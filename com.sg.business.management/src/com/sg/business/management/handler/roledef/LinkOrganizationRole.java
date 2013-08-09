@@ -24,10 +24,14 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()
 						&& is.getFirstElement() instanceof Role) {
-					doLinkOrganizationRole(vc,(Role)is.getFirstElement());
-					
-					super.doOK(is);
-				}else{
+					try {
+						doLinkOrganizationRole(vc, (Role) is.getFirstElement());
+						super.doOK(is);
+					} catch (Exception e) {
+						MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+					}
+
+				} else {
 					MessageUtil.showToast("请选择角色", SWT.ICON_WARNING);
 				}
 			}
@@ -35,16 +39,18 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 		n.show();
 	}
 
-	private void doLinkOrganizationRole(ViewerControl vc, Role role) {
+	private void doLinkOrganizationRole(ViewerControl vc, Role role)
+			throws Exception {
 		ProjectTemplate master = (ProjectTemplate) vc.getMaster();
-		try {
-			RoleDefinition roled = master.makeOrganizationRole(role);
-			roled.addEventListener(vc);
-			roled.doSave(new CurrentAccountContext());
-		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+
+		if (master.hasOrganizationRole(role)) {
+			throw new Exception("该角色已经添加");
 		}
-		
+
+		RoleDefinition roled = master.makeOrganizationRole(role);
+		roled.addEventListener(vc);
+		roled.doSave(new CurrentAccountContext());
+
 	}
 
 	@Override

@@ -27,19 +27,20 @@ public class ProjectTemplate extends PrimaryObject {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		//É¾³ýÔ¤Ëã¸ù
+		// É¾³ýÔ¤Ëã¸ù
 		doRemoveBudgetItemInternal();
 		super.doRemove(context);
 	}
 
 	private void doRemoveBudgetItemInternal() {
 		Object bioid = getValue(F_BUDGET_ID);
-		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_BUDGET_ITEM);
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_BUDGET_ITEM);
 		col.remove(new BasicDBObject().append(F__ID, bioid));
 	}
 
 	public RoleDefinition makeRoleDefinition(RoleDefinition roled) {
-		if(roled==null){
+		if (roled == null) {
 			BasicDBObject data = new BasicDBObject();
 			roled = ModelService.createModelObject(data, RoleDefinition.class);
 		}
@@ -48,11 +49,20 @@ public class ProjectTemplate extends PrimaryObject {
 	}
 
 	public RoleDefinition makeOrganizationRole(Role role) {
-		RoleDefinition roled = ModelService.createModelObject(RoleDefinition.class);
-		roled.setValue(RoleDefinition.F_ORGANIZATION_ROLE_ID,role.get_id());
+		RoleDefinition roled = ModelService
+				.createModelObject(RoleDefinition.class);
+		roled.setValue(RoleDefinition.F_ORGANIZATION_ROLE_ID, role.get_id());
 		roled.setValue(RoleDefinition.F_PROJECT_TEMPLATE_ID, get_id());
 		return roled;
 	}
-	
-	
+
+	public boolean hasOrganizationRole(Role role) {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_ROLE_DEFINITION);
+		long count = col.count(new BasicDBObject().append(
+				RoleDefinition.F_ORGANIZATION_ROLE_ID, role.get_id()).append(
+				RoleDefinition.F_PROJECT_TEMPLATE_ID, get_id()));
+		return count!=0;
+	}
+
 }
