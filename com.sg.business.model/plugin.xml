@@ -432,6 +432,13 @@
             type="Integer"
             width="160">
       </column>
+      <column
+            column="desc"
+            id="roledefinition.desc"
+            name="角色名称"
+            type="String"
+            width="-1">
+      </column>
    </extension>
 
 </plugin>

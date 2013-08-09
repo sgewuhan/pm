@@ -172,7 +172,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.workdef.ProjectTemplatesOfOrganization"
+            dataSet="com.sg.business.model.dataset.projecttemplate.ProjectTemplatesOfOrganization"
             editorId="editor.projecttemplate"
             headerVisiable="false"
             id="management.projecttemplates"
@@ -186,7 +186,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.workdef.GenericWorkDefinitions"
+            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinitions"
             headerVisiable="false"
             id="management.genericwork.definitions"
             popupMenu="popup:com.sg.widget.navigator">
@@ -199,7 +199,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.workdef.StandloneWorkDefinitionsOfOrganization"
+            dataSet="com.sg.business.model.dataset.projecttemplate.StandloneWorkDefinitionsOfOrganization"
             headerVisiable="false"
             id="management.standlonework.definitions"
             popupMenu="popup:com.sg.widget.navigator">
@@ -211,8 +211,12 @@
          </column>
       </table>
       <table
+            dataSet="com.sg.business.model.dataset.projecttemplate.ProjectRoleDefinition"
             headerVisiable="false"
             id="management.roledefinition">
+         <column
+               columnDefinitionId="roledefinition.desc">
+         </column>
       </table>
    </extension>
    <extension
@@ -539,7 +543,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            dataSet="com.sg.business.model.dataset.workdef.WorkDefinitionOfProjectTemplate"
+            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
             id="management.wbstemplate"
             popupMenu="popup:management.wbstemplate">
          <column
