@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Home
+Bundle-SymbolicName: com.sg.business.home;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.sg.business.home.HomeActivator
+Bundle-Vendor: SG
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.rap.ui,
+ com.sg.widgets;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

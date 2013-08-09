@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.mobnut.admin.adminFunction">
+      <adminFunction
+            id="com.sg.business.finance.admin.budgetitem"
+            image="image/budgetitem_48.png"
+            label="预算科目"
+            run="com.sg.business.finance.admin.BudgetItemFunction">
+      </adminFunction>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.sg.business.finance.editor.BudgetItemEditor"
+            default="false"
+            id="com.sg.business.finance.budgetitemeditor"
+            name="默认预算科目">
+      </editor>
+   </extension>
+
+</plugin>

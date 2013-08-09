@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="com.sg.business.visualization.category"
+            name="可视化">
+      </category>
+      <view
+            category="com.sg.business.visualization.category"
+            class="com.sg.ui.part.view.TreeNavigator"
+            id="com.sg.business.visualization.navigator"
+            name="项目导航"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

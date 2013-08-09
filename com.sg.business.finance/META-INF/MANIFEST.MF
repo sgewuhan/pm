@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Finance
+Bundle-SymbolicName: com.sg.business.finance;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.sg.business.finance.FinanceActivator
+Bundle-Vendor: SG
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.rap.ui;bundle-version="2.1.0",
+ com.mobnut.admin,
+ com.mobnut.db;bundle-version="1.0.0",
+ com.sg.widgets,
+ com.sg.thirdparty;bundle-version="1.0.0",
+ com.mobnut.commons
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Import-Package: com.sg.business.model

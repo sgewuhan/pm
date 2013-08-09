@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="com.sg.business.home.category.work"
+            class="com.sg.business.home.view.MyWorkView"
+            id="com.sg.business.home.mywork"
+            name="我的工作"
+            restorable="true">
+      </view>
+      <view
+            category="com.sg.business.home.category.work"
+            class="com.sg.business.home.view.MyCalendar"
+            id="com.sg.business.home.mycalendar"
+            name="日历"
+            restorable="true">
+      </view>
+      <view
+            category="com.sg.business.home.category.work"
+            class="com.sg.business.home.view.SummaryView"
+            id="com.sg.business.home.summary"
+            name="业务概览"
+            restorable="true">
+      </view>
+      <category
+            id="com.sg.business.home.category.work"
+            name="工作">
+      </category>
+   </extension>
+
+</plugin>
