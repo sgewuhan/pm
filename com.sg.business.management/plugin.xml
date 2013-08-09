@@ -211,9 +211,12 @@
          </column>
       </table>
       <table
-            dataSet="com.sg.business.model.dataset.projecttemplate.ProjectRoleDefinition"
+            dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplate"
             headerVisiable="false"
             id="management.roledefinition">
+         <column
+               columnDefinitionId="roledefinition.id">
+         </column>
          <column
                columnDefinitionId="roledefinition.desc">
          </column>

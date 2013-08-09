@@ -13,9 +13,9 @@ import com.sg.business.resource.BusinessResource;
 
 public class Document extends PrimaryObject {
 
-	public static final String F_DOCUMENT_TYPE = "documentType";
+	public static final String F_DOCUMENT_TYPE = "documenttype";
 	
-	public static final String F_DOCUMENT_NUMBER = "documentNumber";
+	public static final String F_DOCUMENT_NUMBER = "documentnumber";
 
 	public static final String F__SUMMARY = "_summary";
 

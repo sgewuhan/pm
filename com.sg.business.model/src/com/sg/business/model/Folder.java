@@ -14,7 +14,7 @@ public class Folder extends PrimaryObject {
 	public static final String F_PARENT_ID = "parent_id";
 	public static final String F_ROOT_ID = "root_id";
 
-	public static final String F_CONTAINER_DB = "containerDB";
+	public static final String F_CONTAINER_DB = "containerdb";
 
 	public static final String F_CONTAINER_COLLECTION = "containerCollection";
 

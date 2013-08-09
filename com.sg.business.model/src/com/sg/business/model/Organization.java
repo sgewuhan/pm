@@ -19,19 +19,19 @@ import com.sg.business.resource.BusinessResource;
 
 public class Organization extends PrimaryObject {
 
-	public static final String F_ORGANIZATION_NUMBER = "organizationNumber";
+	public static final String F_ORGANIZATION_NUMBER = "organizationnumber";
 
 	public static final String F_DESCRIPTION = "description";
 
 	public static final String F_PARENT_ID = "parent_id";
 
-	public static final String F_IS_FUNCTION_DEPARTMENT = "isFunctionDepartment";
+	public static final String F_IS_FUNCTION_DEPARTMENT = "isfunctiondepartment";
 
-	public static final String F_IS_CONTAINER = "isContainer";
+	public static final String F_IS_CONTAINER = "iscontainer";
 
-	public static final String F_COST_CENTER_CODE = "costCenterCode";
+	public static final String F_COST_CENTER_CODE = "costcentercode";
 
-	public static final String F_ORGANIZATION_TYPE = "organizationType";
+	public static final String F_ORGANIZATION_TYPE = "organizationtype";
 
 	public String getDescription() {
 		return (String) getValue(F_DESCRIPTION);

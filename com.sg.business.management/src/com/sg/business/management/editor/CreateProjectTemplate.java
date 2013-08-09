@@ -48,6 +48,7 @@ public class CreateProjectTemplate extends ChildPrimaryObjectCreator {
 					.CREATE_ROOT(WorkDefinition.WORK_TYPE_PROJECT);
 			wbsRoot.doSave(new CurrentAccountContext());
 			po.setValue(ProjectTemplate.F_WORK_DEFINITON_ID, wbsRoot.get_id());
+			
 		}
 	}
 

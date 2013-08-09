@@ -51,5 +51,11 @@ public interface IModelConstants {
 	 * 预算科目
 	 */
 	public static final String C_BUDGET_ITEM = "budget";
+	
+	
+	/**
+	 * 角色定义
+	 */
+	public static final String C_ROLE_DEFINITION = "roled";
 
 }
