@@ -64,6 +64,11 @@ public class BusinessResource extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "com.sg.business.resource"; //$NON-NLS-1$
 
+	public static final String IMAGE_ROLE3_16 = "role3_16.png";
+	
+	public static final String IMAGE_ROLE4_16 = "role4_16.png";
+
+
 	/**
 	 * Returns the shared instance
 	 * 

@@ -4,6 +4,7 @@ import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -35,6 +36,15 @@ public class ProjectTemplate extends PrimaryObject {
 		Object bioid = getValue(F_BUDGET_ID);
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_BUDGET_ITEM);
 		col.remove(new BasicDBObject().append(F__ID, bioid));
+	}
+
+	public RoleDefinition makeRoleDefinition(RoleDefinition roled) {
+		if(roled==null){
+			BasicDBObject data = new BasicDBObject();
+			roled = ModelService.createModelObject(data, RoleDefinition.class);
+		}
+		roled.setValue(RoleDefinition.F_PROJECT_TEMPLATE_ID, get_id());
+		return roled;
 	}
 	
 	

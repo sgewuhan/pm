@@ -66,6 +66,11 @@
             collection="budget"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.RoleDefinition"
+            collection="roled"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
@@ -172,10 +177,10 @@
          <column
                column="desc"
                id="organization.desc"
-               name="组织名称"
+               name="名称"
                style="SWT.LEFT"
                type="String"
-               width="240">
+               width="-1">
          </column>
          <column
                column="organizationtype"
@@ -440,11 +445,18 @@
             width="-1">
       </column>
       <column
-            column="roledefinitionnumber"
+            column="rolenumber"
             id="roledefinition.number"
             name="角色编号"
             type="String"
             width="80">
+      </column>
+      <column
+            column="description"
+            id="roledefinition.description"
+            name="说明"
+            type="String"
+            width="120">
       </column>
    </extension>
 

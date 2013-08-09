@@ -270,4 +270,34 @@ public class Organization extends PrimaryObject {
 		return false;
 	}
 
+	public WorkDefinition makeGenericWorkDefinition(WorkDefinition po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
+		}
+		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
+		po.setValue(WorkDefinition.F__EDITOR,WorkDefinition.EDITOR_GENERIC_WORK);
+		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_GENERIC);
+		return po;
+	}
+
+	public ProjectTemplate makeProjectTemplate(ProjectTemplate po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), ProjectTemplate.class);
+		}
+		po.setValue(ProjectTemplate.F_ORGANIZATION_ID, get_id());
+		
+		return po;
+	}
+
+	public WorkDefinition makeStandardWorkDefinition(WorkDefinition po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
+		}
+		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
+		po.setValue(WorkDefinition.F__EDITOR,WorkDefinition.EDITOR_STANDLONE_WORK);
+		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_STANDLONE);
+		return po;
+		
+	}
+
 }

@@ -1,4 +1,4 @@
-package com.sg.business.management.handler;
+package com.sg.business.management.handler.workdef;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -10,10 +10,11 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class WorkDefinitionMoveDown extends AbstractWorkDefinitionHandler {
+public class WorkDefinitionMoveDown extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "下移工作定义";
 	
@@ -25,10 +26,10 @@ public class WorkDefinitionMoveDown extends AbstractWorkDefinitionHandler {
 	}
 	
 	@Override
-	protected void execute(WorkDefinition selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		try {
-			PrimaryObject[] relativeObjects = selected.doMoveDown(new CurrentAccountContext());
+			PrimaryObject[] relativeObjects = ((WorkDefinition)selected).doMoveDown(new CurrentAccountContext());
 			
 			ViewerControl vc = getCurrentViewerControl(event);
 			ColumnViewer viewer = vc.getViewer();

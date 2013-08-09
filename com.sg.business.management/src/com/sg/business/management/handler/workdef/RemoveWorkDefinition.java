@@ -1,4 +1,4 @@
-package com.sg.business.management.handler;
+package com.sg.business.management.handler.workdef;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
@@ -6,12 +6,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.sg.business.model.WorkDefinition;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class RemoveWorkDefinition extends AbstractWorkDefinitionHandler {
+public class RemoveWorkDefinition extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "删除工作定义";
 
@@ -23,7 +24,7 @@ public class RemoveWorkDefinition extends AbstractWorkDefinitionHandler {
 	}
 
 	@Override
-	protected void execute(WorkDefinition selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		if(selected.getParentPrimaryObject()==null){
 			MessageUtil.showToast(shell, TITLE, "顶级工作定义不可删除", SWT.ICON_WARNING);
