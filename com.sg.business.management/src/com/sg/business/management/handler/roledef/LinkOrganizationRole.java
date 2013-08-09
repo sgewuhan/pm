@@ -1,5 +1,7 @@
 package com.sg.business.management.handler.roledef;
 
+import java.util.Iterator;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -19,13 +21,20 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		final ViewerControl vc = getCurrentViewerControl(event);
-		NavigatorSelector n = new NavigatorSelector("management.roleselector") {
+		NavigatorSelector n = new NavigatorSelector("management.roleselector",
+				"选择组织角色") {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()
 						&& is.getFirstElement() instanceof Role) {
 					try {
-						doLinkOrganizationRole(vc, (Role) is.getFirstElement());
+						Iterator<?> iter = is.iterator();
+						while (iter.hasNext()) {
+							Object next = iter.next();
+							if(next instanceof Role){
+								doLinkOrganizationRole(vc, (Role) next);
+							}
+						}
 						super.doOK(is);
 					} catch (Exception e) {
 						MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);

@@ -631,7 +631,8 @@
       </tree>
       <tree
             dataSet="com.sg.business.model.dataset.organization.OrganizationRoot"
-            id="management.roleselector">
+            id="management.roleselector"
+            multiSelection="true">
          <column
                columnDefinitionId="organization.desc">
          </column>
