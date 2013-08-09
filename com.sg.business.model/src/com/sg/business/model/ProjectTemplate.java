@@ -46,6 +46,13 @@ public class ProjectTemplate extends PrimaryObject {
 		roled.setValue(RoleDefinition.F_PROJECT_TEMPLATE_ID, get_id());
 		return roled;
 	}
+
+	public RoleDefinition makeOrganizationRole(Role role) {
+		RoleDefinition roled = ModelService.createModelObject(RoleDefinition.class);
+		roled.setValue(RoleDefinition.F_ORGANIZATION_ROLE_ID,role.get_id());
+		roled.setValue(RoleDefinition.F_PROJECT_TEMPLATE_ID, get_id());
+		return roled;
+	}
 	
 	
 }

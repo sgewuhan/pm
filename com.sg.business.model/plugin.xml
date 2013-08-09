@@ -440,6 +440,7 @@
       <column
             column="desc"
             id="roledefinition.desc"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionLabelProvider"
             name="角色名称"
             type="String"
             width="-1">
@@ -447,16 +448,26 @@
       <column
             column="rolenumber"
             id="roledefinition.number"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionLabelProvider"
             name="角色编号"
+            type="String"
+            width="80">
+      </column>
+      <column
+            column="roletype"
+            id="roledefinition.type"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionTypeLabelProvider"
+            name="角色类型"
             type="String"
             width="80">
       </column>
       <column
             column="description"
             id="roledefinition.description"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionDescLabelProvider"
             name="说明"
             type="String"
-            width="120">
+            width="240">
       </column>
    </extension>
 
