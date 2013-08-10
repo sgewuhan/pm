@@ -51,5 +51,10 @@ public interface IModelConstants {
 	 * 预算科目
 	 */
 	public static final String C_BUDGET_ITEM = "budget";
+	
+	/**
+	 * 系统日历
+	 */
+	public static final String C_SYSCALENDAR = "syscalendar";
 
 }
