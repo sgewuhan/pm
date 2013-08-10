@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
@@ -26,42 +27,66 @@ public class SysCalendar extends PrimaryObject {
 
 	public static List<PrimaryObject> getCondition() {
 
-		PrimaryObject po = null;
-
-		DBCollection col = DBActivator.getCollection(IModelConstants.DB,IModelConstants.C_SYSCALENDAR);
-				
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_SYSCALENDAR);
 		DBCursor cur = col.find();
 		List<PrimaryObject> list = new ArrayList<PrimaryObject>();
 		List<DBObject> dbl = cur.toArray();
-		if (dbl == null || !(dbl.size() > 0)) {
-			DBObject data = new BasicDBObject().append(F__ID, new ObjectId())
-					.append(F_SEQUENCE, 0).append(F_DESC, "")
-					.append(F_EXPLAIN, "");
-			col.insert(data);
-			list.add(ModelService.createModelObject(data, BudgetItem.class));
-		} else {
-			for (DBObject data : dbl) {
-				po = ModelService.createModelObject(data, SysCalendar.class);
-				list.add(po);
-			}
+		for (DBObject data : dbl) {
+			list.add(ModelService.createModelObject(data, SysCalendar.class));
 		}
-
 		return list;
 
 	}
 
-	public void createCondition(String condition) {
-		DBCursor cur = this.getCollection().find();
-		List<DBObject> dblist = cur.toArray();
+	public static void createCondition(String condition) {
+
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_SYSCALENDAR);
-		System.out.println(dblist.size());
+		DBCursor cur = col.find();
+		DBObject data = new BasicDBObject().append(F__ID, new ObjectId())
+				.append(F_SEQUENCE, cur.size()).append(F_DESC, condition)
+				.append(F_EXPLAIN, "");
+		col.insert(data);
+		ModelService.createModelObject(data, BudgetItem.class);
 
 	}
 
+
+	public void createFollowCondition(String condition) {
+		DBCollection col = this.getCollection();
+		
+		DBObject data = new BasicDBObject().append(F__ID, new ObjectId())
+				.append(F_SEQUENCE, (Integer)this.getValue(F_SEQUENCE)+1).append(F_DESC, condition)
+				.append(F_EXPLAIN, "");
+		col.insert(data);
+		changeSequence(data);
+	}
+
+	public String getSequence() {
+		return this.getValue(F_SEQUENCE).toString();
+	}
+	
 	public String getExplain() {
 
 		return (String) this.getValue(F_EXPLAIN);
 	}
 
+    public void changeSequence(DBObject data){
+    	
+    	DBCollection col = DBActivator.getCollection(IModelConstants.DB,IModelConstants.C_SYSCALENDAR);
+		List<DBObject> dataList = col.find().toArray();
+		for(DBObject db:dataList){
+			if(data.get(PrimaryObject.F__ID).equals(db.get(PrimaryObject.F__ID))){
+				continue;
+			}
+			if((Integer)(data.get("sequence"))-(Integer)(db.get("sequence"))==0){
+		      	PrimaryObject po=ModelService.createModelObject(db, BudgetItem.class);
+		        po.setValue(F_SEQUENCE,(Integer)(po.getValue(F_SEQUENCE))+1);
+		      	System.out.println(	po.getValue(F_SEQUENCE));
+		      	changeSequence(db);
+			}
+		}
+    }
+	
 }

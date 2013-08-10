@@ -1,4 +1,4 @@
-package com.sg.business.management.handler;
+package com.sg.business.management.handler.workdef;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

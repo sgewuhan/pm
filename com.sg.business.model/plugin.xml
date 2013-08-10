@@ -71,6 +71,16 @@
             collection="syscalendar"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.RoleDefinition"
+            collection="roled"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.DemoModel"
+            collection="demo"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
@@ -167,7 +177,7 @@
          name="组织"
          point="com.sg.widgets.column">
          <column
-               column="organizationNumber"
+               column="organizationnumber"
                id="organization.organizationNumber"
                name="组织编号"
                style="SWT.LEFT"
@@ -177,34 +187,34 @@
          <column
                column="desc"
                id="organization.desc"
-               name="组织名称"
+               name="名称"
                style="SWT.LEFT"
                type="String"
-               width="240">
+               width="-1">
          </column>
          <column
-               column="organizationType"
+               column="organizationtype"
                id="organization.organizationType"
                name="组织类型"
                style="SWT.LEFT"
                type="String">
          </column>
          <column
-               column="isFunctionDepartment"
+               column="isfunctiondepartment"
                id="organization.isFunctionDepartment"
                name="项目管理\n职能"
                style="SWT.CENTER"
                type="Boolean">
          </column>
          <column
-               column="isContainer"
+               column="iscontainer"
                id="organization.isContainer"
                name="文档容器"
                style="SWT.CENTER"
                type="Boolean">
          </column>
          <column
-               column="costCenterCode"
+               column="costcentercode"
                id="organization.costCenterCode"
                name="成本中心\n代码"
                style="SWT.LEFT"
@@ -232,7 +242,7 @@
          id="role"
          point="com.sg.widgets.column">
       <column
-            column="roleNumber"
+            column="rolenumber"
             id="role.roleNumber"
             labelProvider="com.sg.business.model.labelprovider.RoleNumberLabelProvider"
             name="编号"
@@ -256,7 +266,7 @@
             width="240">
       </column>
       <column
-            column="roleType"
+            column="roletype"
             id="role.roleType"
             labelProvider="com.sg.business.model.labelprovider.RoleTypeLabelProvider"
             name="类型"
@@ -345,7 +355,7 @@
          name="文档"
          point="com.sg.widgets.column">
       <column
-            column="documentNumber"
+            column="documentnumber"
             id="document.documentNumber"
             name="编号"
             type="String"
@@ -359,7 +369,7 @@
             width="180">
       </column>
       <column
-            column="documentType"
+            column="documenttype"
             id="document.documentType"
             name="类型"
             type="String"
@@ -440,9 +450,34 @@
       <column
             column="desc"
             id="roledefinition.desc"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionLabelProvider"
             name="角色名称"
             type="String"
             width="-1">
+      </column>
+      <column
+            column="rolenumber"
+            id="roledefinition.number"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionLabelProvider"
+            name="角色编号"
+            type="String"
+            width="80">
+      </column>
+      <column
+            column="roletype"
+            id="roledefinition.type"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionTypeLabelProvider"
+            name="角色类型"
+            type="String"
+            width="80">
+      </column>
+      <column
+            column="description"
+            id="roledefinition.description"
+            labelProvider="com.sg.business.model.labelprovider.RoleDefinitionDescLabelProvider"
+            name="说明"
+            type="String"
+            width="240">
       </column>
    </extension>
 

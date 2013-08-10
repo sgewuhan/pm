@@ -21,7 +21,7 @@ public class Role extends PrimaryObject {
 
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
-	public static final String F_ROLE_NUMBER = "roleNumber";
+	public static final String F_ROLE_NUMBER = "rolenumber";
 
 	/**
 	 * 基础角色/组织角色/系统管理员

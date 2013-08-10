@@ -3,6 +3,7 @@ package com.sg.business.management.editor;
 import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.BudgetItem;
+import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.Widgets;
@@ -20,9 +21,9 @@ public class CreateProjectTemplate extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		PrimaryObject parentOrg = po.getParentPrimaryObject();
+		Organization parentOrg = (Organization) po.getParentPrimaryObject();
 		// 设置项目模板的所属组织
-		po.setValue(ProjectTemplate.F_ORGANIZATION_ID, parentOrg.get_id());
+		parentOrg.makeProjectTemplate((ProjectTemplate) po);
 	}
 
 	@Override
@@ -48,6 +49,7 @@ public class CreateProjectTemplate extends ChildPrimaryObjectCreator {
 					.CREATE_ROOT(WorkDefinition.WORK_TYPE_PROJECT);
 			wbsRoot.doSave(new CurrentAccountContext());
 			po.setValue(ProjectTemplate.F_WORK_DEFINITON_ID, wbsRoot.get_id());
+			
 		}
 	}
 

@@ -56,5 +56,15 @@ public interface IModelConstants {
 	 * 系统日历
 	 */
 	public static final String C_SYSCALENDAR = "syscalendar";
+	
+	/**
+	 * 角色定义
+	 */
+	public static final String C_ROLE_DEFINITION = "roled";
+
+	/**
+	 * 表单演示
+	 */
+	public static final String C_DEMO = "demo";
 
 }

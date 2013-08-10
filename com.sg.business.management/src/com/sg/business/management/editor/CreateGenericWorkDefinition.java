@@ -1,6 +1,7 @@
 package com.sg.business.management.editor;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.Organization;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.IMasterListenerPart;
@@ -16,10 +17,8 @@ public class CreateGenericWorkDefinition extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		PrimaryObject parentOrg = po.getParentPrimaryObject();
-		po.setValue(WorkDefinition.F_ORGANIZATION_ID, parentOrg.get_id());
-		po.setValue(WorkDefinition.F__EDITOR,WorkDefinition.EDITOR_GENERIC_WORK);
-		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_GENERIC);
+		Organization parentOrg = (Organization) po.getParentPrimaryObject();
+		parentOrg.makeGenericWorkDefinition((WorkDefinition) po);
 	}
 
 	@Override

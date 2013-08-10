@@ -1,4 +1,4 @@
-package com.sg.business.management.handler;
+package com.sg.business.management.handler.workdef;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
@@ -6,15 +6,17 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class CreateWorkDefinition extends AbstractWorkDefinitionHandler {
+public class CreateWorkDefinition extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "添加工作定义";
 
@@ -26,10 +28,10 @@ public class CreateWorkDefinition extends AbstractWorkDefinitionHandler {
 	}
 
 	@Override
-	protected void execute(WorkDefinition selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 
-		WorkDefinition po = selected.makeChildWorkDefinition();
+		WorkDefinition po = ((WorkDefinition)selected).makeChildWorkDefinition();
 		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 

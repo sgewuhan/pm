@@ -29,7 +29,7 @@ public class Container extends PrimaryObject {
 
 	public static final String TYPETEXT_ADMIN_GRANTED = " ⁄»®π‹¿Ì";//
 
-	public static final String F_CONTAINER_TYPE = "containerType";
+	public static final String F_CONTAINER_TYPE = "containertype";
 
 	public static final String F_SOURCE_DB = "sourceDB";
 

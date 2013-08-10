@@ -1,4 +1,4 @@
-package com.sg.business.management.handler;
+package com.sg.business.management.handler.workdef;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.swt.SWT;
@@ -7,14 +7,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.sg.business.model.WorkDefinition;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ShowWorkDefinitionCompase extends AbstractWorkDefinitionHandler {
+public class ShowWorkDefinitionCompase extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(WorkDefinition selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		ViewerControl vc = getCurrentViewerControl(event);
 		WorkDefinitionNavigatorPanel navi = new WorkDefinitionNavigatorPanel();
 		

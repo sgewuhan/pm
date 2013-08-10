@@ -19,19 +19,19 @@ import com.sg.business.resource.BusinessResource;
 
 public class Organization extends PrimaryObject {
 
-	public static final String F_ORGANIZATION_NUMBER = "organizationNumber";
+	public static final String F_ORGANIZATION_NUMBER = "organizationnumber";
 
 	public static final String F_DESCRIPTION = "description";
 
 	public static final String F_PARENT_ID = "parent_id";
 
-	public static final String F_IS_FUNCTION_DEPARTMENT = "isFunctionDepartment";
+	public static final String F_IS_FUNCTION_DEPARTMENT = "isfunctiondepartment";
 
-	public static final String F_IS_CONTAINER = "isContainer";
+	public static final String F_IS_CONTAINER = "iscontainer";
 
-	public static final String F_COST_CENTER_CODE = "costCenterCode";
+	public static final String F_COST_CENTER_CODE = "costcentercode";
 
-	public static final String F_ORGANIZATION_TYPE = "organizationType";
+	public static final String F_ORGANIZATION_TYPE = "organizationtype";
 
 	public String getDescription() {
 		return (String) getValue(F_DESCRIPTION);
@@ -268,6 +268,36 @@ public class Organization extends PrimaryObject {
 			parent = (Organization) organization.getParentOrganization();
 		}
 		return false;
+	}
+
+	public WorkDefinition makeGenericWorkDefinition(WorkDefinition po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
+		}
+		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
+		po.setValue(WorkDefinition.F__EDITOR,WorkDefinition.EDITOR_GENERIC_WORK);
+		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_GENERIC);
+		return po;
+	}
+
+	public ProjectTemplate makeProjectTemplate(ProjectTemplate po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), ProjectTemplate.class);
+		}
+		po.setValue(ProjectTemplate.F_ORGANIZATION_ID, get_id());
+		
+		return po;
+	}
+
+	public WorkDefinition makeStandardWorkDefinition(WorkDefinition po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
+		}
+		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
+		po.setValue(WorkDefinition.F__EDITOR,WorkDefinition.EDITOR_STANDLONE_WORK);
+		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_STANDLONE);
+		return po;
+		
 	}
 
 }

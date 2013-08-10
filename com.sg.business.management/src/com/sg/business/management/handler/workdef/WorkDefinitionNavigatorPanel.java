@@ -1,4 +1,4 @@
-package com.sg.business.management.handler;
+package com.sg.business.management.handler.workdef;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -9,11 +9,11 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.part.NavigatorPanel;
+import com.sg.widgets.part.CompassPanel;
 import com.sg.widgets.viewer.CTreeViewer;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class WorkDefinitionNavigatorPanel extends NavigatorPanel {
+public class WorkDefinitionNavigatorPanel extends CompassPanel {
 
 	private CTreeViewer viewer;
 

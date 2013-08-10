@@ -8,7 +8,4 @@ public class UserDataSetFactory extends SingleDBCollectionDataSetFactory {
 	public UserDataSetFactory() {
 		super(IModelConstants.DB, IModelConstants.C_USER);
 	}
-
-
-	
 }
