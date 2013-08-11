@@ -151,6 +151,22 @@
       <navigator
             id="management.roledefinition"
             table="management.roledefinition">
+         <filterAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="management.roleselector"
@@ -228,6 +244,7 @@
             dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplate"
             headerVisiable="true"
             id="management.roledefinition"
+            multiSelection="true"
             popupMenu="popup:management.roledefinition">
          <column
                columnDefinitionId="roledefinition.number">
@@ -502,7 +519,8 @@
                         name="desc"
                         persistable="true"
                         required="false"
-                        type="String">
+                        type="String"
+                        widthHint="240">
                   </text>
                   <text
                         editPart="Text(Multi Line)"
@@ -721,21 +739,6 @@
                commandId="management.wbstemplate.charger"
                icon="image/24_blank.png"
                label="指定负责人角色"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="+">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="management.wbstemplate.participation"
-               icon="image/24_blank.png"
-               label="指定承担者角色"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1016,11 +1019,6 @@
             id="management.wbstemplate.charger"
             name="指定负责人角色">
       </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.participation"
-            name="指定承担者角色">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -1063,10 +1061,6 @@
       <handler
             class="com.sg.business.management.handler.workdef.ShowWorkDefinitionCompase"
             commandId="management.wbstemplate.showcompass">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.ParticipationAssignment"
-            commandId="management.wbstemplate.participation">
       </handler>
       <handler
             class="com.sg.business.management.handler.workdef.ChargerAssignment"
