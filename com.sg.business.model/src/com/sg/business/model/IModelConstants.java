@@ -61,4 +61,14 @@ public interface IModelConstants {
 	 * ½ÇÉ«¶¨Òå
 	 */
 	public static final String C_ROLE_DEFINITION = "roled";
+
+	/**
+	 * demo1
+	 */
+	public static final String C_DEMO1 = "demo1";
+	
+	/**
+	 * demo2
+	 */
+	public static final String C_DEMO2 = "demo2";
 }
