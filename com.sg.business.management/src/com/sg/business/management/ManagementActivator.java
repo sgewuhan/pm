@@ -14,6 +14,7 @@ public class ManagementActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static ManagementActivator plugin;
 	
+	
 	/**
 	 * The constructor
 	 */

@@ -76,6 +76,11 @@
             collection="roled"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.ParticipateDefinition"
+            collection="participated"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
