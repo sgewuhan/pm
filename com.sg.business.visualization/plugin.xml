@@ -15,7 +15,7 @@
             restorable="true">
       </view>
       <view
-            class="com.sg.widgets.part.view.TableNavigator"
+            class="com.sg.widgets.part.view.TreeNavigator"
             id="visualization.demoview"
             name="表单演示"
             restorable="true">
@@ -26,7 +26,7 @@
       <navigator
             id="visualization.demoview"
             provideSelection="true"
-            table="visualization.demoview">
+            tree="visualization.demotree">
       </navigator>
    </extension>
    <extension
@@ -35,12 +35,13 @@
             canCreate="true"
             canDelete="true"
             canEdit="true"
+            collectionName="demo"
             dataSet="com.sg.business.model.dataset.demo.DemoDataSet"
+            dbName="pm2"
             editorId="visualization.demoeditor"
-            id="visualization.demoview"
+            id="visualization.demotable"
             popupMenu="popup:com.sg.widget.navigator"
-            queryMode="false"
-            virtual="true">
+            queryMode="false">
          <column
                column="desc"
                name="描述"
@@ -52,6 +53,26 @@
                type="Boolean">
          </column>
       </table>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            dataSet="com.sg.business.model.dataset.demo.DemoDataRoot"
+            id="visualization.demotree">
+         <column
+               column="desc"
+               name="描述"
+               type="String">
+         </column>
+         <column
+               column="necessary"
+               name="是否必须"
+               type="Boolean">
+         </column>
+         <structure
+               modelRelation="demo_demo">
+         </structure>
+      </tree>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
