@@ -76,11 +76,6 @@
             collection="roled"
             db="pm2">
       </doc>
-      <doc
-            class="com.sg.business.model.DemoModel"
-            collection="demo"
-            db="pm2">
-      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
@@ -478,6 +473,14 @@
             name="说明"
             type="String"
             width="240">
+      </column>
+      <column
+            column="charger_roled_id"
+            id="workdefinition.chargerrole"
+            labelProvider="com.sg.business.model.labelprovider.ChargerRoleDefOfWorkDefLabelProvider"
+            name="负责人角色"
+            type="String"
+            width="120">
       </column>
    </extension>
    <extension

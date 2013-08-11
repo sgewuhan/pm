@@ -37,7 +37,7 @@ public class EditWorkDefinition extends AbstractNavigatorHandler {
 		selected.addEventListener(currentViewerControl);
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				WorkDefinition.EDITOR_PROJECT_WORK_EDIT);
+				WorkDefinition.EDITOR_PROJECT_WORK);
 		try {
 			DataObjectDialog.openDialog(selected, (DataEditorConfigurator) conf,
 					true, null, TITLE);

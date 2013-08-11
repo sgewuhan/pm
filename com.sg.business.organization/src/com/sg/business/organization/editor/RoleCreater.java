@@ -1,6 +1,7 @@
 package com.sg.business.organization.editor;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.IMasterListenerPart;
@@ -16,8 +17,8 @@ public class RoleCreater extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		PrimaryObject parentOrg = po.getParentPrimaryObject();
-		po.setValue(Role.F_ORGANIZATION_ID, parentOrg.get_id());
+		Organization parentOrg = (Organization) po.getParentPrimaryObject();
+		parentOrg.makeRole((Role)po);
 	}
 
 	@Override

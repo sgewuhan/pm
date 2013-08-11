@@ -6,11 +6,8 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mobnut.db.utils.DBUtil;
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;

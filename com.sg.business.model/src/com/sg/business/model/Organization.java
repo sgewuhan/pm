@@ -115,7 +115,7 @@ public class Organization extends PrimaryObject {
 		}
 	}
 
-	public void addMembers(ObjectId[] userIdList) {
+	public void doAddMembers(ObjectId[] userIdList) {
 		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
 		userCol.update(
@@ -128,7 +128,7 @@ public class Organization extends PrimaryObject {
 								getDesc())), false, true);
 	}
 
-	public void addMembers(List<PrimaryObject> userDatas) {
+	public void doAddMembers(List<PrimaryObject> userDatas) {
 		ObjectId[] userIdList = new ObjectId[userDatas.size()];
 		for (int i = 0; i < userDatas.size(); i++) {
 			User user = (User) userDatas.get(i);
@@ -137,7 +137,7 @@ public class Organization extends PrimaryObject {
 					UserSessionContext.EVENT_ORG_CHANGED);
 			userIdList[i] = (ObjectId) user.get_id();
 		}
-		addMembers(userIdList);
+		doAddMembers(userIdList);
 	}
 
 	@Override
@@ -223,7 +223,7 @@ public class Organization extends PrimaryObject {
 	 *            , ½ÇÉ«Ãû³Æ
 	 * @return
 	 */
-	public Role addRole(String roleNumber, String roleName) {
+	public Role doAddRole(String roleNumber, String roleName) {
 		DBCollection roleCollection = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_ROLE);
 		BasicDBObject data = new BasicDBObject();
@@ -298,6 +298,23 @@ public class Organization extends PrimaryObject {
 		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_STANDLONE);
 		return po;
 		
+	}
+
+	public Organization makeChildOrganization(Organization po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), Organization.class);
+		}
+		po.setValue(Organization.F_PARENT_ID, get_id());
+		return po;
+	}
+
+	public Role makeRole(Role po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), Role.class);
+		}
+		po.setValue(Role.F_ORGANIZATION_ID, get_id());
+		return po;
+
 	}
 
 }

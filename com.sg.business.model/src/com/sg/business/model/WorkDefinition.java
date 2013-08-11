@@ -19,52 +19,92 @@ import com.sg.business.resource.BusinessResource;
 
 public class WorkDefinition extends PrimaryObject {
 
-	public static final String F_ORGANIZATION_ID = "organization_id";
-
-	public static final String F_PARENT_ID = "parent_id";
-
-	public static final String F_WORK_TYPE = "worktype";
-
-	public static final String F_ACTIVATED = "activated";
-
-	public static final String F_SEQ = "seq";
-
+	/**
+	 * 通用工作定义
+	 */
 	public static final int WORK_TYPE_GENERIC = 0;
 
+	/**
+	 * 独立工作定义
+	 */
 	public static final int WORK_TYPE_STANDLONE = 1;
 
+	/**
+	 * 项目模板工作定义
+	 */
 	public static final int WORK_TYPE_PROJECT = 2;
 
+	/**
+	 * 工作定义的类型， 可以使用
+	 * <p>
+	 * {@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE},
+	 * {@link #WORK_TYPE_PROJECT}
+	 */
+	public static final String F_WORK_TYPE = "worktype";
+	/**
+	 * 只用于通用工作定义和独立工作定义
+	 */
+	public static final String F_ORGANIZATION_ID = "organization_id";
+
+	/**
+	 * 只用于项目模板工作定义
+	 */
+	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
+
+	/**
+	 * 工作定义的上级工作定义
+	 */
+	public static final String F_PARENT_ID = "parent_id";
+
+	/**
+	 * 工作定义是否激活，可使用，只用于{@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE}
+	 */
+	public static final String F_ACTIVATED = "activated";
+
+	/**
+	 * 工作定义的负责角色定义，{@link RoleDefinition},保存了角色定义的Id
+	 */
+	public static final String F_CHARGER_ROLE_ID = "charger_roled_id";
+
+	/**
+	 * 工作定义的同层序号
+	 */
+	public static final String F_SEQ = "seq";
+
+	/**
+	 * 通用工作定义的编辑器Id
+	 */
 	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition";
 
+	/**
+	 * 独立工作定义的编辑器Id
+	 */
 	public static final String EDITOR_STANDLONE_WORK = "editor.standloneWorkDefinition";
 
-	public static final String EDITOR_PROJECT_WORK_CREATE = "editor.workDefinition.create";
-
-	public static final String EDITOR_PROJECT_WORK_EDIT = "editor.workDefinition";
+	/**
+	 * 项目模板工作定义的编辑器Id
+	 */
+	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
 
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
 	}
 
+
 	/**
+	 * 构造子工作定义对象
 	 * 
-	 * @param type
-	 *            WORK_TYPE_GENERIC, WORK_TYPE_STANDLONE, WORK_TYPE_PROJECT
 	 * @return
 	 */
-	public static WorkDefinition CREATE_ROOT(int type) {
-		BasicDBObject data = new BasicDBObject();
-		data.put(F_WORK_TYPE, new Integer(WORK_TYPE_PROJECT));
-		return ModelService.createModelObject(data, WorkDefinition.class);
-	}
-
 	public WorkDefinition makeChildWorkDefinition() {
 		DBObject data = new BasicDBObject();
 		data.put(WorkDefinition.F_PARENT_ID, get_id());
 		int seq = getMaxChildSeq();
 		data.put(F_SEQ, new Integer(seq));
+		data.put(F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
+		data.put(F_WORK_TYPE, getValue(F_WORK_TYPE));
+		
 		WorkDefinition po = ModelService.createModelObject(data,
 				WorkDefinition.class);
 		return po;
@@ -212,22 +252,22 @@ public class WorkDefinition extends PrimaryObject {
 
 		return new PrimaryObject[] { parent, upperBrother };
 	}
-	
-	
+
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		super.doRemove(context);
 		WorkDefinition parent = getParent();
 		Assert.isNotNull(parent);
-		
+
 		List<PrimaryObject> children = getChildrenWorkDefinition();
-		doSaveAndResetSeq(children,context);
+		doSaveAndResetSeq(children, context);
 	}
 
 	public WorkDefinition getParent() {
-		ObjectId parent_id = (ObjectId)getValue(F_PARENT_ID);
-		if(parent_id!=null){
-			return ModelService.createModelObject(WorkDefinition.class, parent_id);
+		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
+		if (parent_id != null) {
+			return ModelService.createModelObject(WorkDefinition.class,
+					parent_id);
 		}
 		return null;
 	}
@@ -248,6 +288,38 @@ public class WorkDefinition extends PrimaryObject {
 		} else {
 			return parent.getWBSCode() + "." + (getSequance() + 1);
 		}
+	}
+
+	public void doSetChargerAssignmentRole(RoleDefinition roled,
+			IContext context) throws Exception {
+		setValue(F_CHARGER_ROLE_ID, roled.get_id());
+		doSave(context);
+	}
+
+	/**
+	 * 获取工作定义所属的项目模板
+	 * @return
+	 */
+	public ProjectTemplate getProjectTemplate() {
+		ObjectId ptId = (ObjectId) getValue(F_PROJECTTEMPLATE_ID);
+		if(ptId!=null){
+			return ModelService.createModelObject(ProjectTemplate.class, ptId);
+		}else{
+			return null;
+		}
+	}
+
+
+	/**
+	 * 获得该工作定义的负责人角色定义
+	 * @return
+	 */
+	public RoleDefinition getChargerRoleDefinition() {
+		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
+		if(chargerRoleDefId!=null){
+			return ModelService.createModelObject(RoleDefinition.class, chargerRoleDefId);
+		}
+		return null;
 	}
 
 }

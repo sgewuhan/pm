@@ -43,7 +43,7 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 
 		// 使用编辑器打开编辑工作定义
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				WorkDefinition.EDITOR_PROJECT_WORK_CREATE);
+				WorkDefinition.EDITOR_PROJECT_WORK);
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, TITLE);

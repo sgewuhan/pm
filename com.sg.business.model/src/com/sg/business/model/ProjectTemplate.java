@@ -9,6 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectTemplate extends PrimaryObject {
 
@@ -25,6 +26,29 @@ public class ProjectTemplate extends PrimaryObject {
 		return BusinessResource.getImage(BusinessResource.IMAGE_TEMPLATE_16);
 	}
 
+	@Override
+	protected void doInsert(IContext context) throws Exception {
+		if (getValue(F_WORK_DEFINITON_ID) == null) {
+			BasicDBObject wbsRootData = new BasicDBObject();
+			wbsRootData.put(WorkDefinition.F_WORK_TYPE, new Integer(WorkDefinition.WORK_TYPE_PROJECT));
+			wbsRootData.put(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id());
+			
+			WorkDefinition wbsRoot = ModelService.createModelObject(wbsRootData, WorkDefinition.class);
+			wbsRoot.doSave(new CurrentAccountContext());
+			setValue(ProjectTemplate.F_WORK_DEFINITON_ID, wbsRoot.get_id());
+		}
+		
+		if (getValue(F_BUDGET_ID) == null) {
+			BudgetItem biRoot = BudgetItem.COPY_DEFAULT_BUDGET_ITEM();
+			biRoot.setValue(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id());
+			
+			biRoot.doSave(new CurrentAccountContext());
+			setValue(ProjectTemplate.F_BUDGET_ID, biRoot.get_id());
+		}
+		
+		super.doInsert(context);
+	}
+	
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		// É¾³ýÔ¤Ëã¸ù

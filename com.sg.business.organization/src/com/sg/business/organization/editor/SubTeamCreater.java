@@ -14,8 +14,8 @@ public class SubTeamCreater extends ChildPrimaryObjectCreator{
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		PrimaryObject parentOrg = po.getParentPrimaryObject();
-		po.setValue(Organization.F_PARENT_ID, parentOrg.get_id());
+		Organization parentOrg = (Organization) po.getParentPrimaryObject();
+		parentOrg.makeChildOrganization((Organization) po);
 	}
 
 }
