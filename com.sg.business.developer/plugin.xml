@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="com.sg.business.developer.perspective"
+            name="开发者演示">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="com.sg.business.developer.perspective">
+      </perspectiveExtension>
+   </extension>
+
+</plugin>

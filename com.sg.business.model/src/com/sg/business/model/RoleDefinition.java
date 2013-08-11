@@ -19,7 +19,7 @@ public class RoleDefinition extends PrimaryObject {
 	public static final String EDITOR_ROLE_DEFINITION_CREATE = "editor.roleDefinition";
 
 	public boolean isOrganizatioRole() {
-		return getValue(F_ORGANIZATION_ROLE_ID)!=null;
+		return getValue(F_ORGANIZATION_ROLE_ID) != null;
 	}
 
 	public Image getImage() {
@@ -34,5 +34,15 @@ public class RoleDefinition extends PrimaryObject {
 		ObjectId id = (ObjectId) getValue(F_ORGANIZATION_ROLE_ID);
 		Assert.isNotNull(id);
 		return ModelService.createModelObject(Role.class, id);
+	}
+
+	@Override
+	public String getLabel() {
+		if (isOrganizatioRole()) {
+			Role role = getOrganizationRole();
+			return role.getLabel();
+		} else {
+			return super.getLabel();
+		}
 	}
 }

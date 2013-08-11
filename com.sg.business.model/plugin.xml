@@ -474,6 +474,14 @@
             type="String"
             width="240">
       </column>
+      <column
+            column="charger_roled_id"
+            id="workdefinition.chargerrole"
+            labelProvider="com.sg.business.model.labelprovider.ChargerRoleDefOfWorkDefLabelProvider"
+            name="负责人角色"
+            type="String"
+            width="120">
+      </column>
    </extension>
 
 </plugin>

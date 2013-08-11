@@ -64,7 +64,7 @@ public class WorkDefinition extends PrimaryObject {
 	/**
 	 * 工作定义的负责角色定义，{@link RoleDefinition},保存了角色定义的Id
 	 */
-	public static final String F_CHARGER_ROLE = "charger_roled_id";
+	public static final String F_CHARGER_ROLE_ID = "charger_roled_id";
 
 	/**
 	 * 工作定义的同层序号
@@ -292,7 +292,7 @@ public class WorkDefinition extends PrimaryObject {
 
 	public void doSetChargerAssignmentRole(RoleDefinition roled,
 			IContext context) throws Exception {
-		setValue(F_CHARGER_ROLE, roled.get_id());
+		setValue(F_CHARGER_ROLE_ID, roled.get_id());
 		doSave(context);
 	}
 
@@ -307,6 +307,19 @@ public class WorkDefinition extends PrimaryObject {
 		}else{
 			return null;
 		}
+	}
+
+
+	/**
+	 * 获得该工作定义的负责人角色定义
+	 * @return
+	 */
+	public RoleDefinition getChargerRoleDefinition() {
+		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
+		if(chargerRoleDefId!=null){
+			return ModelService.createModelObject(RoleDefinition.class, chargerRoleDefId);
+		}
+		return null;
 	}
 
 }
