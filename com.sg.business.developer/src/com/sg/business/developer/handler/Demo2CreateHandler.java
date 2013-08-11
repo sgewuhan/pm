@@ -17,5 +17,10 @@ public class Demo2CreateHandler extends ChildPrimaryObjectCreator {
 	protected String getMessageForEmptySelection() {
 		return  "您需要选择Tree后进行创建";
 	}
+	
+	@Override
+	protected boolean needHostPartListenSaveEvent() {
+		return false;
+	}
 
 }
