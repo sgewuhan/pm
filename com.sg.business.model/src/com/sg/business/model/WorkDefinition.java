@@ -26,6 +26,8 @@ public class WorkDefinition extends PrimaryObject {
 	public static final String F_WORK_TYPE = "worktype";
 
 	public static final String F_ACTIVATED = "activated";
+	
+	public static final String F_CHARGER_ROLE = "charger_roled_id";
 
 	public static final String F_SEQ = "seq";
 
@@ -42,6 +44,7 @@ public class WorkDefinition extends PrimaryObject {
 	public static final String EDITOR_PROJECT_WORK_CREATE = "editor.workDefinition.create";
 
 	public static final String EDITOR_PROJECT_WORK_EDIT = "editor.workDefinition";
+
 
 	@Override
 	public Image getImage() {
@@ -212,22 +215,22 @@ public class WorkDefinition extends PrimaryObject {
 
 		return new PrimaryObject[] { parent, upperBrother };
 	}
-	
-	
+
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		super.doRemove(context);
 		WorkDefinition parent = getParent();
 		Assert.isNotNull(parent);
-		
+
 		List<PrimaryObject> children = getChildrenWorkDefinition();
-		doSaveAndResetSeq(children,context);
+		doSaveAndResetSeq(children, context);
 	}
 
 	public WorkDefinition getParent() {
-		ObjectId parent_id = (ObjectId)getValue(F_PARENT_ID);
-		if(parent_id!=null){
-			return ModelService.createModelObject(WorkDefinition.class, parent_id);
+		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
+		if (parent_id != null) {
+			return ModelService.createModelObject(WorkDefinition.class,
+					parent_id);
 		}
 		return null;
 	}
@@ -248,6 +251,11 @@ public class WorkDefinition extends PrimaryObject {
 		} else {
 			return parent.getWBSCode() + "." + (getSequance() + 1);
 		}
+	}
+
+	public void doSetChargerAssignmentRole(RoleDefinition roled, IContext context) throws Exception {
+		setValue(F_CHARGER_ROLE, roled.get_id());
+		doSave(context);
 	}
 
 }
