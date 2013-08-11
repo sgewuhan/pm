@@ -52,10 +52,13 @@ public interface IModelConstants {
 	 */
 	public static final String C_BUDGET_ITEM = "budget";
 	
+	/**
+	 * 系统日历
+	 */
+	public static final String C_SYSCALENDAR = "syscalendar";
 	
 	/**
 	 * 角色定义
 	 */
 	public static final String C_ROLE_DEFINITION = "roled";
-	
 }
