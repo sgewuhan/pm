@@ -8,7 +8,6 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
-import com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplate;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -41,7 +40,8 @@ public class ChargerAssignment extends AbstractNavigatorHandler {
 				}
 			}
 		};
-		ns.setDataSetFactory(new RoleDefinitionOfProjectTemplate(projectTemplate));
+		ProjectTemplate projectTemplate = workd.getProjectTemplate();
+		ns.setMaster(projectTemplate);
 		ns.show();
 	}
 
