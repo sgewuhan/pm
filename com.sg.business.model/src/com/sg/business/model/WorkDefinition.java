@@ -258,4 +258,9 @@ public class WorkDefinition extends PrimaryObject {
 		doSave(context);
 	}
 
+	public ProjectTemplate getProjectTemplate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
