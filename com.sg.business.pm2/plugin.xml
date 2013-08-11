@@ -275,12 +275,24 @@
             targetID="perspective.visualization">
          <view
                closeable="false"
-               id="com.sg.business.visualization.navigator"
+               id="visualization.demomodel1"
                minimized="false"
                moveable="false"
                ratio="0.4"
                relationship="left"
                relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="visualization.demomodel2"
+               minimized="false"
+               moveable="false"
+               ratio="0.6"
+               relationship="right"
+               relative="visualization.demomodel1"
                showTitle="true"
                standalone="false"
                visible="true">

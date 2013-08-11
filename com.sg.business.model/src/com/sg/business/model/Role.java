@@ -100,7 +100,7 @@ public class Role extends PrimaryObject {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
 
-	public void assignUsers(List<PrimaryObject> users) {
+	public void doAssignUsers(List<PrimaryObject> users) {
 		DBCollection roleAssignmentCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_ROLE_ASSIGNMENT);
 		List<DBObject> list = new ArrayList<DBObject>();

@@ -660,47 +660,81 @@
                icon="image/editwork_24.png"
                label="编辑..."
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="management.wbstemplate.remove"
                icon="image/removework_24.png"
                label="删除"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="management.wbstemplate.separator1"
                visible="true">
          </separator>
-         <command
-               commandId="management.wbstemplate.moveup"
-               icon="image/up_24.png"
-               label="上移"
-               style="push">
-         </command>
-         <command
-               commandId="management.wbstemplate.movedown"
-               icon="image/down_24.png"
-               label="下移"
-               style="push">
-         </command>
-         <command
-               commandId="management.wbstemplate.moveleft"
-               icon="image/left_24.png"
-               label="升级"
-               style="push">
-         </command>
-         <command
-               commandId="management.wbstemplate.moveright"
-               icon="image/right_24.png"
-               label="降级"
-               style="push">
-         </command>
-         <command
-               commandId="management.wbstemplate.showcompass"
-               icon="image/naviclose_24.png"
-               label="显示移动罗盘"
-               style="push">
-         </command>
+         <menu
+               icon="image/24_blank.png"
+               label="移动工作定义">
+            <command
+                  commandId="management.wbstemplate.moveup"
+                  icon="image/up_24.png"
+                  label="上移"
+                  style="push">
+            </command>
+            <command
+                  commandId="management.wbstemplate.movedown"
+                  icon="image/down_24.png"
+                  label="下移"
+                  style="push">
+            </command>
+            <command
+                  commandId="management.wbstemplate.moveleft"
+                  icon="image/left_24.png"
+                  label="升级"
+                  style="push">
+            </command>
+            <command
+                  commandId="management.wbstemplate.moveright"
+                  icon="image/right_24.png"
+                  label="降级"
+                  style="push">
+            </command>
+            <separator
+                  name="management.wbstemplate.separator1.1">
+            </separator>
+            <command
+                  commandId="management.wbstemplate.showcompass"
+                  icon="image/naviclose_24.png"
+                  label="显示移动罗盘"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </menu>
          <separator
                name="management.wbstemplate.separator2"
                visible="true">
@@ -719,6 +753,40 @@
          </command>
          <separator
                name="management.wbstemplate.separator3"
+               visible="true">
+         </separator>
+         <command
+               commandId="management.wbstemplate.charger"
+               icon="image/24_blank.png"
+               label="指定负责人角色"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="management.wbstemplate.participation"
+               icon="image/24_blank.png"
+               label="指定承担者角色"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="management.wbstemplate.separator4"
                visible="true">
          </separator>
          <command
@@ -748,10 +816,10 @@
             <visibleWhen
                   checkEnabled="false">
                <with
-                     variable="activePart">
-                  <instanceof
-                        value="com.sg.widgets.part.IEditablePart">
-                  </instanceof>
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
                </with>
             </visibleWhen>
          </command>
@@ -768,6 +836,15 @@
                   name="com.sg.widgets.edit.pageid"
                   value="wbstemplatepage">
             </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
@@ -782,6 +859,15 @@
                   name="com.sg.widgets.edit.pageid"
                   value="budgetpage">
             </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
@@ -796,6 +882,15 @@
                   name="com.sg.widgets.edit.pageid"
                   value="rolepage">
             </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="management.projecttemplates.separator1"
@@ -823,14 +918,12 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <and>
-                  <with
-                        variable="activePart">
-                     <instanceof
-                           value="com.sg.widgets.part.IEditablePart">
-                     </instanceof>
-                  </with>
-               </and>
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
             </visibleWhen>
          </command>
       </menuContribution>
@@ -845,7 +938,7 @@
          </command>
          <command
                commandId="management.roledefinition.link"
-               icon="image/createrole_24.png"
+               icon="image/24_blank.png"
                label="添加组织角色"
                style="push">
          </command>
@@ -854,12 +947,30 @@
                icon="image/editrole_24.png"
                label="编辑..."
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="management.roledefinition.remove"
                icon="image/removerole_24.png"
                label="删除"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="management.roledefinition.separator1"
@@ -938,6 +1049,16 @@
             id="management.wbstemplate.showcompass"
             name="显示移动罗盘">
       </command>
+      <command
+            categoryId="com.sg.business.management"
+            id="management.wbstemplate.charger"
+            name="指定负责人角色">
+      </command>
+      <command
+            categoryId="com.sg.business.management"
+            id="management.wbstemplate.participation"
+            name="指定承担者角色">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -980,6 +1101,14 @@
       <handler
             class="com.sg.business.management.handler.workdef.ShowWorkDefinitionCompase"
             commandId="management.wbstemplate.showcompass">
+      </handler>
+      <handler
+            class="com.sg.business.management.handler.workdef.ParticipationAssignment"
+            commandId="management.wbstemplate.participation">
+      </handler>
+      <handler
+            class="com.sg.business.management.handler.workdef.ChargerAssignment"
+            commandId="management.wbstemplate.charger">
       </handler>
    </extension>
    <extension

@@ -57,5 +57,5 @@ public interface IModelConstants {
 	 * ½ÇÉ«¶¨Òå
 	 */
 	public static final String C_ROLE_DEFINITION = "roled";
-
+	
 }

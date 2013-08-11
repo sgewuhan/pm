@@ -30,11 +30,11 @@ public class OrganizationSaveHandler implements IEditorSaveHandler {
 			//判断是否存在这个role,如果不存在再添加。这个判断通过建立唯一索引来解决可以免除事务处理的问题。
 			boolean hasRole = org.hasRole(Role.ROLE_PROJECT_ADMIN_ID);
 			if(!hasRole){
-				org.addRole(Role.ROLE_PROJECT_ADMIN_ID,Role.ROLE_PROJECT_ADMIN_TEXT);
+				org.doAddRole(Role.ROLE_PROJECT_ADMIN_ID,Role.ROLE_PROJECT_ADMIN_TEXT);
 			}
 			hasRole = org.hasRole(Role.ROLE_BUSINESS_ADMIN_ID);
 			if(!hasRole){
-				org.addRole(Role.ROLE_BUSINESS_ADMIN_ID,Role.ROLE_BUSINESS_ADMIN_TEXT);
+				org.doAddRole(Role.ROLE_BUSINESS_ADMIN_ID,Role.ROLE_BUSINESS_ADMIN_TEXT);
 			}
 		}
 		
@@ -44,11 +44,11 @@ public class OrganizationSaveHandler implements IEditorSaveHandler {
 			//判断是否存在这个role
 			boolean hasRole = org.hasRole(Role.ROLE_VAULT_ADMIN_ID);
 			if(!hasRole){
-				org.addRole(Role.ROLE_VAULT_ADMIN_ID,Role.ROLE_VALUT_ADMIN_TEXT);
+				org.doAddRole(Role.ROLE_VAULT_ADMIN_ID,Role.ROLE_VALUT_ADMIN_TEXT);
 			}
 			hasRole = org.hasRole(Role.ROLE_VAULT_GUEST_ID);
 			if(!hasRole){
-				org.addRole(Role.ROLE_VAULT_GUEST_ID,Role.ROLE_VAULT_GUEST_TEXT);
+				org.doAddRole(Role.ROLE_VAULT_GUEST_ID,Role.ROLE_VAULT_GUEST_TEXT);
 			}
 		}
 

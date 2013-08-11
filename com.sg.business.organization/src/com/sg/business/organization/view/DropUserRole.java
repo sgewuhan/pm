@@ -22,7 +22,7 @@ public class DropUserRole extends DropPrimaryObjectTarget{
 			return;
 		}
 		Role role = (Role) event.item.getData();
-		role.assignUsers(dragsItems);
+		role.doAssignUsers(dragsItems);
 		targetViewerControl.getViewer().refresh(role);
 		super.doDrop(sourceId, dragsItems, event, targetViewerControl);
 	}

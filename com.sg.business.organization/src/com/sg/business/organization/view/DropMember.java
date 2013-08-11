@@ -22,7 +22,7 @@ public class DropMember  extends DropPrimaryObjectTarget{
 		if(org==null){
 			return;
 		}
-		org.addMembers(dragsItems);
+		org.doAddMembers(dragsItems);
 		// 刷新目标表
 		targetViewerControl.doReloadData();
 		super.doDrop(sourceId, dragsItems, event, targetViewerControl);
