@@ -488,16 +488,5 @@
             width="120">
       </column>
    </extension>
-   <extension
-         point="com.mobnut.db.modelRelation">
-      <relation
-            end1Class="com.sg.business.model.DemoModel"
-            end1Key="_id"
-            end2Class="com.sg.business.model.DemoModel"
-            end2Key="parent_id"
-            id="demo_demo"
-            name="演示树形结构">
-      </relation>
-   </extension>
 
 </plugin>
