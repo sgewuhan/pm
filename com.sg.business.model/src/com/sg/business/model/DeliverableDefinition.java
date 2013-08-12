@@ -38,7 +38,11 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 		if (docd_id == null) {
 			DBObject docdData = new BasicDBObject();
 			docdData.put(DocumentDefinition.F_DESC, getDesc());
-			docdData.put(DocumentDefinition.F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
+
+			// 获取模板对应的组织
+			ProjectTemplate projectTemplate = getProjectTemplate();
+			docdData.put(DocumentDefinition.F_ORGANIZATION_ID,
+					projectTemplate.getValue(ProjectTemplate.F_ORGANIZATION_ID));
 
 			DocumentDefinition docd = ModelService.createModelObject(docdData,
 					DocumentDefinition.class);
@@ -46,6 +50,15 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 			setValue(F_DOCUMENT_DEFINITION_ID, docd.get_id());
 		}
 		super.doInsert(context);
+	}
+
+	public ProjectTemplate getProjectTemplate() {
+		ObjectId pjtempId = (ObjectId) getValue(F_PROJECTTEMPLATE_ID);
+		if (pjtempId != null) {
+			return ModelService.createModelObject(ProjectTemplate.class,
+					pjtempId);
+		}
+		return null;
 	}
 
 	@Override

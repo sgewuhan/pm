@@ -7,7 +7,7 @@ import com.sg.business.resource.BusinessResource;
 
 public class DocumentDefinition extends PrimaryObject {
 
-	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
+	public static final String F_ORGANIZATION_ID = "organization_id";
 
 	@Override
 	public Image getImage() {

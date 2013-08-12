@@ -25,7 +25,7 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 		final ViewerControl vc = getCurrentViewerControl(event);
 
 		NavigatorSelector ns = new NavigatorSelector(
-				"management.projecttemplate.documents") {
+				"management.organization.document.definition") {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()) {
@@ -50,7 +50,7 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 		};
 
 		ProjectTemplate projectTemplate = workd.getProjectTemplate();
-		ns.setMaster(projectTemplate);
+		ns.setMaster(projectTemplate.getOrganization());
 		ns.show();
 	}
 

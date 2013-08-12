@@ -285,8 +285,8 @@
          </column>
       </table>
       <table
-            dataSet="com.sg.business.model.dataset.projecttemplate.DocumentDefinitionOfProjectTemplate"
-            id="management.projecttemplate.documents"
+            dataSet="com.sg.business.model.dataset.projecttemplate.DocumentDefinitionOfOrganization"
+            id="management.organization.document.definition"
             multiSelection="true">
          <column
                columnDefinitionId="document.desc">
@@ -334,8 +334,18 @@
                   <combo
                         editPart="Combo(Read Only)"
                         editable="true"
+                        id="wfd_projectstart"
+                        label="启动流程"
+                        labelVisible="true"
+                        name="wfd_projectstart"
+                        persistable="true"
+                        required="false">
+                  </combo>
+                  <combo
+                        editPart="Combo(Read Only)"
+                        editable="true"
                         id="wfd_projectchange"
-                        label="项目变更流程"
+                        label="变更流程"
                         labelVisible="true"
                         name="wfd_projectchange"
                         persistable="true"
