@@ -35,6 +35,13 @@
             name="独立工作定义"
             restorable="true">
       </view>
+      <view
+            category="management.category"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="management.documentdefinition"
+            name="文档模板"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -63,6 +70,10 @@
          <createEditor
                createHandler="com.sg.business.management.editor.CreateStandloneWorkDefinition"
                editorId="editor.standloneWorkDefinition">
+         </createEditor>
+         <createEditor
+               createHandler="com.sg.business.management.editor.CreateDocumentDefinition"
+               editorId="editor.documentdefinition">
          </createEditor>
       </navigator>
       <navigator
@@ -197,8 +208,8 @@
          </searchAction>
       </navigator>
       <navigator
-            id="management.projecttemplate.documents"
-            table="management.projecttemplate.documents">
+            id="management.documentdefinition"
+            table="management.documentdefinition">
          <filterAction>
             <column
                   columnDefinitionId="document.desc">
@@ -209,6 +220,9 @@
                   columnDefinitionId="document.desc">
             </column>
          </searchAction>
+         <masterProvider
+               id="management.organization.navigaor">
+         </masterProvider>
       </navigator>
    </extension>
    <extension
@@ -285,8 +299,12 @@
          </column>
       </table>
       <table
+            canCreate="false"
             dataSet="com.sg.business.model.dataset.projecttemplate.DocumentDefinitionOfOrganization"
-            id="management.organization.document.definition"
+            dragSourceListener="com.sg.business.management.dnd.DragDocumentDefinition"
+            editorId="editor.documentdefinition"
+            headerVisiable="false"
+            id="management.documentdefinition"
             multiSelection="true">
          <column
                columnDefinitionId="document.desc">
@@ -682,6 +700,75 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="documentd"
+            dbName="pm2"
+            id="editor.documentdefinition"
+            name="文档模板"
+            titleToolTips="文档模板">
+         <basicpage
+               description="文档模板"
+               id="basicpage1"
+               title="文档模板">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="文档名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <combo
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="document_editorid"
+                        label="编辑器"
+                        labelVisible="true"
+                        name="document_editorid"
+                        persistable="true"
+                        required="false">
+                  </combo>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="模板文件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="templatefile"
+                        label="模板文件"
+                        labelVisible="false"
+                        name="templatefile"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <pageExtendsions
+            id="editor.documentdefinition"
+            location="after=basicpage1"
+            targetId="systempage">
+      </pageExtendsions>
       <pageExtendsions
             id="editor.projecttemplate"
             location="after=optionpage"
@@ -725,6 +812,7 @@
       <tree
             autoExpandLevel="-1"
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
+            dropTargetListener="com.sg.business.management.dnd.DropDeliverable"
             fix="1"
             id="management.deliverables"
             popupMenu="popup:management.deliverables">

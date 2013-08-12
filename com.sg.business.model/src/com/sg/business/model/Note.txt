@@ -1,3 +1,4 @@
 建立唯一索引，执行以下语句
 db.roleassignment.ensureIndex({"userid":1,"role_id":1},{"unique":true})
 db.roled.ensureIndex({"role_id":1,"projecttemplate_id":1},{"unique":true})
+db.deliverabled.ensureIndex({"word_id":1,"documentd_id":1},{"unique":true})

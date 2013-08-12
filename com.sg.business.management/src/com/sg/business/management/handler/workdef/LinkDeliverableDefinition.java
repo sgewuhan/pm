@@ -25,7 +25,7 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 		final ViewerControl vc = getCurrentViewerControl(event);
 
 		NavigatorSelector ns = new NavigatorSelector(
-				"management.organization.document.definition") {
+				"management.documentdefinition") {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()) {

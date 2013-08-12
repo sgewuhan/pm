@@ -254,6 +254,18 @@
                standalone="false"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="management.documentdefinition"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="management.genericwork.definitions"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.system">

@@ -299,6 +299,15 @@ public class Organization extends PrimaryObject {
 		return po;
 		
 	}
+	
+
+	public DocumentDefinition makeDocumentDefinition(DocumentDefinition po) {
+		if(po == null){
+			po = ModelService.createModelObject(new BasicDBObject(), DocumentDefinition.class);
+		}	
+		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
+		return po;
+	}
 
 	public Organization makeChildOrganization(Organization po) {
 		if(po == null){
