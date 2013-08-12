@@ -25,6 +25,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_DISACTIVATED_16 = "disactivated_16.png";
 	
 	public static final String IMAGE_DOCUMENT_16 = "document_16.png";
+	
+	public static final String IMAGE_DOCUMENT_DEF_16 = "documentd_16.png";
 
 	public static final String IMAGE_FOLDER = "image";
 

@@ -196,6 +196,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="management.projecttemplate.documents"
+            table="management.projecttemplate.documents">
+         <filterAction>
+            <column
+                  columnDefinitionId="document.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="document.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -270,6 +284,14 @@
                columnDefinitionId="roledefinition.description">
          </column>
       </table>
+      <table
+            dataSet="com.sg.business.model.dataset.projecttemplate.DocumentDefinitionOfProjectTemplate"
+            id="management.projecttemplate.documents"
+            multiSelection="true">
+         <column
+               columnDefinitionId="document.desc">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -284,7 +306,7 @@
                description="项目模板基本信息"
                id="basicpage"
                image="image/projecttemplate_32.png"
-               title="基本信息">
+               title="基本">
             <pagecolumn
                   id="1">
                <section
@@ -342,7 +364,7 @@
                description="可用于项目属性工作筛选的选项"
                id="optionpage"
                image="image/options_32.png"
-               title="项目选项">
+               title="选项">
             <pagecolumn>
                <section
                      expand="true"
@@ -393,25 +415,26 @@
                id="budgetpage"
                image="image/financial_32.png"
                pageDelegator="com.sg.business.management.editor.page.BugetTemplatePage"
-               title="预算科目">
+               title="预算">
          </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="rolepage"
                image="image/role_32.png"
                navigatorId="management.roledefinition"
-               title="项目角色">
+               title="角色">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
                id="wbstemplatepage"
                navigatorId="management.wbstemplate"
-               title="工作分解">
+               title="WBS">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
                id="deliverables"
                navigatorId="management.deliverables"
+               pageBodyPartCreater="com.sg.business.management.editor.page.DeliverablesBody"
                title="交付物">
          </navigatorpage>
       </editor>
@@ -649,6 +672,11 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <pageExtendsions
+            id="editor.projecttemplate"
+            location="after=optionpage"
+            targetId="systempage">
+      </pageExtendsions>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -687,6 +715,7 @@
       <tree
             autoExpandLevel="-1"
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
+            fix="1"
             id="management.deliverables"
             popupMenu="popup:management.deliverables">
          <column
@@ -1062,7 +1091,25 @@
          <command
                commandId="management.deliverables.create"
                icon="image/deliverablecreate_24.png"
-               label="添加交付物"
+               label="创建交付物定义"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.WorkDefinition">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="management.deliverables.link"
+               icon="image/24_blank.png"
+               label="链接交付文档..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1291,16 +1338,21 @@
       <command
             categoryId="com.sg.business.management"
             id="management.deliverables.create"
-            name="添加交付物">
+            name="添加交付物定义">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="management.deliverables.edit"
-            name="编辑交付物">
+            name="编辑交付物定义">
       </command>
       <command
             id="management.deliverables.remove"
-            name="删除交付物">
+            name="删除交付物定义">
+      </command>
+      <command
+            categoryId="com.sg.business.management"
+            id="management.deliverables.link"
+            name="链接交付物定义">
       </command>
    </extension>
    <extension
@@ -1316,6 +1368,10 @@
       <handler
             class="com.sg.business.management.handler.workdef.RemoveDeliverableDefinition"
             commandId="management.deliverables.remove">
+      </handler>
+      <handler
+            class="com.sg.business.management.handler.workdef.LinkDeliverableDefinition"
+            commandId="management.deliverables.link">
       </handler>
    </extension>
 

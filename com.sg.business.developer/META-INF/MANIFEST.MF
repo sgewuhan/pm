@@ -10,9 +10,7 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.widgets;bundle-version="1.0.0",
  com.mobnut.db;bundle-version="1.0.0",
  com.sg.thirdparty;bundle-version="1.0.0",
- org.eclipse.rap.ui.forms;bundle-version="2.1.0"
+ org.eclipse.rap.ui.forms;bundle-version="2.1.0",
+ com.sg.business.model;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: com.mobnut.db.model,
- com.mobnut.db.model.mongodb,
- com.sg.business.model

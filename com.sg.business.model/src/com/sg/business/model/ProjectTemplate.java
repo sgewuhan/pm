@@ -1,5 +1,7 @@
 package com.sg.business.model;
 
+import java.util.List;
+
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.DBActivator;
@@ -20,6 +22,13 @@ public class ProjectTemplate extends PrimaryObject {
 	public static final String F_BUDGET_ID = "budget_id";
 
 	public static final String F_WORK_DEFINITON_ID = "workd_id";
+
+	public static final String F_STANDARD_OPTION_SET = "standardset";
+	
+	public static final String F_PRODUCTTYPE_OPTION_SET = "producttype";
+
+	public static final String F_PROJECTTYPE_OPTION_SET = "projecttype";
+	
 
 	@Override
 	public Image getImage() {
@@ -89,4 +98,15 @@ public class ProjectTemplate extends PrimaryObject {
 		return count!=0;
 	}
 
+	public List<?> getStandardOptionSet() {
+		return (List<?>) getValue(F_STANDARD_OPTION_SET);
+	}
+
+	public List<?> getProductOptionSet() {
+		return (List<?>) getValue(F_PRODUCTTYPE_OPTION_SET);
+	}
+	
+	public List<?> getProjectOptionSet() {
+		return (List<?>) getValue(F_PROJECTTYPE_OPTION_SET);
+	}
 }

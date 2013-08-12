@@ -71,4 +71,6 @@ public interface IModelConstants {
 	 * demo2
 	 */
 	public static final String C_DEMO2 = "demo2";
+
+	public static final String C_DOCUMENT_DEFINITION = "documentd";
 }

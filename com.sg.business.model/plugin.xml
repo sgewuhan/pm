@@ -86,6 +86,11 @@
             collection="deliverabled"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.DocumentDefinition"
+            collection="documentd"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
@@ -183,6 +188,14 @@
             end2Key="workd_id"
             id="workd_deliverable"
             name="工作定义的交付物定义">
+      </relation>
+      <relation
+            end1Class="com.sg.business.model.DeliverableDefinition"
+            end1Key="documentd_id"
+            end2Class="com.sg.business.model.DocumentDefinition"
+            end2Key="_id"
+            id="deliverabled_documentd"
+            name="交付物定义的文档定义">
       </relation>
    </extension>
    <extension

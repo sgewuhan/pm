@@ -47,7 +47,7 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 				DeliverableDefinition.EDITOR);
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, TITLE);
+					true, null , TITLE);
 		} catch (Exception e) {
 			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
 		}

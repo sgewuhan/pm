@@ -17,7 +17,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
-public class WorkDefinition extends PrimaryObject {
+public class WorkDefinition extends AbstractOptionFilterableItem {
 
 	/**
 	 * 通用工作定义
@@ -41,15 +41,16 @@ public class WorkDefinition extends PrimaryObject {
 	 * {@link #WORK_TYPE_PROJECT}
 	 */
 	public static final String F_WORK_TYPE = "worktype";
+
+	/**
+	 * 项目模板工作定义和交付物定义
+	 */
+	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
+
 	/**
 	 * 只用于通用工作定义和独立工作定义
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
-
-	/**
-	 * 只用于项目模板工作定义
-	 */
-	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
 
 	/**
 	 * 工作定义的上级工作定义
@@ -91,7 +92,6 @@ public class WorkDefinition extends PrimaryObject {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
 	}
 
-
 	/**
 	 * 构造子工作定义对象
 	 * 
@@ -104,22 +104,31 @@ public class WorkDefinition extends PrimaryObject {
 		data.put(F_SEQ, new Integer(seq));
 		data.put(F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
 		data.put(F_WORK_TYPE, getValue(F_WORK_TYPE));
-		
+
 		WorkDefinition po = ModelService.createModelObject(data,
 				WorkDefinition.class);
 		return po;
 
 	}
-	
 
 	public DeliverableDefinition makeDeliverableDefinition() {
+		return makeDeliverableDefinition(null);
+	}
+
+	public DeliverableDefinition makeDeliverableDefinition(DocumentDefinition docd) {
 		DBObject data = new BasicDBObject();
-		data.put(DeliverableDefinition.F_WORKD_ID, get_id());
-		data.put(F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
+		data.put(DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
+		data.put(DeliverableDefinition.F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
 		data.put(F_WORK_TYPE, getValue(F_WORK_TYPE));
-		
+
+		if (docd != null) {
+			data.put(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID,docd.get_id());
+			data.put(DeliverableDefinition.F_DESC, docd.getDesc());
+		}
+
 		DeliverableDefinition po = ModelService.createModelObject(data,
 				DeliverableDefinition.class);
+
 		return po;
 	}
 
@@ -131,8 +140,8 @@ public class WorkDefinition extends PrimaryObject {
 		dsf.setSort(sort);
 		return dsf.getDataSet().getDataItems();
 	}
-	
-	public boolean isSummaryWorkDefinition(){
+
+	public boolean isSummaryWorkDefinition() {
 		return hasChildrenWorkDefinition();
 	}
 
@@ -140,9 +149,8 @@ public class WorkDefinition extends PrimaryObject {
 		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
 		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
 				WorkDefinition.class, condition);
-		return dsf.getTotalCount()>0;
+		return dsf.getTotalCount() > 0;
 	}
-
 
 	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
@@ -322,29 +330,30 @@ public class WorkDefinition extends PrimaryObject {
 
 	/**
 	 * 获取工作定义所属的项目模板
+	 * 
 	 * @return
 	 */
 	public ProjectTemplate getProjectTemplate() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECTTEMPLATE_ID);
-		if(ptId!=null){
+		if (ptId != null) {
 			return ModelService.createModelObject(ProjectTemplate.class, ptId);
-		}else{
+		} else {
 			return null;
 		}
 	}
 
-
 	/**
 	 * 获得该工作定义的负责人角色定义
+	 * 
 	 * @return
 	 */
 	public RoleDefinition getChargerRoleDefinition() {
 		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
-		if(chargerRoleDefId!=null){
-			return ModelService.createModelObject(RoleDefinition.class, chargerRoleDefId);
+		if (chargerRoleDefId != null) {
+			return ModelService.createModelObject(RoleDefinition.class,
+					chargerRoleDefId);
 		}
 		return null;
 	}
-
 
 }
