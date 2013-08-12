@@ -26,6 +26,11 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 
 	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
 
+	/**
+	 * 通用工作定义和独立工作定义使用
+	 */
+	public static final String F_ORGANIZATION_ID = "organization_id";
+
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_DELIVERABLE_16);
@@ -40,9 +45,14 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 			docdData.put(DocumentDefinition.F_DESC, getDesc());
 
 			// 获取模板对应的组织
-			ProjectTemplate projectTemplate = getProjectTemplate();
-			docdData.put(DocumentDefinition.F_ORGANIZATION_ID,
-					projectTemplate.getValue(ProjectTemplate.F_ORGANIZATION_ID));
+			ObjectId orgId = (ObjectId) getValue(F_ORGANIZATION_ID);
+			if(orgId==null){
+				ProjectTemplate projectTemplate = getProjectTemplate();
+				if(projectTemplate!=null){
+					orgId = (ObjectId)projectTemplate.getValue(ProjectTemplate.F_ORGANIZATION_ID);
+				}
+			}
+			docdData.put(DocumentDefinition.F_ORGANIZATION_ID,orgId);
 
 			DocumentDefinition docd = ModelService.createModelObject(docdData,
 					DocumentDefinition.class);
