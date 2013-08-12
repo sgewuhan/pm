@@ -719,7 +719,11 @@
             id="management.deliverables"
             popupMenu="popup:management.deliverables">
          <column
-               columnDefinitionId="work.desc">
+               column="desc"
+               name="名称"
+               style="SWT.LEFT"
+               type="String"
+               width="150">
          </column>
          <structure
                modelRelation="workd_workd">

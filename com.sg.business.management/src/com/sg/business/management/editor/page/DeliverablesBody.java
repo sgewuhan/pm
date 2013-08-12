@@ -51,7 +51,11 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 		for (int i = 0; i < set.size(); i++) {
 			final String optionName = (String) set.get(i);
 			col = new TreeViewerColumn(viewer, SWT.CENTER);
-			col.getColumn().setText(optionSetName + "\n" + optionName);
+			if(i==0){
+				col.getColumn().setText(optionSetName + "\n" + optionName);
+			}else{
+				col.getColumn().setText("\n"+optionName);
+			}
 			col.getColumn().setWidth(80);
 			col.setLabelProvider(new ColumnLabelProvider() {
 				@Override
