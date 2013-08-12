@@ -57,6 +57,9 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_VAULT2_16 = "vault2_16.png";
 	
 	public static final String IMAGE_WORK_16 = "work_16.gif";
+	
+	public static final String IMAGE_DELIVERABLE_16 = "deliverable_16.gif";
+
 
 	// The shared instance
 	private static BusinessResource plugin;

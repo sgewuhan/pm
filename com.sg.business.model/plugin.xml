@@ -81,6 +81,11 @@
             collection="participated"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.DeliverableDefinition"
+            collection="deliverabled"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
@@ -170,6 +175,14 @@
             end2Key="_id"
             id="projecttemplate_workd"
             name="项目模板的顶层工作定义">
+      </relation>
+      <relation
+            end1Class="com.sg.business.model.WorkDefinition"
+            end1Key="_id"
+            end2Class="com.sg.business.model.DeliverableDefinition"
+            end2Key="workd_id"
+            id="workd_deliverable"
+            name="工作定义的交付物定义">
       </relation>
    </extension>
    <extension
@@ -435,7 +448,7 @@
       <column
             column="desc"
             id="work.desc"
-            name="工作名称"
+            name="名称"
             type="String"
             width="-1">
       </column>

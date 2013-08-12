@@ -110,6 +110,18 @@ public class WorkDefinition extends PrimaryObject {
 		return po;
 
 	}
+	
+
+	public DeliverableDefinition makeDeliverableDefinition() {
+		DBObject data = new BasicDBObject();
+		data.put(DeliverableDefinition.F_WORKD_ID, get_id());
+		data.put(F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
+		data.put(F_WORK_TYPE, getValue(F_WORK_TYPE));
+		
+		DeliverableDefinition po = ModelService.createModelObject(data,
+				DeliverableDefinition.class);
+		return po;
+	}
 
 	public List<PrimaryObject> getChildrenWorkDefinition() {
 		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
@@ -119,6 +131,18 @@ public class WorkDefinition extends PrimaryObject {
 		dsf.setSort(sort);
 		return dsf.getDataSet().getDataItems();
 	}
+	
+	public boolean isSummaryWorkDefinition(){
+		return hasChildrenWorkDefinition();
+	}
+
+	public boolean hasChildrenWorkDefinition() {
+		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
+		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
+				WorkDefinition.class, condition);
+		return dsf.getTotalCount()>0;
+	}
+
 
 	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
@@ -321,5 +345,6 @@ public class WorkDefinition extends PrimaryObject {
 		}
 		return null;
 	}
+
 
 }

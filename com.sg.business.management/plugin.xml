@@ -182,6 +182,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="management.deliverables"
+            tree="management.deliverables">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -383,16 +397,22 @@
          </basicpage>
          <navigatorpage
                createAfterSave="true"
-               id="wbstemplatepage"
-               navigatorId="management.wbstemplate"
-               title="工作分解结构">
-         </navigatorpage>
-         <navigatorpage
-               createAfterSave="true"
                id="rolepage"
                image="image/role_32.png"
                navigatorId="management.roledefinition"
                title="项目角色">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="wbstemplatepage"
+               navigatorId="management.wbstemplate"
+               title="工作分解">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="deliverables"
+               navigatorId="management.deliverables"
+               title="交付物">
          </navigatorpage>
       </editor>
       <editor
@@ -589,10 +609,51 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="deliverabled"
+            dbName="pm2"
+            id="editor.deliverableDefinition"
+            name="交付物定义">
+         <basicpage
+               description="交付物是工作需要提交的对象，请定义交付物的属性"
+               id="basicpage1"
+               title="交付物定义">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="-1"
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
             id="management.wbstemplate"
             popupMenu="popup:management.wbstemplate">
@@ -621,6 +682,21 @@
          </structure>
          <structure
                modelRelation="organization_role">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="-1"
+            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
+            id="management.deliverables"
+            popupMenu="popup:management.deliverables">
+         <column
+               columnDefinitionId="work.desc">
+         </column>
+         <structure
+               modelRelation="workd_workd">
+         </structure>
+         <structure
+               modelRelation="workd_deliverable">
          </structure>
       </tree>
    </extension>
@@ -857,6 +933,29 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/deliverable_24.png"
+               label="编辑交付物"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editor.projecttemplate">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.pageid"
+                  value="deliverables">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
          <separator
                name="management.projecttemplates.separator1"
                visible="true">
@@ -939,6 +1038,83 @@
          </command>
          <separator
                name="management.roledefinition.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:management.deliverables">
+         <command
+               commandId="management.deliverables.create"
+               icon="image/deliverablecreate_24.png"
+               label="添加交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.WorkDefinition">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="management.deliverables.edit"
+               icon="image/deliverableedit_24.png"
+               label="编辑..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.DeliverableDefinition">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="management.deliverables.remove"
+               icon="image/deliverableremove_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.DeliverableDefinition">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="management.deliverables.separator1"
                visible="true">
          </separator>
          <command
@@ -1108,6 +1284,38 @@
       <handler
             class="com.sg.business.management.handler.roledef.LinkOrganizationRole"
             commandId="management.roledefinition.link">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="com.sg.business.management"
+            id="management.deliverables.create"
+            name="添加交付物">
+      </command>
+      <command
+            categoryId="com.sg.business.management"
+            id="management.deliverables.edit"
+            name="编辑交付物">
+      </command>
+      <command
+            id="management.deliverables.remove"
+            name="删除交付物">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.management.handler.workdef.CreateDeliverableDefinition"
+            commandId="management.deliverables.create">
+      </handler>
+      <handler
+            class="com.sg.business.management.handler.workdef.EditDeliverableDefinition"
+            commandId="management.deliverables.edit">
+      </handler>
+      <handler
+            class="com.sg.business.management.handler.workdef.RemoveDeliverableDefinition"
+            commandId="management.deliverables.remove">
       </handler>
    </extension>
 
