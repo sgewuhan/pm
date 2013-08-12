@@ -29,23 +29,44 @@ public class EditWorkDefinition extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+		WorkDefinition workdefinition = (WorkDefinition) selected;
 		Shell shell = HandlerUtil.getActiveShell(event);
 
 		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
-		selected.addEventListener(currentViewerControl);
+		workdefinition.addEventListener(currentViewerControl);
 
-		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				WorkDefinition.EDITOR_PROJECT_WORK);
-		try {
-			DataObjectDialog.openDialog(selected, (DataEditorConfigurator) conf,
-					true, null, TITLE);
-		} catch (Exception e) {
-			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
+		Configurator conf = null;
+
+		int type = workdefinition.getWorkDefinitionType();
+
+		switch (type) {
+		case WorkDefinition.WORK_TYPE_GENERIC:
+			conf = Widgets.getEditorRegistry().getConfigurator(
+					WorkDefinition.EDITOR_GENERIC_WORK);
+		case WorkDefinition.WORK_TYPE_STANDLONE:
+			conf = Widgets.getEditorRegistry().getConfigurator(
+					WorkDefinition.EDITOR_STANDLONE_WORK);
+			break;
+		case WorkDefinition.WORK_TYPE_PROJECT:
+			conf = Widgets.getEditorRegistry().getConfigurator(
+					WorkDefinition.EDITOR_PROJECT_WORK);
+			break;
+		default:
+			break;
+		}
+		if (conf != null) {
+			try {
+				DataObjectDialog.openDialog(workdefinition,
+						(DataEditorConfigurator) conf, true, null, TITLE);
+			} catch (Exception e) {
+				MessageUtil.showToast(shell, TITLE, e.getMessage(),
+						SWT.ICON_ERROR);
+			}
 		}
 
-		selected.removeEventListener(currentViewerControl);
+		workdefinition.removeEventListener(currentViewerControl);
 	}
 
 }

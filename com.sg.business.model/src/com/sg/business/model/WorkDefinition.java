@@ -92,6 +92,14 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
 	}
 
+	
+
+	public int getWorkDefinitionType() {
+		Object value = getValue(F_WORK_TYPE);
+		return ((Integer)value).intValue();
+	}
+	
+	
 	/**
 	 * 构造子工作定义对象
 	 * 
@@ -102,8 +110,25 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		data.put(WorkDefinition.F_PARENT_ID, get_id());
 		int seq = getMaxChildSeq();
 		data.put(F_SEQ, new Integer(seq));
-		data.put(F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
-		data.put(F_WORK_TYPE, getValue(F_WORK_TYPE));
+		Object value = getValue(F_WORK_TYPE);
+		if(value instanceof Integer ){
+			int type = ((Integer)value).intValue();
+			
+			switch (type) {
+			case WORK_TYPE_GENERIC://通用工作定义和独立工作定义需要设定组织Id
+			case WORK_TYPE_STANDLONE:
+				data.put(F_ORGANIZATION_ID, getValue(F_ORGANIZATION_ID));
+				break;
+			case WORK_TYPE_PROJECT://项目工作定义需要设定项目模板Id
+				data.put(F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
+				
+				break;
+			default:
+				break;
+			}
+			
+			data.put(F_WORK_TYPE, value);
+		}
 
 		WorkDefinition po = ModelService.createModelObject(data,
 				WorkDefinition.class);

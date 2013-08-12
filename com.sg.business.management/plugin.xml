@@ -224,6 +224,20 @@
                id="management.organization.navigaor">
          </masterProvider>
       </navigator>
+      <navigator
+            id="management.genericworkd.wbstemplate"
+            tree="management.genericworkd.wbstemplate">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -258,7 +272,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinitions"
+            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinitionsOfOrganization"
             headerVisiable="false"
             id="management.genericwork.definitions"
             popupMenu="popup:com.sg.widget.navigator">
@@ -475,7 +489,7 @@
             titleToolTips="通用工作定义">
          <basicpage
                description="通用工作定义是可添加到多项目中工作模块"
-               id="basicpage1"
+               id="basicpage"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -515,6 +529,12 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="wbspage"
+               navigatorId="management.genericworkd.wbstemplate"
+               title="WBS">
+         </navigatorpage>
       </editor>
       <editor
             collectionName="workd"
@@ -667,7 +687,7 @@
             name="交付物定义">
          <basicpage
                description="交付物是工作需要提交的对象，请定义交付物的属性"
-               id="basicpage1"
+               id="basicpage"
                title="交付物定义">
             <pagecolumn
                   id="1">
@@ -766,7 +786,7 @@
       </editor>
       <pageExtendsions
             id="editor.documentdefinition"
-            location="after=basicpage1"
+            location="after=basicpage"
             targetId="systempage">
       </pageExtendsions>
       <pageExtendsions
@@ -828,6 +848,27 @@
          </structure>
          <structure
                modelRelation="workd_deliverable">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="-1"
+            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinition"
+            id="management.genericworkd.wbstemplate"
+            popupMenu="popup:management.genericworkd.wbstemplate">
+         <structure
+               modelRelation="workd_workd">
+         </structure>
+         <column
+               columnDefinitionId="work.seq">
+         </column>
+         <column
+               columnDefinitionId="work.desc">
+         </column>
+         <column
+               columnDefinitionId="workdefinition.chargerrole">
+         </column>
+         <structure
+               modelRelation="workd_workd">
          </structure>
       </tree>
    </extension>
@@ -1266,6 +1307,126 @@
                name="management.deliverables.separator1"
                visible="true">
          </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:management.genericworkd.wbstemplate">
+         <command
+               commandId="management.wbstemplate.create"
+               icon="image/creatework_24.png"
+               label="添加"
+               style="push">
+         </command>
+         <command
+               commandId="management.wbstemplate.edit"
+               icon="image/editwork_24.png"
+               label="编辑..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="management.wbstemplate.remove"
+               icon="image/removework_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="management.wbstemplate.separator1"
+               visible="true">
+         </separator>
+         <menu
+               icon="image/24_blank.png"
+               label="移动工作定义">
+            <command
+                  commandId="management.wbstemplate.moveup"
+                  icon="image/up_24.png"
+                  label="上移"
+                  style="push">
+            </command>
+            <command
+                  commandId="management.wbstemplate.movedown"
+                  icon="image/down_24.png"
+                  label="下移"
+                  style="push">
+            </command>
+            <command
+                  commandId="management.wbstemplate.moveleft"
+                  icon="image/left_24.png"
+                  label="升级"
+                  style="push">
+            </command>
+            <command
+                  commandId="management.wbstemplate.moveright"
+                  icon="image/right_24.png"
+                  label="降级"
+                  style="push">
+            </command>
+            <separator
+                  name="management.wbstemplate.separator1.1">
+            </separator>
+            <command
+                  commandId="management.wbstemplate.showcompass"
+                  icon="image/naviclose_24.png"
+                  label="显示移动罗盘"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </menu>
+         <command
+               commandId="management.wbstemplate.charger"
+               icon="image/24_blank.png"
+               label="指定负责人角色"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
