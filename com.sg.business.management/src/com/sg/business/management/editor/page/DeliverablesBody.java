@@ -2,6 +2,7 @@ package com.sg.business.management.editor.page;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
@@ -16,13 +17,14 @@ import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.NavigatorControl;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.INavigatorPageBodyPartCreater;
+import com.sg.widgets.part.editor.page.NavigatorPage;
 import com.sg.widgets.viewer.CTreeViewer;
 
 public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 
 	@Override
 	public void createNavigatorBody(Composite body, NavigatorControl navi,
-			PrimaryObjectEditorInput input) {
+			PrimaryObjectEditorInput input, NavigatorPage page) {
 		navi.createPartContent(body);
 		// 创建选项列
 		// 读取选择项
@@ -40,6 +42,9 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 				.getProjectOptionSet();
 		createColumns(projectTypeSet, viewer, "项目类型");
 
+		IToolBarManager manager = page.getToolBarManager();
+		manager.add(new PreviewOptionAction(projectTemplate));
+
 	}
 
 	private void createColumns(ArrayList<?> set, final CTreeViewer viewer,
@@ -51,10 +56,10 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 		for (int i = 0; i < set.size(); i++) {
 			final String optionName = (String) set.get(i);
 			col = new TreeViewerColumn(viewer, SWT.CENTER);
-			if(i==0){
+			if (i == 0) {
 				col.getColumn().setText(optionSetName + "\n" + optionName);
-			}else{
-				col.getColumn().setText("\n"+optionName);
+			} else {
+				col.getColumn().setText("\n" + optionName);
 			}
 			col.getColumn().setWidth(80);
 			col.setLabelProvider(new ColumnLabelProvider() {

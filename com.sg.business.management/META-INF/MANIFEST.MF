@@ -11,8 +11,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.widgets;bundle-version="1.0.0",
  com.sg.business.model;bundle-version="1.0.0",
  com.mobnut.db,
- com.sg.thirdparty,
  org.eclipse.rap.ui.forms;bundle-version="2.1.0",
- com.sg.thirdparty
+ com.sg.business.resource;bundle-version="1.0.0",
+ com.sg.thirdparty;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

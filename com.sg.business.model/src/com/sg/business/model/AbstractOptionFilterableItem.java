@@ -10,6 +10,12 @@ import com.mongodb.DBObject;
 
 public class AbstractOptionFilterableItem extends PrimaryObject {
 
+	public static final String SF_VALUE = "value";
+
+	public static final String SF_OPTION = "option";
+
+	public static final String SF_OPTIONSET = "optionset";
+
 	/**
 	 * 根据模板创建后添加，且禁止删除
 	 */
@@ -48,11 +54,11 @@ public class AbstractOptionFilterableItem extends PrimaryObject {
 			List<?> optionFilters = (List<?>) value;
 			for (int i = 0; i < optionFilters.size(); i++) {
 				DBObject filter = (DBObject) optionFilters.get(i);
-				Object itemOptionSet = filter.get("optionset");
-				Object itemOption = filter.get("option");
+				Object itemOptionSet = filter.get(SF_OPTIONSET);
+				Object itemOption = filter.get(SF_OPTION);
 				if (optionSet.equals(itemOptionSet)
 						&& option.equals(itemOption)) {
-					return (String) filter.get("value");
+					return (String) filter.get(SF_VALUE);
 				}
 			}
 		}
@@ -72,15 +78,15 @@ public class AbstractOptionFilterableItem extends PrimaryObject {
 		if (filters == null) {
 			filters = new BasicDBList();
 		}
-		BasicDBObject filterElement = new BasicDBObject().append("optionset", optionSet)
-				.append("option", option).append("value", value);
+		BasicDBObject filterElement = new BasicDBObject().append(SF_OPTIONSET, optionSet)
+				.append(SF_OPTION, option).append(SF_VALUE, value);
 		boolean has = filters.contains(filterElement);
 		if (has) {
 			return;
 		}
 		for (int i = 0; i < filters.size(); i++) {
 			DBObject filter = (DBObject) filters.get(i);
-			if(optionSet.equals(filter.get("optionset"))&&option.equals(filter.get("option"))){
+			if(optionSet.equals(filter.get(SF_OPTIONSET))&&option.equals(filter.get(SF_OPTION))){
 				filters.remove(i);
 				break;
 			}
