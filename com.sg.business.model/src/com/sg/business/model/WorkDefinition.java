@@ -17,7 +17,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
-public class WorkDefinition extends AbstractOptionFilterableItem {
+public class WorkDefinition extends AbstractOptionFilterable {
 
 	/**
 	 * 通用工作定义

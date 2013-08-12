@@ -13,7 +13,7 @@ import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import com.sg.business.model.AbstractOptionFilterableItem;
+import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.part.INavigatablePart;
 import com.sg.widgets.part.NavigatorControl;
@@ -24,6 +24,9 @@ public class PreviewPage extends WizardPage implements INavigatablePart {
 
 	protected PreviewPage() {
 		super("预览");
+		
+		setDescription("项目的分解结构和交付物");
+
 	}
 
 	@Override
@@ -141,20 +144,23 @@ public class PreviewPage extends WizardPage implements INavigatablePart {
 	}
 
 	public void setFilters(final BasicDBList conditions) {
+
 		navi.getViewer().setFilters(new ViewerFilter[] { new ViewerFilter() {
 			@Override
 			public boolean select(Viewer viewer, Object parentElement,
 					Object element) {
-				if (element instanceof AbstractOptionFilterableItem) {
-					AbstractOptionFilterableItem item = (AbstractOptionFilterableItem) element;
+				if (element instanceof AbstractOptionFilterable) {
+					AbstractOptionFilterable item = (AbstractOptionFilterable) element;
 					for (int i = 0; i < conditions.size(); i++) {
 						DBObject condition = (DBObject) conditions.get(i);
 						String optionSet = (String) condition
-								.get(AbstractOptionFilterableItem.SF_OPTIONSET);
+								.get(AbstractOptionFilterable.SF_OPTIONSET);
 						String option = (String) condition
-								.get(AbstractOptionFilterableItem.SF_OPTION);
-						String setting = item.getOptionValueSetting(optionSet, option);
-						if(AbstractOptionFilterableItem.VALUE_EXCLUDE.equals(setting)){
+								.get(AbstractOptionFilterable.SF_OPTION);
+						String setting = item.getOptionValueSetting(optionSet,
+								option);
+						if (AbstractOptionFilterable.VALUE_EXCLUDE
+								.equals(setting)) {
 							return false;
 						}
 					}

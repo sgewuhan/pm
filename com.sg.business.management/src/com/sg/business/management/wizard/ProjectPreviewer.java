@@ -4,7 +4,7 @@ import org.eclipse.jface.wizard.Wizard;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.sg.business.model.AbstractOptionFilterableItem;
+import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 
 public class ProjectPreviewer extends Wizard {
@@ -43,8 +43,8 @@ public class ProjectPreviewer extends Wizard {
 	public void setFilterCondition(String optionSet, String option,
 			boolean selection) {
 		BasicDBObject filter = new BasicDBObject().append(
-				AbstractOptionFilterableItem.SF_OPTIONSET, optionSet).append(
-				AbstractOptionFilterableItem.SF_OPTION, option);
+				AbstractOptionFilterable.SF_OPTIONSET, optionSet).append(
+				AbstractOptionFilterable.SF_OPTION, option);
 		if (selection) {
 			filters.add(filter);
 		} else {

@@ -11,7 +11,7 @@ import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import com.sg.business.model.AbstractOptionFilterableItem;
+import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.NavigatorControl;
@@ -65,8 +65,8 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 			col.setLabelProvider(new ColumnLabelProvider() {
 				@Override
 				public String getText(Object element) {
-					if (element instanceof AbstractOptionFilterableItem) {
-						return ((AbstractOptionFilterableItem) element)
+					if (element instanceof AbstractOptionFilterable) {
+						return ((AbstractOptionFilterable) element)
 								.getOptionValueSetting(optionSetName,
 										optionName);
 					}
@@ -74,7 +74,7 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 				}
 			});
 			final CellEditor editor = new ComboBoxCellEditor(viewer.getTree(),
-					AbstractOptionFilterableItem.VALUE_SET, SWT.READ_ONLY);
+					AbstractOptionFilterable.VALUE_SET, SWT.READ_ONLY);
 
 			col.setEditingSupport(new EditingSupport(viewer) {
 
@@ -82,9 +82,9 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 				protected void setValue(Object element, Object value) {
 					if (value instanceof Integer) {
 						try {
-							String setValue = AbstractOptionFilterableItem.VALUE_SET[((Integer) value)
+							String setValue = AbstractOptionFilterable.VALUE_SET[((Integer) value)
 									.intValue()];
-							AbstractOptionFilterableItem item = (AbstractOptionFilterableItem) element;
+							AbstractOptionFilterable item = (AbstractOptionFilterable) element;
 							item.doSetOptionValueSetting(optionSetName,
 									optionName, setValue,
 									new CurrentAccountContext());
@@ -97,10 +97,10 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 
 				@Override
 				protected Object getValue(Object element) {
-					String value = ((AbstractOptionFilterableItem) element)
+					String value = ((AbstractOptionFilterable) element)
 							.getOptionValueSetting(optionSetName, optionName);
-					for (int i = 0; i < AbstractOptionFilterableItem.VALUE_SET.length; i++) {
-						if (AbstractOptionFilterableItem.VALUE_SET[i]
+					for (int i = 0; i < AbstractOptionFilterable.VALUE_SET.length; i++) {
+						if (AbstractOptionFilterable.VALUE_SET[i]
 								.equals(value)) {
 							return new Integer(i);
 						}

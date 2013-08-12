@@ -8,7 +8,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class AbstractOptionFilterableItem extends PrimaryObject {
+public class AbstractOptionFilterable extends PrimaryObject {
 
 	public static final String SF_VALUE = "value";
 
