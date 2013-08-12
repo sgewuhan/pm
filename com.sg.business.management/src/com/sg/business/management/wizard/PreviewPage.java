@@ -40,7 +40,7 @@ public class PreviewPage extends WizardPage implements INavigatablePart {
 		setControl(navi.getViewer().getControl());
 		setPageComplete(true);
 	}
-
+	
 	@Override
 	public void setMasterChanged(PrimaryObject master, PrimaryObject oldMaster,
 			IWorkbenchPart part) {

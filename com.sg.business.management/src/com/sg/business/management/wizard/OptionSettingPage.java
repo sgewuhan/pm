@@ -46,7 +46,7 @@ public class OptionSettingPage extends WizardPage {
 		createOptionSetting(content, projectTypeOptions, "项目类型");
 
 		setControl(content);
-        setPageComplete(false);
+		setPageComplete(true);
 	}
 
 	@Override

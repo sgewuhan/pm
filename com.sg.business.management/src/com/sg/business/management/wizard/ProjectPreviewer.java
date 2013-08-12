@@ -25,6 +25,7 @@ public class ProjectPreviewer extends Wizard {
 		addPage(optionSettingPage);
 		previewPage = new PreviewPage();
 		addPage(previewPage);
+		
 	}
 
 	@Override
