@@ -173,6 +173,14 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		dsf.setSort(sort);
 		return dsf.getDataSet().getDataItems();
 	}
+	
+
+	public List<PrimaryObject> getDeliverableDefinitions() {
+		DBObject condition = new BasicDBObject().append(DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
+		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
+				DeliverableDefinition.class, condition);
+		return dsf.getDataSet().getDataItems();
+	}
 
 	public boolean isSummaryWorkDefinition() {
 		return hasChildrenWorkDefinition();
@@ -387,5 +395,50 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 		return null;
 	}
+
+	/**
+	 * 导入一个通用工作定义
+	 * @param genericWorkDefinition
+	 * @param context
+	 * @throws Exception 
+	 */
+	public void doImportGenericWorkDefinition(WorkDefinition genericWorkDefinition, IContext context) throws Exception {
+		doClone(genericWorkDefinition,context);
+	}
+
+	/**
+	 * 复制创建
+	 * @param srcWorkDefinition
+	 * @param context
+	 * @throws Exception 
+	 */
+	public void doClone(WorkDefinition srcWorkDefinition, IContext context) throws Exception {
+		if(srcWorkDefinition==null){
+			throw new IllegalArgumentException("源对象为空");
+		}
+		
+		//创建子工作定义
+		WorkDefinition child = makeChildWorkDefinition();
+		child.setValue(F_DESC, srcWorkDefinition.getValue(F_DESC));
+		child.doSave(context);
+		
+		//获取交付物定义
+		List<PrimaryObject> srcDeliverableDefinitions = srcWorkDefinition.getDeliverableDefinitions();
+		for (PrimaryObject po : srcDeliverableDefinitions) {
+			DeliverableDefinition srcDeliverableDefinition = (DeliverableDefinition)po;
+			DeliverableDefinition childDeliverable = child.makeDeliverableDefinition();
+			//复制文档模板的Id
+			childDeliverable.setValue(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID, srcDeliverableDefinition.getValue(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID));
+			childDeliverable.setValue(DeliverableDefinition.F_DESC, srcDeliverableDefinition.getValue(DeliverableDefinition.F_DESC));
+			childDeliverable.doSave(context);
+		}
+		
+		//处理子工作
+		List<PrimaryObject> sourceChildren = srcWorkDefinition.getChildrenWorkDefinition();
+		for (PrimaryObject po : sourceChildren) {
+			child.doClone((WorkDefinition) po, context);
+		}
+	}
+
 
 }

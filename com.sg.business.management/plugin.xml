@@ -287,6 +287,7 @@
       <table
             canCreate="false"
             dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinitionsOfOrganization"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             headerVisiable="false"
             id="management.genericwork.definitions"
             popupMenu="popup:management.genericwork.definitions">
@@ -302,7 +303,7 @@
             dataSet="com.sg.business.model.dataset.projecttemplate.StandloneWorkDefinitionsOfOrganization"
             headerVisiable="false"
             id="management.standlonework.definitions"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:management.genericwork.definitions">
          <column
                columnDefinitionId="work.desc">
          </column>
@@ -329,11 +330,12 @@
       <table
             canCreate="false"
             dataSet="com.sg.business.model.dataset.projecttemplate.DocumentDefinitionOfOrganization"
-            dragSourceListener="com.sg.business.management.dnd.DragDocumentDefinition"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             editorId="editor.documentdefinition"
             headerVisiable="false"
             id="management.documentdefinition"
-            multiSelection="true">
+            multiSelection="true"
+            popupMenu="popup:management.documentdefinition">
          <column
                columnDefinitionId="document.desc">
          </column>
@@ -493,118 +495,6 @@
                pageBodyPartCreater="com.sg.business.management.editor.page.DeliverablesBody"
                title="交付物">
          </navigatorpage>
-      </editor>
-      <editor
-            collectionName="workd"
-            dbName="pm2"
-            id="editor.genericWorkDefinition"
-            isDefault="false"
-            name="通用工作定义"
-            titleToolTips="通用工作定义">
-         <basicpage
-               description="通用工作定义是可添加到多项目中工作模块"
-               id="basicpage"
-               title="基本信息">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="description"
-                        label="说明"
-                        labelVisible="true"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <checkbox
-                        editable="true"
-                        id="activated"
-                        label="启用"
-                        labelVisible="true"
-                        name="activated"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <navigatorpage
-               createAfterSave="true"
-               id="wbspage"
-               navigatorId="management.genericworkd.wbstemplate"
-               title="WBS">
-         </navigatorpage>
-         <navigatorpage
-               createAfterSave="true"
-               id="deliverables"
-               navigatorId="management.genericworkd.deliverables"
-               title="交付物">
-         </navigatorpage>
-      </editor>
-      <editor
-            collectionName="workd"
-            dbName="pm2"
-            id="editor.standloneWorkDefinition"
-            isDefault="false"
-            name="独立工作定义"
-            titleToolTips="独立工作定义">
-         <basicpage
-               description="独立工作定义是可以不依赖项目单独发起的工作"
-               id="basicpage"
-               title="基本信息">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="description"
-                        label="说明"
-                        labelVisible="true"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <checkbox
-                        editable="true"
-                        id="activated"
-                        label="启用"
-                        labelVisible="true"
-                        name="activated"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-               </section>
-            </pagecolumn>
-         </basicpage>
       </editor>
       <editor
             collectionName="workd"
@@ -814,22 +704,13 @@
             location="after=optionpage"
             targetId="systempage">
       </pageExtendsions>
-      <pageExtendsions
-            id="editor.genericWorkDefinition"
-            location="after=basicpage"
-            targetId="systempage">
-      </pageExtendsions>
-      <pageExtendsions
-            id="editor.standloneWorkDefinition"
-            location="after=basicpage"
-            targetId="systempage">
-      </pageExtendsions>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
             autoExpandLevel="-1"
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
+            dropTargetListener="com.sg.business.management.dnd.DropWBSTemplate"
             id="management.wbstemplate"
             popupMenu="popup:management.wbstemplate">
          <column
@@ -893,9 +774,6 @@
          </column>
          <column
                columnDefinitionId="work.desc">
-         </column>
-         <column
-               columnDefinitionId="workdefinition.chargerrole">
          </column>
          <structure
                modelRelation="workd_workd">
@@ -1464,21 +1342,6 @@
             </visibleWhen>
          </menu>
          <command
-               commandId="management.wbstemplate.charger"
-               icon="image/24_blank.png"
-               label="指定负责人角色"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="+">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
                label="更新"
@@ -1548,6 +1411,59 @@
                   name="com.sg.widgets.edit.pageid"
                   value="deliverables">
             </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="management.projecttemplates.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:management.documentdefinition">
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="编辑"
+               style="push">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -1786,6 +1702,143 @@
             class="com.sg.business.management.handler.workdef.LinkDeliverableDefinition"
             commandId="management.deliverables.link">
       </handler>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="workd"
+            dbName="pm2"
+            id="editor.genericWorkDefinition"
+            isDefault="false"
+            name="通用工作定义"
+            titleToolTips="通用工作定义">
+         <basicpage
+               description="通用工作定义是可添加到多项目中工作模块"
+               id="basicpage"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="activated"
+                        label="启用"
+                        labelVisible="true"
+                        name="activated"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="wbspage"
+               navigatorId="management.genericworkd.wbstemplate"
+               title="WBS">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="deliverables"
+               navigatorId="management.genericworkd.deliverables"
+               title="交付物">
+         </navigatorpage>
+      </editor>
+      <editor
+            collectionName="workd"
+            dbName="pm2"
+            id="editor.standloneWorkDefinition"
+            isDefault="false"
+            name="独立工作定义"
+            titleToolTips="独立工作定义">
+         <basicpage
+               description="独立工作定义是可以不依赖项目单独发起的工作"
+               id="basicpage"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="activated"
+                        label="启用"
+                        labelVisible="true"
+                        name="activated"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="wbspage"
+               navigatorId="management.genericworkd.wbstemplate"
+               title="WBS">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="deliverables"
+               navigatorId="management.genericworkd.deliverables"
+               title="交付物">
+         </navigatorpage>
+      </editor>
+      <pageExtendsions
+            id="editor.standloneWorkDefinition"
+            location="after=basicpage"
+            targetId="systempage">
+      </pageExtendsions>
+      <pageExtendsions
+            id="editor.genericWorkDefinition"
+            location="after=basicpage"
+            targetId="systempage">
+      </pageExtendsions>
    </extension>
 
 </plugin>

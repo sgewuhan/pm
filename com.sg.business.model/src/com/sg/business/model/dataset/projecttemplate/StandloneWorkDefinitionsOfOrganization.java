@@ -11,7 +11,8 @@ public class StandloneWorkDefinitionsOfOrganization extends
 	public StandloneWorkDefinitionsOfOrganization() {
 		super(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 		setQueryCondition(new BasicDBObject().append(
-				WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_STANDLONE));
+				WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_STANDLONE)
+				.append(WorkDefinition.F_PARENT_ID, null));
 	}
 
 	@Override
