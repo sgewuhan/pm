@@ -203,6 +203,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="3"
             canCreate="true"
             canDelete="true"
             canEdit="true"
