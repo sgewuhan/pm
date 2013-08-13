@@ -68,6 +68,10 @@ public class ProjectTemplate extends PrimaryObject {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
+		if(isActivated()){
+			throw new Exception("项目模板启用状态不可删除");
+		}
+		
 		// 删除预算根
 		doRemoveBudgetItemInternal();
 		
@@ -77,6 +81,13 @@ public class ProjectTemplate extends PrimaryObject {
 		doRemoveDeliverableDefinitionsInternal();
 		
 		super.doRemove(context);
+	}
+
+	/**
+	 * 该模板是否已经启用
+	 */
+	public boolean isActivated() {
+		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
 	}
 
 	private void doRemoveDeliverableDefinitionsInternal() {
