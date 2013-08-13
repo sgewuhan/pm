@@ -361,6 +361,7 @@
             collectionName="projecttemplate"
             dbName="pm2"
             id="editor.projecttemplate"
+            image="image/projecttemplate_32.png"
             isDefault="true"
             name="项目模板"
             titleToolTips="项目模板">
@@ -521,12 +522,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.workDefinition"
+            image="image/work_32.png"
             isDefault="false"
             name="工作定义"
             titleToolTips="工作定义">
          <basicpage
                description="工作定义的基本信息"
                id="basicpage"
+               image="image/work_32.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -730,12 +733,14 @@
             collectionName="roled"
             dbName="pm2"
             id="editor.roleDefinition"
+            image="image/role_32.png"
             isDefault="false"
             name="角色定义"
             titleToolTips="角色定义">
          <basicpage
                description="独立工作定义是可以不依赖项目单独发起的工作"
                id="basicpage1"
+               image="image/role_32.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -782,10 +787,12 @@
             collectionName="deliverabled"
             dbName="pm2"
             id="editor.deliverableDefinition"
+            image="image/deliverable_32.png"
             name="交付物定义">
          <basicpage
                description="交付物是工作需要提交的对象，请定义交付物的属性"
                id="basicpage"
+               image="image/deliverable_32.png"
                title="交付物定义">
             <pagecolumn
                   id="1">
@@ -822,11 +829,13 @@
             collectionName="documentd"
             dbName="pm2"
             id="editor.documentdefinition"
+            image="image/documentd_24.png"
             name="文档模板"
             titleToolTips="文档模板">
          <basicpage
                description="文档模板"
-               id="basicpage1"
+               id="basicpage"
+               image="image/documentd_24.png"
                title="文档模板">
             <pagecolumn
                   id="1">
@@ -905,12 +914,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.genericWorkDefinition"
+            image="image/work_32.png"
             isDefault="false"
             name="通用工作定义"
             titleToolTips="通用工作定义">
          <basicpage
                description="通用工作定义是可添加到多项目中工作模块"
                id="basicpage"
+               image="image/work_32.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -972,12 +983,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.standloneWorkDefinition"
+            image="image/work_32.png"
             isDefault="false"
             name="独立工作定义"
             titleToolTips="独立工作定义">
          <basicpage
                description="独立工作定义是可以不依赖项目单独发起的工作"
                id="basicpage"
+               image="image/work_32.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -1377,7 +1390,7 @@
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
-               icon="image/deliverable_24.png"
+               icon="image/deliverableedit_24.png"
                label="编辑交付物"
                style="push">
             <parameter

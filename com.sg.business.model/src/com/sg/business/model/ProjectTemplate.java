@@ -41,8 +41,8 @@ public class ProjectTemplate extends PrimaryObject {
 		
 		if (getValue(F_WORK_DEFINITON_ID) == null) {
 			BasicDBObject wbsRootData = new BasicDBObject();
-			wbsRootData.put(WorkDefinition.F_WORK_TYPE, new Integer(
-					WorkDefinition.WORK_TYPE_PROJECT));
+			wbsRootData.put(WorkDefinition.F_WORK_TYPE, new Integer(WorkDefinition.WORK_TYPE_PROJECT));
+			wbsRootData.put(WorkDefinition.F_DESC, getDesc());
 			wbsRootData.put(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id());
 			ObjectId wbsRootId = new ObjectId();
 			wbsRootData.put(WorkDefinition.F__ID, wbsRootId);
