@@ -7,7 +7,7 @@ import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 public class Demo2DataSet extends MasterDetailDataSetFactory {
 
 	public Demo2DataSet() {
-		super(IModelConstants.DB, IModelConstants.C_DEMO2);
+		super(IModelConstants.DB, "demo2");
 	}
 
 	@Override

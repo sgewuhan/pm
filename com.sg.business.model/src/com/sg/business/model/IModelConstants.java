@@ -62,15 +62,14 @@ public interface IModelConstants {
 	 */
 	public static final String C_ROLE_DEFINITION = "roled";
 
-	/**
-	 * demo1
-	 */
-	public static final String C_DEMO1 = "demo1";
-	
-	/**
-	 * demo2
-	 */
-	public static final String C_DEMO2 = "demo2";
 
+	/**
+	 * 文档模板
+	 */
 	public static final String C_DOCUMENT_DEFINITION = "documentd";
+
+	/**
+	 * 交付物定义
+	 */
+	public static final String C_DELIEVERABLE_DEFINITION = "deliverabled";
 }

@@ -1,11 +1,14 @@
 package com.sg.business.model;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
@@ -37,7 +40,7 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 	}
 
 	@Override
-	protected void doInsert(IContext context) throws Exception {
+	public void doInsert(IContext context) throws Exception {
 		// 创建对应的文档定义
 		ObjectId docd_id = (ObjectId) getValue(F_DOCUMENT_DEFINITION_ID);
 		if (docd_id == null) {
@@ -84,5 +87,13 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 			return docd.getLabel();
 		}
 		return super.getLabel();
+	}
+
+	public WorkDefinition getWorkDefinition() {
+		List<PrimaryObject> result = getRelationById(F_WORK_DEFINITION_ID, F__ID, WorkDefinition.class);
+		if(result.size()>0){
+			return (WorkDefinition) result.get(0);
+		}
+		return null;
 	}
 }

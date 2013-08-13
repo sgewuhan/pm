@@ -14,8 +14,7 @@ public class BudgetItem extends PrimaryObject {
 
 	public  static final String F_CHILDREN = "children";
 	public  static final String F_ISDEFAULT = "isdefault";
-
-	
+	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
 	
 
 	public static BudgetItem GET_DEFAULT_BUDGET_ITEM(){

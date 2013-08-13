@@ -87,6 +87,8 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 */
 	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
 
+	public static final String F_ROOT_ID = "root_id";
+
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
@@ -106,10 +108,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	public WorkDefinition makeChildWorkDefinition() {
 		DBObject data = new BasicDBObject();
 		data.put(WorkDefinition.F_PARENT_ID, get_id());
+		data.put(WorkDefinition.F_ROOT_ID, getValue(F_ROOT_ID));
+
 		int seq = getMaxChildSeq();
 		data.put(F_SEQ, new Integer(seq));
-		
-		//针对不同类型的工作定义的预处理
+
+		// 针对不同类型的工作定义的预处理
 		int type = getWorkDefinitionType();
 		switch (type) {
 		case WORK_TYPE_GENERIC:// 通用工作定义和独立工作定义需要设定组织Id
@@ -125,7 +129,8 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 		data.put(F_WORK_TYPE, new Integer(type));
 
-		WorkDefinition po = ModelService.createModelObject(data,WorkDefinition.class);
+		WorkDefinition po = ModelService.createModelObject(data,
+				WorkDefinition.class);
 		return po;
 
 	}
@@ -138,29 +143,33 @@ public class WorkDefinition extends AbstractOptionFilterable {
 			DocumentDefinition docd) {
 		DBObject data = new BasicDBObject();
 		data.put(DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
-		
-		//针对不同类型的工作定义的预处理
+
+		// 针对不同类型的工作定义的预处理
 		int type = getWorkDefinitionType();
 		switch (type) {
 		case WORK_TYPE_GENERIC:// 通用工作定义和独立工作定义需要设定组织Id
 		case WORK_TYPE_STANDLONE:
-			data.put(DeliverableDefinition.F_ORGANIZATION_ID, getValue(F_ORGANIZATION_ID));
+			data.put(DeliverableDefinition.F_ORGANIZATION_ID,
+					getValue(F_ORGANIZATION_ID));
 			break;
 		case WORK_TYPE_PROJECT:// 项目工作定义需要设定项目模板Id
-			data.put(DeliverableDefinition.F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
+			data.put(DeliverableDefinition.F_PROJECTTEMPLATE_ID,
+					getValue(F_PROJECTTEMPLATE_ID));
 			break;
 		default:
 			break;
 		}
-		
+
 		data.put(F_WORK_TYPE, new Integer(type));
 
 		if (docd != null) {
-			data.put(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID,docd.get_id());
+			data.put(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID,
+					docd.get_id());
 			data.put(DeliverableDefinition.F_DESC, docd.getDesc());
 		}
 
-		DeliverableDefinition po = ModelService.createModelObject(data,DeliverableDefinition.class);
+		DeliverableDefinition po = ModelService.createModelObject(data,
+				DeliverableDefinition.class);
 
 		return po;
 	}
@@ -173,10 +182,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		dsf.setSort(sort);
 		return dsf.getDataSet().getDataItems();
 	}
-	
 
 	public List<PrimaryObject> getDeliverableDefinitions() {
-		DBObject condition = new BasicDBObject().append(DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
+		DBObject condition = new BasicDBObject().append(
+				DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
 		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
 				DeliverableDefinition.class, condition);
 		return dsf.getDataSet().getDataItems();
@@ -328,18 +337,37 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
+		//删除交付物定义
+		List<PrimaryObject> deliverableDefinitions = getDeliverableDefinitions();
+		for (PrimaryObject primaryObject : deliverableDefinitions) {
+			DeliverableDefinition deliverableDefinition = (DeliverableDefinition) primaryObject;
+			deliverableDefinition.doRemove(context);
+		}
+		
+		//删除下级
+		List<PrimaryObject> childrenWorkDefinitions = getChildrenWorkDefinition();
+		for (PrimaryObject primaryObject : childrenWorkDefinitions) {
+			WorkDefinition childWorkDefinition = (WorkDefinition) primaryObject;
+			childWorkDefinition.doRemove(context);
+		}
+		//删除自己
 		super.doRemove(context);
 		WorkDefinition parent = getParent();
 		Assert.isNotNull(parent);
 
+		//对平级的重新排列序号
 		List<PrimaryObject> children = getChildrenWorkDefinition();
 		doSaveAndResetSeq(children, context);
+		
+		
+		
 	}
 
 	public WorkDefinition getParent() {
 		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
 		if (parent_id != null) {
-			return ModelService.createModelObject(WorkDefinition.class, parent_id);
+			return ModelService.createModelObject(WorkDefinition.class,
+					parent_id);
 		}
 		return null;
 	}
@@ -398,47 +426,79 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	/**
 	 * 导入一个通用工作定义
+	 * 
 	 * @param genericWorkDefinition
 	 * @param context
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void doImportGenericWorkDefinition(WorkDefinition genericWorkDefinition, IContext context) throws Exception {
-		doClone(genericWorkDefinition,context);
+	public void doImportGenericWorkDefinition(
+			WorkDefinition genericWorkDefinition, IContext context)
+			throws Exception {
+		doClone(genericWorkDefinition, context);
 	}
 
 	/**
 	 * 复制创建
+	 * 
 	 * @param srcWorkDefinition
 	 * @param context
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void doClone(WorkDefinition srcWorkDefinition, IContext context) throws Exception {
-		if(srcWorkDefinition==null){
+	public void doClone(WorkDefinition srcWorkDefinition, IContext context)
+			throws Exception {
+		if (srcWorkDefinition == null) {
 			throw new IllegalArgumentException("源对象为空");
 		}
-		
-		//创建子工作定义
+
+		// 创建子工作定义
 		WorkDefinition child = makeChildWorkDefinition();
 		child.setValue(F_DESC, srcWorkDefinition.getValue(F_DESC));
 		child.doSave(context);
-		
-		//获取交付物定义
-		List<PrimaryObject> srcDeliverableDefinitions = srcWorkDefinition.getDeliverableDefinitions();
+
+		// 获取交付物定义
+		List<PrimaryObject> srcDeliverableDefinitions = srcWorkDefinition
+				.getDeliverableDefinitions();
 		for (PrimaryObject po : srcDeliverableDefinitions) {
-			DeliverableDefinition srcDeliverableDefinition = (DeliverableDefinition)po;
-			DeliverableDefinition childDeliverable = child.makeDeliverableDefinition();
-			//复制文档模板的Id
-			childDeliverable.setValue(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID, srcDeliverableDefinition.getValue(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID));
-			childDeliverable.setValue(DeliverableDefinition.F_DESC, srcDeliverableDefinition.getValue(DeliverableDefinition.F_DESC));
+			DeliverableDefinition srcDeliverableDefinition = (DeliverableDefinition) po;
+			DeliverableDefinition childDeliverable = child
+					.makeDeliverableDefinition();
+			// 复制文档模板的Id
+			childDeliverable
+					.setValue(
+							DeliverableDefinition.F_DOCUMENT_DEFINITION_ID,
+							srcDeliverableDefinition
+									.getValue(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID));
+			childDeliverable.setValue(DeliverableDefinition.F_DESC,
+					srcDeliverableDefinition
+							.getValue(DeliverableDefinition.F_DESC));
 			childDeliverable.doSave(context);
 		}
-		
-		//处理子工作
-		List<PrimaryObject> sourceChildren = srcWorkDefinition.getChildrenWorkDefinition();
+
+		// 处理子工作
+		List<PrimaryObject> sourceChildren = srcWorkDefinition
+				.getChildrenWorkDefinition();
 		for (PrimaryObject po : sourceChildren) {
 			child.doClone((WorkDefinition) po, context);
 		}
 	}
 
+	/**
+	 * 取出根工作定义
+	 * 
+	 * @return
+	 */
+	public WorkDefinition getRoot() {
+		ObjectId rootId = (ObjectId) getValue(F_ROOT_ID);
+		if(rootId == null){
+			WorkDefinition parent = getParent();
+			if (parent == null) {
+				return this;
+			} else {
+				return parent.getRoot();
+			}
+		}else{
+			return ModelService.createModelObject(WorkDefinition.class, rootId);
+		}
+	}
 
 }

@@ -13,7 +13,6 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.sg.business.resource.BusinessResource;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectTemplate extends PrimaryObject {
 
@@ -37,7 +36,7 @@ public class ProjectTemplate extends PrimaryObject {
 	}
 
 	@Override
-	protected void doInsert(IContext context) throws Exception {
+	public void doInsert(IContext context) throws Exception {
 		setValue(F__ID,new ObjectId());//需要预设ID,否则后面的get_id()取出的是空
 		
 		if (getValue(F_WORK_DEFINITON_ID) == null) {
@@ -45,18 +44,22 @@ public class ProjectTemplate extends PrimaryObject {
 			wbsRootData.put(WorkDefinition.F_WORK_TYPE, new Integer(
 					WorkDefinition.WORK_TYPE_PROJECT));
 			wbsRootData.put(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id());
+			ObjectId wbsRootId = new ObjectId();
+			wbsRootData.put(WorkDefinition.F__ID, wbsRootId);
+			wbsRootData.put(WorkDefinition.F_ROOT_ID, wbsRootId);
 
 			WorkDefinition wbsRoot = ModelService.createModelObject(
 					wbsRootData, WorkDefinition.class);
-			wbsRoot.doSave(new CurrentAccountContext());
+			wbsRoot.doInsert(context);
+			
 			setValue(ProjectTemplate.F_WORK_DEFINITON_ID, wbsRoot.get_id());
 		}
 
 		if (getValue(F_BUDGET_ID) == null) {
 			BudgetItem biRoot = BudgetItem.COPY_DEFAULT_BUDGET_ITEM();
-			biRoot.setValue(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id());
-
-			biRoot.doSave(new CurrentAccountContext());
+			biRoot.setValue(BudgetItem.F_PROJECTTEMPLATE_ID, get_id());
+			biRoot.doInsert(context);
+			
 			setValue(ProjectTemplate.F_BUDGET_ID, biRoot.get_id());
 		}
 
@@ -67,7 +70,23 @@ public class ProjectTemplate extends PrimaryObject {
 	public void doRemove(IContext context) throws Exception {
 		// 删除预算根
 		doRemoveBudgetItemInternal();
+		
+		// 删除工作定义
+		doRemoveWorkDefinitionsInternal();
+		//删除交付物定义
+		doRemoveDeliverableDefinitionsInternal();
+		
 		super.doRemove(context);
+	}
+
+	private void doRemoveDeliverableDefinitionsInternal() {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_DELIEVERABLE_DEFINITION);
+		col.remove(new BasicDBObject().append(DeliverableDefinition.F_PROJECTTEMPLATE_ID, get_id()));		
+	}
+
+	private void doRemoveWorkDefinitionsInternal() {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
+		col.remove(new BasicDBObject().append(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id()));
 	}
 
 	private void doRemoveBudgetItemInternal() {
