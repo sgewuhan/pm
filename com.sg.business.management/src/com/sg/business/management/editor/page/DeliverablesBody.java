@@ -10,7 +10,10 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TreeColumn;
 
+import com.mobnut.db.model.IPrimaryObjectEventListener;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -20,7 +23,12 @@ import com.sg.widgets.part.editor.page.INavigatorPageBodyPartCreater;
 import com.sg.widgets.part.editor.page.NavigatorPage;
 import com.sg.widgets.viewer.CTreeViewer;
 
-public class DeliverablesBody implements INavigatorPageBodyPartCreater {
+public class DeliverablesBody implements INavigatorPageBodyPartCreater,
+		IPrimaryObjectEventListener {
+
+	private static final String IS_OPTION_COLUMN = "isOptionColumn";
+	private ProjectTemplate projectTemplate;
+	private CTreeViewer viewer;
 
 	@Override
 	public void createNavigatorBody(Composite body, NavigatorControl navi,
@@ -28,8 +36,27 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 		navi.createPartContent(body);
 		// 创建选项列
 		// 读取选择项
-		CTreeViewer viewer = (CTreeViewer) navi.getViewer();
-		ProjectTemplate projectTemplate = (ProjectTemplate) input.getData();
+		viewer = (CTreeViewer) navi.getViewer();
+		if (projectTemplate == null) {
+			projectTemplate = (ProjectTemplate) input.getData();
+			projectTemplate.addEventListener(this);
+		}
+
+		reloadOptionsColumns();
+
+		IToolBarManager manager = page.getToolBarManager();
+		manager.add(new PreviewOptionAction(projectTemplate));
+
+	}
+
+	private void reloadOptionsColumns() {
+		TreeColumn[] columns = viewer.getTree().getColumns();
+		for (TreeColumn treeColumn : columns) {
+			if(Boolean.TRUE.equals(treeColumn.getData(IS_OPTION_COLUMN))){
+				treeColumn.dispose();
+			}
+		}
+		
 		ArrayList<?> standardSet = (ArrayList<?>) projectTemplate
 				.getStandardOptionSet();
 		createColumns(standardSet, viewer, "标准");
@@ -41,10 +68,6 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 		ArrayList<?> projectTypeSet = (ArrayList<?>) projectTemplate
 				.getProjectOptionSet();
 		createColumns(projectTypeSet, viewer, "项目类型");
-
-		IToolBarManager manager = page.getToolBarManager();
-		manager.add(new PreviewOptionAction(projectTemplate));
-
 	}
 
 	private void createColumns(ArrayList<?> set, final CTreeViewer viewer,
@@ -56,6 +79,7 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 		for (int i = 0; i < set.size(); i++) {
 			final String optionName = (String) set.get(i);
 			col = new TreeViewerColumn(viewer, SWT.CENTER);
+			col.getColumn().setData(IS_OPTION_COLUMN, Boolean.TRUE);
 			if (i == 0) {
 				col.getColumn().setText(optionSetName + "\n" + optionName);
 			} else {
@@ -100,8 +124,7 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 					String value = ((AbstractOptionFilterable) element)
 							.getOptionValueSetting(optionSetName, optionName);
 					for (int i = 0; i < AbstractOptionFilterable.VALUE_SET.length; i++) {
-						if (AbstractOptionFilterable.VALUE_SET[i]
-								.equals(value)) {
+						if (AbstractOptionFilterable.VALUE_SET[i].equals(value)) {
 							return new Integer(i);
 						}
 					}
@@ -120,6 +143,14 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater {
 			});
 		}
 
+	}
+
+	@Override
+	public void primaryObjectEvent(String code, PrimaryObject po) {
+		if(IPrimaryObjectEventListener.UPDATED.equals(code)){
+			reloadOptionsColumns();
+			viewer.refresh();
+		}
 	}
 
 }

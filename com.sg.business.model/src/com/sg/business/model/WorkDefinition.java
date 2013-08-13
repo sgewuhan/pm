@@ -111,7 +111,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		data.put(WorkDefinition.F_ROOT_ID, getValue(F_ROOT_ID));
 
 		int seq = getMaxChildSeq();
-		data.put(F_SEQ, new Integer(seq));
+		data.put(F_SEQ, new Integer(seq+1));
 
 		// 针对不同类型的工作定义的预处理
 		int type = getWorkDefinitionType();
@@ -193,6 +193,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	public boolean isSummaryWorkDefinition() {
 		return hasChildrenWorkDefinition();
+	}
+
+	public boolean isActivated() {
+		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
 	}
 
 	public boolean hasChildrenWorkDefinition() {
@@ -337,30 +341,37 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		//删除交付物定义
+		int type = getWorkDefinitionType();
+		if ((type == WORK_TYPE_GENERIC || type == WORK_TYPE_STANDLONE)
+				&& isActivated()) {
+			throw new Exception("工作定义处于启用状态，不可删除");
+		}
+
+		// 删除交付物定义
 		List<PrimaryObject> deliverableDefinitions = getDeliverableDefinitions();
 		for (PrimaryObject primaryObject : deliverableDefinitions) {
 			DeliverableDefinition deliverableDefinition = (DeliverableDefinition) primaryObject;
 			deliverableDefinition.doRemove(context);
 		}
-		
-		//删除下级
+
+		// 删除下级
 		List<PrimaryObject> childrenWorkDefinitions = getChildrenWorkDefinition();
 		for (PrimaryObject primaryObject : childrenWorkDefinitions) {
 			WorkDefinition childWorkDefinition = (WorkDefinition) primaryObject;
 			childWorkDefinition.doRemove(context);
 		}
-		//删除自己
-		super.doRemove(context);
+		// 删除自己
 		WorkDefinition parent = getParent();
-		Assert.isNotNull(parent);
 
-		//对平级的重新排列序号
-		List<PrimaryObject> children = getChildrenWorkDefinition();
-		doSaveAndResetSeq(children, context);
-		
-		
-		
+		super.doRemove(context);
+
+		if (parent != null) {
+
+			// 对平级的重新排列序号
+			List<PrimaryObject> children = parent.getChildrenWorkDefinition();
+			doSaveAndResetSeq(children, context);
+		}
+
 	}
 
 	public WorkDefinition getParent() {
@@ -489,14 +500,14 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 */
 	public WorkDefinition getRoot() {
 		ObjectId rootId = (ObjectId) getValue(F_ROOT_ID);
-		if(rootId == null){
+		if (rootId == null) {
 			WorkDefinition parent = getParent();
 			if (parent == null) {
 				return this;
 			} else {
 				return parent.getRoot();
 			}
-		}else{
+		} else {
 			return ModelService.createModelObject(WorkDefinition.class, rootId);
 		}
 	}
