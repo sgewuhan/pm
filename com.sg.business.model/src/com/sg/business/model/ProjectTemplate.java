@@ -38,6 +38,8 @@ public class ProjectTemplate extends PrimaryObject {
 
 	@Override
 	protected void doInsert(IContext context) throws Exception {
+		setValue(F__ID,new ObjectId());//需要预设ID,否则后面的get_id()取出的是空
+		
 		if (getValue(F_WORK_DEFINITON_ID) == null) {
 			BasicDBObject wbsRootData = new BasicDBObject();
 			wbsRootData.put(WorkDefinition.F_WORK_TYPE, new Integer(
