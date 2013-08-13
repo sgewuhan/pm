@@ -42,7 +42,11 @@ public class RoleDefinition extends PrimaryObject {
 			Role role = getOrganizationRole();
 			return role.getLabel();
 		} else {
-			return super.getLabel();
+			return getDesc() + "|" + getRoleNumber();
 		}
+	}
+
+	public String getRoleNumber() {
+		return (String) getValue(F_ROLE_NUMBER);
 	}
 }

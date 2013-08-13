@@ -61,6 +61,7 @@ public class EditWorkDefinition extends AbstractNavigatorHandler {
 				DataObjectDialog.openDialog(workdefinition,
 						(DataEditorConfigurator) conf, true, null, TITLE);
 			} catch (Exception e) {
+				e.printStackTrace();
 				MessageUtil.showToast(shell, TITLE, e.getMessage(),
 						SWT.ICON_ERROR);
 			}

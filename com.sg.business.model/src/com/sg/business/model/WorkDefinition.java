@@ -111,7 +111,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		data.put(WorkDefinition.F_ROOT_ID, getValue(F_ROOT_ID));
 
 		int seq = getMaxChildSeq();
-		data.put(F_SEQ, new Integer(seq+1));
+		data.put(F_SEQ, new Integer(seq + 1));
 
 		// 针对不同类型的工作定义的预处理
 		int type = getWorkDefinitionType();
@@ -449,6 +449,19 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	}
 
 	/**
+	 * 导出一个通用工作定义
+	 * 
+	 * @param workd
+	 * @param context
+	 * @throws Exception 
+	 */
+	public void doExportGenericWorkDefinition(WorkDefinition genericWorkDefinition,
+			IContext context) throws Exception {
+		genericWorkDefinition.doClone(this, context);
+		
+	}
+
+	/**
 	 * 复制创建
 	 * 
 	 * @param srcWorkDefinition
@@ -512,4 +525,15 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 	}
 
+	public Organization getOrganization() {
+		ObjectId org_id = (ObjectId) getValue(F_ORGANIZATION_ID);
+		if(org_id!=null){
+			return ModelService.createModelObject(Organization.class, org_id);
+		}
+		return null;
+	}
+	
+	public ObjectId getOrganizationId(){
+		return (ObjectId) getValue(F_ORGANIZATION_ID);
+	}
 }

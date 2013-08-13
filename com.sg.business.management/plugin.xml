@@ -340,6 +340,20 @@
                columnDefinitionId="document.desc">
          </column>
       </table>
+      <table
+            fullSelection="false"
+            hasBorder="true"
+            headerVisiable="false"
+            id="management.field.participate_roled_set"
+            lineVisiable="false"
+            multiSelection="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.model.labelprovider.RoleDefinitionLabelProvider2"
+               name="名称"
+               width="-1">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -387,7 +401,8 @@
                         labelVisible="true"
                         name="wfd_projectstart"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        type="String">
                   </combo>
                   <combo
                         editPart="Combo(Read Only)"
@@ -397,7 +412,8 @@
                         labelVisible="true"
                         name="wfd_projectchange"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        type="String">
                   </combo>
                </section>
                <section
@@ -509,8 +525,8 @@
             name="工作定义"
             titleToolTips="工作定义">
          <basicpage
-               description="独立工作定义是可以不依赖项目单独发起的工作"
-               id="basicpage1"
+               description="工作定义的基本信息"
+               id="basicpage"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -531,6 +547,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
+                        heightHint="90"
                         id="description"
                         label="说明"
                         labelVisible="true"
@@ -539,6 +556,172 @@
                         required="false"
                         type="String">
                   </text>
+                  <checkbox
+                        editable="true"
+                        id="milestone"
+                        label="里程碑"
+                        labelVisible="true"
+                        name="milestone"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <spinner
+                        editable="true"
+                        id="standardworks"
+                        label="标准工时(h)"
+                        labelVisible="true"
+                        name="standardworks"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,9999,1,10">
+                  </spinner>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     label="负责人和承担者角色">
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="charger_roled_id"
+                        label="负责人角色"
+                        labelVisible="true"
+                        name="charger_roled_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </combo>
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="assignmentcharger_roled_id"
+                        label="指派人角色"
+                        labelVisible="true"
+                        name="assignmentcharger_roled_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </combo>
+                  <table
+                        ctableId="management.field.participate_roled_set"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        editable="true"
+                        id="participate_roled_set"
+                        label="承担者角色"
+                        labelVisible="true"
+                        name="participate_roled_set"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="设置工作定义的特性"
+               id="settingpage"
+               title="设置">
+            <pagecolumn>
+               <section
+                     label="工作和交付物">
+                  <checkbox
+                        defaultValue="true"
+                        editable="true"
+                        id="s_canbreakdown"
+                        label="是否允许分解工作"
+                        labelVisible="true"
+                        name="s_canbreakdown"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        defaultValue="true"
+                        editable="true"
+                        id="s_canadddeliverables"
+                        label="是否允许添加交付物"
+                        labelVisible="true"
+                        name="s_canadddeliverables"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        defaultValue="true"
+                        editable="true"
+                        id="s_canmodifyplanworks"
+                        label="是否允许修改计划工时"
+                        labelVisible="true"
+                        name="s_canmodifyplanworks"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+               <section
+                     label="开始和完成设定">
+                  <checkbox
+                        defaultValue="false"
+                        editable="true"
+                        id="s_autostartwithparent"
+                        label="上级工作开始时，本工作自动开始"
+                        labelVisible="true"
+                        name="s_autostartwithparent"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        defaultValue="false"
+                        editable="true"
+                        id="s_autofinishwithparent"
+                        label="上级工作完成时，本工作自动完成"
+                        labelVisible="true"
+                        name="s_autofinishwithparent"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        defaultValue="false"
+                        editable="true"
+                        id="s_canskiptofinish"
+                        label="是否可以跳过进行中的流程完成工作"
+                        labelVisible="true"
+                        name="s_canskiptofinish"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        defaultValue="true"
+                        editable="true"
+                        id="s_autofinishwithchildren"
+                        label="下级所有工作完成时，本工作自动完成"
+                        labelVisible="true"
+                        name="s_autofinishwithchildren"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+               <section
+                     label="变更设定">
+                  <checkbox
+                        defaultValue="false"
+                        editable="true"
+                        id="s_workchangeflowmandory"
+                        label="需启动变更流程实施工作的更改"
+                        labelVisible="true"
+                        name="s_workchangeflowmandory"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        defaultValue="false"
+                        editable="true"
+                        id="s_projectchangeflowmandory"
+                        label="需启动项目变更流程实施工作的更改"
+                        labelVisible="true"
+                        name="s_projectchangeflowmandory"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                </section>
             </pagecolumn>
          </basicpage>
@@ -669,7 +852,8 @@
                         labelVisible="true"
                         name="document_editorid"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        type="String">
                   </combo>
                   <text
                         editPart="Text(Multi Line)"
