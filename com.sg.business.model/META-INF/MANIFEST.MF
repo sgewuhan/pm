@@ -13,8 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.widgets;bundle-version="1.0.0",
  com.sg.thirdparty,
  com.mobnut.portal,
- com.sg.bpm.service;bundle-version="1.0.0",
- com.sg.bpm.workflow;bundle-version="1.0.0"
+ com.sg.bpm.service;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.model,

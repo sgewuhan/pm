@@ -85,15 +85,15 @@ public class DroolsProcessDefinition {
 	}
 	
 	
-	public List<HumanTaskNode> getHumanNodes() {
-		List<HumanTaskNode> result = new ArrayList<HumanTaskNode>();
+	public List<NodeAssignment> getNodesAssignment() {
+		List<NodeAssignment> result = new ArrayList<NodeAssignment>();
 		getProcess();
 		if (process instanceof WorkflowProcess) {
 			Node[] nodes = ((WorkflowProcess) process).getNodes();
 			for (int i = 0; i < nodes.length; i++) {
 				Node nodesItem = nodes[i];
 				if (nodesItem instanceof HumanTaskNode) {
-					result.add((HumanTaskNode) nodesItem);
+					result.add(new NodeAssignment((HumanTaskNode) nodesItem));
 				} else if (nodesItem instanceof ForEachNode) {
 					// 忽略多实例的节点，这可能在多实例中的活动中设置变量参与者时出现问题
 				}

@@ -761,6 +761,20 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               description="工作执行流程"
+               id="processpage1"
+               image="image/flow_32.png"
+               pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
+               title="工作执行流程">
+         </basicpage>
+         <basicpage
+               description="工作变更流程"
+               id="processpage2"
+               image="image/flow_32.png"
+               pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
+               title="工作变更流程">
+         </basicpage>
       </editor>
       <editor
             collectionName="roled"
@@ -1006,6 +1020,20 @@
                navigatorId="management.genericworkd.deliverables"
                title="交付物">
          </navigatorpage>
+         <basicpage
+               description="工作执行流程"
+               id="processpage1"
+               image="image/flow_32.png"
+               pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
+               title="工作执行流程">
+         </basicpage>
+         <basicpage
+               description="工作变更流程"
+               id="processpage2"
+               image="image/flow_32.png"
+               pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
+               title="工作变更流程">
+         </basicpage>
          <versionControl>
             <fieldname
                   fieldname="all">
@@ -1075,6 +1103,20 @@
                navigatorId="management.genericworkd.deliverables"
                title="交付物">
          </navigatorpage>
+         <basicpage
+               description="工作变更流程"
+               id="processpage2"
+               image="image/flow_32.png"
+               pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
+               title="工作变更流程">
+         </basicpage>
+         <basicpage
+               description="工作执行流程"
+               id="processpage1"
+               image="image/flow_32.png"
+               pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
+               title="工作执行流程">
+         </basicpage>
          <versionControl>
             <fieldname
                   fieldname="all">

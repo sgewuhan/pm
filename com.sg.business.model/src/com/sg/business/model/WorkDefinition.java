@@ -89,6 +89,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	public static final String F_ROOT_ID = "root_id";
 
+	public static final String F_WF_EXECUTE = "wf_execute";
+
+	public static final String F_WF_CHANGE = "wf_change";
+
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);

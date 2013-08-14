@@ -9,7 +9,7 @@ public class WorkflowUtils {
 	 * @param param
 	 * @return
 	 */
-	public static String getParameterName(String param) {
+	public static String parseAssignmentParameterName(String param) {
 
 		int start = param.indexOf("#{");
 		int end = param.indexOf("}");

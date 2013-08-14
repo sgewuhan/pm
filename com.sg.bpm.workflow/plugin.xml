@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.sg.bpm.service.actorRule">
+      <actorRule
+            actorIdProvider="com.sg.bpm.workflow.actor.LauncherUserId"
+            id="launcher"
+            name="流程发起人"
+            runtimeSolve="false">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.bpm.workflow.actor.DeptManagerOfLauncher"
+            id="dept_manager"
+            name="发起部门主管"
+            runtimeSolve="false">
+      </actorRule>
+   </extension>
+
+</plugin>

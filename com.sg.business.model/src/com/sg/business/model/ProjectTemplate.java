@@ -12,8 +12,6 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.resource.BusinessResource;
 
 public class ProjectTemplate extends PrimaryObject {
@@ -36,7 +34,11 @@ public class ProjectTemplate extends PrimaryObject {
 	
 	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";
 	
+	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
+
 	public static final String F_WF_CHANGE = "wf_change";
+	
+	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
 
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
 	
@@ -168,15 +170,9 @@ public class ProjectTemplate extends PrimaryObject {
 		Assert.isNotNull(orgId);
 		return ModelService.createModelObject(Organization.class, orgId);
 	}
+
+	public List<PrimaryObject> getRoleDefinitions() {
+		return getRelationById(F__ID, RoleDefinition.F_PROJECT_TEMPLATE_ID, RoleDefinition.class);
+	}
 	
-	public DroolsProcessDefinition getCommitProcessDefinition(){
-		DBObject data = (DBObject) getValue(F_WF_COMMIT);
-		return new DroolsProcessDefinition(data);
-	}
-
-	public DroolsProcessDefinition getChangeProcessDefinition(){
-		DBObject data = (DBObject) getValue(F_WF_CHANGE);
-		return new DroolsProcessDefinition(data);
-	}
-
 }
