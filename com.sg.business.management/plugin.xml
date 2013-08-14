@@ -436,28 +436,6 @@
                         persistable="true"
                         required="false">
                   </checkbox>
-                  <combo
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="wfd_projectstart"
-                        label="启动流程"
-                        labelVisible="true"
-                        name="wfd_projectstart"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </combo>
-                  <combo
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="wfd_projectchange"
-                        label="变更流程"
-                        labelVisible="true"
-                        name="wfd_projectchange"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </combo>
                </section>
                <section
                      label="说明">
@@ -541,6 +519,13 @@
                navigatorId="management.roledefinition"
                title="角色">
          </navigatorpage>
+         <basicpage
+               description="项目的全局流程设置"
+               id="processpage"
+               image="image/flow_32.png"
+               pageDelegator="com.sg.business.management.editor.page.ProcessDefinitionPage"
+               title="流程">
+         </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="wbstemplatepage"
