@@ -352,10 +352,6 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		for (PrimaryObject primaryObject : connections) {
 			primaryObject.doRemove(context);
 		}
-		connections = getEnd2Connections();
-		for (PrimaryObject primaryObject : connections) {
-			primaryObject.doRemove(context);
-		}
 		
 		// 删除交付物定义
 		List<PrimaryObject> deliverableDefinitions = getDeliverableDefinitions();
