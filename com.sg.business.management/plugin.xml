@@ -464,7 +464,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="320"
+                        heightHint="240"
                         id="description"
                         label="模板说明"
                         labelVisible="false"
@@ -2059,7 +2059,7 @@
                <with
                      variable="selection">
                   <count
-                        value="+">
+                        value="1">
                   </count>
                </with>
             </visibleWhen>

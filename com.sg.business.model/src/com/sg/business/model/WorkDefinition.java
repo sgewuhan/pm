@@ -347,18 +347,26 @@ public class WorkDefinition extends AbstractOptionFilterable {
 			throw new Exception("工作定义处于启用状态，不可删除");
 		}
 
+		// 删除前后顺序关系
+		List<PrimaryObject> connections = getEnd2Connections();
+		for (PrimaryObject primaryObject : connections) {
+			primaryObject.doRemove(context);
+		}
+		connections = getEnd2Connections();
+		for (PrimaryObject primaryObject : connections) {
+			primaryObject.doRemove(context);
+		}
+		
 		// 删除交付物定义
 		List<PrimaryObject> deliverableDefinitions = getDeliverableDefinitions();
 		for (PrimaryObject primaryObject : deliverableDefinitions) {
-			DeliverableDefinition deliverableDefinition = (DeliverableDefinition) primaryObject;
-			deliverableDefinition.doRemove(context);
+			primaryObject.doRemove(context);
 		}
 
 		// 删除下级
 		List<PrimaryObject> childrenWorkDefinitions = getChildrenWorkDefinition();
 		for (PrimaryObject primaryObject : childrenWorkDefinitions) {
-			WorkDefinition childWorkDefinition = (WorkDefinition) primaryObject;
-			childWorkDefinition.doRemove(context);
+			primaryObject.doRemove(context);
 		}
 		// 删除自己
 		WorkDefinition parent = getParent();
@@ -374,6 +382,16 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	}
 
+	public List<PrimaryObject> getEnd2Connections() {
+		return getRelationById(F__ID, WorkDefinitionConnection.F_END1_ID,
+				WorkDefinitionConnection.class);
+	}
+
+	public List<PrimaryObject> getEnd1Connections() {
+		return getRelationById(F__ID, WorkDefinitionConnection.F_END2_ID,
+				WorkDefinitionConnection.class);
+	}
+	
 	public WorkDefinition getParent() {
 		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
 		if (parent_id != null) {
@@ -453,12 +471,13 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 * 
 	 * @param workd
 	 * @param context
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public void doExportGenericWorkDefinition(WorkDefinition genericWorkDefinition,
-			IContext context) throws Exception {
+	public void doExportGenericWorkDefinition(
+			WorkDefinition genericWorkDefinition, IContext context)
+			throws Exception {
 		genericWorkDefinition.doClone(this, context);
-		
+
 	}
 
 	/**
@@ -527,13 +546,13 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	public Organization getOrganization() {
 		ObjectId org_id = (ObjectId) getValue(F_ORGANIZATION_ID);
-		if(org_id!=null){
+		if (org_id != null) {
 			return ModelService.createModelObject(Organization.class, org_id);
 		}
 		return null;
 	}
-	
-	public ObjectId getOrganizationId(){
+
+	public ObjectId getOrganizationId() {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
 }

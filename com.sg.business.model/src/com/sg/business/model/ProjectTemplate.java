@@ -77,6 +77,7 @@ public class ProjectTemplate extends PrimaryObject {
 		
 		// 删除工作定义
 		doRemoveWorkDefinitionsInternal();
+		
 		//删除交付物定义
 		doRemoveDeliverableDefinitionsInternal();
 		

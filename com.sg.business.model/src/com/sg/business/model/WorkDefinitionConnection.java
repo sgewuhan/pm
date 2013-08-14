@@ -36,9 +36,9 @@ public class WorkDefinitionConnection extends PrimaryObject {
 
 	public static final int UNIT_HOUR = 60 * 60 * 1000;
 
-	public static final long UNIT_MINUTE = 60 * 1000;
+	public static final int UNIT_MINUTE = 60 * 1000;
 
-	public static final long UNIT_SECOND = 1000;
+	public static final int UNIT_SECOND = 1000;
 
 	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
 
@@ -91,8 +91,8 @@ public class WorkDefinitionConnection extends PrimaryObject {
 		return (String) getValue(F_CONNECTIONTYPE);
 	}
 
-	public long getInterval() {
-		long interval = ((Long) getValue(F_INTERVAL)).longValue();
+	public int getInterval() {
+		int interval = ((Integer) getValue(F_INTERVAL)).intValue();
 		Object op = getValue(F_OPERATOR);
 		if ("-".equals(op)) {
 			interval = -1 * interval;
