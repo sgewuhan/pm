@@ -4,10 +4,10 @@ import com.sg.business.model.DocumentDefinition;
 import com.sg.business.model.IModelConstants;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class DocumentDefinitionOfOrganization extends
+public class DocDefOfOrg extends
 		MasterDetailDataSetFactory {
 
-	public DocumentDefinitionOfOrganization() {
+	public DocDefOfOrg() {
 		super(IModelConstants.DB, IModelConstants.C_DOCUMENT_DEFINITION);
 	}
 

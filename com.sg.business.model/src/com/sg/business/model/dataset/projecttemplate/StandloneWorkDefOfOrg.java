@@ -5,10 +5,10 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class StandloneWorkDefinitionsOfOrganization extends
+public class StandloneWorkDefOfOrg extends
 		MasterDetailDataSetFactory {
 
-	public StandloneWorkDefinitionsOfOrganization() {
+	public StandloneWorkDefOfOrg() {
 		super(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 		setQueryCondition(new BasicDBObject().append(
 				WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_STANDLONE)

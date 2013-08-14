@@ -18,6 +18,67 @@
                id="团队">
          </option>
       </option>
+      <option
+            id="connectiontype"
+            label="顺序关系">
+         <option
+               id="SF"
+               label="开始-完成"
+               value="SF">
+         </option>
+         <option
+               id="SS"
+               label="开始-开始"
+               value="SS">
+         </option>
+         <option
+               id="FF"
+               label="完成-完成"
+               value="FF">
+         </option>
+         <option
+               id="FS"
+               label="完成-开始"
+               value="FS">
+         </option>
+      </option>
+      <option
+            id="操作符">
+         <option
+               id="+">
+         </option>
+         <option
+               id="-">
+         </option>
+      </option>
+      <option
+            id="日期单位">
+         <option
+               id="周"
+               label="周"
+               value="w">
+         </option>
+         <option
+               id="天"
+               label="天"
+               value="d">
+         </option>
+         <option
+               id="小时"
+               label="小时"
+               value="h">
+         </option>
+         <option
+               id="分钟"
+               label="分钟"
+               value="m">
+         </option>
+         <option
+               id="秒"
+               label="秒"
+               value="s">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.mobnut.db.documentModelAdapter">
@@ -89,6 +150,11 @@
       <doc
             class="com.sg.business.model.DocumentDefinition"
             collection="documentd"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.WorkDefinitionConnection"
+            collection="workdconnection"
             db="pm2">
       </doc>
    </extension>

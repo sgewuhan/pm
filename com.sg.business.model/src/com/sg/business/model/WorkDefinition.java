@@ -45,7 +45,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	/**
 	 * 项目模板工作定义和交付物定义
 	 */
-	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
+	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
 
 	/**
 	 * 只用于通用工作定义和独立工作定义
@@ -121,7 +121,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 			data.put(F_ORGANIZATION_ID, getValue(F_ORGANIZATION_ID));
 			break;
 		case WORK_TYPE_PROJECT:// 项目工作定义需要设定项目模板Id
-			data.put(F_PROJECTTEMPLATE_ID, getValue(F_PROJECTTEMPLATE_ID));
+			data.put(F_PROJECT_TEMPLATE_ID, getValue(F_PROJECT_TEMPLATE_ID));
 
 			break;
 		default:
@@ -154,7 +154,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 			break;
 		case WORK_TYPE_PROJECT:// 项目工作定义需要设定项目模板Id
 			data.put(DeliverableDefinition.F_PROJECTTEMPLATE_ID,
-					getValue(F_PROJECTTEMPLATE_ID));
+					getValue(F_PROJECT_TEMPLATE_ID));
 			break;
 		default:
 			break;
@@ -413,7 +413,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 * @return
 	 */
 	public ProjectTemplate getProjectTemplate() {
-		ObjectId ptId = (ObjectId) getValue(F_PROJECTTEMPLATE_ID);
+		ObjectId ptId = (ObjectId) getValue(F_PROJECT_TEMPLATE_ID);
 		if (ptId != null) {
 			return ModelService.createModelObject(ProjectTemplate.class, ptId);
 		} else {

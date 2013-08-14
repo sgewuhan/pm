@@ -5,10 +5,10 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class GenericWorkDefinitionsOfOrganization extends
+public class GenericWorkDefOfOrg extends
 		MasterDetailDataSetFactory {
 
-	public GenericWorkDefinitionsOfOrganization() {
+	public GenericWorkDefOfOrg() {
 		super(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 		setQueryCondition(new BasicDBObject().append(
 				WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_GENERIC)

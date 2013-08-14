@@ -43,7 +43,7 @@ public class ProjectTemplate extends PrimaryObject {
 			BasicDBObject wbsRootData = new BasicDBObject();
 			wbsRootData.put(WorkDefinition.F_WORK_TYPE, new Integer(WorkDefinition.WORK_TYPE_PROJECT));
 			wbsRootData.put(WorkDefinition.F_DESC, getDesc());
-			wbsRootData.put(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id());
+			wbsRootData.put(WorkDefinition.F_PROJECT_TEMPLATE_ID, get_id());
 			ObjectId wbsRootId = new ObjectId();
 			wbsRootData.put(WorkDefinition.F__ID, wbsRootId);
 			wbsRootData.put(WorkDefinition.F_ROOT_ID, wbsRootId);
@@ -97,7 +97,7 @@ public class ProjectTemplate extends PrimaryObject {
 
 	private void doRemoveWorkDefinitionsInternal() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
-		col.remove(new BasicDBObject().append(WorkDefinition.F_PROJECTTEMPLATE_ID, get_id()));
+		col.remove(new BasicDBObject().append(WorkDefinition.F_PROJECT_TEMPLATE_ID, get_id()));
 	}
 
 	private void doRemoveBudgetItemInternal() {
@@ -122,6 +122,13 @@ public class ProjectTemplate extends PrimaryObject {
 		roled.setValue(RoleDefinition.F_ORGANIZATION_ROLE_ID, role.get_id());
 		roled.setValue(RoleDefinition.F_PROJECT_TEMPLATE_ID, get_id());
 		return roled;
+	}
+	
+
+	public WorkDefinitionConnection makeWorkDefinitionConnection() {
+		WorkDefinitionConnection wdc = ModelService.createModelObject(WorkDefinitionConnection.class);
+		wdc.setValue(WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID, get_id());
+		return wdc;
 	}
 
 	public boolean hasOrganizationRole(Role role) {

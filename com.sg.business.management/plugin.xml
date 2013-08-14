@@ -252,6 +252,10 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="management.workdconnection"
+            table="management.workdconnection">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -272,7 +276,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.projecttemplate.ProjectTemplatesOfOrganization"
+            dataSet="com.sg.business.model.dataset.projecttemplate.ProjectTemplatesOfOrg"
             editorId="editor.projecttemplate"
             headerVisiable="false"
             id="management.projecttemplates"
@@ -286,7 +290,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinitionsOfOrganization"
+            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefOfOrg"
             dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             headerVisiable="false"
             id="management.genericwork.definitions"
@@ -300,7 +304,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.projecttemplate.StandloneWorkDefinitionsOfOrganization"
+            dataSet="com.sg.business.model.dataset.projecttemplate.StandloneWorkDefOfOrg"
             headerVisiable="false"
             id="management.standlonework.definitions"
             popupMenu="popup:management.genericwork.definitions">
@@ -312,7 +316,7 @@
          </column>
       </table>
       <table
-            dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplate"
+            dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplate"
             headerVisiable="true"
             id="management.roledefinition"
             multiSelection="true"
@@ -329,7 +333,7 @@
       </table>
       <table
             canCreate="false"
-            dataSet="com.sg.business.model.dataset.projecttemplate.DocumentDefinitionOfOrganization"
+            dataSet="com.sg.business.model.dataset.projecttemplate.DocDefOfOrg"
             dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             editorId="editor.documentdefinition"
             headerVisiable="false"
@@ -352,6 +356,44 @@
                labelProvider="com.sg.business.model.labelprovider.RoleDefinitionLabelProvider2"
                name="名称"
                width="-1">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjectTemplate"
+            id="management.workdconnection"
+            popupMenu="popup:management.workdconnection">
+         <column
+               column="end1label"
+               labelProvider="com.sg.business.model.labelprovider.End1WorkDefLabelProvider"
+               name="前置工作"
+               type="String"
+               width="120">
+         </column>
+         <column
+               column="end2label"
+               labelProvider="com.sg.business.model.labelprovider.End2WorkDefLabelProvider"
+               name="后置工作"
+               type="String"
+               width="120">
+         </column>
+         <column
+               column="connectiontype"
+               name="类型"
+               type="String"
+               width="50">
+         </column>
+         <column
+               column="operator"
+               name="±"></column>
+         <column
+               column="interval"
+               name="间隔时间"
+               type="String">
+         </column>
+         <column
+               column="unit"
+               name="单位"
+               type="String">
          </column>
       </table>
    </extension>
@@ -511,6 +553,12 @@
                navigatorId="management.deliverables"
                pageBodyPartCreater="com.sg.business.management.editor.page.DeliverablesBody"
                title="交付物">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="connectionpage"
+               navigatorId="management.workdconnection"
+               title="前后置">
          </navigatorpage>
          <versionControl>
             <fieldname
@@ -1060,10 +1108,105 @@
       </pageExtendsions>
    </extension>
    <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="workdconnection"
+            dbName="pm2"
+            id="editor.workDefinitionConnection"
+            isDefault="true"
+            name="工作顺序关系"
+            titleToolTips="工作顺序关系">
+         <basicpage
+               id="basicpage"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <selectionDialog
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjecttemplateOption"
+                        editable="true"
+                        id="end1_id"
+                        label="前置工作"
+                        labelVisible="true"
+                        name="end1_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </selectionDialog>
+                  <selectionDialog
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjecttemplateOption"
+                        editable="true"
+                        id="end2_id"
+                        label="后置工作"
+                        labelVisible="true"
+                        name="end2_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </selectionDialog>
+                  <radio
+                        defaultValue="FS"
+                        editable="true"
+                        id="connectiontype"
+                        label="顺序关系"
+                        labelVisible="true"
+                        name="connectiontype"
+                        option="connectiontype"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        wrapRadio="true">
+                  </radio>
+                  <fieldgroup
+                        columnCount="3">
+                     <combo
+                           defaultValue="+"
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="operator"
+                           label="操作符"
+                           labelVisible="true"
+                           name="operator"
+                           option="操作符"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                     <spinner
+                           defaultValue="0"
+                           editable="true"
+                           id="interval"
+                           label="间隔时间"
+                           labelVisible="true"
+                           name="interval"
+                           persistable="true"
+                           required="false">
+                     </spinner>
+                     <combo
+                           defaultValue="d"
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="unit"
+                           label="单位"
+                           labelVisible="false"
+                           name="unit"
+                           option="日期单位"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
          point="com.sg.widgets.tree">
       <tree
             autoExpandLevel="-1"
-            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
+            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefOfProjectTemplate"
             dropTargetListener="com.sg.business.management.dnd.DropWBSTemplate"
             id="management.wbstemplate"
             popupMenu="popup:management.wbstemplate">
@@ -1096,7 +1239,7 @@
       </tree>
       <tree
             autoExpandLevel="-1"
-            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefinitionOfProjectTemplate"
+            dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefOfProjectTemplate"
             dropTargetListener="com.sg.business.management.dnd.DropDeliverable"
             fix="1"
             id="management.deliverables"
@@ -1117,7 +1260,7 @@
       </tree>
       <tree
             autoExpandLevel="-1"
-            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinition"
+            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDef"
             id="management.genericworkd.wbstemplate"
             popupMenu="popup:management.genericworkd.wbstemplate">
          <structure
@@ -1135,7 +1278,7 @@
       </tree>
       <tree
             autoExpandLevel="-1"
-            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDefinition"
+            dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDef"
             dropTargetListener="com.sg.business.management.dnd.DropDeliverable"
             fix="1"
             id="management.genericworkd.deliverables"
@@ -1863,6 +2006,65 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:management.workdconnection">
+         <command
+               commandId="management.workdconnection.create"
+               icon="image/24_blank.png"
+               label="添加顺序关系..."
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="编辑"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="management.projecttemplates.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2056,6 +2258,57 @@
             class="com.sg.business.management.handler.workdef.LinkDeliverableDefinition"
             commandId="management.deliverables.link">
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="com.sg.business.management"
+            id="management.workdconnection.create"
+            name="添加工作顺序关系">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.management.handler.workdef.CreateWorkDefinitionConnection"
+            commandId="management.workdconnection.create">
+      </handler>
+   </extension>
+   <extension
+         point="com.sg.widgets.option">
+      <option
+            id="connectiontype"
+            label="顺序关系">
+         <option
+               id="SF"
+               label="开始-完成"
+               value="SF">
+         </option>
+         <option
+               id="SS"
+               label="开始-开始"
+               value="SS">
+         </option>
+         <option
+               id="FF"
+               label="完成-完成"
+               value="FF">
+         </option>
+         <option
+               id="FS"
+               label="完成-开始"
+               value="FS">
+         </option>
+      </option>
+      <option
+            id="操作符">
+         <option
+               id="+">
+         </option>
+         <option
+               id="-">
+         </option>
+      </option>
    </extension>
 
 </plugin>

@@ -6,9 +6,9 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class WorkDefinitionOfProjectTemplate extends MasterDetailDataSetFactory {
+public class WorkDefOfProjectTemplate extends MasterDetailDataSetFactory {
 
-	public WorkDefinitionOfProjectTemplate() {
+	public WorkDefOfProjectTemplate() {
 		super(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 		setSort(new SEQSorter().getBSON());
 	}

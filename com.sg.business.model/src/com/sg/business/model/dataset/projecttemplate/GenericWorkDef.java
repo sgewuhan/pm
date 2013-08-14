@@ -4,9 +4,9 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class GenericWorkDefinition extends MasterDetailDataSetFactory {
+public class GenericWorkDef extends MasterDetailDataSetFactory {
 
-	public GenericWorkDefinition() {
+	public GenericWorkDef() {
 		super(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 	}
 

@@ -4,9 +4,9 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class ProjectTemplatesOfOrganization extends MasterDetailDataSetFactory {
+public class ProjectTemplatesOfOrg extends MasterDetailDataSetFactory {
 
-	public ProjectTemplatesOfOrganization() {
+	public ProjectTemplatesOfOrg() {
 		super(IModelConstants.DB, IModelConstants.C_PROJECT_TEMPLATE);
 	}
 

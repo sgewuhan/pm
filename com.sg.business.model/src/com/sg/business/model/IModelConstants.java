@@ -72,4 +72,6 @@ public interface IModelConstants {
 	 * 交付物定义
 	 */
 	public static final String C_DELIEVERABLE_DEFINITION = "deliverabled";
+
+	public static final String C_WORK_DEFINITION_CONNECTION = "workdconnection";
 }
