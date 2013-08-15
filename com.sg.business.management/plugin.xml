@@ -620,7 +620,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -632,7 +632,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -645,7 +645,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"
@@ -1106,7 +1106,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -1118,7 +1118,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -1131,7 +1131,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"
@@ -1230,7 +1230,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -1242,7 +1242,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -1255,7 +1255,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"
@@ -1364,7 +1364,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleOfOrganizationOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -1376,7 +1376,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleOfOrganizationOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -1389,7 +1389,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleOfOrganizationOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"
@@ -1476,7 +1476,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -1488,7 +1488,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -1501,7 +1501,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefinitionOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"

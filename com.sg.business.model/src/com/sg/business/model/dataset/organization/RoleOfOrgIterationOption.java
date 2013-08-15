@@ -6,9 +6,9 @@ import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.commons.dataset.IOptionDataSetFactory;
 
-public class RoleOfOrgInterationOption implements IOptionDataSetFactory {
+public class RoleOfOrgIterationOption implements IOptionDataSetFactory {
 
-	public RoleOfOrgInterationOption() {
+	public RoleOfOrgIterationOption() {
 		// TODO Auto-generated constructor stub
 	}
 

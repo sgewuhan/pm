@@ -8,9 +8,9 @@ import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.dataset.OptionDataSetFactory;
 
-public class RoleDefinitionOfProjectTemplateOption extends OptionDataSetFactory {
+public class RoleDefOfProjectTemplateOption extends OptionDataSetFactory {
 
-	public RoleDefinitionOfProjectTemplateOption() {
+	public RoleDefOfProjectTemplateOption() {
 		super(IModelConstants.DB, IModelConstants.C_ROLE_DEFINITION);
 	}
 
