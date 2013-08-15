@@ -283,7 +283,7 @@
             editorId="editor.organization.user"
             id="organization.user"
             multiSelection="true"
-            popupMenu="popup:com.sg.widget.navigator"
+            popupMenu="popup:organization.user"
             queryMode="false">
          <column
                columnDefinitionId="account.userid">
@@ -850,6 +850,105 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:organization.user">
+         <command
+               commandId="com.sg.widgets.command.create"
+               icon="image/create2_24.png"
+               id="create"
+               label="创建"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="编辑"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="system.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="加入对比"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="organization.consignUser"
+               icon="image/consign_24.png"
+               label="由其他用户托管"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -862,12 +961,21 @@
             id="command.organization.syncHR"
             name="将HR的组织数据同步到系统">
       </command>
+      <command
+            categoryId="organization.category"
+            id="organization.consignUser"
+            name="用户托管">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="com.sg.business.organization.command.SyncHR"
             commandId="command.organization.syncHR">
+      </handler>
+      <handler
+            class="com.sg.business.organization.command.Consign"
+            commandId="organization.consignUser">
       </handler>
    </extension>
 </plugin>

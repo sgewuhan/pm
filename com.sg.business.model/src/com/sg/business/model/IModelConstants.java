@@ -74,4 +74,6 @@ public interface IModelConstants {
 	public static final String C_DELIEVERABLE_DEFINITION = "deliverabled";
 
 	public static final String C_WORK_DEFINITION_CONNECTION = "workdconnection";
+
+	public static final String C_PROJECT = "project";
 }

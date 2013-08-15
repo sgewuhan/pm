@@ -9,7 +9,7 @@
             name="首页">
       </perspective>
       <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
+            class="com.sg.widgets.perspective.EditorShowPerspective"
             id="perspective.project"
             name="项目">
       </perspective>
@@ -84,12 +84,23 @@
             targetID="perspective.project">
          <view
                closeable="false"
-               id="project.navigator"
+               id="project.navigator.myproject"
                minimized="false"
                moveable="false"
-               ratio="0.4"
+               ratio="0.3"
                relationship="left"
                relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.management"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.myproject"
                showTitle="true"
                standalone="false"
                visible="true">

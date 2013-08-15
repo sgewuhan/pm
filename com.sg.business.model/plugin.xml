@@ -157,6 +157,11 @@
             collection="workdconnection"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.Project"
+            collection="project"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

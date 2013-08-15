@@ -32,6 +32,8 @@ public class User extends PrimaryObject {
 
 	public static final String F_ORGANIZATION_NAME = "organization_name";
 
+	private static final String F_CONSIGNER = "consigner";
+
 	public ObjectId getOrganization_id() {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
@@ -126,7 +128,8 @@ public class User extends PrimaryObject {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		if (context!=null&&"organization.member".equals(context.getPartId())) {// 删除团队成员
+		if (context != null
+				&& "organization.member".equals(context.getPartId())) {// 删除团队成员
 
 			setValue(F_ORGANIZATION_ID, null);
 			try {
@@ -139,9 +142,52 @@ public class User extends PrimaryObject {
 	}
 
 	public static User getUserById(String userId) {
-		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_USER);
-		DBObject userData = userCol.findOne(new BasicDBObject().append(User.F_USER_ID, userId));
+		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_USER);
+		DBObject userData = userCol.findOne(new BasicDBObject().append(
+				User.F_USER_ID, userId));
 		return ModelService.createModelObject(userData, User.class);
+	}
+
+	/**
+	 * 获得用户具有某角色的组织
+	 * @param roleNumber
+	 * @return
+	 */
+	public List<PrimaryObject> getRoleGrantedOrganization(String roleNumber) {
+
+		List<PrimaryObject> roles = getRoles(roleNumber);
+
+		// 取出这些角色的所属组织的id
+		ObjectId[] orgIds = new ObjectId[roles.size()];
+		for (int i = 0; i < roles.size(); i++) {
+			orgIds[i] = ((Role) roles.get(i)).getOrganization_id();
+		}
+
+		List<PrimaryObject> orgs = new ArrayList<PrimaryObject>();
+		
+		// 查询属于可管理的组织
+		DBCollection orgCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_ORGANIZATION);
+		DBObject condition = new BasicDBObject();
+		condition.put(Organization.F__ID,
+				new BasicDBObject().append("$in", orgIds));
+		condition.put(Organization.F_IS_FUNCTION_DEPARTMENT, Boolean.TRUE);
+		DBCursor cur = orgCol.find(condition);
+		while (cur.hasNext()) {
+			Organization org = ModelService.createModelObject(cur.next(),
+					Organization.class);
+			if (!orgs.contains(org)) {
+				orgs.add(org);
+			}
+		}
+
+		return orgs;
+	}
+
+	public void doConsignTo(User consigner, IContext context) throws Exception {
+		setValue(F_CONSIGNER, consigner.getUserid());
+		doSave(context);
 	}
 
 }

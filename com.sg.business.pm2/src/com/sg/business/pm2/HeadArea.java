@@ -9,27 +9,35 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.design.ext.IHeadAreaSupport;
+import com.mobnut.portal.user.IAccountChangeListener;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.User;
 import com.sg.widgets.ImageResource;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-public class HeadArea implements IHeadAreaSupport {
+public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 	private Label headerPic;
 	private Label welcomeMessage;
@@ -70,11 +78,60 @@ public class HeadArea implements IHeadAreaSupport {
 		fd.top = new FormAttachment(0, 2);
 		fd.height = 46;
 		fd.width = 46;
+
+		final Shell shell = headerPic.getShell();
+		// 创建菜单
+		final Menu dropDownMenu = new Menu(shell, SWT.POP_UP);
+		MenuItem item = new MenuItem(dropDownMenu, SWT.PUSH);
+		item.setText("更改我的个人信息");
+		List<String[]> consigners = UserSessionContext.getSession()
+				.getConsignerList();
+		if (consigners.size() > 0) {
+			item = new MenuItem(dropDownMenu, SWT.SEPARATOR);
+			item.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					editUserProfile(user);
+				}
+			});
+			for (int i = 0; i < consigners.size(); i++) {
+				item = new MenuItem(dropDownMenu, SWT.PUSH);
+				final String[] cs = consigners.get(i);
+				item.setText("代管 " + cs[0] + "|" + consigners.get(i)[1]);
+				item.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						int yes = MessageUtil
+								.showMessage(
+										shell,
+										"切换至代管账户",
+										"切换至代管账户将中止某些您当前的操作进程。\n请确保您已经保存了重要的数据。选择YES切换至托管账户",
+										SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+						if (yes == SWT.YES) {
+							UserSessionContext.getSession()
+									.setCurrentConsigner(cs[0], cs[1]);
+						}
+					}
+				});
+			}
+			item = new MenuItem(dropDownMenu, SWT.PUSH);
+			item.setText("取消代管");
+			item.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					UserSessionContext.getSession().cancelCurrentConsigner();
+				}
+			});
+		}
+
 		headerPic.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				editUserProfile(user);
+				Point point = headerPic.toDisplay(headerPic.getBounds().x,
+						headerPic.getBounds().y + headerPic.getBounds().height);
+				dropDownMenu.setLocation(point);
+				dropDownMenu.setVisible(true);
 			}
 
 			@Override
@@ -105,11 +162,13 @@ public class HeadArea implements IHeadAreaSupport {
 		// fd.left = new FormAttachment(headPicContainer, 6);
 		// fd.top = new FormAttachment(0,2);
 
+		UserSessionContext.getSession().addAccountChangeListener(this);
 		return headPicContainer;
 	}
 
 	private void setWelcomeMessage(String welcomeMessageText) {
-		welcomeMessage.setText(welcomeMessageText);		
+		welcomeMessage.setText(welcomeMessageText);
+		welcomeMessage.getParent().layout();
 	}
 
 	// protected void editUserProfile(DBObject user) {
@@ -157,7 +216,7 @@ public class HeadArea implements IHeadAreaSupport {
 		}
 
 		headerPic.setText("<img src='" + imageURL
-				+ "' style='float:left' width='46' height='46' />");		
+				+ "' style='float:left' width='46' height='46' />");
 	}
 
 	protected void editUserProfile(User user) {
@@ -165,16 +224,18 @@ public class HeadArea implements IHeadAreaSupport {
 				.getEditorRegistry().getConfigurator("editor.user");
 		try {
 			IEditorSaveHandler save = new IEditorSaveHandler() {
-				
+
 				@Override
 				public boolean doSaveBefore(PrimaryObjectEditorInput input,
-						IProgressMonitor monitor, String operation) throws Exception {
+						IProgressMonitor monitor, String operation)
+						throws Exception {
 					return true;
 				}
-				
+
 				@Override
 				public boolean doSaveAfter(PrimaryObjectEditorInput input,
-						IProgressMonitor monitor, String operation) throws Exception {
+						IProgressMonitor monitor, String operation)
+						throws Exception {
 					User user = (User) input.getData();
 					setHeadPic(user);
 					setWelcomeMessage(getWelcomeMessage(user.getUsername()));
@@ -182,7 +243,7 @@ public class HeadArea implements IHeadAreaSupport {
 					return true;
 				}
 			};
-			DataObjectDialog.openDialog(user, conf, true, save,"编辑用户资料");
+			DataObjectDialog.openDialog(user, conf, true, save, "编辑用户资料");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -216,7 +277,7 @@ public class HeadArea implements IHeadAreaSupport {
 		case 16:
 		case 17:
 		case 18:
-			
+
 			return username + " 下午好";
 		case 19:
 		case 20:
@@ -233,6 +294,23 @@ public class HeadArea implements IHeadAreaSupport {
 	@Override
 	public Image getCenterLogo() {
 		return null;
+	}
+
+	@Override
+	public void accountChanged(Object data) {
+		if (UserSessionContext.EVENT_CONSIGNER_CHANGED.equals(data)) {
+			try {
+				AccountInfo user = UserSessionContext.getAccountInfo();
+				if (user.isConsigning()) {
+					setWelcomeMessage(getWelcomeMessage(user.getUserName())
+							+ " 代表:" + user.getconsignerName());
+				} else {
+					setWelcomeMessage(getWelcomeMessage(user.getUserName()));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

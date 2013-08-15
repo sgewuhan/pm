@@ -9,44 +9,30 @@
       </category>
       <view
             category="com.sg.business.project.category.project"
-            class="com.sg.widgets.part.view.TableNavigator"
-            id="project.navigator"
+            class="com.sg.widgets.part.view.AccountSensitiveTableView"
+            id="project.navigator.myproject"
             name="项目导航"
             restorable="true">
       </view>
       <view
             category="com.sg.business.project.category.project"
-            class="com.sg.widgets.part.view.TreeNavigator"
-            id="com.sg.business.project.wbs"
-            name="工作分解结构"
+            class="com.sg.widgets.part.view.AccountSensitiveTableView"
+            id="project.navigator.management"
+            name="项目管理"
             restorable="true">
       </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
       <navigator
-            id="project.navigator"
+            id="project.navigator.myproject"
             provideSelection="true"
-            table="project.navigator">
-         <filterAction>
-            <column
-                  column="projectNum"
-                  name="项目编号"
-                  style="SWT.LEFT"
-                  type="String">
-            </column>
-            <column
-                  column="activated"
-                  name="激活"
-                  style="SWT.LEFT"
-                  type="Boolean">
-            </column>
-         </filterAction>
+            table="project.navigator.myproject">
       </navigator>
       <navigator
-            id="com.sg.business.project.wbs"
+            id="project.navigator.management"
             provideSelection="true"
-            table="com.sg.business.project.wbstree">
+            table="project.navigator.management">
       </navigator>
    </extension>
    <extension
@@ -55,47 +41,39 @@
             canCreate="true"
             canDelete="true"
             canEdit="true"
-            collectionName="project"
-            dataSet="com.sg.business.project.model.ProjectDataSetFactory"
-            dbName="pm2"
-            editorId="com.sg.business.project.editor1"
-            id="project.navigator"
-            limit="100"
+            dataSet="com.sg.business.model.dataset.project.MyProject"
+            editorId="project.editor"
+            id="project.navigator.myproject"
             popupMenu="popup:com.sg.widgets.ctableviewer"
             searchCollection="true">
          <column
-               column="projectNum"
-               name="项目编号"
-               style="SWT.LEFT"
-               type="String">
-         </column>
-         <column
-               column="activated"
-               name="激活"
-               style="SWT.LEFT"
-               type="Boolean">
+               column="desc"
+               name="desc"
+               width="-1">
          </column>
       </table>
-   </extension>
-   <extension
-         point="com.sg.widgets.tree">
-      <tree
-            id="com.sg.business.project.wbstree"
-            popupMenu="popup:com.sg.widgets.ctableviewer">
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            dataSet="com.sg.business.model.dataset.project.ManagementProject"
+            editorId="project.editor"
+            id="project.navigator.management"
+            popupMenu="popup:com.sg.widgets.ctableviewer"
+            searchCollection="true">
          <column
-               column="projectNum"
-               name="项目编号"
-               style="SWT.LEFT"
-               type="String">
+               column="desc"
+               name="desc"
+               width="-1">
          </column>
-      </tree>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="project"
             dbName="pm2"
-            id="com.sg.business.project.editor1"
+            id="project.editor"
             name="项目">
          <basicpage
                id="com.sg.business.project.basicpage1"

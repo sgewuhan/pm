@@ -172,7 +172,7 @@ public class BudgetItemEditor extends EditorPart {
 		BudgetItem budgetItem = getSelectedBudgetItem();
 		if (budgetItem == null) {
 			MessageUtil
-					.showMessage(shell, "预算科目", "没有选中预算科目", SWT.ICON_WARNING);
+					.showToast(shell, "预算科目", "没有选中预算科目", SWT.ICON_WARNING);
 			return;
 		}
 		InputDialog id = new InputDialog(shell, "预算科目", "请输入科目名称", "", null);
@@ -192,7 +192,7 @@ public class BudgetItemEditor extends EditorPart {
 
 		BudgetItem budgetItem = getSelectedBudgetItem();
 		if (budgetItem == null) {
-			MessageUtil.showMessage(shell, "预算科目", "没有选中上级预算科目",
+			MessageUtil.showToast(shell, "预算科目", "没有选中上级预算科目",
 					SWT.ICON_WARNING);
 			return;
 		}
