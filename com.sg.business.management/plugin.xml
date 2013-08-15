@@ -1557,11 +1557,6 @@
          <column
                columnDefinitionId="workdefinition.chargerrole">
          </column>
-         <column
-               column="participate_roled_set"
-               labelProvider="com.sg.business.model.labelprovider.WorkDefParticipateLabelPro"
-               name="承担者"
-               width="120"></column>
          <structure
                modelRelation="workd_workd">
          </structure>
