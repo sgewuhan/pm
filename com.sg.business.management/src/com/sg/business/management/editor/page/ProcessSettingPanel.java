@@ -35,7 +35,7 @@ import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
 import com.sg.business.model.RoleDefinition;
 import com.sg.widgets.MessageUtil;
 
-public abstract class ProcessSettingPanel extends Composite {
+public class ProcessSettingPanel extends Composite {
 
 	private static final String F_POSTFIX_ASSIGNMENT = "_assignment";
 	private static final int MARGIN = 4;
@@ -132,6 +132,7 @@ public abstract class ProcessSettingPanel extends Composite {
 	private Table createProcessViewer() {
 		processViewer = new TableViewer(this, SWT.FULL_SELECTION);
 		processViewer.getTable().setHeaderVisible(true);
+		processViewer.getTable().setLinesVisible(true);
 		processViewer.setContentProvider(ArrayContentProvider.getInstance());
 		TableViewerColumn column = new TableViewerColumn(processViewer,
 				SWT.LEFT);
@@ -321,7 +322,8 @@ public abstract class ProcessSettingPanel extends Composite {
 		}
 	}
 
-	protected abstract void setDirty(boolean b);
+	protected void setDirty(boolean b) {
+	}
 
 	protected void activate(String key, Boolean b) {
 		primaryObject.setValue(key + F_POSTFIX_ACTIVATED, b);

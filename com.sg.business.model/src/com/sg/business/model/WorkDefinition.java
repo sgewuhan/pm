@@ -1,5 +1,6 @@
 package com.sg.business.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -75,12 +76,16 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	/**
 	 * 通用工作定义的编辑器Id
 	 */
-	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition";
+	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition.1";
+	
+	public static final String EDITOR_GENERIC_WORK_ROOT =  "editor.genericWorkDefinition";
 
 	/**
 	 * 独立工作定义的编辑器Id
 	 */
-	public static final String EDITOR_STANDLONE_WORK = "editor.standloneWorkDefinition";
+	public static final String EDITOR_STANDLONE_WORK = "editor.standloneWorkDefinition.1";
+
+	public static final String EDITOR_STANDLONE_WORK_ROOT = "editor.standloneWorkDefinition";
 
 	/**
 	 * 项目模板工作定义的编辑器Id
@@ -92,6 +97,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	public static final String F_WF_EXECUTE = "wf_execute";
 
 	public static final String F_WF_CHANGE = "wf_change";
+
 
 	@Override
 	public Image getImage() {
@@ -360,7 +366,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		for (PrimaryObject primaryObject : connections) {
 			primaryObject.doRemove(context);
 		}
-		
+
 		// 删除交付物定义
 		List<PrimaryObject> deliverableDefinitions = getDeliverableDefinitions();
 		for (PrimaryObject primaryObject : deliverableDefinitions) {
@@ -395,7 +401,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END2_ID,
 				WorkDefinitionConnection.class);
 	}
-	
+
 	public WorkDefinition getParent() {
 		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
 		if (parent_id != null) {
@@ -558,5 +564,29 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	public ObjectId getOrganizationId() {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
+	}
+
+	public List<PrimaryObject> getParticipateRoles() {
+		List<?> list = (List<?>) getValue("participate_roled_set");
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		if (list != null) {
+			if (WORK_TYPE_PROJECT == getWorkDefinitionType()) {
+				for (int i = 0; i < list.size(); i++) {
+					DBObject data = (DBObject) list.get(i);
+					RoleDefinition po = ModelService.createModelObject(data,
+							RoleDefinition.class);
+					result.add(po);
+				}
+			} else if (WORK_TYPE_GENERIC == getWorkDefinitionType()
+					|| WORK_TYPE_STANDLONE == getWorkDefinitionType()) {
+				for (int i = 0; i < list.size(); i++) {
+					DBObject data = (DBObject) list.get(i);
+					Role po = ModelService.createModelObject(data,
+							Role.class);
+					result.add(po);
+				}
+			}
+		}
+		return result;
 	}
 }

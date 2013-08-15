@@ -110,8 +110,7 @@ public class Role extends PrimaryObject {
 			UserSessionContext.noticeAccountChanged(user.getUserid(),
 					UserSessionContext.EVENT_ROLE_CHANGED);
 			list.add(new BasicDBObject()
-					.append(RoleAssignment.F__TYPE,
-							IModelConstants.C_ROLE_ASSIGNMENT)
+					.append(RoleAssignment.F__TYPE,IModelConstants.C_ROLE_ASSIGNMENT)
 					.append(RoleAssignment.F_USER_ID, user.getUserid())
 					.append(RoleAssignment.F_USER_NAME, user.getUsername())
 					.append(RoleAssignment.F_ROLE_ID, get_id())
