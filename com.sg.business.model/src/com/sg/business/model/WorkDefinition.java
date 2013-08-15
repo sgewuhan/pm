@@ -513,6 +513,9 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		// 创建子工作定义
 		WorkDefinition child = makeChildWorkDefinition();
 		child.setValue(F_DESC, srcWorkDefinition.getValue(F_DESC));
+		child.setValue(F_WF_CHANGE, srcWorkDefinition.getValue(F_WF_CHANGE));
+		child.setValue(F_WF_EXECUTE, srcWorkDefinition.getValue(F_WF_EXECUTE));
+
 		child.doSave(context);
 
 		// 获取交付物定义
