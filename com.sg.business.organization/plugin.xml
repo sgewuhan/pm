@@ -208,7 +208,7 @@
             canDelete="true"
             canEdit="true"
             collectionName="organization"
-            dataSet="com.sg.business.model.dataset.organization.OrganizationRoot"
+            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
             dbName="pm2"
             editorId="editor.organization.team"
             id="organization.navigator"
@@ -245,7 +245,7 @@
             canDelete="true"
             canEdit="true"
             collectionName="role"
-            dataSet="com.sg.business.model.dataset.organization.RoleOfOrganization"
+            dataSet="com.sg.business.model.dataset.organization.RoleOfOrg"
             dbName="pm2"
             dropTargetListener="com.sg.business.organization.view.DropUserRole"
             editorId="editor.organization.role"
@@ -309,7 +309,7 @@
             canDelete="true"
             canEdit="true"
             collectionName="account"
-            dataSet="com.sg.business.model.dataset.organization.MemberofOrganization"
+            dataSet="com.sg.business.model.dataset.organization.MemberofOrg"
             dbName="pm2"
             dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             dropTargetListener="com.sg.business.organization.view.DropMember"
@@ -445,7 +445,7 @@
                <section
                      label="基本信息">
                   <selectionDialog
-                        dataSetFactory="com.sg.business.model.dataset.organization.OrganizationFinder"
+                        dataSetFactory="com.sg.business.model.dataset.organization.OrgFinder"
                         editable="false"
                         id="parent_id"
                         label="上级组织"
@@ -550,7 +550,7 @@
                <section
                      label="基本信息">
                   <selectionDialog
-                        dataSetFactory="com.sg.business.model.dataset.organization.OrganizationFinder"
+                        dataSetFactory="com.sg.business.model.dataset.organization.OrgFinder"
                         editable="false"
                         id="organization_id"
                         label="所属组织"
@@ -615,7 +615,7 @@
                <section
                      label="基本信息">
                   <selectionDialog
-                        dataSetFactory="com.sg.business.model.dataset.organization.OrganizationFinder"
+                        dataSetFactory="com.sg.business.model.dataset.organization.OrgFinder"
                         editable="false"
                         id="organization_id"
                         label="所属组织"

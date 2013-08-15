@@ -4,9 +4,9 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Role;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class RoleOfOrganization extends MasterDetailDataSetFactory {
+public class RoleOfOrg extends MasterDetailDataSetFactory {
 
-	public RoleOfOrganization() {
+	public RoleOfOrg() {
 		super(IModelConstants.DB, IModelConstants.C_ROLE);
 	}
 

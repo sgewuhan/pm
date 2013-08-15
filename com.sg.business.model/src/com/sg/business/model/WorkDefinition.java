@@ -20,6 +20,7 @@ import com.sg.business.resource.BusinessResource;
 
 public class WorkDefinition extends AbstractOptionFilterable {
 
+
 	/**
 	 * 通用工作定义
 	 */
@@ -68,6 +69,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 */
 	public static final String F_CHARGER_ROLE_ID = "charger_roled_id";
 
+	/**
+	 * 承担者角色定义
+	 */
+	public static final String F_PARTICIPATE_ROLE_SET = "participate_roled_set";
+
+	
 	/**
 	 * 工作定义的同层序号
 	 */
@@ -567,7 +574,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	}
 
 	public List<PrimaryObject> getParticipateRoles() {
-		List<?> list = (List<?>) getValue("participate_roled_set");
+		List<?> list = (List<?>) getValue(F_PARTICIPATE_ROLE_SET);
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		if (list != null) {
 			if (WORK_TYPE_PROJECT == getWorkDefinitionType()) {

@@ -265,7 +265,7 @@
             canEdit="false"
             canRead="false"
             customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.organization.OrganizationOfBMRole"
+            dataSet="com.sg.business.model.dataset.organization.OrgOfBusinessManagerRole"
             headerVisiable="false"
             id="management.organization.navigaor"
             markupEnabled="true"
@@ -1549,14 +1549,25 @@
                columnDefinitionId="work.desc">
          </column>
          <column
+               column="wf_execute"
+               labelProvider="com.sg.business.model.labelprovider.WorkflowDefLabelPro"
+               name="流程"
+               width="100">
+         </column>
+         <column
                columnDefinitionId="workdefinition.chargerrole">
          </column>
+         <column
+               column="participate_roled_set"
+               labelProvider="com.sg.business.model.labelprovider.WorkDefParticipateLabelPro"
+               name="承担者"
+               width="120"></column>
          <structure
                modelRelation="workd_workd">
          </structure>
       </tree>
       <tree
-            dataSet="com.sg.business.model.dataset.organization.OrganizationRoot"
+            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
             id="management.roleselector"
             multiSelection="true">
          <column

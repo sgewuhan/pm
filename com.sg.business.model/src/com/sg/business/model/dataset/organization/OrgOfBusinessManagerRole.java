@@ -26,7 +26,7 @@ import com.sg.business.model.User;
  * @author Administrator
  * 
  */
-public class OrganizationOfBMRole extends DataSetFactory {
+public class OrgOfBusinessManagerRole extends DataSetFactory {
 
 	private long count;
 
