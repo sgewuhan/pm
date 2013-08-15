@@ -45,6 +45,7 @@ public class EditWorkDefinition extends AbstractNavigatorHandler {
 		case WorkDefinition.WORK_TYPE_GENERIC:
 			conf = Widgets.getEditorRegistry().getConfigurator(
 					WorkDefinition.EDITOR_GENERIC_WORK);
+			break;
 		case WorkDefinition.WORK_TYPE_STANDLONE:
 			conf = Widgets.getEditorRegistry().getConfigurator(
 					WorkDefinition.EDITOR_STANDLONE_WORK);

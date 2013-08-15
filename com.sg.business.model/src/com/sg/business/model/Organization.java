@@ -1,5 +1,6 @@
 package com.sg.business.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -326,4 +327,26 @@ public class Organization extends PrimaryObject {
 
 	}
 
+	/**
+	 * 获取本级以及下级所有的角色
+	 * @return
+	 */
+	public List<PrimaryObject> getRolesIteration() {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		iterateSearchRolesRoles(this,result);
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param org
+	 * @param dataItems
+	 */
+	private void iterateSearchRolesRoles(Organization org, List<PrimaryObject> dataItems) {
+		dataItems.addAll(org.getRoles());
+		List<PrimaryObject> children = org.getChildrenOrganization();
+		for (PrimaryObject primaryObject : children) {
+			iterateSearchRolesRoles((Organization) primaryObject, dataItems);
+		}
+	}
 }

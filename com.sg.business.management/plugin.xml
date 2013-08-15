@@ -405,14 +405,14 @@
             collectionName="projecttemplate"
             dbName="pm2"
             id="editor.projecttemplate"
-            image="image/projecttemplate_32.png"
+            image="image/projecttemplate_24.png"
             isDefault="true"
             name="项目模板"
             titleToolTips="项目模板">
          <basicpage
                description="项目模板基本信息"
                id="basicpage"
-               image="image/projecttemplate_32.png"
+               image="image/projecttemplate_24.png"
                title="基本">
             <pagecolumn
                   id="1">
@@ -460,7 +460,7 @@
          <basicpage
                description="可用于工作筛选的选项"
                id="optionpage"
-               image="image/options_32.png"
+               image="image/options_24.png"
                title="选项">
             <pagecolumn>
                <section
@@ -510,21 +510,21 @@
          <basicpage
                description="设定项目预算科目"
                id="budgetpage"
-               image="image/financial_32.png"
+               image="image/financial_24.png"
                pageDelegator="com.sg.business.management.editor.page.BugetTemplatePage"
                title="预算">
          </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="rolepage"
-               image="image/role_32.png"
+               image="image/role_24.png"
                navigatorId="management.roledefinition"
                title="角色">
          </navigatorpage>
          <basicpage
                description="项目的全局流程设置"
                id="processpage"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.ProcessDefinitionPage"
                title="流程">
          </basicpage>
@@ -557,14 +557,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.workDefinition"
-            image="image/work_32.png"
+            image="image/work_24.png"
             isDefault="false"
             name="工作定义"
             titleToolTips="工作定义">
          <basicpage
                description="工作定义的基本信息"
                id="basicpage"
-               image="image/work_32.png"
+               image="image/work_24.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -766,14 +766,14 @@
          <basicpage
                description="工作执行流程"
                id="processpage1"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
@@ -782,14 +782,14 @@
             collectionName="roled"
             dbName="pm2"
             id="editor.roleDefinition"
-            image="image/role_32.png"
+            image="image/role_24.png"
             isDefault="false"
             name="角色定义"
             titleToolTips="角色定义">
          <basicpage
                description="独立工作定义是可以不依赖项目单独发起的工作"
                id="basicpage1"
-               image="image/role_32.png"
+               image="image/role_24.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -836,12 +836,12 @@
             collectionName="deliverabled"
             dbName="pm2"
             id="editor.deliverableDefinition"
-            image="image/deliverable_32.png"
+            image="image/deliverable_24.png"
             name="交付物定义">
          <basicpage
                description="交付物是工作需要提交的对象，请定义交付物的属性"
                id="basicpage"
-               image="image/deliverable_32.png"
+               image="image/deliverable_24.png"
                title="交付物定义">
             <pagecolumn
                   id="1">
@@ -1055,14 +1055,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.genericWorkDefinition"
-            image="image/work_32.png"
+            image="image/work_24.png"
             isDefault="false"
             name="通用工作定义"
             titleToolTips="通用工作定义">
          <basicpage
                description="通用工作定义是可添加到多项目中工作模块"
                id="basicpage"
-               image="image/work_32.png"
+               image="image/work_24.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -1106,7 +1106,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -1118,7 +1118,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -1131,7 +1131,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"
@@ -1158,14 +1158,14 @@
          <basicpage
                description="工作执行流程"
                id="processpage1"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
@@ -1179,14 +1179,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.standloneWorkDefinition"
-            image="image/work_32.png"
+            image="image/work_24.png"
             isDefault="false"
             name="独立工作定义"
             titleToolTips="独立工作定义">
          <basicpage
                description="独立工作定义是可以不依赖项目单独发起的工作"
                id="basicpage"
-               image="image/work_32.png"
+               image="image/work_24.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -1230,7 +1230,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -1242,7 +1242,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -1255,7 +1255,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"
@@ -1282,14 +1282,14 @@
          <basicpage
                description="工作变更流程"
                id="processpage2"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
          <basicpage
                description="工作执行流程"
                id="processpage1"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
@@ -1313,14 +1313,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.genericWorkDefinition.1"
-            image="image/work_32.png"
+            image="image/work_24.png"
             isDefault="false"
             name="通用工作定义"
             titleToolTips="通用工作定义">
          <basicpage
                description="通用工作定义是可添加到多项目中工作模块"
                id="basicpage"
-               image="image/work_32.png"
+               image="image/work_24.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -1404,14 +1404,14 @@
          <basicpage
                description="工作执行流程"
                id="processpage1"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
@@ -1425,14 +1425,14 @@
             collectionName="workd"
             dbName="pm2"
             id="editor.standloneWorkDefinition.1"
-            image="image/work_32.png"
+            image="image/work_24.png"
             isDefault="false"
             name="独立工作定义"
             titleToolTips="独立工作定义">
          <basicpage
                description="独立工作定义是可以不依赖项目单独发起的工作"
                id="basicpage"
-               image="image/work_32.png"
+               image="image/work_24.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -1476,7 +1476,7 @@
                <section
                      label="负责人和承担者角色">
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
@@ -1488,7 +1488,7 @@
                         type="ObjectId">
                   </combo>
                   <combo
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
@@ -1501,7 +1501,7 @@
                   </combo>
                   <table
                         ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
                         editable="true"
                         id="participate_roled_set"
                         label="承担者角色"
@@ -1516,14 +1516,14 @@
          <basicpage
                description="工作变更流程"
                id="processpage2"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
          <basicpage
                description="工作执行流程"
                id="processpage1"
-               image="image/flow_32.png"
+               image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>

@@ -18,7 +18,7 @@ import com.sg.widgets.registry.config.IPageDelegator;
 
 public class ProcessDefinitionPage implements IPageDelegator, IFormPart {
 
-	private boolean dirty= false;
+	private boolean dirty;
 	private IManagedForm form;
 	private ProjectTemplate projectTemplate;
 	private List<PrimaryObject> roleDefinitions;

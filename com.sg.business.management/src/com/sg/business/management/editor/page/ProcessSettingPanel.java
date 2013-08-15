@@ -32,7 +32,9 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
+import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 
 public class ProcessSettingPanel extends Composite {
@@ -64,6 +66,20 @@ public class ProcessSettingPanel extends Composite {
 			processAssignment = new BasicDBObject();
 		}
 
+	}
+	
+	private boolean isGenericWorkDefinition(){
+		if( primaryObject instanceof WorkDefinition){
+			return ((WorkDefinition)primaryObject).getWorkDefinitionType()==WorkDefinition.WORK_TYPE_GENERIC;
+		}
+		return false;
+	}
+	
+	private boolean isStandloneWorkDefinition(){
+		if( primaryObject instanceof WorkDefinition){
+			return ((WorkDefinition)primaryObject).getWorkDefinitionType()==WorkDefinition.WORK_TYPE_STANDLONE;
+		}
+		return false;
 	}
 
 	public void setRoleDefinitions(List<PrimaryObject> roleDefinitions) {
@@ -209,9 +225,17 @@ public class ProcessSettingPanel extends Composite {
 				NodeAssignment na = (NodeAssignment) element;
 				String ap = na.getNodeActorParameter();
 				ObjectId roleId = (ObjectId) processAssignment.get(ap);
-				RoleDefinition roled = ModelService.createModelObject(
-						RoleDefinition.class, roleId);
-				return roleId == null ? "" : roled.getLabel();
+				//如果是通用工作定义或者是独立工作定义，取出的是角色
+				if(isGenericWorkDefinition()||isStandloneWorkDefinition()){
+					Role roled = ModelService.createModelObject(
+							Role.class, roleId);
+					return roleId == null ? "" : roled.getLabel();
+				}else{//取出的是角色定义
+					RoleDefinition roled = ModelService.createModelObject(
+							RoleDefinition.class, roleId);
+					return roleId == null ? "" : roled.getLabel();
+				}
+				
 			}
 
 		});
@@ -271,7 +295,7 @@ public class ProcessSettingPanel extends Composite {
 		return processViewer.getTable();
 	}
 
-	protected void updateInputData() {
+	private void updateInputData() {
 		primaryObject.setValue(key + F_POSTFIX_ASSIGNMENT, processAssignment);
 		setDirty(true);
 	}
@@ -325,12 +349,12 @@ public class ProcessSettingPanel extends Composite {
 	protected void setDirty(boolean b) {
 	}
 
-	protected void activate(String key, Boolean b) {
+	private void activate(String key, Boolean b) {
 		primaryObject.setValue(key + F_POSTFIX_ACTIVATED, b);
 		setDirty(true);
 	}
 
-	public void packTableViewer(TableViewer viewer) {
+	private void packTableViewer(TableViewer viewer) {
 
 		int count = viewer.getTable().getColumnCount();
 		for (int i = 0; i < count; i++) {

@@ -9,4 +9,5 @@ public class WorkChangeProcessPage extends AbstractWorkProcessPage {
 		return WorkDefinition.F_WF_CHANGE;
 	}
 
+
 }
