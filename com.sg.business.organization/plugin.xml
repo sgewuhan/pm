@@ -245,7 +245,7 @@
             canDelete="true"
             canEdit="true"
             collectionName="role"
-            dataSet="com.sg.business.model.dataset.organization.RoleofOrganization"
+            dataSet="com.sg.business.model.dataset.organization.RolesOfOrganization"
             dbName="pm2"
             dropTargetListener="com.sg.business.organization.view.DropUserRole"
             editorId="editor.organization.role"
