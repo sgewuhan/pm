@@ -51,12 +51,12 @@
             table="management.organization.navigaor">
          <filterAction>
             <column
-                  columnDefinitionId="organization.desc">
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  columnDefinitionId="organization.desc">
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </searchAction>
          <createEditor
@@ -184,12 +184,12 @@
             tree="management.roleselector">
          <filterAction>
             <column
-                  columnDefinitionId="organization.desc">
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  columnDefinitionId="organization.desc">
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </searchAction>
       </navigator>
@@ -212,12 +212,12 @@
             table="management.documentdefinition">
          <filterAction>
             <column
-                  columnDefinitionId="document.desc">
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  columnDefinitionId="document.desc">
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </searchAction>
          <masterProvider
@@ -343,7 +343,7 @@
             multiSelection="true"
             popupMenu="popup:management.documentdefinition">
          <column
-               columnDefinitionId="document.desc">
+               columnDefinitionId="com.sg.widgets.column.desc">
          </column>
       </table>
       <table
@@ -1484,7 +1484,7 @@
             id="management.roleselector"
             multiSelection="true">
          <column
-               columnDefinitionId="organization.desc">
+               columnDefinitionId="com.sg.widgets.column.desc">
          </column>
          <structure
                modelRelation="organization_organization">

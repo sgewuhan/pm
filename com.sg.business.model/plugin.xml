@@ -282,14 +282,6 @@
                width="120">
          </column>
          <column
-               column="desc"
-               id="organization.desc"
-               name="名称"
-               style="SWT.LEFT"
-               type="String"
-               width="-1">
-         </column>
-         <column
                column="organizationtype"
                id="organization.organizationType"
                name="组织类型"
@@ -459,13 +451,6 @@
             width="80">
       </column>
       <column
-            column="desc"
-            id="document.desc"
-            name="名称"
-            type="String"
-            width="-1">
-      </column>
-      <column
             column="documenttype"
             id="document.documentType"
             name="类型"
@@ -581,6 +566,94 @@
             id="workdefinition.chargerrole"
             labelProvider="com.sg.business.model.labelprovider.ChargerRoleDefOfWorkDefLabelProvider"
             name="负责人角色"
+            type="String"
+            width="120">
+      </column>
+   </extension>
+   <extension
+         point="com.sg.widgets.column">
+      <column
+            column="projectnumber"
+            id="project.projectnumber"
+            name="项目编号"
+            type="String"
+            width="80">
+      </column>
+      <column
+            column="desc"
+            id="project.desc"
+            name="名称"
+            type="String"
+            width="180">
+      </column>
+      <column
+            column="status"
+            id="project.status"
+            name="状态"
+            type="String"
+            width="50">
+      </column>
+      <column
+            column="planstart"
+            id="planstart"
+            name="计划开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planfinish"
+            id="planfinish"
+            name="计划完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planduration"
+            id="planduration"
+            name="计划工期"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="planworks"
+            id="planworks"
+            name="计划工时"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="actualstart"
+            id="actualstart"
+            name="实际开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualfinish"
+            id="actualfinish"
+            name="实际完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualduration"
+            id="actualduration"
+            name="实际工期"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="actualworks"
+            id="actualworks"
+            name="实际工时"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="charger"
+            id="charger"
+            labelProvider="com.sg.business.model.labelprovider.UserIdLabelProvider"
+            name="负责人"
             type="String"
             width="120">
       </column>
