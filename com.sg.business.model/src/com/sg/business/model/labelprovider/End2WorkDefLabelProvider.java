@@ -15,9 +15,9 @@ public class End2WorkDefLabelProvider extends ColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		WorkDefinition end1 = ((WorkDefinitionConnection) element).getEnd1();
-		if (end1 != null)
-			return end1.getLabel();
+		WorkDefinition end2 = ((WorkDefinitionConnection) element).getEnd2();
+		if (end2 != null)
+			return end2.getLabel();
 		return "";
 	}
 }
