@@ -37,7 +37,7 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 				ids[i] = orglist.get(i).get_id();
 			}
 			BasicDBObject condition = new BasicDBObject();
-			condition.put(Project.FUNCTION_ORGANIZATION,
+			condition.put(Project.F_FUNCTION_ORGANIZATION,
 					new BasicDBObject().append("$in", ids));
 			return condition;
 		} catch (Exception e) {

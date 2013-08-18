@@ -38,8 +38,8 @@ public class Organization extends PrimaryObject {
 		return (String) getValue(F_DESCRIPTION);
 	}
 
-	public Boolean isFunctionDepartment() {
-		return (Boolean) getValue(F_IS_FUNCTION_DEPARTMENT);
+	public boolean isFunctionDepartment() {
+		return Boolean.TRUE.equals((Boolean) getValue(F_IS_FUNCTION_DEPARTMENT));
 	}
 
 	// public void handleCreateSubTeam(Object data) {
@@ -63,8 +63,8 @@ public class Organization extends PrimaryObject {
 		return (String) getValue(F_ORGANIZATION_NUMBER);
 	}
 
-	public Boolean isContainer() {
-		return (Boolean) getValue(F_IS_CONTAINER);
+	public boolean isContainer() {
+		return Boolean.TRUE.equals((Boolean) getValue(F_IS_CONTAINER));
 	}
 
 	public String getCostCenterCode() {

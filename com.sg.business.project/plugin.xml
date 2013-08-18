@@ -300,6 +300,7 @@
             dbName="pm2"
             id="project.editor"
             image="image/project_24.png"
+            isDefault="true"
             name="项目">
          <basicpage
                description="项目的基本信息"
@@ -324,7 +325,6 @@
                            type="String">
                      </text>
                      <combo
-                           defaultValue="准备中"
                            editPart="Combo(Read Only)"
                            editable="false"
                            id="status"
@@ -405,7 +405,7 @@
                      label="计划">
                   <dateTime
                         editPart="DateDialog"
-                        editable="true"
+                        editable="false"
                         id="planstart"
                         label="计划开始"
                         labelVisible="true"
@@ -416,7 +416,7 @@
                   </dateTime>
                   <dateTime
                         editPart="DateDialog"
-                        editable="true"
+                        editable="false"
                         id="planfinish"
                         label="计划完成"
                         labelVisible="true"
@@ -448,7 +448,7 @@
                      label="实际">
                   <dateTime
                         editPart="DateDialog"
-                        editable="true"
+                        editable="false"
                         id="actualstart"
                         label="实际开始"
                         labelVisible="true"
@@ -459,7 +459,7 @@
                   </dateTime>
                   <dateTime
                         editPart="DateDialog"
-                        editable="true"
+                        editable="false"
                         id="actualfinish"
                         label="实际完成"
                         labelVisible="true"
@@ -469,7 +469,7 @@
                         type="Date">
                   </dateTime>
                   <spinner
-                        editable="true"
+                        editable="false"
                         id="actualduration"
                         label="实际工期(天)"
                         labelVisible="true"
@@ -478,7 +478,7 @@
                         required="false">
                   </spinner>
                   <spinner
-                        editable="true"
+                        editable="false"
                         id="actualworks"
                         label="实际工时(小时)"
                         labelVisible="true"
@@ -489,12 +489,19 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               description="请确定项目的以下选项"
+               id="project.basicpage.3"
+               pageDelegator="com.sg.business.project.editor.ProjectOptionPage"
+               title="项目选项">
+         </basicpage>
       </editor>
       <editor
             collectionName="project"
             dbName="pm2"
             id="project.editor.wizard"
             image="image/project_72.png"
+            isDefault="false"
             name="项目">
          <basicpage
                description="项目的基本信息"
@@ -503,34 +510,17 @@
             <pagecolumn>
                <section
                      label="项目摘要">
-                  <fieldgroup
-                        columnCount="2"
-                        makeColumnWidthEqual="false">
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
-                           id="projectnumber"
-                           label="项目编号"
-                           labelVisible="true"
-                           name="projectnumber"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                     <combo
-                           defaultValue="准备中"
-                           editPart="Combo(Read Only)"
-                           editable="false"
-                           id="status"
-                           label="状态"
-                           labelVisible="false"
-                           name="status"
-                           option="status"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </combo>
-                  </fieldgroup>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="projectnumber"
+                        label="项目编号"
+                        labelVisible="true"
+                        name="projectnumber"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
@@ -555,19 +545,7 @@
                   </text>
                </section>
                <section
-                     label="项目经理, 部门">
-                  <navigatorSelector
-                        editable="true"
-                        id="chargerid"
-                        label="项目经理"
-                        labelVisible="true"
-                        modelClass="com.sg.business.model.User"
-                        name="chargerid"
-                        navigatorId="organization.user"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
+                     label="项目经理、项目管理部门">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
@@ -575,42 +553,40 @@
                         label="项目经理"
                         labelVisible="true"
                         name="chargerid"
-                        persistable="false"
+                        persistable="true"
                         presentation="com.sg.business.model.field.UserIdFieldPres"
-                        required="true"
+                        required="false"
                         type="String">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
+                  <navigatorSelector
                         id="org_id"
                         label="项目管理部门"
                         labelVisible="true"
+                        modelClass="com.sg.business.model.Organization"
                         name="org_id"
+                        navigatorId="project.managementorg"
+                        navigatorReturnField="_id"
                         persistable="true"
-                        presentation="com.sg.business.model.field.OrgFieldPres"
-                        required="true"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
                         id="launchorg_id"
                         label="项目发起部门"
                         labelVisible="true"
+                        modelClass="com.sg.business.model.Organization"
                         name="launchorg_id"
+                        navigatorId="project.launchorg"
+                        navigatorReturnField="_id"
                         persistable="true"
-                        presentation="com.sg.business.model.field.OrgFieldPres"
-                        required="true"
-                        type="String">
-                  </text>
+                        required="true">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="请输入项目的进度计划"
+               description="请填写项目计划，并选择项目模板"
                id="project.basicpage.2"
-               title="进度计划">
+               title="项目计划和模板">
             <pagecolumn>
                <section
                      label="计划">
@@ -637,9 +613,83 @@
                         type="Date">
                   </dateTime>
                </section>
+               <section
+                     label="项目模板">
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.project.ProjectTemplateOfOrg"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="projecttemplate_id"
+                        isComputeField="true"
+                        label="项目模板"
+                        labelVisible="true"
+                        name="projecttemplate_id"
+                        persistable="true"
+                        required="true"
+                        type="ObjectId">
+                  </combo>
+               </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               description="请确定项目的以下选项"
+               id="project.basicpage.3"
+               pageDelegator="com.sg.business.project.editor.ProjectOptionPage"
+               title="项目选项">
+         </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="project.managementorg"
+            table="project.managementorg">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="project.launchorg"
+            table="project.launchorg">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.project.PMOrgOfPM"
+            id="project.managementorg"
+            markupEnabled="true">
+         <column
+               columnDefinitionId="organization.desc.html">
+         </column>
+      </table>
+      <table
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.project.LaunchOrgOfPM"
+            id="project.launchorg"
+            markupEnabled="true">
+         <column
+               columnDefinitionId="organization.desc.html">
+         </column>
+      </table>
    </extension>
 
 </plugin>
