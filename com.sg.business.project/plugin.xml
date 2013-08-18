@@ -98,6 +98,10 @@
                   columnDefinitionId="actualworks">
             </column>
          </searchAction>
+         <createEditor
+               createHandler="com.sg.business.project.editor.CreateProject"
+               editorId="project.editor.wizard">
+         </createEditor>
       </navigator>
       <navigator
             id="project.navigator.management"
@@ -304,9 +308,10 @@
                title="基本">
             <pagecolumn>
                <section
-                     label="基本信息">
+                     label="项目摘要">
                   <fieldgroup
-                        columnCount="2">
+                        columnCount="2"
+                        makeColumnWidthEqual="false">
                      <text
                            editPart="Text(Single Line)"
                            editable="true"
@@ -318,17 +323,19 @@
                            required="false"
                            type="String">
                      </text>
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
+                     <combo
+                           defaultValue="准备中"
+                           editPart="Combo(Read Only)"
+                           editable="false"
                            id="status"
                            label="状态"
-                           labelVisible="true"
+                           labelVisible="false"
                            name="status"
+                           option="status"
                            persistable="true"
                            required="false"
                            type="String">
-                     </text>
+                     </combo>
                   </fieldgroup>
                   <text
                         editPart="Text(Single Line)"
@@ -342,19 +349,6 @@
                         type="String">
                   </text>
                   <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="charger"
-                        isComputeField="false"
-                        label="项目经理"
-                        labelVisible="true"
-                        name="charger"
-                        persistable="false"
-                        presentation="com.sg.business.model.field.UserIdFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
@@ -362,6 +356,45 @@
                         labelVisible="true"
                         name="description"
                         persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="项目经理, 部门">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="chargerid"
+                        label="项目经理"
+                        labelVisible="true"
+                        name="chargerid"
+                        persistable="false"
+                        presentation="com.sg.business.model.field.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="org_id"
+                        label="项目管理部门"
+                        labelVisible="true"
+                        name="org_id"
+                        persistable="true"
+                        presentation="com.sg.business.model.field.OrgFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="launchorg_id"
+                        label="项目发起部门"
+                        labelVisible="true"
+                        name="launchorg_id"
+                        persistable="true"
+                        presentation="com.sg.business.model.field.OrgFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -453,6 +486,156 @@
                         persistable="true"
                         required="false">
                   </spinner>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="project.editor.wizard"
+            image="image/project_72.png"
+            name="项目">
+         <basicpage
+               description="项目的基本信息"
+               id="project.basicpage.1"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="项目摘要">
+                  <fieldgroup
+                        columnCount="2"
+                        makeColumnWidthEqual="false">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="projectnumber"
+                           label="项目编号"
+                           labelVisible="true"
+                           name="projectnumber"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <combo
+                           defaultValue="准备中"
+                           editPart="Combo(Read Only)"
+                           editable="false"
+                           id="status"
+                           label="状态"
+                           labelVisible="false"
+                           name="status"
+                           option="status"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="项目名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="描述"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="项目经理, 部门">
+                  <navigatorSelector
+                        editable="true"
+                        id="chargerid"
+                        label="项目经理"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.User"
+                        name="chargerid"
+                        navigatorId="organization.user"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="chargerid"
+                        label="项目经理"
+                        labelVisible="true"
+                        name="chargerid"
+                        persistable="false"
+                        presentation="com.sg.business.model.field.UserIdFieldPres"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="org_id"
+                        label="项目管理部门"
+                        labelVisible="true"
+                        name="org_id"
+                        persistable="true"
+                        presentation="com.sg.business.model.field.OrgFieldPres"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="launchorg_id"
+                        label="项目发起部门"
+                        labelVisible="true"
+                        name="launchorg_id"
+                        persistable="true"
+                        presentation="com.sg.business.model.field.OrgFieldPres"
+                        required="true"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="请输入项目的进度计划"
+               id="project.basicpage.2"
+               title="进度计划">
+            <pagecolumn>
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
                </section>
             </pagecolumn>
          </basicpage>

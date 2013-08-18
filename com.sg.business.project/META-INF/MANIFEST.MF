@@ -10,6 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui,
  com.sg.widgets;bundle-version="1.0.0",
  com.sg.thirdparty,
- com.sg.business.model;bundle-version="1.0.0"
+ com.sg.business.model;bundle-version="1.0.0",
+ com.mobnut.db;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

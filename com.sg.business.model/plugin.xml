@@ -79,6 +79,24 @@
                value="s">
          </option>
       </option>
+      <option
+            id="status">
+         <option
+               id="准备中">
+         </option>
+         <option
+               id="进行中">
+         </option>
+         <option
+               id="已暂停">
+         </option>
+         <option
+               id="已完成">
+         </option>
+         <option
+               id="已取消">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.mobnut.db.documentModelAdapter">
