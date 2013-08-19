@@ -18,39 +18,51 @@ import com.mongodb.DBObject;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * <p>
+ * 工作定义
+ * <p/>
+ * 工作定义包括三个类别：项目工作定义，通用工作定义，独立工作定义 <br/>
+ * 工作定义用于描述项目模板中的工作分解结构
+ * 
+ * @author zhong hua
+ * 
+ */
 public class WorkDefinition extends AbstractOptionFilterable {
 
-
 	/**
-	 * 通用工作定义
+	 * 通用工作定义,用于设置{@link #F_WORK_TYPE}的值
 	 */
 	public static final int WORK_TYPE_GENERIC = 0;
 
 	/**
-	 * 独立工作定义
+	 * 独立工作定义,用于设置{@link #F_WORK_TYPE}的值
 	 */
 	public static final int WORK_TYPE_STANDLONE = 1;
 
 	/**
-	 * 项目模板工作定义
+	 * 项目模板工作定义,用于设置{@link #F_WORK_TYPE}的值
 	 */
 	public static final int WORK_TYPE_PROJECT = 2;
 
 	/**
-	 * 工作定义的类型， 可以使用
-	 * <p>
+	 * 工作定义的类型， 可以使用 <br/>
 	 * {@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE},
 	 * {@link #WORK_TYPE_PROJECT}
 	 */
 	public static final String F_WORK_TYPE = "worktype";
 
 	/**
-	 * 项目模板工作定义和交付物定义
+	 * 项目模板id
+	 * 
+	 * @see #ProjectTemplate
 	 */
 	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
 
 	/**
-	 * 只用于通用工作定义和独立工作定义
+	 * 只用于通用工作定义和独立工作定义,保存组织的_id字段值
+	 * 
+	 * @see #Orgainzation
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
@@ -74,7 +86,6 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 */
 	public static final String F_PARTICIPATE_ROLE_SET = "participate_roled_set";
 
-	
 	/**
 	 * 工作定义的同层序号
 	 */
@@ -84,8 +95,8 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 * 通用工作定义的编辑器Id
 	 */
 	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition.1";
-	
-	public static final String EDITOR_GENERIC_WORK_ROOT =  "editor.genericWorkDefinition";
+
+	public static final String EDITOR_GENERIC_WORK_ROOT = "editor.genericWorkDefinition";
 
 	/**
 	 * 独立工作定义的编辑器Id
@@ -105,12 +116,16 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	public static final String F_WF_CHANGE = "wf_change";
 
-
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
 	}
 
+	/**
+	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
+	 * 
+	 * @return
+	 */
 	public int getWorkDefinitionType() {
 		Object value = getValue(F_WORK_TYPE);
 		Assert.isTrue(value instanceof Integer);
@@ -118,9 +133,13 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	}
 
 	/**
-	 * 构造子工作定义对象
+	 * 构造子工作定义对象，包括以下的处理：<br/>
+	 * <li>将自己的{@link #F__ID}设置为创建的子工作定义的{@link #F_PARENT_ID}</li> <li>将自己的
+	 * {@link #F_ROOT_ID},设置为创建的子工作定义的{@link #F_ROOT_ID}</li> <li>
+	 * 对于通用工作定义和独立工作定义，在构造对象时将保存其上一级的{@link #F_ORGANIZATION_ID}字段的值</li> <li>
+	 * 对于项目工作定义，在构造时保存上一级的{@link #F_PROJECT_TEMPLATE_ID}字段的值</li>
 	 * 
-	 * @return
+	 * @return 未保存的{@link #WorkDefinition}, 用于编辑器使用
 	 */
 	public WorkDefinition makeChildWorkDefinition() {
 		DBObject data = new BasicDBObject();
@@ -133,11 +152,13 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		// 针对不同类型的工作定义的预处理
 		int type = getWorkDefinitionType();
 		switch (type) {
-		case WORK_TYPE_GENERIC:// 通用工作定义和独立工作定义需要设定组织Id
+		// 通用工作定义和独立工作定义需要设定组织Id
+		case WORK_TYPE_GENERIC:
 		case WORK_TYPE_STANDLONE:
 			data.put(F_ORGANIZATION_ID, getValue(F_ORGANIZATION_ID));
 			break;
-		case WORK_TYPE_PROJECT:// 项目工作定义需要设定项目模板Id
+		// 项目工作定义需要设定项目模板Id
+		case WORK_TYPE_PROJECT:
 			data.put(F_PROJECT_TEMPLATE_ID, getValue(F_PROJECT_TEMPLATE_ID));
 
 			break;
@@ -591,8 +612,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 					|| WORK_TYPE_STANDLONE == getWorkDefinitionType()) {
 				for (int i = 0; i < list.size(); i++) {
 					DBObject data = (DBObject) list.get(i);
-					Role po = ModelService.createModelObject(data,
-							Role.class);
+					Role po = ModelService.createModelObject(data, Role.class);
 					result.add(po);
 				}
 			}

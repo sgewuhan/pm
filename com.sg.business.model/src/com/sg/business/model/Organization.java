@@ -18,6 +18,11 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * 
+ * @author zhong hua
+ *#Organization
+ */
 public class Organization extends PrimaryObject {
 
 	public static final String F_ORGANIZATION_NUMBER = "organizationnumber";
