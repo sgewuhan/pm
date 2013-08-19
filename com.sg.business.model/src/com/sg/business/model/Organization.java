@@ -93,7 +93,7 @@ public class Organization extends PrimaryObject {
 	// }
 
 	/**
-	 * 返回组织的上级组织。see {@link #F_PARENT_ID}
+	 * 返回组织的上级组织的id。see {@link #F_PARENT_ID}
 	 * @return ObjectId
 	 */
 	public ObjectId getParent_id() {
@@ -192,7 +192,7 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 添加用户到组织中
 	 * @param userIdList
-	 *            ,用户ID
+	 *            ,用户_id数组
 	 */
 	public void doAddMembers(ObjectId[] userIdList) {
 		//获取用户表
