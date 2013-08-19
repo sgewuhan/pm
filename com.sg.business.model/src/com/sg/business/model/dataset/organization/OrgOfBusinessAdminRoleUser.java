@@ -13,15 +13,27 @@ import com.sg.business.model.Role;
 import com.sg.business.model.User;
 
 /**
+ * <p>
  * 获得当前用户的可以管理的组织
+ * <p/>
+ * <br/>
+ * 继承于 {@link com.mobnut.db.model.DataSetFactory}
  * 
- * @author Administrator
+ * @author yangjun
  * 
  */
 public class OrgOfBusinessAdminRoleUser extends DataSetFactory {
-
+	
+	/**
+	 * 当前用户可访问的组织集合数
+	 */
 	private long count;
 
+	/**
+	 * 获取当前用户可访问的组织
+	 * @param ds : 组织数据集
+	 * @return 实例化的{@link com.sg.business.model.Organization}集合
+	 */
 	@Override
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 		
@@ -29,8 +41,10 @@ public class OrgOfBusinessAdminRoleUser extends DataSetFactory {
 		ObjectId useroid = UserSessionContext.getSession().getUserOId();
 		User currentUser = ModelService.createModelObject(User.class, useroid);
 		
+		//获得用户具有业务管理员(组织角色)的组织
 		List<PrimaryObject> orgs = currentUser.getRoleGrantedOrganization(Role.ROLE_BUSINESS_ADMIN_ID);
 
+		//获取当前用户可访问的组织集合数
 		count = orgs.size();
 		return orgs;
 	}
