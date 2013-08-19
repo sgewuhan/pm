@@ -15,34 +15,79 @@ import com.sg.business.resource.BusinessResource;
  */
 public class WorkDefinitionConnection extends PrimaryObject {
 
+	/**
+	 * 前置节点
+	 */
 	public static final String F_END1_ID = "end1_id";
 
+	/**
+	 * 后置节点
+	 */
 	public static final String F_END2_ID = "end2_id";
 
+	/**
+	 * 链接类型
+	 */
 	public static final String F_CONNECTIONTYPE = "connectiontype";
 
+	/**
+	 * 间隔
+	 */
 	public static final String F_INTERVAL = "interval";
 
+	/**
+	 * 操作
+	 */
 	public static final String F_OPERATOR = "operator";
 
+	/**
+	 * 时间单位
+	 */
 	public static final String F_UNIT = "unit";
 
+	/**
+	 * 类型，前置任务完成，后置任务完成
+	 */
 	public static final String TYPE_FF = "FF";
 
+	/**
+	 * 类型，前置任务完成，后置任务开始
+	 */
 	public static final String TYPE_FS = "FS";
 
+	/**
+	 * 类型，前置任务开始，后置任务开始
+	 */
 	public static final String TYPE_SS = "SS";
 
+	/**
+	 * 类型，前置任务开始，后置任务结束
+	 */
 	public static final String TYPE_SF = "SF";
 
+	/**
+	 * 时间单位，一周
+	 */
 	public static final int UNIT_WEEK = 7 * 24 * 60 * 60 * 1000;
 
+	/**
+	 * 时间单位，一天
+	 */
 	public static final int UNIT_DAY = 24 * 60 * 60 * 1000;
 
+	/**
+	 * 时间单位，一小时
+	 */
 	public static final int UNIT_HOUR = 60 * 60 * 1000;
 
+	/**
+	 * 时间单位，一分钟
+	 */
 	public static final int UNIT_MINUTE = 60 * 1000;
 
+	/**
+	 * 单位时间，一秒
+	 */
 	public static final int UNIT_SECOND = 1000;
 
 	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
