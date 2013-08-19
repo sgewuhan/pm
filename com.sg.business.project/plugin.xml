@@ -62,6 +62,11 @@
             <column
                   columnDefinitionId="actualworks">
             </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
          </filterAction>
          <searchAction>
             <column
@@ -96,6 +101,11 @@
             </column>
             <column
                   columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
             </column>
          </searchAction>
          <createEditor
@@ -141,6 +151,11 @@
             <column
                   columnDefinitionId="actualworks">
             </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
          </filterAction>
          <searchAction>
             <column
@@ -176,6 +191,11 @@
             <column
                   columnDefinitionId="actualworks">
             </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
          </searchAction>
       </navigator>
    </extension>
@@ -197,7 +217,7 @@
                columnDefinitionId="project.desc">
          </column>
          <column
-               columnDefinitionId="charger">
+               columnDefinitionId="chargerid">
          </column>
          <column
                columnDefinitionId="project.status">
@@ -234,6 +254,16 @@
             </column>
             <column
                   columnDefinitionId="actualworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="组织">
+            <column
+                  columnDefinitionId="project.org_id">
+            </column>
+            <column
+                  columnDefinitionId="project.launchorg_id">
             </column>
          </columnGroup>
       </table>
@@ -252,7 +282,7 @@
                columnDefinitionId="project.desc">
          </column>
          <column
-               columnDefinitionId="charger">
+               columnDefinitionId="chargerid">
          </column>
          <column
                columnDefinitionId="project.status">
@@ -289,6 +319,16 @@
             </column>
             <column
                   columnDefinitionId="actualworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="组织">
+            <column
+                  columnDefinitionId="project.org_id">
+            </column>
+            <column
+                  columnDefinitionId="project.launchorg_id">
             </column>
          </columnGroup>
       </table>
@@ -512,14 +552,18 @@
                      label="项目摘要">
                   <text
                         editPart="Text(Single Line)"
-                        editable="true"
+                        editable="false"
                         id="projectnumber"
                         label="项目编号"
                         labelVisible="true"
                         name="projectnumber"
                         persistable="true"
                         required="false"
+                        textMessage="&lt;自动编号&gt;"
                         type="String">
+                     <extendValueDefinition
+                           type="com.sg.business.model.numbering.ProjectNumber">
+                     </extendValueDefinition>
                   </text>
                   <text
                         editPart="Text(Single Line)"

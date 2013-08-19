@@ -668,13 +668,39 @@
             width="72">
       </column>
       <column
-            column="charger"
-            id="charger"
+            column="chargerid"
+            id="chargerid"
             labelProvider="com.sg.business.model.labelprovider.UserIdLabelProvider"
             name="负责人"
             type="String"
             width="120">
       </column>
+      <column
+            column="org_id"
+            id="project.org_id"
+            labelProvider="com.sg.business.model.labelprovider.OrgLabelProvidder"
+            name="职能组织"
+            type="String"
+            width="160">
+      </column>
+      <column
+            column="launchorg_id"
+            id="project.launchorg_id"
+            labelProvider="com.sg.business.model.labelprovider.OrgLabelProvidder"
+            name="发起组织"
+            type="String"
+            width="160">
+      </column>
+   </extension>
+   <extension
+         point="com.mobnut.admin.seq">
+      <seq
+            collectionname="ids"
+            dbname="pm2"
+            id="project.number"
+            name="项目编号"
+            seqname="projectnumber">
+      </seq>
    </extension>
 
 </plugin>
