@@ -12,17 +12,28 @@ import com.sg.business.model.User;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
 /**
+ * <p>
  * 获得项目经理所在的项目管理部门
+ * </p>
+ * 继承于 {@link com.sg.widgets.commons.dataset.MasterDetailDataSetFactory}
  * 
- * @author Administrator
+ * @author yangjun
  * 
  */
 public class LaunchOrgOfPM extends MasterDetailDataSetFactory {
 
+	/**
+	 * 项目经理所在的项目管理部门构造函数
+	 */
 	public LaunchOrgOfPM() {
+		//设置项目经理所在的项目管理部门存在数据库及数据存储表
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);
 	}
 
+	/**
+	 * 获取项目经理所在的项目管理部门集合
+	 * @return 项目经理所在的项目管理部门集合的数据集
+	 */
 	@Override
 	public DataSet getDataSet() {
 		List<PrimaryObject> list = new ArrayList<PrimaryObject>();
@@ -54,6 +65,9 @@ public class LaunchOrgOfPM extends MasterDetailDataSetFactory {
 		}
 	}
 
+	/**
+	 * 设置项目经理所在的项目管理部门的MasterID
+	 */
 	@Override
 	protected String getDetailCollectionKey() {
 		return null;
