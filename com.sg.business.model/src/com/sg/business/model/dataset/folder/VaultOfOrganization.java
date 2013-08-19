@@ -15,15 +15,27 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 
 /**
- * 获得当前用户的可用目录 包括：所属组织的文件夹，负责的项目的文件夹
+ * <p>
+ * 获得当前用户的起始组织以及该组织的下级组织的组织容器 包括：所属组织的文件夹，负责的项目的文件夹
+ * </p>
+ * <br/>
+ * 继承于 {@link com.mobnut.db.model.DataSetFactory}
  * 
- * @author Administrator
+ * @author yangjun
  * 
  */
 public class VaultOfOrganization extends DataSetFactory {
 
+	/**
+	 * 当前用户可访问的组织容器集合数
+	 */
 	private long count;
 
+	/**
+	 * 获取当前用户的起始组织以及该组织的下级组织的组织容器
+	 * @param ds : 组织容器数据集
+	 * @return 实例化的{@link com.sg.business.model.Organization}集合
+	 */
 	@Override
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 		
@@ -35,31 +47,24 @@ public class VaultOfOrganization extends DataSetFactory {
 		Organization org = currentUser.getOrganization();
 		List<PrimaryObject> containers = new ArrayList<PrimaryObject>();
 		
-//		// 添加授予“文档管理员”角色的组织容器
-//		addRoleGrantedOrganizationContainer(currentUser,
-//				Role.ROLE_VAULT_ADMIN_ID,Container.TYPE_ADMIN_GRANTED, containers);
-		
 		// 添加下级的组织容器
 		addSubOrganizationContainer(org, containers);
-		
-//		// 添加授予“文档访问者”角色的组织容器
-//		addRoleGrantedOrganizationContainer(currentUser,
-//				Role.ROLE_VAULT_GUEST_ID,Container.TYPE_GUEST_GRANTED, containers);
 
+		//获取当前用户可访问的组织容器集合数
 		count = containers.size();
 		return containers;
 	}
 
 
 	/**
-	 * 添加下级的组织容器 从起始组织以及该组织的下级组织，如果是容器的组织，添加到orgList中
+	 * 添加下级的组织容器 从起始组织以及该组织的下级组织，如果是容器的组织，添加到OrganizationList中
 	 * 
-	 * @param startOrganization
-	 *            起始组织
-	 * @param containers
+	 * @param startOrganization : 起始组织
+	 * @param containers ： 组织容器集合
 	 */
 	private void addSubOrganizationContainer(Organization startOrganization,
 			List<PrimaryObject> containers) {
+		//判断起始组织以及该组织的下级组织，是否为容器的组织，如果为容器的组织，则添加到OrganizationList中
 		if (Boolean.TRUE.equals(startOrganization.isContainer())) {
 			Container container = Container.adapter(startOrganization,
 					Container.TYPE_OWNER);
