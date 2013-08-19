@@ -8,6 +8,11 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * 工作的前后置关系<p/>
+ * @author zhonghua
+ *
+ */
 public class WorkDefinitionConnection extends PrimaryObject {
 
 	public static final String F_END1_ID = "end1_id";

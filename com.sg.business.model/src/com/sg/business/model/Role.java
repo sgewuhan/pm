@@ -17,6 +17,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * 角色<p/>
+ * 组织中的角色
+ * @author zhonghua
+ *
+ */
 public class Role extends PrimaryObject {
 
 	public static final String F_ORGANIZATION_ID = "organization_id";
@@ -71,22 +77,34 @@ public class Role extends PrimaryObject {
 	public static final String ROLE_PROJECT_GUEST_ID = "P001";
 	public static final String ROLE_PROJECT_GUEST_TEXT = "项目访问者";
 
+	/**
+	 * 系统角色ID
+	 */
 	public static final String[] ROLE_ID_SYSTEM = new String[] { ROLE_ADMIN_ID,
 			ROLE_ORGANIZATION_ADMIN_ID, ROLE_PROJECT_ADMIN_ID,ROLE_BUSINESS_ADMIN_ID,
 			ROLE_PROJECT_GUEST_ID, ROLE_PROJECT_MANAGER_ID, ROLE_VAULT_ADMIN_ID,
 			ROLE_VAULT_GUEST_ID };
 
+	/**
+	 * 系统角色名称
+	 */
 	public static final String[] ROLE_NAME_SYSTEM = new String[] {
 			ROLE_ADMIN_TEXT, ROLE_ORGANIZATION_ADMIN_TEXT,ROLE_BUSINESS_ADMIN_TEXT,
 			ROLE_PROJECT_ADMIN_TEXT, ROLE_PROJECT_GUEST_TEXT,
 			ROLE_PROJECT_MANAGER_TEXT, ROLE_VALUT_ADMIN_TEXT,
 			ROLE_VAULT_GUEST_TEXT };
 
+	/**
+	 * 角色在系统中的的显示内容
+	 */
 	@Override
 	public String getLabel() {
 		return getDesc() + "|" + getRoleNumber();
 	}
 
+	/**
+	 * 角色在系统中的显示图标
+	 */
 	@Override
 	public Image getImage() {
 		if (isSystemRole()) {
@@ -96,10 +114,19 @@ public class Role extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 获取角色所属组织的ID
+	 * @return ObjectId
+	 */
 	public ObjectId getOrganization_id() {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
 
+	/**
+	 * 添加用户到角色中
+	 * @param users
+	 *          ，用户集合
+	 */
 	public void doAssignUsers(List<PrimaryObject> users) {
 		DBCollection roleAssignmentCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_ROLE_ASSIGNMENT);
@@ -121,6 +148,10 @@ public class Role extends PrimaryObject {
 
 	}
 
+	/**
+	 * 删除角色
+	 * @param context
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		// 先删除角色指派
@@ -131,6 +162,10 @@ public class Role extends PrimaryObject {
 		super.doRemove(context);
 	}
 
+	/**
+	 * 获取角色编号
+	 * @return String
+	 */
 	public String getRoleNumber() {
 		return (String) getValue(F_ROLE_NUMBER);
 	}
@@ -138,7 +173,7 @@ public class Role extends PrimaryObject {
 	/**
 	 * 获得角色从属的组织
 	 * 
-	 * @return
+	 * @return  Organization
 	 */
 	public Organization getOrganization() {
 		ObjectId organization_id = getOrganization_id();
@@ -150,6 +185,10 @@ public class Role extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 获取角色类型
+	 * @return
+	 */
 	public String getRoleTypeText() {
 		if (isSystemRole()) {
 			return "系统角色";
@@ -158,6 +197,10 @@ public class Role extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 判断角色是否可以更改
+	 * @param context
+	 */
 	@Override
 	public boolean canEdit(IContext context) {
 		// 系统的角色不可以更改
@@ -167,6 +210,11 @@ public class Role extends PrimaryObject {
 		return super.canEdit(context);
 	}
 
+	/**
+	 * 判断角色是否可以删除
+	 * @param context
+	 * @return boolean
+	 */
 	@Override
 	public boolean canDelete(IContext context) {
 		if (isSystemRole()) {
@@ -175,6 +223,10 @@ public class Role extends PrimaryObject {
 		return super.canDelete(context);
 	}
 
+	/**
+	 * 判断角色是否为系统角色
+	 * @return boolean
+	 */
 	public boolean isSystemRole() {
 		String rn = getRoleNumber();
 		if (Utils.inArray(rn, ROLE_ID_SYSTEM)) {
