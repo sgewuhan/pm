@@ -86,4 +86,7 @@ public interface IModelConstants {
 	 * 项目编号的自动编号序列名称
 	 */
 	public static final String SEQ_PROJECT_NUMBER = "projectnumber";
+	
+	public static final String C_PROJECT_ROLE = "projectrole";
+
 }

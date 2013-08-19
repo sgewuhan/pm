@@ -32,6 +32,15 @@ public class AbstractOptionFilterable extends PrimaryObject {
 	 * 根据模板创建后不添加
 	 */
 	public static final String VALUE_EXCLUDE = "排除";
+	
+	/**
+	 * “标准”选项集的名称
+	 */
+	public static final String OPTIONSET_NAME_STANDARD = "标准";
+	
+	public static final String OPTIONSET_NAME_PRODUCTTYPE = "产品类型";
+
+	public static final String OPTIONSET_NAME_PROJECTTYPE = "项目类型";
 
 	public static final String[] VALUE_SET = new String[] { VALUE_EMPTY,
 			VALUE_MONDARY, VALUE_OPTION, VALUE_EXCLUDE };

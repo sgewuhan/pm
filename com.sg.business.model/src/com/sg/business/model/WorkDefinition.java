@@ -28,7 +28,7 @@ import com.sg.business.resource.BusinessResource;
  * @author zhong hua
  * 
  */
-public class WorkDefinition extends AbstractOptionFilterable {
+public class WorkDefinition extends AbstractOptionFilterable implements IWorkCloneFields{
 
 	/**
 	 * 通用工作定义,用于设置{@link #F_WORK_TYPE}的值
@@ -76,20 +76,6 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 */
 	public static final String F_ACTIVATED = "activated";
 
-	/**
-	 * 工作定义的负责角色定义，{@link RoleDefinition},保存了角色定义的Id
-	 */
-	public static final String F_CHARGER_ROLE_ID = "charger_roled_id";
-
-	/**
-	 * 承担者角色定义
-	 */
-	public static final String F_PARTICIPATE_ROLE_SET = "participate_roled_set";
-
-	/**
-	 * 工作定义的同层序号
-	 */
-	public static final String F_SEQ = "seq";
 
 	/**
 	 * 通用工作定义的编辑器Id
@@ -111,10 +97,6 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
 
 	public static final String F_ROOT_ID = "root_id";
-
-	public static final String F_WF_EXECUTE = "wf_execute";
-
-	public static final String F_WF_CHANGE = "wf_change";
 
 	@Override
 	public Image getImage() {

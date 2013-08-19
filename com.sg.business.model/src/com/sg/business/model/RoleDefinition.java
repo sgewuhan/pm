@@ -61,9 +61,13 @@ public class RoleDefinition extends PrimaryObject {
 	 * @return
 	 */
 	public Role getOrganizationRole() {
-		ObjectId id = (ObjectId) getValue(F_ORGANIZATION_ROLE_ID);
+		ObjectId id = getOrganizationRoleId();
 		Assert.isNotNull(id);
 		return ModelService.createModelObject(Role.class, id);
+	}
+
+	public ObjectId getOrganizationRoleId() {
+		return (ObjectId) getValue(F_ORGANIZATION_ROLE_ID);
 	}
 
 	/**
@@ -87,4 +91,5 @@ public class RoleDefinition extends PrimaryObject {
 	public String getRoleNumber() {
 		return (String) getValue(F_ROLE_NUMBER);
 	}
+
 }
