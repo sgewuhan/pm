@@ -10,6 +10,7 @@ public class DocumentOfFolder extends MasterDetailDataSetFactory {
 		super(IModelConstants.DB, IModelConstants.C_DOCUMENT);
 	}
 
+	
 	@Override
 	protected String getDetailCollectionKey() {
 		return Document.F_FOLDER_ID;
