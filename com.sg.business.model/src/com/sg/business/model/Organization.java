@@ -19,30 +19,62 @@ import com.mongodb.WriteResult;
 import com.sg.business.resource.BusinessResource;
 
 /**
+ * 组织<p/>
  * 
+ * 组织为公司的组织结构<br>
+ * 组织下面有组织角色和用户<br>
  * @author zhong hua
  *#Organization
  */
 public class Organization extends PrimaryObject {
 
+	/**
+	 * 组织编号
+	 */
 	public static final String F_ORGANIZATION_NUMBER = "organizationnumber";
 
+	/**
+	 * 组织说明
+	 */
 	public static final String F_DESCRIPTION = "description";
 
+	/**
+	 * 组织的上级组织
+	 */
 	public static final String F_PARENT_ID = "parent_id";
 
+	/**
+	 * 组织是否具有项目管理职能,具有项目管理职能的组织可以为项目的归口组织
+	 */
 	public static final String F_IS_FUNCTION_DEPARTMENT = "isfunctiondepartment";
 
+	/**
+	 * 组织是否可以为文档库
+	 */
 	public static final String F_IS_CONTAINER = "iscontainer";
 
+	/**
+	 * 组织的成本中心代码，	成本中心代码为SAP系统中的成本中心代码
+	 */
 	public static final String F_COST_CENTER_CODE = "costcentercode";
 
+	/**
+	 * 组织类型，组织类型分为法人，事业部，部门和团队
+	 */
 	public static final String F_ORGANIZATION_TYPE = "organizationtype";
 
+	/**
+	 * 返回组织的说明. see {@link #F_DESCRIPTION}
+	 * @return String
+	 */
 	public String getDescription() {
 		return (String) getValue(F_DESCRIPTION);
 	}
 
+	/**
+	 * 判断组织是否具有项目管理职能。see {@link #F_IS_FUNCTION_DEPARTMENT}
+	 * @return boolean
+	 */
 	public boolean isFunctionDepartment() {
 		return Boolean.TRUE.equals((Boolean) getValue(F_IS_FUNCTION_DEPARTMENT));
 	}
@@ -60,31 +92,59 @@ public class Organization extends PrimaryObject {
 	// return null;
 	// }
 
+	/**
+	 * 返回组织的上级组织。see {@link #F_PARENT_ID}
+	 * @return ObjectId
+	 */
 	public ObjectId getParent_id() {
 		return (ObjectId) getValue(F_PARENT_ID);
 	}
 
+	/**
+	 * 返回组织的编号。see {@link #F_ORGANIZATION_NUMBER}
+	 * @return String
+	 */
 	public String getOrganizationNumber() {
 		return (String) getValue(F_ORGANIZATION_NUMBER);
 	}
 
+	/**
+	 * 判断组织是否具有文档容器职能。see {@link #F_IS_CONTAINER}
+	 * @return boolean
+	 */
 	public boolean isContainer() {
 		return Boolean.TRUE.equals((Boolean) getValue(F_IS_CONTAINER));
 	}
 
+	/**
+	 * 获取组织的成本中心代码。see {@link #F_COST_CENTER_CODE}
+	 * @return String
+	 */
 	public String getCostCenterCode() {
 		return (String) getValue(F_COST_CENTER_CODE);
 	}
 
+	/**
+	 * 获取组织的类型。see {@link #F_ORGANIZATION_TYPE}
+	 * @return String
+	 */
 	public String getOrganizationType() {
 		return (String) getValue(F_ORGANIZATION_TYPE);
 	}
 
+	/**
+	 * 返回组织在系统中的显示内容
+	 * @return String
+	 */
 	@Override
 	public String getLabel() {
 		return getDesc() + "|" + getOrganizationNumber();
 	}
 
+	/**
+	 * 返回组织在系统中的显示内容的格式
+	 * @return String
+	 */
 	@Override
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
@@ -102,6 +162,10 @@ public class Organization extends PrimaryObject {
 		return sb.toString();
 	}
 
+	/**
+	 * 返回组织在系统中的显示图标地址
+	 * @return String
+	 */
 	public String getImageURL() {
 		if (getValue(F_PARENT_ID) == null) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_ORG_24,
@@ -112,6 +176,10 @@ public class Organization extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 返回组织在系统中的显示图标地址
+	 * @return String
+	 */
 	@Override
 	public Image getImage() {
 		if (getValue(F_PARENT_ID) == null) {
@@ -121,9 +189,16 @@ public class Organization extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 添加用户到组织中
+	 * @param userIdList
+	 *            ,用户ID
+	 */
 	public void doAddMembers(ObjectId[] userIdList) {
+		//获取用户表
 		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
+		//更新用户表，关联至组织
 		userCol.update(
 				new BasicDBObject().append(User.F__ID,
 						new BasicDBObject().append("$in", userIdList)),
@@ -134,6 +209,11 @@ public class Organization extends PrimaryObject {
 								getDesc())), false, true);
 	}
 
+	/**
+	 * 根据用户对象，添加用户到组织中
+	 * @param userDatas 
+	 *            ,用户对象集合
+	 */
 	public void doAddMembers(List<PrimaryObject> userDatas) {
 		ObjectId[] userIdList = new ObjectId[userDatas.size()];
 		for (int i = 0; i < userDatas.size(); i++) {
@@ -146,6 +226,11 @@ public class Organization extends PrimaryObject {
 		doAddMembers(userIdList);
 	}
 
+	/**
+	 * 删除组织
+	 * @param context
+	 *           ,上下文
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		// 删除本组织的角色
@@ -164,7 +249,7 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 获取组织的上级组织
 	 * 
-	 * @return
+	 * @return PrimaryObject
 	 */
 	public PrimaryObject getParentOrganization() {
 		ObjectId organization_id = getParent_id();
@@ -179,7 +264,7 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 获取下级组织
 	 * 
-	 * @return
+	 * @return List
 	 */
 	public List<PrimaryObject> getChildrenOrganization() {
 		return getRelationById(F__ID, F_PARENT_ID, Organization.class);
@@ -188,7 +273,7 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 获取组织下的所有角色
 	 * 
-	 * @return
+	 * @return List
 	 */
 	public List<PrimaryObject> getRoles() {
 		return getRelationById(F__ID, Role.F_ORGANIZATION_ID, Role.class);
@@ -197,7 +282,7 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 获取当前组织的所有系统角色
 	 * 
-	 * @return
+	 * @return List
 	 */
 	public List<PrimaryObject> getSystemRoles() {
 		DBObject condition = new BasicDBObject();
@@ -211,8 +296,8 @@ public class Organization extends PrimaryObject {
 	 * 检查组织下是否包含某个角色
 	 * 
 	 * @param roleNumber
-	 *            , 角色编号
-	 * @return
+	 *            ,角色编号
+	 * @return boolean
 	 */
 	public boolean hasRole(String roleNumber) {
 		return getRelationCountByCondition(Role.class,
@@ -227,7 +312,7 @@ public class Organization extends PrimaryObject {
 	 *            , 角色编号
 	 * @param roleName
 	 *            , 角色名称
-	 * @return
+	 * @return Role
 	 */
 	public Role doAddRole(String roleNumber, String roleName) {
 		DBCollection roleCollection = DBActivator.getCollection(
@@ -247,7 +332,7 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 获得当前组织的路径
 	 * 
-	 * @return
+	 * @return String
 	 */
 	public String getPath() {
 		PrimaryObject parent = getParentOrganization();
@@ -262,7 +347,8 @@ public class Organization extends PrimaryObject {
 	 * 判断当前组织是否是某个组织的上级组织
 	 * 
 	 * @param organization
-	 * @return
+	 *              ,组织
+	 * @return boolean
 	 */
 	public boolean isSuperOf(Organization organization) {
 		Organization parent = (Organization) organization
@@ -276,6 +362,12 @@ public class Organization extends PrimaryObject {
 		return false;
 	}
 
+	/**
+	 * 新建通用工作定义
+	 * @param po
+	 *         ,通用工作定义
+	 * @return WorkDefinition
+	 */
 	public WorkDefinition makeGenericWorkDefinition(WorkDefinition po) {
 		if(po == null){
 			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
@@ -286,6 +378,12 @@ public class Organization extends PrimaryObject {
 		return po;
 	}
 
+	/**
+	 * 新建项目模板
+	 * @param po
+	 *         ,项目模板
+	 * @return ProjectTemplate
+	 */
 	public ProjectTemplate makeProjectTemplate(ProjectTemplate po) {
 		if(po == null){
 			po = ModelService.createModelObject(new BasicDBObject(), ProjectTemplate.class);
@@ -295,6 +393,12 @@ public class Organization extends PrimaryObject {
 		return po;
 	}
 
+	/**
+	 * 新建标准工作定义
+	 * @param po
+	 *         ,工作定义
+	 * @return
+	 */
 	public WorkDefinition makeStandardWorkDefinition(WorkDefinition po) {
 		if(po == null){
 			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
@@ -307,6 +411,12 @@ public class Organization extends PrimaryObject {
 	}
 	
 
+	/**
+	 * 新建文档模板
+	 * @param po
+	 *        ,文档定义
+	 * @return
+	 */
 	public DocumentDefinition makeDocumentDefinition(DocumentDefinition po) {
 		if(po == null){
 			po = ModelService.createModelObject(new BasicDBObject(), DocumentDefinition.class);
@@ -315,6 +425,12 @@ public class Organization extends PrimaryObject {
 		return po;
 	}
 
+	/**
+	 * 新建子组织
+	 * @param po
+	 *        ,组织
+	 * @return Organization
+	 */
 	public Organization makeChildOrganization(Organization po) {
 		if(po == null){
 			po = ModelService.createModelObject(new BasicDBObject(), Organization.class);
@@ -323,6 +439,12 @@ public class Organization extends PrimaryObject {
 		return po;
 	}
 
+	/**
+	 * 新建角色
+	 * @param po
+	 *        ,角色
+	 * @return  ,Role
+	 */
 	public Role makeRole(Role po) {
 		if(po == null){
 			po = ModelService.createModelObject(new BasicDBObject(), Role.class);
@@ -334,7 +456,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 获取本级以及下级所有的角色
-	 * @return
+	 * @return List
 	 */
 	public List<PrimaryObject> getRolesIteration() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
@@ -343,9 +465,11 @@ public class Organization extends PrimaryObject {
 	}
 
 	/**
-	 * 
+	 * 查询组织和子组织中所有角色
 	 * @param org
+	 *          ,组织
 	 * @param dataItems
+	 *          ,组织下的所有角色
 	 */
 	private void iterateSearchRolesRoles(Organization org, List<PrimaryObject> dataItems) {
 		dataItems.addAll(org.getRoles());

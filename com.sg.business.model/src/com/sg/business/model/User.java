@@ -16,24 +16,54 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * 用户<p/>
+ * 用户为公司职员，归属于组织
+ * @author zhonghua
+ *
+ */
 public class User extends PrimaryObject {
 
+	/**
+	 * 用户邮箱
+	 */
 	public static final String F_EMAIL = "email";
 
+	/**
+	 * 用户ID
+	 */
 	public static final String F_USER_ID = "userid";
 
+	/**
+	 * 用户名称
+	 */
 	public static final String F_USER_NAME = "username";
 
 	public static final String F_NICK = "nick";
 
 	public static final String F_HEADPIC = "headpic";
 
+	/**
+	 * 所属组织ＩＤ
+	 * @see #Orgainzation
+	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
-
+	
+	/**
+	 * 所属组织名称
+	 * @see #Orgainzation
+	 */
 	public static final String F_ORGANIZATION_NAME = "organization_name";
 
+	/**
+	 * 委托人
+	 */
 	private static final String F_CONSIGNER = "consigner";
 
+	/**
+	 * 获取组织ID
+	 * @return
+	 */
 	public ObjectId getOrganization_id() {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
@@ -49,7 +79,7 @@ public class User extends PrimaryObject {
 	/**
 	 * 获得用户从属的组织
 	 * 
-	 * @return
+	 * @return Organization
 	 */
 	public Organization getOrganization() {
 		ObjectId organization_id = getOrganization_id();
@@ -112,11 +142,19 @@ public class User extends PrimaryObject {
 		return result;
 	}
 
+	/**
+	 * 用户的显示内容
+	 * @return String
+	 */
 	@Override
 	public String getLabel() {
 		return getUsername() + "|" + getUserid();
 	}
 
+	/**
+	 * 用户的显示图标
+	 * @return Image
+	 */
 	@Override
 	public Image getImage() {
 		if (getValue(F_ORGANIZATION_ID) == null) {
@@ -126,6 +164,9 @@ public class User extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 删除用户
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		if (context != null
@@ -141,6 +182,12 @@ public class User extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 根据ID获取用户
+	 * @param userId
+	 *           用户ID
+	 * @return
+	 */
 	public static User getUserById(String userId) {
 		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
@@ -152,6 +199,7 @@ public class User extends PrimaryObject {
 	/**
 	 * 获得用户具有某角色的组织
 	 * @param roleNumber
+	 *           ,角色编号
 	 * @return
 	 */
 	public List<PrimaryObject> getRoleGrantedOrganization(String roleNumber) {
@@ -185,6 +233,12 @@ public class User extends PrimaryObject {
 		return orgs;
 	}
 
+	/**
+	 * 将用户委托至其他用户
+	 * @param consigner
+	 * @param context
+	 * @throws Exception
+	 */
 	public void doConsignTo(User consigner, IContext context) throws Exception {
 		setValue(F_CONSIGNER, consigner.getUserid());
 		doSave(context);
