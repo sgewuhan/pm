@@ -23,6 +23,16 @@ public class Document extends PrimaryObject {
 
 	public static final String F_VAULT = "vault";
 
+	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty";
+
+	public static final String F_DESCRIPTION = "description";
+
+	public static final String FILE_NAMESPACE = "vault_file";
+
+	public static final String FILE_DB = "pm2";
+
+	public static final String F_PROJECT_ID = "project_id";
+
 	public ObjectId getParent_id() {
 		return (ObjectId) getValue(F_FOLDER_ID);
 	}

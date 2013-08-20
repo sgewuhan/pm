@@ -156,6 +156,7 @@ public class Role extends PrimaryObject {
 	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
+		//需要考虑角色被应用到项目的情况
 		// 先删除角色指派
 		DBCollection raCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ROLE_ASSIGNMENT);

@@ -19,7 +19,7 @@ public class AbstractOptionFilterable extends PrimaryObject {
 	/**
 	 * 根据模板创建后添加，且禁止删除
 	 */
-	public static final String VALUE_MONDARY = "必须";
+	public static final String VALUE_MANDATORY = "必须";
 
 	/**
 	 * 根据模板创建后添加，可以删除
@@ -43,7 +43,7 @@ public class AbstractOptionFilterable extends PrimaryObject {
 	public static final String OPTIONSET_NAME_PROJECTTYPE = "项目类型";
 
 	public static final String[] VALUE_SET = new String[] { VALUE_EMPTY,
-			VALUE_MONDARY, VALUE_OPTION, VALUE_EXCLUDE };
+			VALUE_MANDATORY, VALUE_OPTION, VALUE_EXCLUDE };
 
 	public static final String F_OPTION_FILTERS = "optionFilters";
 

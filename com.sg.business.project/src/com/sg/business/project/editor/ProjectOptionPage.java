@@ -137,7 +137,6 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	@Override
 	public void commit(boolean onSave) {
-		// TODO Auto-generated method stub
 
 	}
 

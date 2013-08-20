@@ -7,23 +7,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
-import com.mobnut.db.DBActivator;
+import com.mobnut.commons.util.file.FileUtil;
+import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
+import com.mongodb.WriteResult;
+import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
-public class Project extends PrimaryObject {
+public class Project extends PrimaryObject implements IProjectTemplateRelative{
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -44,8 +47,6 @@ public class Project extends PrimaryObject {
 	 * 项目发起部门
 	 */
 	public static final String F_LAUNCH_ORGANIZATION = "launchorg_id";
-
-	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
 
 	/**
 	 * 根工作定义
@@ -100,18 +101,40 @@ public class Project extends PrimaryObject {
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		setValue(F__ID, new ObjectId());// 需要预设ID,否则后面的get_id()取出的是空
+		setValue(F__ID, new ObjectId());
+
+		// 创建根工作定义
+
+		Work root = makeWBSRoot();
+
+		setValue(ProjectTemplate.F_WORK_DEFINITON_ID, root.get_id());
+
+		root.doInsert(context);
+		super.doInsert(context);
 
 		// 复制模板
-		doSetupWithTemplate(context);
-		super.doInsert(context);
+		doSetupWithTemplate(root.get_id(), context);
+
+	}
+
+	private Work makeWBSRoot() {
+		BasicDBObject wbsRootData = new BasicDBObject();
+		wbsRootData.put(Work.F_DESC, getDesc());
+		wbsRootData.put(Work.F_PROJECT_ID, get_id());
+		ObjectId wbsRootId = new ObjectId();
+		wbsRootData.put(Work.F__ID, wbsRootId);
+		wbsRootData.put(Work.F_ROOT_ID, wbsRootId);
+		return ModelService.createModelObject(wbsRootData, Work.class);
 	}
 
 	/**
 	 * 
 	 * @param context
+	 * @param wbsRootId
+	 * @throws Exception
 	 */
-	public void doSetupWithTemplate(IContext context) {
+	public void doSetupWithTemplate(ObjectId wbsRootId, IContext context)
+			throws Exception {
 		ObjectId id = getProjectTemplateId();
 		if (id == null) {
 			return;
@@ -121,44 +144,155 @@ public class Project extends PrimaryObject {
 		Map<ObjectId, DBObject> roleMap = doSetupRolesWithTemplate(id, context);
 
 		// 复制工作定义
-		try {
-			doSetupWBSWithTemplate(id, roleMap, context);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Map<ObjectId, DBObject> workMap = doSetupWBSWithTemplate(id, wbsRootId,
+				roleMap, context);
 
-		// 过滤WBS,复制WBS
+		// 复制工作的前后序关系
+		doSetupWorkConnectionWithTemplate(id, workMap, context);
+		
+		//复制预算
+		doSetupBudgetWithTemplate(id,context);
 	}
 
-	private void doSetupWBSWithTemplate(ObjectId projectTemplateId,
+	private void doSetupBudgetWithTemplate(ObjectId projectTemplateId, IContext context) throws Exception {
+		DBCollection col = getCollection(IModelConstants.C_BUDGET_ITEM);
+		DBObject srcdata = col.findOne(new BasicDBObject().append(
+				WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID,
+				projectTemplateId));
+		DBObject tgtData = new BasicDBObject();
+		tgtData.put(ProjectBudget.F_PROJECT_ID, get_id());
+		tgtData.put(ProjectBudget.F_DESC, getDesc());
+		tgtData.put(ProjectBudget.F_DESC_EN, getDesc_e());
+		tgtData.put(ProjectBudget.F_CHILDREN, srcdata.get(BudgetItem.F_CHILDREN));
+		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
+		WriteResult ws = col.insert(tgtData);
+		checkError(ws);
+	}
+
+	private void doSetupWorkConnectionWithTemplate(ObjectId projectTemplateId,
+			Map<ObjectId, DBObject> workMap, IContext context) throws Exception {
+		DBCollection connDefCol = getCollection(IModelConstants.C_WORK_DEFINITION_CONNECTION);
+		DBCursor cur = connDefCol.find(new BasicDBObject().append(
+				WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID,
+				projectTemplateId));
+		List<DBObject> result = new ArrayList<DBObject>();
+		while(cur.hasNext()){
+			DBObject connD = cur.next();
+			ObjectId srcEnd1 = (ObjectId) connD.get(WorkDefinitionConnection.F_END1_ID);
+			DBObject tgtEnd1Data = workMap.get(srcEnd1);
+			ObjectId tgtEnd1 = null;
+			if(tgtEnd1Data!=null){
+				tgtEnd1 = (ObjectId) tgtEnd1Data.get(Work.F__ID);
+			}
+			ObjectId srcEnd2 = (ObjectId) connD.get(WorkDefinitionConnection.F_END2_ID);
+			DBObject tgtEnd2Data = workMap.get(srcEnd2);
+			ObjectId tgtEnd2 = null;
+			if(tgtEnd2Data!=null){
+				tgtEnd2 = (ObjectId) tgtEnd2Data.get(Work.F__ID);
+			}
+			if(tgtEnd1==null||tgtEnd2==null){
+				continue;
+			}
+			
+			BasicDBObject conn = new BasicDBObject();
+			conn.put(WorkConnection.F_PROJECT_ID, get_id());
+			conn.put(WorkConnection.F__EDITOR, WorkConnection.EDITOR);
+			conn.put(WorkConnection.F_CONNECTIONTYPE, connD.get(WorkDefinitionConnection.F_CONNECTIONTYPE));
+			conn.put(WorkConnection.F_INTERVAL, connD.get(WorkDefinitionConnection.F_INTERVAL));
+			conn.put(WorkConnection.F_OPERATOR, connD.get(WorkDefinitionConnection.F_OPERATOR));
+			conn.put(WorkConnection.F_UNIT, connD.get(WorkDefinitionConnection.F_UNIT));
+			conn.put(WorkConnection.F_END1_ID, tgtEnd1);
+			conn.put(WorkConnection.F_END2_ID, tgtEnd2);
+			result.add(conn);
+		}
+		
+		DBCollection col = getCollection(IModelConstants.C_WORK_CONNECTION);
+		WriteResult ws = col.insert(result);
+		checkError(ws);
+	}
+
+	private HashMap<ObjectId, DBObject> doSetupWBSWithTemplate(
+			ObjectId projectTemplateId, ObjectId wbsRootId,
 			Map<ObjectId, DBObject> roleMap, IContext context) throws Exception {
-		// 创建根工作定义
-		BasicDBObject wbsRootData = new BasicDBObject();
-		wbsRootData.put(Work.F_DESC, getDesc());
-		wbsRootData.put(Work.F_PROJECT_ID, get_id());
-		ObjectId wbsRootId = new ObjectId();
-		wbsRootData.put(Work.F__ID, wbsRootId);
-		wbsRootData.put(Work.F_ROOT_ID, wbsRootId);
-		wbsRootData.put(Work.F__CACCOUNT, context.getAccountInfo().getUserId());
-		wbsRootData.put(Work.F__CDATE, new Date());
-		setValue(ProjectTemplate.F_WORK_DEFINITON_ID, wbsRootId);
 
 		// 取出模板的根工作定义的_id
-		DBCollection pjTempCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT_TEMPLATE);
+		DBCollection pjTempCol = getCollection(IModelConstants.C_PROJECT_TEMPLATE);
+
 		DBObject pjTemp = pjTempCol.findOne(new BasicDBObject().append(
 				ProjectTemplate.F__ID, projectTemplateId), new BasicDBObject()
 				.append(ProjectTemplate.F_WORK_DEFINITON_ID, 1));
 		ObjectId rootWorkDefId = (ObjectId) pjTemp
 				.get(ProjectTemplate.F_WORK_DEFINITON_ID);
 
-		ArrayList<DBObject> worksToBeInsert = new ArrayList<DBObject>();
-		worksToBeInsert.add(wbsRootData);
-		ArrayList<DBObject> documentsToBeInsert = new ArrayList<DBObject>();
+		HashMap<ObjectId, DBObject> worksToBeInsert = new HashMap<ObjectId, DBObject>();
 
-		doCopyWBSTemplate(rootWorkDefId, wbsRootId, wbsRootId,get_id(),roleMap, worksToBeInsert,
-				documentsToBeInsert, context);
+		HashMap<ObjectId, DBObject> documentsToBeInsert = new HashMap<ObjectId, DBObject>();
+
+		List<DBObject> deliverableToInsert = new ArrayList<DBObject>();
+
+		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
+
+		copyWBSTemplate(rootWorkDefId, wbsRootId, wbsRootId, get_id(), roleMap,
+				worksToBeInsert, documentsToBeInsert, deliverableToInsert,
+				fileToCopy, context);
+
+		// 保存工作
+		DBCollection workCol = getCollection(IModelConstants.C_WORK);
+		// 清除已有的非根工作定义
+		WriteResult ws = workCol.remove(new BasicDBObject().append(
+				Work.F_PROJECT_ID, get_id()).append(Work.F__ID,
+				new BasicDBObject().append("$ne", wbsRootId)));
+		checkError(ws);
+		ws = workCol.insert(worksToBeInsert.values().toArray(new DBObject[0]),
+				WriteConcern.NORMAL);
+		checkError(ws);
+
+		// 保存文档
+		DBCollection docCol = getCollection(IModelConstants.C_DOCUMENT);
+		ws = docCol.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
+				get_id()));
+		checkError(ws);
+
+		ws = docCol.insert(documentsToBeInsert.values()
+				.toArray(new DBObject[0]), WriteConcern.NORMAL);
+		checkError(ws);
+
+		// 保存交付物
+		DBCollection deliCol = getCollection(IModelConstants.C_DELIEVERABLE);
+		ws = deliCol.remove(new BasicDBObject().append(
+				Delieverable.F_PROJECT_ID, get_id()));
+		checkError(ws);
+
+		ws = deliCol.insert(deliverableToInsert, WriteConcern.NORMAL);
+		checkError(ws);
+
+		// 保存文件
+		for (DBObject[] dbObjects : fileToCopy) {
+			DBObject src = dbObjects[0];
+			DBObject tgt = dbObjects[1];
+
+			String srcDB = (String) src.get(RemoteFile.F_DB);
+			String srcFilename = (String) src.get(RemoteFile.F_FILENAME);
+			String srcNamespace = (String) src.get(RemoteFile.F_NAMESPACE);
+			ObjectId srcID = (ObjectId) src.get(RemoteFile.F_ID);
+
+			String tgtDB = (String) tgt.get(RemoteFile.F_DB);
+			String tgtFilename = (String) tgt.get(RemoteFile.F_FILENAME);
+			String tgtNamespace = (String) tgt.get(RemoteFile.F_NAMESPACE);
+			ObjectId tgtID = (ObjectId) tgt.get(RemoteFile.F_ID);
+
+			FileUtil.copyGridFSFile(srcID, srcDB, srcFilename, srcNamespace,
+					tgtID, tgtDB, tgtFilename, tgtNamespace);
+		}
+
+		return worksToBeInsert;
+	}
+
+	private void checkError(WriteResult ws) throws Exception {
+		String error = ws.getError();
+		if (!Utils.isNullOrEmpty(error)) {
+			throw new Exception(error);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -176,14 +310,42 @@ public class Project extends PrimaryObject {
 		return (List<String>) getValue(F_PROJECT_TYPE_OPTION);
 	}
 
-	private void doCopyWBSTemplate(ObjectId srcParent, ObjectId tgtParentId,ObjectId tgtRootId,ObjectId projectId,
+	/**
+	 * 
+	 * @param srcParent
+	 *            模板工作的Id
+	 * @param tgtParentId
+	 *            项目目标工作的Id
+	 * @param tgtRootId
+	 *            项目目标工作的根Id
+	 * @param projectId
+	 *            项目Id
+	 * @param roleMap
+	 *            角色映射，{模板角色Id:目标角色}
+	 * @param worksToInsert
+	 *            将要插入数据库的工作，添加的工作都需要放置到ArrayList中
+	 * @param documentsToInsert
+	 *            将要插入数据库的文档, {文档模板id:目标文档}
+	 * @param dilerverableToInsert
+	 *            将要插入数据库的交付物关系
+	 * @param fileToCopy
+	 *            需要复制的文件
+	 * @param context
+	 *            操作上下文
+	 */
+	private void copyWBSTemplate(ObjectId srcParent, ObjectId tgtParentId,
+			ObjectId tgtRootId, ObjectId projectId,
 			Map<ObjectId, DBObject> roleMap,
-			ArrayList<DBObject> worksToBeInsert,
-			ArrayList<DBObject> documentsToBeInsert, IContext context) {
+			Map<ObjectId, DBObject> worksToInsert,
+			Map<ObjectId, DBObject> documentsToInsert,
+			List<DBObject> dilerverableToInsert, List<DBObject[]> fileToCopy,
+			IContext context) {
 		// 获得src的子
 		DBCollection workDefCol = getCollection(IModelConstants.C_WORK_DEFINITION);
-		DBCursor cur = workDefCol.find(new BasicDBObject().append(
-				WorkDefinition.F_PARENT_ID, srcParent));
+		DBCursor cur = workDefCol.find(
+				new BasicDBObject().append(WorkDefinition.F_PARENT_ID,
+						srcParent)).sort(new SEQSorter().getBSON());
+		int seq = 0;
 		while (cur.hasNext()) {
 			DBObject workdef = cur.next();
 
@@ -191,23 +353,24 @@ public class Project extends PrimaryObject {
 			String optionValue = checkOptionValueFromTemplate(workdef);
 
 			if (WorkDefinition.VALUE_EXCLUDE.equals(optionValue)) {
-				// 如果是排出的，就需要跳过
+				// 如果是排除的，就需要跳过
 				continue;
 
 			} else {
+				// ************************************************************************
 				// 创建工作
-				BasicDBObject work = new BasicDBObject();
+				DBObject work = new BasicDBObject();
 
 				work.put(Work.F_PROJECT_ID, projectId);
-				
+
 				work.put(Work.F_ROOT_ID, tgtRootId);
-				
+
 				work.put(Work.F_PARENT_ID, tgtParentId);
-				
+
 				work.put(Work.F__ID, new ObjectId());
 
-				if (WorkDefinition.VALUE_MONDARY.equals(optionValue)) {
-					work.put(Work.F_MONDARY, Boolean.TRUE);
+				if (WorkDefinition.VALUE_MANDATORY.equals(optionValue)) {
+					work.put(Work.F_MANDATORY, Boolean.TRUE);
 				}
 
 				// 设置工作的描述字段
@@ -248,10 +411,10 @@ public class Project extends PrimaryObject {
 					work.put(IWorkCloneFields.F_WF_EXECUTE_ACTIVATED, value);
 				}
 
-				//设置执行工作流的活动执行人角色
+				// 设置执行工作流的活动执行人角色
 				setRoleDBObjectField(work, workdef,
 						IWorkCloneFields.F_WF_EXECUTE_ASSIGNMENT, roleMap);
-				
+
 				// 设置负责人角色
 				setRoleField(work, workdef, IWorkCloneFields.F_CHARGER_ROLE_ID,
 						roleMap);
@@ -261,38 +424,170 @@ public class Project extends PrimaryObject {
 						IWorkCloneFields.F_PARTICIPATE_ROLE_SET, roleMap);
 
 				// 设置序号
-				value = workdef.get(IWorkCloneFields.F_SEQ);
-				if (value != null) {
-					work.put(IWorkCloneFields.F_SEQ, value);
-				}
+				work.put(IWorkCloneFields.F_SEQ, new Integer(seq++));
 
 				// 设置标准工时
 				value = workdef.get(IWorkCloneFields.F_STANDARD_WORKS);
 				if (value != null) {
-					work.put(IWorkCloneFields.F_SEQ, value);
+					work.put(IWorkCloneFields.F_STANDARD_WORKS, value);
 				}
 
-				//复制设置项
+				// 复制设置项
 				for (int i = 0; i < IWorkCloneFields.SETTING_FIELDS.length; i++) {
 					value = workdef.get(IWorkCloneFields.SETTING_FIELDS[i]);
 					if (value != null) {
 						work.put(IWorkCloneFields.SETTING_FIELDS[i], value);
 					}
 				}
-				
-				work.put(Work.F__CACCOUNT, context.getAccountInfo().getUserId());
-				
+
+				BasicDBObject accountData = new BasicDBObject().append(
+						"userid", context.getAccountInfo().getUserId()).append(
+						"username", context.getAccountInfo().getUserName());
+				work.put(Work.F__CACCOUNT, accountData);
+
 				work.put(Work.F__CDATE, new Date());
-				
-				//******************************复制工作属性完成
-				worksToBeInsert.add(work);
+
+				// 完成工作属性复制
+				// ************************************************************
+
+				// ************************************************************
+				// 添加工作交付物
+				// 获得模板定义的交付物定义
+				DBCollection deliveryDefCol = getCollection(IModelConstants.C_DELIEVERABLE_DEFINITION);
+				DBCursor deliCur = deliveryDefCol.find(
+						new BasicDBObject().append(
+								DeliverableDefinition.F_WORK_DEFINITION_ID,
+								workdef.get(WorkDefinition.F__ID)),
+						new BasicDBObject().append(
+								DeliverableDefinition.F_DOCUMENT_DEFINITION_ID,
+								1).append(
+								DeliverableDefinition.F_OPTION_FILTERS, 1));
+				while (deliCur.hasNext()) {
+					DBObject delidata = deliCur.next();
+					// 检查交付物是否符合选项过滤条件
+					String documentOptionValue = checkOptionValueFromTemplate(delidata);
+					if (DeliverableDefinition.VALUE_EXCLUDE
+							.equals(documentOptionValue)) {
+						// 如果是排除的，就需要跳过
+						continue;
+					} else {
+						// 根据模板的交付物定义创建交付物关系
+						DBObject deliverableData = new BasicDBObject();
+
+						// 设置项目Id
+						deliverableData.put(Delieverable.F_PROJECT_ID,
+								projectId);
+
+						// 设置工作Id
+						deliverableData.put(Delieverable.F_WORK_ID,
+								work.get(Work.F__ID));
+
+						// 设置是否必须
+						if (DeliverableDefinition.VALUE_MANDATORY
+								.equals(documentOptionValue)) {
+							deliverableData.put(Delieverable.F_MANDATORY,
+									Boolean.TRUE);
+						}
+
+						// 获得文档模板
+						ObjectId documentTemplateId = (ObjectId) delidata
+								.get(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID);
+						// 检查该文档模板是否已经创建了文档
+						DBObject documentData = documentsToInsert
+								.get(documentTemplateId);
+						if (documentData == null) {
+							// 如果没有创建，需要创建该文档
+							documentData = copyDocumentFromTemplate(
+									documentsToInsert, fileToCopy,
+									documentTemplateId, projectId);
+						}
+						documentsToInsert.put(documentTemplateId, documentData);
+						ObjectId documentId = (ObjectId) documentData
+								.get(Document.F__ID);
+						deliverableData.put(Delieverable.F_DOCUMENT_ID,
+								documentId);
+						dilerverableToInsert.add(deliverableData);
+					}
+				}
+
+				worksToInsert.put((ObjectId) workdef.get(WorkDefinition.F__ID),
+						work);
+
+				// 处理子工作
+				copyWBSTemplate((ObjectId) workdef.get(WorkDefinition.F__ID),
+						(ObjectId) work.get(Work.F__ID), tgtRootId, projectId,
+						roleMap, worksToInsert, documentsToInsert,
+						dilerverableToInsert, fileToCopy, context);
 			}
 
 		}
 
 	}
 
-	private void setRoleDBObjectField(BasicDBObject work, DBObject workdef,
+	private DBObject copyDocumentFromTemplate(
+			Map<ObjectId, DBObject> documentsToInsert,
+			List<DBObject[]> fileToCopy, ObjectId documentTemplateId,
+			ObjectId projectId) {
+		DBObject documentData;
+		DBCollection docdCol = getCollection(IModelConstants.C_DOCUMENT_DEFINITION);
+		DBObject documentTemplate = docdCol.findOne(new BasicDBObject().append(
+				Document.F__ID, documentTemplateId));
+		documentData = new BasicDBObject();
+
+		documentData.put(Document.F__ID, new ObjectId());
+
+		documentData.put(Document.F_PROJECT_ID, projectId);
+
+		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
+		if (value != null) {
+			documentData.put(Document.F_DESC, value);
+		}
+
+		value = documentTemplate.get(DocumentDefinition.F_DESC_EN);
+		if (value != null) {
+			documentData.put(Document.F_DESC_EN, value);
+		}
+
+		value = new Boolean(Boolean.TRUE.equals(documentTemplate
+				.get(DocumentDefinition.F_ATTACHMENT_CANNOT_EMPTY)));
+		documentData.put(Document.F_ATTACHMENT_CANNOT_EMPTY, value);
+
+		value = documentTemplate.get(DocumentDefinition.F_DESCRIPTION);
+		if (value != null) {
+			documentData.put(Document.F_DESCRIPTION, value);
+		}
+
+		value = documentTemplate.get(DocumentDefinition.F_DOCUMENT_EDITORID);
+		if (value != null) {
+			documentData.put(Document.F__EDITOR, value);
+		}
+
+		// 根据文档的附件创建文件
+		BasicBSONList templateFiles = (BasicBSONList) documentTemplate
+				.get(DocumentDefinition.F_TEMPLATEFILE);
+		if (templateFiles != null) {
+			BasicBSONList documentFiles = new BasicBSONList();
+			for (int i = 0; i < templateFiles.size(); i++) {
+				DBObject templateFile = (DBObject) templateFiles.get(i);
+				DBObject documentFile = new BasicDBObject();
+				documentFile.put(RemoteFile.F_ID, new ObjectId());
+				documentFile.put(RemoteFile.F_FILENAME,
+						templateFile.get(RemoteFile.F_FILENAME));
+				documentFile.put(RemoteFile.F_NAMESPACE,
+						Document.FILE_NAMESPACE);
+				documentFile.put(RemoteFile.F_DB, Document.FILE_DB);
+				documentFiles.add(documentFile);
+				fileToCopy.add(new DBObject[] { templateFile, documentFile });
+			}
+			documentData.put(Document.F_VAULT, documentFiles);
+		}
+		// 完成文档创建
+		documentsToInsert.put(documentTemplateId, documentData);
+
+		return documentData;
+	}
+
+	private void setRoleDBObjectField(DBObject work, DBObject workdef,
 			String fieldName, Map<ObjectId, DBObject> roleMap) {
 		Object value = workdef.get(fieldName);
 		if (value instanceof DBObject) {
@@ -310,12 +605,12 @@ public class Project extends PrimaryObject {
 		}
 	}
 
-	private void setRoleListField(BasicDBObject work, DBObject workdef,
+	private void setRoleListField(DBObject work, DBObject workdef,
 			String fieldName, Map<ObjectId, DBObject> roleMap) {
 		Object value = workdef.get(fieldName);
-		if (value instanceof BasicDBList) {
-			BasicDBList participates = new BasicDBList();
-			BasicDBList valueList = (BasicDBList) value;
+		if (value instanceof BasicBSONList) {
+			BasicBSONList participates = new BasicBSONList();
+			BasicBSONList valueList = (BasicBSONList) value;
 			for (int i = 0; i < valueList.size(); i++) {
 				DBObject srcRole = (DBObject) valueList.get(i);
 				ObjectId srcRoleId = (ObjectId) srcRole.get(ProjectRole.F__ID);
@@ -331,7 +626,7 @@ public class Project extends PrimaryObject {
 		}
 	}
 
-	private void setRoleField(BasicDBObject work, DBObject workdef,
+	private void setRoleField(DBObject work, DBObject workdef,
 			String roleFieldName, Map<ObjectId, DBObject> roleMap) {
 		ObjectId srcRoleId = (ObjectId) workdef.get(roleFieldName);
 		if (srcRoleId != null) {
@@ -345,11 +640,11 @@ public class Project extends PrimaryObject {
 		}
 	}
 
-	private String checkOptionValueFromTemplate(DBObject workdef) {
-		Object filters = workdef.get(WorkDefinition.F_OPTION_FILTERS);
-		if (filters instanceof BasicDBList) {
+	private String checkOptionValueFromTemplate(DBObject optionHost) {
+		Object filters = optionHost.get(WorkDefinition.F_OPTION_FILTERS);
+		if (filters instanceof BasicBSONList) {
 
-			BasicDBList filtersValue = (BasicDBList) filters;
+			BasicBSONList filtersValue = (BasicBSONList) filters;
 			// 检查标准集
 			List<String> optionValueSet = getStandardSetOptions();
 			if (optionValueSet != null) {
@@ -365,9 +660,9 @@ public class Project extends PrimaryObject {
 						return WorkDefinition.VALUE_EXCLUDE;
 					} else {
 						item.put(WorkDefinition.SF_VALUE,
-								WorkDefinition.VALUE_MONDARY);
+								WorkDefinition.VALUE_MANDATORY);
 						if (filtersValue.contains(item)) {
-							return WorkDefinition.VALUE_MONDARY;
+							return WorkDefinition.VALUE_MANDATORY;
 						}
 					}
 				}
@@ -388,9 +683,9 @@ public class Project extends PrimaryObject {
 						return WorkDefinition.VALUE_EXCLUDE;
 					} else {
 						item.put(WorkDefinition.SF_VALUE,
-								WorkDefinition.VALUE_MONDARY);
+								WorkDefinition.VALUE_MANDATORY);
 						if (filtersValue.contains(item)) {
-							return WorkDefinition.VALUE_MONDARY;
+							return WorkDefinition.VALUE_MANDATORY;
 						}
 					}
 				}
@@ -411,9 +706,9 @@ public class Project extends PrimaryObject {
 						return WorkDefinition.VALUE_EXCLUDE;
 					} else {
 						item.put(WorkDefinition.SF_VALUE,
-								WorkDefinition.VALUE_MONDARY);
+								WorkDefinition.VALUE_MANDATORY);
 						if (filtersValue.contains(item)) {
-							return WorkDefinition.VALUE_MONDARY;
+							return WorkDefinition.VALUE_MANDATORY;
 						}
 					}
 				}
@@ -423,7 +718,7 @@ public class Project extends PrimaryObject {
 	}
 
 	private Map<ObjectId, DBObject> doSetupRolesWithTemplate(
-			ObjectId projectTemplateId, IContext context) {
+			ObjectId projectTemplateId, IContext context) throws Exception {
 		DBCollection col_roled = getCollection(IModelConstants.C_ROLE_DEFINITION);
 		DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
 		// 删除项目现有的角色
@@ -470,7 +765,8 @@ public class Project extends PrimaryObject {
 			DBObject[] insertData = result.values().toArray(new DBObject[0]);
 
 			// 插入到数据库
-			col_role.insert(insertData, new WriteConcern());
+			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
+			checkError(ws);
 		}
 
 		return result;

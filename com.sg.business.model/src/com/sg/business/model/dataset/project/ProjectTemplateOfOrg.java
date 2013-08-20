@@ -20,7 +20,7 @@ public class ProjectTemplateOfOrg extends OptionDataSetFactory {
 		Project project = (Project) data;
 		ObjectId org_id = project.getFunctionOrganizationId();
 		if(org_id!=null){
-			setQueryCondition(new BasicDBObject().append(ProjectTemplate.F_ORGANIZATION_ID, org_id));
+			setQueryCondition(new BasicDBObject().append(ProjectTemplate.F_ORGANIZATION_ID, org_id).append(ProjectTemplate.F_ACTIVATED, Boolean.TRUE));
 		}else{
 			setQueryCondition(new BasicDBObject().append(ProjectTemplate.F__ID, null));
 		}

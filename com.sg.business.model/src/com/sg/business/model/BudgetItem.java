@@ -68,7 +68,6 @@ public class BudgetItem extends PrimaryObject {
 	}
 
 	public void createChild(String budgetItemName) {
-		// TODO Auto-generated method stub
 		 BasicDBList childrenData = (BasicDBList) getValue(F_CHILDREN);
 		 if(childrenData==null){
 			 childrenData=new BasicDBList();

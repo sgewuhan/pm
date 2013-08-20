@@ -61,7 +61,6 @@ public class IndexJob extends Job {
 		try {
 			build();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

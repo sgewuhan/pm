@@ -28,7 +28,7 @@ import com.sg.business.resource.BusinessResource;
  * @author zhong hua
  * 
  */
-public class WorkDefinition extends AbstractOptionFilterable implements IWorkCloneFields{
+public class WorkDefinition extends AbstractOptionFilterable implements IWorkCloneFields,IProjectTemplateRelative{
 
 	/**
 	 * 通用工作定义,用于设置{@link #F_WORK_TYPE}的值
@@ -51,13 +51,6 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 	 * {@link #WORK_TYPE_PROJECT}
 	 */
 	public static final String F_WORK_TYPE = "worktype";
-
-	/**
-	 * 项目模板id
-	 * 
-	 * @see #ProjectTemplate
-	 */
-	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
 
 	/**
 	 * 只用于通用工作定义和独立工作定义,保存组织的_id字段值

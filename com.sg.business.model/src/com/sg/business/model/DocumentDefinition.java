@@ -14,6 +14,17 @@ import com.sg.business.resource.BusinessResource;
 public class DocumentDefinition extends PrimaryObject {
 
 	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty";
+	public static final String F_DOCUMENT_EDITORID = "document_editorid";
+	public static final String F_DESCRIPTION = "description";
+
+	
+	/**
+	 * 文件类型的字段 <br/><code>"templatefile" : [{ "_id" : ObjectId("5209d03fe5abb85488af9c81"),
+	 * "namespace" : "templatefile_file", "fileName" : "流程.xlsx", "preview" :
+	 * ObjectId("5209d03fe5abb85488af9c82"), "db" : "pm2" }]<code/>
+	 */
+	public static final String F_TEMPLATEFILE = "templatefile";
 
 	@Override
 	public Image getImage() {

@@ -185,6 +185,26 @@
             collection="projectrole"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.Delieverable"
+            collection="delieverable"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.Work"
+            collection="work"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.WorkConnection"
+            collection="workconnection"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.ProjectBudget"
+            collection="projectbudget"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

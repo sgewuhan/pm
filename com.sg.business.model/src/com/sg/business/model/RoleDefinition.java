@@ -14,12 +14,7 @@ import com.sg.business.resource.BusinessResource;
  * @author zhonghua
  *
  */
-public class RoleDefinition extends PrimaryObject {
-
-	/**
-	 * 项目模板ID
-	 */
-	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
+public class RoleDefinition extends PrimaryObject implements IProjectTemplateRelative{
 
 	/**
 	 * 角色ID
