@@ -33,6 +33,9 @@
                   columnDefinitionId="project.projectnumber">
             </column>
             <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
                   columnDefinitionId="project.desc">
             </column>
             <column
@@ -71,6 +74,9 @@
          <searchAction>
             <column
                   columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
             </column>
             <column
                   columnDefinitionId="project.desc">
@@ -122,6 +128,9 @@
                   columnDefinitionId="project.projectnumber">
             </column>
             <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
                   columnDefinitionId="project.desc">
             </column>
             <column
@@ -160,6 +169,9 @@
          <searchAction>
             <column
                   columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
             </column>
             <column
                   columnDefinitionId="project.desc">
@@ -401,6 +413,21 @@
                   </text>
                </section>
                <section
+                     label="工作令号">
+                  <list
+                        editable="true"
+                        id="workorder"
+                        label="工作令号"
+                        labelVisible="false"
+                        name="workorder"
+                        persistable="true"
+                        required="false"
+                        tooltips="项目关联的工作令号,可以添加多个">
+                  </list>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
                      label="项目经理, 部门">
                   <text
                         editPart="Text(Single Line)"
@@ -439,8 +466,6 @@
                         type="String">
                   </text>
                </section>
-            </pagecolumn>
-            <pagecolumn>
                <section
                      label="计划">
                   <dateTime
@@ -532,8 +557,15 @@
          <basicpage
                description="请确定项目的以下选项"
                id="project.basicpage.3"
+               image="image/options_24.png"
                pageDelegator="com.sg.business.project.editor.ProjectOptionPage"
-               title="项目选项">
+               title="选项">
+         </basicpage>
+         <basicpage
+               id="project.basicpage.2"
+               image="image/financial_24.png"
+               pageDelegator="com.sg.business.project.editor.ProjectBudgetPage"
+               title="预算">
          </basicpage>
       </editor>
       <editor
@@ -676,10 +708,10 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="请确定项目的以下选项"
+               description="您选择的模板提供了以下选项，请确定选择"
                id="project.basicpage.3"
                pageDelegator="com.sg.business.project.editor.ProjectOptionPage"
-               title="项目选项">
+               title="选项">
          </basicpage>
       </editor>
       <editor

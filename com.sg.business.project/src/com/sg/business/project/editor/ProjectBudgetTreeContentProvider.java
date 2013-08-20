@@ -1,11 +1,11 @@
-package com.sg.business.management.editor.page;
+package com.sg.business.project.editor;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import com.sg.business.model.ProjectBudget;
 
-public class BudgetItemTreeContentProvider implements ITreeContentProvider {
+public class ProjectBudgetTreeContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {

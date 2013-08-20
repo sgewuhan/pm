@@ -716,6 +716,13 @@
             type="String"
             width="160">
       </column>
+      <column
+            column="workorder"
+            id="project.workorder"
+            name="工作令号"
+            type="String"
+            width="60">
+      </column>
    </extension>
    <extension
          point="com.mobnut.admin.seq">

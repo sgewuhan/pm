@@ -26,7 +26,7 @@ import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
-public class Project extends PrimaryObject implements IProjectTemplateRelative{
+public class Project extends PrimaryObject implements IProjectTemplateRelative {
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -60,6 +60,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative{
 	public static final String F_PRODUCT_TYPE_OPTION = "producttype";
 
 	public static final String F_PROJECT_TYPE_OPTION = "projecttype";
+
+	/**
+	 * 列表类型的字段，工作令号
+	 */
+	public static final String F_WORK_ORDER = "workorder";
 
 	@Override
 	public Image getImage() {
@@ -104,17 +109,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative{
 		setValue(F__ID, new ObjectId());
 
 		// 创建根工作定义
-
 		Work root = makeWBSRoot();
-
+		root.doInsert(context);
 		setValue(ProjectTemplate.F_WORK_DEFINITON_ID, root.get_id());
 
-		root.doInsert(context);
+		// 预算
+		ProjectBudget budget = makeBudget(context);
+		budget.doInsert(context);
+		
 		super.doInsert(context);
 
 		// 复制模板
 		doSetupWithTemplate(root.get_id(), context);
 
+	}
+
+	public ProjectBudget makeBudget(IContext context) {
+		ObjectId id = getProjectTemplateId();
+		if(id!=null){
+			return makeBudgetWithTemplate(id, context);
+		}else{
+			//从全局复制
+			return (ProjectBudget) BudgetItem.COPY_DEFAULT_BUDGET_ITEM(ProjectBudget.class);
+		}
 	}
 
 	private Work makeWBSRoot() {
@@ -149,12 +166,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative{
 
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
-		
-		//复制预算
-		doSetupBudgetWithTemplate(id,context);
+
 	}
 
-	private void doSetupBudgetWithTemplate(ObjectId projectTemplateId, IContext context) throws Exception {
+	public ProjectBudget makeBudgetWithTemplate(ObjectId projectTemplateId,
+			IContext context) {
 		DBCollection col = getCollection(IModelConstants.C_BUDGET_ITEM);
 		DBObject srcdata = col.findOne(new BasicDBObject().append(
 				WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID,
@@ -163,10 +179,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative{
 		tgtData.put(ProjectBudget.F_PROJECT_ID, get_id());
 		tgtData.put(ProjectBudget.F_DESC, getDesc());
 		tgtData.put(ProjectBudget.F_DESC_EN, getDesc_e());
-		tgtData.put(ProjectBudget.F_CHILDREN, srcdata.get(BudgetItem.F_CHILDREN));
-		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
-		WriteResult ws = col.insert(tgtData);
-		checkError(ws);
+		tgtData.put(ProjectBudget.F_CHILDREN,
+				srcdata.get(BudgetItem.F_CHILDREN));
+
+		return ModelService.createModelObject(tgtData, ProjectBudget.class);
 	}
 
 	private void doSetupWorkConnectionWithTemplate(ObjectId projectTemplateId,
@@ -176,36 +192,42 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative{
 				WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID,
 				projectTemplateId));
 		List<DBObject> result = new ArrayList<DBObject>();
-		while(cur.hasNext()){
+		while (cur.hasNext()) {
 			DBObject connD = cur.next();
-			ObjectId srcEnd1 = (ObjectId) connD.get(WorkDefinitionConnection.F_END1_ID);
+			ObjectId srcEnd1 = (ObjectId) connD
+					.get(WorkDefinitionConnection.F_END1_ID);
 			DBObject tgtEnd1Data = workMap.get(srcEnd1);
 			ObjectId tgtEnd1 = null;
-			if(tgtEnd1Data!=null){
+			if (tgtEnd1Data != null) {
 				tgtEnd1 = (ObjectId) tgtEnd1Data.get(Work.F__ID);
 			}
-			ObjectId srcEnd2 = (ObjectId) connD.get(WorkDefinitionConnection.F_END2_ID);
+			ObjectId srcEnd2 = (ObjectId) connD
+					.get(WorkDefinitionConnection.F_END2_ID);
 			DBObject tgtEnd2Data = workMap.get(srcEnd2);
 			ObjectId tgtEnd2 = null;
-			if(tgtEnd2Data!=null){
+			if (tgtEnd2Data != null) {
 				tgtEnd2 = (ObjectId) tgtEnd2Data.get(Work.F__ID);
 			}
-			if(tgtEnd1==null||tgtEnd2==null){
+			if (tgtEnd1 == null || tgtEnd2 == null) {
 				continue;
 			}
-			
+
 			BasicDBObject conn = new BasicDBObject();
 			conn.put(WorkConnection.F_PROJECT_ID, get_id());
 			conn.put(WorkConnection.F__EDITOR, WorkConnection.EDITOR);
-			conn.put(WorkConnection.F_CONNECTIONTYPE, connD.get(WorkDefinitionConnection.F_CONNECTIONTYPE));
-			conn.put(WorkConnection.F_INTERVAL, connD.get(WorkDefinitionConnection.F_INTERVAL));
-			conn.put(WorkConnection.F_OPERATOR, connD.get(WorkDefinitionConnection.F_OPERATOR));
-			conn.put(WorkConnection.F_UNIT, connD.get(WorkDefinitionConnection.F_UNIT));
+			conn.put(WorkConnection.F_CONNECTIONTYPE,
+					connD.get(WorkDefinitionConnection.F_CONNECTIONTYPE));
+			conn.put(WorkConnection.F_INTERVAL,
+					connD.get(WorkDefinitionConnection.F_INTERVAL));
+			conn.put(WorkConnection.F_OPERATOR,
+					connD.get(WorkDefinitionConnection.F_OPERATOR));
+			conn.put(WorkConnection.F_UNIT,
+					connD.get(WorkDefinitionConnection.F_UNIT));
 			conn.put(WorkConnection.F_END1_ID, tgtEnd1);
 			conn.put(WorkConnection.F_END2_ID, tgtEnd2);
 			result.add(conn);
 		}
-		
+
 		DBCollection col = getCollection(IModelConstants.C_WORK_CONNECTION);
 		WriteResult ws = col.insert(result);
 		checkError(ws);
@@ -778,6 +800,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative{
 		}
 		po.setValue(ProjectRole.F_PROJECT_ID, get_id());
 		return po;
+	}
+
+	public ProjectBudget getBudget() {
+		DBCollection col = getCollection(IModelConstants.C_PROJECT_BUDGET);
+		DBObject data = col.findOne(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID, get_id()));
+		return ModelService.createModelObject(data, ProjectBudget.class);
 	}
 
 }
