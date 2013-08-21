@@ -3,7 +3,7 @@ package com.sg.business.model;
 import com.mobnut.db.model.PrimaryObject;
 
 
-public class Work extends PrimaryObject implements IWorkCloneFields,IProjectRelative{
+public class Work extends PrimaryObject implements IWorkCloneFields,IProjectRelative,ILifecycle{
 
 	/**
 	 * 根工作_id字段，用于保存根工作的_id的值

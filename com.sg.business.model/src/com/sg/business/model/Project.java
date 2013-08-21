@@ -26,7 +26,8 @@ import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
-public class Project extends PrimaryObject implements IProjectTemplateRelative {
+public class Project extends PrimaryObject implements IProjectTemplateRelative,
+		ILifecycle {
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -116,7 +117,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative {
 		// 预算
 		ProjectBudget budget = makeBudget(context);
 		budget.doInsert(context);
-		
+
 		super.doInsert(context);
 
 		// 复制模板
@@ -126,11 +127,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative {
 
 	public ProjectBudget makeBudget(IContext context) {
 		ObjectId id = getProjectTemplateId();
-		if(id!=null){
+		if (id != null) {
 			return makeBudgetWithTemplate(id, context);
-		}else{
-			//从全局复制
-			return (ProjectBudget) BudgetItem.COPY_DEFAULT_BUDGET_ITEM(ProjectBudget.class);
+		} else {
+			// 从全局复制
+			return (ProjectBudget) BudgetItem
+					.COPY_DEFAULT_BUDGET_ITEM(ProjectBudget.class);
 		}
 	}
 
@@ -804,43 +806,55 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative {
 
 	public ProjectBudget getBudget() {
 		DBCollection col = getCollection(IModelConstants.C_PROJECT_BUDGET);
-		DBObject data = col.findOne(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID, get_id()));
+		DBObject data = col.findOne(new BasicDBObject().append(
+				ProjectBudget.F_PROJECT_ID, get_id()));
 		return ModelService.createModelObject(data, ProjectBudget.class);
 	}
 
-	
+	@Override
+	public boolean canDelete(IContext context) {
+		
+		// TODO Auto-generated method stub
+		return super.canDelete(context);
+	}
+
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		//删除work
+		// 删除work
 		DBCollection col = getCollection(IModelConstants.C_WORK);
-		WriteResult ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
+		WriteResult ws = col.remove(new BasicDBObject().append(
+				Work.F_PROJECT_ID, get_id()));
 		checkError(ws);
-		
-		//删除workconnection
+
+		// 删除workconnection
 		col = getCollection(IModelConstants.C_WORK_CONNECTION);
 		ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
 		checkError(ws);
-		
-		//删除预算
+
+		// 删除预算
 		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
-		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID, get_id()));
+		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID,
+				get_id()));
 		checkError(ws);
 
-		//删除role
+		// 删除role
 		col = getCollection(IModelConstants.C_PROJECT_ROLE);
-		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID, get_id()));
-		checkError(ws);
-		
-		//删除交付物
-		col = getCollection(IModelConstants.C_DELIEVERABLE);
-		ws = col.remove(new BasicDBObject().append(Delieverable.F_PROJECT_ID, get_id()));
+		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
+				get_id()));
 		checkError(ws);
 
-		//删除文档
-		col = getCollection(IModelConstants.C_DOCUMENT);
-		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID, get_id()));
+		// 删除交付物
+		col = getCollection(IModelConstants.C_DELIEVERABLE);
+		ws = col.remove(new BasicDBObject().append(Delieverable.F_PROJECT_ID,
+				get_id()));
 		checkError(ws);
-		
+
+		// 删除文档
+		col = getCollection(IModelConstants.C_DOCUMENT);
+		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
+				get_id()));
+		checkError(ws);
+
 		super.doRemove(context);
 	}
 }
