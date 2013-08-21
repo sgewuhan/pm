@@ -890,7 +890,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            dataSet="com.sg.business.model.dataset.RoleOfProject"
+            dataSet="com.sg.business.model.dataset.project.RoleOfProject"
             id="project.team">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">

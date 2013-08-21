@@ -1,4 +1,4 @@
-package com.sg.business.model.dataset;
+package com.sg.business.model.dataset.project;
 
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.ProjectRole;
