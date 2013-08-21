@@ -335,6 +335,20 @@
                id="perspective.system">
          </perspective>
       </scenario>
+      <scenario
+            id="manager"
+            name="业务管理">
+         <perspective
+               default="true"
+               id="perspective.organization">
+         </perspective>
+         <perspective
+               id="perspective.project">
+         </perspective>
+         <perspective
+               id="perspective.management">
+         </perspective>
+      </scenario>
    </extension>
    <extension
          point="com.mobnut.design.headAreaPart">

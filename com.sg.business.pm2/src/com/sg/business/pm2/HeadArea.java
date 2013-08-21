@@ -7,6 +7,8 @@ import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -163,6 +165,13 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		// fd.top = new FormAttachment(0,2);
 
 		UserSessionContext.getSession().addAccountChangeListener(this);
+		content.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent event) {
+				UserSessionContext.getSession().removeAccountChangeListener(HeadArea.this);
+			}
+		});
 		return headPicContainer;
 	}
 
