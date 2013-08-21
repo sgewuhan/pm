@@ -11,7 +11,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
 
-public class Document extends PrimaryObject {
+public class Document extends PrimaryObject implements IProjectRelative{
 
 	public static final String F_DOCUMENT_TYPE = "documenttype";
 	
@@ -30,8 +30,6 @@ public class Document extends PrimaryObject {
 	public static final String FILE_NAMESPACE = "vault_file";
 
 	public static final String FILE_DB = "pm2";
-
-	public static final String F_PROJECT_ID = "project_id";
 
 	public ObjectId getParent_id() {
 		return (ObjectId) getValue(F_FOLDER_ID);

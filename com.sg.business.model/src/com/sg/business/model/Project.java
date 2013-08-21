@@ -808,4 +808,39 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative {
 		return ModelService.createModelObject(data, ProjectBudget.class);
 	}
 
+	
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		//É¾³ýwork
+		DBCollection col = getCollection(IModelConstants.C_WORK);
+		WriteResult ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
+		checkError(ws);
+		
+		//É¾³ýworkconnection
+		col = getCollection(IModelConstants.C_WORK_CONNECTION);
+		ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
+		checkError(ws);
+		
+		//É¾³ýÔ¤Ëã
+		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
+		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID, get_id()));
+		checkError(ws);
+
+		//É¾³ýrole
+		col = getCollection(IModelConstants.C_PROJECT_ROLE);
+		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID, get_id()));
+		checkError(ws);
+		
+		//É¾³ý½»¸¶Îï
+		col = getCollection(IModelConstants.C_DELIEVERABLE);
+		ws = col.remove(new BasicDBObject().append(Delieverable.F_PROJECT_ID, get_id()));
+		checkError(ws);
+
+		//É¾³ýÎÄµµ
+		col = getCollection(IModelConstants.C_DOCUMENT);
+		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID, get_id()));
+		checkError(ws);
+		
+		super.doRemove(context);
+	}
 }

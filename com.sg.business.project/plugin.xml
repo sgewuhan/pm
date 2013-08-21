@@ -210,6 +210,26 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="project.team"
+            tree="project.team">
+         <filterAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -567,6 +587,14 @@
                pageDelegator="com.sg.business.project.editor.ProjectBudgetPage"
                title="预算">
          </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               description="为项目团队的各个角色指定成员"
+               id="teampage"
+               image="image/group_24.png"
+               navigatorId="project.team"
+               title="项目组">
+         </navigatorpage>
       </editor>
       <editor
             collectionName="project"
@@ -858,6 +886,19 @@
                columnDefinitionId="organization.desc.html">
          </column>
       </table>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            dataSet="com.sg.business.model.dataset.RoleOfProject"
+            id="project.team">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="ProjectRole_Assignment">
+         </structure>
+      </tree>
    </extension>
 
 </plugin>
