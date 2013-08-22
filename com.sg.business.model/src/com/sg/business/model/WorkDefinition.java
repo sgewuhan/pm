@@ -132,11 +132,21 @@ public class WorkDefinition extends AbstractWork implements
 
 	}
 
+	/**
+	 * 新建交付物定义
+	 * @return DeliverableDefinition
+	 */
 	@Override
 	public DeliverableDefinition makeDeliverableDefinition() {
 		return makeDeliverableDefinition(null);
 	}
 
+	/**
+	 * 新建交付物定义
+	 * @param docd
+	 *         ,文档定义
+	 * @return
+	 */
 	public DeliverableDefinition makeDeliverableDefinition(
 			DocumentDefinition docd) {
 		DBObject data = new BasicDBObject();
@@ -172,6 +182,10 @@ public class WorkDefinition extends AbstractWork implements
 		return po;
 	}
 
+	/**
+	 * 返回工作定义关联的所有交付物定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getDeliverableDefinitions() {
 		DBObject condition = new BasicDBObject().append(
 				DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
@@ -180,10 +194,17 @@ public class WorkDefinition extends AbstractWork implements
 		return dsf.getDataSet().getDataItems();
 	}
 
+	/**
+	 * 工作定义是否启用
+	 * @return boolean
+	 */
 	public boolean isActivated() {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
 	}
 
+	/**
+	 * 删除工作定义
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		int type = getWorkDefinitionType();
@@ -227,11 +248,19 @@ public class WorkDefinition extends AbstractWork implements
 
 	}
 
+	/**
+	 * 返回后置工作定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getEnd2Connections() {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END1_ID,
 				WorkDefinitionConnection.class);
 	}
 
+	/**
+	 * 返回前置工作定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getEnd1Connections() {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END2_ID,
 				WorkDefinitionConnection.class);
@@ -326,6 +355,10 @@ public class WorkDefinition extends AbstractWork implements
 		}
 	}
 
+	/**
+	 * 返回工作定义归属的组织
+	 * @return Organization
+	 */ 
 	public Organization getOrganization() {
 		ObjectId org_id = (ObjectId) getValue(F_ORGANIZATION_ID);
 		if (org_id != null) {
@@ -334,10 +367,18 @@ public class WorkDefinition extends AbstractWork implements
 		return null;
 	}
 
+	/**
+	 * 返回工作定义的组织_id
+	 * @return ObjectId
+	 */
 	public ObjectId getOrganizationId() {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
 
+	/**
+	 * 返回工作的承担者角色
+	 * @return List
+	 */
 	public List<PrimaryObject> getParticipateRoles() {
 		List<?> list = (List<?>) getValue(F_PARTICIPATE_ROLE_SET);
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
@@ -361,16 +402,28 @@ public class WorkDefinition extends AbstractWork implements
 		return result;
 	}
 
+	/**
+	 * 返回工作定义归属的模板
+	 * @return PrimaryObject
+	 */
 	@Override
 	public PrimaryObject getHoster() {
 		return getProjectTemplate();
 	}
 
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "工作定义";
 	}
 
+    /**
+     * 返回工作定义的默认编辑器ID	
+     * @return String
+     */
 	@Override
 	public String getDefaultEditorId() {
 		int type = getWorkDefinitionType();

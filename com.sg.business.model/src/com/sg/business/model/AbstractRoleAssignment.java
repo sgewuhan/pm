@@ -72,6 +72,10 @@ public abstract class AbstractRoleAssignment extends PrimaryObject{
 		return BusinessResource.getImage(BusinessResource.IMAGE_USER_16);
 	}
 	
+	/**
+	 * ·µ»ØÏÔÊ¾ÄÚÈİ
+	 * @return String
+	 */
 	@Override
 	public String getLabel() {
 		String uid = getUserid();

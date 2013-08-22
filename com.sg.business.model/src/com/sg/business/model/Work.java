@@ -8,8 +8,17 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+/**
+ * <p>工作<p/>
+ * 工作用于描述项目中的工作分解结构
+ * @author jinxitao
+ *
+ */
 public class Work extends AbstractWork implements IProjectRelative,ISchedual {
 
+	/**
+	 * 工作的编辑器ID
+	 */
 	public static final String EDITOR = "editor.work";
 
 	/**
@@ -17,6 +26,10 @@ public class Work extends AbstractWork implements IProjectRelative,ISchedual {
 	 */
 	public static final String F_MANDATORY = "mandatory";
 
+	/**
+	 * 返回工作所属项目
+	 * @return Project
+	 */
 	public Project getProject() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);
 		if (ptId != null) {
@@ -26,6 +39,10 @@ public class Work extends AbstractWork implements IProjectRelative,ISchedual {
 		}
 	}
 
+	/**
+	 * 新建下级工作
+	 * @return Work
+	 */
 	@Override
 	public Work makeChildWork() {
 		DBObject data = new BasicDBObject();
@@ -41,16 +58,30 @@ public class Work extends AbstractWork implements IProjectRelative,ISchedual {
 		return po;
 	}
 
+	/**
+	 * 返回工作所属项目
+	 * @return PrimaryObject
+	 */
 	@Override
 	public PrimaryObject getHoster() {
 		return getProject();
 	}
 
+	/**
+	 * 新建工作交付物
+	 * @return Deliverable
+	 */
 	@Override
 	public Deliverable makeDeliverableDefinition() {
 		return makeDeliverableDefinition(null);
 	}
 
+	/**
+	 * 新建工作交付物
+	 * @param docd
+	 *         ,交付物文档定义
+	 * @return
+	 */
 	public Deliverable makeDeliverableDefinition(DocumentDefinition docd) {
 		DBObject data = new BasicDBObject();
 		data.put(Deliverable.F_WORK_ID, get_id());
@@ -69,22 +100,45 @@ public class Work extends AbstractWork implements IProjectRelative,ISchedual {
 	}
 	
 
-	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "工作";
 	}
 	
+	/**
+	 * 返回工作默认编辑器ID
+	 * @return String
+	 */
 	@Override
 	public String getDefaultEditorId() {
 		return EDITOR;
 	}
 
+	/**
+	 * 判断工作的属性是否只读
+	 * @param column
+	 *          ,工作的属性
+	 * @param context
+	 * @return boolean
+	 */
 	public boolean canEdit(String column,
 			IContext context) {
 		return true;
 	}
 
+	/**
+	 * 更新工作
+	 * @param key
+	 *        ,更新内容的KEY
+	 * @param value
+	 *        ,更改后的Value
+	 * @param context
+	 * @return Work[]
+	 */
 	public Work[] doUpdateSchedual(String key, Object value,
 			IContext context) {
 		setValue(key, value);

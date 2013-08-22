@@ -9,7 +9,10 @@ package com.sg.business.model;
  */
 public class RoleAssignment extends AbstractRoleAssignment{
 
-	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "角色指派";
