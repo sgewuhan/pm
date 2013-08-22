@@ -1,4 +1,4 @@
-package com.sg.business.project.editor;
+package com.sg.business.project.editor.page;
 
 import java.text.DecimalFormat;
 

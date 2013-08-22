@@ -18,7 +18,6 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class EditWork extends AbstractNavigatorHandler {
 
-
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
 		MessageUtil.showToast("ÄúÐèÒªÑ¡ÔñÒ»Ïî", SWT.ICON_WARNING);
@@ -41,11 +40,12 @@ public class EditWork extends AbstractNavigatorHandler {
 		if (conf != null) {
 			try {
 				DataObjectDialog.openDialog(workdefinition,
-						(DataEditorConfigurator) conf, true, null, "±à¼­"+selected.getTypeName());
+						(DataEditorConfigurator) conf, true, null, "±à¼­"
+								+ selected.getTypeName());
 			} catch (Exception e) {
 				e.printStackTrace();
-				MessageUtil.showToast(shell, "±à¼­"+selected.getTypeName(), e.getMessage(),
-						SWT.ICON_ERROR);
+				MessageUtil.showToast(shell, "±à¼­" + selected.getTypeName(),
+						e.getMessage(), SWT.ICON_ERROR);
 			}
 		}
 

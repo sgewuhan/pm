@@ -1,4 +1,4 @@
-package com.sg.business.project.editor;
+package com.sg.business.project.editor.page;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;

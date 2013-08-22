@@ -28,7 +28,7 @@ import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
-		ILifecycle {
+		ILifecycle,ISchedual {
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -636,7 +636,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				if (tgtRole != null) {
 					Object tgtRoleId = tgtRole.get(ProjectRole.F__ID);
 					if (tgtRoleId != null) {
-						participates.add(tgtRoleId);
+						participates.add(new BasicDBObject().append("_id", tgtRoleId));
 					}
 				}
 			}
@@ -833,10 +833,23 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 删除role
 		col = getCollection(IModelConstants.C_PROJECT_ROLE);
+		DBCursor cur = col.find(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
+				get_id()), new BasicDBObject().append(ProjectRole.F__ID, 1));
+		ObjectId[] roleIds = new ObjectId[cur.size()];
+		int i=0;
+		while(cur.hasNext()){
+			roleIds[i++] = (ObjectId) cur.next().get(ProjectRole.F__ID);
+		}
 		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
 				get_id()));
 		checkWriteResult(ws);
-
+		
+		//删除roleassignment
+		col = getCollection(IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
+		ws = col.remove(new BasicDBObject().append(ProjectRoleAssignment.F_ROLE_ID,new BasicDBObject().append("$in",roleIds )
+				));
+		checkWriteResult(ws);
+		
 		// 删除交付物
 		col = getCollection(IModelConstants.C_DELIEVERABLE);
 		ws = col.remove(new BasicDBObject().append(Deliverable.F_PROJECT_ID,
@@ -871,5 +884,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public String getTypeName() {
 		return "项目";
+	}
+	
+
+	public List<PrimaryObject> getRoleDefinitions() {
+		return getRelationById(F__ID, ProjectRole.F_PROJECT_ID, ProjectRole.class);
 	}
 }

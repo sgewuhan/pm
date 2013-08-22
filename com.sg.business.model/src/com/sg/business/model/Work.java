@@ -7,9 +7,9 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class Work extends AbstractWork implements IProjectRelative {
+public class Work extends AbstractWork implements IProjectRelative,ISchedual {
 
-	public static final String EDITOR_PROJECT_WORK = "editor.work";
+	public static final String EDITOR = "editor.work";
 
 	/**
 	 * 必需的，不可删除，布尔类型的字段
@@ -72,5 +72,10 @@ public class Work extends AbstractWork implements IProjectRelative {
 	@Override
 	public String getTypeName() {
 		return "工作";
+	}
+	
+	@Override
+	public String getDefaultEditorId() {
+		return EDITOR;
 	}
 }

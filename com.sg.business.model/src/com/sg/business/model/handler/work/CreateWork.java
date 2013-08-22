@@ -8,8 +8,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
-import com.sg.business.model.Work;
-import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -41,19 +39,13 @@ public class CreateWork extends AbstractNavigatorHandler {
 		po.addEventListener(currentViewerControl);
 
 		// 使用编辑器打开编辑工作定义
-		Configurator conf;
-		if (po instanceof WorkDefinition) {
-			conf = Widgets.getEditorRegistry().getConfigurator(
-					WorkDefinition.EDITOR_PROJECT_WORK);
-		} else {
-			conf = Widgets.getEditorRegistry().getConfigurator(
-					Work.EDITOR_PROJECT_WORK);
-		}
+		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
+				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, getTitle(po));
+					true, null,"创建"+po.getTypeName());
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, getTitle(po), e.getMessage(),
+			MessageUtil.showToast(shell, "创建"+po.getTypeName(), e.getMessage(),
 					SWT.ICON_ERROR);
 		}
 
@@ -61,8 +53,5 @@ public class CreateWork extends AbstractNavigatorHandler {
 		po.removeEventListener(currentViewerControl);
 	}
 
-	private String getTitle(AbstractWork po) {
-		return (po instanceof WorkDefinition) ? "添加工作定义" : "添加工作";
-	}
 
 }
