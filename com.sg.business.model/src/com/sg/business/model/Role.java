@@ -20,13 +20,19 @@ import com.sg.business.resource.BusinessResource;
 /**
  * 角色<p/>
  * 组织中的角色
- * @author zhonghua
+ * @author jinxitao
  *
  */
 public class Role extends PrimaryObject {
 
+	/**
+	 * 所属组织ID
+	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
+	/**
+	 * 角色编号
+	 */
 	public static final String F_ROLE_NUMBER = "rolenumber";
 
 	/**
@@ -117,7 +123,7 @@ public class Role extends PrimaryObject {
 	}
 
 	/**
-	 * 获取角色所属组织的ID
+	 * 获取角色所属组织的_id
 	 * @return ObjectId
 	 */
 	public ObjectId getOrganization_id() {
@@ -189,7 +195,7 @@ public class Role extends PrimaryObject {
 	}
 
 	/**
-	 * 获取角色类型
+	 * 获取角色类型,角色类型分为系统角色和用户自定义角色
 	 * @return
 	 */
 	public String getRoleTypeText() {
@@ -267,6 +273,11 @@ public class Role extends PrimaryObject {
 						.startsWith("P"));
 	}
 
+	/**
+	 * 判断角色编号是否合法
+	 * 角色是否为系统保留编号，角色所属组织是否存在，角色在所属组织中是否已经存在
+	 * @throws Exception
+	 */
 	public void check() throws Exception {
 		String rn = getRoleNumber();
 		// 检查角色编号是否合法

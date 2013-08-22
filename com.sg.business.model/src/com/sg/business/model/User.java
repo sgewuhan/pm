@@ -19,7 +19,7 @@ import com.sg.business.resource.BusinessResource;
 /**
  * 用户<p/>
  * 用户为公司职员，归属于组织
- * @author zhonghua
+ * @author jinxitao
  *
  */
 public class User extends PrimaryObject {
@@ -39,12 +39,18 @@ public class User extends PrimaryObject {
 	 */
 	public static final String F_USER_NAME = "username";
 
+	/**
+	 * 用户昵称
+	 */
 	public static final String F_NICK = "nick";
 
+	/**
+	 * 用户头部照片
+	 */
 	public static final String F_HEADPIC = "headpic";
 
 	/**
-	 * 所属组织ＩＤ
+	 * 所属组织ID
 	 * @see #Orgainzation
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
@@ -61,8 +67,8 @@ public class User extends PrimaryObject {
 	private static final String F_CONSIGNER = "consigner";
 
 	/**
-	 * 获取组织ID
-	 * @return
+	 * 获取组织_id
+	 * @return ObjectId
 	 */
 	public ObjectId getOrganization_id() {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
@@ -236,6 +242,7 @@ public class User extends PrimaryObject {
 	/**
 	 * 将用户委托至其他用户
 	 * @param consigner
+	 *         ,被委托用户
 	 * @param context
 	 * @throws Exception
 	 */
