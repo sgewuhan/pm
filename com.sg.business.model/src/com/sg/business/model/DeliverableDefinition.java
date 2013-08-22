@@ -96,4 +96,11 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public String getTypeName() {
+		return "Ωª∏∂∂®“Â";
+	}
+
 }

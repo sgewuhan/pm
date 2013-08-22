@@ -44,7 +44,9 @@ public class Role extends PrimaryObject {
 	/**
 	 * 基础角色/组织角色/组织管理员
 	 */
+	@Deprecated
 	public static final String ROLE_ORGANIZATION_ADMIN_ID = "T000";
+	@Deprecated
 	public static final String ROLE_ORGANIZATION_ADMIN_TEXT = "组织管理员";
 
 	/**
@@ -160,6 +162,7 @@ public class Role extends PrimaryObject {
 	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
+		//需要考虑角色被应用到项目的情况
 		// 先删除角色指派
 		DBCollection raCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ROLE_ASSIGNMENT);
@@ -290,5 +293,10 @@ public class Role extends PrimaryObject {
 			throw new Exception("角色编号在所属的组织中重复");
 		}
 
+	}
+	
+	@Override
+	public String getTypeName() {
+		return "角色";
 	}
 }

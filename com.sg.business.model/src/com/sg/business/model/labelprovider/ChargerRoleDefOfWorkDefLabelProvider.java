@@ -11,7 +11,7 @@ public class ChargerRoleDefOfWorkDefLabelProvider extends ConfiguratorColumnLabe
 	@Override
 	public String getText(Object element) {
 		WorkDefinition workd = (WorkDefinition) element;
-		RoleDefinition chargerRoleDef = workd.getChargerRoleDefinition();
+		RoleDefinition chargerRoleDef = workd.getChargerRoleDefinition(RoleDefinition.class);
 		if(chargerRoleDef!=null){
 			return chargerRoleDef.getLabel();
 		}else{
@@ -22,7 +22,7 @@ public class ChargerRoleDefOfWorkDefLabelProvider extends ConfiguratorColumnLabe
 	@Override
 	public Image getImage(Object element) {
 		WorkDefinition workd = (WorkDefinition) element;
-		RoleDefinition chargerRoleDef = workd.getChargerRoleDefinition();
+		RoleDefinition chargerRoleDef = workd.getChargerRoleDefinition(RoleDefinition.class);
 		if(chargerRoleDef!=null){
 			return chargerRoleDef.getImage();
 		}else{

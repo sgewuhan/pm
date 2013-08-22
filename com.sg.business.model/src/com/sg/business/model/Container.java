@@ -120,5 +120,9 @@ public class Container extends PrimaryObject {
 		}
 		return null;
 	}
-
+	
+	@Override
+	public String getTypeName() {
+		return "ÈÝÆ÷";
+	}
 }

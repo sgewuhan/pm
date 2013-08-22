@@ -33,6 +33,9 @@
                   columnDefinitionId="project.projectnumber">
             </column>
             <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
                   columnDefinitionId="project.desc">
             </column>
             <column
@@ -61,6 +64,11 @@
             </column>
             <column
                   columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
             </column>
          </filterAction>
          <searchAction>
@@ -68,6 +76,9 @@
                   columnDefinitionId="project.projectnumber">
             </column>
             <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
                   columnDefinitionId="project.desc">
             </column>
             <column
@@ -96,6 +107,11 @@
             </column>
             <column
                   columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
             </column>
          </searchAction>
          <createEditor
@@ -112,6 +128,9 @@
                   columnDefinitionId="project.projectnumber">
             </column>
             <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
                   columnDefinitionId="project.desc">
             </column>
             <column
@@ -140,6 +159,11 @@
             </column>
             <column
                   columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
             </column>
          </filterAction>
          <searchAction>
@@ -147,6 +171,9 @@
                   columnDefinitionId="project.projectnumber">
             </column>
             <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
                   columnDefinitionId="project.desc">
             </column>
             <column
@@ -176,7 +203,50 @@
             <column
                   columnDefinitionId="actualworks">
             </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
          </searchAction>
+      </navigator>
+      <navigator
+            id="project.team"
+            tree="project.team">
+         <filterAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="project.wbs"
+            tree="project.wbs">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.seq">
+            </column>
+            <column
+                  columnDefinitionId="work.desc">
+            </column></filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.seq">
+            </column>
+            <column
+                  columnDefinitionId="work.desc">
+            </column></searchAction>
       </navigator>
    </extension>
    <extension
@@ -189,7 +259,7 @@
             editorId="project.editor"
             fix="2"
             id="project.navigator.myproject"
-            popupMenu="popup:com.sg.widgets.ctableviewer">
+            popupMenu="popup:com.sg.widget.navigator">
          <column
                columnDefinitionId="project.projectnumber">
          </column>
@@ -197,7 +267,7 @@
                columnDefinitionId="project.desc">
          </column>
          <column
-               columnDefinitionId="charger">
+               columnDefinitionId="chargerid">
          </column>
          <column
                columnDefinitionId="project.status">
@@ -234,6 +304,16 @@
             </column>
             <column
                   columnDefinitionId="actualworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="组织">
+            <column
+                  columnDefinitionId="project.org_id">
+            </column>
+            <column
+                  columnDefinitionId="project.launchorg_id">
             </column>
          </columnGroup>
       </table>
@@ -244,7 +324,7 @@
             dataSet="com.sg.business.model.dataset.project.ManagementProject"
             editorId="project.editor"
             id="project.navigator.management"
-            popupMenu="popup:com.sg.widgets.ctableviewer">
+            popupMenu="popup:com.sg.widget.navigator">
          <column
                columnDefinitionId="project.projectnumber">
          </column>
@@ -252,7 +332,7 @@
                columnDefinitionId="project.desc">
          </column>
          <column
-               columnDefinitionId="charger">
+               columnDefinitionId="chargerid">
          </column>
          <column
                columnDefinitionId="project.status">
@@ -291,6 +371,30 @@
                   columnDefinitionId="actualworks">
             </column>
          </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="组织">
+            <column
+                  columnDefinitionId="project.org_id">
+            </column>
+            <column
+                  columnDefinitionId="project.launchorg_id">
+            </column>
+         </columnGroup>
+      </table>
+      <table
+            fullSelection="false"
+            hasBorder="true"
+            headerVisiable="false"
+            id="project.field.participate_roled_set"
+            lineVisiable="false"
+            multiSelection="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.model.labelprovider.ProjectRoleLabelProvider2"
+               name="名称"
+               width="-1">
+         </column>
       </table>
    </extension>
    <extension
@@ -301,7 +405,7 @@
             id="project.editor"
             image="image/project_24.png"
             isDefault="true"
-            name="项目">
+            name="项目计划">
          <basicpage
                description="项目的基本信息"
                id="project.basicpage"
@@ -361,6 +465,21 @@
                   </text>
                </section>
                <section
+                     label="工作令号">
+                  <list
+                        editable="true"
+                        id="workorder"
+                        label="工作令号"
+                        labelVisible="false"
+                        name="workorder"
+                        persistable="true"
+                        required="false"
+                        tooltips="项目关联的工作令号,可以添加多个">
+                  </list>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
                      label="项目经理, 部门">
                   <text
                         editPart="Text(Single Line)"
@@ -399,8 +518,6 @@
                         type="String">
                   </text>
                </section>
-            </pagecolumn>
-            <pagecolumn>
                <section
                      label="计划">
                   <dateTime
@@ -490,11 +607,31 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="请确定项目的以下选项"
+               description="项目包含以下选项"
                id="project.basicpage.3"
-               pageDelegator="com.sg.business.project.editor.ProjectOptionPage"
-               title="项目选项">
+               image="image/options_24.png"
+               pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
+               title="选项">
          </basicpage>
+         <basicpage
+               id="project.basicpage.2"
+               image="image/financial_24.png"
+               pageDelegator="com.sg.business.project.editor.page.ProjectBudgetPage"
+               title="预算">
+         </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               description="为项目团队的各个角色指定成员"
+               id="project.team"
+               image="image/group_24.png"
+               navigatorId="project.team"
+               title="项目组">
+         </navigatorpage>
+         <navigatorpage
+               id="project.wbs"
+               navigatorId="project.wbs"
+               title="WBS">
+         </navigatorpage>
       </editor>
       <editor
             collectionName="project"
@@ -512,14 +649,18 @@
                      label="项目摘要">
                   <text
                         editPart="Text(Single Line)"
-                        editable="true"
+                        editable="false"
                         id="projectnumber"
                         label="项目编号"
                         labelVisible="true"
                         name="projectnumber"
                         persistable="true"
                         required="false"
+                        textMessage="&lt;自动编号&gt;"
                         type="String">
+                     <extendValueDefinition
+                           type="com.sg.business.model.numbering.ProjectNumber">
+                     </extendValueDefinition>
                   </text>
                   <text
                         editPart="Text(Single Line)"
@@ -632,14 +773,526 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="请确定项目的以下选项"
+               description="您选择的模板提供了以下选项，请确定选择"
                id="project.basicpage.3"
-               pageDelegator="com.sg.business.project.editor.ProjectOptionPage"
-               title="项目选项">
+               pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
+               title="选项">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="workconnection"
+            dbName="pm2"
+            id="editor.workConnection"
+            isDefault="true"
+            name="工作顺序关系"
+            titleToolTips="工作顺序关系">
+         <basicpage
+               id="basicpage"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <selectionDialog
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjecttemplateOption"
+                        editable="true"
+                        id="end1_id"
+                        label="前置工作"
+                        labelVisible="true"
+                        name="end1_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </selectionDialog>
+                  <selectionDialog
+                        dataSetFactory="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjecttemplateOption"
+                        editable="true"
+                        id="end2_id"
+                        label="后置工作"
+                        labelVisible="true"
+                        name="end2_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </selectionDialog>
+                  <radio
+                        defaultValue="FS"
+                        editable="true"
+                        id="connectiontype"
+                        label="顺序关系"
+                        labelVisible="true"
+                        name="connectiontype"
+                        option="connectiontype"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        wrapRadio="true">
+                  </radio>
+                  <fieldgroup
+                        columnCount="3">
+                     <combo
+                           defaultValue="+"
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="operator"
+                           label="操作符"
+                           labelVisible="true"
+                           name="operator"
+                           option="操作符"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                     <spinner
+                           defaultValue="0"
+                           editable="true"
+                           id="interval"
+                           label="间隔时间"
+                           labelVisible="true"
+                           name="interval"
+                           persistable="true"
+                           required="false">
+                     </spinner>
+                     <combo
+                           defaultValue="d"
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="unit"
+                           label="单位"
+                           labelVisible="false"
+                           name="unit"
+                           option="日期单位"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="projectrole"
+            dbName="pm2"
+            id="editor.projectrole"
+            image="image/role_24.png"
+            isDefault="false"
+            name="项目角色"
+            titleToolTips="项目角色">
+         <basicpage
+               description="项目角色信息"
+               id="basicpage1"
+               image="image/role_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="rolenumber"
+                        label="角色代码"
+                        labelVisible="true"
+                        name="rolenumber"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="projectrole"
+            dbName="pm2"
+            id="editor.projectrole.edit"
+            image="image/role_24.png"
+            isDefault="false"
+            name="项目角色"
+            titleToolTips="项目角色">
+         <basicpage
+               description="项目角色信息"
+               id="basicpage1"
+               image="image/role_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="rolenumber"
+                        label="角色代码"
+                        labelVisible="true"
+                        name="rolenumber"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="editor.work"
+            image="image/work_24.png"
+            isDefault="false"
+            name="工作"
+            titleToolTips="工作">
+         <basicpage
+               description="工作的基本信息"
+               id="basicpage"
+               image="image/work_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="90"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="milestone"
+                        label="里程碑"
+                        labelVisible="true"
+                        name="milestone"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <spinner
+                        editable="false"
+                        id="standardworks"
+                        label="标准工时(h)"
+                        labelVisible="true"
+                        name="standardworks"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,9999,1,10">
+                  </spinner>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="true"
+                        id="planduration"
+                        label="计划工期(天)"
+                        labelVisible="true"
+                        name="planduration"
+                        persistable="true"
+                        required="false">
+                  </spinner>
+                  <spinner
+                        editable="true"
+                        id="planworks"
+                        label="计划工时(小时)"
+                        labelVisible="true"
+                        name="planworks"
+                        persistable="true"
+                        required="false">
+                  </spinner>
+               </section>
+               <section
+                     label="实际">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualstart"
+                        label="实际开始"
+                        labelVisible="true"
+                        name="actualstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualfinish"
+                        label="实际完成"
+                        labelVisible="true"
+                        name="actualfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="false"
+                        id="actualduration"
+                        label="实际工期(天)"
+                        labelVisible="true"
+                        name="actualduration"
+                        persistable="true"
+                        required="false">
+                  </spinner>
+                  <spinner
+                        editable="false"
+                        id="actualworks"
+                        label="实际工时(小时)"
+                        labelVisible="true"
+                        name="actualworks"
+                        persistable="true"
+                        required="false">
+                  </spinner>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="工作的角色和负责人,承担者"
+               id="basicpage2"
+               image="image/work_24.png"
+               title="执行人">
+            <pagecolumn
+                  id="2">
+               <section
+                     label="角色">
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="charger_roled_id"
+                        label="负责人角色"
+                        labelVisible="true"
+                        name="charger_roled_id"
+                        persistable="true"
+                        required="true"
+                        type="ObjectId">
+                  </combo>
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="assignmentcharger_roled_id"
+                        label="指派人角色"
+                        labelVisible="true"
+                        name="assignmentcharger_roled_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </combo>
+                  <table
+                        ctableId="project.field.participate_roled_set"
+                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
+                        editable="true"
+                        id="participate_roled_set"
+                        label="承担者角色"
+                        labelVisible="true"
+                        name="participate_roled_set"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="设置工作定义的特性"
+               id="settingpage"
+               title="设置">
+            <pagecolumn>
+               <section
+                     label="工作和交付物">
+                  <checkbox
+                        editable="false"
+                        id="s_canbreakdown"
+                        label="是否允许分解工作"
+                        labelVisible="true"
+                        name="s_canbreakdown"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="false"
+                        id="s_canadddeliverables"
+                        label="是否允许添加交付物"
+                        labelVisible="true"
+                        name="s_canadddeliverables"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="false"
+                        id="s_canmodifyplanworks"
+                        label="是否允许修改计划工时"
+                        labelVisible="true"
+                        name="s_canmodifyplanworks"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+               </section>
+               <section
+                     label="开始和完成设定">
+                  <checkbox
+                        editable="false"
+                        id="s_autostartwithparent"
+                        label="上级工作开始时，本工作自动开始"
+                        labelVisible="true"
+                        name="s_autostartwithparent"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="false"
+                        id="s_autofinishwithparent"
+                        label="上级工作完成时，本工作自动完成"
+                        labelVisible="true"
+                        name="s_autofinishwithparent"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="false"
+                        id="s_canskiptofinish"
+                        label="是否可以跳过进行中的流程完成工作"
+                        labelVisible="true"
+                        name="s_canskiptofinish"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="false"
+                        id="s_autofinishwithchildren"
+                        label="下级所有工作完成时，本工作自动完成"
+                        labelVisible="true"
+                        name="s_autofinishwithchildren"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+               </section>
+               <section
+                     label="变更设定">
+                  <checkbox
+                        editable="false"
+                        id="s_workchangeflowmandory"
+                        label="需启动变更流程实施工作的更改"
+                        labelVisible="true"
+                        name="s_workchangeflowmandory"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="false"
+                        id="s_projectchangeflowmandory"
+                        label="需启动项目变更流程实施工作的更改"
+                        labelVisible="true"
+                        name="s_projectchangeflowmandory"
+                        persistable="false"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="工作执行流程"
+               id="processpage1"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.project.editor.page.WorkExecuteProcessPage"
+               title="工作执行流程">
+         </basicpage>
+         <basicpage
+               description="工作变更流程"
+               id="processpage2"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.project.editor.page.WorkChangeProcessPage"
+               title="工作变更流程">
          </basicpage>
       </editor>
    </extension>
    <extension
+         name="用于选择器"
          point="com.sg.widgets.navigator">
       <navigator
             id="project.managementorg"
@@ -690,6 +1343,373 @@
                columnDefinitionId="organization.desc.html">
          </column>
       </table>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.RoleOfProject"
+            id="project.team"
+            popupMenu="popup:project.team">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="ProjectRole_Assignment">
+         </structure>
+         <structure
+               modelRelation="ProjectRole_RoleAssignment">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfProject"
+            fix="2"
+            id="project.wbs"
+            popupMenu="popup:project.wbs">
+         <column
+               columnDefinitionId="work.seq">
+         </column>
+         <column
+               columnDefinitionId="work.desc">
+         </column>
+         <columnGroup
+               defaultGroup="true"
+               name="计划">
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="实际">
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+         </columnGroup>
+         <column
+               column="wf_execute"
+               labelProvider="com.sg.business.model.labelprovider.WorkflowDefLabelPro"
+               name="流程"
+               width="100">
+         </column>
+         <column
+               columnDefinitionId="work.chargerrole">
+         </column>
+         <structure
+               modelRelation="work_work">
+         </structure>
+      </tree>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.team">
+         <command
+               commandId="project.createprojectrole"
+               icon="image/createrole_24.png"
+               label="创建项目角色"
+               style="push">
+         </command>
+         <command
+               commandId="project.linkorganizationrole"
+               icon="image/24_blank.png"
+               label="添加组织角色"
+               style="push">
+         </command>
+         <command
+               commandId="project.roleassignment"
+               icon="image/user_24.png"
+               label="指派成员"
+               style="push">
+         </command>
+         <separator
+               name="project.team1"
+               visible="true">
+         </separator>
+         <command
+               commandId="project.editprojectrole"
+               icon="image/editrole_24.png"
+               label="编辑..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.removeroleormember"
+               icon="image/removerole_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.team2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.wbs">
+         <command
+               commandId="work.create"
+               icon="image/creatework_24.png"
+               label="添加"
+               style="push">
+         </command>
+         <command
+               commandId="work.edit"
+               icon="image/editwork_24.png"
+               label="编辑..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="work.remove"
+               icon="image/removework_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.wbs.1"
+               visible="true">
+         </separator>
+         <menu
+               icon="image/24_blank.png"
+               label="移动工作定义">
+            <command
+                  commandId="work.moveup"
+                  icon="image/up_24.png"
+                  label="上移"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.movedown"
+                  icon="image/down_24.png"
+                  label="下移"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.moveleft"
+                  icon="image/left_24.png"
+                  label="升级"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.moveright"
+                  icon="image/right_24.png"
+                  label="降级"
+                  style="push">
+            </command>
+            <separator
+                  name="management.wbstemplate.separator1.1">
+            </separator>
+            <command
+                  commandId="work.showcompass"
+                  icon="image/naviclose_24.png"
+                  label="显示移动罗盘"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </menu>
+         <separator
+               name="project.wbs.2"
+               visible="true">
+         </separator>
+         <command
+               commandId="work.setcharger"
+               icon="image/24_blank.png"
+               label="指定负责人角色"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.wbs.3"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.project.handler.role.CreateProjectRole"
+            commandId="project.createprojectrole">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.LinkOrganizationRole"
+            commandId="project.linkorganizationrole">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.ProjectRoleAssignment"
+            commandId="project.roleassignment">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.EditProjectRole"
+            commandId="project.editprojectrole">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.RemoveProjectRoleOrMember"
+            commandId="project.removeroleormember">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="project"
+            name="项目">
+      </category>
+      <command
+            categoryId="project"
+            id="project.createprojectrole"
+            name="添加项目角色">
+      </command>
+      <command
+            categoryId="project"
+            id="project.linkorganizationrole"
+            name="添加组织角色">
+      </command>
+      <command
+            categoryId="project"
+            id="project.roleassignment"
+            name="指派角色成员">
+      </command>
+      <command
+            categoryId="project"
+            id="project.editprojectrole"
+            name="编辑项目角色">
+      </command>
+      <command
+            categoryId="project"
+            id="project.removeroleormember"
+            name="删除项目角色或用户">
+      </command>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="organization.alluser"
+            tree="organization.alluser">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
+            id="organization.alluser">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
    </extension>
 
 </plugin>

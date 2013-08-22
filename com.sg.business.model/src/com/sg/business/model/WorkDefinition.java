@@ -5,18 +5,13 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.model.bson.SEQSorter;
-import com.sg.business.resource.BusinessResource;
 
 /**
  * <p>
@@ -28,7 +23,8 @@ import com.sg.business.resource.BusinessResource;
  * @author zhong hua
  * 
  */
-public class WorkDefinition extends AbstractOptionFilterable {
+public class WorkDefinition extends AbstractWork implements
+		IProjectTemplateRelative {
 
 	/**
 	 * 通用工作定义,用于设置{@link #F_WORK_TYPE}的值
@@ -53,13 +49,6 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	public static final String F_WORK_TYPE = "worktype";
 
 	/**
-	 * 项目模板id
-	 * 
-	 * @see #ProjectTemplate
-	 */
-	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
-
-	/**
 	 * 只用于通用工作定义和独立工作定义,保存组织的_id字段值
 	 * 
 	 * @see #Orgainzation
@@ -67,29 +56,9 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
 	/**
-	 * 工作定义的上级工作定义
-	 */
-	public static final String F_PARENT_ID = "parent_id";
-
-	/**
 	 * 工作定义是否激活，可使用，只用于{@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE}
 	 */
 	public static final String F_ACTIVATED = "activated";
-
-	/**
-	 * 工作定义的负责角色定义，{@link RoleDefinition},保存了角色定义的Id
-	 */
-	public static final String F_CHARGER_ROLE_ID = "charger_roled_id";
-
-	/**
-	 * 承担者角色定义
-	 */
-	public static final String F_PARTICIPATE_ROLE_SET = "participate_roled_set";
-
-	/**
-	 * 工作定义的同层序号
-	 */
-	public static final String F_SEQ = "seq";
 
 	/**
 	 * 通用工作定义的编辑器Id
@@ -110,25 +79,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 */
 	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
 
-	public static final String F_ROOT_ID = "root_id";
-
-	public static final String F_WF_EXECUTE = "wf_execute";
-
-	public static final String F_WF_CHANGE = "wf_change";
-
-	/**
-	 * 返回工作定义的显示图标
-	 * @return Image
-	 */
-	@Override
-	public Image getImage() {
-		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
-	}
-
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
 	 * 
-	 * @return int
+	 * @return
 	 */
 	public int getWorkDefinitionType() {
 		Object value = getValue(F_WORK_TYPE);
@@ -145,7 +99,8 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	 * 
 	 * @return 未保存的{@link #WorkDefinition}, 用于编辑器使用
 	 */
-	public WorkDefinition makeChildWorkDefinition() {
+	@Override
+	public WorkDefinition makeChildWork() {
 		DBObject data = new BasicDBObject();
 		data.put(WorkDefinition.F_PARENT_ID, get_id());
 		data.put(WorkDefinition.F_ROOT_ID, getValue(F_ROOT_ID));
@@ -177,20 +132,11 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	}
 
-	/**
-	 * 新建工作工作定义的交付物定义
-	 * @return DeliverableDefinition
-	 */
+	@Override
 	public DeliverableDefinition makeDeliverableDefinition() {
 		return makeDeliverableDefinition(null);
 	}
 
-	/**
-	 * 新建工作定义的交付物定义
-	 * @param docd
-	 *         ,文档定义
-	 * @return DeliverableDefinition
-	 */
 	public DeliverableDefinition makeDeliverableDefinition(
 			DocumentDefinition docd) {
 		DBObject data = new BasicDBObject();
@@ -226,23 +172,6 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return po;
 	}
 
-	/**
-	 * 返回下级工作的工作定义
-	 * @return List
-	 */
-	public List<PrimaryObject> getChildrenWorkDefinition() {
-		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
-		DBObject sort = new SEQSorter().getBSON();
-		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
-				WorkDefinition.class, condition);
-		dsf.setSort(sort);
-		return dsf.getDataSet().getDataItems();
-	}
-
-	/**
-	 * 返回工作定义的所有交付物定义
-	 * @return List
-	 */
 	public List<PrimaryObject> getDeliverableDefinitions() {
 		DBObject condition = new BasicDBObject().append(
 				DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
@@ -251,198 +180,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return dsf.getDataSet().getDataItems();
 	}
 
-	/**
-	 * 判断工作定义是否为摘要工作定义
-	 * @return boolean
-	 */
-	public boolean isSummaryWorkDefinition() {
-		return hasChildrenWorkDefinition();
-	}
-
-	/**
-	 * 判断工作定义是否启用
-	 * @return boolean
-	 */
 	public boolean isActivated() {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
 	}
 
-	/**
-	 * 判断工作定义是否存在下级工作定义
-	 * @return boolean
-	 */
-	public boolean hasChildrenWorkDefinition() {
-		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
-		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
-				WorkDefinition.class, condition);
-		return dsf.getTotalCount() > 0;
-	}
-
-	/**
-	 * 在WBS中向下移动工作定义
-	 * @param context
-	 * @return PrimaryObject[]
-	 * @throws Exception
-	 */
-	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-
-		List<PrimaryObject> children = parent.getChildrenWorkDefinition();
-		int index = children.indexOf(this);
-		Assert.isTrue(index != -1, "下移出错，无法定位将要移动的节点");
-
-		if ((index + 1) >= children.size()) {
-			throw new Exception("已经是本层的最后一个");
-		}
-		children.remove(index);
-		children.add(index + 1, this);
-		doSaveAndResetSeq(children, context);
-		return new PrimaryObject[] { parent };
-	}
-
-	/**
-	 * 在WBS中向上移动工作定义
-	 * @param context
-	 * @return PrimaryObject[]
-	 * @throws Exception
-	 */
-	public PrimaryObject[] doMoveUp(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-		List<PrimaryObject> children = parent.getChildrenWorkDefinition();
-		int index = children.indexOf(this);
-		Assert.isTrue(index != -1, "上移出错，无法定位将要移动的节点");
-
-		if (index == 0) {
-			throw new Exception("已经是本层的第一个");
-		}
-		children.remove(index);
-		children.add(index - 1, this);
-		doSaveAndResetSeq(children, context);
-
-		return new PrimaryObject[] { parent };
-
-	}
-
-	/**
-	 * 在WBS中，升级工作定义
-	 * @param context
-	 * @return PrimaryObject[]
-	 * @throws Exception
-	 */
-	public PrimaryObject[] doMoveLeft(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-
-		WorkDefinition grandpa = (WorkDefinition) parent
-				.getParentPrimaryObject();
-
-		List<PrimaryObject> thisChildren = getChildrenWorkDefinition();
-
-		List<PrimaryObject> parentChildren = parent.getChildrenWorkDefinition();
-		int index = parentChildren.indexOf(this);
-		Assert.isTrue(index != -1, "升级出错，无法定位将要升级的节点");
-
-		if (grandpa == null) {
-			throw new Exception("节点已经不能升级");
-		}
-
-		// 1 自己的下面所有的兄弟变成自己的儿子，从自己的最后一个儿子开始添加
-		for (int i = index + 1; i < parentChildren.size(); i++) {
-			WorkDefinition brother = (WorkDefinition) parentChildren.get(i);
-			brother.setValue(F_PARENT_ID, get_id());
-			thisChildren.add(brother);
-		}
-		// 整理儿子的序号
-		doSaveAndResetSeq(thisChildren, context);
-
-		// 2 祖父变成自己的父，取出祖父的下级获得父所在的位置，,插入到父下面的位置
-		setValue(F_PARENT_ID, grandpa.get_id());
-		List<PrimaryObject> grandpaChildren = grandpa
-				.getChildrenWorkDefinition();
-		index = grandpaChildren.indexOf(parent);
-		Assert.isTrue(index != -1, "升级出错，无法定位将要移动的父节点");
-		grandpaChildren.add(index + 1, this);
-		doSaveAndResetSeq(grandpaChildren, context);
-		return new PrimaryObject[] { this, parent, grandpa };
-	}
-
-	/**
-	 * 取得子工作的最大序号
-	 * 
-	 * @return int
-	 */
-	public int getMaxChildSeq() {
-		DBCollection col = getCollection();
-		DBCursor cur = col.find(
-				new BasicDBObject().append(F_PARENT_ID, get_id()),
-				new BasicDBObject().append(F_SEQ, 1));
-		cur.sort(new SEQSorter(-1).getBSON());
-		if (cur.hasNext()) {
-			Object seq = cur.next().get(F_SEQ);
-			if (seq instanceof Integer) {
-				return ((Integer) seq).intValue();
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * 获取工作定义的序号
-	 * @return int
-	 */
-	public int getSequance() {
-		Object seq = getValue(F_SEQ);
-		if (seq instanceof Integer) {
-			return ((Integer) seq).intValue();
-		}
-		return -1;
-	}
-
-	/**
-	 * 在WBS中，降级工作定义
-	 * @param context
-	 * @return PrimaryObject[]
-	 * @throws Exception
-	 */
-	public PrimaryObject[] doMoveRight(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-		List<PrimaryObject> parentChildren = parent.getChildrenWorkDefinition();
-		int index = parentChildren.indexOf(this);
-		Assert.isTrue(index != -1, "降级出错，无法定位将要降级的节点");
-
-		// 变成上兄弟的最后一个儿子，从父中移除自己
-		if (index == 0) {
-			throw new Exception("节点已经不能降级");
-		}
-		WorkDefinition upperBrother = (WorkDefinition) parentChildren
-				.get(index - 1);
-		List<PrimaryObject> upperBrotherChildren = upperBrother
-				.getChildrenWorkDefinition();
-		upperBrotherChildren.add(this);
-		setValue(F_PARENT_ID, upperBrother.get_id());
-
-		parentChildren.remove(index);
-		doSaveAndResetSeq(parentChildren, context);
-		doSaveAndResetSeq(upperBrotherChildren, context);
-
-		return new PrimaryObject[] { parent, upperBrother };
-	}
-
-	/**
-	 * 删除工作定义
-	 * @param context
-	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		int type = getWorkDefinitionType();
@@ -468,99 +209,38 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 
 		// 删除下级
-		List<PrimaryObject> childrenWorkDefinitions = getChildrenWorkDefinition();
+		List<PrimaryObject> childrenWorkDefinitions = getChildrenWork();
 		for (PrimaryObject primaryObject : childrenWorkDefinitions) {
 			primaryObject.doRemove(context);
 		}
 		// 删除自己
-		WorkDefinition parent = getParent();
+		WorkDefinition parent = (WorkDefinition) getParent();
 
 		super.doRemove(context);
 
 		if (parent != null) {
 
 			// 对平级的重新排列序号
-			List<PrimaryObject> children = parent.getChildrenWorkDefinition();
+			List<PrimaryObject> children = parent.getChildrenWork();
 			doSaveAndResetSeq(children, context);
 		}
 
 	}
 
-	/**
-	 * 返回工作定义的后置工作定义
-	 * @return List
-	 */
 	public List<PrimaryObject> getEnd2Connections() {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END1_ID,
 				WorkDefinitionConnection.class);
 	}
 
-	/**
-	 * 返回工作定义的前置工作定义
-	 * @return List
-	 */
 	public List<PrimaryObject> getEnd1Connections() {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END2_ID,
 				WorkDefinitionConnection.class);
 	}
 
 	/**
-	 * 返回工作定义的上级工作定义
-	 * @return WorkDefinition
-	 */
-	public WorkDefinition getParent() {
-		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
-		if (parent_id != null) {
-			return ModelService.createModelObject(WorkDefinition.class,
-					parent_id);
-		}
-		return null;
-	}
-
-	/**
-	 * 保存工作定义，并重置序号
-	 * @param list
-	 * @param context
-	 * @throws Exception
-	 */
-	private void doSaveAndResetSeq(List<PrimaryObject> list, IContext context)
-			throws Exception {
-		for (int i = 0; i < list.size(); i++) {
-			PrimaryObject item = list.get(i);
-			item.setValue(F_SEQ, new Integer(i));
-			item.doSave(context);
-		}
-	}
-
-	/**
-	 * 返回工作定义的编号，编号为曾经加上序号
-	 * @return String
-	 */
-	public String getWBSCode() {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			return "1";
-		} else {
-			return parent.getWBSCode() + "." + (getSequance() + 1);
-		}
-	}
-
-	/**
-	 * 设置工作负责人
-	 * @param roled
-	 * @param context
-	 * @throws Exception
-	 */
-	public void doSetChargerAssignmentRole(RoleDefinition roled,
-			IContext context) throws Exception {
-		setValue(F_CHARGER_ROLE_ID, roled.get_id());
-		doSave(context);
-	}
-
-	/**
 	 * 获取工作定义所属的项目模板
 	 * 
-	 * @return ProjectTemplate
+	 * @return
 	 */
 	public ProjectTemplate getProjectTemplate() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_TEMPLATE_ID);
@@ -569,20 +249,6 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * 获得该工作定义的负责人角色定义
-	 * 
-	 * @return RoleDefinition
-	 */
-	public RoleDefinition getChargerRoleDefinition() {
-		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
-		if (chargerRoleDefId != null) {
-			return ModelService.createModelObject(RoleDefinition.class,
-					chargerRoleDefId);
-		}
-		return null;
 	}
 
 	/**
@@ -626,7 +292,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 
 		// 创建子工作定义
-		WorkDefinition child = makeChildWorkDefinition();
+		WorkDefinition child = makeChildWork();
 		child.setValue(F_DESC, srcWorkDefinition.getValue(F_DESC));
 		child.setValue(F_WF_CHANGE, srcWorkDefinition.getValue(F_WF_CHANGE));
 		child.setValue(F_WF_EXECUTE, srcWorkDefinition.getValue(F_WF_EXECUTE));
@@ -654,35 +320,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 		// 处理子工作
 		List<PrimaryObject> sourceChildren = srcWorkDefinition
-				.getChildrenWorkDefinition();
+				.getChildrenWork();
 		for (PrimaryObject po : sourceChildren) {
 			child.doClone((WorkDefinition) po, context);
 		}
 	}
 
-	/**
-	 * 取出根工作定义
-	 * 
-	 * @return WorkDefinition
-	 */
-	public WorkDefinition getRoot() {
-		ObjectId rootId = (ObjectId) getValue(F_ROOT_ID);
-		if (rootId == null) {
-			WorkDefinition parent = getParent();
-			if (parent == null) {
-				return this;
-			} else {
-				return parent.getRoot();
-			}
-		} else {
-			return ModelService.createModelObject(WorkDefinition.class, rootId);
-		}
-	}
-
-	/**
-	 * 返回工作定义的所属组织
-	 * @return Organization
-	 */
 	public Organization getOrganization() {
 		ObjectId org_id = (ObjectId) getValue(F_ORGANIZATION_ID);
 		if (org_id != null) {
@@ -716,5 +359,30 @@ public class WorkDefinition extends AbstractOptionFilterable {
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public PrimaryObject getHoster() {
+		return getProjectTemplate();
+	}
+
+	@Override
+	public String getTypeName() {
+		return "工作定义";
+	}
+
+	@Override
+	public String getDefaultEditorId() {
+		int type = getWorkDefinitionType();
+		switch (type) {
+		case WorkDefinition.WORK_TYPE_GENERIC:
+			return WorkDefinition.EDITOR_GENERIC_WORK;
+		case WorkDefinition.WORK_TYPE_STANDLONE:
+			return WorkDefinition.EDITOR_STANDLONE_WORK;
+		case WorkDefinition.WORK_TYPE_PROJECT:
+			return WorkDefinition.EDITOR_PROJECT_WORK;
+		default:
+		}
+		return super.getDefaultEditorId();
 	}
 }

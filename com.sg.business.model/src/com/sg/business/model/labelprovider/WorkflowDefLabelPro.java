@@ -1,14 +1,14 @@
 package com.sg.business.model.labelprovider;
 
+import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
-import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
 public class WorkflowDefLabelPro extends ConfiguratorColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		WorkDefinition workd = (WorkDefinition)element;
+		PrimaryObject workd = (PrimaryObject)element;
 		String key = getFieldName();
 		Object data = workd.getValue(key);
 		if (data instanceof DBObject) {

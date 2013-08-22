@@ -194,7 +194,6 @@ public class IndexFiles {
           try {
 			doc.add(new TextField("contents", FileUtil.getContent(file.getName(), fis),Field.Store.NO));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -8,7 +8,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class AbstractOptionFilterable extends PrimaryObject {
+public abstract class AbstractOptionFilterable extends PrimaryObject {
 
 	public static final String SF_VALUE = "value";
 
@@ -19,7 +19,7 @@ public class AbstractOptionFilterable extends PrimaryObject {
 	/**
 	 * 根据模板创建后添加，且禁止删除
 	 */
-	public static final String VALUE_MONDARY = "必须";
+	public static final String VALUE_MANDATORY = "必须";
 
 	/**
 	 * 根据模板创建后添加，可以删除
@@ -32,9 +32,18 @@ public class AbstractOptionFilterable extends PrimaryObject {
 	 * 根据模板创建后不添加
 	 */
 	public static final String VALUE_EXCLUDE = "排除";
+	
+	/**
+	 * “标准”选项集的名称
+	 */
+	public static final String OPTIONSET_NAME_STANDARD = "标准";
+	
+	public static final String OPTIONSET_NAME_PRODUCTTYPE = "产品类型";
+
+	public static final String OPTIONSET_NAME_PROJECTTYPE = "项目类型";
 
 	public static final String[] VALUE_SET = new String[] { VALUE_EMPTY,
-			VALUE_MONDARY, VALUE_OPTION, VALUE_EXCLUDE };
+			VALUE_MANDATORY, VALUE_OPTION, VALUE_EXCLUDE };
 
 	public static final String F_OPTION_FILTERS = "optionFilters";
 

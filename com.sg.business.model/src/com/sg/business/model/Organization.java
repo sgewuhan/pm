@@ -92,7 +92,11 @@ public class Organization extends PrimaryObject {
 	// }
 
 	/**
+<<<<<<< HEAD
 	 * 返回组织的上级组织_id  see {@link #F_PARENT_ID}
+=======
+	 * 返回组织的上级组织的id。see {@link #F_PARENT_ID}
+>>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
 	 * @return ObjectId
 	 */
 	public ObjectId getParent_id() {
@@ -191,7 +195,11 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 添加用户到组织中
 	 * @param userIdList
+<<<<<<< HEAD
 	 *            ,用户_id的数组
+=======
+	 *            ,用户_id数组
+>>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
 	 */
 	public void doAddMembers(ObjectId[] userIdList) {
 		//获取用户表
@@ -476,5 +484,11 @@ public class Organization extends PrimaryObject {
 		for (PrimaryObject primaryObject : children) {
 			iterateSearchRolesRoles((Organization) primaryObject, dataItems);
 		}
+	}	
+	
+	@Override
+	public String getTypeName() {
+		return "组织";
 	}
+
 }

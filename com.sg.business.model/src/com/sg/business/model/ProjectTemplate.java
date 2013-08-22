@@ -204,5 +204,10 @@ public class ProjectTemplate extends PrimaryObject {
 	public List<PrimaryObject> getRoleDefinitions() {
 		return getRelationById(F__ID, RoleDefinition.F_PROJECT_TEMPLATE_ID, RoleDefinition.class);
 	}
+
 	
+	@Override
+	public String getTypeName() {
+		return "ÏîÄ¿Ä£°å";
+	}
 }

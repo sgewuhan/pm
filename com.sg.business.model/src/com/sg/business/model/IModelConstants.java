@@ -76,4 +76,27 @@ public interface IModelConstants {
 	public static final String C_WORK_DEFINITION_CONNECTION = "workdconnection";
 
 	public static final String C_PROJECT = "project";
+
+	/**
+	 * 保存自动编号
+	 */
+	public static final String C__IDS = "ids";
+
+	/**
+	 * 项目编号的自动编号序列名称
+	 */
+	public static final String SEQ_PROJECT_NUMBER = "projectnumber";
+	
+	public static final String C_PROJECT_ROLE = "projectrole";
+
+	public static final String C_WORK = "work";
+
+	public static final String C_DELIEVERABLE = "deliverable";
+
+	public static final String C_WORK_CONNECTION = "workconnection";
+
+	public static final String C_PROJECT_BUDGET = "projectbudget";
+
+	public static final String C_PROJECT_ROLE_ASSIGNMENT = "projectroleassignment";
+
 }

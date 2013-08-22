@@ -3,7 +3,7 @@ package com.sg.business.management.editor.page;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import com.sg.business.model.BudgetItem;
+import com.sg.business.model.ProjectBudget;
 
 public class BudgetItemTreeContentProvider implements ITreeContentProvider {
 
@@ -17,12 +17,12 @@ public class BudgetItemTreeContentProvider implements ITreeContentProvider {
 	
 	@Override
 	public boolean hasChildren(Object element) {
-		return ((BudgetItem)element).hasChildren();
+		return ((ProjectBudget)element).hasChildren();
 	}
 	
 	@Override
 	public Object getParent(Object element) {
-		return ((BudgetItem)element).getParent();
+		return ((ProjectBudget)element).getParent();
 	}
 	
 	@Override
@@ -32,6 +32,6 @@ public class BudgetItemTreeContentProvider implements ITreeContentProvider {
 	
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		return ((BudgetItem)parentElement).getChildren();
+		return ((ProjectBudget)parentElement).getChildren();
 	}
 }
