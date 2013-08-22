@@ -22,7 +22,7 @@ public class ProjectRoleAssignment extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+		final Shell shell = HandlerUtil.getActiveShell(event);
 		if(!(selected instanceof ProjectRole)){
 			MessageUtil.showToast(shell, TITLE, "只能对项目角色指派用户", SWT.ICON_WARNING);
 			return;
@@ -45,9 +45,14 @@ public class ProjectRoleAssignment extends AbstractNavigatorHandler {
 		NavigatorSelector ns = new NavigatorSelector("organization.alluser") {
 			@Override
 			protected void doOK(IStructuredSelection is) {
-				rd.doAssignUsers(is.toList());
-				vc.getViewer().refresh(rd);
-				vc.expandItem(rd);
+				try {
+					rd.doAssignUsers(is.toList());
+					vc.getViewer().refresh(rd);
+					vc.expandItem(rd);
+				} catch (Exception e) {
+					MessageUtil
+					.showToast(shell, TITLE, e.getMessage(), SWT.ICON_WARNING);
+				}
 				super.doOK(is);
 			}
 

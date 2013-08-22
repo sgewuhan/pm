@@ -233,7 +233,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		DBCollection col = getCollection(IModelConstants.C_WORK_CONNECTION);
 		WriteResult ws = col.insert(result);
-		checkError(ws);
+		checkWriteResult(ws);
 	}
 
 	private HashMap<ObjectId, DBObject> doSetupWBSWithTemplate(
@@ -267,29 +267,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		WriteResult ws = workCol.remove(new BasicDBObject().append(
 				Work.F_PROJECT_ID, get_id()).append(Work.F__ID,
 				new BasicDBObject().append("$ne", wbsRootId)));
-		checkError(ws);
+		checkWriteResult(ws);
 		ws = workCol.insert(worksToBeInsert.values().toArray(new DBObject[0]),
 				WriteConcern.NORMAL);
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 保存文档
 		DBCollection docCol = getCollection(IModelConstants.C_DOCUMENT);
 		ws = docCol.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
 				get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		ws = docCol.insert(documentsToBeInsert.values()
 				.toArray(new DBObject[0]), WriteConcern.NORMAL);
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 保存交付物
 		DBCollection deliCol = getCollection(IModelConstants.C_DELIEVERABLE);
 		ws = deliCol.remove(new BasicDBObject().append(
 				Delieverable.F_PROJECT_ID, get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		ws = deliCol.insert(deliverableToInsert, WriteConcern.NORMAL);
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 保存文件
 		for (DBObject[] dbObjects : fileToCopy) {
@@ -311,13 +311,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		return worksToBeInsert;
-	}
-
-	private void checkError(WriteResult ws) throws Exception {
-		String error = ws.getError();
-		if (!Utils.isNullOrEmpty(error)) {
-			throw new Exception(error);
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -791,7 +784,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 			// 插入到数据库
 			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
-			checkError(ws);
+			checkWriteResult(ws);
 		}
 
 		return result;
@@ -825,36 +818,36 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		DBCollection col = getCollection(IModelConstants.C_WORK);
 		WriteResult ws = col.remove(new BasicDBObject().append(
 				Work.F_PROJECT_ID, get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 删除workconnection
 		col = getCollection(IModelConstants.C_WORK_CONNECTION);
 		ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 删除预算
 		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
 		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID,
 				get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 删除role
 		col = getCollection(IModelConstants.C_PROJECT_ROLE);
 		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
 				get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 删除交付物
 		col = getCollection(IModelConstants.C_DELIEVERABLE);
 		ws = col.remove(new BasicDBObject().append(Delieverable.F_PROJECT_ID,
 				get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		// 删除文档
 		col = getCollection(IModelConstants.C_DOCUMENT);
 		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
 				get_id()));
-		checkError(ws);
+		checkWriteResult(ws);
 
 		super.doRemove(context);
 	}

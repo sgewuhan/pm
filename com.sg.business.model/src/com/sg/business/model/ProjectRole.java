@@ -6,11 +6,14 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
+import com.mongodb.WriteResult;
 
 public class ProjectRole extends AbstractRoleDefinition implements
 		IProjectRelative {
@@ -32,8 +35,9 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	/**
 	 * 为角色指派用户
 	 * @param user
+	 * @throws Exception 
 	 */
-	public void doAssignUsers(List<?> users) {
+	public void doAssignUsers(List<?> users) throws Exception {
 		DBCollection roleAssignmentCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
 		List<DBObject> list = new ArrayList<DBObject>();
@@ -50,6 +54,16 @@ public class ProjectRole extends AbstractRoleDefinition implements
 					.append(ProjectRoleAssignment.F_ROLE_NUMBER, getRoleNumber())
 					.append(ProjectRoleAssignment.F_ROLE_NAME, getDesc()));
 		}
-		roleAssignmentCol.insert(list);
+		WriteResult ws = roleAssignmentCol.insert(list);
+		checkWriteResult(ws);
+	}
+	
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		DBCollection col = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
+		WriteResult ws = col.remove(new BasicDBObject().append(ProjectRoleAssignment.F_ROLE_ID, get_id()),WriteConcern.NORMAL);
+		checkWriteResult(ws);
+		super.doRemove(context);
 	}
 }
