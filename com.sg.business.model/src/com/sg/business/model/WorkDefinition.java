@@ -116,6 +116,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	public static final String F_WF_CHANGE = "wf_change";
 
+	/**
+	 * 返回工作定义的显示图标
+	 * @return Image
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
@@ -124,7 +128,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
 	 * 
-	 * @return
+	 * @return int
 	 */
 	public int getWorkDefinitionType() {
 		Object value = getValue(F_WORK_TYPE);
@@ -173,10 +177,20 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	}
 
+	/**
+	 * 新建工作工作定义的交付物定义
+	 * @return DeliverableDefinition
+	 */
 	public DeliverableDefinition makeDeliverableDefinition() {
 		return makeDeliverableDefinition(null);
 	}
 
+	/**
+	 * 新建工作定义的交付物定义
+	 * @param docd
+	 *         ,文档定义
+	 * @return DeliverableDefinition
+	 */
 	public DeliverableDefinition makeDeliverableDefinition(
 			DocumentDefinition docd) {
 		DBObject data = new BasicDBObject();
@@ -212,6 +226,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return po;
 	}
 
+	/**
+	 * 返回下级工作的工作定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getChildrenWorkDefinition() {
 		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
 		DBObject sort = new SEQSorter().getBSON();
@@ -221,6 +239,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return dsf.getDataSet().getDataItems();
 	}
 
+	/**
+	 * 返回工作定义的所有交付物定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getDeliverableDefinitions() {
 		DBObject condition = new BasicDBObject().append(
 				DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
@@ -229,14 +251,26 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return dsf.getDataSet().getDataItems();
 	}
 
+	/**
+	 * 判断工作定义是否为摘要工作定义
+	 * @return boolean
+	 */
 	public boolean isSummaryWorkDefinition() {
 		return hasChildrenWorkDefinition();
 	}
 
+	/**
+	 * 判断工作定义是否启用
+	 * @return boolean
+	 */
 	public boolean isActivated() {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
 	}
 
+	/**
+	 * 判断工作定义是否存在下级工作定义
+	 * @return boolean
+	 */
 	public boolean hasChildrenWorkDefinition() {
 		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
 		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
@@ -244,6 +278,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return dsf.getTotalCount() > 0;
 	}
 
+	/**
+	 * 在WBS中向下移动工作定义
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
 		if (parent == null) {
@@ -263,6 +303,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return new PrimaryObject[] { parent };
 	}
 
+	/**
+	 * 在WBS中向上移动工作定义
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveUp(IContext context) throws Exception {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
 		if (parent == null) {
@@ -283,6 +329,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	}
 
+	/**
+	 * 在WBS中，升级工作定义
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveLeft(IContext context) throws Exception {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
 		if (parent == null) {
@@ -325,7 +377,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	/**
 	 * 取得子工作的最大序号
 	 * 
-	 * @return
+	 * @return int
 	 */
 	public int getMaxChildSeq() {
 		DBCollection col = getCollection();
@@ -342,6 +394,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return 0;
 	}
 
+	/**
+	 * 获取工作定义的序号
+	 * @return int
+	 */
 	public int getSequance() {
 		Object seq = getValue(F_SEQ);
 		if (seq instanceof Integer) {
@@ -350,6 +406,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return -1;
 	}
 
+	/**
+	 * 在WBS中，降级工作定义
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveRight(IContext context) throws Exception {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
 		if (parent == null) {
@@ -377,6 +439,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return new PrimaryObject[] { parent, upperBrother };
 	}
 
+	/**
+	 * 删除工作定义
+	 * @param context
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		int type = getWorkDefinitionType();
@@ -420,16 +486,28 @@ public class WorkDefinition extends AbstractOptionFilterable {
 
 	}
 
+	/**
+	 * 返回工作定义的后置工作定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getEnd2Connections() {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END1_ID,
 				WorkDefinitionConnection.class);
 	}
 
+	/**
+	 * 返回工作定义的前置工作定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getEnd1Connections() {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END2_ID,
 				WorkDefinitionConnection.class);
 	}
 
+	/**
+	 * 返回工作定义的上级工作定义
+	 * @return WorkDefinition
+	 */
 	public WorkDefinition getParent() {
 		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
 		if (parent_id != null) {
@@ -439,6 +517,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		return null;
 	}
 
+	/**
+	 * 保存工作定义，并重置序号
+	 * @param list
+	 * @param context
+	 * @throws Exception
+	 */
 	private void doSaveAndResetSeq(List<PrimaryObject> list, IContext context)
 			throws Exception {
 		for (int i = 0; i < list.size(); i++) {
@@ -448,6 +532,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 	}
 
+	/**
+	 * 返回工作定义的编号，编号为曾经加上序号
+	 * @return String
+	 */
 	public String getWBSCode() {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
 		if (parent == null) {
@@ -457,6 +545,12 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 	}
 
+	/**
+	 * 设置工作负责人
+	 * @param roled
+	 * @param context
+	 * @throws Exception
+	 */
 	public void doSetChargerAssignmentRole(RoleDefinition roled,
 			IContext context) throws Exception {
 		setValue(F_CHARGER_ROLE_ID, roled.get_id());
@@ -466,7 +560,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	/**
 	 * 获取工作定义所属的项目模板
 	 * 
-	 * @return
+	 * @return ProjectTemplate
 	 */
 	public ProjectTemplate getProjectTemplate() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_TEMPLATE_ID);
@@ -480,7 +574,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	/**
 	 * 获得该工作定义的负责人角色定义
 	 * 
-	 * @return
+	 * @return RoleDefinition
 	 */
 	public RoleDefinition getChargerRoleDefinition() {
 		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
@@ -569,7 +663,7 @@ public class WorkDefinition extends AbstractOptionFilterable {
 	/**
 	 * 取出根工作定义
 	 * 
-	 * @return
+	 * @return WorkDefinition
 	 */
 	public WorkDefinition getRoot() {
 		ObjectId rootId = (ObjectId) getValue(F_ROOT_ID);
@@ -585,6 +679,10 @@ public class WorkDefinition extends AbstractOptionFilterable {
 		}
 	}
 
+	/**
+	 * 返回工作定义的所属组织
+	 * @return Organization
+	 */
 	public Organization getOrganization() {
 		ObjectId org_id = (ObjectId) getValue(F_ORGANIZATION_ID);
 		if (org_id != null) {

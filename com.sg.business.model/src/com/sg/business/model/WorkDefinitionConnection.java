@@ -10,7 +10,7 @@ import com.sg.business.resource.BusinessResource;
 
 /**
  * 工作的前后置关系<p/>
- * @author zhonghua
+ * @author jinxitao
  *
  */
 public class WorkDefinitionConnection extends PrimaryObject {
@@ -26,12 +26,13 @@ public class WorkDefinitionConnection extends PrimaryObject {
 	public static final String F_END2_ID = "end2_id";
 
 	/**
-	 * 链接类型
+	 * 链接类型,类型可以使用
+	 * {@link #TYPE_FF},{@link #TYPE_FS},{@link #TYPE_SS},{@link #TYPE_SF}
 	 */
 	public static final String F_CONNECTIONTYPE = "connectiontype";
 
 	/**
-	 * 间隔
+	 * 间隔时间
 	 */
 	public static final String F_INTERVAL = "interval";
 
@@ -90,15 +91,27 @@ public class WorkDefinitionConnection extends PrimaryObject {
 	 */
 	public static final int UNIT_SECOND = 1000;
 
+	/**
+	 * 项目模板ID
+	 */
 	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
 
+	/**
+	 * 工作前后置任务编辑器
+	 */
 	public static final String EDITOR = "editor.workDefinitionConnection";
 
+	/**
+	 * 获取显示图标
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_LINK_16);
 	}
 
+	/**
+	 * 获取显示内容
+	 */
 	@Override
 	public String getLabel() {
 		WorkDefinition end1 = getEnd1();
@@ -117,6 +130,10 @@ public class WorkDefinitionConnection extends PrimaryObject {
 		return null;
 	}
 
+	/**
+	 * 获取前置任务
+	 * @return
+	 */
 	public WorkDefinition getEnd1() {
 		ObjectId end1_id = (ObjectId) getValue(F_END1_ID);
 		if (end1_id != null) {
@@ -127,6 +144,10 @@ public class WorkDefinitionConnection extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 获取后置任务
+	 * @return
+	 */
 	public WorkDefinition getEnd2() {
 		ObjectId end2_id = (ObjectId) getValue(F_END2_ID);
 		if (end2_id != null) {
@@ -137,10 +158,19 @@ public class WorkDefinitionConnection extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 获取链接类型，有四种类型可以设置
+	 *  {@link #TYPE_FF},{@link #TYPE_FS},{@link #TYPE_SS},{@link #TYPE_SF}
+	 * @return
+	 */
 	public String getConnectionType() {
 		return (String) getValue(F_CONNECTIONTYPE);
 	}
 
+	/**
+	 * 获取间隔时间
+	 * @return
+	 */
 	public int getInterval() {
 		int interval = ((Integer) getValue(F_INTERVAL)).intValue();
 		Object op = getValue(F_OPERATOR);
@@ -163,6 +193,12 @@ public class WorkDefinitionConnection extends PrimaryObject {
 		return interval;
 	}
 
+	/**
+	 * 传递单位，获取间隔时间
+	 * @param unit
+	 *        时间单位
+	 * @return
+	 */
 	public long getInterval(int unit) {
 		return getInterval() / unit;
 	}

@@ -22,9 +22,8 @@ import com.sg.business.resource.BusinessResource;
  * 组织<p/>
  * 
  * 组织为公司的组织结构<br>
- * 组织下面有组织角色和用户<br>
- * @author zhong hua
- *#Organization
+ * 组织下面有子组织,组织角色和用户<br>
+ * @author jinxitao
  */
 public class Organization extends PrimaryObject {
 
@@ -39,7 +38,7 @@ public class Organization extends PrimaryObject {
 	public static final String F_DESCRIPTION = "description";
 
 	/**
-	 * 组织的上级组织
+	 * 组织的上级组织_id
 	 */
 	public static final String F_PARENT_ID = "parent_id";
 
@@ -49,7 +48,7 @@ public class Organization extends PrimaryObject {
 	public static final String F_IS_FUNCTION_DEPARTMENT = "isfunctiondepartment";
 
 	/**
-	 * 组织是否可以为文档库
+	 * 组织是否可以为文档容器,为文档容器的组织可以归档项目文档
 	 */
 	public static final String F_IS_CONTAINER = "iscontainer";
 
@@ -93,7 +92,7 @@ public class Organization extends PrimaryObject {
 	// }
 
 	/**
-	 * 返回组织的上级组织。see {@link #F_PARENT_ID}
+	 * 返回组织的上级组织_id  see {@link #F_PARENT_ID}
 	 * @return ObjectId
 	 */
 	public ObjectId getParent_id() {
@@ -177,7 +176,7 @@ public class Organization extends PrimaryObject {
 	}
 
 	/**
-	 * 返回组织在系统中的显示图标地址
+	 * 返回组织在系统中的显示图标
 	 * @return String
 	 */
 	@Override
@@ -192,7 +191,7 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 添加用户到组织中
 	 * @param userIdList
-	 *            ,用户ID
+	 *            ,用户_id的数组
 	 */
 	public void doAddMembers(ObjectId[] userIdList) {
 		//获取用户表

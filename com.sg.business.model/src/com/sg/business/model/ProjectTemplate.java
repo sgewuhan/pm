@@ -14,22 +14,52 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * 项目模板<p>
+ * 项目模板由业务管理员创建，用于新建项目
+ * @author jinxitao
+ *
+ */
 public class ProjectTemplate extends PrimaryObject {
 
+	/**
+	 * 所属组织
+	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
+	/**
+	 * 是否启用
+	 */
 	public static final String F_ACTIVATED = "activated";
 
+	/**
+	 * 预算定义ID
+	 */
 	public static final String F_BUDGET_ID = "budget_id";
 
+	/**
+	 * 工作定义ID
+	 */
 	public static final String F_WORK_DEFINITON_ID = "workd_id";
 
+	/**
+	 * 标准集，用于选配，确定工作和交付物是否必须
+	 */
 	public static final String F_STANDARD_OPTION_SET = "standardset";
 
+	/**
+	 * 产品类型，用于选配，确定工作和交付物是否必须
+	 */
 	public static final String F_PRODUCTTYPE_OPTION_SET = "producttype";
 
+	/**
+	 * 项目类型，用于选配，确定工作和交付物是否必须
+	 */
 	public static final String F_PROJECTTYPE_OPTION_SET = "projecttype";
 
+	/**
+	 * 项目提交流程
+	 */
 	public static final String F_WF_COMMIT = "wf_commit";
 	
 	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";

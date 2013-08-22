@@ -9,7 +9,7 @@ import com.sg.business.resource.BusinessResource;
 /**
  * 角色和用户的关系<p/>
  * 将角色赋予某个用户，用户和角色为多对多的关系
- * @author zhonghua
+ * @author jinxitao
  *
  */
 public class RoleAssignment extends PrimaryObject{

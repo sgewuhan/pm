@@ -10,8 +10,8 @@ import com.sg.business.resource.BusinessResource;
 
 /**
  * 角色定义<p/>
- * 在项目模板和项目中定义的角色
- * @author zhonghua
+ * 在项目模板中的角色定义
+ * @author jinxitao
  *
  */
 public class RoleDefinition extends PrimaryObject {
@@ -57,8 +57,8 @@ public class RoleDefinition extends PrimaryObject {
 	}
 
 	/**
-	 * 获取组织角色，如果组织中不存在此角色定义就创建
-	 * @return
+	 * 获取角色定义在组织中的角色
+	 * @return Role
 	 */
 	public Role getOrganizationRole() {
 		ObjectId id = (ObjectId) getValue(F_ORGANIZATION_ROLE_ID);
