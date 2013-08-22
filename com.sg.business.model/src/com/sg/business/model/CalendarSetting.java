@@ -37,6 +37,7 @@ public class CalendarSetting extends PrimaryObject {
      * 每天工时（小时）
      */
     public static final String F_WORKING_TIME = "worktime";
+	public static final String F_PROJECT_ID = "project_id";
 
     
 }

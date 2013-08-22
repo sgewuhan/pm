@@ -396,6 +396,57 @@
                width="-1">
          </column>
       </table>
+      <table
+            dataSet="com.sg.business.model.dataset.calendarsetting.ProjectCalendar"
+            editorId="calendar.setting"
+            id="project.calendar">
+         <column
+               column="desc"
+               name="名称"
+               type="String"
+               width="160">
+         </column>
+         <column
+               column="startdate"
+               name="开始日期"
+               type="Date">
+         </column>
+         <column
+               column="enddate"
+               name="结束日期"
+               type="Date">
+         </column>
+         <column
+               column="workingday"
+               name="工作日"
+               type="Boolean">
+         </column>
+         <column
+               column="condition"
+               name="条件"
+               type="String">
+         </column>
+         <column
+               column="operator"
+               name="计算"
+               type="String">
+         </column>
+         <column
+               column="value"
+               name="值"
+               type="String">
+         </column>
+         <column
+               column="seq"
+               name="优先级"
+               type="Integer">
+         </column>
+         <column
+               column="worktime"
+               name="每天工时（小时）"
+               type="Double">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -631,6 +682,12 @@
                id="project.wbs"
                navigatorId="project.wbs"
                title="WBS">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="project.calendar"
+               navigatorId="project.calendar"
+               title="日历">
          </navigatorpage>
       </editor>
       <editor
@@ -1335,6 +1392,10 @@
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </searchAction>
+      </navigator>
+      <navigator
+            id="project.calendar"
+            table="project.calendar">
       </navigator>
    </extension>
    <extension

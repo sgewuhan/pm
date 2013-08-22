@@ -15,6 +15,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.file.RemoteFile;
+import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -25,6 +26,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
+import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.resource.BusinessResource;
 
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
@@ -124,6 +126,34 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制模板
 		doSetupWithTemplate(root.get_id(), context);
 
+		//复制系统日历
+		doCopySystemCanlendar();
+
+	}
+
+	private void doCopySystemCanlendar() throws Exception {
+		SystemCalendar sc = new SystemCalendar();
+		DataSet d = sc.getDataSet();
+		List<PrimaryObject> items = d.getDataItems();
+		List<DBObject> ins = new ArrayList<DBObject>();
+		for (int i = 0; i < items.size(); i++) {
+			CalendarSetting item = (CalendarSetting) items.get(i);
+			BasicDBObject pjCalData = new BasicDBObject();
+			pjCalData.put(CalendarSetting.F_CONDITION, item.getValue(CalendarSetting.F_CONDITION));
+			pjCalData.put(CalendarSetting.F_END_DATE, item.getValue(CalendarSetting.F_END_DATE));
+			pjCalData.put(CalendarSetting.F_OPERATOR, item.getValue(CalendarSetting.F_OPERATOR));
+			pjCalData.put(CalendarSetting.F_SEQ, item.getValue(CalendarSetting.F_SEQ));
+			pjCalData.put(CalendarSetting.F_START_DATE, item.getValue(CalendarSetting.F_START_DATE));
+			pjCalData.put(CalendarSetting.F_VALUE, item.getValue(CalendarSetting.F_VALUE));
+			pjCalData.put(CalendarSetting.F_WORKING_TIME, item.getValue(CalendarSetting.F_WORKING_TIME));
+			pjCalData.put(CalendarSetting.F_WORKINGDAY, item.getValue(CalendarSetting.F_WORKINGDAY));
+			pjCalData.put(CalendarSetting.F_DESC, item.getValue(CalendarSetting.F_DESC));
+			pjCalData.put(CalendarSetting.F_PROJECT_ID, get_id());
+			ins.add(pjCalData);
+		}
+		DBCollection col = getCollection(IModelConstants.C_CALENDAR_SETTING);
+		WriteResult ws = col.insert(ins, WriteConcern.NORMAL);
+		checkWriteResult(ws);
 	}
 
 	public ProjectBudget makeBudget(IContext context) {
