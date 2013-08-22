@@ -9,12 +9,14 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
 
 /**
- * 角色定义<p/>
+ * 角色定义
+ * <p/>
  * 在项目模板和项目中定义的角色
+ * 
  * @author zhonghua
- *
+ * 
  */
-public class AbstractRoleDefinition extends PrimaryObject{
+public class AbstractRoleDefinition extends PrimaryObject {
 
 	/**
 	 * 角色ID
@@ -26,13 +28,10 @@ public class AbstractRoleDefinition extends PrimaryObject{
 	 */
 	public static final String F_ROLE_NUMBER = "rolenumber";
 
-	/**
-	 * 编辑角色的编辑器
-	 */
-	public static final String EDITOR_ROLE_DEFINITION_CREATE = "editor.roleDefinition";
 
 	/**
 	 * 判断角色是否为组织角色
+	 * 
 	 * @return boolean
 	 */
 	public boolean isOrganizatioRole() {
@@ -41,6 +40,7 @@ public class AbstractRoleDefinition extends PrimaryObject{
 
 	/**
 	 * 获取角色的显示图标
+	 * 
 	 * @return Image
 	 */
 	public Image getImage() {
@@ -53,6 +53,7 @@ public class AbstractRoleDefinition extends PrimaryObject{
 
 	/**
 	 * 获取组织角色，如果组织中不存在此角色定义就创建
+	 * 
 	 * @return
 	 */
 	public Role getOrganizationRole() {
@@ -67,20 +68,26 @@ public class AbstractRoleDefinition extends PrimaryObject{
 
 	/**
 	 * 角色的显示图标
+	 * 
 	 * @return String
 	 */
 	@Override
 	public String getLabel() {
-		if (isOrganizatioRole()) {
-			Role role = getOrganizationRole();
-			return role.getLabel();
+		if (isPersistent()) {
+			if (isOrganizatioRole()) {
+				Role role = getOrganizationRole();
+				return role.getLabel();
+			} else {
+				return getDesc() + "|" + getRoleNumber();
+			}
 		} else {
-			return getDesc() + "|" + getRoleNumber();
+			return "";
 		}
 	}
 
 	/**
 	 * 获取角色的编号
+	 * 
 	 * @return String
 	 */
 	public String getRoleNumber() {

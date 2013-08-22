@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
@@ -813,7 +814,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public boolean canDelete(IContext context) {
-		
+
 		// TODO Auto-generated method stub
 		return super.canDelete(context);
 	}
@@ -856,5 +857,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		checkError(ws);
 
 		super.doRemove(context);
+	}
+
+	public boolean hasOrganizationRole(Role role) {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT_ROLE);
+		long count = col.count(new BasicDBObject().append(
+				ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id()).append(
+				ProjectRole.F_PROJECT_ID, get_id()));
+		return count != 0;
+	}
+
+	public ProjectRole makeOrganizationRole(Role role) {
+		ProjectRole prole = ModelService.createModelObject(ProjectRole.class);
+		prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id());
+		prole.setValue(ProjectRole.F_PROJECT_ID, get_id());
+		return prole;
 	}
 }
