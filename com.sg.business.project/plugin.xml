@@ -1361,6 +1361,9 @@
          <structure
                modelRelation="ProjectRole_Assignment">
          </structure>
+         <structure
+               modelRelation="ProjectRole_RoleAssignment">
+         </structure>
       </tree>
       <tree
             autoExpandLevel="-1"
@@ -1369,6 +1372,7 @@
             canEdit="false"
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.WorkOfProject"
+            fix="2"
             id="project.wbs"
             popupMenu="popup:project.wbs">
          <column
@@ -1377,6 +1381,38 @@
          <column
                columnDefinitionId="work.desc">
          </column>
+         <columnGroup
+               defaultGroup="true"
+               name="计划">
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="实际">
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+         </columnGroup>
          <column
                column="wf_execute"
                labelProvider="com.sg.business.model.labelprovider.WorkflowDefLabelPro"
