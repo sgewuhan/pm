@@ -97,4 +97,6 @@ public interface IModelConstants {
 
 	public static final String C_PROJECT_BUDGET = "projectbudget";
 
+	public static final String C_PROJECT_ROLE_ASSIGNMENT = "projectroleassignment";
+
 }

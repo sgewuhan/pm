@@ -1,15 +1,67 @@
 package com.sg.business.project.handler.role;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.handlers.HandlerUtil;
 
-public class ProjectRoleAssignment extends AbstractHandler {
+import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.Organization;
+import com.sg.business.model.Project;
+import com.sg.business.model.ProjectRole;
+import com.sg.business.model.User;
+import com.sg.widgets.MessageUtil;
+import com.sg.widgets.command.AbstractNavigatorHandler;
+import com.sg.widgets.commons.selector.NavigatorSelector;
+import com.sg.widgets.viewer.ViewerControl;
+
+public class ProjectRoleAssignment extends AbstractNavigatorHandler {
+
+	private static final String TITLE = "指派用户";
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		// TODO Auto-generated method stub
-		return null;
+	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+		Shell shell = HandlerUtil.getActiveShell(event);
+		if(!(selected instanceof ProjectRole)){
+			MessageUtil.showToast(shell, TITLE, "只能对项目角色指派用户", SWT.ICON_WARNING);
+			return;
+		}
+
+		final ProjectRole rd = ((ProjectRole) selected);
+		if (rd.isOrganizatioRole()) {
+			MessageUtil
+					.showToast(shell, TITLE, "只能对项目角色指派用户", SWT.ICON_WARNING);
+			return;
+		}
+
+		Project project = rd.getProject();
+
+		Organization org = project.getFunctionOrganization();
+
+		final ViewerControl vc = getCurrentViewerControl(event);
+		// 显示用户选择器
+		// 可选择项目所属职能部门的及下级部门的所有成员
+		NavigatorSelector ns = new NavigatorSelector("organization.alluser") {
+			@Override
+			protected void doOK(IStructuredSelection is) {
+				rd.doAssignUsers(is.toList());
+				vc.getViewer().refresh(rd);
+				vc.expandItem(rd);
+				super.doOK(is);
+			}
+
+			@Override
+			protected boolean isSelectEnabled(IStructuredSelection is) {
+				return super.isSelectEnabled(is)
+						&& (is.getFirstElement() instanceof User);
+			}
+
+		};
+
+		ns.setMaster(org);
+		ns.show();
+
 	}
 
 }

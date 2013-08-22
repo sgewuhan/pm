@@ -999,6 +999,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="-1"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -1146,6 +1147,29 @@
             id="project.removeroleormember"
             name="删除项目角色或用户">
       </command>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="organization.alluser"
+            tree="organization.alluser">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
+            id="organization.alluser">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
    </extension>
 
 </plugin>

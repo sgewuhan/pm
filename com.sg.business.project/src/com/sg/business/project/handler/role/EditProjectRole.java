@@ -22,7 +22,11 @@ public class EditProjectRole extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		
+		if(!(selected instanceof ProjectRole)){
+			MessageUtil.showToast(shell, TITLE, "您只能编辑项目角色", SWT.ICON_WARNING);
+			return;
+		}
+
 		ProjectRole rd = ((ProjectRole)selected);
 		if(rd.isOrganizatioRole()){
 			MessageUtil.showToast(shell, TITLE, "您只能编辑项目角色", SWT.ICON_WARNING);

@@ -18,7 +18,7 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler{
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个角色定义", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, "您需要选择一个角色或用户指派", SWT.ICON_WARNING);
 		return super.nullSelectionContinue(event);
 	}
 
@@ -27,7 +27,7 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler{
 		Shell shell = HandlerUtil.getActiveShell(event);
 		
 		int yes = MessageUtil.showMessage(shell, TITLE,
-				"您确定要删除这个角色吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
+				"您确定要删除吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
 						| SWT.ICON_QUESTION);
 		if(yes!=SWT.YES){
 			return;
