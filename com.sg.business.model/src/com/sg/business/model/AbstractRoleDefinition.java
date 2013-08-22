@@ -16,7 +16,7 @@ import com.sg.business.resource.BusinessResource;
  * @author zhonghua
  * 
  */
-public class AbstractRoleDefinition extends PrimaryObject {
+public abstract class AbstractRoleDefinition extends PrimaryObject {
 
 	/**
 	 * ½ÇÉ«ID

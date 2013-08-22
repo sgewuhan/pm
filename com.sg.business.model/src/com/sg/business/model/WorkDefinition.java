@@ -5,18 +5,13 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.model.bson.SEQSorter;
-import com.sg.business.resource.BusinessResource;
 
 /**
  * <p>
@@ -28,7 +23,7 @@ import com.sg.business.resource.BusinessResource;
  * @author zhong hua
  * 
  */
-public class WorkDefinition extends AbstractOptionFilterable implements IWorkCloneFields,IProjectTemplateRelative{
+public class WorkDefinition extends AbstractWork implements IProjectTemplateRelative{
 
 	/**
 	 * 通用工作定义,用于设置{@link #F_WORK_TYPE}的值
@@ -60,11 +55,6 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
 	/**
-	 * 工作定义的上级工作定义
-	 */
-	public static final String F_PARENT_ID = "parent_id";
-
-	/**
 	 * 工作定义是否激活，可使用，只用于{@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE}
 	 */
 	public static final String F_ACTIVATED = "activated";
@@ -89,12 +79,6 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 	 */
 	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
 
-	public static final String F_ROOT_ID = "root_id";
-
-	@Override
-	public Image getImage() {
-		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
-	}
 
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
@@ -187,15 +171,6 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		return po;
 	}
 
-	public List<PrimaryObject> getChildrenWorkDefinition() {
-		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
-		DBObject sort = new SEQSorter().getBSON();
-		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
-				WorkDefinition.class, condition);
-		dsf.setSort(sort);
-		return dsf.getDataSet().getDataItems();
-	}
-
 	public List<PrimaryObject> getDeliverableDefinitions() {
 		DBObject condition = new BasicDBObject().append(
 				DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
@@ -204,19 +179,8 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		return dsf.getDataSet().getDataItems();
 	}
 
-	public boolean isSummaryWorkDefinition() {
-		return hasChildrenWorkDefinition();
-	}
-
 	public boolean isActivated() {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
-	}
-
-	public boolean hasChildrenWorkDefinition() {
-		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
-		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
-				WorkDefinition.class, condition);
-		return dsf.getTotalCount() > 0;
 	}
 
 	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
@@ -225,7 +189,7 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 			throw new Exception("您不能移动顶层的工作");
 		}
 
-		List<PrimaryObject> children = parent.getChildrenWorkDefinition();
+		List<PrimaryObject> children = parent.getChildrenWork();
 		int index = children.indexOf(this);
 		Assert.isTrue(index != -1, "下移出错，无法定位将要移动的节点");
 
@@ -243,7 +207,7 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		if (parent == null) {
 			throw new Exception("您不能移动顶层的工作");
 		}
-		List<PrimaryObject> children = parent.getChildrenWorkDefinition();
+		List<PrimaryObject> children = parent.getChildrenWork();
 		int index = children.indexOf(this);
 		Assert.isTrue(index != -1, "上移出错，无法定位将要移动的节点");
 
@@ -267,9 +231,9 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		WorkDefinition grandpa = (WorkDefinition) parent
 				.getParentPrimaryObject();
 
-		List<PrimaryObject> thisChildren = getChildrenWorkDefinition();
+		List<PrimaryObject> thisChildren = getChildrenWork();
 
-		List<PrimaryObject> parentChildren = parent.getChildrenWorkDefinition();
+		List<PrimaryObject> parentChildren = parent.getChildrenWork();
 		int index = parentChildren.indexOf(this);
 		Assert.isTrue(index != -1, "升级出错，无法定位将要升级的节点");
 
@@ -289,7 +253,7 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		// 2 祖父变成自己的父，取出祖父的下级获得父所在的位置，,插入到父下面的位置
 		setValue(F_PARENT_ID, grandpa.get_id());
 		List<PrimaryObject> grandpaChildren = grandpa
-				.getChildrenWorkDefinition();
+				.getChildrenWork();
 		index = grandpaChildren.indexOf(parent);
 		Assert.isTrue(index != -1, "升级出错，无法定位将要移动的父节点");
 		grandpaChildren.add(index + 1, this);
@@ -297,40 +261,13 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		return new PrimaryObject[] { this, parent, grandpa };
 	}
 
-	/**
-	 * 取得子工作的最大序号
-	 * 
-	 * @return
-	 */
-	public int getMaxChildSeq() {
-		DBCollection col = getCollection();
-		DBCursor cur = col.find(
-				new BasicDBObject().append(F_PARENT_ID, get_id()),
-				new BasicDBObject().append(F_SEQ, 1));
-		cur.sort(new SEQSorter(-1).getBSON());
-		if (cur.hasNext()) {
-			Object seq = cur.next().get(F_SEQ);
-			if (seq instanceof Integer) {
-				return ((Integer) seq).intValue();
-			}
-		}
-		return 0;
-	}
-
-	public int getSequance() {
-		Object seq = getValue(F_SEQ);
-		if (seq instanceof Integer) {
-			return ((Integer) seq).intValue();
-		}
-		return -1;
-	}
 
 	public PrimaryObject[] doMoveRight(IContext context) throws Exception {
 		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
 		if (parent == null) {
 			throw new Exception("您不能移动顶层的工作");
 		}
-		List<PrimaryObject> parentChildren = parent.getChildrenWorkDefinition();
+		List<PrimaryObject> parentChildren = parent.getChildrenWork();
 		int index = parentChildren.indexOf(this);
 		Assert.isTrue(index != -1, "降级出错，无法定位将要降级的节点");
 
@@ -341,7 +278,7 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		WorkDefinition upperBrother = (WorkDefinition) parentChildren
 				.get(index - 1);
 		List<PrimaryObject> upperBrotherChildren = upperBrother
-				.getChildrenWorkDefinition();
+				.getChildrenWork();
 		upperBrotherChildren.add(this);
 		setValue(F_PARENT_ID, upperBrother.get_id());
 
@@ -377,19 +314,19 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		}
 
 		// 删除下级
-		List<PrimaryObject> childrenWorkDefinitions = getChildrenWorkDefinition();
+		List<PrimaryObject> childrenWorkDefinitions = getChildrenWork();
 		for (PrimaryObject primaryObject : childrenWorkDefinitions) {
 			primaryObject.doRemove(context);
 		}
 		// 删除自己
-		WorkDefinition parent = getParent();
+		WorkDefinition parent = (WorkDefinition) getParent();
 
 		super.doRemove(context);
 
 		if (parent != null) {
 
 			// 对平级的重新排列序号
-			List<PrimaryObject> children = parent.getChildrenWorkDefinition();
+			List<PrimaryObject> children = parent.getChildrenWork();
 			doSaveAndResetSeq(children, context);
 		}
 
@@ -403,39 +340,6 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 	public List<PrimaryObject> getEnd1Connections() {
 		return getRelationById(F__ID, WorkDefinitionConnection.F_END2_ID,
 				WorkDefinitionConnection.class);
-	}
-
-	public WorkDefinition getParent() {
-		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
-		if (parent_id != null) {
-			return ModelService.createModelObject(WorkDefinition.class,
-					parent_id);
-		}
-		return null;
-	}
-
-	private void doSaveAndResetSeq(List<PrimaryObject> list, IContext context)
-			throws Exception {
-		for (int i = 0; i < list.size(); i++) {
-			PrimaryObject item = list.get(i);
-			item.setValue(F_SEQ, new Integer(i));
-			item.doSave(context);
-		}
-	}
-
-	public String getWBSCode() {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			return "1";
-		} else {
-			return parent.getWBSCode() + "." + (getSequance() + 1);
-		}
-	}
-
-	public void doSetChargerAssignmentRole(RoleDefinition roled,
-			IContext context) throws Exception {
-		setValue(F_CHARGER_ROLE_ID, roled.get_id());
-		doSave(context);
 	}
 
 	/**
@@ -452,19 +356,6 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 		}
 	}
 
-	/**
-	 * 获得该工作定义的负责人角色定义
-	 * 
-	 * @return
-	 */
-	public RoleDefinition getChargerRoleDefinition() {
-		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
-		if (chargerRoleDefId != null) {
-			return ModelService.createModelObject(RoleDefinition.class,
-					chargerRoleDefId);
-		}
-		return null;
-	}
 
 	/**
 	 * 导入一个通用工作定义
@@ -535,28 +426,9 @@ public class WorkDefinition extends AbstractOptionFilterable implements IWorkClo
 
 		// 处理子工作
 		List<PrimaryObject> sourceChildren = srcWorkDefinition
-				.getChildrenWorkDefinition();
+				.getChildrenWork();
 		for (PrimaryObject po : sourceChildren) {
 			child.doClone((WorkDefinition) po, context);
-		}
-	}
-
-	/**
-	 * 取出根工作定义
-	 * 
-	 * @return
-	 */
-	public WorkDefinition getRoot() {
-		ObjectId rootId = (ObjectId) getValue(F_ROOT_ID);
-		if (rootId == null) {
-			WorkDefinition parent = getParent();
-			if (parent == null) {
-				return this;
-			} else {
-				return parent.getRoot();
-			}
-		} else {
-			return ModelService.createModelObject(WorkDefinition.class, rootId);
 		}
 	}
 

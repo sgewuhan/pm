@@ -73,7 +73,7 @@ public class DocumentDefinition extends PrimaryObject {
 			int type = workDefinition.getWorkDefinitionType();
 			if (type == WorkDefinition.WORK_TYPE_GENERIC
 					|| type == WorkDefinition.WORK_TYPE_STANDLONE) {
-				WorkDefinition root = workDefinition.getRoot();
+				WorkDefinition root = (WorkDefinition) workDefinition.getRoot();
 				if (!result.contains(root)) {
 					result.add(root);
 				}

@@ -230,6 +230,24 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="project.wbs"
+            tree="project.wbs">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.seq">
+            </column>
+            <column
+                  columnDefinitionId="work.desc">
+            </column></filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.seq">
+            </column>
+            <column
+                  columnDefinitionId="work.desc">
+            </column></searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -594,6 +612,11 @@
                image="image/group_24.png"
                navigatorId="project.team"
                title="项目组">
+         </navigatorpage>
+         <navigatorpage
+               id="project.wbs"
+               navigatorId="project.wbs"
+               title="WBS">
          </navigatorpage>
       </editor>
       <editor
@@ -1012,6 +1035,34 @@
          </column>
          <structure
                modelRelation="ProjectRole_Assignment">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.RoleOfProject"
+            id="project.wbs"
+            popupMenu="popup:project.wbs">
+         <column
+               columnDefinitionId="work.seq">
+         </column>
+         <column
+               columnDefinitionId="work.desc">
+         </column>
+         <column
+               column="wf_execute"
+               labelProvider="com.sg.business.model.labelprovider.WorkflowDefLabelPro"
+               name="流程"
+               width="100">
+         </column>
+         <column
+               columnDefinitionId="work.chargerrole">
+         </column>
+         <structure
+               modelRelation="work_work">
          </structure>
       </tree>
    </extension>

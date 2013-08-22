@@ -2,16 +2,16 @@ package com.sg.business.model.labelprovider;
 
 import org.eclipse.swt.graphics.Image;
 
-import com.sg.business.model.RoleDefinition;
-import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.ProjectRole;
+import com.sg.business.model.Work;
 import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
-public class ChargerRoleDefOfWorkDefLabelProvider extends ConfiguratorColumnLabelProvider {
+public class ChargerRoleDefOfWorkLabelProvider extends ConfiguratorColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		WorkDefinition workd = (WorkDefinition) element;
-		RoleDefinition chargerRoleDef = workd.getChargerRoleDefinition(RoleDefinition.class);
+		Work work = (Work) element;
+		ProjectRole chargerRoleDef = work.getChargerRoleDefinition(ProjectRole.class);
 		if(chargerRoleDef!=null){
 			return chargerRoleDef.getLabel();
 		}else{
@@ -21,8 +21,8 @@ public class ChargerRoleDefOfWorkDefLabelProvider extends ConfiguratorColumnLabe
 	
 	@Override
 	public Image getImage(Object element) {
-		WorkDefinition workd = (WorkDefinition) element;
-		RoleDefinition chargerRoleDef = workd.getChargerRoleDefinition(RoleDefinition.class);
+		Work work = (Work) element;
+		ProjectRole chargerRoleDef = work.getChargerRoleDefinition(ProjectRole.class);
 		if(chargerRoleDef!=null){
 			return chargerRoleDef.getImage();
 		}else{

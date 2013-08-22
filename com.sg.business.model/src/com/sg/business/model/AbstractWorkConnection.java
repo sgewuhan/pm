@@ -13,7 +13,7 @@ import com.sg.business.resource.BusinessResource;
  * @author zhonghua
  *
  */
-public class AbstractWorkConnection extends PrimaryObject {
+public abstract class AbstractWorkConnection extends PrimaryObject {
 
 	/**
 	 * Ç°ÖÃ½Úµã
