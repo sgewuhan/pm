@@ -100,7 +100,8 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 	 * 
 	 * @return 未保存的{@link #WorkDefinition}, 用于编辑器使用
 	 */
-	public WorkDefinition makeChildWorkDefinition() {
+	@Override
+	public WorkDefinition makeChildWork() {
 		DBObject data = new BasicDBObject();
 		data.put(WorkDefinition.F_PARENT_ID, get_id());
 		data.put(WorkDefinition.F_ROOT_ID, getValue(F_ROOT_ID));
@@ -398,7 +399,7 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 		}
 
 		// 创建子工作定义
-		WorkDefinition child = makeChildWorkDefinition();
+		WorkDefinition child = makeChildWork();
 		child.setValue(F_DESC, srcWorkDefinition.getValue(F_DESC));
 		child.setValue(F_WF_CHANGE, srcWorkDefinition.getValue(F_WF_CHANGE));
 		child.setValue(F_WF_EXECUTE, srcWorkDefinition.getValue(F_WF_EXECUTE));

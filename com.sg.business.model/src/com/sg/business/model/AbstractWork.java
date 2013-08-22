@@ -157,4 +157,6 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 			item.doSave(context);
 		}
 	}
+	
+	public abstract AbstractWork makeChildWork();
 }

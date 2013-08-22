@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -13,7 +13,7 @@ import com.sg.widgets.part.CompassPanel;
 import com.sg.widgets.viewer.CTreeViewer;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class WorkDefinitionNavigatorPanel extends CompassPanel {
+public class WorkNavigatorPanel extends CompassPanel {
 
 	private CTreeViewer viewer;
 

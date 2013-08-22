@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.roledef;
+package com.sg.business.management.handler;
 
 import java.util.Iterator;
 

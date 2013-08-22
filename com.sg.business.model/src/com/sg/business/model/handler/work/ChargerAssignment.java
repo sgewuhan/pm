@@ -1,6 +1,4 @@
-package com.sg.business.management.handler.workdef;
-
-import java.util.Iterator;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -8,37 +6,30 @@ import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
+import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.viewer.CTreeViewer;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
+public class ChargerAssignment extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		final WorkDefinition workd = (WorkDefinition) selected;
-		final ViewerControl vc = getCurrentViewerControl(event);
+		ViewerControl vc = getCurrentViewerControl(event);
 		workd.addEventListener(vc);
 		NavigatorSelector ns = new NavigatorSelector(
-				"management.genericwork.definitions") {
+				"management.roledefinition") {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()) {
 					try {
-						Iterator<?> iter = is.iterator();
-						while (iter.hasNext()) {
-							Object next = iter.next();
-							workd.doImportGenericWorkDefinition(
-									(WorkDefinition) next,
-									new CurrentAccountContext());
-						}
-						CTreeViewer viewer = (CTreeViewer) vc.getViewer();
-						viewer.refresh(workd);
-						viewer.expandToLevel(workd, CTreeViewer.ALL_LEVELS);
+						Object next = is.getFirstElement();
+						workd.doSetChargerAssignmentRole((RoleDefinition) next,
+								new CurrentAccountContext());
 						super.doOK(is);
 					} catch (Exception e) {
 						MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
@@ -50,7 +41,7 @@ public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
 			}
 		};
 		ProjectTemplate projectTemplate = workd.getProjectTemplate();
-		ns.setMaster(projectTemplate.getOrganization());
+		ns.setMaster(projectTemplate);
 		ns.show();
 	}
 

@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
@@ -7,44 +7,42 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.DeliverableDefinition;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
-import com.sg.widgets.part.editor.DataObjectDialog;
-import com.sg.widgets.registry.config.Configurator;
-import com.sg.widgets.registry.config.DataEditorConfigurator;
+import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class EditDeliverableDefinition extends AbstractNavigatorHandler {
+public class RemoveDeliverableDefinition extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "编辑交付物定义";
+	private static final String TITLE = "删除交付物交付物";
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个交付物定义", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, "您需要选择一个交付物交付物", SWT.ICON_WARNING);
 		return super.nullSelectionContinue(event);
 	}
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
-
+		int yes = MessageUtil.showMessage(shell, TITLE,
+				"您确定要删除这个交付物定义吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
+						| SWT.ICON_QUESTION);
+		if(yes!=SWT.YES){
+			return;
+		}
+		
 		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
 		selected.addEventListener(currentViewerControl);
-
-		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				DeliverableDefinition.EDITOR);
 		try {
-			DataObjectDialog.openDialog(selected, (DataEditorConfigurator) conf,
-					true, null, TITLE);
+			selected.doRemove(new CurrentAccountContext());
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showMessage(shell, TITLE, e.getMessage(),
+					SWT.ICON_WARNING);
 		}
-
 		selected.removeEventListener(currentViewerControl);
 	}
 

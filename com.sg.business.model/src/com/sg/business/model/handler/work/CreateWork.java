@@ -1,33 +1,28 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.DeliverableDefinition;
+import com.sg.business.model.AbstractWork;
+import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.editor.DataObjectDialog;
-import com.sg.widgets.part.view.NavigatorPart;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
-
-	private static final String TITLE = "添加交付物定义";
+public class CreateWork extends AbstractNavigatorHandler {
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个上级工作定义", SWT.ICON_WARNING);
+		MessageUtil.showToast("您需要选择一个上级", SWT.ICON_WARNING);
 		return super.nullSelectionContinue(event);
 	}
 
@@ -35,8 +30,7 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 
-		DeliverableDefinition po = ((WorkDefinition) selected)
-				.makeDeliverableDefinition();
+		AbstractWork po = ((AbstractWork) selected).makeChildWork();
 		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
@@ -47,24 +41,28 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 		po.addEventListener(currentViewerControl);
 
 		// 使用编辑器打开编辑工作定义
-		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				DeliverableDefinition.EDITOR);
+		Configurator conf;
+		if (po instanceof WorkDefinition) {
+			conf = Widgets.getEditorRegistry().getConfigurator(
+					WorkDefinition.EDITOR_PROJECT_WORK);
+		} else {
+			conf = Widgets.getEditorRegistry().getConfigurator(
+					Work.EDITOR_PROJECT_WORK);
+		}
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, TITLE);
+					true, null, getTitle(po));
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, getTitle(po), e.getMessage(),
+					SWT.ICON_ERROR);
 		}
 
 		// 3. 处理完成后，释放侦听器
 		po.removeEventListener(currentViewerControl);
+	}
 
-		// 4. 刷新当前页面的文档模板视图
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		NavigatorPart np = (NavigatorPart) page
-				.findView("management.documentdefinition");
-		np.reloadMaster();
+	private String getTitle(AbstractWork po) {
+		return (po instanceof WorkDefinition) ? "添加工作定义" : "工作";
 	}
 
 }

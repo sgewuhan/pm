@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.management.handler;
 
 import java.util.Iterator;
 
@@ -7,48 +7,48 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.DeliverableDefinition;
-import com.sg.business.model.DocumentDefinition;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.viewer.CTreeViewer;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
+public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		final WorkDefinition workd = (WorkDefinition) selected;
 		final ViewerControl vc = getCurrentViewerControl(event);
-
+		workd.addEventListener(vc);
 		NavigatorSelector ns = new NavigatorSelector(
-				"management.documentdefinition") {
+				"management.genericwork.definitions") {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()) {
 					try {
 						Iterator<?> iter = is.iterator();
 						while (iter.hasNext()) {
-							DocumentDefinition next = (DocumentDefinition) iter.next();
-							DeliverableDefinition po = workd.makeDeliverableDefinition(next);
-							po.setParentPrimaryObject(workd);
-							po.addEventListener(vc);
-							po.doSave(new CurrentAccountContext());
+							Object next = iter.next();
+							workd.doImportGenericWorkDefinition(
+									(WorkDefinition) next,
+									new CurrentAccountContext());
 						}
+						CTreeViewer viewer = (CTreeViewer) vc.getViewer();
+						viewer.refresh(workd);
+						viewer.expandToLevel(workd, CTreeViewer.ALL_LEVELS);
 						super.doOK(is);
 					} catch (Exception e) {
 						MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
 					}
 
 				} else {
-					MessageUtil.showToast("请选择文档定义", SWT.ICON_WARNING);
+					MessageUtil.showToast("请选择角色定义", SWT.ICON_WARNING);
 				}
 			}
 		};
-
 		ProjectTemplate projectTemplate = workd.getProjectTemplate();
 		ns.setMaster(projectTemplate.getOrganization());
 		ns.show();

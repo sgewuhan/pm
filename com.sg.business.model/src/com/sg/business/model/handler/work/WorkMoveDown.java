@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -14,35 +14,34 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class WorkDefinitionMoveUp extends AbstractNavigatorHandler {
+public class WorkMoveDown extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "上移工作定义";
-
+	private static final String TITLE = "下移工作定义";
+	
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		MessageUtil.showToast(shell, TITLE, "您需要选择一个工作定义", SWT.ICON_WARNING);
 		return false;
 	}
-
+	
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		try {
-			PrimaryObject[] relativeObjects = ((WorkDefinition) selected)
-					.doMoveUp(new CurrentAccountContext());
-
+			PrimaryObject[] relativeObjects = ((WorkDefinition)selected).doMoveDown(new CurrentAccountContext());
+			
 			ViewerControl vc = getCurrentViewerControl(event);
 			ColumnViewer viewer = vc.getViewer();
-			for (int i = 0; i < relativeObjects.length; i++) {
+			for(int i=0;i<relativeObjects.length;i++){
 				viewer.refresh(relativeObjects[i]);
 			}
 			viewer.setSelection(new StructuredSelection(selected), true);
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, TITLE, e.getMessage(),
-					SWT.ICON_WARNING);
+			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_WARNING);
 		}
-
+		
 	}
+
 
 }

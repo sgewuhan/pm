@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
@@ -12,7 +12,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class RemoveWorkDefinition extends AbstractNavigatorHandler {
+public class RemoveWork extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "删除工作定义";
 

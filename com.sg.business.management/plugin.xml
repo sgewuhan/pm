@@ -1560,13 +1560,13 @@
             allPopups="false"
             locationURI="popup:management.wbstemplate">
          <command
-               commandId="management.wbstemplate.create"
+               commandId="work.create"
                icon="image/creatework_24.png"
                label="添加"
                style="push">
          </command>
          <command
-               commandId="management.wbstemplate.edit"
+               commandId="work.edit"
                icon="image/editwork_24.png"
                label="编辑..."
                style="push">
@@ -1581,7 +1581,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="management.wbstemplate.remove"
+               commandId="work.remove"
                icon="image/removework_24.png"
                label="删除"
                style="push">
@@ -1603,25 +1603,25 @@
                icon="image/24_blank.png"
                label="移动工作定义">
             <command
-                  commandId="management.wbstemplate.moveup"
+                  commandId="work.moveup"
                   icon="image/up_24.png"
                   label="上移"
                   style="push">
             </command>
             <command
-                  commandId="management.wbstemplate.movedown"
+                  commandId="work.movedown"
                   icon="image/down_24.png"
                   label="下移"
                   style="push">
             </command>
             <command
-                  commandId="management.wbstemplate.moveleft"
+                  commandId="work.moveleft"
                   icon="image/left_24.png"
                   label="升级"
                   style="push">
             </command>
             <command
-                  commandId="management.wbstemplate.moveright"
+                  commandId="work.moveright"
                   icon="image/right_24.png"
                   label="降级"
                   style="push">
@@ -1630,7 +1630,7 @@
                   name="management.wbstemplate.separator1.1">
             </separator>
             <command
-                  commandId="management.wbstemplate.showcompass"
+                  commandId="work.showcompass"
                   icon="image/naviclose_24.png"
                   label="显示移动罗盘"
                   style="push">
@@ -1666,7 +1666,7 @@
                visible="true">
          </separator>
          <command
-               commandId="management.wbstemplate.charger"
+               commandId="work.setcharger"
                icon="image/24_blank.png"
                label="指定负责人角色"
                style="push">
@@ -2009,13 +2009,13 @@
             allPopups="false"
             locationURI="popup:management.genericworkd.wbstemplate">
          <command
-               commandId="management.wbstemplate.create"
+               commandId="work.create"
                icon="image/creatework_24.png"
                label="添加"
                style="push">
          </command>
          <command
-               commandId="management.wbstemplate.edit"
+               commandId="work.edit"
                icon="image/editwork_24.png"
                label="编辑..."
                style="push">
@@ -2030,7 +2030,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="management.wbstemplate.remove"
+               commandId="work.remove"
                icon="image/removework_24.png"
                label="删除"
                style="push">
@@ -2052,25 +2052,25 @@
                icon="image/24_blank.png"
                label="移动工作定义">
             <command
-                  commandId="management.wbstemplate.moveup"
+                  commandId="work.moveup"
                   icon="image/up_24.png"
                   label="上移"
                   style="push">
             </command>
             <command
-                  commandId="management.wbstemplate.movedown"
+                  commandId="work.movedown"
                   icon="image/down_24.png"
                   label="下移"
                   style="push">
             </command>
             <command
-                  commandId="management.wbstemplate.moveleft"
+                  commandId="work.moveleft"
                   icon="image/left_24.png"
                   label="升级"
                   style="push">
             </command>
             <command
-                  commandId="management.wbstemplate.moveright"
+                  commandId="work.moveright"
                   icon="image/right_24.png"
                   label="降级"
                   style="push">
@@ -2079,7 +2079,7 @@
                   name="management.wbstemplate.separator1.1">
             </separator>
             <command
-                  commandId="management.wbstemplate.showcompass"
+                  commandId="work.showcompass"
                   icon="image/naviclose_24.png"
                   label="显示移动罗盘"
                   style="push">
@@ -2323,115 +2323,6 @@
       </menuContribution>
    </extension>
    <extension
-         point="org.eclipse.ui.commands">
-      <category
-            id="com.sg.business.management"
-            name="业务管理">
-      </category>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.create"
-            name="添加">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.edit"
-            name="编辑">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.remove"
-            name="删除">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.copygeneric"
-            name="添加通用工作定义">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.changetogeneric"
-            name="转为通用工作定义">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.moveup"
-            name="上移">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.movedown"
-            name="下移">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.moveleft"
-            name="升级">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.moveright"
-            name="降级">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.showcompass"
-            name="显示移动罗盘">
-      </command>
-      <command
-            categoryId="com.sg.business.management"
-            id="management.wbstemplate.charger"
-            name="指定负责人角色">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="com.sg.business.management.handler.workdef.CreateWorkDefinition"
-            commandId="management.wbstemplate.create">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.EditWorkDefinition"
-            commandId="management.wbstemplate.edit">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.RemoveWorkDefinition"
-            commandId="management.wbstemplate.remove">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.WorkDefinitionMoveUp"
-            commandId="management.wbstemplate.moveup">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.WorkDefinitionMoveDown"
-            commandId="management.wbstemplate.movedown">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.WorkDefinitionMoveLeft"
-            commandId="management.wbstemplate.moveleft">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.WorkDefinitionMoveRight"
-            commandId="management.wbstemplate.moveright">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.ChangeToGenericWorkDefinition"
-            commandId="management.wbstemplate.changetogeneric">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.CopyGenericWorkDefinition"
-            commandId="management.wbstemplate.copygeneric">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.ShowWorkDefinitionCompase"
-            commandId="management.wbstemplate.showcompass">
-      </handler>
-      <handler
-            class="com.sg.business.management.handler.workdef.ChargerAssignment"
-            commandId="management.wbstemplate.charger">
-      </handler>
-   </extension>
-   <extension
          name="角色定义"
          point="org.eclipse.ui.commands">
       <command
@@ -2458,19 +2349,19 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.management.handler.roledef.CreateRoleDefinition"
+            class="com.sg.business.management.handler.CreateRoleDefinition"
             commandId="management.roledefinition.create">
       </handler>
       <handler
-            class="com.sg.business.management.handler.roledef.EditRoleDefinition"
+            class="com.sg.business.management.handler.EditRoleDefinition"
             commandId="management.roledefinition.edit">
       </handler>
       <handler
-            class="com.sg.business.management.handler.roledef.RemoveRoleDefinition"
+            class="com.sg.business.management.handler.RemoveRoleDefinition"
             commandId="management.roledefinition.remove">
       </handler>
       <handler
-            class="com.sg.business.management.handler.roledef.LinkOrganizationRole"
+            class="com.sg.business.management.handler.LinkOrganizationRole"
             commandId="management.roledefinition.link">
       </handler>
    </extension>
@@ -2499,19 +2390,19 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.management.handler.workdef.CreateDeliverableDefinition"
+            class="com.sg.business.model.handler.work.CreateDeliverableDefinition"
             commandId="management.deliverables.create">
       </handler>
       <handler
-            class="com.sg.business.management.handler.workdef.EditDeliverableDefinition"
+            class="com.sg.business.model.handler.work.EditDeliverableDefinition"
             commandId="management.deliverables.edit">
       </handler>
       <handler
-            class="com.sg.business.management.handler.workdef.RemoveDeliverableDefinition"
+            class="com.sg.business.model.handler.work.RemoveDeliverableDefinition"
             commandId="management.deliverables.remove">
       </handler>
       <handler
-            class="com.sg.business.management.handler.workdef.LinkDeliverableDefinition"
+            class="com.sg.business.model.handler.work.LinkDeliverableDefinition"
             commandId="management.deliverables.link">
       </handler>
    </extension>
@@ -2526,7 +2417,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.management.handler.workdef.CreateWorkDefinitionConnection"
+            class="com.sg.business.management.handler.CreateWorkConnection"
             commandId="management.workdconnection.create">
       </handler>
    </extension>
@@ -2565,6 +2456,30 @@
                id="-">
          </option>
       </option>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="com.sg.business.management"
+            id="management.wbstemplate.copygeneric"
+            name="添加通用工作定义">
+      </command>
+      <command
+            categoryId="com.sg.business.management"
+            id="management.wbstemplate.changetogeneric"
+            name="转为通用工作定义">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.management.handler.ChangeToGenericWorkDefinition"
+            commandId="management.wbstemplate.changetogeneric">
+      </handler>
+      <handler
+            class="com.sg.business.management.handler.CopyGenericWorkDefinition"
+            commandId="management.wbstemplate.copygeneric">
+      </handler>
    </extension>
 
 </plugin>

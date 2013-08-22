@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.swt.SWT;
@@ -12,12 +12,12 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ShowWorkDefinitionCompase extends AbstractNavigatorHandler {
+public class ShowWorkCompase extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		ViewerControl vc = getCurrentViewerControl(event);
-		WorkDefinitionNavigatorPanel navi = new WorkDefinitionNavigatorPanel();
+		WorkNavigatorPanel navi = new WorkNavigatorPanel();
 		
 		navi.setViewerControl(vc);
 		

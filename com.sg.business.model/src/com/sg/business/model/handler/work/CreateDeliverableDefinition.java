@@ -1,24 +1,28 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.editor.DataObjectDialog;
+import com.sg.widgets.part.view.NavigatorPart;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class CreateWorkDefinition extends AbstractNavigatorHandler {
+public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "添加工作定义";
+	private static final String TITLE = "添加交付物定义";
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
@@ -31,7 +35,8 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 
-		WorkDefinition po = ((WorkDefinition)selected).makeChildWorkDefinition();
+		DeliverableDefinition po = ((WorkDefinition) selected)
+				.makeDeliverableDefinition();
 		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
@@ -43,7 +48,7 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 
 		// 使用编辑器打开编辑工作定义
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				WorkDefinition.EDITOR_PROJECT_WORK);
+				DeliverableDefinition.EDITOR);
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, TITLE);
@@ -53,6 +58,13 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 
 		// 3. 处理完成后，释放侦听器
 		po.removeEventListener(currentViewerControl);
+
+		// 4. 刷新当前页面的文档模板视图
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+		NavigatorPart np = (NavigatorPart) page
+				.findView("management.documentdefinition");
+		np.reloadMaster();
 	}
 
 }

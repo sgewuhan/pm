@@ -1,4 +1,4 @@
-package com.sg.business.management.handler.workdef;
+package com.sg.business.model.handler.work;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
@@ -16,7 +16,7 @@ import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class EditWorkDefinition extends AbstractNavigatorHandler {
+public class EditWork extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "编辑工作定义";
 
