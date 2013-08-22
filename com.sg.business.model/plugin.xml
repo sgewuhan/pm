@@ -946,5 +946,37 @@
          </column>
       </table>
    </extension>
+   <extension
+         point="com.sg.widgets.column">
+      <column
+            column="planstart"
+            editingSupport="com.sg.business.model.editingsupport.PlanStartEditing"
+            id="planstart_e"
+            name="计划开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planfinish"
+            id="planfinish_e"
+            name="计划完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planduration"
+            id="planduration_e"
+            name="计划工期"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="planworks"
+            id="planworks_e"
+            name="计划工时"
+            type="Integer"
+            width="72">
+      </column>
+   </extension>
 
 </plugin>

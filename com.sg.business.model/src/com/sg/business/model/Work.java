@@ -2,6 +2,7 @@ package com.sg.business.model;
 
 import org.bson.types.ObjectId;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -77,5 +78,16 @@ public class Work extends AbstractWork implements IProjectRelative,ISchedual {
 	@Override
 	public String getDefaultEditorId() {
 		return EDITOR;
+	}
+
+	public boolean canEdit(String column,
+			IContext context) {
+		return true;
+	}
+
+	public Work[] doUpdateSchedual(String key, Object value,
+			IContext context) {
+		setValue(key, value);
+		return new Work[]{this};
 	}
 }

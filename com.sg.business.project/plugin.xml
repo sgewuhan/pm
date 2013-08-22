@@ -1020,15 +1020,29 @@
                         required="false"
                         type="String">
                   </text>
-                  <checkbox
-                        editable="true"
-                        id="milestone"
-                        label="里程碑"
-                        labelVisible="true"
-                        name="milestone"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
+                  <fieldgroup
+                        columnCount="2">
+                     <checkbox
+                           editable="true"
+                           id="milestone"
+                           label="里程碑"
+                           labelVisible="true"
+                           name="milestone"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="false"
+                           id="status"
+                           label="状态"
+                           labelVisible="true"
+                           name="status"
+                           option="status"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo></fieldgroup>
                   <spinner
                         editable="false"
                         id="standardworks"
@@ -1385,16 +1399,16 @@
                defaultGroup="true"
                name="计划">
             <column
-                  columnDefinitionId="planstart">
+                  columnDefinitionId="planstart_e">
             </column>
             <column
-                  columnDefinitionId="planfinish">
+                  columnDefinitionId="planfinish_e">
             </column>
             <column
-                  columnDefinitionId="planworks">
+                  columnDefinitionId="planworks_e">
             </column>
             <column
-                  columnDefinitionId="planduration">
+                  columnDefinitionId="planduration_e">
             </column>
          </columnGroup>
          <columnGroup
