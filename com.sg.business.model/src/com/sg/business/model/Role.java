@@ -295,6 +295,10 @@ public class Role extends PrimaryObject {
 
 	}
 	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "角色";

@@ -74,10 +74,18 @@ public class User extends PrimaryObject {
 		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
 
+	/**
+	 * 返回用户编号
+	 * @return String
+	 */
 	public String getUserid() {
 		return (String) getValue(F_USER_ID);
 	}
 
+	/**
+	 * 返回用户名称
+	 * @return String
+	 */
 	public String getUsername() {
 		return (String) getValue(F_USER_NAME);
 	}
@@ -251,7 +259,10 @@ public class User extends PrimaryObject {
 		doSave(context);
 	}
 
-	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "用户";

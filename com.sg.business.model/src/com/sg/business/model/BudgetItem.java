@@ -10,6 +10,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
+/**
+ * ‘§À„∂®“Â
+ * @author jinxitao
+ *
+ */
 public class BudgetItem extends PrimaryObject {
 
 	public static final String F_CHILDREN = "children";

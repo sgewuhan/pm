@@ -66,17 +66,27 @@ public class ProjectTemplate extends PrimaryObject {
 	
 	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
 
+	/**
+	 * 项目变更流程
+	 */
 	public static final String F_WF_CHANGE = "wf_change";
 	
 	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
 
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
 	
+	/**
+	 * 返回显示图标
+	 * @return Image
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_TEMPLATE_16);
 	}
 
+	/**
+	 * 插入新模板数据到数据库中
+	 */
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		setValue(F__ID,new ObjectId());//需要预设ID,否则后面的get_id()取出的是空
@@ -108,6 +118,9 @@ public class ProjectTemplate extends PrimaryObject {
 		super.doInsert(context);
 	}
 
+	/**
+	 * 删除模板
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		if(isActivated()){
@@ -133,16 +146,25 @@ public class ProjectTemplate extends PrimaryObject {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
 	}
 
+	/**
+	 * 删除模板中的交付物定义
+	 */
 	private void doRemoveDeliverableDefinitionsInternal() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_DELIEVERABLE_DEFINITION);
 		col.remove(new BasicDBObject().append(DeliverableDefinition.F_PROJECTTEMPLATE_ID, get_id()));		
 	}
 
+	/**
+	 * 删除模板中工作定义与交付物的关系
+	 */
 	private void doRemoveWorkDefinitionsInternal() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 		col.remove(new BasicDBObject().append(WorkDefinition.F_PROJECT_TEMPLATE_ID, get_id()));
 	}
 
+	/**
+	 * 删除模板中的预算定义
+	 */
 	private void doRemoveBudgetItemInternal() {
 		Object bioid = getValue(F_BUDGET_ID);
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
@@ -150,6 +172,12 @@ public class ProjectTemplate extends PrimaryObject {
 		col.remove(new BasicDBObject().append(F__ID, bioid));
 	}
 
+	/**
+	 * 新建角色定义
+	 * @param roled
+	 *        ,角色定义
+	 * @return RoleDefinition
+	 */
 	public RoleDefinition makeRoleDefinition(RoleDefinition roled) {
 		if (roled == null) {
 			BasicDBObject data = new BasicDBObject();
