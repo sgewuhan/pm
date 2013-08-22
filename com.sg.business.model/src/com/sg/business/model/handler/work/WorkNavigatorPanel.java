@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.CompassPanel;
@@ -20,7 +20,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 	@Override
 	protected void upPressed() {
 		try {
-			WorkDefinition selected = getSelected();
+			AbstractWork selected = getSelected();
 			PrimaryObject[] relativeObjects = selected
 					.doMoveUp(new CurrentAccountContext());
 
@@ -37,7 +37,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 	@Override
 	protected void leftPressed() {
 		try {
-			WorkDefinition selected = getSelected();
+			AbstractWork selected = getSelected();
 
 			PrimaryObject[] relativeObjects = selected.doMoveLeft(
 					new CurrentAccountContext());
@@ -63,7 +63,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 	@Override
 	protected void downPressed() {
 		try {
-			WorkDefinition selected = getSelected();
+			AbstractWork selected = getSelected();
 
 			PrimaryObject[] relativeObjects = selected.doMoveDown(
 					new CurrentAccountContext());
@@ -81,7 +81,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 	@Override
 	protected void rightPressed() {
 		try {
-			WorkDefinition selected = getSelected();
+			AbstractWork selected = getSelected();
 
 			PrimaryObject[] relativeObjects = selected.doMoveRight(
 					new CurrentAccountContext());
@@ -116,12 +116,12 @@ public class WorkNavigatorPanel extends CompassPanel {
 		}
 	}
 
-	private WorkDefinition getSelected() {
+	private AbstractWork getSelected() {
 		IStructuredSelection selection = (IStructuredSelection) viewer
 				.getSelection();
 		Assert.isTrue(selection != null && !selection.isEmpty(), "请先选中节点");
 
-		return (WorkDefinition) selection.getFirstElement();
+		return (AbstractWork) selection.getFirstElement();
 	}
 
 	public void setViewerControl(ViewerControl vc) {

@@ -5,4 +5,9 @@ public class ProjectRoleAssignment extends AbstractRoleAssignment implements IPr
 
 	
 
+	
+	@Override
+	public String getTypeName() {
+		return "ÏîÄ¿Ö¸ÅÉ";
+	}
 }

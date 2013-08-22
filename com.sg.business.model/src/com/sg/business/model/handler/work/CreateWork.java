@@ -62,7 +62,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 	}
 
 	private String getTitle(AbstractWork po) {
-		return (po instanceof WorkDefinition) ? "添加工作定义" : "工作";
+		return (po instanceof WorkDefinition) ? "添加工作定义" : "添加工作";
 	}
 
 }

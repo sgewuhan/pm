@@ -285,7 +285,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 保存交付物
 		DBCollection deliCol = getCollection(IModelConstants.C_DELIEVERABLE);
 		ws = deliCol.remove(new BasicDBObject().append(
-				Delieverable.F_PROJECT_ID, get_id()));
+				Deliverable.F_PROJECT_ID, get_id()));
 		checkWriteResult(ws);
 
 		ws = deliCol.insert(deliverableToInsert, WriteConcern.NORMAL);
@@ -493,17 +493,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						DBObject deliverableData = new BasicDBObject();
 
 						// 设置项目Id
-						deliverableData.put(Delieverable.F_PROJECT_ID,
+						deliverableData.put(Deliverable.F_PROJECT_ID,
 								projectId);
 
 						// 设置工作Id
-						deliverableData.put(Delieverable.F_WORK_ID,
+						deliverableData.put(Deliverable.F_WORK_ID,
 								work.get(Work.F__ID));
 
 						// 设置是否必须
 						if (DeliverableDefinition.VALUE_MANDATORY
 								.equals(documentOptionValue)) {
-							deliverableData.put(Delieverable.F_MANDATORY,
+							deliverableData.put(Deliverable.F_MANDATORY,
 									Boolean.TRUE);
 						}
 
@@ -522,7 +522,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						documentsToInsert.put(documentTemplateId, documentData);
 						ObjectId documentId = (ObjectId) documentData
 								.get(Document.F__ID);
-						deliverableData.put(Delieverable.F_DOCUMENT_ID,
+						deliverableData.put(Deliverable.F_DOCUMENT_ID,
 								documentId);
 						dilerverableToInsert.add(deliverableData);
 					}
@@ -839,7 +839,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 删除交付物
 		col = getCollection(IModelConstants.C_DELIEVERABLE);
-		ws = col.remove(new BasicDBObject().append(Delieverable.F_PROJECT_ID,
+		ws = col.remove(new BasicDBObject().append(Deliverable.F_PROJECT_ID,
 				get_id()));
 		checkWriteResult(ws);
 
@@ -866,5 +866,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id());
 		prole.setValue(ProjectRole.F_PROJECT_ID, get_id());
 		return prole;
+	}
+	
+	@Override
+	public String getTypeName() {
+		return "项目";
 	}
 }

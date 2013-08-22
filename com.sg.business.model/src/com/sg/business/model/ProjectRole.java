@@ -66,4 +66,9 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		checkWriteResult(ws);
 		super.doRemove(context);
 	}
+	
+	@Override
+	public String getTypeName() {
+		return "ÏîÄ¿½ÇÉ«";
+	}
 }

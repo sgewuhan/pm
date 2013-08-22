@@ -23,7 +23,8 @@ import com.mongodb.DBObject;
  * @author zhong hua
  * 
  */
-public class WorkDefinition extends AbstractWork implements IProjectTemplateRelative{
+public class WorkDefinition extends AbstractWork implements
+		IProjectTemplateRelative {
 
 	/**
 	 * 通用工作定义,用于设置{@link #F_WORK_TYPE}的值
@@ -59,7 +60,6 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 	 */
 	public static final String F_ACTIVATED = "activated";
 
-
 	/**
 	 * 通用工作定义的编辑器Id
 	 */
@@ -78,7 +78,6 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 	 * 项目模板工作定义的编辑器Id
 	 */
 	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
-
 
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
@@ -133,6 +132,7 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 
 	}
 
+	@Override
 	public DeliverableDefinition makeDeliverableDefinition() {
 		return makeDeliverableDefinition(null);
 	}
@@ -182,112 +182,6 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 
 	public boolean isActivated() {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
-	}
-
-	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-
-		List<PrimaryObject> children = parent.getChildrenWork();
-		int index = children.indexOf(this);
-		Assert.isTrue(index != -1, "下移出错，无法定位将要移动的节点");
-
-		if ((index + 1) >= children.size()) {
-			throw new Exception("已经是本层的最后一个");
-		}
-		children.remove(index);
-		children.add(index + 1, this);
-		doSaveAndResetSeq(children, context);
-		return new PrimaryObject[] { parent };
-	}
-
-	public PrimaryObject[] doMoveUp(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-		List<PrimaryObject> children = parent.getChildrenWork();
-		int index = children.indexOf(this);
-		Assert.isTrue(index != -1, "上移出错，无法定位将要移动的节点");
-
-		if (index == 0) {
-			throw new Exception("已经是本层的第一个");
-		}
-		children.remove(index);
-		children.add(index - 1, this);
-		doSaveAndResetSeq(children, context);
-
-		return new PrimaryObject[] { parent };
-
-	}
-
-	public PrimaryObject[] doMoveLeft(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-
-		WorkDefinition grandpa = (WorkDefinition) parent
-				.getParentPrimaryObject();
-
-		List<PrimaryObject> thisChildren = getChildrenWork();
-
-		List<PrimaryObject> parentChildren = parent.getChildrenWork();
-		int index = parentChildren.indexOf(this);
-		Assert.isTrue(index != -1, "升级出错，无法定位将要升级的节点");
-
-		if (grandpa == null) {
-			throw new Exception("节点已经不能升级");
-		}
-
-		// 1 自己的下面所有的兄弟变成自己的儿子，从自己的最后一个儿子开始添加
-		for (int i = index + 1; i < parentChildren.size(); i++) {
-			WorkDefinition brother = (WorkDefinition) parentChildren.get(i);
-			brother.setValue(F_PARENT_ID, get_id());
-			thisChildren.add(brother);
-		}
-		// 整理儿子的序号
-		doSaveAndResetSeq(thisChildren, context);
-
-		// 2 祖父变成自己的父，取出祖父的下级获得父所在的位置，,插入到父下面的位置
-		setValue(F_PARENT_ID, grandpa.get_id());
-		List<PrimaryObject> grandpaChildren = grandpa
-				.getChildrenWork();
-		index = grandpaChildren.indexOf(parent);
-		Assert.isTrue(index != -1, "升级出错，无法定位将要移动的父节点");
-		grandpaChildren.add(index + 1, this);
-		doSaveAndResetSeq(grandpaChildren, context);
-		return new PrimaryObject[] { this, parent, grandpa };
-	}
-
-
-	public PrimaryObject[] doMoveRight(IContext context) throws Exception {
-		WorkDefinition parent = (WorkDefinition) getParentPrimaryObject();
-		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
-		}
-		List<PrimaryObject> parentChildren = parent.getChildrenWork();
-		int index = parentChildren.indexOf(this);
-		Assert.isTrue(index != -1, "降级出错，无法定位将要降级的节点");
-
-		// 变成上兄弟的最后一个儿子，从父中移除自己
-		if (index == 0) {
-			throw new Exception("节点已经不能降级");
-		}
-		WorkDefinition upperBrother = (WorkDefinition) parentChildren
-				.get(index - 1);
-		List<PrimaryObject> upperBrotherChildren = upperBrother
-				.getChildrenWork();
-		upperBrotherChildren.add(this);
-		setValue(F_PARENT_ID, upperBrother.get_id());
-
-		parentChildren.remove(index);
-		doSaveAndResetSeq(parentChildren, context);
-		doSaveAndResetSeq(upperBrotherChildren, context);
-
-		return new PrimaryObject[] { parent, upperBrother };
 	}
 
 	@Override
@@ -356,7 +250,6 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 			return null;
 		}
 	}
-
 
 	/**
 	 * 导入一个通用工作定义
@@ -466,5 +359,30 @@ public class WorkDefinition extends AbstractWork implements IProjectTemplateRela
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public PrimaryObject getHoster() {
+		return getProjectTemplate();
+	}
+
+	@Override
+	public String getTypeName() {
+		return "工作定义";
+	}
+
+	@Override
+	public String getDefaultEditorId() {
+		int type = getWorkDefinitionType();
+		switch (type) {
+		case WorkDefinition.WORK_TYPE_GENERIC:
+			return WorkDefinition.EDITOR_GENERIC_WORK;
+		case WorkDefinition.WORK_TYPE_STANDLONE:
+			return WorkDefinition.EDITOR_STANDLONE_WORK;
+		case WorkDefinition.WORK_TYPE_PROJECT:
+			return WorkDefinition.EDITOR_PROJECT_WORK;
+		default:
+		}
+		return super.getDefaultEditorId();
 	}
 }

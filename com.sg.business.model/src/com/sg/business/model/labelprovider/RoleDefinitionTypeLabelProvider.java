@@ -2,13 +2,13 @@ package com.sg.business.model.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.AbstractRoleDefinition;
 
 public class RoleDefinitionTypeLabelProvider extends ColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		if(((RoleDefinition)element).isOrganizatioRole()){
+		if(((AbstractRoleDefinition)element).isOrganizatioRole()){
 			return "组织角色";
 		}else{
 			return "项目角色";

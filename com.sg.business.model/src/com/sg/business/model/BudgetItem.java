@@ -37,8 +37,9 @@ public class BudgetItem extends PrimaryObject {
 		data.put(F_CHILDREN, defaultBi.getValue(F_CHILDREN));
 		return ModelService.createModelObject(data, BudgetItem.class);
 	}
-	
-	public static PrimaryObject COPY_DEFAULT_BUDGET_ITEM(Class<? extends PrimaryObject> t) {
+
+	public static PrimaryObject COPY_DEFAULT_BUDGET_ITEM(
+			Class<? extends PrimaryObject> t) {
 		BudgetItem defaultBi = GET_DEFAULT_BUDGET_ITEM();
 		DBObject data = new BasicDBObject();
 		data.put(F_DESC, defaultBi.getValue(F_DESC));
@@ -114,4 +115,8 @@ public class BudgetItem extends PrimaryObject {
 		this.setValue(F_DESC, budgetItemName);
 	}
 
+	@Override
+	public String getTypeName() {
+		return "Ô¤Ëã";
+	}
 }

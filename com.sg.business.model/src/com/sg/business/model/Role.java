@@ -283,4 +283,9 @@ public class Role extends PrimaryObject {
 		}
 
 	}
+	
+	@Override
+	public String getTypeName() {
+		return "½ÇÉ«";
+	}
 }

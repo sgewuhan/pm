@@ -28,6 +28,11 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 	private void setParent(ProjectBudget budgetItem) {
 		this.parent = budgetItem;
 	}
+	
+	@Override
+	public String getTypeName() {
+		return "ÏîÄ¿Ô¤Ëã";
+	}
 
 	public ProjectBudget getParent() {
 		return parent;

@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -18,18 +18,16 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class EditWork extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "编辑工作定义";
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个工作定义", SWT.ICON_WARNING);
+		MessageUtil.showToast("您需要选择一项", SWT.ICON_WARNING);
 		return super.nullSelectionContinue(event);
 	}
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		WorkDefinition workdefinition = (WorkDefinition) selected;
+		AbstractWork workdefinition = (AbstractWork) selected;
 		Shell shell = HandlerUtil.getActiveShell(event);
 
 		ViewerControl currentViewerControl = getCurrentViewerControl(event);
@@ -37,33 +35,16 @@ public class EditWork extends AbstractNavigatorHandler {
 
 		workdefinition.addEventListener(currentViewerControl);
 
-		Configurator conf = null;
+		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
+				selected.getDefaultEditorId());
 
-		int type = workdefinition.getWorkDefinitionType();
-
-		switch (type) {
-		case WorkDefinition.WORK_TYPE_GENERIC:
-			conf = Widgets.getEditorRegistry().getConfigurator(
-					WorkDefinition.EDITOR_GENERIC_WORK);
-			break;
-		case WorkDefinition.WORK_TYPE_STANDLONE:
-			conf = Widgets.getEditorRegistry().getConfigurator(
-					WorkDefinition.EDITOR_STANDLONE_WORK);
-			break;
-		case WorkDefinition.WORK_TYPE_PROJECT:
-			conf = Widgets.getEditorRegistry().getConfigurator(
-					WorkDefinition.EDITOR_PROJECT_WORK);
-			break;
-		default:
-			break;
-		}
 		if (conf != null) {
 			try {
 				DataObjectDialog.openDialog(workdefinition,
-						(DataEditorConfigurator) conf, true, null, TITLE);
+						(DataEditorConfigurator) conf, true, null, "编辑"+selected.getTypeName());
 			} catch (Exception e) {
 				e.printStackTrace();
-				MessageUtil.showToast(shell, TITLE, e.getMessage(),
+				MessageUtil.showToast(shell, "编辑"+selected.getTypeName(), e.getMessage(),
 						SWT.ICON_ERROR);
 			}
 		}

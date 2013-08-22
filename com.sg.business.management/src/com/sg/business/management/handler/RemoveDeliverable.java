@@ -1,4 +1,4 @@
-package com.sg.business.model.handler.work;
+package com.sg.business.management.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
@@ -12,22 +12,20 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class RemoveDeliverableDefinition extends AbstractNavigatorHandler {
+public class RemoveDeliverable extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "删除交付物交付物";
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个交付物交付物", SWT.ICON_WARNING);
+		MessageUtil.showToast("您需要选择一项", SWT.ICON_WARNING);
 		return super.nullSelectionContinue(event);
 	}
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		int yes = MessageUtil.showMessage(shell, TITLE,
-				"您确定要删除这个交付物定义吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
+		int yes = MessageUtil.showMessage(shell, "删除"+selected.getTypeName(),
+				"您确定要删除这个"+selected.getTypeName()+"吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
 						| SWT.ICON_QUESTION);
 		if(yes!=SWT.YES){
 			return;
@@ -40,7 +38,7 @@ public class RemoveDeliverableDefinition extends AbstractNavigatorHandler {
 		try {
 			selected.doRemove(new CurrentAccountContext());
 		} catch (Exception e) {
-			MessageUtil.showMessage(shell, TITLE, e.getMessage(),
+			MessageUtil.showMessage(shell, "删除"+selected.getTypeName(), e.getMessage(),
 					SWT.ICON_WARNING);
 		}
 		selected.removeEventListener(currentViewerControl);

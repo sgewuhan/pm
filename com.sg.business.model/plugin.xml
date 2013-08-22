@@ -186,7 +186,7 @@
             db="pm2">
       </doc>
       <doc
-            class="com.sg.business.model.Delieverable"
+            class="com.sg.business.model.Deliverable"
             collection="delieverable"
             db="pm2">
       </doc>
@@ -860,6 +860,83 @@
             class="com.sg.business.model.handler.work.ChargerAssignment"
             commandId="work.setcharger">
       </handler>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="management.roledefinition"
+            table="management.roledefinition">
+         <filterAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="project.role"
+            table="project.role">
+         <filterAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="roledefinition.number">
+            </column>
+            <column
+                  columnDefinitionId="roledefinition.desc">
+            </column>
+         </searchAction>
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplate"
+            headerVisiable="true"
+            id="management.roledefinition"
+            multiSelection="true"
+            popupMenu="popup:management.roledefinition">
+         <column
+               columnDefinitionId="roledefinition.number">
+         </column>
+         <column
+               columnDefinitionId="roledefinition.desc">
+         </column>
+         <column
+               columnDefinitionId="roledefinition.description">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.project.RoleOfProject"
+            headerVisiable="true"
+            id="project.role"
+            multiSelection="true">
+         <column
+               columnDefinitionId="roledefinition.number">
+         </column>
+         <column
+               columnDefinitionId="roledefinition.desc">
+         </column>
+         <column
+               columnDefinitionId="roledefinition.description">
+         </column>
+      </table>
    </extension>
 
 </plugin>

@@ -29,7 +29,7 @@ public class ShowWorkCompase extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		MessageUtil.showToast(shell, "移动工作定义", "您需要选择一个工作定义", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, "移动工作定义", "您需要选择一项", SWT.ICON_WARNING);
 		return false;
 	}
 }

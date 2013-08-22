@@ -1,4 +1,4 @@
-package com.sg.business.model.handler.work;
+package com.sg.business.management.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;

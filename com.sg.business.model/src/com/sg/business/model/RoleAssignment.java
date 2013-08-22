@@ -9,4 +9,9 @@ package com.sg.business.model;
  */
 public class RoleAssignment extends AbstractRoleAssignment{
 
+	
+	@Override
+	public String getTypeName() {
+		return "½ÇÉ«Ö¸ÅÉ";
+	}
 }

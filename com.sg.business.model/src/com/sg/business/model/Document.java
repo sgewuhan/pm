@@ -71,5 +71,10 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	}
 
 	
+	@Override
+	public String getTypeName() {
+		return "ÎÄµµ";
+	}
+
 	
 }

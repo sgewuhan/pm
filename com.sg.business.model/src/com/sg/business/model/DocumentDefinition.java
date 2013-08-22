@@ -119,5 +119,10 @@ public class DocumentDefinition extends PrimaryObject {
 		}
 		return result;
 	}
+	
+	@Override
+	public String getTypeName() {
+		return "ÎÄµµ¶¨Òå";
+	}
 
 }

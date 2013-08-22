@@ -244,4 +244,9 @@ public class User extends PrimaryObject {
 		doSave(context);
 	}
 
+	
+	@Override
+	public String getTypeName() {
+		return "”√ªß";
+	}
 }

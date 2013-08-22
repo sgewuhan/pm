@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -29,7 +29,7 @@ public class WorkMoveUp extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		try {
-			PrimaryObject[] relativeObjects = ((WorkDefinition) selected)
+			PrimaryObject[] relativeObjects = ((AbstractWork) selected)
 					.doMoveUp(new CurrentAccountContext());
 
 			ViewerControl vc = getCurrentViewerControl(event);

@@ -477,5 +477,11 @@ public class Organization extends PrimaryObject {
 		for (PrimaryObject primaryObject : children) {
 			iterateSearchRolesRoles((Organization) primaryObject, dataItems);
 		}
+	}	
+	
+	@Override
+	public String getTypeName() {
+		return "×éÖ¯";
 	}
+
 }

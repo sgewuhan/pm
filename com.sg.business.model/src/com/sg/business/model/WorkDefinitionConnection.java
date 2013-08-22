@@ -9,5 +9,9 @@ package com.sg.business.model;
  */
 public class WorkDefinitionConnection extends AbstractWorkConnection implements IProjectTemplateRelative{
 	public static final String EDITOR = "editor.workDefinitionConnection";
-
+	
+	@Override
+	public String getTypeName() {
+		return "工作定义置关系";
+	}
 }

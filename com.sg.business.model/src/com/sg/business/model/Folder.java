@@ -126,5 +126,10 @@ public class Folder extends PrimaryObject {
 		return getRelationCountById(Folder.F__ID, Folder.F_PARENT_ID,
 				Folder.class) > 0;
 	}
+	
+	@Override
+	public String getTypeName() {
+		return "Ŀ¼";
+	}
 
 }

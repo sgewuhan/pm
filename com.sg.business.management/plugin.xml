@@ -160,26 +160,6 @@
          </searchAction>
       </navigator>
       <navigator
-            id="management.roledefinition"
-            table="management.roledefinition">
-         <filterAction>
-            <column
-                  columnDefinitionId="roledefinition.number">
-            </column>
-            <column
-                  columnDefinitionId="roledefinition.desc">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="roledefinition.number">
-            </column>
-            <column
-                  columnDefinitionId="roledefinition.desc">
-            </column>
-         </searchAction>
-      </navigator>
-      <navigator
             id="management.roleselector"
             tree="management.roleselector">
          <filterAction>
@@ -315,22 +295,6 @@
          </column>
          <column
                columnDefinitionId="generic.activated">
-         </column>
-      </table>
-      <table
-            dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplate"
-            headerVisiable="true"
-            id="management.roledefinition"
-            multiSelection="true"
-            popupMenu="popup:management.roledefinition">
-         <column
-               columnDefinitionId="roledefinition.number">
-         </column>
-         <column
-               columnDefinitionId="roledefinition.desc">
-         </column>
-         <column
-               columnDefinitionId="roledefinition.description">
          </column>
       </table>
       <table
@@ -2394,15 +2358,15 @@
             commandId="management.deliverables.create">
       </handler>
       <handler
-            class="com.sg.business.model.handler.work.EditDeliverableDefinition"
+            class="com.sg.business.management.handler.EditDeliverableDefinition"
             commandId="management.deliverables.edit">
       </handler>
       <handler
-            class="com.sg.business.model.handler.work.RemoveDeliverableDefinition"
+            class="com.sg.business.management.handler.RemoveDeliverable"
             commandId="management.deliverables.remove">
       </handler>
       <handler
-            class="com.sg.business.model.handler.work.LinkDeliverableDefinition"
+            class="com.sg.business.management.handler.LinkDeliverableDefinition"
             commandId="management.deliverables.link">
       </handler>
    </extension>
