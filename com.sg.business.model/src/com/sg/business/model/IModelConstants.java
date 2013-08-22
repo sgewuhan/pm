@@ -55,7 +55,7 @@ public interface IModelConstants {
 	/**
 	 * 系统日历
 	 */
-	public static final String C_SYSCALENDAR = "syscalendar";
+	public static final String C_CALENDAR_SETTING = "calendarsetting";
 	
 	/**
 	 * 角色定义
