@@ -113,7 +113,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 创建根工作定义
 		Work root = makeWBSRoot();
 		root.doInsert(context);
-		setValue(ProjectTemplate.F_WORK_DEFINITON_ID, root.get_id());
+		setValue(Project.F_WORK_ID, root.get_id());
 
 		// 预算
 		ProjectBudget budget = makeBudget(context);

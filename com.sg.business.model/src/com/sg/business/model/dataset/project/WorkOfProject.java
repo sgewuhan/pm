@@ -2,7 +2,7 @@ package com.sg.business.model.dataset.project;
 
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
-import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.Work;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
@@ -15,7 +15,7 @@ public class WorkOfProject extends MasterDetailDataSetFactory {
 
 	@Override
 	protected String getDetailCollectionKey() {
-		return WorkDefinition.F__ID;
+		return Work.F__ID;
 	}
 
 
