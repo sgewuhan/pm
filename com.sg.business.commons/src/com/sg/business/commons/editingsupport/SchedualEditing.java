@@ -1,5 +1,7 @@
 package com.sg.business.commons.editingsupport;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -60,7 +62,9 @@ public abstract class SchedualEditing implements IEditingSupportor {
 					work.setValue(getFieldName(), value);
 					try {
 						work.doSave(new CurrentAccountContext());
-						getViewer().update(work.getThisAndAllParents().toArray(), null);
+						List<Work> toUpdate = work.getAllParents();
+						toUpdate.add(work);
+						getViewer().update(toUpdate.toArray(), null);
 					} catch (Exception e) {
 						MessageUtil.showToast(e.getMessage(), SWT.ICON_ERROR);
 					}

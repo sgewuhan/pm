@@ -670,6 +670,7 @@
                title="选项">
          </basicpage>
          <basicpage
+               description="请输入预算金额"
                id="project.basicpage.2"
                image="image/financial_24.png"
                pageDelegator="com.sg.business.project.editor.page.ProjectBudgetPage"
@@ -687,6 +688,15 @@
                id="project.wbs"
                navigatorId="project.wbs"
                title="WBS">
+            <navigatoraction
+                  action="com.sg.business.project.action.RecalculateSEQ">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.AutoAssignment">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.CheckPlan">
+            </navigatoraction>
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
@@ -1461,38 +1471,18 @@
          <column
                columnDefinitionId="work.desc">
          </column>
-         <columnGroup
-               defaultGroup="true"
-               name="计划">
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="planworks_e">
-            </column>
-            <column
-                  columnDefinitionId="planduration_e">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
-               name="实际">
-            <column
-                  columnDefinitionId="actualstart_e">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="actualworks_e">
-            </column>
-            <column
-                  columnDefinitionId="actualduration_e">
-            </column>
-         </columnGroup>
+         <column
+               columnDefinitionId="planstart_e">
+         </column>
+         <column
+               columnDefinitionId="planfinish_e">
+         </column>
+         <column
+               columnDefinitionId="planworks_e">
+         </column>
+         <column
+               columnDefinitionId="planduration_e">
+         </column>
          <column
                column="wf_execute"
                labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
@@ -1725,6 +1715,16 @@
                commandId="carlendartest2"
                icon="image/24_blank.png"
                label="测试某时间段有多少工作日"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:com.sg.widgets.dataObjectEditor?after=additions">
+         <command
+               commandId="carlendartest1"
+               icon="image/editwork_24.png"
+               label="TEST"
                style="push">
          </command>
       </menuContribution>

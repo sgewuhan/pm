@@ -137,7 +137,9 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	@Override
 	public void commit(boolean onSave) {
-
+		if(onSave){
+			setDirty(false);
+		}
 	}
 
 	@Override

@@ -372,7 +372,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
-	public List<Work> getThisAndAllParents() {
+	public List<Work> getAllParents() {
 		List<Work> result = new ArrayList<Work>();
 		result.add(this);
 		Work parent = (Work) getParent();

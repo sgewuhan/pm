@@ -1,5 +1,7 @@
 package com.sg.business.commons.handler.work;
 
+import java.util.List;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
@@ -7,6 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -38,6 +41,13 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
+		//如果是工作，需要刷新开始和完成时间
+		List<Work> toUpdate = null;
+		if(selected instanceof Work){
+			Work work = (Work) selected;
+			toUpdate = work.getAllParents();
+		}
+
 		selected.addEventListener(currentViewerControl);
 		try {
 			selected.doRemove(new CurrentAccountContext());
@@ -46,6 +56,11 @@ public class RemoveWork extends AbstractNavigatorHandler {
 					SWT.ICON_WARNING);
 		}
 		selected.removeEventListener(currentViewerControl);
+		
+		if(toUpdate!=null){
+			currentViewerControl.getViewer().update(toUpdate.toArray(), null);
+		}
+		
 	}
 
 }

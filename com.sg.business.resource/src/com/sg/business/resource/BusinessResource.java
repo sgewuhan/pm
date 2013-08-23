@@ -79,6 +79,13 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_ROLE4_16 = "role4_16.png";
 
+	public static final String IMAGE_WBS_SORT_24 = "wbssort_24.png";
+
+	public static final String IMAGE_ASSIGNMENT_24 = "assignment_24.png";
+	
+	public static final String IMAGE_CHECK_24 = "check_24.png";
+
+
 
 	/**
 	 * Returns the shared instance
