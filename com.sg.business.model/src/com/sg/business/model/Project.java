@@ -27,6 +27,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
+import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.resource.BusinessResource;
 
@@ -926,4 +927,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ModelRelation mr = ModelService.getModelRelation("project_calendar");
 		return getRelationByModel(mr);
 	}
+	
+	
+	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
+			String fFinish, String fDuration) throws Exception {
+		Date start = (Date) getValue(fStart);
+		if (start != null) {
+			start = Utils.getDayBegin(start).getTime();
+		}
+
+		Date finish = (Date) getValue(fFinish);
+		if (finish != null) {
+			finish = Utils.getDayEnd(finish).getTime();
+		}
+
+		if (start != null && finish != null) {
+			// 检查是否合法
+			if (start.after(finish)) {
+				throw new Exception("开始日期必须早于完成日期");
+			}
+			// 计算工期
+			int workingdays = cc.getWorkingDays(start, finish);
+			setValue(fDuration, new Integer(workingdays));
+		}
+	}
+
 }

@@ -71,6 +71,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		return po;
 	}
 
+
 	/**
 	 * 返回工作所属项目
 	 * 
@@ -86,50 +87,176 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 	}
 
 	public Date getPlanStart() {
-		Date d = (Date) getValue(F_PLAN_START);
-		if (d != null) {
-			return Utils.getDayBegin(d).getTime();
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			Date d = (Date) getValue(F_PLAN_START);
+			if (d != null) {
+				return Utils.getDayBegin(d).getTime();
+			} else {
+				return null;
+			}
+		} else {
+			Date start = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Date s = child.getPlanStart();
+				if (s != null && (start == null || s.before(start))) {
+					start = s;
+				}
+			}
+			return start;
 		}
-		return null;
 	}
 
 	public Date getPlanFinish() {
-		Date d = (Date) getValue(F_PLAN_FINISH);
-		if (d != null) {
-			return Utils.getDayEnd(d).getTime();
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			Date d = (Date) getValue(F_PLAN_FINISH);
+			if (d != null) {
+				return Utils.getDayEnd(d).getTime();
+			} else {
+				return null;
+			}
+		} else {
+			Date finish = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Date f = child.getPlanFinish();
+				if (f != null && (finish == null || f.after(finish))) {
+					finish = f;
+				}
+			}
+			return finish;
 		}
-		return null;
 	}
 
 	public Date getActualStart() {
-		Date d = (Date) getValue(F_ACTUAL_START);
-		if (d != null) {
-			return Utils.getDayBegin(d).getTime();
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			Date d = (Date) getValue(F_ACTUAL_START);
+			if (d != null) {
+				return Utils.getDayBegin(d).getTime();
+			} else {
+				return null;
+			}
+		} else {
+			Date start = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Date s = child.getActualStart();
+				if (s != null && (start == null || s.before(start))) {
+					start = s;
+				}
+			}
+			return start;
 		}
-		return null;
 	}
 
 	public Date getActualFinish() {
-		Date d = (Date) getValue(F_ACTUAL_FINISH);
-		if (d != null) {
-			return Utils.getDayEnd(d).getTime();
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			Date d = (Date) getValue(F_ACTUAL_FINISH);
+			if (d != null) {
+				return Utils.getDayEnd(d).getTime();
+			} else {
+				return null;
+			}
+		} else {
+			Date finish = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Date f = child.getActualFinish();
+				if (f != null && (finish == null || f.after(finish))) {
+					finish = f;
+				}
+			}
+			return finish;
 		}
-		return null;
 	}
 
-//	@Override
-//	public void setValue(String key, Object newValue, Object source,
-//			boolean noticeFieldValueChange) {
-//		if (newValue != null
-//				&& (key.equals(F_PLAN_START) )){//|| key.equals(F_ACTUAL_START))) {
-//			newValue = Utils.getDayBegin((Date) newValue).getTime();
-//		}
-//		if (newValue != null
-//				&& (key.equals(F_PLAN_FINISH) )){//|| key.equals(F_ACTUAL_FINISH))) {
-//			newValue = Utils.getDayEnd((Date) newValue).getTime();
-//		}
-//		super.setValue(key, newValue, source, noticeFieldValueChange);
-//	}
+	public Double getActualWorks() {
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			return (Double) getValue(F_ACTUAL_WORKS);
+		}else{
+			Double works = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Double w = child.getActualWorks();
+				if(w!=null){
+					if(works == null){
+						works = w;
+					}else{
+						works = works + w;
+					}
+				}
+			}
+			return works;
+		}
+	}
+
+	public Double getPlanWorks() {
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			return (Double) getValue(F_PLAN_WORKS);
+		}else{
+			Double works = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Double w = child.getPlanWorks();
+				if(w!=null){
+					if(works == null){
+						works = w;
+					}else{
+						works = works + w;
+					}
+				}
+			}
+			return works;
+		}
+	}
+
+	public Integer getActualDuration() {
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			return (Integer) getValue(F_ACTUAL_DURATION);
+		}else{
+			Integer duration = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Integer d = child.getActualDuration();
+				if(d!=null){
+					if(duration == null){
+						duration = d;
+					}else if(duration<d){
+						duration = d;
+					}
+				}
+			}
+			return duration;
+		}
+	}
+
+	public Integer getPlanDuration() {
+		List<PrimaryObject> children = getChildrenWork();
+		if (children.size() == 0) {
+			return (Integer) getValue(F_PLAN_DURATION);
+		}else{
+			Integer duration = null;
+			for (int i = 0; i < children.size(); i++) {
+				Work child = (Work) children.get(i);
+				Integer d = child.getPlanDuration();
+				if(d!=null){
+					if(duration == null){
+						duration = d;
+					}else if(duration<d){
+						duration = d;
+					}
+				}
+			}
+			return duration;
+		}
+	}
 
 	/**
 	 * 新建工作交付物
@@ -207,44 +334,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 				F_PLAN_FINISH, F_PLAN_DURATION);
 		checkAndCalculateDuration(calendarCaculater, F_ACTUAL_START,
 				F_ACTUAL_FINISH, F_ACTUAL_DURATION);
+
 		super.doSave(context);
-		Work parent = (Work) getParent();
-		if (parent != null) {
-			parent.doUpdateSummarySchedual(calendarCaculater, context);
-		}
+
+		// Work parent = (Work) getParent();
+		// if (parent != null) {
+		// parent.doUpdateSummarySchedual(calendarCaculater, context);
+		// }else{
+		// doUpdateProjectSchedual(context);
+		// }
+
 		calendarCaculater = null;
 		return true;
 
-	}
-
-	private void doUpdateSummarySchedual(CalendarCaculater calendarCaculater,
-			IContext context) throws Exception {
-		Date start = null;
-		Date finish = null;
-		List<PrimaryObject> children = getChildrenWork();
-		for (int i = 0; i < children.size(); i++) {
-			Work child = (Work) children.get(i);
-			Date s = child.getPlanStart();
-			Date f = child.getPlanFinish();
-			if (s!=null&&(start == null || s.before(start))) {
-				start = s;
-			}
-			if (f!=null&&(finish == null || f.after(finish))) {
-				finish = f;
-			}
-		}
-		this.calendarCaculater = calendarCaculater;
-		
-		Date os = getPlanStart();
-		Date of = getPlanFinish();
-		
-		if(os.equals(start)&&of.equals(finish)){
-			return;
-		}
-		
-		setValue(F_PLAN_START, start);
-		setValue(F_PLAN_FINISH, finish);
-		doSave(context);
 	}
 
 	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
@@ -264,13 +366,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 			if (start.after(finish)) {
 				throw new Exception("开始日期必须早于完成日期");
 			}
-
 			// 计算工期
 			int workingdays = cc.getWorkingDays(start, finish);
 			setValue(fDuration, new Integer(workingdays));
-
 		}
-
 	}
 
 	public List<Work> getThisAndAllParents() {
