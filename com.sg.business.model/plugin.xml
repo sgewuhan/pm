@@ -829,6 +829,14 @@
             id="work.setcharger"
             name="指定负责人角色">
       </command>
+      <command
+            id="carlendartest1"
+            name="测试某天是否为工作日">
+      </command>
+      <command
+            id="carlendartest2"
+            name="测试某时间段有多少工作日">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -867,6 +875,14 @@
       <handler
             class="com.sg.business.model.handler.work.ChargerAssignment"
             commandId="work.setcharger">
+      </handler>
+      <handler
+            class="com.sg.business.model.handler.work.CarlendarTest1"
+            commandId="carlendartest1">
+      </handler>
+      <handler
+            class="com.sg.business.model.handler.work.CarlendarTest2"
+            commandId="carlendartest2">
       </handler>
    </extension>
    <extension

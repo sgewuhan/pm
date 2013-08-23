@@ -399,7 +399,8 @@
       <table
             dataSet="com.sg.business.model.dataset.calendarsetting.ProjectCalendar"
             editorId="calendar.setting"
-            id="project.calendar">
+            id="project.calendar"
+            popupMenu="popup:project.calendar">
          <column
                column="desc"
                name="名称"
@@ -1705,6 +1706,22 @@
                   </instanceof>
                </with>
             </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.calendar">
+         <command
+               commandId="carlendartest1"
+               icon="image/24_blank.png"
+               label="测试某天是否为工作日"
+               style="push">
+         </command>
+         <command
+               commandId="carlendartest2"
+               icon="image/24_blank.png"
+               label="测试某时间段有多少工作日"
+               style="push">
          </command>
       </menuContribution>
    </extension>
