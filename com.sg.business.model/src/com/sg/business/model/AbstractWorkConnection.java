@@ -90,11 +90,17 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 	 */
 	public static final int UNIT_SECOND = 1000;
 
+	/**
+	 * 返回显示图标
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_LINK_16);
 	}
 
+	/**
+	 * 返回显示内容
+	 */
 	@Override
 	public String getLabel() {
 		WorkDefinition end1 = getEnd1();
@@ -113,6 +119,10 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 		return null;
 	}
 
+	/**
+	 * 返回前置节点
+	 * @return WorkDefinition
+	 */
 	public WorkDefinition getEnd1() {
 		ObjectId end1_id = (ObjectId) getValue(F_END1_ID);
 		if (end1_id != null) {
@@ -123,6 +133,10 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 返回后置节点
+	 * @return WorkDefinition
+	 */
 	public WorkDefinition getEnd2() {
 		ObjectId end2_id = (ObjectId) getValue(F_END2_ID);
 		if (end2_id != null) {
@@ -133,10 +147,18 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 返回链接类型
+	 * @return String
+	 */
 	public String getConnectionType() {
 		return (String) getValue(F_CONNECTIONTYPE);
 	}
 
+	/**
+	 * 返回间隔时间
+	 * @return int
+	 */
 	public int getInterval() {
 		int interval = ((Integer) getValue(F_INTERVAL)).intValue();
 		Object op = getValue(F_OPERATOR);
@@ -159,6 +181,12 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 		return interval;
 	}
 
+	/**
+	 * 传入时间单位，返回间隔时间
+	 * @param unit
+	 *          ,时间单位
+	 * @return
+	 */
 	public long getInterval(int unit) {
 		return getInterval() / unit;
 	}

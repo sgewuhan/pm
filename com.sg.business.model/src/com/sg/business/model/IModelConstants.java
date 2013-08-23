@@ -1,5 +1,11 @@
 package com.sg.business.model;
 
+/**
+ * 模型常量</p>
+ * 定义了模型存储的数据库和存储的表
+ * @author jinxitao
+ *
+ */
 public interface IModelConstants {
 
 	/**
@@ -73,8 +79,14 @@ public interface IModelConstants {
 	 */
 	public static final String C_DELIEVERABLE_DEFINITION = "deliverabled";
 
+	/**
+	 * 工作定义前后置关系
+	 */
 	public static final String C_WORK_DEFINITION_CONNECTION = "workdconnection";
 
+	/**
+	 * 项目集合
+	 */
 	public static final String C_PROJECT = "project";
 
 	/**
@@ -87,16 +99,35 @@ public interface IModelConstants {
 	 */
 	public static final String SEQ_PROJECT_NUMBER = "projectnumber";
 	
+	/**
+	 * 项目角色
+	 */
 	public static final String C_PROJECT_ROLE = "projectrole";
 
+	/**
+	 * 工作集合
+	 */
 	public static final String C_WORK = "work";
 
+	/**
+	 * 交付物集合
+	 */
 	public static final String C_DELIEVERABLE = "deliverable";
 
+	/**
+	 * 前后置关系
+	 */
 	public static final String C_WORK_CONNECTION = "workconnection";
 
+	/**
+	 * 项目预算
+	 */
 	public static final String C_PROJECT_BUDGET = "projectbudget";
 
+	
+	/**
+	 * 角色指派
+	 */
 	public static final String C_PROJECT_ROLE_ASSIGNMENT = "projectroleassignment";
 
 }

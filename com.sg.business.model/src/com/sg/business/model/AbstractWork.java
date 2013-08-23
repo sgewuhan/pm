@@ -39,11 +39,19 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 */
 	public static final String F_ROOT_ID = "root_id";
 
+	/**
+	 * 返回显示图标
+	 * @return Image
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
 	}
 
+	/**
+	 * 判断是否具有下级工作定义
+	 * @return boolean
+	 */
 	public boolean hasChildrenWork() {
 		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
 		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
@@ -51,10 +59,19 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return dsf.getTotalCount() > 0;
 	}
 
+	/**
+	 * 判断工作定义是否为摘要工作定义
+	 * @return boolean
+	 */
 	public boolean isSummaryWork() {
 		return hasChildrenWork();
 	}
 
+	/**
+	 * 返回工作定义在WBS中的编号<br/>
+	 * 层级+序号
+	 * @return String
+	 */
 	public String getWBSCode() {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
 		if (parent == null) {
@@ -64,6 +81,10 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		}
 	}
 
+	/**
+	 * 返回工作定义在同级中的序号
+	 * @return int
+	 */
 	public int getSequance() {
 		Object seq = getValue(F_SEQ);
 		if (seq instanceof Integer) {
@@ -72,6 +93,10 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return -1;
 	}
 
+	/**
+	 * 返回上级工作
+	 * @return AbstractWork
+	 */
 	public AbstractWork getParent() {
 		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
 		if (parent_id != null) {
@@ -100,11 +125,11 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	}
 
 	/**
-	 * 获得该工作定义的负责人角色定义
+	 * 返回工作定义的负责人角色定义
 	 * 
 	 * @param clas
 	 * 
-	 * @return
+	 * @return T 
 	 */
 	public <T extends PrimaryObject> T getChargerRoleDefinition(Class<T> clas) {
 		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
@@ -114,6 +139,12 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return null;
 	}
 
+	/**
+	 * 设置承担者角色
+	 * @param role
+	 * @param context
+	 * @throws Exception
+	 */
 	public void doSetChargerAssignmentRole(PrimaryObject role, IContext context)
 			throws Exception {
 		setValue(F_CHARGER_ROLE_ID, role.get_id());
@@ -140,6 +171,10 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return 0;
 	}
 
+	/**
+	 * 返回所有下级工作定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getChildrenWork() {
 		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
 		DBObject sort = new SEQSorter().getBSON();
@@ -149,6 +184,12 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return dsf.getDataSet().getDataItems();
 	}
 
+	/**
+	 * 保存并重置工作定义的序号
+	 * @param list
+	 * @param context
+	 * @throws Exception
+	 */
 	protected void doSaveAndResetSeq(List<PrimaryObject> list, IContext context)
 			throws Exception {
 		for (int i = 0; i < list.size(); i++) {
@@ -158,12 +199,30 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		}
 	}
 
+	/**
+	 * 抽象方法，新建下级工作定义
+	 * @return AbstractWork
+	 */
 	public abstract AbstractWork makeChildWork();
 
+	/**
+	 * 抽象方法，返回上级工作定义
+	 * @return PrimaryObject
+	 */
 	public abstract PrimaryObject getHoster();
 
+	/**
+	 * 抽象方法，新建工作定义的交付物定义
+	 * @return PrimaryObject
+	 */
 	public abstract PrimaryObject makeDeliverableDefinition();
 
+	/**
+	 * 工作定义下移
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
 		if (parent == null) {
@@ -183,6 +242,12 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return new PrimaryObject[] { parent };
 	}
 
+	/**
+	 * 工作定义上移
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveUp(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
 		if (parent == null) {
@@ -203,6 +268,12 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	}
 
+	/**
+	 * 工作定义升级
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveLeft(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
 		if (parent == null) {
@@ -240,6 +311,12 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return new PrimaryObject[] { this, parent, grandpa };
 	}
 
+	/**
+	 * 工作定义降级
+	 * @param context
+	 * @return PrimaryObject[]
+	 * @throws Exception
+	 */
 	public PrimaryObject[] doMoveRight(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
 		if (parent == null) {

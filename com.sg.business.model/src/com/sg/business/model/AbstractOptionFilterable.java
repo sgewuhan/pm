@@ -8,12 +8,27 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+/**
+ * 选配<p/>
+ * 设置项目模板中的工作定义，交付物定义是否必须
+ * @author jinxitao
+ *
+ */
 public abstract class AbstractOptionFilterable extends PrimaryObject {
 
+	/**
+	 * 选项值，值可为必须，可选，排除
+	 */
 	public static final String SF_VALUE = "value";
 
+	/**
+	 * 选项集下的选项
+	 */
 	public static final String SF_OPTION = "option";
 
+	/**
+	 * 选项集
+	 */
 	public static final String SF_OPTIONSET = "optionset";
 
 	/**
@@ -57,6 +72,14 @@ public abstract class AbstractOptionFilterable extends PrimaryObject {
 	 * [optionset:"产品类型",option:"球绞",value:排除]}
 	 */
 
+	/**
+	 * 返回选项集中选项的值（必须，可选，排除）
+	 * @param optionSet
+	 *           ,选项集
+	 * @param option
+	 *           ,选项
+	 * @return String
+	 */
 	public String getOptionValueSetting(String optionSet, String option) {
 		Object value = getValue(F_OPTION_FILTERS);
 		if (value instanceof List<?>) {
@@ -75,9 +98,13 @@ public abstract class AbstractOptionFilterable extends PrimaryObject {
 	}
 
 	/**
+	 * 设置选相集中选项的值
 	 * @param optionSet
+	 *          ,选相集
 	 * @param option
+	 *          ,选项
 	 * @param value
+	 *          ,值
 	 * @param context
 	 * @throws Exception
 	 */

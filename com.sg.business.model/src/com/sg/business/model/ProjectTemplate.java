@@ -187,6 +187,11 @@ public class ProjectTemplate extends PrimaryObject {
 		return roled;
 	}
 
+	/**
+	 * 引用组织角色
+	 * @param role
+	 * @return RoleDefinition
+	 */
 	public RoleDefinition makeOrganizationRole(Role role) {
 		RoleDefinition roled = ModelService
 				.createModelObject(RoleDefinition.class);
@@ -196,12 +201,21 @@ public class ProjectTemplate extends PrimaryObject {
 	}
 	
 
+	/**
+	 * 新建前后置关系定义
+	 * @return WorkDefinitionConnection
+	 */
 	public WorkDefinitionConnection makeWorkDefinitionConnection() {
 		WorkDefinitionConnection wdc = ModelService.createModelObject(WorkDefinitionConnection.class);
 		wdc.setValue(WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID, get_id());
 		return wdc;
 	}
 
+	/**
+	 * 判断模板中的角色定义是否是从组织角色引用
+	 * @param role
+	 * @return
+	 */
 	public boolean hasOrganizationRole(Role role) {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ROLE_DEFINITION);
@@ -211,29 +225,52 @@ public class ProjectTemplate extends PrimaryObject {
 		return count != 0;
 	}
 
+	/**
+	 * 返回标准集
+	 * @return List
+	 */
 	public List<?> getStandardOptionSet() {
 		return (List<?>) getValue(F_STANDARD_OPTION_SET);
 	}
 
+	/**
+	 * 返回产品类型集合
+	 * @return List
+	 */
 	public List<?> getProductOptionSet() {
 		return (List<?>) getValue(F_PRODUCTTYPE_OPTION_SET);
 	}
 
+	/**
+	 * 返回项目类型集合
+	 * @return List
+	 */
 	public List<?> getProjectOptionSet() {
 		return (List<?>) getValue(F_PROJECTTYPE_OPTION_SET);
 	}
 
+	/**
+	 * 返回模板归属组织
+	 * @return Organization
+	 */
 	public Organization getOrganization() {
 		ObjectId orgId = (ObjectId) getValue(F_ORGANIZATION_ID);
 		Assert.isNotNull(orgId);
 		return ModelService.createModelObject(Organization.class, orgId);
 	}
 
+	/**
+	 * 返回模板中的所有角色定义
+	 * @return List
+	 */
 	public List<PrimaryObject> getRoleDefinitions() {
 		return getRelationById(F__ID, RoleDefinition.F_PROJECT_TEMPLATE_ID, RoleDefinition.class);
 	}
 
-	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "项目模板";

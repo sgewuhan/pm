@@ -52,8 +52,8 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 	}
 
 	/**
-	 * 获取组织角色，如果组织中不存在此角色定义就创建
 	 * 
+	 * 返回角色的组织角色
 	 * @return
 	 */
 	public Role getOrganizationRole() {
