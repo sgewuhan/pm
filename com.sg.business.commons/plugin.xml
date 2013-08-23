@@ -872,6 +872,7 @@
             column="planstart"
             editingSupport="com.sg.business.commons.editingsupport.PlanStartEditing"
             id="planstart_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
             name="计划开始"
             type="Date"
             width="72">
@@ -880,6 +881,7 @@
             column="planfinish"
             editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
             id="planfinish_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
             name="计划完成"
             type="Date"
             width="72">
@@ -887,6 +889,7 @@
       <column
             column="planduration"
             id="planduration_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
             name="计划工期"
             type="Integer"
             width="72">
@@ -894,7 +897,40 @@
       <column
             column="planworks"
             id="planworks_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
             name="计划工时"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="actualstart"
+            id="actualstart_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
+            name="实际开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualfinish"
+            id="actualfinish_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
+            name="实际完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualduration"
+            id="actualduration_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
+            name="实际工期"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="actualworks"
+            id="actualworks_e"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
+            name="实际工时"
             type="Integer"
             width="72">
       </column>

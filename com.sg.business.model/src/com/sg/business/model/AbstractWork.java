@@ -75,7 +75,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public AbstractWork getParent() {
 		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
 		if (parent_id != null) {
-			return ModelService.createModelObject(getClass(), parent_id);
+			return  ModelService.createModelObject(getClass(), parent_id);
 		}
 		return null;
 	}
