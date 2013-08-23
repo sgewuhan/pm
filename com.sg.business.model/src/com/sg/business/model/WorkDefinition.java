@@ -82,7 +82,7 @@ public class WorkDefinition extends AbstractWork implements
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
 	 * 
-	 * @return
+	 * @return int
 	 */
 	public int getWorkDefinitionType() {
 		Object value = getValue(F_WORK_TYPE);
@@ -133,7 +133,7 @@ public class WorkDefinition extends AbstractWork implements
 	}
 
 	/**
-	 * 新建交付物定义
+	 * 构造交付物定义对象
 	 * @return DeliverableDefinition
 	 */
 	@Override
@@ -142,7 +142,7 @@ public class WorkDefinition extends AbstractWork implements
 	}
 
 	/**
-	 * 新建交付物定义
+	 * 传入文档定义，构建交付物定义对象
 	 * @param docd
 	 *         ,文档定义
 	 * @return
@@ -269,7 +269,7 @@ public class WorkDefinition extends AbstractWork implements
 	/**
 	 * 获取工作定义所属的项目模板
 	 * 
-	 * @return
+	 * @return ProjectTemplate
 	 */
 	public ProjectTemplate getProjectTemplate() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_TEMPLATE_ID);
@@ -284,6 +284,7 @@ public class WorkDefinition extends AbstractWork implements
 	 * 导入一个通用工作定义
 	 * 
 	 * @param genericWorkDefinition
+	 *            ,通用工作定义
 	 * @param context
 	 * @throws Exception
 	 */
