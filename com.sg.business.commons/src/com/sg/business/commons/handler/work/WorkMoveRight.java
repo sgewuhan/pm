@@ -29,7 +29,7 @@ public class WorkMoveRight extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		try {
-			PrimaryObject[] relativeObjects = ((AbstractWork)selected)
+			PrimaryObject[] relativeObjects = ((AbstractWork) selected)
 					.doMoveRight(new CurrentAccountContext());
 
 			ViewerControl vc = getCurrentViewerControl(event);
@@ -37,7 +37,7 @@ public class WorkMoveRight extends AbstractNavigatorHandler {
 			Object[] expanded = viewer.getExpandedElements();
 
 			for (int i = 0; i < relativeObjects.length; i++) {
-				viewer.refresh(relativeObjects[i]);
+				viewer.refresh(relativeObjects[i], true);
 			}
 
 			// 需要展开upperNeighbor
