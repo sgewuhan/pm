@@ -117,19 +117,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		return null;
 	}
 
-//	@Override
-//	public void setValue(String key, Object newValue, Object source,
-//			boolean noticeFieldValueChange) {
-//		if (newValue != null
-//				&& (key.equals(F_PLAN_START) )){//|| key.equals(F_ACTUAL_START))) {
-//			newValue = Utils.getDayBegin((Date) newValue).getTime();
-//		}
-//		if (newValue != null
-//				&& (key.equals(F_PLAN_FINISH) )){//|| key.equals(F_ACTUAL_FINISH))) {
-//			newValue = Utils.getDayEnd((Date) newValue).getTime();
-//		}
-//		super.setValue(key, newValue, source, noticeFieldValueChange);
-//	}
 
 	/**
 	 * 新建工作交付物
@@ -207,14 +194,55 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 				F_PLAN_FINISH, F_PLAN_DURATION);
 		checkAndCalculateDuration(calendarCaculater, F_ACTUAL_START,
 				F_ACTUAL_FINISH, F_ACTUAL_DURATION);
+	
 		super.doSave(context);
+		
 		Work parent = (Work) getParent();
 		if (parent != null) {
 			parent.doUpdateSummarySchedual(calendarCaculater, context);
+		}else{
+			doUpdateProjectSchedual(context);
 		}
+		
 		calendarCaculater = null;
 		return true;
 
+	}
+
+	private void doUpdateProjectSchedual(IContext context) throws Exception {
+		Project project = getProject();
+		Object value = getPlanStart();
+		if(value!=null){
+			project.setValue(Project.F_PLAN_START, value);
+		}
+		
+		value = getPlanFinish();
+		if(value!=null){
+			project.setValue(Project.F_PLAN_FINISH, value);
+		}
+
+		value = getValue(F_PLAN_DURATION);
+		if(value!=null){
+			project.setValue(Project.F_PLAN_DURATION, value);
+		}
+		
+		value = getActualStart();
+		if(value!=null){
+			project.setValue(Project.F_ACTUAL_START, value);
+		}
+		
+		value = getActualFinish();
+		if(value!=null){
+			project.setValue(Project.F_ACTUAL_FINISH, value);
+		}
+		
+		value = getValue(F_ACTUAL_DURATION);
+		if(value!=null){
+			project.setValue(Project.F_ACTUAL_DURATION,value );
+		}
+
+		project.doSave(context);
+		
 	}
 
 	private void doUpdateSummarySchedual(CalendarCaculater calendarCaculater,
@@ -264,13 +292,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 			if (start.after(finish)) {
 				throw new Exception("开始日期必须早于完成日期");
 			}
-
 			// 计算工期
 			int workingdays = cc.getWorkingDays(start, finish);
 			setValue(fDuration, new Integer(workingdays));
-
 		}
-
 	}
 
 	public List<Work> getThisAndAllParents() {

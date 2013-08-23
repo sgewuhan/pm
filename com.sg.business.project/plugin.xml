@@ -595,22 +595,24 @@
                         type="Date">
                   </dateTime>
                   <spinner
-                        editable="true"
+                        editable="false"
                         id="planduration"
                         label="计划工期(天)"
                         labelVisible="true"
                         name="planduration"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
                   </spinner>
                   <spinner
-                        editable="true"
+                        editable="false"
                         id="planworks"
                         label="计划工时(小时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
                   </spinner>
                </section>
                <section
@@ -644,7 +646,8 @@
                         labelVisible="true"
                         name="actualduration"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
                   </spinner>
                   <spinner
                         editable="false"
@@ -653,7 +656,8 @@
                         labelVisible="true"
                         name="actualworks"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
                   </spinner>
                </section>
             </pagecolumn>
