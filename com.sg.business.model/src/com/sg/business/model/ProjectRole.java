@@ -34,7 +34,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	/**
 	 * 为角色指派用户
-	 * @param user
+	 * @param users
 	 * @throws Exception 
 	 */
 	public void doAssignUsers(List<?> users) throws Exception {
