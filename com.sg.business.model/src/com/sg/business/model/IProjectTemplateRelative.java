@@ -1,7 +1,7 @@
 package com.sg.business.model;
 
 /**
- * 项目模板与模板内容要素的关联
+ * 项目模板与模板内容的关联
  * @author jinxitao
  *
  */

@@ -31,6 +31,11 @@ import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * ÏîÄ¿<p/>
+ * @author jinxitao
+ *
+ */
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ILifecycle,ISchedual {
 

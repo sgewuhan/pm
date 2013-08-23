@@ -1,5 +1,10 @@
 package com.sg.business.model;
 
+/**
+ * 
+ * @author jinxitao
+ *
+ */
 public interface ISchedual {
 	
 	public static final String F_PLAN_START = "planstart";

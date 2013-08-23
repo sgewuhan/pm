@@ -13,9 +13,24 @@ import com.sg.business.resource.BusinessResource;
 
 public class DocumentDefinition extends PrimaryObject {
 
+	/**
+	 * 所属组织ID
+	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
+	
+	/**
+	 * 附件不能为空
+	 */
 	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty";
+	
+	/**
+	 * 文档编辑器ID
+	 */
 	public static final String F_DOCUMENT_EDITORID = "document_editorid";
+	
+	/**
+	 * 描述
+	 */
 	public static final String F_DESCRIPTION = "description";
 
 	
@@ -26,12 +41,20 @@ public class DocumentDefinition extends PrimaryObject {
 	 */
 	public static final String F_TEMPLATEFILE = "templatefile";
 
+	/**
+	 * 返回显示图标
+	 * @return Image
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource
 				.getImage(BusinessResource.IMAGE_DOCUMENT_DEF_16);
 	}
 
+	/**
+	 * 删除文档模板<br/>
+	 * 文档模板没有被工作定义引用时，才能删除
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		// 删除文档模板时需要检查该文档是否被交付定义引用，如果是则不能删除
@@ -59,7 +82,7 @@ public class DocumentDefinition extends PrimaryObject {
 	/**
 	 * 获得使用该文档的通用工作定义
 	 * 
-	 * @return
+	 * @return List
 	 */
 	public List<PrimaryObject> getReferenceGenericAndStandloneWorkDefinition() {
 		List<PrimaryObject> deliverableDefinitions = getReferenceDeliverableDefinitions();
@@ -86,7 +109,7 @@ public class DocumentDefinition extends PrimaryObject {
 	/**
 	 * 获得使用该文档模板的交付物定义
 	 * 
-	 * @return
+	 * @return List
 	 */
 	public List<PrimaryObject> getReferenceDeliverableDefinitions() {
 		return getRelationById(F__ID,
@@ -97,7 +120,7 @@ public class DocumentDefinition extends PrimaryObject {
 	/**
 	 * 获得使用该文档模板的项目模板
 	 * 
-	 * @return
+	 * @return List
 	 */
 	public List<PrimaryObject> getReferenceProjectTemplates() {
 		List<PrimaryObject> deliverableDefinitions = getReferenceDeliverableDefinitions();

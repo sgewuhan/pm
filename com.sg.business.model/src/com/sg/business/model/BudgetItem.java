@@ -11,16 +11,31 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 /**
- * 预算定义
+ * 预算
  * @author jinxitao
  *
  */
 public class BudgetItem extends PrimaryObject {
 
+	/**
+	 * 下级预算
+	 */
 	public static final String F_CHILDREN = "children";
+	
+	/**
+	 * 默认预算，是最上级的预算
+	 */
 	public static final String F_ISDEFAULT = "isdefault";
+	
+	/**
+	 * 项目模板_id字段
+	 */
 	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
 
+	/**
+	 * 返回默认预算，默认预算为最上层预算。如果没有，则插入最上级预算，字段desc为默认预算
+	 * @return BudgetItem
+	 */
 	public static BudgetItem GET_DEFAULT_BUDGET_ITEM() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_BUDGET_ITEM);
@@ -34,6 +49,10 @@ public class BudgetItem extends PrimaryObject {
 		return ModelService.createModelObject(data, BudgetItem.class);
 	}
 
+	/**
+	 * 复制默认预算，返回复制后的对象
+	 * @return BudgetItem
+	 */
 	public static BudgetItem COPY_DEFAULT_BUDGET_ITEM() {
 		BudgetItem defaultBi = GET_DEFAULT_BUDGET_ITEM();
 		DBObject data = new BasicDBObject();
@@ -43,6 +62,11 @@ public class BudgetItem extends PrimaryObject {
 		return ModelService.createModelObject(data, BudgetItem.class);
 	}
 
+	/**
+	 * 传入PrimaryObject对象，复制默认预算到传递的对象中并返回。
+	 * @param t
+	 * @return
+	 */
 	public static PrimaryObject COPY_DEFAULT_BUDGET_ITEM(
 			Class<? extends PrimaryObject> t) {
 		BudgetItem defaultBi = GET_DEFAULT_BUDGET_ITEM();
@@ -53,8 +77,15 @@ public class BudgetItem extends PrimaryObject {
 		return ModelService.createModelObject(data, t);
 	}
 
+	/**
+	 * 上级预算
+	 */
 	private BudgetItem parent;
 
+	/**
+	 * 返回下级预算
+	 * @return
+	 */
 	public BudgetItem[] getChildren() {
 		BasicDBList childrenData = (BasicDBList) getValue(F_CHILDREN);
 		if (childrenData != null) {
@@ -70,19 +101,36 @@ public class BudgetItem extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 传入预算对象，设置为自身的上级预算
+	 * @param budgetItem
+	 */
 	private void setParent(BudgetItem budgetItem) {
 		this.parent = budgetItem;
 	}
 
+	/**
+	 * 返回上级预算
+	 * @return BudgetItem
+	 */
 	public BudgetItem getParent() {
 		return parent;
 	}
 
+	/**
+	 * 判断是否具有下级预算
+	 * @return boolean
+	 */
 	public boolean hasChildren() {
 
 		return getChildren().length > 0;
 	}
 
+	/**
+	 * 传入预算名称，新建下级预算
+	 * @param budgetItemName
+	 *            ,预算名称
+	 */
 	public void createChild(String budgetItemName) {
 		BasicDBList childrenData = (BasicDBList) getValue(F_CHILDREN);
 		if (childrenData == null) {
@@ -93,6 +141,11 @@ public class BudgetItem extends PrimaryObject {
 		setValue(F_CHILDREN, childrenData);
 	}
 
+	/**
+	 * 
+	 * @param srcPo
+	 * @param index
+	 */
 	public void createChild(BudgetItem srcPo, int index) {
 		BasicDBList childrenData = (BasicDBList) getValue(F_CHILDREN);
 		if (childrenData == null) {
@@ -102,6 +155,11 @@ public class BudgetItem extends PrimaryObject {
 		setValue(F_CHILDREN, childrenData);
 	}
 
+	/**
+	 * 传入下级预算，遍历所有下级预算，找到与参数相等的下级预算，并将其删除
+	 * @param budgetItem
+	 *            ,下级预算
+	 */
 	public void removeChild(BudgetItem budgetItem) {
 		BasicDBList childrenData = (BasicDBList) getValue(F_CHILDREN);
 		if (childrenData != null) {
@@ -116,6 +174,11 @@ public class BudgetItem extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 编辑预算，修改预算名
+	 * @param budgetItemName
+	 *            ,预算名称
+	 */
 	public void editBudgetItem(String budgetItemName) {
 		this.setValue(F_DESC, budgetItemName);
 	}

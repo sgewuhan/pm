@@ -1,5 +1,10 @@
 package com.sg.business.model;
 
+/**
+ * 项目和工作的生命周期状态
+ * @author jinxitao
+ *
+ */
 public interface ILifecycle {
 
 	public static final String F_LIFECYCLE = "status";
