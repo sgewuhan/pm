@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 
 public class CalendarSetting extends PrimaryObject {
@@ -68,6 +69,7 @@ public class CalendarSetting extends PrimaryObject {
 	public static final String OPERATOR_GT = "大于等于";
 
 	public static final String OPERATOR_GE = "大于";
+	private HashMap<String, Double> workingTimeMap;
 
 	private Calendar getStartDate() {
 		Date date = (Date) getValue(F_START_DATE);
@@ -125,23 +127,34 @@ public class CalendarSetting extends PrimaryObject {
 		return value.replaceAll("，", ",");
 	}
 
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		workingTimeMap = null;
+		return super.doSave(context);
+	}
+	
 	public Map<String, Double> getCalendarWorkingTime() {
+		if(workingTimeMap == null){
+			initTimeMap();
+		}
+		return workingTimeMap;
+	}
+
+	private void initTimeMap() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Calendar start = getStartDate();
 		Calendar end = getEndDate();
 
-		HashMap<String, Double> result = new HashMap<String, Double>();
+		workingTimeMap = new HashMap<String, Double>();
 		Calendar current = start;
 		while (current.before(end)) {
 			String key = sdf.format(current.getTime());
 			Double workingTime = getWorkingTime(current);
 			if (workingTime != null) {
-				result.put(key, workingTime);
+				workingTimeMap.put(key, workingTime);
 			}
 			current.set(Calendar.DATE, current.get(Calendar.DATE) + 1);
 		}
-		return result;
-
 	}
 
 	private Double getWorkingTime(Calendar cal) {

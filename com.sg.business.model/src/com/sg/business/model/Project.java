@@ -17,6 +17,7 @@ import com.mobnut.db.DBActivator;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelRelation;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -919,5 +920,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public List<PrimaryObject> getRoleDefinitions() {
 		return getRelationById(F__ID, ProjectRole.F_PROJECT_ID, ProjectRole.class);
+	}
+
+	public List<PrimaryObject> getCalendarCondition() {
+		ModelRelation mr = ModelService.getModelRelation("project_calendar");
+		return getRelationByModel(mr);
 	}
 }

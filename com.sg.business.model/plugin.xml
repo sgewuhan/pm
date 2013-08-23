@@ -247,6 +247,15 @@
             id="ProjectRole_RoleAssignment"
             name="项目的组织角色指派">
       </relation>
+      <relation
+            end1Class="com.sg.business.model.Project"
+            end1Key="_id"
+            end2Class="com.sg.business.model.CalendarSetting"
+            end2Key="project_id"
+            id="project_calendar"
+            name="项目日历"
+            sort="com.sg.business.model.bson.SEQSorter">
+      </relation>
    </extension>
 
 </plugin>

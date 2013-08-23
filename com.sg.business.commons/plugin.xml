@@ -878,6 +878,7 @@
       </column>
       <column
             column="planfinish"
+            editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
             id="planfinish_e"
             name="计划完成"
             type="Date"
