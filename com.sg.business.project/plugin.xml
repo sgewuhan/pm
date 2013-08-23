@@ -391,7 +391,7 @@
             multiSelection="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.model.labelprovider.ProjectRoleLabelProvider2"
+               labelProvider="com.sg.business.commons.labelprovider.ProjectRoleLabelProvider2"
                name="名称"
                width="-1">
          </column>
@@ -541,7 +541,7 @@
                         labelVisible="true"
                         name="chargerid"
                         persistable="false"
-                        presentation="com.sg.business.model.field.UserIdFieldPres"
+                        presentation="com.sg.business.commons.field.UserIdFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -553,7 +553,7 @@
                         labelVisible="true"
                         name="org_id"
                         persistable="true"
-                        presentation="com.sg.business.model.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.OrgFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -565,7 +565,7 @@
                         labelVisible="true"
                         name="launchorg_id"
                         persistable="true"
-                        presentation="com.sg.business.model.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.OrgFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -717,7 +717,7 @@
                         textMessage="&lt;自动编号&gt;"
                         type="String">
                      <extendValueDefinition
-                           type="com.sg.business.model.numbering.ProjectNumber">
+                           type="com.sg.business.commons.numbering.ProjectNumber">
                      </extendValueDefinition>
                   </text>
                   <text
@@ -753,7 +753,7 @@
                         labelVisible="true"
                         name="chargerid"
                         persistable="true"
-                        presentation="com.sg.business.model.field.UserIdFieldPres"
+                        presentation="com.sg.business.commons.field.UserIdFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -1491,7 +1491,7 @@
          </columnGroup>
          <column
                column="wf_execute"
-               labelProvider="com.sg.business.model.labelprovider.WorkflowDefLabelPro"
+               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
                name="流程"
                width="100">
          </column>

@@ -11,6 +11,14 @@ Require-Bundle: org.eclipse.rap.ui,
  com.mobnut.db;bundle-version="1.0.0",
  com.mobnut.admin;bundle-version="1.0.0",
  com.sg.business.model;bundle-version="1.0.0",
- com.sg.thirdparty;bundle-version="1.0.0"
+ com.sg.thirdparty;bundle-version="1.0.0",
+ org.eclipse.rap.ui.forms;bundle-version="2.1.0",
+ com.mobnut.commons,
+ com.sg.business.resource
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Export-Package: com.sg.business.commons.editingsupport,
+ com.sg.business.commons.field,
+ com.sg.business.commons.handler.work,
+ com.sg.business.commons.labelprovider,
+ com.sg.business.commons.numbering

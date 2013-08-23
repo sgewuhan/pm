@@ -319,7 +319,7 @@
             multiSelection="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.model.labelprovider.RoleDefinitionLabelProvider2"
+               labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider2"
                name="名称"
                width="-1">
          </column>
@@ -330,14 +330,14 @@
             popupMenu="popup:management.workdconnection">
          <column
                column="end1label"
-               labelProvider="com.sg.business.model.labelprovider.End1WorkDefLabelProvider"
+               labelProvider="com.sg.business.commons.labelprovider.End1WorkDefLabelProvider"
                name="前置工作"
                type="String"
                width="120">
          </column>
          <column
                column="end2label"
-               labelProvider="com.sg.business.model.labelprovider.End2WorkDefLabelProvider"
+               labelProvider="com.sg.business.commons.labelprovider.End2WorkDefLabelProvider"
                name="后置工作"
                type="String"
                width="120">
@@ -1432,7 +1432,7 @@
          </column>
          <column
                column="wf_execute"
-               labelProvider="com.sg.business.model.labelprovider.WorkflowDefLabelPro"
+               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
                name="流程"
                width="100">
          </column>
@@ -2354,7 +2354,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.model.handler.work.CreateDeliverableDefinition"
+            class="com.sg.business.commons.handler.work.CreateDeliverableDefinition"
             commandId="management.deliverables.create">
       </handler>
       <handler

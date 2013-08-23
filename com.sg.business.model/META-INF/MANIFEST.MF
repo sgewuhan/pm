@@ -9,13 +9,10 @@ Require-Bundle: org.eclipse.core.runtime,
  com.mobnut.commons;bundle-version="1.0.0",
  org.eclipse.rap.ui;bundle-version="2.1.0",
  com.mobnut.db,
- com.sg.business.resource,
  com.sg.widgets;bundle-version="1.0.0",
  com.sg.thirdparty,
  com.mobnut.portal,
- com.sg.bpm.service;bundle-version="1.0.0",
- org.eclipse.rap.ui.forms,
- com.mobnut.admin
+ com.sg.business.resource;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.model,
@@ -24,9 +21,4 @@ Export-Package: com.sg.business.model,
  com.sg.business.model.dataset.folder,
  com.sg.business.model.dataset.organization,
  com.sg.business.model.dataset.project,
- com.sg.business.model.dataset.projecttemplate,
- com.sg.business.model.editingsupport,
- com.sg.business.model.field,
- com.sg.business.model.handler.work,
- com.sg.business.model.labelprovider,
- com.sg.business.model.numbering
+ com.sg.business.model.dataset.projecttemplate
