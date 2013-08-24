@@ -46,15 +46,8 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		if(isOrganizatioRole()){
 			Role role = getOrganizationRole();
 			List<PrimaryObject> ass = role.getAssignment();
-			String[] userIds = new String[ass.size()];
-			for (int i = 0; i < ass.size(); i++) {
-				 RoleAssignment ra = (RoleAssignment) ass.get(i);
-				 userIds[i] = ra.getUserid();
-			}
-			if(userIds.length>0){
-				Project project = getProject();
-				project.doAddProjectParticipate(userIds);
-			}
+			Project project = getProject();
+			project.doAddParticipateFromAssignment(ass);
 		}
 		
 		super.doInsert(context);
@@ -95,7 +88,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		// 写入到项目
 		if(userIds.length>0){
 			Project project = getProject();
-			project.doAddProjectParticipate(userIds);
+			project.doAddParticipate(userIds);
 		}
 
 		// 写日志

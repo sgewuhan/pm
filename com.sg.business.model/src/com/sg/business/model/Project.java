@@ -397,6 +397,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			if (roleId != null) {
 				// 设置为组织角色
 				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
+				//将组织角色中的成员加入到项目的参与者
+				Role role = ModelService.createModelObject(Role.class, (ObjectId)roleId);
+				List<PrimaryObject> ass = role.getAssignment();
+				doAddParticipateFromAssignment(ass);
+				
 			} else {
 				// 设置为项目角色
 				prole.setValue(ProjectRole.F_ROLE_NUMBER,
@@ -531,7 +536,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @throws Exception
 	 *             抛出写入错误时
 	 */
-	public void doAddProjectParticipate(String[] userIds) throws Exception {
+	public void doAddParticipate(String[] userIds) throws Exception {
 		DBCollection pjCol = getCollection();
 
 		DBObject update = new BasicDBObject().append("$addToSet",
@@ -542,6 +547,20 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				new BasicDBObject().append(Project.F__ID, get_id()), update,
 				false, false);
 		checkWriteResult(ws);
+	}
+
+	public void doAddParticipateFromAssignment(List<PrimaryObject> assignment) throws Exception {
+		if(assignment==null||assignment.size()==0){
+			return;
+		}
+		String[] userIds = new String[assignment.size()];
+		for (int i = 0; i < assignment.size(); i++) {
+			 AbstractRoleAssignment ra = (AbstractRoleAssignment) assignment.get(i);
+			 userIds[i] = ra.getUserid();
+		}
+		if(userIds.length>0){
+			doAddParticipate(userIds);
+		}
 	}
 
 	@Override
