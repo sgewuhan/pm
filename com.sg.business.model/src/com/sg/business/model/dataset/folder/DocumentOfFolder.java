@@ -7,7 +7,7 @@ import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 /**
  * <p>
  * 文档集合
- * <p/>
+ * </p>
  * 文档集合用于描述文档库中的文档信息<br/>
  * 继承于 {@link com.sg.widgets.commons.dataset.MasterDetailDataSetFactory}
  * 
