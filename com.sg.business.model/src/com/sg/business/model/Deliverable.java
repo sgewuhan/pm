@@ -46,4 +46,8 @@ public class Deliverable extends PrimaryObject implements IProjectRelative{
 		return "½»¸¶Îï";
 	}
 
+	@Override
+	public String getDefaultEditorId() {
+		return EDITOR;
+	}
 }

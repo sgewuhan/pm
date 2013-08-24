@@ -10,9 +10,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
-import com.sg.business.model.Deliverable;
-import com.sg.business.model.DeliverableDefinition;
-import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -46,19 +43,14 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 		po.addEventListener(currentViewerControl);
 
 		// 使用编辑器打开编辑工作定义
-		Configurator conf;
-		if (po instanceof WorkDefinition) {
-			conf = Widgets.getEditorRegistry().getConfigurator(
-					DeliverableDefinition.EDITOR);
-		} else {
-			conf = Widgets.getEditorRegistry().getConfigurator(
-					Deliverable.EDITOR);
-		}
+		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
+				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, getTitle((AbstractWork) selected));
+					true, null, "添加" + po.getTypeName());
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, getTitle((AbstractWork) selected), e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, "添加" + po.getTypeName(),
+					e.getMessage(), SWT.ICON_ERROR);
 		}
 
 		// 3. 处理完成后，释放侦听器
@@ -69,13 +61,9 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 				.getActiveWorkbenchWindow().getActivePage();
 		NavigatorPart np = (NavigatorPart) page
 				.findView("management.documentdefinition");
-		if(np != null){
+		if (np != null) {
 			np.reloadMaster();
 		}
-	}
-	
-	private String getTitle(AbstractWork po) {
-		return (po instanceof WorkDefinition) ? "添加交付物定义" : "添加交付物";
 	}
 
 }

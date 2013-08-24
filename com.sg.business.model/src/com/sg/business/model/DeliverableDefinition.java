@@ -133,5 +133,10 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 	public String getTypeName() {
 		return "Ωª∏∂∂®“Â";
 	}
+	
+	@Override
+	public String getDefaultEditorId() {
+		return EDITOR;
+	}
 
 }
