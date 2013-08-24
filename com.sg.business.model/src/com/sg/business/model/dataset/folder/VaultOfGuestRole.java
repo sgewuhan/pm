@@ -23,10 +23,14 @@ import com.sg.business.model.User;
 
 /**
  * <p>
- * 获得授予当前用户“文档管理员”权限的组织容器 包括：所属组织的文件夹，负责的项目的文件夹
+ * 授权文档库
  * </p>
+ * 继承于 {@link com.mobnut.db.model.DataSetFactory}，获得当前用户授权查看（具有文档访问者权限）的组织的文档库
+ * 包括：授权查看的组织的文件夹
  * <br/>
- * 继承于 {@link com.mobnut.db.model.DataSetFactory}
+ * 实现以下几种功能：
+ * <li>获取授权查看的组织的文件夹数
+ * <li>获取授权查看的组织的文件夹的List<{@link com.mobnut.db.model.PrimaryObject}>集合
  * 
  * @author yangjun
  * 
@@ -34,14 +38,14 @@ import com.sg.business.model.User;
 public class VaultOfGuestRole extends DataSetFactory {
 	
 	/**
-	 * 当前用户可访问的组织容器集合数
+	 * 当前用户授权查看的组织的文件夹数
 	 */
 	private long count;
 
 	/**
-	 * 获取授予当前用户“文档访问者”权限的组织容器
+	 * 获取当前用户授权查看的组织的文件夹的List<{@link com.mobnut.db.model.PrimaryObject}>集合
 	 * @param ds : 组织容器数据集
-	 * @return 实例化的{@link com.sg.business.model.Organization}集合
+	 * @return 实例化的{@link com.mobnut.db.model.PrimaryObject}集合
 	 */
 	@Override
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
@@ -63,7 +67,7 @@ public class VaultOfGuestRole extends DataSetFactory {
 	}
 
 	/**
-	 * 获取授予当前用户的组织容器
+	 * 添加授权查看的组织的文件夹到List<{@link com.mobnut.db.model.PrimaryObject}>集合
 	 * @param user ： 登录用户的信息
 	 * @param roleNumber : 角色编号
 	 * @param containerType ： 授权信息,信息来源于{@link com.sg.business.model.Container}
@@ -93,6 +97,7 @@ public class VaultOfGuestRole extends DataSetFactory {
 		while (cur.hasNext()) {
 			Organization org = ModelService.createModelObject(cur.next(),
 					Organization.class);
+			//虚拟化的组织容器
 			Container container = Container.adapter(org, containerType);
 			if(!containers.contains(container)){
 				containers.add(container);

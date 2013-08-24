@@ -14,10 +14,13 @@ import com.sg.business.model.User;
 
 /**
  * <p>
- * 获得当前用户的可以管理的组织
+ * 具有项目管理职能的组织
  * <p/>
+ * 继承于 {@link com.mobnut.db.model.DataSetFactory}，
+ * 业务管理中获得当前用户的可以建立项目模版、工作定义（独立、通用）和文档模版的组织
  * <br/>
- * 继承于 {@link com.mobnut.db.model.DataSetFactory}
+ * 实现以下几种功能：
+ * <li>获取当前用户可以管理的具有项目管理职能的组织（被授予了业务管理员权限）
  * 
  * @author yangjun
  * 
@@ -25,14 +28,14 @@ import com.sg.business.model.User;
 public class OrgOfBusinessAdminRoleUser extends DataSetFactory {
 	
 	/**
-	 * 当前用户可访问的组织集合数
+	 * 当前用户可以管理的具有项目管理职能的组织数
 	 */
 	private long count;
 
 	/**
-	 * 获取当前用户可访问的组织
+	 * 获取当前用户可以管理的具有项目管理职能的组织的List<{@link com.mobnut.db.model.PrimaryObject}>集合
 	 * @param ds : 组织数据集
-	 * @return 实例化的{@link com.sg.business.model.Organization}集合
+	 * @return 实例化的{@link com.mobnut.db.model.PrimaryObject}集合
 	 */
 	@Override
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
