@@ -45,7 +45,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public static final String F_CHARGER = "chargerid";
 
 	/**
-	 * 数组类型字段，字段中的每个元素为 userData
+	 * 数组类型字段，每个元素为都是userid
 	 */
 	public static final String F_PARTICIPATE = "participate";
 

@@ -65,6 +65,9 @@ public class WorkDefinition extends AbstractWork implements
 	 */
 	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition.1";
 
+	/**
+	 * 通用工作定义的编辑器Id,用于编辑根节点
+	 */
 	public static final String EDITOR_GENERIC_WORK_ROOT = "editor.genericWorkDefinition";
 
 	/**
@@ -72,6 +75,9 @@ public class WorkDefinition extends AbstractWork implements
 	 */
 	public static final String EDITOR_STANDLONE_WORK = "editor.standloneWorkDefinition.1";
 
+	/**
+	 * 独立工作定义的编辑器Id,用于编辑根节点
+	 */
 	public static final String EDITOR_STANDLONE_WORK_ROOT = "editor.standloneWorkDefinition";
 
 	/**
@@ -91,10 +97,12 @@ public class WorkDefinition extends AbstractWork implements
 	}
 
 	/**
-	 * 构造子工作定义对象，包括以下的处理：<br/>
+	 * 构造子工作定义对象，包括以下的处理： <br/>
+	 * 
 	 * <li>将自己的{@link #F__ID}设置为创建的子工作定义的{@link #F_PARENT_ID}</li> <li>将自己的
-	 * {@link #F_ROOT_ID},设置为创建的子工作定义的{@link #F_ROOT_ID}</li> <li>
-	 * 对于通用工作定义和独立工作定义，在构造对象时将保存其上一级的{@link #F_ORGANIZATION_ID}字段的值</li> <li>
+	 * {@link #F_ROOT_ID},设置为创建的子工作定义的{@link #F_ROOT_ID}</li>
+	 * 
+	 * <li>对于通用工作定义和独立工作定义，在构造对象时将保存其上一级的{@link #F_ORGANIZATION_ID}字段的值</li> <li>
 	 * 对于项目工作定义，在构造时保存上一级的{@link #F_PROJECT_TEMPLATE_ID}字段的值</li>
 	 * 
 	 * @return 未保存的{@link #WorkDefinition}, 用于编辑器使用
@@ -134,6 +142,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 构造交付物定义对象
+	 * 
 	 * @return DeliverableDefinition
 	 */
 	@Override
@@ -143,9 +152,10 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 传入文档定义，构建交付物定义对象
+	 * 
 	 * @param docd
-	 *         ,文档定义
-	 * @return
+	 *            为空时，不将文档定义的Id放入交付物定义对象
+	 * @return 交付物定义
 	 */
 	public DeliverableDefinition makeDeliverableDefinition(
 			DocumentDefinition docd) {
@@ -184,6 +194,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回工作定义关联的所有交付物定义
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getDeliverableDefinitions() {
@@ -195,7 +206,8 @@ public class WorkDefinition extends AbstractWork implements
 	}
 
 	/**
-	 * 工作定义是否启用
+	 * 工作定义是否启用，适用于通用工作定义，独立工作定义
+	 * 
 	 * @return boolean
 	 */
 	public boolean isActivated() {
@@ -250,6 +262,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回后置工作定义
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getEnd2Connections() {
@@ -259,6 +272,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回前置工作定义
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getEnd1Connections() {
@@ -358,8 +372,9 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回工作定义归属的组织
+	 * 
 	 * @return Organization
-	 */ 
+	 */
 	public Organization getOrganization() {
 		ObjectId org_id = (ObjectId) getValue(F_ORGANIZATION_ID);
 		if (org_id != null) {
@@ -370,6 +385,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回工作定义的组织_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getOrganizationId() {
@@ -378,6 +394,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回工作的承担者角色
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getParticipateRoles() {
@@ -405,6 +422,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回工作定义归属的模板
+	 * 
 	 * @return PrimaryObject
 	 */
 	@Override
@@ -414,6 +432,7 @@ public class WorkDefinition extends AbstractWork implements
 
 	/**
 	 * 返回类型名称
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -421,10 +440,11 @@ public class WorkDefinition extends AbstractWork implements
 		return "工作定义";
 	}
 
-    /**
-     * 返回工作定义的默认编辑器ID	
-     * @return String
-     */
+	/**
+	 * 返回工作定义的默认编辑器ID
+	 * 
+	 * @return String
+	 */
 	@Override
 	public String getDefaultEditorId() {
 		int type = getWorkDefinitionType();

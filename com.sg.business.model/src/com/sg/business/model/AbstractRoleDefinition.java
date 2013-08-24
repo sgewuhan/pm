@@ -67,7 +67,7 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 	}
 
 	/**
-	 * 角色的显示图标
+	 * 角色的显示内容
 	 * 
 	 * @return String
 	 */
