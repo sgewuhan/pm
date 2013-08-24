@@ -231,6 +231,100 @@
                id="小于">
          </option>
       </option>
+      <option
+            id="com.sg.business.option.organizationType">
+         <option
+               id="法人">
+         </option>
+         <option
+               id="事业部">
+         </option>
+         <option
+               id="部门">
+         </option>
+         <option
+               id="团队">
+         </option>
+      </option>
+      <option
+            id="connectiontype"
+            label="顺序关系">
+         <option
+               id="SF"
+               label="开始-完成"
+               value="SF">
+         </option>
+         <option
+               id="SS"
+               label="开始-开始"
+               value="SS">
+         </option>
+         <option
+               id="FF"
+               label="完成-完成"
+               value="FF">
+         </option>
+         <option
+               id="FS"
+               label="完成-开始"
+               value="FS">
+         </option>
+      </option>
+      <option
+            id="操作符">
+         <option
+               id="+">
+         </option>
+         <option
+               id="-">
+         </option>
+      </option>
+      <option
+            id="日期单位">
+         <option
+               id="周"
+               label="周"
+               value="w">
+         </option>
+         <option
+               id="天"
+               label="天"
+               value="d">
+         </option>
+         <option
+               id="小时"
+               label="小时"
+               value="h">
+         </option>
+         <option
+               id="分钟"
+               label="分钟"
+               value="m">
+         </option>
+         <option
+               id="秒"
+               label="秒"
+               value="s">
+         </option>
+      </option>
+      <option
+            id="status">
+         <option
+               id="准备中">
+         </option>
+         <option
+               id="进行中">
+         </option>
+         <option
+               id="已暂停">
+         </option>
+         <option
+               id="已完成">
+         </option>
+         <option
+               id="已取消">
+         </option>
+      </option>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -662,17 +756,6 @@
       </column>
    </extension>
    <extension
-         point="com.sg.widgets.column">
-      <column
-            column="charger_roled_id"
-            id="work.chargerrole"
-            labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkLabelProvider"
-            name="负责人角色"
-            type="String"
-            width="120">
-      </column>
-   </extension>
-   <extension
          point="com.mobnut.admin.seq">
       <seq
             collectionname="ids"
@@ -869,6 +952,17 @@
    <extension
          point="com.sg.widgets.column">
       <column
+            column="charger_roled_id"
+            id="work.chargerrole"
+            labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkLabelProvider"
+            name="负责人角色"
+            type="String"
+            width="120">
+      </column>
+   </extension>
+   <extension
+         point="com.sg.widgets.column">
+      <column
             column="planstart"
             editingSupport="com.sg.business.commons.editingsupport.PlanStartEditing"
             id="planstart_e"
@@ -934,103 +1028,6 @@
             type="Integer"
             width="72">
       </column>
-   </extension>
-   <extension
-         point="com.sg.widgets.option">
-      <option
-            id="com.sg.business.option.organizationType">
-         <option
-               id="法人">
-         </option>
-         <option
-               id="事业部">
-         </option>
-         <option
-               id="部门">
-         </option>
-         <option
-               id="团队">
-         </option>
-      </option>
-      <option
-            id="connectiontype"
-            label="顺序关系">
-         <option
-               id="SF"
-               label="开始-完成"
-               value="SF">
-         </option>
-         <option
-               id="SS"
-               label="开始-开始"
-               value="SS">
-         </option>
-         <option
-               id="FF"
-               label="完成-完成"
-               value="FF">
-         </option>
-         <option
-               id="FS"
-               label="完成-开始"
-               value="FS">
-         </option>
-      </option>
-      <option
-            id="操作符">
-         <option
-               id="+">
-         </option>
-         <option
-               id="-">
-         </option>
-      </option>
-      <option
-            id="日期单位">
-         <option
-               id="周"
-               label="周"
-               value="w">
-         </option>
-         <option
-               id="天"
-               label="天"
-               value="d">
-         </option>
-         <option
-               id="小时"
-               label="小时"
-               value="h">
-         </option>
-         <option
-               id="分钟"
-               label="分钟"
-               value="m">
-         </option>
-         <option
-               id="秒"
-               label="秒"
-               value="s">
-         </option>
-      </option>
-      <option
-            id="status">
-         <option
-               id="准备中">
-         </option>
-         <option
-               id="进行中">
-         </option>
-         <option
-               id="已暂停">
-         </option>
-         <option
-               id="已完成">
-         </option>
-         <option
-               id="已取消">
-         </option>
-      </option>
    </extension>
 
 </plugin>

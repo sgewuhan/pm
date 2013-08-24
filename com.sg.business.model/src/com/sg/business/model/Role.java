@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -11,6 +12,7 @@ import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.utils.DBUtil;
 import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -134,8 +136,9 @@ public class Role extends PrimaryObject {
 	 * 添加用户到角色中
 	 * @param users
 	 *          ，用户集合
+	 * @throws Exception 
 	 */
-	public void doAssignUsers(List<PrimaryObject> users) {
+	public void doAssignUsers(List<PrimaryObject> users,IContext context) throws Exception {
 		DBCollection roleAssignmentCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_ROLE_ASSIGNMENT);
 		List<DBObject> list = new ArrayList<DBObject>();
@@ -154,6 +157,12 @@ public class Role extends PrimaryObject {
 		}
 		roleAssignmentCol.insert(list);
 
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "为角色指派用户",
+				new Date(), "角色："+this+"\n用户"+users.toString(), IModelConstants.DB);
+	}
+	
+	public List<PrimaryObject> getAssignment(){
+		return getRelationById(F__ID, RoleAssignment.F_ROLE_ID, RoleAssignment.class);
 	}
 
 	/**

@@ -14,6 +14,7 @@ import com.sg.business.model.User;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
+import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class ProjectRoleAssignment extends AbstractNavigatorHandler {
@@ -46,7 +47,7 @@ public class ProjectRoleAssignment extends AbstractNavigatorHandler {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				try {
-					rd.doAssignUsers(is.toList());
+					rd.doAssignUsers(is.toList(),new CurrentAccountContext());
 					vc.getViewer().refresh(rd);
 					vc.expandItem(rd);
 				} catch (Exception e) {

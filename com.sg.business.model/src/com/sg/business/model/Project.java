@@ -32,12 +32,14 @@ import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.resource.BusinessResource;
 
 /**
- * 项目<p/>
+ * 项目
+ * <p/>
+ * 
  * @author jinxitao
- *
+ * 
  */
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
-		ILifecycle,ISchedual {
+		ILifecycle, ISchedual {
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -78,6 +80,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public static final String F_WORK_ORDER = "workorder";
 
 	@Override
+	public String getTypeName() {
+		return "项目";
+	}
+
+	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_16);
 	}
@@ -115,6 +122,70 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return (ObjectId) getValue(F_PROJECT_TEMPLATE_ID);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<String> getStandardSetOptions() {
+		return (List<String>) getValue(F_STANDARD_SET_OPTION);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getProductTypeOptions() {
+		return (List<String>) getValue(F_PRODUCT_TYPE_OPTION);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getProjectTypeOptions() {
+		return (List<String>) getValue(F_PROJECT_TYPE_OPTION);
+	}
+
+	public ProjectBudget getBudget() {
+		DBCollection col = getCollection(IModelConstants.C_PROJECT_BUDGET);
+		DBObject data = col.findOne(new BasicDBObject().append(
+				ProjectBudget.F_PROJECT_ID, get_id()));
+		return ModelService.createModelObject(data, ProjectBudget.class);
+	}
+
+	public Work getWBSRoot() {
+		ObjectId workid = (ObjectId) getValue(F_WORK_ID);
+		return ModelService.createModelObject(Work.class, workid);
+	}
+
+	public List<PrimaryObject> getChildrenWork() {
+		Work root = getWBSRoot();
+		return root.getChildrenWork();
+	}
+
+	public Map<ObjectId, List<PrimaryObject>> getRoleAssignmentMap() {
+		List<PrimaryObject> roles = getRoleDefinitions();
+		Map<ObjectId, List<PrimaryObject>> result = new HashMap<ObjectId, List<PrimaryObject>>();
+		if (!roles.isEmpty()) {
+			for (int i = 0; i < roles.size(); i++) {
+				ProjectRole role = (ProjectRole) roles.get(i);
+				List<PrimaryObject> assignment = role.getAssignment();
+				result.put(role.get_id(), assignment);
+			}
+		}
+		return result;
+	}
+
+	public List<PrimaryObject> getRoleDefinitions() {
+		return getRelationById(F__ID, ProjectRole.F_PROJECT_ID,
+				ProjectRole.class);
+	}
+
+	public List<PrimaryObject> getCalendarCondition() {
+		ModelRelation mr = ModelService.getModelRelation("project_calendar");
+		return getRelationByModel(mr);
+	}
+
+	public boolean hasOrganizationRole(Role role) {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT_ROLE);
+		long count = col.count(new BasicDBObject().append(
+				ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id()).append(
+				ProjectRole.F_PROJECT_ID, get_id()));
+		return count != 0;
+	}
+
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		setValue(F__ID, new ObjectId());
@@ -133,7 +204,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制模板
 		doSetupWithTemplate(root.get_id(), context);
 
-		//复制系统日历
+		// 复制系统日历
 		doCopySystemCanlendar();
 
 	}
@@ -146,15 +217,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		for (int i = 0; i < items.size(); i++) {
 			CalendarSetting item = (CalendarSetting) items.get(i);
 			BasicDBObject pjCalData = new BasicDBObject();
-			pjCalData.put(CalendarSetting.F_CONDITION, item.getValue(CalendarSetting.F_CONDITION));
-			pjCalData.put(CalendarSetting.F_END_DATE, item.getValue(CalendarSetting.F_END_DATE));
-			pjCalData.put(CalendarSetting.F_OPERATOR, item.getValue(CalendarSetting.F_OPERATOR));
-			pjCalData.put(CalendarSetting.F_SEQ, item.getValue(CalendarSetting.F_SEQ));
-			pjCalData.put(CalendarSetting.F_START_DATE, item.getValue(CalendarSetting.F_START_DATE));
-			pjCalData.put(CalendarSetting.F_VALUE, item.getValue(CalendarSetting.F_VALUE));
-			pjCalData.put(CalendarSetting.F_WORKING_TIME, item.getValue(CalendarSetting.F_WORKING_TIME));
-			pjCalData.put(CalendarSetting.F_WORKINGDAY, item.getValue(CalendarSetting.F_WORKINGDAY));
-			pjCalData.put(CalendarSetting.F_DESC, item.getValue(CalendarSetting.F_DESC));
+			pjCalData.put(CalendarSetting.F_CONDITION,
+					item.getValue(CalendarSetting.F_CONDITION));
+			pjCalData.put(CalendarSetting.F_END_DATE,
+					item.getValue(CalendarSetting.F_END_DATE));
+			pjCalData.put(CalendarSetting.F_OPERATOR,
+					item.getValue(CalendarSetting.F_OPERATOR));
+			pjCalData.put(CalendarSetting.F_SEQ,
+					item.getValue(CalendarSetting.F_SEQ));
+			pjCalData.put(CalendarSetting.F_START_DATE,
+					item.getValue(CalendarSetting.F_START_DATE));
+			pjCalData.put(CalendarSetting.F_VALUE,
+					item.getValue(CalendarSetting.F_VALUE));
+			pjCalData.put(CalendarSetting.F_WORKING_TIME,
+					item.getValue(CalendarSetting.F_WORKING_TIME));
+			pjCalData.put(CalendarSetting.F_WORKINGDAY,
+					item.getValue(CalendarSetting.F_WORKINGDAY));
+			pjCalData.put(CalendarSetting.F_DESC,
+					item.getValue(CalendarSetting.F_DESC));
 			pjCalData.put(CalendarSetting.F_PROJECT_ID, get_id());
 			ins.add(pjCalData);
 		}
@@ -184,6 +264,37 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelService.createModelObject(wbsRootData, Work.class);
 	}
 
+	public ProjectRole makeProjectRole(ProjectRole po) {
+		if (po == null) {
+			po = ModelService.createModelObject(ProjectRole.class);
+		}
+		po.setValue(ProjectRole.F_PROJECT_ID, get_id());
+		return po;
+	}
+
+	public ProjectRole makeOrganizationRole(Role role) {
+		ProjectRole prole = ModelService.createModelObject(ProjectRole.class);
+		prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id());
+		prole.setValue(ProjectRole.F_PROJECT_ID, get_id());
+		return prole;
+	}
+
+	public ProjectBudget makeBudgetWithTemplate(ObjectId projectTemplateId,
+			IContext context) {
+		DBCollection col = getCollection(IModelConstants.C_BUDGET_ITEM);
+		DBObject srcdata = col.findOne(new BasicDBObject().append(
+				WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID,
+				projectTemplateId));
+		DBObject tgtData = new BasicDBObject();
+		tgtData.put(ProjectBudget.F_PROJECT_ID, get_id());
+		tgtData.put(ProjectBudget.F_DESC, getDesc());
+		tgtData.put(ProjectBudget.F_DESC_EN, getDesc_e());
+		tgtData.put(ProjectBudget.F_CHILDREN,
+				srcdata.get(BudgetItem.F_CHILDREN));
+
+		return ModelService.createModelObject(tgtData, ProjectBudget.class);
+	}
+
 	/**
 	 * 
 	 * @param context
@@ -207,22 +318,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
 
-	}
-
-	public ProjectBudget makeBudgetWithTemplate(ObjectId projectTemplateId,
-			IContext context) {
-		DBCollection col = getCollection(IModelConstants.C_BUDGET_ITEM);
-		DBObject srcdata = col.findOne(new BasicDBObject().append(
-				WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID,
-				projectTemplateId));
-		DBObject tgtData = new BasicDBObject();
-		tgtData.put(ProjectBudget.F_PROJECT_ID, get_id());
-		tgtData.put(ProjectBudget.F_DESC, getDesc());
-		tgtData.put(ProjectBudget.F_DESC_EN, getDesc_e());
-		tgtData.put(ProjectBudget.F_CHILDREN,
-				srcdata.get(BudgetItem.F_CHILDREN));
-
-		return ModelService.createModelObject(tgtData, ProjectBudget.class);
 	}
 
 	private void doSetupWorkConnectionWithTemplate(ObjectId projectTemplateId,
@@ -348,21 +443,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		return worksToBeInsert;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<String> getStandardSetOptions() {
-		return (List<String>) getValue(F_STANDARD_SET_OPTION);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<String> getProductTypeOptions() {
-		return (List<String>) getValue(F_PRODUCT_TYPE_OPTION);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<String> getProjectTypeOptions() {
-		return (List<String>) getValue(F_PROJECT_TYPE_OPTION);
 	}
 
 	/**
@@ -530,8 +610,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						DBObject deliverableData = new BasicDBObject();
 
 						// 设置项目Id
-						deliverableData.put(Deliverable.F_PROJECT_ID,
-								projectId);
+						deliverableData
+								.put(Deliverable.F_PROJECT_ID, projectId);
 
 						// 设置工作Id
 						deliverableData.put(Deliverable.F_WORK_ID,
@@ -673,7 +753,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				if (tgtRole != null) {
 					Object tgtRoleId = tgtRole.get(ProjectRole.F__ID);
 					if (tgtRoleId != null) {
-						participates.add(new BasicDBObject().append("_id", tgtRoleId));
+						participates.add(new BasicDBObject().append("_id",
+								tgtRoleId));
 					}
 				}
 			}
@@ -827,21 +908,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-	public ProjectRole makeProjectRole(ProjectRole po) {
-		if (po == null) {
-			po = ModelService.createModelObject(ProjectRole.class);
-		}
-		po.setValue(ProjectRole.F_PROJECT_ID, get_id());
-		return po;
-	}
-
-	public ProjectBudget getBudget() {
-		DBCollection col = getCollection(IModelConstants.C_PROJECT_BUDGET);
-		DBObject data = col.findOne(new BasicDBObject().append(
-				ProjectBudget.F_PROJECT_ID, get_id()));
-		return ModelService.createModelObject(data, ProjectBudget.class);
-	}
-
 	@Override
 	public boolean canDelete(IContext context) {
 
@@ -870,23 +936,25 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 删除role
 		col = getCollection(IModelConstants.C_PROJECT_ROLE);
-		DBCursor cur = col.find(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
-				get_id()), new BasicDBObject().append(ProjectRole.F__ID, 1));
+		DBCursor cur = col.find(
+				new BasicDBObject().append(ProjectRole.F_PROJECT_ID, get_id()),
+				new BasicDBObject().append(ProjectRole.F__ID, 1));
 		ObjectId[] roleIds = new ObjectId[cur.size()];
-		int i=0;
-		while(cur.hasNext()){
+		int i = 0;
+		while (cur.hasNext()) {
 			roleIds[i++] = (ObjectId) cur.next().get(ProjectRole.F__ID);
 		}
 		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
 				get_id()));
 		checkWriteResult(ws);
-		
-		//删除roleassignment
+
+		// 删除roleassignment
 		col = getCollection(IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
-		ws = col.remove(new BasicDBObject().append(ProjectRoleAssignment.F_ROLE_ID,new BasicDBObject().append("$in",roleIds )
-				));
+		ws = col.remove(new BasicDBObject().append(
+				ProjectRoleAssignment.F_ROLE_ID,
+				new BasicDBObject().append("$in", roleIds)));
 		checkWriteResult(ws);
-		
+
 		// 删除交付物
 		col = getCollection(IModelConstants.C_DELIEVERABLE);
 		ws = col.remove(new BasicDBObject().append(Deliverable.F_PROJECT_ID,
@@ -902,38 +970,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		super.doRemove(context);
 	}
 
-	public boolean hasOrganizationRole(Role role) {
-		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT_ROLE);
-		long count = col.count(new BasicDBObject().append(
-				ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id()).append(
-				ProjectRole.F_PROJECT_ID, get_id()));
-		return count != 0;
-	}
-
-	public ProjectRole makeOrganizationRole(Role role) {
-		ProjectRole prole = ModelService.createModelObject(ProjectRole.class);
-		prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id());
-		prole.setValue(ProjectRole.F_PROJECT_ID, get_id());
-		return prole;
-	}
-	
-	@Override
-	public String getTypeName() {
-		return "项目";
-	}
-	
-
-	public List<PrimaryObject> getRoleDefinitions() {
-		return getRelationById(F__ID, ProjectRole.F_PROJECT_ID, ProjectRole.class);
-	}
-
-	public List<PrimaryObject> getCalendarCondition() {
-		ModelRelation mr = ModelService.getModelRelation("project_calendar");
-		return getRelationByModel(mr);
-	}
-	
-	
 	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
 			String fFinish, String fDuration) throws Exception {
 		Date start = (Date) getValue(fStart);
@@ -954,6 +990,23 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 计算工期
 			int workingdays = cc.getWorkingDays(start, finish);
 			setValue(fDuration, new Integer(workingdays));
+		}
+	}
+
+	/**
+	 * 根据角色进行工作指派
+	 * 
+	 * @throws Exception
+	 */
+	public void doAssignmentByRole(IContext context) throws Exception {
+		Map<ObjectId, List<PrimaryObject>> map = getRoleAssignmentMap();
+		if(map.size()==0){
+			throw new Exception("尚未对角色指定人员，无法执行按角色指派工作");
+		}
+		List<PrimaryObject> childrenWorks = getChildrenWork();
+		for (int i = 0; i < childrenWorks.size(); i++) {
+			Work childWork = (Work) childrenWorks.get(i);
+			childWork.doAssignment(map,context);
 		}
 	}
 

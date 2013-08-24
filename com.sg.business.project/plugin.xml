@@ -1080,18 +1080,6 @@
                         type="String"
                         widthHint="240">
                   </text>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        heightHint="90"
-                        id="description"
-                        label="说明"
-                        labelVisible="true"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
                   <fieldgroup
                         columnCount="2">
                      <checkbox
@@ -1115,16 +1103,32 @@
                            required="false"
                            type="String">
                      </combo></fieldgroup>
-                  <spinner
+               </section>
+               <section
+                     label="负责人，承担者">
+                  <text
+                        editPart="Text(Single Line)"
                         editable="false"
-                        id="standardworks"
-                        label="标准工时(h)"
+                        id="chargerid"
+                        label="负责人"
                         labelVisible="true"
-                        name="standardworks"
-                        persistable="true"
+                        name="chargerid"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.UserIdFieldPres"
                         required="false"
-                        spinnerSetting="0,9999,1,10">
-                  </spinner>
+                        type="String">
+                  </text>
+                  <list
+                        addTableItemHandler="com.sg.business.project.editor.field.AddParticipate"
+                        editable="true"
+                        id="participate"
+                        label="承担者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.project.labelprovider.UserIdLabelprovider"
+                        name="participate"
+                        persistable="true"
+                        required="false">
+                  </list>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -1161,6 +1165,16 @@
                         name="planduration"
                         persistable="true"
                         required="false">
+                  </spinner>
+                  <spinner
+                        editable="false"
+                        id="standardworks"
+                        label="标准工时(小时)"
+                        labelVisible="true"
+                        name="standardworks"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,9999,1,10">
                   </spinner>
                   <spinner
                         editable="true"
@@ -1214,53 +1228,6 @@
                         persistable="true"
                         required="false">
                   </spinner>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="工作的角色和负责人,承担者"
-               id="basicpage2"
-               image="image/work_24.png"
-               title="执行人">
-            <pagecolumn
-                  id="2">
-               <section
-                     label="角色">
-                  <combo
-                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="charger_roled_id"
-                        label="负责人角色"
-                        labelVisible="true"
-                        name="charger_roled_id"
-                        persistable="true"
-                        required="true"
-                        type="ObjectId">
-                  </combo>
-                  <combo
-                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="assignmentcharger_roled_id"
-                        label="指派人角色"
-                        labelVisible="true"
-                        name="assignmentcharger_roled_id"
-                        persistable="true"
-                        required="false"
-                        type="ObjectId">
-                  </combo>
-                  <table
-                        ctableId="project.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
-                        editable="true"
-                        id="participate_roled_set"
-                        label="承担者角色"
-                        labelVisible="true"
-                        name="participate_roled_set"
-                        persistable="true"
-                        required="false">
-                  </table>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1360,6 +1327,47 @@
                   </checkbox>
                </section>
             </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     label="指派角色">
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="charger_roled_id"
+                        label="负责人角色"
+                        labelVisible="true"
+                        name="charger_roled_id"
+                        persistable="true"
+                        required="true"
+                        type="ObjectId">
+                  </combo>
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="assignmentcharger_roled_id"
+                        label="指派人角色"
+                        labelVisible="true"
+                        name="assignmentcharger_roled_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </combo>
+                  <table
+                        ctableId="project.field.participate_roled_set"
+                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
+                        editable="true"
+                        id="participate_roled_set"
+                        label="承担者角色"
+                        labelVisible="true"
+                        name="participate_roled_set"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
          </basicpage>
          <basicpage
                description="工作执行流程"
@@ -1374,6 +1382,29 @@
                image="image/flow_24.png"
                pageDelegator="com.sg.business.project.editor.page.WorkChangeProcessPage"
                title="工作变更流程">
+         </basicpage>
+         <basicpage
+               description="说明"
+               id="memopage"
+               image="image/work_24.png"
+               title="说明">
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="120"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
    </extension>
@@ -1484,13 +1515,16 @@
                columnDefinitionId="planduration_e">
          </column>
          <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="work.chargerrole">
+         </column>
+         <column
                column="wf_execute"
                labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
                name="流程"
                width="100">
-         </column>
-         <column
-               columnDefinitionId="work.chargerrole">
          </column>
          <structure
                modelRelation="work_work">
