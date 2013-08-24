@@ -16,10 +16,14 @@ import com.sg.business.model.User;
 
 /**
  * <p>
- * 获得当前用户的起始组织以及该组织的下级组织的组织容器 包括：所属组织的文件夹，负责的项目的文件夹
+ * 组织文档库
  * </p>
+ * 继承于 {@link com.mobnut.db.model.DataSetFactory}，获得当前用户所属组织的文档库
+ * 包括：所属组织及其下级组织的文件夹
  * <br/>
- * 继承于 {@link com.mobnut.db.model.DataSetFactory}
+ * 实现以下几种功能：
+ * <li>获取所属组织及其下级组织的文件夹数
+ * <li>获取所属组织及其下级组织的文件夹的List<{@link com.mobnut.db.model.PrimaryObject}>集合
  * 
  * @author yangjun
  * 
@@ -27,14 +31,14 @@ import com.sg.business.model.User;
 public class VaultOfOrganization extends DataSetFactory {
 
 	/**
-	 * 当前用户可访问的组织容器集合数
+	 * 当前用户所属组织及其下级组织的文件夹数
 	 */
 	private long count;
 
 	/**
-	 * 获取当前用户的起始组织以及该组织的下级组织的组织容器
+	 * 获取所属组织及其下级组织的文件夹的List<{@link com.mobnut.db.model.PrimaryObject}>集合
 	 * @param ds : 组织容器数据集
-	 * @return 实例化的{@link com.sg.business.model.Organization}集合
+	 * @return 实例化的List<{@link com.mobnut.db.model.PrimaryObject}>集合
 	 */
 	@Override
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
@@ -47,7 +51,7 @@ public class VaultOfOrganization extends DataSetFactory {
 		Organization org = currentUser.getOrganization();
 		List<PrimaryObject> containers = new ArrayList<PrimaryObject>();
 		
-		// 添加下级的组织容器
+		// 添加下级的组织集合
 		addSubOrganizationContainer(org, containers);
 
 		//获取当前用户可访问的组织容器集合数
@@ -57,14 +61,14 @@ public class VaultOfOrganization extends DataSetFactory {
 
 
 	/**
-	 * 添加下级的组织容器 从起始组织以及该组织的下级组织，如果是容器的组织，添加到OrganizationList中
+	 * 递归添加所属组织的其下级组织的文件夹到List<{@link com.mobnut.db.model.PrimaryObject}>集合
 	 * 
 	 * @param startOrganization : 起始组织
 	 * @param containers ： 组织容器集合
 	 */
 	private void addSubOrganizationContainer(Organization startOrganization,
 			List<PrimaryObject> containers) {
-		//判断起始组织以及该组织的下级组织，是否为容器的组织，如果为容器的组织，则添加到OrganizationList中
+		//判断起始组织是否为容器的组织，如果为容器的组织，则添加到OrganizationList中
 		if (Boolean.TRUE.equals(startOrganization.isContainer())) {
 			Container container = Container.adapter(startOrganization,
 					Container.TYPE_OWNER);
@@ -72,6 +76,7 @@ public class VaultOfOrganization extends DataSetFactory {
 				containers.add(container);
 			}
 		}
+		//获取起始组织的下级组织，递归调用，将是容器的组织添加到OrganizationList中
 		List<PrimaryObject> children = startOrganization
 				.getChildrenOrganization();
 		for (PrimaryObject child : children) {

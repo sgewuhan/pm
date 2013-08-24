@@ -11,9 +11,9 @@ import com.sg.widgets.commons.dataset.OptionDataSetFactory;
 
 /**
  * <p>
- * 工作定义的角色集合
+ * 独立工作定义的角色集合
  * </p>
- * 用于通用工作定义和独立工作定义 这两类工作定义直接使用了组织的角色，并不创建角色定义 获取选项时，
+ * 用于独立工作定义直接使用了组织的角色，并不创建角色定义 获取选项时，
  * 需要返回该职能部门及下级的所有角色 这个类不保证线程安全
  * <br/>
  * 继承于{@link com.sg.widgets.commons.dataset.OptionDataSetFactory}
