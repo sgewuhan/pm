@@ -9,6 +9,8 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeColumn;
 
@@ -46,7 +48,13 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater,
 
 		IToolBarManager manager = page.getToolBarManager();
 		manager.add(new PreviewOptionAction(projectTemplate));
-
+		body.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent event) {
+				projectTemplate.removeEventListener(DeliverablesBody.this);				
+			}
+		});
 	}
 
 	private void reloadOptionsColumns() {

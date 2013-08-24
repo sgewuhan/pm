@@ -186,63 +186,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return count != 0;
 	}
 
-	@Override
-	public void doInsert(IContext context) throws Exception {
-		setValue(F__ID, new ObjectId());
-
-		// 创建根工作定义
-		Work root = makeWBSRoot();
-		root.doInsert(context);
-		setValue(Project.F_WORK_ID, root.get_id());
-
-		// 预算
-		ProjectBudget budget = makeBudget(context);
-		budget.doInsert(context);
-
-		super.doInsert(context);
-
-		// 复制模板
-		doSetupWithTemplate(root.get_id(), context);
-
-		// 复制系统日历
-		doCopySystemCanlendar();
-
-	}
-
-	private void doCopySystemCanlendar() throws Exception {
-		SystemCalendar sc = new SystemCalendar();
-		DataSet d = sc.getDataSet();
-		List<PrimaryObject> items = d.getDataItems();
-		List<DBObject> ins = new ArrayList<DBObject>();
-		for (int i = 0; i < items.size(); i++) {
-			CalendarSetting item = (CalendarSetting) items.get(i);
-			BasicDBObject pjCalData = new BasicDBObject();
-			pjCalData.put(CalendarSetting.F_CONDITION,
-					item.getValue(CalendarSetting.F_CONDITION));
-			pjCalData.put(CalendarSetting.F_END_DATE,
-					item.getValue(CalendarSetting.F_END_DATE));
-			pjCalData.put(CalendarSetting.F_OPERATOR,
-					item.getValue(CalendarSetting.F_OPERATOR));
-			pjCalData.put(CalendarSetting.F_SEQ,
-					item.getValue(CalendarSetting.F_SEQ));
-			pjCalData.put(CalendarSetting.F_START_DATE,
-					item.getValue(CalendarSetting.F_START_DATE));
-			pjCalData.put(CalendarSetting.F_VALUE,
-					item.getValue(CalendarSetting.F_VALUE));
-			pjCalData.put(CalendarSetting.F_WORKING_TIME,
-					item.getValue(CalendarSetting.F_WORKING_TIME));
-			pjCalData.put(CalendarSetting.F_WORKINGDAY,
-					item.getValue(CalendarSetting.F_WORKINGDAY));
-			pjCalData.put(CalendarSetting.F_DESC,
-					item.getValue(CalendarSetting.F_DESC));
-			pjCalData.put(CalendarSetting.F_PROJECT_ID, get_id());
-			ins.add(pjCalData);
-		}
-		DBCollection col = getCollection(IModelConstants.C_CALENDAR_SETTING);
-		WriteResult ws = col.insert(ins, WriteConcern.NORMAL);
-		checkWriteResult(ws);
-	}
-
 	public ProjectBudget makeBudget(IContext context) {
 		ObjectId id = getProjectTemplateId();
 		if (id != null) {
@@ -293,6 +236,63 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				srcdata.get(BudgetItem.F_CHILDREN));
 
 		return ModelService.createModelObject(tgtData, ProjectBudget.class);
+	}
+
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		setValue(F__ID, new ObjectId());
+	
+		// 创建根工作定义
+		Work root = makeWBSRoot();
+		root.doInsert(context);
+		setValue(Project.F_WORK_ID, root.get_id());
+	
+		// 预算
+		ProjectBudget budget = makeBudget(context);
+		budget.doInsert(context);
+	
+		super.doInsert(context);
+	
+		// 复制模板
+		doSetupWithTemplate(root.get_id(), context);
+	
+		// 复制系统日历
+		doCopySystemCanlendar();
+	
+	}
+
+	private void doCopySystemCanlendar() throws Exception {
+		SystemCalendar sc = new SystemCalendar();
+		DataSet d = sc.getDataSet();
+		List<PrimaryObject> items = d.getDataItems();
+		List<DBObject> ins = new ArrayList<DBObject>();
+		for (int i = 0; i < items.size(); i++) {
+			CalendarSetting item = (CalendarSetting) items.get(i);
+			BasicDBObject pjCalData = new BasicDBObject();
+			pjCalData.put(CalendarSetting.F_CONDITION,
+					item.getValue(CalendarSetting.F_CONDITION));
+			pjCalData.put(CalendarSetting.F_END_DATE,
+					item.getValue(CalendarSetting.F_END_DATE));
+			pjCalData.put(CalendarSetting.F_OPERATOR,
+					item.getValue(CalendarSetting.F_OPERATOR));
+			pjCalData.put(CalendarSetting.F_SEQ,
+					item.getValue(CalendarSetting.F_SEQ));
+			pjCalData.put(CalendarSetting.F_START_DATE,
+					item.getValue(CalendarSetting.F_START_DATE));
+			pjCalData.put(CalendarSetting.F_VALUE,
+					item.getValue(CalendarSetting.F_VALUE));
+			pjCalData.put(CalendarSetting.F_WORKING_TIME,
+					item.getValue(CalendarSetting.F_WORKING_TIME));
+			pjCalData.put(CalendarSetting.F_WORKINGDAY,
+					item.getValue(CalendarSetting.F_WORKINGDAY));
+			pjCalData.put(CalendarSetting.F_DESC,
+					item.getValue(CalendarSetting.F_DESC));
+			pjCalData.put(CalendarSetting.F_PROJECT_ID, get_id());
+			ins.add(pjCalData);
+		}
+		DBCollection col = getCollection(IModelConstants.C_CALENDAR_SETTING);
+		WriteResult ws = col.insert(ins, WriteConcern.NORMAL);
+		checkWriteResult(ws);
 	}
 
 	/**
@@ -366,6 +366,61 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		DBCollection col = getCollection(IModelConstants.C_WORK_CONNECTION);
 		WriteResult ws = col.insert(result);
 		checkWriteResult(ws);
+	}
+
+	private Map<ObjectId, DBObject> doSetupRolesWithTemplate(
+			ObjectId projectTemplateId, IContext context) throws Exception {
+		DBCollection col_roled = getCollection(IModelConstants.C_ROLE_DEFINITION);
+		DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
+		// 删除项目现有的角色
+		col_role.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
+				get_id()));
+	
+		// 准备返回值
+		HashMap<ObjectId, DBObject> result = new HashMap<ObjectId, DBObject>();
+	
+		// 查找模板的角色定义
+		DBCursor cur = col_roled.find(new BasicDBObject().append(
+				RoleDefinition.F_PROJECT_TEMPLATE_ID, projectTemplateId));
+		while (cur.hasNext()) {
+			DBObject roleddata = cur.next();
+	
+			// 创建项目角色对象
+			ProjectRole prole = makeProjectRole(null);
+	
+			// 给出将要创建的项目角色的_id
+			ObjectId proleId = new ObjectId();
+			prole.setValue(F__ID, proleId);
+			// 如果是组织角色
+			Object roleId = roleddata
+					.get(RoleDefinition.F_ORGANIZATION_ROLE_ID);
+			if (roleId != null) {
+				// 设置为组织角色
+				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
+			} else {
+				// 设置为项目角色
+				prole.setValue(ProjectRole.F_ROLE_NUMBER,
+						roleddata.get(RoleDefinition.F_ROLE_NUMBER));
+				prole.setValue(ProjectRole.F_DESC,
+						roleddata.get(RoleDefinition.F_DESC));
+			}
+			prole.setValue(ProjectRole.F__CACCOUNT, context.getAccountInfo()
+					.getUserId());
+			prole.setValue(ProjectRole.F__CDATE, new Date());
+	
+			result.put((ObjectId) roleddata.get(RoleDefinition.F__ID),
+					prole.get_data());
+		}
+	
+		if (!result.isEmpty()) {
+			DBObject[] insertData = result.values().toArray(new DBObject[0]);
+	
+			// 插入到数据库
+			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
+	
+		return result;
 	}
 
 	private HashMap<ObjectId, DBObject> doSetupWBSWithTemplate(
@@ -443,6 +498,105 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		return worksToBeInsert;
+	}
+
+	/**
+	 * 根据角色进行工作指派
+	 * 
+	 * @throws Exception
+	 */
+	public void doAssignmentByRole(IContext context) throws Exception {
+		Map<ObjectId, List<PrimaryObject>> map = getRoleAssignmentMap();
+		if (map.size() == 0) {
+			throw new Exception("尚未对角色指定人员，无法执行按角色指派工作");
+		}
+		List<PrimaryObject> childrenWorks = getChildrenWork();
+		for (int i = 0; i < childrenWorks.size(); i++) {
+			Work childWork = (Work) childrenWorks.get(i);
+			childWork.doAssignment(map, context);
+		}
+	}
+
+	/**
+	 * 为项目添加参与者, 项目的参与者可以在为项目角色指定成员时添加,也可以自由添加<br/>
+	 * 自由添加的参与者可以应用到项目的工作中<br/>
+	 * 传入的参数是用户id{@link User#F_USER_ID}的列表<br/>
+	 * 
+	 * 
+	 * {@link F_PARTICIPATE} 字段是数组类型的字段<br/>
+	 * 使用了$addToSet和each一次性将多个值更新到该字段，并且保证没有重复<br/>
+	 * 
+	 * @param userIds
+	 *            参与者数组 userid {@link User#getUserid()}, {@link User#F_USER_ID}
+	 * @throws Exception
+	 *             抛出写入错误时
+	 */
+	public void doAddProjectParticipate(String[] userIds) throws Exception {
+		DBCollection pjCol = getCollection();
+
+		DBObject update = new BasicDBObject().append("$addToSet",
+				new BasicDBObject().append(Project.F_PARTICIPATE,
+						new BasicDBObject().append("$each", userIds)));
+	
+		WriteResult ws = pjCol.update(
+				new BasicDBObject().append(Project.F__ID, get_id()), update,
+				false, false);
+		checkWriteResult(ws);
+	}
+
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		// 删除work
+		DBCollection col = getCollection(IModelConstants.C_WORK);
+		WriteResult ws = col.remove(new BasicDBObject().append(
+				Work.F_PROJECT_ID, get_id()));
+		checkWriteResult(ws);
+	
+		// 删除workconnection
+		col = getCollection(IModelConstants.C_WORK_CONNECTION);
+		ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
+		checkWriteResult(ws);
+	
+		// 删除预算
+		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
+		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID,
+				get_id()));
+		checkWriteResult(ws);
+	
+		// 删除role
+		col = getCollection(IModelConstants.C_PROJECT_ROLE);
+		DBCursor cur = col.find(
+				new BasicDBObject().append(ProjectRole.F_PROJECT_ID, get_id()),
+				new BasicDBObject().append(ProjectRole.F__ID, 1));
+		ObjectId[] roleIds = new ObjectId[cur.size()];
+		int i = 0;
+		while (cur.hasNext()) {
+			roleIds[i++] = (ObjectId) cur.next().get(ProjectRole.F__ID);
+		}
+		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
+				get_id()));
+		checkWriteResult(ws);
+	
+		// 删除roleassignment
+		col = getCollection(IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
+		ws = col.remove(new BasicDBObject().append(
+				ProjectRoleAssignment.F_ROLE_ID,
+				new BasicDBObject().append("$in", roleIds)));
+		checkWriteResult(ws);
+	
+		// 删除交付物
+		col = getCollection(IModelConstants.C_DELIEVERABLE);
+		ws = col.remove(new BasicDBObject().append(Deliverable.F_PROJECT_ID,
+				get_id()));
+		checkWriteResult(ws);
+	
+		// 删除文档
+		col = getCollection(IModelConstants.C_DOCUMENT);
+		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
+				get_id()));
+		checkWriteResult(ws);
+	
+		super.doRemove(context);
 	}
 
 	/**
@@ -853,121 +1007,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return WorkDefinition.VALUE_OPTION;
 	}
 
-	private Map<ObjectId, DBObject> doSetupRolesWithTemplate(
-			ObjectId projectTemplateId, IContext context) throws Exception {
-		DBCollection col_roled = getCollection(IModelConstants.C_ROLE_DEFINITION);
-		DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
-		// 删除项目现有的角色
-		col_role.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
-				get_id()));
-
-		// 准备返回值
-		HashMap<ObjectId, DBObject> result = new HashMap<ObjectId, DBObject>();
-
-		// 查找模板的角色定义
-		DBCursor cur = col_roled.find(new BasicDBObject().append(
-				RoleDefinition.F_PROJECT_TEMPLATE_ID, projectTemplateId));
-		while (cur.hasNext()) {
-			DBObject roleddata = cur.next();
-
-			// 创建项目角色对象
-			ProjectRole prole = makeProjectRole(null);
-
-			// 给出将要创建的项目角色的_id
-			ObjectId proleId = new ObjectId();
-			prole.setValue(F__ID, proleId);
-			// 如果是组织角色
-			Object roleId = roleddata
-					.get(RoleDefinition.F_ORGANIZATION_ROLE_ID);
-			if (roleId != null) {
-				// 设置为组织角色
-				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
-			} else {
-				// 设置为项目角色
-				prole.setValue(ProjectRole.F_ROLE_NUMBER,
-						roleddata.get(RoleDefinition.F_ROLE_NUMBER));
-				prole.setValue(ProjectRole.F_DESC,
-						roleddata.get(RoleDefinition.F_DESC));
-			}
-			prole.setValue(ProjectRole.F__CACCOUNT, context.getAccountInfo()
-					.getUserId());
-			prole.setValue(ProjectRole.F__CDATE, new Date());
-
-			result.put((ObjectId) roleddata.get(RoleDefinition.F__ID),
-					prole.get_data());
-		}
-
-		if (!result.isEmpty()) {
-			DBObject[] insertData = result.values().toArray(new DBObject[0]);
-
-			// 插入到数据库
-			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
-			checkWriteResult(ws);
-		}
-
-		return result;
-	}
-
 	@Override
 	public boolean canDelete(IContext context) {
-
-		// TODO Auto-generated method stub
 		return super.canDelete(context);
-	}
-
-	@Override
-	public void doRemove(IContext context) throws Exception {
-		// 删除work
-		DBCollection col = getCollection(IModelConstants.C_WORK);
-		WriteResult ws = col.remove(new BasicDBObject().append(
-				Work.F_PROJECT_ID, get_id()));
-		checkWriteResult(ws);
-
-		// 删除workconnection
-		col = getCollection(IModelConstants.C_WORK_CONNECTION);
-		ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
-		checkWriteResult(ws);
-
-		// 删除预算
-		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
-		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID,
-				get_id()));
-		checkWriteResult(ws);
-
-		// 删除role
-		col = getCollection(IModelConstants.C_PROJECT_ROLE);
-		DBCursor cur = col.find(
-				new BasicDBObject().append(ProjectRole.F_PROJECT_ID, get_id()),
-				new BasicDBObject().append(ProjectRole.F__ID, 1));
-		ObjectId[] roleIds = new ObjectId[cur.size()];
-		int i = 0;
-		while (cur.hasNext()) {
-			roleIds[i++] = (ObjectId) cur.next().get(ProjectRole.F__ID);
-		}
-		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
-				get_id()));
-		checkWriteResult(ws);
-
-		// 删除roleassignment
-		col = getCollection(IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
-		ws = col.remove(new BasicDBObject().append(
-				ProjectRoleAssignment.F_ROLE_ID,
-				new BasicDBObject().append("$in", roleIds)));
-		checkWriteResult(ws);
-
-		// 删除交付物
-		col = getCollection(IModelConstants.C_DELIEVERABLE);
-		ws = col.remove(new BasicDBObject().append(Deliverable.F_PROJECT_ID,
-				get_id()));
-		checkWriteResult(ws);
-
-		// 删除文档
-		col = getCollection(IModelConstants.C_DOCUMENT);
-		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
-				get_id()));
-		checkWriteResult(ws);
-
-		super.doRemove(context);
 	}
 
 	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
@@ -990,23 +1032,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 计算工期
 			int workingdays = cc.getWorkingDays(start, finish);
 			setValue(fDuration, new Integer(workingdays));
-		}
-	}
-
-	/**
-	 * 根据角色进行工作指派
-	 * 
-	 * @throws Exception
-	 */
-	public void doAssignmentByRole(IContext context) throws Exception {
-		Map<ObjectId, List<PrimaryObject>> map = getRoleAssignmentMap();
-		if(map.size()==0){
-			throw new Exception("尚未对角色指定人员，无法执行按角色指派工作");
-		}
-		List<PrimaryObject> childrenWorks = getChildrenWork();
-		for (int i = 0; i < childrenWorks.size(); i++) {
-			Work childWork = (Work) childrenWorks.get(i);
-			childWork.doAssignment(map,context);
 		}
 	}
 

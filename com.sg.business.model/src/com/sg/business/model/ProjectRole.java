@@ -28,12 +28,38 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	public static final String EDITOR_ROLE_DEFINITION_EDIT = "editor.projectrole.edit";
 
 	public Project getProject() {
-		ObjectId projectId = (ObjectId) getValue(F_PROJECT_ID);
+		ObjectId projectId = getProjectId();
 		if (projectId != null) {
 			return ModelService.createModelObject(Project.class, projectId);
 		}
 		return null;
 	}
+	
+	
+	public ObjectId getProjectId() {
+		return (ObjectId) getValue(F_PROJECT_ID);
+	}
+
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		//如果是系统角色，需要将该角色的用户添加到项目的参与者
+		if(isOrganizatioRole()){
+			Role role = getOrganizationRole();
+			List<PrimaryObject> ass = role.getAssignment();
+			String[] userIds = new String[ass.size()];
+			for (int i = 0; i < ass.size(); i++) {
+				 RoleAssignment ra = (RoleAssignment) ass.get(i);
+				 userIds[i] = ra.getUserid();
+			}
+			if(userIds.length>0){
+				Project project = getProject();
+				project.doAddProjectParticipate(userIds);
+			}
+		}
+		
+		super.doInsert(context);
+	}
+
 
 	/**
 	 * 为角色指派用户
@@ -67,7 +93,10 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		checkWriteResult(ws);
 
 		// 写入到项目
-		doAddProjectParticipate(userIds);
+		if(userIds.length>0){
+			Project project = getProject();
+			project.doAddProjectParticipate(userIds);
+		}
 
 		// 写日志
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "为角色指派用户",
@@ -76,17 +105,6 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	}
 
-	public void doAddProjectParticipate(String[] userIds) throws Exception {
-		DBCollection pjCol = getCollection(IModelConstants.C_PROJECT);
-		DBObject update = new BasicDBObject().append("$addToSet",
-				new BasicDBObject().append(Project.F_PARTICIPATE,
-						new BasicDBObject().append("$each", userIds)));
-
-		WriteResult ws = pjCol.update(
-				new BasicDBObject().append(Project.F__ID, get_id()), update,
-				false, false);
-		checkWriteResult(ws);
-	}
 
 	@Override
 	public void doRemove(IContext context) throws Exception {

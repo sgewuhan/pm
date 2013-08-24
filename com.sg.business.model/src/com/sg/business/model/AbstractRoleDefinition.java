@@ -61,7 +61,7 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 		Assert.isNotNull(id);
 		return ModelService.createModelObject(Role.class, id);
 	}
-
+	
 	public ObjectId getOrganizationRoleId() {
 		return (ObjectId) getValue(F_ORGANIZATION_ROLE_ID);
 	}
