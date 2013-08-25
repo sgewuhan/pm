@@ -604,16 +604,17 @@
                         required="false"
                         spinnerSetting="0,999999,1,100">
                   </spinner>
-                  <spinner
-                        editable="false"
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
                         id="planworks"
-                        label="计划工时(小时)"
+                        label="计划工时(时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="true"
                         required="false"
-                        spinnerSetting="0,999999,1,100">
-                  </spinner>
+                        type="Double">
+                  </text>
                </section>
                <section
                      label="实际">
@@ -649,16 +650,17 @@
                         required="false"
                         spinnerSetting="0,999999,1,100">
                   </spinner>
-                  <spinner
-                        editable="false"
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
                         id="actualworks"
-                        label="实际工时(小时)"
+                        label="实际工时(时)"
                         labelVisible="true"
                         name="actualworks"
                         persistable="true"
                         required="false"
-                        spinnerSetting="0,999999,1,100">
-                  </spinner>
+                        type="Double">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1080,6 +1082,18 @@
                         type="String"
                         widthHint="240">
                   </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="chargerid"
+                        label="负责"
+                        labelVisible="true"
+                        name="chargerid"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
                   <fieldgroup
                         columnCount="2">
                      <checkbox
@@ -1105,25 +1119,13 @@
                      </combo></fieldgroup>
                </section>
                <section
-                     label="负责人，承担者">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="chargerid"
-                        label="负责人"
-                        labelVisible="true"
-                        name="chargerid"
-                        persistable="false"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
+                     label="参与者">
                   <list
                         addTableItemHandler="com.sg.business.project.editor.field.AddParticipate"
                         editable="true"
                         id="participate"
-                        label="承担者"
-                        labelVisible="true"
+                        label="参与者"
+                        labelVisible="false"
                         labelprovider="com.sg.business.project.labelprovider.UserIdLabelprovider"
                         name="participate"
                         persistable="true"
@@ -1166,25 +1168,28 @@
                         persistable="true"
                         required="false">
                   </spinner>
-                  <spinner
-                        editable="false"
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
                         id="standardworks"
-                        label="标准工时(小时)"
+                        label="标准工时(时)"
                         labelVisible="true"
                         name="standardworks"
                         persistable="true"
                         required="false"
-                        spinnerSetting="0,9999,1,10">
-                  </spinner>
-                  <spinner
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
                         editable="true"
                         id="planworks"
-                        label="计划工时(小时)"
+                        label="计划工时(时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="true"
-                        required="false">
-                  </spinner>
+                        required="false"
+                        type="Double">
+                  </text>
                </section>
                <section
                      label="实际">
@@ -1219,15 +1224,17 @@
                         persistable="true"
                         required="false">
                   </spinner>
-                  <spinner
-                        editable="false"
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
                         id="actualworks"
-                        label="实际工时(小时)"
+                        label="实际工时(时)"
                         labelVisible="true"
                         name="actualworks"
                         persistable="true"
-                        required="false">
-                  </spinner>
+                        required="false"
+                        type="Double">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1360,7 +1367,7 @@
                         dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
                         editable="true"
                         id="participate_roled_set"
-                        label="承担者角色"
+                        label="参与者角色"
                         labelVisible="true"
                         name="participate_roled_set"
                         persistable="true"
@@ -1496,11 +1503,14 @@
             fix="2"
             id="project.wbs"
             popupMenu="popup:project.wbs">
-         <column
-               columnDefinitionId="work.seq">
-         </column>
+         <structure
+               modelRelation="work_work">
+         </structure>
          <column
                columnDefinitionId="work.desc">
+         </column>
+         <column
+               columnDefinitionId="work.seq">
          </column>
          <column
                columnDefinitionId="planstart_e">
@@ -1514,21 +1524,53 @@
          <column
                columnDefinitionId="planduration_e">
          </column>
-         <column
-               columnDefinitionId="chargerid">
-         </column>
-         <column
-               columnDefinitionId="work.chargerrole">
-         </column>
-         <column
-               column="wf_execute"
-               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
-               name="流程"
-               width="100">
-         </column>
-         <structure
-               modelRelation="work_work">
-         </structure>
+         <columnGroup
+               defaultGroup="false"
+               name="负责人和参与者">
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="实际进度">
+            <column
+                  columnDefinitionId="actualstart_e">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="actualworks_e">
+            </column>
+            <column
+                  columnDefinitionId="actualduration_e">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="条件和设置">
+            <column
+                  column="standardworks"
+                  name="标准工时"
+                  type="Double">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="work.chargerrole">
+            </column>
+            <column
+                  column="wf_execute"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+                  name="流程"
+                  width="100">
+            </column>
+         </columnGroup>
       </tree>
    </extension>
    <extension

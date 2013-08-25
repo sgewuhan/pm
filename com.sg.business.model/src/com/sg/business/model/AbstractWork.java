@@ -140,7 +140,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	}
 
 	/**
-	 * 设置承担者角色
+	 * 设置参与者角色
 	 * @param role
 	 * @param context
 	 * @throws Exception

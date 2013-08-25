@@ -593,15 +593,15 @@
             id="work.desc"
             name="名称"
             type="String"
-            width="-1">
+            width="240">
       </column>
       <column
             column="seq"
             id="work.seq"
             labelProvider="com.sg.business.commons.labelprovider.WBSCodeLabelprovider"
-            name="序号"
+            name="WBS序号"
             type="Integer"
-            width="160">
+            width="60">
       </column>
       <column
             column="desc"
@@ -642,117 +642,6 @@
             name="负责人角色"
             type="String"
             width="120">
-      </column>
-   </extension>
-   <extension
-         point="com.sg.widgets.column">
-      <column
-            column="projectnumber"
-            id="project.projectnumber"
-            name="项目编号"
-            type="String"
-            width="80">
-      </column>
-      <column
-            column="desc"
-            id="project.desc"
-            name="名称"
-            type="String"
-            width="180">
-      </column>
-      <column
-            column="status"
-            id="project.status"
-            name="状态"
-            type="String"
-            width="50">
-      </column>
-      <column
-            column="planstart"
-            id="planstart"
-            name="计划开始"
-            type="Date"
-            width="72">
-      </column>
-      <column
-            column="planfinish"
-            id="planfinish"
-            name="计划完成"
-            type="Date"
-            width="72">
-      </column>
-      <column
-            column="planduration"
-            id="planduration"
-            name="计划工期"
-            type="Integer"
-            width="72">
-      </column>
-      <column
-            column="planworks"
-            id="planworks"
-            name="计划工时"
-            type="Integer"
-            width="72">
-      </column>
-      <column
-            column="actualstart"
-            id="actualstart"
-            name="实际开始"
-            type="Date"
-            width="72">
-      </column>
-      <column
-            column="actualfinish"
-            id="actualfinish"
-            name="实际完成"
-            type="Date"
-            width="72">
-      </column>
-      <column
-            column="actualduration"
-            id="actualduration"
-            name="实际工期"
-            type="Integer"
-            width="72">
-      </column>
-      <column
-            column="actualworks"
-            id="actualworks"
-            name="实际工时"
-            type="Integer"
-            width="72">
-      </column>
-      <column
-            column="chargerid"
-            id="chargerid"
-            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-            name="负责人"
-            type="String"
-            width="120">
-      </column>
-      <column
-            column="org_id"
-            id="project.org_id"
-            labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
-            name="职能组织"
-            type="String"
-            width="160">
-      </column>
-      <column
-            column="launchorg_id"
-            id="project.launchorg_id"
-            labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
-            name="发起组织"
-            type="String"
-            width="160">
-      </column>
-      <column
-            column="workorder"
-            id="project.workorder"
-            name="工作令号"
-            type="String"
-            width="60">
       </column>
    </extension>
    <extension
@@ -952,10 +841,118 @@
    <extension
          point="com.sg.widgets.column">
       <column
-            column="charger_roled_id"
-            id="work.chargerrole"
-            labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkLabelProvider"
-            name="负责人角色"
+            column="projectnumber"
+            id="project.projectnumber"
+            name="项目编号"
+            type="String"
+            width="80">
+      </column>
+      <column
+            column="desc"
+            id="project.desc"
+            name="名称"
+            type="String"
+            width="180">
+      </column>
+      <column
+            column="status"
+            id="project.status"
+            name="状态"
+            type="String"
+            width="50">
+      </column>
+      <column
+            column="planstart"
+            id="planstart"
+            name="计划开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planfinish"
+            id="planfinish"
+            name="计划完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planduration"
+            id="planduration"
+            name="计划工期"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="planworks"
+            id="planworks"
+            name="计划工时"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="actualstart"
+            id="actualstart"
+            name="实际开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualfinish"
+            id="actualfinish"
+            name="实际完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualduration"
+            id="actualduration"
+            name="实际工期"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="actualworks"
+            id="actualworks"
+            name="实际工时"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="chargerid"
+            id="chargerid"
+            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            name="负责人"
+            type="String"
+            width="120">
+      </column>
+      <column
+            column="org_id"
+            id="project.org_id"
+            labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+            name="职能组织"
+            type="String"
+            width="160">
+      </column>
+      <column
+            column="launchorg_id"
+            id="project.launchorg_id"
+            labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+            name="发起组织"
+            type="String"
+            width="160">
+      </column>
+      <column
+            column="workorder"
+            id="project.workorder"
+            name="工作令号"
+            type="String"
+            width="60">
+      </column>
+      <column
+            column="participate"
+            id="participate"
+            labelProvider="com.sg.business.commons.labelprovider.UserIdListLabelProvider"
+            name="参与者"
             type="String"
             width="120">
       </column>
@@ -993,7 +990,7 @@
             id="planworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
             name="计划工时"
-            type="Integer"
+            type="Double"
             width="72">
       </column>
       <column
@@ -1025,8 +1022,16 @@
             id="actualworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
             name="实际工时"
-            type="Integer"
+            type="Double"
             width="72">
+      </column>
+      <column
+            column="charger_roled_id"
+            id="work.chargerrole"
+            labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkLabelProvider"
+            name="负责人角色"
+            type="String"
+            width="120">
       </column>
    </extension>
 

@@ -393,7 +393,7 @@ public class WorkDefinition extends AbstractWork implements
 	}
 
 	/**
-	 * 返回工作的承担者角色
+	 * 返回工作的参与者角色
 	 * 
 	 * @return List
 	 */

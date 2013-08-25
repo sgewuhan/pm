@@ -415,7 +415,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 			}
 		}
 
-		// 设置承担者
+		// 设置参与者
 		BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
 		if (roleIds != null && roleIds.size() > 0) {
 			List<String> participates = new ArrayList<String>();
