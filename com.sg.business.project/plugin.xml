@@ -259,7 +259,7 @@
             editorId="project.editor"
             fix="2"
             id="project.navigator.myproject"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:project.navigator">
          <column
                columnDefinitionId="project.projectnumber">
          </column>
@@ -275,7 +275,7 @@
          <columnGroup
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
-               name="计划">
+               name="计划进度">
             <column
                   columnDefinitionId="planstart">
             </column>
@@ -292,7 +292,7 @@
          <columnGroup
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
-               name="实际">
+               name="实际进度">
             <column
                   columnDefinitionId="actualstart">
             </column>
@@ -324,7 +324,7 @@
             dataSet="com.sg.business.model.dataset.project.ManagementProject"
             editorId="project.editor"
             id="project.navigator.management"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:project.navigator">
          <column
                columnDefinitionId="project.projectnumber">
          </column>
@@ -340,7 +340,7 @@
          <columnGroup
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
-               name="计划">
+               name="计划进度">
             <column
                   columnDefinitionId="planstart">
             </column>
@@ -357,7 +357,7 @@
          <columnGroup
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
-               name="实际">
+               name="实际进度">
             <column
                   columnDefinitionId="actualstart">
             </column>
@@ -673,7 +673,7 @@
          </basicpage>
          <basicpage
                description="请输入预算金额"
-               id="project.basicpage.2"
+               id="project.financial"
                image="image/financial_24.png"
                pageDelegator="com.sg.business.project.editor.page.ProjectBudgetPage"
                title="预算">
@@ -1575,6 +1575,159 @@
    </extension>
    <extension
          point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.navigator">
+         <command
+               commandId="com.sg.widgets.command.create"
+               icon="image/project_24.png"
+               id="create"
+               label="项目创建向导..."
+               style="push">
+         </command>
+         <separator
+               name="project.separator0"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="打开"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/financial_24.png"
+               label="预算"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="project.editor">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.pageid"
+                  value="project.financial">
+            </parameter>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/group_24.png"
+               label="角色指派"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="project.editor">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.pageid"
+                  value="project.team">
+            </parameter>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/wbs_24.png"
+               label="工作分解结构和计划"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="project.editor">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.pageid"
+                  value="project.wbs">
+            </parameter>
+         </command>
+         <separator
+               name="project.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="加入对比"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <with
+                        variable="selection">
+                     <count
+                           value="+">
+                     </count>
+                  </with>
+                  <with
+                        variable="activePart">
+                     <test
+                           args="provideComparableObject"
+                           property="com.sg.widgets.test.activePart"
+                           value="true">
+                     </test>
+                  </with>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
       <menuContribution
             allPopups="false"
             locationURI="popup:project.team">

@@ -1425,10 +1425,10 @@
             id="management.wbstemplate"
             popupMenu="popup:management.wbstemplate">
          <column
-               columnDefinitionId="work.seq">
+               columnDefinitionId="work.desc">
          </column>
          <column
-               columnDefinitionId="work.desc">
+               columnDefinitionId="work.seq">
          </column>
          <column
                column="wf_execute"
