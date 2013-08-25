@@ -1,5 +1,7 @@
 package com.sg.business.model;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
@@ -89,6 +91,16 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 			}
 			parentItem.setValue(F_BUDGET_VALUE, new Double(summary));
 			parentItem.calculateValue();
+		}
+	}
+	
+	@Override
+	public Project getProject() {
+		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);
+		if (ptId != null) {
+			return ModelService.createModelObject(Project.class, ptId);
+		} else {
+			return null;
 		}
 	}
 }

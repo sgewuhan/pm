@@ -1,5 +1,9 @@
 package com.sg.business.model;
 
+import org.bson.types.ObjectId;
+
+import com.mobnut.db.model.ModelService;
+
 /**
  * 工作的前后置关系
  * <p/>
@@ -17,5 +21,15 @@ public class WorkConnection extends AbstractWorkConnection implements IProjectRe
 	@Override
 	public String getTypeName() {
 		return "工作前后置关系";
+	}
+	
+	@Override
+	public Project getProject() {
+		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);
+		if (ptId != null) {
+			return ModelService.createModelObject(Project.class, ptId);
+		} else {
+			return null;
+		}
 	}
 }

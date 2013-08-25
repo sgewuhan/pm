@@ -1,7 +1,9 @@
 package com.sg.business.model;
 
+import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
 
@@ -49,5 +51,15 @@ public class Deliverable extends PrimaryObject implements IProjectRelative{
 	@Override
 	public String getDefaultEditorId() {
 		return EDITOR;
+	}
+	
+	@Override
+	public Project getProject() {
+		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);
+		if (ptId != null) {
+			return ModelService.createModelObject(Project.class, ptId);
+		} else {
+			return null;
+		}
 	}
 }

@@ -1054,4 +1054,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 	}
 
+	public List<?> getParticipate() {
+		return (List<?>) getValue(F_PARTICIPATE);
+	}
+
 }

@@ -448,6 +448,32 @@
                type="Double">
          </column>
       </table>
+      <table
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.project.PMOrgOfPM"
+            id="project.managementorg"
+            markupEnabled="true">
+         <column
+               columnDefinitionId="organization.desc.html">
+         </column>
+      </table>
+      <table
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.project.LaunchOrgOfPM"
+            id="project.launchorg"
+            markupEnabled="true">
+         <column
+               columnDefinitionId="organization.desc.html">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.project.ProjectParticipate"
+            id="project.participte.selector"
+            multiSelection="true">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -1082,18 +1108,19 @@
                         type="String"
                         widthHint="240">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
+                  <navigatorSelector
+                        editable="true"
                         id="chargerid"
-                        label="负责"
+                        label="负责人"
                         labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
                         name="chargerid"
-                        persistable="false"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                   <fieldgroup
                         columnCount="2">
                      <checkbox
@@ -1126,7 +1153,7 @@
                         id="participate"
                         label="参与者"
                         labelVisible="false"
-                        labelprovider="com.sg.business.project.labelprovider.UserIdLabelprovider"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -1362,13 +1389,16 @@
                         required="false"
                         type="ObjectId">
                   </combo>
+               </section>
+               <section
+                     label="参与者角色">
                   <table
                         ctableId="project.field.participate_roled_set"
                         dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
                         editable="true"
                         id="participate_roled_set"
                         label="参与者角色"
-                        labelVisible="true"
+                        labelVisible="false"
                         name="participate_roled_set"
                         persistable="true"
                         required="false">
@@ -1450,27 +1480,24 @@
             id="project.calendar"
             table="project.calendar">
       </navigator>
-   </extension>
-   <extension
-         point="com.sg.widgets.table">
-      <table
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.project.PMOrgOfPM"
-            id="project.managementorg"
-            markupEnabled="true">
-         <column
-               columnDefinitionId="organization.desc.html">
-         </column>
-      </table>
-      <table
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.project.LaunchOrgOfPM"
-            id="project.launchorg"
-            markupEnabled="true">
-         <column
-               columnDefinitionId="organization.desc.html">
-         </column>
-      </table>
+      <navigator
+            id="organization.alluser"
+            tree="organization.alluser">
+      </navigator>
+      <navigator
+            id="project.participte.selector"
+            table="project.participte.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1572,6 +1599,19 @@
             </column>
          </columnGroup>
       </tree>
+      <tree
+            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
+            id="organization.alluser">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -1607,7 +1647,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/financial_24.png"
-               label="预算"
+               label="编制项目预算"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2012,29 +2052,6 @@
             id="project.removeroleormember"
             name="删除项目角色或用户">
       </command>
-   </extension>
-   <extension
-         point="com.sg.widgets.navigator">
-      <navigator
-            id="organization.alluser"
-            tree="organization.alluser">
-      </navigator>
-   </extension>
-   <extension
-         point="com.sg.widgets.tree">
-      <tree
-            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
-            id="organization.alluser">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-         <structure
-               modelRelation="organization_user">
-         </structure>
-         <structure
-               modelRelation="organization_organization">
-         </structure>
-      </tree>
    </extension>
 
 </plugin>

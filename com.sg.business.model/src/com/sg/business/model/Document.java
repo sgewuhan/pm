@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
 
@@ -132,5 +133,13 @@ public class Document extends PrimaryObject implements IProjectRelative{
 		return "ÎÄµµ";
 	}
 
-	
+	@Override
+	public Project getProject() {
+		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);
+		if (ptId != null) {
+			return ModelService.createModelObject(Project.class, ptId);
+		} else {
+			return null;
+		}
+	}
 }
