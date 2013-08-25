@@ -104,6 +104,9 @@ public class PreviewPage extends WizardPage implements INavigatablePart {
 	@Override
 	public void doEdit(String editorId, String pageId) {
 	}
+	@Override
+	public void doEdit(String editorId, String pageId, String opentype) {
+	}
 
 	@Override
 	public boolean canExport() {
