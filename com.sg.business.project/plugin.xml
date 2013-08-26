@@ -1596,6 +1596,73 @@
                title="工作变更流程设置">
          </basicpage>
       </editor>
+      <editor
+            collectionName="deliverable"
+            dbName="pm2"
+            id="work.deliverable"
+            image="image/document_24.png"
+            isDefault="true"
+            name="交付物">
+         <basicpage
+               id="basicpage1"
+               image="image/document_24.png"
+               title="基本信息">
+            <pagecolumn>
+               <section
+                     label="文档基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="document_id"
+                        label="文档"
+                        labelVisible="true"
+                        name="document_id"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.DocumentFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <combo
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="doceditor"
+                        label="编辑器"
+                        labelVisible="true"
+                        name="doceditor"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
+                  <checkbox
+                        editable="true"
+                        id="mandatory"
+                        label="必须"
+                        labelVisible="true"
+                        name="mandatory"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="200">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          name="用于选择器"
@@ -1804,6 +1871,12 @@
          </column>
          <column
                columnDefinitionId="planduration_e">
+         </column>
+         <column
+               column="mandatory"
+               name="必须"
+               type="Boolean"
+               width="48">
          </column>
          <columnGroup
                defaultGroup="false"
@@ -2263,7 +2336,7 @@
          <command
                commandId="project.createdeliverable"
                icon="image/createdocument_24.png"
-               label="创建交付物"
+               label="创建交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2281,7 +2354,7 @@
          <command
                commandId="project.linkdeliverable"
                icon="image/24_blank.png"
-               label="链接交付物"
+               label="链接交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2303,7 +2376,7 @@
          <command
                commandId="project.editdeliverable"
                icon="image/editdocument_24.png"
-               label="编辑交付物"
+               label="编辑交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2319,9 +2392,9 @@
             </visibleWhen>
          </command>
          <command
-               commandId="project.deletedeliverable"
-               icon="image/trash_24.png"
-               label="删除"
+               commandId="project.viewdeliverabledocument"
+               icon="image/document_24.png"
+               label="查看交付物文档..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2340,6 +2413,24 @@
                name="project.deliverable.separator2"
                visible="true">
          </separator>
+         <command
+               commandId="project.deletedeliverable"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Deliverable">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
@@ -2414,6 +2505,11 @@
             id="project.deletedeliverable"
             name="删除交付物">
       </command>
+      <command
+            categoryId="project"
+            id="project.viewdeliverabledocument"
+            name="查看交付物文档">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2452,6 +2548,10 @@
       <handler
             class="com.sg.business.project.handler.deliverable.RemoveDeliverable"
             commandId="project.deletedeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.deliverable.ViewDeliverableDocument"
+            commandId="project.viewdeliverabledocument">
       </handler>
    </extension>
 

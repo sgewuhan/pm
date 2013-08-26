@@ -33,7 +33,7 @@ public class Deliverable extends PrimaryObject implements IProjectRelative{
 	/**
 	 * 交付物的编辑器
 	 */
-	public static final String EDITOR = null;
+	public static final String EDITOR = "work.deliverable";
 
 	/**
 	 * 返回显示图标
