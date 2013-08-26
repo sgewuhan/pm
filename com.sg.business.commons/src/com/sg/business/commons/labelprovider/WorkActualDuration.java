@@ -6,14 +6,14 @@ import com.sg.business.model.Work;
 
 public class WorkActualDuration extends ColumnLabelProvider {
 
-
 	@Override
 	public String getText(Object element) {
-		Integer value = ((Work)element).getActualDuration();
-		if(value!=null){
-			return ""+value;
-		}else{
-			return "";
+		if (element instanceof Work) {
+			Integer value = ((Work) element).getActualDuration();
+			if (value != null) {
+				return "" + value;
+			}
 		}
+		return "";
 	}
 }

@@ -596,6 +596,13 @@
             width="240">
       </column>
       <column
+            column="desc"
+            id="work.desc.1"
+            name="名称"
+            type="String"
+            width="-1">
+      </column>
+      <column
             column="seq"
             id="work.seq"
             labelProvider="com.sg.business.commons.labelprovider.WBSCodeLabelprovider"

@@ -40,9 +40,24 @@ public class Deliverable extends PrimaryObject implements IProjectRelative{
 	 */
 	@Override
 	public Image getImage() {
-		return BusinessResource.getImage(BusinessResource.IMAGE_DELIVERABLE_16);
+		return BusinessResource.getImage(BusinessResource.IMAGE_DOCUMENT_16);
 	}
 	
+	@Override
+	public String getLabel() {
+		Document document = getDocument();
+		return document.getLabel();
+	}
+	
+	public Document getDocument() {
+		ObjectId _id = getDocumentId();
+		return ModelService.createModelObject(Document.class, _id);
+	}
+
+	public ObjectId getDocumentId() {
+		return (ObjectId) getValue(F_DOCUMENT_ID);
+	}
+
 	@Override
 	public String getTypeName() {
 		return "½»¸¶Îï";

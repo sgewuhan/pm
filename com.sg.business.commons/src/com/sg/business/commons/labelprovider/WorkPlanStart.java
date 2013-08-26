@@ -12,12 +12,14 @@ public class WorkPlanStart extends ColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
-		Date value = ((Work)element).getPlanStart();
-		if(value!=null){
-			return sdf.format(value);
-		}else{
-			return "";
+		if (element instanceof Work) {
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					Utils.SDF_DATE_COMPACT_SASH);
+			Date value = ((Work) element).getPlanStart();
+			if (value != null) {
+				return sdf.format(value);
+			}
 		}
+		return "";
 	}
 }

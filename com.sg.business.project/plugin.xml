@@ -284,6 +284,62 @@
                   columnDefinitionId="participate">
             </column></searchAction>
       </navigator>
+      <navigator
+            id="project.deliverable"
+            tree="project.deliverable">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="milestone">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+            <column
+                  columnDefinitionId="planduration_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="milestone">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+            <column
+                  columnDefinitionId="planduration_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -750,6 +806,7 @@
          </navigatorpage>
          <navigatorpage
                id="project.wbs"
+               image="image/wbs_24.png"
                navigatorId="project.wbs"
                title="WBS">
             <navigatoraction
@@ -761,6 +818,11 @@
             <navigatoraction
                   action="com.sg.business.project.action.CheckPlan">
             </navigatoraction>
+         </navigatorpage>
+         <navigatorpage
+               id="project.deliverable"
+               navigatorId="project.deliverable"
+               title="交付物">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
@@ -1592,6 +1654,19 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
+            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
+            id="organization.alluser">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
+      <tree
             autoExpandLevel="-1"
             canCreate="false"
             canDelete="false"
@@ -1694,17 +1769,68 @@
          </columnGroup>
       </tree>
       <tree
-            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
-            id="organization.alluser">
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfProject"
+            editorId="editor.work"
+            fix="1"
+            id="project.deliverable"
+            popupMenu="popup:project.deliverable">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <structure
+               modelRelation="work_deliverable">
+         </structure>
          <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               style="SWT.LEFT"
+               type="String"
+               width="180">
          </column>
-         <structure
-               modelRelation="organization_user">
-         </structure>
-         <structure
-               modelRelation="organization_organization">
-         </structure>
+         <column
+               columnDefinitionId="planstart_e">
+         </column>
+         <column
+               columnDefinitionId="planfinish_e">
+         </column>
+         <column
+               columnDefinitionId="planworks_e">
+         </column>
+         <column
+               columnDefinitionId="planduration_e">
+         </column>
+         <columnGroup
+               defaultGroup="false"
+               name="负责人和参与者">
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="实际进度">
+            <column
+                  columnDefinitionId="actualstart_e">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="actualworks_e">
+            </column>
+            <column
+                  columnDefinitionId="actualduration_e">
+            </column>
+         </columnGroup>
       </tree>
    </extension>
    <extension
@@ -1807,6 +1933,29 @@
                   value="project.wbs">
             </parameter>
          </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/editdocument_24.png"
+               label="交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="project.editor">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.pageid"
+                  value="project.deliverable">
+            </parameter>
+         </command>
          <separator
                name="project.separator1"
                visible="true">
@@ -1843,22 +1992,12 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <and>
-                  <with
-                        variable="selection">
-                     <count
-                           value="+">
-                     </count>
-                  </with>
-                  <with
-                        variable="activePart">
-                     <test
-                           args="provideComparableObject"
-                           property="com.sg.widgets.test.activePart"
-                           value="true">
-                     </test>
-                  </with>
-               </and>
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
             </visibleWhen>
          </command>
       </menuContribution>
@@ -1933,6 +2072,21 @@
                   <instanceof
                         value="com.sg.widgets.part.IRefreshablePart">
                   </instanceof>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="加入对比"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
                </with>
             </visibleWhen>
          </command>
@@ -2038,10 +2192,6 @@
                </with>
             </visibleWhen>
          </menu>
-         <separator
-               name="project.wbs.2"
-               visible="true">
-         </separator>
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/worksetting_24.png"
@@ -2065,11 +2215,30 @@
                   value="datadialog">
             </parameter>
          </command>
+         <separator
+               name="project.wbs.2"
+               visible="true">
+         </separator>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
                label="更新"
                style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="加入对比"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
@@ -2090,37 +2259,109 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:com.sg.widgets.dataObjectEditor?after=additions">
+            locationURI="popup:project.deliverable">
          <command
-               commandId="carlendartest1"
-               icon="image/editwork_24.png"
-               label="TEST"
+               commandId="project.createdeliverable"
+               icon="image/createdocument_24.png"
+               label="创建交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Work">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.linkdeliverable"
+               icon="image/24_blank.png"
+               label="链接交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Work">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.deliverable.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="project.editdeliverable"
+               icon="image/editdocument_24.png"
+               label="编辑交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Deliverable">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.deletedeliverable"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Deliverable">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.deliverable.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
                style="push">
          </command>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="加入对比"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="com.sg.business.project.handler.role.CreateProjectRole"
-            commandId="project.createprojectrole">
-      </handler>
-      <handler
-            class="com.sg.business.project.handler.role.LinkOrganizationRole"
-            commandId="project.linkorganizationrole">
-      </handler>
-      <handler
-            class="com.sg.business.project.handler.role.ProjectRoleAssignment"
-            commandId="project.roleassignment">
-      </handler>
-      <handler
-            class="com.sg.business.project.handler.role.EditProjectRole"
-            commandId="project.editprojectrole">
-      </handler>
-      <handler
-            class="com.sg.business.project.handler.role.RemoveProjectRoleOrMember"
-            commandId="project.removeroleormember">
-      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2153,6 +2394,65 @@
             id="project.removeroleormember"
             name="删除项目角色或用户">
       </command>
+      <command
+            categoryId="project"
+            id="project.createdeliverable"
+            name="创建交付物">
+      </command>
+      <command
+            categoryId="project"
+            id="project.editdeliverable"
+            name="编辑交付物">
+      </command>
+      <command
+            categoryId="project"
+            id="project.linkdeliverable"
+            name="链接交付物">
+      </command>
+      <command
+            categoryId="project"
+            id="project.deletedeliverable"
+            name="删除交付物">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.project.handler.role.CreateProjectRole"
+            commandId="project.createprojectrole">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.LinkOrganizationRole"
+            commandId="project.linkorganizationrole">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.ProjectRoleAssignment"
+            commandId="project.roleassignment">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.EditProjectRole"
+            commandId="project.editprojectrole">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.role.RemoveProjectRoleOrMember"
+            commandId="project.removeroleormember">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.deliverable.CreateDeliverable"
+            commandId="project.createdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.deliverable.EditDeliverable"
+            commandId="project.editdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.deliverable.LinkDeliverable"
+            commandId="project.linkdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.deliverable.RemoveDeliverable"
+            commandId="project.deletedeliverable">
+      </handler>
    </extension>
 
 </plugin>

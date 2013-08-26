@@ -29,14 +29,14 @@ public class CreateWork extends AbstractNavigatorHandler {
 		Shell shell = HandlerUtil.getActiveShell(event);
 
 		AbstractWork po = ((AbstractWork) selected).makeChildWork();
-		ViewerControl currentViewerControl = getCurrentViewerControl(event);
-		Assert.isNotNull(currentViewerControl);
+		ViewerControl vc = getCurrentViewerControl(event);
+		Assert.isNotNull(vc);
 
 		// 以下两句很重要，使树currentViewerControl够侦听到保存事件， 更新树上的节点
 		// 1. 设置父并不涉及到数据库，主要是维护模型的父子关系，同时ViewerControl也需要父来处理事件响应
 		po.setParentPrimaryObject(selected);
 		// 2. 侦听po的事件作出合适的响应
-		po.addEventListener(currentViewerControl);
+		po.addEventListener(vc);
 
 		// 使用编辑器打开编辑工作定义
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
@@ -50,7 +50,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 		}
 
 		// 3. 处理完成后，释放侦听器
-		po.removeEventListener(currentViewerControl);
+		po.removeEventListener(vc);
 	}
 
 

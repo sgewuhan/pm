@@ -85,7 +85,7 @@
       </doc>
       <doc
             class="com.sg.business.model.Deliverable"
-            collection="delieverable"
+            collection="deliverable"
             db="pm2">
       </doc>
       <doc
@@ -255,6 +255,14 @@
             id="project_calendar"
             name="项目日历"
             sort="com.sg.business.model.bson.SEQSorter">
+      </relation>
+      <relation
+            end1Class="com.sg.business.model.Work"
+            end1Key="_id"
+            end2Class="com.sg.business.model.Deliverable"
+            end2Key="work_id"
+            id="work_deliverable"
+            name="工作的交付物">
       </relation>
    </extension>
 

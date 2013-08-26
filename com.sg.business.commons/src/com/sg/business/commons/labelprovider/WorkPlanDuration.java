@@ -8,11 +8,12 @@ public class WorkPlanDuration extends ColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		Integer value = ((Work)element).getPlanDuration();
-		if(value!=null){
-			return ""+value;
-		}else{
-			return "";
+		if (element instanceof Work) {
+			Integer value = ((Work) element).getPlanDuration();
+			if (value != null) {
+				return "" + value;
+			}
 		}
+		return "";
 	}
 }
