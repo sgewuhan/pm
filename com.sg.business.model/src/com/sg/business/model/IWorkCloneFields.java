@@ -16,6 +16,11 @@ public interface IWorkCloneFields {
 	 * 工作定义的同层序号
 	 */
 	public static final String F_SEQ = "seq";
+	
+	/**
+	 * 是否是里程碑任务
+	 */
+	public static final String F_MILESTONE = "milestone";
 
 	/**
 	 * 工作流定义,DBObject 类型<br/>

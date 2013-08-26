@@ -982,6 +982,7 @@
             id="planduration_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
             name="计划工期"
+            style="SWT.RIGHT"
             type="Integer"
             width="72">
       </column>
@@ -990,6 +991,7 @@
             id="planworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
             name="计划工时"
+            style="SWT.RIGHT"
             type="Double"
             width="72">
       </column>
@@ -1014,6 +1016,7 @@
             id="actualduration_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
             name="实际工期"
+            style="SWT.RIGHT"
             type="Integer"
             width="72">
       </column>
@@ -1022,6 +1025,7 @@
             id="actualworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
             name="实际工时"
+            style="SWT.RIGHT"
             type="Double"
             width="72">
       </column>
@@ -1032,6 +1036,13 @@
             name="负责人角色"
             type="String"
             width="120">
+      </column>
+      <column
+            column="milestone"
+            id="milestone"
+            name="里程碑"
+            type="Boolean"
+            width="60">
       </column>
    </extension>
 
