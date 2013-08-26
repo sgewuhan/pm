@@ -241,24 +241,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		setValue(F__ID, new ObjectId());
-	
+
 		// 创建根工作定义
 		Work root = makeWBSRoot();
 		root.doInsert(context);
 		setValue(Project.F_WORK_ID, root.get_id());
-	
+
 		// 预算
 		ProjectBudget budget = makeBudget(context);
 		budget.doInsert(context);
-	
+
 		super.doInsert(context);
-	
+
 		// 复制模板
 		doSetupWithTemplate(root.get_id(), context);
-	
+
 		// 复制系统日历
 		doCopySystemCanlendar();
-	
+
 	}
 
 	private void doCopySystemCanlendar() throws Exception {
@@ -375,19 +375,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 删除项目现有的角色
 		col_role.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
 				get_id()));
-	
+
 		// 准备返回值
 		HashMap<ObjectId, DBObject> result = new HashMap<ObjectId, DBObject>();
-	
+
 		// 查找模板的角色定义
 		DBCursor cur = col_roled.find(new BasicDBObject().append(
 				RoleDefinition.F_PROJECT_TEMPLATE_ID, projectTemplateId));
 		while (cur.hasNext()) {
 			DBObject roleddata = cur.next();
-	
+
 			// 创建项目角色对象
 			ProjectRole prole = makeProjectRole(null);
-	
+
 			// 给出将要创建的项目角色的_id
 			ObjectId proleId = new ObjectId();
 			prole.setValue(F__ID, proleId);
@@ -397,11 +397,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			if (roleId != null) {
 				// 设置为组织角色
 				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
-				//将组织角色中的成员加入到项目的参与者
-				Role role = ModelService.createModelObject(Role.class, (ObjectId)roleId);
+				// 将组织角色中的成员加入到项目的参与者
+				Role role = ModelService.createModelObject(Role.class,
+						(ObjectId) roleId);
 				List<PrimaryObject> ass = role.getAssignment();
 				doAddParticipateFromAssignment(ass);
-				
+
 			} else {
 				// 设置为项目角色
 				prole.setValue(ProjectRole.F_ROLE_NUMBER,
@@ -412,19 +413,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			prole.setValue(ProjectRole.F__CACCOUNT, context.getAccountInfo()
 					.getUserId());
 			prole.setValue(ProjectRole.F__CDATE, new Date());
-	
+
 			result.put((ObjectId) roleddata.get(RoleDefinition.F__ID),
 					prole.get_data());
 		}
-	
+
 		if (!result.isEmpty()) {
 			DBObject[] insertData = result.values().toArray(new DBObject[0]);
-	
+
 			// 插入到数据库
 			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
 			checkWriteResult(ws);
 		}
-	
+
 		return result;
 	}
 
@@ -542,23 +543,25 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		DBObject update = new BasicDBObject().append("$addToSet",
 				new BasicDBObject().append(Project.F_PARTICIPATE,
 						new BasicDBObject().append("$each", userIds)));
-	
+
 		WriteResult ws = pjCol.update(
 				new BasicDBObject().append(Project.F__ID, get_id()), update,
 				false, false);
 		checkWriteResult(ws);
 	}
 
-	public void doAddParticipateFromAssignment(List<PrimaryObject> assignment) throws Exception {
-		if(assignment==null||assignment.size()==0){
+	public void doAddParticipateFromAssignment(List<PrimaryObject> assignment)
+			throws Exception {
+		if (assignment == null || assignment.size() == 0) {
 			return;
 		}
 		String[] userIds = new String[assignment.size()];
 		for (int i = 0; i < assignment.size(); i++) {
-			 AbstractRoleAssignment ra = (AbstractRoleAssignment) assignment.get(i);
-			 userIds[i] = ra.getUserid();
+			AbstractRoleAssignment ra = (AbstractRoleAssignment) assignment
+					.get(i);
+			userIds[i] = ra.getUserid();
 		}
-		if(userIds.length>0){
+		if (userIds.length > 0) {
 			doAddParticipate(userIds);
 		}
 	}
@@ -570,18 +573,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		WriteResult ws = col.remove(new BasicDBObject().append(
 				Work.F_PROJECT_ID, get_id()));
 		checkWriteResult(ws);
-	
+
 		// 删除workconnection
 		col = getCollection(IModelConstants.C_WORK_CONNECTION);
 		ws = col.remove(new BasicDBObject().append(Work.F_PROJECT_ID, get_id()));
 		checkWriteResult(ws);
-	
+
 		// 删除预算
 		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
 		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID,
 				get_id()));
 		checkWriteResult(ws);
-	
+
 		// 删除role
 		col = getCollection(IModelConstants.C_PROJECT_ROLE);
 		DBCursor cur = col.find(
@@ -595,26 +598,26 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ws = col.remove(new BasicDBObject().append(ProjectRole.F_PROJECT_ID,
 				get_id()));
 		checkWriteResult(ws);
-	
+
 		// 删除roleassignment
 		col = getCollection(IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
 		ws = col.remove(new BasicDBObject().append(
 				ProjectRoleAssignment.F_ROLE_ID,
 				new BasicDBObject().append("$in", roleIds)));
 		checkWriteResult(ws);
-	
+
 		// 删除交付物
 		col = getCollection(IModelConstants.C_DELIEVERABLE);
 		ws = col.remove(new BasicDBObject().append(Deliverable.F_PROJECT_ID,
 				get_id()));
 		checkWriteResult(ws);
-	
+
 		// 删除文档
 		col = getCollection(IModelConstants.C_DOCUMENT);
 		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
 				get_id()));
 		checkWriteResult(ws);
-	
+
 		super.doRemove(context);
 	}
 
@@ -1056,6 +1059,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public List<?> getParticipate() {
 		return (List<?>) getValue(F_PARTICIPATE);
+	}
+
+	/**
+	 * 重新整理WBS序号,不排除某些操作可能引起WBS的混乱，使用本功能整理WBS序号
+	 * 
+	 * @param context
+	 * @throws Exception 
+	 */
+	public void doArrangeWBSCode(IContext context) throws Exception {
+		Work root = getWBSRoot();
+		root.doArrangeWBSCode();
 	}
 
 }

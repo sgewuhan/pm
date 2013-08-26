@@ -14,6 +14,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
 
@@ -41,6 +42,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 返回显示图标
+	 * 
 	 * @return Image
 	 */
 	@Override
@@ -50,6 +52,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 判断是否具有下级工作定义
+	 * 
 	 * @return boolean
 	 */
 	public boolean hasChildrenWork() {
@@ -61,6 +64,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 判断工作定义是否为摘要工作定义
+	 * 
 	 * @return boolean
 	 */
 	public boolean isSummaryWork() {
@@ -70,6 +74,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	/**
 	 * 返回工作定义在WBS中的编号<br/>
 	 * 层级+序号
+	 * 
 	 * @return String
 	 */
 	public String getWBSCode() {
@@ -83,6 +88,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 返回工作定义在同级中的序号
+	 * 
 	 * @return int
 	 */
 	public int getSequance() {
@@ -95,12 +101,13 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 返回上级工作
+	 * 
 	 * @return AbstractWork
 	 */
 	public AbstractWork getParent() {
 		ObjectId parent_id = (ObjectId) getValue(F_PARENT_ID);
 		if (parent_id != null) {
-			return  ModelService.createModelObject(getClass(), parent_id);
+			return ModelService.createModelObject(getClass(), parent_id);
 		}
 		return null;
 	}
@@ -129,7 +136,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * 
 	 * @param clas
 	 * 
-	 * @return T 
+	 * @return T
 	 */
 	public <T extends PrimaryObject> T getChargerRoleDefinition(Class<T> clas) {
 		ObjectId chargerRoleDefId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
@@ -141,6 +148,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 设置参与者角色
+	 * 
 	 * @param role
 	 * @param context
 	 * @throws Exception
@@ -173,6 +181,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 返回所有下级工作定义
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getChildrenWork() {
@@ -186,6 +195,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 保存并重置工作定义的序号
+	 * 
 	 * @param list
 	 * @param context
 	 * @throws Exception
@@ -201,24 +211,28 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 抽象方法，新建下级工作定义
+	 * 
 	 * @return AbstractWork
 	 */
 	public abstract AbstractWork makeChildWork();
 
 	/**
 	 * 抽象方法，返回上级工作定义
+	 * 
 	 * @return PrimaryObject
 	 */
 	public abstract PrimaryObject getHoster();
 
 	/**
 	 * 抽象方法，新建工作定义的交付物定义
+	 * 
 	 * @return PrimaryObject
 	 */
 	public abstract PrimaryObject makeDeliverableDefinition();
 
 	/**
 	 * 工作定义下移
+	 * 
 	 * @param context
 	 * @return PrimaryObject[]
 	 * @throws Exception
@@ -244,6 +258,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 工作定义上移
+	 * 
 	 * @param context
 	 * @return PrimaryObject[]
 	 * @throws Exception
@@ -270,6 +285,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 工作定义升级
+	 * 
 	 * @param context
 	 * @return PrimaryObject[]
 	 * @throws Exception
@@ -313,6 +329,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 	/**
 	 * 工作定义降级
+	 * 
 	 * @param context
 	 * @return PrimaryObject[]
 	 * @throws Exception
@@ -342,5 +359,21 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		doSaveAndResetSeq(upperBrotherChildren, context);
 
 		return new PrimaryObject[] { parent, upperBrother };
+	}
+
+	public void doArrangeWBSCode() throws Exception {
+		List<PrimaryObject> children = getChildrenWork();
+		DBCollection col = getCollection();
+		WriteResult ws;
+		for (int i = 0; i < children.size(); i++) {
+			AbstractWork child = (AbstractWork) children.get(i);
+			ws = col.update(
+					new BasicDBObject().append(F__ID, child.get_id()),
+					new BasicDBObject().append("$set",
+							new BasicDBObject().append(F_SEQ, new Integer(i))));
+			checkWriteResult(ws);
+
+			child.doArrangeWBSCode();
+		}
 	}
 }

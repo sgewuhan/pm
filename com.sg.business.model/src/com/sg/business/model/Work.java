@@ -505,4 +505,5 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 	public ProjectRole getChargerRoleDefinition() {
 		return getChargerRoleDefinition(ProjectRole.class);
 	}
+
 }

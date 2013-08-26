@@ -22,7 +22,7 @@ public class AutoAssignment extends NavigatorAction {
 	}
 
 	@Override
-	public void run() {
+	public void execute() throws Exception {
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getShell();
 		MessageUtil
@@ -33,11 +33,7 @@ public class AutoAssignment extends NavigatorAction {
 						SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 		// 获得项目
 		Project project = (Project) getInput().getData();
-		try {
-			project.doAssignmentByRole(new CurrentAccountContext());
-		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
-		}
+		project.doAssignmentByRole(new CurrentAccountContext());
 		MessageUtil.showToast("角色自动指派完成", SWT.ICON_INFORMATION);
 		getNavigator().reload();
 	}
