@@ -1624,7 +1624,7 @@
                   </text>
                   <combo
                         editPart="Combo(Read Only)"
-                        editable="true"
+                        editable="false"
                         id="doceditor"
                         label="编辑器"
                         labelVisible="true"
@@ -1642,6 +1642,71 @@
                         persistable="true"
                         required="false">
                   </checkbox>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="200">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="deliverable"
+            dbName="pm2"
+            id="work.deliverable.createwiz"
+            image="image/document_24.png"
+            isDefault="true"
+            name="交付物">
+         <basicpage
+               id="basicpage1"
+               image="image/document_24.png"
+               title="交付物设定">
+            <pagecolumn>
+               <section
+                     label="文档">
+                  <navigatorSelector
+                        editable="true"
+                        id="documentTemplate_id"
+                        label="可用的文档模板"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.DocumentDefinition"
+                        name="documentTemplate_id"
+                        navigatorId="management.documentdefinition"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <checkbox
+                        editable="true"
+                        id="mandatory"
+                        label="必须"
+                        labelVisible="true"
+                        name="mandatory"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
             <pagecolumn>
@@ -2336,7 +2401,7 @@
          <command
                commandId="project.createdeliverable"
                icon="image/createdocument_24.png"
-               label="创建交付物..."
+               label="创建新的交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2352,9 +2417,49 @@
             </visibleWhen>
          </command>
          <command
-               commandId="project.viewdeliverabledocument"
-               icon="image/document_24.png"
-               label="查看交付物文档..."
+               commandId="project.createdeliverablewithtemplate"
+               icon="image/24_blank.png"
+               label="使用文档模板创建交付物..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Work">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.linkdeliverable"
+               icon="image/24_blank.png"
+               label="链接项目其他工作的交付物..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Work">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.deliverable.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="project.editdeliverable"
+               icon="image/editdocument_24.png"
+               label="交付物设定..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2369,14 +2474,10 @@
                </with>
             </visibleWhen>
          </command>
-         <separator
-               name="project.deliverable.separator1"
-               visible="true">
-         </separator>
          <command
-               commandId="project.editdeliverable"
-               icon="image/editdocument_24.png"
-               label="交付物设定..."
+               commandId="project.viewdeliverabledocument"
+               icon="image/document_24.png"
+               label="查看文档..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2487,6 +2588,16 @@
             id="project.viewdeliverabledocument"
             name="查看交付物文档">
       </command>
+      <command
+            categoryId="project"
+            id="project.linkdeliverable"
+            name="链接交付物文档">
+      </command>
+      <command
+            categoryId="project"
+            id="project.createdeliverablewithtemplate"
+            name="创建交付物">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2525,6 +2636,14 @@
       <handler
             class="com.sg.business.project.handler.deliverable.ViewDeliverableDocument"
             commandId="project.viewdeliverabledocument">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.deliverable.LinkDeliverable"
+            commandId="project.linkdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.deliverable.CreateDeliverableWithTemplate"
+            commandId="project.createdeliverablewithtemplate">
       </handler>
    </extension>
 
