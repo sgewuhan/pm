@@ -36,12 +36,12 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	public static final String F__SUMMARY = "_summary";
 
 	/**
-	 * 存储位置
+	 * 文件夹_id字段值
 	 */
 	public static final String F_FOLDER_ID = "folder_id";
 
 	/**
-	 * 文档容器
+	 * 文档附件的存储位置
 	 */
 	public static final String F_VAULT = "vault";
 
