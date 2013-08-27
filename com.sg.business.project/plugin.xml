@@ -1771,6 +1771,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="project.deliverable.selector"
+            tree="project.deliverable.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1958,6 +1972,30 @@
                   columnDefinitionId="actualduration_e">
             </column>
          </columnGroup>
+      </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfProject"
+            fix="1"
+            id="project.deliverable.selector">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <structure
+               modelRelation="work_deliverable">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
       </tree>
    </extension>
    <extension

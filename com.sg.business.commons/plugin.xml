@@ -819,47 +819,47 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.work.CreateWork"
+            class="com.sg.business.commons.handler.CreateWork"
             commandId="work.create">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.EditWork"
+            class="com.sg.business.commons.handler.EditWork"
             commandId="work.edit">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.RemoveWork"
+            class="com.sg.business.commons.handler.RemoveWork"
             commandId="work.remove">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveUp"
+            class="com.sg.business.commons.handler.WorkMoveUp"
             commandId="work.moveup">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveDown"
+            class="com.sg.business.commons.handler.WorkMoveDown"
             commandId="work.movedown">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveLeft"
+            class="com.sg.business.commons.handler.WorkMoveLeft"
             commandId="work.moveleft">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveRight"
+            class="com.sg.business.commons.handler.WorkMoveRight"
             commandId="work.moveright">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.ShowWorkCompase"
+            class="com.sg.business.commons.handler.ShowWorkCompase"
             commandId="work.showcompass">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.ChargerAssignment"
+            class="com.sg.business.commons.handler.ChargerAssignment"
             commandId="work.setcharger">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.CarlendarTest1"
+            class="com.sg.business.commons.handler.CarlendarTest1"
             commandId="carlendartest1">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.CarlendarTest2"
+            class="com.sg.business.commons.handler.CarlendarTest2"
             commandId="carlendartest2">
       </handler>
    </extension>

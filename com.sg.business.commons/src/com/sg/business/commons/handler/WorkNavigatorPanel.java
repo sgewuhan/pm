@@ -1,4 +1,4 @@
-package com.sg.business.commons.handler.work;
+package com.sg.business.commons.handler;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.IStructuredSelection;

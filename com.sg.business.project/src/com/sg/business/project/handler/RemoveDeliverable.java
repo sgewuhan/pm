@@ -1,16 +1,9 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import com.sg.business.commons.handler.RemovePrimaryObject;
 
-import com.mobnut.db.model.PrimaryObject;
-import com.sg.widgets.command.AbstractNavigatorHandler;
+public class RemoveDeliverable extends RemovePrimaryObject {
 
-public class RemoveDeliverable extends AbstractNavigatorHandler {
 
-	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		// TODO Auto-generated method stub
-
-	}
 
 }

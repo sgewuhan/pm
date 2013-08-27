@@ -506,4 +506,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		return getChargerRoleDefinition(ProjectRole.class);
 	}
 
+	public Deliverable doAddDeliverable(Document doc,IContext context) throws Exception {
+		Deliverable deli = makeDeliverableDefinition();
+		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
+		deli.doInsert(context);
+		return deli;
+		
+	}
+
 }

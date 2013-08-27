@@ -1,6 +1,5 @@
-package com.sg.business.commons.handler.work;
+package com.sg.business.commons.handler;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,7 +16,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class CarlendarTest2 extends AbstractNavigatorHandler {
+public class CarlendarTest1 extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
 		return true;
@@ -27,25 +26,21 @@ public class CarlendarTest2 extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		ViewerControl v = getCurrentViewerControl(event);
 		DataSetFactory dsf = v.getDataSetFactory();
-		Shell parentShell = HandlerUtil.getActiveShell(event);
-
 		CalendarCaculater ds = new CalendarCaculater(dsf.getDataSet()
 				.getDataItems());
+		Shell parentShell = HandlerUtil.getActiveShell(event);
 		InputDialog input = new InputDialog(parentShell, "测试某天是否为工作日",
-				"请输入yyyyMMdd格式的日期，两个日期使用,分割",
+				"请输入yyyyMMdd格式的日期",
 				new SimpleDateFormat("yyyyMMdd").format(new Date()), null);
 		if (input.open() == InputDialog.OK) {
 			String value = input.getValue();
-			String[] values = value.split(",");
-			try {
-				Date value1 = new SimpleDateFormat("yyyyMMdd").parse(values[0]);
-				Date value2 = new SimpleDateFormat("yyyyMMdd").parse(values[1]);
-				int time = ds.getWorkingDays(value1, value2);
-				MessageUtil.showToast(parentShell, value, "工作天数" + time,
+			double time = ds.getWorkingTime(value);
+			if (time == 0d) {
+				MessageUtil.showToast(parentShell, value, "是休息日",
 						SWT.ICON_INFORMATION);
-
-			} catch (ParseException e) {
-				MessageUtil.showToast(e.getMessage(), SWT.ICON_ERROR);
+			} else {
+				MessageUtil.showToast(parentShell, value, "是工作日，当天工时为" + time,
+						SWT.ICON_INFORMATION);
 			}
 		}
 	}
