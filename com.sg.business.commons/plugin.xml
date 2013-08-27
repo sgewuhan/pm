@@ -23,6 +23,100 @@
       <navigator
             id="commons.admin.calendar"
             table="commons.admin.calendar">
+         <filterAction>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="开始日期"
+                  type="Date">
+            </column>
+            <column
+                  column="enddate"
+                  name="结束日期"
+                  type="Date">
+            </column>
+            <column
+                  column="workingday"
+                  name="工作日"
+                  type="Boolean">
+            </column>
+            <column
+                  column="condition"
+                  name="条件"
+                  type="String">
+            </column>
+            <column
+                  column="operator"
+                  name="计算"
+                  type="String">
+            </column>
+            <column
+                  column="value"
+                  name="值"
+                  type="String">
+            </column>
+            <column
+                  column="seq"
+                  name="优先级"
+                  type="Integer">
+            </column>
+            <column
+                  column="worktime"
+                  name="每天工时（小时）"
+                  type="Double">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="开始日期"
+                  type="Date">
+            </column>
+            <column
+                  column="enddate"
+                  name="结束日期"
+                  type="Date">
+            </column>
+            <column
+                  column="workingday"
+                  name="工作日"
+                  type="Boolean">
+            </column>
+            <column
+                  column="condition"
+                  name="条件"
+                  type="String">
+            </column>
+            <column
+                  column="operator"
+                  name="计算"
+                  type="String">
+            </column>
+            <column
+                  column="value"
+                  name="值"
+                  type="String">
+            </column>
+            <column
+                  column="seq"
+                  name="优先级"
+                  type="Integer">
+            </column>
+            <column
+                  column="worktime"
+                  name="每天工时（小时）"
+                  type="Double">
+            </column>
+         </searchAction>
       </navigator>
    </extension>
    <extension
@@ -34,7 +128,8 @@
             popupMenu="popup:commons.admin.calendar">
          <column
                column="desc"
-               name="名称">
+               name="名称"
+               type="String">
          </column>
          <column
                column="startdate"
