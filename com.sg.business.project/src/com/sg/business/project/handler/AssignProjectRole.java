@@ -1,4 +1,4 @@
-package com.sg.business.project.handler.role;
+package com.sg.business.project.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -17,7 +17,7 @@ import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectRoleAssignment extends AbstractNavigatorHandler {
+public class AssignProjectRole extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "÷∏≈…”√ªß";
 

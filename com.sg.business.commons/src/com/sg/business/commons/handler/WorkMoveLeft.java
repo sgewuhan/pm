@@ -1,8 +1,8 @@
-package com.sg.business.commons.handler.work;
+package com.sg.business.commons.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -14,9 +14,9 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class WorkMoveDown extends AbstractNavigatorHandler {
+public class WorkMoveLeft extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "下移工作定义";
+	private static final String TITLE = "升级工作定义";
 	
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
@@ -27,19 +27,28 @@ public class WorkMoveDown extends AbstractNavigatorHandler {
 	
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
 		try {
-			PrimaryObject[] relativeObjects = ((AbstractWork)selected).doMoveDown(new CurrentAccountContext());
-			
+			PrimaryObject[] relativeObjects = ((AbstractWork)selected).doMoveLeft(new CurrentAccountContext());
+	
 			ViewerControl vc = getCurrentViewerControl(event);
-			ColumnViewer viewer = vc.getViewer();
+			TreeViewer viewer = (TreeViewer) vc.getViewer();
+			Object[] expanded = viewer.getExpandedElements();
+			
 			for(int i=0;i<relativeObjects.length;i++){
 				viewer.refresh(relativeObjects[i]);
 			}
+			
+			Object[] newExpand = new Object[expanded.length + 1];
+			System.arraycopy(expanded, 0, newExpand, 0, expanded.length);
+			newExpand[expanded.length] = selected;
+			viewer.setExpandedElements(newExpand);
 			viewer.setSelection(new StructuredSelection(selected), true);
+
 		} catch (Exception e) {
+			Shell shell = HandlerUtil.getActiveShell(event);
 			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_WARNING);
 		}
+		
 		
 	}
 

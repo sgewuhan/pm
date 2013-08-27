@@ -10,6 +10,7 @@
       <view
             category="com.sg.business.project.category.project"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
+            icon="image/project_24.png"
             id="project.navigator.myproject"
             name="项目导航"
             restorable="true">
@@ -17,6 +18,7 @@
       <view
             category="com.sg.business.project.category.project"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
+            icon="image/project_24.png"
             id="project.navigator.management"
             name="项目管理"
             restorable="true">
@@ -1600,9 +1602,9 @@
             collectionName="deliverable"
             dbName="pm2"
             id="work.deliverable"
-            image="image/document_24.png"
+            image="image/deliverable_24.png"
             isDefault="true"
-            name="交付物">
+            name="交付物设定">
          <basicpage
                id="basicpage1"
                image="image/document_24.png"
@@ -1624,7 +1626,7 @@
                   </text>
                   <combo
                         editPart="Combo(Read Only)"
-                        editable="true"
+                        editable="false"
                         id="doceditor"
                         label="编辑器"
                         labelVisible="true"
@@ -1645,6 +1647,60 @@
                </section>
             </pagecolumn>
             <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="200">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="deliverable"
+            dbName="pm2"
+            id="work.deliverable.create"
+            image="image/deliverable_24.png"
+            isDefault="true"
+            name="交付物">
+         <basicpage
+               id="basicpage1"
+               image="image/document_24.png"
+               title="交付物定义">
+            <pagecolumn>
+               <section
+                     label="文档">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="mandatory"
+                        label="必须"
+                        labelVisible="true"
+                        name="mandatory"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
                <section
                      label="说明">
                   <text
@@ -1706,6 +1762,20 @@
       <navigator
             id="project.participte.selector"
             table="project.participte.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="project.deliverable.selector"
+            tree="project.deliverable.selector">
          <filterAction>
             <column
                   columnDefinitionId="com.sg.widgets.column.desc">
@@ -1905,6 +1975,30 @@
             </column>
          </columnGroup>
       </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfProject"
+            fix="1"
+            id="project.deliverable.selector">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <structure
+               modelRelation="work_deliverable">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+      </tree>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -2008,7 +2102,7 @@
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
-               icon="image/editdocument_24.png"
+               icon="image/deliverable_24.png"
                label="交付物"
                style="push">
             <visibleWhen
@@ -2335,8 +2429,26 @@
             locationURI="popup:project.deliverable">
          <command
                commandId="project.createdeliverable"
-               icon="image/createdocument_24.png"
-               label="创建交付物..."
+               icon="image/deliverablecreate_24.png"
+               label="创建新的交付物..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Work">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.createdeliverablewithtemplate"
+               icon="image/24_blank.png"
+               label="使用文档模板创建交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2354,7 +2466,7 @@
          <command
                commandId="project.linkdeliverable"
                icon="image/24_blank.png"
-               label="链接交付物..."
+               label="链接项目的其他交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2375,8 +2487,8 @@
          </separator>
          <command
                commandId="project.editdeliverable"
-               icon="image/editdocument_24.png"
-               label="编辑交付物..."
+               icon="image/deliverableedit_24.png"
+               label="交付物设定..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2394,7 +2506,7 @@
          <command
                commandId="project.viewdeliverabledocument"
                icon="image/document_24.png"
-               label="查看交付物文档..."
+               label="查看文档..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2497,11 +2609,6 @@
       </command>
       <command
             categoryId="project"
-            id="project.linkdeliverable"
-            name="链接交付物">
-      </command>
-      <command
-            categoryId="project"
             id="project.deletedeliverable"
             name="删除交付物">
       </command>
@@ -2510,48 +2617,62 @@
             id="project.viewdeliverabledocument"
             name="查看交付物文档">
       </command>
+      <command
+            categoryId="project"
+            id="project.linkdeliverable"
+            name="链接交付物文档">
+      </command>
+      <command
+            categoryId="project"
+            id="project.createdeliverablewithtemplate"
+            name="创建交付物">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.project.handler.role.CreateProjectRole"
+            class="com.sg.business.project.handler.CreateProjectRole"
             commandId="project.createprojectrole">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.LinkOrganizationRole"
+            class="com.sg.business.project.handler.LinkOrganizationRole"
             commandId="project.linkorganizationrole">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.ProjectRoleAssignment"
+            class="com.sg.business.project.handler.AssignProjectRole"
             commandId="project.roleassignment">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.EditProjectRole"
+            class="com.sg.business.project.handler.EditProjectRole"
             commandId="project.editprojectrole">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.RemoveProjectRoleOrMember"
+            class="com.sg.business.project.handler.RemoveProjectRoleOrMember"
             commandId="project.removeroleormember">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.CreateDeliverable"
+            class="com.sg.business.project.handler.CreateDeliverable"
             commandId="project.createdeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.EditDeliverable"
+            class="com.sg.business.project.handler.EditDeliverable"
             commandId="project.editdeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.LinkDeliverable"
-            commandId="project.linkdeliverable">
-      </handler>
-      <handler
-            class="com.sg.business.project.handler.deliverable.RemoveDeliverable"
+            class="com.sg.business.project.handler.RemoveDeliverable"
             commandId="project.deletedeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.ViewDeliverableDocument"
+            class="com.sg.business.project.handler.ViewDeliverableDocument"
             commandId="project.viewdeliverabledocument">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.LinkDeliverable"
+            commandId="project.linkdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.CreateDeliverableWithTemplate"
+            commandId="project.createdeliverablewithtemplate">
       </handler>
    </extension>
 

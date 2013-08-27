@@ -295,7 +295,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		data.put(Deliverable.F_PROJECT_ID, getValue(F_PROJECT_ID));
 
 		if (docd != null) {
-			data.put(Deliverable.F_DOCUMENT_ID, docd.get_id());
+			data.put(Deliverable.F_DOCUMENT_DEFINITION_ID, docd.get_id());
 			data.put(Deliverable.F_DESC, docd.getDesc());
 		}
 
@@ -504,6 +504,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	public ProjectRole getChargerRoleDefinition() {
 		return getChargerRoleDefinition(ProjectRole.class);
+	}
+
+	public Deliverable doAddDeliverable(Document doc,IContext context) throws Exception {
+		Deliverable deli = makeDeliverableDefinition();
+		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
+		deli.doInsert(context);
+		return deli;
+		
 	}
 
 }

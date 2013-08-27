@@ -23,6 +23,100 @@
       <navigator
             id="commons.admin.calendar"
             table="commons.admin.calendar">
+         <filterAction>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="开始日期"
+                  type="Date">
+            </column>
+            <column
+                  column="enddate"
+                  name="结束日期"
+                  type="Date">
+            </column>
+            <column
+                  column="workingday"
+                  name="工作日"
+                  type="Boolean">
+            </column>
+            <column
+                  column="condition"
+                  name="条件"
+                  type="String">
+            </column>
+            <column
+                  column="operator"
+                  name="计算"
+                  type="String">
+            </column>
+            <column
+                  column="value"
+                  name="值"
+                  type="String">
+            </column>
+            <column
+                  column="seq"
+                  name="优先级"
+                  type="Integer">
+            </column>
+            <column
+                  column="worktime"
+                  name="每天工时（小时）"
+                  type="Double">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="开始日期"
+                  type="Date">
+            </column>
+            <column
+                  column="enddate"
+                  name="结束日期"
+                  type="Date">
+            </column>
+            <column
+                  column="workingday"
+                  name="工作日"
+                  type="Boolean">
+            </column>
+            <column
+                  column="condition"
+                  name="条件"
+                  type="String">
+            </column>
+            <column
+                  column="operator"
+                  name="计算"
+                  type="String">
+            </column>
+            <column
+                  column="value"
+                  name="值"
+                  type="String">
+            </column>
+            <column
+                  column="seq"
+                  name="优先级"
+                  type="Integer">
+            </column>
+            <column
+                  column="worktime"
+                  name="每天工时（小时）"
+                  type="Double">
+            </column>
+         </searchAction>
       </navigator>
    </extension>
    <extension
@@ -34,7 +128,8 @@
             popupMenu="popup:commons.admin.calendar">
          <column
                column="desc"
-               name="名称">
+               name="名称"
+               type="String">
          </column>
          <column
                column="startdate"
@@ -724,47 +819,47 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.work.CreateWork"
+            class="com.sg.business.commons.handler.CreateWork"
             commandId="work.create">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.EditWork"
+            class="com.sg.business.commons.handler.EditWork"
             commandId="work.edit">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.RemoveWork"
+            class="com.sg.business.commons.handler.RemoveWork"
             commandId="work.remove">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveUp"
+            class="com.sg.business.commons.handler.WorkMoveUp"
             commandId="work.moveup">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveDown"
+            class="com.sg.business.commons.handler.WorkMoveDown"
             commandId="work.movedown">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveLeft"
+            class="com.sg.business.commons.handler.WorkMoveLeft"
             commandId="work.moveleft">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.WorkMoveRight"
+            class="com.sg.business.commons.handler.WorkMoveRight"
             commandId="work.moveright">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.ShowWorkCompase"
+            class="com.sg.business.commons.handler.ShowWorkCompase"
             commandId="work.showcompass">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.ChargerAssignment"
+            class="com.sg.business.commons.handler.ChargerAssignment"
             commandId="work.setcharger">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.CarlendarTest1"
+            class="com.sg.business.commons.handler.CarlendarTest1"
             commandId="carlendartest1">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.work.CarlendarTest2"
+            class="com.sg.business.commons.handler.CarlendarTest2"
             commandId="carlendartest2">
       </handler>
    </extension>
@@ -1051,6 +1146,89 @@
             type="Boolean"
             width="60">
       </column>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="document"
+            dbName="pm2"
+            id="editor.document.generic"
+            image="image/document_24.png"
+            name="文档"
+            titleToolTips="文档">
+         <basicpage
+               description="文档基本信息"
+               id="basicpage1"
+               image="image/document_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本属性">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="documentnumber"
+                        label="文档编号"
+                        labelVisible="true"
+                        name="documentnumber"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="文档名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="documenttype"
+                        label="文档类型"
+                        labelVisible="true"
+                        name="documenttype"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="300"
+                        id="_summary"
+                        label="摘要"
+                        labelVisible="true"
+                        name="_summary"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <versionControl>
+            <fieldname
+                  fieldname="vault">
+            </fieldname>
+         </versionControl>
+      </editor>
+      <pageExtendsions
+            id="editor.document.generic"
+            location="after=basicpage1"
+            targetId="systempage">
+      </pageExtendsions>
+      <pageExtendsions
+            id="editor.document.generic"
+            location="after=basicpage1"
+            targetId="filepage">
+      </pageExtendsions>
    </extension>
 
 </plugin>

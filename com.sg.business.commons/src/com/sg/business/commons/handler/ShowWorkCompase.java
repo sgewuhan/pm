@@ -1,4 +1,4 @@
-package com.sg.business.commons.handler.work;
+package com.sg.business.commons.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.swt.SWT;
