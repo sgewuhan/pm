@@ -3,8 +3,11 @@ package com.sg.business.model;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -48,11 +51,18 @@ public class Deliverable extends PrimaryObject implements IProjectRelative{
 	@Override
 	public String getLabel() {
 		Document document = getDocument();
-		return document.getLabel();
+		if(document!=null){
+			return document.getLabel();
+		}else{
+			return super.getLabel();
+		}
 	}
 	
 	public Document getDocument() {
 		ObjectId _id = getDocumentId();
+		if(_id==null){
+			return null;
+		}
 		return ModelService.createModelObject(Document.class, _id);
 	}
 
@@ -79,4 +89,30 @@ public class Deliverable extends PrimaryObject implements IProjectRelative{
 			return null;
 		}
 	}
+	
+	/**
+	 * 插入交付物定义记录到数据库中
+	 */
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		// 创建对应的文档定义
+		ObjectId docd_id = (ObjectId) getValue(F_DOCUMENT_ID);
+		if (docd_id == null) {
+			DBObject docdData = new BasicDBObject();
+			docdData.put(Document.F_DESC, getDesc());
+
+			//获取交付物所属项目
+			ObjectId projectId = (ObjectId) getValue(F_PROJECT_ID);
+			if(projectId!=null){
+				docdData.put(Document.F_PROJECT_ID,projectId);
+			}
+
+			Document docd = ModelService.createModelObject(docdData,
+					Document.class);
+			docd.doSave(context);
+			setValue(F_DOCUMENT_ID, docd.get_id());
+		}
+		super.doInsert(context);
+	}
+
 }
