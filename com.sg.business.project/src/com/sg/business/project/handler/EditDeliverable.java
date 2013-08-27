@@ -37,7 +37,7 @@ public class EditDeliverable extends AbstractNavigatorHandler {
 		selected.addEventListener(currentViewerControl);
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				Deliverable.EDITOR);
+				Deliverable.EDITOR_SETTING);
 		try {
 			DataObjectDialog.openDialog(selected, (DataEditorConfigurator) conf,
 					true, null, TITLE);

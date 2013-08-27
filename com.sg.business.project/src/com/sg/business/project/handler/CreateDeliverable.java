@@ -23,7 +23,7 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		MessageUtil.showToast("您需要选择添加的上级对象", SWT.ICON_WARNING);
+		MessageUtil.showToast("您需要选择工作后添加交付物", SWT.ICON_WARNING);
 		return super.nullSelectionContinue(event);
 	}
 
@@ -49,6 +49,7 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, "添加" + po.getTypeName());
 		} catch (Exception e) {
+			e.printStackTrace();
 			MessageUtil.showToast(shell, "添加" + po.getTypeName(),
 					e.getMessage(), SWT.ICON_ERROR);
 		}
