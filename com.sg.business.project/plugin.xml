@@ -2593,47 +2593,47 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.project.handler.role.CreateProjectRole"
+            class="com.sg.business.project.handler.CreateProjectRole"
             commandId="project.createprojectrole">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.LinkOrganizationRole"
+            class="com.sg.business.project.handler.LinkOrganizationRole"
             commandId="project.linkorganizationrole">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.AssignProjectRole"
+            class="com.sg.business.project.handler.AssignProjectRole"
             commandId="project.roleassignment">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.EditProjectRole"
+            class="com.sg.business.project.handler.EditProjectRole"
             commandId="project.editprojectrole">
       </handler>
       <handler
-            class="com.sg.business.project.handler.role.RemoveProjectRoleOrMember"
+            class="com.sg.business.project.handler.RemoveProjectRoleOrMember"
             commandId="project.removeroleormember">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.CreateDeliverable"
+            class="com.sg.business.project.handler.CreateDeliverable"
             commandId="project.createdeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.EditDeliverable"
+            class="com.sg.business.project.handler.EditDeliverable"
             commandId="project.editdeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.RemoveDeliverable"
+            class="com.sg.business.project.handler.RemoveDeliverable"
             commandId="project.deletedeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.ViewDeliverableDocument"
+            class="com.sg.business.project.handler.ViewDeliverableDocument"
             commandId="project.viewdeliverabledocument">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.LinkDeliverable"
+            class="com.sg.business.project.handler.LinkDeliverable"
             commandId="project.linkdeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.deliverable.CreateDeliverableWithTemplate"
+            class="com.sg.business.project.handler.CreateDeliverableWithTemplate"
             commandId="project.createdeliverablewithtemplate">
       </handler>
    </extension>

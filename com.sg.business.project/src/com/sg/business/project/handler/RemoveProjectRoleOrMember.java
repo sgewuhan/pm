@@ -1,4 +1,4 @@
-package com.sg.business.project.handler.role;
+package com.sg.business.project.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.swt.SWT;

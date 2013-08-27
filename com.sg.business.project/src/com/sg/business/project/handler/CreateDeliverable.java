@@ -1,4 +1,4 @@
-package com.sg.business.project.handler.deliverable;
+package com.sg.business.project.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;

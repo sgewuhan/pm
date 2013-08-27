@@ -1,11 +1,11 @@
-package com.sg.business.project.handler.deliverable;
+package com.sg.business.project.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 
-public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
+public class ViewDeliverableDocument extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
