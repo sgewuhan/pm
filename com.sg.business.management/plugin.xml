@@ -2354,7 +2354,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.work.CreateDeliverableDefinition"
+            class="com.sg.business.management.handler.CreateDeliverableDefinition"
             commandId="management.deliverables.create">
       </handler>
       <handler
