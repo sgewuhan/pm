@@ -5,6 +5,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
@@ -58,6 +59,9 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	 * 数据库名称
 	 */
 	public static final String FILE_DB = "pm2";
+	
+	public static final String EDITOR = "editor.document.generic";
+
 
 	/**
 	 * 返回存放位置对象的_id
@@ -140,6 +144,16 @@ public class Document extends PrimaryObject implements IProjectRelative{
 			return ModelService.createModelObject(Project.class, ptId);
 		} else {
 			return null;
+		}
+	}
+	
+	@Override
+	public String getDefaultEditorId() {
+		String editorId = get_editor();
+		if(Utils.isNullOrEmpty(editorId)){
+			return EDITOR;
+		}else{
+			return editorId;
 		}
 	}
 }

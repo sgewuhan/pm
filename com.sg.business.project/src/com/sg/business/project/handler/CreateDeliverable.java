@@ -4,8 +4,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -14,7 +12,6 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.editor.DataObjectDialog;
-import com.sg.widgets.part.view.NavigatorPart;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
@@ -56,15 +53,6 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 
 		// 3. 处理完成后，释放侦听器
 		po.removeEventListener(currentViewerControl);
-
-		// 4. 刷新当前页面的文档模板视图
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		NavigatorPart np = (NavigatorPart) page
-				.findView("management.documentdefinition");
-		if (np != null) {
-			np.reloadMaster();
-		}
 	}
 
 }

@@ -295,7 +295,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		data.put(Deliverable.F_PROJECT_ID, getValue(F_PROJECT_ID));
 
 		if (docd != null) {
-			data.put(Deliverable.F_DOCUMENT_ID, docd.get_id());
+			data.put(Deliverable.F_DOCUMENT_DEFINITION_ID, docd.get_id());
 			data.put(Deliverable.F_DESC, docd.getDesc());
 		}
 
