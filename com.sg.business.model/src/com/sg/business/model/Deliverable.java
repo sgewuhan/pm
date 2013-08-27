@@ -52,7 +52,7 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 	 */
 	@Override
 	public Image getImage() {
-		return BusinessResource.getImage(BusinessResource.IMAGE_DOCUMENT_16);
+		return BusinessResource.getImage(BusinessResource.IMAGE_DELIVERABLE_16);
 	}
 
 	@Override

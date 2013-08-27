@@ -10,6 +10,7 @@
       <view
             category="com.sg.business.project.category.project"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
+            icon="image/project_24.png"
             id="project.navigator.myproject"
             name="项目导航"
             restorable="true">
@@ -17,6 +18,7 @@
       <view
             category="com.sg.business.project.category.project"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
+            icon="image/project_24.png"
             id="project.navigator.management"
             name="项目管理"
             restorable="true">
@@ -1600,7 +1602,7 @@
             collectionName="deliverable"
             dbName="pm2"
             id="work.deliverable"
-            image="image/document_24.png"
+            image="image/deliverable_24.png"
             isDefault="true"
             name="交付物设定">
          <basicpage
@@ -1667,7 +1669,7 @@
             collectionName="deliverable"
             dbName="pm2"
             id="work.deliverable.create"
-            image="image/document_24.png"
+            image="image/deliverable_24.png"
             isDefault="true"
             name="交付物">
          <basicpage
@@ -2100,7 +2102,7 @@
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
-               icon="image/editdocument_24.png"
+               icon="image/deliverable_24.png"
                label="交付物"
                style="push">
             <visibleWhen
@@ -2427,7 +2429,7 @@
             locationURI="popup:project.deliverable">
          <command
                commandId="project.createdeliverable"
-               icon="image/createdocument_24.png"
+               icon="image/deliverablecreate_24.png"
                label="创建新的交付物..."
                style="push">
             <visibleWhen
@@ -2485,7 +2487,7 @@
          </separator>
          <command
                commandId="project.editdeliverable"
-               icon="image/editdocument_24.png"
+               icon="image/deliverableedit_24.png"
                label="交付物设定..."
                style="push">
             <visibleWhen
