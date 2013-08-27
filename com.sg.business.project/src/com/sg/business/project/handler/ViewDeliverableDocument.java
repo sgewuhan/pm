@@ -17,11 +17,15 @@ public class ViewDeliverableDocument extends AbstractNavigatorHandler {
 		if(selected instanceof Deliverable){
 			Deliverable deliverable = (Deliverable) selected;
 			Document doc = deliverable.getDocument();
-			try {
-				DataObjectEditor.open(doc, doc.getDefaultEditorId(), false, null);
-			} catch (Exception e) {
-				e.printStackTrace();
-				MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+			if(doc==null){
+				MessageUtil.showToast("选择的交付物不包含文档", SWT.ICON_WARNING);
+			}else{
+				try {
+					DataObjectEditor.open(doc, doc.getDefaultEditorId(), false, null);
+				} catch (Exception e) {
+					e.printStackTrace();
+					MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+				}
 			}
 		}
 	}
