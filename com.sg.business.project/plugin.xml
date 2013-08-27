@@ -1602,7 +1602,7 @@
             id="work.deliverable"
             image="image/document_24.png"
             isDefault="true"
-            name="交付物">
+            name="交付物设定">
          <basicpage
                id="basicpage1"
                image="image/document_24.png"
@@ -2352,31 +2352,9 @@
             </visibleWhen>
          </command>
          <command
-               commandId="project.linkdeliverable"
-               icon="image/24_blank.png"
-               label="链接交付物..."
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <instanceof
-                           value="com.sg.business.model.Work">
-                     </instanceof>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-         <separator
-               name="project.deliverable.separator1"
-               visible="true">
-         </separator>
-         <command
-               commandId="project.editdeliverable"
-               icon="image/editdocument_24.png"
-               label="编辑交付物..."
+               commandId="project.viewdeliverabledocument"
+               icon="image/document_24.png"
+               label="查看交付物文档..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2391,10 +2369,14 @@
                </with>
             </visibleWhen>
          </command>
+         <separator
+               name="project.deliverable.separator1"
+               visible="true">
+         </separator>
          <command
-               commandId="project.viewdeliverabledocument"
-               icon="image/document_24.png"
-               label="查看交付物文档..."
+               commandId="project.editdeliverable"
+               icon="image/editdocument_24.png"
+               label="交付物设定..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2497,11 +2479,6 @@
       </command>
       <command
             categoryId="project"
-            id="project.linkdeliverable"
-            name="链接交付物">
-      </command>
-      <command
-            categoryId="project"
             id="project.deletedeliverable"
             name="删除交付物">
       </command>
@@ -2540,10 +2517,6 @@
       <handler
             class="com.sg.business.project.handler.deliverable.EditDeliverable"
             commandId="project.editdeliverable">
-      </handler>
-      <handler
-            class="com.sg.business.project.handler.deliverable.LinkDeliverable"
-            commandId="project.linkdeliverable">
       </handler>
       <handler
             class="com.sg.business.project.handler.deliverable.RemoveDeliverable"
