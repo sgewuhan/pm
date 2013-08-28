@@ -72,6 +72,21 @@
                   name="参与者"
                   type="String">
             </column>
+            <column
+                  column="producttype"
+                  name="产品类型"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准"
+                  type="String">
+            </column>
          </filterAction>
          <searchAction>
             <column
@@ -113,6 +128,21 @@
             <column
                   column="participate"
                   name="参与者"
+                  type="String">
+            </column>
+            <column
+                  column="producttype"
+                  name="产品类型"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准"
                   type="String">
             </column>
          </searchAction>
@@ -342,6 +372,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="project.documents"
+            table="project.documents">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -402,13 +446,30 @@
          </columnGroup>
          <columnGroup
                defaultGroup="false"
-               name="组织">
+               name="组织和参与者">
+            <column
+                  columnDefinitionId="participate">
+            </column>
             <column
                   columnDefinitionId="project.org_id">
             </column>
             <column
                   columnDefinitionId="project.launchorg_id">
             </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="选项属性">
+            <column
+                  column="producttype"
+                  name="产品类型"></column>
+            <column
+                  column="projecttype"
+                  name="项目类型">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准"></column>
          </columnGroup>
       </table>
       <table
@@ -564,6 +625,18 @@
             dataSet="com.sg.business.model.dataset.project.ProjectParticipate"
             id="project.participte.selector"
             multiSelection="true">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            dataSet="com.sg.business.model.dataset.project.DocumentsOfProject"
+            headerVisiable="false"
+            id="project.documents">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -825,6 +898,11 @@
                id="project.deliverable"
                navigatorId="project.deliverable"
                title="交付物">
+         </navigatorpage>
+         <navigatorpage
+               id="project.documents"
+               navigatorId="project.documents"
+               title="文档">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
@@ -2121,6 +2199,29 @@
             <parameter
                   name="com.sg.widgets.edit.pageid"
                   value="project.deliverable">
+            </parameter>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/document_24.png"
+               label="查看项目文档"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="project.editor">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.pageid"
+                  value="project.documents">
             </parameter>
          </command>
          <separator
