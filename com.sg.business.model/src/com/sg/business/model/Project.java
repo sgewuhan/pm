@@ -79,6 +79,28 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public static final String F_WORK_ORDER = "workorder";
 
+	/**
+	 * 项目提交流程
+	 */
+	public static final String F_WF_COMMIT = "wf_commit";
+	
+	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";
+	
+	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
+
+	public static final String F_WF_COMMIT_ACTORS = "wf_commit_actors";
+	/**
+	 * 项目变更流程
+	 */
+	public static final String F_WF_CHANGE = "wf_change";
+	
+	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
+
+	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
+
+	public static final String F_WF_CHANGE_ACTORS = "wf_change_actors";
+
+
 	@Override
 	public String getTypeName() {
 		return "项目";
@@ -317,7 +339,55 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
+		
+		//设置项目的流程和角色
+		doSetupWorkflowWithTemplate(id,roleMap,context);
 
+	}
+
+	private void doSetupWorkflowWithTemplate(ObjectId id,
+			Map<ObjectId, DBObject> roleMap, IContext context) throws Exception {
+		
+		DBCollection col = getCollection(IModelConstants.C_PROJECT_TEMPLATE);
+		DBObject pjTempData = col.findOne(new BasicDBObject().append(ProjectTemplate.F__ID, getProjectTemplateId()));
+		if(pjTempData == null){
+			return;
+		}
+		
+		
+		// 设置变更工作流
+		Object value = pjTempData.get(ProjectTemplate.F_WF_CHANGE);
+		if (value != null) {
+			setValue(ProjectTemplate.F_WF_CHANGE, value);
+		}
+
+		// 设置变更工作流是否激活
+		value = pjTempData.get(ProjectTemplate.F_WF_CHANGE_ACTIVATED);
+		if (value != null) {
+			setValue(ProjectTemplate.F_WF_CHANGE_ACTIVATED, value);
+		}
+
+		// 设置变更流程的活动执行人
+		setRoleDBObjectField(get_data(), pjTempData,
+				ProjectTemplate.F_WF_CHANGE_ASSIGNMENT, roleMap);
+
+		// 设置执行工作流
+		value = pjTempData.get(ProjectTemplate.F_WF_COMMIT);
+		if (value != null) {
+			setValue(ProjectTemplate.F_WF_COMMIT, value);
+		}
+
+		// 设置执行工作流是否激活
+		value = pjTempData.get(ProjectTemplate.F_WF_COMMIT_ACTIVATED);
+		if (value != null) {
+			setValue(ProjectTemplate.F_WF_COMMIT_ACTIVATED, value);
+		}
+
+		// 设置执行工作流的活动执行人角色
+		setRoleDBObjectField(get_data(), pjTempData,
+				ProjectTemplate.F_WF_COMMIT_ASSIGNMENT, roleMap);
+		
+		doSave(context);
 	}
 
 	private void doSetupWorkConnectionWithTemplate(ObjectId projectTemplateId,

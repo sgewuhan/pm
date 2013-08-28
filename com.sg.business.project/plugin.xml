@@ -1797,6 +1797,28 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="project.flow.setting"
+            image="image/project_flow_24.png"
+            isDefault="true"
+            name="项目流程设定">
+         <basicpage
+               description="项目提交流程设置"
+               id="processpage1"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.project.editor.page.WorkExecuteProcessPage"
+               title="项目提交流程设置">
+         </basicpage>
+         <basicpage
+               description="项目变更流程设置"
+               id="processpage2"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.project.editor.page.WorkChangeProcessPage"
+               title="项目变更流程设置">
+         </basicpage>
+      </editor>
    </extension>
    <extension
          name="用于选择器"
@@ -2222,6 +2244,25 @@
             <parameter
                   name="com.sg.widgets.edit.pageid"
                   value="project.documents">
+            </parameter>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/flow_24.png"
+               label="项目流程设置"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="project.flow.setting">
             </parameter>
          </command>
          <separator

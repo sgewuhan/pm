@@ -225,15 +225,18 @@ public class ProcessSettingPanel extends Composite {
 				NodeAssignment na = (NodeAssignment) element;
 				String ap = na.getNodeActorParameter();
 				ObjectId roleId = (ObjectId) processAssignment.get(ap);
+				if(roleId == null){
+					return "";
+				}
 				//如果是通用工作定义或者是独立工作定义，取出的是角色
 				if(isGenericWorkDefinition()||isStandloneWorkDefinition()){
 					Role roled = ModelService.createModelObject(
 							Role.class, roleId);
-					return roleId == null ? "" : roled.getLabel();
+					return roled == null ? "" : roled.getLabel();
 				}else{//取出的是角色定义
 					RoleDefinition roled = ModelService.createModelObject(
 							RoleDefinition.class, roleId);
-					return roleId == null ? "" : roled.getLabel();
+					return roled == null ? "" : roled.getLabel();
 				}
 				
 			}

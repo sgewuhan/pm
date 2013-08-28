@@ -8,8 +8,8 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
-import com.sg.business.model.Work;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
@@ -29,20 +29,27 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
-		Work workDefinition = (Work) input.getData();
+		PrimaryObject po = input.getData();
 
 		ProcessSettingPanel psp = new ProcessSettingPanel(parent,
-				getWorkflowKey(), workDefinition) {
+				getWorkflowKey(), po) {
 			@Override
 			protected void setDirty(boolean b) {
 				AbstractWorkProcessPage.this.setDirty(b);
 			}
 		};
-		Project projectTemplate = workDefinition.getProject();
-		List<PrimaryObject> roleDefinitions = projectTemplate
-				.getRoleDefinitions();
-		psp.setRoleDefinitions(roleDefinitions);
-		psp.createContent();
+		Project project = null;
+		if (po instanceof IProjectRelative) {
+			project = ((IProjectRelative) po).getProject();
+		} else if (po instanceof Project) {
+			project = (Project) po;
+		}
+
+		if (project != null) {
+			List<PrimaryObject> roleDefinitions = project.getRoleDefinitions();
+			psp.setRoleDefinitions(roleDefinitions);
+			psp.createContent();
+		}
 		return psp;
 	}
 
