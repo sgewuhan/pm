@@ -1802,7 +1802,7 @@
             dbName="pm2"
             id="project.flow.setting"
             image="image/project_flow_24.png"
-            isDefault="true"
+            isDefault="false"
             name="项目流程设定">
          <basicpage
                description="项目提交流程设置"
@@ -2707,6 +2707,16 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:project.navigator.myproject?after=additions">
+         <command
+               commandId="project.check"
+               icon="image/project_check_24.png"
+               label="计划检查"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2769,6 +2779,11 @@
             id="project.createdeliverablewithtemplate"
             name="创建交付物">
       </command>
+      <command
+            categoryId="project"
+            id="project.check"
+            name="计划检查">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2815,6 +2830,10 @@
       <handler
             class="com.sg.business.project.handler.CreateDeliverableWithTemplate"
             commandId="project.createdeliverablewithtemplate">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.ProjectCheck"
+            commandId="project.check">
       </handler>
    </extension>
 
