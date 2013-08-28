@@ -311,31 +311,6 @@
    <extension
          point="com.mobnut.portal.scenario">
       <scenario
-            id="developer"
-            name="开发者">
-         <perspective
-               default="true"
-               id="perspective.home"></perspective>
-         <perspective
-               id="perspective.organization">
-         </perspective>
-         <perspective
-               id="perspective.project">
-         </perspective>
-         <perspective
-               id="perspective.management">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.visualization">
-         </perspective>
-         <perspective
-               id="perspective.system">
-         </perspective>
-      </scenario>
-      <scenario
             id="manager"
             name="业务管理">
          <perspective
