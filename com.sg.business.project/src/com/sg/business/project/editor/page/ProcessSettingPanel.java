@@ -209,9 +209,12 @@ public class ProcessSettingPanel extends Composite {
 				NodeAssignment na = (NodeAssignment) element;
 				String ap = na.getNodeActorParameter();
 				ObjectId roleId = (ObjectId) processAssignment.get(ap);
-				ProjectRole roled = ModelService.createModelObject(
-						ProjectRole.class, roleId);
-				return roleId == null ? "" : roled.getLabel();
+				if(roleId !=null){
+					ProjectRole roled = ModelService.createModelObject(
+							ProjectRole.class, roleId);
+					return roled.getLabel();
+				}
+				return "" ;
 
 			}
 

@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +16,6 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 
 /**
  * <p>
@@ -48,8 +48,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 	public static final String F_WF_CHANGE_ACTORS = "wf_change_actors";
 
 	public static final String F_WF_EXECUTE_ACTORS = "wf_execute_actors";
-
-	private CalendarCaculater calendarCaculater;
 
 	/**
 	 * 返回工作所属项目
@@ -339,13 +337,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
-		if (calendarCaculater == null) {
-			calendarCaculater = new CalendarCaculater(getProjectId());
-		}
+//		if (calendarCaculater == null) {
+//			calendarCaculater = new CalendarCaculater(getProjectId());
+//		}
 
-		checkAndCalculateDuration(calendarCaculater, F_PLAN_START,
+		checkAndCalculateDuration(F_PLAN_START,
 				F_PLAN_FINISH, F_PLAN_DURATION);
-		checkAndCalculateDuration(calendarCaculater, F_ACTUAL_START,
+		checkAndCalculateDuration(F_ACTUAL_START,
 				F_ACTUAL_FINISH, F_ACTUAL_DURATION);
 
 		super.doSave(context);
@@ -357,12 +355,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		// doUpdateProjectSchedual(context);
 		// }
 
-		calendarCaculater = null;
 		return true;
 
 	}
 
-	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
+	public void checkAndCalculateDuration( String fStart,
 			String fFinish, String fDuration) throws Exception {
 		Date start = (Date) getValue(fStart);
 		if (start != null) {
@@ -380,8 +377,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 				throw new Exception("开始日期必须早于完成日期");
 			}
 			// 计算工期
-			int workingdays = cc.getWorkingDays(start, finish);
-			setValue(fDuration, new Integer(workingdays));
+			Calendar sdate = Utils.getDayBegin(start);
+			Calendar edate = Utils.getDayEnd(finish);
+			setValue(fDuration, new Integer((int)(edate.getTimeInMillis()-sdate.getTimeInMillis())/(1000*60*60*24)));
 		}
 	}
 
