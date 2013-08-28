@@ -28,37 +28,36 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener {
 			List<ICalendarEvent> input = new ArrayList<ICalendarEvent>();
 			CalendarEvent event = new CalendarEvent();
 			event.setId("001");
-			event.setDescription("测试工作1");
-			event.setNoticeMessage("提示信息1");
-			event.setTitle("工作标题1");
+			event.setDescription("测试工作1qweqwe");
+			event.setNoticeMessage(1);
+			event.setTitle("工作标题收到回复决定是否决定是否合适的机会福建省地方");
 			event.setStart(new SimpleDateFormat("yyyy-MM-dd")
 					.parse("2013-08-10"));
 			event.setEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2013-08-28"));
-//			event.setColor(ICalendarEvent.COLOR_RED);
+			event.setColor(ICalendarEvent.COLOR_BLUES[1]);
 			event.setReminderTime(new SimpleDateFormat("yyyy-MM-dd").parse("2013-08-20"));
 			input.add(event);
 			
 			event = new CalendarEvent();
 			event.setId("002");
 			event.setDescription("测试工作2");
-			event.setNoticeMessage("提示信息2");
+			event.setNoticeMessage(1);
 			event.setTitle("工作标题2");
 			event.setStart(new SimpleDateFormat("yyyy-MM-dd")
 					.parse("2013-07-20"));
 			event.setEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2013-08-28"));
-//			event.setColor(ICalendarEvent.COLOR_BLUE);
+			event.setColor(ICalendarEvent.COLOR_REDS[2]);
 			event.setReminderTime(new SimpleDateFormat("yyyy-MM-dd").parse("2013-07-23"));
 			input.add(event);
 			
 			event = new CalendarEvent();
 			event.setId("003");
 			event.setDescription("测试工作3");
-			event.setNoticeMessage("提示信息3");
+			event.setNoticeMessage(0);
 			event.setTitle("工作标题3");
-			event.setStart(new SimpleDateFormat("yyyy-MM-dd")
-					.parse("2013-08-20"));
+			event.setStart(new SimpleDateFormat("yyyy-MM-dd").parse("2013-08-20"));
 			event.setEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2013-08-25"));
-//			event.setColor(ICalendarEvent.COLOR_YELLOW);
+			event.setColor(ICalendarEvent.COLOR_YELLOWS[1]);
 			event.setReminderTime(new SimpleDateFormat("yyyy-MM-dd").parse("2013-08-23"));
 			input.add(event);
 			
