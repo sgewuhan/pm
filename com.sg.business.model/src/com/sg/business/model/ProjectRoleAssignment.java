@@ -4,14 +4,26 @@ import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.ModelService;
 
+/**
+ * 项目角色指派
+ * @author jinxitao
+ *
+ */
 public class ProjectRoleAssignment extends AbstractRoleAssignment implements IProjectRelative{
 
-	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "项目指派";
 	}
 	
+	/**
+	 * 返回项目
+	 * @return Project
+	 */
 	@Override
 	public Project getProject() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);

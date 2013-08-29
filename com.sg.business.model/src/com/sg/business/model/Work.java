@@ -43,10 +43,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 	 */
 	public static final String F_CHARGER = "chargerid";
 
+	/**
+	 * 工作承担者
+	 */
 	public static final String F_PARTICIPATE = "participate";
 
+	/**
+	 * 工作变更流程执行者
+	 */
 	public static final String F_WF_CHANGE_ACTORS = "wf_change_actors";
 
+	/**
+	 * 工作执行流程执行者
+	 */
 	public static final String F_WF_EXECUTE_ACTORS = "wf_execute_actors";
 
 	/**
@@ -64,7 +73,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 	}
 
 	/**
-	 * 新建下级工作
+	 * 构建下级工作
 	 * 
 	 * @return Work
 	 */
@@ -93,10 +102,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		return getProject();
 	}
 
+	/**
+	 * 返回工作所属项目_id
+	 * @return
+	 */
 	public ObjectId getProjectId() {
 		return (ObjectId) getValue(F_PROJECT_ID);
 	}
 
+	/**
+	 * 返回工作计划开始时间
+	 * @return Date
+	 */
 	public Date getPlanStart() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -119,6 +136,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回工作计划完成时间
+	 * @return Date
+	 */
 	public Date getPlanFinish() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -141,6 +162,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回工作实际开始时间
+	 * @return Date
+	 */
 	public Date getActualStart() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -163,6 +188,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回工作实际完成时间
+	 * @return Date
+	 */
 	public Date getActualFinish() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -185,6 +214,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回工作的实际工时
+	 * @return Double
+	 */
 	public Double getActualWorks() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -206,6 +239,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回工作的计划工时
+	 * @return Double
+	 */
 	public Double getPlanWorks() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -227,6 +264,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回工作的实际工期
+	 * @return Integer
+	 */
 	public Integer getActualDuration() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -248,6 +289,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回工作的计划工期
+	 * @return Integer
+	 */
 	public Integer getPlanDuration() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
@@ -283,8 +328,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 	 * 新建工作交付物
 	 * 
 	 * @param docd
-	 *            ,交付物文档定义
-	 * @return
+	 *           ,文档模板定义
+	 * @return Deliverable
 	 */
 	public Deliverable makeDeliverableDefinition(DocumentDefinition docd) {
 		DBObject data = new BasicDBObject();
@@ -335,6 +380,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		return true;
 	}
 
+	/**
+	 * 保存工作
+	 * @return boolean
+	 */
 	@Override
 	public boolean doSave(IContext context) throws Exception {
 //		if (calendarCaculater == null) {
@@ -359,6 +408,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	}
 
+	/**
+	 * 计算工期
+	 * @param fStart
+	 *          ,开始日期
+	 * @param fFinish
+	 *          ,完成日期
+	 * @param fDuration
+	 *          ,工期
+	 * @throws Exception
+	 */
 	public void checkAndCalculateDuration( String fStart,
 			String fFinish, String fDuration) throws Exception {
 		Date start = (Date) getValue(fStart);
@@ -383,6 +442,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回所有上级共组
+	 * @return List
+	 */
 	public List<Work> getAllParents() {
 		List<Work> result = new ArrayList<Work>();
 		result.add(this);
@@ -394,6 +457,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		return result;
 	}
 
+	/**
+	 * 为工作及下级工作的负责人,参与者,工作流的执行者指定用户
+	 * @param roleAssign
+	 * @param context
+	 * @throws Exception
+	 */
 	public void doAssignment(Map<ObjectId, List<PrimaryObject>> roleAssign,
 			IContext context) throws Exception {
 		AbstractRoleAssignment assItem;
@@ -468,6 +537,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		}
 	}
 
+	/**
+	 * 返回流程执行者
+	 * @param wfRoleAss
+	 * @param roleAssign
+	 * @return BasicDBObject
+	 */
 	private BasicDBObject getWorkFlowActors(DBObject wfRoleAss,
 			Map<ObjectId, List<PrimaryObject>> roleAssign) {
 		AbstractRoleAssignment assItem;
@@ -500,10 +575,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 		return wfRoleActors;
 	}
 
+	/**
+	 * 返回工作的负责人角色
+	 * @return ProjectRole
+	 */
 	public ProjectRole getChargerRoleDefinition() {
 		return getChargerRoleDefinition(ProjectRole.class);
 	}
 
+	/**
+	 * 新建交付物
+	 * @param doc
+	 *         ,文档
+	 * @param context
+	 * @return Deliverable
+	 * @throws Exception
+	 */
 	public Deliverable doAddDeliverable(Document doc,IContext context) throws Exception {
 		Deliverable deli = makeDeliverableDefinition();
 		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());

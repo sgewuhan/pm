@@ -18,6 +18,11 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
+/**
+ * 项目角色
+ * @author jinxitao
+ *
+ */
 public class ProjectRole extends AbstractRoleDefinition implements
 		IProjectRelative {
 	/**
@@ -25,8 +30,15 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	 */
 	public static final String EDITOR_ROLE_DEFINITION_CREATE = "editor.projectrole";
 
+	/**
+	 * 编辑项目角色编辑器
+	 */
 	public static final String EDITOR_ROLE_DEFINITION_EDIT = "editor.projectrole.edit";
 
+	/**
+	 * 返回角色所属项目
+	 * @return Project
+	 */
 	public Project getProject() {
 		ObjectId projectId = getProjectId();
 		if (projectId != null) {
@@ -35,11 +47,17 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		return null;
 	}
 	
-	
+	/**
+	 * 返回角色所属项目_id
+	 * @return ObjectId
+	 */
 	public ObjectId getProjectId() {
 		return (ObjectId) getValue(F_PROJECT_ID);
 	}
 
+	/**
+	 * 插入一条项目角色记录到数据库中
+	 */
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		//如果是系统角色，需要将该角色的用户添加到项目的参与者
@@ -56,7 +74,6 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	/**
 	 * 为角色指派用户
-	 * 
 	 * @param users
 	 * @throws Exception
 	 */
@@ -99,6 +116,9 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	}
 
 
+	/**
+	 * 删除项目角色
+	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
@@ -111,11 +131,19 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		super.doRemove(context);
 	}
 
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "项目角色";
 	}
 
+	/**
+	 * 返回角色指派
+	 * @return List
+	 */
 	public List<PrimaryObject> getAssignment() {
 		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();

@@ -8,6 +8,10 @@ package com.sg.business.model;
  * 
  */
 public class WorkDefinitionConnection extends AbstractWorkConnection implements IProjectTemplateRelative{
+	
+	/**
+	 * 工作定义的编辑器ID
+	 */
 	public static final String EDITOR = "editor.workDefinitionConnection";
 	
 	/**

@@ -49,12 +49,17 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 
 	/**
 	 * 返回显示图标
+	 * @return Image
 	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_DELIVERABLE_16);
 	}
 
+	/**
+	 * 返回显示内容
+	 * @return String
+	 */
 	@Override
 	public String getLabel() {
 		Document document = getDocument();
@@ -65,6 +70,10 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 		}
 	}
 
+	/**
+	 * 返回交付物文档
+	 * @return Document
+	 */
 	public Document getDocument() {
 		ObjectId _id = getDocumentId();
 		if (_id == null) {
@@ -73,20 +82,36 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 		return ModelService.createModelObject(Document.class, _id);
 	}
 
+	/**
+	 * 返回交付物文档_id
+	 * @return
+	 */
 	public ObjectId getDocumentId() {
 		return (ObjectId) getValue(F_DOCUMENT_ID);
 	}
 
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "交付物";
 	}
 
+	/**
+	 * 返回默认编辑器ID
+	 * @return String
+	 */
 	@Override
 	public String getDefaultEditorId() {
 		return EDITOR;
 	}
 
+	/**
+	 * 返回项目
+	 * @return Project
+	 */
 	@Override
 	public Project getProject() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);

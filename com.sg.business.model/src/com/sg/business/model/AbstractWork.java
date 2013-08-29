@@ -147,7 +147,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	}
 
 	/**
-	 * 设置参与者角色
+	 * 设置负责人角色
 	 * 
 	 * @param role
 	 * @param context
@@ -360,7 +360,13 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 		return new PrimaryObject[] { parent, upperBrother };
 	}
-
+	
+	
+    
+	/**
+	 * 重新排列序号
+	 * @throws Exception
+	 */
 	public void doArrangeWBSCode() throws Exception {
 		List<PrimaryObject> children = getChildrenWork();
 		DBCollection col = getCollection();

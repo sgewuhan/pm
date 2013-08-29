@@ -968,6 +968,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return documentData;
 	}
 
+	/**
+	 * 
+	 * @param work
+	 * @param workdef
+	 * @param fieldName
+	 * @param roleMap
+	 */
 	private void setRoleDBObjectField(DBObject work, DBObject workdef,
 			String fieldName, Map<ObjectId, DBObject> roleMap) {
 		Object value = workdef.get(fieldName);

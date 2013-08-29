@@ -48,28 +48,54 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 		}
 	}
 
+	/**
+	 * 设置上级预算
+	 * @param budgetItem
+	 *            ,预算科目
+	 */
 	private void setParent(ProjectBudget budgetItem) {
 		this.parent = budgetItem;
 	}
 	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "项目预算";
 	}
 
+	/**
+	 * 返回上级预算
+	 * @return ProjectBudget
+	 */
 	public ProjectBudget getParent() {
 		return parent;
 	}
 
+	/**
+	 * 判断是否具有下级预算
+	 * @return boolean
+	 */
 	public boolean hasChildren() {
 
 		return getChildren().length > 0;
 	}
 
+	/**
+	 * 返回预算科目值
+	 * @return Double
+	 */
 	public Double getBudgetValue() {
 		return (Double) getValue(F_BUDGET_VALUE);
 	}
 
+	/**
+	 * 设置预算科目的值
+	 * @param val
+	 *         ,值
+	 */
 	public void inputBudgetValue(Double val) {
 		if (val == null) {
 			return;
@@ -78,6 +104,9 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 		calculateValue();
 	}
 
+	/**
+	 * 计算预算科目的值，上级预算的值由下级预算向上累计
+	 */
 	private void calculateValue() {
 		ProjectBudget parentItem = getParent();
 		if (parentItem != null) {
@@ -94,6 +123,10 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 		}
 	}
 	
+	/**
+	 * 返回项目
+	 * @return Project
+	 */
 	@Override
 	public Project getProject() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);

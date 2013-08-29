@@ -7,6 +7,11 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * 文件夹
+ * @author jinxitao
+ *
+ */
 public class Folder extends PrimaryObject {
 
 	public static final String F_FOLDER_TYPE = "folderType";
@@ -117,16 +122,27 @@ public class Folder extends PrimaryObject {
 	// return root;
 	// }
 
+	/**
+	 * 判断是否存在文件
+	 * @return boolean
+	 */
 	private boolean hasFile() {
 		return getRelationCountById(Folder.F__ID, Document.F_FOLDER_ID,
 				Document.class) > 0;
 	}
 
+	/**
+	 * 判断是否
+	 * @return
+	 */
 	private boolean hasSubFolder() {
 		return getRelationCountById(Folder.F__ID, Folder.F_PARENT_ID,
 				Folder.class) > 0;
 	}
 	
+	/**
+	 * 返回类型名称
+	 */
 	@Override
 	public String getTypeName() {
 		return "目录";

@@ -1,7 +1,7 @@
 package com.sg.business.model;
 
 /**
- * 项目于项目内容的关联
+ * 项目与项目内容的关联
  * @author jinxitao
  *
  */
@@ -12,6 +12,10 @@ public interface IProjectRelative {
 	 */
 	public static final String F_PROJECT_ID = "project_id";
 
+	/**
+	 * 返回所属项目
+	 * @return Project
+	 */
 	public Project getProject();
 
 }

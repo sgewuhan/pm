@@ -10,6 +10,11 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 
+/**
+ * 日历设置
+ * @author jinxitao
+ *
+ */
 public class CalendarSetting extends PrimaryObject {
 
 	/**
@@ -69,24 +74,41 @@ public class CalendarSetting extends PrimaryObject {
 	public static final String OPERATOR_GT = "大于等于";
 
 	public static final String OPERATOR_GE = "大于";
+	
 	private HashMap<String, Double> workingTimeMap;
 
+	/**
+	 * 返回开始日期
+	 * @return Calendar
+	 */
 	private Calendar getStartDate() {
 		Date date = (Date) getValue(F_START_DATE);
 		return Utils.getDayBegin(date);
 
 	}
 
+	/**
+	 * 返回结束日期
+	 * @return Calendar
+	 */
 	private Calendar getEndDate() {
 		Date date = (Date) getValue(F_END_DATE);
 		return Utils.getDayEnd(date);
 
 	}
 
+	/**
+	 * 判断是否为工作日
+	 * @return boolean
+	 */
 	private boolean isWorkingDay() {
 		return Boolean.TRUE.equals(getValue(F_WORKINGDAY));
 	}
 
+	/**
+	 * 返回该工作日的工作时间
+	 * @return
+	 */
 	private Double getWorkingTime() {
 		if (!isWorkingDay()) {
 			return new Double(0d);
@@ -99,14 +121,26 @@ public class CalendarSetting extends PrimaryObject {
 		}
 	}
 
+	/**
+	 * 计算
+	 * @return String
+	 */
 	private String getOperator() {
 		return (String) getValue(F_OPERATOR);
 	}
 
+	/**
+	 * 判断是否为周条件
+	 * @return
+	 */
 	private boolean isWeekCondition() {
 		return CONDITON_DAY_OF_WEEK.equals(getValue(F_CONDITION));
 	}
 
+	/**
+	 * 判断是否为工作日条件
+	 * @return
+	 */
 	private boolean isDateCondition() {
 		return CONDITON_DAY_OF_MONTH.equals(getValue(F_CONDITION));
 	}

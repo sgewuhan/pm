@@ -134,6 +134,10 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 		return "交付定义";
 	}
 	
+	/**
+	 * 返回默认编辑器ID
+	 * @return String
+	 */
 	@Override
 	public String getDefaultEditorId() {
 		return EDITOR;

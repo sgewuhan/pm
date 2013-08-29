@@ -18,6 +18,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
+/**
+ * 文档模板定义
+ * @author jinxitao
+ *
+ */
 public class DocumentDefinition extends PrimaryObject {
 
 	/**
@@ -31,7 +36,7 @@ public class DocumentDefinition extends PrimaryObject {
 	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty";
 
 	/**
-	 * 文档编辑器ID
+	 * 文档模板编辑器ID
 	 */
 	public static final String F_DOCUMENT_EDITORID = "document_editorid";
 
@@ -151,11 +156,24 @@ public class DocumentDefinition extends PrimaryObject {
 		return result;
 	}
 
+	/**
+	 * 返回类型名称
+	 * @retrun String
+	 */
 	@Override
 	public String getTypeName() {
 		return "文档定义";
 	}
 
+	/**
+	 * 创建文档
+	 * @param projectId
+	 *           文档所属项目_id
+	 * @param context
+	             ,上下文
+	 * @return Document
+	 * @throws Exception
+	 */
 	public Document doCreateDocument(ObjectId projectId, IContext context) throws Exception {
 		BasicDBObject documentData = new BasicDBObject();
 		documentData.put(Document.F__ID, new ObjectId());

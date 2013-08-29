@@ -98,7 +98,7 @@ public abstract class AbstractOptionFilterable extends PrimaryObject {
 	}
 
 	/**
-	 * 设置选相集中选项的值
+	 * 设置选项集中选项的值
 	 * 
 	 * @param optionSet
 	 *            ,选相集

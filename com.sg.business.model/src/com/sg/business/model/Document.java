@@ -51,8 +51,14 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	 */
 	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty";
 
+	/**
+	 * 文档描述
+	 */
 	public static final String F_DESCRIPTION = "description";
 
+	/**
+	 * 文件命名空间
+	 */
 	public static final String FILE_NAMESPACE = "vault_file";
 
 	/**
@@ -60,11 +66,14 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	 */
 	public static final String FILE_DB = "pm2";
 	
+	/**
+	 * 文档编辑器ID
+	 */
 	public static final String EDITOR = "editor.document.generic";
 
 
 	/**
-	 * 返回存放位置对象的_id
+	 * 返回所属文件夹_id
 	 * @return  ObjectId
 	 */
 	public ObjectId getParent_id() {
@@ -96,7 +105,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	}
 
 	/**
-	 * 返回归档的文档库
+	 * 返回文档附件的存储目录
 	 * @return
 	 */
 	public RemoteFileSet getVault(){
@@ -109,6 +118,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 返回显示图标
+	 * @return Image
 	 */
 	@Override
 	public Image getImage() {
@@ -117,6 +127,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 判断是否可以编辑
+	 * @return boolean
 	 */
 	@Override
 	public boolean canEdit(IContext context) {
@@ -125,18 +136,26 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 判断是否只读
+	 * @return boolean
 	 */
 	@Override
 	public boolean canRead(IContext context) {
 		return super.canRead(context);
 	}
 
-	
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "文档";
 	}
 
+	/**
+	 * 返回所属项目
+	 * @return Project
+	 */
 	@Override
 	public Project getProject() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);
@@ -147,6 +166,10 @@ public class Document extends PrimaryObject implements IProjectRelative{
 		}
 	}
 	
+	/**
+	 * 返回默认编辑器ID
+	 * @return String
+	 */
 	@Override
 	public String getDefaultEditorId() {
 		String editorId = get_editor();

@@ -58,21 +58,33 @@ public class ProjectTemplate extends PrimaryObject {
 	public static final String F_PROJECTTYPE_OPTION_SET = "projecttype";
 
 	/**
-	 * 项目提交流程
+	 * 提交流程的定义
 	 */
 	public static final String F_WF_COMMIT = "wf_commit";
 	
+	/**
+	 * 流程定义中的指派
+	 */
 	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";
 	
+	/**
+	 * 流程是否启用
+	 */
 	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
 
 	/**
-	 * 项目变更流程
+	 * 变更流程定义
 	 */
 	public static final String F_WF_CHANGE = "wf_change";
 	
+	/**
+	 * 变更流程定义中的指派
+	 */
 	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
 
+	/**
+	 * 流程是否启用
+	 */
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
 	
 	/**
