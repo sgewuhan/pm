@@ -897,9 +897,6 @@
             <navigatoraction
                   action="com.sg.business.project.action.AutoAssignment">
             </navigatoraction>
-            <navigatoraction
-                  action="com.sg.business.project.action.CheckPlan">
-            </navigatoraction>
          </navigatorpage>
          <navigatorpage
                id="project.deliverable"
@@ -2272,6 +2269,12 @@
                   value="project.flow.setting">
             </parameter>
          </command>
+         <command
+               commandId="project.check"
+               icon="image/project_check_24.png"
+               label="项目计划检查"
+               style="push">
+         </command>
          <separator
                name="project.separator1"
                visible="true">
@@ -2720,7 +2723,7 @@
          <command
                commandId="project.check"
                icon="image/project_check_24.png"
-               label="计划检查"
+               label="计划提交检查"
                style="push">
          </command>
       </menuContribution>

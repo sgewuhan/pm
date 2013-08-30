@@ -457,9 +457,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 计算工期
 			Calendar sdate = Utils.getDayBegin(start);
 			Calendar edate = Utils.getDayEnd(finish);
-			setValue(fDuration, new Integer(
-					(int) (edate.getTimeInMillis() - sdate.getTimeInMillis())
-							/ (1000 * 60 * 60 * 24)));
+			long l = (edate.getTimeInMillis() - sdate.getTimeInMillis())
+					/ (1000 * 60 * 60 * 24);
+			setValue(fDuration, new Integer((int) l));
 		}
 	}
 
@@ -646,7 +646,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public List<ICheckListItem> checkPlan() {
 		Project project = getProject();
 		Map<ObjectId, List<PrimaryObject>> ram = project.getRoleAssignmentMap();
-		return checkPlan(ram);
+		return checkPlan(project, ram);
 	}
 
 	/**
@@ -656,18 +656,20 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 4. 交付物检查 <br/>
 	 * 4.1. 检查工作是否具有交付物：警告，没有交付物的叶工作 4.2. 检查交付物文档没有电子文件作为模板：警告
 	 * 
-	 * @param raMap
+	 * @param project
+	 * 
+	 * @param roleMap
 	 * 
 	 * @return
 	 */
-	public List<ICheckListItem> checkPlan(
-			Map<ObjectId, List<PrimaryObject>> raMap) {
+	public List<ICheckListItem> checkPlan(Project project,
+			Map<ObjectId, List<PrimaryObject>> roleMap) {
 		ArrayList<ICheckListItem> result = new ArrayList<ICheckListItem>();
 		List<PrimaryObject> childrenWork = getChildrenWork();
 		if (childrenWork.size() > 0) {// 如果有下级，直接返回下级的检查结果
 			for (int i = 0; i < childrenWork.size(); i++) {
 				Work childWork = (Work) childrenWork.get(i);
-				result.addAll(childWork.checkPlan(raMap));
+				result.addAll(childWork.checkPlan(project, roleMap));
 			}
 		} else {
 			// ****************************************************************************************
@@ -676,8 +678,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			boolean passed = true;
 			if (value == null) {
 				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作的计划开始没有确定，请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(this);
+						"工作的计划开始没有确定", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
 				checkItem.setKey(F_PLAN_START);
 				result.add(checkItem);
 				passed = false;
@@ -686,8 +691,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			value = getPlanFinish();
 			if (value == null) {
 				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作的计划完成时间没有确定，请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(this);
+						"工作的计划完成时间没有确定", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
 				checkItem.setKey(F_PLAN_START);
 				result.add(checkItem);
 				passed = false;
@@ -696,9 +704,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			value = getPlanWorks();
 			if (value == null) {
 				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作的计划工时没有确定，不确定该计划工时表示该工作不计算工时，如果您并不希望这样，请在提交前确定。",
+						"工作的计划工时没有确定", "不确定该计划工时表示该工作不计算工时，如果您并不希望这样，请在提交前确定。",
 						ICheckListItem.WARRING);
-				checkItem.setData(this);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
 				checkItem.setKey(F_PLAN_WORKS);
 				result.add(checkItem);
 				passed = false;
@@ -707,16 +718,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			value = getDesc();
 			if (value == null) {
 				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作名称为空，请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(this);
+						"工作名称为空", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
 				checkItem.setKey(F_DESC);
 				result.add(checkItem);
 			}
 
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem("检查工作基本属性", "",
-						ICheckListItem.PASS);
-				checkItem.setData(this);
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性");
+				checkItem.setData(project);
+				checkItem.setSelection(this);
 				result.add(checkItem);
 			}
 			passed = true;
@@ -726,8 +740,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			value = getCharger();
 			if (value == null) {
 				CheckListItem checkItem = new CheckListItem("检查工作执行人",
-						"工作负责人为空，请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(this);
+						"工作负责人为空", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
 				checkItem.setKey(F_CHARGER);
 				result.add(checkItem);
 				passed = false;
@@ -737,16 +754,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			value = getParticipate();
 			if (value == null || ((BasicBSONList) value).isEmpty()) {
 				CheckListItem checkItem = new CheckListItem("检查工作执行人",
-						"没有添加工作参与者，请在提交前确定。", ICheckListItem.WARRING);
-				checkItem.setData(this);
+						"没有添加工作参与者", "请在提交前确定。", ICheckListItem.WARRING);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
 				checkItem.setKey(F_PARTICIPATE);
 				result.add(checkItem);
 				passed = false;
 			}
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem("检查工作执行人", "",
-						ICheckListItem.PASS);
-				checkItem.setData(this);
+				CheckListItem checkItem = new CheckListItem("检查工作执行人");
+				checkItem.setData(project);
+				checkItem.setSelection(this);
 				result.add(checkItem);
 			}
 			passed = true;
@@ -756,24 +776,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			String process = F_WF_CHANGE;
 			String editorId = Project.EDITOR_CREATE_PLAN;
 			String pageId = Project.EDITOR_PAGE_WBS;
-			passed = ModelUtil.checkProcessInternal(this, result, raMap, title, process,
-					editorId, pageId);
+			passed = ModelUtil.checkProcessInternal(project,this, result, roleMap,
+					title, process, editorId, pageId);
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem(title, "",
-						ICheckListItem.PASS);
-				checkItem.setData(this);
+				CheckListItem checkItem = new CheckListItem(title);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
 				result.add(checkItem);
 			}
 
 			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
 			title = "检查工作执行流程";
 			process = F_WF_EXECUTE;
-			passed = ModelUtil.checkProcessInternal(this, result, raMap, title, process,
-					editorId, pageId);
+			passed = ModelUtil.checkProcessInternal(project,this, result, roleMap,
+					title, process, editorId, pageId);
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem(title, "",
-						ICheckListItem.PASS);
-				checkItem.setData(this);
+				CheckListItem checkItem = new CheckListItem(title);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
 				result.add(checkItem);
 			}
 
@@ -782,17 +802,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			List<PrimaryObject> docs = getDeliverableDocuments();
 			if (docs.isEmpty()) {
 				CheckListItem checkItem = new CheckListItem("检查交付物",
-						"该工作没有设定交付物，提交前如果不设定，将由工作执行后由执行者自行添加，请在提交前确定。",
+						"该工作没有设定交付物", "提交前如果不设定，将由工作执行后由执行者自行添加，请在提交前确定。",
 						ICheckListItem.WARRING);
-				checkItem.setData(this);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
 				checkItem.setKey(F_PARTICIPATE);
 				result.add(checkItem);
 				passed = false;
 			}
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem("检查交付物", "",
-						ICheckListItem.PASS);
-				checkItem.setData(this);
+				CheckListItem checkItem = new CheckListItem("检查交付物");
+				checkItem.setData(project);
+				checkItem.setSelection(this);
 				result.add(checkItem);
 			}
 
@@ -830,7 +851,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	@Override
 	public String getProcessActionActor(String key, String nodeActorParameter) {
 		DBObject data = (DBObject) getValue(key + POSTFIX_ACTORS);
-		if(data==null){
+		if (data == null) {
 			return null;
 		}
 		return (String) data.get(nodeActorParameter);
@@ -841,7 +862,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			String nodeActorParameter) {
 		// 取出角色指派
 		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
-		if(data==null){
+		if (data == null) {
 			return null;
 		}
 		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
