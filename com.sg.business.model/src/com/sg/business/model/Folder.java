@@ -14,32 +14,69 @@ import com.sg.business.resource.BusinessResource;
  */
 public class Folder extends PrimaryObject {
 
+	/**
+	 * 文件类型
+	 */
 	public static final String F_FOLDER_TYPE = "folderType";
 
+	/**
+	 * 上级文件夹ID
+	 */
 	public static final String F_PARENT_ID = "parent_id";
+	
+	/**
+	 * 根文件夹ID
+	 */
 	public static final String F_ROOT_ID = "root_id";
 
+	/**
+	 * 容器存储的数据库
+	 */
 	public static final String F_CONTAINER_DB = "containerdb";
 
+	/**
+	 * 容器存储的集合
+	 */
 	public static final String F_CONTAINER_COLLECTION = "containerCollection";
 
+	/**
+	 * 返回文件夹类型
+	 * @return String
+	 */
 	public String getFolderType() {
 		return (String) getValue(F_FOLDER_TYPE);
 	}
 
+	/**
+	 * 返回上级文件夹_id
+	 * @return ObjectId
+	 */
 	public ObjectId getParent_id() {
 		return (ObjectId) getValue(F_PARENT_ID);
 	}
 
+	/**
+	 * 返回根文件夹_id
+	 * @return ObjectId
+	 */
 	public ObjectId getRoot_id() {
 		return (ObjectId) getValue(F_ROOT_ID);
 	}
 
+	/**
+	 * 返回显示图标
+	 * @return Image
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_FOLDER_16);
 	}
 
+	/**
+	 * 判断是否可以删除
+	 * @param context
+	 * @return boolean
+	 */
 	@Override
 	public boolean canDelete(IContext context) {
 		// 如果有下级文档或目录，不可删除
@@ -132,8 +169,8 @@ public class Folder extends PrimaryObject {
 	}
 
 	/**
-	 * 判断是否
-	 * @return
+	 * 判断是否存在下级文件夹
+	 * @return boolean
 	 */
 	private boolean hasSubFolder() {
 		return getRelationCountById(Folder.F__ID, Folder.F_PARENT_ID,

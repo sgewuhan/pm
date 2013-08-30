@@ -34,7 +34,7 @@ public class CalendarSetting extends PrimaryObject {
 	 */
 	public static final String F_CONDITION = "condition";
 	/**
-	 * 计算
+	 * 操作符
 	 */
 	public static final String F_OPERATOR = "operator";
 	/**
@@ -145,6 +145,10 @@ public class CalendarSetting extends PrimaryObject {
 		return CONDITON_DAY_OF_MONTH.equals(getValue(F_CONDITION));
 	}
 
+	/**
+	 * 判断是否设置了日历条件
+	 * @return boolean
+	 */
 	private boolean hasCondition() {
 		return !Utils.isNullOrEmptyString(getValue(F_CONDITION))
 				&& !Utils.isNullOrEmptyString(getValue(F_OPERATOR))
@@ -156,17 +160,28 @@ public class CalendarSetting extends PrimaryObject {
 		System.out.println(cal.get(Calendar.DAY_OF_MONTH));
 	}
 
+	/**
+	 * 返回日历设置记录值
+	 * @return String
+	 */
 	private String getConditionValue() {
 		String value = (String) getValue(F_VALUE);
 		return value.replaceAll("，", ",");
 	}
 
+	/**
+	 * 保存
+	 */
 	@Override
 	public boolean doSave(IContext context) throws Exception {
 		workingTimeMap = null;
 		return super.doSave(context);
 	}
 	
+	/**
+	 * 返回日历工作时间
+	 * @return
+	 */
 	public Map<String, Double> getCalendarWorkingTime() {
 		if(workingTimeMap == null){
 			initTimeMap();
@@ -284,6 +299,11 @@ public class CalendarSetting extends PrimaryObject {
 		return null;
 	}
 
+	/**
+	 * 按格式返回工作日
+	 * @param yyyyMMddDate
+	 * @return
+	 */
 	public Double getCalendarWorkingTime(String yyyyMMddDate) {
 		Map<String, Double> map = getCalendarWorkingTime();
 		return map.get(yyyyMMddDate);

@@ -23,6 +23,10 @@ public class WorkConnection extends AbstractWorkConnection implements IProjectRe
 		return "工作前后置关系";
 	}
 	
+	/**
+	 * 返回所属项目
+	 * @return Project
+	 */
 	@Override
 	public Project getProject() {
 		ObjectId ptId = (ObjectId) getValue(F_PROJECT_ID);

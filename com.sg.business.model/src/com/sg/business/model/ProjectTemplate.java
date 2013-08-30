@@ -78,12 +78,12 @@ public class ProjectTemplate extends PrimaryObject {
 	public static final String F_WF_CHANGE = "wf_change";
 	
 	/**
-	 * 变更流程定义中的指派
+	 * 流程是否启用
 	 */
 	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
 
 	/**
-	 * 流程是否启用
+	 * 变更流程定义中的指派
 	 */
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
 	
