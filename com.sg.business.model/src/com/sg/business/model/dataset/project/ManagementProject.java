@@ -2,7 +2,6 @@ package com.sg.business.model.dataset.project;
 
 import java.util.List;
 import org.bson.types.ObjectId;
-import org.eclipse.swt.SWT;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
@@ -66,7 +65,7 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 					new BasicDBObject().append("$in", ids));
 			return condition;
 		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showToast(e);
 			return new BasicDBObject().append("_id", null);
 		}
 	}

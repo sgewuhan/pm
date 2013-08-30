@@ -1377,4 +1377,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelUtil.getLifecycleStatusText(lc);
 	}
 
+	public void doCancel(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doCommit(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doFinish(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doPause(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doStart(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -29,7 +29,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 			}
 			viewer.setSelection(new StructuredSelection(selected), true);
 		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+			MessageUtil.showToast(e);
 
 		}
 	}
@@ -55,7 +55,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 			viewer.setSelection(new StructuredSelection(selected), true);
 
 		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+			MessageUtil.showToast(e);
 
 		}
 	}
@@ -73,7 +73,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 			}
 			viewer.setSelection(new StructuredSelection(selected), true);
 		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+			MessageUtil.showToast(e);
 
 		}
 	}

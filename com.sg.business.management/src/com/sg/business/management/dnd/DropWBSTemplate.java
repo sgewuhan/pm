@@ -2,7 +2,6 @@ package com.sg.business.management.dnd;
 
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DropTargetEvent;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -42,7 +41,7 @@ public class DropWBSTemplate extends DropPrimaryObjectTarget {
 				try {
 					targetWorkDefinition.doImportGenericWorkDefinition(srcWorkDefinition,new CurrentAccountContext());
 				} catch (Exception e) {
-					MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+					MessageUtil.showToast(e);
 					return;
 				}
 				CTreeViewer viewer = (CTreeViewer) targetViewerControl.getViewer();

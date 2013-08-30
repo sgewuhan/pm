@@ -37,7 +37,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 						}
 						super.doOK(is);
 					} catch (Exception e) {
-						MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+						MessageUtil.showToast(e);
 					}
 
 				} else {

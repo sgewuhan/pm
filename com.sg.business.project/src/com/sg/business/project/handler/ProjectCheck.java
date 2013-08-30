@@ -31,7 +31,7 @@ public class ProjectCheck extends AbstractNavigatorHandler {
 				part.setInput(result);
 				MessageUtil.showToast("项目计划检查完成，双击条目定位检查目标", SWT.ICON_INFORMATION);
 			} catch (PartInitException e) {
-				MessageUtil.showToast(e.getMessage(), SWT.ERROR);
+				MessageUtil.showToast(e);
 				e.printStackTrace();
 			}
 		}

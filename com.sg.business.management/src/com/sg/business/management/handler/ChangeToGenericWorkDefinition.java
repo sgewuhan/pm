@@ -2,7 +2,6 @@ package com.sg.business.management.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
@@ -40,7 +39,7 @@ public class ChangeToGenericWorkDefinition extends AbstractNavigatorHandler {
 			np.reloadMaster();
 
 		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+			MessageUtil.showToast(e);
 		}
 	}
 
