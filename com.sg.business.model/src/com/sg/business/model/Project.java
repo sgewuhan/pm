@@ -26,6 +26,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
@@ -39,7 +41,7 @@ import com.sg.business.resource.BusinessResource;
  * 
  */
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
-		ILifecycle, ISchedual {
+		ILifecycle, ISchedual, IProcessControlable {
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -83,9 +85,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 项目提交流程
 	 */
 	public static final String F_WF_COMMIT = "wf_commit";
-	
+
 	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";
-	
+
 	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
 
 	public static final String F_WF_COMMIT_ACTORS = "wf_commit_actors";
@@ -93,13 +95,22 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 项目变更流程
 	 */
 	public static final String F_WF_CHANGE = "wf_change";
-	
+
 	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
 
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
 
 	public static final String F_WF_CHANGE_ACTORS = "wf_change_actors";
 
+	private static final String EDITOR_CREATE_PLAN = "project.editor";
+
+	private static final String EDITOR_PAGE_SETPROCESS = "project.financial";
+
+	private static final String EDITOR_SETPROCESS = "project.flow.setting";
+
+	private static final String EDITOR_PAGE_CHANGE_PROCESS = "processpage2";
+
+	private static final String EDITOR_PAGE_COMMIT_PROCESS = "processpage1";
 
 	@Override
 	public String getTypeName() {
@@ -339,22 +350,22 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
-		
-		//设置项目的流程和角色
-		doSetupWorkflowWithTemplate(id,roleMap,context);
+
+		// 设置项目的流程和角色
+		doSetupWorkflowWithTemplate(id, roleMap, context);
 
 	}
 
 	private void doSetupWorkflowWithTemplate(ObjectId id,
 			Map<ObjectId, DBObject> roleMap, IContext context) throws Exception {
-		
+
 		DBCollection col = getCollection(IModelConstants.C_PROJECT_TEMPLATE);
-		DBObject pjTempData = col.findOne(new BasicDBObject().append(ProjectTemplate.F__ID, getProjectTemplateId()));
-		if(pjTempData == null){
+		DBObject pjTempData = col.findOne(new BasicDBObject().append(
+				ProjectTemplate.F__ID, getProjectTemplateId()));
+		if (pjTempData == null) {
 			return;
 		}
-		
-		
+
 		// 设置变更工作流
 		Object value = pjTempData.get(ProjectTemplate.F_WF_CHANGE);
 		if (value != null) {
@@ -386,7 +397,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 设置执行工作流的活动执行人角色
 		setRoleDBObjectField(get_data(), pjTempData,
 				ProjectTemplate.F_WF_COMMIT_ASSIGNMENT, roleMap);
-		
+
 		doSave(context);
 	}
 
@@ -1142,11 +1153,195 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 重新整理WBS序号,不排除某些操作可能引起WBS的混乱，使用本功能整理WBS序号
 	 * 
 	 * @param context
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void doArrangeWBSCode(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doArrangeWBSCode();
+	}
+
+	/**
+	 * 检查项目计划 <br/>
+	 * 1. 检查工作令号： 警告，没有 <br/>
+	 * 2. 预算检查 ：警告，如果没有值 <br/>
+	 * 3. 检查角色的指派： 警告没有指派人员的角色 <br/>
+	 * 4. 检查项目的流程 ：错误，没有指明流程负责人 <br/>
+	 * 5. WBS <br/>
+	 * 5.1. 检查工作的计划时间：错误，没有设定计划开始、计划完成、计划工时的叶工作 <br/>
+	 * 5.2. 检查工作的负责人 ：错误，没有设定负责人，而且没有设定指派者的叶工作 <br/>
+	 * 5.3. 工作的流程设定 ：警告，没有指明流程执行者的工作 <br/>
+	 * 6. 交付物 <br/>
+	 * 6.1. 检查工作是否具有交付物：警告，没有交付物的叶工作 6.2. 检查交付物文档没有电子文件作为模板：警告
+	 * 
+	 * -- 重新计算项目的计划开始开始时间、计划完成时间、工期 重新计算项目的总工时
+	 * 
+	 * @return List<ICheckListItem> 检查项清单
+	 */
+	public List<ICheckListItem> checkPlan() {
+		List<ICheckListItem> result = new ArrayList<ICheckListItem>();
+		// 1. 检查工作令号： 警告，没有
+		Object value = getValue(F_WORK_ORDER);
+		if (!(value instanceof BasicBSONList)
+				|| ((BasicBSONList) value).isEmpty()) {
+			ProjectCheckListItem checkItem = new ProjectCheckListItem("检查工作令号",
+					"工作令号为空，如果本项目在提交后确定工作令号，请忽略本提示。", ICheckListItem.WARRING);
+			checkItem.setProject(this);
+			checkItem.setKey(F_WORK_ORDER);
+			result.add(checkItem);
+		}
+
+		// 2. 预算检查 ：警告，如果没有值
+		ProjectBudget budget = getBudget();
+		value = budget.getBudgetValue();
+		if (value == null) {
+			ProjectCheckListItem checkItem = new ProjectCheckListItem("检查预算",
+					"没有制定项目预算。\n如果本项目在提交后确定预算，请忽略本提示", ICheckListItem.WARRING);
+			checkItem.setProject(this);
+			checkItem.setKey(F_WORK_ORDER);
+			result.add(checkItem);
+		}
+
+		// 3. 检查角色的指派： 警告没有指派人员的角色
+		List<PrimaryObject> rd = getRoleDefinitions();
+		Map<ObjectId, List<PrimaryObject>> raMap = getRoleAssignmentMap();
+		List<PrimaryObject> ra;
+		for (int i = 0; i < rd.size(); i++) {
+			ProjectRole role = (ProjectRole) rd.get(i);
+			ObjectId roldId = role.get_id();
+			ra = raMap.get(roldId);
+			if (ra == null) {
+				ProjectCheckListItem checkItem = new ProjectCheckListItem(
+						"检查项目角色指派", "没有确定角色对应的人员，" + "角色：" + role.getLabel()
+								+ "\n如果本项目在提交后确定预算，请忽略本提示",
+						ICheckListItem.WARRING);
+				checkItem.setProject(this);
+				checkItem.setEditorId(EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(EDITOR_PAGE_SETPROCESS);
+				checkItem.setSelection(role);
+				result.add(checkItem);
+			}
+		}
+
+		// 4.1 检查项目变更的流程 ：错误，没有指明流程负责人
+		String title = "检查项目变更流程";
+		String process = F_WF_CHANGE;
+		String editorId = EDITOR_SETPROCESS;
+		String pageId = EDITOR_PAGE_CHANGE_PROCESS;
+		checkProcessInternal(result, raMap, title, process, editorId,pageId);
+
+		// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
+		title = "检查项目提交流程";
+		process = F_WF_COMMIT;
+		pageId = EDITOR_PAGE_COMMIT_PROCESS;
+		checkProcessInternal(result, raMap, title, process, editorId,pageId);
+		
+		
+		return result;
+	}
+
+	private void checkProcessInternal(List<ICheckListItem> result,
+			Map<ObjectId, List<PrimaryObject>> raMap, String title,
+			String process, String editorId, String pageId) {
+		List<PrimaryObject> ra;
+		if (isWorkflowActivate(process)) {
+			// 如果变更流程已经激活，需要判断是否所有的actor都指派
+			DroolsProcessDefinition pd = getProcessDefinition(process);
+			List<NodeAssignment> nalist = pd.getNodesAssignment();
+			for (int i = 0; i < nalist.size(); i++) {
+				NodeAssignment na = nalist.get(i);
+				String nap = na.getNodeActorParameter();
+				String userId = getProcessActionActor(process, nap);
+				if (userId == null) {
+					// 检查角色
+					ProjectRole role = getProcessActionAssignment(process, nap);
+					if (role == null) {
+						ProjectCheckListItem checkItem = new ProjectCheckListItem(
+								title, "流程活动无法确定执行人。" + "活动名称："
+										+ na.getNodeName() + "\n请在提交前设定。",
+								ICheckListItem.ERROR);
+						checkItem.setProject(this);
+						checkItem.setEditorId(editorId);
+						checkItem.setEditorPageId(pageId);
+						checkItem.setSelection(role);
+						result.add(checkItem);
+					} else {
+						ra = raMap.get(role.get_id());
+						if (ra == null || ra.isEmpty()) {
+							ProjectCheckListItem checkItem = new ProjectCheckListItem(
+									title, "流程活动执行角色没有对应人员。" + "活动名称："
+											+ na.getNodeName() + "\n请在提交前设定。",
+									ICheckListItem.ERROR);
+							checkItem.setProject(this);
+							checkItem.setEditorId(editorId);
+							checkItem
+									.setEditorPageId(pageId);
+							checkItem.setSelection(role);
+							result.add(checkItem);
+						} else if (ra.size() > 1) {
+							ProjectCheckListItem checkItem = new ProjectCheckListItem(
+									title,
+									"流程的活动指定了多名人员。流程启动后这些人员中的任一人都将可执行该活动。"
+											+ "活动名称：" + na.getNodeName()
+											+ "\n如果您不希望这样，请在提交前设定",
+									ICheckListItem.WARRING);
+							checkItem.setProject(this);
+							checkItem.setEditorId(editorId);
+							checkItem
+									.setEditorPageId(pageId);
+							checkItem.setSelection(role);
+							result.add(checkItem);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public String getProcessActionActor(String key, String nodeActorParameter) {
+		DBObject data = (DBObject) getValue(key + POSTFIX_ACTORS);
+		return (String) data.get(nodeActorParameter);
+	}
+
+	public ProjectRole getProcessActionAssignment(String key,
+			String nodeActorParameter) {
+		// 取出角色指派
+		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
+		if (roleId != null) {
+			return ModelService.createModelObject(ProjectRole.class, roleId);
+		}
+		return null;
+	}
+
+	/**
+	 * 变更工作流是否激活
+	 * 
+	 * @return
+	 */
+	public boolean isChangeWorkflowActivate() {
+		return Boolean.TRUE.equals(getValue(F_WF_CHANGE_ACTIVATED));
+	}
+
+	/**
+	 * 提交工作流是否激活
+	 * 
+	 * @return
+	 */
+	public boolean isCommitWorkflowActivate() {
+		return Boolean.TRUE.equals(getValue(F_WF_COMMIT_ACTIVATED));
+	}
+
+	@Override
+	public boolean isWorkflowActivate(String fieldKey) {
+		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
+	}
+
+	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
+		DBObject processData = (DBObject) getValue(fieldKey);
+		if (processData != null) {
+			return new DroolsProcessDefinition(processData);
+		}
+		return null;
 	}
 
 }
