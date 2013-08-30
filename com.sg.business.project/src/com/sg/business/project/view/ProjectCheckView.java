@@ -1,5 +1,6 @@
 package com.sg.business.project.view;
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -78,6 +79,7 @@ public class ProjectCheckView extends ViewPart {
 				return ci.getMessage();
 			}
 		});
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
 	}
 
 	public void setInput(Object input){

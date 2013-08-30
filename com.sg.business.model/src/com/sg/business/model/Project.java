@@ -1275,6 +1275,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public String getProcessActionActor(String key, String nodeActorParameter) {
 		DBObject data = (DBObject) getValue(key + POSTFIX_ACTORS);
+		if(data==null){
+			return null;
+		}
 		return (String) data.get(nodeActorParameter);
 	}
 
@@ -1283,6 +1286,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			String nodeActorParameter) {
 		// 取出角色指派
 		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+		if(data==null){
+			return null;
+		}
 		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
 		if (roleId != null) {
 			return ModelService.createModelObject(ProjectRole.class, roleId);
