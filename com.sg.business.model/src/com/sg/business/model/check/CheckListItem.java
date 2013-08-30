@@ -1,19 +1,19 @@
-package com.sg.business.model;
+package com.sg.business.model.check;
 
 import com.mobnut.db.model.PrimaryObject;
 
-public class ProjectCheckListItem implements ICheckListItem{
+public class CheckListItem implements ICheckListItem{
 
 	private String title;
 	private String message;
 	private int type;
-	private Project project;
 	private String key;
 	private PrimaryObject selection;
 	private String editorId;
 	private String pageId;
+	private Object data;
 
-	public ProjectCheckListItem(String title, String message, int type) {
+	public CheckListItem(String title, String message, int type) {
 		this.title = title;
 		this.message = message;
 		this.type = type;
@@ -27,10 +27,6 @@ public class ProjectCheckListItem implements ICheckListItem{
 	@Override
 	public int getType() {
 		return type;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
 	}
 
 	public void setKey(String key) {
@@ -47,10 +43,6 @@ public class ProjectCheckListItem implements ICheckListItem{
 
 	public String getTitle() {
 		return title;
-	}
-
-	public Project getProject() {
-		return project;
 	}
 
 	public String getKey() {
@@ -71,6 +63,14 @@ public class ProjectCheckListItem implements ICheckListItem{
 
 	public void setEditorPageId(String pageId) {
 		this.pageId = pageId;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+	
+	public Object getData(){
+		return data;
 	}
 
 	

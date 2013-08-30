@@ -16,5 +16,7 @@ public interface IProcessControlable {
 
 	ProjectRole getProcessActionAssignment(String key, String nodeActorParameter);
 
+	String getProcessActionActor(String key, String nodeActorParameter);
+
 	
 }

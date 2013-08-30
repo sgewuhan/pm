@@ -23,6 +23,13 @@
             name="项目管理"
             restorable="true">
       </view>
+      <view
+            category="com.sg.business.project.category.project"
+            class="com.sg.business.project.view.ProjectCheckView"
+            id="project.view.check"
+            name="项目检查"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
