@@ -30,7 +30,7 @@ import com.sg.business.model.check.ICheckListItem;
  * 
  */
 public class Work extends AbstractWork implements IProjectRelative, ISchedual,
-		IProcessControlable {
+		IProcessControlable,ILifecycle {
 
 	/**
 	 * ¹¤×÷µÄ±à¼­Æ÷ID
@@ -870,6 +870,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return ModelService.createModelObject(ProjectRole.class, roleId);
 		}
 		return null;
+	}
+
+	@Override
+	public String getLifecycleStatus(){
+		String lc = (String) getValue(F_LIFECYCLE);
+		if(lc==null){
+			return STATUS_NONE_VALUE;
+		}else{
+			return lc;
+		}
+	}
+	
+	@Override
+	public String getLifecycleStatusText() {
+		String lc = getLifecycleStatus();
+		return ModelUtil.getLifecycleStatusText(lc);
 	}
 
 }
