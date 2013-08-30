@@ -16,6 +16,9 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.model.check.CheckListItem;
+import com.sg.business.model.check.ICheckListItem;
 
 /**
  * <p>
@@ -26,12 +29,18 @@ import com.mongodb.DBObject;
  * @author jinxitao
  * 
  */
-public class Work extends AbstractWork implements IProjectRelative, ISchedual {
+public class Work extends AbstractWork implements IProjectRelative, ISchedual,
+		IProcessControlable {
 
 	/**
 	 * 工作的编辑器ID
 	 */
 	public static final String EDITOR = "editor.work";
+
+	/**
+	 * 工作设置的编辑器ID
+	 */
+	public static final String EDITOR_SETTING = "editor.work.setting";
 
 	/**
 	 * 必需的，不可删除，布尔类型的字段
@@ -104,6 +113,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作所属项目_id
+	 * 
 	 * @return
 	 */
 	public ObjectId getProjectId() {
@@ -112,6 +122,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作计划开始时间
+	 * 
 	 * @return Date
 	 */
 	public Date getPlanStart() {
@@ -138,6 +149,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作计划完成时间
+	 * 
 	 * @return Date
 	 */
 	public Date getPlanFinish() {
@@ -164,6 +176,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作实际开始时间
+	 * 
 	 * @return Date
 	 */
 	public Date getActualStart() {
@@ -190,6 +203,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作实际完成时间
+	 * 
 	 * @return Date
 	 */
 	public Date getActualFinish() {
@@ -216,6 +230,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作的实际工时
+	 * 
 	 * @return Double
 	 */
 	public Double getActualWorks() {
@@ -241,6 +256,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作的计划工时
+	 * 
 	 * @return Double
 	 */
 	public Double getPlanWorks() {
@@ -266,6 +282,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作的实际工期
+	 * 
 	 * @return Integer
 	 */
 	public Integer getActualDuration() {
@@ -291,6 +308,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作的计划工期
+	 * 
 	 * @return Integer
 	 */
 	public Integer getPlanDuration() {
@@ -328,7 +346,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 	 * 新建工作交付物
 	 * 
 	 * @param docd
-	 *           ,文档模板定义
+	 *            ,文档模板定义
 	 * @return Deliverable
 	 */
 	public Deliverable makeDeliverableDefinition(DocumentDefinition docd) {
@@ -382,18 +400,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 保存工作
+	 * 
 	 * @return boolean
 	 */
 	@Override
 	public boolean doSave(IContext context) throws Exception {
-//		if (calendarCaculater == null) {
-//			calendarCaculater = new CalendarCaculater(getProjectId());
-//		}
+		// if (calendarCaculater == null) {
+		// calendarCaculater = new CalendarCaculater(getProjectId());
+		// }
 
-		checkAndCalculateDuration(F_PLAN_START,
-				F_PLAN_FINISH, F_PLAN_DURATION);
-		checkAndCalculateDuration(F_ACTUAL_START,
-				F_ACTUAL_FINISH, F_ACTUAL_DURATION);
+		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
+		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
+				F_ACTUAL_DURATION);
 
 		super.doSave(context);
 
@@ -410,16 +428,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 计算工期
+	 * 
 	 * @param fStart
-	 *          ,开始日期
+	 *            ,开始日期
 	 * @param fFinish
-	 *          ,完成日期
+	 *            ,完成日期
 	 * @param fDuration
-	 *          ,工期
+	 *            ,工期
 	 * @throws Exception
 	 */
-	public void checkAndCalculateDuration( String fStart,
-			String fFinish, String fDuration) throws Exception {
+	public void checkAndCalculateDuration(String fStart, String fFinish,
+			String fDuration) throws Exception {
 		Date start = (Date) getValue(fStart);
 		if (start != null) {
 			start = Utils.getDayBegin(start).getTime();
@@ -438,12 +457,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 			// 计算工期
 			Calendar sdate = Utils.getDayBegin(start);
 			Calendar edate = Utils.getDayEnd(finish);
-			setValue(fDuration, new Integer((int)(edate.getTimeInMillis()-sdate.getTimeInMillis())/(1000*60*60*24)));
+			setValue(fDuration, new Integer(
+					(int) (edate.getTimeInMillis() - sdate.getTimeInMillis())
+							/ (1000 * 60 * 60 * 24)));
 		}
 	}
 
 	/**
 	 * 返回所有上级共组
+	 * 
 	 * @return List
 	 */
 	public List<Work> getAllParents() {
@@ -459,6 +481,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 为工作及下级工作的负责人,参与者,工作流的执行者指定用户
+	 * 
 	 * @param roleAssign
 	 * @param context
 	 * @throws Exception
@@ -539,6 +562,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回流程执行者
+	 * 
 	 * @param wfRoleAss
 	 * @param roleAssign
 	 * @return BasicDBObject
@@ -577,6 +601,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 返回工作的负责人角色
+	 * 
 	 * @return ProjectRole
 	 */
 	public ProjectRole getChargerRoleDefinition() {
@@ -585,18 +610,239 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual {
 
 	/**
 	 * 新建交付物
+	 * 
 	 * @param doc
-	 *         ,文档
+	 *            ,文档
 	 * @param context
 	 * @return Deliverable
 	 * @throws Exception
 	 */
-	public Deliverable doAddDeliverable(Document doc,IContext context) throws Exception {
+	public Deliverable doAddDeliverable(Document doc, IContext context)
+			throws Exception {
 		Deliverable deli = makeDeliverableDefinition();
 		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		deli.doInsert(context);
 		return deli;
-		
+
+	}
+
+	public List<PrimaryObject> getDeliverable() {
+		return getRelationById(F__ID, Deliverable.F_WORK_ID, Deliverable.class);
+	}
+
+	public List<PrimaryObject> getDeliverableDocuments() {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		List<PrimaryObject> d = getDeliverable();
+		for (int i = 0; i < d.size(); i++) {
+			Deliverable ditem = (Deliverable) d.get(i);
+			Document doc = ditem.getDocument();
+			if (doc != null) {
+				result.add(doc);
+			}
+		}
+		return result;
+	}
+
+	public List<ICheckListItem> checkPlan() {
+		Project project = getProject();
+		Map<ObjectId, List<PrimaryObject>> ram = project.getRoleAssignmentMap();
+		return checkPlan(ram);
+	}
+
+	/**
+	 * 1. 检查工作的计划时间：错误，没有设定计划开始、计划完成、计划工时的叶工作 <br/>
+	 * 2. 检查工作的负责人 ：错误，没有设定负责人，而且没有设定指派者的叶工作 <br/>
+	 * 3. 工作的流程设定 ：警告，没有指明流程执行者的工作 <br/>
+	 * 4. 交付物检查 <br/>
+	 * 4.1. 检查工作是否具有交付物：警告，没有交付物的叶工作 4.2. 检查交付物文档没有电子文件作为模板：警告
+	 * 
+	 * @param raMap
+	 * 
+	 * @return
+	 */
+	public List<ICheckListItem> checkPlan(
+			Map<ObjectId, List<PrimaryObject>> raMap) {
+		ArrayList<ICheckListItem> result = new ArrayList<ICheckListItem>();
+		List<PrimaryObject> childrenWork = getChildrenWork();
+		if (childrenWork.size() > 0) {// 如果有下级，直接返回下级的检查结果
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				result.addAll(childWork.checkPlan(raMap));
+			}
+		} else {
+			// ****************************************************************************************
+			// 1 检查工作的计划开始和计划完成
+			Object value = getPlanStart();
+			boolean passed = true;
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作的计划开始没有确定，请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(this);
+				checkItem.setKey(F_PLAN_START);
+				result.add(checkItem);
+				passed = false;
+			}
+
+			value = getPlanFinish();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作的计划完成时间没有确定，请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(this);
+				checkItem.setKey(F_PLAN_START);
+				result.add(checkItem);
+				passed = false;
+			}
+
+			value = getPlanWorks();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作的计划工时没有确定，不确定该计划工时表示该工作不计算工时，如果您并不希望这样，请在提交前确定。",
+						ICheckListItem.WARRING);
+				checkItem.setData(this);
+				checkItem.setKey(F_PLAN_WORKS);
+				result.add(checkItem);
+				passed = false;
+			}
+
+			value = getDesc();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作名称为空，请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(this);
+				checkItem.setKey(F_DESC);
+				result.add(checkItem);
+			}
+
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性", "",
+						ICheckListItem.PASS);
+				checkItem.setData(this);
+				result.add(checkItem);
+			}
+			passed = true;
+
+			// ****************************************************************************************
+			// 2 检查负责人
+			value = getCharger();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作执行人",
+						"工作负责人为空，请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(this);
+				checkItem.setKey(F_CHARGER);
+				result.add(checkItem);
+				passed = false;
+			}
+
+			// 3.检查参与者
+			value = getParticipate();
+			if (value == null || ((BasicBSONList) value).isEmpty()) {
+				CheckListItem checkItem = new CheckListItem("检查工作执行人",
+						"没有添加工作参与者，请在提交前确定。", ICheckListItem.WARRING);
+				checkItem.setData(this);
+				checkItem.setKey(F_PARTICIPATE);
+				result.add(checkItem);
+				passed = false;
+			}
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem("检查工作执行人", "",
+						ICheckListItem.PASS);
+				checkItem.setData(this);
+				result.add(checkItem);
+			}
+			passed = true;
+
+			// 4.1 检查工作变更的流程 ：错误，没有指明流程负责人
+			String title = "检查工作变更流程";
+			String process = F_WF_CHANGE;
+			String editorId = Project.EDITOR_CREATE_PLAN;
+			String pageId = Project.EDITOR_PAGE_WBS;
+			passed = ModelUtil.checkProcessInternal(this, result, raMap, title, process,
+					editorId, pageId);
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem(title, "",
+						ICheckListItem.PASS);
+				checkItem.setData(this);
+				result.add(checkItem);
+			}
+
+			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
+			title = "检查工作执行流程";
+			process = F_WF_EXECUTE;
+			passed = ModelUtil.checkProcessInternal(this, result, raMap, title, process,
+					editorId, pageId);
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem(title, "",
+						ICheckListItem.PASS);
+				checkItem.setData(this);
+				result.add(checkItem);
+			}
+
+			passed = true;
+			// 检查工作交付物
+			List<PrimaryObject> docs = getDeliverableDocuments();
+			if (docs.isEmpty()) {
+				CheckListItem checkItem = new CheckListItem("检查交付物",
+						"该工作没有设定交付物，提交前如果不设定，将由工作执行后由执行者自行添加，请在提交前确定。",
+						ICheckListItem.WARRING);
+				checkItem.setData(this);
+				checkItem.setKey(F_PARTICIPATE);
+				result.add(checkItem);
+				passed = false;
+			}
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem("检查交付物", "",
+						ICheckListItem.PASS);
+				checkItem.setData(this);
+				result.add(checkItem);
+			}
+
+		}
+
+		return result;
+	}
+
+	public User getCharger() {
+		String chargerId = (String) getValue(F_CHARGER);
+		if (Utils.isNullOrEmpty(chargerId)) {
+			return null;
+		}
+		return User.getUserById(chargerId);
+	}
+
+	public List<?> getParticipate() {
+		return (List<?>) getValue(F_PARTICIPATE);
+	}
+
+	@Override
+	public boolean isWorkflowActivate(String fieldKey) {
+		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
+	}
+
+	@Override
+	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
+		DBObject processData = (DBObject) getValue(fieldKey);
+		if (processData != null) {
+			return new DroolsProcessDefinition(processData);
+		}
+		return null;
+	}
+
+	@Override
+	public String getProcessActionActor(String key, String nodeActorParameter) {
+		DBObject data = (DBObject) getValue(key + POSTFIX_ACTORS);
+		return (String) data.get(nodeActorParameter);
+	}
+
+	@Override
+	public ProjectRole getProcessActionAssignment(String key,
+			String nodeActorParameter) {
+		// 取出角色指派
+		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
+		if (roleId != null) {
+			return ModelService.createModelObject(ProjectRole.class, roleId);
+		}
+		return null;
 	}
 
 }
