@@ -130,4 +130,9 @@ public interface IModelConstants {
 	 */
 	public static final String C_PROJECT_ROLE_ASSIGNMENT = "projectroleassignment";
 
+	/**
+	 * ÏûÏ¢
+	 */
+	public static final String C_MESSAGE = "message";
+
 }

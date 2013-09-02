@@ -4,39 +4,39 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            category="vault.category"
+            category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.org"
             name="组织文档库"
             restorable="true">
       </view>
       <view
-            category="vault.category"
+            category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.granted"
             name="授权文档库"
             restorable="true">
       </view>
       <view
-            category="vault.category"
+            category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.admin"
             name="管理"
             restorable="true">
       </view>
       <category
-            id="vault.category"
+            id="vault"
             name="文档管理">
       </category>
       <view
-            category="vault.category"
+            category="vault"
             class="com.sg.business.vault.view.DocumentsView"
             id="vault.documents"
             name="文档"
             restorable="true">
       </view>
       <view
-            category="vault.category"
+            category="vault"
             class="com.sg.business.vault.view.DocumentsView"
             id="vault.documents.contextsearch"
             name="内容检索"

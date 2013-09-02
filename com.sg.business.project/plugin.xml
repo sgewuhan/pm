@@ -4,11 +4,11 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="com.sg.business.project.category.project"
+            id="project"
             name="项目">
       </category>
       <view
-            category="com.sg.business.project.category.project"
+            category="project"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
             icon="image/project_24.png"
             id="project.navigator.myproject"
@@ -16,7 +16,7 @@
             restorable="true">
       </view>
       <view
-            category="com.sg.business.project.category.project"
+            category="project"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
             icon="image/project_24.png"
             id="project.navigator.management"
@@ -24,7 +24,7 @@
             restorable="true">
       </view>
       <view
-            category="com.sg.business.project.category.project"
+            category="project"
             class="com.sg.business.project.view.ProjectCheckView"
             id="project.view.check"
             name="项目检查"

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="message"
+            name="消息">
+      </category>
+      <view
+            category="message"
+            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            id="message.mymessage"
+            name="我的消息"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="message.mymessage"
+            tree="message.mymessage">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            dataSet="com.sg.business.model.dataset.message.MyMessage"
+            id="message.mymessage">
+      </tree>
+   </extension>
+
+</plugin>

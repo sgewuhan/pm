@@ -4,39 +4,39 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="management.category"
+            id="management"
             name="业务管理">
       </category>
       <view
-            category="management.category"
+            category="management"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
             id="management.organization.navigaor"
             name="组织"
             restorable="true">
       </view>
       <view
-            category="management.category"
+            category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.projecttemplates"
             name="项目模板"
             restorable="true">
       </view>
       <view
-            category="management.category"
+            category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.genericwork.definitions"
             name="通用工作定义"
             restorable="true">
       </view>
       <view
-            category="management.category"
+            category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.standlonework.definitions"
             name="独立工作定义"
             restorable="true">
       </view>
       <view
-            category="management.category"
+            category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.documentdefinition"
             name="文档模板"
