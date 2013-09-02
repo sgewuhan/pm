@@ -2,7 +2,6 @@ package com.sg.business.organization.view;
 
 import java.util.List;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DropTargetEvent;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -29,7 +28,7 @@ public class DropUserRole extends DropPrimaryObjectTarget{
 			role.doAssignUsers(dragsItems, new CurrentAccountContext());
 			targetViewerControl.getViewer().refresh(role);
 		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showToast(e);
 		}
 		super.doDrop(sourceId, dragsItems, event, targetViewerControl);
 	}

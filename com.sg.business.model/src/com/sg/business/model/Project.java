@@ -147,15 +147,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 项目预算
 	 */
 	public static final String EDITOR_PAGE_BUDGET = "project.financial";
-	
-	/**
-	 * 项目组
-	 */
+
+
 	public static final String EDITOR_PAGE_TEAM = "project.team";
-	
+
 	/**
 	 * 项目工作分解结构
 	 */
+
 	public static final String EDITOR_PAGE_WBS = "project.wbs";
 
 	public static final String EDITOR_PAGE_CHANGE_PROCESS = "processpage2";
@@ -1279,31 +1278,33 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Object value = getValue(F_WORK_ORDER);
 		if (!(value instanceof BasicBSONList)
 				|| ((BasicBSONList) value).isEmpty()) {
-			CheckListItem checkItem = new CheckListItem("检查工作令号",
-					"工作令号为空，如果本项目在提交后确定工作令号，请忽略本提示。", ICheckListItem.WARRING);
+			CheckListItem checkItem = new CheckListItem("检查工作令号", "工作令号空",
+					"如果本项目在提交后确定工作令号，请忽略本提示。", ICheckListItem.WARRING);
 			checkItem.setData(this);
+			checkItem.setEditorId(EDITOR_CREATE_PLAN);
 			checkItem.setKey(F_WORK_ORDER);
 			result.add(checkItem);
-		}else{
-			CheckListItem checkItem = new CheckListItem("检查工作令号",
-					"", ICheckListItem.PASS);
+		} else {
+			CheckListItem checkItem = new CheckListItem("检查工作令号");
+			checkItem.setData(this);
 			result.add(checkItem);
 		}
 
 		// 2. 预算检查 ：警告，如果没有值
 		ProjectBudget budget = getBudget();
 		value = budget.getBudgetValue();
-		if (value == null) {
+		if (value == null || ((Double) value).doubleValue() == 0d) {
 			CheckListItem checkItem = new CheckListItem("检查预算",
-					"没有制定项目预算。\n如果本项目在提交后确定预算，请忽略本提示", ICheckListItem.WARRING);
+					"没有制定项目预算，或预算为0", "如果本项目在提交后确定预算，请忽略本提示",
+					ICheckListItem.WARRING);
 			checkItem.setData(this);
 			checkItem.setKey(F_WORK_ORDER);
 			checkItem.setEditorId(EDITOR_CREATE_PLAN);
 			checkItem.setEditorPageId(EDITOR_PAGE_BUDGET);
 			result.add(checkItem);
-		}else{
-			CheckListItem checkItem = new CheckListItem("检查预算",
-					"", ICheckListItem.PASS);
+		} else {
+			CheckListItem checkItem = new CheckListItem("检查预算");
+			checkItem.setData(this);
 			result.add(checkItem);
 		}
 
@@ -1317,9 +1318,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			ObjectId roldId = role.get_id();
 			ra = raMap.get(roldId);
 			if (ra == null) {
-				CheckListItem checkItem = new CheckListItem(
-						"检查项目角色指派", "没有确定角色对应的人员，" + "角色：" + role.getLabel()
-								+ "\n如果本项目在提交后确定预算，请忽略本提示",
+				CheckListItem checkItem = new CheckListItem("检查项目角色指派",
+						"没有确定角色对应人员，" + "角色：[" + role.getLabel()+"]"
+								, "如果本项目在提交后确定人员，请忽略本提示",
 						ICheckListItem.WARRING);
 				checkItem.setData(this);
 				checkItem.setEditorId(EDITOR_CREATE_PLAN);
@@ -1329,9 +1330,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				passed = false;
 			}
 		}
-		if(passed){
-			CheckListItem checkItem = new CheckListItem("检查项目角色指派",
-					"", ICheckListItem.PASS);
+		if (passed) {
+			CheckListItem checkItem = new CheckListItem("检查项目角色指派");
+			checkItem.setData(this);
 			result.add(checkItem);
 		}
 
@@ -1340,38 +1341,38 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String process = F_WF_CHANGE;
 		String editorId = EDITOR_SETPROCESS;
 		String pageId = EDITOR_PAGE_CHANGE_PROCESS;
-		passed = ModelUtil.checkProcessInternal(this,result, raMap, title, process, editorId,pageId);
-		if(passed){
-			CheckListItem checkItem = new CheckListItem(title,
-					"", ICheckListItem.PASS);
+		passed = ModelUtil.checkProcessInternal(this,this, result, raMap, title,
+				process, editorId, pageId);
+		if (passed) {
+			CheckListItem checkItem = new CheckListItem(title);
+			checkItem.setData(this);
 			result.add(checkItem);
 		}
-		
+
 		// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
 		title = "检查项目提交流程";
 		process = F_WF_COMMIT;
 		pageId = EDITOR_PAGE_COMMIT_PROCESS;
-		passed = ModelUtil.checkProcessInternal(this,result, raMap, title, process, editorId,pageId);
-		if(passed){
-			CheckListItem checkItem = new CheckListItem(title,
-					"", ICheckListItem.PASS);
+		passed = ModelUtil.checkProcessInternal(this,this, result, raMap, title,
+				process, editorId, pageId);
+		if (passed) {
+			CheckListItem checkItem = new CheckListItem(title);
+			checkItem.setData(this);
 			result.add(checkItem);
 		}
-		
+
 		// 5 检查工作
 		Work work = getWBSRoot();
 		List<ICheckListItem> workResult = work.checkPlan();
 		result.addAll(workResult);
-		
+
 		return result;
 	}
-
-
 
 	@Override
 	public String getProcessActionActor(String key, String nodeActorParameter) {
 		DBObject data = (DBObject) getValue(key + POSTFIX_ACTORS);
-		if(data==null){
+		if (data == null) {
 			return null;
 		}
 		return (String) data.get(nodeActorParameter);
@@ -1382,7 +1383,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			String nodeActorParameter) {
 		// 取出角色指派
 		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
-		if(data==null){
+		if (data == null) {
 			return null;
 		}
 		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
@@ -1422,6 +1423,78 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return new DroolsProcessDefinition(processData);
 		}
 		return null;
+	}
+	
+	public String getLifecycleStatus(){
+		String lc = (String) getValue(F_LIFECYCLE);
+		if(lc==null){
+			return STATUS_NONE_VALUE;
+		}else{
+			return lc;
+		}
+	}
+
+	public boolean canCheck() {
+		//未完成和未取消的
+		String lc = getLifecycleStatus();
+		return (!STATUS_CANCELED_VALUE.equals(lc))&&(!STATUS_FINIHED_VALUE.equals(lc));
+	}
+
+	public boolean canCommit() {
+		String lc = getLifecycleStatus();
+
+		return STATUS_NONE_VALUE.equals(lc);
+	}
+
+	public boolean canStart() {
+		String lc = getLifecycleStatus();
+		return STATUS_ONREADY_VALUE.equals(lc)||STATUS_PAUSED_VALUE.equals(lc);
+	}
+
+	public boolean canPause() {
+		String lc = getLifecycleStatus();
+		return STATUS_WIP_VALUE.equals(lc);
+	}
+
+	public boolean canFinish() {
+		String lc = getLifecycleStatus();
+		return STATUS_WIP_VALUE.equals(lc)||STATUS_PAUSED_VALUE.equals(lc);
+	}
+
+	public boolean canCancel() {
+		String lc = getLifecycleStatus();
+		return STATUS_WIP_VALUE.equals(lc)||STATUS_PAUSED_VALUE.equals(lc);
+	}
+
+	@Override
+	public String getLifecycleStatusText() {
+		String lc = getLifecycleStatus();
+		return ModelUtil.getLifecycleStatusText(lc);
+	}
+
+	public void doCancel(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doCommit(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doFinish(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doPause(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void doStart(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

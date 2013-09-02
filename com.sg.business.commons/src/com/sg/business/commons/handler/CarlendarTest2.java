@@ -45,7 +45,7 @@ public class CarlendarTest2 extends AbstractNavigatorHandler {
 						SWT.ICON_INFORMATION);
 
 			} catch (ParseException e) {
-				MessageUtil.showToast(e.getMessage(), SWT.ICON_ERROR);
+				MessageUtil.showToast(e);
 			}
 		}
 	}

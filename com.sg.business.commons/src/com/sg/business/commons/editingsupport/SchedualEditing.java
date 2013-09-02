@@ -66,7 +66,7 @@ public abstract class SchedualEditing implements IEditingSupportor {
 						toUpdate.add(work);
 						getViewer().update(toUpdate.toArray(), null);
 					} catch (Exception e) {
-						MessageUtil.showToast(e.getMessage(), SWT.ICON_ERROR);
+						MessageUtil.showToast(e);
 					}
 				}
 			}

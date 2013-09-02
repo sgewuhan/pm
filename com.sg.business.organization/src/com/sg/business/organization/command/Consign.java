@@ -32,8 +32,7 @@ public class Consign extends AbstractNavigatorHandler {
 							SWT.ICON_INFORMATION);
 				} catch (Exception e) {
 					e.printStackTrace();
-					MessageUtil.showToast(e.getMessage(),
-							SWT.ICON_INFORMATION);
+					MessageUtil.showToast(e);
 				}
 				super.doOK(is);
 			}

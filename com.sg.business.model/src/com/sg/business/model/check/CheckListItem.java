@@ -12,16 +12,27 @@ public class CheckListItem implements ICheckListItem{
 	private String editorId;
 	private String pageId;
 	private Object data;
+	private String result;
 
-	public CheckListItem(String title, String message, int type) {
+	public CheckListItem(String title, String result,String message, int type) {
 		this.title = title;
+		this.result = result;
 		this.message = message;
 		this.type = type;
+	}
+
+	public CheckListItem(String title) {
+		this.title = title;
+		this.type = PASS;
 	}
 
 	@Override
 	public String getMessage() {
 		return message;
+	}
+	
+	public String getResult(){
+		return result;
 	}
 
 	@Override

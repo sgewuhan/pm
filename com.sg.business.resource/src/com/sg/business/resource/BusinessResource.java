@@ -88,6 +88,19 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_WARRING_16 = "warning_16.gif";
 
 	public static final String IMAGE_ERROR_16 = "error_16.gif";
+	
+	public static final String IMAGE_READY_16 = "ready_16.png";
+	
+	public static final String IMAGE_WIP_16 = "wip_16.png";
+	
+	public static final String IMAGE_FINISHED_16 = "finished_16.png";
+	
+	public static final String IMAGE_CANCELED_16 = "canceled_16.png";
+	
+	public static final String IMAGE_PAUSEED_16 = "paused_16.png";
+
+	public static final String IMAGE_PREPARING_16 = "preparing_16.png";
+
 
 
 	/**

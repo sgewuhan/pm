@@ -24,7 +24,7 @@ public class ViewDeliverableDocument extends AbstractNavigatorHandler {
 					DataObjectEditor.open(doc, doc.getDefaultEditorId(), false, null);
 				} catch (Exception e) {
 					e.printStackTrace();
-					MessageUtil.showToast(e.getMessage(), SWT.ICON_WARNING);
+					MessageUtil.showToast(e);
 				}
 			}
 		}

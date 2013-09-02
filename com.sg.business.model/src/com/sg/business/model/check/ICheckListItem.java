@@ -19,4 +19,8 @@ public interface ICheckListItem {
 	String getEditorId();
 
 	Object getData();
+
+	String getResult();
+
+	String getPageId();
 }

@@ -1,7 +1,5 @@
 package com.sg.business.model.dataset.project;
 
-import org.eclipse.swt.SWT;
-
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
 import com.mobnut.portal.user.UserSessionContext;
@@ -55,7 +53,7 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 			return queryCondition;
 
 		} catch (Exception e) {
-			MessageUtil.showToast(e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showToast(e);
 			return new BasicDBObject().append("_id", null);
 		}
 	}

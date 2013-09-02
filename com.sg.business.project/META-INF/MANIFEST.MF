@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.bpm.workflow;bundle-version="1.0.0",
  com.sg.business.model;bundle-version="1.0.0",
  com.sg.business.commons;bundle-version="1.0.0",
- com.sg.business.resource
+ com.sg.business.resource,
+ org.eclipse.core.expressions
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

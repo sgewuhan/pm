@@ -405,19 +405,33 @@
       <option
             id="status">
          <option
-               id="准备中">
+               id="规划中"
+               label="规划中">
          </option>
          <option
-               id="进行中">
+               id="准备中"
+               label="准备中"
+               value="ready">
          </option>
          <option
-               id="已暂停">
+               id="进行中"
+               label="进行中"
+               value="wip">
          </option>
          <option
-               id="已完成">
+               id="已暂停"
+               label="已暂停"
+               value="paused">
          </option>
          <option
-               id="已取消">
+               id="已完成"
+               label="已完成"
+               value="finished">
+         </option>
+         <option
+               id="已取消"
+               label="已取消"
+               value="canceled">
          </option>
       </option>
    </extension>
@@ -959,9 +973,10 @@
       <column
             column="status"
             id="project.status"
-            name="状态"
+            labelProvider="com.sg.business.commons.labelprovider.StatusLabelProvider"
+            name=" "
             type="String"
-            width="50">
+            width="24">
       </column>
       <column
             column="planstart"
