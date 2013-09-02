@@ -65,16 +65,28 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public static final String F_LAUNCH_ORGANIZATION = "launchorg_id";
 
 	/**
-	 * 根工作定义
+	 * 根工作ID
 	 */
 	public static final String F_WORK_ID = "work_id";
 
+	/**
+	 * 预算ID
+	 */
 	public static final String F_BUDGET_ID = "budget_id";
 
+	/**
+	 * 适用标准集
+	 */
 	public static final String F_STANDARD_SET_OPTION = "standardset";
 
+	/**
+	 * 产品类型选项集
+	 */
 	public static final String F_PRODUCT_TYPE_OPTION = "producttype";
 
+	/**
+	 * 项目类型选项集
+	 */
 	public static final String F_PROJECT_TYPE_OPTION = "projecttype";
 
 	/**
@@ -87,46 +99,90 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public static final String F_WF_COMMIT = "wf_commit";
 
+	/**
+	 * 提交流程中的角色指派
+	 */
 	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";
 
+	/**
+	 * 提交流程是否启用
+	 */
 	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
 
+	/**
+	 * 提交流程任务的执行人
+	 */
 	public static final String F_WF_COMMIT_ACTORS = "wf_commit_actors";
 	/**
 	 * 项目变更流程
 	 */
 	public static final String F_WF_CHANGE = "wf_change";
 
+	/**
+	 * 项目变更流程是否启用
+	 */
 	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
 
+	/**
+	 * 项目变更流程角色指派
+	 */
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
 
+	/**
+	 * 项目变更流程任务执行人
+	 */
 	public static final String F_WF_CHANGE_ACTORS = "wf_change_actors";
 
+	/**
+	 * 项目编辑器
+	 */
 	public static final String EDITOR_CREATE_PLAN = "project.editor";
 
+	/**
+	 * 项目流程设置
+	 */
 	public static final String EDITOR_SETPROCESS = "project.flow.setting";
 
+	/**
+	 * 项目预算
+	 */
 	public static final String EDITOR_PAGE_BUDGET = "project.financial";
 	
+	/**
+	 * 项目组
+	 */
 	public static final String EDITOR_PAGE_TEAM = "project.team";
 	
+	/**
+	 * 项目工作分解结构
+	 */
 	public static final String EDITOR_PAGE_WBS = "project.wbs";
 
 	public static final String EDITOR_PAGE_CHANGE_PROCESS = "processpage2";
 
 	public static final String EDITOR_PAGE_COMMIT_PROCESS = "processpage1";
 
+	/**
+	 * 返回类型名称
+	 * @return String
+	 */
 	@Override
 	public String getTypeName() {
 		return "项目";
 	}
 
+	/**
+	 * 返回显示图标
+	 */
 	@Override
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_16);
 	}
 
+	/**
+	 * 返回项目负责人
+	 * @return User
+	 */
 	public User getCharger() {
 		String chargerId = (String) getValue(F_CHARGER);
 		if (Utils.isNullOrEmpty(chargerId)) {
@@ -135,6 +191,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return User.getUserById(chargerId);
 	}
 
+	/**
+	 * 返回项目的管理组织
+	 * @return Organization
+	 */
 	public Organization getFunctionOrganization() {
 		ObjectId orgId = getFunctionOrganizationId();
 		if (orgId != null) {
@@ -144,10 +204,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
+	/**
+	 * 返回项目管理组织_id
+	 * @return ObjectId
+	 */
 	public ObjectId getFunctionOrganizationId() {
 		return (ObjectId) getValue(F_FUNCTION_ORGANIZATION);
 	}
 
+	/**
+	 * 返回项目模板
+	 * @return ProjectTemplate
+	 */
 	public ProjectTemplate getProjectTemplate() {
 		ObjectId id = getProjectTemplateId();
 		if (id != null) {
@@ -156,25 +224,45 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
+	/**
+	 * 返回项目模板_id
+	 * @return ObjectId
+	 */
 	public ObjectId getProjectTemplateId() {
 		return (ObjectId) getValue(F_PROJECT_TEMPLATE_ID);
 	}
 
+	/**
+	 * 返回项目标准集
+	 * @return List
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getStandardSetOptions() {
 		return (List<String>) getValue(F_STANDARD_SET_OPTION);
 	}
 
+	/**
+	 * 返回产品类型集选项集
+	 * @return List
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getProductTypeOptions() {
 		return (List<String>) getValue(F_PRODUCT_TYPE_OPTION);
 	}
 
+	/**
+	 * 返回项目类型选项集
+	 * @return List
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getProjectTypeOptions() {
 		return (List<String>) getValue(F_PROJECT_TYPE_OPTION);
 	}
 
+	/**
+	 * 返回项目预算
+	 * @return ProjectBudget
+	 */
 	public ProjectBudget getBudget() {
 		DBCollection col = getCollection(IModelConstants.C_PROJECT_BUDGET);
 		DBObject data = col.findOne(new BasicDBObject().append(
@@ -182,11 +270,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelService.createModelObject(data, ProjectBudget.class);
 	}
 
+	/**
+	 * 返回项目的WBS结构根工作
+	 * @return Work
+	 */
 	public Work getWBSRoot() {
 		ObjectId workid = (ObjectId) getValue(F_WORK_ID);
 		return ModelService.createModelObject(Work.class, workid);
 	}
 
+	/**
+	 * 返回根工作的下级工作
+	 * @return List
+	 */
 	public List<PrimaryObject> getChildrenWork() {
 		Work root = getWBSRoot();
 		return root.getChildrenWork();
