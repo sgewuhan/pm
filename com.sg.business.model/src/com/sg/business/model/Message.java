@@ -1,6 +1,10 @@
 package com.sg.business.model;
 
+import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 public class Message extends PrimaryObject {
 	
@@ -22,7 +26,7 @@ public class Message extends PrimaryObject {
 	/**
 	 * 标题字段
 	 */
-	public static final String F_TITLE = "title";
+	public static final String F_DESC = "desc";
 	
 	/**
 	 * 内容
@@ -40,7 +44,7 @@ public class Message extends PrimaryObject {
 	public static final String F_RECIEVEDDATE = "recievedate";
 	
 	/**
-	 * 已读标志
+	 * 已读标志,DBObject类型字段,保存了用户ID，是否已读<br/>{"zhonghua": true,"zhansan":true}
 	 */
 	public static final String F_MARK_READ = "markread";
 	
@@ -55,7 +59,7 @@ public class Message extends PrimaryObject {
 	public static final String F_EMAIL_NOTICE_DATE = "emailnoticedate";
 	
 	/**
-	 * 目标列表
+	 * 目标列表 {{targetid=ObjectId(""),targetclass="com.sg.business.model.Work",targeteditor="work.editor"},{}}
 	 */
 	public static final String F_TARGETS = "targets";
 	
@@ -79,5 +83,39 @@ public class Message extends PrimaryObject {
 	 * 附件,文件列表型字段
 	 */
 	public static final String F_ATTACHMENT = "attachment";
+
+	/**
+	 * 回复编辑器ID
+	 */
+	public static final String EDITOR_REPLY = "message.editor.reply";
+
+
+	public Message makeReply() {
+		Message reply = ModelService.createModelObject(Message.class);
+		reply.setValue(F_PARENT_MESSAGE, get_id());
+		reply.setValue(F_RECIEVER, getValue(F_SENDER));
+		reply.setValue(F_DESC, "RE:"+getDesc());
+		return reply;
+	}
+
+
+	public void doMarkRead(IContext context, Boolean isRead) throws Exception {
+        Object markReadData = getValue(F_MARK_READ);
+        if(!(markReadData instanceof DBObject)){
+        	markReadData=new BasicDBObject();
+        }
+        ((DBObject)markReadData).put(context.getAccountInfo().getUserId(), isRead);
+		setValue(F_MARK_READ, markReadData);
+		doSave(context);
+	}
+
+
+	public Boolean isRead(IContext context) {
+		 Object markReadData = getValue(F_MARK_READ);
+	        if(!(markReadData instanceof DBObject)){
+	        	return false;
+	        }
+	       return (Boolean) ((DBObject)markReadData).get(context.getAccountInfo().getUserId());
+	}
 
 }

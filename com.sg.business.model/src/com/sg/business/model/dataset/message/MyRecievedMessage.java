@@ -7,15 +7,15 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Message;
 import com.sg.widgets.MessageUtil;
 
-public class MyMessage extends SingleDBCollectionDataSetFactory {
+public class MyRecievedMessage extends SingleDBCollectionDataSetFactory {
 
-	public MyMessage() {
+	public MyRecievedMessage() {
 		super(IModelConstants.DB, IModelConstants.C_MESSAGE);
 		try {
 			String userid = UserSessionContext.getAccountInfo()
 					.getconsignerId();
 			setQueryCondition(new BasicDBObject().append(Message.F_RECIEVER,
-					userid).append(Message.F_PARENT_MESSAGE, null));
+					userid));
 			setSort(new BasicDBObject().append(Message.F_SENDDATE, -1));
 		} catch (Exception e) {
 			e.printStackTrace();

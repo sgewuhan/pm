@@ -79,6 +79,28 @@
                standalone="false"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="message.recieved"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="com.sg.business.home.mywork"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="message.send"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="com.sg.business.home.mywork"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.project">
