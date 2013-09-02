@@ -1,10 +1,17 @@
 package com.sg.business.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class Message extends PrimaryObject {
 	
@@ -116,6 +123,44 @@ public class Message extends PrimaryObject {
 	        	return false;
 	        }
 	       return (Boolean) ((DBObject)markReadData).get(context.getAccountInfo().getUserId());
+	}
+
+
+	@Override
+	public String getHTMLLabel() {
+		StringBuffer sb = new StringBuffer();
+		String imageUrl = "<img src='" + getImageURL()
+				+ "' style='float:left;padding:2px' width='24' height='24' />";
+		String label = getLabel();
+		
+		String senderId = (String) getValue(F_SENDER);
+		User sender = User.getUserById(senderId);
+	/*	String recieverId=(String) getValue(F_RECIEVER);
+		User reciever = User.getUserById(recieverId);*/
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATETIME_COMPACT_SASH);
+		Date date = (Date) getValue(F_SENDDATE);
+		String sendDate = sdf.format(date);
+		
+		sb.append(imageUrl);
+		sb.append("<b>");
+		sb.append(label);
+		sb.append("</b>");
+		sb.append("<br/>");
+		sb.append("·¢¼þÈË:"+sender+" "+sendDate);
+		
+		return sb.toString();
+	}
+
+
+	public String getImageURL() {
+	
+		if (isRead(new CurrentAccountContext())) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_OPEN_24,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_24,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		}
 	}
 
 }

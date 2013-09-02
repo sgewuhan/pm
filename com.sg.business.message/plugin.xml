@@ -27,6 +27,96 @@
       <navigator
             id="message.recieved"
             tree="message.recieved">
+         <filterAction>
+            <column
+                  column="markread"
+                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String"
+                  width="260">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="markread"
+                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String"
+                  width="260">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </searchAction>
+         <sortAction>
+            <column
+                  column="markread"
+                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String"
+                  width="260">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </sortAction>
       </navigator>
       <navigator
             id="message.send"
@@ -34,43 +124,115 @@
          <createEditor
                editorId="message.editor.create">
          </createEditor>
+         <filterAction>
+            <column
+                  column="markread"
+                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String"
+                  width="260">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="markread"
+                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String"
+                  width="260">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </searchAction>
+         <sortAction>
+            <column
+                  column="markread"
+                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String"
+                  width="260">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </sortAction>
       </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
             autoExpandLevel="-1"
+            customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
             editorId="message.editor.create"
+            headerVisiable="false"
             id="message.recieved"
+            markupEnabled="true"
             popupMenu="popup:message.recieved">
          <column
-               column="markread"
-               labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
-               name="已读"
-               type="Boolean">
-         </column>
-         <column
-               column="importance"
-               name="重要度"
-               type="String">
-         </column>
-         <column
-               column="sender"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="发件人"
-               type="String">
-         </column>
-         <column
                column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
                name="标题"
                type="String"
-               width="260">
-         </column>
-         <column
-               column="senddate"
-               name="发送日期"
-               type="DateTime">
+               width="-1">
          </column>
          <structure
                modelRelation="message_message">
@@ -78,41 +240,24 @@
       </tree>
       <tree
             autoExpandLevel="-1"
+            canDelete="false"
+            canEdit="false"
+            customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MySendMessage"
             editorId="message.editor.create"
+            headerVisiable="false"
             id="message.send"
-            popupMenu="popup:message.send">
-         <column
-               column="markread"
-               labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
-               name="已读"
-               type="Boolean">
-         </column>
-         <column
-               column="importance"
-               name="重要度"
-               type="String">
-         </column>
-         <column
-               column="sender"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="发件人"
-               type="String">
-         </column>
-         <column
-               column="desc"
-               name="标题"
-               type="String"
-               width="260">
-         </column>
-         <column
-               column="senddate"
-               name="发送日期"
-               type="DateTime">
-         </column>
+            markupEnabled="true">
          <structure
                modelRelation="message_message">
          </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="标题"
+               type="String"
+               width="-1">
+         </column>
       </tree>
    </extension>
    <extension
@@ -345,6 +490,7 @@
             locationURI="popup:message.recieved">
          <command
                commandId="message.reply"
+               icon="image/message_reply_24.png"
                label="回复"
                style="push">
             <visibleWhen
@@ -359,6 +505,7 @@
          </command>
          <command
                commandId="message.open"
+               icon="image/message_open_24.png"
                label="打开"
                style="push">
             <visibleWhen
@@ -373,52 +520,7 @@
          </command>
          <command
                commandId="message.markread"
-               label="标记已读"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:message.send">
-         <command
-               commandId="message.reply"
-               label="回复"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="message.open"
-               label="打开"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="message.markread"
+               icon="image/24_blank.png"
                label="标记已读"
                style="push">
             <visibleWhen
