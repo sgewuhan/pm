@@ -204,8 +204,10 @@
       <tree
             autoExpandLevel="-1"
             canCreate="false"
+            canDelete="false"
             canEdit="false"
-            customItemHeight="54"
+            canRead="false"
+            customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
             editorId="message.editor.create"
             headerVisiable="false"
@@ -225,9 +227,11 @@
       </tree>
       <tree
             autoExpandLevel="-1"
+            canCreate="false"
             canDelete="false"
             canEdit="false"
-            customItemHeight="54"
+            canRead="false"
+            customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MySendMessage"
             editorId="message.editor.create"
             headerVisiable="false"
@@ -252,11 +256,11 @@
             dbName="pm2"
             id="message.editor.create"
             name="消息"
-            titleToolTips="新消息">
+            titleToolTips="消息">
          <basicpage
                description="消息"
                id="basicpage"
-               image="image/message_24.png"
+               image="image/message_add_24.png"
                title="消息">
             <pagecolumn>
                <section
@@ -333,12 +337,12 @@
             collectionName="message"
             dbName="pm2"
             id="message.editor.reply"
-            name="消息"
+            name="回复消息"
             titleToolTips="回复消息">
          <basicpage
-               description="消息"
+               description="回复消息"
                id="basicpage"
-               image="image/message_24.png"
+               image="image/message_reply_24.png"
                title="消息">
             <pagecolumn>
                <section
@@ -381,6 +385,9 @@
                            type="String">
                      </combo>
                   </fieldgroup>
+               </section>
+               <section
+                     label="内容">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -394,11 +401,144 @@
                         type="String">
                   </text>
                </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="basicpage2"
+               title="附件">
+            <pagecolumn>
                <section
                      label="附件">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
+                        heightHint="240"
+                        id="attachment"
+                        label="附件"
+                        labelVisible="false"
+                        name="attachment"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="message"
+            dbName="pm2"
+            id="message.editor.view"
+            name="查看消息"
+            titleToolTips="查看消息">
+         <basicpage
+               description="消息"
+               id="basicpage"
+               image="image/message_24.png"
+               title="消息">
+            <pagecolumn>
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="desc"
+                        label="标题"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="importance"
+                        label="重要度"
+                        labelVisible="true"
+                        name="importance"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <fieldgroup
+                        columnCount="2">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="sender"
+                           label="发件人"
+                           labelVisible="true"
+                           name="sender"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.UserIdFieldPres"
+                           required="true"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="reciever"
+                           label="收件人"
+                           labelVisible="true"
+                           name="reciever"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.UserIdListFieldPres"
+                           required="true"
+                           type="String">
+                     </text>
+                  </fieldgroup>
+                  <fieldgroup
+                        columnCount="2">
+                     <dateTime
+                           editPart="DateDrop"
+                           editable="false"
+                           id="senddate"
+                           label="发送日期"
+                           labelVisible="true"
+                           name="senddate"
+                           persistable="true"
+                           required="false"
+                           type="Date">
+                     </dateTime>
+                     <dateTime
+                           editPart="DateDrop"
+                           editable="false"
+                           id="recievedate"
+                           label="收件日期"
+                           labelVisible="true"
+                           name="recievedate"
+                           persistable="true"
+                           required="false"
+                           type="Date">
+                     </dateTime>
+                  </fieldgroup>
+               </section>
+               <section
+                     label="内容">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="false"
+                        heightHint="160"
+                        id="content"
+                        label="内容"
+                        labelVisible="false"
+                        name="content"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="basicpage2"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="false"
                         heightHint="240"
                         id="attachment"
                         label="附件"
@@ -420,7 +560,7 @@
          <command
                commandId="message.reply"
                icon="image/message_reply_24.png"
-               label="回复"
+               label="回复消息"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -435,7 +575,7 @@
          <command
                commandId="message.open"
                icon="image/message_open_24.png"
-               label="打开"
+               label="查看消息"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -447,9 +587,13 @@
                </with>
             </visibleWhen>
          </command>
+         <separator
+               name="message.separator1"
+               visible="true">
+         </separator>
          <command
                commandId="message.markread"
-               icon="image/24_blank.png"
+               icon="image/markread_24.png"
                label="标记已读"
                style="push">
             <visibleWhen
@@ -457,7 +601,77 @@
                <with
                      variable="selection">
                   <count
-                        value="1">
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.unmarkread"
+               icon="image/unmarkread_24.png"
+               label="标记未读"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.markstar"
+               icon="image/markstar_24.png"
+               label="加上星标"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.unmarkstar"
+               icon="image/unmarkstar_24.png"
+               label="取消星标"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="message.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
                   </count>
                </with>
             </visibleWhen>
@@ -473,20 +687,61 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:message.send?after=additions">
+         <command
+               commandId="message.add"
+               icon="image/message_add_24.png"
+               label="新消息"
+               style="push">
+         </command>
+         <command
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
+            id="message.add"
+            name="新消息">
+      </command>
+      <command
             id="message.reply"
-            name="回复">
+            name="回复消息">
       </command>
       <command
             id="message.open"
-            name="打开">
+            name="查看消息">
       </command>
       <command
             id="message.markread"
             name="标记已读">
+      </command>
+      <command
+            id="message.unmarkread"
+            name="标记未读">
+      </command>
+      <command
+            id="message.markstar"
+            name="加上星标">
+      </command>
+      <command
+            id="message.unmarkstar"
+            name="取消星标">
       </command>
       <command
             id="message.sendtoselecteduser"
@@ -496,8 +751,12 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
+            class="com.sg.bussiness.message.handler.AddMessage"
+            commandId="message.add">
+      </handler>
+      <handler
             commandId="message.reply"
-            class="com.sg.bussiness.message.handler.Reply">
+            class="com.sg.bussiness.message.handler.ReplyMessage">
       </handler>
       <handler
             commandId="message.open"
@@ -507,6 +766,18 @@
             commandId="message.markread"
             class="com.sg.bussiness.message.handler.MarkRead">
             
+      </handler>
+      <handler
+            class="com.sg.bussiness.message.handler.UnmarkRead"
+            commandId="message.unmarkread">
+      </handler>
+      <handler
+            class="com.sg.bussiness.message.handler.MarkStar"
+            commandId="message.markstar">
+      </handler>
+      <handler
+            class="com.sg.bussiness.message.handler.UnmarkStar"
+            commandId="message.unmarkstar">
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.SendToSelectedUser"

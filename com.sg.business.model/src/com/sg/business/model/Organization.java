@@ -38,6 +38,11 @@ public class Organization extends PrimaryObject {
 	public static final String F_DESCRIPTION = "description";
 
 	/**
+	 * 组织全称
+	 */
+	public static final String F_FULLDESC = "fulldesc";
+
+	/**
 	 * 组织的上级组织_id
 	 */
 	public static final String F_PARENT_ID = "parent_id";
@@ -137,7 +142,7 @@ public class Organization extends PrimaryObject {
 	 */
 	@Override
 	public String getLabel() {
-		return getDesc() + "|" + getOrganizationNumber();
+		return getDesc();
 	}
 
 	/**

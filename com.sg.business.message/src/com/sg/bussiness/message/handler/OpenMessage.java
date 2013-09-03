@@ -21,7 +21,7 @@ public class OpenMessage extends AbstractNavigatorHandler {
 				message.doMarkRead(new CurrentAccountContext(),Boolean.TRUE);
 				ViewerControl vc = getCurrentViewerControl(event);
 				vc.getViewer().update(selected, null);
-				DataObjectEditor.open(message, Message.EDITOR_REPLY, false,null);
+				DataObjectEditor.open(message, Message.EDITOR_VIEW, false,null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 				e.printStackTrace();
