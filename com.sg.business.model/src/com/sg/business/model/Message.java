@@ -105,7 +105,16 @@ public class Message extends PrimaryObject {
 	 */
 	public static final String EDITOR_REPLY = "message.editor.reply";
 
+	/**
+	 * 新消息编辑器
+	 */
 	public static final String EDITOR_SEND = "message.editor.create";
+	
+	/**
+	 * 消息查看编辑器
+	 */
+	public static final String EDITOR_VIEW = "message.editor.view";
+
 
 	public Message makeReply() {
 		Message reply = ModelService.createModelObject(Message.class);
@@ -176,39 +185,46 @@ public class Message extends PrimaryObject {
 		boolean isReply = isReply();
 		boolean isRead = isRead(new CurrentAccountContext());
 		StringBuffer sb = new StringBuffer();
+		
+		//添加日期
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		Date date = (Date) getValue(F_SENDDATE);
+		String sendDate = sdf.format(date);
+		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append(sendDate);
+		sb.append("</span>");
+		
+		//添加图标
 		String imageUrl = null;
 		if (isRead) {
 			imageUrl = "<img src='"
 					+ getImageURLForOpen()
-					+ "' style='float:left;padding:2px' width='24' height='24' />";
+					+ "' style='float:left;padding:6px' width='24' height='24' />";
 		} else {
 			imageUrl = "<img src='"
 					+ (isReply ? getImageURLForReply() : getImageURL())
-					+ "' style='float:left;padding:2px' width='24' height='24' />";
+					+ "' style='float:left;padding:6px' width='24' height='24' />";
 		}
+		sb.append(imageUrl);
 
+		//添加主题
 		String label = getLabel();
 		label = Utils.getPlainText(label);
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
-		Date date = (Date) getValue(F_SENDDATE);
-		String sendDate = sdf.format(date);
+		label = Utils.getLimitLengthString(label, 20);
 		if (isRead) {
 			sb.append(label);
 		} else {
-
 			sb.append("<b>" + label + "</b>");
 		}
 
 		sb.append("<br/>");
-		sb.append(imageUrl);
+		
 		String senderId = (String) getValue(F_SENDER);
 		User sender = User.getUserById(senderId);
-		sb.append("<small>");
-		sb.append("发件人:" + sender + " " + sendDate);
-		sb.append("<br/>");
+		sb.append("发件人:" + sender );
+		sb.append("  ");
 		String recieverLabel = getRecieverLabel();
 		sb.append("收件人:" + recieverLabel);
-		sb.append("</small>");
 		return sb.toString();
 	}
 
