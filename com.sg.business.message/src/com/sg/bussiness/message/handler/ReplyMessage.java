@@ -8,7 +8,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class Reply extends AbstractNavigatorHandler {
+public class ReplyMessage extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
