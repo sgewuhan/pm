@@ -148,7 +148,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public static final String EDITOR_PAGE_BUDGET = "project.financial";
 
-
 	public static final String EDITOR_PAGE_TEAM = "project.team";
 
 	/**
@@ -163,6 +162,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回类型名称
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -180,18 +180,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目负责人
+	 * 
 	 * @return User
 	 */
 	public User getCharger() {
-		String chargerId = (String) getValue(F_CHARGER);
+		String chargerId = getChargerId();
 		if (Utils.isNullOrEmpty(chargerId)) {
 			return null;
 		}
 		return User.getUserById(chargerId);
 	}
 
+	public String getChargerId() {
+		return (String) getValue(F_CHARGER);
+	}
+
 	/**
 	 * 返回项目的管理组织
+	 * 
 	 * @return Organization
 	 */
 	public Organization getFunctionOrganization() {
@@ -205,6 +211,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目管理组织_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getFunctionOrganizationId() {
@@ -213,6 +220,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目模板
+	 * 
 	 * @return ProjectTemplate
 	 */
 	public ProjectTemplate getProjectTemplate() {
@@ -225,6 +233,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目模板_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getProjectTemplateId() {
@@ -233,6 +242,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目标准集
+	 * 
 	 * @return List
 	 */
 	@SuppressWarnings("unchecked")
@@ -242,6 +252,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回产品类型集选项集
+	 * 
 	 * @return List
 	 */
 	@SuppressWarnings("unchecked")
@@ -251,6 +262,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目类型选项集
+	 * 
 	 * @return List
 	 */
 	@SuppressWarnings("unchecked")
@@ -260,6 +272,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目预算
+	 * 
 	 * @return ProjectBudget
 	 */
 	public ProjectBudget getBudget() {
@@ -271,6 +284,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回项目的WBS结构根工作
+	 * 
 	 * @return Work
 	 */
 	public Work getWBSRoot() {
@@ -280,6 +294,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 返回根工作的下级工作
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getChildrenWork() {
@@ -910,6 +925,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				// 设置负责人角色
 				setRoleField(work, workdef, IWorkCloneFields.F_CHARGER_ROLE_ID,
 						roleMap);
+				
+				// 设置指派人角色
+				setRoleField(work, workdef, IWorkCloneFields.F_ASSIGNMENT_CHARGER_ROLE_ID,
+						roleMap);
 
 				// 设置参与者角色
 				setRoleListField(work, workdef,
@@ -1245,7 +1264,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 	}
 
-	public List<?> getParticipate() {
+	/**
+	 * 获取项目参与者<br/>
+	 * @return 由每个元素为用户的userid组成的List,有可能为空
+	 */
+	public List<?> getParticipatesIdList() {
 		return (List<?>) getValue(F_PARTICIPATE);
 	}
 
@@ -1319,9 +1342,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			ra = raMap.get(roldId);
 			if (ra == null) {
 				CheckListItem checkItem = new CheckListItem("检查项目角色指派",
-						"没有确定角色对应人员，" + "角色：[" + role.getLabel()+"]"
-								, "如果本项目在提交后确定人员，请忽略本提示",
-						ICheckListItem.WARRING);
+						"没有确定角色对应人员，" + "角色：[" + role.getLabel() + "]",
+						"如果本项目在提交后确定人员，请忽略本提示", ICheckListItem.WARRING);
 				checkItem.setData(this);
 				checkItem.setEditorId(EDITOR_CREATE_PLAN);
 				checkItem.setEditorPageId(EDITOR_PAGE_TEAM);
@@ -1341,8 +1363,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String process = F_WF_CHANGE;
 		String editorId = EDITOR_SETPROCESS;
 		String pageId = EDITOR_PAGE_CHANGE_PROCESS;
-		passed = ModelUtil.checkProcessInternal(this,this, result, raMap, title,
-				process, editorId, pageId);
+		passed = ModelUtil.checkProcessInternal(this, this, result, raMap,
+				title, process, editorId, pageId);
 		if (passed) {
 			CheckListItem checkItem = new CheckListItem(title);
 			checkItem.setData(this);
@@ -1353,8 +1375,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		title = "检查项目提交流程";
 		process = F_WF_COMMIT;
 		pageId = EDITOR_PAGE_COMMIT_PROCESS;
-		passed = ModelUtil.checkProcessInternal(this,this, result, raMap, title,
-				process, editorId, pageId);
+		passed = ModelUtil.checkProcessInternal(this, this, result, raMap,
+				title, process, editorId, pageId);
 		if (passed) {
 			CheckListItem checkItem = new CheckListItem(title);
 			checkItem.setData(this);
@@ -1371,13 +1393,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public String getProcessActionActor(String key, String nodeActorParameter) {
-		DBObject data = (DBObject) getValue(key + POSTFIX_ACTORS);
+		DBObject data = getProcessActorsMap(key);
 		if (data == null) {
 			return null;
 		}
 		return (String) data.get(nodeActorParameter);
 	}
 
+	public DBObject getProcessActorsMap(String key) {
+		return (DBObject) getValue(key + POSTFIX_ACTORS);
+	}
+	
 	@Override
 	public ProjectRole getProcessActionAssignment(String key,
 			String nodeActorParameter) {
@@ -1424,20 +1450,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return null;
 	}
-	
-	public String getLifecycleStatus(){
+
+	public String getLifecycleStatus() {
 		String lc = (String) getValue(F_LIFECYCLE);
-		if(lc==null){
+		if (lc == null) {
 			return STATUS_NONE_VALUE;
-		}else{
+		} else {
 			return lc;
 		}
 	}
 
 	public boolean canCheck() {
-		//未完成和未取消的
+		// 未完成和未取消的
 		String lc = getLifecycleStatus();
-		return (!STATUS_CANCELED_VALUE.equals(lc))&&(!STATUS_FINIHED_VALUE.equals(lc));
+		return (!STATUS_CANCELED_VALUE.equals(lc))
+				&& (!STATUS_FINIHED_VALUE.equals(lc));
 	}
 
 	public boolean canCommit() {
@@ -1448,7 +1475,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public boolean canStart() {
 		String lc = getLifecycleStatus();
-		return STATUS_ONREADY_VALUE.equals(lc)||STATUS_PAUSED_VALUE.equals(lc);
+		return STATUS_ONREADY_VALUE.equals(lc)
+				|| STATUS_PAUSED_VALUE.equals(lc);
 	}
 
 	public boolean canPause() {
@@ -1458,12 +1486,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public boolean canFinish() {
 		String lc = getLifecycleStatus();
-		return STATUS_WIP_VALUE.equals(lc)||STATUS_PAUSED_VALUE.equals(lc);
+		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
 
 	public boolean canCancel() {
 		String lc = getLifecycleStatus();
-		return STATUS_WIP_VALUE.equals(lc)||STATUS_PAUSED_VALUE.equals(lc);
+		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
 
 	@Override
@@ -1474,27 +1502,118 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public void doCancel(IContext context) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/**
+	 * 提交项目计划<br/>
+	 * 判断项目计划是否定义了提交流程，如果定义了提交流程，使用流程进行提交 。<br>
+	 * 如果没有定义流程，直接发送消息。<br/>
+
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
 	public void doCommit(IContext context) throws Exception {
+		if(isCommitWorkflowActivate()){
+			doCommitWithWorkflow(context);
+		}else{
+			doCommitWithSendMessage(context);
+		}
+	}
+
+	private void doCommitWithSendMessage(IContext context) throws Exception {
+		Map<String, Message> msgList = getCommitMessage();
+		Iterator<Message> iter = msgList.values().iterator();
+		while(iter.hasNext()){
+			Message message = iter.next();
+			message.doSave(context);
+		}
+	}
+
+	/**
+	 * 发送消息进行提交：<br/>
+	 * 需要发送到项目的负责人，（消息需要关联到项目），<br/>
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
+	private Map<String,Message>  getCommitMessage() throws Exception{
+		Map<String,Message> messageList = new HashMap<String,Message>();
+		//1. 获取项目负责人
+		appendMessageForCharger(messageList);
+		//2. 获取项目的参与者
+		
+		appendMessageForParticipate(messageList);
+
+		//3. 项目流程通知
+		appendMessageForChangeWorkflowActor(messageList);
+		
+		//4. 遍历工作
+		Work root = getWBSRoot();
+		messageList = root.getCommitMessage(messageList);
+		return messageList;
+	}
+	public void appendMessageForParticipate(Map<String, Message> messageList) {
+		Message message;
+		String userId;
+		List<?> userIdList = getParticipatesIdList();
+		if (userIdList != null) {
+			for (int i = 0; i < userIdList.size(); i++) {
+				userId = (String) userIdList.get(i);
+				message = messageList.get(userId);
+				if (message == null) {
+					message = ModelUtil.createProjectCommitMessage(userId);
+					messageList.put(userId, message);
+				}
+				ModelUtil.appendMessageContent(message, "您将参与工作" + " :"
+						+ getLabel());
+				message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
+			}
+		}
+	}
+
+	public void appendMessageForChangeWorkflowActor(
+			Map<String, Message> messageList) {
+		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
+				"项目变更流程");
+	}
+	
+	public void appendMessageForCharger(Map<String, Message> messageList) {
+		Message message;
+		String userId = getChargerId();
+		if (userId != null) {
+			message = messageList.get(userId);
+			if (message == null) {
+				message = ModelUtil.createProjectCommitMessage(userId);
+				messageList.put(userId, message);
+			}
+			message = ModelUtil.createProjectCommitMessage(userId);
+			ModelUtil.appendMessageContent(message, "您将在本项目计划中担任项目负责人，项目" + " :"
+					+ getLabel());
+			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
+			messageList.put(userId, message);
+		}
+	}
+
+	private void doCommitWithWorkflow(IContext context) throws Exception{
 		// TODO Auto-generated method stub
 		
 	}
 
 	public void doFinish(IContext context) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void doPause(IContext context) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void doStart(IContext context) throws Exception {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
+	
 }

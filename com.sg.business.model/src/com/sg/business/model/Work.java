@@ -30,7 +30,7 @@ import com.sg.business.model.check.ICheckListItem;
  * 
  */
 public class Work extends AbstractWork implements IProjectRelative, ISchedual,
-		IProcessControlable,ILifecycle {
+		IProcessControlable, ILifecycle {
 
 	/**
 	 * 工作的编辑器ID
@@ -51,6 +51,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 负责人的id userid
 	 */
 	public static final String F_CHARGER = "chargerid";
+
+	/**
+	 * 指派者的id
+	 */
+	public static final String F_ASSIGNER = "assignerid";
 
 	/**
 	 * 工作承担者
@@ -505,6 +510,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 		}
 
+		// 设置指派者
+		roleId = (ObjectId) getValue(F_ASSIGNMENT_CHARGER_ROLE_ID);
+		if (roleId != null) {
+			assignments = roleAssign.get(roleId);
+			if (assignments != null && !assignments.isEmpty()) {
+				assItem = (AbstractRoleAssignment) assignments.get(0);
+				userid = assItem.getUserid();
+				setValue(F_ASSIGNER, userid);
+				modified = true;
+			}
+		}
+
 		// 设置参与者
 		BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
 		if (roleIds != null && roleIds.size() > 0) {
@@ -751,7 +768,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 
 			// 3.检查参与者
-			value = getParticipate();
+			value = getParticipatesIdList();
 			if (value == null || ((BasicBSONList) value).isEmpty()) {
 				CheckListItem checkItem = new CheckListItem("检查工作执行人",
 						"没有添加工作参与者", "请在提交前确定。", ICheckListItem.WARRING);
@@ -776,8 +793,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			String process = F_WF_CHANGE;
 			String editorId = Project.EDITOR_CREATE_PLAN;
 			String pageId = Project.EDITOR_PAGE_WBS;
-			passed = ModelUtil.checkProcessInternal(project,this, result, roleMap,
-					title, process, editorId, pageId);
+			passed = ModelUtil.checkProcessInternal(project, this, result,
+					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
 				checkItem.setData(project);
@@ -788,8 +805,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
 			title = "检查工作执行流程";
 			process = F_WF_EXECUTE;
-			passed = ModelUtil.checkProcessInternal(project,this, result, roleMap,
-					title, process, editorId, pageId);
+			passed = ModelUtil.checkProcessInternal(project, this, result,
+					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
 				checkItem.setData(project);
@@ -823,14 +840,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public User getCharger() {
-		String chargerId = (String) getValue(F_CHARGER);
+		String chargerId = getChargerId();
 		if (Utils.isNullOrEmpty(chargerId)) {
 			return null;
 		}
 		return User.getUserById(chargerId);
 	}
 
-	public List<?> getParticipate() {
+	public String getChargerId() {
+		return (String) getValue(F_CHARGER);
+	}
+
+	public String getAssignerId() {
+		return (String) getValue(F_ASSIGNER);
+	}
+
+	public List<?> getParticipatesIdList() {
 		return (List<?>) getValue(F_PARTICIPATE);
 	}
 
@@ -850,11 +875,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	@Override
 	public String getProcessActionActor(String key, String nodeActorParameter) {
-		DBObject data = (DBObject) getValue(key + POSTFIX_ACTORS);
+		DBObject data = getProcessActorsMap(key);
 		if (data == null) {
 			return null;
 		}
 		return (String) data.get(nodeActorParameter);
+	}
+
+	public DBObject getProcessActorsMap(String key) {
+		return (DBObject) getValue(key + POSTFIX_ACTORS);
 	}
 
 	@Override
@@ -873,19 +902,112 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	@Override
-	public String getLifecycleStatus(){
+	public String getLifecycleStatus() {
 		String lc = (String) getValue(F_LIFECYCLE);
-		if(lc==null){
+		if (lc == null) {
 			return STATUS_NONE_VALUE;
-		}else{
+		} else {
 			return lc;
 		}
 	}
-	
+
 	@Override
 	public String getLifecycleStatusText() {
 		String lc = getLifecycleStatus();
 		return ModelUtil.getLifecycleStatusText(lc);
+	}
+
+	/**
+	 * 发送到工作的负责人、参与者、指派者（消息需要关联到工作）<br/>
+	 * 发送消息将考虑合并消息，发送至同一人的同一类型的消息应当整合为一条<br/>
+	 * 
+	 * @param messageList
+	 *            , 传入待发生的消息列表，如有相同用户的可以合并
+	 * @return
+	 */
+	public Map<String, Message> getCommitMessage(
+			Map<String, Message> messageList) {
+		// 1. 取工作负责人
+		appendMessageForCharger(messageList);
+
+		// 2. 取工作指派者
+		appendMessageForAssigner(messageList);
+
+		// 3. 获取参与者
+		appendMessageForParticipate(messageList);
+
+		// 4. 获取流程的执行人
+		appendMessageForChangeWorkflowActor(messageList);
+
+		appendMessageForExecuteWorkflowActor(messageList);
+
+		return messageList;
+	}
+
+	public void appendMessageForCharger(Map<String, Message> messageList) {
+		Message message;
+		String userId = getChargerId();
+		if (userId != null) {
+			message = messageList.get(userId);
+			if (message == null) {
+				message = ModelUtil.createProjectCommitMessage(userId);
+				messageList.put(userId, message);
+			}
+			message = ModelUtil.createProjectCommitMessage(userId);
+			ModelUtil.appendMessageContent(message, "您将负责工作" + " :"
+					+ getLabel());
+			message.appendTargets(this, EDITOR, Boolean.TRUE);
+			messageList.put(userId, message);
+		}
+	}
+
+	public void appendMessageForAssigner(Map<String, Message> messageList) {
+		Message message;
+		String userId;
+		userId = getAssignerId();
+		if (userId != null) {
+			message = messageList.get(userId);
+			if (message == null) {
+				message = ModelUtil.createProjectCommitMessage(userId);
+				messageList.put(userId, message);
+			}
+			message = ModelUtil.createProjectCommitMessage(userId);
+			ModelUtil.appendMessageContent(message, "您需要为工作指派负责人和参与者，工作" + " :"
+					+ getLabel());
+			message.appendTargets(this, EDITOR, Boolean.TRUE);
+			messageList.put(userId, message);
+		}
+	}
+
+	public void appendMessageForParticipate(Map<String, Message> messageList) {
+		Message message;
+		String userId;
+		List<?> userIdList = getParticipatesIdList();
+		if (userIdList != null) {
+			for (int i = 0; i < userIdList.size(); i++) {
+				userId = (String) userIdList.get(i);
+				message = messageList.get(userId);
+				if (message == null) {
+					message = ModelUtil.createProjectCommitMessage(userId);
+					messageList.put(userId, message);
+				}
+				ModelUtil.appendMessageContent(message, "您将参与工作" + " :"
+						+ getLabel());
+				message.appendTargets(this, EDITOR, Boolean.TRUE);
+			}
+		}
+	}
+
+	public void appendMessageForExecuteWorkflowActor(
+			Map<String, Message> messageList) {
+		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_EXECUTE,
+				"执行流程");
+	}
+
+	public void appendMessageForChangeWorkflowActor(
+			Map<String, Message> messageList) {
+		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
+				"变更流程");
 	}
 
 }
