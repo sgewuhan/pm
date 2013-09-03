@@ -101,6 +101,14 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_PREPARING_16 = "preparing_16.png";
 	
+	/*public static final String IMAGE_MESSAGE_32 = "message_32.png";
+
+	public static final String IMAGE_MESSAGE_ADD_32 = "message_add_32.png";
+
+	public static final String IMAGE_MESSAGE_REPLY_32 = "message_reply_32.png";
+
+	public static final String IMAGE_MESSAGE_OPEN_32 = "message_open_32.png";*/
+
 	public static final String IMAGE_MESSAGE_24 = "message_24.png";
 
 	public static final String IMAGE_MESSAGE_ADD_24 = "message_add_24.png";
@@ -108,8 +116,6 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_MESSAGE_REPLY_24 = "message_reply_24.png";
 
 	public static final String IMAGE_MESSAGE_OPEN_24 = "message_open_24.png";
-
-
 
 
 	/**

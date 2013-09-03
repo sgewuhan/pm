@@ -45,10 +45,10 @@
             targetID="perspective.home">
          <view
                closeable="false"
-               id="com.sg.business.home.mywork"
+               id="com.sg.business.home.summary"
                minimized="false"
                moveable="false"
-               ratio="0.4"
+               ratio="0.8"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
@@ -57,12 +57,12 @@
          </view>
          <view
                closeable="false"
-               id="com.sg.business.home.summary"
+               id="com.sg.business.home.mywork"
                minimized="false"
                moveable="false"
                ratio="0.4"
-               relationship="right"
-               relative="com.sg.business.home.mywork"
+               relationship="left"
+               relative="com.sg.business.home.summary"
                showTitle="true"
                standalone="false"
                visible="true">
