@@ -30,7 +30,6 @@
          <filterAction>
             <column
                   column="markread"
-                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
                   name="已读"
                   type="Boolean">
             </column>
@@ -41,15 +40,13 @@
             </column>
             <column
                   column="sender"
-                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                   name="发件人"
                   type="String">
             </column>
             <column
                   column="desc"
                   name="标题"
-                  type="String"
-                  width="260">
+                  type="String">
             </column>
             <column
                   column="senddate"
@@ -60,7 +57,6 @@
          <searchAction>
             <column
                   column="markread"
-                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
                   name="已读"
                   type="Boolean">
             </column>
@@ -71,7 +67,6 @@
             </column>
             <column
                   column="sender"
-                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                   name="发件人"
                   type="String">
             </column>
@@ -79,7 +74,7 @@
                   column="desc"
                   name="标题"
                   type="String"
-                  width="260">
+                  >
             </column>
             <column
                   column="senddate"
@@ -90,7 +85,6 @@
          <sortAction>
             <column
                   column="markread"
-                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
                   name="已读"
                   type="Boolean">
             </column>
@@ -101,15 +95,13 @@
             </column>
             <column
                   column="sender"
-                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                   name="发件人"
                   type="String">
             </column>
             <column
                   column="desc"
                   name="标题"
-                  type="String"
-                  width="260">
+                  type="String">
             </column>
             <column
                   column="senddate"
@@ -127,7 +119,6 @@
          <filterAction>
             <column
                   column="markread"
-                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
                   name="已读"
                   type="Boolean">
             </column>
@@ -138,15 +129,13 @@
             </column>
             <column
                   column="sender"
-                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                   name="发件人"
                   type="String">
             </column>
             <column
                   column="desc"
                   name="标题"
-                  type="String"
-                  width="260">
+                  type="String">
             </column>
             <column
                   column="senddate"
@@ -157,7 +146,6 @@
          <searchAction>
             <column
                   column="markread"
-                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
                   name="已读"
                   type="Boolean">
             </column>
@@ -168,15 +156,13 @@
             </column>
             <column
                   column="sender"
-                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                   name="发件人"
                   type="String">
             </column>
             <column
                   column="desc"
                   name="标题"
-                  type="String"
-                  width="260">
+                  type="String">
             </column>
             <column
                   column="senddate"
@@ -187,7 +173,6 @@
          <sortAction>
             <column
                   column="markread"
-                  labelProvider="com.sg.bussiness.message.labelprovider.ReadMark"
                   name="已读"
                   type="Boolean">
             </column>
@@ -198,15 +183,13 @@
             </column>
             <column
                   column="sender"
-                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                   name="发件人"
                   type="String">
             </column>
             <column
                   column="desc"
                   name="标题"
-                  type="String"
-                  width="260">
+                  type="String">
             </column>
             <column
                   column="senddate"
@@ -222,7 +205,7 @@
             autoExpandLevel="-1"
             canCreate="false"
             canEdit="false"
-            customItemHeight="40"
+            customItemHeight="54"
             dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
             editorId="message.editor.create"
             headerVisiable="false"
@@ -236,6 +219,9 @@
                type="String"
                width="-1">
          </column>
+         <structure
+               modelRelation="message_message">
+         </structure>
       </tree>
       <tree
             autoExpandLevel="-1"
@@ -252,7 +238,7 @@
          </structure>
          <column
                column="desc"
-               labelProvider="com.sg.bussiness.message.labelprovider.Send"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
                name="标题"
                type="String"
                width="-1">
@@ -270,21 +256,26 @@
          <basicpage
                description="消息"
                id="basicpage"
+               image="image/message_24.png"
                title="消息">
             <pagecolumn>
                <section
-                     label="基本信息">
+                     label="收件人">
                   <list
                         addTableItemHandler="com.sg.business.message.editor.field.AddReciever"
                         editable="true"
+                        heightHint="120"
                         id="reciever"
-                        label="接收人"
-                        labelVisible="true"
+                        label="收件人"
+                        labelVisible="false"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reciever"
                         persistable="true"
                         required="true">
                   </list>
+               </section>
+               <section
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
@@ -296,48 +287,18 @@
                         required="true"
                         type="String">
                   </text>
-                  <text
-                        defaultValueProvider="com.sg.business.commons.value.CurrentUser"
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="sender"
-                        label="发件人"
-                        labelVisible="true"
-                        name="sender"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="senddate"
-                        label="发件日期"
-                        labelVisible="true"
-                        name="senddate"
-                        persistable="true"
-                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
-                        required="false"
-                        type="Date">
-                  </text>
-                  <radio
-                        defaultValue="一般"
+                  <combo
+                        editPart="Combo(Read Only)"
                         editable="true"
                         id="importance"
                         label="重要度"
-                        labelVisible="false"
+                        labelVisible="true"
                         name="importance"
                         option="com.sg.crm.action.ip.option"
                         persistable="true"
                         required="false"
-                        type="String"
-                        wrapRadio="false">
-                  </radio>
-               </section>
-               <section
-                     label="内容">
+                        type="String">
+                  </combo>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -351,8 +312,6 @@
                         type="String">
                   </text>
                </section>
-            </pagecolumn>
-            <pagecolumn>
                <section
                      label="附件">
                   <file
@@ -374,11 +333,12 @@
             collectionName="message"
             dbName="pm2"
             id="message.editor.reply"
-            name="回复"
+            name="消息"
             titleToolTips="回复消息">
          <basicpage
                description="消息"
                id="basicpage"
+               image="image/message_24.png"
                title="消息">
             <pagecolumn>
                <section
@@ -394,60 +354,33 @@
                         required="true"
                         type="String">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="reciever"
-                        label="收件人"
-                        labelVisible="true"
-                        name="reciever"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
-                        required="true"
-                        type="String">
-                  </text>
-                  <text
-                        defaultValueProvider="com.sg.business.commons.value.CurrentUser"
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="sender"
-                        label="发件人"
-                        labelVisible="true"
-                        name="sender"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="senddate"
-                        label="发件日期"
-                        labelVisible="true"
-                        name="senddate"
-                        persistable="true"
-                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
-                        required="false"
-                        type="Date">
-                  </text>
-                  <radio
-                        defaultValue="一般"
-                        editable="true"
-                        id="importance"
-                        label="重要度"
-                        labelVisible="false"
-                        name="importance"
-                        option="com.sg.crm.action.ip.option"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        wrapRadio="false">
-                  </radio>
-               </section>
-               <section
-                     label="内容">
+                  <fieldgroup
+                        columnCount="2">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="reciever"
+                           label="收件人"
+                           labelVisible="true"
+                           name="reciever"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.UserIdListFieldPres"
+                           required="true"
+                           type="String">
+                     </text>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="importance"
+                           label="重要度"
+                           labelVisible="true"
+                           name="importance"
+                           option="com.sg.crm.action.ip.option"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -461,8 +394,6 @@
                         type="String">
                   </text>
                </section>
-            </pagecolumn>
-            <pagecolumn>
                <section
                      label="附件">
                   <file
@@ -535,6 +466,12 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:organization.user?after=organization.consignUser">
+         <command
+               commandId="message.sendtoselecteduser"
+               icon="image/message_add_24.png"
+               label="发送消息"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -551,6 +488,10 @@
             id="message.markread"
             name="标记已读">
       </command>
+      <command
+            id="message.sendtoselecteduser"
+            name="发送消息">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -566,6 +507,10 @@
             commandId="message.markread"
             class="com.sg.bussiness.message.handler.MarkRead">
             
+      </handler>
+      <handler
+            class="com.sg.bussiness.message.handler.SendToSelectedUser"
+            commandId="message.sendtoselecteduser">
       </handler>
    </extension>
 
