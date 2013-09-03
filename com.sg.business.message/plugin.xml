@@ -520,6 +520,7 @@
                         editable="false"
                         heightHint="160"
                         id="content"
+                        isHTML="true"
                         label="内容"
                         labelVisible="false"
                         name="content"
@@ -532,6 +533,7 @@
          </basicpage>
          <basicpage
                id="basicpage2"
+               image="image/message_24.png"
                title="附件">
             <pagecolumn>
                <section

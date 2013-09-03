@@ -131,9 +131,9 @@ public class ModelUtil {
 	public static  void appendMessageContent(Message message, String contentLine) {
 		Object value = message.getValue(Message.F_CONTENT);
 		if(!(value instanceof String)){
-			message.setValue(Message.F_CONTENT, "您好:"+"<br/>"+contentLine);
+			message.setValue(Message.F_CONTENT, "<strong>"+"您好: "+"</strong><br/>"+"您收到了提交的项目计划信息。<br/>您在计划中将负责和参与以下工作：<br/><br/>"+contentLine);
 		}else{
-			message.setValue(Message.F_CONTENT, ""+value+"<br/>"+contentLine);
+			message.setValue(Message.F_CONTENT, (String)value+"<br/>  "+contentLine);
 		}
 	}
 
@@ -158,7 +158,7 @@ public class ModelUtil {
 						message = ModelUtil.createProjectCommitMessage(userId);
 						messageList.put(userId, message);
 					}
-					ModelUtil.appendMessageContent(message, "您将参与工作流程，"+processName + " :"
+					ModelUtil.appendMessageContent(message, "参与工作流程，"+processName + ": "
 							+ work.getLabel());
 					message.appendTargets(work, Work.EDITOR, Boolean.TRUE);
 				}
@@ -180,7 +180,7 @@ public class ModelUtil {
 						message = ModelUtil.createProjectCommitMessage(userId);
 						messageList.put(userId, message);
 					}
-					ModelUtil.appendMessageContent(message, "您将参与本项目流程，"+processName + " :"
+					ModelUtil.appendMessageContent(message, "参与项目流程，"+processName + ": "
 							+ project.getLabel());
 					message.appendTargets(project, Work.EDITOR, Boolean.TRUE);
 				}
