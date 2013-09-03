@@ -457,14 +457,6 @@
          name="组织"
          point="com.sg.widgets.column">
       <column
-            column="organizationnumber"
-            id="organization.organizationNumber"
-            name="组织编号"
-            style="SWT.LEFT"
-            type="String"
-            width="120">
-      </column>
-      <column
             column="organizationtype"
             id="organization.organizationType"
             name="组织类型"
