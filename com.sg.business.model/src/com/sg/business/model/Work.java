@@ -941,6 +941,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		appendMessageForExecuteWorkflowActor(messageList);
 
+		List<PrimaryObject> children = getChildrenWork();
+		for (int i = 0; i < children.size(); i++) {
+			Work childwork = (Work) children.get(i);
+			childwork.getCommitMessage(messageList);
+		}
 		return messageList;
 	}
 
@@ -953,8 +958,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				message = ModelUtil.createProjectCommitMessage(userId);
 				messageList.put(userId, message);
 			}
-			message = ModelUtil.createProjectCommitMessage(userId);
-			ModelUtil.appendMessageContent(message, "您将负责工作" + " :"
+			ModelUtil.appendMessageContent(message, "负责工作" + ": "
 					+ getLabel());
 			message.appendTargets(this, EDITOR, Boolean.TRUE);
 			messageList.put(userId, message);
@@ -971,8 +975,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				message = ModelUtil.createProjectCommitMessage(userId);
 				messageList.put(userId, message);
 			}
-			message = ModelUtil.createProjectCommitMessage(userId);
-			ModelUtil.appendMessageContent(message, "您需要为工作指派负责人和参与者，工作" + " :"
+			ModelUtil.appendMessageContent(message, "为工作指派负责人和参与者，工作" + ": "
 					+ getLabel());
 			message.appendTargets(this, EDITOR, Boolean.TRUE);
 			messageList.put(userId, message);
@@ -991,7 +994,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					message = ModelUtil.createProjectCommitMessage(userId);
 					messageList.put(userId, message);
 				}
-				ModelUtil.appendMessageContent(message, "您将参与工作" + " :"
+				ModelUtil.appendMessageContent(message, "参与工作" + ": "
 						+ getLabel());
 				message.appendTargets(this, EDITOR, Boolean.TRUE);
 			}

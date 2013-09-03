@@ -1566,7 +1566,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					message = ModelUtil.createProjectCommitMessage(userId);
 					messageList.put(userId, message);
 				}
-				ModelUtil.appendMessageContent(message, "您将参与工作" + " :"
+				ModelUtil.appendMessageContent(message, "参与工作" + ": "
 						+ getLabel());
 				message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
 			}
@@ -1588,8 +1588,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				message = ModelUtil.createProjectCommitMessage(userId);
 				messageList.put(userId, message);
 			}
-			message = ModelUtil.createProjectCommitMessage(userId);
-			ModelUtil.appendMessageContent(message, "您将在本项目计划中担任项目负责人，项目" + " :"
+			ModelUtil.appendMessageContent(message, "担任项目负责人，项目" + ": "
 					+ getLabel());
 			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
 			messageList.put(userId, message);
