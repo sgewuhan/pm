@@ -9,13 +9,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.IRefreshablePart;
-import com.sg.widgets.part.NavigatorControl;
-import com.sg.widgets.part.editor.DataObjectEditor;
-import com.sg.widgets.part.editor.page.NavigatorPage;
-import com.sg.widgets.part.view.NavigatorPart;
-import com.sg.widgets.viewer.ViewerControl;
 
 public class SyncHR extends AbstractHandler {
 
