@@ -44,9 +44,6 @@
             tree="organization.navigator">
          <filterAction>
             <column
-                  columnDefinitionId="organization.organizationNumber">
-            </column>
-            <column
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
             <column
@@ -66,9 +63,6 @@
             </column>
          </filterAction>
          <searchAction>
-            <column
-                  columnDefinitionId="organization.organizationNumber">
-            </column>
             <column
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
