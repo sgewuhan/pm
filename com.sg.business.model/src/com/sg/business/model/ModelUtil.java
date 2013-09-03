@@ -1,12 +1,15 @@
 package com.sg.business.model;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.check.CheckListItem;
@@ -125,5 +128,63 @@ public class ModelUtil {
 		return null;
 	}
 	
+	public static  void appendMessageContent(Message message, String contentLine) {
+		Object value = message.getValue(Message.F_CONTENT);
+		if(!(value instanceof String)){
+			message.setValue(Message.F_CONTENT, "您好:"+"<br/>"+contentLine);
+		}else{
+			message.setValue(Message.F_CONTENT, ""+value+"<br/>"+contentLine);
+		}
+	}
+
+	public static  Message createProjectCommitMessage(String userId) {
+		Message message = ModelService.createModelObject(Message.class);
+		message.setValue(Message.F_RECIEVER, userId);
+		message.setValue(Message.F_DESC, "项目计划提交通知");
+		return message;
+	}
 	
+	public static  void appendWorkflowActorMessage(Work work,Map<String, Message> messageList, String processKey, String processName) {
+		Message message;
+		String userId;
+		if(work.isWorkflowActivate(processKey)){
+			DBObject map = work.getProcessActorsMap(processKey);
+			if(map != null){
+				Iterator<String> iter = map.keySet().iterator();
+				while(iter.hasNext()){
+					userId = iter.next();
+					message = messageList.get(userId);
+					if (message == null) {
+						message = ModelUtil.createProjectCommitMessage(userId);
+						messageList.put(userId, message);
+					}
+					ModelUtil.appendMessageContent(message, "您将参与工作流程，"+processName + " :"
+							+ work.getLabel());
+					message.appendTargets(work, Work.EDITOR, Boolean.TRUE);
+				}
+			}
+		}
+	}
+	
+	public static  void appendWorkflowActorMessage(Project project,Map<String, Message> messageList, String processKey, String processName) {
+		Message message;
+		String userId;
+		if(project.isWorkflowActivate(processKey)){
+			DBObject map = project.getProcessActorsMap(processKey);
+			if(map != null){
+				Iterator<String> iter = map.keySet().iterator();
+				while(iter.hasNext()){
+					userId = iter.next();
+					message = messageList.get(userId);
+					if (message == null) {
+						message = ModelUtil.createProjectCommitMessage(userId);
+						messageList.put(userId, message);
+					}
+					ModelUtil.appendMessageContent(message, "您将参与本项目流程，"+processName + " :"
+							+ project.getLabel());
+					message.appendTargets(project, Work.EDITOR, Boolean.TRUE);
+				}
+			}
+		}
+	}
 }
