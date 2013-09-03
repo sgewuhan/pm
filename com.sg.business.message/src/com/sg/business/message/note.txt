@@ -1,0 +1,11 @@
+1. 收件箱 不能新建
+2. 收件箱 中的图片和标签文字
+2.1. Message.getImageURL() 转变为3个，一个是获取 messsage_open的图标、message图标、reply图标
+2.2. getHTMLLabel() 注意，已读的除了图标不同外，desc的加粗去掉
+3. 发件箱图片和标签文字
+3.1. 把发件箱的labelprovider新做一个，显示收件人
+4. 调整页面布局的宽度比例编辑器占0.4
+5. 收件人应当可以是多人，更改编辑器字段（参考项目中的工作的参与者字段）
+6. 调整收件人在labelprovider中的显示
+7. 在组织上选择人，发送消息，完成command, handler
+8. 去掉plugins.xml中的警告项
