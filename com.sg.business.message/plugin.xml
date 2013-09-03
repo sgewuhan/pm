@@ -340,7 +340,7 @@
             name="回复消息"
             titleToolTips="回复消息">
          <basicpage
-               description="消息"
+               description="回复消息"
                id="basicpage"
                image="image/message_reply_24.png"
                title="消息">
@@ -385,6 +385,9 @@
                            type="String">
                      </combo>
                   </fieldgroup>
+               </section>
+               <section
+                     label="内容">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -398,6 +401,12 @@
                         type="String">
                   </text>
                </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="basicpage2"
+               title="附件">
+            <pagecolumn>
                <section
                      label="附件">
                   <file
@@ -477,6 +486,9 @@
                            required="true"
                            type="String">
                      </text>
+                  </fieldgroup>
+                  <fieldgroup
+                        columnCount="2">
                      <dateTime
                            editPart="DateDrop"
                            editable="false"
@@ -545,21 +557,6 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:message.recieved">
-         <command
-               commandId="message.add"
-               icon="image/message_add_24.png"
-               label="新消息"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
          <command
                commandId="message.reply"
                icon="image/message_reply_24.png"
@@ -688,6 +685,31 @@
                icon="image/message_add_24.png"
                label="发送消息"
                style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:message.send?after=additions">
+         <command
+               commandId="message.add"
+               icon="image/message_add_24.png"
+               label="新消息"
+               style="push">
+         </command>
+         <command
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
    </extension>

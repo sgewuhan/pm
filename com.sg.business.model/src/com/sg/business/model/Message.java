@@ -119,7 +119,10 @@ public class Message extends PrimaryObject {
 	public Message makeReply() {
 		Message reply = ModelService.createModelObject(Message.class);
 		reply.setValue(F_PARENT_MESSAGE, get_id());
-		reply.setValue(F_RECIEVER, getValue(F_SENDER));
+		Object value = getValue(F_SENDER);
+		BasicDBList recieverList = new BasicDBList();
+		recieverList.add(value);
+		reply.setValue(F_RECIEVER, recieverList);
 		reply.setValue(F_DESC, "RE:" + getDesc());
 		return reply;
 	}
