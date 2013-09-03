@@ -67,6 +67,11 @@ public class User extends PrimaryObject {
 	private static final String F_CONSIGNER = "consigner";
 
 	/**
+	 * 是否系统管理员
+	 */
+	private static final String F_IS_ADMIN = "isadmin";
+
+	/**
 	 * 获取组织_id
 	 * @return ObjectId
 	 */
@@ -257,6 +262,22 @@ public class User extends PrimaryObject {
 	public void doConsignTo(User consigner, IContext context) throws Exception {
 		setValue(F_CONSIGNER, consigner.getUserid());
 		doSave(context);
+	}
+
+	/**
+	 * 获取系统管理员
+	 * @return List<User>
+	 */
+	public static List<PrimaryObject> getUserByAdmin() {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_USER);
+		
+		DBCursor cur = userCol.find(new BasicDBObject().append(User.F_IS_ADMIN, Boolean.TRUE));
+		while (cur.hasNext()) {
+			result.add(ModelService.createModelObject(cur.next(), User.class));
+		}
+		return result;
 	}
 
 	/**
