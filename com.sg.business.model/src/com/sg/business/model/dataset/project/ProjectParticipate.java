@@ -27,7 +27,7 @@ public class ProjectParticipate extends MasterDetailDataSetFactory {
 		if (master != null) {
 			IProjectRelative work = (IProjectRelative) master;
 			Project project = work.getProject();
-			List<?> participates = project.getParticipate();
+			List<?> participates = project.getParticipatesIdList();
 			List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 			if (participates != null) {
 				for (int i = 0; i < participates.size(); i++) {

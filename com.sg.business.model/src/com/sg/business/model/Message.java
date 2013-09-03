@@ -3,11 +3,14 @@ package com.sg.business.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.bson.types.BasicBSONList;
+
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
@@ -88,6 +91,11 @@ public class Message extends PrimaryObject {
 	public static final String SF_TARGET_EDITOR = "targeteditor";
 
 	/**
+	 * 是否可以修改
+	 */
+	public static final String SF_TARGET_EDITABLE = "targeteditable";
+
+	/**
 	 * 附件,文件列表型字段
 	 */
 	public static final String F_ATTACHMENT = "attachment";
@@ -121,8 +129,8 @@ public class Message extends PrimaryObject {
 		if (!(markReadData instanceof DBObject)) {
 			return false;
 		}
-		return (Boolean) ((DBObject) markReadData).get(context.getAccountInfo()
-				.getUserId());
+		String userId = context.getAccountInfo().getUserId();
+		return Boolean.TRUE.equals(((DBObject) markReadData).get(userId));
 	}
 
 	@Override
@@ -132,6 +140,7 @@ public class Message extends PrimaryObject {
 		String imageUrl = "<img src='" +(isRead?getImageURLForOpen():getImageURL())
 				+ "' style='float:left;padding:2px' width='24' height='24' />";
 		String label = getLabel();
+
 		String senderId = (String) getValue(F_SENDER);
 		User sender = User.getUserById(senderId);
 
@@ -139,6 +148,7 @@ public class Message extends PrimaryObject {
 				Utils.SDF_DATE_COMPACT_SASH);
 		Date date = (Date) getValue(F_SENDDATE);
 		String sendDate = sdf.format(date);
+
 		sb.append(imageUrl);
 		if (isRead) {
 			sb.append(label);
@@ -151,14 +161,6 @@ public class Message extends PrimaryObject {
 		sb.append("发件人:" + sender + " " + sendDate);
 
 		return sb.toString();
-	}
-
-	public String getStatus() {
-		if (isRead(new CurrentAccountContext())) {
-			return "marked";
-		} else
-			return "message";
-
 	}
 	public String getImageURLForReply() {
 			return FileUtil.getImageURL(
@@ -195,9 +197,9 @@ public class Message extends PrimaryObject {
 			User sender = User.getUserById(senderId);
 			sb.append("发件人:" + sender + " " + sendDate );
 			sb.append("<br/>");
-/*			String recieverId = (String) getValue(F_RECIEVER);
+		    String recieverId = (String) getValue(F_RECIEVER);
 			User reciever = User.getUserById(recieverId);
-			sb.append("收件人:" + reciever);*/
+			sb.append("收件人:" + reciever);
 		return sb.toString();
 	}
 
@@ -205,4 +207,35 @@ public class Message extends PrimaryObject {
 		return getValue(F_PARENT_MESSAGE)!=null;
 	}
 
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		setValue(F_SENDDATE, new Date());
+		setValue(F_SENDER, context.getAccountInfo().getUserId());
+		super.doInsert(context);
+	}
+
+	/**
+	 * 向消息增加目标导航数据
+	 * 
+	 * @param target
+	 */
+	public void appendTargets(PrimaryObject target, String editorId,
+			boolean editable) {
+		Object value = getValue(F_TARGETS);
+		if (!(value instanceof BasicBSONList)) {
+			value = new BasicDBList();
+		}
+		BasicBSONList targets = (BasicBSONList) value;
+
+		DBObject newElement = new BasicDBObject();
+		newElement.put(SF_TARGET, target.get_id());
+		newElement.put(SF_TARGET_CLASS, target.getClass().getName());
+		newElement.put(SF_TARGET_EDITOR, editorId);
+		newElement.put(SF_TARGET_EDITABLE, new Boolean(editable));
+		if (targets.contains(newElement)) {
+			return;
+		}
+		targets.add(newElement);
+		setValue(F_TARGETS, targets);
+	}
 }

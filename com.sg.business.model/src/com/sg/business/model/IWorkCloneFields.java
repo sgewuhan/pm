@@ -8,6 +8,10 @@ public interface IWorkCloneFields {
 	public static final String F_CHARGER_ROLE_ID = "charger_roled_id";
 
 	/**
+	 * 指派者角色定义
+	 */
+	public static final String F_ASSIGNMENT_CHARGER_ROLE_ID = "assignmentcharger_roled_id";
+	/**
 	 * 参与者角色定义
 	 */
 	public static final String F_PARTICIPATE_ROLE_SET = "participate_roled_set";
