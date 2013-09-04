@@ -1,6 +1,8 @@
 package com.sg.business.organization.command;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -33,6 +35,7 @@ public class SyncHR extends AbstractHandler {
 		for (OrgExchange orgExchange : renameSet) {
 			orgExchange.doRenameHR();
 		}
+		pmOrg.sendMessage(removeSet);
 
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		if (part instanceof IRefreshablePart) {

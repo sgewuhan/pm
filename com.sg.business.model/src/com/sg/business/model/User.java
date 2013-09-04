@@ -268,7 +268,7 @@ public class User extends PrimaryObject {
 	 * 获取系统管理员
 	 * @return List<User>
 	 */
-	public static List<PrimaryObject> getUserByAdmin() {
+	public static List<PrimaryObject> getAdmin() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
