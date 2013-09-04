@@ -131,9 +131,9 @@ public class ModelUtil {
 	public static  void appendMessageContent(Message message, String contentLine) {
 		Object value = message.getValue(Message.F_CONTENT);
 		if(!(value instanceof String)){
-			message.setValue(Message.F_CONTENT, "<strong>"+"您好: "+"</strong><br/>"+"您收到了提交的项目计划信息。<br/>您在计划中将负责和参与以下工作：<br/><br/>"+contentLine);
+			message.setValue(Message.F_CONTENT, "<span style='font-size:14px'>"+"您好: "+"</span><br/><br/>"+"您收到了提交的项目计划信息。<br/>您在计划中将负责和参与以下工作：<br/><br/>"+contentLine);
 		}else{
-			message.setValue(Message.F_CONTENT, (String)value+"<br/>  "+contentLine);
+			message.setValue(Message.F_CONTENT, (String)value+"<br/>"+contentLine);
 		}
 	}
 
@@ -141,6 +141,7 @@ public class ModelUtil {
 		Message message = ModelService.createModelObject(Message.class);
 		message.setValue(Message.F_RECIEVER, userId);
 		message.setValue(Message.F_DESC, "项目计划提交通知");
+		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
 		return message;
 	}
 	
