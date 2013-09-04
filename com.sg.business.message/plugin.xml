@@ -21,6 +21,12 @@
             name="发件箱"
             restorable="true">
       </view>
+      <view
+            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            id="message.waste"
+            name="废件箱"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -198,6 +204,9 @@
             </column>
          </sortAction>
       </navigator>
+      <navigator
+            id="message.waste">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -237,6 +246,20 @@
             headerVisiable="false"
             id="message.send"
             markupEnabled="true">
+         <structure
+               modelRelation="message_message">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="标题"
+               type="String"
+               width="-1">
+         </column>
+      </tree>
+      <tree
+            dataSet="com.sg.business.model.dataset.message.MyWasteMessage"
+            id="message.waste">
          <structure
                modelRelation="message_message">
          </structure>
@@ -332,6 +355,27 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="basicpage2"
+               image="image/message_24.png"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        heightHint="240"
+                        id="attachment"
+                        label="附件"
+                        labelVisible="false"
+                        name="attachment"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="message"
@@ -405,6 +449,7 @@
          </basicpage>
          <basicpage
                id="basicpage2"
+               image="image/message_24.png"
                title="附件">
             <pagecolumn>
                <section
@@ -767,24 +812,82 @@
       <handler
             commandId="message.markread"
             class="com.sg.bussiness.message.handler.MarkRead">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="markRead"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
             
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.UnmarkRead"
             commandId="message.unmarkread">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="unmarkread"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.MarkStar"
             commandId="message.markstar">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="markstar"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.UnmarkStar"
             commandId="message.unmarkstar">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="unmarkstar"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.SendToSelectedUser"
             commandId="message.sendtoselecteduser">
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.message.test.MessageActionTest"
+            id="message.action.test"
+            namespace="message"
+            properties="action"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>

@@ -15,7 +15,7 @@ public class MySendMessage extends SingleDBCollectionDataSetFactory {
 			String userid = UserSessionContext.getAccountInfo()
 					.getconsignerId();
 			setQueryCondition(new BasicDBObject().append(Message.F_SENDER,
-					userid).append(Message.F_PARENT_MESSAGE, null));
+					userid));
 			setSort(new BasicDBObject().append(Message.F_SENDDATE, -1));
 		} catch (Exception e) {
 			e.printStackTrace();

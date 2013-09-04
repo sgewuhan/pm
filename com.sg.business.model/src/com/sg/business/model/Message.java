@@ -58,6 +58,10 @@ public class Message extends PrimaryObject {
 	 * {"zhonghua": true,"zhansan":true}
 	 */
 	public static final String F_MARK_READ = "markread";
+	
+	public static final String F_MARK_STAR = "markstar";
+	
+	public static final String F_WASTE = "waste";
 
 	/**
 	 * 重要度
@@ -156,6 +160,33 @@ public class Message extends PrimaryObject {
 		doSave(context);
 	}
 
+	
+	public void doMarkStar(IContext context,
+			Boolean isStar) throws Exception {
+		Object markStarData = getValue(F_MARK_STAR);
+		if (!(markStarData instanceof DBObject)) {
+			markStarData = new BasicDBObject();
+		}
+		((DBObject) markStarData).put(context.getAccountInfo().getUserId(),
+				isStar);
+		setValue(F_MARK_STAR, markStarData);
+		doSave(context);
+	}
+
+	
+	public void doWaste(IContext context,
+			Boolean isWaste) throws Exception {
+		Object wasteData = getValue(F_WASTE);
+		if (!(wasteData instanceof DBObject)) {
+			wasteData = new BasicDBObject();
+		}
+		((DBObject) wasteData).put(context.getAccountInfo().getUserId(),
+				isWaste);
+		setValue(F_WASTE, wasteData);
+		doSave(context);
+	}
+	
+	
 	public boolean isRead(IContext context) {
 		Object markReadData = getValue(F_MARK_READ);
 		if (!(markReadData instanceof DBObject)) {
@@ -165,7 +196,23 @@ public class Message extends PrimaryObject {
 		return Boolean.TRUE.equals(((DBObject) markReadData).get(userId));
 	}
 
-
+	public boolean isStar(IContext context) {
+		Object markStarData = getValue(F_MARK_STAR);
+		if (!(markStarData instanceof DBObject)) {
+			return false;
+		}
+		String userId = context.getAccountInfo().getUserId();
+		return Boolean.TRUE.equals(((DBObject) markStarData).get(userId));
+	}
+	
+	public boolean isWaste(IContext context) {
+		Object wasteData = getValue(F_WASTE);
+		if (!(wasteData instanceof DBObject)) {
+			return false;
+		}
+		String userId = context.getAccountInfo().getUserId();
+		return Boolean.TRUE.equals(((DBObject) wasteData).get(userId));
+	}
 	/**
 	 * 返回回复图标路径
 	 * @return String
@@ -192,6 +239,11 @@ public class Message extends PrimaryObject {
 		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_24,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
+	
+	public String getImageURLForStar() {
+		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_STAR_12,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+	}
 
 	/**
 	 * 返回标题的显示内容
@@ -200,6 +252,7 @@ public class Message extends PrimaryObject {
 	public String getHTMLLabel() {
 		boolean isReply = isReply();
 		boolean isRead = isRead(new CurrentAccountContext());
+		boolean isStar = isStar(new CurrentAccountContext());
 		StringBuffer sb = new StringBuffer();
 		
 		//添加日期
@@ -229,11 +282,16 @@ public class Message extends PrimaryObject {
 		label = Utils.getPlainText(label);
 		label = Utils.getLimitLengthString(label, 20);
 		if (isRead) {
-			sb.append(label);
+			sb.append(label+"(已读)");
 		} else {
-			sb.append("<b>" + label + "</b>");
+			sb.append("<b>" + label +"(未读)"+ "</b>");
 		}
-
+		
+		if(isStar){
+			sb.append("<img src='"
+					+ getImageURLForStar()
+					+ "' width='12' height='12' />");
+		}
 		sb.append("<br/>");
 		
 		String senderId = (String) getValue(F_SENDER);
@@ -310,4 +368,7 @@ public class Message extends PrimaryObject {
 		targets.add(newElement);
 		setValue(F_TARGETS, targets);
 	}
+
+
+	
 }
