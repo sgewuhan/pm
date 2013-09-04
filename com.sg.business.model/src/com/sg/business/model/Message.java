@@ -185,6 +185,7 @@ public class Message extends PrimaryObject {
 		((DBObject) wasteData).put(context.getAccountInfo().getUserId(),
 				isWaste);
 		setValue(F_WASTE, wasteData);
+		setValue(F_PARENT_MESSAGE,null);
 		doSave(context);
 	}
 	

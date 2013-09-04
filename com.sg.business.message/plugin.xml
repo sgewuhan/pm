@@ -285,7 +285,8 @@
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
             id="message.recieved"
-            markupEnabled="true">
+            markupEnabled="true"
+            popupMenu="popup:message.recieved">
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
