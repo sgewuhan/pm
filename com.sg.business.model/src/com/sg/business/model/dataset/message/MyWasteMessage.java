@@ -14,6 +14,7 @@ public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 			try {
 				String userid = UserSessionContext.getAccountInfo()
 						.getconsignerId();
+				setQueryCondition(new BasicDBObject().append(Message.F_WASTE,new BasicDBObject().append(userid, true)));
 			} catch (Exception e) {
 				e.printStackTrace();
 				MessageUtil.showToast(e);

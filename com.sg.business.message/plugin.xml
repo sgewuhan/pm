@@ -9,7 +9,7 @@
       </category>
       <view
             category="message"
-            class="com.sg.business.message.view.MessageView"
+            class="com.sg.widgets.part.view.TableNavigator"
             id="message.recieved"
             name="收件箱"
             restorable="true">
@@ -22,7 +22,8 @@
             restorable="true">
       </view>
       <view
-            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            category="message"
+            class="com.sg.business.message.view.MessageView"
             id="message.waste"
             name="废件箱"
             restorable="true">
@@ -32,7 +33,7 @@
          point="com.sg.widgets.navigator">
       <navigator
             id="message.recieved"
-            tree="message.recieved">
+            table="message.recieved">
          <filterAction>
             <column
                   column="markread"
@@ -205,7 +206,8 @@
          </sortAction>
       </navigator>
       <navigator
-            id="message.waste">
+            id="message.waste"
+            tree="message.waste">
       </navigator>
    </extension>
    <extension
@@ -230,9 +232,6 @@
                type="String"
                width="-1">
          </column>
-         <structure
-               modelRelation="message_message">
-         </structure>
       </tree>
       <tree
             autoExpandLevel="-1"
@@ -258,8 +257,16 @@
          </column>
       </tree>
       <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MyWasteMessage"
-            id="message.waste">
+            headerVisiable="false"
+            id="message.waste"
+            markupEnabled="true">
          <structure
                modelRelation="message_message">
          </structure>
@@ -271,6 +278,22 @@
                width="-1">
          </column>
       </tree>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
+            id="message.recieved"
+            markupEnabled="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="标题"
+               type="String"
+               width="-1">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -741,6 +764,11 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="message.remove"
+               label="移除至废件箱"
+               style="push">
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -811,6 +839,10 @@
       <command
             id="message.sendtoselecteduser"
             name="发送消息">
+      </command>
+      <command
+            id="message.remove"
+            name="移除至废件箱">
       </command>
    </extension>
    <extension
@@ -895,6 +927,10 @@
       <handler
             class="com.sg.bussiness.message.handler.SendToSelectedUser"
             commandId="message.sendtoselecteduser">
+      </handler>
+      <handler
+            class="com.sg.bussiness.message.handler.RemoveToWaste"
+            commandId="message.remove">
       </handler>
    </extension>
    <extension

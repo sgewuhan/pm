@@ -30,6 +30,6 @@ public class MessageActionTest extends PropertyTester {
 			}
 
 		}
-		return false;
+		return true;
 	}
 }
