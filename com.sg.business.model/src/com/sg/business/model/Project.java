@@ -1552,6 +1552,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		//4. ±éÀú¹¤×÷
 		Work root = getWBSRoot();
 		messageList = root.getCommitMessage(messageList);
+		
+		ModelUtil.appendProjectCommitMessageEndContent(messageList);
 		return messageList;
 	}
 	public void appendMessageForParticipate(Map<String, Message> messageList) {
