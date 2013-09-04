@@ -331,4 +331,8 @@ public class Message extends PrimaryObject {
 		targets.add(newElement);
 		setValue(F_TARGETS, targets);
 	}
+
+	public BasicBSONList getTargetList() {
+		return (BasicBSONList) getValue(F_TARGETS);
+	}
 }

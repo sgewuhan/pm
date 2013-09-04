@@ -563,6 +563,13 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               description="导航"
+               id="basicpage3"
+               image="image/message_24.png"
+               pageDelegator="com.sg.business.message.editor.page.TargetListPage"
+               title="导航">
+         </basicpage>
       </editor>
    </extension>
    <extension

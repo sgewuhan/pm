@@ -203,7 +203,7 @@ public class ModelUtil {
 		while(iter.hasNext()){
 			Message message = iter.next();
 			appendMessageContent(message, "<br/><br/>"
-					+ "您可在[消息导航]中查看以上消息对应的项目和工作。"
+					+ "您可在[导航]中查看以上消息对应的项目和工作。"
 					+ "<br/>"
 					+ "如果您对项目计划有任何疑问，请及时与项目的发起者沟通，或直接[回复]本消息。"
 					+ "<br/><br/>"
