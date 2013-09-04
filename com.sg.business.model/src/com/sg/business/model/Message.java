@@ -115,6 +115,11 @@ public class Message extends PrimaryObject {
 	 */
 	public static final String EDITOR_VIEW = "message.editor.view";
 
+	/**
+	 * 使用html的内容
+	 */
+	public static final String F_ISHTMLBODY = "ishtmlcontent";
+
 
 	/**
 	 * 构建回复信息对象
