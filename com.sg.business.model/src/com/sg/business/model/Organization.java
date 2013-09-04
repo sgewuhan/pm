@@ -28,6 +28,15 @@ import com.sg.business.resource.BusinessResource;
 public class Organization extends PrimaryObject {
 
 	/**
+	 * 部门和团队编辑器
+	 */
+	public static final String EDITOR_SUBTEAM = "editor.organization.subteam";
+	
+	/**
+	 * 顶级组织编辑器
+	 */
+	public static final String EDITOR_TEAM = "editor.organization.team";
+	/**
 	 * 组织编号
 	 */
 	public static final String F_ORGANIZATION_NUMBER = "organizationnumber";

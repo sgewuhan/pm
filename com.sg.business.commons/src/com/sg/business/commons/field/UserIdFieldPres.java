@@ -19,7 +19,7 @@ public class UserIdFieldPres implements IValuePresentation {
 				return user.getLabel();
 			}
 		}
-		return "";
+		return value;
 	}
 
 }

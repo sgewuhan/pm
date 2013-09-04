@@ -1,5 +1,7 @@
 package com.sg.business.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -7,8 +9,10 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
@@ -139,7 +143,9 @@ public class ModelUtil {
 
 	public static  Message createProjectCommitMessage(String userId) {
 		Message message = ModelService.createModelObject(Message.class);
-		message.setValue(Message.F_RECIEVER, userId);
+		BasicDBList recievers = new BasicDBList();
+		recievers.add(userId);
+		message.setValue(Message.F_RECIEVER, recievers);
 		message.setValue(Message.F_DESC, "项目计划提交通知");
 		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
 		return message;
@@ -153,7 +159,8 @@ public class ModelUtil {
 			if(map != null){
 				Iterator<String> iter = map.keySet().iterator();
 				while(iter.hasNext()){
-					userId = iter.next();
+					String key = iter.next();
+					userId = (String) map.get(key);
 					message = messageList.get(userId);
 					if (message == null) {
 						message = ModelUtil.createProjectCommitMessage(userId);
@@ -175,7 +182,8 @@ public class ModelUtil {
 			if(map != null){
 				Iterator<String> iter = map.keySet().iterator();
 				while(iter.hasNext()){
-					userId = iter.next();
+					String key = iter.next();
+					userId = (String) map.get(key);
 					message = messageList.get(userId);
 					if (message == null) {
 						message = ModelUtil.createProjectCommitMessage(userId);
@@ -186,6 +194,24 @@ public class ModelUtil {
 					message.appendTargets(project, Work.EDITOR, Boolean.TRUE);
 				}
 			}
+		}
+	}
+
+	public static void appendProjectCommitMessageEndContent(
+			Map<String, Message> messageList) {
+		Iterator<Message> iter = messageList.values().iterator();
+		while(iter.hasNext()){
+			Message message = iter.next();
+			appendMessageContent(message, "<br/><br/>"
+					+ "您可在[导航]中查看以上消息对应的项目和工作。"
+					+ "<br/>"
+					+ "如果您对项目计划有任何疑问，请及时与项目的发起者沟通，或直接[回复]本消息。"
+					+ "<br/><br/>"
+					+ "祝工作愉快!"
+					+ "<br/>"
+					+ new SimpleDateFormat(Utils.SDF_DATE_WEEKDAY_TIME).format(new Date())
+					+ "<br/>"
+					+ "（本消息由系统自动代发）");
 		}
 	}
 }

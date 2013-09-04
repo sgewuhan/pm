@@ -961,7 +961,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.organization.command.SyncHR"
+            class="com.sg.business.organization.command.SyncHRHandler"
             commandId="command.organization.syncHR">
       </handler>
       <handler

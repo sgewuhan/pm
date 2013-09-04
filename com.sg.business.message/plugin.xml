@@ -9,14 +9,14 @@
       </category>
       <view
             category="message"
-            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            class="com.sg.business.message.view.MessageView"
             id="message.recieved"
             name="收件箱"
             restorable="true">
       </view>
       <view
             category="message"
-            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            class="com.sg.business.message.view.MessageView"
             id="message.send"
             name="发件箱"
             restorable="true">
@@ -492,7 +492,8 @@
                         name="desc"
                         persistable="true"
                         required="true"
-                        type="String">
+                        type="String"
+                        userlabelForReadonly="true">
                   </text>
                   <text
                         editPart="Text(Single Line)"
@@ -503,7 +504,8 @@
                         name="importance"
                         persistable="true"
                         required="false"
-                        type="String">
+                        type="String"
+                        userlabelForReadonly="true">
                   </text>
                   <fieldgroup
                         columnCount="2">
@@ -517,7 +519,8 @@
                            persistable="true"
                            presentation="com.sg.business.commons.field.UserIdFieldPres"
                            required="true"
-                           type="String">
+                           type="String"
+                           userlabelForReadonly="true">
                      </text>
                      <text
                            editPart="Text(Single Line)"
@@ -529,33 +532,40 @@
                            persistable="true"
                            presentation="com.sg.business.commons.field.UserIdListFieldPres"
                            required="true"
-                           type="String">
+                           type="String"
+                           userlabelForReadonly="true">
                      </text>
                   </fieldgroup>
                   <fieldgroup
                         columnCount="2">
-                     <dateTime
-                           editPart="DateDrop"
+                     <text
+                           editPart="Text(Single Line)"
                            editable="false"
                            id="senddate"
                            label="发送日期"
                            labelVisible="true"
                            name="senddate"
                            persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd E HH:mm:ss"
                            required="false"
-                           type="Date">
-                     </dateTime>
-                     <dateTime
-                           editPart="DateDrop"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
                            editable="false"
                            id="recievedate"
                            label="收件日期"
                            labelVisible="true"
                            name="recievedate"
                            persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd E HH:mm:ss"
                            required="false"
-                           type="Date">
-                     </dateTime>
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
                   </fieldgroup>
                </section>
                <section
@@ -577,6 +587,7 @@
             </pagecolumn>
          </basicpage>
          <basicpage
+               description="附件"
                id="basicpage2"
                image="image/message_24.png"
                title="附件">
@@ -596,6 +607,13 @@
                   </file>
                </section>
             </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="导航"
+               id="basicpage3"
+               image="image/message_24.png"
+               pageDelegator="com.sg.business.message.editor.page.TargetListPage"
+               title="导航">
          </basicpage>
       </editor>
    </extension>

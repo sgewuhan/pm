@@ -10,6 +10,7 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -113,7 +114,7 @@ public class Message extends PrimaryObject {
 	 * 新消息编辑器
 	 */
 	public static final String EDITOR_SEND = "message.editor.create";
-	
+
 	/**
 	 * 消息查看编辑器
 	 */
@@ -124,15 +125,15 @@ public class Message extends PrimaryObject {
 	 */
 	public static final String F_ISHTMLBODY = "ishtmlcontent";
 
-
 	/**
 	 * 构建回复信息对象
+	 * 
 	 * @return Message
 	 */
 	public Message makeReply() {
 		Message reply = ModelService.createModelObject(Message.class);
 		reply.setValue(F_PARENT_MESSAGE, get_id());
-		//设置接收人
+		// 设置接收人
 		Object value = getValue(F_SENDER);
 		BasicDBList recieverList = new BasicDBList();
 		recieverList.add(value);
@@ -143,9 +144,10 @@ public class Message extends PrimaryObject {
 
 	/**
 	 * 设置消息状态
+	 * 
 	 * @param context
 	 * @param isRead
-	 *          ,是否已读
+	 *            ,是否已读
 	 * @throws Exception
 	 */
 	public void doMarkRead(IContext context, Boolean isRead) throws Exception {
@@ -213,8 +215,10 @@ public class Message extends PrimaryObject {
 		String userId = context.getAccountInfo().getUserId();
 		return Boolean.TRUE.equals(((DBObject) wasteData).get(userId));
 	}
+	
 	/**
 	 * 返回回复图标路径
+	 * 
 	 * @return String
 	 */
 	public String getImageURLForReply() {
@@ -224,6 +228,7 @@ public class Message extends PrimaryObject {
 
 	/**
 	 * 返回已读消息图标路径
+	 * 
 	 * @return String
 	 */
 	public String getImageURLForOpen() {
@@ -233,6 +238,7 @@ public class Message extends PrimaryObject {
 
 	/**
 	 * 返回未读消息图标路径
+	 * 
 	 * @return String
 	 */
 	public String getImageURL() {
@@ -247,25 +253,26 @@ public class Message extends PrimaryObject {
 
 	/**
 	 * 返回标题的显示内容
-	 * @return  String
+	 * 
+	 * @return String
 	 */
 	public String getHTMLLabel() {
 		boolean isReply = isReply();
 		boolean isRead = isRead(new CurrentAccountContext());
 		boolean isStar = isStar(new CurrentAccountContext());
 		StringBuffer sb = new StringBuffer();
-		
-		//添加日期
+
+		// 添加日期
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		Date date = (Date) getValue(F_SENDDATE);
 		String sendDate = sdf.format(date);
 		sb.append("<span style='float:right;padding-right:4px'>");
 		sb.append(sendDate);
 		sb.append("</span>");
-		
-		//添加图标
+
+		// 添加图标
 		String imageUrl = null;
-		//如果为已读消息，显示图标地址为getImageURLForOpen()
+		// 如果为已读消息，显示图标地址为getImageURLForOpen()
 		if (isRead) {
 			imageUrl = "<img src='"
 					+ getImageURLForOpen()
@@ -277,7 +284,7 @@ public class Message extends PrimaryObject {
 		}
 		sb.append(imageUrl);
 
-		//添加主题
+		// 添加主题
 		String label = getLabel();
 		label = Utils.getPlainText(label);
 		label = Utils.getLimitLengthString(label, 20);
@@ -293,10 +300,10 @@ public class Message extends PrimaryObject {
 					+ "' width='12' height='12' />");
 		}
 		sb.append("<br/>");
-		
+
 		String senderId = (String) getValue(F_SENDER);
 		User sender = User.getUserById(senderId);
-		sb.append("发件人:" + sender );
+		sb.append("发件人:" + sender);
 		sb.append("  ");
 		String recieverLabel = getRecieverLabel();
 		sb.append("收件人:" + recieverLabel);
@@ -305,6 +312,7 @@ public class Message extends PrimaryObject {
 
 	/**
 	 * 返回接收人的显示内容
+	 * 
 	 * @return String
 	 */
 	public String getRecieverLabel() {
@@ -316,7 +324,7 @@ public class Message extends PrimaryObject {
 				String userId = (String) recieverList.get(0);
 				User user = User.getUserById(userId);
 				result = user.getLabel();
-				//如果收件人有多个人，则显示第一个收件人加省略号
+				// 如果收件人有多个人，则显示第一个收件人加省略号
 				if (recieverList.size() > 1) {
 					result += " ...";
 				}
@@ -328,6 +336,7 @@ public class Message extends PrimaryObject {
 
 	/**
 	 * 判断是否为回复消息
+	 * 
 	 * @return boolean
 	 */
 	public boolean isReply() {
@@ -339,9 +348,23 @@ public class Message extends PrimaryObject {
 	 */
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		setValue(F_SENDDATE, new Date());
-		setValue(F_SENDER, context.getAccountInfo().getUserId());
-		super.doInsert(context);
+		Object value = getValue(F_RECIEVER);
+		if (value instanceof BasicBSONList) {
+			setValue(F_SENDDATE, new Date());
+			setValue(F_SENDER, context.getAccountInfo().getUserId());
+			super.doInsert(context);
+
+			// 激活账户通知
+			BasicBSONList recieverList = (BasicBSONList) value;
+			for (int i = 0; i < recieverList.size(); i++) {
+				UserSessionContext.noticeAccountChanged((String)recieverList.get(i),
+						UserSessionContext.EVENT_MESSAGE);
+			}
+
+		} else {
+			throw new Exception("缺少收件人");
+		}
+
 	}
 
 	/**
@@ -369,6 +392,7 @@ public class Message extends PrimaryObject {
 		setValue(F_TARGETS, targets);
 	}
 
-
-	
+	public BasicBSONList getTargetList() {
+		return (BasicBSONList) getValue(F_TARGETS);
+	}
 }
