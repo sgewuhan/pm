@@ -13,8 +13,10 @@ public class SyncHRHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		long start = System.currentTimeMillis();
-		
-		SyscHR.doSyscHR();
+
+		// 与HR的组织进行同步
+		SyscHR syscHR = new SyscHR();
+		syscHR.doSyscHROrganization();
 
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		if (part instanceof IRefreshablePart) {
