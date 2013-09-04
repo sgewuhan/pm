@@ -1,16 +1,16 @@
 package com.sg.business.organization.command;
 
 import java.util.Date;
-import java.util.HashSet;import java.util.HashSet;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -21,11 +21,11 @@ import com.mongodb.WriteResult;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Message;
 import com.sg.business.model.Organization;
-import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.sqldb.utility.SQLResult;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;
+import com.sg.widgets.part.BackgroundContext;
 
 public class OrgExchange {
 
@@ -36,6 +36,8 @@ public class OrgExchange {
 	private Set<OrgExchange> children = new HashSet<OrgExchange>();
 
 	private ObjectId pmParentId;
+
+	private ObjectId pmId;
 
 	private OrgExchange parent;
 
@@ -63,7 +65,8 @@ public class OrgExchange {
 			ObjectId childrenPmParentId, OrgExchange childrenParent) {
 		this.orgId = childrenOrgId;
 		this.desc = childrenDesc;
-		this.pmParentId = childrenPmParentId;
+		this.setPmId(childrenPmParentId);
+		this.pmParentId = childrenParent.getPmId();
 		this.parent = childrenParent;
 		this.children.addAll(initByPmChildren(this));
 	}
@@ -83,7 +86,8 @@ public class OrgExchange {
 		if (row != null) {
 			orgId = (String) row.get(Organization.F_ORGANIZATION_NUMBER);
 			desc = (String) row.get(Organization.F_FULLDESC);
-			pmParentId = (ObjectId) row.get(Organization.F__ID);
+			pmParentId = (ObjectId) row.get(Organization.F_PARENT_ID);
+			setPmId((ObjectId) row.get(Organization.F__ID));
 			children.addAll(initByPmChildren(this));
 		}
 	}
@@ -93,7 +97,7 @@ public class OrgExchange {
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
 		DBCursor childCursor = coll.find(new BasicDBObject().append(
-				Organization.F_PARENT_ID, parentOrgExchange.pmParentId));
+				Organization.F_PARENT_ID, parentOrgExchange.getPmId()));
 		while (childCursor.hasNext()) {
 			DBObject childRow = childCursor.next();
 			String childrenOrgId = (String) childRow
@@ -103,9 +107,6 @@ public class OrgExchange {
 			ObjectId childrenPmId = (ObjectId) childRow.get(Organization.F__ID);
 			OrgExchange orgExchange = new OrgExchange(childrenOrgId,
 					childrenDesc, childrenPmId, parentOrgExchange);
-			if(parentOrgExchange.parent == null){
-			System.out.println(orgExchange.orgId);
-			}
 			childrenSet.add(orgExchange);
 
 		}
@@ -181,6 +182,14 @@ public class OrgExchange {
 		return parent;
 	}
 
+	public ObjectId getPmId() {
+		return pmId;
+	}
+
+	public void setPmId(ObjectId pmId) {
+		this.pmId = pmId;
+	}
+
 	public ObjectId getParentId() {
 		ObjectId pmId = null;
 		if (parent != null) {
@@ -244,8 +253,21 @@ public class OrgExchange {
 			data.put(Organization.F_DESC,
 					otherOrg.desc.replaceFirst(otherOrg.parent.desc, ""));
 		}
+		DBObject accountInfo = new BasicDBObject();
+		AccountInfo account = new BackgroundContext().getAccountInfo();
+		accountInfo.put("userid", account.getUserId());
+		accountInfo.put("username", account.getUserName());
+
 		data.put(Organization.F__ID, _id);
 		data.put(Organization.F_PARENT_ID, parentId);
+		data.put(PrimaryObject.F__CDATE, new Date());
+		data.put(PrimaryObject.F__CACCOUNT, accountInfo);
+		if(parentId == null){
+			data.put(PrimaryObject.F__EDITOR, Organization.EDITOR_TEAM);
+		} else {
+			data.put(PrimaryObject.F__EDITOR, Organization.EDITOR_SUBTEAM);
+		}
+		
 		WriteResult wr = roleCollection.insert(data);
 		if (wr.getN() > 0) {
 			ModelService.createModelObject(data, Organization.class);
@@ -253,12 +275,15 @@ public class OrgExchange {
 	}
 
 	public void doRenameHR() {
-		DBCollection organizationCol = DBActivator.getCollection(
-				IModelConstants.DB, IModelConstants.C_ORGANIZATION);
-		organizationCol.update(new BasicDBObject().append(
-				Organization.F_ORGANIZATION_NUMBER, orgId), new BasicDBObject()
-				.append("$set", new BasicDBObject().append(
-						Organization.F_FULLDESC, desc)), false, true);
+		Organization organization;
+		organization = ModelService.createModelObject(Organization.class);
+		organization.setValue(Organization.F__ID, pmId);
+		organization.setValue(Organization.F_FULLDESC, desc);
+		try {
+			organization.doSave(new BackgroundContext());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -287,35 +312,36 @@ public class OrgExchange {
 	}
 
 	public void sendMessage(Set<OrgExchange> removeSet) {
+		Message message;
+		// 设置消息内容
 		String messageContent = null;
 		for (OrgExchange orgExchange : removeSet) {
 			if (messageContent == null) {
-				messageContent = OrgExchange.MESSAGE_CONTENT_BEFORE + orgExchange.desc
-						+ OrgExchange.MESSAGE_CONTENT_AFTER;
+				messageContent = OrgExchange.MESSAGE_CONTENT_BEFORE
+						+ orgExchange.desc + OrgExchange.MESSAGE_CONTENT_AFTER;
 			} else {
 				messageContent = messageContent + (char) 13
 						+ OrgExchange.MESSAGE_CONTENT_BEFORE + orgExchange.desc
 						+ OrgExchange.MESSAGE_CONTENT_AFTER;
 			}
 		}
-		DBCollection roleCollection = DBActivator.getCollection(
-				IModelConstants.DB, IModelConstants.C_MESSAGE);
 
-		BasicDBObject data = new BasicDBObject();
-		data.put(Message.F_CONTENT, messageContent);
-		data.put(Message.F_SENDDATE, new Date());
-		data.put(Message.F_DESC, OrgExchange.MESSAGE_DESC);
+		// 获取系统管理员角色的用户信息
 		List<PrimaryObject> user = User.getAdmin();
-
 		BasicBSONList recieverList = new BasicBSONList();
 		for (int i = 0; i < user.size(); i++) {
 			recieverList.add(user.get(i).getValue(User.F_USER_ID));
 		}
-		data.put(Message.F_RECIEVER, recieverList);
 
-		WriteResult wr = roleCollection.insert(data);
-		if (wr.getN() > 0) {
-			ModelService.createModelObject(data, Message.class);
+		message = ModelService.createModelObject(Message.class);
+		message.setValue(Message.F_CONTENT, messageContent);
+		message.setValue(Message.F_DESC, OrgExchange.MESSAGE_DESC);
+		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
+		message.setValue(Message.F_RECIEVER, recieverList);
+		try {
+			message.doSave(new BackgroundContext());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

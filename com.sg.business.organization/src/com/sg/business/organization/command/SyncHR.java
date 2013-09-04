@@ -1,8 +1,6 @@
 package com.sg.business.organization.command;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -51,6 +49,7 @@ public class SyncHR extends AbstractHandler {
 		insertSet.addAll(hrOrg.getDifferentChildren(pmOrg));
 		removeSet.addAll(pmOrg.getDifferentChildren(hrOrg));
 		if (!hrOrg.getDifferentName(pmOrg)) {
+			hrOrg.setPmId(pmOrg.getPmId());
 			renameSet.add(hrOrg);
 		}
 		Set<OrgExchange> hrSameChildren = hrOrg.getSameChildren(pmOrg);
