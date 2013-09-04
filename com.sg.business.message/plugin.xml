@@ -9,14 +9,14 @@
       </category>
       <view
             category="message"
-            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            class="com.sg.business.message.view.MessageView"
             id="message.recieved"
             name="收件箱"
             restorable="true">
       </view>
       <view
             category="message"
-            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            class="com.sg.business.message.view.MessageView"
             id="message.send"
             name="发件箱"
             restorable="true">

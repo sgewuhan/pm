@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
@@ -139,7 +140,9 @@ public class ModelUtil {
 
 	public static  Message createProjectCommitMessage(String userId) {
 		Message message = ModelService.createModelObject(Message.class);
-		message.setValue(Message.F_RECIEVER, userId);
+		BasicDBList recievers = new BasicDBList();
+		recievers.add(userId);
+		message.setValue(Message.F_RECIEVER, recievers);
 		message.setValue(Message.F_DESC, "项目计划提交通知");
 		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
 		return message;
@@ -153,7 +156,8 @@ public class ModelUtil {
 			if(map != null){
 				Iterator<String> iter = map.keySet().iterator();
 				while(iter.hasNext()){
-					userId = iter.next();
+					String key = iter.next();
+					userId = (String) map.get(key);
 					message = messageList.get(userId);
 					if (message == null) {
 						message = ModelUtil.createProjectCommitMessage(userId);
@@ -175,7 +179,8 @@ public class ModelUtil {
 			if(map != null){
 				Iterator<String> iter = map.keySet().iterator();
 				while(iter.hasNext()){
-					userId = iter.next();
+					String key = iter.next();
+					userId = (String) map.get(key);
 					message = messageList.get(userId);
 					if (message == null) {
 						message = ModelUtil.createProjectCommitMessage(userId);
