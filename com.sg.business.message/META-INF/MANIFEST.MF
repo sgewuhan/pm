@@ -7,6 +7,7 @@ Bundle-Activator: com.sg.business.message.MessageActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.ui.forms;bundle-version="2.1.0",
+ org.eclipse.rap.ui.forms;bundle-version="2.1.0",
  org.eclipse.core.runtime,
  com.mobnut.db;bundle-version="1.0.0",
  com.mobnut.portal;bundle-version="1.0.0",
@@ -14,7 +15,6 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.widgets;bundle-version="1.0.0",
  com.sg.business.model;bundle-version="1.0.0",
  com.sg.business.commons;bundle-version="1.0.0",
- org.eclipse.rap.ui.forms;bundle-version="2.1.0",
  org.eclipse.core.expressions
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
