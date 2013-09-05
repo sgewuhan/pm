@@ -12,6 +12,13 @@
       </view>
       <view
             category="home"
+            class="com.sg.business.home.view.BulletinBoardView"
+            id="home.bulletinboard"
+            name="公告板"
+            restorable="true">
+      </view>
+      <view
+            category="home"
             class="com.sg.business.home.view.MyCalendar"
             id="com.sg.business.home.mycalendar"
             name="日历"
@@ -28,6 +35,24 @@
             id="home"
             name="工作">
       </category>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="home.bulletinboard"
+            tree="home.bulletinboard">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            autoExpandLevel="-1"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.home.BulletinBoardDataSet"
+            headerVisiable="false"
+            id="home.bulletinboard"
+            markupEnabled="true">
+      </tree>
    </extension>
 
 </plugin>

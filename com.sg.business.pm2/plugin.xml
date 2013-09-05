@@ -83,6 +83,17 @@
                standalone="false"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="home.bulletinboard"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="com.sg.business.home.mywork"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.message">

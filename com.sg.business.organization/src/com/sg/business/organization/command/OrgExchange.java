@@ -29,15 +29,11 @@ import com.sg.widgets.part.BackgroundContext;
  * <p>
  * 同步组织
  * </p>
- * 用于同步HR和PM系统的组织，包括以下功能：
- * <li>根据组织编号构造HR和PM系统完整的组织结构（其中包括组织编号、组织全称、子组织、父组织）
- * <li>获取差异的子组织
- * <li>
- * <li>
- * <li>
+ * 用于同步HR和PM系统的组织，包括以下功能： <li>根据组织编号构造HR和PM系统完整的组织结构（其中包括组织编号、组织全称、子组织、父组织） <li>
+ * 获取差异的子组织 <li> <li> <li>
  * 
  * @author 杨骏
- *
+ * 
  */
 public class OrgExchange {
 
@@ -75,12 +71,12 @@ public class OrgExchange {
 	 * 消息标题
 	 */
 	public static String MESSAGE_DESC = "系统消息：HR系统中存在组织被删除或更改了上级组织！";
-	
+
 	/**
 	 * 消息内容（后半部分）
 	 */
 	public static String MESSAGE_CONTENT_AFTER = "”已被删除或更改了上级组织，请在PM系统中更改归属其组织的人员、角色、项目等信息，并删除对应的组织！";
-	
+
 	/**
 	 * 消息内容（后半部分）
 	 */
@@ -88,8 +84,11 @@ public class OrgExchange {
 
 	/**
 	 * 构造函数
-	 * @param id : 组织编号
-	 * @param isPm : 标识是从PM系统还是从HR系统中读取组织，True时为PM系统，False时为HR系统
+	 * 
+	 * @param id
+	 *            : 组织编号
+	 * @param isPm
+	 *            : 标识是从PM系统还是从HR系统中读取组织，True时为PM系统，False时为HR系统
 	 */
 	public OrgExchange(String id, boolean isPm) {
 		if (isPm) {
@@ -101,12 +100,15 @@ public class OrgExchange {
 
 	/**
 	 * 构造函数
-	 * @param OrgId : 组织编号
-	 * @param Desc : 组织全称
-	 * @param Parent : 父组织
+	 * 
+	 * @param OrgId
+	 *            : 组织编号
+	 * @param Desc
+	 *            : 组织全称
+	 * @param Parent
+	 *            : 父组织
 	 */
-	public OrgExchange(String OrgId, String Desc,
-			OrgExchange Parent) {
+	public OrgExchange(String OrgId, String Desc, OrgExchange Parent) {
 		this.orgId = OrgId;
 		this.desc = Desc;
 		this.parent = Parent;
@@ -115,13 +117,18 @@ public class OrgExchange {
 
 	/**
 	 * 构造函数
-	 * @param OrgId : 组织编号
-	 * @param Desc : 组织全称
-	 * @param PmParentId : PM父组织id
-	 * @param Parent : 父组织
+	 * 
+	 * @param OrgId
+	 *            : 组织编号
+	 * @param Desc
+	 *            : 组织全称
+	 * @param PmParentId
+	 *            : PM父组织id
+	 * @param Parent
+	 *            : 父组织
 	 */
-	public OrgExchange(String OrgId, String Desc,
-			ObjectId PmParentId, OrgExchange Parent) {
+	public OrgExchange(String OrgId, String Desc, ObjectId PmParentId,
+			OrgExchange Parent) {
 		this.orgId = OrgId;
 		this.desc = Desc;
 		this.setPmId(PmParentId);
@@ -132,15 +139,17 @@ public class OrgExchange {
 
 	/**
 	 * 初始化PM系统的组织
-	 * @param id : 组织编号
+	 * 
+	 * @param id
+	 *            : 组织编号
 	 */
 	private void initByPm(String id) {
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
 		DBObject condition;
-		//判断是否顶级组织
-		//为null表示为顶级组织，这是通过parent_id来获取PM组织
-		//不为null表示为非顶级组织，这时通过organizationnumber来获取PM组织
+		// 判断是否顶级组织
+		// 为null表示为顶级组织，这是通过parent_id来获取PM组织
+		// 不为null表示为非顶级组织，这时通过organizationnumber来获取PM组织
 		if (id == null) {
 			condition = new BasicDBObject()
 					.append(Organization.F_PARENT_ID, id);
@@ -148,7 +157,7 @@ public class OrgExchange {
 			condition = new BasicDBObject().append(
 					Organization.F_ORGANIZATION_NUMBER, id);
 		}
-		//构造PM系统的组织
+		// 构造PM系统的组织
 		DBObject row = coll.findOne(condition);
 		if (row != null) {
 			orgId = (String) row.get(Organization.F_ORGANIZATION_NUMBER);
@@ -161,17 +170,19 @@ public class OrgExchange {
 
 	/**
 	 * 初始化PM系统的子组织
-	 * @param parentOrgExchange : {@link OrgExchange},父组织
+	 * 
+	 * @param parentOrgExchange
+	 *            : {@link OrgExchange},父组织
 	 * @return {@link HashSet},为子组织集合
 	 */
 	private Set<OrgExchange> initByPmChildren(OrgExchange parentOrgExchange) {
 		Set<OrgExchange> childrenSet = new HashSet<OrgExchange>();
-		//通过parent_id来获取子组织
+		// 通过parent_id来获取子组织
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
 		DBCursor childCursor = coll.find(new BasicDBObject().append(
 				Organization.F_PARENT_ID, parentOrgExchange.getPmId()));
-		//循环构造当前组织的子组织
+		// 循环构造当前组织的子组织
 		while (childCursor.hasNext()) {
 			DBObject childRow = childCursor.next();
 			String childrenOrgId = (String) childRow
@@ -189,27 +200,35 @@ public class OrgExchange {
 
 	/**
 	 * 初始化PM系统的组织
-	 * @param id : 组织编号
+	 * 
+	 * @param id
+	 *            : 组织编号
 	 */
 	private void initBySql(String id) {
 		try {
 			SQLResult result;
-			//判断是否顶级组织
-			//为null表示为顶级组织，这是通过ldunitid=‘1’来获取HR组织
-			//不为null表示为非顶级组织，这时通过unitid来获取HR组织
+			// 判断是否顶级组织
+			// 为null表示为顶级组织，这是通过ldunitid=‘1’来获取HR组织
+			// 不为null表示为非顶级组织，这时通过unitid来获取HR组织
 			if (id == null) {
 				result = SQLUtil.SQL_QUERY("hr",
 						"select * from pm_unit where ldunitid = '1'");
+				// result =
+				// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where ldunitid = '1'");
 			} else {
 				result = SQLUtil.SQL_QUERY("hr",
 						"select * from pm_unit where unitid = '" + id + "'");
+
+				// result =
+				// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where unitid = '"
+				// + id + "'");
 			}
-			//构造HR系统的组织
+			// 构造HR系统的组织
 			if (!result.isEmpty()) {
 				List<SQLRow> dataSet = result.getData();
 				SQLRow row = dataSet.get(0);
-				orgId = (String) row.getValue("unitid");
-				desc = (String) row.getValue("unitname");
+				orgId = "" + row.getValue("unitid");
+				desc = "" + row.getValue("unitname");
 				children.addAll(initBySqlChildren(this));
 			}
 		} catch (Exception e) {
@@ -219,7 +238,9 @@ public class OrgExchange {
 
 	/**
 	 * 初始化HR系统的子组织
-	 * @param parentOrgExchange : {@link OrgExchange},父组织
+	 * 
+	 * @param parentOrgExchange
+	 *            : {@link OrgExchange},父组织
 	 * @return {@link HashSet},为子组织集合
 	 */
 	private Set<OrgExchange> initBySqlChildren(OrgExchange parentOrgExchange) {
@@ -227,18 +248,20 @@ public class OrgExchange {
 		SQLResult result;
 		SQLRow row;
 		try {
-			//通过ldunitid来获取子组织
+			// 通过ldunitid来获取子组织
 			result = SQLUtil.SQL_QUERY("hr",
 					"select * from pm_unit where ldunitid = '"
 							+ parentOrgExchange.orgId + "'");
-
+			// result =
+			// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where ldunitid = '"+
+			// parentOrgExchange.orgId + "'");
 			if (!result.isEmpty()) {
-				//循环构造当前组织的子组织
+				// 循环构造当前组织的子组织
 				Iterator<SQLRow> iter = result.iterator();
 				while (iter.hasNext()) {
 					row = iter.next();
-					String childrenOrgId = (String) row.getValue("unitid");
-					String childrenDesc = (String) row.getValue("unitname");
+					String childrenOrgId = "" + row.getValue("unitid");
+					String childrenDesc = "" + row.getValue("unitname");
 
 					OrgExchange orgExchange = new OrgExchange(childrenOrgId,
 							childrenDesc, parentOrgExchange);
@@ -295,14 +318,17 @@ public class OrgExchange {
 
 	/**
 	 * 设置当前组织的PM系统_ID
-	 * @param pmId : {@link ObjectId},PM系统_ID
+	 * 
+	 * @param pmId
+	 *            : {@link ObjectId},PM系统_ID
 	 */
 	public void setPmId(ObjectId pmId) {
 		this.pmId = pmId;
 	}
 
 	/**
-	 * @return : {@link ObjectId}类型，当前组织的PM系统parent_id，在使用时需要设置属性{@link #parent}的{@link #orgId}
+	 * @return : {@link ObjectId}类型，当前组织的PM系统parent_id，在使用时需要设置属性{@link #parent}
+	 *         的{@link #orgId}
 	 */
 	public ObjectId getParentId() {
 		ObjectId pmId = null;
@@ -322,7 +348,9 @@ public class OrgExchange {
 
 	/**
 	 * 获取两个组织的子组织的差异部分
-	 * @param otherOrg : {@link OrgExchange},被比较的组织
+	 * 
+	 * @param otherOrg
+	 *            : {@link OrgExchange},被比较的组织
 	 * @return : {@link HashSet},子组织的差异部分
 	 */
 	public Set<OrgExchange> getDifferentChildren(OrgExchange otherOrg) {
@@ -334,7 +362,9 @@ public class OrgExchange {
 
 	/**
 	 * 获取两个组织的子组织的相同部分
-	 * @param otherOrg : {@link OrgExchange},被比较的组织
+	 * 
+	 * @param otherOrg
+	 *            : {@link OrgExchange},被比较的组织
 	 * @return : {@link HashSet},子组织的相同部分
 	 */
 	public Set<OrgExchange> getSameChildren(OrgExchange otherOrg) {
@@ -346,7 +376,9 @@ public class OrgExchange {
 
 	/**
 	 * 比较两个组织的全称是否相同
-	 * @param otherOrg : {@link OrgExchange},被比较的组织
+	 * 
+	 * @param otherOrg
+	 *            : {@link OrgExchange},被比较的组织
 	 * @return : 相同时为true。
 	 */
 	public boolean getDifferentName(OrgExchange otherOrg) {
@@ -357,20 +389,22 @@ public class OrgExchange {
 	 * 将当前组织插入到PM系统中
 	 */
 	public void doAddAllHR() {
-		//获取当前组织的parentId
+		// 获取当前组织的parentId
 		ObjectId parentId = this.getParentId();
 		doAddAllHR(parentId);
 	}
 
 	/**
 	 * 将当前组织插入到PM系统中
-	 * @param parentId : PM系统的parentId
+	 * 
+	 * @param parentId
+	 *            : PM系统的parentId
 	 */
 	public void doAddAllHR(ObjectId parentId) {
 		ObjectId _id = new ObjectId();
-		//插入当前组织
+		// 插入当前组织
 		doAddHR(this, _id, parentId);
-		//循环迭代调用本方法，插入子组织
+		// 循环迭代调用本方法，插入子组织
 		for (OrgExchange orgExchangeChildren : children) {
 			orgExchangeChildren.doAddAllHR(_id);
 		}
@@ -378,20 +412,24 @@ public class OrgExchange {
 
 	/**
 	 * 将组织插入到PM系统中
-	 * @param otherOrg : 需要插入的组织
-	 * @param _id : 插入的PM的_id
-	 * @param parentId : PM系统的parentId
+	 * 
+	 * @param otherOrg
+	 *            : 需要插入的组织
+	 * @param _id
+	 *            : 插入的PM的_id
+	 * @param parentId
+	 *            : PM系统的parentId
 	 */
 	public void doAddHR(OrgExchange otherOrg, ObjectId _id, ObjectId parentId) {
 		DBCollection roleCollection = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_ORGANIZATION);
 
-		//设置插入的组织信息
+		// 设置插入的组织信息
 		BasicDBObject data = new BasicDBObject();
 		data.put(Organization.F_ORGANIZATION_NUMBER, otherOrg.orgId);
 		data.put(Organization.F_FULLDESC, otherOrg.desc);
-		//如果没有父组织，则默认将全称作为简称，如果存在，则简称将去掉和父组相同的部分
-		//同时设置组织的编辑器，如果没有父组织，则使用顶级组织编辑器，如果存在，则使用部门和团队编辑器
+		// 如果没有父组织，则默认将全称作为简称，如果存在，则简称将去掉和父组相同的部分
+		// 同时设置组织的编辑器，如果没有父组织，则使用顶级组织编辑器，如果存在，则使用部门和团队编辑器
 		if (otherOrg.parent == null) {
 			data.put(Organization.F_DESC, otherOrg.desc);
 			data.put(PrimaryObject.F__EDITOR, Organization.EDITOR_TEAM);
@@ -400,7 +438,7 @@ public class OrgExchange {
 					otherOrg.desc.replaceFirst(otherOrg.parent.desc, ""));
 			data.put(PrimaryObject.F__EDITOR, Organization.EDITOR_SUBTEAM);
 		}
-		//设置系统信息
+		// 设置系统信息
 		DBObject accountInfo = new BasicDBObject();
 		AccountInfo account = new BackgroundContext().getAccountInfo();
 		accountInfo.put("userid", account.getUserId());
@@ -409,7 +447,7 @@ public class OrgExchange {
 		data.put(Organization.F_PARENT_ID, parentId);
 		data.put(PrimaryObject.F__CDATE, new Date());
 		data.put(PrimaryObject.F__CACCOUNT, accountInfo);
-		
+
 		WriteResult wr = roleCollection.insert(data);
 		if (wr.getN() > 0) {
 			ModelService.createModelObject(data, Organization.class);
@@ -458,7 +496,9 @@ public class OrgExchange {
 
 	/**
 	 * 发送需要消息给系统管理员，内容为需要删除的组织
-	 * @param removeSet : {@link HashSet}，需要删除的组织
+	 * 
+	 * @param removeSet
+	 *            : {@link HashSet}，需要删除的组织
 	 */
 	public void sendMessage(Set<OrgExchange> removeSet) {
 		Message message;
