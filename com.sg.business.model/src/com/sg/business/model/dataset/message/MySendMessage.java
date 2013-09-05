@@ -22,7 +22,7 @@ public class MySendMessage extends SingleDBCollectionDataSetFactory {
 			
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Message.F_SENDER,userid);
-			condition.put(Message.F_WASTE,new BasicDBObject().append("$ne",new BasicDBObject().append(userid, true)));
+			condition.put(Message.F_WASTE+"."+userid,new BasicDBObject().append("$ne", true));
 			return condition;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -12,7 +12,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Message;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 import com.sg.widgets.MessageUtil;
