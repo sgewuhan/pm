@@ -1,6 +1,12 @@
 package com.sg.business.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.bson.types.ObjectId;
+
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 
 public class BulletinBoard extends PrimaryObject {
@@ -9,12 +15,12 @@ public class BulletinBoard extends PrimaryObject {
 	 * 发布/回复人
 	 */
 	public static final String F_PUBLISHER = "publisher";
-	
+
 	/**
 	 * 发布/回复日期
 	 */
 	public static final String F_PUBLISH_DATE = "publish_date";
-	
+
 	/**
 	 * 所属组织ID
 	 */
@@ -39,7 +45,35 @@ public class BulletinBoard extends PrimaryObject {
 	 * 附件,文件列表型字段
 	 */
 	public static final String F_ATTACHMENT = "attachment";
-	
+
+	public static final String EDITOR_REPLY = "bulletinboard.editor.reply";
+
+	public static final String EDITOR_CREATE = "bulletinboard.editor.create";
+
+	public String getPublisher() {
+		return (String) getValue(F_PUBLISHER);
+	}
+
+	public String getPublishDate() {
+		return (String) getValue(F_PUBLISH_DATE);
+	}
+
+	public String getOrganizationId() {
+		return (String) getValue(F_ORGANIZATION_ID);
+	}
+
+	public String getDesc() {
+		return (String) getValue(F_DESC);
+	}
+
+	public String getContent() {
+		return (String) getValue(F_CONTENT);
+	}
+
+	public ObjectId getParentBulletin() {
+		return (ObjectId) getValue(F_PARENT_BULLETIN);
+	}
+
 	/**
 	 * 返回标题的显示内容
 	 * 
@@ -48,8 +82,15 @@ public class BulletinBoard extends PrimaryObject {
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
 
-
-		// 添加主题
+		// 添加日期
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		Date date = (Date) getValue(F_PUBLISH_DATE);
+		String publishDate = sdf.format(date);
+		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append(publishDate);
+		sb.append("</span>");
+		
+		// 添加标题
 		String label = getLabel();
 		label = Utils.getPlainText(label);
 		label = Utils.getLimitLengthString(label, 20);
@@ -57,4 +98,43 @@ public class BulletinBoard extends PrimaryObject {
 
 		return sb.toString();
 	}
+
+	@Override
+	public boolean canEdit(IContext context) {
+		if (isOtherUser(context)) {
+			return false;
+		}
+		return super.canEdit(context);
+	}
+
+	@Override
+	public boolean canRead(IContext context) {
+		if (isOtherUser(context)) {
+			return false;
+		}
+		return super.canRead(context);
+	}
+
+	@Override
+	public boolean canDelete(IContext context) {
+		if (isOtherUser(context)) {
+			return false;
+		}
+		return super.canDelete(context);
+	}
+
+	private boolean isOtherUser(IContext context) {
+		String userId = context.getAccountInfo().getUserId();
+		String bulletinboardUserid = getPublisher();
+		return userId.equals(bulletinboardUserid);
+	}
+
+	public boolean isReply() {
+		if (getParentBulletin() == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 }
