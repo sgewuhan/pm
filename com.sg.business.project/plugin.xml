@@ -2784,24 +2784,6 @@
                label="启动"
                style="push">
          </command>
-         <command
-               commandId="project.pause"
-               icon="image/project_pause_24.png"
-               label="暂停"
-               style="push">
-         </command>
-         <command
-               commandId="project.finish"
-               icon="image/project_finish_24.png"
-               label="完工"
-               style="push">
-         </command>
-         <command
-               commandId="project.cancel"
-               icon="image/project_stop_24.png"
-               label="中止"
-               style="push">
-         </command>
       </menuContribution>
    </extension>
    <extension
@@ -3058,6 +3040,7 @@
             dbName="pm2"
             id="editor.work.launch"
             image="image/work_24.png"
+            isDefault="false"
             name="发起工作">
          <basicpage
                description="请填写工作的名称和描述"
@@ -3095,7 +3078,7 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="请填写计划开始、完成时间"
+               description="请填写本工作的计划开始、完成时间"
                id="basicpage2"
                image="image/schedule_72.png"
                title="计划">
@@ -3144,7 +3127,7 @@
                description="请设置工作执行流程的执行人"
                id="processpage1"
                image="image/workflow_72.png"
-               pageDelegator="com.sg.business.project.editor.page.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.project.editor.page.WorkExecuteProcessAssignmentPage"
                title="流程">
          </basicpage>
       </editor>
