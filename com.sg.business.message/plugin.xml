@@ -9,21 +9,21 @@
       </category>
       <view
             category="message"
-            class="com.sg.widgets.part.view.TableNavigator"
+            class="com.sg.business.message.view.Inbox"
             id="message.recieved"
             name="收件箱"
             restorable="true">
       </view>
       <view
             category="message"
-            class="com.sg.widgets.part.view.TableNavigator"
+            class="com.sg.business.message.view.Outbox"
             id="message.send"
             name="发件箱"
             restorable="true">
       </view>
       <view
             category="message"
-            class="com.sg.widgets.part.view.TableNavigator"
+            class="com.sg.business.message.view.Wastebox"
             id="message.waste"
             name="废件箱"
             restorable="true">
