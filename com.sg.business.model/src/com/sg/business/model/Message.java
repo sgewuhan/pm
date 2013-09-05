@@ -178,7 +178,6 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		((DBObject) wasteData).put(context.getAccountInfo().getUserId(),
 				Boolean.TRUE);
 		setValue(F_WASTE, wasteData);
-		setValue(F_PARENT_MESSAGE, null);
 		doSave(context);
 	}
 

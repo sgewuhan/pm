@@ -23,7 +23,6 @@ public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 					.getconsignerId();
 			
 			BasicDBObject condition = new BasicDBObject();
-			//condition.put(Message.F_SENDER,userid);
 			condition.put(Message.F_WASTE,new BasicDBObject().append(userid, true));
 			return condition;
 		} catch (Exception e) {
