@@ -59,9 +59,15 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	 * {"zhonghua": true,"zhansan":true}
 	 */
 	public static final String F_MARK_READ = "markread";
-	
+
+	/**
+	 * 星标标志
+	 */
 	public static final String F_MARK_STAR = "markstar";
-	
+
+	/**
+	 * 废件箱
+	 */
 	public static final String F_WASTE = "waste";
 
 	/**
@@ -96,6 +102,11 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	public static final String EDITOR_VIEW = "message.editor.view";
 
 	/**
+	 * 消息查看HTML编辑器
+	 */
+	public static final String EDITOR_HTMLVIEW = "message.editor.htmlview";
+
+	/**
 	 * 使用html的内容
 	 */
 	public static final String F_ISHTMLBODY = "ishtmlcontent";
@@ -118,7 +129,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	}
 
 	/**
-	 * 设置消息状态
+	 * 设置消息是否已读
 	 * 
 	 * @param context
 	 * @param isRead
@@ -137,9 +148,15 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		doSave(context);
 	}
 
-	
-	public void doMarkStar(IContext context,
-			Boolean isStar) throws Exception {
+	/**
+	 * 为消息添加星标
+	 * 
+	 * @param context
+	 * @param isStar
+	 *            ,是否添加星标
+	 * @throws Exception
+	 */
+	public void doMarkStar(IContext context, Boolean isStar) throws Exception {
 		Object markStarData = getValue(F_MARK_STAR);
 		if (!(markStarData instanceof DBObject)) {
 			markStarData = new BasicDBObject();
@@ -150,21 +167,28 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		doSave(context);
 	}
 
-	
-	public void doWaste(IContext context,
-			Boolean isWaste) throws Exception {
+	/**
+	 * 将消息添加到废件箱
+	 */
+	@Override
+	public void doRemove(IContext context) throws Exception {
 		Object wasteData = getValue(F_WASTE);
 		if (!(wasteData instanceof DBObject)) {
 			wasteData = new BasicDBObject();
 		}
 		((DBObject) wasteData).put(context.getAccountInfo().getUserId(),
-				isWaste);
+				Boolean.TRUE);
 		setValue(F_WASTE, wasteData);
-		setValue(F_PARENT_MESSAGE,null);
+		setValue(F_PARENT_MESSAGE, null);
 		doSave(context);
 	}
-	
-	
+
+	/**
+	 * 判断是否已读
+	 * 
+	 * @param context
+	 * @return boolean
+	 */
 	public boolean isRead(IContext context) {
 		Object markReadData = getValue(F_MARK_READ);
 		if (!(markReadData instanceof DBObject)) {
@@ -174,6 +198,12 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		return Boolean.TRUE.equals(((DBObject) markReadData).get(userId));
 	}
 
+	/**
+	 * 判断是否具有星标
+	 * 
+	 * @param context
+	 * @return boolean
+	 */
 	public boolean isStar(IContext context) {
 		Object markStarData = getValue(F_MARK_STAR);
 		if (!(markStarData instanceof DBObject)) {
@@ -182,7 +212,13 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		String userId = context.getAccountInfo().getUserId();
 		return Boolean.TRUE.equals(((DBObject) markStarData).get(userId));
 	}
-	
+
+	/**
+	 * 判断是否加入到废件箱
+	 * 
+	 * @param context
+	 * @return boolean
+	 */
 	public boolean isWaste(IContext context) {
 		Object wasteData = getValue(F_WASTE);
 		if (!(wasteData instanceof DBObject)) {
@@ -191,7 +227,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		String userId = context.getAccountInfo().getUserId();
 		return Boolean.TRUE.equals(((DBObject) wasteData).get(userId));
 	}
-	
+
 	/**
 	 * 返回回复图标路径
 	 * 
@@ -221,7 +257,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_24,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
-	
+
 	public String getImageURLForStar() {
 		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_STAR_12,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
@@ -265,14 +301,13 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		label = Utils.getPlainText(label);
 		label = Utils.getLimitLengthString(label, 20);
 		if (isRead) {
-			sb.append(label+"(已读)");
+			sb.append(label);
 		} else {
-			sb.append("<b>" + label +"(未读)"+ "</b>");
+			sb.append("<b>" + label + "</b>");
 		}
-		
-		if(isStar){
-			sb.append("<img src='"
-					+ getImageURLForStar()
+
+		if (isStar) {
+			sb.append("<img src='" + getImageURLForStar()
 					+ "' width='12' height='12' />");
 		}
 		sb.append("<br/>");
@@ -333,7 +368,8 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			// 激活账户通知
 			BasicBSONList recieverList = (BasicBSONList) value;
 			for (int i = 0; i < recieverList.size(); i++) {
-				UserSessionContext.noticeAccountChanged((String)recieverList.get(i),
+				UserSessionContext.noticeAccountChanged(
+						(String) recieverList.get(i),
 						UserSessionContext.EVENT_MESSAGE);
 			}
 
