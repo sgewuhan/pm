@@ -243,8 +243,10 @@
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
             editorId="message.editor.create"
+            headerVisiable="false"
             id="message.recieved"
             markupEnabled="true"
+            multiSelection="true"
             popupMenu="popup:message.recieved">
          <column
                column="desc"
@@ -771,36 +773,6 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:message.recieved">
-         <command
-               commandId="message.reply"
-               icon="image/message_reply_24.png"
-               label="回复消息"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="message.open"
-               icon="image/message_open_24.png"
-               label="查看消息"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
          <separator
                name="message.separator1"
                visible="true">
@@ -909,6 +881,40 @@
                icon="image/message_add_24.png"
                label="新消息"
                style="push">
+         </command>
+         <command
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:message.recieved?after=additions">
+         <command
+               commandId="message.reply"
+               icon="image/message_reply_24.png"
+               label="回复消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="message.open"
