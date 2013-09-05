@@ -214,7 +214,7 @@ public class User extends PrimaryObject {
 				User.F_USER_ID, userId));
 		return ModelService.createModelObject(userData, User.class);
 	}
-
+	
 	/**
 	 * 获得用户具有某角色的组织
 	 * @param roleNumber

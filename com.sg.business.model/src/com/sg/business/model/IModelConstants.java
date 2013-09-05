@@ -135,4 +135,9 @@ public interface IModelConstants {
 	 */
 	public static final String C_MESSAGE = "message";
 
+	/**
+	 * ¹«¸æ°å
+	 */
+	public static final String C_BULLETINBOARD = "bulletinboard";
+
 }
