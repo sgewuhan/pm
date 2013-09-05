@@ -4,13 +4,14 @@ import java.util.Iterator;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.viewer.CTableViewer;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class RestoreMessage extends AbstractNavigatorHandler {
@@ -28,16 +29,22 @@ public class RestoreMessage extends AbstractNavigatorHandler {
 				try {
 					message.doRestore(new CurrentAccountContext(),
 							Boolean.FALSE);
-					vc.getViewer().update(message, null);
+					CTableViewer viewer = (CTableViewer)vc.getViewer();
+					viewer.remove(message);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 					e.printStackTrace();
 				}
 			}
 		}
-		vc.getViewer().setSelection(new StructuredSelection(new Object[] {}));
-
+		
+		//刷新收件箱
+		String viewId = "message.recieved";
+		Widgets.refreshNavigatorView(viewId);
+		
+		//刷新发件箱
+		viewId = "message.send";
+		Widgets.refreshNavigatorView(viewId);
 	}
-
 
 }

@@ -143,7 +143,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		((DBObject) markReadData).put(context.getAccountInfo().getUserId(),
 				isRead);
 		setValue(F_MARK_READ, markReadData);
-		setValue(F_RECIEVEDDATE, new Date());
+		// setValue(F_RECIEVEDDATE, new Date());
 		doSave(context);
 	}
 
@@ -180,9 +180,8 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		setValue(F_WASTE, wasteData);
 		doSave(context);
 	}
-	
-	public void doRestore(IContext context,
-			Boolean isRestore) throws Exception {
+
+	public void doRestore(IContext context, Boolean isRestore) throws Exception {
 		Object wasteData = getValue(F_WASTE);
 		if (!(wasteData instanceof DBObject)) {
 			wasteData = new BasicDBObject();
@@ -269,7 +268,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	}
 
 	public String getImageURLForStar() {
-		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_STAR_12,
+		return FileUtil.getImageURL(BusinessResource.IMAGE_STAR_14,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
@@ -282,12 +281,12 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		boolean isReply = isReply();
 		boolean isRead = isRead(new CurrentAccountContext());
 		boolean isStar = isStar(new CurrentAccountContext());
-		String userid="";
+		String userid = "";
 		try {
 			userid = UserSessionContext.getAccountInfo().getconsignerId();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return e.getMessage();
 		}
 		StringBuffer sb = new StringBuffer();
 
@@ -302,32 +301,38 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		// 添加图标
 		String imageUrl = null;
 		// 如果为已读消息，显示图标地址为getImageURLForOpen()
-		if (isRead||getValue(F_SENDER).equals(userid)) {
+		if (isRead || userid.equals(getValue(F_SENDER))) {
 			imageUrl = "<img src='"
 					+ getImageURLForOpen()
 					+ "' style='float:left;padding:6px' width='24' height='24' />";
-		}else {
+		} else {
 			imageUrl = "<img src='"
 					+ (isReply ? getImageURLForReply() : getImageURL())
 					+ "' style='float:left;padding:6px' width='24' height='24' />";
 		}
 		sb.append(imageUrl);
 
+		
+		if (isStar) {
+			sb.append("<img src='" + getImageURLForStar()
+					+ "' width='14' height='14' />");
+		}
 		// 添加主题
 		String label = getLabel();
 		label = Utils.getPlainText(label);
 		label = Utils.getLimitLengthString(label, 20);
-		if (isRead||getValue(F_SENDER).equals(userid)) {
-			sb.append(label + "(" + getValue(F_IMPORTANCE) + ")");
+		if (isRead || getValue(F_SENDER).equals(userid)) {
+			sb.append(label);
 		} else {
-			sb.append("<b>" + label + "(" + getValue(F_IMPORTANCE) + ")"
-					+ "</b>");
+			sb.append("<b>" + label +"</b>");
 		}
-
-		if (isStar) {
-			sb.append("<img src='" + getImageURLForStar()
-					+ "' width='12' height='12' />");
+		Object importance = getValue(F_IMPORTANCE);
+		if(!Utils.isNullOrEmptyString(importance)){
+			sb.append("  (");
+			sb.append(importance);
+			sb.append(")");
 		}
+		
 		sb.append("<br/>");
 
 		String senderId = (String) getValue(F_SENDER);
@@ -426,5 +431,4 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		return (BasicBSONList) getValue(F_TARGETS);
 	}
 
-	
 }

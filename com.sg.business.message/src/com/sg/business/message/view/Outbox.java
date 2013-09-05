@@ -17,7 +17,7 @@ public class Outbox extends AccountSensitiveTableView {
 
 	@Override
 	protected String getAccountNoticeMessage() {
-		return "重新读取收件信息。。。";
+		return "重新读取发件信息...";
 	}
 
 
