@@ -80,7 +80,6 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	 */
 	public static final String F_EMAIL_NOTICE_DATE = "emailnoticedate";
 
-
 	/**
 	 * 附件,文件列表型字段
 	 */
@@ -179,7 +178,6 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		((DBObject) wasteData).put(context.getAccountInfo().getUserId(),
 				Boolean.TRUE);
 		setValue(F_WASTE, wasteData);
-		setValue(F_PARENT_MESSAGE, null);
 		doSave(context);
 	}
 
@@ -272,6 +270,13 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		boolean isReply = isReply();
 		boolean isRead = isRead(new CurrentAccountContext());
 		boolean isStar = isStar(new CurrentAccountContext());
+		String userid="";
+		try {
+			userid = UserSessionContext.getAccountInfo().getconsignerId();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		StringBuffer sb = new StringBuffer();
 
 		// 添加日期
@@ -285,11 +290,11 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		// 添加图标
 		String imageUrl = null;
 		// 如果为已读消息，显示图标地址为getImageURLForOpen()
-		if (isRead) {
+		if (isRead||getValue(F_SENDER).equals(userid)) {
 			imageUrl = "<img src='"
 					+ getImageURLForOpen()
 					+ "' style='float:left;padding:6px' width='24' height='24' />";
-		} else {
+		}else {
 			imageUrl = "<img src='"
 					+ (isReply ? getImageURLForReply() : getImageURL())
 					+ "' style='float:left;padding:6px' width='24' height='24' />";
@@ -300,10 +305,11 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		String label = getLabel();
 		label = Utils.getPlainText(label);
 		label = Utils.getLimitLengthString(label, 20);
-		if (isRead) {
-			sb.append(label);
+		if (isRead||getValue(F_SENDER).equals(userid)) {
+			sb.append(label + "(" + getValue(F_IMPORTANCE) + ")");
 		} else {
-			sb.append("<b>" + label + "</b>");
+			sb.append("<b>" + label + "(" + getValue(F_IMPORTANCE) + ")"
+					+ "</b>");
 		}
 
 		if (isStar) {

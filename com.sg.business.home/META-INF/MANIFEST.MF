@@ -5,9 +5,17 @@ Bundle-SymbolicName: com.sg.business.home;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.sg.business.home.HomeActivator
 Bundle-Vendor: SG
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.rap.ui,
+Require-Bundle: org.eclipse.rap.ui;bundle-version="2.1.0",
+ org.eclipse.rap.ui.forms;bundle-version="2.1.0",
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ com.mobnut.db,
+ com.mobnut.portal;bundle-version="1.0.0",
+ com.mobnut.commons,
+ com.sg.thirdparty,
  com.sg.widgets;bundle-version="1.0.0",
- com.sg.widgets.fullcalendar;bundle-version="1.0.0"
+ com.sg.widgets.fullcalendar;bundle-version="1.0.0",
+ com.sg.business.model;bundle-version="1.0.0",
+ com.sg.business.commons;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

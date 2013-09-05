@@ -16,7 +16,7 @@
       </view>
       <view
             category="message"
-            class="com.sg.business.message.view.MessageView"
+            class="com.sg.widgets.part.view.TableNavigator"
             id="message.send"
             name="发件箱"
             restorable="true">
@@ -119,7 +119,7 @@
       </navigator>
       <navigator
             id="message.send"
-            tree="message.send">
+            table="message.send">
          <filterAction>
             <column
                   column="markread"
@@ -205,33 +205,88 @@
       <navigator
             id="message.waste"
             table="message.waste">
+         <filterAction>
+            <column
+                  column="markread"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="markread"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </searchAction>
+         <sortAction>
+            <column
+                  column="markread"
+                  name="已读"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="重要度"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  name="发件人"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String">
+            </column>
+            <column
+                  column="senddate"
+                  name="发送日期"
+                  type="DateTime">
+            </column>
+         </sortAction>
       </navigator>
-   </extension>
-   <extension
-         point="com.sg.widgets.tree">
-      <tree
-            autoExpandLevel="-1"
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.message.MySendMessage"
-            editorId="message.editor.create"
-            headerVisiable="false"
-            id="message.send"
-            markupEnabled="true">
-         <structure
-               modelRelation="message_message">
-         </structure>
-         <column
-               column="desc"
-               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
-               name="标题"
-               type="String"
-               width="-1">
-         </column>
-      </tree>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -243,9 +298,34 @@
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
             editorId="message.editor.create"
+            headerVisiable="false"
             id="message.recieved"
+            limit="100"
             markupEnabled="true"
+            multiSelection="true"
             popupMenu="popup:message.recieved">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="标题"
+               type="String"
+               width="-1">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.message.MySendMessage"
+            editorId="message.editor.create"
+            headerVisiable="false"
+            id="message.send"
+            limit="100"
+            markupEnabled="true"
+            multiSelection="true"
+            popupMenu="popup:message.send">
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
@@ -264,7 +344,9 @@
             editorId="message.editor.create"
             headerVisiable="false"
             id="message.waste"
-            markupEnabled="true">
+            limit="100"
+            markupEnabled="true"
+            multiSelection="true">
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
@@ -340,20 +422,6 @@
                         required="false"
                         type="String">
                   </text>
-               </section>
-               <section
-                     label="附件">
-                  <file
-                        editPart="OfficeFileUploader"
-                        editable="true"
-                        heightHint="240"
-                        id="attachment"
-                        label="附件"
-                        labelVisible="false"
-                        name="attachment"
-                        persistable="true"
-                        required="false">
-                  </file>
                </section>
             </pagecolumn>
          </basicpage>
@@ -772,9 +840,9 @@
             allPopups="false"
             locationURI="popup:message.recieved">
          <command
-               commandId="message.reply"
-               icon="image/message_reply_24.png"
-               label="回复消息"
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -787,9 +855,9 @@
             </visibleWhen>
          </command>
          <command
-               commandId="message.open"
-               icon="image/message_open_24.png"
-               label="查看消息"
+               commandId="message.reply"
+               icon="image/message_reply_24.png"
+               label="回复消息"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -893,6 +961,90 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
+            locationURI="popup:message.send">
+         <command
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.add"
+               icon="image/message_add_24.png"
+               label="新消息"
+               style="push">
+         </command>
+         <separator
+               name="message.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="message.markstar"
+               icon="image/markstar_24.png"
+               label="加上星标"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.unmarkstar"
+               icon="image/unmarkstar_24.png"
+               label="取消星标"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="message.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
             locationURI="popup:organization.user?after=organization.consignUser">
          <command
                commandId="message.sendtoselecteduser"
@@ -915,15 +1067,22 @@
                icon="image/message_open_24.png"
                label="查看消息"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:message.recieved?after=additions">
+         <command
+               commandId="message.reply"
+               icon="image/message_reply_24.png"
+               label="回复消息"
+               style="push">
+         </command>
+         <command
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
+               style="push">
          </command>
       </menuContribution>
    </extension>
@@ -971,10 +1130,20 @@
       <handler
             commandId="message.reply"
             class="com.sg.bussiness.message.handler.ReplyMessage">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
       </handler>
       <handler
             commandId="message.open"
             class="com.sg.bussiness.message.handler.OpenMessage">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
       </handler>
       <handler
             commandId="message.markread"
