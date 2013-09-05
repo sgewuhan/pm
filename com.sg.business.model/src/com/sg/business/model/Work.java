@@ -30,7 +30,7 @@ import com.sg.business.model.check.ICheckListItem;
  * 
  */
 public class Work extends AbstractWork implements IProjectRelative, ISchedual,
-		IProcessControlable, ILifecycle ,IReferenceContainer{
+		IProcessControlable, ILifecycle, IReferenceContainer {
 
 	/**
 	 * 工作的编辑器ID
@@ -896,11 +896,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return (DBObject) getValue(key + POSTFIX_ACTORS);
 	}
 
+	public DBObject getProcessAssignmentRoleMap(String key) {
+		return (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+	}
+
 	@Override
 	public ProjectRole getProcessActionAssignment(String key,
 			String nodeActorParameter) {
 		// 取出角色指派
-		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+		DBObject data = getProcessAssignmentRoleMap(key);
 		if (data == null) {
 			return null;
 		}
@@ -968,8 +972,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				message = ModelUtil.createProjectCommitMessage(userId);
 				messageList.put(userId, message);
 			}
-			ModelUtil.appendMessageContent(message, "负责工作" + ": "
-					+ getLabel());
+			ModelUtil.appendMessageContent(message, "负责工作" + ": " + getLabel());
 			message.appendTargets(this, EDITOR, Boolean.TRUE);
 			messageList.put(userId, message);
 		}
@@ -1025,19 +1028,25 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 绑定工作流定义
-	 * @param workflowKey,工作流关键字，执行流程或者是变更流程 {@link #F_WF_EXECUTE}  {@link #F_WF_CHANGE}
+	 * 
+	 * @param workflowKey
+	 *            ,工作流关键字，执行流程或者是变更流程 {@link #F_WF_EXECUTE} {@link #F_WF_CHANGE}
 	 * @param workflowDefinition
 	 */
-	public void bindingWorkflowDefinition(String workflowKey, DBObject workflowDefinition) {
-		setValue(workflowKey, workflowDefinition.get(workflowKey));
-		setValue(workflowKey+POSTFIX_ACTIVATED, workflowDefinition.get(POSTFIX_ACTIVATED));
-		setValue(workflowKey+POSTFIX_ACTORS, workflowDefinition.get(POSTFIX_ACTORS));
-		setValue(workflowKey+POSTFIX_ASSIGNMENT, workflowDefinition.get(POSTFIX_ASSIGNMENT));
+	public void bindingWorkflowDefinition(String workflowKey,
+			DBObject workflowDefinition) {
+		setValue(workflowKey, workflowDefinition.get("KEY"));
+		setValue(workflowKey + POSTFIX_ACTIVATED,
+				workflowDefinition.get(POSTFIX_ACTIVATED));
+		setValue(workflowKey + POSTFIX_ACTORS,
+				workflowDefinition.get(POSTFIX_ACTORS));
+		setValue(workflowKey + POSTFIX_ASSIGNMENT,
+				workflowDefinition.get(POSTFIX_ASSIGNMENT));
 	}
-	
+
 	public void doCancel(IContext context) throws Exception {
 		// TODO Auto-generated method stub
-	
+
 	}
 
 	public void doFinish(IContext context) throws Exception {
@@ -1054,10 +1063,44 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public BasicBSONList getTargetList() {
 		return (BasicBSONList) getValue(F_TARGETS);
+	}
+
+	/**
+	 * 获得流程某个活动执行者对应的用户
+	 * 
+	 * @param nodeActor
+	 * @return
+	 */
+	public List<User> getPermittedUserOfWorkflowActor(String processKey,
+			String nodeActor) {
+		DBObject processRoleDefinitions = getProcessAssignmentRoleMap(processKey);
+		ObjectId _id = (ObjectId) processRoleDefinitions.get(nodeActor);
+
+		List<PrimaryObject> ralist;
+		if (getProjectId() != null) {
+			ProjectRole roled = ModelService.createModelObject(
+					ProjectRole.class, _id);
+			ralist = roled.getAssignment();
+
+		} else {
+			Role role = ModelService.createModelObject(Role.class, _id);
+			ralist = role.getAssignment();
+		}
+		List<User> result = new ArrayList<User>();
+		if (ralist != null) {
+			for (int i = 0; i < ralist.size(); i++) {
+				AbstractRoleAssignment ra = (AbstractRoleAssignment) ralist.get(i);
+				String userid = ra.getUserid();
+				User user = User.getUserById(userid);
+				result.add(user);
+			}
+		}
+
+		return result;
 	}
 
 }

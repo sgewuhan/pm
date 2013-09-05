@@ -38,6 +38,17 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 				AbstractWorkProcessPage.this.setDirty(b);
 			}
 		};
+		psp.setRoleDefinitions(getRoleDefinitions(po));
+		psp.createContent();
+		return psp;
+	}
+
+	/**
+	 * 获取角色定义
+	 * @param po
+	 * @return
+	 */
+	protected List<PrimaryObject> getRoleDefinitions(PrimaryObject po) {
 		Project project = null;
 		if (po instanceof IProjectRelative) {
 			project = ((IProjectRelative) po).getProject();
@@ -46,11 +57,10 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 		}
 
 		if (project != null) {
-			List<PrimaryObject> roleDefinitions = project.getRoleDefinitions();
-			psp.setRoleDefinitions(roleDefinitions);
-			psp.createContent();
+			return project.getRoleDefinitions();
 		}
-		return psp;
+		
+		return null;
 	}
 
 	protected abstract String getWorkflowKey();

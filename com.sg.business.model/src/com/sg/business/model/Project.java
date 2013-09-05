@@ -1619,6 +1619,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			work.setValue(Work.F_TARGETS, targets);
 			
 		}
+		work.setValue(Work.F_PROJECT_ID, get_id());
 		DBObject wfdef = getWorkflowDefinition(F_WF_COMMIT);
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
@@ -1626,7 +1627,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	private DBObject getWorkflowDefinition(String workflowKey) {
 		DBObject result = new BasicDBObject();
-		result.put(workflowKey, getValue(workflowKey));
+		result.put("KEY", getValue(workflowKey));
 		result.put(POSTFIX_ACTIVATED, getValue(workflowKey + POSTFIX_ACTIVATED));
 		result.put(POSTFIX_ACTORS, getValue(workflowKey + POSTFIX_ACTORS));
 		result.put(POSTFIX_ASSIGNMENT, getValue(workflowKey

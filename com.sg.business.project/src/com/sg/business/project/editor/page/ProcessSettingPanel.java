@@ -2,15 +2,8 @@ package com.sg.business.project.editor.page;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.drools.definition.process.Process;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
@@ -25,21 +18,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
-import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
-import com.sg.business.model.ProjectRole;
+import com.sg.business.model.IProcessControlable;
 import com.sg.widgets.MessageUtil;
 
 public class ProcessSettingPanel extends Composite {
 
-	private static final String F_POSTFIX_ASSIGNMENT = "_assignment";
 	private static final int MARGIN = 4;
-	private static final String F_POSTFIX_ACTIVATED = "_activated";
 	private String key;
 	private PrimaryObject primaryObject;
 	private TableViewer processViewer;
@@ -59,7 +48,7 @@ public class ProcessSettingPanel extends Composite {
 		}
 
 		processAssignment = (BasicDBObject) primaryObject.getValue(key
-				+ F_POSTFIX_ASSIGNMENT);
+				+ IProcessControlable.POSTFIX_ASSIGNMENT);
 		if (processAssignment == null) {
 			processAssignment = new BasicDBObject();
 		}
@@ -130,158 +119,21 @@ public class ProcessSettingPanel extends Composite {
 	}
 
 	private Table createProcessViewer() {
-		processViewer = new TableViewer(this, SWT.FULL_SELECTION);
-		processViewer.getTable().setHeaderVisible(true);
-		processViewer.getTable().setLinesVisible(true);
-		processViewer.setContentProvider(ArrayContentProvider.getInstance());
-		TableViewerColumn column = new TableViewerColumn(processViewer,
-				SWT.LEFT);
-		column.getColumn().setText("活动名称");
-		column.getColumn().setWidth(120);
-		column.setLabelProvider(new ColumnLabelProvider() {
-
+		processViewer = new ProcessViewer(this, key, primaryObject, roleds) {
+			
 			@Override
-			public String getText(Object element) {
-				return ((NodeAssignment) element).getNodeName();
-			}
-
-		});
-
-		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派类别");
-		column.getColumn().setWidth(120);
-		column.setLabelProvider(new ColumnLabelProvider() {
-
-			@Override
-			public String getText(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				if (na.isDyanmic()) {
-					return "动态指派";
-				} else if (na.isRuleAssignment()) {
-					return "规则指派";
-				} else if (na.isStaticActor()) {
-					return "静态执行人";
-				} else if (na.isStaticGroup()) {
-					return "静态执行组";
-				} else {
-					return "";
-				}
-			}
-		});
-
-		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("规则名称");
-		column.getColumn().setWidth(120);
-		column.setLabelProvider(new ColumnLabelProvider() {
-
-			@Override
-			public String getText(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				String name = na.getRuleAssignmentName();
-				if (name != null) {
-					return name;
-				} else {
-					return "";
-				}
-			}
-		});
-
-		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派参数");
-		column.getColumn().setWidth(120);
-		column.setLabelProvider(new ColumnLabelProvider() {
-
-			@Override
-			public String getText(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				return na.getNodeActorParameter();
-			}
-
-		});
-
-		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("执行角色");
-		column.getColumn().setWidth(120);
-		column.setLabelProvider(new ColumnLabelProvider() {
-
-			@Override
-			public String getText(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				String ap = na.getNodeActorParameter();
-				ObjectId roleId = (ObjectId) processAssignment.get(ap);
-				if(roleId !=null){
-					ProjectRole roled = ModelService.createModelObject(
-							ProjectRole.class, roleId);
-					return roled.getLabel();
-				}
-				return "" ;
-
-			}
-
-		});
-
-		String[] rolednames = new String[roleds.size() + 1];
-		rolednames[0] = "";
-		for (int i = 1; i < rolednames.length; i++) {
-			rolednames[i] = roleds.get(i - 1).getLabel();
-		}
-		final ComboBoxCellEditor combo = new ComboBoxCellEditor(
-				processViewer.getTable(), rolednames, SWT.READ_ONLY);
-
-		EditingSupport editingSupport = new EditingSupport(processViewer) {
-
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				return combo;
-			}
-
-			@Override
-			protected boolean canEdit(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				return na.isNeedAssignment();
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				ObjectId roled_id = (ObjectId) processAssignment.get(na
-						.getNodeActorParameter());
-				for (int i = 0; i < roleds.size(); i++) {
-					PrimaryObject roled = roleds.get(i);
-					if (roled.get_id().equals(roled_id)) {
-						return i + 1;
-					}
-				}
-				return 0;
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
-				int index = ((Integer) value).intValue();
-				NodeAssignment na = (NodeAssignment) element;
-				String nodeActorParameter = na.getNodeActorParameter();
-				if (index == 0) {
-					processAssignment.removeField(nodeActorParameter);
-				} else {
-					PrimaryObject roled = roleds.get(index - 1);
-					processAssignment.put(nodeActorParameter, roled.get_id());
-				}
-				updateInputData();
-				processViewer.refresh();
+			protected void processAssignmentUpdated() {
+				setDirty(true);
 			}
 
 		};
-		column.setEditingSupport(editingSupport);
+
 		return processViewer.getTable();
 	}
 
-	private void updateInputData() {
-		primaryObject.setValue(key + F_POSTFIX_ASSIGNMENT, processAssignment);
-		setDirty(true);
-	}
-
 	private void refresh() {
-		Object activated = primaryObject.getValue(key + F_POSTFIX_ACTIVATED);
+		Object activated = primaryObject.getValue(key
+				+ IProcessControlable.POSTFIX_ACTIVATED);
 		activeButton.setSelection(Boolean.TRUE.equals(activated));
 
 		if (processDefinition != null) {
@@ -330,7 +182,7 @@ public class ProcessSettingPanel extends Composite {
 	}
 
 	private void activate(String key, Boolean b) {
-		primaryObject.setValue(key + F_POSTFIX_ACTIVATED, b);
+		primaryObject.setValue(key + IProcessControlable.POSTFIX_ACTIVATED, b);
 		setDirty(true);
 	}
 
