@@ -10,7 +10,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class UnmarkRead extends AbstractNavigatorHandler {
+public class RemoveToWaste extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
@@ -18,7 +18,7 @@ public class UnmarkRead extends AbstractNavigatorHandler {
 		if (selected instanceof Message) {
 			Message message = (Message) selected;
 			try {
-				message.doMarkRead(new CurrentAccountContext(),Boolean.FALSE);
+				message.doWaste(new CurrentAccountContext(),Boolean.TRUE);
 				ViewerControl vc = getCurrentViewerControl(event);
 				vc.getViewer().update(selected, null);
 				vc.getViewer().setSelection(new StructuredSelection(new Object[]{}));
@@ -29,5 +29,4 @@ public class UnmarkRead extends AbstractNavigatorHandler {
 		}
 	
 	}
-
 }

@@ -9,7 +9,7 @@
       </category>
       <view
             category="message"
-            class="com.sg.business.message.view.MessageView"
+            class="com.sg.widgets.part.view.TableNavigator"
             id="message.recieved"
             name="收件箱"
             restorable="true">
@@ -21,12 +21,19 @@
             name="发件箱"
             restorable="true">
       </view>
+      <view
+            category="message"
+            class="com.sg.business.message.view.MessageView"
+            id="message.waste"
+            name="废件箱"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
       <navigator
             id="message.recieved"
-            tree="message.recieved">
+            table="message.recieved">
          <filterAction>
             <column
                   column="markread"
@@ -198,6 +205,10 @@
             </column>
          </sortAction>
       </navigator>
+      <navigator
+            id="message.waste"
+            tree="message.waste">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -221,9 +232,6 @@
                type="String"
                width="-1">
          </column>
-         <structure
-               modelRelation="message_message">
-         </structure>
       </tree>
       <tree
             autoExpandLevel="-1"
@@ -248,6 +256,45 @@
                width="-1">
          </column>
       </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.message.MyWasteMessage"
+            headerVisiable="false"
+            id="message.waste"
+            markupEnabled="true">
+         <structure
+               modelRelation="message_message">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="标题"
+               type="String"
+               width="-1">
+         </column>
+      </tree>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
+            id="message.recieved"
+            markupEnabled="true"
+            popupMenu="popup:message.recieved">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="标题"
+               type="String"
+               width="-1">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -316,6 +363,27 @@
                         type="String">
                   </text>
                </section>
+               <section
+                     label="附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        heightHint="240"
+                        id="attachment"
+                        label="附件"
+                        labelVisible="false"
+                        name="attachment"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="basicpage2"
+               image="image/message_24.png"
+               title="附件">
+            <pagecolumn>
                <section
                      label="附件">
                   <file
@@ -405,6 +473,7 @@
          </basicpage>
          <basicpage
                id="basicpage2"
+               image="image/message_24.png"
                title="附件">
             <pagecolumn>
                <section
@@ -696,6 +765,11 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="message.remove"
+               label="移除至废件箱"
+               style="push">
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -767,6 +841,10 @@
             id="message.sendtoselecteduser"
             name="发送消息">
       </command>
+      <command
+            id="message.remove"
+            name="移除至废件箱">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -785,24 +863,86 @@
       <handler
             commandId="message.markread"
             class="com.sg.bussiness.message.handler.MarkRead">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="markRead"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
             
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.UnmarkRead"
             commandId="message.unmarkread">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="unmarkread"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.MarkStar"
             commandId="message.markstar">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="markstar"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.UnmarkStar"
             commandId="message.unmarkstar">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="unmarkstar"
+                        property="message.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.SendToSelectedUser"
             commandId="message.sendtoselecteduser">
       </handler>
+      <handler
+            class="com.sg.bussiness.message.handler.RemoveToWaste"
+            commandId="message.remove">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.message.test.MessageActionTest"
+            id="message.action.test"
+            namespace="message"
+            properties="action"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>

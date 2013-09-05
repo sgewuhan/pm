@@ -10,6 +10,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.message"
+            name="消息">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
             name="项目">
       </perspective>
@@ -78,13 +83,17 @@
                standalone="false"
                visible="true">
          </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.message">
          <view
                closeable="false"
                id="message.recieved"
                minimized="false"
                moveable="false"
-               relationship="stack"
-               relative="com.sg.business.home.mywork"
+               ratio="0.5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -95,7 +104,18 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="com.sg.business.home.mywork"
+               relative="message.recieved"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="message.waste"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="message.recieved"
                showTitle="true"
                standalone="false"
                visible="true">
