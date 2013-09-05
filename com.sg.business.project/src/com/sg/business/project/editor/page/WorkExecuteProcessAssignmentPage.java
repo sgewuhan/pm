@@ -38,6 +38,20 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 		}
 		
 		processViewer = new ProcessViewer(parent, Work.F_WF_EXECUTE, work) {
+			
+			@Override
+			protected void createColumns() {
+				createActionNameColumn();
+
+//				createAssignmentTypeColumn();
+//
+//				createRuleColumn();
+//
+//				createParameterColumn();
+
+				createActorRoleColumn();
+			}
+			
 			@Override
 			protected void processAssignmentUpdated() {
 				setDirty(true);

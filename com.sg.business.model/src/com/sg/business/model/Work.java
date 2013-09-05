@@ -14,6 +14,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
@@ -412,33 +413,39 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean canEdit(String column, IContext context) {
 		return true;
 	}
+	
+	public boolean canCheck() {
+		// 未完成和未取消的
+		String lc = getLifecycleStatus();
+		return (!STATUS_CANCELED_VALUE.equals(lc))
+				&& (!STATUS_FINIHED_VALUE.equals(lc));
+	}
 
-	/**
-	 * 保存工作
-	 * 
-	 * @return boolean
-	 */
-	@Override
-	public boolean doSave(IContext context) throws Exception {
-		// if (calendarCaculater == null) {
-		// calendarCaculater = new CalendarCaculater(getProjectId());
-		// }
+	public boolean canCommit() {
+		String lc = getLifecycleStatus();
 
-		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
-		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
-				F_ACTUAL_DURATION);
+		return STATUS_NONE_VALUE.equals(lc);
+	}
 
-		super.doSave(context);
+	public boolean canStart() {
+		String lc = getLifecycleStatus();
+		return STATUS_ONREADY_VALUE.equals(lc)
+				|| STATUS_PAUSED_VALUE.equals(lc);
+	}
 
-		// Work parent = (Work) getParent();
-		// if (parent != null) {
-		// parent.doUpdateSummarySchedual(calendarCaculater, context);
-		// }else{
-		// doUpdateProjectSchedual(context);
-		// }
+	public boolean canPause() {
+		String lc = getLifecycleStatus();
+		return STATUS_WIP_VALUE.equals(lc);
+	}
 
-		return true;
+	public boolean canFinish() {
+		String lc = getLifecycleStatus();
+		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
+	}
 
+	public boolean canCancel() {
+		String lc = getLifecycleStatus();
+		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
 
 	/**
@@ -495,99 +502,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 为工作及下级工作的负责人,参与者,工作流的执行者指定用户
-	 * 
-	 * @param roleAssign
-	 * @param context
-	 * @throws Exception
-	 */
-	public void doAssignment(Map<ObjectId, List<PrimaryObject>> roleAssign,
-			IContext context) throws Exception {
-		AbstractRoleAssignment assItem;
-		List<PrimaryObject> assignments;
-		String userid;
-		boolean modified = false;
-
-		// 设置负责人
-		ObjectId roleId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
-		if (roleId != null) {
-			assignments = roleAssign.get(roleId);
-			if (assignments != null && !assignments.isEmpty()) {
-				assItem = (AbstractRoleAssignment) assignments.get(0);
-				userid = assItem.getUserid();
-				setValue(F_CHARGER, userid);
-				modified = true;
-			}
-		}
-
-		// 设置指派者
-		roleId = (ObjectId) getValue(F_ASSIGNMENT_CHARGER_ROLE_ID);
-		if (roleId != null) {
-			assignments = roleAssign.get(roleId);
-			if (assignments != null && !assignments.isEmpty()) {
-				assItem = (AbstractRoleAssignment) assignments.get(0);
-				userid = assItem.getUserid();
-				setValue(F_ASSIGNER, userid);
-				modified = true;
-			}
-		}
-
-		// 设置参与者
-		BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
-		if (roleIds != null && roleIds.size() > 0) {
-			List<String> participates = new ArrayList<String>();
-			for (int i = 0; i < roleIds.size(); i++) {
-				DBObject object = (DBObject) roleIds.get(i);
-				assignments = roleAssign.get(object.get(F__ID));
-				if (assignments != null && !assignments.isEmpty()) {
-					for (int j = 0; j < assignments.size(); j++) {
-						assItem = (AbstractRoleAssignment) assignments.get(j);
-						userid = assItem.getUserid();
-						participates.add(userid);
-					}
-				}
-			}
-			if (participates.size() > 0) {
-				setValue(F_PARTICIPATE, participates);
-				modified = true;
-			}
-		}
-
-		// 设置变更工作流执行人
-
-		DBObject wfRoleAss = (DBObject) getValue(F_WF_CHANGE_ASSIGNMENT);
-		if (wfRoleAss != null) {
-			BasicDBObject wfRoleActors = getWorkFlowActors(wfRoleAss,
-					roleAssign);
-			if (!wfRoleActors.isEmpty()) {
-				setValue(F_WF_CHANGE_ACTORS, wfRoleActors);
-				modified = true;
-			}
-		}
-
-		// 设置执行工作流的执行人
-		wfRoleAss = (DBObject) getValue(F_WF_EXECUTE_ASSIGNMENT);
-		if (wfRoleAss != null) {
-			BasicDBObject wfRoleActors = getWorkFlowActors(wfRoleAss,
-					roleAssign);
-			if (!wfRoleActors.isEmpty()) {
-				setValue(F_WF_EXECUTE_ACTORS, wfRoleActors);
-				modified = true;
-			}
-		}
-		if (modified) {
-			doSave(context);
-		}
-
-		// 设置下级
-		List<PrimaryObject> children = getChildrenWork();
-		for (int i = 0; i < children.size(); i++) {
-			Work child = (Work) children.get(i);
-			child.doAssignment(roleAssign, context);
-		}
-	}
-
-	/**
 	 * 返回流程执行者
 	 * 
 	 * @param wfRoleAss
@@ -633,24 +547,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public ProjectRole getChargerRoleDefinition() {
 		return getChargerRoleDefinition(ProjectRole.class);
-	}
-
-	/**
-	 * 新建交付物
-	 * 
-	 * @param doc
-	 *            ,文档
-	 * @param context
-	 * @return Deliverable
-	 * @throws Exception
-	 */
-	public Deliverable doAddDeliverable(Document doc, IContext context)
-			throws Exception {
-		Deliverable deli = makeDeliverableDefinition();
-		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
-		deli.doInsert(context);
-		return deli;
-
 	}
 
 	public List<PrimaryObject> getDeliverable() {
@@ -865,8 +761,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return (String) getValue(F_ASSIGNER);
 	}
 
-	public List<?> getParticipatesIdList() {
-		return (List<?>) getValue(F_PARTICIPATE);
+	public BasicBSONList getParticipatesIdList() {
+		return (BasicBSONList) getValue(F_PARTICIPATE);
 	}
 
 	@Override
@@ -1042,6 +938,180 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				workflowDefinition.get(POSTFIX_ACTORS));
 		setValue(workflowKey + POSTFIX_ASSIGNMENT,
 				workflowDefinition.get(POSTFIX_ASSIGNMENT));
+	}
+
+	/**
+	 * 保存工作
+	 * 
+	 * @return boolean
+	 */
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		// if (calendarCaculater == null) {
+		// calendarCaculater = new CalendarCaculater(getProjectId());
+		// }
+	
+		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
+		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
+				F_ACTUAL_DURATION);
+	
+		//同步负责人、流程活动执行人到工作的参与者。
+		ensureParticipatesConsistency();
+		
+		super.doSave(context);
+	
+		// Work parent = (Work) getParent();
+		// if (parent != null) {
+		// parent.doUpdateSummarySchedual(calendarCaculater, context);
+		// }else{
+		// doUpdateProjectSchedual(context);
+		// }
+	
+		return true;
+	
+	}
+
+	/**
+	 * 确保工作的参与者包括工作的负责人、流程执行人
+	 */
+	public void ensureParticipatesConsistency() {
+		//获取工作的负责人
+		String chargerId = getChargerId();
+		addParticipate(chargerId);
+		
+		//获得流程的执行人
+		if(isWorkflowActivate(F_WF_EXECUTE)){
+			DBObject processActorsMap = getProcessActorsMap(F_WF_EXECUTE);
+			Iterator<String> iter = processActorsMap.keySet().iterator();
+			while(iter.hasNext()){
+				String key = iter.next();
+				String userId = (String) processActorsMap.get(key);
+				addParticipate(userId);
+			}
+		}
+		
+	}
+
+	public void addParticipate(String chargerId) {
+		BasicBSONList participatesIdList = getParticipatesIdList();
+		if(participatesIdList == null){
+			participatesIdList = new BasicDBList();
+			setValue(F_PARTICIPATE, participatesIdList);
+		}
+		if(!participatesIdList.contains(chargerId)){
+			participatesIdList.add(chargerId);
+		}
+	}
+
+	/**
+	 * 为工作及下级工作的负责人,参与者,工作流的执行者指定用户
+	 * 
+	 * @param roleAssign
+	 * @param context
+	 * @throws Exception
+	 */
+	public void doAssignment(Map<ObjectId, List<PrimaryObject>> roleAssign,
+			IContext context) throws Exception {
+		AbstractRoleAssignment assItem;
+		List<PrimaryObject> assignments;
+		String userid;
+		boolean modified = false;
+	
+		// 设置负责人
+		ObjectId roleId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
+		if (roleId != null) {
+			assignments = roleAssign.get(roleId);
+			if (assignments != null && !assignments.isEmpty()) {
+				assItem = (AbstractRoleAssignment) assignments.get(0);
+				userid = assItem.getUserid();
+				setValue(F_CHARGER, userid);
+				modified = true;
+			}
+		}
+	
+		// 设置指派者
+		roleId = (ObjectId) getValue(F_ASSIGNMENT_CHARGER_ROLE_ID);
+		if (roleId != null) {
+			assignments = roleAssign.get(roleId);
+			if (assignments != null && !assignments.isEmpty()) {
+				assItem = (AbstractRoleAssignment) assignments.get(0);
+				userid = assItem.getUserid();
+				setValue(F_ASSIGNER, userid);
+				modified = true;
+			}
+		}
+	
+		// 设置参与者
+		BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
+		if (roleIds != null && roleIds.size() > 0) {
+			List<String> participates = new ArrayList<String>();
+			for (int i = 0; i < roleIds.size(); i++) {
+				DBObject object = (DBObject) roleIds.get(i);
+				assignments = roleAssign.get(object.get(F__ID));
+				if (assignments != null && !assignments.isEmpty()) {
+					for (int j = 0; j < assignments.size(); j++) {
+						assItem = (AbstractRoleAssignment) assignments.get(j);
+						userid = assItem.getUserid();
+						participates.add(userid);
+					}
+				}
+			}
+			if (participates.size() > 0) {
+				setValue(F_PARTICIPATE, participates);
+				modified = true;
+			}
+		}
+	
+		// 设置变更工作流执行人
+	
+		DBObject wfRoleAss = (DBObject) getValue(F_WF_CHANGE_ASSIGNMENT);
+		if (wfRoleAss != null) {
+			BasicDBObject wfRoleActors = getWorkFlowActors(wfRoleAss,
+					roleAssign);
+			if (!wfRoleActors.isEmpty()) {
+				setValue(F_WF_CHANGE_ACTORS, wfRoleActors);
+				modified = true;
+			}
+		}
+	
+		// 设置执行工作流的执行人
+		wfRoleAss = (DBObject) getValue(F_WF_EXECUTE_ASSIGNMENT);
+		if (wfRoleAss != null) {
+			BasicDBObject wfRoleActors = getWorkFlowActors(wfRoleAss,
+					roleAssign);
+			if (!wfRoleActors.isEmpty()) {
+				setValue(F_WF_EXECUTE_ACTORS, wfRoleActors);
+				modified = true;
+			}
+		}
+		if (modified) {
+			doSave(context);
+		}
+	
+		// 设置下级
+		List<PrimaryObject> children = getChildrenWork();
+		for (int i = 0; i < children.size(); i++) {
+			Work child = (Work) children.get(i);
+			child.doAssignment(roleAssign, context);
+		}
+	}
+
+	/**
+	 * 新建交付物
+	 * 
+	 * @param doc
+	 *            ,文档
+	 * @param context
+	 * @return Deliverable
+	 * @throws Exception
+	 */
+	public Deliverable doAddDeliverable(Document doc, IContext context)
+			throws Exception {
+		Deliverable deli = makeDeliverableDefinition();
+		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
+		deli.doInsert(context);
+		return deli;
+	
 	}
 
 	public void doCancel(IContext context) throws Exception {

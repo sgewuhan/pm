@@ -35,7 +35,7 @@ public abstract class ProcessViewer extends TableViewer {
 		processAssignment = (DBObject) data.getValue(key
 				+ IProcessControlable.POSTFIX_ASSIGNMENT);
 		this.roleDefinitions = roleDefinitions;
-		create();
+		createColumns();
 	}
 
 	public ProcessViewer(Composite parent, String key, PrimaryObject data) {
@@ -44,13 +44,13 @@ public abstract class ProcessViewer extends TableViewer {
 		this.key = key;
 		processAssignment = (DBObject) data.getValue(key
 				+ IProcessControlable.POSTFIX_ASSIGNMENT);
-		create();
-	}
-
-	private void create() {
 		getTable().setHeaderVisible(true);
 		getTable().setLinesVisible(true);
 		setContentProvider(ArrayContentProvider.getInstance());
+		createColumns();
+	}
+
+	protected void createColumns() {
 
 		createActionNameColumn();
 
@@ -63,7 +63,7 @@ public abstract class ProcessViewer extends TableViewer {
 		createActorRoleColumn();
 	}
 
-	private TableViewerColumn createActorRoleColumn() {
+	protected TableViewerColumn createActorRoleColumn() {
 		TableViewerColumn column;
 		column = new TableViewerColumn(this, SWT.LEFT);
 		column.getColumn().setText("执行角色");
@@ -148,7 +148,7 @@ public abstract class ProcessViewer extends TableViewer {
 		return column;
 	}
 
-	private void createParameterColumn() {
+	protected void createParameterColumn() {
 		TableViewerColumn column;
 		column = new TableViewerColumn(this, SWT.LEFT);
 		column.getColumn().setText("指派参数");
@@ -164,7 +164,7 @@ public abstract class ProcessViewer extends TableViewer {
 		});
 	}
 
-	private void createRuleColumn() {
+	protected void createRuleColumn() {
 		TableViewerColumn column;
 		column = new TableViewerColumn(this, SWT.LEFT);
 		column.getColumn().setText("规则名称");
@@ -184,7 +184,7 @@ public abstract class ProcessViewer extends TableViewer {
 		});
 	}
 
-	private void createAssignmentTypeColumn() {
+	protected void createAssignmentTypeColumn() {
 		TableViewerColumn column;
 		column = new TableViewerColumn(this, SWT.LEFT);
 		column.getColumn().setText("指派类别");
@@ -209,7 +209,7 @@ public abstract class ProcessViewer extends TableViewer {
 		});
 	}
 
-	private void createActionNameColumn() {
+	protected void createActionNameColumn() {
 		TableViewerColumn column = new TableViewerColumn(this, SWT.LEFT);
 		column.getColumn().setText("活动名称");
 		column.getColumn().setWidth(120);

@@ -683,7 +683,7 @@
                description="导航"
                id="basicpage3"
                image="image/message_24.png"
-               pageDelegator="com.sg.business.message.editor.page.TargetListPage"
+               pageDelegator="com.sg.business.commons.page.ReferenceListPage"
                title="导航">
          </basicpage>
       </editor>
@@ -883,9 +883,13 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="markRead"
+                           property="message.action">
+                     </test>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
@@ -898,9 +902,13 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="unmarkread"
+                           property="message.action">
+                     </test>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
@@ -913,9 +921,13 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="markstar"
+                           property="message.action">
+                     </test>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
@@ -928,9 +940,13 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="unmarkstar"
+                           property="message.action">
+                     </test>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
@@ -1188,67 +1204,19 @@
       <handler
             commandId="message.markread"
             class="com.sg.bussiness.message.handler.MarkRead">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="markRead"
-                        property="message.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
             
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.UnmarkRead"
             commandId="message.unmarkread">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="unmarkread"
-                        property="message.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.MarkStar"
             commandId="message.markstar">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="markstar"
-                        property="message.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.UnmarkStar"
             commandId="message.unmarkstar">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="unmarkstar"
-                        property="message.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.bussiness.message.handler.SendToSelectedUser"

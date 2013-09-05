@@ -1509,6 +1509,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			message.doSave(context);
 		}
 	}
+	
+
+	public void doCommitWithWork(Work work) {
+		
+	}
 
 	/**
 	 * 发送消息进行提交：<br/>
