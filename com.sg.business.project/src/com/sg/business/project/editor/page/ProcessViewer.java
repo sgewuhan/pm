@@ -35,6 +35,9 @@ public abstract class ProcessViewer extends TableViewer {
 		processAssignment = (DBObject) data.getValue(key
 				+ IProcessControlable.POSTFIX_ASSIGNMENT);
 		this.roleDefinitions = roleDefinitions;
+		getTable().setHeaderVisible(true);
+		getTable().setLinesVisible(true);
+		setContentProvider(ArrayContentProvider.getInstance());
 		createColumns();
 	}
 
