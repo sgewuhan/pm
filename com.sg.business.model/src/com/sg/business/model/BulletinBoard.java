@@ -1,5 +1,6 @@
 package com.sg.business.model;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 
 public class BulletinBoard extends PrimaryObject {
@@ -39,4 +40,21 @@ public class BulletinBoard extends PrimaryObject {
 	 */
 	public static final String F_ATTACHMENT = "attachment";
 	
+	/**
+	 * 返回标题的显示内容
+	 * 
+	 * @return String
+	 */
+	public String getHTMLLabel() {
+		StringBuffer sb = new StringBuffer();
+
+
+		// 添加主题
+		String label = getLabel();
+		label = Utils.getPlainText(label);
+		label = Utils.getLimitLengthString(label, 20);
+		sb.append("<b>" + label + "</b>");
+
+		return sb.toString();
+	}
 }

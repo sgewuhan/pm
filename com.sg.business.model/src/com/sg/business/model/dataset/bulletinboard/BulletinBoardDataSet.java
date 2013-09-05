@@ -1,4 +1,4 @@
-package com.sg.business.model.dataset.home;
+package com.sg.business.model.dataset.bulletinboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +12,13 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Message;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 import com.sg.widgets.MessageUtil;
 
 public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 
-	public BulletinBoardDataSet(String dbName, String collectionName) {
+	public BulletinBoardDataSet() {
 		super(IModelConstants.DB, IModelConstants.C_BULLETINBOARD);
 	}
 
@@ -63,5 +62,10 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 		if (parent != null) {
 			searchUp(parent, list);
 		}
+	}
+
+	@Override
+	public DBObject getSort() {
+		return new BasicDBObject().append(BulletinBoard.F_PUBLISH_DATE, -1);
 	}
 }
