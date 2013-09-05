@@ -408,7 +408,7 @@
                         name="importance"
                         option="com.sg.crm.action.ip.option"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </combo>
                   <text
@@ -496,7 +496,7 @@
                            name="importance"
                            option="com.sg.crm.action.ip.option"
                            persistable="true"
-                           required="false"
+                           required="true"
                            type="String">
                      </combo>
                   </fieldgroup>
