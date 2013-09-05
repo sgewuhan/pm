@@ -1,6 +1,9 @@
 package com.sg.bussiness.message.handler;
 
+import java.util.Iterator;
+
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -15,21 +18,27 @@ public class UnmarkStar extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 
-
-		if (selected instanceof Message) {
-			Message message = (Message) selected;
-			try {
-				message.doMarkStar(new CurrentAccountContext(),Boolean.FALSE);
-				ViewerControl vc = getCurrentViewerControl(event);
-				vc.getViewer().update(selected, null);
-				vc.getViewer().setSelection(new StructuredSelection(new Object[]{}));
-			} catch (Exception e) {
-				MessageUtil.showToast(e);
-				e.printStackTrace();
+		ViewerControl vc = getCurrentViewerControl(event);
+		IStructuredSelection ssel = (IStructuredSelection) vc.getViewer()
+				.getSelection();
+		Iterator<?> iter = ssel.iterator();
+		while (iter.hasNext()) {
+			Object sel = iter.next();
+			if (sel instanceof Message) {
+				Message message = (Message) sel;
+				try {
+					message.doMarkStar(new CurrentAccountContext(),
+							Boolean.FALSE);
+					vc.getViewer().update(message, null);
+				} catch (Exception e) {
+					MessageUtil.showToast(e);
+					e.printStackTrace();
+				}
 			}
 		}
-	
-	
+		vc.getViewer().setSelection(new StructuredSelection(new Object[] {}));
+
 	}
+
 
 }
