@@ -17,7 +17,7 @@ import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class Message extends PrimaryObject {
+public class Message extends PrimaryObject implements IReferenceContainer {
 
 	/**
 	 * 上级的消息id
@@ -70,31 +70,6 @@ public class Message extends PrimaryObject {
 	 */
 	public static final String F_EMAIL_NOTICE_DATE = "emailnoticedate";
 
-	/**
-	 * 目标列表 {{targetid=ObjectId(""),targetclass="com.sg.business.model.Work",
-	 * targeteditor="work.editor"},{}}
-	 */
-	public static final String F_TARGETS = "targets";
-
-	/**
-	 * 目标对象
-	 */
-	public static final String SF_TARGET = "targetid";
-
-	/**
-	 * 目标类
-	 */
-	public static final String SF_TARGET_CLASS = "targetclass";
-
-	/**
-	 * 目标编辑器
-	 */
-	public static final String SF_TARGET_EDITOR = "targeteditor";
-
-	/**
-	 * 是否可以修改
-	 */
-	public static final String SF_TARGET_EDITABLE = "targeteditable";
 
 	/**
 	 * 附件,文件列表型字段

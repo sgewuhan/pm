@@ -42,7 +42,7 @@ import com.sg.business.resource.BusinessResource;
  * 
  */
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
-		ILifecycle, ISchedual, IProcessControlable {
+		ILifecycle, ISchedual, IProcessControlable, IReferenceContainer {
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -925,10 +925,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				// 设置负责人角色
 				setRoleField(work, workdef, IWorkCloneFields.F_CHARGER_ROLE_ID,
 						roleMap);
-				
+
 				// 设置指派人角色
-				setRoleField(work, workdef, IWorkCloneFields.F_ASSIGNMENT_CHARGER_ROLE_ID,
-						roleMap);
+				setRoleField(work, workdef,
+						IWorkCloneFields.F_ASSIGNMENT_CHARGER_ROLE_ID, roleMap);
 
 				// 设置参与者角色
 				setRoleListField(work, workdef,
@@ -1266,6 +1266,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 获取项目参与者<br/>
+	 * 
 	 * @return 由每个元素为用户的userid组成的List,有可能为空
 	 */
 	public List<?> getParticipatesIdList() {
@@ -1403,7 +1404,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public DBObject getProcessActorsMap(String key) {
 		return (DBObject) getValue(key + POSTFIX_ACTORS);
 	}
-	
+
 	@Override
 	public ProjectRole getProcessActionAssignment(String key,
 			String nodeActorParameter) {
@@ -1500,32 +1501,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelUtil.getLifecycleStatusText(lc);
 	}
 
-	public void doCancel(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * 提交项目计划<br/>
-	 * 判断项目计划是否定义了提交流程，如果定义了提交流程，使用流程进行提交 。<br>
-	 * 如果没有定义流程，直接发送消息。<br/>
-
-	 * 
-	 * @param context
-	 * @throws Exception
-	 */
-	public void doCommit(IContext context) throws Exception {
-		if(isCommitWorkflowActivate()){
-			doCommitWithWorkflow(context);
-		}else{
-			doCommitWithSendMessage(context);
-		}
-	}
-
-	private void doCommitWithSendMessage(IContext context) throws Exception {
+	public void doCommitWithSendMessage(IContext context) throws Exception {
 		Map<String, Message> msgList = getCommitMessage();
 		Iterator<Message> iter = msgList.values().iterator();
-		while(iter.hasNext()){
+		while (iter.hasNext()) {
 			Message message = iter.next();
 			message.doSave(context);
 		}
@@ -1538,24 +1517,30 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @param context
 	 * @throws Exception
 	 */
-	private Map<String,Message>  getCommitMessage() throws Exception{
-		Map<String,Message> messageList = new HashMap<String,Message>();
-		//1. 获取项目负责人
+	private Map<String, Message> getCommitMessage() throws Exception {
+		Map<String, Message> messageList = new HashMap<String, Message>();
+		// 1. 获取项目负责人
 		appendMessageForCharger(messageList);
-		//2. 获取项目的参与者
-		
+		// 2. 获取项目的参与者
+
 		appendMessageForParticipate(messageList);
 
-		//3. 项目流程通知
+		// 3. 项目流程通知
 		appendMessageForChangeWorkflowActor(messageList);
-		
-		//4. 遍历工作
+
+		// 4. 遍历工作
 		Work root = getWBSRoot();
 		messageList = root.getCommitMessage(messageList);
-		
+
 		ModelUtil.appendProjectCommitMessageEndContent(messageList);
 		return messageList;
 	}
+
+	/**
+	 * 向消息清单中添加项目的参与者提醒消息
+	 * 
+	 * @param messageList
+	 */
 	public void appendMessageForParticipate(Map<String, Message> messageList) {
 		Message message;
 		String userId;
@@ -1575,12 +1560,22 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 	}
 
+	/**
+	 * 向消息清单中添加工作流活动执行者的提示消息
+	 * 
+	 * @param messageList
+	 */
 	public void appendMessageForChangeWorkflowActor(
 			Map<String, Message> messageList) {
 		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
 				"项目变更流程");
 	}
-	
+
+	/**
+	 * 向消息清单中添加项目负责人的提醒消息
+	 * 
+	 * @param messageList
+	 */
 	public void appendMessageForCharger(Map<String, Message> messageList) {
 		Message message;
 		String userId = getChargerId();
@@ -1597,9 +1592,51 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 	}
 
-	private void doCommitWithWorkflow(IContext context) throws Exception{
+	/**
+	 * 使用工作流进行提交，创建一个工作，并将工作流绑定到该工作
+	 * 
+	 * @param context
+	 * @return
+	 * @throws Exception
+	 */
+	public Work makeWorkflowCommitableWork(Work work, IContext context)
+			throws Exception {
+		if (work == null) {
+			work = ModelService.createModelObject(Work.class);
+			work.setValue(Work.F_CHARGER, context.getAccountInfo().getUserId());// 设置负责人为当前用户
+			work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
+			work.setValue(Work.F_PLAN_START, new Date());
+			work.setValue(Work.F_DESC, "项目计划提交");
+			work.setValue(Work.F_DESCRIPTION, getDesc());
+			BasicBSONList targets = new BasicBSONList();
+			targets.add(new BasicDBObject()
+					.append(SF_TARGET, get_id())
+					.append(SF_TARGET_CLASS, Project.class.getName())
+					.append(SF_TARGET_EDITING_TYPE, EDITING_BY_EDITOR)
+					.append(SF_TARGET_EDITOR, EDITOR_CREATE_PLAN)
+					.append(SF_TARGET_EDITABLE, Boolean.TRUE)
+					);
+			work.setValue(Work.F_TARGETS, targets);
+			
+		}
+		DBObject wfdef = getWorkflowDefinition(F_WF_COMMIT);
+		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
+		return work;
+	}
+
+	private DBObject getWorkflowDefinition(String workflowKey) {
+		DBObject result = new BasicDBObject();
+		result.put(workflowKey, getValue(workflowKey));
+		result.put(POSTFIX_ACTIVATED, getValue(workflowKey + POSTFIX_ACTIVATED));
+		result.put(POSTFIX_ACTORS, getValue(workflowKey + POSTFIX_ACTORS));
+		result.put(POSTFIX_ASSIGNMENT, getValue(workflowKey
+				+ POSTFIX_ASSIGNMENT));
+		return result;
+	}
+
+	public void doCancel(IContext context) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void doFinish(IContext context) throws Exception {
@@ -1616,5 +1653,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// TODO Auto-generated method stub
 
 	}
-	
+
+	@Override
+	public BasicBSONList getTargetList() {
+		return (BasicBSONList) getValue(F_TARGETS);
+	}
+
 }

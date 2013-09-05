@@ -1,4 +1,4 @@
-package com.sg.business.message.editor.page;
+package com.sg.business.commons.page;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
@@ -17,19 +17,21 @@ import com.mobnut.db.model.DocumentModelDefinition;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
-import com.sg.business.model.Message;
+import com.sg.business.model.IReferenceContainer;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.DataObjectEditor;
+import com.sg.widgets.part.editor.DataObjectWizard;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
-public class TargetListPage extends AbstractFormPageDelegator {
+public class ReferenceListPage extends AbstractFormPageDelegator {
 
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		Message message = (Message) input.getData();
+		IReferenceContainer message = (IReferenceContainer) input.getData();
 		Composite content = new Composite(parent,SWT.NONE);
 		content.setLayout(new FillLayout());
 		BasicBSONList targetList = message.getTargetList();
@@ -41,8 +43,8 @@ public class TargetListPage extends AbstractFormPageDelegator {
 			public String getText(Object element) {
 				if(element instanceof DBObject){
 					DBObject dbObject = (DBObject) element;
-					String targetClass = (String) dbObject.get(Message.SF_TARGET_CLASS);
-					ObjectId targetId = (ObjectId) dbObject.get(Message.SF_TARGET);
+					String targetClass = (String) dbObject.get(IReferenceContainer.SF_TARGET_CLASS);
+					ObjectId targetId = (ObjectId) dbObject.get(IReferenceContainer.SF_TARGET);
 					DocumentModelDefinition md = ModelService.getDocumentModelDefinition(targetClass);
 					PrimaryObject po = ModelService.createModelObject(md.getModelClass(), targetId);
 					String typeName = po.getTypeName();
@@ -59,8 +61,8 @@ public class TargetListPage extends AbstractFormPageDelegator {
 			public Image getImage(Object element){
 				if(element instanceof DBObject){
 					DBObject dbObject = (DBObject) element;
-					String targetClass = (String) dbObject.get(Message.SF_TARGET_CLASS);
-					ObjectId targetId = (ObjectId) dbObject.get(Message.SF_TARGET);
+					String targetClass = (String) dbObject.get(IReferenceContainer.SF_TARGET_CLASS);
+					ObjectId targetId = (ObjectId) dbObject.get(IReferenceContainer.SF_TARGET);
 					DocumentModelDefinition md = ModelService.getDocumentModelDefinition(targetClass);
 					PrimaryObject po = ModelService.createModelObject(md.getModelClass(), targetId);
 					return po.getImage();
@@ -84,14 +86,21 @@ public class TargetListPage extends AbstractFormPageDelegator {
 	}
 
 	protected void openTarget(DBObject dbObject) {
-		String targetClass = (String) dbObject.get(Message.SF_TARGET_CLASS);
-		String editorId = (String) dbObject.get(Message.SF_TARGET_EDITOR);
-		boolean editable = Boolean.TRUE.equals(dbObject.get(Message.SF_TARGET_EDITABLE));
-		ObjectId targetId = (ObjectId) dbObject.get(Message.SF_TARGET);
+		String targetClass = (String) dbObject.get(IReferenceContainer.SF_TARGET_CLASS);
+		String editorId = (String) dbObject.get(IReferenceContainer.SF_TARGET_EDITOR);
+		boolean editable = Boolean.TRUE.equals(dbObject.get(IReferenceContainer.SF_TARGET_EDITABLE));
+		ObjectId targetId = (ObjectId) dbObject.get(IReferenceContainer.SF_TARGET);
+		Integer type = (Integer) dbObject.get(IReferenceContainer.SF_TARGET_EDITING_TYPE);
 		DocumentModelDefinition md = ModelService.getDocumentModelDefinition(targetClass);
 		PrimaryObject po = ModelService.createModelObject(md.getModelClass(), targetId);
 		try {
-			DataObjectEditor.open(po, editorId, editable, null);
+			if(type==null||type.intValue()==IReferenceContainer.EDITING_BY_EDITOR){
+				DataObjectEditor.open(po, editorId, editable, null);
+			}else if(type.intValue()==IReferenceContainer.EDITING_BY_DIALOG){
+				DataObjectDialog.openDialog(po, editorId, editable, null);
+			}else if(type.intValue()==IReferenceContainer.EDITING_BY_WIZARD){
+				DataObjectWizard.open(po, editorId, editable, null);
+			}
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 			e.printStackTrace();

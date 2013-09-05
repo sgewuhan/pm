@@ -30,7 +30,7 @@ import com.sg.business.model.check.ICheckListItem;
  * 
  */
 public class Work extends AbstractWork implements IProjectRelative, ISchedual,
-		IProcessControlable, ILifecycle {
+		IProcessControlable, ILifecycle ,IReferenceContainer{
 
 	/**
 	 * 工作的编辑器ID
@@ -71,6 +71,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 工作执行流程执行者
 	 */
 	public static final String F_WF_EXECUTE_ACTORS = "wf_execute_actors";
+
+	/**
+	 * 发起新工作的向导编辑器
+	 */
+	public static final String EDITOR_LAUNCH = "editor.work.launch";
+
+	/**
+	 * 描述
+	 */
+	public static final String F_DESCRIPTION = "description";
 
 	/**
 	 * 返回工作所属项目
@@ -1011,6 +1021,43 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			Map<String, Message> messageList) {
 		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
 				"变更流程");
+	}
+
+	/**
+	 * 绑定工作流定义
+	 * @param workflowKey,工作流关键字，执行流程或者是变更流程 {@link #F_WF_EXECUTE}  {@link #F_WF_CHANGE}
+	 * @param workflowDefinition
+	 */
+	public void bindingWorkflowDefinition(String workflowKey, DBObject workflowDefinition) {
+		setValue(workflowKey, workflowDefinition.get(workflowKey));
+		setValue(workflowKey+POSTFIX_ACTIVATED, workflowDefinition.get(POSTFIX_ACTIVATED));
+		setValue(workflowKey+POSTFIX_ACTORS, workflowDefinition.get(POSTFIX_ACTORS));
+		setValue(workflowKey+POSTFIX_ASSIGNMENT, workflowDefinition.get(POSTFIX_ASSIGNMENT));
+	}
+	
+	public void doCancel(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+	
+	}
+
+	public void doFinish(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void doPause(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void doStart(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+	
+	@Override
+	public BasicBSONList getTargetList() {
+		return (BasicBSONList) getValue(F_TARGETS);
 	}
 
 }
