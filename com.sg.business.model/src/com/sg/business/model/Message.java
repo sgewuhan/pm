@@ -180,6 +180,18 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		setValue(F_WASTE, wasteData);
 		doSave(context);
 	}
+	
+	public void doRestore(IContext context,
+			Boolean isRestore) throws Exception {
+		Object wasteData = getValue(F_WASTE);
+		if (!(wasteData instanceof DBObject)) {
+			wasteData = new BasicDBObject();
+		}
+		((DBObject) wasteData).put(context.getAccountInfo().getUserId(),
+				isRestore);
+		setValue(F_WASTE, wasteData);
+		doSave(context);
+	}
 
 	/**
 	 * ≈–∂œ «∑Ò“—∂¡
@@ -413,4 +425,6 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	public BasicBSONList getTargetList() {
 		return (BasicBSONList) getValue(F_TARGETS);
 	}
+
+	
 }
