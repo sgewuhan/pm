@@ -16,17 +16,24 @@ public class OpenMessage extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		if (selected instanceof Message) {
 			Message message = (Message) selected;
-			
+
 			try {
-				message.doMarkRead(new CurrentAccountContext(),Boolean.TRUE);
+				message.doMarkRead(new CurrentAccountContext(), Boolean.TRUE);
 				ViewerControl vc = getCurrentViewerControl(event);
 				vc.getViewer().update(selected, null);
-				DataObjectEditor.open(message, Message.EDITOR_VIEW, false,null);
+			    Object isHtmlBody = message.getValue(Message.F_ISHTMLBODY);
+				if (isHtmlBody!=null&&isHtmlBody.equals(Boolean.TRUE)) {
+					DataObjectEditor.open(message, Message.EDITOR_HTMLVIEW,
+							false, null);
+				} else {
+					DataObjectEditor.open(message, Message.EDITOR_VIEW, false,
+							null);
+				}
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
 
