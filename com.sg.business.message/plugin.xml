@@ -23,7 +23,7 @@
       </view>
       <view
             category="message"
-            class="com.sg.business.message.view.MessageView"
+            class="com.sg.widgets.part.view.TableNavigator"
             id="message.waste"
             name="废件箱"
             restorable="true">
@@ -120,9 +120,6 @@
       <navigator
             id="message.send"
             tree="message.send">
-         <createEditor
-               editorId="message.editor.create">
-         </createEditor>
          <filterAction>
             <column
                   column="markread"
@@ -207,32 +204,11 @@
       </navigator>
       <navigator
             id="message.waste"
-            tree="message.waste">
+            table="message.waste">
       </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
-      <tree
-            autoExpandLevel="-1"
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
-            editorId="message.editor.create"
-            headerVisiable="false"
-            id="message.recieved"
-            markupEnabled="true"
-            popupMenu="popup:message.recieved">
-         <column
-               column="desc"
-               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
-               name="标题"
-               type="String"
-               width="-1">
-         </column>
-      </tree>
       <tree
             autoExpandLevel="-1"
             canCreate="false"
@@ -256,20 +232,20 @@
                width="-1">
          </column>
       </tree>
-      <tree
-            autoExpandLevel="-1"
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
             canCreate="false"
             canDelete="true"
             canEdit="false"
             canRead="false"
             customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.message.MyWasteMessage"
-            headerVisiable="false"
-            id="message.waste"
-            markupEnabled="true">
-         <structure
-               modelRelation="message_message">
-         </structure>
+            dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
+            editorId="message.editor.create"
+            id="message.recieved"
+            markupEnabled="true"
+            popupMenu="popup:message.recieved">
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
@@ -277,16 +253,18 @@
                type="String"
                width="-1">
          </column>
-      </tree>
-   </extension>
-   <extension
-         point="com.sg.widgets.table">
+      </table>
       <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
             customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
-            id="message.recieved"
-            markupEnabled="true"
-            popupMenu="popup:message.recieved">
+            dataSet="com.sg.business.model.dataset.message.MyWasteMessage"
+            editorId="message.editor.create"
+            headerVisiable="false"
+            id="message.waste"
+            markupEnabled="true">
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
@@ -496,7 +474,7 @@
       <editor
             collectionName="message"
             dbName="pm2"
-            id="message.editor.view"
+            id="message.editor.htmlview"
             name="查看消息"
             titleToolTips="查看消息">
          <basicpage
@@ -600,6 +578,153 @@
                         heightHint="160"
                         id="content"
                         isHTML="true"
+                        label="内容"
+                        labelVisible="false"
+                        name="content"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="附件"
+               id="basicpage2"
+               image="image/message_24.png"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="false"
+                        heightHint="240"
+                        id="attachment"
+                        label="附件"
+                        labelVisible="false"
+                        name="attachment"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="导航"
+               id="basicpage3"
+               image="image/message_24.png"
+               pageDelegator="com.sg.business.message.editor.page.TargetListPage"
+               title="导航">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="message"
+            dbName="pm2"
+            id="message.editor.view"
+            name="查看消息"
+            titleToolTips="查看消息">
+         <basicpage
+               description="消息"
+               id="basicpage"
+               image="image/message_24.png"
+               title="消息">
+            <pagecolumn>
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="desc"
+                        label="标题"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String"
+                        userlabelForReadonly="true">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="importance"
+                        label="重要度"
+                        labelVisible="true"
+                        name="importance"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        userlabelForReadonly="true">
+                  </text>
+                  <fieldgroup
+                        columnCount="2">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="sender"
+                           label="发件人"
+                           labelVisible="true"
+                           name="sender"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.UserIdFieldPres"
+                           required="true"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="reciever"
+                           label="收件人"
+                           labelVisible="true"
+                           name="reciever"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.UserIdListFieldPres"
+                           required="true"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                  </fieldgroup>
+                  <fieldgroup
+                        columnCount="2">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="senddate"
+                           label="发送日期"
+                           labelVisible="true"
+                           name="senddate"
+                           persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd E HH:mm:ss"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="recievedate"
+                           label="收件日期"
+                           labelVisible="true"
+                           name="recievedate"
+                           persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd E HH:mm:ss"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                  </fieldgroup>
+               </section>
+               <section
+                     label="内容">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="false"
+                        heightHint="160"
+                        id="content"
+                        isHTML="false"
                         label="内容"
                         labelVisible="false"
                         name="content"
@@ -765,11 +890,6 @@
                </with>
             </visibleWhen>
          </command>
-         <command
-               commandId="message.remove"
-               label="移除至废件箱"
-               style="push">
-         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -840,10 +960,6 @@
       <command
             id="message.sendtoselecteduser"
             name="发送消息">
-      </command>
-      <command
-            id="message.remove"
-            name="移除至废件箱">
       </command>
    </extension>
    <extension
@@ -928,10 +1044,6 @@
       <handler
             class="com.sg.bussiness.message.handler.SendToSelectedUser"
             commandId="message.sendtoselecteduser">
-      </handler>
-      <handler
-            class="com.sg.bussiness.message.handler.RemoveToWaste"
-            commandId="message.remove">
       </handler>
    </extension>
    <extension
