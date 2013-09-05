@@ -212,7 +212,7 @@
       <tree
             autoExpandLevel="-1"
             canCreate="false"
-            canDelete="false"
+            canDelete="true"
             canEdit="false"
             canRead="false"
             customItemHeight="40"
@@ -220,7 +220,10 @@
             editorId="message.editor.create"
             headerVisiable="false"
             id="message.send"
-            markupEnabled="true">
+            limit="100"
+            markupEnabled="true"
+            multiSelection="true"
+            popupMenu="popup:message.send">
          <structure
                modelRelation="message_message">
          </structure>
@@ -245,6 +248,7 @@
             editorId="message.editor.create"
             headerVisiable="false"
             id="message.recieved"
+            limit="100"
             markupEnabled="true"
             multiSelection="true"
             popupMenu="popup:message.recieved">
@@ -266,6 +270,7 @@
             editorId="message.editor.create"
             headerVisiable="false"
             id="message.waste"
+            limit="100"
             markupEnabled="true">
          <column
                column="desc"
@@ -342,20 +347,6 @@
                         required="false"
                         type="String">
                   </text>
-               </section>
-               <section
-                     label="附件">
-                  <file
-                        editPart="OfficeFileUploader"
-                        editable="true"
-                        heightHint="240"
-                        id="attachment"
-                        label="附件"
-                        labelVisible="false"
-                        name="attachment"
-                        persistable="true"
-                        required="false">
-                  </file>
                </section>
             </pagecolumn>
          </basicpage>
@@ -773,6 +764,36 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:message.recieved">
+         <command
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.reply"
+               icon="image/message_reply_24.png"
+               label="回复消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
          <separator
                name="message.separator1"
                visible="true">
@@ -865,6 +886,90 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
+            locationURI="popup:message.send">
+         <command
+               commandId="message.open"
+               icon="image/message_open_24.png"
+               label="查看消息"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.add"
+               icon="image/message_add_24.png"
+               label="新消息"
+               style="push">
+         </command>
+         <separator
+               name="message.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="message.markstar"
+               icon="image/markstar_24.png"
+               label="加上星标"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="message.unmarkstar"
+               icon="image/unmarkstar_24.png"
+               label="取消星标"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="message.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
             locationURI="popup:organization.user?after=organization.consignUser">
          <command
                commandId="message.sendtoselecteduser"
@@ -887,15 +992,6 @@
                icon="image/message_open_24.png"
                label="查看消息"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
@@ -906,30 +1002,12 @@
                icon="image/message_reply_24.png"
                label="回复消息"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
          </command>
          <command
                commandId="message.open"
                icon="image/message_open_24.png"
                label="查看消息"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
@@ -977,10 +1055,20 @@
       <handler
             commandId="message.reply"
             class="com.sg.bussiness.message.handler.ReplyMessage">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
       </handler>
       <handler
             commandId="message.open"
             class="com.sg.bussiness.message.handler.OpenMessage">
+         <enabledWhen>
+            <count
+                  value="1">
+            </count>
+         </enabledWhen>
       </handler>
       <handler
             commandId="message.markread"
