@@ -2,6 +2,7 @@ package com.sg.business.model;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -42,7 +43,7 @@ public class ModelActivator implements BundleActivator {
 		workEventRegistry.init();
 	}
 
-	public static void executeEvent(Work work,String eventType) throws Exception{
+	public static void executeEvent(Work work,String eventType, Map<String, Object> params) throws Exception{
 		Collection<Configurator> confs = PLUGINS.workEventRegistry.getConfigurators();
 		Iterator<Configurator> iter = confs.iterator();
 		while(iter!=null&&iter.hasNext()){
@@ -51,7 +52,7 @@ public class ModelActivator implements BundleActivator {
 				IWorkFilter filter = conf.getWorkFilter();
 				IEventAction action = conf.getEventAction();
 				if(filter!=null&&filter.filter(work)&&action!=null){
-					action.run(work);
+					action.run(work,params);
 				}
 			}
 		}

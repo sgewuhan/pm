@@ -27,6 +27,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
@@ -1666,6 +1667,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public BasicBSONList getTargetList() {
 		return (BasicBSONList) getValue(F_TARGETS);
+	}
+
+	@Override
+	public Workflow getWorkflow(String key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

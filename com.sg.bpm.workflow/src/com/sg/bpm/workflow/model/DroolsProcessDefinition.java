@@ -6,13 +6,18 @@ import java.util.List;
 import org.drools.definition.process.Node;
 import org.drools.definition.process.Process;
 import org.drools.definition.process.WorkflowProcess;
+import org.drools.runtime.StatefulKnowledgeSession;
+import org.jbpm.process.workitem.wsht.CommandBasedWSHumanTaskHandler;
 import org.jbpm.workflow.core.node.ForEachNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.BPM;
+import com.sg.bpm.service.BPMService;
+import com.sg.bpm.service.task.CommonServiceTaskHandler;
 
+@SuppressWarnings("deprecation")
 public class DroolsProcessDefinition {
 
 	private String kbase;
@@ -27,29 +32,30 @@ public class DroolsProcessDefinition {
 		this.kbase = kbase;
 		this.processId = process.getId();
 		this.processName = process.getName();
-		this.processNamespace=process.getPackageName();
+		this.processNamespace = process.getPackageName();
 		this.type = process.getType();
 		this.version = process.getVersion();
 		this.process = process;
 	}
-	
+
 	public DroolsProcessDefinition(DBObject data) {
 		this.kbase = (String) data.get("kbase");
 		this.processId = (String) data.get("processId");
 		this.processName = (String) data.get("processName");
-		this.processNamespace=(String) data.get("processNamespace");
-		this.type =(String) data.get("type");
+		this.processNamespace = (String) data.get("processNamespace");
+		this.type = (String) data.get("type");
 		this.version = (String) data.get("version");
 	}
-	
-	public Process getProcess(){
-		if(process==null){
-			process = BPM.getBPMService().getKnowledgeBase(kbase).getProcess(processId);
+
+	public Process getProcess() {
+		if (process == null) {
+			process = BPM.getBPMService().getKnowledgeBase(kbase)
+					.getProcess(processId);
 		}
 		return process;
 	}
-	
-	public DBObject getData(){
+
+	public DBObject getData() {
 		DBObject data = new BasicDBObject();
 		data.put("kbase", kbase);
 		data.put("processId", processId);
@@ -83,8 +89,7 @@ public class DroolsProcessDefinition {
 	public String getVersion() {
 		return version;
 	}
-	
-	
+
 	public List<NodeAssignment> getNodesAssignment() {
 		List<NodeAssignment> result = new ArrayList<NodeAssignment>();
 		getProcess();
@@ -100,6 +105,20 @@ public class DroolsProcessDefinition {
 			}
 		}
 		return result;
+	}
+
+	public StatefulKnowledgeSession getKnowledgeSession() {
+		BPMService bpmService = BPM.getBPMService();
+
+		StatefulKnowledgeSession ksession = null;
+		ksession = bpmService.createSession(kbase);
+
+		CommandBasedWSHumanTaskHandler htHandler = new CommandBasedWSHumanTaskHandler();
+		htHandler.setSession(ksession);
+		CommonServiceTaskHandler stHandler = new CommonServiceTaskHandler();
+		ksession.getWorkItemManager().registerWorkItemHandler("Human Task", htHandler);
+		ksession.getWorkItemManager().registerWorkItemHandler("Service Task", stHandler);
+		return ksession;
 	}
 
 }

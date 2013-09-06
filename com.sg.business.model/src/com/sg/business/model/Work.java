@@ -3,12 +3,14 @@ package com.sg.business.model;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+import org.drools.runtime.process.ProcessInstance;
 import org.eclipse.core.runtime.Assert;
 
 import com.mobnut.commons.util.Utils;
@@ -19,6 +21,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.toolkit.LifecycleToolkit;
@@ -1120,30 +1123,36 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public void doCancel(IContext context) throws Exception {
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
-		doCancelBefore(context);
+		Map<String, Object> params = new HashMap<String,Object>();
+
+		doCancelBefore(context, params);
 
 		// TODO Auto-generated method stub
 
-		doCancelAfter(context);
+		doCancelAfter(context, params);
 	}
 
 	public void doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
-		doFinishBefore(context);
+		Map<String, Object> params = new HashMap<String,Object>();
+
+		doFinishBefore(context, params);
 
 		// TODO Auto-generated method stub
 
-		doFinishAfter(context);
+		doFinishAfter(context, params);
 
 	}
 
 	public void doPause(IContext context) throws Exception {
 		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
-		doPauseBefore(context);
+		Map<String, Object> params = new HashMap<String,Object>();
+
+		doPauseBefore(context, params);
 
 		// TODO Auto-generated method stub
 
-		doPauseAfter(context);
+		doPauseAfter(context, params);
 	}
 
 	/**
@@ -1153,13 +1162,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 判断能否启动，检查状态
 		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
 
+		Map<String, Object> params = new HashMap<String,Object>();
 		//调用前处理
-		doStartBefore(context);
+		doStartBefore(context,params);
 
 		// 判定是否使用执行工作流
 		if (isWorkflowActivate(F_WF_EXECUTE)) {
 			// 如果是，启动工作流
+			Workflow wf = getWorkflow(F_WF_EXECUTE);
+			ProcessInstance processInstance = wf.startHumanProcess(params);
+			Assert.isNotNull(processInstance, "流程启动失败");
 
+			setValue(F_WF_EXECUTE+POSTFIX_INSTANCEID, processInstance.getId());
 		}
 
 		// 启动下级同步启动的工作
@@ -1187,7 +1201,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doWorkActionNotice(context, "工作启动");
 
 		//调用后处理
-		doStartAfter(context);
+		doStartAfter(context,params);
+	}
+
+	public Workflow getWorkflow(String key) {
+		DBObject actors = getProcessActorsMap(key);
+		@SuppressWarnings("unchecked")
+		Map<String,String> actorParameter = actors.toMap();
+		DroolsProcessDefinition processDefintion = getProcessDefinition(key);
+		Workflow wf = new Workflow(processDefintion,actorParameter,this);
+		return wf;
 	}
 
 	/**
@@ -1271,41 +1294,41 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	
-	private void doStartAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "start.after");
+	private void doStartAfter(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "start.after",params);
 	}
 
-	private void doStartBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "start.before");
+	private void doStartBefore(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "start.before",params);
 	}
 
-	private void doPauseAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "pause.after");
-
-	}
-
-	private void doPauseBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "pause.before");
+	private void doPauseAfter(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "pause.after",params);
 
 	}
 
-	private void doFinishAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "finish.after");
+	private void doPauseBefore(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "pause.before",params);
 
 	}
 
-	private void doFinishBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "finish.before");
+	private void doFinishAfter(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "finish.after",params);
 
 	}
 
-	private void doCancelAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "cancel.after");
+	private void doFinishBefore(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "finish.before",params);
 
 	}
 
-	private void doCancelBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "cancel.before");
+	private void doCancelAfter(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "cancel.after",params);
+
+	}
+
+	private void doCancelBefore(IContext context,Map<String, Object> params) throws Exception {
+		ModelActivator.executeEvent(this, "cancel.before",params);
 
 	}
 }

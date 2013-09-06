@@ -11,6 +11,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.sg.bpm.service.BPM;
+import com.sg.bpm.service.HTService;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
 
 /**
@@ -42,6 +44,21 @@ public class WorkflowActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		loadConfig();
+		syncAccountToBPM();
+	}
+
+	public void syncAccountToBPM() {
+		HTService s = BPM.getHumanTaskService();
+		s.addParticipateUser("Administrator");
+
+//		// 将用户信息同步到流程管理器
+//		DBCollection col = DBActivator.getCollection("pm2", "account");
+//		DBCursor cur = col.find(new BasicDBObject().append("activated", Boolean.TRUE),new BasicDBObject().append("userid", 1));
+//		while(cur.hasNext()){
+//			DBObject usersItem = cur.next();
+//			String id = (String) usersItem.get("userid");
+//			s.addParticipateUser(id);
+//		}
 	}
 
 	/*
