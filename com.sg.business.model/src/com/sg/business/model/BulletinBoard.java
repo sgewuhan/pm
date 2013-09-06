@@ -1,6 +1,5 @@
 package com.sg.business.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
@@ -82,14 +81,20 @@ public class BulletinBoard extends PrimaryObject {
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
 
+		// 添加标题
+		String label = getLabel();
+		label = Utils.getPlainText(label);
+		label = Utils.getLimitLengthString(label, 20);
+		
+		String content = getContent();
+		content = Utils.getPlainText(content);
+		content = Utils.getLimitLengthString(content,40);
 		if (isReply()) {
-			
+			sb.append(content);
 		} else {
-			// 添加标题
-			String label = getLabel();
-			label = Utils.getPlainText(label);
-			label = Utils.getLimitLengthString(label, 20);
 			sb.append("<b>" + label + "</b>");
+			sb.append("<br/>");
+			sb.append(content);
 		}
 		return sb.toString();
 	}
