@@ -1153,6 +1153,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 判断能否启动，检查状态
 		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
 
+		//调用前处理
 		doStartBefore(context);
 
 		// 判定是否使用执行工作流
@@ -1165,26 +1166,37 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
+			//检查下级的工作是否设置了与上级同步启动
 			if (Boolean.TRUE.equals(childWork
 					.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))) {
+				//启动下级工作
 				childWork.doStart(context);
 			}
 		}
 
 		// 标记工作的进行中
 		setValue(F_LIFECYCLE, STATUS_WIP_VALUE);
+		
 		// 设置工作的实际开始时间
 		setValue(F_ACTUAL_START, new Date());
+		
 		// 保存
 		doSave(context);
 
 		// 提示工作启动
 		doWorkActionNotice(context, "工作启动");
 
+		//调用后处理
 		doStartAfter(context);
 	}
 
-	private void doWorkActionNotice(IContext context, String actionName)
+	/**
+	 * 发送工作操作完成的通知
+	 * @param context 当前的上下文
+	 * @param actionName 操作的文本名称
+	 * @throws Exception 发送消息出现的错误
+	 */
+	public void doWorkActionNotice(IContext context, String actionName)
 			throws Exception {
 		Message message = ModelService.createModelObject(Message.class);
 		//设置收件人
@@ -1217,43 +1229,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
-	private void doStartAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "start.after");
-	}
-
-	private void doStartBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "start.before");
-	}
-
-	private void doPauseAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "pause.after");
-
-	}
-
-	private void doPauseBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "pause.before");
-
-	}
-
-	private void doFinishAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "finish.after");
-
-	}
-
-	private void doFinishBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "finish.before");
-
-	}
-
-	private void doCancelAfter(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "cancel.after");
-
-	}
-
-	private void doCancelBefore(IContext context) throws Exception {
-		ModelActivator.executeEvent(this, "cancel.before");
-
-	}
 
 	@Override
 	public BasicBSONList getTargetList() {
@@ -1295,4 +1270,42 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return result;
 	}
 
+	
+	private void doStartAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "start.after");
+	}
+
+	private void doStartBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "start.before");
+	}
+
+	private void doPauseAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "pause.after");
+
+	}
+
+	private void doPauseBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "pause.before");
+
+	}
+
+	private void doFinishAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "finish.after");
+
+	}
+
+	private void doFinishBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "finish.before");
+
+	}
+
+	private void doCancelAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "cancel.after");
+
+	}
+
+	private void doCancelBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "cancel.before");
+
+	}
 }

@@ -1,7 +1,17 @@
 package com.sg.bpm.workflow;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import com.sg.bpm.workflow.taskform.TaskFormConfig;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -14,6 +24,10 @@ public class WorkflowActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static WorkflowActivator plugin;
 	
+	private Map<String, TaskFormConfig> taskStartFormMap = new HashMap<String, TaskFormConfig>();
+
+	private Map<String, TaskFormConfig> taskCompleteFormMap = new HashMap<String, TaskFormConfig>();
+
 	/**
 	 * The constructor
 	 */
@@ -27,6 +41,7 @@ public class WorkflowActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		loadConfig();
 	}
 
 	/*
@@ -45,6 +60,43 @@ public class WorkflowActivator extends AbstractUIPlugin {
 	 */
 	public static WorkflowActivator getDefault() {
 		return plugin;
+	}
+	
+	
+	private void loadConfig() {
+
+		IExtensionRegistry eReg = Platform.getExtensionRegistry();
+		IExtensionPoint ePnt = eReg.getExtensionPoint(PLUGIN_ID, "taskForm");
+		if (ePnt == null)
+			return;
+		IExtension[] exts = ePnt.getExtensions();
+		for (int i = 0; i < exts.length; i++) {
+			IConfigurationElement[] confs = exts[i].getConfigurationElements();
+			for (int j = 0; j < confs.length; j++) {
+				if ("taskForm".equals(confs[j].getName())) {
+					TaskFormConfig element = new TaskFormConfig(confs[j]);
+					if (element.isStartForm()) {
+						taskStartFormMap.put(element.getTaskFormId(), element);
+					} else if (element.isCompleteForm()) {
+						taskCompleteFormMap.put(element.getTaskFormId(),
+								element);
+					}
+				}
+			}
+		}
+
+	}
+
+	public TaskFormConfig getTaskCompleteFormConfig(String processDefinitionId,
+			String taskName) {
+
+		return taskCompleteFormMap.get(processDefinitionId + "@" + taskName);
+	}
+
+	public TaskFormConfig getTaskStartFormConfig(String processDefinitionId,
+			String taskName) {
+
+		return taskStartFormMap.get(processDefinitionId + "@" + taskName);
 	}
 
 }
