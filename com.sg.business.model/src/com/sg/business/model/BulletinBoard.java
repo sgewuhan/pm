@@ -54,12 +54,12 @@ public class BulletinBoard extends PrimaryObject {
 		return (String) getValue(F_PUBLISHER);
 	}
 
-	public String getPublishDate() {
-		return (String) getValue(F_PUBLISH_DATE);
+	public Date getPublishDate() {
+		return (Date) getValue(F_PUBLISH_DATE);
 	}
 
-	public String getOrganizationId() {
-		return (String) getValue(F_ORGANIZATION_ID);
+	public ObjectId getOrganizationId() {
+		return (ObjectId) getValue(F_ORGANIZATION_ID);
 	}
 
 	public String getDesc() {
@@ -82,20 +82,15 @@ public class BulletinBoard extends PrimaryObject {
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
 
-		// 添加日期
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
-		Date date = (Date) getValue(F_PUBLISH_DATE);
-		String publishDate = sdf.format(date);
-		sb.append("<span style='float:right;padding-right:4px'>");
-		sb.append(publishDate);
-		sb.append("</span>");
-		
-		// 添加标题
-		String label = getLabel();
-		label = Utils.getPlainText(label);
-		label = Utils.getLimitLengthString(label, 20);
-		sb.append("<b>" + label + "</b>");
-
+		if (isReply()) {
+			
+		} else {
+			// 添加标题
+			String label = getLabel();
+			label = Utils.getPlainText(label);
+			label = Utils.getLimitLengthString(label, 20);
+			sb.append("<b>" + label + "</b>");
+		}
 		return sb.toString();
 	}
 
@@ -126,7 +121,11 @@ public class BulletinBoard extends PrimaryObject {
 	private boolean isOtherUser(IContext context) {
 		String userId = context.getAccountInfo().getUserId();
 		String bulletinboardUserid = getPublisher();
-		return userId.equals(bulletinboardUserid);
+		if (userId == bulletinboardUserid) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public boolean isReply() {

@@ -69,6 +69,13 @@
                type="String"
                width="-1"></column>
          <column
+               column="publisher"
+               labelProvider="com.sg.business.commons.labelprovider.PublisherLabelProvider"
+               name="发布人"
+               style="SWT.LEFT"
+               type="String"
+               width="200"></column>
+         <column
                column="attachment"
                labelProvider="com.sg.business.commons.labelprovider.AttachmentLabelProvider"
                name="附件"
