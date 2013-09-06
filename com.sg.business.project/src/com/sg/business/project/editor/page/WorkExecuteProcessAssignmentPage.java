@@ -27,53 +27,55 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 	private ProcessViewer processViewer;
 	private DBObject processActors;
 	private Work work;
+	private boolean editable;
 
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		work = (Work) input.getData();
+		editable = input.isEditable();
 		processActors = work.getProcessActorsMap(Work.F_WF_EXECUTE);
-		if(processActors==null){
+		if (processActors == null) {
 			processActors = new BasicDBObject();
 		}
-		
-		processViewer = new ProcessViewer(parent, Work.F_WF_EXECUTE, work) {
-			
+
+		processViewer = new ProcessViewer(parent, Work.F_WF_EXECUTE, work,editable) {
+
 			@Override
-			protected void createColumns() {
-				createActionNameColumn();
+			protected void createColumns(ProcessViewer viewer) {
+				createActionNameColumn(viewer);
 
-//				createAssignmentTypeColumn();
-//
-//				createRuleColumn();
-//
-//				createParameterColumn();
+				// createAssignmentTypeColumn();
+				//
+				// createRuleColumn();
+				//
+				// createParameterColumn();
 
-				createActorRoleColumn();
+				createActorRoleColumn(viewer);
+
+				// 创建设定执行人的列
+				createProcessActorColumn(viewer);
 			}
-			
+
 			@Override
 			protected void processAssignmentUpdated() {
 				setDirty(true);
 			}
 		};
-		
-		DroolsProcessDefinition pd = work.getProcessDefinition(Work.F_WF_EXECUTE);
-		if(pd!=null){
+
+		DroolsProcessDefinition pd = work
+				.getProcessDefinition(Work.F_WF_EXECUTE);
+		if (pd != null) {
 			List<NodeAssignment> na = pd.getNodesAssignment();
 			processViewer.setInput(na);
 		}
-		// 创建设定执行人的列
-		createProcessActorColumn();
 
-		
-		
 		return processViewer.getTable();
 	}
 
-	private TableViewerColumn createProcessActorColumn() {
+	private TableViewerColumn createProcessActorColumn(ProcessViewer viewer) {
 		TableViewerColumn column;
-		column = new TableViewerColumn(processViewer, SWT.LEFT);
+		column = new TableViewerColumn(viewer, SWT.LEFT);
 		column.getColumn().setText("执行人");
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -96,51 +98,54 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 
 		});
 
-		EditingSupport editingSupport = new EditingSupport(processViewer) {
+		if (editable) {
+			EditingSupport editingSupport = new EditingSupport(viewer) {
 
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				List<User> userList = work.getPermittedUserOfWorkflowActor(
-						Work.F_WF_EXECUTE, na.getNodeActorParameter());
-				ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(
-						processViewer.getTable(), SWT.READ_ONLY);
-				combo.setContentProvider(ArrayContentProvider.getInstance());
-				combo.setInput(userList);
-				return combo;
-			}
-
-			@Override
-			protected boolean canEdit(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				return na.isNeedAssignment();
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				NodeAssignment na = (NodeAssignment) element;
-				String userid = (String) processActors.get(na
-						.getNodeActorParameter());
-				return User.getUserById(userid);
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
-				NodeAssignment na = (NodeAssignment) element;
-				String nodeActorParameter = na.getNodeActorParameter();
-				if(value instanceof User){
-					processActors.put(nodeActorParameter, ((User)value).getUserid());
-				}else{
-					processActors.removeField(nodeActorParameter);
+				@Override
+				protected CellEditor getCellEditor(Object element) {
+					NodeAssignment na = (NodeAssignment) element;
+					List<User> userList = work.getPermittedUserOfWorkflowActor(
+							Work.F_WF_EXECUTE, na.getNodeActorParameter());
+					ComboBoxViewerCellEditor combo = new ComboBoxViewerCellEditor(
+							processViewer.getTable(), SWT.READ_ONLY);
+					combo.setContentProvider(ArrayContentProvider.getInstance());
+					combo.setInput(userList);
+					return combo;
 				}
-				work.setValue(Work.F_WF_EXECUTE + IProcessControlable.POSTFIX_ACTORS,
-						processActors);
-				setDirty(true);
-				processViewer.refresh();
-			}
 
-		};
-		column.setEditingSupport(editingSupport);
+				@Override
+				protected boolean canEdit(Object element) {
+					NodeAssignment na = (NodeAssignment) element;
+					return na.isNeedAssignment();
+				}
+
+				@Override
+				protected Object getValue(Object element) {
+					NodeAssignment na = (NodeAssignment) element;
+					String userid = (String) processActors.get(na
+							.getNodeActorParameter());
+					return User.getUserById(userid);
+				}
+
+				@Override
+				protected void setValue(Object element, Object value) {
+					NodeAssignment na = (NodeAssignment) element;
+					String nodeActorParameter = na.getNodeActorParameter();
+					if (value instanceof User) {
+						processActors.put(nodeActorParameter,
+								((User) value).getUserid());
+					} else {
+						processActors.removeField(nodeActorParameter);
+					}
+					work.setValue(Work.F_WF_EXECUTE
+							+ IProcessControlable.POSTFIX_ACTORS, processActors);
+					setDirty(true);
+					processViewer.refresh();
+				}
+
+			};
+			column.setEditingSupport(editingSupport);
+		}
 		return column;
 
 	}

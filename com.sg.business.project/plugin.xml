@@ -1470,6 +1470,13 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               description="工作执行流程的执行人"
+               id="processpage1"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.project.editor.page.WorkExecuteProcessAssignmentPage"
+               title="流程">
+         </basicpage>
       </editor>
       <editor
             collectionName="work"

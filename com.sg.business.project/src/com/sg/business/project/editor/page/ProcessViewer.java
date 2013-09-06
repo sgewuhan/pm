@@ -26,10 +26,12 @@ public abstract class ProcessViewer extends TableViewer {
 	private DBObject processAssignment;
 	private PrimaryObject data;
 	private String key;
+	private boolean editable;
 
 	public ProcessViewer(Composite parent, String key, PrimaryObject data,
-			List<PrimaryObject> roleDefinitions) {
+			List<PrimaryObject> roleDefinitions,boolean editable) {
 		super(parent, SWT.FULL_SELECTION);
+		this.editable = editable;
 		this.data = data;
 		this.key = key;
 		processAssignment = (DBObject) data.getValue(key
@@ -38,11 +40,12 @@ public abstract class ProcessViewer extends TableViewer {
 		getTable().setHeaderVisible(true);
 		getTable().setLinesVisible(true);
 		setContentProvider(ArrayContentProvider.getInstance());
-		createColumns();
+		createColumns(this);
 	}
 
-	public ProcessViewer(Composite parent, String key, PrimaryObject data) {
+	public ProcessViewer(Composite parent, String key, PrimaryObject data,boolean editable) {
 		super(parent, SWT.FULL_SELECTION);
+		this.editable = editable;
 		this.data = data;
 		this.key = key;
 		processAssignment = (DBObject) data.getValue(key
@@ -50,25 +53,25 @@ public abstract class ProcessViewer extends TableViewer {
 		getTable().setHeaderVisible(true);
 		getTable().setLinesVisible(true);
 		setContentProvider(ArrayContentProvider.getInstance());
-		createColumns();
+		createColumns(this);
 	}
 
-	protected void createColumns() {
+	protected void createColumns(ProcessViewer processViewer) {
 
-		createActionNameColumn();
+		createActionNameColumn(processViewer);
 
-		createAssignmentTypeColumn();
+		createAssignmentTypeColumn(processViewer);
 
-		createRuleColumn();
+		createRuleColumn(processViewer);
 
-		createParameterColumn();
+		createParameterColumn(processViewer);
 
-		createActorRoleColumn();
+		createActorRoleColumn(processViewer);
 	}
 
-	protected TableViewerColumn createActorRoleColumn() {
+	protected TableViewerColumn createActorRoleColumn(ProcessViewer processViewer) {
 		TableViewerColumn column;
-		column = new TableViewerColumn(this, SWT.LEFT);
+		column = new TableViewerColumn(processViewer, SWT.LEFT);
 		column.getColumn().setText("执行角色");
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -89,7 +92,7 @@ public abstract class ProcessViewer extends TableViewer {
 
 		});
 
-		if (roleDefinitions != null) {
+		if (editable&&roleDefinitions != null) {
 
 			String[] rolednames = new String[roleDefinitions.size() + 1];
 			rolednames[0] = "";
@@ -151,9 +154,9 @@ public abstract class ProcessViewer extends TableViewer {
 		return column;
 	}
 
-	protected void createParameterColumn() {
+	protected void createParameterColumn(ProcessViewer processViewer) {
 		TableViewerColumn column;
-		column = new TableViewerColumn(this, SWT.LEFT);
+		column = new TableViewerColumn(processViewer, SWT.LEFT);
 		column.getColumn().setText("指派参数");
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -167,9 +170,9 @@ public abstract class ProcessViewer extends TableViewer {
 		});
 	}
 
-	protected void createRuleColumn() {
+	protected void createRuleColumn(ProcessViewer processViewer) {
 		TableViewerColumn column;
-		column = new TableViewerColumn(this, SWT.LEFT);
+		column = new TableViewerColumn(processViewer, SWT.LEFT);
 		column.getColumn().setText("规则名称");
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -187,9 +190,9 @@ public abstract class ProcessViewer extends TableViewer {
 		});
 	}
 
-	protected void createAssignmentTypeColumn() {
+	protected void createAssignmentTypeColumn(ProcessViewer processViewer) {
 		TableViewerColumn column;
-		column = new TableViewerColumn(this, SWT.LEFT);
+		column = new TableViewerColumn(processViewer, SWT.LEFT);
 		column.getColumn().setText("指派类别");
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -212,8 +215,8 @@ public abstract class ProcessViewer extends TableViewer {
 		});
 	}
 
-	protected void createActionNameColumn() {
-		TableViewerColumn column = new TableViewerColumn(this, SWT.LEFT);
+	protected void createActionNameColumn(ProcessViewer processViewer) {
+		TableViewerColumn column = new TableViewerColumn(processViewer, SWT.LEFT);
 		column.getColumn().setText("活动名称");
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
