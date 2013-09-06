@@ -119,7 +119,7 @@ public class ProcessSettingPanel extends Composite {
 	}
 
 	private Table createProcessViewer() {
-		processViewer = new ProcessViewer(this, key, primaryObject, roleds) {
+		processViewer = new ProcessViewer(this, key, primaryObject, roleds,true) {
 			
 			@Override
 			protected void processAssignmentUpdated() {
