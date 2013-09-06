@@ -50,7 +50,7 @@
             targetID="perspective.home">
          <view
                closeable="false"
-               id="com.sg.business.home.mywork"
+               id="work.processing"
                minimized="false"
                moveable="false"
                ratio="0.75"
@@ -67,7 +67,7 @@
                moveable="false"
                ratio="0.5"
                relationship="right"
-               relative="com.sg.business.home.mywork"
+               relative="work.processing"
                showTitle="true"
                standalone="false"
                visible="true">

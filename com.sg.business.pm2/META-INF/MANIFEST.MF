@@ -7,6 +7,13 @@ Bundle-Activator: com.sg.business.pm2.PM2Activator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
+ com.mobnut.db,
+ com.mobnut.commons,
+ com.mobnut.design;bundle-version="1.5.0",
+ com.mobnut.portal,
+ com.sg.thirdparty,
+ com.sg.widgets;bundle-version="1.0.0",
+ com.sg.business.message;bundle-version="1.0.0",
  com.sg.business.home;bundle-version="1.0.0",
  com.sg.business.model;bundle-version="1.0.0",
  com.sg.business.organization;bundle-version="1.0.0",
@@ -14,13 +21,6 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.management;bundle-version="1.0.0",
  com.sg.business.vault;bundle-version="1.0.0",
  com.sg.business.visualization;bundle-version="1.0.0",
- com.sg.widgets;bundle-version="1.0.0",
- com.mobnut.portal,
- com.mobnut.design;bundle-version="1.5.0",
- com.mobnut.db,
- com.sg.thirdparty,
- com.mobnut.commons,
- com.sg.widgets,
- com.sg.business.message;bundle-version="1.0.0"
+ com.sg.busingess.work;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
