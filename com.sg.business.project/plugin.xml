@@ -2964,7 +2964,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.project.handler.ProjectStart"
+            class="com.sg.business.commons.handler.LifeCycleActionStart"
             commandId="project.start">
          <enabledWhen>
             <with
@@ -2980,7 +2980,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.project.handler.ProjectPause"
+            class="com.sg.business.commons.handler.LifeCycleActionPause"
             commandId="project.pause">
          <enabledWhen>
             <with
@@ -2996,7 +2996,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.project.handler.ProjectCancel"
+            class="com.sg.business.commons.handler.LifeCycleActionCancel"
             commandId="project.cancel">
          <enabledWhen>
             <with
@@ -3013,7 +3013,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.project.handler.ProjectFinish"
+            class="com.sg.business.commons.handler.LifeCycleActionFinish"
             commandId="project.finish">
          <enabledWhen>
             <with

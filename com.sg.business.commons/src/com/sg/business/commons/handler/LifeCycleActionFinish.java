@@ -1,4 +1,4 @@
-package com.sg.business.project.handler;
+package com.sg.business.commons.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 
@@ -9,7 +9,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectFinish extends AbstractNavigatorHandler {
+public class LifeCycleActionFinish extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {

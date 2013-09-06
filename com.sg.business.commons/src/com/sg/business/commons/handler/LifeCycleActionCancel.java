@@ -1,4 +1,4 @@
-package com.sg.business.project.handler;
+package com.sg.business.commons.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 
@@ -9,7 +9,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectStart extends AbstractNavigatorHandler {
+public class LifeCycleActionCancel extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
@@ -17,7 +17,7 @@ public class ProjectStart extends AbstractNavigatorHandler {
 			ViewerControl vc = getCurrentViewerControl(event);
 			Project project = (Project) selected;
 			try {
-				project.doStart(new CurrentAccountContext());
+				project.doCancel(new CurrentAccountContext());
 				vc.getViewer().update(selected, null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
