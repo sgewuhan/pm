@@ -8,6 +8,7 @@ Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.ui.forms;bundle-version="2.1.0",
  org.eclipse.core.runtime,
+ org.eclipse.core.expressions;bundle-version="3.4.500",
  com.mobnut.db;bundle-version="1.0.0",
  com.mobnut.admin;bundle-version="1.0.0",
  com.mobnut.commons,
@@ -26,4 +27,5 @@ Export-Package: com.sg.business.commons,
  com.sg.business.commons.labelprovider,
  com.sg.business.commons.numbering,
  com.sg.business.commons.page,
+ com.sg.business.commons.test,
  com.sg.business.commons.value

@@ -2941,7 +2941,7 @@
                      ifEmpty="false">
                   <test
                         args="check"
-                        property="project.action">
+                        property="lifecycle.action">
                   </test>
                </iterate>
             </with>
@@ -2957,7 +2957,7 @@
                      ifEmpty="false">
                   <test
                         args="commit"
-                        property="project.action">
+                        property="lifecycle.action">
                   </test>
                </iterate>
             </with>
@@ -2973,7 +2973,7 @@
                      ifEmpty="false">
                   <test
                         args="start"
-                        property="project.action">
+                        property="lifecycle.action">
                   </test>
                </iterate>
             </with>
@@ -2989,7 +2989,7 @@
                      ifEmpty="false">
                   <test
                         args="pause"
-                        property="project.action">
+                        property="lifecycle.action">
                   </test>
                </iterate>
             </with>
@@ -3006,7 +3006,7 @@
                      operator="and">
                   <test
                         args="cancel"
-                        property="project.action">
+                        property="lifecycle.action">
                   </test>
                </iterate>
             </with>
@@ -3022,7 +3022,7 @@
                      ifEmpty="false">
                   <test
                         args="finish"
-                        property="project.action">
+                        property="lifecycle.action">
                   </test>
                </iterate>
             </with>
@@ -3032,7 +3032,7 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.sg.business.project.test.ProjectActionTest"
+            class="com.sg.business.commons.test.LifeCycleActionTest"
             id="project.action.test"
             namespace="project"
             properties="action"

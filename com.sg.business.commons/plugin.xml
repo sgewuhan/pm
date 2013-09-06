@@ -1237,5 +1237,15 @@
             targetId="filepage">
       </pageExtendsions>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.commons.test.LifeCycleActionTest"
+            id="lifecycle.action.test"
+            namespace="lifecycle"
+            properties="action"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
 
 </plugin>

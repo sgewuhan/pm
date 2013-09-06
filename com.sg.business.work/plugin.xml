@@ -34,6 +34,9 @@
             id="work.processing"
             popupMenu="popup:work.processing">
          <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
          <structure
@@ -118,18 +121,67 @@
       <handler
             class="com.sg.business.work.handler.WorkStart"
             commandId="work.start">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="start"
+                        property="lifecycle.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.work.handler.WorkFinish"
             commandId="work.finish">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="finish"
+                        property="lifecycle.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.work.handler.WorkPause"
             commandId="work.pause">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="pause"
+                        property="lifecycle.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.work.handler.WorkCancel"
             commandId="work.cancel">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <test
+                        args="cancel"
+                        property="lifecycle.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
       </handler>
    </extension>
 

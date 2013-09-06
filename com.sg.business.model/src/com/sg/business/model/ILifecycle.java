@@ -1,5 +1,7 @@
 package com.sg.business.model;
 
+import com.mobnut.db.model.IContext;
+
 /**
  * 项目和工作的生命周期状态
  * @author jinxitao
@@ -59,5 +61,25 @@ public interface ILifecycle {
 	String getLifecycleStatus();
 
 	String getLifecycleStatusText();
+
+	boolean canCheck();
+
+	boolean canCommit();
+
+	boolean canStart();
+
+	boolean canPause();
+
+	boolean canFinish();
+
+	boolean canCancel();
+
+	void doStart(IContext context) throws Exception;
+
+	void doPause(IContext context) throws Exception;
+
+	void doFinish(IContext context) throws Exception;
+
+	void doCancel(IContext context) throws Exception;
 
 }
