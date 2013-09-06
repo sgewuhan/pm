@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="workevent" name="WorkEvent" schema="schema/workevent.exsd"/>
    <extension
          point="com.mobnut.db.documentModelAdapter">
       <doc

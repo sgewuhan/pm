@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+import org.eclipse.core.runtime.Assert;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
@@ -20,6 +21,9 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.business.model.toolkit.LifecycleToolkit;
+import com.sg.business.model.toolkit.MessageToolkit;
+import com.sg.business.model.toolkit.ProjectToolkit;
 
 /**
  * <p>
@@ -413,7 +417,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean canEdit(String column, IContext context) {
 		return true;
 	}
-	
+
 	public boolean canCheck() {
 		// 未完成和未取消的
 		String lc = getLifecycleStatus();
@@ -699,7 +703,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			String process = F_WF_CHANGE;
 			String editorId = Project.EDITOR_CREATE_PLAN;
 			String pageId = Project.EDITOR_PAGE_WBS;
-			passed = ModelUtil.checkProcessInternal(project, this, result,
+			passed = ProjectToolkit.checkProcessInternal(project, this, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
@@ -711,7 +715,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
 			title = "检查工作执行流程";
 			process = F_WF_EXECUTE;
-			passed = ModelUtil.checkProcessInternal(project, this, result,
+			passed = ProjectToolkit.checkProcessInternal(project, this, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
@@ -824,7 +828,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	@Override
 	public String getLifecycleStatusText() {
 		String lc = getLifecycleStatus();
-		return ModelUtil.getLifecycleStatusText(lc);
+		return LifecycleToolkit.getLifecycleStatusText(lc);
 	}
 
 	/**
@@ -865,10 +869,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (userId != null) {
 			message = messageList.get(userId);
 			if (message == null) {
-				message = ModelUtil.createProjectCommitMessage(userId);
+				message = MessageToolkit.createProjectCommitMessage(userId);
 				messageList.put(userId, message);
 			}
-			ModelUtil.appendMessageContent(message, "负责工作" + ": " + getLabel());
+			MessageToolkit.appendMessageContent(message, "负责工作" + ": " + getLabel());
 			message.appendTargets(this, EDITOR, Boolean.TRUE);
 			messageList.put(userId, message);
 		}
@@ -881,10 +885,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (userId != null) {
 			message = messageList.get(userId);
 			if (message == null) {
-				message = ModelUtil.createProjectCommitMessage(userId);
+				message = MessageToolkit.createProjectCommitMessage(userId);
 				messageList.put(userId, message);
 			}
-			ModelUtil.appendMessageContent(message, "为工作指派负责人和参与者，工作" + ": "
+			MessageToolkit.appendMessageContent(message, "为工作指派负责人和参与者，工作" + ": "
 					+ getLabel());
 			message.appendTargets(this, EDITOR, Boolean.TRUE);
 			messageList.put(userId, message);
@@ -900,10 +904,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				userId = (String) userIdList.get(i);
 				message = messageList.get(userId);
 				if (message == null) {
-					message = ModelUtil.createProjectCommitMessage(userId);
+					message = MessageToolkit.createProjectCommitMessage(userId);
 					messageList.put(userId, message);
 				}
-				ModelUtil.appendMessageContent(message, "参与工作" + ": "
+				MessageToolkit.appendMessageContent(message, "参与工作" + ": "
 						+ getLabel());
 				message.appendTargets(this, EDITOR, Boolean.TRUE);
 			}
@@ -912,13 +916,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public void appendMessageForExecuteWorkflowActor(
 			Map<String, Message> messageList) {
-		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_EXECUTE,
+		MessageToolkit.appendWorkflowActorMessage(this, messageList, F_WF_EXECUTE,
 				"执行流程");
 	}
 
 	public void appendMessageForChangeWorkflowActor(
 			Map<String, Message> messageList) {
-		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
+		MessageToolkit.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
 				"变更流程");
 	}
 
@@ -950,55 +954,55 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// if (calendarCaculater == null) {
 		// calendarCaculater = new CalendarCaculater(getProjectId());
 		// }
-	
+
 		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
 		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
 				F_ACTUAL_DURATION);
-	
-		//同步负责人、流程活动执行人到工作的参与者。
+
+		// 同步负责人、流程活动执行人到工作的参与者。
 		ensureParticipatesConsistency();
-		
+
 		super.doSave(context);
-	
+
 		// Work parent = (Work) getParent();
 		// if (parent != null) {
 		// parent.doUpdateSummarySchedual(calendarCaculater, context);
 		// }else{
 		// doUpdateProjectSchedual(context);
 		// }
-	
+
 		return true;
-	
+
 	}
 
 	/**
 	 * 确保工作的参与者包括工作的负责人、流程执行人
 	 */
 	public void ensureParticipatesConsistency() {
-		//获取工作的负责人
+		// 获取工作的负责人
 		String chargerId = getChargerId();
 		addParticipate(chargerId);
-		
-		//获得流程的执行人
-		if(isWorkflowActivate(F_WF_EXECUTE)){
+
+		// 获得流程的执行人
+		if (isWorkflowActivate(F_WF_EXECUTE)) {
 			DBObject processActorsMap = getProcessActorsMap(F_WF_EXECUTE);
 			Iterator<String> iter = processActorsMap.keySet().iterator();
-			while(iter.hasNext()){
+			while (iter.hasNext()) {
 				String key = iter.next();
 				String userId = (String) processActorsMap.get(key);
 				addParticipate(userId);
 			}
 		}
-		
+
 	}
 
 	public void addParticipate(String chargerId) {
 		BasicBSONList participatesIdList = getParticipatesIdList();
-		if(participatesIdList == null){
+		if (participatesIdList == null) {
 			participatesIdList = new BasicDBList();
 			setValue(F_PARTICIPATE, participatesIdList);
 		}
-		if(!participatesIdList.contains(chargerId)){
+		if (!participatesIdList.contains(chargerId)) {
 			participatesIdList.add(chargerId);
 		}
 	}
@@ -1016,7 +1020,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		List<PrimaryObject> assignments;
 		String userid;
 		boolean modified = false;
-	
+
 		// 设置负责人
 		ObjectId roleId = (ObjectId) getValue(F_CHARGER_ROLE_ID);
 		if (roleId != null) {
@@ -1028,7 +1032,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				modified = true;
 			}
 		}
-	
+
 		// 设置指派者
 		roleId = (ObjectId) getValue(F_ASSIGNMENT_CHARGER_ROLE_ID);
 		if (roleId != null) {
@@ -1040,7 +1044,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				modified = true;
 			}
 		}
-	
+
 		// 设置参与者
 		BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
 		if (roleIds != null && roleIds.size() > 0) {
@@ -1061,9 +1065,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				modified = true;
 			}
 		}
-	
+
 		// 设置变更工作流执行人
-	
+
 		DBObject wfRoleAss = (DBObject) getValue(F_WF_CHANGE_ASSIGNMENT);
 		if (wfRoleAss != null) {
 			BasicDBObject wfRoleActors = getWorkFlowActors(wfRoleAss,
@@ -1073,7 +1077,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				modified = true;
 			}
 		}
-	
+
 		// 设置执行工作流的执行人
 		wfRoleAss = (DBObject) getValue(F_WF_EXECUTE_ASSIGNMENT);
 		if (wfRoleAss != null) {
@@ -1087,7 +1091,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (modified) {
 			doSave(context);
 		}
-	
+
 		// 设置下级
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
@@ -1111,26 +1115,143 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		deli.doInsert(context);
 		return deli;
-	
+
 	}
 
 	public void doCancel(IContext context) throws Exception {
+		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
+		doCancelBefore(context);
+
 		// TODO Auto-generated method stub
 
+		doCancelAfter(context);
 	}
 
 	public void doFinish(IContext context) throws Exception {
+		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
+		doFinishBefore(context);
+
 		// TODO Auto-generated method stub
+
+		doFinishAfter(context);
 
 	}
 
 	public void doPause(IContext context) throws Exception {
+		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
+		doPauseBefore(context);
+
 		// TODO Auto-generated method stub
+
+		doPauseAfter(context);
+	}
+
+	/**
+	 * 启动工作
+	 */
+	public void doStart(IContext context) throws Exception {
+		// 判断能否启动，检查状态
+		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
+
+		doStartBefore(context);
+
+		// 判定是否使用执行工作流
+		if (isWorkflowActivate(F_WF_EXECUTE)) {
+			// 如果是，启动工作流
+
+		}
+
+		// 启动下级同步启动的工作
+		List<PrimaryObject> children = getChildrenWork();
+		for (int i = 0; i < children.size(); i++) {
+			Work childWork = (Work) children.get(i);
+			if (Boolean.TRUE.equals(childWork
+					.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))) {
+				childWork.doStart(context);
+			}
+		}
+
+		// 标记工作的进行中
+		setValue(F_LIFECYCLE, STATUS_WIP_VALUE);
+		// 设置工作的实际开始时间
+		setValue(F_ACTUAL_START, new Date());
+		// 保存
+		doSave(context);
+
+		// 提示工作启动
+		doWorkActionNotice(context, "工作启动");
+
+		doStartAfter(context);
+	}
+
+	private void doWorkActionNotice(IContext context, String actionName)
+			throws Exception {
+		Message message = ModelService.createModelObject(Message.class);
+		//设置收件人
+		BasicBSONList participatesIdList = getParticipatesIdList();
+		Assert.isTrue(participatesIdList != null
+				&& participatesIdList.size() > 0, "工作的参与者为空");
+		message.setValue(Message.F_RECIEVER, participatesIdList);
+		
+		//设置通知标题
+		message.setValue(Message.F_DESC, actionName + "通知");
+		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
+
+		//设置发件人
+		String userId = context.getAccountInfo().getUserId();
+		String userName = context.getAccountInfo().getUserName();
+		message.setValue(Message.F_SENDER, userId);
+	
+		//设置发送时间
+		message.setValue(Message.F_SENDDATE, new Date());
+		
+		//设置通知内容
+		String content = "<span style='font-size:14px'>" + "您好: "
+				+ "</span><br/><br/>" + userName + "|" + userId + "执行了"
+				+ actionName + getLabel() + "<br/>您是该工作的参与者，请知晓。<br/><br/>";
+		message.setValue(Message.F_CONTENT, content);
+		MessageToolkit.appendEndMessage(message);
+		
+		//设置导航附件
+		message.appendTargets(this, EDITOR, false);
 
 	}
 
-	public void doStart(IContext context) throws Exception {
-		// TODO Auto-generated method stub
+	private void doStartAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "start.after");
+	}
+
+	private void doStartBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "start.before");
+	}
+
+	private void doPauseAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "pause.after");
+
+	}
+
+	private void doPauseBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "pause.before");
+
+	}
+
+	private void doFinishAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "finish.after");
+
+	}
+
+	private void doFinishBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "finish.before");
+
+	}
+
+	private void doCancelAfter(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "cancel.after");
+
+	}
+
+	private void doCancelBefore(IContext context) throws Exception {
+		ModelActivator.executeEvent(this, "cancel.before");
 
 	}
 
@@ -1163,7 +1284,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		List<User> result = new ArrayList<User>();
 		if (ralist != null) {
 			for (int i = 0; i < ralist.size(); i++) {
-				AbstractRoleAssignment ra = (AbstractRoleAssignment) ralist.get(i);
+				AbstractRoleAssignment ra = (AbstractRoleAssignment) ralist
+						.get(i);
 				String userid = ra.getUserid();
 				User user = User.getUserById(userid);
 				result.add(user);

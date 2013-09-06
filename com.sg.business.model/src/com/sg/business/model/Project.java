@@ -32,6 +32,9 @@ import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
+import com.sg.business.model.toolkit.LifecycleToolkit;
+import com.sg.business.model.toolkit.MessageToolkit;
+import com.sg.business.model.toolkit.ProjectToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -1364,7 +1367,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String process = F_WF_CHANGE;
 		String editorId = EDITOR_SETPROCESS;
 		String pageId = EDITOR_PAGE_CHANGE_PROCESS;
-		passed = ModelUtil.checkProcessInternal(this, this, result, raMap,
+		passed = ProjectToolkit.checkProcessInternal(this, this, result, raMap,
 				title, process, editorId, pageId);
 		if (passed) {
 			CheckListItem checkItem = new CheckListItem(title);
@@ -1376,7 +1379,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		title = "检查项目提交流程";
 		process = F_WF_COMMIT;
 		pageId = EDITOR_PAGE_COMMIT_PROCESS;
-		passed = ModelUtil.checkProcessInternal(this, this, result, raMap,
+		passed = ProjectToolkit.checkProcessInternal(this, this, result, raMap,
 				title, process, editorId, pageId);
 		if (passed) {
 			CheckListItem checkItem = new CheckListItem(title);
@@ -1498,7 +1501,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public String getLifecycleStatusText() {
 		String lc = getLifecycleStatus();
-		return ModelUtil.getLifecycleStatusText(lc);
+		return LifecycleToolkit.getLifecycleStatusText(lc);
 	}
 
 	public void doCommitWithSendMessage(IContext context) throws Exception {
@@ -1537,7 +1540,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Work root = getWBSRoot();
 		messageList = root.getCommitMessage(messageList);
 
-		ModelUtil.appendProjectCommitMessageEndContent(messageList);
+		MessageToolkit.appendProjectCommitMessageEndContent(messageList);
 		return messageList;
 	}
 
@@ -1555,10 +1558,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				userId = (String) userIdList.get(i);
 				message = messageList.get(userId);
 				if (message == null) {
-					message = ModelUtil.createProjectCommitMessage(userId);
+					message = MessageToolkit.createProjectCommitMessage(userId);
 					messageList.put(userId, message);
 				}
-				ModelUtil.appendMessageContent(message, "参与工作" + ": "
+				MessageToolkit.appendMessageContent(message, "参与工作" + ": "
 						+ getLabel());
 				message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
 			}
@@ -1572,7 +1575,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForChangeWorkflowActor(
 			Map<String, Message> messageList) {
-		ModelUtil.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
+		MessageToolkit.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
 				"项目变更流程");
 	}
 
@@ -1587,10 +1590,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (userId != null) {
 			message = messageList.get(userId);
 			if (message == null) {
-				message = ModelUtil.createProjectCommitMessage(userId);
+				message = MessageToolkit.createProjectCommitMessage(userId);
 				messageList.put(userId, message);
 			}
-			ModelUtil.appendMessageContent(message, "担任项目负责人，项目" + ": "
+			MessageToolkit.appendMessageContent(message, "担任项目负责人，项目" + ": "
 					+ getLabel());
 			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
 			messageList.put(userId, message);

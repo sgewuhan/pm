@@ -3,7 +3,7 @@ package com.sg.business.commons.labelprovider;
 import org.eclipse.swt.graphics.Image;
 
 import com.sg.business.model.ILifecycle;
-import com.sg.business.model.ModelUtil;
+import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
 public class StatusLabelProvider extends ConfiguratorColumnLabelProvider {
@@ -24,7 +24,7 @@ public class StatusLabelProvider extends ConfiguratorColumnLabelProvider {
 		if(element instanceof ILifecycle){
 			ILifecycle lc = (ILifecycle) element;
 			 String s = lc.getLifecycleStatus();
-			 return ModelUtil.getLifecycleStatusImage(s);
+			 return LifecycleToolkit.getLifecycleStatusImage(s);
 		}else{
 			return null;
 		}

@@ -13,7 +13,7 @@ public class WorkActivator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static WorkActivator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -28,6 +28,8 @@ public class WorkActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 	}
+
+
 
 	/*
 	 * (non-Javadoc)

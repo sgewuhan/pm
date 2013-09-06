@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.thirdparty,
  com.mobnut.portal,
  com.sg.business.resource;bundle-version="1.0.0",
- com.sg.bpm.workflow
+ com.sg.bpm.workflow,
+ org.eclipse.core.expressions;bundle-version="3.4.500"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.model,
@@ -26,4 +27,6 @@ Export-Package: com.sg.business.model,
  com.sg.business.model.dataset.organization,
  com.sg.business.model.dataset.project,
  com.sg.business.model.dataset.projecttemplate,
- com.sg.business.model.dataset.work
+ com.sg.business.model.dataset.work,
+ com.sg.business.model.event,
+ com.sg.business.model.toolkit
