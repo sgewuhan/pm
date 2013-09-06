@@ -16,23 +16,47 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 import com.sg.widgets.MessageUtil;
 
+/**
+ * <p>
+ * 公告板
+ * </p>
+ * 继承于 {@link SingleDBCollectionDataSetFactory}
+ * 用于获取公告板信息<br/>
+ * 实现以下几种功能：
+ * <li>获取公告板数据信息
+ * <li>设置查询条件
+ * <li>设置排序
+ * @author gdiyang
+ *
+ */
 public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 
+	/**
+	 * 公告板构造函数
+	 */
 	public BulletinBoardDataSet() {
+		//设置公告板数据合的存在数据库及数据存储表
 		super(IModelConstants.DB, IModelConstants.C_BULLETINBOARD);
 	}
 
+	/**
+	 * 设置查询条件
+	 */
 	@Override
 	public DBObject getQueryCondition() {
 		try {
+			//获取当前用户所在的组织
 			List<ObjectId> orgIds = new ArrayList<ObjectId>();
 			String userid = UserSessionContext.getAccountInfo()
 					.getconsignerId();
 			User user = User.getUserById(userid);
 			Organization org = user.getOrganization();
+			//获取当前用户所在组织的下级组织
 			searchDown(org, orgIds);
+			//获取当前用户所在组织的上级组织
 			searchUp(org, orgIds);
 
+			//设置查询条件
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(BulletinBoard.F_ORGANIZATION_ID,
 					new BasicDBObject().append("$in", orgIds));
@@ -45,8 +69,15 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 		}
 	}
 
+	/**
+	 * 获取组织的下级组织
+	 * @param org : 当前组织
+	 * @param list : 需查询的组织列表
+	 */
 	private void searchDown(Organization org, List<ObjectId> list) {
+		//获取当前组织的下级组织
 		List<PrimaryObject> children = org.getChildrenOrganization();
+		//循环迭代添加下级组织到需查询的组织列表中
 		for (int i = 0; i < children.size(); i++) {
 			Organization child = (Organization) children.get(i);
 			if (child.isFunctionDepartment()) {
@@ -56,16 +87,27 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 		}
 	}
 
+	/**
+	 * 获取组织的上级组织
+	 * @param org : 当前组织
+	 * @param list : 需查询的组织列表
+	 */
 	private void searchUp(Organization org, List<ObjectId> list) {
+		//添加当前组织到组织列表中
 		list.add(0, org.get_id());
+		//迭代添加上级组织到组织列表中
 		Organization parent = (Organization) org.getParentOrganization();
 		if (parent != null) {
 			searchUp(parent, list);
 		}
 	}
 
+	/**
+	 * 设置排序
+	 */
 	@Override
 	public DBObject getSort() {
+		//依据发布日期进行排序
 		return new BasicDBObject().append(BulletinBoard.F_PUBLISH_DATE, -1);
 	}
 }

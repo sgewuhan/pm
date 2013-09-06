@@ -4,6 +4,11 @@ import java.util.Date;
 
 import com.sg.widgets.part.editor.fields.value.IFieldDefaultValue;
 
+/**
+ * 设置时间默认值
+ * @author gdiyang
+ *
+ */
 public class TodayDefault implements IFieldDefaultValue {
 
 	public TodayDefault() {
