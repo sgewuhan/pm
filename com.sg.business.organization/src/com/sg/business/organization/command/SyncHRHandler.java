@@ -65,16 +65,19 @@ public class SyncHRHandler extends AbstractHandler {
 //		po.removeEventListener(vc);
 		
 		
-//		SyscHR syscHR = new SyscHR();
-//		// 变量，存放PM系统比HR系统少的组织，将会作为PM系统需要插入的组织使用
-//		Set<OrgExchange> insertSet = new HashSet<OrgExchange>();
-//		// 变量，存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
-//		Set<OrgExchange> removeSet = new HashSet<OrgExchange>();
-//		// 变量，存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
-//		Set<OrgExchange> renameSet = new HashSet<OrgExchange>();
-//		syscHR.doSyscHROrganization(insertSet, removeSet, renameSet);
+		SyscHR syscHR = new SyscHR();
+		// 变量，存放PM系统比HR系统少的组织，将会作为PM系统需要插入的组织使用
+		Set<OrgExchange> insertSet = new HashSet<OrgExchange>();
+		// 变量，存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
+		Set<OrgExchange> removeSet = new HashSet<OrgExchange>();
+		// 变量，存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
+		Set<OrgExchange> renameSet = new HashSet<OrgExchange>();
+		syscHR.doSyscHROrganization(insertSet, removeSet, renameSet);
 		
 		SyncHROrganizationDialog dialog = new SyncHROrganizationDialog(shell);
+		dialog.setInputForNewOrganization(insertSet);
+		dialog.setInputForRemoveOrganization(removeSet);
+		dialog.setInputForRenameOrganization(renameSet);
 		int ret = dialog.open();
 		System.out.println(ret);
 		return null;
