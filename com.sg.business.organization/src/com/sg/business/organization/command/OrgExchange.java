@@ -5,8 +5,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.ModelService;
@@ -66,6 +68,8 @@ public class OrgExchange {
 	 * 父组织
 	 */
 	private OrgExchange parent;
+
+	private boolean checkHR;
 
 	/**
 	 * 消息标题
@@ -326,6 +330,10 @@ public class OrgExchange {
 		this.pmId = pmId;
 	}
 
+	public void setCheckHR(boolean checkHR) {
+		this.checkHR = checkHR;
+	}
+
 	/**
 	 * @return : {@link ObjectId}类型，当前组织的PM系统parent_id，在使用时需要设置属性{@link #parent}
 	 *         的{@link #orgId}
@@ -401,12 +409,17 @@ public class OrgExchange {
 	 *            : PM系统的parentId
 	 */
 	public void doAddAllHR(ObjectId parentId) {
+		if(!checkHR){
+			return;
+		}
 		ObjectId _id = new ObjectId();
 		// 插入当前组织
 		doAddHR(this, _id, parentId);
 		// 循环迭代调用本方法，插入子组织
 		for (OrgExchange orgExchangeChildren : children) {
-			orgExchangeChildren.doAddAllHR(_id);
+			if (orgExchangeChildren.checkHR) {
+				orgExchangeChildren.doAddAllHR(_id);
+			}
 		}
 	}
 
@@ -458,6 +471,9 @@ public class OrgExchange {
 	 * 修改PM系统中当前组织的全称
 	 */
 	public void doRenameHR() {
+		if(!checkHR){
+			return;
+		}
 		Organization organization;
 		organization = ModelService.createModelObject(Organization.class);
 		organization.setValue(Organization.F__ID, pmId);
@@ -500,37 +516,46 @@ public class OrgExchange {
 	 * @param removeSet
 	 *            : {@link HashSet}，需要删除的组织
 	 */
-	public void sendMessage(Set<OrgExchange> removeSet) {
-		Message message;
-		// 设置消息内容
-		String messageContent = null;
-		for (OrgExchange orgExchange : removeSet) {
-			if (messageContent == null) {
-				messageContent = OrgExchange.MESSAGE_CONTENT_BEFORE
-						+ orgExchange.desc + OrgExchange.MESSAGE_CONTENT_AFTER;
-			} else {
-				messageContent = messageContent + "<br/>"
-						+ OrgExchange.MESSAGE_CONTENT_BEFORE + orgExchange.desc
-						+ OrgExchange.MESSAGE_CONTENT_AFTER;
-			}
-		}
-
-		// 获取系统管理员角色的用户信息
-		List<PrimaryObject> user = User.getAdmin();
-		BasicBSONList recieverList = new BasicBSONList();
-		for (int i = 0; i < user.size(); i++) {
-			recieverList.add(user.get(i).getValue(User.F_USER_ID));
-		}
-
-		message = ModelService.createModelObject(Message.class);
-		message.setValue(Message.F_CONTENT, messageContent);
-		message.setValue(Message.F_DESC, OrgExchange.MESSAGE_DESC);
-		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
-		message.setValue(Message.F_RECIEVER, recieverList);
-		try {
-			message.doSave(new BackgroundContext());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void sendMessage(Set<OrgExchange> removeSet) {
+//		Message message;
+//		// 设置消息内容
+//		String messageContent = null;
+//		for (OrgExchange orgExchange : removeSet) {
+//			messageContent = setMessageContent(orgExchange);
+//		}
+//
+//		// 获取系统管理员角色的用户信息
+//		List<PrimaryObject> user = User.getAdmin();
+//		BasicBSONList recieverList = new BasicBSONList();
+//		for (int i = 0; i < user.size(); i++) {
+//			recieverList.add(user.get(i).getValue(User.F_USER_ID));
+//		}
+//
+//		message = ModelService.createModelObject(Message.class);
+//		message.setValue(Message.F_CONTENT, messageContent);
+//		message.setValue(Message.F_DESC, OrgExchange.MESSAGE_DESC);
+//		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
+//		message.setValue(Message.F_RECIEVER, recieverList);
+//		try {
+//			message.doSave(new BackgroundContext());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	private String setMessageContent(OrgExchange orgExchange) {
+//		String messageContent = null;
+//		if (orgExchange.checkHR) {
+//			if (messageContent == null) {
+//				messageContent = OrgExchange.MESSAGE_CONTENT_BEFORE
+//						+ orgExchange.desc + OrgExchange.MESSAGE_CONTENT_AFTER;
+//			} 
+//			
+//			for (OrgExchange childrenOrgExchange : orgExchange.children) {
+//				messageContent = messageContent + "<br/>" + setMessageContent(childrenOrgExchange);
+//			}
+//		}
+//
+//		return messageContent;
+//	}
 }

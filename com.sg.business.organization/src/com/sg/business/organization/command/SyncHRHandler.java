@@ -1,86 +1,71 @@
 package com.sg.business.organization.command;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.swt.SWT;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.sg.business.model.AbstractWork;
-import com.sg.widgets.MessageUtil;
-import com.sg.widgets.Widgets;
-import com.sg.widgets.part.IEditablePart;
-import com.sg.widgets.part.IRefreshablePart;
-import com.sg.widgets.part.editor.DataObjectDialog;
-import com.sg.widgets.registry.config.Configurator;
-import com.sg.widgets.registry.config.DataEditorConfigurator;
+import com.mobnut.db.model.PrimaryObject;
+import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class SyncHRHandler extends AbstractHandler {
+public class SyncHRHandler extends AbstractNavigatorHandler {
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-//		long start = System.currentTimeMillis();
-//
-//		// 与HR的组织进行同步
-//		SyscHR syscHR = new SyscHR();
-//		syscHR.doSyscHROrganization();
-//
-//		IWorkbenchPart part = HandlerUtil.getActivePart(event);
-//		if (part instanceof IRefreshablePart) {
-//			((IRefreshablePart) part).doRefresh();
-//		}
-//		System.out.println(System.currentTimeMillis() - start);
-		
-		Shell shell = HandlerUtil.getActiveShell(event);
-//
-//		AbstractWork po = ((AbstractWork) selected).makeChildWork();
-//		ViewerControl vc = getCurrentViewerControl(event);
-//		Assert.isNotNull(vc);
-//
-//		// 以下两句很重要，使树currentViewerControl够侦听到保存事件， 更新树上的节点
-//		// 1. 设置父并不涉及到数据库，主要是维护模型的父子关系，同时ViewerControl也需要父来处理事件响应
-//		po.setParentPrimaryObject(selected);
-//		// 2. 侦听po的事件作出合适的响应
-//		po.addEventListener(vc);
-//
-//		// 使用编辑器打开编辑工作定义
-//		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-//				po.getDefaultEditorId());
-//		try {
-//			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-//					true, null,"创建"+po.getTypeName());
-//		} catch (Exception e) {
-//			MessageUtil.showToast(shell, "创建"+po.getTypeName(), e.getMessage(),
-//					SWT.ICON_ERROR);
-//		}
-//
-//		// 3. 处理完成后，释放侦听器
-//		po.removeEventListener(vc);
-		
-		
-		SyscHR syscHR = new SyscHR();
+	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+		final Shell shell = HandlerUtil.getActiveShell(event);
+		final SyncHR syncHR = new SyncHR();
+		final ViewerControl vc = getCurrentViewerControl(event);
+		syncHR.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				shell.getDisplay().syncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						doSyncDone(syncHR, shell, vc);
+					}
+				});
+			}
+		});
+
+		syncHR.schedule();
+	}
+
+	protected void doSyncDone(SyncHR syncHR, Shell shell, ViewerControl vc) {
 		// 变量，存放PM系统比HR系统少的组织，将会作为PM系统需要插入的组织使用
-		Set<OrgExchange> insertSet = new HashSet<OrgExchange>();
+		Set<OrgExchange> insertSet = syncHR.getInsertSet();
 		// 变量，存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
-		Set<OrgExchange> removeSet = new HashSet<OrgExchange>();
+		Set<OrgExchange> removeSet = syncHR.getRemoveSet();
 		// 变量，存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
-		Set<OrgExchange> renameSet = new HashSet<OrgExchange>();
-		syscHR.doSyscHROrganization(insertSet, removeSet, renameSet);
-		
+		Set<OrgExchange> renameSet = syncHR.getRenameSet();
+
 		SyncHROrganizationDialog dialog = new SyncHROrganizationDialog(shell);
 		dialog.setInputForNewOrganization(insertSet);
 		dialog.setInputForRemoveOrganization(removeSet);
 		dialog.setInputForRenameOrganization(renameSet);
 		int ret = dialog.open();
-		System.out.println(ret);
-		return null;
+		if (ret == IDialogConstants.OK_ID) {
+			// 插入PM系统比HR系统少的组织
+			for (OrgExchange orgExchange : insertSet) {
+				orgExchange.doAddAllHR();
+			}
+			// 修改PM系统和HR系统名称不一致的组织
+			for (OrgExchange orgExchange : renameSet) {
+				orgExchange.doRenameHR();
+			}
+
+			vc.refreshViewer();
+		}
+
 	}
 
+	@Override
+	protected boolean nullSelectionContinue(ExecutionEvent event) {
+		return true;
+	}
 }

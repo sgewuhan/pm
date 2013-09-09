@@ -10,17 +10,20 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.TreeItem;
 
 public class SyncHROrganizationDialog extends Dialog {
 
@@ -44,11 +47,16 @@ public class SyncHROrganizationDialog extends Dialog {
 			shell.setText(title);
 		}
 		// Workaround for RWT Text Size Determination
-		shell.addListener(SWT.Resize, new Listener() {
-			public void handleEvent(Event event) {
-				initializeBounds();
-			}
-		});
+		// shell.addListener(SWT.Resize, new Listener() {
+		// public void handleEvent(Event event) {
+		// initializeBounds();
+		// }
+		// });
+	}
+
+	@Override
+	protected Point getInitialSize() {
+		return new Point(600, 600);
 	}
 
 	@Override
@@ -79,7 +87,7 @@ public class SyncHROrganizationDialog extends Dialog {
 		fd.top = new FormAttachment(messageLabel, 10);
 		fd.left = new FormAttachment(0, 10);
 		fd.right = new FormAttachment(100, -10);
-		fd.bottom = new FormAttachment(100,-10);
+		fd.bottom = new FormAttachment(100, -10);
 		return content;
 	}
 
@@ -87,110 +95,141 @@ public class SyncHROrganizationDialog extends Dialog {
 		TabItem tabItem = new TabItem(tab, SWT.NONE);
 		tabItem.setText("HR中更名的组织");
 		Composite panel = new Composite(tab, SWT.NONE);
+		panel.setLayout(new FillLayout());
 		renameOrgTable = createTable(panel);
 		renameOrgTable.setInput(renameOrgTableInput);
 		tabItem.setControl(panel);
 	}
 
-
 	private void createTabItemOrgToBeRemove(TabFolder tab) {
 		TabItem tabItem = new TabItem(tab, SWT.NONE);
 		tabItem.setText("HR中移除的组织");
 		Composite panel = new Composite(tab, SWT.NONE);
-		removeOrgTree = createTree(panel);
-		removeOrgTree .setInput(removeOrgTreeInput);
-		
+		panel.setLayout(new FillLayout());
+		removeOrgTree = createTree(panel,SWT.NONE);
+		removeOrgTree.setInput(removeOrgTreeInput);
+
 		tabItem.setControl(panel);
 	}
-	
 
 	private void createTabItemOrgToBeInsert(TabFolder tab) {
 		TabItem tabItem = new TabItem(tab, SWT.NONE);
 		tabItem.setText("HR中的新组织");
 		Composite panel = new Composite(tab, SWT.NONE);
-		newOrgTree = createTree(panel);
+		panel.setLayout(new FillLayout());
+		newOrgTree = createTree(panel,SWT.CHECK);
 		newOrgTree.setInput(newOrgTreeInput);
 		tabItem.setControl(panel);
 	}
 
-	private TreeViewer createTree(Composite panel) {
-		TreeViewer treeViewer = new TreeViewer(panel,SWT.CHECK);
+	private TreeViewer createTree(Composite panel, int style) {
+		TreeViewer treeViewer = new TreeViewer(panel, style);
 		treeViewer.getTree().setLinesVisible(true);
 		treeViewer.setLabelProvider(new OrgExchangeLabelProvider());
 		treeViewer.setContentProvider(new ITreeContentProvider() {
-			
+
 			@Override
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			public void inputChanged(Viewer viewer, Object oldInput,
+					Object newInput) {
 			}
-			
+
 			@Override
 			public void dispose() {
-				
+
 			}
-			
+
 			@Override
 			public boolean hasChildren(Object element) {
-				if(element instanceof OrgExchange){
+				if (element instanceof OrgExchange) {
 					OrgExchange orgExchange = (OrgExchange) element;
 					return !orgExchange.getChildren().isEmpty();
 				}
 				return false;
 			}
-			
+
 			@Override
 			public Object getParent(Object element) {
-				if(element instanceof OrgExchange){
+				if (element instanceof OrgExchange) {
 					OrgExchange orgExchange = (OrgExchange) element;
 					return orgExchange.getParent();
 				}
 				return null;
 			}
-			
+
 			@Override
 			public Object[] getElements(Object inputElement) {
-				if(inputElement instanceof Set){
+				if (inputElement instanceof Set) {
 					@SuppressWarnings("unchecked")
 					Set<OrgExchange> set = (Set<OrgExchange>) inputElement;
-					return set.toArray(new OrgExchange[]{});
+					return set.toArray(new OrgExchange[] {});
 				}
 				return null;
 			}
-			
+
 			@Override
 			public Object[] getChildren(Object parentElement) {
-				if(parentElement instanceof OrgExchange){
+				if (parentElement instanceof OrgExchange) {
 					OrgExchange orgExchange = (OrgExchange) parentElement;
-					Set<OrgExchange> children = orgExchange .getChildren();
-					return children.toArray(new OrgExchange[]{});
+					Set<OrgExchange> children = orgExchange.getChildren();
+					return children.toArray(new OrgExchange[] {});
 				}
 				return null;
 			}
 		});
-		
-		
+		treeViewer.getTree().addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TreeItem treeItem = (TreeItem) e.item;
+				((OrgExchange)treeItem.getData()).setCheckHR(treeItem.getChecked());
+				if (treeItem.getChecked()) {
+					TreeItem parentItem = treeItem.getParentItem();
+					while(parentItem != null){
+						parentItem.setChecked(true);
+						((OrgExchange)parentItem.getData()).setCheckHR(true);
+						parentItem= parentItem.getParentItem();
+					}
+				} else {
+					unCheck(treeItem);
+				}
+			}
+
+			private void unCheck(TreeItem treeItem) {
+				for (TreeItem childrenTreeItem : treeItem.getItems()) {
+					childrenTreeItem.setChecked(false);
+					((OrgExchange)childrenTreeItem.getData()).setCheckHR(false);
+					unCheck(childrenTreeItem);
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
+
 		return treeViewer;
 	}
-	
+
 	private TableViewer createTable(Composite panel) {
-		TableViewer tableViewer = new TableViewer(panel,SWT.CHECK);
+		TableViewer tableViewer = new TableViewer(panel, SWT.CHECK);
 		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		tableViewer.setLabelProvider(new OrgExchangeLabelProvider());
-		
-		
+
 		return tableViewer;
 	}
-	
-	public void setInputForNewOrganization(Set<OrgExchange> input){
-		
+
+	public void setInputForNewOrganization(Set<OrgExchange> input) {
+
 		newOrgTreeInput = input;
 	}
-	
-	public void setInputForRemoveOrganization(Set<OrgExchange> input){
+
+	public void setInputForRemoveOrganization(Set<OrgExchange> input) {
 		removeOrgTreeInput = input;
 	}
-	
-	public void setInputForRenameOrganization(Set<OrgExchange> input){
+
+	public void setInputForRenameOrganization(Set<OrgExchange> input) {
 		renameOrgTableInput = input;
 	}
 

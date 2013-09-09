@@ -3,6 +3,12 @@ package com.sg.business.organization.command;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Shell;
+
 /**
  * <P>
  * 同步HR系统
@@ -12,7 +18,15 @@ import java.util.Set;
  * @author yangjun
  *
  */
-public class SyscHR {
+public class SyncHR extends Job {
+
+	private Set<OrgExchange> insertSet;
+	private Set<OrgExchange> removeSet;
+	private Set<OrgExchange> renameSet;
+	public SyncHR() {
+		super("读取HR系统数据");
+		setUser(true);
+	}
 
 	/**
 	 * 与HR组织进行同步
@@ -20,7 +34,11 @@ public class SyscHR {
 	 * @param removeSet ,存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
 	 * @param renameSet ,存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
 	 */
-	public void doSyscHROrganization(Set<OrgExchange> insertSet, Set<OrgExchange> removeSet, Set<OrgExchange> renameSet) {
+	public void doSyscHROrganization() {
+		insertSet = new HashSet<OrgExchange>();
+		removeSet = new HashSet<OrgExchange>();
+		renameSet = new HashSet<OrgExchange>();
+		
 		// 获取PM系统和HR系统的顶级组织，构造时会同时构造出完整的组织树形结构
 		OrgExchange pmOrg = new OrgExchange(null, true);
 		OrgExchange hrOrg = new OrgExchange(null, false);
@@ -35,18 +53,18 @@ public class SyscHR {
 			// 获取PM系统和HR系统组织的差异
 			getPMDifferentHR(pmOrg, hrOrg, insertSet, removeSet, renameSet);
 		}
-		// 插入PM系统比HR系统少的组织
-		for (OrgExchange orgExchange : insertSet) {
-			orgExchange.doAddAllHR();
-		}
-		// 修改PM系统和HR系统名称不一致的组织
-		for (OrgExchange orgExchange : renameSet) {
-			orgExchange.doRenameHR();
-		}
-		// 发邮件通知系统管理员删除PM系统比HR系统多的组织
-		if(removeSet.size() > 0){
-			pmOrg.sendMessage(removeSet);
-		}
+//		// 插入PM系统比HR系统少的组织
+//		for (OrgExchange orgExchange : insertSet) {
+//			orgExchange.doAddAllHR();
+//		}
+//		// 修改PM系统和HR系统名称不一致的组织
+//		for (OrgExchange orgExchange : renameSet) {
+//			orgExchange.doRenameHR();
+//		}
+//		// 发邮件通知系统管理员删除PM系统比HR系统多的组织
+//		if(removeSet.size() > 0){
+//			pmOrg.sendMessage(removeSet);
+//		}
 	}
 
 	/**
@@ -93,6 +111,26 @@ public class SyscHR {
 			getPMDifferentHR(pmOrgChildren, hrOrgChildren, insertSet,
 					removeSet, renameSet);
 		}
+	}
+
+	
+	public Set<OrgExchange> getInsertSet() {
+		return insertSet;
+	}
+
+	public Set<OrgExchange> getRemoveSet() {
+		return removeSet;
+	}
+
+	public Set<OrgExchange> getRenameSet() {
+		return renameSet;
+	}
+
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		monitor.beginTask("正在查询数据", IProgressMonitor.UNKNOWN);
+		doSyscHROrganization();
+		return Status.OK_STATUS;
 	}
 
 }
