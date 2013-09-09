@@ -23,7 +23,6 @@ import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
-import com.sg.widgets.part.internal.MultipageEditablePanel;
 
 public class SyncHRDialog extends FormDialog implements IInputProvider {
 
@@ -79,9 +78,9 @@ public class SyncHRDialog extends FormDialog implements IInputProvider {
 
 		parent.setLayout(new FillLayout());
 
-		MultipageEditablePanel folder = new MultipageEditablePanel(parent,
-				SWT.TOP | SWT.FLAT);
-		folder.setMessageManager(form.getMessageManager());
+//		MultipageEditablePanel folder = new MultipageEditablePanel(parent,
+//				SWT.TOP | SWT.FLAT);
+//		folder.setMessageManager(form.getMessageManager());
 		// folder.createContents(managedForm, input);
 
 	}

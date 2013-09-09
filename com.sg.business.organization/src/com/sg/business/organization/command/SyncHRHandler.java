@@ -1,5 +1,8 @@
 package com.sg.business.organization.command;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -35,7 +38,7 @@ public class SyncHRHandler extends AbstractHandler {
 //		}
 //		System.out.println(System.currentTimeMillis() - start);
 		
-//		Shell shell = HandlerUtil.getActiveShell(event);
+		Shell shell = HandlerUtil.getActiveShell(event);
 //
 //		AbstractWork po = ((AbstractWork) selected).makeChildWork();
 //		ViewerControl vc = getCurrentViewerControl(event);
@@ -61,6 +64,19 @@ public class SyncHRHandler extends AbstractHandler {
 //		// 3. 处理完成后，释放侦听器
 //		po.removeEventListener(vc);
 		
+		
+//		SyscHR syscHR = new SyscHR();
+//		// 变量，存放PM系统比HR系统少的组织，将会作为PM系统需要插入的组织使用
+//		Set<OrgExchange> insertSet = new HashSet<OrgExchange>();
+//		// 变量，存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
+//		Set<OrgExchange> removeSet = new HashSet<OrgExchange>();
+//		// 变量，存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
+//		Set<OrgExchange> renameSet = new HashSet<OrgExchange>();
+//		syscHR.doSyscHROrganization(insertSet, removeSet, renameSet);
+		
+		SyncHROrganizationDialog dialog = new SyncHROrganizationDialog(shell);
+		int ret = dialog.open();
+		System.out.println(ret);
 		return null;
 	}
 

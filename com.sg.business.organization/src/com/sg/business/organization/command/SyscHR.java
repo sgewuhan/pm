@@ -16,17 +16,15 @@ public class SyscHR {
 
 	/**
 	 * 与HR组织进行同步
+	 * @param insertSet ，存放PM系统比HR系统少的组织，将会作为PM系统需要插入的组织使用
+	 * @param removeSet ,存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
+	 * @param renameSet ,存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
 	 */
-	public void doSyscHROrganization() {
+	public void doSyscHROrganization(Set<OrgExchange> insertSet, Set<OrgExchange> removeSet, Set<OrgExchange> renameSet) {
 		// 获取PM系统和HR系统的顶级组织，构造时会同时构造出完整的组织树形结构
 		OrgExchange pmOrg = new OrgExchange(null, true);
 		OrgExchange hrOrg = new OrgExchange(null, false);
-		// 变量，存放PM系统比HR系统少的组织，将会作为PM系统需要插入的组织使用
-		Set<OrgExchange> insertSet = new HashSet<OrgExchange>();
-		// 变量，存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
-		Set<OrgExchange> removeSet = new HashSet<OrgExchange>();
-		// 变量，存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
-		Set<OrgExchange> renameSet = new HashSet<OrgExchange>();
+
 
 		// 判断顶级组织是否一致
 		if (!hrOrg.equals(pmOrg)) {

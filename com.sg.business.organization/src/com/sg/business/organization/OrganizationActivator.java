@@ -3,8 +3,6 @@ package com.sg.business.organization;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import com.sg.business.organization.handler.SyncHRJob;
-
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -16,7 +14,7 @@ public class OrganizationActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static OrganizationActivator plugin;
 
-	private SyncHRJob job;
+//	private SyncHRJob job;
 	
 	/**
 	 * The constructor
@@ -31,8 +29,8 @@ public class OrganizationActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		job = new SyncHRJob();
-		job.start("14:31:00");
+//		job = new SyncHRJob();
+//		job.start("14:31:00");
 	}
 
 	/*
