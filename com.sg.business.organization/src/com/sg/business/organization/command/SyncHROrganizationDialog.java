@@ -28,6 +28,9 @@ public class SyncHROrganizationDialog extends Dialog {
 	private TreeViewer newOrgTree;
 	private TreeViewer removeOrgTree;
 	private TableViewer renameOrgTable;
+	private Set<OrgExchange> newOrgTreeInput;
+	private Set<OrgExchange> removeOrgTreeInput;
+	private Set<OrgExchange> renameOrgTableInput;
 
 	protected SyncHROrganizationDialog(Shell parentShell) {
 		super(parentShell);
@@ -85,7 +88,7 @@ public class SyncHROrganizationDialog extends Dialog {
 		tabItem.setText("HR中更名的组织");
 		Composite panel = new Composite(tab, SWT.NONE);
 		renameOrgTable = createTable(panel);
-		
+		renameOrgTable.setInput(renameOrgTableInput);
 		tabItem.setControl(panel);
 	}
 
@@ -95,28 +98,18 @@ public class SyncHROrganizationDialog extends Dialog {
 		tabItem.setText("HR中移除的组织");
 		Composite panel = new Composite(tab, SWT.NONE);
 		removeOrgTree = createTree(panel);
-
+		removeOrgTree .setInput(removeOrgTreeInput);
 		
 		tabItem.setControl(panel);
 	}
 	
-
-	private TableViewer createTable(Composite panel) {
-		TableViewer tableViewer = new TableViewer(panel,SWT.CHECK);
-		tableViewer.getTable().setLinesVisible(true);
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setLabelProvider(new OrgExchangeLabelProvider());
-		
-		
-		return tableViewer;
-	}
 
 	private void createTabItemOrgToBeInsert(TabFolder tab) {
 		TabItem tabItem = new TabItem(tab, SWT.NONE);
 		tabItem.setText("HR中的新组织");
 		Composite panel = new Composite(tab, SWT.NONE);
 		newOrgTree = createTree(panel);
-		
+		newOrgTree.setInput(newOrgTreeInput);
 		tabItem.setControl(panel);
 	}
 
@@ -178,17 +171,27 @@ public class SyncHROrganizationDialog extends Dialog {
 		return treeViewer;
 	}
 	
+	private TableViewer createTable(Composite panel) {
+		TableViewer tableViewer = new TableViewer(panel,SWT.CHECK);
+		tableViewer.getTable().setLinesVisible(true);
+		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+		tableViewer.setLabelProvider(new OrgExchangeLabelProvider());
+		
+		
+		return tableViewer;
+	}
 	
 	public void setInputForNewOrganization(Set<OrgExchange> input){
-		newOrgTree.setInput(input);
+		
+		newOrgTreeInput = input;
 	}
 	
 	public void setInputForRemoveOrganization(Set<OrgExchange> input){
-		removeOrgTree.setInput(input);
+		removeOrgTreeInput = input;
 	}
 	
 	public void setInputForRenameOrganization(Set<OrgExchange> input){
-		renameOrgTable.setInput(input);
+		renameOrgTableInput = input;
 	}
 
 }
