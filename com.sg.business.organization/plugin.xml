@@ -193,6 +193,18 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="organization.renamehr"
+            tree="organization.renamehr">
+      </navigator>
+      <navigator
+            id="organization.removehr"
+            tree="organization.removehr">
+      </navigator>
+      <navigator
+            id="organization.inserthr"
+            tree="organization.inserthr">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -259,6 +271,15 @@
          <structure
                modelRelation="role_roleassignment">
          </structure>
+      </tree>
+      <tree
+            id="organization.renamehr">
+      </tree>
+      <tree
+            id="organization.removehr">
+      </tree>
+      <tree
+            id="organization.inserthr">
       </tree>
    </extension>
    <extension
@@ -686,6 +707,27 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="com.sg.business.organization.editor1"
+            dbName="com.sg.business.organization.editor1"
+            id="editor.organization.synchr"
+            name="导入组织和用户信息">
+         <navigatorpage
+               id="organization.inserthr"
+               navigatorId="organization.inserthr"
+               title="新增组织">
+         </navigatorpage>
+         <navigatorpage
+               id="organization.removehr"
+               navigatorId="organization.removehr"
+               title="删除组织">
+         </navigatorpage>
+         <navigatorpage
+               id="organization.renamehr"
+               navigatorId="organization.renamehr"
+               title="修改组织">
+         </navigatorpage>
+      </editor>
    </extension>
    <!--以下是自定义创建handler的例程
    <extension
@@ -830,7 +872,7 @@
                label="HR同步"
                style="push"
                tooltip="将HR的组织数据同步到系统">
-                           <visibleWhen
+            <visibleWhen
                   checkEnabled="false">
                <with
                      variable="activeWorkbenchWindow.activePerspective">
