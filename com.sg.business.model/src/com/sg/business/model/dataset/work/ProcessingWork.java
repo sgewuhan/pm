@@ -63,19 +63,6 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 		DBObject projection = getProjection();
 		DBCursor cursor = c.find(query, projection);
 
-		DBObject sort = getSort();
-		if(sort!=null){
-			cursor.sort(sort);
-		}
-		
-		int skip = getSkip();
-		if (skip > 0) {
-			cursor.skip(skip);
-		}
-		int limit = getLimit();
-		if (limit > 0) {
-			cursor.limit(limit);
-		}
 
 		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
 		Class<? extends PrimaryObject> clas;
@@ -84,6 +71,9 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 
 		while (iter.hasNext()) {
 			DBObject dbo = iter.next();
+			Object obj = dbo.get(Work.F_ROOT_ID);
+			
+			
 			clas = getModelClass(dbo);
 			Assert.isNotNull(clas, "类参数不可为空");
 			PrimaryObject po = ModelService.createModelObject(dbo, clas);
