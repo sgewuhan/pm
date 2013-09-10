@@ -66,7 +66,7 @@
             editorId="editor.work"
             headerVisiable="false"
             id="work.finished"
-            popupMenu="popup:work.processing">
+            popupMenu="popup:work.finished">
          <structure
                modelRelation="work_work">
          </structure>
@@ -198,7 +198,7 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="popup:work.examine">
+            locationURI="popup:work.finished">
          <command
                commandId="workprocessing.openproject"
                icon="image/24_blank.png"
