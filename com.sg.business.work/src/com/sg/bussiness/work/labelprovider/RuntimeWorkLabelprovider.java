@@ -3,6 +3,7 @@ package com.sg.bussiness.work.labelprovider;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.bson.types.BasicBSONList;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.mobnut.commons.util.Utils;
@@ -24,6 +25,9 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		//生命周期状态
 		String lifecycleState = work.getLifecycleStatusText();
+		if(lifecycleState==null||lifecycleState.length()<=0){
+			lifecycleState="无状态";
+		}
 		//根工作desc
 		String rootDesc = work.getRoot().toString();
 		//工作desc
@@ -33,29 +37,47 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		String planStart="";
 		if(date!=null){
 			planStart = sdf.format(date);
+		}else{
+			planStart="没有设置";
 		}
+			
 		
 		date=work.getPlanFinish();
 		String planFinish="";
 		if(date!=null){
 			planFinish = sdf.format(date);
+		}else{
+			planStart="没有设置";
 		}
 		
 		date=work.getActualStart();
 		String actualStart="";
 		if(date!=null){
 			actualStart = sdf.format(date);
+		}else{
+			planStart="没有设置";
 		}
 		
 		date=work.getActualFinish();
 		String actualFinish="";
 		if(date!=null){
 			actualFinish = sdf.format(date);
+		}else{
+			planStart="没有设置";
 		}
 		
-		int planDuration = work.getPlanDuration();
+		Integer planDuration = work.getPlanDuration();
+		if(planDuration==null){
+			planDuration=0;
+		}
 		Integer actualDuration=work.getActualDuration();
+		if(actualDuration==null){
+			actualDuration=0;
+		}
 		
+		String charger=work.getCharger().getDesc();
+		BasicBSONList participateList = work.getParticipatesIdList();
+		//for()
 	
         sb.append(lifecycleState+","+rootDesc+","+workDesc);
         sb.append("<br/>");

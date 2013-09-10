@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.IProcessControlable;
@@ -29,13 +30,18 @@ public abstract class ProcessViewer extends TableViewer {
 	private boolean editable;
 
 	public ProcessViewer(Composite parent, String key, PrimaryObject data,
-			List<PrimaryObject> roleDefinitions,boolean editable) {
+			List<PrimaryObject> roleDefinitions, boolean editable) {
 		super(parent, SWT.FULL_SELECTION);
 		this.editable = editable;
 		this.data = data;
 		this.key = key;
 		processAssignment = (DBObject) data.getValue(key
 				+ IProcessControlable.POSTFIX_ASSIGNMENT);
+		if (processAssignment == null) {
+			processAssignment = new BasicDBObject();
+			data.setValue(key + IProcessControlable.POSTFIX_ASSIGNMENT,
+					processAssignment);
+		}
 		this.roleDefinitions = roleDefinitions;
 		getTable().setHeaderVisible(true);
 		getTable().setLinesVisible(true);
@@ -43,13 +49,19 @@ public abstract class ProcessViewer extends TableViewer {
 		createColumns(this);
 	}
 
-	public ProcessViewer(Composite parent, String key, PrimaryObject data,boolean editable) {
+	public ProcessViewer(Composite parent, String key, PrimaryObject data,
+			boolean editable) {
 		super(parent, SWT.FULL_SELECTION);
 		this.editable = editable;
 		this.data = data;
 		this.key = key;
 		processAssignment = (DBObject) data.getValue(key
 				+ IProcessControlable.POSTFIX_ASSIGNMENT);
+		if (processAssignment == null) {
+			processAssignment = new BasicDBObject();
+			data.setValue(key + IProcessControlable.POSTFIX_ASSIGNMENT,
+					processAssignment);
+		}
 		getTable().setHeaderVisible(true);
 		getTable().setLinesVisible(true);
 		setContentProvider(ArrayContentProvider.getInstance());
@@ -69,7 +81,8 @@ public abstract class ProcessViewer extends TableViewer {
 		createActorRoleColumn(processViewer);
 	}
 
-	protected TableViewerColumn createActorRoleColumn(ProcessViewer processViewer) {
+	protected TableViewerColumn createActorRoleColumn(
+			ProcessViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
 		column.getColumn().setText("执行角色");
@@ -92,7 +105,7 @@ public abstract class ProcessViewer extends TableViewer {
 
 		});
 
-		if (editable&&roleDefinitions != null) {
+		if (editable && roleDefinitions != null) {
 
 			String[] rolednames = new String[roleDefinitions.size() + 1];
 			rolednames[0] = "";
@@ -216,7 +229,8 @@ public abstract class ProcessViewer extends TableViewer {
 	}
 
 	protected void createActionNameColumn(ProcessViewer processViewer) {
-		TableViewerColumn column = new TableViewerColumn(processViewer, SWT.LEFT);
+		TableViewerColumn column = new TableViewerColumn(processViewer,
+				SWT.LEFT);
 		column.getColumn().setText("活动名称");
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {

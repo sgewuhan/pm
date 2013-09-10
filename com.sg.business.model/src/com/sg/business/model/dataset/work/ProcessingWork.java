@@ -1,10 +1,9 @@
 package com.sg.business.model.dataset.work;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.Assert;
+import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.DataSet;
@@ -24,6 +23,28 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 
 	public ProcessingWork() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
+	}
+
+	@Override
+	public DataSet getDataSet() {
+		DBCollection col = getCollection();
+		DBCursor cur = col.find(getQueryCondition(),
+				new BasicDBObject().append(Work.F_ROOT_ID, 1));
+		List<PrimaryObject> ret = new ArrayList<PrimaryObject>();
+		while(cur.hasNext()){
+			DBObject dbo = cur.next();
+			ObjectId rootId = (ObjectId) dbo.get(Work.F_ROOT_ID);
+			if(rootId==null){
+				rootId = (ObjectId) dbo.get(Work.F__ID);
+			}
+			Work work = ModelService.createModelObject(Work.class, rootId);
+			if(!ret.contains(work)){
+				ret.add(work);
+			}
+		}
+		
+		return new DataSet(ret);
+		
 	}
 
 	/**
@@ -54,40 +75,39 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 		}
 	}
 
-	@Override
-	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
-		DBCollection c = getCollection();
-		Assert.isNotNull(c, "无法获取集合");
-
-		DBObject query = getQueryCondition();
-		DBObject projection = getProjection();
-		DBCursor cursor = c.find(query, projection);
-
-
-		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
-		Class<? extends PrimaryObject> clas;
-
-		Iterator<DBObject> iter = cursor.iterator();
-
-		while (iter.hasNext()) {
-			DBObject dbo = iter.next();
-			Object obj = dbo.get(Work.F_ROOT_ID);
-			
-			
-			
-			clas = getModelClass(dbo);
-			Assert.isNotNull(clas, "类参数不可为空");
-			PrimaryObject po = ModelService.createModelObject(dbo, clas);
-			/*while(po.getParentPrimaryObject()!=null){
-				po=po.getParentPrimaryObject();
-			}*/
-			po.setDataSet(ds);
-			Assert.isNotNull(po, "无法创建ORM映射的对象:" + dbo.toString());
-			dataItems.add(po);
-		}
-
-		return dataItems;
-	}
+	// @Override
+	// public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
+	// DBCollection c = getCollection();
+	// Assert.isNotNull(c, "无法获取集合");
+	//
+	// DBObject query = getQueryCondition();
+	// DBObject projection = getProjection();
+	// DBCursor cursor = c.find(query, projection);
+	//
+	//
+	// List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
+	// Class<? extends PrimaryObject> clas;
+	//
+	// Iterator<DBObject> iter = cursor.iterator();
+	//
+	// while (iter.hasNext()) {
+	// DBObject dbo = iter.next();
+	// Object obj = dbo.get(Work.F_ROOT_ID);
+	//
+	//
+	// clas = getModelClass(dbo);
+	// Assert.isNotNull(clas, "类参数不可为空");
+	// PrimaryObject po = ModelService.createModelObject(dbo, clas);
+	// /*while(po.getParentPrimaryObject()!=null){
+	// po=po.getParentPrimaryObject();
+	// }*/
+	// po.setDataSet(ds);
+	// Assert.isNotNull(po, "无法创建ORM映射的对象:" + dbo.toString());
+	// dataItems.add(po);
+	// }
+	//
+	// return dataItems;
+	// }
 
 	@Override
 	public DBObject getSort() {

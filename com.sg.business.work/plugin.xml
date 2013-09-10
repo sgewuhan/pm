@@ -40,7 +40,7 @@
             canDelete="true"
             canEdit="false"
             canRead="true"
-            customItemHeight="60"
+            customItemHeight="40"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
             editorId="editor.work"
             headerVisiable="false"
@@ -53,7 +53,8 @@
                column="desc"
                labelProvider="com.sg.bussiness.work.labelprovider.RuntimeWorkLabelprovider"
                name="工作"
-               type="String">
+               type="String"
+               width="-1">
          </column>
       </tree>
       <tree
