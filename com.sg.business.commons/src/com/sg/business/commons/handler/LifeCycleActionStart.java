@@ -15,9 +15,9 @@ public class LifeCycleActionStart extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		if(selected instanceof ILifecycle){
 			ViewerControl vc = getCurrentViewerControl(event);
-			ILifecycle project = (ILifecycle) selected;
+			ILifecycle lc = (ILifecycle) selected;
 			try {
-				project.doStart(new CurrentAccountContext());
+				lc.doStart(new CurrentAccountContext());
 				vc.getViewer().update(selected, null);
 			} catch (Exception e) {
 				e.printStackTrace();

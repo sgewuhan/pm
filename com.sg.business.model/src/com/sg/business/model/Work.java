@@ -1401,9 +1401,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param task
 	 *            任务
 	 * @param context
+	 * @return 是否更新
 	 * @throws Exception
 	 */
-	public void doUpdateWorkflowDataByTask(String key, Task task,
+	public boolean doUpdateWorkflowDataByTask(String key, Task task,
 			IContext context) throws Exception {
 		String field = key+POSTFIX_TASK;
 		Object value = getValue(field);
@@ -1413,7 +1414,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
 			//已经通知过
 			if(noticedate instanceof Date){
-				return;
+				return false;
 			}
 		}
 
@@ -1462,6 +1463,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		
 		setValue(field, data);
 		doSave(context);
+		
+		return true;
 	}
 
 }
