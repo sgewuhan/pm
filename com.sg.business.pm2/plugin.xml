@@ -94,6 +94,17 @@
                standalone="false"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="work.finished"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.processing"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.message">
@@ -376,7 +387,6 @@
                id="perspective.management">
          </perspective>
       </scenario>
->
    </extension>
    <extension
          point="com.mobnut.design.headAreaPart">

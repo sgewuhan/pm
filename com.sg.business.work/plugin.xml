@@ -14,12 +14,23 @@
             name="待处理工作"
             restorable="true">
       </view>
+      <view
+            category="work"
+            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            id="work.finished"
+            name="已结束的工作"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
       <navigator
             id="work.processing"
             tree="work.processing">
+      </navigator>
+      <navigator
+            id="work.finished"
+            tree="work.finished">
       </navigator>
    </extension>
    <extension
@@ -29,18 +40,33 @@
             canDelete="true"
             canEdit="false"
             canRead="true"
+            customItemHeight="60"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
             editorId="editor.work"
+            headerVisiable="false"
             id="work.processing"
             popupMenu="popup:work.processing">
+         <structure
+               modelRelation="work_work">
+         </structure>
          <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
+               column="desc"
+               labelProvider="com.sg.bussiness.work.labelprovider.RuntimeWorkLabelprovider"
+               name="工作"
+               type="String">
          </column>
-         <column
-               column="wf_execute_task"
-               name="流程任务信息"
-               type="String"
-               width="120"></column>
+      </tree>
+      <tree
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.work.ProcessingWork"
+            editorId="editor.work"
+            headerVisiable="false"
+            id="work.finished"
+            popupMenu="popup:work.finished">
          <structure
                modelRelation="work_work">
          </structure>
@@ -52,57 +78,48 @@
             allPopups="false"
             locationURI="popup:work.processing">
          <command
-               commandId="work.create"
+               commandId="runtimework.create"
+               icon="image/24_blank.png"
                label="添加子工作"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="+">
-                  </count>
-               </with>
-            </visibleWhen>
          </command>
          <command
-               commandId="work.createdeliverable"
+               commandId="runtimework.createdeliverable"
+               icon="image/24_blank.png"
                label="添加交付物"
                style="push">
          </command>
          <command
-               commandId="project.linkdeliverable"
+               commandId="runtimework.linkdeliverable"
                icon="image/24_blank.png"
                label="链接项目的其他交付物..."
                style="push">
          </command>
          <separator
-               name="work.separator0"
+               name="runtimework.separator0"
                visible="true">
          </separator>
          <command
-               commandId="work.openproject"
+               commandId="runtimework.openproject"
                icon="image/24_blank.png"
                label="查看项目"
                style="push">
          </command>
          <command
-               commandId="com.sg.widgets.command.edit"
+               commandId="runtimework.openwork"
                icon="image/work_24.png"
                label="查看工作"
                style="push">
-            <parameter
-                  name="com.sg.widgets.edit.editorid"
-                  value="editor.work">
-            </parameter>
          </command>
          <command
-               commandId="work.opendeliverable"
+               commandId="runtimework.opendeliverable"
+               icon="image/24_blank.png"
                label="项目交付物"
                style="push">
          </command>
          <command
-               commandId="work.edit"
+               commandId="runtimework.edit"
+               icon="image/24_blank.png"
                label="更改工作"
                style="push">
          </command>
@@ -110,25 +127,25 @@
                icon="image/work2_24.png"
                label="工作操作">
             <command
-                  commandId="work.start"
+                  commandId="runtimework.start"
                   icon="image/work_start_24.png"
                   label="启动"
                   style="push">
             </command>
             <command
-                  commandId="work.finish"
+                  commandId="runtimework.finish"
                   icon="image/work_finish_24.png"
                   label="完工"
                   style="push">
             </command>
             <command
-                  commandId="work.pause"
+                  commandId="runtimework.pause"
                   icon="image/work_pause_24.png"
                   label="暂停"
                   style="push">
             </command>
             <command
-                  commandId="work.cancel"
+                  commandId="runtimework.cancel"
                   icon="image/work_cancel_24.png"
                   label="取消"
                   style="push">
@@ -138,47 +155,69 @@
                icon="image/execute_24.png"
                label="流程操作">
             <command
-                  commandId="work.wfstart"
+                  commandId="runtimework.wfstart"
                   icon="image/project_start_24.png"
                   label="启动"
                   style="push">
             </command>
             <command
-                  commandId="work.wffinish"
+                  commandId="runtimework.wffinish"
                   icon="image/project_finish_24.png"
                   label="完成"
                   style="push">
             </command>
             <command
-                  commandId="work.wfcancel"
+                  commandId="runtimework.wfcancel"
                   icon="image/project_stop_24.png"
                   label="中止"
                   style="push">
             </command>
          </menu>
          <command
-               commandId="work.workrecord"
+               commandId="runtimework.workrecord"
+               icon="image/24_blank.png"
                label="编辑工作记录"
                style="push">
          </command>
          <separator
-               name="work.separator1"
+               name="runtimework.separator1"
                visible="true">
          </separator>
          <menu
                icon="image/trash_24.png"
                label="删除">
             <command
-                  commandId="com.sg.widgets.command.delete"
+                  commandId="runtimework.delete"
                   label="删除子工作"
                   style="push">
             </command>
             <command
-                  commandId="project.deletedeliverable"
+                  commandId="runtimework.deletedeliverable"
                   label="删除交付物"
                   style="push">
             </command>
          </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:work.finished">
+         <command
+               commandId="runtimework.openproject"
+               icon="image/24_blank.png"
+               label="查看项目"
+               style="push">
+         </command>
+         <command
+               commandId="runtimework.openwork"
+               icon="image/work_24.png"
+               label="查看工作"
+               style="push">
+         </command>
+         <command
+               commandId="runtimework.opendeliverable"
+               label="项目交付物"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -188,71 +227,160 @@
             name="工作">
       </category>
       <command
+            id="runtimework.create"
+            name="添加子工作">
+      </command>
+      <command
+            id="runtimework.createdeliverable"
+            name="添加交付物">
+      </command>
+      <command
+            id="runtimework.linkdeliverable"
+            name="链接项目的其他交付物...">
+      </command>
+      <command
+            id="runtimework.openproject"
+            name="查看项目">
+      </command>
+      <command
+            id="runtimework.openwork"
+            name="查看工作">
+      </command>
+      <command
+            id="runtimework.opendeliverable"
+            name="项目交付物">
+      </command>
+      <command
+            id="runtimework.edit"
+            name="更改工作">
+      </command>
+      <command
             categoryId="work"
-            id="work.start"
+            id="runtimework.start"
             name="启动">
       </command>
       <command
             categoryId="work"
-            id="work.finish"
+            id="runtimework.finish"
             name="完成">
       </command>
       <command
             categoryId="work"
-            id="work.pause"
+            id="runtimework.pause"
             name="暂停">
       </command>
       <command
             categoryId="work"
-            id="work.cancel"
+            id="runtimework.cancel"
             name="取消">
       </command>
       <command
-            id="work.createdeliverable"
-            name="添加交付物">
-      </command>
-      <command
-            id="work.openproject"
-            name="查看项目">
-      </command>
-      <command
-            id="work.opendeliverable"
-            name="项目交付物">
-      </command>
-      <command
-            id="work.create"
-            name="添加子工作">
-      </command>
-      <command
-            id="work.edit"
-            name="更改工作">
-      </command>
-      <command
-            id="work.wfstart"
+            id="runtimework.wfstart"
             name="启动">
       </command>
       <command
-            id="work.wffinish"
+            id="runtimework.wffinish"
             name="完成">
       </command>
       <command
-            id="work.wfcancel"
+            id="runtimework.wfcancel"
             name="中止">
       </command>
       <command
-            id="work.workrecord"
+            id="runtimework.workrecord"
             name="编辑工作记录">
       </command>
       <command
-            id="project.deletedeliverable"
+            id="runtimework.delete"
+            name="删除子工作">
+      </command>
+      <command
+            id="runtimework.deletedeliverable"
             name="删除交付物">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
+            commandId="runtimework.create">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.createdeliverable">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.linkdeliverable">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.openproject">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.openwork">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.opendeliverable">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.edit">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
             class="com.sg.business.commons.handler.LifeCycleActionStart"
-            commandId="work.start">
+            commandId="runtimework.start">
          <enabledWhen>
             <with
                   variable="selection">
@@ -268,7 +396,7 @@
       </handler>
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionFinish"
-            commandId="work.finish">
+            commandId="runtimework.finish">
          <enabledWhen>
             <with
                   variable="selection">
@@ -284,7 +412,7 @@
       </handler>
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionPause"
-            commandId="work.pause">
+            commandId="runtimework.pause">
          <enabledWhen>
             <with
                   variable="selection">
@@ -300,7 +428,7 @@
       </handler>
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionCancel"
-            commandId="work.cancel">
+            commandId="runtimework.cancel">
          <enabledWhen>
             <with
                   variable="selection">
@@ -315,6 +443,367 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            commandId="runtimework.wfstart">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="start"
+                        property="wf.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.wffinish">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false">
+                  <test
+                        args="finish"
+                        property="wf.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.wfcancel">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <test
+                        args="cancel"
+                        property="wf.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.workrecord">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.delete">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.deletedeliverable">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <with
+                     variable="1">
+               </with>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="editor.runtimework"
+            image="image/work_24.png"
+            isDefault="false"
+            name="工作"
+            titleToolTips="工作">
+         <basicpage
+               description="工作的基本信息"
+               id="basicpage"
+               image="image/work_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <navigatorSelector
+                        editable="true"
+                        id="chargerid"
+                        label="负责人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="chargerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <combo
+                        editPart="Combo(Read Only)"
+                        editable="false"
+                        id="status"
+                        label="状态"
+                        labelVisible="true"
+                        name="status"
+                        option="status"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
+               </section>
+               <section
+                     label="参与者">
+                  <list
+                        addTableItemHandler="com.sg.business.work.editor.field.AddRuntimeWorkParticipate"
+                        editable="true"
+                        id="participate"
+                        label="参与者"
+                        labelVisible="false"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="participate"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="true"
+                        id="planduration"
+                        label="计划工期(天)"
+                        labelVisible="true"
+                        name="planduration"
+                        persistable="true"
+                        required="false">
+                  </spinner>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="standardworks"
+                        label="标准工时(时)"
+                        labelVisible="true"
+                        name="standardworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="planworks"
+                        label="计划工时(时)"
+                        labelVisible="true"
+                        name="planworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+               <section
+                     label="实际">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualstart"
+                        label="实际开始"
+                        labelVisible="true"
+                        name="actualstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualfinish"
+                        label="实际完成"
+                        labelVisible="true"
+                        name="actualfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="false"
+                        id="actualduration"
+                        label="实际工期(天)"
+                        labelVisible="true"
+                        name="actualduration"
+                        persistable="true"
+                        required="false">
+                  </spinner>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="actualworks"
+                        label="实际工时(时)"
+                        labelVisible="true"
+                        name="actualworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="说明"
+               id="memopage"
+               image="image/work_24.png"
+               title="说明">
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="120"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="工作执行流程"
+               id="processpage1"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.work.editor.page.WorkProcessExecuteAssignmentPage"
+               title="工作执行流程">
+         </basicpage>
+         <basicpage
+               description="工作变更流程"
+               id="processpage2"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.work.editor.page.WorkProcessChangePage"
+               title="工作变更流程">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="deliverable"
+            dbName="pm2"
+            id="editor.runtimeworkdeliverable"
+            image="image/deliverable_24.png"
+            name="交付物">
+         <basicpage
+               id="basicpage1"
+               image="image/document_24.png"
+               title="基本信息">
+            <pagecolumn>
+               <section
+                     label="文档基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="document_id"
+                        label="文档"
+                        labelVisible="true"
+                        name="document_id"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.DocumentFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <combo
+                        editPart="Combo(Read Only)"
+                        editable="false"
+                        id="doceditor"
+                        label="编辑器"
+                        labelVisible="true"
+                        name="doceditor"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
+                  <checkbox
+                        editable="true"
+                        id="mandatory"
+                        label="必须"
+                        labelVisible="true"
+                        name="mandatory"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="200">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
 
 </plugin>
