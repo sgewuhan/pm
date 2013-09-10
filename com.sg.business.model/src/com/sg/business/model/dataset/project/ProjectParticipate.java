@@ -9,6 +9,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
 public class ProjectParticipate extends MasterDetailDataSetFactory {
@@ -32,7 +33,7 @@ public class ProjectParticipate extends MasterDetailDataSetFactory {
 			if (participates != null) {
 				for (int i = 0; i < participates.size(); i++) {
 					String userid = (String) participates.get(i);
-					User user = User.getUserById(userid);
+					User user = UserToolkit.getUserById(userid);
 					result.add(user);
 				}
 			}

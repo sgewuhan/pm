@@ -36,6 +36,7 @@ import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -192,7 +193,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (Utils.isNullOrEmpty(chargerId)) {
 			return null;
 		}
-		return User.getUserById(chargerId);
+		return UserToolkit.getUserById(chargerId);
 	}
 
 	public String getChargerId() {

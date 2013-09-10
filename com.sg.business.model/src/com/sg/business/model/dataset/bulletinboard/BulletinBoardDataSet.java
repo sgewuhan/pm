@@ -14,6 +14,7 @@ import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
 
 /**
@@ -49,7 +50,7 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 			List<ObjectId> orgIds = new ArrayList<ObjectId>();
 			String userid = UserSessionContext.getAccountInfo()
 					.getconsignerId();
-			User user = User.getUserById(userid);
+			User user = UserToolkit.getUserById(userid);
 			Organization org = user.getOrganization();
 			//获取当前用户所在组织的下级组织
 			searchDown(org, orgIds);

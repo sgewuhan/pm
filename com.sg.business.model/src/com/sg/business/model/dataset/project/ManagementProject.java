@@ -1,7 +1,9 @@
 package com.sg.business.model.dataset.project;
 
 import java.util.List;
+
 import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
@@ -12,6 +14,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
 
 /**
@@ -51,7 +54,7 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 			//获取当前用户信息
 			AccountInfo account = UserSessionContext.getAccountInfo();
 			String userId = account.getconsignerId();
-			User user = User.getUserById(userId);
+			User user = UserToolkit.getUserById(userId);
 			//获取当前用户具有业务管理员角色的组织
 			List<PrimaryObject> orglist = user
 					.getRoleGrantedOrganization(Role.ROLE_BUSINESS_ADMIN_ID);

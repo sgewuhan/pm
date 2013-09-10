@@ -4,6 +4,7 @@ import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -80,7 +81,7 @@ public abstract class AbstractRoleAssignment extends PrimaryObject{
 	public String getLabel() {
 		String uid = getUserid();
 		if(uid!=null){
-			User user = User.getUserById(uid);
+			User user = UserToolkit.getUserById(uid);
 			return user.getLabel();
 		}
 		return super.getLabel();
