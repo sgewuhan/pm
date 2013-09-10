@@ -14,12 +14,23 @@
             name="待处理工作"
             restorable="true">
       </view>
+      <view
+            category="work"
+            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            id="work.finished"
+            name="已结束的工作"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
       <navigator
             id="work.processing"
             tree="work.processing">
+      </navigator>
+      <navigator
+            id="work.finished"
+            tree="work.finished">
       </navigator>
    </extension>
    <extension
@@ -29,16 +40,36 @@
             canDelete="false"
             canEdit="false"
             canRead="true"
+            customItemHeight="60"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
             editorId="editor.work"
+            headerVisiable="false"
             id="work.processing"
             popupMenu="popup:work.processing">
+         <structure
+               modelRelation="work_work">
+         </structure>
          <column
-               columnDefinitionId="project.status">
+               column="desc"
+               labelProvider="com.sg.bussiness.work.labelprovider.RuntimeWorkLabelprovider"
+               name="工作"
+               type="String">
          </column>
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
+      </tree>
+      <tree
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.work.ProcessingWork"
+            editorId="editor.work"
+            headerVisiable="false"
+            id="work.finished"
+            popupMenu="popup:work.processing">
+         <structure
+               modelRelation="work_work">
+         </structure>
          <structure
                modelRelation="work_work">
          </structure>
