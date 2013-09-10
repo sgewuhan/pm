@@ -1629,7 +1629,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			work.setValue(Work.F_TARGETS, targets);
 			
 		}
-		work.setValue(Work.F_PROJECT_ID, get_id());
+//		work.setValue(Work.F_PROJECT_ID, get_id());
 		DBObject wfdef = getWorkflowDefinition(F_WF_COMMIT);
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
