@@ -37,6 +37,11 @@ public class DroolsProcessDefinition {
 		this.version = process.getVersion();
 		this.process = process;
 	}
+	
+	public DroolsProcessDefinition(String processId) {
+		kbase = processId.substring(0,processId.lastIndexOf("."));
+		this.processId = processId;
+	}
 
 	public DroolsProcessDefinition(DBObject data) {
 		this.kbase = (String) data.get("kbase");

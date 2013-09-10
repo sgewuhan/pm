@@ -26,7 +26,7 @@
          point="com.sg.widgets.tree">
       <tree
             canCreate="false"
-            canDelete="false"
+            canDelete="true"
             canEdit="false"
             canRead="true"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
