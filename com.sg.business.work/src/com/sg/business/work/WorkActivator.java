@@ -14,7 +14,7 @@ public class WorkActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static WorkActivator plugin;
 
-	private WorkSynchronizer sync;
+	private WorkflowSynchronizer sync;
 
 	/**
 	 * The constructor
@@ -55,7 +55,7 @@ public class WorkActivator extends AbstractUIPlugin {
 	 * 同步工作的更新
 	 */
 	private void startWorkSync() {
-		sync = new WorkSynchronizer();
+		sync = new WorkflowSynchronizer();
 		sync.start(5*60*1000);
 	}
 
