@@ -1,6 +1,7 @@
 package com.sg.bussiness.work.labelprovider;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
@@ -26,20 +27,39 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		//根工作desc
 		String rootDesc = work.getRoot().toString();
 		//工作desc
-		
-		
 		String workDesc = work.getDesc();
-		String planStart = sdf.format(work.getPlanStart());
-		String PlanFinish = sdf.format(work.getPlanFinish());
-		String actualStart =sdf.format(work.getActualStart());
-		String actualFinish =sdf.format(work.getActualFinish());
+		
+		Date date=work.getPlanStart();
+		String planStart="";
+		if(date!=null){
+			planStart = sdf.format(date);
+		}
+		
+		date=work.getPlanFinish();
+		String planFinish="";
+		if(date!=null){
+			planFinish = sdf.format(date);
+		}
+		
+		date=work.getActualStart();
+		String actualStart="";
+		if(date!=null){
+			actualStart = sdf.format(date);
+		}
+		
+		date=work.getActualFinish();
+		String actualFinish="";
+		if(date!=null){
+			actualFinish = sdf.format(date);
+		}
+		
 		int planDuration = work.getPlanDuration();
-		int actualDuration=work.getActualDuration();
+		Integer actualDuration=work.getActualDuration();
 		
 	
         sb.append(lifecycleState+","+rootDesc+","+workDesc);
         sb.append("<br/>");
-        sb.append(planStart+","+PlanFinish+","+actualStart+","+actualFinish+","+planDuration+","+actualDuration);
+        sb.append(planStart+","+planFinish+","+actualStart+","+actualFinish+","+planDuration+","+actualDuration);
         sb.append("<br/>");
 		return sb.toString();
 	}

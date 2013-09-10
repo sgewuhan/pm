@@ -1,9 +1,20 @@
 package com.sg.business.model.dataset.work;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.core.runtime.Assert;
+
 import com.mobnut.db.model.AccountInfo;
+import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
 import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Work;
@@ -41,6 +52,50 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 			MessageUtil.showToast(e);
 			return new BasicDBObject().append(Work.F__ID, null);
 		}
+	}
+
+	@Override
+	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
+		DBCollection c = getCollection();
+		Assert.isNotNull(c, "无法获取集合");
+
+		DBObject query = getQueryCondition();
+		DBObject projection = getProjection();
+		DBCursor cursor = c.find(query, projection);
+
+		DBObject sort = getSort();
+		if(sort!=null){
+			cursor.sort(sort);
+		}
+		
+		int skip = getSkip();
+		if (skip > 0) {
+			cursor.skip(skip);
+		}
+		int limit = getLimit();
+		if (limit > 0) {
+			cursor.limit(limit);
+		}
+
+		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
+		Class<? extends PrimaryObject> clas;
+
+		Iterator<DBObject> iter = cursor.iterator();
+
+		while (iter.hasNext()) {
+			DBObject dbo = iter.next();
+			clas = getModelClass(dbo);
+			Assert.isNotNull(clas, "类参数不可为空");
+			PrimaryObject po = ModelService.createModelObject(dbo, clas);
+			/*while(po.getParentPrimaryObject()!=null){
+				po=po.getParentPrimaryObject();
+			}*/
+			po.setDataSet(ds);
+			Assert.isNotNull(po, "无法创建ORM映射的对象:" + dbo.toString());
+			dataItems.add(po);
+		}
+
+		return dataItems;
 	}
 
 	@Override
