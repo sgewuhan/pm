@@ -1403,7 +1403,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public void doUpdateWorkflowTask(String key, Task task,
+	public void doUpdateWorkflowDataByTask(String key, Task task,
 			IContext context) throws Exception {
 		String field = key+POSTFIX_TASK;
 		Object value = getValue(field);
