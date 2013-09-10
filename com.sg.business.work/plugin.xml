@@ -53,7 +53,8 @@
                column="desc"
                labelProvider="com.sg.bussiness.work.labelprovider.RuntimeWorkLabelprovider"
                name="工作"
-               type="String">
+               type="String"
+               width="-1">
          </column>
       </tree>
       <tree
