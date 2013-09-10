@@ -984,28 +984,49 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		if (getValue(F_PARENT_ID) == null) {// 根工作
+			ObjectId id = new ObjectId();
+			setValue(F__ID, id);
+			setValue(F_ROOT_ID, id);
+		} else {
+			AbstractWork parent = getParent();
+			ObjectId rootId = (ObjectId) parent.getValue(F_ROOT_ID);
+			setValue(F_ROOT_ID, rootId);
+		}
+		super.doInsert(context);
+	}
+
 	/**
 	 * 确保工作的参与者包括工作的负责人、流程执行人
 	 */
 	public void ensureParticipatesConsistency() {
 		// 获取工作的负责人
 		String chargerId = getChargerId();
-		addParticipate(chargerId);
+		if(chargerId!=null){
+			addParticipate(chargerId);
+		}
 
 		// 获得流程的执行人
 		if (isWorkflowActivate(F_WF_EXECUTE)) {
 			DBObject processActorsMap = getProcessActorsMap(F_WF_EXECUTE);
-			Iterator<String> iter = processActorsMap.keySet().iterator();
-			while (iter.hasNext()) {
-				String key = iter.next();
-				String userId = (String) processActorsMap.get(key);
-				addParticipate(userId);
+			if (processActorsMap != null) {
+				Iterator<String> iter = processActorsMap.keySet().iterator();
+				while (iter.hasNext()) {
+					String key = iter.next();
+					String userId = (String) processActorsMap.get(key);
+					if(userId!=null){
+						addParticipate(userId);
+					}
+				}
 			}
 		}
 
 	}
 
 	public void addParticipate(String chargerId) {
+		Assert.isTrue(chargerId!=null, "参数不可为空");
 		BasicBSONList participatesIdList = getParticipatesIdList();
 		if (participatesIdList == null) {
 			participatesIdList = new BasicDBList();
@@ -1057,7 +1078,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 设置参与者
 		BasicBSONList roleIds = (BasicBSONList) getValue(F_PARTICIPATE_ROLE_SET);
 		if (roleIds != null && roleIds.size() > 0) {
-			List<String> participates = new ArrayList<String>();
+			BasicBSONList participates = new BasicDBList();
 			for (int i = 0; i < roleIds.size(); i++) {
 				DBObject object = (DBObject) roleIds.get(i);
 				assignments = roleAssign.get(object.get(F__ID));
@@ -1227,7 +1248,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 *            当前的上下文
 	 * @param actionName
 	 *            操作的文本名称
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 *             发送消息出现的错误
 	 */
@@ -1261,24 +1282,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 设置导航附件
 		message.appendTargets(this, EDITOR, false);
-		
+
 		message.doSave(context);
-		
+
 		return message;
 	}
-	
 
-	public Message doNoticeWorkflow(IContext context,String actorId, String taskName,String key) throws Exception {
+	public Message doNoticeWorkflow(IContext context, String actorId,
+			String taskName, String key) throws Exception {
 		Message message = ModelService.createModelObject(Message.class);
 		// 设置收件人
-		
-		message.setValue(Message.F_RECIEVER, new String[]{actorId});
+
+		message.setValue(Message.F_RECIEVER, new String[] { actorId });
 
 		// 设置通知标题
 		String actionName = "";
-		if(key .equals(F_WF_EXECUTE)){
+		if (key.equals(F_WF_EXECUTE)) {
 			actionName = "工作执行流程";
-		}else if(key.equals(F_WF_CHANGE)){
+		} else if (key.equals(F_WF_CHANGE)) {
 			actionName = "工作变更流程";
 		}
 		message.setValue(Message.F_DESC, actionName + "通知");
@@ -1293,19 +1314,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 设置通知内容
 		String content = "<span style='font-size:14px'>" + "您好: "
-				+ "</span><br/><br/>" + "工作: "+getLabel()+"<br/>"
-						+ "流程活动: "+taskName
-				+ "<br/>您是该流程活动的执行人，请尽快开始流程活动。<br/><br/>";
+				+ "</span><br/><br/>" + "工作: " + getLabel() + "<br/>"
+				+ "流程活动: " + taskName + "<br/>您是该流程活动的执行人，请尽快开始流程活动。<br/><br/>";
 		message.setValue(Message.F_CONTENT, content);
 		MessageToolkit.appendEndMessage(message);
 
 		// 设置导航附件
-		message.appendTargets(this, EDITOR, false);		
-		
+		message.appendTargets(this, EDITOR, false);
+
 		message.doSave(context);
 		return message;
 	}
-	
 
 	@Override
 	public BasicBSONList getTargetList() {
@@ -1406,27 +1425,27 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public boolean doUpdateWorkflowDataByTask(String key, Task task,
 			IContext context) throws Exception {
-		String field = key+POSTFIX_TASK;
+		String field = key + POSTFIX_TASK;
 		Object value = getValue(field);
 		DBObject data;
-		if(value instanceof DBObject){
+		if (value instanceof DBObject) {
 			data = (DBObject) value;
 			Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
-			//已经通知过
-			if(noticedate instanceof Date){
+			// 已经通知过
+			if (noticedate instanceof Date) {
 				return false;
 			}
 		}
 
 		data = new BasicDBObject();
-		
+
 		List<I18NText> names = task.getNames();
-		Assert.isLegal(names!=null&&names.size()>0, "流程活动名称没有定义");
+		Assert.isLegal(names != null && names.size() > 0, "流程活动名称没有定义");
 		String taskName = names.get(0).getText();
 		data.put(F_WF_TASK_NAME, taskName);
 
 		List<I18NText> descriptions = task.getDescriptions();
-		if(descriptions!=null&&descriptions.size()>0){
+		if (descriptions != null && descriptions.size() > 0) {
 			String taskComment = descriptions.get(0).getText();
 			data.put(F_WF_TASK_DESC, taskComment);
 		}
@@ -1453,17 +1472,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		long workItemId = taskData.getWorkItemId();
 		data.put(F_WF_TASK_WORKITEMID, new Long(workItemId));
-		
-		//发送消息
-		Message message = doNoticeWorkflow(context,actorId,taskName,key);
-		
+
+		// 发送消息
+		Message message = doNoticeWorkflow(context, actorId, taskName, key);
+
 		Assert.isNotNull(message, "消息发送失败");
-		
+
 		data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
-		
+
 		setValue(field, data);
 		doSave(context);
-		
+
 		return true;
 	}
 
