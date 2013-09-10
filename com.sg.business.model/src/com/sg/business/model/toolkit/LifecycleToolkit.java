@@ -25,7 +25,7 @@ public class LifecycleToolkit {
 		if (ILifecycle.STATUS_WIP_VALUE.equals(lifecycleValue)) {
 			return ILifecycle.STATUS_WIP_TEXT;
 		}
-		return null;
+		return ILifecycle.STATUS_NONE_TEXT;
 	}
 
 	public static Image getLifecycleStatusImage(String lifecycleValue) {

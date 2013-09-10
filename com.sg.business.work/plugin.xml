@@ -40,11 +40,12 @@
             canDelete="true"
             canEdit="false"
             canRead="true"
-            customItemHeight="40"
+            customItemHeight="54"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
             editorId="editor.work"
             headerVisiable="false"
             id="work.processing"
+            markupEnabled="true"
             popupMenu="popup:work.processing">
          <structure
                modelRelation="work_work">
