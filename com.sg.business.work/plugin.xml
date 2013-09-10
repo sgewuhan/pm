@@ -81,43 +81,133 @@
             allPopups="false"
             locationURI="popup:work.processing">
          <command
+               commandId="work.create"
+               label="添加子工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="work.createdeliverable"
+               label="添加交付物"
+               style="push">
+         </command>
+         <command
+               commandId="project.linkdeliverable"
+               icon="image/24_blank.png"
+               label="链接项目的其他交付物..."
+               style="push">
+         </command>
+         <separator
+               name="work.separator0"
+               visible="true">
+         </separator>
+         <command
+               commandId="work.openproject"
+               icon="image/24_blank.png"
+               label="查看项目"
+               style="push">
+         </command>
+         <command
                commandId="com.sg.widgets.command.edit"
                icon="image/work_24.png"
-               label="查看"
+               label="查看工作"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
                   value="editor.work">
             </parameter>
          </command>
+         <command
+               commandId="work.opendeliverable"
+               label="项目交付物"
+               style="push">
+         </command>
+         <command
+               commandId="work.edit"
+               label="更改工作"
+               style="push">
+         </command>
+         <menu
+               icon="image/work2_24.png"
+               label="工作操作">
+            <command
+                  commandId="work.start"
+                  icon="image/work_start_24.png"
+                  label="启动"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.finish"
+                  icon="image/work_finish_24.png"
+                  label="完工"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.pause"
+                  icon="image/work_pause_24.png"
+                  label="暂停"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.cancel"
+                  icon="image/work_cancel_24.png"
+                  label="取消"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               icon="image/execute_24.png"
+               label="流程操作">
+            <command
+                  commandId="work.wfstart"
+                  icon="image/project_start_24.png"
+                  label="启动"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.wffinish"
+                  icon="image/project_finish_24.png"
+                  label="完成"
+                  style="push">
+            </command>
+            <command
+                  commandId="work.wfcancel"
+                  icon="image/project_stop_24.png"
+                  label="中止"
+                  style="push">
+            </command>
+         </menu>
+         <command
+               commandId="work.workrecord"
+               label="编辑工作记录"
+               style="push">
+         </command>
          <separator
                name="work.separator1"
                visible="true">
          </separator>
-         <command
-               commandId="work.start"
-               icon="image/work_start_24.png"
-               label="启动"
-               style="push">
-         </command>
-         <command
-               commandId="work.finish"
-               icon="image/work_finish_24.png"
-               label="完工"
-               style="push">
-         </command>
-         <command
-               commandId="work.pause"
-               icon="image/work_pause_24.png"
-               label="暂停"
-               style="push">
-         </command>
-         <command
-               commandId="work.cancel"
-               icon="image/work_cancel_24.png"
-               label="取消"
-               style="push">
-         </command>
+         <menu
+               icon="image/trash_24.png"
+               label="删除">
+            <command
+                  commandId="com.sg.widgets.command.delete"
+                  label="删除子工作"
+                  style="push">
+            </command>
+            <command
+                  commandId="project.deletedeliverable"
+                  label="删除交付物"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
    </extension>
    <extension
@@ -145,6 +235,46 @@
             categoryId="work"
             id="work.cancel"
             name="取消">
+      </command>
+      <command
+            id="work.createdeliverable"
+            name="添加交付物">
+      </command>
+      <command
+            id="work.openproject"
+            name="查看项目">
+      </command>
+      <command
+            id="work.opendeliverable"
+            name="项目交付物">
+      </command>
+      <command
+            id="work.create"
+            name="添加子工作">
+      </command>
+      <command
+            id="work.edit"
+            name="更改工作">
+      </command>
+      <command
+            id="work.wfstart"
+            name="启动">
+      </command>
+      <command
+            id="work.wffinish"
+            name="完成">
+      </command>
+      <command
+            id="work.wfcancel"
+            name="中止">
+      </command>
+      <command
+            id="work.workrecord"
+            name="编辑工作记录">
+      </command>
+      <command
+            id="project.deletedeliverable"
+            name="删除交付物">
       </command>
    </extension>
    <extension
