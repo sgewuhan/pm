@@ -313,7 +313,6 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		}
 		sb.append(imageUrl);
 
-		
 		if (isStar) {
 			sb.append("<img src='" + getImageURLForStar()
 					+ "' width='14' height='14' />");
@@ -325,15 +324,15 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		if (isRead || getValue(F_SENDER).equals(userid)) {
 			sb.append(label);
 		} else {
-			sb.append("<b>" + label +"</b>");
+			sb.append("<b>" + label + "</b>");
 		}
 		Object importance = getValue(F_IMPORTANCE);
-		if(!Utils.isNullOrEmptyString(importance)){
+		if (!Utils.isNullOrEmptyString(importance)) {
 			sb.append("  (");
 			sb.append(importance);
 			sb.append(")");
 		}
-		
+
 		sb.append("<br/>");
 
 		String senderId = (String) getValue(F_SENDER);
@@ -397,8 +396,20 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 						UserSessionContext.EVENT_MESSAGE);
 			}
 
+		} else if (value instanceof String[]) {
+			setValue(F_SENDDATE, new Date());
+			setValue(F_SENDER, context.getAccountInfo().getUserId());
+			super.doInsert(context);
+
+			// 激活账户通知
+			String[] recieverList = (String[]) value;
+			for (int i = 0; i < recieverList.length; i++) {
+				UserSessionContext.noticeAccountChanged(recieverList[i],
+						UserSessionContext.EVENT_MESSAGE);
+			}
 		} else {
 			throw new Exception("缺少收件人");
+
 		}
 
 	}

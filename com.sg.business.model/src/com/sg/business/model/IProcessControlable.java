@@ -17,6 +17,16 @@ public interface IProcessControlable {
 	 * 当前的流程任务
 	 */
 	public static final String POSTFIX_TASK = "_task";
+
+	/**
+	 * 任务字段,任务名称
+	 */
+	public static final String F_WF_TASK_NAME = "taskname";
+	
+	/**
+	 * 任务字段，任务备注
+	 */
+	public static final String F_WF_TASK_DESC = "description";
 	
 	/**
 	 * 任务字段,实际的活动所有者
@@ -52,6 +62,11 @@ public interface IProcessControlable {
 	 * 任务字段，流程实例id
 	 */
 	public static final String F_WF_TASK_WORKITEMID = "workitemid";
+	
+	/**
+	 * 任务字段，通知日期
+	 */
+	public static final String F_WF_TASK_NOTICEDATE = "noticedate";
 	
 	boolean isWorkflowActivate(String fieldKey) ;
 	

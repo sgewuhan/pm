@@ -12,7 +12,9 @@ import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.drools.runtime.process.ProcessInstance;
 import org.eclipse.core.runtime.Assert;
+import org.jbpm.task.I18NText;
 import org.jbpm.task.Status;
+import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.util.Utils;
@@ -21,9 +23,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
@@ -1208,7 +1208,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doSave(context);
 
 		// 提示工作启动
-		doWorkActionNotice(context, "工作启动");
+		doNoticeWorkAction(context, "工作启动");
 
 		// 调用后处理
 		doStartAfter(context, params);
@@ -1227,10 +1227,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 *            当前的上下文
 	 * @param actionName
 	 *            操作的文本名称
+	 * @return 
 	 * @throws Exception
 	 *             发送消息出现的错误
 	 */
-	public void doWorkActionNotice(IContext context, String actionName)
+	public Message doNoticeWorkAction(IContext context, String actionName)
 			throws Exception {
 		Message message = ModelService.createModelObject(Message.class);
 		// 设置收件人
@@ -1260,8 +1261,51 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 设置导航附件
 		message.appendTargets(this, EDITOR, false);
-
+		
+		message.doSave(context);
+		
+		return message;
 	}
+	
+
+	public Message doNoticeWorkflow(IContext context,String actorId, String taskName,String key) throws Exception {
+		Message message = ModelService.createModelObject(Message.class);
+		// 设置收件人
+		
+		message.setValue(Message.F_RECIEVER, new String[]{actorId});
+
+		// 设置通知标题
+		String actionName = "";
+		if(key .equals(F_WF_EXECUTE)){
+			actionName = "工作执行流程";
+		}else if(key.equals(F_WF_CHANGE)){
+			actionName = "工作变更流程";
+		}
+		message.setValue(Message.F_DESC, actionName + "通知");
+		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
+
+		// 设置发件人
+		String userId = context.getAccountInfo().getUserId();
+		message.setValue(Message.F_SENDER, userId);
+
+		// 设置发送时间
+		message.setValue(Message.F_SENDDATE, new Date());
+
+		// 设置通知内容
+		String content = "<span style='font-size:14px'>" + "您好: "
+				+ "</span><br/><br/>" + "工作: "+getLabel()+"<br/>"
+						+ "流程活动: "+taskName
+				+ "<br/>您是该流程活动的执行人，请尽快开始流程活动。<br/><br/>";
+		message.setValue(Message.F_CONTENT, content);
+		MessageToolkit.appendEndMessage(message);
+
+		// 设置导航附件
+		message.appendTargets(this, EDITOR, false);		
+		
+		message.doSave(context);
+		return message;
+	}
+	
 
 	@Override
 	public BasicBSONList getTargetList() {
@@ -1354,40 +1398,70 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @param key
 	 *            流程字段名
-	 * @param taskData
-	 *            任务数据
-	 * @throws Exception 
+	 * @param task
+	 *            任务
+	 * @param context
+	 * @throws Exception
 	 */
-	public void doUpdateWorkflowTask(String key, TaskData taskData) throws Exception {
-		DBObject task = new BasicDBObject();
+	public void doUpdateWorkflowTask(String key, Task task,
+			IContext context) throws Exception {
+		String field = key+POSTFIX_TASK;
+		Object value = getValue(field);
+		DBObject data;
+		if(value instanceof DBObject){
+			data = (DBObject) value;
+			Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
+			//已经通知过
+			if(noticedate instanceof Date){
+				return;
+			}
+		}
+
+		data = new BasicDBObject();
+		
+		List<I18NText> names = task.getNames();
+		Assert.isLegal(names!=null&&names.size()>0, "流程活动名称没有定义");
+		String taskName = names.get(0).getText();
+		data.put(F_WF_TASK_NAME, taskName);
+
+		List<I18NText> descriptions = task.getDescriptions();
+		if(descriptions!=null&&descriptions.size()>0){
+			String taskComment = descriptions.get(0).getText();
+			data.put(F_WF_TASK_DESC, taskComment);
+		}
+
+		TaskData taskData = task.getTaskData();
 		org.jbpm.task.User actualOwner = taskData.getActualOwner();
-		task.put(F_WF_TASK_ACTUALOWNER, actualOwner.getId());
+		String actorId = actualOwner.getId();
+		data.put(F_WF_TASK_ACTUALOWNER, actorId);
 
 		org.jbpm.task.User createdBy = taskData.getCreatedBy();
-		task.put(F_WF_TASK_CREATEDBY, createdBy.getId());
+		data.put(F_WF_TASK_CREATEDBY, createdBy.getId());
 
 		Date createdOn = taskData.getCreatedOn();
-		task.put(F_WF_TASK_CREATEDON, createdOn);
+		data.put(F_WF_TASK_CREATEDON, createdOn);
 
 		String processId = taskData.getProcessId();
-		task.put(F_WF_TASK_PROCESSID, processId);
+		data.put(F_WF_TASK_PROCESSID, processId);
 
 		long processInstanceId = taskData.getProcessInstanceId();
-		task.put(F_WF_TASK_PROCESSINSTANCEID, new Long(processInstanceId));
+		data.put(F_WF_TASK_PROCESSINSTANCEID, new Long(processInstanceId));
 
 		Status status = taskData.getStatus();
-		task.put(F_WF_TASK_STATUS, status.name());
+		data.put(F_WF_TASK_STATUS, status.name());
 
 		long workItemId = taskData.getWorkItemId();
-		task.put(F_WF_TASK_WORKITEMID, new Long(workItemId));
-
-		DBCollection col = getCollection();
-
-		WriteResult ws = col.update(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set",
-						new BasicDBObject().append(key+POSTFIX_TASK, task)));
+		data.put(F_WF_TASK_WORKITEMID, new Long(workItemId));
 		
-		checkWriteResult(ws);
+		//发送消息
+		Message message = doNoticeWorkflow(context,actorId,taskName,key);
+		
+		Assert.isNotNull(message, "消息发送失败");
+		
+		data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
+		
+		setValue(field, data);
+		doSave(context);
 	}
+
 }

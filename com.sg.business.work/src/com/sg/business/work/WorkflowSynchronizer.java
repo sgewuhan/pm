@@ -10,6 +10,7 @@ import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.job.RepeatJob;
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.sg.bpm.workflow.WorkflowService;
@@ -17,11 +18,15 @@ import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.UserDataSetFactory;
+import com.sg.widgets.part.BackgroundContext;
 
 public class WorkflowSynchronizer extends RepeatJob {
 
+	private IContext context;
+
 	public WorkflowSynchronizer() {
 		super("Work Synchronizer");
+		context = new BackgroundContext();
 	}
 
 	@Override
@@ -39,15 +44,18 @@ public class WorkflowSynchronizer extends RepeatJob {
 			Task[] tasks = WorkflowService.getDefault().getTask(userid);
 			for (int i = 0; i < tasks.length; i++) {
 				TaskData taskData = tasks[i].getTaskData();
+
 				long processInstanceId = taskData.getProcessInstanceId();
 				String processId = taskData.getProcessId();
+
 				try {
-					Workflow workflow = new Workflow(processId, processInstanceId);
+					Workflow workflow = new Workflow(processId,
+							processInstanceId);
 					PrimaryObject host = workflow.getHost();
 					String flowKey = workflow.getKey();
-					if(host instanceof Work){
+					if (flowKey != null && host instanceof Work) {
 						Work work = (Work) host;
-						work.doUpdateWorkflowTask(flowKey,taskData);
+						work.doUpdateWorkflowTask(flowKey, tasks[i], context);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
