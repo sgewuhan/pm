@@ -1,10 +1,12 @@
 package com.sg.bpm.workflow;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.process.WorkflowProcessInstance;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -20,6 +22,7 @@ import org.osgi.framework.BundleContext;
 
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.service.HTService;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
 
 /**
@@ -168,8 +171,7 @@ public class WorkflowService extends AbstractUIPlugin {
 	 * @param userid
 	 * @return
 	 */
-	public List<Task> getTask(String userid) {
-		List<Task> result = new ArrayList<Task>();
+	public Task[] getTask(String userid) {
 		TaskClient taskClient = getBackgroundTaskClient();
 
 		BlockingTaskSummaryResponseHandler handler = new BlockingTaskSummaryResponseHandler();
@@ -177,6 +179,7 @@ public class WorkflowService extends AbstractUIPlugin {
 
 		List<TaskSummary> tslist = handler.getResults();
 		BlockingGetTaskResponseHandler getTaskResponsehandler;
+		Task[] result = new Task[tslist.size()];
 		for (int i = 0; i < tslist.size(); i++) {
 			TaskSummary item = tslist.get(i);
 			getTaskResponsehandler = new BlockingGetTaskResponseHandler();
@@ -184,10 +187,25 @@ public class WorkflowService extends AbstractUIPlugin {
 			taskClient.getTask(item.getId(), getTaskResponsehandler);
 
 			Task task = getTaskResponsehandler.getTask(1000);
-			result.add(task);
+			result[i]= task;
 		}
 
 		return result;
+	}
+
+	/**
+	 * 根据流程Id和流程实例id获得流程
+	 * @param processId
+	 * @param processInstanceId
+	 * @return
+	 */
+	public WorkflowProcessInstance getProcessInstance(String processId,
+			long processInstanceId) throws Exception {
+		DroolsProcessDefinition dpd = new DroolsProcessDefinition(processId);
+		Assert.isNotNull(dpd, "无法确定流程ID对应的流程定义");
+		StatefulKnowledgeSession session = dpd.getKnowledgeSession();
+		Assert.isNotNull(session, "无法获得流程定义的知识库进程");
+		return (WorkflowProcessInstance) session.getProcessInstance(processInstanceId);
 	}
 
 }
