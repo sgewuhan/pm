@@ -19,23 +19,23 @@ import org.osgi.framework.BundleContext;
 public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_ACTIVATED_16 = "activated_16.png";
-	
+
 	public static final String IMAGE_ATTACHMENT_32 = "attachment_32.png";
 
 	public static final String IMAGE_DATABASE_16 = "database_16.png";
 
 	public static final String IMAGE_DISACTIVATED_16 = "disactivated_16.png";
-	
+
 	public static final String IMAGE_DOCUMENT_16 = "document_16.png";
-	
+
 	public static final String IMAGE_LINK_16 = "link_16.gif";
-	
+
 	public static final String IMAGE_DOCUMENT_DEF_16 = "documentd_16.png";
 
 	public static final String IMAGE_PROJECT_16 = "project_16.png";
-	
+
 	public static final String IMAGE_FOLDER = "image";
-	
+
 	public static final String IMAGE_PREVIEW_24 = "preview_24.png";
 
 	public static final String IMAGE_FOLDER_16 = "folder_16.png";
@@ -49,7 +49,7 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_ROLE2_16 = "role2_16.png";
 
 	public static final String IMAGE_SEARCH24 = "search_24.png";
-	
+
 	public static final String IMAGE_TEAM_16 = "team_16.png";
 
 	public static final String IMAGE_TEAM_24 = "team_24.png";
@@ -61,15 +61,38 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_USER2_16 = "user2_16.png";
 
 	public static final String IMAGE_VAULT_16 = "vault_16.png";
-	
+
 	public static final String IMAGE_VAULT1_16 = "vault1_16.png";
-	
+
 	public static final String IMAGE_VAULT2_16 = "vault2_16.png";
-	
+
 	public static final String IMAGE_WORK_16 = "work_16.gif";
-	
+
 	public static final String IMAGE_DELIVERABLE_16 = "deliverable_16.gif";
 
+	public static final String IMAGE_PROJECT_32 = "project_32.png";
+
+	public static final String IMAGE_WORK_32 = "work_32.png";
+
+	public static final String IMAGE_WORK_CANCEL_32 = "work_cancel_32.png";
+
+	public static final String IMAGE_WORK_WIP_32 = "work_wip_32.png";
+
+	public static final String IMAGE_WORK_PAUSE_32 = "work_pause_32.png";
+
+	public static final String IMAGE_WORK_FINISH_32 = "work_finish_32.png";
+
+	public static final String IMAGE_WORK_PREPARING_32 = "work_preparing_32.png";
+
+	public static final String IMAGE_WORKCANCEL_10 = "workcancel_10.png";
+	
+	public static final String IMAGE_WORKREADY_10 = "workready_10.png";
+	
+	public static final String IMAGE_WORKSTOP_10 = "workstop_10.png";
+	
+	public static final String IMAGE_WORKCLOSE_10 = "workclose_10.png";
+	
+	public static final String IMAGE_WORKPROCESS_10 = "workprocess_10.png";
 
 	// The shared instance
 	private static BusinessResource plugin;
@@ -78,41 +101,44 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "com.sg.business.resource"; //$NON-NLS-1$
 
 	public static final String IMAGE_ROLE3_16 = "role3_16.png";
-	
+
 	public static final String IMAGE_ROLE4_16 = "role4_16.png";
 
 	public static final String IMAGE_WBS_SORT_24 = "wbssort_24.png";
 
 	public static final String IMAGE_ASSIGNMENT_24 = "assignment_24.png";
-	
+
 	public static final String IMAGE_CHECK_24 = "check_24.png";
 
 	public static final String IMAGE_WARRING_16 = "warning_16.gif";
 
 	public static final String IMAGE_ERROR_16 = "error_16.gif";
-	
+
 	public static final String IMAGE_READY_16 = "ready_16.png";
-	
+
 	public static final String IMAGE_WIP_16 = "wip_16.png";
-	
+
 	public static final String IMAGE_FINISHED_16 = "finished_16.png";
-	
+
 	public static final String IMAGE_CANCELED_16 = "canceled_16.png";
-	
+
 	public static final String IMAGE_PAUSEED_16 = "paused_16.png";
 
 	public static final String IMAGE_PREPARING_16 = "preparing_16.png";
-	
-	/*public static final String IMAGE_MESSAGE_32 = "message_32.png";
 
-	public static final String IMAGE_MESSAGE_ADD_32 = "message_add_32.png";
-
-	public static final String IMAGE_MESSAGE_REPLY_32 = "message_reply_32.png";
-
-	public static final String IMAGE_MESSAGE_OPEN_32 = "message_open_32.png";*/
+	/*
+	 * public static final String IMAGE_MESSAGE_32 = "message_32.png";
+	 * 
+	 * public static final String IMAGE_MESSAGE_ADD_32 = "message_add_32.png";
+	 * 
+	 * public static final String IMAGE_MESSAGE_REPLY_32 =
+	 * "message_reply_32.png";
+	 * 
+	 * public static final String IMAGE_MESSAGE_OPEN_32 = "message_open_32.png";
+	 */
 
 	public static final String IMAGE_MESSAGE_24 = "message_24.png";
-	
+
 	public static final String IMAGE_STAR_14 = "star_14.png";
 
 	public static final String IMAGE_MESSAGE_ADD_24 = "message_add_24.png";
@@ -120,7 +146,6 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_MESSAGE_REPLY_24 = "message_reply_24.png";
 
 	public static final String IMAGE_MESSAGE_OPEN_24 = "message_open_24.png";
-
 
 	/**
 	 * Returns the shared instance
