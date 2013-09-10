@@ -3,7 +3,7 @@ package com.sg.business.commons.handler;
 import org.eclipse.core.commands.ExecutionEvent;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.Project;
+import com.sg.business.model.ILifecycle;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -13,13 +13,14 @@ public class LifeCycleActionCancel extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		if(selected instanceof Project){
+		if(selected instanceof ILifecycle){
 			ViewerControl vc = getCurrentViewerControl(event);
-			Project project = (Project) selected;
+			ILifecycle lc = (ILifecycle) selected;
 			try {
-				project.doCancel(new CurrentAccountContext());
+				lc.doCancel(new CurrentAccountContext());
 				vc.getViewer().update(selected, null);
 			} catch (Exception e) {
+				e.printStackTrace();
 				MessageUtil.showToast(e);
 			}
 		}

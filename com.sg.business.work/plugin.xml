@@ -9,7 +9,7 @@
       </category>
       <view
             category="work"
-            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            class="com.sg.business.work.view.WorkInProcess"
             id="work.processing"
             name="待处理工作"
             restorable="true">
@@ -34,11 +34,13 @@
             id="work.processing"
             popupMenu="popup:work.processing">
          <column
-               columnDefinitionId="project.status">
-         </column>
-         <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
+         <column
+               column="wf_execute_task"
+               name="流程任务信息"
+               type="String"
+               width="120"></column>
          <structure
                modelRelation="work_work">
          </structure>
