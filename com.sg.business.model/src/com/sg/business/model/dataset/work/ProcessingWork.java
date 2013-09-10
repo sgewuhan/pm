@@ -74,6 +74,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 			Object obj = dbo.get(Work.F_ROOT_ID);
 			
 			
+			
 			clas = getModelClass(dbo);
 			Assert.isNotNull(clas, "类参数不可为空");
 			PrimaryObject po = ModelService.createModelObject(dbo, clas);
