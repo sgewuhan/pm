@@ -73,6 +73,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		Integer actualDuration=work.getActualDuration();
 		if(actualDuration==null){
 			actualDuration=0;
+			
 		}
 		
 		String charger=work.getCharger().getDesc();
