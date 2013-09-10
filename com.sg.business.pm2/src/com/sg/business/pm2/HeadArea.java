@@ -31,6 +31,7 @@ import com.mobnut.design.ext.IHeadAreaSupport;
 import com.mobnut.portal.user.IAccountChangeListener;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -58,7 +59,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		} catch (Exception e) {
 			return null;
 		}
-		final User user = User.getUserById(account.getUserId());
+		final User user = UserToolkit.getUserById(account.getUserId());
 
 		Composite headPicContainer = new Composite(parent, SWT.NONE);
 

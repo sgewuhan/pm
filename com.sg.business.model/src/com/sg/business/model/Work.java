@@ -27,6 +27,7 @@ import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
+import com.sg.business.model.toolkit.UserToolkit;
 
 /**
  * <p>
@@ -757,7 +758,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (Utils.isNullOrEmpty(chargerId)) {
 			return null;
 		}
-		return User.getUserById(chargerId);
+		return UserToolkit.getUserById(chargerId);
 	}
 
 	public String getChargerId() {
@@ -1285,7 +1286,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				AbstractRoleAssignment ra = (AbstractRoleAssignment) ralist
 						.get(i);
 				String userid = ra.getUserid();
-				User user = User.getUserById(userid);
+				User user = UserToolkit.getUserById(userid);
 				result.add(user);
 			}
 		}

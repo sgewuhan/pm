@@ -18,6 +18,7 @@ import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.IProcessControlable;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
@@ -87,7 +88,7 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 				Object value = processActors.get(ap);
 				if (value instanceof String) {
 					String userId = (String) value;
-					User user = User.getUserById(userId);
+					User user = UserToolkit.getUserById(userId);
 					if (user != null) {
 						return user.getLabel();
 					}
@@ -124,7 +125,7 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 					NodeAssignment na = (NodeAssignment) element;
 					String userid = (String) processActors.get(na
 							.getNodeActorParameter());
-					return User.getUserById(userid);
+					return UserToolkit.getUserById(userid);
 				}
 
 				@Override

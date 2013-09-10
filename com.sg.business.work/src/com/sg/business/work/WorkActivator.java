@@ -14,6 +14,8 @@ public class WorkActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static WorkActivator plugin;
 
+	private WorkSynchronizer sync;
+
 	/**
 	 * The constructor
 	 */
@@ -27,8 +29,10 @@ public class WorkActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		
+		startWorkSync();
 	}
-
+	
 
 
 	/*
@@ -38,6 +42,21 @@ public class WorkActivator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+		stopWorkSync();
+	}
+
+	private void stopWorkSync() {
+		sync.stop();
+	}
+	
+
+
+	/**
+	 * 同步工作的更新
+	 */
+	private void startWorkSync() {
+		sync = new WorkSynchronizer();
+		sync.start(5*60*1000);
 	}
 
 	/**

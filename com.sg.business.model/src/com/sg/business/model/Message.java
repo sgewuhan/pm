@@ -14,6 +14,7 @@ import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -336,7 +337,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		sb.append("<br/>");
 
 		String senderId = (String) getValue(F_SENDER);
-		User sender = User.getUserById(senderId);
+		User sender = UserToolkit.getUserById(senderId);
 		sb.append("发件人:" + sender);
 		sb.append("  ");
 		String recieverLabel = getRecieverLabel();
@@ -356,7 +357,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			BasicBSONList recieverList = (BasicBSONList) value;
 			if (recieverList.size() > 0) {
 				String userId = (String) recieverList.get(0);
-				User user = User.getUserById(userId);
+				User user = UserToolkit.getUserById(userId);
 				result = user.getLabel();
 				// 如果收件人有多个人，则显示第一个收件人加省略号
 				if (recieverList.size() > 1) {

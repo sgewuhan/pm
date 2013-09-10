@@ -3,6 +3,7 @@ package com.sg.business.commons.labelprovider;
 import java.util.List;
 
 import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
 public class UserIdListLabelProvider extends ConfiguratorColumnLabelProvider {
@@ -18,7 +19,7 @@ public class UserIdListLabelProvider extends ConfiguratorColumnLabelProvider {
 					label += ", ";
 				}
 				String userid = userIdArray[i];
-				User user = User.getUserById(userid);
+				User user = UserToolkit.getUserById(userid);
 				if(user!=null){
 					label += user.getLabel();
 				}
@@ -32,7 +33,7 @@ public class UserIdListLabelProvider extends ConfiguratorColumnLabelProvider {
 					label += ", ";
 				}
 				String userid = (String) userIdArray.get(i);
-				User user = User.getUserById(userid);
+				User user = UserToolkit.getUserById(userid);
 				if(user!=null){
 					label += user.getLabel();
 				}			}

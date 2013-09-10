@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.DBActivator;
@@ -14,6 +15,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -64,12 +66,12 @@ public class User extends PrimaryObject {
 	/**
 	 * 委托人
 	 */
-	private static final String F_CONSIGNER = "consigner";
+	public static final String F_CONSIGNER = "consigner";
 
 	/**
 	 * 是否系统管理员
 	 */
-	private static final String F_IS_ADMIN = "isadmin";
+	public static final String F_IS_ADMIN = "isadmin";
 
 	/**
 	 * 获取组织_id
@@ -201,18 +203,17 @@ public class User extends PrimaryObject {
 		}
 	}
 
-	/**
-	 * 根据ID获取用户
+	/** 
+	 * 根据ID获取用户 此方法已不可使用，请使用  {@link UserToolkit#getUserById(userId)}
 	 * @param userId
 	 *           用户ID
 	 * @return
 	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	public static User getUserById(String userId) {
-		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_USER);
-		DBObject userData = userCol.findOne(new BasicDBObject().append(
-				User.F_USER_ID, userId));
-		return ModelService.createModelObject(userData, User.class);
+		Assert.isNotNull(null, "此方法已不可使用，请使用UserToolkit.getUserById(userId)");
+		return null;
 	}
 	
 	/**
@@ -265,19 +266,14 @@ public class User extends PrimaryObject {
 	}
 
 	/**
-	 * 获取系统管理员
+	 * 获取系统管理员,此方法已不可使用，请使用  {@link UserToolkit#getAdmin()}
 	 * @return List<User>
 	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	public static List<PrimaryObject> getAdmin() {
-		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_USER);
-		
-		DBCursor cur = userCol.find(new BasicDBObject().append(User.F_IS_ADMIN, Boolean.TRUE));
-		while (cur.hasNext()) {
-			result.add(ModelService.createModelObject(cur.next(), User.class));
-		}
-		return result;
+		Assert.isNotNull(null, "此方法已不可使用，请使用UserToolkit.getAdmin()");
+		return null;
 	}
 
 	/**

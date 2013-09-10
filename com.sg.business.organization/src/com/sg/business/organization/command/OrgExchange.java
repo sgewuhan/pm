@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
@@ -19,9 +18,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Message;
 import com.sg.business.model.Organization;
-import com.sg.business.model.User;
 import com.sg.sqldb.utility.SQLResult;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;

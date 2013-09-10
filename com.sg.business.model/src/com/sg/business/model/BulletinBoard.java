@@ -9,6 +9,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.toolkit.UserToolkit;
 
 /**
  * 公告板
@@ -135,7 +136,7 @@ public class BulletinBoard extends PrimaryObject {
 		StringBuffer sb = new StringBuffer();
 
 		//设置发布人
-		String punlisher =User.getUserById(getPublisher()).getUsername();
+		String punlisher =UserToolkit.getUserById(getPublisher()).getUsername();
 		//设置日期
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		Date date = getPublishDate();
