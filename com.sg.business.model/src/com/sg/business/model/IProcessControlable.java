@@ -13,6 +13,45 @@ public interface IProcessControlable {
 	
 	public static final String POSTFIX_INSTANCEID = "_instance";
 
+	/**
+	 * 当前的流程任务
+	 */
+	public static final String POSTFIX_TASK = "_task";
+	
+	/**
+	 * 任务字段,实际的活动所有者
+	 */
+	public static final String F_WF_TASK_ACTUALOWNER = "actualowner";
+	
+	/**
+	 * 任务字段，任务的创建者
+	 */
+	public static final String F_WF_TASK_CREATEDBY = "createdby";
+
+	/**
+	 * 任务字段，创建时间
+	 */
+	public static final String F_WF_TASK_CREATEDON = "createdon";
+	
+	/**
+	 * 任务字段，流程定义id
+	 */
+	public static final String F_WF_TASK_PROCESSID = "processid";
+
+	/**
+	 * 任务字段，流程实例id
+	 */
+	public static final String F_WF_TASK_PROCESSINSTANCEID = "instanceid";
+
+	/**
+	 * 任务字段，任务状态
+	 */
+	public static final String F_WF_TASK_STATUS = "status";
+	
+	/**
+	 * 任务字段，流程实例id
+	 */
+	public static final String F_WF_TASK_WORKITEMID = "workitemid";
 	
 	boolean isWorkflowActivate(String fieldKey) ;
 	
