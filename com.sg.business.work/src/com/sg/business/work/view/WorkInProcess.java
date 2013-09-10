@@ -7,9 +7,9 @@ import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.db.model.IContext;
 import com.sg.business.work.WorkflowSynchronizer;
-import com.sg.widgets.part.view.AccountSensitiveTreeView;
+import com.sg.widgets.part.view.TreeNavigator;
 
-public class WorkInProcess extends AccountSensitiveTreeView {
+public class WorkInProcess extends TreeNavigator {
 
 	private WorkflowSynchronizer workSynchronizer;
 	private JobChangeAdapter syncListener;
