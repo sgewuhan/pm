@@ -26,14 +26,19 @@ public class WorkflowSynchronizer extends RepeatJob {
 
 	private IContext context;
 	private String userId;
+	private boolean client;
 
-	public WorkflowSynchronizer() {
-		super("Work Synchronizer");
+	public WorkflowSynchronizer(boolean client) {
+		super("更新流程信息");
 		context = new BackgroundContext();
+		this.client = client;
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
+		if(client){
+			monitor.beginTask("正在同步工作流任务...", IProgressMonitor.UNKNOWN);
+		}
 		if (userId != null) {
 			synchronizeUserTask(userId);
 		} else {

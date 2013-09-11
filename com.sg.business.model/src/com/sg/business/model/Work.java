@@ -24,6 +24,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
@@ -1414,6 +1415,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
+	public DBObject getCurrentWorkflowTaskData(String key) {
+		String field = key + POSTFIX_TASK;
+		Object value = getValue(field);
+		return (DBObject) value;
+	}
+
+	public void makeCurrentWorkflowTaskData(String key,
+			DBObject currentWorkflowTaskData) {
+		String field = key + POSTFIX_TASK;
+		setValue(field, currentWorkflowTaskData);
+	}
+
 	/**
 	 * 使用工作流的任务更新当前工作的流程任务信息
 	 * 
@@ -1427,19 +1440,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public boolean doUpdateWorkflowDataByTask(String key, Task task,
 			IContext context) throws Exception {
-		String field = key + POSTFIX_TASK;
-		Object value = getValue(field);
-		DBObject data;
-		if (value instanceof DBObject) {
-			data = (DBObject) value;
-			Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
-			// 已经通知过
-			if (noticedate instanceof Date) {
-				return false;
-			}
-		}
+//		DBObject data = getCurrentWorkflowTaskData(key);
 
-		data = new BasicDBObject();
+		DBObject data = new BasicDBObject();
+
+		data.put(F_WF_TASK_ID, task.getId());
 
 		List<I18NText> names = task.getNames();
 		Assert.isLegal(names != null && names.size() > 0, "流程活动名称没有定义");
@@ -1476,13 +1481,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		data.put(F_WF_TASK_WORKITEMID, new Long(workItemId));
 
 		// 发送消息
-		Message message = doNoticeWorkflow(context, actorId, taskName, key);
+//		Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
+//		if (noticedate == null) {
+			Message message = doNoticeWorkflow(context, actorId, taskName, key);
+			Assert.isNotNull(message, "消息发送失败");
+			data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
+//		}
 
-		Assert.isNotNull(message, "消息发送失败");
-
-		data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
-
-		setValue(field, data);
+		makeCurrentWorkflowTaskData(key, data);
 		doSave(context);
 
 		return true;
@@ -1497,12 +1503,46 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @param processKey
 	 *            ，流程key 目前只有{@link IWorkCloneFields#F_WF_EXECUTE}
-	 *            {@link IWorkCloneFields#F_WF_CHANGE}<br/> 可以支持绑定更多的流程定义
+	 *            {@link IWorkCloneFields#F_WF_CHANGE}<br/>
+	 *            可以支持绑定更多的流程定义
 	 * @param context
 	 */
-	public void doStartTask(String processKey, IContext context) throws Exception{
-		// TODO Auto-generated method stub
+	public void doStartTask(String processKey, IContext context)
+			throws Exception {
+		DBObject data = getCurrentWorkflowTaskData(processKey);
+		Long taskId = (Long) data.get(F_WF_TASK_ID);
+		String userId = context.getAccountInfo().getconsignerId();
 
+		Task task = WorkflowService.getDefault().startTask(userId, taskId);
+		Assert.isNotNull(task, "开始流程任务失败");
+
+		doSaveWorkflowHistroy(processKey, task, context);
+	}
+
+	/**
+	 * 保存流程的历史记录
+	 * 
+	 * @param key
+	 * @param task
+	 * @param context
+	 * @throws Exception
+	 */
+	private void doSaveWorkflowHistroy(String key, Task task, IContext context)
+			throws Exception {
+		// 提取当前的任务数据
+		DBObject taskData = getCurrentWorkflowTaskData(key);
+		taskData.put(F_WF_TASK_ACTOR, context.getAccountInfo().getUserId());
+		taskData.put(F_WF_TASK_STARTDATE, new Date());
+
+		String histroyField = key + POSTFIX_HISTORY;
+		BasicDBList history = (BasicDBList) getValue(histroyField);
+		if (history == null) {
+			history = new BasicDBList();
+			setValue(histroyField, history);
+		}
+
+		history.add(0, taskData);
+		doUpdateWorkflowDataByTask(key, task, context);
 	}
 
 }

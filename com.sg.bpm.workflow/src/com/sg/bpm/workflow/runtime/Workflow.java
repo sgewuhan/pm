@@ -27,12 +27,24 @@ public class Workflow {
 	private final DroolsProcessDefinition processDefintion;
 	private final String key;
 
-	public Workflow(DroolsProcessDefinition processDefintion, PrimaryObject po,String key) {
-		this.host = po;
+	/**
+	 * 根据定义获得工作流
+	 * @param processDefintion
+	 * @param host
+	 * @param key
+	 */
+	public Workflow(DroolsProcessDefinition processDefintion, PrimaryObject host,String key) {
+		this.host = host;
 		this.processDefintion = processDefintion;
 		this.key = key;
 	}
 
+	/**
+	 * 根据流程实例获得工作流
+	 * @param processId
+	 * @param processInstanceId
+	 * @throws Exception
+	 */
 	public Workflow(String processId, long processInstanceId) throws Exception {
 		processDefintion = new DroolsProcessDefinition(processId);
 		Assert.isNotNull(processDefintion, "无法确定流程ID对应的流程定义");

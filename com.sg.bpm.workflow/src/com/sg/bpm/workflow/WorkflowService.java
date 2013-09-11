@@ -13,10 +13,12 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.TaskClient;
 import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
+import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
 import org.osgi.framework.BundleContext;
 
@@ -35,8 +37,6 @@ public class WorkflowService extends AbstractUIPlugin {
 
 	// The shared instance
 	private static WorkflowService plugin;
-
-	private Map<String, TaskFormConfig> taskStartFormMap = new HashMap<String, TaskFormConfig>();
 
 	private Map<String, TaskFormConfig> taskCompleteFormMap = new HashMap<String, TaskFormConfig>();
 
@@ -99,12 +99,7 @@ public class WorkflowService extends AbstractUIPlugin {
 			for (int j = 0; j < confs.length; j++) {
 				if ("taskForm".equals(confs[j].getName())) {
 					TaskFormConfig element = new TaskFormConfig(confs[j]);
-					if (element.isStartForm()) {
-						taskStartFormMap.put(element.getTaskFormId(), element);
-					} else if (element.isCompleteForm()) {
-						taskCompleteFormMap.put(element.getTaskFormId(),
-								element);
-					}
+					taskCompleteFormMap.put(element.getTaskFormId(), element);
 				}
 			}
 		}
@@ -131,19 +126,6 @@ public class WorkflowService extends AbstractUIPlugin {
 		return taskCompleteFormMap.get(processDefinitionId + "@" + taskName);
 	}
 
-	/**
-	 * 获取某个流程、任务的开始表单
-	 * 
-	 * @param processDefinitionId
-	 *            ，流程id
-	 * @param taskName
-	 *            ，任务名称
-	 * @return
-	 */
-	public TaskFormConfig getTaskStartFormConfig(String processDefinitionId,
-			String taskName) {
-		return taskStartFormMap.get(processDefinitionId + "@" + taskName);
-	}
 
 	/**
 	 * 获取某个用户的任务客户端，用于流程查询控制
@@ -187,7 +169,7 @@ public class WorkflowService extends AbstractUIPlugin {
 			taskClient.getTask(item.getId(), getTaskResponsehandler);
 
 			Task task = getTaskResponsehandler.getTask(1000);
-			result[i]= task;
+			result[i] = task;
 		}
 
 		return result;
@@ -195,6 +177,7 @@ public class WorkflowService extends AbstractUIPlugin {
 
 	/**
 	 * 根据流程Id和流程实例id获得流程
+	 * 
 	 * @param processId
 	 * @param processInstanceId
 	 * @return
@@ -205,7 +188,61 @@ public class WorkflowService extends AbstractUIPlugin {
 		Assert.isNotNull(dpd, "无法确定流程ID对应的流程定义");
 		StatefulKnowledgeSession session = dpd.getKnowledgeSession();
 		Assert.isNotNull(session, "无法获得流程定义的知识库进程");
-		return (WorkflowProcessInstance) session.getProcessInstance(processInstanceId);
+		return (WorkflowProcessInstance) session
+				.getProcessInstance(processInstanceId);
+	}
+
+	/**
+	 * 开始任务
+	 * 
+	 * @param userId
+	 * @param taskId
+	 * @return
+	 */
+	public Task startTask(String userId, long taskId) {
+		TaskClient taskClient = getTaskClient(userId);
+		BlockingTaskOperationResponseHandler oHandler = new BlockingTaskOperationResponseHandler();
+
+		taskClient.start(taskId, userId, oHandler);
+		oHandler.waitTillDone(1000);
+
+		BlockingGetTaskResponseHandler gHandler = new BlockingGetTaskResponseHandler();
+		taskClient.getTask(taskId, gHandler);
+		Task task = gHandler.getTask(1000);
+		return task;
+	}
+
+	public static boolean canStartTask(String status) {
+		// created, ready,reserved 都可以开始
+		if (Status.Created.name().equals(status)) {
+			return true;
+		}
+		if (Status.Ready.name().equals(status)) {
+			return true;
+		}
+		if (Status.Reserved.name().equals(status)) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean canFinishTask(String status) {
+		if (Status.Completed.name().equals(status)) {
+			return false;
+		}
+		if (Status.Error.name().equals(status)) {
+			return false;
+		}
+		if (Status.Failed.name().equals(status)) {
+			return false;
+		}
+		if (Status.Obsolete.name().equals(status)) {
+			return false;
+		}
+		if (Status.Exited.name().equals(status)) {
+			return false;
+		}
+		return false;
 	}
 
 }
