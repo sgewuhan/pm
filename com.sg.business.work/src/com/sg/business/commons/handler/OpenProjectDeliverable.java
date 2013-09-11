@@ -26,6 +26,8 @@ public class OpenProjectDeliverable extends AbstractNavigatorHandler {
 			IWorkbenchPage page = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage();
 			try {
+				
+				
 				ProjectDeliverableView part = (ProjectDeliverableView) page
 						.showView("work.view.projectDeliverable");
 				part.setInput(result);
