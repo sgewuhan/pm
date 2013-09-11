@@ -22,7 +22,7 @@ public class WorkInProcess extends TreeNavigator {
 		// 刷新工作流信息
 		IContext context = getNavigator().getContext();
 		String userid = context.getAccountInfo().getconsignerId();
-		workSynchronizer = new WorkflowSynchronizer();
+		workSynchronizer = new WorkflowSynchronizer(true);
 		workSynchronizer.setUser(true);
 		workSynchronizer.setUserId(userid);
 
@@ -44,9 +44,7 @@ public class WorkInProcess extends TreeNavigator {
 
 	@Override
 	public void doRefresh() {
-
 		workSynchronizer.schedule();
-
 	}
 
 	@Override

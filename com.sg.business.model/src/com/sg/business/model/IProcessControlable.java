@@ -12,11 +12,19 @@ public interface IProcessControlable {
 	public static final String POSTFIX_ACTORS = "_actors";
 	
 	public static final String POSTFIX_INSTANCEID = "_instance";
+	
+	public static final String POSTFIX_HISTORY = "_history";
+
 
 	/**
 	 * 当前的流程任务
 	 */
 	public static final String POSTFIX_TASK = "_task";
+	
+	/**
+	 * 任务字段,任务id
+	 */
+	public static final String F_WF_TASK_ID = "taskid";
 
 	/**
 	 * 任务字段,任务名称
@@ -67,6 +75,17 @@ public interface IProcessControlable {
 	 * 任务字段，通知日期
 	 */
 	public static final String F_WF_TASK_NOTICEDATE = "noticedate";
+	
+	/**
+	 * 任务字段，执行人Id(登录帐户)
+	 */
+	public static final String F_WF_TASK_ACTOR = "actor";
+	
+	/**
+	 * 任务字段，开始日期
+	 */
+	public static final String F_WF_TASK_STARTDATE = "startdate";
+	
 	
 	boolean isWorkflowActivate(String fieldKey) ;
 	

@@ -106,14 +106,4 @@ public class TaskFormConfig {
 
 	}
 
-	public boolean isStartForm() {
-
-		return "start".equalsIgnoreCase(ic.getAttribute("eventType"));
-	}
-
-	public boolean isCompleteForm() {
-
-		return "complete".equalsIgnoreCase(ic.getAttribute("eventType"));
-	}
-
 }

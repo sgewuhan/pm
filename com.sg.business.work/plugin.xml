@@ -449,18 +449,6 @@
       <handler
             class="com.sg.business.work.handler.StartTask"
             commandId="runtimework.wfstart">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="start"
-                        property="wf.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             commandId="runtimework.wffinish">

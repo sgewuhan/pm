@@ -52,21 +52,6 @@
          <choice minOccurs="0" maxOccurs="unbounded">
             <element ref="processParameter"/>
          </choice>
-         <attribute name="eventType" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-            <simpleType>
-               <restriction base="string">
-                  <enumeration value="start">
-                  </enumeration>
-                  <enumeration value="complete">
-                  </enumeration>
-               </restriction>
-            </simpleType>
-         </attribute>
          <attribute name="processDefinitionId" type="string" use="required">
             <annotation>
                <documentation>
