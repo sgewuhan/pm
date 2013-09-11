@@ -480,10 +480,6 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.OpenProjectDeliverable"
-            commandId="runtimework.opendeliverable">
-      </handler>
-      <handler
             class="com.sg.business.commons.handler.LifeCycleActionStart"
             commandId="runtimework.start">
          <enabledWhen>
