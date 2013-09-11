@@ -461,6 +461,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
+	
+	public boolean canRunTimeCreate(){
+		
+		
+		return true;
+	}
 
 	/**
 	 * ¼ÆËã¹¤ÆÚ
