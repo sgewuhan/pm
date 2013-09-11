@@ -327,63 +327,8 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            commandId="runtimework.createdeliverable">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.linkdeliverable">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.openproject">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.openwork">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
             class="com.sg.business.commons.handler.OpenProjectDeliverable"
             commandId="runtimework.opendeliverable">
-      </handler>
-      <handler
-            commandId="runtimework.edit">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionStart"
@@ -453,70 +398,6 @@
       <handler
             class="com.sg.business.work.handler.StartTask"
             commandId="runtimework.wfstart">
-      </handler>
-      <handler
-            commandId="runtimework.wffinish">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="finish"
-                        property="wf.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.wfcancel">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <test
-                        args="cancel"
-                        property="wf.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.workrecord">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.delete">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.deletedeliverable">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
       </handler>
    </extension>
    <extension
