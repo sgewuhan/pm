@@ -16,6 +16,8 @@ public class RunTimeWorkCreateTest extends PropertyTester {
 			if (property.equals(PROPERTY_ACTION)) {
 				if (args[0].equals("runTimeWorkCreate")) {
 					return work.canRunTimeCreate();
+				} else if(args[0].equals("runTimeWorkCreateDeliverable")) {
+					return work.canRunTimeCreateDeliverable();
 				}
 			}
 

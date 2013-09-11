@@ -512,7 +512,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public boolean canRunTimeCreate() {
 		if (!isSummaryWork()) {
-			if (!((boolean) getValue(F_S_CANBREAKDOWN))) {
+			if (!getWorkSetting(F_S_CANBREAKDOWN)) {
 				return false;
 			}
 		}
@@ -523,23 +523,80 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return false;
 		}
 
-		try {
-			AccountInfo account = UserSessionContext.getAccountInfo();
-			String loginUser = account.getUserId();
-			List<String> workUser = new ArrayList<String>();
-			getWorkChargerIds(workUser);
-		} catch (Exception e) {
+		if (!IsResponsible()) {
 			return false;
 		}
-		
 
 		return true;
 	}
-	public void getWorkChargerIds(List<String> workUser) {
-		 workUser.add(getChargerId());
-		 Work parentWork = (Work) getParent();
-		 parentWork.getWorkChargerIds(workUser);
+
+	public boolean canRunTimeCreateDeliverable() {
+		if (isSummaryWork()) {
+			return false;
+		}
+		
+		if(!getWorkSetting(F_S_CANADDDELIVERABLES)){
+			return false;
+		}
+		
+		String liftCycle = (String) getValue(F_LIFECYCLE);
+		if (liftCycle == STATUS_CANCELED_VALUE
+				|| liftCycle == STATUS_FINIHED_VALUE
+				|| liftCycle == STATUS_PAUSED_VALUE) {
+			return false;
+		}
+
+		if (!IsResponsible()) {
+			return false;
+		}
+
+		return true;
 	}
+
+	public boolean getWorkSetting(String settingField) {
+		Boolean canAddDeliveravles = (Boolean) getValue(settingField);
+		if (canAddDeliveravles != null) {
+			if (canAddDeliveravles) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public boolean IsResponsible() {
+		try {
+			AccountInfo account = UserSessionContext.getAccountInfo();
+			String loginUser = account.getUserId();
+			List<String> workUsers = new ArrayList<String>();
+			getWorkChargerIds(workUsers);
+			for (String workUser : workUsers) {
+				if (workUser.equals(loginUser)) {
+					return true;
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public void getWorkChargerIds(List<String> workUser) {
+		if (isProjectWBSRoot()) {
+			workUser.add(getProject().getChargerId());
+		} else {
+			workUser.add(getChargerId());
+			Work parentWork = (Work) getParent();
+			if (parentWork.isProjectWBSRoot()) {
+				workUser.add(parentWork.getProject().getChargerId());
+			} else {
+				parentWork.getWorkChargerIds(workUser);
+			}
+		}
+	}
+
 	/**
 	 * ¼ÆËã¹¤ÆÚ
 	 * 

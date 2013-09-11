@@ -106,7 +106,7 @@
                         ifEmpty="false">
                      <test
                            args="runTimeWorkCreate"
-                           property="runtimework.createtest">
+                           property="runtimework.action">
                      </test>
                   </iterate>
                </with>
@@ -117,12 +117,38 @@
                icon="image/24_blank.png"
                label="添加交付物"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="runTimeWorkCreateDeliverable"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="project.linkdeliverable"
                icon="image/24_blank.png"
                label="链接项目的其他交付物..."
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="runTimeWorkCreateDeliverable"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="runtimework.separator0"
@@ -688,7 +714,7 @@
             class="com.sg.business.work.test.RunTimeWorkCreateTest"
             id="runtimework.create.test"
             namespace="runtimework"
-            properties="createtest"
+            properties="action"
             type="java.lang.Object">
       </propertyTester>
    </extension>
