@@ -21,12 +21,6 @@
             name="已结束的工作"
             restorable="true">
       </view>
-      <view
-            class="com.sg.business.work.view.ProjectDeliverableView"
-            id="work.view.projectDeliverable"
-            name="项目交付物"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
