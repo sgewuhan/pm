@@ -64,7 +64,6 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 			condition.put(BulletinBoard.F_PARENT_BULLETIN,null);
 			return condition;
 		} catch (Exception e) {
-			e.printStackTrace();
 			MessageUtil.showToast(e);
 			return new BasicDBObject().append("_id", null);
 		}

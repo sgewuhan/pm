@@ -7,9 +7,9 @@ import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.db.model.IContext;
 import com.sg.business.work.WorkflowSynchronizer;
-import com.sg.widgets.part.view.AccountSensitiveTreeView;
+import com.sg.widgets.part.view.TreeNavigator;
 
-public class WorkInProcess extends AccountSensitiveTreeView {
+public class WorkInProcess extends TreeNavigator {
 
 	private WorkflowSynchronizer workSynchronizer;
 	private JobChangeAdapter syncListener;
@@ -22,7 +22,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 		// 刷新工作流信息
 		IContext context = getNavigator().getContext();
 		String userid = context.getAccountInfo().getconsignerId();
-		workSynchronizer = new WorkflowSynchronizer();
+		workSynchronizer = new WorkflowSynchronizer(true);
 		workSynchronizer.setUser(true);
 		workSynchronizer.setUserId(userid);
 
@@ -44,9 +44,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 
 	@Override
 	public void doRefresh() {
-
 		workSynchronizer.schedule();
-
 	}
 
 	@Override

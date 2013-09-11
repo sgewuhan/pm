@@ -20,7 +20,6 @@ public class LifeCycleActionFinish extends AbstractNavigatorHandler {
 				lc.doFinish(new CurrentAccountContext());
 				vc.getViewer().update(selected, null);
 			} catch (Exception e) {
-				e.printStackTrace();
 				MessageUtil.showToast(e);
 			}
 		}

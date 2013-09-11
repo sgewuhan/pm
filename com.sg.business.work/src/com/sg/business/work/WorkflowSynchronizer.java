@@ -26,14 +26,19 @@ public class WorkflowSynchronizer extends RepeatJob {
 
 	private IContext context;
 	private String userId;
+	private boolean client;
 
-	public WorkflowSynchronizer() {
-		super("Work Synchronizer");
+	public WorkflowSynchronizer(boolean client) {
+		super("更新流程信息");
 		context = new BackgroundContext();
+		this.client = client;
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
+		if(client){
+			monitor.beginTask("正在同步工作流任务...", IProgressMonitor.UNKNOWN);
+		}
 		if (userId != null) {
 			synchronizeUserTask(userId);
 		} else {
@@ -56,7 +61,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 
 	public Set<Work> synchronizeUserTask(String userid) {
 		Set<Work> updated = new HashSet<Work>();
-		Task[] tasks = WorkflowService.getDefault().getTask(userid);
+		Task[] tasks = WorkflowService.getDefault().getUserTasks(userid);
 		for (int i = 0; i < tasks.length; i++) {
 			TaskData taskData = tasks[i].getTaskData();
 
@@ -69,10 +74,13 @@ public class WorkflowSynchronizer extends RepeatJob {
 				String flowKey = workflow.getKey();
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
+					work.reload();
 					work.doUpdateWorkflowDataByTask(flowKey, tasks[i], context);
 					updated.add(work);
 				}
 			} catch (Exception e) {
+				//流程不存在
+				//work被删除
 				e.printStackTrace();
 			}
 		}

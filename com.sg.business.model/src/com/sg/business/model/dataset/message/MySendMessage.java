@@ -25,7 +25,6 @@ public class MySendMessage extends SingleDBCollectionDataSetFactory {
 			condition.put(Message.F_WASTE+"."+userid,new BasicDBObject().append("$ne", true));
 			return condition;
 		} catch (Exception e) {
-			e.printStackTrace();
 			MessageUtil.showToast(e);
 			return new BasicDBObject().append("_id", null);
 		}

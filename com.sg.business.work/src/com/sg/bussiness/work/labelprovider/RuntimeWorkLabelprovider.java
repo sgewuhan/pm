@@ -120,17 +120,16 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		sb.append("<br/>");
 
-		Object wfinfo = work.getValue(Work.F_WF_EXECUTE + Work.POSTFIX_TASK);
-		if (wfinfo instanceof DBObject) {
+		DBObject wfinfo = work.getCurrentWorkflowTaskData(Work.F_WF_EXECUTE);
+		if (wfinfo != null) {
 			sb.append("Á÷³Ì:");
-			DBObject dbObject = (DBObject) wfinfo;
-			Object taskname = dbObject.get(Work.F_WF_TASK_NAME);
+			Object taskname = wfinfo.get(Work.F_WF_TASK_NAME);
 			sb.append(taskname);
-			Object taskstatus = dbObject.get(Work.F_WF_TASK_STATUS);
+			Object taskstatus = wfinfo.get(Work.F_WF_TASK_STATUS);
 			sb.append(" ");
 			sb.append(taskstatus);
 			sb.append(" ");
-			Object owner = dbObject.get(Work.F_WF_TASK_ACTUALOWNER);
+			Object owner = wfinfo.get(Work.F_WF_TASK_ACTUALOWNER);
 			if (owner instanceof String) {
 				User ownerUser = UserToolkit.getUserById((String) owner);
 				sb.append(ownerUser);
@@ -167,7 +166,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 	}
 
 	private String getHeaderImageURL(Work work) {
-		if (work.getParent() == null && work.getProjectId()!=null) {
+		if (work.isProjectWBSRoot()) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}
@@ -180,12 +179,23 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_FINISH_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(
-					BusinessResource.IMAGE_WORK_PREPARING_32,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			if(work.isWorkflowActivate(Work.F_WF_EXECUTE)){
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_READY_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}else{
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK_READY_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_32,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			if(work.isWorkflowActivate(Work.F_WF_EXECUTE)){
+				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}else{
+				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_PAUSE_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);

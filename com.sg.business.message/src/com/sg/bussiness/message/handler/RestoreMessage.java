@@ -33,7 +33,6 @@ public class RestoreMessage extends AbstractNavigatorHandler {
 					viewer.remove(message);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
-					e.printStackTrace();
 				}
 			}
 		}

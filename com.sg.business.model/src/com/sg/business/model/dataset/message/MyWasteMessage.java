@@ -26,7 +26,6 @@ public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 			condition.put(Message.F_WASTE+"."+userid,true);
 			return condition;
 		} catch (Exception e) {
-			e.printStackTrace();
 			MessageUtil.showToast(e);
 			return new BasicDBObject().append("_id", null);
 		}
