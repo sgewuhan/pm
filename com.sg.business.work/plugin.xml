@@ -85,6 +85,19 @@
                icon="image/24_blank.png"
                label="添加子工作"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="runTimeWorkCreate"
+                           property="runtimework.createtest">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="runtimework.createdeliverable"
@@ -796,6 +809,16 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.work.test.RunTimeWorkCreateTest"
+            id="runtimework.create.test"
+            namespace="runtimework"
+            properties="createtest"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>

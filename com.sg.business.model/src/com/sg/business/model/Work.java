@@ -18,9 +18,11 @@ import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -97,6 +99,51 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_DESCRIPTION = "description";
 
 	public static final String F_IS_PROJECT_WBSROOT = "iswbsroot";
+
+	/**
+	 * 下级所有工作完成时，本工作自动完成
+	 */
+	public static final String F_S_AUTOFINISHWITHCHILDREN = "s_autofinishwithchildren";
+
+	/**
+	 * 上级工作完成时，本工作自动完成
+	 */
+	public static final String F_S_AUTOFINISHWITHPARENT = "s_autofinishwithparent";
+
+	/**
+	 * 上级工作开始时，本工作自动开始
+	 */
+	public static final String F_S_AUTOSTARTWITHPARENT = "s_autostartwithparent";
+
+	/**
+	 * 是否允许添加交付物
+	 */
+	public static final String F_S_CANADDDELIVERABLES = "s_canadddeliverables";
+
+	/**
+	 * 是否允许分解工作
+	 */
+	public static final String F_S_CANBREAKDOWN = "s_canbreakdown";
+
+	/**
+	 * 是否允许修改计划工时
+	 */
+	public static final String F_S_CANMODIFYPLANWORKS = "s_canmodifyplanworks";
+
+	/**
+	 * 是否可以跳过进行中的流程完成工作
+	 */
+	public static final String F_S_CANSKIPTOFINISH = "s_canskiptofinish";
+
+	/**
+	 * 需启动项目变更流程实施工作的更改
+	 */
+	public static final String F_S_PROJECTCHANGEFLOWMANDORY = "s_projectchangeflowmandory";
+
+	/**
+	 * 需启动变更流程实施工作的更改
+	 */
+	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
 
 	/**
 	 * 返回工作所属项目
@@ -462,13 +509,37 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
-	
-	public boolean canRunTimeCreate(){
+
+	public boolean canRunTimeCreate() {
+		if (!isSummaryWork()) {
+			if (!((boolean) getValue(F_S_CANBREAKDOWN))) {
+				return false;
+			}
+		}
+		String liftCycle = (String) getValue(F_LIFECYCLE);
+		if (liftCycle == STATUS_CANCELED_VALUE
+				|| liftCycle == STATUS_FINIHED_VALUE
+				|| liftCycle == STATUS_PAUSED_VALUE) {
+			return false;
+		}
+
+		try {
+			AccountInfo account = UserSessionContext.getAccountInfo();
+			String loginUser = account.getUserId();
+			List<String> workUser = new ArrayList<String>();
+			getWorkChargerIds(workUser);
+		} catch (Exception e) {
+			return false;
+		}
 		
-		
+
 		return true;
 	}
-
+	public void getWorkChargerIds(List<String> workUser) {
+		 workUser.add(getChargerId());
+		 Work parentWork = (Work) getParent();
+		 parentWork.getWorkChargerIds(workUser);
+	}
 	/**
 	 * 计算工期
 	 * 
@@ -1160,22 +1231,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void doCancel(IContext context) throws Exception {
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
-
 		doCancelBefore(context, params);
-
-		// TODO Auto-generated method stub
-
 		doCancelAfter(context, params);
 	}
 
 	public void doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
-
 		doFinishBefore(context, params);
-
-		// TODO Auto-generated method stub
-
 		doFinishAfter(context, params);
 
 	}
@@ -1183,10 +1246,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void doPause(IContext context) throws Exception {
 		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
 		Map<String, Object> params = new HashMap<String, Object>();
-
 		doPauseBefore(context, params);
-
-		// TODO Auto-generated method stub
 
 		doPauseAfter(context, params);
 	}
@@ -1446,7 +1506,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public boolean doUpdateWorkflowDataByTask(String key, Task task,
 			IContext context) throws Exception {
-//		DBObject data = getCurrentWorkflowTaskData(key);
+		// DBObject data = getCurrentWorkflowTaskData(key);
 
 		DBObject data = new BasicDBObject();
 
@@ -1487,12 +1547,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		data.put(F_WF_TASK_WORKITEMID, new Long(workItemId));
 
 		// 发送消息
-//		Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
-//		if (noticedate == null) {
-			Message message = doNoticeWorkflow(context, actorId, taskName, key);
-			Assert.isNotNull(message, "消息发送失败");
-			data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
-//		}
+		// Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
+		// if (noticedate == null) {
+		Message message = doNoticeWorkflow(context, actorId, taskName, key);
+		Assert.isNotNull(message, "消息发送失败");
+		data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
+		// }
 
 		makeCurrentWorkflowTaskData(key, data);
 		doSave(context);
