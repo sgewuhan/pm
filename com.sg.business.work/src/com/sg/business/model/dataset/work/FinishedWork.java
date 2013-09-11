@@ -19,12 +19,15 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 
-public class ProcessingWork extends SingleDBCollectionDataSetFactory {
+public class FinishedWork extends SingleDBCollectionDataSetFactory{
 
-	public ProcessingWork() {
+	public FinishedWork(String dbName, String collectionName) {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
 	}
 
+	/**
+	 * 返回数据集
+	 */
 	@Override
 	public DataSet getDataSet() {
 		DBCollection col = getCollection();
@@ -65,9 +68,8 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 			queryCondition
 					.put(Work.F_LIFECYCLE,
 							new BasicDBObject().append("$in", new String[] {
-									Work.STATUS_ONREADY_VALUE,
-									Work.STATUS_WIP_VALUE,
-									Work.STATUS_PAUSED_VALUE}));
+									Work.STATUS_FINIHED_VALUE,
+									Work.STATUS_CANCELED_VALUE}));
 			return queryCondition;
 
 		} catch (Exception e) {
@@ -76,42 +78,10 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 		}
 	}
 
-	// @Override
-	// public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
-	// DBCollection c = getCollection();
-	// Assert.isNotNull(c, "无法获取集合");
-	//
-	// DBObject query = getQueryCondition();
-	// DBObject projection = getProjection();
-	// DBCursor cursor = c.find(query, projection);
-	//
-	//
-	// List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
-	// Class<? extends PrimaryObject> clas;
-	//
-	// Iterator<DBObject> iter = cursor.iterator();
-	//
-	// while (iter.hasNext()) {
-	// DBObject dbo = iter.next();
-	// Object obj = dbo.get(Work.F_ROOT_ID);
-	//
-	//
-	// clas = getModelClass(dbo);
-	// Assert.isNotNull(clas, "类参数不可为空");
-	// PrimaryObject po = ModelService.createModelObject(dbo, clas);
-	// /*while(po.getParentPrimaryObject()!=null){
-	// po=po.getParentPrimaryObject();
-	// }*/
-	// po.setDataSet(ds);
-	// Assert.isNotNull(po, "无法创建ORM映射的对象:" + dbo.toString());
-	// dataItems.add(po);
-	// }
-	//
-	// return dataItems;
-	// }
 
 	@Override
 	public DBObject getSort() {
 		return new BasicDBObject().append(Work.F__ID, -1);
 	}
+
 }
