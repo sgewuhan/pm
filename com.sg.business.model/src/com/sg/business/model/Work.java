@@ -18,9 +18,11 @@ import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -98,6 +100,51 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_DESCRIPTION = "description";
 
 	public static final String F_IS_PROJECT_WBSROOT = "iswbsroot";
+
+	/**
+	 * 下级所有工作完成时，本工作自动完成
+	 */
+	public static final String F_S_AUTOFINISHWITHCHILDREN = "s_autofinishwithchildren";
+
+	/**
+	 * 上级工作完成时，本工作自动完成
+	 */
+	public static final String F_S_AUTOFINISHWITHPARENT = "s_autofinishwithparent";
+
+	/**
+	 * 上级工作开始时，本工作自动开始
+	 */
+	public static final String F_S_AUTOSTARTWITHPARENT = "s_autostartwithparent";
+
+	/**
+	 * 是否允许添加交付物
+	 */
+	public static final String F_S_CANADDDELIVERABLES = "s_canadddeliverables";
+
+	/**
+	 * 是否允许分解工作
+	 */
+	public static final String F_S_CANBREAKDOWN = "s_canbreakdown";
+
+	/**
+	 * 是否允许修改计划工时
+	 */
+	public static final String F_S_CANMODIFYPLANWORKS = "s_canmodifyplanworks";
+
+	/**
+	 * 是否可以跳过进行中的流程完成工作
+	 */
+	public static final String F_S_CANSKIPTOFINISH = "s_canskiptofinish";
+
+	/**
+	 * 需启动项目变更流程实施工作的更改
+	 */
+	public static final String F_S_PROJECTCHANGEFLOWMANDORY = "s_projectchangeflowmandory";
+
+	/**
+	 * 需启动变更流程实施工作的更改
+	 */
+	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
 
 	/**
 	 * 返回工作所属项目
@@ -462,6 +509,93 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean canCancel() {
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
+	}
+
+	public boolean canRunTimeCreate() {
+		if (!isSummaryWork()) {
+			if (!getWorkSetting(F_S_CANBREAKDOWN)) {
+				return false;
+			}
+		}
+		String liftCycle = (String) getValue(F_LIFECYCLE);
+		if (liftCycle == STATUS_CANCELED_VALUE
+				|| liftCycle == STATUS_FINIHED_VALUE
+				|| liftCycle == STATUS_PAUSED_VALUE) {
+			return false;
+		}
+
+		if (!IsResponsible()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean canRunTimeCreateDeliverable() {
+		if (isSummaryWork()) {
+			return false;
+		}
+		
+		if(!getWorkSetting(F_S_CANADDDELIVERABLES)){
+			return false;
+		}
+		
+		String liftCycle = (String) getValue(F_LIFECYCLE);
+		if (liftCycle == STATUS_CANCELED_VALUE
+				|| liftCycle == STATUS_FINIHED_VALUE
+				|| liftCycle == STATUS_PAUSED_VALUE) {
+			return false;
+		}
+
+		if (!IsResponsible()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean getWorkSetting(String settingField) {
+		Boolean canAddDeliveravles = (Boolean) getValue(settingField);
+		if (canAddDeliveravles != null) {
+			if (canAddDeliveravles) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public boolean IsResponsible() {
+		try {
+			AccountInfo account = UserSessionContext.getAccountInfo();
+			String loginUser = account.getUserId();
+			List<String> workUsers = new ArrayList<String>();
+			getWorkChargerIds(workUsers);
+			for (String workUser : workUsers) {
+				if (workUser.equals(loginUser)) {
+					return true;
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public void getWorkChargerIds(List<String> workUser) {
+		if (isProjectWBSRoot()) {
+			workUser.add(getProject().getChargerId());
+		} else {
+			workUser.add(getChargerId());
+			Work parentWork = (Work) getParent();
+			if (parentWork.isProjectWBSRoot()) {
+				workUser.add(parentWork.getProject().getChargerId());
+			} else {
+				parentWork.getWorkChargerIds(workUser);
+			}
+		}
 	}
 
 	/**
@@ -1155,22 +1289,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void doCancel(IContext context) throws Exception {
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
-
 		doCancelBefore(context, params);
-
-		// TODO Auto-generated method stub
-
 		doCancelAfter(context, params);
 	}
 
 	public void doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
-
 		doFinishBefore(context, params);
-
-		// TODO Auto-generated method stub
-
 		doFinishAfter(context, params);
 
 	}
@@ -1178,10 +1304,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void doPause(IContext context) throws Exception {
 		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
 		Map<String, Object> params = new HashMap<String, Object>();
-
 		doPauseBefore(context, params);
-
-		// TODO Auto-generated method stub
 
 		doPauseAfter(context, params);
 	}
