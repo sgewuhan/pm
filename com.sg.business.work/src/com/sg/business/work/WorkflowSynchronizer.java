@@ -69,10 +69,13 @@ public class WorkflowSynchronizer extends RepeatJob {
 				String flowKey = workflow.getKey();
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
+					work.reload();
 					work.doUpdateWorkflowDataByTask(flowKey, tasks[i], context);
 					updated.add(work);
 				}
 			} catch (Exception e) {
+				//流程不存在
+				//work被删除
 				e.printStackTrace();
 			}
 		}

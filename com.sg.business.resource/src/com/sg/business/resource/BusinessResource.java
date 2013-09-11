@@ -17,44 +17,51 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle
  */
 public class BusinessResource extends AbstractUIPlugin {
+	
 
-	public static final String IMAGE_ACTIVATED_16 = "activated_16.png";
+	// The shared instance
+	private static BusinessResource plugin;
 
-	public static final String IMAGE_ATTACHMENT_32 = "attachment_32.png";
+	// The plug-in ID
+	public static final String PLUGIN_ID = "com.sg.business.resource"; //$NON-NLS-1$
 
-	public static final String IMAGE_DATABASE_16 = "database_16.png";
+	public static final String IMAGE_FOLDER = "image";//$NON-NLS-1$
 
-	public static final String IMAGE_DISACTIVATED_16 = "disactivated_16.png";
+	public static final String IMAGE_ACTIVATED_16 = "activated_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_DOCUMENT_16 = "document_16.png";
+	public static final String IMAGE_ATTACHMENT_32 = "attachment_32.png";//$NON-NLS-1$
 
-	public static final String IMAGE_LINK_16 = "link_16.gif";
+	public static final String IMAGE_DATABASE_16 = "database_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_DOCUMENT_DEF_16 = "documentd_16.png";
+	public static final String IMAGE_DISACTIVATED_16 = "disactivated_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_PROJECT_16 = "project_16.png";
+	public static final String IMAGE_DOCUMENT_16 = "document_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_FOLDER = "image";
+	public static final String IMAGE_LINK_16 = "link_16.gif";//$NON-NLS-1$
 
-	public static final String IMAGE_PREVIEW_24 = "preview_24.png";
+	public static final String IMAGE_DOCUMENT_DEF_16 = "documentd_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_FOLDER_16 = "folder_16.png";
+	public static final String IMAGE_PROJECT_16 = "project_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_ORG_16 = "org_16.png";
+	public static final String IMAGE_PREVIEW_24 = "preview_24.png";//$NON-NLS-1$
 
-	public static final String IMAGE_ORG_24 = "org_24.png";
+	public static final String IMAGE_FOLDER_16 = "folder_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_ROLE_16 = "role_16.png";
+	public static final String IMAGE_ORG_16 = "org_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_ROLE2_16 = "role2_16.png";
+	public static final String IMAGE_ORG_24 = "org_24.png";//$NON-NLS-1$
 
-	public static final String IMAGE_SEARCH24 = "search_24.png";
+	public static final String IMAGE_ROLE_16 = "role_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_TEAM_16 = "team_16.png";
+	public static final String IMAGE_ROLE2_16 = "role2_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_TEAM_24 = "team_24.png";
+	public static final String IMAGE_SEARCH24 = "search_24.png";//$NON-NLS-1$
 
-	public static final String IMAGE_TEMPLATE_16 = "template_16.gif";
+	public static final String IMAGE_TEAM_16 = "team_16.png";//$NON-NLS-1$
+
+	public static final String IMAGE_TEAM_24 = "team_24.png";//$NON-NLS-1$
+
+	public static final String IMAGE_TEMPLATE_16 = "template_16.gif";//$NON-NLS-1$
 
 	public static final String IMAGE_USER_16 = "user_16.png";
 
@@ -77,28 +84,24 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_WORK_CANCEL_32 = "work_cancel_32.png";
 
 	public static final String IMAGE_WORK_WIP_32 = "work_wip_32.png";
+	public static final String IMAGE_WORK2_WIP_32 = "work2_wip_32.png";
 
 	public static final String IMAGE_WORK_PAUSE_32 = "work_pause_32.png";
 
 	public static final String IMAGE_WORK_FINISH_32 = "work_finish_32.png";
 
-	public static final String IMAGE_WORK_PREPARING_32 = "work_preparing_32.png";
+	public static final String IMAGE_WORK_READY_32 = "work_ready_32.png";
+	public static final String IMAGE_WORK2_READY_32 = "work2_ready_32.png";
 
-	public static final String IMAGE_WORKCANCEL_10 = "workcancel_10.png";
-	
-	public static final String IMAGE_WORKREADY_10 = "workready_10.png";
-	
-	public static final String IMAGE_WORKSTOP_10 = "workstop_10.png";
-	
-	public static final String IMAGE_WORKCLOSE_10 = "workclose_10.png";
-	
-	public static final String IMAGE_WORKPROCESS_10 = "workprocess_10.png";
-
-	// The shared instance
-	private static BusinessResource plugin;
-
-	// The plug-in ID
-	public static final String PLUGIN_ID = "com.sg.business.resource"; //$NON-NLS-1$
+//	public static final String IMAGE_WORKCANCEL_10 = "workcancel_10.png";
+//	
+//	public static final String IMAGE_WORKREADY_10 = "workready_10.png";
+//	
+//	public static final String IMAGE_WORKSTOP_10 = "workstop_10.png";
+//	
+//	public static final String IMAGE_WORKCLOSE_10 = "workclose_10.png";
+//	
+//	public static final String IMAGE_WORKPROCESS_10 = "workprocess_10.png";
 
 	public static final String IMAGE_ROLE3_16 = "role3_16.png";
 

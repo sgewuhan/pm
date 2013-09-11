@@ -180,12 +180,23 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_FINISH_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(
-					BusinessResource.IMAGE_WORK_PREPARING_32,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			if(work.isWorkflowActivate(Work.F_WF_EXECUTE)){
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_READY_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}else{
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK_READY_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_32,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			if(work.isWorkflowActivate(Work.F_WF_EXECUTE)){
+				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}else{
+				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_32,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			}
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_PAUSE_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
