@@ -61,7 +61,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 
 	public Set<Work> synchronizeUserTask(String userid) {
 		Set<Work> updated = new HashSet<Work>();
-		Task[] tasks = WorkflowService.getDefault().getTask(userid);
+		Task[] tasks = WorkflowService.getDefault().getUserTasks(userid);
 		for (int i = 0; i < tasks.length; i++) {
 			TaskData taskData = tasks[i].getTaskData();
 

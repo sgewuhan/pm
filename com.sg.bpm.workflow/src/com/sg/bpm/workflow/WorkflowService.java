@@ -153,26 +153,38 @@ public class WorkflowService extends AbstractUIPlugin {
 	 * @param userid
 	 * @return
 	 */
-	public Task[] getTask(String userid) {
+	public Task[] getUserTasks(String userid) {
 		TaskClient taskClient = getBackgroundTaskClient();
 
 		BlockingTaskSummaryResponseHandler handler = new BlockingTaskSummaryResponseHandler();
 		taskClient.getTasksAssignedAsPotentialOwner(userid, "en-UK", handler);
 
 		List<TaskSummary> tslist = handler.getResults();
-		BlockingGetTaskResponseHandler getTaskResponsehandler;
+		BlockingGetTaskResponseHandler gHandler;
 		Task[] result = new Task[tslist.size()];
 		for (int i = 0; i < tslist.size(); i++) {
 			TaskSummary item = tslist.get(i);
-			getTaskResponsehandler = new BlockingGetTaskResponseHandler();
+			gHandler = new BlockingGetTaskResponseHandler();
 
-			taskClient.getTask(item.getId(), getTaskResponsehandler);
+			taskClient.getTask(item.getId(), gHandler);
 
-			Task task = getTaskResponsehandler.getTask(1000);
+			Task task = gHandler.getTask(1000);
 			result[i] = task;
 		}
 
 		return result;
+	}
+	
+	/**
+	 * 根据任务的Id 获得任务
+	 * @param taskId
+	 * @return
+	 */
+	public Task getTask(long taskId){
+		TaskClient taskClient = getBackgroundTaskClient();
+		BlockingGetTaskResponseHandler handler = new BlockingGetTaskResponseHandler();
+		taskClient.getTask(taskId, handler);
+		return handler.getTask(1000);
 	}
 
 	/**
