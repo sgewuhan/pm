@@ -1483,6 +1483,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 	}
 
+	@Override
 	public boolean canCheck() {
 		// 未完成和未取消的
 		String lc = getLifecycleStatus();
@@ -1490,28 +1491,33 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				&& (!STATUS_FINIHED_VALUE.equals(lc));
 	}
 
+	@Override
 	public boolean canCommit() {
 		String lc = getLifecycleStatus();
 
 		return STATUS_NONE_VALUE.equals(lc);
 	}
 
+	@Override
 	public boolean canStart() {
 		String lc = getLifecycleStatus();
 		return STATUS_ONREADY_VALUE.equals(lc)
 				|| STATUS_PAUSED_VALUE.equals(lc);
 	}
 
+	@Override
 	public boolean canPause() {
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc);
 	}
 
+	@Override
 	public boolean canFinish() {
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
-
+	
+	@Override
 	public boolean canCancel() {
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);

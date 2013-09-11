@@ -1,4 +1,4 @@
-package com.sg.bussiness.work.labelprovider;
+package com.sg.business.work.labelprovider;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

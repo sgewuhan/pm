@@ -1,5 +1,8 @@
 package com.sg.bpm.workflow;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +16,11 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jbpm.task.AccessType;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
+import org.jbpm.task.service.ContentData;
 import org.jbpm.task.service.TaskClient;
 import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
@@ -121,11 +126,10 @@ public class WorkflowService extends AbstractUIPlugin {
 	 *            ，任务名称
 	 * @return
 	 */
-	public TaskFormConfig getTaskCompleteFormConfig(String processDefinitionId,
+	public TaskFormConfig getTaskFormConfig(String processDefinitionId,
 			String taskName) {
 		return taskCompleteFormMap.get(processDefinitionId + "@" + taskName);
 	}
-
 
 	/**
 	 * 获取某个用户的任务客户端，用于流程查询控制
@@ -174,13 +178,14 @@ public class WorkflowService extends AbstractUIPlugin {
 
 		return result;
 	}
-	
+
 	/**
 	 * 根据任务的Id 获得任务
+	 * 
 	 * @param taskId
 	 * @return
 	 */
-	public Task getTask(long taskId){
+	public Task getTask(long taskId) {
 		TaskClient taskClient = getBackgroundTaskClient();
 		BlockingGetTaskResponseHandler handler = new BlockingGetTaskResponseHandler();
 		taskClient.getTask(taskId, handler);
@@ -224,6 +229,35 @@ public class WorkflowService extends AbstractUIPlugin {
 		return task;
 	}
 
+	public Task completeTask(Long taskId, String userId,
+			Map<String, Object> inputParameter) {
+		TaskClient taskClient = getTaskClient(userId);
+		BlockingTaskOperationResponseHandler oHandler = new BlockingTaskOperationResponseHandler();
+		if (inputParameter != null) {
+			ContentData contentData = marshal(inputParameter);
+			// ContentMarshallerHelper.marshal(inputParameter, new
+			// ContentMarshallerContext(), null);
+			taskClient.complete(taskId, userId, contentData, oHandler);
+		} else {
+			taskClient.complete(taskId, userId, null, oHandler);
+		}
+
+		oHandler.waitTillDone(1000);
+
+		BlockingGetTaskResponseHandler gHandler = new BlockingGetTaskResponseHandler();
+		taskClient.getTask(taskId, gHandler);
+		Task task = gHandler.getTask(1000);
+		
+		long workItemId = task.getTaskData().getWorkItemId();
+		String processId = task.getTaskData().getProcessId();
+		DroolsProcessDefinition dpd = new DroolsProcessDefinition(processId);
+		StatefulKnowledgeSession session = dpd.getKnowledgeSession();
+		session.getWorkItemManager().completeWorkItem(workItemId,
+				inputParameter);
+		
+		return task;
+	}
+
 	public static boolean canStartTask(String status) {
 		// created, ready,reserved 都可以开始
 		if (Status.Created.name().equals(status)) {
@@ -254,7 +288,23 @@ public class WorkflowService extends AbstractUIPlugin {
 		if (Status.Exited.name().equals(status)) {
 			return false;
 		}
-		return false;
+		return status!=null;
 	}
 
+	private ContentData marshal(Map<String, Object> inputParameter) {
+		ContentData contentData = null;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream out;
+		try {
+			out = new ObjectOutputStream(bos);
+			out.writeObject(inputParameter);
+			out.close();
+			contentData = new ContentData();
+			contentData.setContent(bos.toByteArray());
+			contentData.setAccessType(AccessType.Inline);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		return contentData;
+	}
 }
