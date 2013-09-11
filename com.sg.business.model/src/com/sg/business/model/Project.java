@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -357,6 +358,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ObjectId wbsRootId = new ObjectId();
 		wbsRootData.put(Work.F__ID, wbsRootId);
 		wbsRootData.put(Work.F_ROOT_ID, wbsRootId);
+		wbsRootData.put(Work.F_IS_PROJECT_WBSROOT, Boolean.TRUE);
 		return ModelService.createModelObject(wbsRootData, Work.class);
 	}
 
@@ -442,6 +444,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					item.getValue(CalendarSetting.F_DESC));
 			pjCalData.put(CalendarSetting.F_PROJECT_ID, get_id());
 			ins.add(pjCalData);
+		}
+
+		if (ins.isEmpty()) {
+			return;
 		}
 		DBCollection col = getCollection(IModelConstants.C_CALENDAR_SETTING);
 		WriteResult ws = col.insert(ins, WriteConcern.NORMAL);
@@ -564,6 +570,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			result.add(conn);
 		}
 
+		if (result.isEmpty()) {
+			return;
+		}
 		DBCollection col = getCollection(IModelConstants.C_WORK_CONNECTION);
 		WriteResult ws = col.insert(result);
 		checkWriteResult(ws);
@@ -662,9 +671,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				Work.F_PROJECT_ID, get_id()).append(Work.F__ID,
 				new BasicDBObject().append("$ne", wbsRootId)));
 		checkWriteResult(ws);
-		ws = workCol.insert(worksToBeInsert.values().toArray(new DBObject[0]),
-				WriteConcern.NORMAL);
-		checkWriteResult(ws);
+		Collection<DBObject> collection = worksToBeInsert.values();
+		if (!collection.isEmpty()) {
+			ws = workCol.insert(collection.toArray(new DBObject[0]),
+					WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
 
 		// 保存文档
 		DBCollection docCol = getCollection(IModelConstants.C_DOCUMENT);
@@ -672,9 +684,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				get_id()));
 		checkWriteResult(ws);
 
-		ws = docCol.insert(documentsToBeInsert.values()
-				.toArray(new DBObject[0]), WriteConcern.NORMAL);
-		checkWriteResult(ws);
+		collection = documentsToBeInsert.values();
+		if (!collection.isEmpty()) {
+			ws = docCol.insert(collection.toArray(new DBObject[0]),
+					WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
 
 		// 保存交付物
 		DBCollection deliCol = getCollection(IModelConstants.C_DELIEVERABLE);
@@ -682,8 +697,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				Deliverable.F_PROJECT_ID, get_id()));
 		checkWriteResult(ws);
 
-		ws = deliCol.insert(deliverableToInsert, WriteConcern.NORMAL);
-		checkWriteResult(ws);
+		if (!deliverableToInsert.isEmpty()) {
+			ws = deliCol.insert(deliverableToInsert, WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
 
 		// 保存文件
 		for (DBObject[] dbObjects : fileToCopy) {
@@ -1514,10 +1531,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			message.doSave(context);
 		}
 	}
-	
 
 	public void doCommitWithWork(Work work) {
-		
+
 	}
 
 	/**
@@ -1577,8 +1593,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForChangeWorkflowActor(
 			Map<String, Message> messageList) {
-		MessageToolkit.appendWorkflowActorMessage(this, messageList, F_WF_CHANGE,
-				"项目变更流程");
+		MessageToolkit.appendWorkflowActorMessage(this, messageList,
+				F_WF_CHANGE, "项目变更流程");
 	}
 
 	/**
@@ -1619,17 +1635,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			work.setValue(Work.F_DESC, "项目计划提交");
 			work.setValue(Work.F_DESCRIPTION, getDesc());
 			BasicBSONList targets = new BasicBSONList();
-			targets.add(new BasicDBObject()
-					.append(SF_TARGET, get_id())
+			targets.add(new BasicDBObject().append(SF_TARGET, get_id())
 					.append(SF_TARGET_CLASS, Project.class.getName())
 					.append(SF_TARGET_EDITING_TYPE, EDITING_BY_EDITOR)
 					.append(SF_TARGET_EDITOR, EDITOR_CREATE_PLAN)
-					.append(SF_TARGET_EDITABLE, Boolean.TRUE)
-					);
+					.append(SF_TARGET_EDITABLE, Boolean.TRUE));
 			work.setValue(Work.F_TARGETS, targets);
-			
+
 		}
-//		work.setValue(Work.F_PROJECT_ID, get_id());
+		work.setValue(Work.F_PROJECT_ID, get_id());
 		DBObject wfdef = getWorkflowDefinition(F_WF_COMMIT);
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;

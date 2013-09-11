@@ -167,7 +167,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 	}
 
 	private String getHeaderImageURL(Work work) {
-		if (work.getParent() == null && work.getProjectId()!=null) {
+		if (work.isProjectWBSRoot()) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}

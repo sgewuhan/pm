@@ -95,6 +95,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public static final String F_DESCRIPTION = "description";
 
+	public static final String F_IS_PROJECT_WBSROOT = "iswbsroot";
+
 	/**
 	 * 返回工作所属项目
 	 * 
@@ -1484,6 +1486,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doSave(context);
 
 		return true;
+	}
+
+	public boolean isProjectWBSRoot() {
+		return Boolean.TRUE.equals(getValue(F_IS_PROJECT_WBSROOT));
 	}
 
 }
