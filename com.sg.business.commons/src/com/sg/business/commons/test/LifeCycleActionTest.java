@@ -3,7 +3,6 @@ package com.sg.business.commons.test;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.sg.business.model.ILifecycle;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class LifeCycleActionTest extends PropertyTester {
 
