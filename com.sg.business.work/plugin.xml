@@ -58,7 +58,7 @@
          </structure>
          <column
                column="desc"
-               labelProvider="com.sg.bussiness.work.labelprovider.RuntimeWorkLabelprovider"
+               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
                name="工作"
                style="SWT.LEFT"
                type="String"
@@ -81,7 +81,7 @@
          </structure>
          <column
                column="desc"
-               labelProvider="com.sg.bussiness.work.labelprovider.RuntimeWorkLabelprovider"
+               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
                name="工作"
                type="String"
                width="-1">
@@ -105,7 +105,7 @@
                   <iterate
                         ifEmpty="false">
                      <test
-                           args="runTimeWorkCreate"
+                           args="createChildWork"
                            property="runtimework.action">
                      </test>
                   </iterate>
@@ -124,7 +124,7 @@
                   <iterate
                         ifEmpty="false">
                      <test
-                           args="runTimeWorkCreateDeliverable"
+                           args="createDeliverable"
                            property="runtimework.action">
                      </test>
                   </iterate>
@@ -134,7 +134,7 @@
          <command
                commandId="project.linkdeliverable"
                icon="image/24_blank.png"
-               label="链接项目的其他交付物..."
+               label="链接交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -143,7 +143,7 @@
                   <iterate
                         ifEmpty="false">
                      <test
-                           args="runTimeWorkCreateDeliverable"
+                           args="createDeliverable"
                            property="runtimework.action">
                      </test>
                   </iterate>
@@ -156,28 +156,79 @@
          </separator>
          <command
                commandId="com.sg.widgets.command.edit"
-               icon="image/24_blank.png"
-               label="查看项目"
-               style="push">
-         </command>
-         <command
-               commandId="com.sg.widgets.command.edit"
                icon="image/work_24.png"
                label="查看工作"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
          </command>
          <command
-               commandId="runtimework.opendeliverable"
+               commandId="runtimework.reassignment"
                icon="image/24_blank.png"
-               label="项目交付物"
+               label="指派"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="reassignment"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="runtimework.edit"
                icon="image/24_blank.png"
                label="更改工作"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="modify"
+                           property="runtimework.action">
+                     </test></iterate>
+               </with>
+            </visibleWhen>
          </command>
+         <command
+               commandId="runtimework.workrecord"
+               icon="image/24_blank.png"
+               label="编辑工作记录"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="workrecord"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="runtimework.separator2"
+               visible="true">
+         </separator>
          <menu
                icon="image/work2_24.png"
                label="工作操作">
@@ -229,29 +280,70 @@
             </command>
          </menu>
          <command
-               commandId="runtimework.workrecord"
+               commandId="runtimework.view.project"
                icon="image/24_blank.png"
-               label="编辑工作记录"
+               label="查看项目"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="openproject"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="runtimework.view.project"
+               icon="image/24_blank.png"
+               label="项目文档"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="openproject"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="project.view"
+                  value="project.documents">
+            </parameter>
          </command>
          <separator
                name="runtimework.separator1"
                visible="true">
          </separator>
-         <menu
+         <command
+               commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除">
-            <command
-                  commandId="runtimework.delete"
-                  label="删除子工作"
-                  style="push">
-            </command>
-            <command
-                  commandId="runtimework.deletedeliverable"
-                  label="删除交付物"
-                  style="push">
-            </command>
-         </menu>
+               label="删除工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="delete"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -290,16 +382,17 @@
             name="链接项目的其他交付物...">
       </command>
       <command
-            id="runtimework.openproject"
+            id="runtimework.view.project"
             name="查看项目">
+         <commandParameter
+               id="project.view"
+               name="pageid"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             id="runtimework.openwork"
             name="查看工作">
-      </command>
-      <command
-            id="runtimework.opendeliverable"
-            name="项目交付物">
       </command>
       <command
             id="runtimework.edit"
@@ -477,6 +570,10 @@
                </with>
             </with>
          </enabledWhen>
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.ViewProject"
+            commandId="runtimework.view.project">
       </handler>
    </extension>
    <extension
@@ -764,8 +861,8 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.sg.business.work.test.RunTimeWorkCreateTest"
-            id="runtimework.create.test"
+            class="com.sg.business.work.test.RuntimeWorkTest"
+            id="runtimework.action"
             namespace="runtimework"
             properties="action"
             type="java.lang.Object">

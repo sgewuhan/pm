@@ -23,6 +23,7 @@ public class ProjectDeliverableView extends ViewPart {
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
 		TableViewerColumn col1 = new TableViewerColumn(viewer,SWT.LEFT);
+		col1.getColumn().setWidth(30);
 		col1.setLabelProvider(new ColumnLabelProvider(){
 			@Override
 			public String getText(Object element) {

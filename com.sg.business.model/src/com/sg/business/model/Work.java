@@ -18,13 +18,13 @@ import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.util.Utils;
-import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
@@ -468,15 +468,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	/**
 	 * 判断工作的属性是否只读
 	 * 
-	 * @param column
+	 * @param field
 	 *            ,工作的属性
 	 * @param context
 	 * @return boolean
 	 */
-	public boolean canEdit(String column, IContext context) {
+	public boolean canEdit(String field, IContext context) {
 		return true;
 	}
 
+	@Override
 	public boolean canCheck() {
 		// 未完成和未取消的
 		String lc = getLifecycleStatus();
@@ -484,116 +485,274 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				&& (!STATUS_FINIHED_VALUE.equals(lc));
 	}
 
+	@Override
 	public boolean canCommit() {
 		String lc = getLifecycleStatus();
 
 		return STATUS_NONE_VALUE.equals(lc);
 	}
 
+	@Override
 	public boolean canStart() {
-		String lc = getLifecycleStatus();
-		return STATUS_ONREADY_VALUE.equals(lc)
-				|| STATUS_PAUSED_VALUE.equals(lc);
+		// 检查本工作生命周期状态是否符合:准备中，无状态，已暂停
+		// 如果不是这些状态(已完成、已取消、进行中)，返回false
+		String lifeCycle = getLifecycleStatus();
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_WIP_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+
+		return true;
 	}
 
+	public void startCheck(IContext context) throws Exception {
+		// 1.判断是否是本级的负责人
+		String userId = context.getAccountInfo().getconsignerId();
+		if (!userId.equals(getChargerId())) {
+			throw new Exception("不是本工作负责人，"+this);
+		}
+
+		// 2.判断上级工作生命周期状态是否符合：进行中
+		// 如果不在进行中，返回false
+		Work parentWork = (Work) getParent();
+		if (parentWork != null) {
+			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
+				throw new Exception("上级工作不在进行中，"+this);
+			}
+		} else {
+			Project project = getProject();
+			if (project != null) {
+				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
+					throw new Exception("项目不在进行中，"+this);
+				}
+			}
+		}
+		// 3.判断下级需级联启动的工作是否可以启动
+		// 只判断下级级联启动的工作的生命周期状态为：无状态、准备中、已暂停
+		checkCascadeStart();
+	}
+
+	private void checkCascadeStart() throws Exception {
+		//负责人不允许为空，错误异常
+		
+		//计划开始时间、计划完成时间不允许为空，错误异常
+		
+		//工时不允许为空，错误异常
+		
+		//定义了执行工作流，但没有指定工作流，错误异常
+		
+		//执行工作流活动执行人未定义，警告异常
+		
+		//定义了变更工作流，但没有指定工作流，错误异常
+		
+		//变更工作流活动执行人未定义，警告异常
+		
+		DBCollection col = getCollection();
+		BasicDBObject queryCondition = new BasicDBObject();
+		queryCondition.put(F_PARENT_ID, get_id());
+		long count = col.count(queryCondition);
+		if (count > 0) {
+			throw new Exception("下级级联启动的工作无法启动，"+this);
+		}
+		queryCondition.put(
+				F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						STATUS_NONE_VALUE, STATUS_ONREADY_VALUE,
+						STATUS_PAUSED_VALUE, null }));
+		DBCursor cursor = col.find(queryCondition,
+				new BasicDBObject().append(F__ID, 1));
+		while (cursor.hasNext()) {
+			ObjectId id = (ObjectId) cursor.next().get(F__ID);
+			Work work = ModelService.createModelObject(Work.class, id);
+			work.checkCascadeStart();
+		}
+	}
+
+	@Override
 	public boolean canPause() {
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc);
 	}
 
+	@Override
 	public boolean canFinish() {
-		String lc = getLifecycleStatus();
-		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
+//		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中
+//		// 如果不是这些状态(已完成、准备中、无状态、已取消)，返回false
+//		String lifeCycle = getLifecycleStatus();
+//		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+//				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+//				|| STATUS_NONE_VALUE.equals(lifeCycle)
+//				|| STATUS_ONREADY_VALUE.equals(lifeCycle)) {
+//			return false;
+//		}
+//		
+//		//判断是否为该工作或上级工作的负责人或项目的项目经理
+//		if(!hasPermission(context)){
+//			return false;
+//		}
+		
+		return true;
 	}
 
+	@Override
 	public boolean canCancel() {
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
 
-	public boolean canRunTimeCreate() {
-		if (!isSummaryWork()) {
-			if (!getWorkSetting(F_S_CANBREAKDOWN)) {
-				return false;
-			}
-		}
-		String liftCycle = (String) getValue(F_LIFECYCLE);
-		if (liftCycle == STATUS_CANCELED_VALUE
-				|| liftCycle == STATUS_FINIHED_VALUE
-				|| liftCycle == STATUS_PAUSED_VALUE) {
+	@Override
+	public boolean canEdit(IContext context) {
+		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
+		String lifeCycle = (String) getValue(F_LIFECYCLE);
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
 			return false;
 		}
 
-		if (!IsResponsible()) {
-			return false;
-		}
-
-		return true;
+		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
+		return hasPermission(context);
 	}
 
-	public boolean canRunTimeCreateDeliverable() {
+	@Override
+	public boolean canDelete(IContext context) {
+		// 1.首先检查本工作生命周期状态是否符合:准备中，无状态，
+		// 如果不是这些状态(已完成、已取消、已暂停、进行中)，返回false
+		String lifeCycle = (String) getValue(F_LIFECYCLE);
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)
+				|| STATUS_WIP_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+
+		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
+		return hasPermission(context);
+	}
+
+	public boolean canEditWorkRecord(IContext context) {
+		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
+		String lifeCycle = (String) getValue(F_LIFECYCLE);
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+
+		// 2. 当是摘要工作时，返回false
 		if (isSummaryWork()) {
 			return false;
 		}
-		
-		if(!getWorkSetting(F_S_CANADDDELIVERABLES)){
-			return false;
-		}
-		
-		String liftCycle = (String) getValue(F_LIFECYCLE);
-		if (liftCycle == STATUS_CANCELED_VALUE
-				|| liftCycle == STATUS_FINIHED_VALUE
-				|| liftCycle == STATUS_PAUSED_VALUE) {
-			return false;
-		}
 
-		if (!IsResponsible()) {
-			return false;
-		}
-
-		return true;
+		// 3.判断是否为该工作或上级工作的负责人或项目的项目经理
+		return hasPermission(context);
 	}
 
-	public boolean getWorkSetting(String settingField) {
-		Boolean canAddDeliveravles = (Boolean) getValue(settingField);
-		if (canAddDeliveravles != null) {
-			if (canAddDeliveravles) {
-				return true;
+	public boolean canCreateChildWork(IContext context) {
+		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
+		String lifeCycle = (String) getValue(F_LIFECYCLE);
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+
+		// 2. 当是摘要工作时，是否设置了允许分解，如果没有，返回false
+		if (!isSummaryWork()
+				&& !Boolean.TRUE.equals(getValue(F_S_CANBREAKDOWN))) {
+			return false;
+		}
+
+		// 3.判断是否为该工作或上级工作的负责人或项目的项目经理
+		return hasPermission(context);
+	}
+
+	public boolean canCreateDeliverable(IContext context) {
+		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
+		String lifeCycle = (String) getValue(F_LIFECYCLE);
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+
+		// 2. 当是摘要工作时，返回false
+		if (isSummaryWork()) {
+			return false;
+		}
+
+		// 3.如果设置了不能添加交付物，返回假
+		if (!Boolean.TRUE.equals(getValue(F_S_CANADDDELIVERABLES))) {
+			return false;
+		}
+
+		// 4.判断是否为该工作或上级工作的负责人或项目的项目经理
+		return hasPermission(context);
+	}
+
+	public boolean canReassignment(IContext context) {
+		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
+		String lifeCycle = (String) getValue(F_LIFECYCLE);
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+
+		// 2.判断是否为该工作或上级工作的指派者
+		return hasPermissionForReassignment(context);
+	}
+
+	/**
+	 * 是否有权限进行指派，该工作或上级工作的指派者时有权限
+	 * 
+	 * @param context
+	 * @return
+	 */
+	private boolean hasPermissionForReassignment(IContext context) {
+		String userId = context.getAccountInfo().getconsignerId();
+		// 判断是否是本级的指派者
+		if (userId.equals(getAssignerId())) {
+			return true;
+		} else {
+			Work parent = (Work) getParent();
+			if (parent != null) {
+				return parent.hasPermissionForReassignment(context);
 			} else {
 				return false;
 			}
-		} else {
-			return false;
 		}
 	}
 
-	public boolean IsResponsible() {
-		try {
-			AccountInfo account = UserSessionContext.getAccountInfo();
-			String loginUser = account.getUserId();
-			List<String> workUsers = new ArrayList<String>();
-			getWorkChargerIds(workUsers);
-			for (String workUser : workUsers) {
-				if (workUser.equals(loginUser)) {
-					return true;
-				}
-			}
-			return false;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public void getWorkChargerIds(List<String> workUser) {
-		if (isProjectWBSRoot()) {
-			workUser.add(getProject().getChargerId());
+	/**
+	 * 是否有权限创建子工作、创建交付物、编辑当前工作 该工作或上级工作的负责人或项目的项目经理时有权限
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public boolean hasPermission(IContext context) {
+		String userId = context.getAccountInfo().getconsignerId();
+		// 判断是否是本级的负责人
+		if (userId.equals(getChargerId())) {
+			return true;
 		} else {
-			workUser.add(getChargerId());
-			Work parentWork = (Work) getParent();
-			if (parentWork.isProjectWBSRoot()) {
-				workUser.add(parentWork.getProject().getChargerId());
+			Work parent = (Work) getParent();
+			if (parent != null) {
+				return parent.hasPermission(context);
 			} else {
-				parentWork.getWorkChargerIds(workUser);
+				// 是Root工作，判断是否是项目经理
+				Project project = getProject();
+				if (project != null) {
+					return userId.equals(project.getChargerId());
+				} else {
+					return false;
+				}
 			}
 		}
 	}
@@ -1672,7 +1831,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public void doCompleteTask(String processKey,  Map<String, Object> inputParameter,IContext context)
+	public void doCompleteTask(String processKey,
+			Map<String, Object> inputParameter, IContext context)
 			throws Exception {
 		String lc = getLifecycleStatus();
 		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
@@ -1686,8 +1846,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		Long taskId = task.getId();
 		String userId = context.getAccountInfo().getconsignerId();
-		task = WorkflowService.getDefault().completeTask(taskId,userId,inputParameter);
-		
+		task = WorkflowService.getDefault().completeTask(taskId, userId,
+				inputParameter);
+
 		Assert.isNotNull(task, "完成流程任务失败");
 
 		doSaveWorkflowHistroy(processKey, task, context);
@@ -1736,15 +1897,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 创建任务表单对象
+	 * 
 	 * @return
 	 */
 	public TaskForm makeTaskForm() {
 		DBObject data = get_data();
 		TaskForm taskForm = ModelService.createModelObject(TaskForm.class);
 		Iterator<String> iter = data.keySet().iterator();
-		while(iter.hasNext()){
+		while (iter.hasNext()) {
 			String key = iter.next();
-			if(!Utils.inArray(key, SYSTEM_RESERVED_FIELDS)){
+			if (!Utils.inArray(key, SYSTEM_RESERVED_FIELDS)) {
 				taskForm.setValue(key, data.get(key));
 			}
 		}
