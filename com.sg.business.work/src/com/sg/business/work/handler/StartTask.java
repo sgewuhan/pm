@@ -25,7 +25,7 @@ public class StartTask extends AbstractNavigatorHandler {
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		MessageUtil.showToast("请选择工作后执行启动流程操作", SWT.ICON_INFORMATION);
+		MessageUtil.showToast("请选择工作后执行开始流程任务操作", SWT.ICON_INFORMATION);
 		return super.nullSelectionContinue(event);
 	}
 

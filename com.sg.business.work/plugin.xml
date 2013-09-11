@@ -451,19 +451,8 @@
             commandId="runtimework.wfstart">
       </handler>
       <handler
+            class="com.sg.business.work.handler.CompleteTask"
             commandId="runtimework.wffinish">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="finish"
-                        property="wf.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             commandId="runtimework.wfcancel">

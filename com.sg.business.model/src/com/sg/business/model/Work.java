@@ -33,6 +33,7 @@ import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.part.BackgroundContext;
 
 /**
  * <p>
@@ -1440,7 +1441,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public boolean doUpdateWorkflowDataByTask(String key, Task task,
 			IContext context) throws Exception {
-//		DBObject data = getCurrentWorkflowTaskData(key);
+		DBObject olddata = getCurrentWorkflowTaskData(key);
+		if (olddata != null) {
+			Object oldTaskId = olddata.get(F_WF_TASK_ID);
+			if (task.getId().equals(oldTaskId)) {
+				TaskData taskData = task.getTaskData();
+				Status status = taskData.getStatus();
+				if (status.name().equals(olddata.get(F_WF_TASK_STATUS))) {
+					return false;
+				}
+			}
+		}
 
 		DBObject data = new BasicDBObject();
 
@@ -1481,12 +1492,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		data.put(F_WF_TASK_WORKITEMID, new Long(workItemId));
 
 		// 发送消息
-//		Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
-//		if (noticedate == null) {
-			Message message = doNoticeWorkflow(context, actorId, taskName, key);
-			Assert.isNotNull(message, "消息发送失败");
-			data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
-//		}
+		// Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
+		// if (noticedate == null) {
+		Message message = doNoticeWorkflow(context, actorId, taskName, key);
+		Assert.isNotNull(message, "消息发送失败");
+		data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
+		// }
 
 		makeCurrentWorkflowTaskData(key, data);
 		doSave(context);
@@ -1509,14 +1520,69 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void doStartTask(String processKey, IContext context)
 			throws Exception {
-		DBObject data = getCurrentWorkflowTaskData(processKey);
-		Long taskId = (Long) data.get(F_WF_TASK_ID);
-		String userId = context.getAccountInfo().getconsignerId();
+		String lc = getLifecycleStatus();
+		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
 
-		Task task = WorkflowService.getDefault().startTask(userId, taskId);
+		Task task = getTask(processKey, true);
+		Assert.isNotNull(task, "无法获得当前的流程任务");
+
+		Status taskstatus = task.getTaskData().getStatus();
+		boolean canStartTask = WorkflowService.canStartTask(taskstatus.name());
+		Assert.isTrue(canStartTask, "任务当前的状态不允许执行开始");
+
+		Long taskId = task.getId();
+		String userId = context.getAccountInfo().getconsignerId();
+		task = WorkflowService.getDefault().startTask(userId, taskId);
+
 		Assert.isNotNull(task, "开始流程任务失败");
 
 		doSaveWorkflowHistroy(processKey, task, context);
+	}
+
+	/**
+	 * 完成processKey指定流程的当前任务
+	 * 
+	 * @param processKey
+	 *            ，流程key 目前只有{@link IWorkCloneFields#F_WF_EXECUTE}
+	 *            {@link IWorkCloneFields#F_WF_CHANGE}<br/>
+	 *            可以支持绑定更多的流程定义
+	 * @param context
+	 * @throws Exception
+	 */
+	public void doCompleteTask(String processKey,  Map<String, Object> inputParameter,IContext context)
+			throws Exception {
+		String lc = getLifecycleStatus();
+		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
+
+		Task task = getTask(processKey, true);
+		Assert.isNotNull(task, "无法获得当前的流程任务");
+
+		Status taskstatus = task.getTaskData().getStatus();
+		boolean canStartTask = WorkflowService.canFinishTask(taskstatus.name());
+		Assert.isTrue(canStartTask, "任务当前的状态不允许执行完成");
+
+		Long taskId = task.getId();
+		String userId = context.getAccountInfo().getconsignerId();
+		task = WorkflowService.getDefault().completeTask(taskId,userId,inputParameter);
+		
+		Assert.isNotNull(task, "完成流程任务失败");
+
+		doSaveWorkflowHistroy(processKey, task, context);
+	}
+
+	public Task getTask(String processKey, boolean sync) throws Exception {
+		DBObject data = getCurrentWorkflowTaskData(processKey);
+		if (data != null) {
+			Long taskId = (Long) data.get(F_WF_TASK_ID);
+			Assert.isNotNull(taskId);
+			Task task = WorkflowService.getDefault().getTask(taskId);
+			if (task != null && sync) {// 需要同步到工作
+				doUpdateWorkflowDataByTask(processKey, task,
+						new BackgroundContext());
+			}
+			return task;
+		}
+		return null;
 	}
 
 	/**
@@ -1543,6 +1609,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		history.add(0, taskData);
 		doUpdateWorkflowDataByTask(key, task, context);
+	}
+
+	/**
+	 * 创建任务表单对象
+	 * @return
+	 */
+	public TaskForm makeTaskForm() {
+		DBObject data = get_data();
+		TaskForm taskForm = ModelService.createModelObject(TaskForm.class);
+		Iterator<String> iter = data.keySet().iterator();
+		while(iter.hasNext()){
+			String key = iter.next();
+			if(!Utils.inArray(key, SYSTEM_RESERVED_FIELDS)){
+				taskForm.setValue(key, data.get(key));
+			}
+		}
+		taskForm.setValue(TaskForm.F_WORK_ID, get_id());
+		return taskForm;
 	}
 
 }
