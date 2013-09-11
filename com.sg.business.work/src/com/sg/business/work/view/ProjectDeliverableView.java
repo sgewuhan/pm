@@ -38,7 +38,6 @@ public class ProjectDeliverableView extends ViewPart {
 			
 		});
 		
-		
       viewer.setContentProvider(ArrayContentProvider.getInstance());
 	}
 
