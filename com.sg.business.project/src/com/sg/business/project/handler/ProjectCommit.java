@@ -27,7 +27,6 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 				doCommit(project, new CurrentAccountContext());
 				vc.getViewer().update(selected, null);
 			} catch (Exception e) {
-				e.printStackTrace();
 				MessageUtil.showToast(e);
 			}
 		}

@@ -31,7 +31,6 @@ public class OpenMessage extends AbstractNavigatorHandler {
 				}
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
-				e.printStackTrace();
 			}
 
 		}

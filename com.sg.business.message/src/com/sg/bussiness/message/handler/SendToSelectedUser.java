@@ -39,7 +39,6 @@ public class SendToSelectedUser extends AbstractNavigatorHandler {
 		DataObjectEditor.open(message,Message.EDITOR_SEND, true, null);
 	} catch (Exception e) {
 		MessageUtil.showToast(e);
-		e.printStackTrace();
 	}
 	}
 

@@ -23,7 +23,6 @@ public class ViewDeliverableDocument extends AbstractNavigatorHandler {
 				try {
 					DataObjectEditor.open(doc, doc.getDefaultEditorId(), false, null);
 				} catch (Exception e) {
-					e.printStackTrace();
 					MessageUtil.showToast(e);
 				}
 			}

@@ -31,7 +31,6 @@ public class Consign extends AbstractNavigatorHandler {
 							+", "+ user + "再次登录后，托管自动取消",
 							SWT.ICON_INFORMATION);
 				} catch (Exception e) {
-					e.printStackTrace();
 					MessageUtil.showToast(e);
 				}
 				super.doOK(is);

@@ -32,7 +32,6 @@ public class MarkStar extends AbstractNavigatorHandler {
 					vc.getViewer().update(message, null);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
-					e.printStackTrace();
 				}
 			}
 		}

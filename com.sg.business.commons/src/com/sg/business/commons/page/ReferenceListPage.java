@@ -103,7 +103,6 @@ public class ReferenceListPage extends AbstractFormPageDelegator {
 			}
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
-			e.printStackTrace();
 		}
 	}
 

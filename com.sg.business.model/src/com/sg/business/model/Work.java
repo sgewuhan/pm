@@ -1006,7 +1006,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void ensureParticipatesConsistency() {
 		// 获取工作的负责人
 		String chargerId = getChargerId();
-		if(chargerId!=null){
+		if (chargerId != null) {
 			addParticipate(chargerId);
 		}
 
@@ -1018,7 +1018,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				while (iter.hasNext()) {
 					String key = iter.next();
 					String userId = (String) processActorsMap.get(key);
-					if(userId!=null){
+					if (userId != null) {
 						addParticipate(userId);
 					}
 				}
@@ -1028,7 +1028,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public void addParticipate(String chargerId) {
-		Assert.isTrue(chargerId!=null, "参数不可为空");
+		Assert.isTrue(chargerId != null, "参数不可为空");
 		BasicBSONList participatesIdList = getParticipatesIdList();
 		if (participatesIdList == null) {
 			participatesIdList = new BasicDBList();
@@ -1490,6 +1490,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public boolean isProjectWBSRoot() {
 		return Boolean.TRUE.equals(getValue(F_IS_PROJECT_WBSROOT));
+	}
+
+	/**
+	 * 启动processKey指定流程的当前任务
+	 * 
+	 * @param processKey
+	 *            ，流程key 目前只有{@link IWorkCloneFields#F_WF_EXECUTE}
+	 *            {@link IWorkCloneFields#F_WF_CHANGE}<br/> 可以支持绑定更多的流程定义
+	 * @param context
+	 */
+	public void doStartTask(String processKey, IContext context) throws Exception{
+		// TODO Auto-generated method stub
+
 	}
 
 }

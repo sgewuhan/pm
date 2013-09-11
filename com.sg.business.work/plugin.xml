@@ -447,6 +447,7 @@
          </enabledWhen>
       </handler>
       <handler
+            class="com.sg.business.work.handler.StartTask"
             commandId="runtimework.wfstart">
          <enabledWhen>
             <with
