@@ -21,6 +21,12 @@
             name="已结束的工作"
             restorable="true">
       </view>
+      <view
+            class="com.sg.business.work.view.ProjectDeliverableView"
+            id="work.view.projectDeliverable"
+            name="项目交付物"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -65,7 +71,7 @@
             canEdit="false"
             canRead="true"
             customItemHeight="60"
-            dataSet="com.sg.business.model.dataset.work.ProcessingWork"
+            dataSet="com.sg.business.model.dataset.work.FinishedWork"
             editorId="editor.work"
             headerVisiable="false"
             id="work.finished"
@@ -73,6 +79,13 @@
          <structure
                modelRelation="work_work">
          </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.bussiness.work.labelprovider.RuntimeWorkLabelprovider"
+               name="工作"
+               type="String"
+               width="-1">
+         </column>
       </tree>
    </extension>
    <extension
@@ -81,7 +94,7 @@
             allPopups="false"
             locationURI="popup:work.processing">
          <command
-               commandId="runtimework.create"
+               commandId="work.create"
                icon="image/24_blank.png"
                label="添加子工作"
                style="push">
@@ -100,13 +113,13 @@
             </visibleWhen>
          </command>
          <command
-               commandId="runtimework.createdeliverable"
+               commandId="project.createdeliverable"
                icon="image/24_blank.png"
                label="添加交付物"
                style="push">
          </command>
          <command
-               commandId="runtimework.linkdeliverable"
+               commandId="project.linkdeliverable"
                icon="image/24_blank.png"
                label="链接项目的其他交付物..."
                style="push">
@@ -116,13 +129,13 @@
                visible="true">
          </separator>
          <command
-               commandId="runtimework.openproject"
+               commandId="com.sg.widgets.command.edit"
                icon="image/24_blank.png"
                label="查看项目"
                style="push">
          </command>
          <command
-               commandId="runtimework.openwork"
+               commandId="com.sg.widgets.command.edit"
                icon="image/work_24.png"
                label="查看工作"
                style="push">
@@ -243,10 +256,6 @@
             name="工作">
       </category>
       <command
-            id="runtimework.create"
-            name="添加子工作">
-      </command>
-      <command
             id="runtimework.createdeliverable"
             name="添加交付物">
       </command>
@@ -318,17 +327,6 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            commandId="runtimework.create">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
             commandId="runtimework.createdeliverable">
          <enabledWhen>
             <with
@@ -373,15 +371,8 @@
          </enabledWhen>
       </handler>
       <handler
+            class="com.sg.business.commons.handler.OpenProjectDeliverable"
             commandId="runtimework.opendeliverable">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             commandId="runtimework.edit">
