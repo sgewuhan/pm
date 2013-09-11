@@ -1,14 +1,16 @@
 package com.sg.bpm.workflow.taskform;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.DBObject;
-import com.sg.widgets.part.editor.IDataObjectDialogCallback;
+
+//import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 
 public class TaskFormConfig {
 
@@ -58,20 +60,18 @@ public class TaskFormConfig {
 			}
 		} catch (CoreException e) {
 		}
-//		return new SingleObject().setData(taskFormData);
-		return null;
+		return taskFormData;
 	}
 
-	public IDataObjectDialogCallback getTaskFormDialogHandler(
-			DBObject taskFormData) {
-		try {
-			IDataObjectDialogCallback callback = (IDataObjectDialogCallback) ic
-					.createExecutableExtension("saveHandler");
-			return callback;
-		} catch (CoreException e) {
-		}
-		return null;
-	}
+	// public IDataObjectDialogCallback getTaskFormDialogHandler() {
+	// try {
+	// IDataObjectDialogCallback callback = (IDataObjectDialogCallback) ic
+	// .createExecutableExtension("saveHandler");
+	// return callback;
+	// } catch (CoreException e) {
+	// }
+	// return null;
+	// }
 
 	public IValidationHandler getValidationHandler() {
 		try {
@@ -103,6 +103,39 @@ public class TaskFormConfig {
 		} catch (CoreException e) {
 		}
 		return null;
+
+	}
+
+	public Map<String, Object> getInputParameter(PrimaryObject taskFormData)
+			throws Exception {
+		List<ProcessParameter> ps = getProcessParameters();
+		if (ps.size() == 0) {
+			return null;
+		}
+		Map<String, Object> result = new HashMap<String, Object>();
+		for (int i = 0; i < ps.size(); i++) {
+			ProcessParameter pi = ps.get(i);
+			String processParameter = pi.getprocessParameterName();
+			String taskDatakey = pi.getTaskFormName();
+			IProcessParameterDelegator pd = pi.getProcessParameterDelegator();
+			if (pd != null) {// 如果设置了取值代理
+				try {
+					Object value = pd.getValue(processParameter, taskDatakey,
+							taskFormData);
+					result.put(processParameter, value);
+				} catch (Exception e) {
+					throw new Exception(getTaskFormId() + "参数取值错误。"
+							+ pd.getClass().getName());
+				}
+			} else {// 如果没有设置代理，直接从表单取值
+				if (taskFormData != null) {
+					Object value = taskFormData.getValue(taskDatakey);
+					result.put(processParameter, value);
+				}
+			}
+		}
+
+		return result;
 
 	}
 

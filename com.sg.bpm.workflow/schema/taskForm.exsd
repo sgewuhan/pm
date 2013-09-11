@@ -71,6 +71,9 @@
                <documentation>
                   对应编辑表单的编辑器Id
                </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="com.sg.widgets.dataEditor/editor/@id"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="inputHandler" type="string">

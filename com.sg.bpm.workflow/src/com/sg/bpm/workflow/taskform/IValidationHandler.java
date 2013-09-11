@@ -4,7 +4,7 @@ import com.mobnut.db.model.PrimaryObject;
 
 public interface IValidationHandler {
 
-	boolean validateBeforeOpen(PrimaryObject work);
+	boolean validate(PrimaryObject work);
 
 	String getMessage();
 }
