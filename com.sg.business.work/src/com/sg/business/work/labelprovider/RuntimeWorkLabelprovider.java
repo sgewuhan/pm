@@ -28,10 +28,13 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 	}
 
 	private String getRuntimeWorkHTMLLabel(Work work) {
+		CurrentAccountContext context = new CurrentAccountContext();
+		String userId = context.getAccountInfo().getConsignerId();
+		
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 
-		boolean isOwner = isOwner(work);
+		boolean isOwner = isOwner(work,userId);
 		if(!isOwner){
 			sb.append("<span style='color:#bbbbbb'>");
 		}
@@ -120,7 +123,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		sb.append("<br/>");
 
-		DBObject wfinfo = work.getCurrentWorkflowTaskData(Work.F_WF_EXECUTE);
+		DBObject wfinfo = work.getCurrentWorkflowTaskData(Work.F_WF_EXECUTE,userId);
 		if (wfinfo != null) {
 			sb.append("Á÷³Ì:");
 			Object taskname = wfinfo.get(Work.F_WF_TASK_NAME);
@@ -144,9 +147,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private boolean isOwner(Work work) {
-		CurrentAccountContext context = new CurrentAccountContext();
-		String userId = context.getAccountInfo().getconsignerId();
+	private boolean isOwner(Work work, String userId) {
+
 		String chargerId = work.getChargerId();
 		if (userId.equals(chargerId)) {
 			return true;

@@ -14,6 +14,7 @@ import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -284,7 +285,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		boolean isStar = isStar(new CurrentAccountContext());
 		String userid = "";
 		try {
-			userid = UserSessionContext.getAccountInfo().getconsignerId();
+			userid = UserSessionContext.getAccountInfo().getConsignerId();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
@@ -391,9 +392,8 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			// 激活账户通知
 			BasicBSONList recieverList = (BasicBSONList) value;
 			for (int i = 0; i < recieverList.size(); i++) {
-				UserSessionContext.noticeAccountChanged(
-						(String) recieverList.get(i),
-						UserSessionContext.EVENT_MESSAGE);
+				UserSessionContext.noticeAccountChanged((String) recieverList
+						.get(i), new AccountEvent(AccountEvent.EVENT_MESSAGE, this));
 			}
 
 		} else if (value instanceof String[]) {
@@ -405,7 +405,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			String[] recieverList = (String[]) value;
 			for (int i = 0; i < recieverList.length; i++) {
 				UserSessionContext.noticeAccountChanged(recieverList[i],
-						UserSessionContext.EVENT_MESSAGE);
+						new AccountEvent(AccountEvent.EVENT_MESSAGE, this));
 			}
 		} else {
 			throw new Exception("缺少收件人");

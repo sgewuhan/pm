@@ -40,7 +40,7 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 		// 获得当前帐号
 		try {
 			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userid = account.getconsignerId();
+			String userid = account.getConsignerId();
 			// 查询条件为本人负责的项目和本人参与的项目
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition.put(

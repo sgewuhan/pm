@@ -1,6 +1,6 @@
 package com.sg.business.home.view;
 
-import com.mobnut.portal.user.UserSessionContext;
+import com.mobnut.portal.user.IAccountEvent;
 import com.sg.widgets.part.view.AccountSensitiveTreeView;
 
 /**
@@ -8,8 +8,9 @@ import com.sg.widgets.part.view.AccountSensitiveTreeView;
  * 公告板视图
  * </P>
  * 继承于{@link AccountSensitiveTreeView}
+ * 
  * @author gdiyang
- *
+ * 
  */
 public class BulletinBoardView extends AccountSensitiveTreeView {
 
@@ -22,16 +23,15 @@ public class BulletinBoardView extends AccountSensitiveTreeView {
 	}
 
 	/**
-	 * 设置发生哪些变动时相应：
-	 * <li>人员变动
-	 * <li>组织变动
+	 * 设置发生哪些变动时相应： <li>人员变动 <li>组织变动
 	 */
 	@Override
-	public void accountChanged(Object data) {
-		//只响应以下的事件
-		if (UserSessionContext.EVENT_CONSIGNER_CHANGED.equals(data)
-				|| UserSessionContext.EVENT_ORG_CHANGED.equals(data)) {
-			super.accountChanged(data);
+	public void accountChanged(IAccountEvent event) {
+		String code = event.getEventCode();
+		// 只响应以下的事件
+		if (IAccountEvent.EVENT_CONSIGNER_CHANGED.equals(code)
+				|| IAccountEvent.EVENT_ORG_CHANGED.equals(code)) {
+			super.accountChanged(event);
 		}
 	}
 }

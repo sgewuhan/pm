@@ -60,7 +60,7 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 		// 获得当前帐号
 		try {
 			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userid = account.getconsignerId();
+			String userid = account.getConsignerId();
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition.put(Work.F_PARTICIPATE, userid);

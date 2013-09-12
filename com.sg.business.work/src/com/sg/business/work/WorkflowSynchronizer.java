@@ -12,7 +12,6 @@ import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.job.RepeatJob;
 import com.mobnut.db.model.DataSet;
-import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.sg.bpm.workflow.WorkflowService;
@@ -20,17 +19,14 @@ import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.UserDataSetFactory;
-import com.sg.widgets.part.BackgroundContext;
 
 public class WorkflowSynchronizer extends RepeatJob {
 
-	private IContext context;
 	private String userId;
 	private boolean client;
 
 	public WorkflowSynchronizer(boolean client) {
 		super("更新流程信息");
-		context = new BackgroundContext();
 		this.client = client;
 	}
 
@@ -75,7 +71,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
 					work.reload();
-					work.doUpdateWorkflowDataByTask(flowKey, tasks[i], context);
+					work.doUpdateWorkflowDataByTask(flowKey, tasks[i], userid);
 					updated.add(work);
 				}
 			} catch (Exception e) {

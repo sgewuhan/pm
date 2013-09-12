@@ -1516,7 +1516,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
-	
+
 	@Override
 	public boolean canCancel() {
 		String lc = getLifecycleStatus();
@@ -1638,7 +1638,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			work.setValue(Work.F_CHARGER, context.getAccountInfo().getUserId());// 设置负责人为当前用户
 			work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
 			work.setValue(Work.F_PLAN_START, new Date());
-			work.setValue(Work.F_DESC, "项目计划提交");
+			work.setValue(Work.F_DESC, "项目计划提交" + " " + this);
 			work.setValue(Work.F_DESCRIPTION, getDesc());
 			BasicBSONList targets = new BasicBSONList();
 			targets.add(new BasicDBObject().append(SF_TARGET, get_id())
