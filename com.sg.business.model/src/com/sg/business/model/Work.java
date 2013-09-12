@@ -1762,6 +1762,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void doStart(IContext context) throws Exception {
 		// 判断能否启动，检查状态
 		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
+		List<Object[]> message = this.startCheck(context);
+		
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		// 调用前处理
