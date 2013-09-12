@@ -1,4 +1,4 @@
-package com.sg.business.project.editor.page;
+package com.sg.business.commons.page;
 
 import java.util.List;
 
@@ -37,11 +37,13 @@ public class ProcessSettingPanel extends Composite {
 	private List<PrimaryObject> roleds;
 	private Label processLabel;
 	private Button activeButton;
+	private boolean editable;
 
-	ProcessSettingPanel(Composite parent, String fieldName, PrimaryObject po) {
+	ProcessSettingPanel(Composite parent, String fieldName, PrimaryObject po, boolean editable) {
 		super(parent, SWT.NONE);
 		this.key = fieldName;
 		this.primaryObject = po;
+		this.editable=editable;
 		DBObject processData = (DBObject) primaryObject.getValue(key);
 		if (processData != null) {
 			processDefinition = new DroolsProcessDefinition(processData);
@@ -63,6 +65,7 @@ public class ProcessSettingPanel extends Composite {
 		this.setLayout(new FormLayout());
 		// 是否启用
 		activeButton = new Button(this, SWT.CHECK);
+		activeButton.setEnabled(editable);
 		activeButton.setText("启用");
 		FormData fd = new FormData();
 		activeButton.setLayoutData(fd);
@@ -71,6 +74,8 @@ public class ProcessSettingPanel extends Composite {
 
 		// 流程库
 		final Text text = new Text(this, SWT.BORDER);
+		text.setEnabled(editable);
+
 		text.setMessage("<请输入流程库的名称，查询可用流程>");
 		fd = new FormData();
 		text.setLayoutData(fd);
@@ -78,6 +83,8 @@ public class ProcessSettingPanel extends Composite {
 		fd.left = new FormAttachment(0, MARGIN);
 
 		Button queryButton = new Button(this, SWT.PUSH);
+		queryButton.setEnabled(editable);
+
 		queryButton.setText("查询");
 		fd = new FormData();
 		queryButton.setLayoutData(fd);
@@ -92,7 +99,7 @@ public class ProcessSettingPanel extends Composite {
 		fd.top = new FormAttachment(0, MARGIN);
 		fd.right = new FormAttachment(100);
 
-		// 创建树
+		// 创建表
 		Table control = createProcessViewer();
 		fd = new FormData();
 		control.setLayoutData(fd);
@@ -119,7 +126,7 @@ public class ProcessSettingPanel extends Composite {
 	}
 
 	private Table createProcessViewer() {
-		processViewer = new ProcessViewer(this, key, primaryObject, roleds,true) {
+		processViewer = new ProcessViewer(this, key, primaryObject, roleds,editable) {
 			
 			@Override
 			protected void processAssignmentUpdated() {

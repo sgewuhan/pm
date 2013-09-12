@@ -3,6 +3,7 @@ package com.sg.business.project.editor.page;
 import java.util.List;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.page.AbstractWorkProcessPage;
 import com.sg.business.model.Project;
 
 /**

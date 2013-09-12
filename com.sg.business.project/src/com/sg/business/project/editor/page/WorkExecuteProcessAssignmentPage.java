@@ -21,6 +21,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.commons.page.ProcessViewer;
 import com.sg.business.model.IProcessControlable;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;

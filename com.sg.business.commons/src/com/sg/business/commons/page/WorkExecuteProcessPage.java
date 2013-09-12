@@ -1,4 +1,4 @@
-package com.sg.business.project.editor.page;
+package com.sg.business.commons.page;
 
 import com.sg.business.model.Work;
 

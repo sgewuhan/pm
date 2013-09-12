@@ -82,41 +82,6 @@ public class ProjectToolkit {
 	}
 
 	public static boolean checkProcessInternal(IProcessControlable pc,
-			String process, Project project,
-			Map<ObjectId, List<PrimaryObject>> raMap) {
-		List<PrimaryObject> ra;
-		if (pc.isWorkflowActivate(process)) {
-			// 如果流程已经激活，需要判断是否所有的actor都指派
-			DroolsProcessDefinition pd = pc.getProcessDefinition(process);
-			List<NodeAssignment> nalist = pd.getNodesAssignment();
-			for (int i = 0; i < nalist.size(); i++) {
-				NodeAssignment na = nalist.get(i);
-				if (!na.isNeedAssignment()) {
-					continue;
-				}
-				String nap = na.getNodeActorParameter();
-				String userId = pc.getProcessActionActor(process, nap);
-				if (userId == null) {
-					// 检查角色
-					ProjectRole role = pc.getProcessActionAssignment(process,
-							nap);
-					if (role == null) {
-						return false;
-					} else {
-						ra = raMap.get(role.get_id());
-						if (ra == null || ra.isEmpty()) {
-							return false;
-						} else if (ra.size() > 1) {
-							return false;
-						}
-					}
-				}
-			}
-		}
-		return true;
-	}
-
-	public static boolean checkProcessInternal(IProcessControlable pc,
 			String process) {
 		if (pc.isWorkflowActivate(process)) {
 			// 如果流程已经激活，需要判断是否所有的actor都指派

@@ -182,6 +182,10 @@
             id="work.project.calendar"
             table="work.project.calendar">
       </navigator>
+      <navigator
+            id="work.organization.user"
+            tree="work.organization.user">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -304,7 +308,7 @@
             autoExpandLevel="-1"
             canCreate="false"
             canDelete="false"
-            canEdit="true"
+            canEdit="false"
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.WorkOfProject"
             editorId="editor.work"
@@ -400,6 +404,19 @@
                modelRelation="ProjectRole_RoleAssignment">
          </structure>
       </tree>
+      <tree
+            dataSet="com.sg.business.model.dataset.organization.OrgUserCascade"
+            id="work.organization.user">
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </tree>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -407,7 +424,7 @@
             canCreate="false"
             canDelete="false"
             canEdit="false"
-            canRead="true"
+            canRead="false"
             dataSet="com.sg.business.model.dataset.project.DocumentsOfProject"
             headerVisiable="false"
             id="work.project.documents">
@@ -416,6 +433,10 @@
          </column>
       </table>
       <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
             dataSet="com.sg.business.model.dataset.calendarsetting.ProjectCalendar"
             editorId="calendar.setting"
             id="work.project.calendar">
@@ -800,14 +821,14 @@
                description="工作执行流程"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.editor.page.WorkProcessExecuteAssignmentPage"
+               pageDelegator="com.sg.business.commons.page.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.editor.page.WorkProcessChangePage"
+               pageDelegator="com.sg.business.commons.page.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
       </editor>
@@ -820,6 +841,7 @@
          <basicpage
                description="项目的基本信息"
                id="project.basicpage"
+               image="image/project_24.png"
                title="基本">
             <pagecolumn>
                <section
@@ -1025,13 +1047,53 @@
          <basicpage
                description="项目包含以下选项"
                id="project.option"
-               pageDelegator="com.sg.business.work.editor.page.ProjectOptionPage"
                title="选项">
+            <pagecolumn>
+               <section
+                     label="标准集">
+                  <list
+                        editable="false"
+                        heightHint="120"
+                        id="standardset"
+                        label="标准集"
+                        labelVisible="false"
+                        name="standardset"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="产品类型">
+                  <list
+                        editable="false"
+                        heightHint="120"
+                        id="producttype"
+                        label="产品类型"
+                        labelVisible="false"
+                        name="producttype"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="项目类型">
+                  <list
+                        editable="false"
+                        heightHint="120"
+                        id="projecttype"
+                        label="项目类型"
+                        labelVisible="false"
+                        name="projecttype"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
          </basicpage>
          <basicpage
                description="请输入预算金额"
                id="project.financial"
-               pageDelegator="com.sg.business.work.editor.page.ProjectBudgetPage"
+               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
                title="预算">
          </basicpage>
          <navigatorpage
@@ -1084,13 +1146,14 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
-                        navigatorId="project.participte.selector"
+                        navigatorId="work.organization.user"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="false"
+                        widthHint="250">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.project.editor.field.AddParticipate"
+                        addTableItemHandler="com.sg.business.work.editor.field.AddParticipateFromOrg"
                         editable="true"
                         id="participate"
                         label="参与者"
@@ -1111,10 +1174,11 @@
             allPopups="false"
             locationURI="popup:work.processing">
          <menu
+               icon="image/24_blank.png"
                label="查看">
             <command
                   commandId="runtimework.view.project"
-                  icon="image/24_blank.png"
+                  icon="image/project_24.png"
                   label="项目"
                   style="push">
                <visibleWhen

@@ -875,7 +875,7 @@
                description="请输入预算金额"
                id="project.financial"
                image="image/financial_24.png"
-               pageDelegator="com.sg.business.project.editor.page.ProjectBudgetPage"
+               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
                title="预算">
          </basicpage>
          <navigatorpage
@@ -1676,14 +1676,14 @@
                description="工作执行流程设置"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.project.editor.page.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.page.WorkExecuteProcessPage"
                title="工作执行流程设置">
          </basicpage>
          <basicpage
                description="工作变更流程设置"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.project.editor.page.WorkChangeProcessPage"
+               pageDelegator="com.sg.business.commons.page.WorkChangeProcessPage"
                title="工作变更流程设置">
          </basicpage>
       </editor>

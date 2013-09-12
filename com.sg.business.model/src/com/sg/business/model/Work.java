@@ -12,6 +12,7 @@ import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.drools.runtime.process.ProcessInstance;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.SWT;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
@@ -515,14 +516,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public void startCheck(IContext context) throws Exception {
+	public List<Object[]> startCheck(IContext context) throws Exception {
+		List<Object[]> message = new ArrayList<Object[]>();
+
 		// 1.判断是否是本级的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(getChargerId())) {
 			throw new Exception("不是本工作负责人，" + this);
 		}
 
-		Project project = getProject();
 		// 2.判断上级工作生命周期状态是否符合：进行中
 		// 如果不在进行中，返回false
 		Work parentWork = (Work) getParent();
@@ -531,6 +533,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				throw new Exception("上级工作不在进行中，" + this);
 			}
 		} else {
+			Project project = getProject();
 			if (project != null) {
 				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
 					throw new Exception("项目不在进行中，" + this);
@@ -538,13 +541,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 		}
 		// 3.判断本工作及其下级工作的必要信息是否录入
-		if (project != null) {
-			Map<ObjectId, List<PrimaryObject>> ram = project
-					.getRoleAssignmentMap();
-			checkCascadeStart(project, ram);
-		} else {
-			checkCascadeStart();
-		}
+		message.addAll(checkCascadeStart());
+		return message;
 	}
 
 	/**
@@ -552,128 +550,64 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @throws Exception
 	 */
-	private void checkCascadeStart(Project project,
-			Map<ObjectId, List<PrimaryObject>> roleMap) throws Exception {
+	private List<Object[]> checkCascadeStart() {
+		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.检查工作的计划开始和计划完成
 		Object value = getPlanStart();
 		if (value == null) {
-			throw new Exception("工作的计划开始时间没有确定，" + this);
+			message.add(new Object[] { "工作的计划开始时间没有确定", this, SWT.ICON_ERROR });
 		}
 		value = getPlanFinish();
 		if (value == null) {
-			throw new Exception("工作的计划完成时间没有确定，" + this);
+			message.add(new Object[] { "工作的计划完成时间没有确定", this, SWT.ICON_ERROR });
 		}
 		// 2.检查工作的计划工时
 		value = getPlanWorks();
 		if (value == null) {
-			throw new Exception("工作的计划工时没有确定，" + this);
+			message.add(new Object[] { "工作的计划工时没有确定", this, SWT.ICON_ERROR });
 		}
 		// 3.检查工作名称
 		value = getDesc();
-		if (value == null) {
-			throw new Exception("工作名称为空，" + this);
+		if (Utils.isNullOrEmptyString(value)) {
+			message.add(new Object[] { "工作名称为空", this, SWT.ICON_ERROR });
 		}
 		// 4.检查负责人
 		value = getCharger();
 		if (value == null) {
-			throw new Exception("工作负责人为空，" + this);
+			message.add(new Object[] { "工作负责人为空", this, SWT.ICON_ERROR });
 		}
 		// 5.检查参与者
 		value = getParticipatesIdList();
-		if (value == null || ((BasicBSONList) value).isEmpty()) {
-			throw new Exception("没有添加工作参与者，" + this);
+		if (!(value instanceof List) || ((List<?>) value).isEmpty()) {
+			message.add(new Object[] { "没有添加工作参与者", this, SWT.ICON_WARNING });
 		}
 
-		// 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
-		String process = F_WF_CHANGE;
-		if (ProjectToolkit
-				.checkProcessInternal(this, process, project, roleMap)) {
-			throw new Exception("该工作变更流程没有指明流程负责人，" + this);
-		}
+		// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
+		// String process = F_WF_CHANGE;
+		// if (ProjectToolkit.checkProcessInternal(this, process)) {
+		// throw new Exception("该工作变更流程没有指明流程负责人，" + this);
+		// }
 
 		// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
-		process = F_WF_EXECUTE;
-		if (ProjectToolkit
-				.checkProcessInternal(this, process, project, roleMap)) {
-			throw new Exception("该工作执行流程没有没有指明流程负责人，" + this);
+		if (ProjectToolkit.checkProcessInternal(this, F_WF_EXECUTE)) {
+			message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
+					SWT.ICON_WARNING });
 		}
 
-		// 7.检查工作交付物
+		// 7.检查工作交付物,警告
 		List<PrimaryObject> docs = getDeliverableDocuments();
 		if (docs.isEmpty()) {
-			throw new Exception("该工作没有设定交付物，" + this);
+			message.add(new Object[] { "该工作没有设定交付物", this, SWT.ICON_WARNING });
 		}
 		// 8.检查下级工作
 		List<PrimaryObject> childrenWork = getChildrenWork();
 		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
 			for (int i = 0; i < childrenWork.size(); i++) {
 				Work childWork = (Work) childrenWork.get(i);
-				childWork.checkCascadeStart(project, roleMap);
+				message.addAll(childWork.checkCascadeStart());
 			}
 		}
-	}
-
-	/**
-	 * 非项目的工作检查必要信息是否录入
-	 * 
-	 * @throws Exception
-	 */
-	private void checkCascadeStart() throws Exception {
-		// 1.检查工作的计划开始和计划完成
-		Object value = getPlanStart();
-		if (value == null) {
-			throw new Exception("工作的计划开始时间没有确定，" + this);
-		}
-		value = getPlanFinish();
-		if (value == null) {
-			throw new Exception("工作的计划完成时间没有确定，" + this);
-		}
-		// 2.检查工作的计划工时
-		value = getPlanWorks();
-		if (value == null) {
-			throw new Exception("工作的计划工时没有确定，" + this);
-		}
-		// 3.检查工作名称
-		value = getDesc();
-		if (value == null) {
-			throw new Exception("工作名称为空，" + this);
-		}
-		// 4.检查负责人
-		value = getCharger();
-		if (value == null) {
-			throw new Exception("工作负责人为空，" + this);
-		}
-		// 5.检查参与者
-		value = getParticipatesIdList();
-		if (value == null || ((BasicBSONList) value).isEmpty()) {
-			throw new Exception("没有添加工作参与者，" + this);
-		}
-
-		// 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
-		String process = F_WF_CHANGE;
-		if (ProjectToolkit.checkProcessInternal(this, process)) {
-			throw new Exception("该工作变更流程没有指明流程负责人，" + this);
-		}
-
-		// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
-		process = F_WF_EXECUTE;
-		if (ProjectToolkit.checkProcessInternal(this, process)) {
-			throw new Exception("该工作执行流程没有没有指明流程负责人，" + this);
-		}
-
-		// 7.检查工作交付物
-		List<PrimaryObject> docs = getDeliverableDocuments();
-		if (docs.isEmpty()) {
-			throw new Exception("该工作没有设定交付物，" + this);
-		}
-		// 8.检查下级工作
-		List<PrimaryObject> childrenWork = getChildrenWork();
-		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
-			for (int i = 0; i < childrenWork.size(); i++) {
-				Work childWork = (Work) childrenWork.get(i);
-				childWork.checkCascadeStart();
-			}
-		}
+		return message;
 	}
 
 	/**
@@ -720,8 +654,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 	}
 
-
-
 	@Override
 	public boolean canFinish() {
 		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中
@@ -743,7 +675,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public void finishCheck(IContext context) throws Exception {
+	public List<Object[]> finishCheck(IContext context) throws Exception {
+		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.判断是否是本级的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(getChargerId())) {
@@ -766,7 +699,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 		}
 		// 3.判断下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
-		checkCascadeFinish(get_id());
+		message.addAll(checkCascadeFinish(get_id()));
+		return message;
 	}
 
 	/**
@@ -774,7 +708,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @throws Exception
 	 */
-	private void checkCascadeFinish(ObjectId id) throws Exception {
+	private List<Object[]> checkCascadeFinish(ObjectId id)  {
+		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.判断非级联完成的工作是否已经在已完成状态或已取消状态
 		DBObject condition = new BasicDBObject();
 		condition.put(F_PARENT_ID, id);
@@ -787,14 +722,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBCollection col = getCollection();
 		long count = col.count(condition);
 		if (count > 0) {
-			throw new Exception("非级联完成的下级工作未完成或取消，" + this);
+			message.add(new Object[]{"非级联完成的下级工作未完成或取消",this,SWT.ICON_ERROR});
 		}
+
+		
 		// 2.循环得到下级级联的暂停和进行中状态的工作,只判断取出工作的下级非级联完成的工作是否可以完成
 		condition.put(F_S_AUTOFINISHWITHPARENT, Boolean.TRUE);
-		DBCursor cur = col.find(condition, new BasicDBObject().append(F__ID, 1));
-		while(cur.hasNext()){
+		DBCursor cur = col
+				.find(condition, new BasicDBObject().append(F__ID, 1));
+		
+		while (cur.hasNext()) {
 			checkCascadeFinish((ObjectId) cur.next().get(F__ID));
 		}
+		return message;
 	}
 
 	/**
@@ -815,6 +755,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 判断流程是否可以点击开始
+	 * 
 	 * @param context
 	 * @return
 	 */
@@ -825,6 +766,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 判断流程是否可以点击完成
+	 * 
 	 * @param context
 	 * @return
 	 */
@@ -835,6 +777,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 判断流程是否可以点击中止
+	 * 
 	 * @param context
 	 * @return
 	 */
@@ -870,32 +813,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					throw new Exception("项目不在进行中，" + this);
 				}
 			}
-		}
-		// 3.判断下级工作是否可以取消
-		checkCascadeCancel(get_id());
-	}
-
-	/**
-	 * 检查下级工作是否可以取消
-	 * @param id 
-	 * 
-	 * @throws Exception
-	 */
-	private void checkCascadeCancel(ObjectId id) throws Exception {
-		// 1.判断非级联完成的工作是否已经在已完成状态或已取消状态
-		DBObject condition = new BasicDBObject();
-		condition.put(F_PARENT_ID, id);
-		condition.put(F_LIFECYCLE, STATUS_FINIHED_VALUE);
-		DBCollection col = getCollection();
-		long count = col.count(condition);
-		if (count > 0) {
-			throw new Exception("存在已完成的下级工作，无法取消当前工作，" + this);
-		}
-		// 2.循环得到下级可以取消的工作,只判断其取出的工作的下级工作是否可以取消
-		condition.put(F_LIFECYCLE, new BasicDBObject().append("$nin",STATUS_FINIHED_VALUE));
-		DBCursor cur = col.find(condition, new BasicDBObject().append(F__ID, 1));
-		while(cur.hasNext()){
-			checkCascadeCancel((ObjectId) cur.next().get(F__ID));
 		}
 	}
 
@@ -1822,11 +1739,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doFinishBefore(context, params);
-		
-		//测试流程完成当前的工作
+
+		// 测试流程完成当前的工作
 		setValue(F_LIFECYCLE, STATUS_FINIHED_VALUE);
 		doSave(context);
-		
+
 		doFinishAfter(context, params);
 
 	}
@@ -2071,13 +1988,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 获取当前用户的流程信息
-	 * @param key : 流程名称
-	 * @param userid : 当前用户
+	 * 
+	 * @param key
+	 *            : 流程名称
+	 * @param userid
+	 *            : 当前用户
 	 * @return : 流程信息
 	 */
 	public DBObject getCurrentWorkflowTaskData(String key, String userid) {
 		String field = key + POSTFIX_TASK;
-		Object value = getValue(field,true);
+		Object value = getValue(field, true);
 		if (value instanceof DBObject) {
 			return (DBObject) ((DBObject) value).get(userid);
 		}
@@ -2306,6 +2226,5 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		taskForm.setValue(TaskForm.F_WORK_ID, get_id());
 		return taskForm;
 	}
-
 
 }

@@ -1,4 +1,4 @@
-package com.sg.business.project.editor.page;
+package com.sg.business.commons.page;
 
 import java.text.DecimalFormat;
 
@@ -64,41 +64,45 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 				}
 			}
 		});
-		EditingSupport es = new EditingSupport(viewer) {
-			
-			@Override
-			protected void setValue(Object element, Object value) {
-				ProjectBudget budget = (ProjectBudget)element;
-				Double val = Utils.getDoubleValue(value);
+		
+		if(input.isEditable()){
+			EditingSupport es = new EditingSupport(viewer) {
 				
-				budget.inputBudgetValue(val);
-				setDirty(true);
-				viewer.refresh();
-			}
-			
-			@Override
-			protected Object getValue(Object element) {
-				ProjectBudget budget = (ProjectBudget)element;
-				Double value = budget.getBudgetValue();
-				if(value == null){
-					return "";
-				}else{
-					return ""+value;
+				@Override
+				protected void setValue(Object element, Object value) {
+					ProjectBudget budget = (ProjectBudget)element;
+					Double val = Utils.getDoubleValue(value);
+					
+					budget.inputBudgetValue(val);
+					setDirty(true);
+					viewer.refresh();
 				}
-			}
+				
+				@Override
+				protected Object getValue(Object element) {
+					ProjectBudget budget = (ProjectBudget)element;
+					Double value = budget.getBudgetValue();
+					if(value == null){
+						return "";
+					}else{
+						return ""+value;
+					}
+				}
+				
+				@Override
+				protected CellEditor getCellEditor(Object element) {
+					return new TextCellEditor(viewer.getTree());
+				}
+				
+				@Override
+				protected boolean canEdit(Object element) {
+					ProjectBudget budget = (ProjectBudget)element;
+					return !budget.hasChildren();
+				}
+			};
+			column.setEditingSupport(es);
 			
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				return new TextCellEditor(viewer.getTree());
-			}
-			
-			@Override
-			protected boolean canEdit(Object element) {
-				ProjectBudget budget = (ProjectBudget)element;
-				return !budget.hasChildren();
-			}
-		};
-		column.setEditingSupport(es);
+		}
 		
 		
 		viewer.setInput(root.getChildren());

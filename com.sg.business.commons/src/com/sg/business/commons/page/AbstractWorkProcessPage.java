@@ -1,4 +1,4 @@
-package com.sg.business.work.editor.page;
+package com.sg.business.commons.page;
 
 import java.util.List;
 
@@ -8,19 +8,19 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.IProjectRelative;
+import com.sg.business.model.Project;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 
-public abstract class AbstractWorkProcessExecutPage implements IPageDelegator,
+public abstract class AbstractWorkProcessPage implements IPageDelegator,
 		IFormPart {
 
 	private boolean dirty;
 	private IManagedForm form;
 
-	public AbstractWorkProcessExecutPage() {
+	public AbstractWorkProcessPage() {
 	}
 
 	@Override
@@ -29,29 +29,38 @@ public abstract class AbstractWorkProcessExecutPage implements IPageDelegator,
 
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
-		WorkDefinition workDefinition = (WorkDefinition) input.getData();
+		PrimaryObject po = input.getData();
 
-		WorkProcessSettingPanel psp = new WorkProcessSettingPanel(parent,
-				getWorkflowKey(), workDefinition){
+		ProcessSettingPanel psp = new ProcessSettingPanel(parent,
+				getWorkflowKey(), po,input.isEditable()) {
 			@Override
 			protected void setDirty(boolean b) {
-				AbstractWorkProcessExecutPage.this.setDirty(b);
+				AbstractWorkProcessPage.this.setDirty(b);
 			}
 		};
-		int type = workDefinition.getWorkDefinitionType();
-		if (type == WorkDefinition.WORK_TYPE_PROJECT) {
-			ProjectTemplate projectTemplate = workDefinition
-					.getProjectTemplate();
-			List<PrimaryObject> roleDefinitions = projectTemplate
-					.getRoleDefinitions();
-			psp.setRoleDefinitions(roleDefinitions);
-		} else if (type == WorkDefinition.WORK_TYPE_STANDLONE
-				|| type == WorkDefinition.WORK_TYPE_GENERIC) {
-			List<PrimaryObject> roles = workDefinition.getParticipateRoles();
-			psp.setRoleDefinitions(roles);
-		}
+		psp.setRoleDefinitions(getRoleDefinitions(po));
 		psp.createContent();
 		return psp;
+	}
+
+	/**
+	 * 获取角色定义
+	 * @param po
+	 * @return
+	 */
+	protected List<PrimaryObject> getRoleDefinitions(PrimaryObject po) {
+		Project project = null;
+		if (po instanceof IProjectRelative) {
+			project = ((IProjectRelative) po).getProject();
+		} else if (po instanceof Project) {
+			project = (Project) po;
+		}
+
+		if (project != null) {
+			return project.getRoleDefinitions();
+		}
+		
+		return null;
 	}
 
 	protected abstract String getWorkflowKey();
