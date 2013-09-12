@@ -8,6 +8,7 @@ import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.viewer.ViewerControl;
 
 public class StartTask extends AbstractNavigatorHandler {
 
@@ -17,6 +18,8 @@ public class StartTask extends AbstractNavigatorHandler {
 			Work work = (Work) selected;
 			try {
 				work.doStartTask(Work.F_WF_EXECUTE,new CurrentAccountContext());
+				ViewerControl vc = getCurrentViewerControl(event);
+				vc.getViewer().update(work, null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}

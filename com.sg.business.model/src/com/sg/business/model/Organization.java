@@ -16,13 +16,16 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import com.sg.business.model.event.AccountEvent;
 import com.sg.business.resource.BusinessResource;
 
 /**
- * 组织<p/>
+ * 组织
+ * <p/>
  * 
  * 组织为公司的组织结构<br>
  * 组织下面有子组织,组织角色和用户<br>
+ * 
  * @author jinxitao
  */
 public class Organization extends PrimaryObject {
@@ -31,7 +34,7 @@ public class Organization extends PrimaryObject {
 	 * 部门和团队编辑器
 	 */
 	public static final String EDITOR_SUBTEAM = "editor.organization.subteam";
-	
+
 	/**
 	 * 顶级组织编辑器
 	 */
@@ -67,7 +70,7 @@ public class Organization extends PrimaryObject {
 	public static final String F_IS_CONTAINER = "iscontainer";
 
 	/**
-	 * 组织的成本中心代码，	成本中心代码为SAP系统中的成本中心代码
+	 * 组织的成本中心代码， 成本中心代码为SAP系统中的成本中心代码
 	 */
 	public static final String F_COST_CENTER_CODE = "costcentercode";
 
@@ -78,6 +81,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
+	 * 
 	 * @return String
 	 */
 	public String getDescription() {
@@ -86,10 +90,12 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 判断组织是否具有项目管理职能。see {@link #F_IS_FUNCTION_DEPARTMENT}
+	 * 
 	 * @return boolean
 	 */
 	public boolean isFunctionDepartment() {
-		return Boolean.TRUE.equals((Boolean) getValue(F_IS_FUNCTION_DEPARTMENT));
+		return Boolean.TRUE
+				.equals((Boolean) getValue(F_IS_FUNCTION_DEPARTMENT));
 	}
 
 	// public void handleCreateSubTeam(Object data) {
@@ -106,7 +112,8 @@ public class Organization extends PrimaryObject {
 	// }
 
 	/**
-	 * 返回组织的上级组织_id  see {@link #F_PARENT_ID}
+	 * 返回组织的上级组织_id see {@link #F_PARENT_ID}
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getParent_id() {
@@ -115,6 +122,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 返回组织的编号。see {@link #F_ORGANIZATION_NUMBER}
+	 * 
 	 * @return String
 	 */
 	public String getOrganizationNumber() {
@@ -123,6 +131,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 判断组织是否具有文档容器职能。see {@link #F_IS_CONTAINER}
+	 * 
 	 * @return boolean
 	 */
 	public boolean isContainer() {
@@ -131,6 +140,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 获取组织的成本中心代码。see {@link #F_COST_CENTER_CODE}
+	 * 
 	 * @return String
 	 */
 	public String getCostCenterCode() {
@@ -139,6 +149,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 获取组织的类型。see {@link #F_ORGANIZATION_TYPE}
+	 * 
 	 * @return String
 	 */
 	public String getOrganizationType() {
@@ -147,6 +158,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 返回组织在系统中的显示内容
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -156,6 +168,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 返回组织在系统中的显示内容的格式
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -177,6 +190,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 返回组织在系统中的显示图标地址
+	 * 
 	 * @return String
 	 */
 	public String getImageURL() {
@@ -191,6 +205,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 返回组织在系统中的显示图标
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -204,14 +219,15 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 添加用户到组织中
+	 * 
 	 * @param userIdList
 	 *            ,用户_id的数组
 	 */
 	public void doAddMembers(ObjectId[] userIdList) {
-		//获取用户表
+		// 获取用户表
 		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
-		//更新用户表，关联至组织
+		// 更新用户表，关联至组织
 		userCol.update(
 				new BasicDBObject().append(User.F__ID,
 						new BasicDBObject().append("$in", userIdList)),
@@ -224,7 +240,8 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 根据用户对象，添加用户到组织中
-	 * @param userDatas 
+	 * 
+	 * @param userDatas
 	 *            ,用户对象集合
 	 */
 	public void doAddMembers(List<PrimaryObject> userDatas) {
@@ -232,8 +249,8 @@ public class Organization extends PrimaryObject {
 		for (int i = 0; i < userDatas.size(); i++) {
 			User user = (User) userDatas.get(i);
 			String userId = user.getUserid();
-			UserSessionContext.noticeAccountChanged(userId,
-					UserSessionContext.EVENT_ORG_CHANGED);
+			UserSessionContext.noticeAccountChanged(userId, new AccountEvent(
+					AccountEvent.EVENT_ORG_CHANGED, this));
 			userIdList[i] = (ObjectId) user.get_id();
 		}
 		doAddMembers(userIdList);
@@ -241,8 +258,9 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 删除组织
+	 * 
 	 * @param context
-	 *           ,上下文
+	 *            ,上下文
 	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
@@ -360,7 +378,7 @@ public class Organization extends PrimaryObject {
 	 * 判断当前组织是否是某个组织的上级组织
 	 * 
 	 * @param organization
-	 *              ,组织
+	 *            ,组织
 	 * @return boolean
 	 */
 	public boolean isSuperOf(Organization organization) {
@@ -377,76 +395,89 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 新建通用工作定义
+	 * 
 	 * @param po
-	 *         ,通用工作定义
+	 *            ,通用工作定义
 	 * @return WorkDefinition
 	 */
 	public WorkDefinition makeGenericWorkDefinition(WorkDefinition po) {
-		if(po == null){
-			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
+		if (po == null) {
+			po = ModelService.createModelObject(new BasicDBObject(),
+					WorkDefinition.class);
 		}
 		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
-		po.setValue(WorkDefinition.F__EDITOR,WorkDefinition.EDITOR_GENERIC_WORK_ROOT);
-		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_GENERIC);
+		po.setValue(WorkDefinition.F__EDITOR,
+				WorkDefinition.EDITOR_GENERIC_WORK_ROOT);
+		po.setValue(WorkDefinition.F_WORK_TYPE,
+				WorkDefinition.WORK_TYPE_GENERIC);
 		return po;
 	}
 
 	/**
 	 * 新建项目模板
+	 * 
 	 * @param po
-	 *         ,项目模板
+	 *            ,项目模板
 	 * @return ProjectTemplate
 	 */
 	public ProjectTemplate makeProjectTemplate(ProjectTemplate po) {
-		if(po == null){
-			po = ModelService.createModelObject(new BasicDBObject(), ProjectTemplate.class);
+		if (po == null) {
+			po = ModelService.createModelObject(new BasicDBObject(),
+					ProjectTemplate.class);
 		}
 		po.setValue(ProjectTemplate.F_ORGANIZATION_ID, get_id());
-		
+
 		return po;
 	}
 
 	/**
 	 * 新建标准工作定义
+	 * 
 	 * @param po
-	 *         ,工作定义
+	 *            ,工作定义
 	 * @return
 	 */
 	public WorkDefinition makeStandardWorkDefinition(WorkDefinition po) {
-		if(po == null){
-			po = ModelService.createModelObject(new BasicDBObject(), WorkDefinition.class);
+		if (po == null) {
+			po = ModelService.createModelObject(new BasicDBObject(),
+					WorkDefinition.class);
 		}
 		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
-		po.setValue(WorkDefinition.F__EDITOR,WorkDefinition.EDITOR_STANDLONE_WORK_ROOT);
-		po.setValue(WorkDefinition.F_WORK_TYPE, WorkDefinition.WORK_TYPE_STANDLONE);
+		po.setValue(WorkDefinition.F__EDITOR,
+				WorkDefinition.EDITOR_STANDLONE_WORK_ROOT);
+		po.setValue(WorkDefinition.F_WORK_TYPE,
+				WorkDefinition.WORK_TYPE_STANDLONE);
 		return po;
-		
+
 	}
-	
 
 	/**
 	 * 新建文档模板
+	 * 
 	 * @param po
-	 *        ,文档定义
+	 *            ,文档定义
 	 * @return
 	 */
 	public DocumentDefinition makeDocumentDefinition(DocumentDefinition po) {
-		if(po == null){
-			po = ModelService.createModelObject(new BasicDBObject(), DocumentDefinition.class);
-		}	
+		if (po == null) {
+			po = ModelService.createModelObject(new BasicDBObject(),
+					DocumentDefinition.class);
+		}
 		po.setValue(WorkDefinition.F_ORGANIZATION_ID, get_id());
 		return po;
 	}
 
 	/**
 	 * 新建子组织
+	 * 
 	 * @param po
-	 *        ,组织
+	 *            ,组织
 	 * @return Organization
 	 */
 	public Organization makeChildOrganization(Organization po) {
-		if(po == null){
-			po = ModelService.createModelObject(new BasicDBObject(), Organization.class);
+		if (po == null) {
+			po = ModelService.createModelObject(new BasicDBObject(),
+					Organization.class);
 		}
 		po.setValue(Organization.F_PARENT_ID, get_id());
 		return po;
@@ -454,13 +485,15 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 新建角色
+	 * 
 	 * @param po
-	 *        ,角色
-	 * @return  ,Role
+	 *            ,角色
+	 * @return ,Role
 	 */
 	public Role makeRole(Role po) {
-		if(po == null){
-			po = ModelService.createModelObject(new BasicDBObject(), Role.class);
+		if (po == null) {
+			po = ModelService
+					.createModelObject(new BasicDBObject(), Role.class);
 		}
 		po.setValue(Role.F_ORGANIZATION_ID, get_id());
 		return po;
@@ -469,31 +502,35 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 获取本级以及下级所有的角色
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getRolesIteration() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		iterateSearchRolesRoles(this,result);
+		iterateSearchRolesRoles(this, result);
 		return result;
 	}
 
 	/**
 	 * 查询组织和子组织中所有角色
+	 * 
 	 * @param org
-	 *          ,组织
+	 *            ,组织
 	 * @param dataItems
-	 *          ,组织下的所有角色
+	 *            ,组织下的所有角色
 	 */
-	private void iterateSearchRolesRoles(Organization org, List<PrimaryObject> dataItems) {
+	private void iterateSearchRolesRoles(Organization org,
+			List<PrimaryObject> dataItems) {
 		dataItems.addAll(org.getRoles());
 		List<PrimaryObject> children = org.getChildrenOrganization();
 		for (PrimaryObject primaryObject : children) {
 			iterateSearchRolesRoles((Organization) primaryObject, dataItems);
 		}
-	}	
-	
+	}
+
 	/**
 	 * 返回类型名称
+	 * 
 	 * @return String
 	 */
 	@Override

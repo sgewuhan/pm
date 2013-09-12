@@ -21,7 +21,6 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -518,7 +517,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void startCheck(IContext context) throws Exception {
 		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(getChargerId())) {
 			throw new Exception("不是本工作负责人，" + this);
 		}
@@ -699,7 +698,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void pauseCck(IContext context) throws Exception {
 		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(getChargerId())) {
 			throw new Exception("不是本工作负责人，" + this);
 		}
@@ -721,9 +720,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 	}
 
-	/**
-	 * 能否点击完成
-	 */
+
+
 	@Override
 	public boolean canFinish() {
 		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中
@@ -747,7 +745,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void finishCheck(IContext context) throws Exception {
 		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(getChargerId())) {
 			throw new Exception("不是本工作负责人，" + this);
 		}
@@ -823,7 +821,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void cancelCheck(IContext context) throws Exception {
 		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(getChargerId())) {
 			throw new Exception("不是本工作负责人，" + this);
 		}
@@ -1016,7 +1014,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return
 	 */
 	private boolean hasPermissionForReassignment(IContext context) {
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		// 判断是否是本级的指派者
 		if (userId.equals(getAssignerId())) {
 			return true;
@@ -1037,7 +1035,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return
 	 */
 	public boolean hasPermission(IContext context) {
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		// 判断是否是本级的负责人
 		if (userId.equals(getChargerId())) {
 			return true;
@@ -1912,8 +1910,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return message;
 	}
 
-	public Message doNoticeWorkflow(IContext context, String actorId,
-			String taskName, String key) throws Exception {
+	public Message doNoticeWorkflow(String actorId, String taskName,
+			String key, IContext context) throws Exception {
 		Message message = ModelService.createModelObject(Message.class);
 		// 设置收件人
 
@@ -2036,16 +2034,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
-	public DBObject getCurrentWorkflowTaskData(String key) {
+	public DBObject getCurrentWorkflowTaskData(String key, String userid) {
 		String field = key + POSTFIX_TASK;
 		Object value = getValue(field);
-		return (DBObject) value;
+		if (value instanceof DBObject) {
+			return (DBObject) ((DBObject) value).get(userid);
+		}
+		return null;
 	}
 
 	public void makeCurrentWorkflowTaskData(String key,
-			DBObject currentWorkflowTaskData) {
+			DBObject currentWorkflowTaskData, String userid) {
 		String field = key + POSTFIX_TASK;
-		setValue(field, currentWorkflowTaskData);
+		Object value = getValue(field);
+		if (!(value instanceof DBObject)) {
+			value = new BasicDBObject();
+		}
+		((DBObject) value).put(userid, currentWorkflowTaskData);
+		setValue(field, value);
 	}
 
 	/**
@@ -2056,12 +2062,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param task
 	 *            任务
 	 * @param context
+	 * @param
+	 * @param context
 	 * @return 是否更新
 	 * @throws Exception
 	 */
 	public boolean doUpdateWorkflowDataByTask(String key, Task task,
-			IContext context) throws Exception {
-		DBObject olddata = getCurrentWorkflowTaskData(key);
+			String userid) throws Exception {
+		DBObject olddata = getCurrentWorkflowTaskData(key, userid);
 		if (olddata != null) {
 			Object oldTaskId = olddata.get(F_WF_TASK_ID);
 			if (task.getId().equals(oldTaskId)) {
@@ -2114,12 +2122,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 发送消息
 		// Object noticedate = data.get(F_WF_TASK_NOTICEDATE);
 		// if (noticedate == null) {
-		Message message = doNoticeWorkflow(context, actorId, taskName, key);
+
+		BackgroundContext context = new BackgroundContext();
+		Message message = doNoticeWorkflow(actorId, taskName, key, context);
 		Assert.isNotNull(message, "消息发送失败");
 		data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
 		// }
 
-		makeCurrentWorkflowTaskData(key, data);
+		makeCurrentWorkflowTaskData(key, data, userid);
 		doSave(context);
 
 		return true;
@@ -2143,7 +2153,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String lc = getLifecycleStatus();
 		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
 
-		Task task = getTask(processKey, true);
+		Task task = getTask(processKey, true, context);
 		Assert.isNotNull(task, "无法获得当前的流程任务");
 
 		Status taskstatus = task.getTaskData().getStatus();
@@ -2151,7 +2161,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canStartTask, "任务当前的状态不允许执行开始");
 
 		Long taskId = task.getId();
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		task = WorkflowService.getDefault().startTask(userId, taskId);
 
 		Assert.isNotNull(task, "开始流程任务失败");
@@ -2175,7 +2185,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String lc = getLifecycleStatus();
 		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
 
-		Task task = getTask(processKey, true);
+		Task task = getTask(processKey, true, context);
 		Assert.isNotNull(task, "无法获得当前的流程任务");
 
 		Status taskstatus = task.getTaskData().getStatus();
@@ -2183,7 +2193,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canStartTask, "任务当前的状态不允许执行完成");
 
 		Long taskId = task.getId();
-		String userId = context.getAccountInfo().getconsignerId();
+		String userId = context.getAccountInfo().getConsignerId();
 		task = WorkflowService.getDefault().completeTask(taskId, userId,
 				inputParameter);
 
@@ -2192,15 +2202,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doSaveWorkflowHistroy(processKey, task, context);
 	}
 
-	public Task getTask(String processKey, boolean sync) throws Exception {
-		DBObject data = getCurrentWorkflowTaskData(processKey);
+	public Task getTask(String processKey, boolean sync, IContext context)
+			throws Exception {
+		String userid = context.getAccountInfo().getConsignerId();
+
+		DBObject data = getCurrentWorkflowTaskData(processKey, userid);
 		if (data != null) {
 			Long taskId = (Long) data.get(F_WF_TASK_ID);
 			Assert.isNotNull(taskId);
-			Task task = WorkflowService.getDefault().getTask(taskId);
+			String userId = context.getAccountInfo().getConsignerId();
+			Task task = WorkflowService.getDefault()
+					.getUserTask(userId, taskId);
 			if (task != null && sync) {// 需要同步到工作
-				doUpdateWorkflowDataByTask(processKey, task,
-						new BackgroundContext());
+				doUpdateWorkflowDataByTask(processKey, task, userid);
 			}
 			return task;
 		}
@@ -2217,8 +2231,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	private void doSaveWorkflowHistroy(String key, Task task, IContext context)
 			throws Exception {
+		String userid = context.getAccountInfo().getConsignerId();
+
 		// 提取当前的任务数据
-		DBObject taskData = getCurrentWorkflowTaskData(key);
+		DBObject taskData = getCurrentWorkflowTaskData(key, userid);
 		taskData.put(F_WF_TASK_ACTOR, context.getAccountInfo().getUserId());
 		taskData.put(F_WF_TASK_STARTDATE, new Date());
 
@@ -2230,7 +2246,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		history.add(0, taskData);
-		doUpdateWorkflowDataByTask(key, task, context);
+		doUpdateWorkflowDataByTask(key, task, userid);
 	}
 
 	/**

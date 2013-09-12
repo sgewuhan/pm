@@ -2,8 +2,10 @@ package com.sg.bpm.workflow.runtime;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.process.ProcessInstance;
@@ -13,11 +15,14 @@ import org.eclipse.core.runtime.Assert;
 import com.mobnut.db.model.DocumentModelDefinition;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.portal.user.IAccountEvent;
+import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.service.HTService;
+import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 
 public class Workflow {
@@ -71,12 +76,13 @@ public class Workflow {
 	public ProcessInstance startHumanProcess(
 			Map<String, String> actorParameter, Map<String, Object> params)
 			throws Exception {
-
 		if (params == null) {
 			params = new HashMap<String, Object>();
 		}
-
+		
 		HTService ts = BPM.getHumanTaskService();
+		Set<String> relativeUserId = new HashSet<String>();
+		
 		if (actorParameter != null) {
 			Collection<String> idSet = actorParameter.values();
 			Iterator<String> iter = idSet.iterator();
@@ -86,28 +92,42 @@ public class Workflow {
 					String[] subItems = item.split(",");
 					for (int i = 0; i < subItems.length; i++) {
 						ts.addParticipateUser(subItems[i]);
+						relativeUserId.add(subItems[i]);
 					}
 				} else {
 					ts.addParticipateUser(item);
+					relativeUserId.add(item);
+
 				}
 			}
 
 			params.putAll(actorParameter);
 		}
 
-		StatefulKnowledgeSession ksession = processDefintion
-				.getKnowledgeSession();
-		
-		BasicDBObject result = new BasicDBObject();
+		final BasicDBObject result = new BasicDBObject();
 		result.put("data", host.get_data());
 		result.put("key", key);
 		result.put("class",host.getClass().getName());
 		String var = JSON.serialize(result);
 		
 		params.put(PROCESS_VAR_CONTENT, var);
+		
+		ProcessInstance pi = WorkflowService.getDefault().startHumanProcess(processDefintion,params);
+		
+		for (String userId : relativeUserId) {
+			UserSessionContext.noticeAccountChanged(userId, new IAccountEvent(){
+				@Override
+				public String getEventCode() {
+					return IAccountEvent.EVENT_PROCESS_START;
+				}
 
-		ProcessInstance pi = ksession.startProcess(
-				processDefintion.getProcessId(), params);
+				@Override
+				public Object getEventData() {
+					return host;
+				}
+				
+			});
+		}
 
 		return pi;
 	}
@@ -119,4 +139,5 @@ public class Workflow {
 	public String getKey() {
 		return key;
 	}
+
 }

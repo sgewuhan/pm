@@ -49,7 +49,7 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 			//获取当前用户所在的组织
 			List<ObjectId> orgIds = new ArrayList<ObjectId>();
 			String userid = UserSessionContext.getAccountInfo()
-					.getconsignerId();
+					.getConsignerId();
 			User user = UserToolkit.getUserById(userid);
 			Organization org = user.getOrganization();
 			//获取当前用户所在组织的下级组织

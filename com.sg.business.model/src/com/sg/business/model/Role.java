@@ -17,6 +17,7 @@ import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.model.event.AccountEvent;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -32,6 +33,7 @@ public class Role extends PrimaryObject {
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
+	
 	/**
 	 * ½ÇÉ«±àºÅ
 	 */
@@ -146,7 +148,7 @@ public class Role extends PrimaryObject {
 		for (int i = 0; i < users.size(); i++) {
 			User user = (User) users.get(i);
 			UserSessionContext.noticeAccountChanged(user.getUserid(),
-					UserSessionContext.EVENT_ROLE_CHANGED);
+					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
 			list.add(new BasicDBObject()
 					.append(RoleAssignment.F__TYPE,IModelConstants.C_ROLE_ASSIGNMENT)
 					.append(RoleAssignment.F_USER_ID, user.getUserid())

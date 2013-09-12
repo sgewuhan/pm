@@ -21,6 +21,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
+import com.sg.widgets.viewer.ViewerControl;
 
 public class CompleteTask extends AbstractNavigatorHandler {
 
@@ -32,14 +33,14 @@ public class CompleteTask extends AbstractNavigatorHandler {
 				TaskForm taskForm = work.makeTaskForm();
 				Map<String, Object> taskInputParameter = null;
 
-				Task task = work.getTask(Work.F_WF_EXECUTE, true);
+				Task task = work.getTask(Work.F_WF_EXECUTE, true,
+						new CurrentAccountContext());
 
 				// 1. 检查是否定义了流程表单,并通过表单进行控制
 				String procDefId = task.getTaskData().getProcessId();
 				List<I18NText> names = task.getNames();
 				Assert.isTrue(names.size() > 0, "缺少任务名称");
 
-				
 				String taskName = names.get(0).getText();
 				// 获得任务表单配置
 				TaskFormConfig config = WorkflowService.getDefault()
@@ -71,13 +72,15 @@ public class CompleteTask extends AbstractNavigatorHandler {
 							return;
 						}
 					}
-					
+
 					taskInputParameter = config.getInputParameter(taskForm);
 				}
-
-				work.doCompleteTask(Work.F_WF_EXECUTE,
-						taskInputParameter, new CurrentAccountContext());
-				
+				// 2. 完成工作流任务
+				work.doCompleteTask(Work.F_WF_EXECUTE, taskInputParameter,
+						new CurrentAccountContext());
+				// 3.刷新表格
+				ViewerControl vc = getCurrentViewerControl(event);
+				vc.getViewer().update(work, null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}
@@ -89,6 +92,5 @@ public class CompleteTask extends AbstractNavigatorHandler {
 		MessageUtil.showToast("请选择工作后执行完成流程任务操作", SWT.ICON_INFORMATION);
 		return super.nullSelectionContinue(event);
 	}
-	
 
 }

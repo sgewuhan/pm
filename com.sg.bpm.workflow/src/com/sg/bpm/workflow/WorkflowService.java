@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.runtime.process.ProcessInstance;
 import org.drools.runtime.process.WorkflowProcessInstance;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -172,7 +173,7 @@ public class WorkflowService extends AbstractUIPlugin {
 
 			taskClient.getTask(item.getId(), gHandler);
 
-			Task task = gHandler.getTask(1000);
+			Task task = gHandler.getTask();
 			result[i] = task;
 		}
 
@@ -182,14 +183,47 @@ public class WorkflowService extends AbstractUIPlugin {
 	/**
 	 * 根据任务的Id 获得任务
 	 * 
+	 * @param userId
+	 * 
+	 * @param taskId
+	 * @return
+	 */
+	public Task getUserTask(String userid, long taskId) {
+		TaskClient taskClient = getBackgroundTaskClient();
+
+		BlockingTaskSummaryResponseHandler handler = new BlockingTaskSummaryResponseHandler();
+		taskClient.getTasksAssignedAsPotentialOwner(userid, "en-UK", handler);
+
+		List<TaskSummary> tslist = handler.getResults();
+		BlockingGetTaskResponseHandler gHandler;
+		for (int i = 0; i < tslist.size(); i++) {
+			TaskSummary item = tslist.get(i);
+			gHandler = new BlockingGetTaskResponseHandler();
+
+			long id = item.getId();
+			if (id == taskId) {
+				taskClient.getTask(id, gHandler);
+				return gHandler.getTask();
+
+			}
+
+		}
+		return null;
+	}
+
+	/**
+	 * 根据任务的Id 获得任务
+	 * 
+	 * @param userId
+	 * 
 	 * @param taskId
 	 * @return
 	 */
 	public Task getTask(long taskId) {
 		TaskClient taskClient = getBackgroundTaskClient();
-		BlockingGetTaskResponseHandler handler = new BlockingGetTaskResponseHandler();
-		taskClient.getTask(taskId, handler);
-		return handler.getTask(1000);
+		BlockingGetTaskResponseHandler gHandler = new BlockingGetTaskResponseHandler();
+		taskClient.getTask(taskId, gHandler);
+		return gHandler.getTask();
 	}
 
 	/**
@@ -221,11 +255,13 @@ public class WorkflowService extends AbstractUIPlugin {
 		BlockingTaskOperationResponseHandler oHandler = new BlockingTaskOperationResponseHandler();
 
 		taskClient.start(taskId, userId, oHandler);
-		oHandler.waitTillDone(1000);
+		oHandler.waitTillDone(3000);
 
 		BlockingGetTaskResponseHandler gHandler = new BlockingGetTaskResponseHandler();
 		taskClient.getTask(taskId, gHandler);
-		Task task = gHandler.getTask(1000);
+		Task task = gHandler.getTask();
+
+		taskEventNotice(task);
 		return task;
 	}
 
@@ -242,19 +278,20 @@ public class WorkflowService extends AbstractUIPlugin {
 			taskClient.complete(taskId, userId, null, oHandler);
 		}
 
-		oHandler.waitTillDone(1000);
+		oHandler.waitTillDone(3000);
 
 		BlockingGetTaskResponseHandler gHandler = new BlockingGetTaskResponseHandler();
 		taskClient.getTask(taskId, gHandler);
-		Task task = gHandler.getTask(1000);
-		
+		Task task = gHandler.getTask();
+
 		long workItemId = task.getTaskData().getWorkItemId();
 		String processId = task.getTaskData().getProcessId();
 		DroolsProcessDefinition dpd = new DroolsProcessDefinition(processId);
 		StatefulKnowledgeSession session = dpd.getKnowledgeSession();
 		session.getWorkItemManager().completeWorkItem(workItemId,
 				inputParameter);
-		
+
+		taskEventNotice(task);
 		return task;
 	}
 
@@ -288,7 +325,7 @@ public class WorkflowService extends AbstractUIPlugin {
 		if (Status.Exited.name().equals(status)) {
 			return false;
 		}
-		return status!=null;
+		return status != null;
 	}
 
 	private ContentData marshal(Map<String, Object> inputParameter) {
@@ -306,5 +343,18 @@ public class WorkflowService extends AbstractUIPlugin {
 			ioe.printStackTrace();
 		}
 		return contentData;
+	}
+
+	public ProcessInstance startHumanProcess(
+			DroolsProcessDefinition processDefintion, Map<String, Object> params) {
+		StatefulKnowledgeSession ksession = processDefintion
+				.getKnowledgeSession();
+		ProcessInstance pi = ksession.startProcess(
+				processDefintion.getProcessId(), params);
+
+		return pi;
+	}
+
+	private void taskEventNotice(Task task) {
 	}
 }

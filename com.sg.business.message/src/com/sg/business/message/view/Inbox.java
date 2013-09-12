@@ -1,17 +1,16 @@
 package com.sg.business.message.view;
 
-import com.mobnut.portal.user.UserSessionContext;
+import com.mobnut.portal.user.IAccountEvent;
 import com.sg.widgets.part.view.AccountSensitiveTableView;
 
 public class Inbox extends AccountSensitiveTableView {
 
 	@Override
-	public void accountChanged(Object data) {
-		//只响应以下的事件
-		if (UserSessionContext.EVENT_CONSIGNER_CHANGED.equals(data)
-				|| UserSessionContext.EVENT_MESSAGE.equals(data)
-			) {
-			super.accountChanged(data);
+	public void accountChanged(IAccountEvent event) {
+		// 只响应以下的事件
+		if (IAccountEvent.EVENT_CONSIGNER_CHANGED.equals(event.getEventCode())
+				|| IAccountEvent.EVENT_MESSAGE.equals(event.getEventCode())) {
+			super.accountChanged(event);
 		}
 	}
 
@@ -19,6 +18,5 @@ public class Inbox extends AccountSensitiveTableView {
 	protected String getAccountNoticeMessage() {
 		return "重新读取收件信息...";
 	}
-
 
 }

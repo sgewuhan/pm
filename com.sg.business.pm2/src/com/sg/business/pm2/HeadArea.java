@@ -29,6 +29,7 @@ import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.design.ext.IHeadAreaSupport;
 import com.mobnut.portal.user.IAccountChangeListener;
+import com.mobnut.portal.user.IAccountEvent;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -307,8 +308,9 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 	}
 
 	@Override
-	public void accountChanged(Object data) {
-		if (UserSessionContext.EVENT_CONSIGNER_CHANGED.equals(data)) {
+	public void accountChanged(IAccountEvent event) {
+		String code = event.getEventCode();
+		if (UserSessionContext.EVENT_CONSIGNER_CHANGED.equals(code)) {
 			try {
 				AccountInfo user = UserSessionContext.getAccountInfo();
 				if (user.isConsigning()) {

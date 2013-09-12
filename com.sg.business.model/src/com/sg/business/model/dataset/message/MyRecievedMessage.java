@@ -18,7 +18,7 @@ public class MyRecievedMessage extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		try {
 			String userid = UserSessionContext.getAccountInfo()
-					.getconsignerId();
+					.getConsignerId();
 			
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Message.F_RECIEVER,userid);

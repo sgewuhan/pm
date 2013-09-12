@@ -17,6 +17,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
+import com.sg.business.model.event.AccountEvent;
 
 /**
  * 项目角色
@@ -25,6 +26,7 @@ import com.mongodb.WriteResult;
  */
 public class ProjectRole extends AbstractRoleDefinition implements
 		IProjectRelative {
+	
 	/**
 	 * 创建角色的编辑器
 	 */
@@ -85,7 +87,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		for (int i = 0; i < users.size(); i++) {
 			User user = (User) users.get(i);
 			UserSessionContext.noticeAccountChanged(user.getUserid(),
-					UserSessionContext.EVENT_ROLE_CHANGED);
+					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED,this));
 			list.add(new BasicDBObject()
 					.append(ProjectRoleAssignment.F__TYPE,
 							IModelConstants.C_ROLE_ASSIGNMENT)

@@ -53,7 +53,7 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 		try {
 			//获取当前用户信息
 			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userId = account.getconsignerId();
+			String userId = account.getConsignerId();
 			User user = UserToolkit.getUserById(userId);
 			//获取当前用户具有业务管理员角色的组织
 			List<PrimaryObject> orglist = user
