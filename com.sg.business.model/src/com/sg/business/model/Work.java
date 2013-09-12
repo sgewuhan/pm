@@ -1792,6 +1792,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doFinishBefore(context, params);
+		
+		//测试流程完成当前的工作
+		setValue(F_LIFECYCLE, STATUS_FINIHED_VALUE);
+		doSave(context);
+		
 		doFinishAfter(context, params);
 
 	}
@@ -2036,7 +2041,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public DBObject getCurrentWorkflowTaskData(String key, String userid) {
 		String field = key + POSTFIX_TASK;
-		Object value = getValue(field);
+		Object value = getValue(field,true);
 		if (value instanceof DBObject) {
 			return (DBObject) ((DBObject) value).get(userid);
 		}
@@ -2205,14 +2210,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public Task getTask(String processKey, boolean sync, IContext context)
 			throws Exception {
 		String userid = context.getAccountInfo().getConsignerId();
-
 		DBObject data = getCurrentWorkflowTaskData(processKey, userid);
 		if (data != null) {
 			Long taskId = (Long) data.get(F_WF_TASK_ID);
 			Assert.isNotNull(taskId);
-			String userId = context.getAccountInfo().getConsignerId();
 			Task task = WorkflowService.getDefault()
-					.getUserTask(userId, taskId);
+					.getUserTask(userid, taskId);
 			if (task != null && sync) {// 需要同步到工作
 				doUpdateWorkflowDataByTask(processKey, task, userid);
 			}

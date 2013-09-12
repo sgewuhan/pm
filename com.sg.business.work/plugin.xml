@@ -1067,7 +1067,7 @@
             dbName="pm2"
             id="editor.runtimereassignment"
             name="指派"
-            titleToolTips="工作">
+            titleToolTips="工作指派">
          <basicpage
                description="角色"
                id="rolepage"
@@ -1225,6 +1225,12 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="com.sg.widgets.command.create"
+               icon="image/24_blank.png"
+               label="创建独立工作"
+               style="push">
+         </command>
          <separator
                name="runtimework.separator0"
                visible="true">
@@ -1338,6 +1344,12 @@
                name="runtimework.separator1"
                visible="true">
          </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
@@ -1572,6 +1584,38 @@
             commandId="runtimework.wffinish">
       </handler>
       <handler
+            commandId="runtimework.wfstart">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <test
+                        args="wfstart"
+                        property="runtimework.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
+            commandId="runtimework.wffinish">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <test
+                        args="wffinish"
+                        property="runtimework.action">
+                  </test>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      <handler
             commandId="runtimework.wfcancel">
          <enabledWhen>
             <with
@@ -1580,8 +1624,8 @@
                      ifEmpty="false"
                      operator="and">
                   <test
-                        args="cancel"
-                        property="wf.action">
+                        args="wfcancel"
+                        property="runtimework.action">
                   </test>
                </iterate>
             </with>
@@ -1589,36 +1633,6 @@
       </handler>
       <handler
             commandId="runtimework.workrecord">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.delete">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.deletedeliverable">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <with
-                     variable="1">
-               </with>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.work.handler.ViewProject"

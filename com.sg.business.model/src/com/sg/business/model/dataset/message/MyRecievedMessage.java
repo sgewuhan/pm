@@ -34,7 +34,7 @@ public class MyRecievedMessage extends SingleDBCollectionDataSetFactory {
 
 	@Override
 	public DBObject getSort() {
-		return new BasicDBObject().append(Message.F_RECIEVEDDATE, -1);
+		return new BasicDBObject().append(Message.F_SENDDATE, -1);
 	}
 	
 
