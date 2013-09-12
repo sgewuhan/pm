@@ -30,7 +30,7 @@ public class WorkActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		
-//		startWorkSync();
+		startWorkSync();
 	}
 	
 
@@ -56,7 +56,7 @@ public class WorkActivator extends AbstractUIPlugin {
 	 */
 	private void startWorkSync() {
 		sync = new WorkflowSynchronizer(false);
-		sync.start(10*60*1000);
+		sync.start(2*60*1000);
 	}
 
 	/**

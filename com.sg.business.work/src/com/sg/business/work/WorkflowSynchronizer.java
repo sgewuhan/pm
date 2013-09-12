@@ -72,6 +72,10 @@ public class WorkflowSynchronizer extends RepeatJob {
 					Work work = (Work) host;
 					work.reload();
 					work.doUpdateWorkflowDataByTask(flowKey, tasks[i], userid);
+					
+//					UserSessionContext.noticeAccountChanged(userid, new AccountEvent(
+//							IAccountEvent.EVENT_PROCESS_TASKUPDATEED, work));
+					
 					updated.add(work);
 				}
 			} catch (Exception e) {

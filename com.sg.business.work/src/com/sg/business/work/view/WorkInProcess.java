@@ -63,7 +63,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 	}
 
 	@Override
-	public void accountChanged(IAccountEvent event) {
+	public void accountChanged(final IAccountEvent event) {
 		if (IAccountEvent.EVENT_PROCESS_START.equals(event.getEventCode())
 				|| IAccountEvent.EVENT_CONSIGNER_CHANGED.equals(event
 						.getEventCode())) {
