@@ -153,7 +153,6 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 					setDirty(true);
 					processViewer.refresh();
 				}
-
 			};
 			column.setEditingSupport(editingSupport);
 			column.getColumn().setImage(Widgets.getImage(ImageResource.EDIT_12));
