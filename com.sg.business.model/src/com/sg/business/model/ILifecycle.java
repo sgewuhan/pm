@@ -15,47 +15,59 @@ public interface ILifecycle {
 	public static final String F_LIFECYCLE = "status";
 	
 	/**
-	 * 无状态
+	 * 无状态，显示文本：{@value}
 	 */
 	public static final String STATUS_NONE_TEXT = "";
-	
+	/**
+	 * 无状态，实际值：{@value}
+	 */
 	public static final String STATUS_NONE_VALUE = "";
 	
 	/**
-	 * 准备中状态
+	 * 准备中状态，显示文本：{@value}
 	 */
 	public static final String STATUS_ONREADY_TEXT = "准备中";
-	
+	/**
+	 * 准备中状态，实际值：{@value}
+	 */
 	public static final String STATUS_ONREADY_VALUE = "ready";
 
 
 	/**
-	 * 进行中状态
+	 * 进行中状态，显示文本：{@value}
 	 */
 	public static final String STATUS_WIP_TEXT = "进行中";
-	
+	/**
+	 * 进行中状态，实际值：{@value}
+	 */
 	public static final String STATUS_WIP_VALUE = "wip";
 
 	/**
-	 * 已暂停状态
+	 * 已暂停状态，显示文本：{@value}
 	 */
 	public static final String STATUS_PAUSED_TEXT = "已暂停";
-	
+	/**
+	 * 已暂停状态，实际值：{@value}
+	 */
 	public static final String STATUS_PAUSED_VALUE = "paused";
 	
 	/**
-	 * 已完成状态
+	 * 已完成状态，显示文本：{@value}
 	 */
 	public static final String STATUS_FINIHED_TEXT = "已完成";
-	
+	/**
+	 * 已完成状态，实际值：{@value}
+	 */
 	public static final String STATUS_FINIHED_VALUE = "finished";
 
 	
 	/**
-	 * 已取消状态
+	 * 已取消状态，显示文本，{@value}
 	 */
 	public static final String STATUS_CANCELED_TEXT = "已取消";
-
+	/**
+	 * 已取消状态，实际值，{@value}
+	 */
 	public static final String STATUS_CANCELED_VALUE = "canceled";
 
 	String getLifecycleStatus();
