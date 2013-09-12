@@ -1584,19 +1584,11 @@
       <handler
             class="com.sg.business.work.handler.StartTask"
             commandId="runtimework.wfstart">
-      </handler>
-      <handler
-            class="com.sg.business.work.handler.CompleteTask"
-            commandId="runtimework.wffinish">
-      </handler>
-      <handler
-            commandId="runtimework.wfstart">
          <enabledWhen>
             <with
                   variable="selection">
                <iterate
-                     ifEmpty="false"
-                     operator="and">
+                     ifEmpty="false">
                   <test
                         args="wfstart"
                         property="runtimework.action">
@@ -1606,13 +1598,13 @@
          </enabledWhen>
       </handler>
       <handler
+            class="com.sg.business.work.handler.CompleteTask"
             commandId="runtimework.wffinish">
          <enabledWhen>
             <with
                   variable="selection">
                <iterate
-                     ifEmpty="false"
-                     operator="and">
+                     ifEmpty="false">
                   <test
                         args="wffinish"
                         property="runtimework.action">
@@ -1627,8 +1619,7 @@
             <with
                   variable="selection">
                <iterate
-                     ifEmpty="false"
-                     operator="and">
+                     ifEmpty="false">
                   <test
                         args="wfcancel"
                         property="runtimework.action">
