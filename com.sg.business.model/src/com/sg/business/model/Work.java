@@ -814,6 +814,36 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
+	 * 判断流程是否可以点击开始
+	 * @param context
+	 * @return
+	 */
+	public boolean canWorkflowStart(IContext context) {
+		String lc = getLifecycleStatus();
+		return ILifecycle.STATUS_WIP_VALUE.equals(lc);
+	}
+
+	/**
+	 * 判断流程是否可以点击完成
+	 * @param context
+	 * @return
+	 */
+	public boolean canWorkflowFinish(IContext context) {
+		String lc = getLifecycleStatus();
+		return ILifecycle.STATUS_WIP_VALUE.equals(lc);
+	}
+
+	/**
+	 * 判断流程是否可以点击中止
+	 * @param context
+	 * @return
+	 */
+	public boolean canWorkflowCancel(IContext context) {
+		String lc = getLifecycleStatus();
+		return ILifecycle.STATUS_WIP_VALUE.equals(lc);
+	}
+
+	/**
 	 * 检查工作是否可以取消
 	 * 
 	 * @param context
@@ -2039,6 +2069,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
+	/**
+	 * 获取当前用户的流程信息
+	 * @param key : 流程名称
+	 * @param userid : 当前用户
+	 * @return : 流程信息
+	 */
 	public DBObject getCurrentWorkflowTaskData(String key, String userid) {
 		String field = key + POSTFIX_TASK;
 		Object value = getValue(field,true);
@@ -2270,5 +2306,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		taskForm.setValue(TaskForm.F_WORK_ID, get_id());
 		return taskForm;
 	}
+
 
 }
