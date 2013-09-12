@@ -1069,31 +1069,33 @@
             name="指派"
             titleToolTips="工作指派">
          <basicpage
-               description="角色"
-               id="rolepage"
-               title="角色">
+               description="工作指派"
+               id="assignmentpage"
+               title="工作指派">
             <pagecolumn
                   id="1">
                <section
                      label="为工作指派参与者">
                   <navigatorSelector
                         editable="true"
-                        id="participate_roled_set"
-                        label="指派"
+                        id="chargerid"
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="participate_roled_set"
+                        name="chargerid"
                         navigatorId="project.participte.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
                   </navigatorSelector>
                   <list
+                        addTableItemHandler="com.sg.business.project.editor.field.AddParticipate"
                         editable="true"
                         id="participate"
-                        label="工作参与者"
-                        labelVisible="true"
+                        label="参与者"
+                        labelVisible="false"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -1237,7 +1239,6 @@
          </separator>
          <command
                commandId="com.sg.widgets.command.edit"
-               icon="image/24_blank.png"
                label="指派"
                style="push">
             <parameter
