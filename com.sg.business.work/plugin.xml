@@ -1062,6 +1062,46 @@
                title="日历">
          </navigatorpage>
       </editor>
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="editor.runtimereassignment"
+            name="指派"
+            titleToolTips="工作">
+         <basicpage
+               description="角色"
+               id="rolepage"
+               title="角色">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="为工作指派参与者">
+                  <navigatorSelector
+                        editable="true"
+                        id="participate_roled_set"
+                        label="指派"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="participate_roled_set"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        editable="true"
+                        id="participate"
+                        label="工作参与者"
+                        labelVisible="true"
+                        name="participate"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -1190,13 +1230,13 @@
                visible="true">
          </separator>
          <command
-               commandId="runtimework.reassignment"
+               commandId="com.sg.widgets.command.edit"
                icon="image/24_blank.png"
                label="指派"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
-                  value="editor.work.setting">
+                  value="editor.runtimereassignment">
             </parameter>
             <parameter
                   name="com.sg.widgets.edit.type"
@@ -1454,10 +1494,6 @@
       <command
             id="runtimework.deletedeliverable"
             name="删除交付物">
-      </command>
-      <command
-            id="com.sg.business.work.command1"
-            name="name">
       </command>
    </extension>
    <extension
