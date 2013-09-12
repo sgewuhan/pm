@@ -305,5 +305,14 @@
             sort="com.sg.business.model.bson.BulletinBoardDateSorter">
       </relation>
    </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="lifecycle.service.action"
+            name="生命周期服务"
+            operation="finish"
+            serviceProvider="com.sg.business.model.bpmservice.LifecycleService">
+      </service>
+   </extension>
 
 </plugin>
