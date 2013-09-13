@@ -2159,14 +2159,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
+
 	/**
-	 * 获取当前用户的流程信息
 	 * 
 	 * @param key
-	 *            : 流程名称
 	 * @param userid
-	 *            : 当前用户
-	 * @return : 流程信息
+	 * @param query
+	 * @return
 	 */
 	public DBObject getCurrentWorkflowTaskData(String key, String userid,
 			boolean query) {
