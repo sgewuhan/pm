@@ -186,62 +186,6 @@
             id="work.organization.user"
             tree="work.organization.user">
       </navigator>
-      <navigator
-            id="work.project.workdeliverable"
-            tree="work.project.workdeliverable">
-         <filterAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-            <column
-                  columnDefinitionId="milestone">
-            </column>
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="planworks_e">
-            </column>
-            <column
-                  columnDefinitionId="planduration_e">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-            <column
-                  columnDefinitionId="milestone">
-            </column>
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="planworks_e">
-            </column>
-            <column
-                  columnDefinitionId="planduration_e">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
-         </searchAction>
-      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -472,76 +416,6 @@
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
-      </tree>
-      <tree
-            autoExpandLevel="-1"
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            dataSet="com.sg.business.model.dataset.work.WorkDeliverable"
-            editorId="editor.work"
-            fix="1"
-            id="work.project.workdeliverable"
-            popupMenu="popup:project.deliverable">
-         <structure
-               modelRelation="work_work">
-         </structure>
-         <structure
-               modelRelation="work_deliverable">
-         </structure>
-         <column
-               column="desc"
-               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
-               name="名称"
-               style="SWT.LEFT"
-               type="String"
-               width="180">
-         </column>
-         <column
-               columnDefinitionId="planstart_e">
-         </column>
-         <column
-               columnDefinitionId="planfinish_e">
-         </column>
-         <column
-               columnDefinitionId="planworks_e">
-         </column>
-         <column
-               columnDefinitionId="planduration_e">
-         </column>
-         <column
-               column="mandatory"
-               name="必须"
-               type="Boolean"
-               width="48">
-         </column>
-         <columnGroup
-               defaultGroup="false"
-               name="负责人和参与者">
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
-               name="实际进度">
-            <column
-                  columnDefinitionId="actualstart_e">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="actualworks_e">
-            </column>
-            <column
-                  columnDefinitionId="actualduration_e">
-            </column>
-         </columnGroup>
       </tree>
    </extension>
    <extension
@@ -1293,23 +1167,45 @@
             </pagecolumn>
          </basicpage>
       </editor>
-      <editor
-            collectionName="work"
-            dbName="pm2"
-            id="com.sg.business.work.editor2"
-            name="交付物">
-         <navigatorpage
-               id="work.project.workdeliverable"
-               navigatorId="work.project.workdeliverable"
-               title="交付物">
-         </navigatorpage>
-      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
             locationURI="popup:work.processing">
+         <command
+               commandId="work.create"
+               icon="image/24_blank.png"
+               label="添加工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="createChildWork"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/deliverable_24.png"
+               label="交付物..."
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editor.work">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.pageid"
+                  value="deliverable">
+            </parameter>
+         </command>
          <menu
                icon="image/24_blank.png"
                label="查看">
@@ -1401,31 +1297,6 @@
                </visibleWhen>
             </command>
          </menu>
-         <command
-               commandId="work.create"
-               icon="image/24_blank.png"
-               label="添加工作"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <test
-                           args="createChildWork"
-                           property="runtimework.action">
-                     </test>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="runtimework.view.workdeliverable"
-               icon="image/deliverable_24.png"
-               label="交付物..."
-               style="push">
-         </command>
          <separator
                name="runtimework.separator0"
                visible="true">
