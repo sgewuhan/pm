@@ -1787,7 +1787,113 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return deli;
 
 	}
+	
+	
+	/**
+	 * 启动工作
+	 */
+	@SuppressWarnings("unchecked")
+	public Object doStart(IContext context) throws Exception {
+		// 判断能否启动，检查状态
+		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
+		Map<String, Object> params = new HashMap<String, Object>();
+		// 调用前处理
+		doStartBefore(context, params);
 
+		// 准备保存的对象
+		DBObject update = new BasicDBObject();
+
+		// 判定是否使用执行工作流
+		if (isWorkflowActivate(F_WF_EXECUTE)) {
+			// 如果是，启动工作流
+			Workflow wf = getWorkflow(F_WF_EXECUTE);
+			DBObject actors = getProcessActorsMap(F_WF_EXECUTE);
+			Map<String, String> actorParameter = null;
+			if(actors!=null){
+				actorParameter = actors.toMap();
+			}
+			ProcessInstance processInstance = wf.startHumanProcess(
+					actorParameter, params);
+			Assert.isNotNull(processInstance, "流程启动失败");
+
+			update.put(F_WF_EXECUTE + POSTFIX_INSTANCEID,
+					processInstance.getId());
+		}
+
+		// 启动下级同步启动的工作
+		List<PrimaryObject> children = getChildrenWork();
+		for (int i = 0; i < children.size(); i++) {
+			Work childWork = (Work) children.get(i);
+			// 检查下级的工作是否设置了与上级同步启动
+			if (Boolean.TRUE.equals(childWork
+					.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))) {
+				// 启动下级工作
+				childWork.doStart(context);
+			}
+		}
+
+		// 标记工作的进行中
+		update.put(F_LIFECYCLE, STATUS_WIP_VALUE);
+		// 设置工作的实际开始时间
+		update.put(F_ACTUAL_START, new Date());
+
+		DBCollection col = getCollection();
+		DBObject newData = col.findAndModify(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set", update));
+		set_data(newData);
+
+		// 提示工作启动
+		doNoticeWorkAction(context, "工作启动");
+
+		// 调用后处理
+		doStartAfter(context, params);
+
+		return null;
+	}
+
+	/**
+	 * 暂停工作
+	 */
+	public Object doPause(IContext context) throws Exception {
+		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
+		Map<String, Object> params = new HashMap<String, Object>();
+		doPauseBefore(context, params);
+
+		DBObject update = new BasicDBObject();
+		
+		List<PrimaryObject> children = getChildrenWork();
+		for (int i = 0; i < children.size(); i++) {
+			Work childWork = (Work) children.get(i);
+			// 检查下级的工作状态是否为进行中
+			if (STATUS_WIP_VALUE.equals(childWork
+					.getValue(F_LIFECYCLE))) {
+				// 暂停下级工作
+				childWork.doPause(context);
+			}
+		}
+
+		// 标记工作已暂停
+		update.put(F_LIFECYCLE, STATUS_PAUSED_VALUE);
+		DBCollection col = getCollection();
+		DBObject newData = col.findAndModify(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set", update));
+		set_data(newData);
+
+		// 提示工作已暂停
+		doNoticeWorkAction(context, "工作已暂停");
+		
+		//后处理
+		doPauseAfter(context, params);
+		
+		return null;
+
+	}
+	
+	/**
+	 * 取消工作
+	 */
 	public Object doCancel(IContext context) throws Exception {
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -1860,9 +1966,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		
 		
 		DBObject update = new BasicDBObject();
-		
-		
-		
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
@@ -1871,7 +1974,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					.getValue(F_LIFECYCLE))||STATUS_PAUSED_VALUE.equals(childWork
 							.getValue(F_LIFECYCLE))) {
 				// 完成下级工作
-				childWork.doPause(context);
+				childWork.doFinish(context);
 			}
 		}
 
@@ -1893,104 +1996,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 	
 
-	public Object doPause(IContext context) throws Exception {
-		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
-		Map<String, Object> params = new HashMap<String, Object>();
-		doPauseBefore(context, params);
+	
 
-		DBObject update = new BasicDBObject();
-		
-		List<PrimaryObject> children = getChildrenWork();
-		for (int i = 0; i < children.size(); i++) {
-			Work childWork = (Work) children.get(i);
-			// 检查下级的工作状态是否为进行中
-			if (STATUS_WIP_VALUE.equals(childWork
-					.getValue(F_LIFECYCLE))) {
-				// 暂停下级工作
-				childWork.doPause(context);
-			}
-		}
-
-		// 标记工作已暂停
-		update.put(F_LIFECYCLE, STATUS_PAUSED_VALUE);
-		DBCollection col = getCollection();
-		DBObject newData = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", update));
-		set_data(newData);
-
-		// 提示工作已暂停
-		doNoticeWorkAction(context, "工作已暂停");
-		
-		//后处理
-		doPauseAfter(context, params);
-		
-		return null;
-
-	}
-
-	/**
-	 * 启动工作
-	 */
-	@SuppressWarnings("unchecked")
-	public Object doStart(IContext context) throws Exception {
-		// 判断能否启动，检查状态
-		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
-		Map<String, Object> params = new HashMap<String, Object>();
-		// 调用前处理
-		doStartBefore(context, params);
-
-		// 准备保存的对象
-		DBObject update = new BasicDBObject();
-
-		// 判定是否使用执行工作流
-		if (isWorkflowActivate(F_WF_EXECUTE)) {
-			// 如果是，启动工作流
-			Workflow wf = getWorkflow(F_WF_EXECUTE);
-			DBObject actors = getProcessActorsMap(F_WF_EXECUTE);
-			Map<String, String> actorParameter = null;
-			if(actors!=null){
-				actorParameter = actors.toMap();
-			}
-			ProcessInstance processInstance = wf.startHumanProcess(
-					actorParameter, params);
-			Assert.isNotNull(processInstance, "流程启动失败");
-
-			update.put(F_WF_EXECUTE + POSTFIX_INSTANCEID,
-					processInstance.getId());
-		}
-
-		// 启动下级同步启动的工作
-		List<PrimaryObject> children = getChildrenWork();
-		for (int i = 0; i < children.size(); i++) {
-			Work childWork = (Work) children.get(i);
-			// 检查下级的工作是否设置了与上级同步启动
-			if (Boolean.TRUE.equals(childWork
-					.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))) {
-				// 启动下级工作
-				childWork.doStart(context);
-			}
-		}
-
-		// 标记工作的进行中
-		update.put(F_LIFECYCLE, STATUS_WIP_VALUE);
-		// 设置工作的实际开始时间
-		update.put(F_ACTUAL_START, new Date());
-
-		DBCollection col = getCollection();
-		DBObject newData = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", update));
-		set_data(newData);
-
-		// 提示工作启动
-		doNoticeWorkAction(context, "工作启动");
-
-		// 调用后处理
-		doStartAfter(context, params);
-
-		return null;
-	}
+	
 
 	public Workflow getWorkflow(String key) {
 		DroolsProcessDefinition processDefintion = getProcessDefinition(key);
