@@ -1876,6 +1876,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject newData = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()), null, null, false,
 				new BasicDBObject().append("$set", update), true, false);
+		
 		set_data(newData);
 
 		// 提示工作已暂停
