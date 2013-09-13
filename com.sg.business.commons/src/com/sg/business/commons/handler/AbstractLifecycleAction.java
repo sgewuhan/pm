@@ -31,16 +31,29 @@ public abstract class AbstractLifecycleAction extends AbstractNavigatorHandler {
 			CurrentAccountContext context = new CurrentAccountContext();
 			try {
 				List<Object[]> message = checkBeforeExecute(lc, context);
-				if (message != null && message.size() > 0) {
+				String name = event.getCommand().getName();
+				if (hasError(message)) {
+					MessageUtil.showToast(null, name,
+							"检查发现了一些错误，请查看检查结果，完成修改后重新执行", SWT.ICON_INFORMATION);
 					showCheckMessages(message, selected);
-				}
-				if (!hasError(message)) {
-					execute(lc, context);
-					vc.getViewer().update(selected, null);
 				} else {
-					String name = event.getCommand().getName();
-					MessageUtil.showToast(null,name,"存在一些错误，请查看检查视图，完成修改后重新执行",
-							SWT.ICON_INFORMATION);
+					if (message != null && message.size() > 0) {
+						int result = MessageUtil.showMessage(null, name,
+								"检查发现了一些问题，请查看检查结果。" + "\n" + "选择YES忽视警告信息继续操作" + "\n"
+										+ "选择NO中止本次操作" + "\n"
+										+ "选择CANCEL取消本次操作并查看检查结果",
+								SWT.ICON_WARNING | SWT.YES | SWT.NO
+										| SWT.CANCEL);
+						if (result == SWT.NO) {
+							return;
+						}else if(result == SWT.CANCEL){
+							showCheckMessages(message, selected);
+							return;
+						}
+					}
+					execute(lc, context);
+					vc.getViewer().refresh(selected);
+					vc.getViewer().setSelection(null);
 				}
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
@@ -49,7 +62,7 @@ public abstract class AbstractLifecycleAction extends AbstractNavigatorHandler {
 	}
 
 	private boolean hasError(List<Object[]> message) {
-		if (message == null|| message.size() == 0) {
+		if (message == null || message.size() == 0) {
 			return false;
 		}
 		for (int i = 0; i < message.size(); i++) {
