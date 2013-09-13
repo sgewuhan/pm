@@ -525,7 +525,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean canCancel() {
 		// 检查本工作生命周期状态是否符合:已暂停,进行中
 		String lifeCycle = getLifecycleStatus();
-		return STATUS_WIP_VALUE.equals(lifeCycle)||STATUS_PAUSED_VALUE.equals(lifeCycle);
+		return STATUS_WIP_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle);
 	}
 
 	@Override
@@ -533,7 +534,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中
 		// 如果不是这些状态(已完成、准备中、无状态、已取消)，返回false
 		String lifeCycle = getLifecycleStatus();
-		return STATUS_WIP_VALUE.equals(lifeCycle)||STATUS_PAUSED_VALUE.equals(lifeCycle);
+		return STATUS_WIP_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle);
 	}
 
 	@Override
@@ -623,10 +625,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return false;
 		}
 
-		if(isProjectWBSRoot()){
+		if (isProjectWBSRoot()) {
 			return false;
 		}
-		
+
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
 	}
@@ -645,8 +647,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				|| STATUS_WIP_VALUE.equals(lifeCycle)) {
 			return false;
 		}
-		
-		if(isProjectWBSRoot()){
+
+		if (isProjectWBSRoot()) {
 			return false;
 		}
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
@@ -1784,8 +1786,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return deli;
 
 	}
-	
-	
+
 	/**
 	 * 启动工作
 	 */
@@ -1806,7 +1807,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			Workflow wf = getWorkflow(F_WF_EXECUTE);
 			DBObject actors = getProcessActorsMap(F_WF_EXECUTE);
 			Map<String, String> actorParameter = null;
-			if(actors!=null){
+			if (actors != null) {
 				actorParameter = actors.toMap();
 			}
 			ProcessInstance processInstance = wf.startHumanProcess(
@@ -1836,8 +1837,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", update));
+				new BasicDBObject().append(F__ID, get_id()), null, null, false,
+				new BasicDBObject().append("$set", update), true, false);
 		set_data(newData);
 
 		// 提示工作启动
@@ -1858,13 +1859,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doPauseBefore(context, params);
 
 		DBObject update = new BasicDBObject();
-		
+
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
 			// 检查下级的工作状态是否为进行中
-			if (STATUS_WIP_VALUE.equals(childWork
-					.getValue(F_LIFECYCLE))) {
+			if (STATUS_WIP_VALUE.equals(childWork.getValue(F_LIFECYCLE))) {
 				// 暂停下级工作
 				childWork.doPause(context);
 			}
@@ -1874,20 +1874,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		update.put(F_LIFECYCLE, STATUS_PAUSED_VALUE);
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", update));
+				new BasicDBObject().append(F__ID, get_id()), null, null, false,
+				new BasicDBObject().append("$set", update), true, false);
+		
 		set_data(newData);
 
 		// 提示工作已暂停
 		doNoticeWorkAction(context, "工作已暂停");
-		
-		//后处理
+
+		// 后处理
 		doPauseAfter(context, params);
-		
+
 		return null;
 
 	}
-	
+
 	/**
 	 * 取消工作
 	 */
@@ -1895,14 +1896,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
-		
+
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
 			// 检查下级的工作状态是否为进行中或者已暂停
-			if (STATUS_WIP_VALUE.equals(childWork
-					.getValue(F_LIFECYCLE))||STATUS_PAUSED_VALUE.equals(childWork
+			if (STATUS_WIP_VALUE.equals(childWork.getValue(F_LIFECYCLE))
+					|| STATUS_PAUSED_VALUE.equals(childWork
 							.getValue(F_LIFECYCLE))) {
 				// 取消下级工作
 				childWork.doCancel(context);
@@ -1914,8 +1915,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", update));
+				new BasicDBObject().append(F__ID, get_id()), null, null, false,
+				new BasicDBObject().append("$set", update), true, false);
 		set_data(newData);
 
 		// 提示工作已取消
@@ -1925,50 +1926,40 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return null;
 
 	}
-	
-	
 
 	public Object doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doFinishBefore(context, params);
-		
-		/*DBCollection col = getCollection();
-		DBObject query=new BasicDBObject().append(Work.F__ID,get_id());
-		DBObject update = col.findOne(query);
-		update.put(F_LIFECYCLE, Work.STATUS_FINIHED_VALUE);
-		update.put(F_ACTUAL_FINISH, new Date());
-		DBObject sort=new BasicDBObject().append(F__ID, -1);
-		
-		col.findAndModify(query, null, sort, false, update, false, false);
-		
-		//查询下级
-		BasicDBObject queryCondition = new BasicDBObject();
-		//设置查询条件，该工作的所有下级工作
-		queryCondition.put(Work.F_PARENT_ID,get_id());
-		//设置查询条件，该工作所有正在进行中和已暂停的下级工作
-		queryCondition.put(Work.F_LIFECYCLE,new BasicDBObject().append("$in", new String[] {
-									Work.STATUS_WIP_VALUE,
-									Work.STATUS_PAUSED_VALUE}));
-		//查询，返回该工作所有正在进行中的下级工作
-	    DBCursor cur = col.find(queryCondition);
-		while(cur.hasNext()){      
-			DBObject dbobject = cur.next();
-			Work work = ModelService.createModelObject(dbobject, Work.class);
-			work.doFinish(context);
-		
-		}*/
-		
-		
-		
-		
+
+		/*
+		 * DBCollection col = getCollection(); DBObject query=new
+		 * BasicDBObject().append(Work.F__ID,get_id()); DBObject update =
+		 * col.findOne(query); update.put(F_LIFECYCLE,
+		 * Work.STATUS_FINIHED_VALUE); update.put(F_ACTUAL_FINISH, new Date());
+		 * DBObject sort=new BasicDBObject().append(F__ID, -1);
+		 * 
+		 * col.findAndModify(query, null, sort, false, update, false, false);
+		 * 
+		 * //查询下级 BasicDBObject queryCondition = new BasicDBObject();
+		 * //设置查询条件，该工作的所有下级工作 queryCondition.put(Work.F_PARENT_ID,get_id());
+		 * //设置查询条件，该工作所有正在进行中和已暂停的下级工作 queryCondition.put(Work.F_LIFECYCLE,new
+		 * BasicDBObject().append("$in", new String[] { Work.STATUS_WIP_VALUE,
+		 * Work.STATUS_PAUSED_VALUE})); //查询，返回该工作所有正在进行中的下级工作 DBCursor cur =
+		 * col.find(queryCondition); while(cur.hasNext()){ DBObject dbobject =
+		 * cur.next(); Work work = ModelService.createModelObject(dbobject,
+		 * Work.class); work.doFinish(context);
+		 * 
+		 * }
+		 */
+
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
 			// 检查下级的工作状态是否为进行中或已暂停
-			if (STATUS_WIP_VALUE.equals(childWork
-					.getValue(F_LIFECYCLE))||STATUS_PAUSED_VALUE.equals(childWork
+			if (STATUS_WIP_VALUE.equals(childWork.getValue(F_LIFECYCLE))
+					|| STATUS_PAUSED_VALUE.equals(childWork
 							.getValue(F_LIFECYCLE))) {
 				// 完成下级工作
 				childWork.doFinish(context);
@@ -1981,8 +1972,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		update.put(F_ACTUAL_FINISH, new Date());
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", update));
+				new BasicDBObject().append(F__ID, get_id()), null, null, false,
+				new BasicDBObject().append("$set", update), true, false);
 		set_data(newData);
 
 		// 提示工作已完成
@@ -1991,11 +1982,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return null;
 
 	}
-	
-
-	
-
-	
 
 	public Workflow getWorkflow(String key) {
 		DroolsProcessDefinition processDefintion = getProcessDefinition(key);
@@ -2174,16 +2160,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
+
 	/**
-	 * 获取当前用户的流程信息
 	 * 
 	 * @param key
-	 *            : 流程名称
 	 * @param userid
-	 *            : 当前用户
-	 * @return : 流程信息
+	 * @param query
+	 * @return
 	 */
-	public DBObject getCurrentWorkflowTaskData(String key, String userid) {
+	public DBObject getCurrentWorkflowTaskData(String key, String userid,
+			boolean query) {
 		String field = key + POSTFIX_TASK;
 		Object value = getValue(field, true);
 		if (value instanceof DBObject) {
@@ -2211,7 +2197,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		/*
 		 * 获得当前用户的现有流程任务数据 * 如果任务id和状态一致，那么就无需继续更新操作
 		 */
-		DBObject olddata = getCurrentWorkflowTaskData(key, userid);
+		DBObject olddata = getCurrentWorkflowTaskData(key, userid, true);
 		if (olddata != null) {
 			Object oldTaskId = olddata.get(F_WF_TASK_ID);
 			if (task.getId().equals(oldTaskId)) {
@@ -2367,7 +2353,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isNotNull(task, "开始流程任务失败");
 
 		// 提取当前的任务数据
-		Map<String, Object> taskFormData = new HashMap<String,Object>();
+		Map<String, Object> taskFormData = new HashMap<String, Object>();
 		taskFormData.put(F_WF_TASK_ACTOR, context.getAccountInfo().getUserId());
 		taskFormData.put(F_WF_TASK_STARTDATE, new Date());
 		taskFormData.put(F_WF_TASK_ACTION, TASK_ACTION_START);
@@ -2406,7 +2392,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				inputParameter);
 
 		Assert.isNotNull(task, "完成流程任务失败");
-		
+
 		taskFormData.put(F_WF_TASK_ACTOR, context.getAccountInfo().getUserId());
 		taskFormData.put(F_WF_TASK_FINISHDATE, new Date());
 		taskFormData.put(F_WF_TASK_ACTION, TASK_ACTION_COMPLETE);
@@ -2414,10 +2400,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doSaveWorkflowHistroy(processKey, task, taskFormData, context);
 	}
 
-	public Task getTask(String processKey, IContext context)
-			throws Exception {
+	public Task getTask(String processKey, IContext context) throws Exception {
 		String userid = context.getAccountInfo().getConsignerId();
-		DBObject data = getCurrentWorkflowTaskData(processKey, userid);
+		DBObject data = getCurrentWorkflowTaskData(processKey, userid, true);
 		if (data != null) {
 			Long taskId = (Long) data.get(F_WF_TASK_ID);
 			Assert.isNotNull(taskId);
@@ -2442,28 +2427,30 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			throws Exception {
 		String userid = context.getAccountInfo().getConsignerId();
 
-		//取出当前的任务数据
-		DBObject currentData = getCurrentWorkflowTaskData(key, userid);
-		
-		//将taskformData补充到当前的任务数据中
-		if(taskFormData!=null&&!taskFormData.isEmpty()){
+		// 取出当前的任务数据
+		DBObject currentData = getCurrentWorkflowTaskData(key, userid, true);
+
+		// 将taskformData补充到当前的任务数据中
+		if (taskFormData != null && !taskFormData.isEmpty()) {
 			Iterator<String> iterator = taskFormData.keySet().iterator();
-			while(iterator.hasNext()){
+			while (iterator.hasNext()) {
 				String next = iterator.next();
-				String field = "form_"+next;
+				String field = "form_" + next;
 				currentData.put(field, taskFormData.get(next));
 			}
 		}
-		
-		//将当前的任务数据append到历史数组中
+
+		// 将当前的任务数据append到历史数组中
 		String histroyField = key + POSTFIX_HISTORY;
 
 		DBCollection col = getCollection();
-		WriteResult wr = col.update(new BasicDBObject().append(F__ID, get_id()), 
-				new BasicDBObject().append("$push", new BasicDBObject().append(histroyField, currentData)));
-		
+		WriteResult wr = col.update(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$push",
+						new BasicDBObject().append(histroyField, currentData)));
+
 		checkWriteResult(wr);
-		
+
 		doUpdateWorkflowDataByTask(key, task, userid);
 	}
 

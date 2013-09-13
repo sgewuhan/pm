@@ -123,7 +123,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		sb.append("<br/>");
 
-		DBObject wfinfo = work.getCurrentWorkflowTaskData(Work.F_WF_EXECUTE,userId);
+		DBObject wfinfo = work.getCurrentWorkflowTaskData(Work.F_WF_EXECUTE,userId,false);
 		if (wfinfo != null) {
 			sb.append("Á÷³Ì:");
 			Object taskname = wfinfo.get(Work.F_WF_TASK_NAME);
