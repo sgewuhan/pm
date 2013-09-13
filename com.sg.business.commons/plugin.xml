@@ -1283,16 +1283,6 @@
       </handler>
    </extension>
    <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="com.sg.business.commons.test.BulletinBoardActionTest"
-            id="bulletinboard.action.test"
-            namespace="bulletinboard"
-            properties="action"
-            type="java.lang.Object">
-      </propertyTester>
-   </extension>
-   <extension
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="bulletinboard"
