@@ -22,6 +22,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -516,7 +517,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public List<Object[]> startCheck(IContext context) throws Exception {
+	public List<Object[]> checkStartAction(IContext context) throws Exception {
 		List<Object[]> message = new ArrayList<Object[]>();
 
 		// 1.判断是否是本级的负责人
@@ -630,7 +631,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @throws Exception
 	 */
-	public void pauseCck(IContext context) throws Exception {
+	public void checkPauseAction(IContext context) throws Exception {
 		// 1.判断是否是本级的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(getChargerId())) {
@@ -675,7 +676,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public List<Object[]> finishCheck(IContext context) throws Exception {
+	public List<Object[]> checkFinishAction(IContext context) throws Exception {
 		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.判断是否是本级的负责人
 		String userId = context.getAccountInfo().getConsignerId();
@@ -708,7 +709,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @throws Exception
 	 */
-	private List<Object[]> checkCascadeFinish(ObjectId id)  {
+	private List<Object[]> checkCascadeFinish(ObjectId id) {
 		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.判断非级联完成的工作是否已经在已完成状态或已取消状态
 		DBObject condition = new BasicDBObject();
@@ -719,20 +720,25 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE }));
 		condition.put(F_S_AUTOFINISHWITHPARENT,
 				new BasicDBObject().append("$ne", Boolean.TRUE));
-		DBCollection col = getCollection();
-		long count = col.count(condition);
+		long count = getRelationCountByCondition(Work.class, condition);
 		if (count > 0) {
-			message.add(new Object[]{"非级联完成的下级工作未完成或取消",this,SWT.ICON_ERROR});
+			message.add(new Object[] { "非级联完成的下级工作未完成或取消", this, SWT.ICON_ERROR });
 		}
 
-		
 		// 2.循环得到下级级联的暂停和进行中状态的工作,只判断取出工作的下级非级联完成的工作是否可以完成
 		condition.put(F_S_AUTOFINISHWITHPARENT, Boolean.TRUE);
-		DBCursor cur = col
-				.find(condition, new BasicDBObject().append(F__ID, 1));
-		
-		while (cur.hasNext()) {
-			checkCascadeFinish((ObjectId) cur.next().get(F__ID));
+		List<PrimaryObject> childrenWork = getRelationByCondition(Work.class,
+				condition);
+		if (childrenWork.size() > 0) {
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				if (!Boolean.TRUE
+						.equals(childWork.getValue(F_S_CANSKIPTOFINISH))) {
+					message.add(new Object[] { "存在无法跳过进行中的流程完成的下级级联完成工作",
+							this, SWT.ICON_ERROR });
+				}
+				message.addAll(checkCascadeFinish(childWork.get_id()));
+			}
 		}
 		return message;
 	}
@@ -1762,8 +1768,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void doStart(IContext context) throws Exception {
 		// 判断能否启动，检查状态
 		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
-		List<Object[]> message = this.startCheck(context);
-		
+		List<Object[]> message = this.checkStartAction(context);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		// 调用前处理
