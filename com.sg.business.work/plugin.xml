@@ -1596,10 +1596,6 @@
             id="runtimework.workrecord"
             name="编辑工作记录">
       </command>
-      <command
-            id="runtimework.view.workdeliverable"
-            name="交付物...">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -1690,10 +1686,6 @@
       <handler
             class="com.sg.business.work.handler.EditWork"
             commandId="runtimework.edit">
-      </handler>
-      <handler
-            class="com.sg.business.work.handler.EditWorkDeliverable"
-            commandId="runtimework.view.workdeliverable">
       </handler>
    </extension>
    <extension
