@@ -86,6 +86,25 @@ public interface IProcessControlable {
 	 */
 	public static final String F_WF_TASK_STARTDATE = "startdate";
 	
+	/**
+	 * 任务字段，完成日期
+	 */
+	public static final String F_WF_TASK_FINISHDATE = "finishdata";
+
+	/**
+	 * 任务字段，任务的操作
+	 */
+	public static final String F_WF_TASK_ACTION = "action";
+	
+	/**
+	 * 任务字段值，任务的开始操作
+	 */
+	public static final String TASK_ACTION_START = "start";
+	
+	/**
+	 * 任务字段值，任务的完成操作
+	 */
+	public static final String TASK_ACTION_COMPLETE = "complete";
 	
 	boolean isWorkflowActivate(String fieldKey) ;
 	

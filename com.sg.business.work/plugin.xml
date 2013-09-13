@@ -1388,24 +1388,18 @@
             </command>
          </menu>
          <menu
-               icon="image/execute_24.png"
+               icon="image/24_blank.png"
                label="流程操作">
             <command
                   commandId="runtimework.wfstart"
-                  icon="image/project_start_24.png"
+                  icon="image/start_24.png"
                   label="启动"
                   style="push">
             </command>
             <command
                   commandId="runtimework.wffinish"
-                  icon="image/project_finish_24.png"
+                  icon="image/complete_24.png"
                   label="完成"
-                  style="push">
-            </command>
-            <command
-                  commandId="runtimework.wfcancel"
-                  icon="image/project_stop_24.png"
-                  label="中止"
                   style="push">
             </command>
          </menu>
