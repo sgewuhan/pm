@@ -5,6 +5,7 @@ import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
+import com.sg.business.work.WorkflowSynchronizer;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -18,11 +19,13 @@ public class StartTask extends AbstractNavigatorHandler {
 			Work work = (Work) selected;
 			CurrentAccountContext context = new CurrentAccountContext();
 			try {
+				WorkflowSynchronizer sync = new WorkflowSynchronizer();
+				sync.synchronizeUserTask(context.getAccountInfo().getConsignerId(), work);
 				work.doStartTask(Work.F_WF_EXECUTE,context);
 				ViewerControl vc = getCurrentViewerControl(event);
 				vc.getViewer().update(work, null);
 			} catch (Exception e) {
-				MessageUtil.showToast(e);
+				MessageUtil.showToast("开始流程任务",e);
 			}
 		}
 	}

@@ -1,9 +1,11 @@
 package com.sg.bpm.workflow.taskform;
 
+import java.util.Map;
+
 import com.mobnut.db.model.PrimaryObject;
 
 public interface IWorkflowInfoProvider {
 	
-	Object getWorkflowInformation(PrimaryObject workData);
+	Map<String,Object> getWorkflowInformation(PrimaryObject taskform);
 
 }

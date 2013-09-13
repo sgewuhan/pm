@@ -29,6 +29,10 @@ public class WorkflowSynchronizer extends RepeatJob {
 		super("更新流程信息");
 		this.client = client;
 	}
+	
+	public WorkflowSynchronizer() {
+		super("更新流程信息");
+	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
@@ -85,6 +89,35 @@ public class WorkflowSynchronizer extends RepeatJob {
 			}
 		}
 		return updated;
+	}
+	
+	
+	public void synchronizeUserTask(String userid,Work targetWork) throws Exception {
+		Task[] tasks = WorkflowService.getDefault().getUserTasks(userid);
+		for (int i = 0; i < tasks.length; i++) {
+			TaskData taskData = tasks[i].getTaskData();
+
+			long instanceId = taskData.getProcessInstanceId();
+			String processId = taskData.getProcessId();
+
+			try {
+				Workflow workflow = new Workflow(processId, instanceId);
+				PrimaryObject host = workflow.getHost();
+				String flowKey = workflow.getKey();
+				if (flowKey != null && host instanceof Work) {
+					Work work = (Work) host;
+					if(work.get_id().equals(targetWork.get_id())){
+						targetWork.doUpdateWorkflowDataByTask(flowKey, tasks[i], userid);
+						return;
+					}
+				}
+			} catch (Exception e) {
+				//流程不存在
+				//work被删除
+				e.printStackTrace();
+			}
+		}
+		throw new Exception("用户:"+userid+"\n"+"工作:"+targetWork+"\n\n"+"没有满足条件的流程任务。");
 	}
 
 	public void setUserId(String userId) {
