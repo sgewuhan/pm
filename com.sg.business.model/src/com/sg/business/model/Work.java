@@ -24,6 +24,8 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
@@ -1738,17 +1740,52 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
+		
+		
+		
 		doCancelAfter(context, params);
 
 		return null;
 
 	}
+	
+	
+	/*public Object doFinish(IContext context) throws Exception {
+		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
+		Map<String, Object> params = new HashMap<String, Object>();
+		doFinishBefore(context, params);
+
+		// 测试流程完成当前的工作
+		setValue(F_LIFECYCLE, STATUS_FINIHED_VALUE);
+		doSave(context);
+
+		doFinishAfter(context, params);
+		return null;
+
+	}*/
 
 	public Object doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doFinishBefore(context, params);
 
+		List<DBObject> dataItems = new ArrayList<DBObject>();
+		
+		DBCollection col = getCollection();
+		
+		BasicDBObject queryCondition = new BasicDBObject();
+		//设置查询条件，该工作的所有下级工作
+		queryCondition.put(Work.F_PARENT_ID,get_id());
+		//设置查询条件，该工作所有正在进行中的下级工作
+		queryCondition.put(Work.F_LIFECYCLE,Work.STATUS_WIP_VALUE);
+		//查询，返回该工作所有正在进行中的下级工作
+		DBCursor cur = col.find(queryCondition);
+		while(cur.hasNext()){
+			DBObject dbo = cur.next();
+			Work work = ModelService.createModelObject(dbo, Work.class);
+			
+		}
+		
 		// 测试流程完成当前的工作
 		setValue(F_LIFECYCLE, STATUS_FINIHED_VALUE);
 		doSave(context);
