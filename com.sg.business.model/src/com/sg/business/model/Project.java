@@ -1665,24 +1665,26 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-	public void doCancel(IContext context) throws Exception {
+	public Object doCancel(IContext context) throws Exception {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object doFinish(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 
 	}
 
-	public void doFinish(IContext context) throws Exception {
+	public Object doPause(IContext context) throws Exception {
 		// TODO Auto-generated method stub
+		return null;
 
 	}
 
-	public void doPause(IContext context) throws Exception {
+	public Object doStart(IContext context) throws Exception {
 		// TODO Auto-generated method stub
-
-	}
-
-	public void doStart(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override
@@ -1692,6 +1694,30 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public Workflow getWorkflow(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Object[]> checkStartAction(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Object[]> checkCancelAction(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Object[]> checkFinishAction(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Object[]> checkPauseAction(IContext context) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

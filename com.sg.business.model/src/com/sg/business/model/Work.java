@@ -486,13 +486,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				&& (!STATUS_FINIHED_VALUE.equals(lc));
 	}
 
-	@Override
-	public boolean canCommit() {
-		String lc = getLifecycleStatus();
-
-		return STATUS_NONE_VALUE.equals(lc);
-	}
-
 	/**
 	 * 能否点击启动
 	 */
@@ -506,8 +499,61 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				|| STATUS_WIP_VALUE.equals(lifeCycle)) {
 			return false;
 		}
-
+	
 		return true;
+	}
+
+	/**
+	 * 能否点击暂停
+	 */
+	@Override
+	public boolean canPause() {
+		// 检查本工作生命周期状态是否符合:进行中
+		// 如果不是这些状态(已完成、已取消、准备中、无状态、已暂停)，返回false
+		String lifeCycle = getLifecycleStatus();
+		if (STATUS_WIP_VALUE.equals(lifeCycle)) {
+			return true;
+		}
+	
+		return false;
+	}
+
+	/**
+	 * 能否点击取消
+	 */
+	@Override
+	public boolean canCancel() {
+		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中,准备中,无状态
+		// 如果不是这些状态(已完成、已取消)，返回false
+		String lifeCycle = getLifecycleStatus();
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+	
+		return true;
+	}
+
+	@Override
+	public boolean canFinish() {
+		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中
+		// 如果不是这些状态(已完成、准备中、无状态、已取消)，返回false
+		String lifeCycle = getLifecycleStatus();
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_NONE_VALUE.equals(lifeCycle)
+				|| STATUS_ONREADY_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+	
+		return true;
+	}
+
+	@Override
+	public boolean canCommit() {
+		String lc = getLifecycleStatus();
+
+		return STATUS_NONE_VALUE.equals(lc);
 	}
 
 	/**
@@ -516,7 +562,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public List<Object[]> startCheck(IContext context) throws Exception {
+	public List<Object[]> checkStartAction(IContext context) throws Exception {
 		List<Object[]> message = new ArrayList<Object[]>();
 
 		// 1.判断是否是本级的负责人
@@ -543,6 +589,52 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 3.判断本工作及其下级工作的必要信息是否录入
 		message.addAll(checkCascadeStart());
 		return message;
+	}
+
+	@Override
+	public List<Object[]> checkCancelAction(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 检查工作是否可以完成
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
+	public List<Object[]> checkFinishAction(IContext context) throws Exception {
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.判断是否是本级的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(getChargerId())) {
+			throw new Exception("不是本工作负责人，" + this);
+		}
+	
+		// 2.判断上级工作生命周期状态是否符合：进行中
+		// 如果不在进行中，返回false
+		Work parentWork = (Work) getParent();
+		if (parentWork != null) {
+			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
+				throw new Exception("上级工作不在进行中，" + this);
+			}
+		} else {
+			Project project = getProject();
+			if (project != null) {
+				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
+					throw new Exception("项目不在进行中，" + this);
+				}
+			}
+		}
+		// 3.判断下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
+		message.addAll(checkCascadeFinish(get_id()));
+		return message;
+	}
+
+	@Override
+	public List<Object[]> checkPauseAction(IContext context) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -611,21 +703,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 能否点击暂停
-	 */
-	@Override
-	public boolean canPause() {
-		// 检查本工作生命周期状态是否符合:进行中
-		// 如果不是这些状态(已完成、已取消、准备中、无状态、已暂停)，返回false
-		String lifeCycle = getLifecycleStatus();
-		if (STATUS_WIP_VALUE.equals(lifeCycle)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * 检查工作是否可以暂停
 	 * 
 	 * @throws Exception
@@ -652,55 +729,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean canFinish() {
-		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中
-		// 如果不是这些状态(已完成、准备中、无状态、已取消)，返回false
-		String lifeCycle = getLifecycleStatus();
-		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
-				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
-				|| STATUS_NONE_VALUE.equals(lifeCycle)
-				|| STATUS_ONREADY_VALUE.equals(lifeCycle)) {
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * 检查工作是否可以完成
-	 * 
-	 * @param context
-	 * @throws Exception
-	 */
-	public List<Object[]> finishCheck(IContext context) throws Exception {
-		List<Object[]> message = new ArrayList<Object[]>();
-		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getConsignerId();
-		if (!userId.equals(getChargerId())) {
-			throw new Exception("不是本工作负责人，" + this);
-		}
-
-		// 2.判断上级工作生命周期状态是否符合：进行中
-		// 如果不在进行中，返回false
-		Work parentWork = (Work) getParent();
-		if (parentWork != null) {
-			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
-				throw new Exception("上级工作不在进行中，" + this);
-			}
-		} else {
-			Project project = getProject();
-			if (project != null) {
-				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
-					throw new Exception("项目不在进行中，" + this);
-				}
-			}
-		}
-		// 3.判断下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
-		message.addAll(checkCascadeFinish(get_id()));
-		return message;
 	}
 
 	/**
@@ -735,22 +763,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			checkCascadeFinish((ObjectId) cur.next().get(F__ID));
 		}
 		return message;
-	}
-
-	/**
-	 * 能否点击取消
-	 */
-	@Override
-	public boolean canCancel() {
-		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中,准备中,无状态
-		// 如果不是这些状态(已完成、已取消)，返回false
-		String lifeCycle = getLifecycleStatus();
-		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
-				|| STATUS_FINIHED_VALUE.equals(lifeCycle)) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -1728,14 +1740,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
-	public void doCancel(IContext context) throws Exception {
+	public Object doCancel(IContext context) throws Exception {
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
 		doCancelAfter(context, params);
+		
+		return null;
+
 	}
 
-	public void doFinish(IContext context) throws Exception {
+	public Object doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doFinishBefore(context, params);
@@ -1745,25 +1760,28 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doSave(context);
 
 		doFinishAfter(context, params);
+		return null;
 
 	}
 
-	public void doPause(IContext context) throws Exception {
+	public Object doPause(IContext context) throws Exception {
 		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doPauseBefore(context, params);
 
 		doPauseAfter(context, params);
+		return null;
+
 	}
 
 	/**
 	 * 启动工作
 	 */
-	public void doStart(IContext context) throws Exception {
+	public Object doStart(IContext context) throws Exception {
 		// 判断能否启动，检查状态
 		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
-		List<Object[]> message = this.startCheck(context);
-		
+		List<Object[]> messages = checkStartAction(context);
+		LifecycleToolkit.checkActionMessage(messages);
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		// 调用前处理
@@ -1809,6 +1827,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 调用后处理
 		doStartAfter(context, params);
+		
+		return messages;
 	}
 
 	public Workflow getWorkflow(String key) {

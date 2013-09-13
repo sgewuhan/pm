@@ -16,8 +16,9 @@ public class StartTask extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		if(selected instanceof Work){
 			Work work = (Work) selected;
+			CurrentAccountContext context = new CurrentAccountContext();
 			try {
-				work.doStartTask(Work.F_WF_EXECUTE,new CurrentAccountContext());
+				work.doStartTask(Work.F_WF_EXECUTE,context);
 				ViewerControl vc = getCurrentViewerControl(event);
 				vc.getViewer().update(work, null);
 			} catch (Exception e) {

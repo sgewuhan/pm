@@ -1,5 +1,8 @@
 package com.sg.business.model.toolkit;
 
+import java.util.List;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 import com.sg.business.model.ILifecycle;
@@ -51,5 +54,20 @@ public class LifecycleToolkit {
 			return BusinessResource.getImage(BusinessResource.IMAGE_WIP_16);
 		}
 		return null;
+	}
+	
+	public static void checkActionMessage(List<Object[]> messages) throws Exception{
+		if(messages==null||messages.isEmpty()){
+			return;
+		}
+		
+		for (int i = 0; i < messages.size(); i++) {
+			String msgtext = messages.get(i)[0]==null?"":messages.get(i)[0].toString();
+			Object msgObject = messages.get(i)[1];
+			Object msgType = messages.get(i)[2];
+			if(new Integer(SWT.ICON_ERROR).equals(msgType)){
+				throw new Exception(msgtext+"\n"+msgObject);
+			}
+		}
 	}
 }

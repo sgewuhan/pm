@@ -1,28 +1,21 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.List;
 
-import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.model.IContext;
 import com.sg.business.model.ILifecycle;
-import com.sg.widgets.MessageUtil;
-import com.sg.widgets.command.AbstractNavigatorHandler;
-import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.viewer.ViewerControl;
 
-public class LifeCycleActionPause extends AbstractNavigatorHandler {
+public class LifeCycleActionPause extends AbstractLifecycleAction {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		if(selected instanceof ILifecycle){
-			ViewerControl vc = getCurrentViewerControl(event);
-			ILifecycle lc = (ILifecycle) selected;
-			try {
-				lc.doPause(new CurrentAccountContext());
-				vc.getViewer().update(selected, null);
-			} catch (Exception e) {
-				MessageUtil.showToast(e);
-			}
-		}
+	protected List<Object[]> checkBeforeExecute(ILifecycle lc, IContext context)
+			throws Exception {
+		return lc.checkPauseAction(context);
+	}
+
+	@Override
+	protected void execute(ILifecycle lc, IContext context) throws Exception {
+		lc.doPause(context);
 	}
 
 }
