@@ -1708,27 +1708,50 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public List<Object[]> checkStartAction(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.检查是否本项目的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(this.getChargerId())) {
+			throw new Exception("不是本项目负责人，" + this);
+		}
+		// 2.检查项目的工作是否满足启动条件
+		Work work = getWBSRoot();
+		message.addAll(work.checkCascadeStart());
+		return message;
 	}
 
 	@Override
 	public List<Object[]> checkCancelAction(IContext context) throws Exception {
-		// TODO Auto-generated method stub
+		// 1.检查是否本项目的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(this.getChargerId())) {
+			throw new Exception("不是本项目负责人，" + this);
+		}
 		return null;
 	}
 
 	@Override
 	public List<Object[]> checkFinishAction(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.检查是否本项目的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(this.getChargerId())) {
+			throw new Exception("不是本项目负责人，" + this);
+		}
+		// 2.检查项目的工作是否满足启动条件
+		Work work = getWBSRoot();
+		message.addAll(work.checkCascadeFinish(work.get_id()));
+		return message;
 	}
 
 	@Override
 	public List<Object[]> checkPauseAction(IContext context) throws Exception {
-		// TODO Auto-generated method stub
+		// 1.检查是否本项目的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(this.getChargerId())) {
+			throw new Exception("不是本项目负责人，" + this);
+		}
 		return null;
 	}
-
 
 }
