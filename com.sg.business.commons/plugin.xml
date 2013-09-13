@@ -1246,6 +1246,13 @@
             properties="action,status"
             type="java.lang.Object">
       </propertyTester>
+      <propertyTester
+            class="com.sg.business.commons.test.PrimaryObjectTest"
+            id="primaryobject.properties"
+            namespace="primaryobject"
+            properties="properties"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

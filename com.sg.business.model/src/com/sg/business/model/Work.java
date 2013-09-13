@@ -623,6 +623,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return false;
 		}
 
+		if(isProjectWBSRoot()){
+			return false;
+		}
+		
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
 	}
@@ -641,7 +645,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				|| STATUS_WIP_VALUE.equals(lifeCycle)) {
 			return false;
 		}
-
+		
+		if(isProjectWBSRoot()){
+			return false;
+		}
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
 	}

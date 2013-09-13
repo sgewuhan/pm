@@ -1179,7 +1179,7 @@
             <command
                   commandId="runtimework.view.project"
                   icon="image/project_24.png"
-                  label="项目"
+                  label="查看项目"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -1197,8 +1197,8 @@
             </command>
             <command
                   commandId="runtimework.view.project"
-                  icon="image/24_blank.png"
-                  label="项目文档"
+                  icon="image/document_24.png"
+                  label="查看项目文档"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -1221,15 +1221,22 @@
             <command
                   commandId="runtimework.view.work"
                   icon="image/work_24.png"
-                  label="工作"
+                  label="查看工作"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
                   <with
                         variable="selection">
-                     <count
-                           value="+">
-                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <not>
+                           <test
+                                 args="iswbsroot"
+                                 property="primaryobject.properties"
+                                 value="true">
+                           </test>
+                        </not>
+                     </iterate>
                   </with>
                </visibleWhen>
             </command>
@@ -1254,9 +1261,9 @@
             </visibleWhen>
          </command>
          <command
-               commandId="project.createdeliverable"
-               icon="image/24_blank.png"
-               label="添加交付物"
+               commandId="work.deliverable"
+               icon="image/deliverable_24.png"
+               label="交付物..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1264,38 +1271,16 @@
                      variable="selection">
                   <iterate
                         ifEmpty="false">
-                     <test
-                           args="createDeliverable"
-                           property="runtimework.action">
-                     </test>
+                     <not>
+                        <test
+                              args="iswbsroot"
+                              property="primaryobject.properties"
+                              value="true">
+                        </test>
+                     </not>
                   </iterate>
                </with>
             </visibleWhen>
-         </command>
-         <command
-               commandId="project.linkdeliverable"
-               icon="image/24_blank.png"
-               label="链接交付物..."
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <test
-                           args="createDeliverable"
-                           property="runtimework.action">
-                     </test>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="com.sg.widgets.command.create"
-               icon="image/24_blank.png"
-               label="创建独立工作"
-               style="push">
          </command>
          <separator
                name="runtimework.separator0"
@@ -1303,7 +1288,8 @@
          </separator>
          <command
                commandId="com.sg.widgets.command.edit"
-               label="指派"
+               icon="image/24_blank.png"
+               label="指派负责人和参与者"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1317,6 +1303,22 @@
                   name="com.sg.widgets.edit.editable"
                   value="true">
             </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <not>
+                        <test
+                              args="iswbsroot"
+                              property="primaryobject.properties"
+                              value="true">
+                        </test>
+                     </not>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="runtimework.edit"
@@ -1386,6 +1388,22 @@
                   label="取消"
                   style="push">
             </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <not>
+                        <test
+                              args="iswbsroot"
+                              property="primaryobject.properties"
+                              value="true">
+                        </test>
+                     </not>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </menu>
          <menu
                icon="image/24_blank.png"

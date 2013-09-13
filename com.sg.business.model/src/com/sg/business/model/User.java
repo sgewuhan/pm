@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.DBActivator;
@@ -15,7 +14,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
