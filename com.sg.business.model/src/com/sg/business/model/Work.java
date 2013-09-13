@@ -524,15 +524,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	@Override
 	public boolean canCancel() {
-		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中,准备中,无状态
-		// 如果不是这些状态(已完成、已取消)，返回false
+		// 检查本工作生命周期状态是否符合:已暂停,进行中
 		String lifeCycle = getLifecycleStatus();
-		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
-				|| STATUS_FINIHED_VALUE.equals(lifeCycle)) {
-			return false;
-		}
-
-		return true;
+		return STATUS_WIP_VALUE.equals(lifeCycle)||STATUS_PAUSED_VALUE.equals(lifeCycle);
 	}
 
 	@Override
@@ -540,14 +534,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 1.首先检查本工作生命周期状态是否符合:已暂停,进行中
 		// 如果不是这些状态(已完成、准备中、无状态、已取消)，返回false
 		String lifeCycle = getLifecycleStatus();
-		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
-				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
-				|| STATUS_NONE_VALUE.equals(lifeCycle)
-				|| STATUS_ONREADY_VALUE.equals(lifeCycle)) {
-			return false;
-		}
-
-		return true;
+		return STATUS_WIP_VALUE.equals(lifeCycle)||STATUS_PAUSED_VALUE.equals(lifeCycle);
 	}
 
 	@Override
@@ -563,6 +550,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @return
 	 */
+	@Deprecated
 	public boolean canWorkflowStart(IContext context) {
 		String lc = getLifecycleStatus();
 		return ILifecycle.STATUS_WIP_VALUE.equals(lc);
@@ -574,6 +562,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @return
 	 */
+	@Deprecated
 	public boolean canWorkflowFinish(IContext context) {
 		String lc = getLifecycleStatus();
 		return ILifecycle.STATUS_WIP_VALUE.equals(lc);
@@ -585,6 +574,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @return
 	 */
+	@Deprecated
 	public boolean canWorkflowCancel(IContext context) {
 		String lc = getLifecycleStatus();
 		return ILifecycle.STATUS_WIP_VALUE.equals(lc);

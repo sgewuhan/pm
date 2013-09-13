@@ -3135,7 +3135,7 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.sg.business.commons.test.LifeCycleActionTest"
+            class="com.sg.business.commons.test.LifeCycleTest"
             id="project.action.test"
             namespace="project"
             properties="action"

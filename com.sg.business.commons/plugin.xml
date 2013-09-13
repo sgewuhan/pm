@@ -1240,10 +1240,10 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.sg.business.commons.test.LifeCycleActionTest"
+            class="com.sg.business.commons.test.LifeCycleTest"
             id="lifecycle.action.test"
             namespace="lifecycle"
-            properties="action"
+            properties="action,status"
             type="java.lang.Object">
       </propertyTester>
    </extension>
