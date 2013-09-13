@@ -24,8 +24,6 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
@@ -499,7 +497,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				|| STATUS_WIP_VALUE.equals(lifeCycle)) {
 			return false;
 		}
-	
+
 		return true;
 	}
 
@@ -514,7 +512,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (STATUS_WIP_VALUE.equals(lifeCycle)) {
 			return true;
 		}
-	
+
 		return false;
 	}
 
@@ -530,7 +528,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				|| STATUS_FINIHED_VALUE.equals(lifeCycle)) {
 			return false;
 		}
-	
+
 		return true;
 	}
 
@@ -545,7 +543,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				|| STATUS_ONREADY_VALUE.equals(lifeCycle)) {
 			return false;
 		}
-	
+
 		return true;
 	}
 
@@ -554,215 +552,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String lc = getLifecycleStatus();
 
 		return STATUS_NONE_VALUE.equals(lc);
-	}
-
-	/**
-	 * 检查工作是否可以启动
-	 * 
-	 * @param context
-	 * @throws Exception
-	 */
-	public List<Object[]> checkStartAction(IContext context) throws Exception {
-		List<Object[]> message = new ArrayList<Object[]>();
-
-		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getConsignerId();
-		if (!userId.equals(getChargerId())) {
-			throw new Exception("不是本工作负责人，" + this);
-		}
-
-		// 2.判断上级工作生命周期状态是否符合：进行中
-		// 如果不在进行中，返回false
-		Work parentWork = (Work) getParent();
-		if (parentWork != null) {
-			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
-				throw new Exception("上级工作不在进行中，" + this);
-			}
-		} else {
-			Project project = getProject();
-			if (project != null) {
-				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
-					throw new Exception("项目不在进行中，" + this);
-				}
-			}
-		}
-		// 3.判断本工作及其下级工作的必要信息是否录入
-		message.addAll(checkCascadeStart());
-		return message;
-	}
-
-	@Override
-	public List<Object[]> checkCancelAction(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * 检查工作是否可以完成
-	 * 
-	 * @param context
-	 * @throws Exception
-	 */
-	public List<Object[]> checkFinishAction(IContext context) throws Exception {
-		List<Object[]> message = new ArrayList<Object[]>();
-		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getConsignerId();
-		if (!userId.equals(getChargerId())) {
-			throw new Exception("不是本工作负责人，" + this);
-		}
-	
-		// 2.判断上级工作生命周期状态是否符合：进行中
-		// 如果不在进行中，返回false
-		Work parentWork = (Work) getParent();
-		if (parentWork != null) {
-			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
-				throw new Exception("上级工作不在进行中，" + this);
-			}
-		} else {
-			Project project = getProject();
-			if (project != null) {
-				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
-					throw new Exception("项目不在进行中，" + this);
-				}
-			}
-		}
-		// 3.判断下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
-		message.addAll(checkCascadeFinish(get_id()));
-		return message;
-	}
-
-	@Override
-	public List<Object[]> checkPauseAction(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * 项目的工作检查必要信息是否录入
-	 * 
-	 * @throws Exception
-	 */
-	private List<Object[]> checkCascadeStart() {
-		List<Object[]> message = new ArrayList<Object[]>();
-		// 1.检查工作的计划开始和计划完成
-		Object value = getPlanStart();
-		if (value == null) {
-			message.add(new Object[] { "工作的计划开始时间没有确定", this, SWT.ICON_ERROR });
-		}
-		value = getPlanFinish();
-		if (value == null) {
-			message.add(new Object[] { "工作的计划完成时间没有确定", this, SWT.ICON_ERROR });
-		}
-		// 2.检查工作的计划工时
-		value = getPlanWorks();
-		if (value == null) {
-			message.add(new Object[] { "工作的计划工时没有确定", this, SWT.ICON_ERROR });
-		}
-		// 3.检查工作名称
-		value = getDesc();
-		if (Utils.isNullOrEmptyString(value)) {
-			message.add(new Object[] { "工作名称为空", this, SWT.ICON_ERROR });
-		}
-		// 4.检查负责人
-		value = getCharger();
-		if (value == null) {
-			message.add(new Object[] { "工作负责人为空", this, SWT.ICON_ERROR });
-		}
-		// 5.检查参与者
-		value = getParticipatesIdList();
-		if (!(value instanceof List) || ((List<?>) value).isEmpty()) {
-			message.add(new Object[] { "没有添加工作参与者", this, SWT.ICON_WARNING });
-		}
-
-		// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
-		// String process = F_WF_CHANGE;
-		// if (ProjectToolkit.checkProcessInternal(this, process)) {
-		// throw new Exception("该工作变更流程没有指明流程负责人，" + this);
-		// }
-
-		// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
-		if (ProjectToolkit.checkProcessInternal(this, F_WF_EXECUTE)) {
-			message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
-					SWT.ICON_WARNING });
-		}
-
-		// 7.检查工作交付物,警告
-		List<PrimaryObject> docs = getDeliverableDocuments();
-		if (docs.isEmpty()) {
-			message.add(new Object[] { "该工作没有设定交付物", this, SWT.ICON_WARNING });
-		}
-		// 8.检查下级工作
-		List<PrimaryObject> childrenWork = getChildrenWork();
-		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
-			for (int i = 0; i < childrenWork.size(); i++) {
-				Work childWork = (Work) childrenWork.get(i);
-				message.addAll(childWork.checkCascadeStart());
-			}
-		}
-		return message;
-	}
-
-	/**
-	 * 检查工作是否可以暂停
-	 * 
-	 * @throws Exception
-	 */
-	public void pauseCck(IContext context) throws Exception {
-		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getConsignerId();
-		if (!userId.equals(getChargerId())) {
-			throw new Exception("不是本工作负责人，" + this);
-		}
-
-		// 2.判断上级工作生命周期状态是否符合：进行中
-		// 如果不在进行中，返回false
-		Work parentWork = (Work) getParent();
-		if (parentWork != null) {
-			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
-				throw new Exception("上级工作不在进行中，" + this);
-			}
-		} else {
-			Project project = getProject();
-			if (project != null) {
-				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
-					throw new Exception("项目不在进行中，" + this);
-				}
-			}
-		}
-	}
-
-	/**
-	 * 检查下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
-	 * 
-	 * @throws Exception
-	 */
-	private List<Object[]> checkCascadeFinish(ObjectId id)  {
-		List<Object[]> message = new ArrayList<Object[]>();
-		// 1.判断非级联完成的工作是否已经在已完成状态或已取消状态
-		DBObject condition = new BasicDBObject();
-		condition.put(F_PARENT_ID, id);
-		condition.put(
-				F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
-						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE }));
-		condition.put(F_S_AUTOFINISHWITHPARENT,
-				new BasicDBObject().append("$ne", Boolean.TRUE));
-		DBCollection col = getCollection();
-		long count = col.count(condition);
-		if (count > 0) {
-			message.add(new Object[]{"非级联完成的下级工作未完成或取消",this,SWT.ICON_ERROR});
-		}
-
-		
-		// 2.循环得到下级级联的暂停和进行中状态的工作,只判断取出工作的下级非级联完成的工作是否可以完成
-		condition.put(F_S_AUTOFINISHWITHPARENT, Boolean.TRUE);
-		DBCursor cur = col
-				.find(condition, new BasicDBObject().append(F__ID, 1));
-		
-		while (cur.hasNext()) {
-			checkCascadeFinish((ObjectId) cur.next().get(F__ID));
-		}
-		return message;
 	}
 
 	/**
@@ -967,6 +756,432 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
+	 * 检查工作是否可以启动
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
+	public List<Object[]> checkStartAction(IContext context) throws Exception {
+		List<Object[]> message = new ArrayList<Object[]>();
+	
+		// 1.判断是否是本级的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(getChargerId())) {
+			throw new Exception("不是本工作负责人，" + this);
+		}
+	
+		// 2.判断上级工作生命周期状态是否符合：进行中
+		// 如果不在进行中，返回false
+		Work parentWork = (Work) getParent();
+		if (parentWork != null) {
+			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
+				throw new Exception("上级工作不在进行中，" + this);
+			}
+		} else {
+			Project project = getProject();
+			if (project != null) {
+				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
+					throw new Exception("项目不在进行中，" + this);
+				}
+			}
+		}
+		// 3.判断本工作及其下级工作的必要信息是否录入
+		message.addAll(checkCascadeStart());
+		return message;
+	}
+
+	@Override
+	public List<Object[]> checkCancelAction(IContext context) throws Exception {
+		return null;
+	}
+
+	/**
+	 * 检查工作是否可以完成
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
+	public List<Object[]> checkFinishAction(IContext context) throws Exception {
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.判断是否是本级的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(getChargerId())) {
+			throw new Exception("不是本工作负责人，" + this);
+		}
+	
+		// 2.判断上级工作生命周期状态是否符合：进行中
+		// 如果不在进行中，返回false
+		Work parentWork = (Work) getParent();
+		if (parentWork != null) {
+			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
+				throw new Exception("上级工作不在进行中，" + this);
+			}
+		} else {
+			Project project = getProject();
+			if (project != null) {
+				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
+					throw new Exception("项目不在进行中，" + this);
+				}
+			}
+		}
+		// 3.判断下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
+		message.addAll(checkCascadeFinish(get_id()));
+		return message;
+	
+	}
+
+	@Override
+	public List<Object[]> checkPauseAction(IContext context) throws Exception {
+		// 1.判断是否是本级的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(getChargerId())) {
+			throw new Exception("不是本工作负责人，" + this);
+		}
+	
+		// 2.判断上级工作生命周期状态是否符合：进行中
+		// 如果不在进行中，返回false
+		Work parentWork = (Work) getParent();
+		if (parentWork != null) {
+			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
+				throw new Exception("上级工作不在进行中，" + this);
+			}
+		} else {
+			Project project = getProject();
+			if (project != null) {
+				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
+					throw new Exception("项目不在进行中，" + this);
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 计算工期
+	 * 
+	 * @param fStart
+	 *            ,开始日期
+	 * @param fFinish
+	 *            ,完成日期
+	 * @param fDuration
+	 *            ,工期
+	 * @throws Exception
+	 */
+	public void checkAndCalculateDuration(String fStart, String fFinish,
+			String fDuration) throws Exception {
+		Date start = (Date) getValue(fStart);
+		if (start != null) {
+			start = Utils.getDayBegin(start).getTime();
+		}
+	
+		Date finish = (Date) getValue(fFinish);
+		if (finish != null) {
+			finish = Utils.getDayEnd(finish).getTime();
+		}
+	
+		if (start != null && finish != null) {
+			// 检查是否合法
+			if (start.after(finish)) {
+				throw new Exception("开始日期必须早于完成日期");
+			}
+			// 计算工期
+			Calendar sdate = Utils.getDayBegin(start);
+			Calendar edate = Utils.getDayEnd(finish);
+			long l = (edate.getTimeInMillis() - sdate.getTimeInMillis())
+					/ (1000 * 60 * 60 * 24);
+			setValue(fDuration, new Integer((int) l));
+		}
+	}
+
+	/**
+	 * 项目检查
+	 * 
+	 * @return
+	 */
+	public List<ICheckListItem> checkPlan() {
+		Project project = getProject();
+		Map<ObjectId, List<PrimaryObject>> ram = project.getRoleAssignmentMap();
+		return checkPlan(project, ram);
+	}
+
+	/**
+	 * 1. 检查工作的计划时间：错误，没有设定计划开始、计划完成、计划工时的叶工作 <br/>
+	 * 2. 检查工作的负责人 ：错误，没有设定负责人，而且没有设定指派者的叶工作 <br/>
+	 * 3. 工作的流程设定 ：警告，没有指明流程执行者的工作 <br/>
+	 * 4. 交付物检查 <br/>
+	 * 4.1. 检查工作是否具有交付物：警告，没有交付物的叶工作 4.2. 检查交付物文档没有电子文件作为模板：警告
+	 * 
+	 * @param project
+	 * 
+	 * @param roleMap
+	 * 
+	 * @return
+	 */
+	public List<ICheckListItem> checkPlan(Project project,
+			Map<ObjectId, List<PrimaryObject>> roleMap) {
+		ArrayList<ICheckListItem> result = new ArrayList<ICheckListItem>();
+		List<PrimaryObject> childrenWork = getChildrenWork();
+		if (childrenWork.size() > 0) {// 如果有下级，直接返回下级的检查结果
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				result.addAll(childWork.checkPlan(project, roleMap));
+			}
+		} else {
+			// ****************************************************************************************
+			// 1 检查工作的计划开始和计划完成
+			Object value = getPlanStart();
+			boolean passed = true;
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作的计划开始没有确定", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
+				checkItem.setKey(F_PLAN_START);
+				result.add(checkItem);
+				passed = false;
+			}
+	
+			value = getPlanFinish();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作的计划完成时间没有确定", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
+				checkItem.setKey(F_PLAN_START);
+				result.add(checkItem);
+				passed = false;
+			}
+	
+			value = getPlanWorks();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作的计划工时没有确定", "不确定该计划工时表示该工作不计算工时，如果您并不希望这样，请在提交前确定。",
+						ICheckListItem.WARRING);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
+				checkItem.setKey(F_PLAN_WORKS);
+				result.add(checkItem);
+				passed = false;
+			}
+	
+			value = getDesc();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
+						"工作名称为空", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
+				checkItem.setKey(F_DESC);
+				result.add(checkItem);
+			}
+	
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem("检查工作基本属性");
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				result.add(checkItem);
+			}
+			passed = true;
+	
+			// ****************************************************************************************
+			// 2 检查负责人
+			value = getCharger();
+			if (value == null) {
+				CheckListItem checkItem = new CheckListItem("检查工作执行人",
+						"工作负责人为空", "请在提交前确定。", ICheckListItem.ERROR);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
+				checkItem.setKey(F_CHARGER);
+				result.add(checkItem);
+				passed = false;
+			}
+	
+			// 3.检查参与者
+			value = getParticipatesIdList();
+			if (value == null || ((BasicBSONList) value).isEmpty()) {
+				CheckListItem checkItem = new CheckListItem("检查工作执行人",
+						"没有添加工作参与者", "请在提交前确定。", ICheckListItem.WARRING);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
+				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
+				checkItem.setKey(F_PARTICIPATE);
+				result.add(checkItem);
+				passed = false;
+			}
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem("检查工作执行人");
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				result.add(checkItem);
+			}
+			passed = true;
+	
+			// 4.1 检查工作变更的流程 ：错误，没有指明流程负责人
+			String title = "检查工作变更流程";
+			String process = F_WF_CHANGE;
+			String editorId = Project.EDITOR_CREATE_PLAN;
+			String pageId = Project.EDITOR_PAGE_WBS;
+			passed = ProjectToolkit.checkProcessInternal(project, this, result,
+					roleMap, title, process, editorId, pageId);
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem(title);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				result.add(checkItem);
+			}
+	
+			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
+			title = "检查工作执行流程";
+			process = F_WF_EXECUTE;
+			passed = ProjectToolkit.checkProcessInternal(project, this, result,
+					roleMap, title, process, editorId, pageId);
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem(title);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				result.add(checkItem);
+			}
+	
+			passed = true;
+			// 检查工作交付物
+			List<PrimaryObject> docs = getDeliverableDocuments();
+			if (docs.isEmpty()) {
+				CheckListItem checkItem = new CheckListItem("检查交付物",
+						"该工作没有设定交付物", "提交前如果不设定，将由工作执行后由执行者自行添加，请在提交前确定。",
+						ICheckListItem.WARRING);
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				checkItem.setKey(F_PARTICIPATE);
+				result.add(checkItem);
+				passed = false;
+			}
+			if (passed) {
+				CheckListItem checkItem = new CheckListItem("检查交付物");
+				checkItem.setData(project);
+				checkItem.setSelection(this);
+				result.add(checkItem);
+			}
+	
+		}
+	
+		return result;
+	}
+
+	/**
+	 * 项目的工作检查必要信息是否录入
+	 * 
+	 * @throws Exception
+	 */
+	private List<Object[]> checkCascadeStart() {
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.检查工作的计划开始和计划完成
+		Object value = getPlanStart();
+		if (value == null) {
+			message.add(new Object[] { "工作的计划开始时间没有确定", this, SWT.ICON_ERROR });
+		}
+		value = getPlanFinish();
+		if (value == null) {
+			message.add(new Object[] { "工作的计划完成时间没有确定", this, SWT.ICON_ERROR });
+		}
+		// 2.检查工作的计划工时
+		value = getPlanWorks();
+		if (value == null) {
+			message.add(new Object[] { "工作的计划工时没有确定", this, SWT.ICON_ERROR });
+		}
+		// 3.检查工作名称
+		value = getDesc();
+		if (Utils.isNullOrEmptyString(value)) {
+			message.add(new Object[] { "工作名称为空", this, SWT.ICON_ERROR });
+		}
+		// 4.检查负责人
+		value = getCharger();
+		if (value == null) {
+			message.add(new Object[] { "工作负责人为空", this, SWT.ICON_ERROR });
+		}
+		// 5.检查参与者
+		value = getParticipatesIdList();
+		if (!(value instanceof List) || ((List<?>) value).isEmpty()) {
+			message.add(new Object[] { "没有添加工作参与者", this, SWT.ICON_WARNING });
+		}
+	
+		// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
+		// String process = F_WF_CHANGE;
+		// if (ProjectToolkit.checkProcessInternal(this, process)) {
+		// throw new Exception("该工作变更流程没有指明流程负责人，" + this);
+		// }
+	
+		// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
+		if (ProjectToolkit.checkProcessInternal(this, F_WF_EXECUTE)) {
+			message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
+					SWT.ICON_WARNING });
+		}
+	
+		// 7.检查工作交付物,警告
+		List<PrimaryObject> docs = getDeliverableDocuments();
+		if (docs.isEmpty()) {
+			message.add(new Object[] { "该工作没有设定交付物", this, SWT.ICON_WARNING });
+		}
+		// 8.检查下级工作
+		List<PrimaryObject> childrenWork = getChildrenWork();
+		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				message.addAll(childWork.checkCascadeStart());
+			}
+		}
+		return message;
+	}
+
+	/**
+	 * 检查下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
+	 * 
+	 * @throws Exception
+	 */
+	private List<Object[]> checkCascadeFinish(ObjectId id) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.判断非级联完成的工作是否已经在已完成状态或已取消状态
+		DBObject condition = new BasicDBObject();
+		condition.put(F_PARENT_ID, id);
+		condition.put(
+				F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE }));
+		condition.put(F_S_AUTOFINISHWITHPARENT,
+				new BasicDBObject().append("$ne", Boolean.TRUE));
+		long count = getRelationCountByCondition(Work.class, condition);
+		if (count > 0) {
+			message.add(new Object[] { "非级联完成的下级工作未完成或取消", this, SWT.ICON_ERROR });
+		}
+	
+		// 2.循环得到下级级联的暂停和进行中状态的工作,只判断取出工作的下级非级联完成的工作是否可以完成
+		condition.put(F_S_AUTOFINISHWITHPARENT, Boolean.TRUE);
+		List<PrimaryObject> childrenWork = getRelationByCondition(Work.class,
+				condition);
+		if (childrenWork.size() > 0) {
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				if (!Boolean.TRUE.equals(childWork
+						.getValue(F_S_CANSKIPTOFINISH))) {
+					message.add(new Object[] { "存在无法跳过进行中的流程完成的下级级联完成工作", this,
+							SWT.ICON_ERROR });
+				}
+				message.addAll(checkCascadeFinish(childWork.get_id()));
+			}
+		}
+		return message;
+	}
+
+	/**
 	 * 是否有权限进行指派，该工作或上级工作的指派者时有权限
 	 * 
 	 * @param context
@@ -1011,43 +1226,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					return false;
 				}
 			}
-		}
-	}
-
-	/**
-	 * 计算工期
-	 * 
-	 * @param fStart
-	 *            ,开始日期
-	 * @param fFinish
-	 *            ,完成日期
-	 * @param fDuration
-	 *            ,工期
-	 * @throws Exception
-	 */
-	public void checkAndCalculateDuration(String fStart, String fFinish,
-			String fDuration) throws Exception {
-		Date start = (Date) getValue(fStart);
-		if (start != null) {
-			start = Utils.getDayBegin(start).getTime();
-		}
-
-		Date finish = (Date) getValue(fFinish);
-		if (finish != null) {
-			finish = Utils.getDayEnd(finish).getTime();
-		}
-
-		if (start != null && finish != null) {
-			// 检查是否合法
-			if (start.after(finish)) {
-				throw new Exception("开始日期必须早于完成日期");
-			}
-			// 计算工期
-			Calendar sdate = Utils.getDayBegin(start);
-			Calendar edate = Utils.getDayEnd(finish);
-			long l = (edate.getTimeInMillis() - sdate.getTimeInMillis())
-					/ (1000 * 60 * 60 * 24);
-			setValue(fDuration, new Integer((int) l));
 		}
 	}
 
@@ -1139,190 +1317,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				result.add(doc);
 			}
 		}
-		return result;
-	}
-
-	/**
-	 * 项目检查
-	 * 
-	 * @return
-	 */
-	public List<ICheckListItem> checkPlan() {
-		Project project = getProject();
-		Map<ObjectId, List<PrimaryObject>> ram = project.getRoleAssignmentMap();
-		return checkPlan(project, ram);
-	}
-
-	/**
-	 * 1. 检查工作的计划时间：错误，没有设定计划开始、计划完成、计划工时的叶工作 <br/>
-	 * 2. 检查工作的负责人 ：错误，没有设定负责人，而且没有设定指派者的叶工作 <br/>
-	 * 3. 工作的流程设定 ：警告，没有指明流程执行者的工作 <br/>
-	 * 4. 交付物检查 <br/>
-	 * 4.1. 检查工作是否具有交付物：警告，没有交付物的叶工作 4.2. 检查交付物文档没有电子文件作为模板：警告
-	 * 
-	 * @param project
-	 * 
-	 * @param roleMap
-	 * 
-	 * @return
-	 */
-	public List<ICheckListItem> checkPlan(Project project,
-			Map<ObjectId, List<PrimaryObject>> roleMap) {
-		ArrayList<ICheckListItem> result = new ArrayList<ICheckListItem>();
-		List<PrimaryObject> childrenWork = getChildrenWork();
-		if (childrenWork.size() > 0) {// 如果有下级，直接返回下级的检查结果
-			for (int i = 0; i < childrenWork.size(); i++) {
-				Work childWork = (Work) childrenWork.get(i);
-				result.addAll(childWork.checkPlan(project, roleMap));
-			}
-		} else {
-			// ****************************************************************************************
-			// 1 检查工作的计划开始和计划完成
-			Object value = getPlanStart();
-			boolean passed = true;
-			if (value == null) {
-				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作的计划开始没有确定", "请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
-				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
-				checkItem.setKey(F_PLAN_START);
-				result.add(checkItem);
-				passed = false;
-			}
-
-			value = getPlanFinish();
-			if (value == null) {
-				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作的计划完成时间没有确定", "请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
-				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
-				checkItem.setKey(F_PLAN_START);
-				result.add(checkItem);
-				passed = false;
-			}
-
-			value = getPlanWorks();
-			if (value == null) {
-				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作的计划工时没有确定", "不确定该计划工时表示该工作不计算工时，如果您并不希望这样，请在提交前确定。",
-						ICheckListItem.WARRING);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
-				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
-				checkItem.setKey(F_PLAN_WORKS);
-				result.add(checkItem);
-				passed = false;
-			}
-
-			value = getDesc();
-			if (value == null) {
-				CheckListItem checkItem = new CheckListItem("检查工作基本属性",
-						"工作名称为空", "请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
-				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
-				checkItem.setKey(F_DESC);
-				result.add(checkItem);
-			}
-
-			if (passed) {
-				CheckListItem checkItem = new CheckListItem("检查工作基本属性");
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				result.add(checkItem);
-			}
-			passed = true;
-
-			// ****************************************************************************************
-			// 2 检查负责人
-			value = getCharger();
-			if (value == null) {
-				CheckListItem checkItem = new CheckListItem("检查工作执行人",
-						"工作负责人为空", "请在提交前确定。", ICheckListItem.ERROR);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
-				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
-				checkItem.setKey(F_CHARGER);
-				result.add(checkItem);
-				passed = false;
-			}
-
-			// 3.检查参与者
-			value = getParticipatesIdList();
-			if (value == null || ((BasicBSONList) value).isEmpty()) {
-				CheckListItem checkItem = new CheckListItem("检查工作执行人",
-						"没有添加工作参与者", "请在提交前确定。", ICheckListItem.WARRING);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
-				checkItem.setEditorPageId(Project.EDITOR_PAGE_WBS);
-				checkItem.setKey(F_PARTICIPATE);
-				result.add(checkItem);
-				passed = false;
-			}
-			if (passed) {
-				CheckListItem checkItem = new CheckListItem("检查工作执行人");
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				result.add(checkItem);
-			}
-			passed = true;
-
-			// 4.1 检查工作变更的流程 ：错误，没有指明流程负责人
-			String title = "检查工作变更流程";
-			String process = F_WF_CHANGE;
-			String editorId = Project.EDITOR_CREATE_PLAN;
-			String pageId = Project.EDITOR_PAGE_WBS;
-			passed = ProjectToolkit.checkProcessInternal(project, this, result,
-					roleMap, title, process, editorId, pageId);
-			if (passed) {
-				CheckListItem checkItem = new CheckListItem(title);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				result.add(checkItem);
-			}
-
-			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
-			title = "检查工作执行流程";
-			process = F_WF_EXECUTE;
-			passed = ProjectToolkit.checkProcessInternal(project, this, result,
-					roleMap, title, process, editorId, pageId);
-			if (passed) {
-				CheckListItem checkItem = new CheckListItem(title);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				result.add(checkItem);
-			}
-
-			passed = true;
-			// 检查工作交付物
-			List<PrimaryObject> docs = getDeliverableDocuments();
-			if (docs.isEmpty()) {
-				CheckListItem checkItem = new CheckListItem("检查交付物",
-						"该工作没有设定交付物", "提交前如果不设定，将由工作执行后由执行者自行添加，请在提交前确定。",
-						ICheckListItem.WARRING);
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				checkItem.setKey(F_PARTICIPATE);
-				result.add(checkItem);
-				passed = false;
-			}
-			if (passed) {
-				CheckListItem checkItem = new CheckListItem("检查交付物");
-				checkItem.setData(project);
-				checkItem.setSelection(this);
-				result.add(checkItem);
-			}
-
-		}
-
 		return result;
 	}
 
@@ -1745,7 +1739,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
 		doCancelAfter(context, params);
-		
+
 		return null;
 
 	}
@@ -1780,9 +1774,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public Object doStart(IContext context) throws Exception {
 		// 判断能否启动，检查状态
 		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
-		List<Object[]> messages = checkStartAction(context);
-		LifecycleToolkit.checkActionMessage(messages);
-
 		Map<String, Object> params = new HashMap<String, Object>();
 		// 调用前处理
 		doStartBefore(context, params);
@@ -1828,7 +1819,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 调用后处理
 		doStartAfter(context, params);
 		
-		return messages;
+		return null;
 	}
 
 	public Workflow getWorkflow(String key) {
