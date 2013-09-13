@@ -1172,12 +1172,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
 			// String process = F_WF_CHANGE;
-			// if (ProjectToolkit.checkProcessInternal(this, process)) {
+			// if (!ProjectToolkit.checkProcessInternal(this, process)) {
 			// throw new Exception("该工作变更流程没有指明流程负责人，" + this);
 			// }
 
 			// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
-			if (ProjectToolkit.checkProcessInternal(this, F_WF_EXECUTE)) {
+			if (!ProjectToolkit.checkProcessInternal(this, F_WF_EXECUTE)) {
 				message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
 						SWT.ICON_WARNING });
 			}

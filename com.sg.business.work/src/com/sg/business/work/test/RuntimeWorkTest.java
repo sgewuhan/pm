@@ -30,13 +30,14 @@ public class RuntimeWorkTest extends PropertyTester {
 					return work.getProjectId() != null;
 				}else if ("delete".equals(args[0])) {
 					return work.canDelete(new CurrentAccountContext());
-				}else if ("wfstart".equals(args[0])) {
-					return work.canWorkflowStart(new CurrentAccountContext());
-				}else if ("wffinish".equals(args[0])) {
-					return work.canWorkflowFinish(new CurrentAccountContext());
-				}else if ("wfcancel".equals(args[0])) {
-					return work.canWorkflowCancel(new CurrentAccountContext());
 				}
+//				else if ("wfstart".equals(args[0])) {
+//					return work.canWorkflowStart(new CurrentAccountContext());
+//				}else if ("wffinish".equals(args[0])) {
+//					return work.canWorkflowFinish(new CurrentAccountContext());
+//				}else if ("wfcancel".equals(args[0])) {
+//					return work.canWorkflowCancel(new CurrentAccountContext());
+//				}
 			}
 
 		}
