@@ -397,6 +397,10 @@
             id="project.bulletinboard"
             tree="project.bulletinboard">
       </navigator>
+      <navigator
+            id="work.deliverable"
+            tree="work.deliverable">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -1481,6 +1485,12 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <navigatorpage
+               id="deliverable"
+               image="image/deliverable_24.png"
+               navigatorId="work.deliverable"
+               title="交付物">
+         </navigatorpage>
          <basicpage
                description="工作执行流程的执行人"
                id="processpage1"
@@ -2159,6 +2169,44 @@
                style="SWT.CENTER"
                type="String"
                width="36">
+         </column>
+      </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfWork"
+            editorId="editor.work"
+            fix="1"
+            id="work.deliverable"
+            popupMenu="popup:project.deliverable">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <structure
+               modelRelation="work_deliverable">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               style="SWT.LEFT"
+               type="String"
+               width="180">
+         </column>
+         <column
+               column="mandatory"
+               name="必须"
+               type="Boolean"
+               width="48">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="participate">
          </column>
       </tree>
    </extension>
