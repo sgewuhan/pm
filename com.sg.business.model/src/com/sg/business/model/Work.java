@@ -25,6 +25,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
@@ -1740,32 +1741,130 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
+		
+		DBCollection col = getCollection();
+		
+		DBObject query=new BasicDBObject().append(Work.F__ID,get_id());
+		DBObject update = col.findOne(query);
+		update.put(Work.F_LIFECYCLE, Work.STATUS_CANCELED_VALUE);
+		DBObject sort=new BasicDBObject().append(F__ID, -1);
+		
+		col.findAndModify(query, null, sort, false, update, false, false);
+		
+		
+		//查询下级
+		BasicDBObject queryCondition = new BasicDBObject();
+		//设置查询条件，该工作的所有下级工作
+		queryCondition.put(Work.F_PARENT_ID,get_id());
+		//设置查询条件，该工作所有正在进行中和已暂停的下级工作
+		queryCondition.put(Work.F_LIFECYCLE,new BasicDBObject().append("$in", new String[] {
+									Work.STATUS_WIP_VALUE,
+									Work.STATUS_PAUSED_VALUE}));
+		//查询，返回该工作所有正在进行中的下级工作
+	    DBCursor cur = col.find(queryCondition);
+		while(cur.hasNext()){      
+			DBObject dbobject = cur.next();
+			Work work = ModelService.createModelObject(dbobject, Work.class);
+			work.doCancel(context);
+		
+		}
+		
 		doCancelAfter(context, params);
 
 		return null;
 
 	}
+	
+	
 
 	public Object doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doFinishBefore(context, params);
-
-		// 测试流程完成当前的工作
-		setValue(F_LIFECYCLE, STATUS_FINIHED_VALUE);
-		doSave(context);
+		
+		DBCollection col = getCollection();
+		DBObject query=new BasicDBObject().append(Work.F__ID,get_id());
+	//	DBObject update=new BasicDBObject().append(Work.F_LIFECYCLE, Work.STATUS_FINIHED_VALUE).append(Work.F_ACTUAL_FINISH, new Date());
+	//	DBObject update=((BasicDBObject) query).append(Work.F_LIFECYCLE, Work.STATUS_FINIHED_VALUE).append(Work.F_ACTUAL_FINISH, new Date());
+		DBObject update = col.findOne(query);
+		update.put(Work.F_LIFECYCLE, Work.STATUS_FINIHED_VALUE);
+		update.put(Work.F_ACTUAL_FINISH, new Date());
+		DBObject sort=new BasicDBObject().append(F__ID, -1);
+		
+		col.findAndModify(query, null, sort, false, update, false, false);
+		
+		//查询下级
+		BasicDBObject queryCondition = new BasicDBObject();
+		//设置查询条件，该工作的所有下级工作
+		queryCondition.put(Work.F_PARENT_ID,get_id());
+		//设置查询条件，该工作所有正在进行中和已暂停的下级工作
+		queryCondition.put(Work.F_LIFECYCLE,new BasicDBObject().append("$in", new String[] {
+									Work.STATUS_WIP_VALUE,
+									Work.STATUS_PAUSED_VALUE}));
+		//查询，返回该工作所有正在进行中的下级工作
+	    DBCursor cur = col.find(queryCondition);
+		while(cur.hasNext()){      
+			DBObject dbobject = cur.next();
+			Work work = ModelService.createModelObject(dbobject, Work.class);
+			work.doFinish(context);
+		
+		}
 
 		doFinishAfter(context, params);
 		return null;
 
 	}
+	
+/*	private List<DBObject> getFinishDatas(Work work, List<DBObject> list,DBCollection col){
+		BasicDBObject queryCondition = new BasicDBObject();
+		//设置查询条件，该工作的所有下级工作
+		queryCondition.put(Work.F_PARENT_ID,get_id());
+		//设置查询条件，该工作所有正在进行中的下级工作
+		queryCondition.put(Work.F_LIFECYCLE,Work.STATUS_WIP_VALUE);
+		//查询，返回该工作所有正在进行中的下级工作
+		DBCursor cur = col.find(queryCondition);
+		while(cur.hasNext()){
+			DBObject dbo = cur.next();
+			list.add(dbo);
+			Work finWork = ModelService.createModelObject(dbo, Work.class);
+			getFinishDatas(finWork,list,col);
+		}
+		return list;
+	}*/
 
 	public Object doPause(IContext context) throws Exception {
 		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doPauseBefore(context, params);
 
+		
+         DBCollection col = getCollection();
+		
+		DBObject query=new BasicDBObject().append(Work.F__ID,get_id());
+		DBObject update = col.findOne(query);
+		update.put(Work.F_LIFECYCLE, Work.STATUS_PAUSED_VALUE);
+		DBObject sort=new BasicDBObject().append(F__ID, -1);
+		
+		col.findAndModify(query, null, sort, false, update, false, false);
+		
+		
+		//查询下级
+		BasicDBObject queryCondition = new BasicDBObject();
+		//设置查询条件，该工作的所有下级工作
+		queryCondition.put(Work.F_PARENT_ID,get_id());
+		//设置查询条件，该工作所有正在进行中和已暂停的下级工作
+		queryCondition.put(Work.F_LIFECYCLE,Work.STATUS_WIP_VALUE);
+		//查询，返回该工作所有正在进行中的下级工作
+	    DBCursor cur = col.find(queryCondition);
+		while(cur.hasNext()){      
+			DBObject dbobject = cur.next();
+			Work work = ModelService.createModelObject(dbobject, Work.class);
+			work.doPause(context);
+		}
+		
 		doPauseAfter(context, params);
+		
+		doNoticeWorkAction(context, "工作已暂停");
 		return null;
 
 	}
