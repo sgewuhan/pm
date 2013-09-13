@@ -393,6 +393,10 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="project.bulletinboard"
+            tree="project.bulletinboard">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -913,6 +917,13 @@
                id="project.calendar"
                navigatorId="project.calendar"
                title="日历">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="project.bulletinboard"
+               image="image/bulletin_24.png"
+               navigatorId="project.bulletinboard"
+               title="公告">
          </navigatorpage>
       </editor>
       <editor
@@ -2110,6 +2121,46 @@
                width="-1">
          </column>
       </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="true"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.project.ProjectBulletinBoardDataSet"
+            editorId="bulletinboard.editor.create"
+            headerVisiable="false"
+            id="project.bulletinboard"
+            limit="100"
+            markupEnabled="true"
+            multiSelection="true"
+            popupMenu="popup:menu.project.bulletinboard">
+         <structure
+               modelRelation="bulletinboard_bulletinboard">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="标题"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="publisher"
+               labelProvider="com.sg.business.commons.labelprovider.PublisherLabelProvider"
+               name="发布人"
+               style="SWT.LEFT"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="attachment"
+               labelProvider="com.sg.business.commons.labelprovider.AttachmentLabelProvider"
+               name="附件"
+               style="SWT.CENTER"
+               type="String"
+               width="36">
+         </column>
+      </tree>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -2789,6 +2840,58 @@
                commandId="project.start"
                icon="image/project_start_24.png"
                label="启动"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:menu.project.bulletinboard">
+         <command
+               commandId="bulletinboard.create"
+               icon="image/create2_24.png"
+               label="新建公告"
+               style="push">
+            <parameter
+                  name="bulletinboard.hasproject"
+                  value="true">
+            </parameter>
+         </command>
+         <command
+               commandId="bulletinboard.reply"
+               icon="image/reply24.png"
+               label="回复公告"
+               style="push">
+         </command>
+         <command
+               commandId="bulletinboard.open"
+               icon="image/open_24.png"
+               label="查看公告"
+               style="push">
+         </command>
+         <separator
+               name="bulletinboard.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="编辑"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
                style="push">
          </command>
       </menuContribution>

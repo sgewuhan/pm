@@ -13,8 +13,9 @@ import com.sg.business.model.toolkit.UserToolkit;
 
 /**
  * 公告板
+ * 
  * @author yangjun
- *
+ * 
  */
 public class BulletinBoard extends PrimaryObject {
 
@@ -32,6 +33,11 @@ public class BulletinBoard extends PrimaryObject {
 	 * 所属组织ID
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
+
+	/**
+	 * 所属项目ID
+	 */
+	public static final String F_PROJECT_ID = "project_id";
 
 	/**
 	 * 标题
@@ -85,6 +91,13 @@ public class BulletinBoard extends PrimaryObject {
 	}
 
 	/**
+	 * @return : {@link ObjectId},所属项目ID
+	 */
+	public ObjectId getProjectId() {
+		return (ObjectId) getValue(F_PROJECT_ID);
+	}
+
+	/**
 	 * @return : {@link String},公告内容
 	 */
 	public String getContent() {
@@ -110,23 +123,19 @@ public class BulletinBoard extends PrimaryObject {
 		String label = getLabel();
 		label = Utils.getPlainText(label);
 		label = Utils.getLimitLengthString(label, 20);
-		
-		//设置内容
+
+		// 设置内容
 		String content = getContent();
 		content = Utils.getPlainText(content);
-		content = Utils.getLimitLengthString(content,40);
-		
-		//判断是否为回复内容，回复内容时，只显示内容，公告时，显示标题和内容
-		if (isReply()) {
-			sb.append(content);
-		} else {
-			sb.append("<b>" + label + "</b>");
-			sb.append("<br/>");
-			sb.append(content);
-		}
+		content = Utils.getLimitLengthString(content, 40);
+
+		// 显示标题和内容
+		sb.append("<b>" + label + "</b>");
+		sb.append("<br/>");
+		sb.append(content);
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 返回发布人的显示内容
 	 * 
@@ -135,15 +144,17 @@ public class BulletinBoard extends PrimaryObject {
 	public String getPublisherLabel() {
 		StringBuffer sb = new StringBuffer();
 
-		//设置发布人
-		String punlisher =UserToolkit.getUserById(getPublisher()).getUsername();
-		//设置日期
+		// 设置发布人
+		String punlisher = UserToolkit.getUserById(getPublisher())
+				.getUsername();
+		// 设置日期
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		Date date = getPublishDate();
 		String publishDate = sdf.format(date);
-		//设置发布部门
-		String org = ((Organization)ModelService.createModelObject(Organization.class,
-				getOrganizationId())).getDesc();
+
+		// 设置发布部门
+		String org = ((Organization) ModelService.createModelObject(
+				Organization.class, getOrganizationId())).getDesc();
 
 		sb.append("<span style='padding-left:4px'>");
 		sb.append("" + punlisher);
@@ -152,11 +163,11 @@ public class BulletinBoard extends PrimaryObject {
 		sb.append("" + publishDate);
 		sb.append("</span>");
 		sb.append("<br/>");
-		sb.append(""+org);
+		sb.append("" + org);
 
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 根据发布人和当前登陆用户判断能否编辑，一致时才能编辑。
 	 */
@@ -192,13 +203,15 @@ public class BulletinBoard extends PrimaryObject {
 
 	/**
 	 * 判断当前用户是否为发布人
-	 * @param context : 当前情景
+	 * 
+	 * @param context
+	 *            : 当前情景
 	 * @return : {@link boolean}
 	 */
 	private boolean isOtherUser(IContext context) {
-		//获取当前登录用户
+		// 获取当前登录用户
 		String userId = context.getAccountInfo().getUserId();
-		//获取发布人
+		// 获取发布人
 		String bulletinboardUserid = getPublisher();
 		if (userId == bulletinboardUserid) {
 			return true;
@@ -209,10 +222,11 @@ public class BulletinBoard extends PrimaryObject {
 
 	/**
 	 * 判断是否为回复信息
+	 * 
 	 * @return : {@link boolean}
 	 */
 	public boolean isReply() {
-		//根据上级公告ID判断是否为回复信息
+		// 根据上级公告ID判断是否为回复信息
 		if (getParentBulletin() == null) {
 			return false;
 		} else {

@@ -62,6 +62,7 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 			condition.put(BulletinBoard.F_ORGANIZATION_ID,
 					new BasicDBObject().append("$in", orgIds));
 			condition.put(BulletinBoard.F_PARENT_BULLETIN,null);
+			condition.put(BulletinBoard.F_PROJECT_ID,null);
 			return condition;
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
