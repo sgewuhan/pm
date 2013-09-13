@@ -34,6 +34,7 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 		DBCursor cur = col.find(getQueryCondition(),
 				new BasicDBObject().append(Work.F_ROOT_ID, 1));
 		List<PrimaryObject> ret = new ArrayList<PrimaryObject>();
+		cur.sort(getSort());
 		while(cur.hasNext()){
 			DBObject dbo = cur.next();
 			ObjectId rootId = (ObjectId) dbo.get(Work.F_ROOT_ID);
