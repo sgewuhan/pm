@@ -370,6 +370,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return po;
 	}
 
+	public BulletinBoard makeBulletinBoard(BulletinBoard po) {
+		if (po == null) {
+			po = ModelService.createModelObject(BulletinBoard.class);
+		}
+		po.setValue(BulletinBoard.F_PROJECT_ID, get_id());
+		return po;
+	}
+
 	public ProjectRole makeOrganizationRole(Role role) {
 		ProjectRole prole = ModelService.createModelObject(ProjectRole.class);
 		prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, role.get_id());
@@ -1721,5 +1729,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
