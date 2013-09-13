@@ -1768,11 +1768,38 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doFinishBefore(context, params);
-
-		List<DBObject> dataItems = new ArrayList<DBObject>();
+		
 		
 		DBCollection col = getCollection();
+		BasicDBObject queryCondition = new BasicDBObject();
+		//设置查询条件，该工作的所有下级工作
+		queryCondition.put(Work.F_PARENT_ID,get_id());
+		//设置查询条件，该工作所有正在进行中的下级工作
+		queryCondition.put(Work.F_LIFECYCLE,Work.STATUS_WIP_VALUE);
+		//查询，返回该工作所有正在进行中的下级工作
+	    DBCursor cur = col.find(queryCondition);
 		
+	
+		while(cur.hasNext()){      
+			DBObject dbo = cur.next();
+			
+			DBObject update=new BasicDBObject().append(Work.F_LIFECYCLE, Work.STATUS_FINIHED_VALUE).append(Work.F_ACTUAL_FINISH, new Date());
+			DBObject fields=new BasicDBObject().append(F__ID,dbo.get(Work.F__ID));
+			DBObject sort=new BasicDBObject().append(F__ID, -1);
+			
+			dbo=col.findAndModify(dbo, fields, sort, false, update, true, false);
+			Work work = ModelService.createModelObject(dbo, Work.class);
+			work.doFinish(context);
+		}
+		// 测试流程完成当前的工作
+		setValue(F_LIFECYCLE, STATUS_FINIHED_VALUE);
+
+		doFinishAfter(context, params);
+		return null;
+
+	}
+	
+/*	private List<DBObject> getFinishDatas(Work work, List<DBObject> list,DBCollection col){
 		BasicDBObject queryCondition = new BasicDBObject();
 		//设置查询条件，该工作的所有下级工作
 		queryCondition.put(Work.F_PARENT_ID,get_id());
@@ -1782,18 +1809,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBCursor cur = col.find(queryCondition);
 		while(cur.hasNext()){
 			DBObject dbo = cur.next();
-			Work work = ModelService.createModelObject(dbo, Work.class);
-			
+			list.add(dbo);
+			Work finWork = ModelService.createModelObject(dbo, Work.class);
+			getFinishDatas(finWork,list,col);
 		}
-		
-		// 测试流程完成当前的工作
-		setValue(F_LIFECYCLE, STATUS_FINIHED_VALUE);
-		doSave(context);
-
-		doFinishAfter(context, params);
-		return null;
-
-	}
+		return list;
+	}*/
 
 	public Object doPause(IContext context) throws Exception {
 		Assert.isTrue(canPause(), "工作的当前状态不能执行暂停操作");
