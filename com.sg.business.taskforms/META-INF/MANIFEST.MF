@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Taskforms
+Bundle-SymbolicName: com.sg.business.taskforms;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: SG
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: com.sg.bpm.workflow;bundle-version="1.0.0",
+ com.sg.widgets;bundle-version="1.0.0",
+ com.sg.bpm.service;bundle-version="1.0.0"
