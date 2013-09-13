@@ -203,18 +203,6 @@ public class User extends PrimaryObject {
 		}
 	}
 
-	/** 
-	 * 根据ID获取用户 此方法已不可使用，请使用  {@link UserToolkit#getUserById(userId)}
-	 * @param userId
-	 *           用户ID
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	@Deprecated
-	public static User getUserById(String userId) {
-		Assert.isNotNull(null, "此方法已不可使用，请使用UserToolkit.getUserById(userId)");
-		return null;
-	}
 	
 	/**
 	 * 获得用户具有某角色的组织
@@ -263,17 +251,6 @@ public class User extends PrimaryObject {
 	public void doConsignTo(User consigner, IContext context) throws Exception {
 		setValue(F_CONSIGNER, consigner.getUserid());
 		doSave(context);
-	}
-
-	/**
-	 * 获取系统管理员,此方法已不可使用，请使用  {@link UserToolkit#getAdmin()}
-	 * @return List<User>
-	 */
-	@SuppressWarnings("unused")
-	@Deprecated
-	public static List<PrimaryObject> getAdmin() {
-		Assert.isNotNull(null, "此方法已不可使用，请使用UserToolkit.getAdmin()");
-		return null;
 	}
 
 	/**
