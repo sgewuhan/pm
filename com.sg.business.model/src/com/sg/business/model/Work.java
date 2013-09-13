@@ -1773,6 +1773,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	/**
 	 * 启动工作
 	 */
+	@SuppressWarnings("unchecked")
 	public Object doStart(IContext context) throws Exception {
 		// 判断能否启动，检查状态
 		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
@@ -1788,8 +1789,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 如果是，启动工作流
 			Workflow wf = getWorkflow(F_WF_EXECUTE);
 			DBObject actors = getProcessActorsMap(F_WF_EXECUTE);
-			@SuppressWarnings("unchecked")
-			Map<String, String> actorParameter = actors.toMap();
+			Map<String, String> actorParameter = null;
+			if(actors!=null){
+				actorParameter = actors.toMap();
+			}
 			ProcessInstance processInstance = wf.startHumanProcess(
 					actorParameter, params);
 			Assert.isNotNull(processInstance, "流程启动失败");
