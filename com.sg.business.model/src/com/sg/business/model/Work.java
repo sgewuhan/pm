@@ -1771,24 +1771,28 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		
 		
 		DBCollection col = getCollection();
+		DBObject dbo=new BasicDBObject().append(Work.F__ID,get_id());
+		DBObject update=new BasicDBObject().append(Work.F_LIFECYCLE, Work.STATUS_FINIHED_VALUE).append(Work.F_ACTUAL_FINISH, new Date());
+		DBObject fields=new BasicDBObject().append(F__ID,get_id());
+		DBObject sort=new BasicDBObject().append(F__ID, -1);
+		
+		dbo=col.findAndModify(dbo, fields, sort, false, update, true, false);
+		
+		//查询下级
 		BasicDBObject queryCondition = new BasicDBObject();
 		//设置查询条件，该工作的所有下级工作
 		queryCondition.put(Work.F_PARENT_ID,get_id());
-		//设置查询条件，该工作所有正在进行中的下级工作
-		queryCondition.put(Work.F_LIFECYCLE,Work.STATUS_WIP_VALUE);
+		//设置查询条件，该工作所有正在进行中和已暂停的下级工作
+		queryCondition.put(Work.F_LIFECYCLE,new BasicDBObject().append("$in", new String[] {
+									Work.STATUS_WIP_VALUE,
+									Work.STATUS_PAUSED_VALUE}));
 		//查询，返回该工作所有正在进行中的下级工作
 	    DBCursor cur = col.find(queryCondition);
 		
 	
 		while(cur.hasNext()){      
-			DBObject dbo = cur.next();
-			
-			DBObject update=new BasicDBObject().append(Work.F_LIFECYCLE, Work.STATUS_FINIHED_VALUE).append(Work.F_ACTUAL_FINISH, new Date());
-			DBObject fields=new BasicDBObject().append(F__ID,dbo.get(Work.F__ID));
-			DBObject sort=new BasicDBObject().append(F__ID, -1);
-			
-			dbo=col.findAndModify(dbo, fields, sort, false, update, true, false);
-			Work work = ModelService.createModelObject(dbo, Work.class);
+			DBObject dbobject = cur.next();
+			Work work = ModelService.createModelObject(dbobject, Work.class);
 			work.doFinish(context);
 		}
 		// 测试流程完成当前的工作
