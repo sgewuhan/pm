@@ -1365,7 +1365,7 @@
             <command
                   commandId="runtimework.start"
                   icon="image/work_start_24.png"
-                  label="启动"
+                  label="开始"
                   style="push">
             </command>
             <command
@@ -1393,15 +1393,28 @@
             <command
                   commandId="runtimework.wfstart"
                   icon="image/start_24.png"
-                  label="启动"
+                  label="开始任务"
                   style="push">
             </command>
             <command
                   commandId="runtimework.wffinish"
                   icon="image/complete_24.png"
-                  label="完成"
+                  label="完成任务"
                   style="push">
             </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="wip"
+                           property="lifecycle.status">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </menu>
          <separator
                name="runtimework.separator1"
@@ -1637,49 +1650,10 @@
       <handler
             class="com.sg.business.work.handler.StartTask"
             commandId="runtimework.wfstart">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="wfstart"
-                        property="runtimework.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.work.handler.CompleteTask"
             commandId="runtimework.wffinish">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="wffinish"
-                        property="runtimework.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      <handler
-            commandId="runtimework.wfcancel">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="wfcancel"
-                        property="runtimework.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             commandId="runtimework.workrecord">
