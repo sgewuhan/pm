@@ -309,9 +309,21 @@
          point="com.sg.bpm.service.serviceTask">
       <service
             interface="lifecycle.service.action"
-            name="生命周期服务"
+            name="生命周期操作服务"
             operation="finish"
             serviceProvider="com.sg.business.model.bpmservice.LifecycleService">
+      </service>
+      <service
+            interface="project.service.action"
+            name="项目状态服务"
+            operation="ready"
+            serviceProvider="com.sg.business.model.bpmservice.ProjectService">
+      </service>
+      <service
+            interface="project.service.action"
+            name="项目状态服务"
+            operation="message"
+            serviceProvider="com.sg.business.model.bpmservice.ProjectService">
       </service>
    </extension>
 

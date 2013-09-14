@@ -23,6 +23,16 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            editorId="pm2.projectcommit.audit"
+            name="审核"
+            persistentFields="comment,choice"
+            processDefinitionId="pm.projectcommit">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
