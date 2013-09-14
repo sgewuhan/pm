@@ -11,7 +11,9 @@ import org.jbpm.process.workitem.wsht.CommandBasedWSHumanTaskHandler;
 import org.jbpm.workflow.core.node.ForEachNode;
 import org.jbpm.workflow.core.node.HumanTaskNode;
 
+import com.mobnut.portal.Portal;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.service.BPMService;
@@ -37,9 +39,9 @@ public class DroolsProcessDefinition {
 		this.version = process.getVersion();
 		this.process = process;
 	}
-	
+
 	public DroolsProcessDefinition(String processId) {
-		kbase = processId.substring(0,processId.lastIndexOf("."));
+		kbase = processId.substring(0, processId.lastIndexOf("."));
 		this.processId = processId;
 	}
 
@@ -116,13 +118,33 @@ public class DroolsProcessDefinition {
 		BPMService bpmService = BPM.getBPMService();
 
 		StatefulKnowledgeSession ksession = null;
-		ksession = bpmService.createSession(kbase);
+
+		DBCollection col = Portal.getBasicDB().getCollection("kbase");
+		DBObject dbo = col.findOne(new BasicDBObject().append("kbase", kbase));
+		if (dbo != null) {
+			Object sessionId = dbo.get("session");
+			if (sessionId instanceof Integer) {
+				Integer sid = (Integer) sessionId;
+				ksession = bpmService.getSession(kbase, sid.intValue());
+			}
+		}
+		if (ksession == null) {
+			ksession = bpmService.createSession(kbase);
+			int sid = ksession.getId();
+			col.update(
+					new BasicDBObject().append("kbase", kbase),
+					new BasicDBObject().append("$set",
+							new BasicDBObject().append("session", sid)), true,
+					false);
+		}
 
 		CommandBasedWSHumanTaskHandler htHandler = new CommandBasedWSHumanTaskHandler();
 		htHandler.setSession(ksession);
 		CommonServiceTaskHandler stHandler = new CommonServiceTaskHandler();
-		ksession.getWorkItemManager().registerWorkItemHandler("Human Task", htHandler);
-		ksession.getWorkItemManager().registerWorkItemHandler("Service Task", stHandler);
+		ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
+				htHandler);
+		ksession.getWorkItemManager().registerWorkItemHandler("Service Task",
+				stHandler);
 		return ksession;
 	}
 

@@ -1704,6 +1704,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 //
 //		true, false);
 //		set_data(data);
+		System.out.println("ready!!!!!");
 	}
 
 	@Override

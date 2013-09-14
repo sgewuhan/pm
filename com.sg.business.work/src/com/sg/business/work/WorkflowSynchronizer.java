@@ -85,7 +85,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 			} catch (Exception e) {
 				//流程不存在
 				//work被删除
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 		return updated;
