@@ -63,6 +63,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 						.getTaskFormConfig(procDefId, taskName);
 				TaskForm taskForm = work.makeTaskForm();
 				Map<String, Object> taskInputParameter = null;
+				Map<String, Object> taskFormData = new HashMap<String, Object>();
 
 				if (config != null) {
 					// 执行表单打开前的校验
@@ -93,21 +94,20 @@ public class CompleteTask extends AbstractNavigatorHandler {
 					}
 
 					taskInputParameter = config.getInputParameter(taskForm);
+					// 获取taskform中需要持久化的字段
+					String[] fields = config.getPersistentFields();
+					for (int i = 0; i < fields.length; i++) {
+						Object value = taskForm.getValue(fields[i]);
+						taskFormData.put(fields[i], value);
+					}
+					IWorkflowInfoProvider infoProvider = config
+							.getWorkflowInformationProvider();
+					if (infoProvider != null) {
+						taskFormData = infoProvider
+								.getWorkflowInformation(taskForm);
+					}
 				}
 
-				// 获取taskform中需要持久化的字段
-				String[] fields = config.getPersistentFields();
-				Map<String, Object> taskFormData = new HashMap<String, Object>();
-				for (int i = 0; i < fields.length; i++) {
-					Object value = taskForm.getValue(fields[i]);
-					taskFormData.put(fields[i], value);
-				}
-				IWorkflowInfoProvider infoProvider = config
-						.getWorkflowInformationProvider();
-				if (infoProvider != null) {
-					taskFormData = infoProvider
-							.getWorkflowInformation(taskForm);
-				}
 
 				// 2. 完成工作流任务
 				work.doCompleteTask(Work.F_WF_EXECUTE, taskInputParameter,

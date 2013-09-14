@@ -1695,6 +1695,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
+	public void doReady(IContext context) {
+//		DBCollection col = getCollection();
+//		DBObject data = col.findAndModify(new BasicDBObject().append(F__ID,
+//				get_id()), null, null, false, new BasicDBObject().append(
+//				"$set",
+//				new BasicDBObject().append(F_LIFECYCLE, STATUS_ONREADY_VALUE)),
+//
+//		true, false);
+//		set_data(data);
+	}
+
 	@Override
 	public BasicBSONList getTargetList() {
 		return (BasicBSONList) getValue(F_TARGETS);
