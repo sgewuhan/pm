@@ -106,6 +106,8 @@ public class CompleteTask extends AbstractNavigatorHandler {
 						taskFormData = infoProvider
 								.getWorkflowInformation(taskForm);
 					}
+					
+					taskFormData.put("editor", taskFormEditorId);
 				}
 
 

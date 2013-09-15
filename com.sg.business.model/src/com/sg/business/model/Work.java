@@ -2171,11 +2171,25 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public DBObject getCurrentWorkflowTaskData(String key, String userid,
 			boolean query) {
 		String field = key + POSTFIX_TASK;
-		Object value = getValue(field, true);
+		Object value = getValue(field, query);
 		if (value instanceof DBObject) {
 			return (DBObject) ((DBObject) value).get(userid);
 		}
 		return null;
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @param userid
+	 * @param query
+	 * @return
+	 */
+	public BasicBSONList getWorkflowHistroyData(String key,
+			boolean query) {
+		String field = key + POSTFIX_HISTORY;
+		Object value = getValue(field, query);
+		return (BasicBSONList) value;
 	}
 
 	/**
