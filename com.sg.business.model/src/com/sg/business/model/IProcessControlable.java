@@ -1,5 +1,8 @@
 package com.sg.business.model;
 
+import org.bson.types.BasicBSONList;
+
+import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 
@@ -115,6 +118,10 @@ public interface IProcessControlable {
 	ProjectRole getProcessActionAssignment(String key, String nodeActorParameter);
 
 	String getProcessActionActor(String key, String nodeActorParameter);
+
+	DBObject getCurrentWorkflowTaskData(String key, String userid, boolean query);
+
+	BasicBSONList getWorkflowHistroyData(String key, boolean query);
 
 
 	

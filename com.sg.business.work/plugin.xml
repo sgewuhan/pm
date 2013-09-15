@@ -1422,7 +1422,7 @@
          </menu>
          <menu
                icon="image/24_blank.png"
-               label="流程操作">
+               label="流程">
             <command
                   commandId="runtimework.wfstart"
                   icon="image/start_24.png"
@@ -1434,6 +1434,20 @@
                   icon="image/complete_24.png"
                   label="完成任务"
                   style="push">
+            </command>
+            <separator
+                  name="runtimework.separator2.1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="runtimework.wfview"
+                  icon="image/flow_24.png"
+                  label="查看流程..."
+                  style="push">
+               <parameter
+                     name="process.key"
+                     value="wf_execute">
+               </parameter>
             </command>
             <visibleWhen
                   checkEnabled="false">
@@ -1596,6 +1610,15 @@
             id="runtimework.workrecord"
             name="编辑工作记录">
       </command>
+      <command
+            id="runtimework.wfview"
+            name="查看流程">
+         <commandParameter
+               id="process.key"
+               name="流程关键字"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -1686,6 +1709,10 @@
       <handler
             class="com.sg.business.work.handler.EditWork"
             commandId="runtimework.edit">
+      </handler>
+      <handler
+            class="com.sg.business.commons.handler.WorkflowView"
+            commandId="runtimework.wfview">
       </handler>
    </extension>
    <extension

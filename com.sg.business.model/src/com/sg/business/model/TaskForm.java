@@ -6,6 +6,7 @@ import com.mobnut.db.model.PrimaryObject;
 public class TaskForm extends PrimaryObject {
 
 	public static final String F_WORK_ID = "workid";
+	public static final String F_EDITOR = "form_editor";
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {

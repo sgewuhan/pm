@@ -150,6 +150,20 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_MESSAGE_OPEN_24 = "message_open_24.png";
 
+	public static final String IMAGE_FLOW_START_24 = "flow_start_24.png";
+
+	public static final String IMAGE_FLOW_FINISH_24 = "flow_finish_24.png";
+
+	public static final String IMAGE_FLOW_JOIN_24 = "flow_join_24.png";
+
+	public static final String IMAGE_FLOW_SPLIT_24 = "flow_split_24.png";
+	
+	public static final String IMAGE_FLOW_ACTIVITIE_24 = "flow_activitie_24.png";
+	
+	public static final String IMAGE_FLOW_HUMAN_24 = "flow_human_24.png";
+
+
+
 	/**
 	 * Returns the shared instance
 	 * 
