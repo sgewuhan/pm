@@ -39,7 +39,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener {
 		fc = new FullCalendar(parent, SWT.NONE);
 		List<ICalendarEvent> input = new ArrayList<ICalendarEvent>();
 
-		List<PrimaryObject> OtherdataSet = getDataInput(new String[] { Work.STATUS_PAUSED_VALUE });
+		List<PrimaryObject> OtherdataSet = new ArrayList<PrimaryObject>();
 		// 暂停中的工作
 		List<PrimaryObject> dataSet = getDataInput(new String[] { Work.STATUS_PAUSED_VALUE });
 		List<ICalendarEvent> dataInput = setDataInput(dataSet,
@@ -47,7 +47,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener {
 		input.addAll(dataInput);
 		OtherdataSet.addAll(dataSet);
 
-		// //工作没开始，还不到计划开始时间
+		//工作没开始，还不到计划开始时间
 		dataSet = getDataInput(new String[] { Work.STATUS_ONREADY_VALUE,
 				Work.STATUS_NONE_VALUE });
 		Iterator<PrimaryObject> iter = dataSet.iterator();
