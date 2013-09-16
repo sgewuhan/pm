@@ -12,6 +12,7 @@ import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.INavigatorActionListener;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class WorkMoveDown extends AbstractNavigatorHandler {
@@ -37,6 +38,10 @@ public class WorkMoveDown extends AbstractNavigatorHandler {
 				viewer.refresh(relativeObjects[i]);
 			}
 			viewer.setSelection(new StructuredSelection(selected), true);
+			
+			// 将更改消息传递到编辑器
+			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
+					new Integer(INavigatorActionListener.REFRESH));
 		} catch (Exception e) {
 			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_WARNING);
 		}
