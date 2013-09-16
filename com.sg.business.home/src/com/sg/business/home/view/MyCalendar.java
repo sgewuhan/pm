@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
+
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
@@ -43,8 +44,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 	@Override
 	public void doRefresh() {
 		List<ICalendarEvent> input = getWorkDataInput();
-//		fc.setInput(input);
-//		MessageUtil.showToast("Refresh", SWT.ICON_INFORMATION);
+		fc.setInput(input);
 	}
 
 	private List<ICalendarEvent> getWorkDataInput() {
@@ -64,12 +64,21 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		while (cur.hasNext()) {
 			DBObject workData = cur.next();
 			Work work = ModelService.createModelObject(workData, Work.class);
-//			result.add(getCalendarEvent(work));
+			ICalendarEvent calendarEvent = getCalendarEvent(work);
+			if (calendarEvent != null) {
+				result.add(calendarEvent);
+			}
 		}
 		return result;
 	}
 
 	private ICalendarEvent getCalendarEvent(Work work) {
+		Date planStart = work.getPlanStart();
+		Date planFinish = work.getPlanFinish();
+		if (planStart == null || planFinish == null) {
+			return null;
+		}
+
 		CalendarEvent event = new CalendarEvent();
 		event.setId(work.get_id().toString());
 		Object value = work.getValue(Work.F_DESCRIPTION);
@@ -77,39 +86,37 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		event.setDescription(description);
 		event.setNoticeMessage(0);
 		event.setTitle(work.getLabel());
-		event.setStart(work.getPlanStart());
-		event.setEnd(work.getPlanFinish());
+		event.setStart(planStart);
+		event.setEnd(planFinish);
 
-		// 暂停中的工作
-		if (ILifecycle.STATUS_PAUSED_VALUE.equals(work.getLifecycleStatus())) {
+		String lc = work.getLifecycleStatus();
+		
+		if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
+			// 暂停中的工作
 			event.setColor(ICalendarEvent.COLOR_GRAY);
-		}
-		// 沒有開始的工作
-		else if (ILifecycle.STATUS_ONREADY_VALUE.equals(work
-				.getLifecycleStatus())
-				|| ILifecycle.STATUS_NONE_VALUE.equals(work
-						.getLifecycleStatus())) {
-			// 還沒到計劃開始時間
-			if (work.getPlanStart().getTime() > new Date().getTime()) {
+		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)
+				|| ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
+			// 沒有開始的工作
+			if (work.getPlanStart().after(new Date())) {
+				// 還沒到計劃開始時間
 				event.setColor(ICalendarEvent.COLOR_BLUES[2]);
-			}
-			// 已經到了計劃開始時間
-			else if (work.getPlanStart().getTime() <= new Date().getTime()) {
+			} else {
+				// 已經到了計劃開始時間
 				event.setColor(ICalendarEvent.COLOR_YELLOWS[2]);
 			}
-		}
-		// 已经到了计划完成时间但是没有完成
-		else if (ILifecycle.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())) {
-			if (work.getPlanFinish().getTime() <= new Date().getTime()) {
+		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+			// 已经到了计划完成时间但是没有完成
+			if (work.getPlanFinish().before(new Date())) {
 				event.setColor(ICalendarEvent.COLOR_REDS[2]);
+			} else {
+				event.setColor(ICalendarEvent.COLOR_GREENS[2]);
 			}
 		} else {
-			event.setColor(ICalendarEvent.COLOR_GREENS[2]);
-
+			return null;
 		}
 		return event;
 	}
-	
+
 	@Override
 	public void eventSelected(ICalendarEvent object) {
 
@@ -126,17 +133,14 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		}
 	}
 
-	
 	@Override
 	public boolean canRefresh() {
 		return true;
 	}
-	
+
 	@Override
 	public void setFocus() {
 
 	}
-	
-	
 
 }
