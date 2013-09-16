@@ -52,8 +52,7 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 					vc.getViewer().refresh(rd);
 					vc.expandItem(rd);
 				} catch (Exception e) {
-					MessageUtil
-					.showToast(shell, TITLE, e.getMessage(), SWT.ICON_WARNING);
+					MessageUtil.showToast(TITLE, e);
 				}
 				super.doOK(is);
 			}
