@@ -62,6 +62,17 @@
          </view>
          <view
                closeable="false"
+               id="work.finished"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.processing"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
                id="com.sg.business.home.summary"
                minimized="false"
                moveable="false"
@@ -90,17 +101,6 @@
                moveable="false"
                relationship="stack"
                relative="com.sg.business.home.mycalendar"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="work.finished"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="work.processing"
                showTitle="true"
                standalone="false"
                visible="true">
