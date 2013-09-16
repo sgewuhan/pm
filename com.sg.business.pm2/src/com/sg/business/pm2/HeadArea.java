@@ -33,6 +33,7 @@ import com.mobnut.portal.user.IAccountEvent;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -88,6 +89,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		final Menu dropDownMenu = new Menu(shell, SWT.POP_UP);
 		MenuItem item = new MenuItem(dropDownMenu, SWT.PUSH);
 		item.setText("更改我的个人信息");
+		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_USER_24));
 		List<String[]> consigners = UserSessionContext.getSession()
 				.getConsignerList();
 		if (consigners.size() > 0) {
@@ -102,6 +104,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				item = new MenuItem(dropDownMenu, SWT.PUSH);
 				final String[] cs = consigners.get(i);
 				item.setText("代管 " + cs[0] + "|" + consigners.get(i)[1]);
+				item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_ASSIGNMENT_24));
 				item.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
