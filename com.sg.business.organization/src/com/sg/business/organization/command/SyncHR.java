@@ -33,7 +33,7 @@ public class SyncHR extends Job {
 	 * @param removeSet ,存放PM系统比HR系统多的组织，将会作为PM系统需要删除的组织使用
 	 * @param renameSet ,存放PM系统和HR系统名称不一致的组织，将会作为PM系统需要修改全称的组织使用
 	 */
-	public void doSyscHROrganization() {
+	public void doSyscHROrganization() throws Exception {
 		insertSet = new HashSet<OrgExchange>();
 		removeSet = new HashSet<OrgExchange>();
 		renameSet = new HashSet<OrgExchange>();
@@ -41,7 +41,6 @@ public class SyncHR extends Job {
 		// 获取PM系统和HR系统的顶级组织，构造时会同时构造出完整的组织树形结构
 		OrgExchange pmOrg = new OrgExchange(null, true);
 		OrgExchange hrOrg = new OrgExchange(null, false);
-
 
 		// 判断顶级组织是否一致
 		if (!hrOrg.equals(pmOrg)) {
@@ -102,10 +101,20 @@ public class SyncHR extends Job {
 		//循环获取HR系统中相同的子组织
 		for (OrgExchange orgExchange : hrSameChildren) {
 			//通过HR的子组织编号构造HR系统和PM系统的子组织
-			OrgExchange pmOrgChildren = new OrgExchange(orgExchange.getOrgId(),
-					true);
-			OrgExchange hrOrgChildren = new OrgExchange(orgExchange.getOrgId(),
-					false);
+			OrgExchange pmOrgChildren = null;
+			try {
+				pmOrgChildren = new OrgExchange(orgExchange.getOrgId(),
+						true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			OrgExchange hrOrgChildren = null;
+			try {
+				hrOrgChildren = new OrgExchange(orgExchange.getOrgId(),
+						false);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			//迭代调用该方法，获取子组织的差异
 			getPMDifferentHR(pmOrgChildren, hrOrgChildren, insertSet,
 					removeSet, renameSet);
@@ -128,8 +137,14 @@ public class SyncHR extends Job {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		monitor.beginTask("正在查询数据", IProgressMonitor.UNKNOWN);
-		doSyscHROrganization();
-		return Status.OK_STATUS;
+		try {
+			doSyscHROrganization();
+			return Status.OK_STATUS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Status.CANCEL_STATUS;
+		}
+		
 	}
 
 }

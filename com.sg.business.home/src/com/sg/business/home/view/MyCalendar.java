@@ -45,7 +45,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 	public void doRefresh() {
 		List<ICalendarEvent> input = getWorkDataInput();
 		fc.setInput(input);
-		MessageUtil.showToast("Refresh", SWT.ICON_INFORMATION);
+//		MessageUtil.showToast("Refresh", SWT.ICON_INFORMATION);
 	}
 
 	private List<ICalendarEvent> getWorkDataInput() {
