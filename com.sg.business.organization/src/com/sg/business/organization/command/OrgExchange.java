@@ -91,7 +91,7 @@ public class OrgExchange {
 	 * @param isPm
 	 *            : 标识是从PM系统还是从HR系统中读取组织，True时为PM系统，False时为HR系统
 	 */
-	public OrgExchange(String id, boolean isPm) {
+	public OrgExchange(String id, boolean isPm) throws Exception {
 		if (isPm) {
 			initByPm(id);
 		} else {
@@ -144,9 +144,12 @@ public class OrgExchange {
 	 * @param id
 	 *            : 组织编号
 	 */
-	private void initByPm(String id) {
+	private void initByPm(String id) throws Exception {
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
+		if(coll == null ){
+			throw new Exception("无法连接PM数据库");
+		}
 		DBObject condition;
 		// 判断是否顶级组织
 		// 为null表示为顶级组织，这是通过parent_id来获取PM组织
@@ -205,7 +208,7 @@ public class OrgExchange {
 	 * @param id
 	 *            : 组织编号
 	 */
-	private void initBySql(String id) {
+	private void initBySql(String id) throws Exception {
 		try {
 			SQLResult result;
 			// 判断是否顶级组织
@@ -233,7 +236,7 @@ public class OrgExchange {
 				children.addAll(initBySqlChildren(this));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception("无法连接HR数据库");
 		}
 	}
 
@@ -406,7 +409,7 @@ public class OrgExchange {
 	 *            : PM系统的parentId
 	 */
 	public void doAddAllHR(ObjectId parentId) {
-		if(!checkHR){
+		if (!checkHR) {
 			return;
 		}
 		ObjectId _id = new ObjectId();
@@ -468,7 +471,7 @@ public class OrgExchange {
 	 * 修改PM系统中当前组织的全称
 	 */
 	public void doRenameHR() {
-		if(!checkHR){
+		if (!checkHR) {
 			return;
 		}
 		Organization organization;
@@ -513,46 +516,47 @@ public class OrgExchange {
 	 * @param removeSet
 	 *            : {@link HashSet}，需要删除的组织
 	 */
-//	public void sendMessage(Set<OrgExchange> removeSet) {
-//		Message message;
-//		// 设置消息内容
-//		String messageContent = null;
-//		for (OrgExchange orgExchange : removeSet) {
-//			messageContent = setMessageContent(orgExchange);
-//		}
-//
-//		// 获取系统管理员角色的用户信息
-//		List<PrimaryObject> user = User.getAdmin();
-//		BasicBSONList recieverList = new BasicBSONList();
-//		for (int i = 0; i < user.size(); i++) {
-//			recieverList.add(user.get(i).getValue(User.F_USER_ID));
-//		}
-//
-//		message = ModelService.createModelObject(Message.class);
-//		message.setValue(Message.F_CONTENT, messageContent);
-//		message.setValue(Message.F_DESC, OrgExchange.MESSAGE_DESC);
-//		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
-//		message.setValue(Message.F_RECIEVER, recieverList);
-//		try {
-//			message.doSave(new BackgroundContext());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	private String setMessageContent(OrgExchange orgExchange) {
-//		String messageContent = null;
-//		if (orgExchange.checkHR) {
-//			if (messageContent == null) {
-//				messageContent = OrgExchange.MESSAGE_CONTENT_BEFORE
-//						+ orgExchange.desc + OrgExchange.MESSAGE_CONTENT_AFTER;
-//			} 
-//			
-//			for (OrgExchange childrenOrgExchange : orgExchange.children) {
-//				messageContent = messageContent + "<br/>" + setMessageContent(childrenOrgExchange);
-//			}
-//		}
-//
-//		return messageContent;
-//	}
+	// public void sendMessage(Set<OrgExchange> removeSet) {
+	// Message message;
+	// // 设置消息内容
+	// String messageContent = null;
+	// for (OrgExchange orgExchange : removeSet) {
+	// messageContent = setMessageContent(orgExchange);
+	// }
+	//
+	// // 获取系统管理员角色的用户信息
+	// List<PrimaryObject> user = User.getAdmin();
+	// BasicBSONList recieverList = new BasicBSONList();
+	// for (int i = 0; i < user.size(); i++) {
+	// recieverList.add(user.get(i).getValue(User.F_USER_ID));
+	// }
+	//
+	// message = ModelService.createModelObject(Message.class);
+	// message.setValue(Message.F_CONTENT, messageContent);
+	// message.setValue(Message.F_DESC, OrgExchange.MESSAGE_DESC);
+	// message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
+	// message.setValue(Message.F_RECIEVER, recieverList);
+	// try {
+	// message.doSave(new BackgroundContext());
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	//
+	// private String setMessageContent(OrgExchange orgExchange) {
+	// String messageContent = null;
+	// if (orgExchange.checkHR) {
+	// if (messageContent == null) {
+	// messageContent = OrgExchange.MESSAGE_CONTENT_BEFORE
+	// + orgExchange.desc + OrgExchange.MESSAGE_CONTENT_AFTER;
+	// }
+	//
+	// for (OrgExchange childrenOrgExchange : orgExchange.children) {
+	// messageContent = messageContent + "<br/>" +
+	// setMessageContent(childrenOrgExchange);
+	// }
+	// }
+	//
+	// return messageContent;
+	// }
 }
