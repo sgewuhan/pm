@@ -23,7 +23,7 @@ public class ProjectCommitProcessPage extends AbstractWorkProcessPage {
 	protected List<PrimaryObject> getRoleDefinitions(PrimaryObject po) {
 		if(po instanceof Project){
 			Project project = (Project) po;
-			return project.getRoleDefinitions();
+			return project.getProjectRole();
 		}else{
 			return null;
 		}

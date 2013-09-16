@@ -483,7 +483,7 @@
                            labelVisible="true"
                            name="reciever"
                            persistable="true"
-                           presentation="com.sg.business.commons.field.UserIdListFieldPres"
+                           presentation="com.sg.business.commons.field.presentation.UserIdListFieldPres"
                            required="true"
                            type="String">
                      </text>
@@ -588,7 +588,7 @@
                            labelVisible="true"
                            name="sender"
                            persistable="true"
-                           presentation="com.sg.business.commons.field.UserIdFieldPres"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                            required="true"
                            type="String"
                            userlabelForReadonly="true">
@@ -601,7 +601,7 @@
                            labelVisible="true"
                            name="reciever"
                            persistable="true"
-                           presentation="com.sg.business.commons.field.UserIdListFieldPres"
+                           presentation="com.sg.business.commons.field.presentation.UserIdListFieldPres"
                            required="true"
                            type="String"
                            userlabelForReadonly="true">
@@ -735,7 +735,7 @@
                            labelVisible="true"
                            name="sender"
                            persistable="true"
-                           presentation="com.sg.business.commons.field.UserIdFieldPres"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                            required="true"
                            type="String"
                            userlabelForReadonly="true">
@@ -748,7 +748,7 @@
                            labelVisible="true"
                            name="reciever"
                            persistable="true"
-                           presentation="com.sg.business.commons.field.UserIdListFieldPres"
+                           presentation="com.sg.business.commons.field.presentation.UserIdListFieldPres"
                            required="true"
                            type="String"
                            userlabelForReadonly="true">

@@ -763,11 +763,12 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="rolenumber"
+                        inputValidator="com.sg.business.commons.field.validator.RoleNumberInputValidator"
                         label="编号"
                         labelVisible="true"
                         name="rolenumber"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -778,7 +779,7 @@
                         labelVisible="true"
                         name="desc"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
