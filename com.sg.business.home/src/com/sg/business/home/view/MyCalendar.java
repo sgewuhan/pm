@@ -43,8 +43,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 	@Override
 	public void doRefresh() {
 		List<ICalendarEvent> input = getWorkDataInput();
-//		fc.setInput(input);
-//		MessageUtil.showToast("Refresh", SWT.ICON_INFORMATION);
+		fc.setInput(input);
 	}
 
 	private List<ICalendarEvent> getWorkDataInput() {
@@ -64,7 +63,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		while (cur.hasNext()) {
 			DBObject workData = cur.next();
 			Work work = ModelService.createModelObject(workData, Work.class);
-//			result.add(getCalendarEvent(work));
+			result.add(getCalendarEvent(work));
 		}
 		return result;
 	}
