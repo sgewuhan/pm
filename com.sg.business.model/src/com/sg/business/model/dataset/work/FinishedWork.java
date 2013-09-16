@@ -21,7 +21,7 @@ import com.sg.widgets.MessageUtil;
 
 public class FinishedWork extends SingleDBCollectionDataSetFactory{
 
-	public FinishedWork(String dbName, String collectionName) {
+	public FinishedWork() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
 	}
 

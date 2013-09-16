@@ -309,7 +309,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public Map<ObjectId, List<PrimaryObject>> getRoleAssignmentMap() {
-		List<PrimaryObject> roles = getRoleDefinitions();
+		List<PrimaryObject> roles = getProjectRole();
 		Map<ObjectId, List<PrimaryObject>> result = new HashMap<ObjectId, List<PrimaryObject>>();
 		if (!roles.isEmpty()) {
 			for (int i = 0; i < roles.size(); i++) {
@@ -321,7 +321,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-	public List<PrimaryObject> getRoleDefinitions() {
+	/**
+	 * 获取项目角色
+	 * 
+	 * @return
+	 */
+	public List<PrimaryObject> getProjectRole() {
 		return getRelationById(F__ID, ProjectRole.F_PROJECT_ID,
 				ProjectRole.class);
 	}
@@ -399,6 +404,46 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				srcdata.get(BudgetItem.F_CHILDREN));
 
 		return ModelService.createModelObject(tgtData, ProjectBudget.class);
+	}
+
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		boolean saved = super.doSave(context);
+		if (saved) {
+			// 同步项目经理角色
+			// [bug:18]
+			// 确保项目经理角色的人员与项目负责人一致
+			ensureProjectManagerRole(context);
+		}
+		return saved;
+	}
+
+	/**
+	 * 确保项目经理角色的人员与项目负责人一致
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
+	private void ensureProjectManagerRole(IContext context) throws Exception {
+		User charger = getCharger();
+		if (charger == null) {
+			return;
+		}
+
+		List<User> users = new ArrayList<User>();
+		users.add(charger);
+
+		List<PrimaryObject> roles = getProjectRole();
+		for (int i = 0; i < roles.size(); i++) {
+			ProjectRole projectRole = (ProjectRole) roles.get(i);
+			String rn = projectRole.getRoleNumber();
+			if (ProjectRole.ROLE_PROJECT_MANAGER_ID.equals(rn)) {
+				try {
+					projectRole.doAssignUsers(users, context);
+				} catch (Exception e) {
+				}
+			}
+		}
 	}
 
 	@Override
@@ -1363,7 +1408,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		// 3. 检查角色的指派： 警告没有指派人员的角色
-		List<PrimaryObject> rd = getRoleDefinitions();
+		List<PrimaryObject> rd = getProjectRole();
 		Map<ObjectId, List<PrimaryObject>> raMap = getRoleAssignmentMap();
 		List<PrimaryObject> ra;
 		boolean passed = true;
@@ -1674,37 +1719,65 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public Object doCancel(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Work root = getWBSRoot();
+		root.doCancel(context);
+		
+		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
+		return this;
 	}
 
 	public Object doFinish(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Work root = getWBSRoot();
+		root.doFinish(context);
+		
+		doChangeLifecycleStatus(context, STATUS_FINIHED_VALUE);
+		return this;
 
 	}
 
 	public Object doPause(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-
+		Work root = getWBSRoot();
+		root.doPause(context);
+		
+		doChangeLifecycleStatus(context, STATUS_PAUSED_VALUE);
+		return this;
 	}
 
 	public Object doStart(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Work root = getWBSRoot();
+		root.doStart(context);
+		
+		doChangeLifecycleStatus(context, STATUS_WIP_VALUE);
+		return this;
 	}
 
-	public void doReady(IContext context) {
-//		DBCollection col = getCollection();
-//		DBObject data = col.findAndModify(new BasicDBObject().append(F__ID,
-//				get_id()), null, null, false, new BasicDBObject().append(
-//				"$set",
-//				new BasicDBObject().append(F_LIFECYCLE, STATUS_ONREADY_VALUE)),
-//
-//		true, false);
-//		set_data(data);
-		System.out.println("ready!!!!!");
+	/**
+	 * 将项目的状态更改为准备中
+	 * 
+	 * @param context
+	 */
+	public void doReady(IContext context) throws Exception {
+		doChangeLifecycleStatus(context, STATUS_ONREADY_VALUE);
+	}
+
+	/**
+	 * 更改生命周期状态
+	 * 
+	 * @param context
+	 * @param status
+	 */
+	private void doChangeLifecycleStatus(IContext context, String status) {
+		DBCollection col = getCollection();
+		DBObject data = col.findAndModify(
+				new BasicDBObject().append(F__ID, get_id()),
+				null,
+				null,
+				false,
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_LIFECYCLE, status)),
+
+				true, false);
+		set_data(data);
 	}
 
 	@Override
@@ -1782,7 +1855,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param key
@@ -1790,8 +1863,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @param query
 	 * @return
 	 */
-	public BasicBSONList getWorkflowHistroyData(String key,
-			boolean query) {
+	public BasicBSONList getWorkflowHistroyData(String key, boolean query) {
 		String field = key + POSTFIX_HISTORY;
 		Object value = getValue(field, query);
 		return (BasicBSONList) value;

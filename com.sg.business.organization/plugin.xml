@@ -576,7 +576,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="rolenumber"
-                        inputValidator="com.sg.business.organization.editor.RoleNumberInputValidator"
+                        inputValidator="com.sg.business.commons.field.validator.RoleNumberInputValidator"
                         label="角色编号"
                         labelVisible="true"
                         name="rolenumber"

@@ -57,7 +57,7 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 		}
 
 		if (project != null) {
-			return project.getRoleDefinitions();
+			return project.getProjectRole();
 		}
 		
 		return null;
