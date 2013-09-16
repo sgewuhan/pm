@@ -84,7 +84,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		if (ILifecycle.STATUS_PAUSED_VALUE.equals(work.getLifecycleStatus())) {
 			event.setColor(ICalendarEvent.COLOR_GRAY);
 		}
-		// 準備中的工作
+		// 沒有開始的工作
 		else if (ILifecycle.STATUS_ONREADY_VALUE.equals(work
 				.getLifecycleStatus())
 				|| ILifecycle.STATUS_NONE_VALUE.equals(work
@@ -94,7 +94,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 				event.setColor(ICalendarEvent.COLOR_BLUES[2]);
 			}
 			// 已經到了計劃開始時間
-			else if (work.getPlanStart().getTime() < new Date().getTime()) {
+			else if (work.getPlanStart().getTime() <= new Date().getTime()) {
 				event.setColor(ICalendarEvent.COLOR_YELLOWS[2]);
 			}
 		}
