@@ -218,11 +218,12 @@
             canDelete="false"
             canEdit="false"
             canRead="true"
-            customItemHeight="60"
+            customItemHeight="54"
             dataSet="com.sg.business.model.dataset.work.FinishedWork"
             editorId="editor.work"
             headerVisiable="false"
             id="work.finished"
+            markupEnabled="true"
             popupMenu="popup:work.finished">
          <structure
                modelRelation="work_work">
