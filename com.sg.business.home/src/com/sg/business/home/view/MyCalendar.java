@@ -64,7 +64,6 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		while (cur.hasNext()) {
 			DBObject workData = cur.next();
 			Work work = ModelService.createModelObject(workData, Work.class);
-			result.add(getCalendarEvent(work));
 			ICalendarEvent calendarEvent = getCalendarEvent(work);
 			if (calendarEvent != null) {
 				result.add(calendarEvent);
