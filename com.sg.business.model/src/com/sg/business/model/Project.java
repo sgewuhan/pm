@@ -438,9 +438,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			ProjectRole projectRole = (ProjectRole) roles.get(i);
 			String rn = projectRole.getRoleNumber();
 			if (ProjectRole.ROLE_PROJECT_MANAGER_ID.equals(rn)) {
-				try{
+				try {
 					projectRole.doAssignUsers(users, context);
-				}catch(Exception e){
+				} catch (Exception e) {
 				}
 			}
 		}
@@ -1719,37 +1719,65 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public Object doCancel(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Work root = getWBSRoot();
+		root.doCancel(context);
+		
+		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
+		return this;
 	}
 
 	public Object doFinish(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Work root = getWBSRoot();
+		root.doFinish(context);
+		
+		doChangeLifecycleStatus(context, STATUS_FINIHED_VALUE);
+		return this;
 
 	}
 
 	public Object doPause(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-
+		Work root = getWBSRoot();
+		root.doPause(context);
+		
+		doChangeLifecycleStatus(context, STATUS_PAUSED_VALUE);
+		return this;
 	}
 
 	public Object doStart(IContext context) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Work root = getWBSRoot();
+		root.doStart(context);
+		
+		doChangeLifecycleStatus(context, STATUS_WIP_VALUE);
+		return this;
 	}
 
-	public void doReady(IContext context) {
-		// DBCollection col = getCollection();
-		// DBObject data = col.findAndModify(new BasicDBObject().append(F__ID,
-		// get_id()), null, null, false, new BasicDBObject().append(
-		// "$set",
-		// new BasicDBObject().append(F_LIFECYCLE, STATUS_ONREADY_VALUE)),
-		//
-		// true, false);
-		// set_data(data);
-		System.out.println("ready!!!!!");
+	/**
+	 * 将项目的状态更改为准备中
+	 * 
+	 * @param context
+	 */
+	public void doReady(IContext context) throws Exception {
+		doChangeLifecycleStatus(context, STATUS_ONREADY_VALUE);
+	}
+
+	/**
+	 * 更改生命周期状态
+	 * 
+	 * @param context
+	 * @param status
+	 */
+	private void doChangeLifecycleStatus(IContext context, String status) {
+		DBCollection col = getCollection();
+		DBObject data = col.findAndModify(
+				new BasicDBObject().append(F__ID, get_id()),
+				null,
+				null,
+				false,
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_LIFECYCLE, status)),
+
+				true, false);
+		set_data(data);
 	}
 
 	@Override

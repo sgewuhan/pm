@@ -13,6 +13,7 @@ import org.bson.types.ObjectId;
 import org.drools.runtime.process.ProcessInstance;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
@@ -36,6 +37,7 @@ import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.BackgroundContext;
 
 /**
@@ -147,6 +149,29 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
 
+	
+	/**
+	 * 根据状态返回不同的图标
+	 */
+	@Override
+	public Image getImage() {
+		String lc = getLifecycleStatus();
+		if(STATUS_CANCELED_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_CANCEL_16);
+		}else if(STATUS_FINIHED_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_FINISH_16);
+		}else if(STATUS_NONE_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
+		}else if(STATUS_ONREADY_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
+		}else if(STATUS_PAUSED_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_PAUSE_16);
+		}else if(STATUS_WIP_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_WIP_16);
+		}
+		return super.getImage();
+	}
+	
 	/**
 	 * 返回工作所属项目
 	 * 
