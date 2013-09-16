@@ -209,7 +209,6 @@ public class OrgExchange {
 	 *            : 组织编号
 	 */
 	private void initBySql(String id) throws Exception {
-		try {
 			SQLResult result;
 			// 判断是否顶级组织
 			// 为null表示为顶级组织，这是通过ldunitid=‘1’来获取HR组织
@@ -235,9 +234,6 @@ public class OrgExchange {
 				desc = "" + row.getValue("unitname");
 				children.addAll(initBySqlChildren(this));
 			}
-		} catch (Exception e) {
-			throw new Exception("无法连接HR数据库");
-		}
 	}
 
 	/**

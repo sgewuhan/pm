@@ -5,8 +5,11 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+
+import com.sg.business.organization.OrganizationActivator;
 
 /**
  * <P>
@@ -141,8 +144,7 @@ public class SyncHR extends Job {
 			doSyscHROrganization();
 			return Status.OK_STATUS;
 		} catch (Exception e) {
-			e.printStackTrace();
-			return Status.CANCEL_STATUS;
+			return new MultiStatus(OrganizationActivator.PLUGIN_ID, IStatus.ERROR, "²éÑ¯Êý¾Ý", e);
 		}
 		
 	}

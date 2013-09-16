@@ -303,44 +303,64 @@
             id="calendarrule.option">
          <option
                id="周"
+               label="周"
                value="周">
          </option>
          <option
                id="日"
+               label="日"
                value="日">
          </option>
       </option>
       <option
             id="calendarrule.operator">
          <option
-               id="大于">
+               id="大于"
+               label="大于"
+               value="大于">
          </option>
          <option
-               id="大于等于">
+               id="大于等于"
+               label="大于等于"
+               value="大于等于">
          </option>
          <option
-               id="等于">
+               id="等于"
+               label="等于"
+               value="等于">
          </option>
          <option
-               id="小于等于">
+               id="小于等于"
+               label="小于等于"
+               value="小于等于">
          </option>
          <option
-               id="小于">
+               id="小于"
+               label="小于"
+               value="小于">
          </option>
       </option>
       <option
             id="com.sg.business.option.organizationType">
          <option
-               id="法人">
+               id="法人"
+                label="法人"
+               value="法人">
          </option>
          <option
-               id="事业部">
+               id="事业部"
+                label="事业部"
+               value="事业部">
          </option>
          <option
-               id="部门">
+               id="部门"
+                label="部门"
+               value="部门">
          </option>
          <option
-               id="团队">
+               id="团队"
+                label="团队"
+               value="团队">
          </option>
       </option>
       <option
@@ -370,10 +390,14 @@
       <option
             id="操作符">
          <option
-               id="+">
+               id="+"
+               label="+"
+               value="+">
          </option>
          <option
-               id="-">
+               id="-"
+                label="-"
+               value="-">
          </option>
       </option>
       <option

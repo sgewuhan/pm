@@ -64,9 +64,11 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		while (cur.hasNext()) {
 			DBObject workData = cur.next();
 			Work work = ModelService.createModelObject(workData, Work.class);
-			ICalendarEvent calendarEvent = getCalendarEvent(work);
-			if (calendarEvent != null) {
-				result.add(calendarEvent);
+			if (work != null) {
+				ICalendarEvent calendarEvent = getCalendarEvent(work);
+				if (calendarEvent != null) {
+					result.add(calendarEvent);
+				}
 			}
 		}
 		return result;
@@ -90,7 +92,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		event.setEnd(planFinish);
 
 		String lc = work.getLifecycleStatus();
-		
+
 		if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
 			// 暂停中的工作
 			event.setColor(ICalendarEvent.COLOR_GRAY);
