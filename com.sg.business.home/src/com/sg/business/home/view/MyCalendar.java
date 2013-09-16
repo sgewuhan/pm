@@ -198,7 +198,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 	public void doRefresh() {
 
 		List<ICalendarEvent> input = getWorkDataInput();
-		fc.setInput(input);
+//		fc.setInput(input);
 //		MessageUtil.showToast("Refresh", SWT.ICON_INFORMATION);
 	}
 
@@ -219,7 +219,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		while(cur.hasNext()){
 			DBObject workData = cur.next();
 			Work work = ModelService.createModelObject(workData, Work.class);
-			result.add(getCalendarEvent(work));
+//			result.add(getCalendarEvent(work));
 		}
 		return result;
 	}
@@ -228,5 +228,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		
 		return null;
 	}
+	
+	
 
 }
