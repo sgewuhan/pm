@@ -48,6 +48,11 @@ public class User extends PrimaryObject {
 	 * 用户头部照片
 	 */
 	public static final String F_HEADPIC = "headpic";
+	
+	/**
+	 * 激活
+	 */
+	public static final String F_ACTIVATED = "activated";
 
 	/**
 	 * 所属组织ID

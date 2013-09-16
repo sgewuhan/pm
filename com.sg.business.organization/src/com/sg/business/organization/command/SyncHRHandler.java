@@ -59,6 +59,12 @@ public class SyncHRHandler extends AbstractNavigatorHandler {
 				orgExchange.doRenameHR();
 			}
 
+			try {
+				syncHR.doSyscHRUser();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			vc.refreshViewer();
 		}
 

@@ -18,10 +18,16 @@ public class AttachmentLabelProvider extends ConfiguratorColumnLabelProvider {
 	 */
 	@Override
 	public Image getImage(Object element) {
-		PrimaryObject po = (PrimaryObject)element;
+ 		PrimaryObject po = (PrimaryObject)element;
+ 		/******
+ 		 * @author gdiyang
+ 		 * 
+ 		 * 修改getValue获取值的方式为getText的方式来解决当获取信息为""时的判断问题
+ 		 * 
+ 		 */
 		String key = getFieldName();
 		//判断是否存在附件
-		if(po.getValue(key) != null){
+		if(!"".equals(po.getText(key))){
 			return BusinessResource.getImage(BusinessResource.IMAGE_ATTACHMENT_32);
 		}else {
 			return null;
