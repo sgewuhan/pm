@@ -149,29 +149,32 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
 
-	
 	/**
 	 * 根据状态返回不同的图标
 	 */
 	@Override
 	public Image getImage() {
 		String lc = getLifecycleStatus();
-		if(STATUS_CANCELED_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_CANCEL_16);
-		}else if(STATUS_FINIHED_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_FINISH_16);
-		}else if(STATUS_NONE_VALUE.equals(lc)){
+		if (STATUS_CANCELED_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_WORK_CANCEL_16);
+		} else if (STATUS_FINIHED_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_WORK_FINISH_16);
+		} else if (STATUS_NONE_VALUE.equals(lc)) {
 			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
-		}else if(STATUS_ONREADY_VALUE.equals(lc)){
+		} else if (STATUS_ONREADY_VALUE.equals(lc)) {
 			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_16);
-		}else if(STATUS_PAUSED_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_PAUSE_16);
-		}else if(STATUS_WIP_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_WORK_WIP_16);
+		} else if (STATUS_PAUSED_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_WORK_PAUSE_16);
+		} else if (STATUS_WIP_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_WORK_WIP_16);
 		}
 		return super.getImage();
 	}
-	
+
 	/**
 	 * 返回工作所属项目
 	 * 
@@ -1817,30 +1820,34 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	@SuppressWarnings("unchecked")
 	public Object doStart(IContext context) throws Exception {
-		// 判断能否启动，检查状态
-		Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
-		Map<String, Object> params = new HashMap<String, Object>();
-		// 调用前处理
-		doStartBefore(context, params);
-
 		// 准备保存的对象
 		DBObject update = new BasicDBObject();
+		Map<String, Object> params = new HashMap<String, Object>();
 
-		// 判定是否使用执行工作流
-		if (isWorkflowActivate(F_WF_EXECUTE)) {
-			// 如果是，启动工作流
-			Workflow wf = getWorkflow(F_WF_EXECUTE);
-			DBObject actors = getProcessActorsMap(F_WF_EXECUTE);
-			Map<String, String> actorParameter = null;
-			if (actors != null) {
-				actorParameter = actors.toMap();
+
+		if (!isProjectWBSRoot()) {
+			// 判断能否启动，检查状态
+			Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
+			// 调用前处理
+			doStartBefore(context, params);
+
+
+			// 判定是否使用执行工作流
+			if (isWorkflowActivate(F_WF_EXECUTE)) {
+				// 如果是，启动工作流
+				Workflow wf = getWorkflow(F_WF_EXECUTE);
+				DBObject actors = getProcessActorsMap(F_WF_EXECUTE);
+				Map<String, String> actorParameter = null;
+				if (actors != null) {
+					actorParameter = actors.toMap();
+				}
+				ProcessInstance processInstance = wf.startHumanProcess(
+						actorParameter, params);
+				Assert.isNotNull(processInstance, "流程启动失败");
+
+				update.put(F_WF_EXECUTE + POSTFIX_INSTANCEID,
+						processInstance.getId());
 			}
-			ProcessInstance processInstance = wf.startHumanProcess(
-					actorParameter, params);
-			Assert.isNotNull(processInstance, "流程启动失败");
-
-			update.put(F_WF_EXECUTE + POSTFIX_INSTANCEID,
-					processInstance.getId());
 		}
 
 		// 启动下级同步启动的工作
@@ -1901,7 +1908,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject newData = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()), null, null, false,
 				new BasicDBObject().append("$set", update), true, false);
-		
+
 		set_data(newData);
 
 		// 提示工作已暂停
@@ -2030,8 +2037,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Message message = ModelService.createModelObject(Message.class);
 		// 设置收件人
 		BasicBSONList participatesIdList = getParticipatesIdList();
-		Assert.isTrue(participatesIdList != null
-				&& participatesIdList.size() > 0, "工作的参与者为空");
+		if(participatesIdList == null
+				|| participatesIdList.isEmpty()){
+			return null;
+		}
 		message.setValue(Message.F_RECIEVER, participatesIdList);
 
 		// 设置通知标题
@@ -2185,7 +2194,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
-
 	/**
 	 * 
 	 * @param key
@@ -2202,7 +2210,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param key
@@ -2210,8 +2218,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param query
 	 * @return
 	 */
-	public BasicBSONList getWorkflowHistroyData(String key,
-			boolean query) {
+	public BasicBSONList getWorkflowHistroyData(String key, boolean query) {
 		String field = key + POSTFIX_HISTORY;
 		Object value = getValue(field, query);
 		return (BasicBSONList) value;

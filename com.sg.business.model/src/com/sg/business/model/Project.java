@@ -1730,7 +1730,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Work root = getWBSRoot();
 		root.doFinish(context);
 		
-		doChangeLifecycleStatus(context, STATUS_FINIHED_VALUE);
+		DBCollection col = getCollection();
+		DBObject data = col.findAndModify(
+				new BasicDBObject().append(F__ID, get_id()),
+				null,
+				null,
+				false,
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_LIFECYCLE, STATUS_FINIHED_VALUE)
+						.append(F_ACTUAL_FINISH, new Date())),
+
+				true, false);
+		set_data(data);
 		return this;
 
 	}
@@ -1747,7 +1758,20 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Work root = getWBSRoot();
 		root.doStart(context);
 		
-		doChangeLifecycleStatus(context, STATUS_WIP_VALUE);
+		
+		DBCollection col = getCollection();
+		DBObject data = col.findAndModify(
+				new BasicDBObject().append(F__ID, get_id()),
+				null,
+				null,
+				false,
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_LIFECYCLE, STATUS_WIP_VALUE)
+						.append(F_ACTUAL_START, new Date())),
+
+				true, false);
+		set_data(data);
+		
 		return this;
 	}
 
