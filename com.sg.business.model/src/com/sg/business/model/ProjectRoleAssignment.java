@@ -33,4 +33,5 @@ public class ProjectRoleAssignment extends AbstractRoleAssignment implements IPr
 			return null;
 		}
 	}
+
 }

@@ -123,6 +123,7 @@ public class Role extends PrimaryObject {
 
 	/**
 	 * 添加用户到角色中
+	 * TODO 需要做用户帐户通知处理
 	 * @param users
 	 *          ，用户集合
 	 * @throws Exception 
@@ -154,6 +155,17 @@ public class Role extends PrimaryObject {
 		return getRelationById(F__ID, RoleAssignment.F_ROLE_ID, RoleAssignment.class);
 	}
 
+	/**
+	 * TODO
+	 * 删除角色检查
+	 * 1.角色项下的用户
+	 * 2.项目模板的RoleDefinition引用的角色
+	 * 3.ProjectRole引用的角色
+	 * 4.独立工作定义的WBS引用的角色
+	 * 5.独立工作的WBS引用的角色
+	 */
+	
+	
 	/**
 	 * 删除角色
 	 * @param context

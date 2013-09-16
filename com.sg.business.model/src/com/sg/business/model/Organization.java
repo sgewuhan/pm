@@ -257,6 +257,23 @@ public class Organization extends PrimaryObject {
 	}
 
 	/**
+	 * TODO
+	 * 
+	 * 删除组织判断
+	 * 1.组织没有下级组织
+	 * 2.没有归属该组织的用户
+	 * 3.组织项下角色没有用户（组织上挂的角色也要做检查）
+	 * 4.项目模板
+	 * 5.通用工作定义
+	 * 6.独立工作定义
+	 * 7.文档模板
+	 * 8.文档库
+	 * 9.发起组织和管理组织的项目
+	 * 
+	 */
+	
+	
+	/**
 	 * 删除组织
 	 * 
 	 * @param context
@@ -274,6 +291,8 @@ public class Organization extends PrimaryObject {
 		for (int i = 0; i < childrenOrg.size(); i++) {
 			childrenOrg.get(i).doRemove(context);
 		}
+		//删除组织公告板
+		
 		super.doRemove(context);
 	}
 

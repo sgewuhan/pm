@@ -78,7 +78,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	/**
 	 * 为角色指派用户
-	 * 
+	 * TODO 用户帐户通知处理
 	 * @param users
 	 * @throws Exception
 	 */
@@ -129,7 +129,17 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	}
 
 	/**
+	 * TODO
+	 * 删除角色检查
+	 * 1.WBS引用的角色
+	 * 2.流程上引用
+	 */
+	
+	/**
 	 * 删除项目角色
+	 * 
+	 * 1.清除WBS上的角色
+	 * 2.流程上引用的角色
 	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {

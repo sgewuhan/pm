@@ -17,4 +17,8 @@ public class RoleAssignment extends AbstractRoleAssignment{
 	public String getTypeName() {
 		return "角色指派";
 	}
+	/**
+	 * 把人从角色中取消指派的检查
+	 * TODO doRemove 做账户处理
+	 */
 }

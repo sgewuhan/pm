@@ -114,6 +114,13 @@ public class User extends PrimaryObject {
 			return null;
 		}
 	}
+	
+	/**
+	 * TODO
+	 * 停用用户
+	 * 之后控制不允许选择
+	 */
+	
 
 	/**
 	 * 获取用户授予的角色

@@ -18,6 +18,13 @@ public class RoleDefinition extends AbstractRoleDefinition implements IProjectTe
 	
 
 	/**
+	 * TODO
+	 * 删除角色检查
+	 * 1.WBS引用的角色
+	 * 2.流程上引用
+	 */
+
+	/**
 	 * 返回类型名称
 	 * @return String
 	 */
