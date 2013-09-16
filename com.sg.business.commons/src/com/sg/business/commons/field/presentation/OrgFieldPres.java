@@ -1,4 +1,4 @@
-package com.sg.business.commons.field;
+package com.sg.business.commons.field.presentation;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;

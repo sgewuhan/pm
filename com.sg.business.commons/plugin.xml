@@ -1339,7 +1339,7 @@
                         labelVisible="true"
                         name="publisher"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                         required="false"
                         type="String"
                         userlabelForReadonly="true">
@@ -1367,7 +1367,7 @@
                         labelVisible="true"
                         name="organization_id"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
                         required="false"
                         type="String"
                         userlabelForReadonly="true">
@@ -1432,7 +1432,7 @@
                         labelVisible="true"
                         name="publisher"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                         required="false"
                         type="String"
                         userlabelForReadonly="true">
@@ -1460,7 +1460,7 @@
                         labelVisible="true"
                         name="organization_id"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
                         required="false"
                         type="String"
                         userlabelForReadonly="true">

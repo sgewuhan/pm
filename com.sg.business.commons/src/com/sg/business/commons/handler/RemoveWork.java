@@ -13,6 +13,7 @@ import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.INavigatorActionListener;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class RemoveWork extends AbstractNavigatorHandler {
@@ -51,6 +52,11 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		selected.addEventListener(currentViewerControl);
 		try {
 			selected.doRemove(new CurrentAccountContext());
+			
+			// 4. 将更改消息传递到编辑器
+			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
+					new Integer(INavigatorActionListener.REFRESH));
+			
 		} catch (Exception e) {
 			MessageUtil.showMessage(shell, "删除"+selected.getTypeName(), e.getMessage(),
 					SWT.ICON_WARNING);
@@ -60,7 +66,6 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		if(toUpdate!=null){
 			currentViewerControl.getViewer().update(toUpdate.toArray(), null);
 		}
-		
 	}
 
 }

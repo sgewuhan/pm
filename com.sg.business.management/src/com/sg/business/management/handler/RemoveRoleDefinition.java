@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -24,6 +25,14 @@ public class RemoveRoleDefinition extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
+		
+		if(selected instanceof AbstractRoleDefinition){
+			AbstractRoleDefinition rd = (AbstractRoleDefinition) selected;
+			if(rd.isSystemRole()){
+				MessageUtil.showToast("您不能删除系统角色", SWT.ICON_WARNING);
+				return;
+			}
+		}
 		
 		int yes = MessageUtil.showMessage(shell, TITLE,
 				"您确定要删除这个角色定义吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO

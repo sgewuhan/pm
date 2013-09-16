@@ -75,21 +75,23 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		sectionClient.setLayout(glayout);
 
 		BasicDBList optionsValue = (BasicDBList) project.getValue(fieldName);
-
-		for (int i = 0; i < options.size(); i++) {
-			final Button settingButton = new Button(sectionClient, SWT.CHECK);
-			final String optionName = (String) options.get(i);
-			settingButton.setData("data", optionName);
-			settingButton.setText(optionName);
-			settingButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					addFilterCondition(fieldName, optionName,
-							settingButton.getSelection());
-				}
-			});
-			settingButton.setSelection(optionsValue != null
-					&& optionsValue.contains(optionName));
+		if (options != null) {
+			for (int i = 0; i < options.size(); i++) {
+				final Button settingButton = new Button(sectionClient,
+						SWT.CHECK);
+				final String optionName = (String) options.get(i);
+				settingButton.setData("data", optionName);
+				settingButton.setText(optionName);
+				settingButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						addFilterCondition(fieldName, optionName,
+								settingButton.getSelection());
+					}
+				});
+				settingButton.setSelection(optionsValue != null
+						&& optionsValue.contains(optionName));
+			}
 		}
 
 		section.setClient(sectionClient);
@@ -107,7 +109,7 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		} else {
 			options.remove(option);
 		}
-		project.setValue(optionFieldName, options,this,true);
+		project.setValue(optionFieldName, options, this, true);
 		setDirty(true);
 	}
 
@@ -137,7 +139,7 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	@Override
 	public void commit(boolean onSave) {
-		if(onSave){
+		if (onSave) {
 			setDirty(false);
 		}
 	}
@@ -170,7 +172,6 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		}
 		createOptionContent();
 
-
 	}
 
 	private void createOptionContent() {
@@ -180,8 +181,8 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		}
 
 		ProjectTemplate template = project.getProjectTemplate();
-		
-		if(template==null){
+
+		if (template == null) {
 			return;
 		}
 		List<?> standardOptions = (List<?>) template
@@ -199,7 +200,7 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		createOptionSetting(content, projectTypeOptions, "项目类型",
 				ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
 
-		content.layout();		
+		content.layout();
 	}
 
 	@Override

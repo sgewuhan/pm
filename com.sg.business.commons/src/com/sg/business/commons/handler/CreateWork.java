@@ -11,6 +11,7 @@ import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
+import com.sg.widgets.part.INavigatorActionListener;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
@@ -26,6 +27,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+
 		Shell shell = HandlerUtil.getActiveShell(event);
 
 		AbstractWork po = ((AbstractWork) selected).makeChildWork();
@@ -43,15 +45,21 @@ public class CreateWork extends AbstractNavigatorHandler {
 				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null,"创建"+po.getTypeName());
+					true, null, "创建" + po.getTypeName());
+			
+			// 4. 将更改消息传递到编辑器
+			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
+					new Integer(INavigatorActionListener.REFRESH));
+			
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, "创建"+po.getTypeName(), e.getMessage(),
-					SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, "创建" + po.getTypeName(),
+					e.getMessage(), SWT.ICON_ERROR);
 		}
 
 		// 3. 处理完成后，释放侦听器
 		po.removeEventListener(vc);
-	}
 
+
+	}
 
 }

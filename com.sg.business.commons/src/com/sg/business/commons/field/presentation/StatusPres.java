@@ -1,21 +1,18 @@
-package com.sg.business.commons.field;
+package com.sg.business.commons.field.presentation;
 
 import org.eclipse.ui.forms.IFormPart;
 
-import com.sg.business.model.Message;
+import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.widgets.commons.valuepresentation.IValuePresentation;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 
-public class UserIdListFieldPres implements IValuePresentation {
-
-	public UserIdListFieldPres() {
-	}
+public class StatusPres implements IValuePresentation {
 
 	@Override
 	public String getPresentValue(IFormPart part) {
 		AbstractFieldPart field = (AbstractFieldPart) part;
-		Message message = (Message) field.getInput().getData();
-		return message.getRecieverLabel();
+		String value = (String) field.getValue();
+		return LifecycleToolkit.getLifecycleStatusText(value);
 	}
 
 }

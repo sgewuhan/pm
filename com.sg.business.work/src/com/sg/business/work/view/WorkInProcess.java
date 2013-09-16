@@ -49,7 +49,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 	@Override
 	public void doRefresh() {
 		if (processSync) {
-			MessageUtil.showToast("请稍候, 正在处理更新", SWT.ICON_INFORMATION);
+			MessageUtil.showToast(null,getPartName(),"请稍候, 正在处理更新。", SWT.ICON_INFORMATION);
 			return;
 		}
 		workSynchronizer.schedule();

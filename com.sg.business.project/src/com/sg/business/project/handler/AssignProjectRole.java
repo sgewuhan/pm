@@ -44,6 +44,7 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 		// 显示用户选择器
 		// 可选择项目所属职能部门的及下级部门的所有成员
 		NavigatorSelector ns = new NavigatorSelector("organization.alluser") {
+			@SuppressWarnings("unchecked")
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				try {

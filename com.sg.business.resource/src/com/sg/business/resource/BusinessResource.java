@@ -74,6 +74,14 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_VAULT2_16 = "vault2_16.png";
 
 	public static final String IMAGE_WORK_16 = "work_16.gif";
+	
+	public static final String IMAGE_WORK_FINISH_16 = "work_finish_16.png";
+	
+	public static final String IMAGE_WORK_CANCEL_16 = "work_cancel_16.gif";
+	
+	public static final String IMAGE_WORK_PAUSE_16 = "work_pause_16.gif";
+	
+	public static final String IMAGE_WORK_WIP_16 = "work_wip_16.png";
 
 	public static final String IMAGE_DELIVERABLE_16 = "deliverable_16.gif";
 
