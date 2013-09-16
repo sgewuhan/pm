@@ -77,24 +77,12 @@ public class Role extends PrimaryObject {
 	public static final String ROLE_VAULT_GUEST_ID = "T003";
 	public static final String ROLE_VAULT_GUEST_TEXT = "文档访问者";
 
-	/**
-	 * 基础角色/项目角色/项目经理
-	 */
-	public static final String ROLE_PROJECT_MANAGER_ID = "P000";
-	public static final String ROLE_PROJECT_MANAGER_TEXT = "项目经理";
-
-	/**
-	 * 基础角色/项目角色/项目访问者
-	 */
-	public static final String ROLE_PROJECT_GUEST_ID = "P001";
-	public static final String ROLE_PROJECT_GUEST_TEXT = "项目访问者";
 
 	/**
 	 * 系统角色ID
 	 */
 	public static final String[] ROLE_ID_SYSTEM = new String[] { ROLE_ADMIN_ID,
-			ROLE_ORGANIZATION_ADMIN_ID, ROLE_PROJECT_ADMIN_ID,ROLE_BUSINESS_ADMIN_ID,
-			ROLE_PROJECT_GUEST_ID, ROLE_PROJECT_MANAGER_ID, ROLE_VAULT_ADMIN_ID,
+			ROLE_ORGANIZATION_ADMIN_ID, ROLE_PROJECT_ADMIN_ID,ROLE_BUSINESS_ADMIN_ID, ROLE_VAULT_ADMIN_ID,
 			ROLE_VAULT_GUEST_ID };
 
 	/**
@@ -102,8 +90,7 @@ public class Role extends PrimaryObject {
 	 */
 	public static final String[] ROLE_NAME_SYSTEM = new String[] {
 			ROLE_ADMIN_TEXT, ROLE_ORGANIZATION_ADMIN_TEXT,ROLE_BUSINESS_ADMIN_TEXT,
-			ROLE_PROJECT_ADMIN_TEXT, ROLE_PROJECT_GUEST_TEXT,
-			ROLE_PROJECT_MANAGER_TEXT, ROLE_VALUT_ADMIN_TEXT,
+			ROLE_PROJECT_ADMIN_TEXT,  ROLE_VALUT_ADMIN_TEXT,
 			ROLE_VAULT_GUEST_TEXT };
 
 	/**

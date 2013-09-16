@@ -921,7 +921,7 @@
                         labelVisible="true"
                         name="chargerid"
                         persistable="false"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -933,7 +933,7 @@
                         labelVisible="true"
                         name="org_id"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -945,7 +945,7 @@
                         labelVisible="true"
                         name="launchorg_id"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
                         required="false"
                         type="String">
                   </text>

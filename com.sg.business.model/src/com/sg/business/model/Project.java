@@ -309,7 +309,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public Map<ObjectId, List<PrimaryObject>> getRoleAssignmentMap() {
-		List<PrimaryObject> roles = getRoleDefinitions();
+		List<PrimaryObject> roles = getProjectRole();
 		Map<ObjectId, List<PrimaryObject>> result = new HashMap<ObjectId, List<PrimaryObject>>();
 		if (!roles.isEmpty()) {
 			for (int i = 0; i < roles.size(); i++) {
@@ -321,7 +321,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-	public List<PrimaryObject> getRoleDefinitions() {
+	/**
+	 * 获取项目角色
+	 * 
+	 * @return
+	 */
+	public List<PrimaryObject> getProjectRole() {
 		return getRelationById(F__ID, ProjectRole.F_PROJECT_ID,
 				ProjectRole.class);
 	}
@@ -399,6 +404,46 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				srcdata.get(BudgetItem.F_CHILDREN));
 
 		return ModelService.createModelObject(tgtData, ProjectBudget.class);
+	}
+
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		boolean saved = super.doSave(context);
+		if (saved) {
+			// 同步项目经理角色
+			// [bug:18]
+			// 确保项目经理角色的人员与项目负责人一致
+			ensureProjectManagerRole(context);
+		}
+		return saved;
+	}
+
+	/**
+	 * 确保项目经理角色的人员与项目负责人一致
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
+	private void ensureProjectManagerRole(IContext context) throws Exception {
+		User charger = getCharger();
+		if (charger == null) {
+			return;
+		}
+
+		List<User> users = new ArrayList<User>();
+		users.add(charger);
+
+		List<PrimaryObject> roles = getProjectRole();
+		for (int i = 0; i < roles.size(); i++) {
+			ProjectRole projectRole = (ProjectRole) roles.get(i);
+			String rn = projectRole.getRoleNumber();
+			if (ProjectRole.ROLE_PROJECT_MANAGER_ID.equals(rn)) {
+				try{
+					projectRole.doAssignUsers(users, context);
+				}catch(Exception e){
+				}
+			}
+		}
 	}
 
 	@Override
@@ -1363,7 +1408,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		// 3. 检查角色的指派： 警告没有指派人员的角色
-		List<PrimaryObject> rd = getRoleDefinitions();
+		List<PrimaryObject> rd = getProjectRole();
 		Map<ObjectId, List<PrimaryObject>> raMap = getRoleAssignmentMap();
 		List<PrimaryObject> ra;
 		boolean passed = true;
@@ -1696,14 +1741,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public void doReady(IContext context) {
-//		DBCollection col = getCollection();
-//		DBObject data = col.findAndModify(new BasicDBObject().append(F__ID,
-//				get_id()), null, null, false, new BasicDBObject().append(
-//				"$set",
-//				new BasicDBObject().append(F_LIFECYCLE, STATUS_ONREADY_VALUE)),
-//
-//		true, false);
-//		set_data(data);
+		// DBCollection col = getCollection();
+		// DBObject data = col.findAndModify(new BasicDBObject().append(F__ID,
+		// get_id()), null, null, false, new BasicDBObject().append(
+		// "$set",
+		// new BasicDBObject().append(F_LIFECYCLE, STATUS_ONREADY_VALUE)),
+		//
+		// true, false);
+		// set_data(data);
 		System.out.println("ready!!!!!");
 	}
 
@@ -1782,7 +1827,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 * @param key
@@ -1790,8 +1835,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @param query
 	 * @return
 	 */
-	public BasicBSONList getWorkflowHistroyData(String key,
-			boolean query) {
+	public BasicBSONList getWorkflowHistroyData(String key, boolean query) {
 		String field = key + POSTFIX_HISTORY;
 		Object value = getValue(field, query);
 		return (BasicBSONList) value;

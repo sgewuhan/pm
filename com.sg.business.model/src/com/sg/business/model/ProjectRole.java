@@ -21,12 +21,13 @@ import com.sg.business.model.event.AccountEvent;
 
 /**
  * 项目角色
+ * 
  * @author jinxitao
- *
+ * 
  */
 public class ProjectRole extends AbstractRoleDefinition implements
 		IProjectRelative {
-	
+
 	/**
 	 * 创建角色的编辑器
 	 */
@@ -39,6 +40,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	/**
 	 * 返回角色所属项目
+	 * 
 	 * @return Project
 	 */
 	public Project getProject() {
@@ -48,9 +50,10 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 返回角色所属项目_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getProjectId() {
@@ -62,32 +65,31 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	 */
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		//如果是系统角色，需要将该角色的用户添加到项目的参与者
-		if(isOrganizatioRole()){
+		// 如果是系统角色，需要将该角色的用户添加到项目的参与者
+		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();
 			List<PrimaryObject> ass = role.getAssignment();
 			Project project = getProject();
 			project.doAddParticipateFromAssignment(ass);
 		}
-		
+
 		super.doInsert(context);
 	}
 
-
 	/**
 	 * 为角色指派用户
+	 * 
 	 * @param users
 	 * @throws Exception
 	 */
-	public void doAssignUsers(List<?> users, IContext context) throws Exception {
+	public void doAssignUsers(List<User> users, IContext context)
+			throws Exception {
 		DBCollection roleAssignmentCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
 		List<DBObject> list = new ArrayList<DBObject>();
 		String[] userIds = new String[users.size()];
 		for (int i = 0; i < users.size(); i++) {
 			User user = (User) users.get(i);
-			UserSessionContext.noticeAccountChanged(user.getUserid(),
-					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED,this));
 			list.add(new BasicDBObject()
 					.append(ProjectRoleAssignment.F__TYPE,
 							IModelConstants.C_ROLE_ASSIGNMENT)
@@ -101,22 +103,30 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 			userIds[i] = user.getUserid();
 		}
+		
+		//如果有重复，将在以下的代码中抛出MongoException Code = 11000
 		WriteResult ws = roleAssignmentCol.insert(list);
 		checkWriteResult(ws);
 
 		// 写入到项目
-		if(userIds.length>0){
+		if (userIds.length > 0) {
 			Project project = getProject();
 			project.doAddParticipate(userIds);
 		}
 
+		// 通知帐户
+		for (int i = 0; i < users.size(); i++) {
+			User user = (User) users.get(i);
+			UserSessionContext.noticeAccountChanged(user.getUserid(),
+					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
+		}
+		
 		// 写日志
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "为角色指派用户",
 				new Date(), "角色：" + this + "\n用户" + users.toString(),
 				IModelConstants.DB);
 
 	}
-
 
 	/**
 	 * 删除项目角色
@@ -135,6 +145,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	/**
 	 * 返回类型名称
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -144,6 +155,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	/**
 	 * 返回角色指派
+	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getAssignment() {

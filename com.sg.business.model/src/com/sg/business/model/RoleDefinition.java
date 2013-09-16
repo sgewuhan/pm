@@ -9,6 +9,8 @@ package com.sg.business.model;
  */
 public class RoleDefinition extends AbstractRoleDefinition implements IProjectTemplateRelative{
 
+	
+	
 	/**
 	 * 创建角色的编辑器
 	 */

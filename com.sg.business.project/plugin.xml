@@ -749,7 +749,7 @@
                         labelVisible="true"
                         name="chargerid"
                         persistable="false"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -761,7 +761,7 @@
                         labelVisible="true"
                         name="org_id"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -773,7 +773,7 @@
                         labelVisible="true"
                         name="launchorg_id"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.OrgFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -992,7 +992,7 @@
                         labelVisible="true"
                         name="chargerid"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.UserIdFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                         required="false"
                         type="String">
                   </text>
@@ -1189,12 +1189,14 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="rolenumber"
+                        inputValidator="com.sg.business.commons.field.validator.RoleNumberInputValidator"
                         label="角色代码"
                         labelVisible="true"
                         name="rolenumber"
                         persistable="true"
-                        required="false"
-                        type="String">
+                        required="true"
+                        type="String"
+                        widthHint="240">
                   </text>
                   <text
                         editPart="Text(Single Line)"
@@ -1204,7 +1206,7 @@
                         labelVisible="true"
                         name="desc"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -1248,7 +1250,8 @@
                         name="rolenumber"
                         persistable="true"
                         required="false"
-                        type="String">
+                        type="String"
+                        widthHint="240">
                   </text>
                   <text
                         editPart="Text(Single Line)"
@@ -1258,7 +1261,7 @@
                         labelVisible="true"
                         name="desc"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -1730,7 +1733,7 @@
                         labelVisible="true"
                         name="document_id"
                         persistable="false"
-                        presentation="com.sg.business.commons.field.DocumentFieldPres"
+                        presentation="com.sg.business.commons.field.presentation.DocumentFieldPres"
                         required="false"
                         type="String">
                   </text>
