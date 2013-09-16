@@ -53,7 +53,10 @@ public class ShowWorkCompase extends AbstractNavigatorHandler {
 	}
 
 	protected void sendRefresh(ExecutionEvent event) {
-		// 将更改消息传递到编辑器
+		/**********************************************************
+		 * [BUG:20]
+		 * 将更改消息传递到编辑器
+		 */
 		sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
 				new Integer(INavigatorActionListener.REFRESH));		
 	}

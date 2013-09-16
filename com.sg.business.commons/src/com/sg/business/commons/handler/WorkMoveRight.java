@@ -60,7 +60,10 @@ public class WorkMoveRight extends AbstractNavigatorHandler {
 
 			viewer.setSelection(new StructuredSelection(selected), true);
 			
-			// 将更改消息传递到编辑器
+			/**********************************************************
+			 * [BUG:20]
+			 * 将更改消息传递到编辑器
+			 */
 			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
 					new Integer(INavigatorActionListener.REFRESH));
 		} catch (Exception e) {
