@@ -149,6 +149,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
 
+	public static final String F_MARK = "marked";
+
 	/**
 	 * 根据状态返回不同的图标
 	 */
@@ -1635,10 +1637,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 * BUG:10006
 		 */
 		String lc = getLifecycleStatus();
-		if(lc.equals(STATUS_NONE_VALUE)){
+		if (lc.equals(STATUS_NONE_VALUE)) {
 			setValue(F_LIFECYCLE, STATUS_ONREADY_VALUE);
 		}
-		
+
 		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
 		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
 				F_ACTUAL_DURATION);
@@ -1832,13 +1834,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject update = new BasicDBObject();
 		Map<String, Object> params = new HashMap<String, Object>();
 
-
 		if (!isProjectWBSRoot()) {
 			// 判断能否启动，检查状态
 			Assert.isTrue(canStart(), "工作的当前状态不能执行启动操作");
 			// 调用前处理
 			doStartBefore(context, params);
-
 
 			// 判定是否使用执行工作流
 			if (isWorkflowActivate(F_WF_EXECUTE)) {
@@ -2045,8 +2045,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Message message = ModelService.createModelObject(Message.class);
 		// 设置收件人
 		BasicBSONList participatesIdList = getParticipatesIdList();
-		if(participatesIdList == null
-				|| participatesIdList.isEmpty()){
+		if (participatesIdList == null || participatesIdList.isEmpty()) {
 			return null;
 		}
 		message.setValue(Message.F_RECIEVER, participatesIdList);
@@ -2218,13 +2217,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		return null;
 	}
-	
-	public DBObject getWorkflowTaskData(String key){
+
+	public DBObject getWorkflowTaskData(String key) {
 		String field = key + POSTFIX_TASK;
 		Object value = getValue(field);
-		if(value instanceof DBObject){
+		if (value instanceof DBObject) {
 			return (DBObject) value;
-		}else{
+		} else {
 			return null;
 		}
 	}
@@ -2535,6 +2534,25 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		taskForm.setValue(TaskForm.F_WORK_ID, get_id());
 		return taskForm;
+	}
+
+	public void mark(String userId, boolean marked) throws Exception {
+		DBCollection col = getCollection();
+		WriteResult ws = col.update(new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set", new BasicDBObject().append(
+						F_MARK + "." + userId, marked)));
+		checkWriteResult(ws);
+		DBObject data = (DBObject) getValue(F_MARK);
+		if(data==null){
+			data = new BasicDBObject();
+			setValue(F_MARK, data);
+		}
+		data.put(userId, marked);
+	}
+
+	public boolean getMarked(String userId) {
+		DBObject data = (DBObject) getValue(F_MARK);
+		return data!=null&&Boolean.TRUE.equals(data.get(userId));
 	}
 
 }

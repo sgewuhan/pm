@@ -25,6 +25,20 @@ public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
 		workd.addEventListener(vc);
 		NavigatorSelector ns = new NavigatorSelector(
 				"management.genericwork.definitions") {
+
+			//沒有啟用的通用工作定義不能引用
+			@Override
+			protected boolean isSelectEnabled(IStructuredSelection is) {
+				Iterator<?> iterator = is.iterator();
+				while (iterator.hasNext()) {
+					WorkDefinition nworkd = (WorkDefinition) iterator.next();
+					if (Boolean.FALSE.equals(nworkd.isActivated())) {
+						return false;
+					}
+				}
+				return super.isSelectEnabled(is);
+			}
+			
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()) {

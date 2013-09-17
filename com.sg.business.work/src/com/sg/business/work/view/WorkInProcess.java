@@ -21,7 +21,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
+		
 		// 刷新工作流信息
 		IContext context = getNavigator().getContext();
 		String userid = context.getAccountInfo().getConsignerId();

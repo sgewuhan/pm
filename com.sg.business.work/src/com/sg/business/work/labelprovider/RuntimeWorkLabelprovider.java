@@ -16,6 +16,8 @@ import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.ImageResource;
+import com.sg.widgets.Widgets;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
@@ -36,21 +38,40 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 
+		User charger = work.getCharger();
+
+		// style="position: absolute; overflow: hidden; z-index: 3;
+		// vertical-align: middle; white-space: nowrap;
+
 		boolean isOwner = isOwner(work, userId);
 		if (!isOwner) {
 			sb.append("<span style='color:#bbbbbb;FONT-FAMILY:微软雅黑;font-size:9pt'>");
-		}else{
+		} else {
 			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 		}
+		
+		// 所有者标记
+		boolean userMarked = work.getMarked(userId);
+		if (userMarked){
+			String selectbar = "<img src='"
+					+ getSelectorURL(work,ImageResource.BLUE_BULLETIN)
+					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
+			sb.append(selectbar);
+		}else{
+			String selectbar = "<img src='"
+					+ getSelectorURL(work,ImageResource.WHITE_BULLETIN)
+					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
+			sb.append(selectbar);
 
-		User charger = work.getCharger();
+		}
+		
 		if (charger != null) {
 			sb.append("<span style='float:right;padding-right:4px'>");
 			sb.append(charger);
 			sb.append("</span>");
 		}
 		String imageUrl = "<img src='" + getHeaderImageURL(work)
-				+ "' style='float:left;padding:6px' width='24' height='24' />";
+				+ "' style='float:left;padding:6px' width='16' height='16' />";
 		sb.append(imageUrl);
 
 		// 工作desc
@@ -79,6 +100,14 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		if (date != null) {
 			planStart = sdf.format(date);
 		}
+		
+		
+//		String selectbar = "<img src='"
+//				+ getSelectorURL(work,ImageResource.WHITE_BULLETIN)
+//				+ "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
+//		sb.append(selectbar);
+		
+		sb.append("");
 		sb.append("计划:");
 		sb.append(planStart);
 		sb.append("~");
@@ -181,6 +210,12 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return sb.toString();
 	}
 
+	private String getSelectorURL(Work work, String style) {
+		return FileUtil.getImageURL(style,
+				Widgets.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+	}
+	
+
 	private String getTaskStatusImageURL(Object taskstatus) {
 		if (Status.Created.name().equals(taskstatus)) {
 			return FileUtil.getImageURL(
@@ -195,16 +230,13 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 					BusinessResource.IMAGE_WF_WORK_CLOSE_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.Error.name().equals(taskstatus)) {
-			return FileUtil.getImageURL(
-					BusinessResource.IMAGE_WF_WORK_STOP_10,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_STOP_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.Failed.name().equals(taskstatus)) {
-			return FileUtil.getImageURL(
-					BusinessResource.IMAGE_WF_WORK_STOP_10,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_STOP_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.Exited.name().equals(taskstatus)) {
-			return FileUtil.getImageURL(
-					BusinessResource.IMAGE_WF_WORK_STOP_10,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_STOP_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.InProgress.name().equals(taskstatus)) {
 			return FileUtil.getImageURL(
@@ -219,13 +251,12 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 					BusinessResource.IMAGE_WF_WORK_READY_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.Suspended.name().equals(taskstatus)) {
-			return FileUtil.getImageURL(
-					BusinessResource.IMAGE_WF_WORK_STOP_10,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_STOP_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}
-		return FileUtil.getImageURL(
-				BusinessResource.IMAGE_WF_WORK_READY_10,
-				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);	}
+		return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_READY_10,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+	}
 
 	private boolean isOwner(Work work, String userId) {
 
@@ -255,43 +286,43 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		String lc = work.getLifecycleStatus();
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_CANCEL_24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_CANCEL_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_FINISH_24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
 			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK2_READY_24,
+						BusinessResource.IMAGE_WORK2_READY_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			} else {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK_READY_24,
+						BusinessResource.IMAGE_WORK2_READY_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			}
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
 			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK2_WIP_24,
+						BusinessResource.IMAGE_WORK2_WIP_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			} else {
-				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_24,
+				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			}
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_PAUSE_24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_PAUSE_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_READY_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}
 		return null;
-		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_24,
+		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_16,
 		// BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
