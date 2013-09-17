@@ -1,9 +1,7 @@
 package com.sg.business.model.dataset.organization;
 
-import com.mongodb.BasicDBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Role;
-import com.sg.business.model.User;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
 /**
