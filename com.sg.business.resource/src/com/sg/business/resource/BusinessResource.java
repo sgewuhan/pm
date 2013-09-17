@@ -87,29 +87,29 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_PROJECT_32 = "project_32.png";
 
-	public static final String IMAGE_WORK_32 = "work_32.png";
+	public static final String IMAGE_WORK_24 = "work_24.png";
 
-	public static final String IMAGE_WORK_CANCEL_32 = "work_cancel_32.png";
+	public static final String IMAGE_WORK_CANCEL_24 = "work_cancel_24.png";
 
-	public static final String IMAGE_WORK_WIP_32 = "work_wip_32.png";
-	public static final String IMAGE_WORK2_WIP_32 = "work2_wip_32.png";
+	public static final String IMAGE_WORK_WIP_24 = "work_wip_24.png";
+	public static final String IMAGE_WORK2_WIP_24 = "work2_wip_24.png";
 
-	public static final String IMAGE_WORK_PAUSE_32 = "work_pause_32.png";
+	public static final String IMAGE_WORK_PAUSE_24 = "work_pause_24.png";
 
-	public static final String IMAGE_WORK_FINISH_32 = "work_finish_32.png";
+	public static final String IMAGE_WORK_FINISH_24 = "work_finish_24.png";
 
-	public static final String IMAGE_WORK_READY_32 = "work_ready_32.png";
-	public static final String IMAGE_WORK2_READY_32 = "work2_ready_32.png";
+	public static final String IMAGE_WORK_READY_24 = "work_ready_24.png";
+	public static final String IMAGE_WORK2_READY_24 = "work2_ready_24.png";
 
-//	public static final String IMAGE_WORKCANCEL_10 = "workcancel_10.png";
-//	
-//	public static final String IMAGE_WORKREADY_10 = "workready_10.png";
-//	
-//	public static final String IMAGE_WORKSTOP_10 = "workstop_10.png";
-//	
-//	public static final String IMAGE_WORKCLOSE_10 = "workclose_10.png";
-//	
-//	public static final String IMAGE_WORKPROCESS_10 = "workprocess_10.png";
+	public static final String IMAGE_WF_WORK_CANCEL_10 = "workcancel_10.png";
+	
+	public static final String IMAGE_WF_WORK_READY_10 = "workready_10.png";
+	
+	public static final String IMAGE_WF_WORK_STOP_10 = "workstop_10.png";
+	
+	public static final String IMAGE_WF_WORK_CLOSE_10 = "workclose_10.png";
+	
+	public static final String IMAGE_WF_WORK_PROCESS_10 = "workprocess_10.png";
 
 	public static final String IMAGE_ROLE3_16 = "role3_16.png";
 

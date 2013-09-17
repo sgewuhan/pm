@@ -359,6 +359,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	private Work makeWBSRoot() {
 		BasicDBObject wbsRootData = new BasicDBObject();
 		wbsRootData.put(Work.F_DESC, getDesc());
+		wbsRootData.put(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);
 		wbsRootData.put(Work.F_PROJECT_ID, get_id());
 		ObjectId wbsRootId = new ObjectId();
 		wbsRootData.put(Work.F__ID, wbsRootId);
@@ -950,6 +951,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				work.put(Work.F_PARENT_ID, tgtParentId);
 
 				work.put(Work.F__ID, new ObjectId());
+				/**
+				 * BUG:10006
+				 */
+				work.put(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);
 
 				if (WorkDefinition.VALUE_MANDATORY.equals(optionValue)) {
 					work.put(Work.F_MANDATORY, Boolean.TRUE);

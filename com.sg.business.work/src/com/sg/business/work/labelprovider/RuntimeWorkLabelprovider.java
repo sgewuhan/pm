@@ -2,9 +2,11 @@ package com.sg.business.work.labelprovider;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.jbpm.task.Status;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
@@ -30,13 +32,15 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 	private String getRuntimeWorkHTMLLabel(Work work) {
 		CurrentAccountContext context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getConsignerId();
-		
+
 		StringBuffer sb = new StringBuffer();
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 
-		boolean isOwner = isOwner(work,userId);
-		if(!isOwner){
-			sb.append("<span style='color:#bbbbbb'>");
+		boolean isOwner = isOwner(work, userId);
+		if (!isOwner) {
+			sb.append("<span style='color:#bbbbbb;FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		}else{
+			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 		}
 
 		User charger = work.getCharger();
@@ -45,19 +49,15 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			sb.append(charger);
 			sb.append("</span>");
 		}
-
 		String imageUrl = "<img src='" + getHeaderImageURL(work)
-				+ "' style='float:left;padding:6px' width='32' height='32' />";
+				+ "' style='float:left;padding:6px' width='24' height='24' />";
 		sb.append(imageUrl);
 
 		// 工作desc
 		String workDesc = work.getDesc();
 		workDesc = Utils.getPlainText(workDesc);
-		sb.append("<b>");
 		sb.append(workDesc);
-		sb.append("</b> ");
 
-		sb.append(" ");
 		// BasicBSONList participateIds = work.getParticipatesIdList();
 		// if (participateIds != null && participateIds.size() > 0) {
 		// String pid = (String) participateIds.get(0);
@@ -71,6 +71,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		// 有关时间
 		sb.append("<br/>");
 		sb.append("<small>");
+
+		sb.append(getWorkflowSummaryInformation(work));
 
 		Date date = work.getPlanStart();
 		String planStart = "";
@@ -121,31 +123,109 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		}
 		sb.append(planDuration);
 
-		sb.append("<br/>");
+		sb.append("</small>");
 
-		DBObject wfinfo = work.getCurrentWorkflowTaskData(Work.F_WF_EXECUTE,userId,false);
-		if (wfinfo != null) {
-			sb.append("流程:");
-			Object taskname = wfinfo.get(Work.F_WF_TASK_NAME);
-			sb.append(taskname);
-			Object taskstatus = wfinfo.get(Work.F_WF_TASK_STATUS);
-			sb.append(" ");
-			sb.append(taskstatus);
-			sb.append(" ");
-			Object owner = wfinfo.get(Work.F_WF_TASK_ACTUALOWNER);
-			if (owner instanceof String) {
-				User ownerUser = UserToolkit.getUserById((String) owner);
-				sb.append(ownerUser);
+		sb.append("</span>");
+		return sb.toString();
+	}
+
+	private String getWorkflowSummaryInformation(Work work) {
+		DBObject data = work.getWorkflowTaskData(Work.F_WF_EXECUTE);
+		if (data == null) {
+			return "";
+		}
+
+		DBObject latestTask = null;
+		Iterator<String> iter = data.keySet().iterator();
+		while (iter.hasNext()) {
+			String key = (String) iter.next();
+			Object value = data.get(key);
+			if (value instanceof DBObject) {
+				DBObject task = (DBObject) value;
+				if (latestTask == null) {
+					latestTask = task;
+				} else {
+					Object createdon = task.get(Work.F_WF_TASK_CREATEDON);
+					if (createdon instanceof Date) {
+						Date latestDate = (Date) latestTask
+								.get(Work.F_WF_TASK_CREATEDON);
+						if (((Date) createdon).after(latestDate)) {
+							latestTask = task;
+						}
+					}
+				}
 			}
 		}
 
-		sb.append("</small>");
-		
-		if(!isOwner){
-			sb.append("</span>");
+		if (latestTask == null) {
+			return "";
 		}
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='float:right;padding-right:4px'>");
+		// 根据状态取流程图标
+		Object taskstatus = latestTask.get(Work.F_WF_TASK_STATUS);
+		sb.append("<img src='" + getTaskStatusImageURL(taskstatus)
+				+ "' style='float:left;padding:6px' width='10' height='10' />");
+
+		Object taskname = latestTask.get(Work.F_WF_TASK_NAME);
+		sb.append(" ");
+		sb.append(taskname);
+		sb.append(" ");
+		Object owner = latestTask.get(Work.F_WF_TASK_ACTUALOWNER);
+		if (owner instanceof String) {
+			User ownerUser = UserToolkit.getUserById((String) owner);
+			sb.append(ownerUser);
+		}
+		sb.append("</span>");
 		return sb.toString();
 	}
+
+	private String getTaskStatusImageURL(Object taskstatus) {
+		if (Status.Created.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_READY_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Ready.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_READY_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Completed.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_CLOSE_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Error.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_STOP_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Failed.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_STOP_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Exited.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_STOP_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.InProgress.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_PROCESS_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Obsolete.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_CANCEL_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Reserved.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_READY_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (Status.Suspended.name().equals(taskstatus)) {
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_STOP_10,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		}
+		return FileUtil.getImageURL(
+				BusinessResource.IMAGE_WF_WORK_READY_10,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);	}
 
 	private boolean isOwner(Work work, String userId) {
 
@@ -155,7 +235,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		}
 
 		String assignerId = work.getAssignerId();
-		if(userId.equals(assignerId)){
+		if (userId.equals(assignerId)) {
 			return true;
 		}
 
@@ -163,7 +243,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		if (pidlist != null && pidlist.contains(userId)) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -175,37 +255,44 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		String lc = work.getLifecycleStatus();
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_CANCEL_32,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_CANCEL_24,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_FINISH_32,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_FINISH_24,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
-			if(work.isWorkflowActivate(Work.F_WF_EXECUTE)){
+			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK2_READY_32,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-			}else{
+						BusinessResource.IMAGE_WORK2_READY_24,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			} else {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK_READY_32,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+						BusinessResource.IMAGE_WORK_READY_24,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
 			}
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-			if(work.isWorkflowActivate(Work.F_WF_EXECUTE)){
-				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_32,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-			}else{
-				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_32,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_WIP_24,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
+			} else {
+				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_24,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER);
 			}
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_PAUSE_32,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_PAUSE_24,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_32,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_24,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}
 		return null;
+		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_24,
+		// BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
 }

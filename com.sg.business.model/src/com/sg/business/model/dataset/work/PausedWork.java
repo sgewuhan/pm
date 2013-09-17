@@ -9,37 +9,11 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 
-public class FinishedWork extends SingleDBCollectionDataSetFactory{
+public class PausedWork extends SingleDBCollectionDataSetFactory {
 
-	public FinishedWork() {
+	public PausedWork() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
 	}
-
-//	/**
-//	 * 返回数据集
-//	 */
-//	@Override
-//	public DataSet getDataSet() {
-//		DBCollection col = getCollection();
-//		DBCursor cur = col.find(getQueryCondition(),
-//				new BasicDBObject().append(Work.F_ROOT_ID, 1));
-//		List<PrimaryObject> ret = new ArrayList<PrimaryObject>();
-//		cur.sort(getSort());
-//		while(cur.hasNext()){
-//			DBObject dbo = cur.next();
-//			ObjectId rootId = (ObjectId) dbo.get(Work.F_ROOT_ID);
-//			if(rootId==null){
-//				rootId = (ObjectId) dbo.get(Work.F__ID);
-//			}
-//			Work work = ModelService.createModelObject(Work.class, rootId);
-//			if(!ret.contains(work)){
-//				ret.add(work);
-//			}
-//		}
-//		
-//		return new DataSet(ret);
-//		
-//	}
 
 	/**
 	 * 获取当前账号负责的工作和参与的工作
@@ -55,12 +29,8 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition.put(Work.F_PARTICIPATE, userid);
-			// 生命周期状态为准备、进行中
-			queryCondition
-					.put(Work.F_LIFECYCLE,
-							new BasicDBObject().append("$in", new String[] {
-									Work.STATUS_FINIHED_VALUE,
-									Work.STATUS_CANCELED_VALUE}));
+			// 生命周期状态为已经暂停
+			queryCondition.put(Work.F_LIFECYCLE, Work.STATUS_PAUSED_VALUE);
 			return queryCondition;
 
 		} catch (Exception e) {
@@ -68,7 +38,6 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 			return new BasicDBObject().append(Work.F__ID, null);
 		}
 	}
-
 
 	@Override
 	public DBObject getSort() {

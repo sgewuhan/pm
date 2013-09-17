@@ -184,7 +184,9 @@ public class Organization extends PrimaryObject {
 		sb.append(label);
 		sb.append("</b>");
 		sb.append("<br/>");
+		sb.append("<small>");
 		sb.append(path);
+		sb.append("</small>");
 		return sb.toString();
 	}
 

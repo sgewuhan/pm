@@ -14,9 +14,18 @@ public class Inbox extends AccountSensitiveTableView {
 		}
 	}
 
-	@Override
-	protected String getAccountNoticeMessage() {
-		return "重新读取收件信息...";
-	}
 
+	/*
+	 * BUG:10004 
+	 * 
+	 * 类型:界面不友好
+	 * 
+	 * 描述:经常提示重新读取消息列表 
+	 * 
+	 * 去掉提示，直接刷新
+	 */
+	@Override
+	protected boolean isShowToastNotice() {
+		return false;
+	}
 }

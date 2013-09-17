@@ -336,12 +336,25 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 
 		sb.append("<br/>");
 
+		sb.append("<small>");
+		
 		String senderId = (String) getValue(F_SENDER);
 		User sender = UserToolkit.getUserById(senderId);
-		sb.append("发件人:" + sender);
+		/**
+		 * BUG:10003  zhonghua
+		 * 消息中显示发件人null, 这些发件人是系统发件或者是后台发件
+		 */
+		if (sender == null) {
+			sb.append("发件人:" + senderId);
+		} else {
+			sb.append("发件人:" + sender);
+		}
 		sb.append("  ");
 		String recieverLabel = getRecieverLabel();
 		sb.append("收件人:" + recieverLabel);
+		
+		sb.append("</small>");
+
 		return sb.toString();
 	}
 
@@ -393,7 +406,8 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			BasicBSONList recieverList = (BasicBSONList) value;
 			for (int i = 0; i < recieverList.size(); i++) {
 				UserSessionContext.noticeAccountChanged((String) recieverList
-						.get(i), new AccountEvent(AccountEvent.EVENT_MESSAGE, this));
+						.get(i), new AccountEvent(AccountEvent.EVENT_MESSAGE,
+						this));
 			}
 
 		} else if (value instanceof String[]) {

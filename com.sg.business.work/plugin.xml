@@ -11,14 +11,21 @@
             category="work"
             class="com.sg.business.work.view.WorkInProcess"
             id="work.processing"
-            name="待处理工作"
+            name="待处理"
             restorable="true">
       </view>
       <view
             category="work"
-            class="com.sg.widgets.part.view.TreeNavigator"
+            class="com.sg.business.work.view.WorkHoldon"
             id="work.finished"
-            name="已结束的工作"
+            name="已关闭"
+            restorable="true">
+      </view>
+      <view
+            category="work"
+            class="com.sg.business.work.view.WorkHoldon"
+            id="work.paused"
+            name="已暂停"
             restorable="true">
       </view>
    </extension>
@@ -30,7 +37,11 @@
       </navigator>
       <navigator
             id="work.finished"
-            tree="work.finished">
+            table="work.finished">
+      </navigator>
+      <navigator
+            id="work.paused"
+            table="work.paused">
       </navigator>
       <navigator
             id="work.project.deliverable"
@@ -194,11 +205,12 @@
             canDelete="true"
             canEdit="false"
             canRead="true"
-            customItemHeight="54"
+            customItemHeight="44"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
             editorId="editor.work"
             headerVisiable="false"
             id="work.processing"
+            lineVisiable="false"
             markupEnabled="true"
             popupMenu="popup:work.processing">
          <structure
@@ -209,29 +221,6 @@
                labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
                name="工作"
                style="SWT.LEFT"
-               type="String"
-               width="-1">
-         </column>
-      </tree>
-      <tree
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="true"
-            customItemHeight="54"
-            dataSet="com.sg.business.model.dataset.work.FinishedWork"
-            editorId="editor.work"
-            headerVisiable="false"
-            id="work.finished"
-            markupEnabled="true"
-            popupMenu="popup:work.finished">
-         <structure
-               modelRelation="work_work">
-         </structure>
-         <column
-               column="desc"
-               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
-               name="工作"
                type="String"
                width="-1">
          </column>
@@ -421,6 +410,46 @@
    </extension>
    <extension
          point="com.sg.widgets.table">
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            customItemHeight="44"
+            dataSet="com.sg.business.model.dataset.work.FinishedWork"
+            editorId="editor.work"
+            headerVisiable="false"
+            id="work.finished"
+            markupEnabled="true"
+            popupMenu="popup:work.finished">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
+               name="工作"
+               type="String"
+               width="-1">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            customItemHeight="44"
+            dataSet="com.sg.business.model.dataset.work.PausedWork"
+            editorId="editor.work"
+            headerVisiable="false"
+            id="work.paused"
+            markupEnabled="true"
+            popupMenu="popup:work.finished">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
+               name="工作"
+               type="String"
+               width="-1">
+         </column>
+      </table>
       <table
             canCreate="false"
             canDelete="false"

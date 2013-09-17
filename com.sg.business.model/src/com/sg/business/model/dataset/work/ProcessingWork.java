@@ -67,8 +67,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 					.put(Work.F_LIFECYCLE,
 							new BasicDBObject().append("$in", new String[] {
 									Work.STATUS_ONREADY_VALUE,
-									Work.STATUS_WIP_VALUE,
-									Work.STATUS_PAUSED_VALUE}));
+									Work.STATUS_WIP_VALUE}));
 			return queryCondition;
 
 		} catch (Exception e) {

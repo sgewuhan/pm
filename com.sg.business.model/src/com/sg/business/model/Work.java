@@ -1631,6 +1631,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// calendarCaculater = new CalendarCaculater(getProjectId());
 		// }
 
+		/**
+		 * BUG:10006
+		 */
+		String lc = getLifecycleStatus();
+		if(lc.equals(STATUS_NONE_VALUE)){
+			setValue(F_LIFECYCLE, STATUS_ONREADY_VALUE);
+		}
+		
 		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
 		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
 				F_ACTUAL_DURATION);
@@ -2209,6 +2217,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return (DBObject) ((DBObject) value).get(userid);
 		}
 		return null;
+	}
+	
+	public DBObject getWorkflowTaskData(String key){
+		String field = key + POSTFIX_TASK;
+		Object value = getValue(field);
+		if(value instanceof DBObject){
+			return (DBObject) value;
+		}else{
+			return null;
+		}
 	}
 
 	/**

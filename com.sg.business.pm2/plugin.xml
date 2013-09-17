@@ -73,6 +73,17 @@
          </view>
          <view
                closeable="false"
+               id="work.paused"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.finished"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
                id="com.sg.business.home.summary"
                minimized="false"
                moveable="false"
