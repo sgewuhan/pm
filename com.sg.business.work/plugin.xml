@@ -1521,6 +1521,12 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="runtimework.mark"
+               icon="image/mark_24.png"
+               label="标记"
+               style="push">
+         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -1648,6 +1654,10 @@
                optional="false">
          </commandParameter>
       </command>
+      <command
+            id="runtimework.mark"
+            name="标记工作">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -1742,6 +1752,10 @@
       <handler
             class="com.sg.business.commons.handler.WorkflowView"
             commandId="runtimework.wfview">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.MarkWork"
+            commandId="runtimework.mark">
       </handler>
    </extension>
    <extension

@@ -51,9 +51,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		}
 		
 		// 所有者标记
-		String lc = work.getLifecycleStatus();
-		if (charger != null && userId.equals(charger.getUserid())
-				&& (Work.STATUS_ONREADY_VALUE.equals(lc)||Work.STATUS_WIP_VALUE.equals(lc))) {
+		boolean userMarked = work.getMarked(userId);
+		if (userMarked){
 			String selectbar = "<img src='"
 					+ getSelectorURL(work,ImageResource.BLUE_BULLETIN)
 					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
@@ -72,7 +71,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			sb.append("</span>");
 		}
 		String imageUrl = "<img src='" + getHeaderImageURL(work)
-				+ "' style='float:left;padding:6px' width='32' height='24' />";
+				+ "' style='float:left;padding:6px' width='16' height='16' />";
 		sb.append(imageUrl);
 
 		// 工作desc
@@ -101,6 +100,14 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		if (date != null) {
 			planStart = sdf.format(date);
 		}
+		
+		
+//		String selectbar = "<img src='"
+//				+ getSelectorURL(work,ImageResource.WHITE_BULLETIN)
+//				+ "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
+//		sb.append(selectbar);
+		
+		sb.append("");
 		sb.append("计划:");
 		sb.append(planStart);
 		sb.append("~");
@@ -279,43 +286,43 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		String lc = work.getLifecycleStatus();
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_CANCEL_32x24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_CANCEL_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_FINISH_32x24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
 			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK2_READY_32x24,
+						BusinessResource.IMAGE_WORK2_READY_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			} else {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK_READY_32x24,
+						BusinessResource.IMAGE_WORK2_READY_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			}
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
 			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
 				return FileUtil.getImageURL(
-						BusinessResource.IMAGE_WORK2_WIP_32x24,
+						BusinessResource.IMAGE_WORK2_WIP_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			} else {
-				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_WIP_32x24,
+				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			}
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_PAUSE_32x24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_PAUSE_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_32x24,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_READY_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}
 		return null;
-		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_32x24,
+		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_16,
 		// BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
