@@ -21,6 +21,7 @@ import com.sg.business.resource.BusinessResource;
  */
 public class DeliverableDefinition extends AbstractOptionFilterable {
 
+	
 	/**
 	 * 交付物所属的工作
 	 */
