@@ -144,6 +144,7 @@
             end1Class="com.sg.business.model.Organization"
             end1Key="_id"
             end2Class="com.sg.business.model.User"
+            end2Condition="com.sg.business.model.ConditionProvider.OrgofUserCondition"
             end2Key="organization_id"
             id="organization_user"
             name="组织下的用户">

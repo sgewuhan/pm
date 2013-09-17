@@ -3,8 +3,10 @@ package com.sg.business.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
@@ -14,6 +16,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
 import com.mobnut.portal.user.UserSessionContext;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -21,10 +24,12 @@ import com.sg.business.model.event.AccountEvent;
 import com.sg.business.resource.BusinessResource;
 
 /**
- * 角色<p/>
+ * 角色
+ * <p/>
  * 组织中的角色
+ * 
  * @author jinxitao
- *
+ * 
  */
 public class Role extends PrimaryObject {
 
@@ -33,7 +38,6 @@ public class Role extends PrimaryObject {
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
-	
 	/**
 	 * 角色编号
 	 */
@@ -70,28 +74,27 @@ public class Role extends PrimaryObject {
 	 */
 	public static final String ROLE_BUSINESS_ADMIN_ID = "T004";
 	public static final String ROLE_BUSINESS_ADMIN_TEXT = "业务管理员";
-	
+
 	/**
 	 * 基础角色/组织角色/文档访问者
 	 */
 	public static final String ROLE_VAULT_GUEST_ID = "T003";
 	public static final String ROLE_VAULT_GUEST_TEXT = "文档访问者";
 
-
 	/**
 	 * 系统角色ID
 	 */
 	public static final String[] ROLE_ID_SYSTEM = new String[] { ROLE_ADMIN_ID,
-			ROLE_ORGANIZATION_ADMIN_ID, ROLE_PROJECT_ADMIN_ID,ROLE_BUSINESS_ADMIN_ID, ROLE_VAULT_ADMIN_ID,
-			ROLE_VAULT_GUEST_ID };
+			ROLE_ORGANIZATION_ADMIN_ID, ROLE_PROJECT_ADMIN_ID,
+			ROLE_BUSINESS_ADMIN_ID, ROLE_VAULT_ADMIN_ID, ROLE_VAULT_GUEST_ID };
 
 	/**
 	 * 系统角色名称
 	 */
 	public static final String[] ROLE_NAME_SYSTEM = new String[] {
-			ROLE_ADMIN_TEXT, ROLE_ORGANIZATION_ADMIN_TEXT,ROLE_BUSINESS_ADMIN_TEXT,
-			ROLE_PROJECT_ADMIN_TEXT,  ROLE_VALUT_ADMIN_TEXT,
-			ROLE_VAULT_GUEST_TEXT };
+			ROLE_ADMIN_TEXT, ROLE_ORGANIZATION_ADMIN_TEXT,
+			ROLE_BUSINESS_ADMIN_TEXT, ROLE_PROJECT_ADMIN_TEXT,
+			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT };
 
 	/**
 	 * 角色在系统中的的显示内容
@@ -115,6 +118,7 @@ public class Role extends PrimaryObject {
 
 	/**
 	 * 获取角色所属组织的_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getOrganization_id() {
@@ -122,23 +126,23 @@ public class Role extends PrimaryObject {
 	}
 
 	/**
-	 * 添加用户到角色中
-	 * TODO 需要做用户帐户通知处理
+	 * 添加用户到角色中 
+	 * 
 	 * @param users
-	 *          ，用户集合
-	 * @throws Exception 
+	 *            ，用户集合
+	 * @throws Exception
 	 */
-	public void doAssignUsers(List<PrimaryObject> users,IContext context) throws Exception {
+	public void doAssignUsers(List<PrimaryObject> users, IContext context)
+			throws Exception {
 		DBCollection roleAssignmentCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_ROLE_ASSIGNMENT);
 		List<DBObject> list = new ArrayList<DBObject>();
 
 		for (int i = 0; i < users.size(); i++) {
 			User user = (User) users.get(i);
-			UserSessionContext.noticeAccountChanged(user.getUserid(),
-					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
 			list.add(new BasicDBObject()
-					.append(RoleAssignment.F__TYPE,IModelConstants.C_ROLE_ASSIGNMENT)
+					.append(RoleAssignment.F__TYPE,
+							IModelConstants.C_ROLE_ASSIGNMENT)
 					.append(RoleAssignment.F_USER_ID, user.getUserid())
 					.append(RoleAssignment.F_USER_NAME, user.getUsername())
 					.append(RoleAssignment.F_ROLE_ID, get_id())
@@ -147,32 +151,96 @@ public class Role extends PrimaryObject {
 		}
 		roleAssignmentCol.insert(list);
 
+		// 通知帐户
+		for (int i = 0; i < users.size(); i++) {
+			User user = (User) users.get(i);
+			UserSessionContext.noticeAccountChanged(user.getUserid(),
+					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
+		}
+		
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "为角色指派用户",
-				new Date(), "角色："+this+"\n用户"+users.toString(), IModelConstants.DB);
+				new Date(), "角色：" + this + "\n用户" + users.toString(),
+				IModelConstants.DB);
 	}
-	
-	public List<PrimaryObject> getAssignment(){
-		return getRelationById(F__ID, RoleAssignment.F_ROLE_ID, RoleAssignment.class);
+
+	public List<PrimaryObject> getAssignment() {
+		return getRelationById(F__ID, RoleAssignment.F_ROLE_ID,
+				RoleAssignment.class);
 	}
 
 	/**
-	 * TODO
 	 * 删除角色检查
-	 * 1.角色项下的用户
-	 * 2.项目模板的RoleDefinition引用的角色
-	 * 3.ProjectRole引用的角色
-	 * 4.独立工作定义的WBS引用的角色
-	 * 5.独立工作的WBS引用的角色
 	 */
-	
-	
+	public List<Object[]> checkRemoveAction(IContext context) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.角色项下的用户
+		long countUser = getRelationCountByCondition(RoleAssignment.class,
+				new BasicDBObject().append(RoleAssignment.F_ROLE_ID, get_id()));
+		if (countUser > 0) {
+			message.add(new Object[] { "该角色项下存在指派的用户", this, SWT.ICON_ERROR });
+		}
+
+		// 2.项目模板的RoleDefinition引用的角色
+		long countRoleDefinition = getRelationCountByCondition(
+				RoleAssignment.class, new BasicDBObject().append(
+						RoleDefinition.F_ORGANIZATION_ROLE_ID, get_id()));
+		if (countRoleDefinition > 0) {
+			message.add(new Object[] { "在项目模版中引用了该角色", this, SWT.ICON_ERROR });
+		}
+
+		// 3.独立工作定义的WBS引用的角色
+		BasicDBList values = new BasicDBList();
+		values.add(new BasicDBObject().append(
+				WorkDefinition.F_ASSIGNMENT_CHARGER_ROLE_ID, get_id()));
+		values.add(new BasicDBObject().append(WorkDefinition.F_CHARGER_ROLE_ID,
+				get_id()));
+		values.add(new BasicDBObject().append(
+				WorkDefinition.F_PARTICIPATE_ROLE_SET, Pattern.compile("^.*"
+						+ get_id() + ".*$", Pattern.CASE_INSENSITIVE)));
+		long countWorkDefinition = getRelationCountByCondition(
+				WorkDefinition.class,
+				new BasicDBObject().append("$or", values).append(
+						WorkDefinition.F_WORK_TYPE,
+						WorkDefinition.WORK_TYPE_STANDLONE));
+		if (countWorkDefinition > 0) {
+			message.add(new Object[] { "在独立工作定义中引用了该角色", this, SWT.ICON_ERROR });
+		}
+
+		// 4.项目ProjectRole引用的角色
+		long countProjectRole = getRelationCountByCondition(ProjectRole.class,
+				new BasicDBObject().append(ProjectRole.F_ORGANIZATION_ROLE_ID,
+						get_id()));
+		if (countProjectRole > 0) {
+			message.add(new Object[] { "在项目中引用了该角色", this, SWT.ICON_ERROR });
+		}
+
+		// 5.独立工作的WBS引用的角色
+		values.clear();
+		values.add(new BasicDBObject().append(
+				Work.F_ASSIGNMENT_CHARGER_ROLE_ID, get_id()));
+		values.add(new BasicDBObject().append(Work.F_CHARGER_ROLE_ID, get_id()));
+		values.add(new BasicDBObject().append(Work.F_PARTICIPATE_ROLE_SET,
+				Pattern.compile("^.*" + get_id() + ".*$",
+						Pattern.CASE_INSENSITIVE)));
+		long countWork = getRelationCountByCondition(
+				Work.class,
+				new BasicDBObject().append("$or", values).append(
+						Work.F_PROJECT_ID, null));
+		if (countWork > 0) {
+			message.add(new Object[] { "在独立工作中引用了该角色", this, SWT.ICON_WARNING });
+		}
+
+		return message;
+	}
+
 	/**
 	 * 删除角色
+	 * 
 	 * @param context
 	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		//需要考虑角色被应用到项目的情况
+		// 需要考虑角色被应用到项目的情况
 		// 先删除角色指派
 		DBCollection raCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ROLE_ASSIGNMENT);
@@ -183,6 +251,7 @@ public class Role extends PrimaryObject {
 
 	/**
 	 * 获取角色编号
+	 * 
 	 * @return String
 	 */
 	public String getRoleNumber() {
@@ -192,7 +261,7 @@ public class Role extends PrimaryObject {
 	/**
 	 * 获得角色从属的组织
 	 * 
-	 * @return  Organization
+	 * @return Organization
 	 */
 	public Organization getOrganization() {
 		ObjectId organization_id = getOrganization_id();
@@ -206,6 +275,7 @@ public class Role extends PrimaryObject {
 
 	/**
 	 * 获取角色类型,角色类型分为系统角色和用户自定义角色
+	 * 
 	 * @return
 	 */
 	public String getRoleTypeText() {
@@ -218,6 +288,7 @@ public class Role extends PrimaryObject {
 
 	/**
 	 * 判断角色是否可以更改
+	 * 
 	 * @param context
 	 */
 	@Override
@@ -231,6 +302,7 @@ public class Role extends PrimaryObject {
 
 	/**
 	 * 判断角色是否可以删除
+	 * 
 	 * @param context
 	 * @return boolean
 	 */
@@ -244,13 +316,15 @@ public class Role extends PrimaryObject {
 
 	/**
 	 * 判断角色是否为系统角色
+	 * 
 	 * @return boolean
 	 */
 	public boolean isSystemRole() {
 		String rn = getRoleNumber();
 		if (Utils.inArray(rn, ROLE_ID_SYSTEM)) {
 			// 检查与组织容器属性相关的角色
-			if (ROLE_VAULT_ADMIN_ID.equals(rn) || ROLE_VAULT_GUEST_ID.equals(rn)) {
+			if (ROLE_VAULT_ADMIN_ID.equals(rn)
+					|| ROLE_VAULT_GUEST_ID.equals(rn)) {
 				// 判断该组织是否是容器
 				Organization org = getOrganization();
 				if (Boolean.TRUE.equals(org.isContainer())) {
@@ -258,7 +332,8 @@ public class Role extends PrimaryObject {
 				} else {
 					return false;
 				}
-			} else if (ROLE_PROJECT_ADMIN_ID.equals(rn)|| ROLE_BUSINESS_ADMIN_ID.equals(rn)) {
+			} else if (ROLE_PROJECT_ADMIN_ID.equals(rn)
+					|| ROLE_BUSINESS_ADMIN_ID.equals(rn)) {
 				// 判断该组织是否具有项目管理职能
 				Organization org = getOrganization();
 				if (Boolean.TRUE.equals(org.isFunctionDepartment())) {
@@ -284,8 +359,8 @@ public class Role extends PrimaryObject {
 	}
 
 	/**
-	 * 判断角色编号是否合法
-	 * 角色是否为系统保留编号，角色所属组织是否存在，角色在所属组织中是否已经存在
+	 * 判断角色编号是否合法 角色是否为系统保留编号，角色所属组织是否存在，角色在所属组织中是否已经存在
+	 * 
 	 * @throws Exception
 	 */
 	public void check() throws Exception {
@@ -304,9 +379,10 @@ public class Role extends PrimaryObject {
 		}
 
 	}
-	
+
 	/**
 	 * 返回类型名称
+	 * 
 	 * @return String
 	 */
 	@Override

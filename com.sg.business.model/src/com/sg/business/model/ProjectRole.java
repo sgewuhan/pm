@@ -3,8 +3,10 @@ package com.sg.business.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
+import org.eclipse.swt.SWT;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
@@ -12,12 +14,14 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
 import com.mobnut.portal.user.UserSessionContext;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.business.model.event.AccountEvent;
+import com.sg.business.model.toolkit.ProjectToolkit;
 
 /**
  * 项目角色
@@ -78,7 +82,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 	/**
 	 * 为角色指派用户
-	 * TODO 用户帐户通知处理
+	 * 
 	 * @param users
 	 * @throws Exception
 	 */
@@ -103,8 +107,8 @@ public class ProjectRole extends AbstractRoleDefinition implements
 
 			userIds[i] = user.getUserid();
 		}
-		
-		//如果有重复，将在以下的代码中抛出MongoException Code = 11000
+
+		// 如果有重复，将在以下的代码中抛出MongoException Code = 11000
 		WriteResult ws = roleAssignmentCol.insert(list);
 		checkWriteResult(ws);
 
@@ -120,7 +124,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 			UserSessionContext.noticeAccountChanged(user.getUserid(),
 					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
 		}
-		
+
 		// 写日志
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "为角色指派用户",
 				new Date(), "角色：" + this + "\n用户" + users.toString(),
@@ -129,17 +133,78 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	}
 
 	/**
-	 * TODO
 	 * 删除角色检查
-	 * 1.WBS引用的角色
-	 * 2.流程上引用
 	 */
-	
+	public List<Object[]> checkRemoveAction(IContext context) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.WBS引用的角色
+		BasicDBList values = new BasicDBList();
+		values.add(new BasicDBObject().append(
+				Work.F_ASSIGNMENT_CHARGER_ROLE_ID, getOrganizationRoleId()));
+		values.add(new BasicDBObject().append(Work.F_CHARGER_ROLE_ID,
+				getOrganizationRoleId()));
+		values.add(new BasicDBObject().append(Work.F_PARTICIPATE_ROLE_SET,
+				Pattern.compile("^.*" + getOrganizationRoleId() + ".*$",
+						Pattern.CASE_INSENSITIVE)));
+		long countWork = getRelationCountByCondition(
+				Work.class,
+				new BasicDBObject().append("$or", values).append(
+						Work.F_PARENT_ID, getProjectId()));
+		if (countWork > 0) {
+			message.add(new Object[] { "在WBS中引用了该角色", this, SWT.ICON_WARNING });
+		}
+
+		Project project = getProject();
+
+		// 2.项目执行流程上引用
+		if (ProjectToolkit.checkProcessInternal(project, Project.F_WF_COMMIT,
+				this)) {
+			message.add(new Object[] { "在项目的执行流程中引用了该角色", this,
+					SWT.ICON_WARNING });
+		}
+
+		// 3.项目变更流程上引用
+		if (ProjectToolkit.checkProcessInternal(project, Project.F_WF_CHANGE,
+				this)) {
+			message.add(new Object[] { "在项目的变更流程中引用了该角色", this,
+					SWT.ICON_WARNING });
+		}
+		// 4.工作流程上引用
+		Work root = project.getWBSRoot();
+		message.addAll(checkCascadeRemove(root));
+		return message;
+	}
+
+	private List<Object[]> checkCascadeRemove(Work work) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		List<PrimaryObject> childrenWork = work.getChildrenWork();
+		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				message.addAll(checkCascadeRemove(childWork));
+			}
+		} else {
+			// 4.1.工作执行流程上引用
+			if (ProjectToolkit.checkProcessInternal(work, Work.F_WF_EXECUTE,
+					this)) {
+				message.add(new Object[] { "在工作的执行流程中引用了该角色", work,
+						SWT.ICON_WARNING });
+			}
+
+			// 4.2.工作变更流程上引用
+			if (ProjectToolkit.checkProcessInternal(work, Work.F_WF_CHANGE,
+					this)) {
+				message.add(new Object[] { "在工作的变更流程中引用了该角色", work,
+						SWT.ICON_WARNING });
+			}
+		}
+		return message;
+	}
+
 	/**
 	 * 删除项目角色
 	 * 
-	 * 1.清除WBS上的角色
-	 * 2.流程上引用的角色
+	 * 1.清除WBS上的角色 2.流程上引用的角色
 	 */
 	@Override
 	public void doRemove(IContext context) throws Exception {
