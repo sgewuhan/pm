@@ -335,6 +335,15 @@ public class ProjectTemplate extends PrimaryObject {
 		Assert.isNotNull(orgId);
 		return ModelService.createModelObject(Organization.class, orgId);
 	}
+	
+	/**
+	 * 返回模版中的所有预算定义
+	 * @return
+	 */
+	public List<PrimaryObject> getBudgetItems() {
+		return getRelationById(F__ID, BudgetItem.F_PROJECTTEMPLATE_ID,
+				BudgetItem.class);
+	}
 
 	/**
 	 * 返回模板中的所有角色定义
@@ -344,6 +353,33 @@ public class ProjectTemplate extends PrimaryObject {
 	public List<PrimaryObject> getRoleDefinitions() {
 		return getRelationById(F__ID, RoleDefinition.F_PROJECT_TEMPLATE_ID,
 				RoleDefinition.class);
+	}
+
+	/**
+	 * 返回模版中的所有工作定义
+	 * @return
+	 */
+	public List<PrimaryObject> getWorkDefinitions() {
+		return getRelationById(F__ID, WorkDefinition.F_PROJECT_TEMPLATE_ID,
+				WorkDefinition.class);
+	}
+
+	/**
+	 * 返回模版中的所有交付物定义
+	 * @return
+	 */
+	public List<PrimaryObject> getDeliverableDefinitions() {
+		return getRelationById(F__ID, DeliverableDefinition.F_PROJECTTEMPLATE_ID,
+				DeliverableDefinition.class);
+	}
+
+	/**
+	 * 返回模版中的所有前后置关系
+	 * @return
+	 */
+	public List<PrimaryObject> getWorkConnections() {
+		return getRelationById(F__ID, WorkConnection.F_PROJECT_ID,
+				WorkConnection.class);
 	}
 
 	/**

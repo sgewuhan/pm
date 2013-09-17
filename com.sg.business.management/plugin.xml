@@ -236,6 +236,10 @@
             id="management.workdconnection"
             table="management.workdconnection">
       </navigator>
+      <navigator
+            id="management.copyprojecttemplates"
+            tree="management.copyprojecttemplates">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -246,6 +250,8 @@
             canRead="false"
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.organization.OrgOfBusinessAdminRoleUser"
+            dropTargetListener="com.sg.business.management.dnd.DropOrganization"
+            editorId="editor.copyprojecttemplates"
             headerVisiable="false"
             id="management.organization.navigaor"
             markupEnabled="true"
@@ -257,6 +263,7 @@
       <table
             canCreate="false"
             dataSet="com.sg.business.model.dataset.projecttemplate.ProjectTemplatesOfOrg"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             editorId="editor.projecttemplate"
             headerVisiable="false"
             id="management.projecttemplates"
@@ -1518,6 +1525,23 @@
                modelRelation="workd_deliverable">
          </structure>
       </tree>
+      <tree
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.organization.OrgOfBusinessAdminRoleUser"
+            headerVisiable="false"
+            id="management.copyprojecttemplates"
+            markupEnabled="true">
+         <structure
+               modelRelation="organization_projecttemplates">
+         </structure>
+         <column
+               columnDefinitionId="organization.desc.html">
+         </column>
+      </tree>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -2286,6 +2310,24 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:main?after=application.separator">
+         <command
+               commandId="command.projecttemplates.copy"
+               label="复制项目模版"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.management">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          name="角色定义"
@@ -2444,6 +2486,21 @@
       <handler
             class="com.sg.business.management.handler.CopyGenericWorkDefinition"
             commandId="management.wbstemplate.copygeneric">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="com.sg.business.management"
+            id="command.projecttemplates.copy"
+            name="复制项目模版">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.management.command.CopyProjectTemplates"
+            commandId="command.projecttemplates.copy">
       </handler>
    </extension>
 

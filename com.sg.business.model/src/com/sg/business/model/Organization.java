@@ -1,6 +1,8 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -8,9 +10,11 @@ import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.utils.DBUtil;
 import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -220,6 +224,36 @@ public class Organization extends PrimaryObject {
 	}
 
 	/**
+	 * 添加项目模版到组织中
+	 * 
+	 * @param projectTemplateId
+	 */
+	public void doAddProjectTemplate(ObjectId projectTemplateId) {
+		DBCollection projectTemplateCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_PROJECT_TEMPLATE);
+		projectTemplateCol.update(
+				new BasicDBObject(ProjectTemplate.F__ID, projectTemplateId),
+				new BasicDBObject("$set", (new BasicDBObject().append(
+						ProjectTemplate.F_ORGANIZATION_ID, get_id()))), false,
+				true);
+	}
+
+	/**
+	 * 添加工作定义到组织中
+	 * 
+	 * @param workDefinitionId
+	 */
+	public void doAddWorkDefinition(ObjectId workDefinitionId) {
+		DBCollection projectTemplateCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
+		projectTemplateCol.update(
+				new BasicDBObject(WorkDefinition.F__ID, workDefinitionId),
+				new BasicDBObject("$set", (new BasicDBObject().append(
+						WorkDefinition.F_ORGANIZATION_ID, get_id()))), false,
+				true);
+	}
+
+	/**
 	 * 添加用户到组织中
 	 * 
 	 * @param userIdList
@@ -261,20 +295,11 @@ public class Organization extends PrimaryObject {
 	/**
 	 * TODO
 	 * 
-	 * 删除组织判断
-	 * 1.组织没有下级组织
-	 * 2.没有归属该组织的用户
-	 * 3.组织项下角色没有用户（组织上挂的角色也要做检查）
-	 * 4.项目模板
-	 * 5.通用工作定义
-	 * 6.独立工作定义
-	 * 7.文档模板
-	 * 8.文档库
-	 * 9.发起组织和管理组织的项目
+	 * 删除组织判断 1.组织没有下级组织 2.没有归属该组织的用户 3.组织项下角色没有用户（组织上挂的角色也要做检查） 4.项目模板 5.通用工作定义
+	 * 6.独立工作定义 7.文档模板 8.文档库 9.发起组织和管理组织的项目
 	 * 
 	 */
-	
-	
+
 	/**
 	 * 删除组织
 	 * 
@@ -293,8 +318,8 @@ public class Organization extends PrimaryObject {
 		for (int i = 0; i < childrenOrg.size(); i++) {
 			childrenOrg.get(i).doRemove(context);
 		}
-		//删除组织公告板
-		
+		// 删除组织公告板
+
 		super.doRemove(context);
 	}
 
@@ -557,6 +582,415 @@ public class Organization extends PrimaryObject {
 	@Override
 	public String getTypeName() {
 		return "组织";
+	}
+
+	/**
+	 * 复制其它项目模版到该组织
+	 * 
+	 * @param selectList
+	 * @param context
+	 * @throws Exception
+	 */
+	public void doCopyProjectTemplates(List<ProjectTemplate> selectList,
+			IContext context) throws Exception {
+		AccountInfo account = context.getAccountInfo();
+		BasicDBObject accountInfo = new BasicDBObject().append("userid",
+				account.getUserId()).append("username", account.getUserName());
+		List<DBObject> projectTemplateList = new ArrayList<DBObject>();
+		List<DBObject> budgetItemList = new ArrayList<DBObject>();
+		List<DBObject> roleDefinitionList = new ArrayList<DBObject>();
+		List<DBObject> workDefinitionList = new ArrayList<DBObject>();
+		List<DBObject> deliverableDefinitionList = new ArrayList<DBObject>();
+		List<DBObject> workConnectionList = new ArrayList<DBObject>();
+
+		for (ProjectTemplate projectTemplate : selectList) {
+			ObjectId projectTemplate_id = new ObjectId();
+			ObjectId budgetItem_id = new ObjectId();
+			ObjectId roleDefinition_id = new ObjectId();
+			ObjectId workDefinition_id = new ObjectId();
+			ObjectId deliverableDefinition_id = new ObjectId();
+			ObjectId workConnection_id = new ObjectId();
+
+			// 1.复制项目模版
+			DBObject projectTemplateData = new BasicDBObject();
+			projectTemplateData.put(ProjectTemplate.F_ACTIVATED,
+					projectTemplate.getValue(ProjectTemplate.F_ACTIVATED));
+			projectTemplateData.put(ProjectTemplate.F_BUDGET_ID, budgetItem_id);
+			projectTemplateData.put(ProjectTemplate.F_ORGANIZATION_ID,
+					this.get_id());
+			projectTemplateData
+					.put(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET,
+							projectTemplate
+									.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET));
+			projectTemplateData
+					.put(ProjectTemplate.F_PROJECTTYPE_OPTION_SET,
+							projectTemplate
+									.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET));
+			projectTemplateData.put(ProjectTemplate.F_STANDARD_OPTION_SET,
+					projectTemplate
+							.getValue(ProjectTemplate.F_STANDARD_OPTION_SET));
+			projectTemplateData.put(ProjectTemplate.F_WF_CHANGE,
+					projectTemplate.getValue(ProjectTemplate.F_WF_CHANGE));
+			projectTemplateData.put(ProjectTemplate.F_WF_CHANGE_ACTIVATED,
+					projectTemplate
+							.getValue(ProjectTemplate.F_WF_CHANGE_ACTIVATED));
+			projectTemplateData.put(ProjectTemplate.F_WF_CHANGE_ASSIGNMENT,
+					projectTemplate
+							.getValue(ProjectTemplate.F_WF_CHANGE_ASSIGNMENT));
+			projectTemplateData.put(ProjectTemplate.F_WF_COMMIT,
+					projectTemplate.getValue(ProjectTemplate.F_WF_COMMIT));
+			projectTemplateData.put(ProjectTemplate.F_WF_COMMIT_ACTIVATED,
+					projectTemplate
+							.getValue(ProjectTemplate.F_WF_COMMIT_ACTIVATED));
+			projectTemplateData.put(ProjectTemplate.F_WF_COMMIT_ASSIGNMENT,
+					projectTemplate
+							.getValue(ProjectTemplate.F_WF_COMMIT_ASSIGNMENT));
+			projectTemplateData.put(ProjectTemplate.F_WORK_DEFINITON_ID,
+					workDefinition_id);
+			projectTemplateData.put(ProjectTemplate.F__CACCOUNT, accountInfo);
+			projectTemplateData.put(ProjectTemplate.F__CDATE, new Date());
+			projectTemplateData.put(ProjectTemplate.F__EDITOR,
+					projectTemplate.getValue(ProjectTemplate.F__EDITOR));
+			projectTemplateData.put(ProjectTemplate.F__ID, projectTemplate_id);
+			projectTemplateData.put(ProjectTemplate.F__VID, 0);
+			projectTemplateData.put(ProjectTemplate.F_DESC,
+					projectTemplate.getValue(ProjectTemplate.F_DESC));
+			projectTemplateData.put(ProjectTemplate.F_DESC_EN,
+					projectTemplate.getValue(ProjectTemplate.F_DESC_EN));
+			projectTemplateList.add(projectTemplateData);
+
+			// 2.复制预算
+			DBObject budgetItemData = new BasicDBObject();
+			List<PrimaryObject> budgetItems = projectTemplate.getBudgetItems();
+			for (PrimaryObject po : budgetItems) {
+				if (po instanceof BudgetItem) {
+					BudgetItem budgetItem = (BudgetItem) po;
+					budgetItemData.put(BudgetItem.F_CHILDREN,
+							budgetItem.getValue(BudgetItem.F_CHILDREN));
+					budgetItemData.put(BudgetItem.F_ISDEFAULT,
+							budgetItem.getValue(BudgetItem.F_ISDEFAULT));
+					budgetItemData.put(BudgetItem.F_PROJECTTEMPLATE_ID,
+							projectTemplate_id);
+
+					budgetItemData.put(BudgetItem.F__CACCOUNT, accountInfo);
+					budgetItemData.put(BudgetItem.F__CDATE, new Date());
+					budgetItemData.put(BudgetItem.F__EDITOR,
+							budgetItem.getValue(BudgetItem.F__EDITOR));
+					budgetItemData.put(BudgetItem.F__ID, budgetItem_id);
+					budgetItemData.put(BudgetItem.F__VID, 0);
+					budgetItemData.put(BudgetItem.F_DESC,
+							budgetItem.getValue(BudgetItem.F_DESC));
+					budgetItemData.put(BudgetItem.F_DESC_EN,
+							budgetItem.getValue(BudgetItem.F_DESC_EN));
+					budgetItemList.add(budgetItemData);
+					budgetItem_id = new ObjectId();
+				}
+			}
+			// 3.复制角色
+			DBObject roleDefinitionData = new BasicDBObject();
+			List<PrimaryObject> roleDefinitions = projectTemplate
+					.getRoleDefinitions();
+			for (PrimaryObject po : roleDefinitions) {
+				if (po instanceof RoleDefinition) {
+					RoleDefinition roleDefinition = (RoleDefinition) po;
+					roleDefinitionData
+							.put(RoleDefinition.F_ORGANIZATION_ROLE_ID,
+									roleDefinition
+											.getValue(RoleDefinition.F_ORGANIZATION_ROLE_ID));
+					roleDefinitionData.put(RoleDefinition.F_ROLE_NUMBER,
+							roleDefinition
+									.getValue(RoleDefinition.F_ROLE_NUMBER));
+					roleDefinitionData.put(
+							RoleDefinition.F_PROJECT_TEMPLATE_ID,
+							projectTemplate_id);
+
+					roleDefinitionData.put(RoleDefinition.F__CACCOUNT,
+							accountInfo);
+					roleDefinitionData.put(RoleDefinition.F__CDATE, new Date());
+					roleDefinitionData.put(RoleDefinition.F__EDITOR,
+							roleDefinition.getValue(RoleDefinition.F__EDITOR));
+					roleDefinitionData.put(RoleDefinition.F__ID,
+							roleDefinition_id);
+					roleDefinitionData.put(RoleDefinition.F__VID, 0);
+					roleDefinitionData.put(RoleDefinition.F_DESC,
+							roleDefinition.getValue(RoleDefinition.F_DESC));
+					roleDefinitionData.put(RoleDefinition.F_DESC_EN,
+							roleDefinition.getValue(RoleDefinition.F_DESC_EN));
+					roleDefinitionList.add(roleDefinitionData);
+					roleDefinition_id = new ObjectId();
+				}
+			}
+
+			// TODO 需要把根工作单独来操作
+			// 4.复制WBS
+			HashMap<ObjectId, ObjectId> workDefinitionSet = new HashMap<ObjectId, ObjectId>();
+			DBObject workDefinitionData = new BasicDBObject();
+			List<PrimaryObject> workDefinitions = projectTemplate
+					.getWorkDefinitions();
+			for (PrimaryObject po : workDefinitions) {
+				if (po instanceof WorkDefinition) {
+					workDefinition_id = new ObjectId();
+					WorkDefinition workDefinition = (WorkDefinition) po;
+					workDefinitionData
+							.put(WorkDefinition.F_ACTIVATED, workDefinition
+									.getValue(WorkDefinition.F_ACTIVATED));
+					workDefinitionData
+							.put(WorkDefinition.F_WORK_TYPE, workDefinition
+									.getValue(WorkDefinition.F_WORK_TYPE));
+					workDefinitionData
+							.put(WorkDefinition.F_ASSIGNMENT_CHARGER_ROLE_ID,
+									workDefinition
+											.getValue(WorkDefinition.F_ASSIGNMENT_CHARGER_ROLE_ID));
+					workDefinitionData
+							.put(WorkDefinition.F_CHARGER_ROLE_ID,
+									workDefinition
+											.getValue(WorkDefinition.F_CHARGER_ROLE_ID));
+					workDefinitionData
+							.put(WorkDefinition.F_MILESTONE, workDefinition
+									.getValue(WorkDefinition.F_MILESTONE));
+					workDefinitionData.put(WorkDefinition.F_OPTION_FILTERS,
+							workDefinition
+									.getValue(WorkDefinition.F_OPTION_FILTERS));
+					//TODO 上级工作定义_id的获取
+					workDefinitionData.put(WorkDefinition.F_PARENT_ID, "");
+					workDefinitionData
+							.put(WorkDefinition.F_PARTICIPATE_ROLE_SET,
+									workDefinition
+											.getValue(WorkDefinition.F_PARTICIPATE_ROLE_SET));
+					workDefinitionData.put(
+							WorkDefinition.F_PROJECT_TEMPLATE_ID,
+							projectTemplate_id);
+					workDefinitionData.put(WorkDefinition.F_ROOT_ID,
+							workDefinition.getValue(WorkDefinition.F_ROOT_ID));
+					workDefinitionData.put(WorkDefinition.F_SEQ,
+							workDefinition.getValue(WorkDefinition.F_SEQ));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_AUTOSTART_WHEN_PARENT_START,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_AUTOSTART_WHEN_PARENT_START));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_CAN_ADD_DELIVERABLES,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_CAN_ADD_DELIVERABLES));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_CAN_BREAKDOWN,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_CAN_BREAKDOWN));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_CAN_MODIFY_PLANWORKS,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_CAN_MODIFY_PLANWORKS));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_PROJECTCHANGE_MANDORY,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_PROJECTCHANGE_MANDORY));
+					workDefinitionData
+							.put(WorkDefinition.F_SETTING_WORKCHANGE_MANDORY,
+									workDefinition
+											.getValue(WorkDefinition.F_SETTING_WORKCHANGE_MANDORY));
+					workDefinitionData.put(WorkDefinition.F_STANDARD_WORKS,
+							workDefinition
+									.getValue(WorkDefinition.F_STANDARD_WORKS));
+					workDefinitionData
+							.put(WorkDefinition.F_WF_CHANGE, workDefinition
+									.getValue(WorkDefinition.F_WF_CHANGE));
+					workDefinitionData
+							.put(WorkDefinition.F_WF_CHANGE_ACTIVATED,
+									workDefinition
+											.getValue(WorkDefinition.F_WF_CHANGE_ACTIVATED));
+					workDefinitionData
+							.put(WorkDefinition.F_WF_CHANGE_ASSIGNMENT,
+									workDefinition
+											.getValue(WorkDefinition.F_WF_CHANGE_ASSIGNMENT));
+					workDefinitionData.put(WorkDefinition.F_WF_EXECUTE,
+							workDefinition
+									.getValue(WorkDefinition.F_WF_EXECUTE));
+					workDefinitionData
+							.put(WorkDefinition.F_WF_EXECUTE_ACTIVATED,
+									workDefinition
+											.getValue(WorkDefinition.F_WF_EXECUTE_ACTIVATED));
+					workDefinitionData
+							.put(WorkDefinition.F_WF_EXECUTE_ASSIGNMENT,
+									workDefinition
+											.getValue(WorkDefinition.F_WF_EXECUTE_ASSIGNMENT));
+
+					workDefinitionData.put(WorkDefinition.F__CACCOUNT,
+							accountInfo);
+					workDefinitionData.put(WorkDefinition.F__CDATE, new Date());
+					workDefinitionData.put(WorkDefinition.F__EDITOR,
+							workDefinition.getValue(WorkDefinition.F__EDITOR));
+					workDefinitionData.put(WorkDefinition.F__ID,
+							workDefinition_id);
+					workDefinitionData.put(WorkDefinition.F__VID, 0);
+					workDefinitionData.put(WorkDefinition.F_DESC,
+							workDefinition.getValue(WorkDefinition.F_DESC));
+					workDefinitionData.put(WorkDefinition.F_DESC_EN,
+							workDefinition.getValue(WorkDefinition.F_DESC_EN));
+					workDefinitionList.add(workDefinitionData);
+					workDefinitionSet.put(workDefinition.get_id(),
+							workDefinition_id);
+				}
+			}
+
+			// 5.复制交付物
+			DBObject deliverableDefinitionData = new BasicDBObject();
+			List<PrimaryObject> deliverableDefinitions = projectTemplate
+					.getDeliverableDefinitions();
+			for (PrimaryObject po : deliverableDefinitions) {
+				if (po instanceof DeliverableDefinition) {
+					DeliverableDefinition deliverableDefinition = (DeliverableDefinition) po;
+					// TODO 缺少documentd_id的复制
+					deliverableDefinitionData
+							.put(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID,
+									deliverableDefinition
+											.getValue(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID));
+					deliverableDefinitionData.put(
+							DeliverableDefinition.F_PROJECTTEMPLATE_ID,
+							projectTemplate);
+					deliverableDefinitionData
+							.put(DeliverableDefinition.F_WORK_DEFINITION_ID,
+									deliverableDefinition
+											.getValue(DeliverableDefinition.F_WORK_DEFINITION_ID));
+					deliverableDefinitionData
+							.put(DeliverableDefinition.F_OPTION_FILTERS,
+									deliverableDefinition
+											.getValue(DeliverableDefinition.F_OPTION_FILTERS));
+
+					deliverableDefinitionData.put(
+							DeliverableDefinition.F__CACCOUNT, accountInfo);
+					deliverableDefinitionData.put(
+							DeliverableDefinition.F__CDATE, new Date());
+					deliverableDefinitionData.put(
+							DeliverableDefinition.F__EDITOR,
+							deliverableDefinition
+									.getValue(DeliverableDefinition.F__EDITOR));
+					deliverableDefinitionData.put(DeliverableDefinition.F__ID,
+							deliverableDefinition_id);
+					deliverableDefinitionData.put(DeliverableDefinition.F__VID,
+							0);
+					deliverableDefinitionData.put(DeliverableDefinition.F_DESC,
+							deliverableDefinition
+									.getValue(DeliverableDefinition.F_DESC));
+					deliverableDefinitionData.put(
+							DeliverableDefinition.F_DESC_EN,
+							deliverableDefinition
+									.getValue(DeliverableDefinition.F_DESC_EN));
+					deliverableDefinitionList.add(deliverableDefinitionData);
+					deliverableDefinition_id = new ObjectId();
+				}
+			}
+
+			// 6.复制前后置关系
+			DBObject workConnectionData = new BasicDBObject();
+			List<PrimaryObject> workConnections = projectTemplate
+					.getWorkConnections();
+			for (PrimaryObject po : workConnections) {
+				if (po instanceof WorkConnection) {
+					WorkConnection workConnection = (WorkConnection) po;
+					workConnectionData.put(WorkConnection.F_CONNECTIONTYPE,
+							workConnection
+									.getValue(WorkConnection.F_CONNECTIONTYPE));
+					workConnectionData.put(WorkConnection.F_END1_ID,
+							workDefinitionSet.get(workConnection
+									.getValue(WorkConnection.F_END1_ID)));
+					workConnectionData.put(WorkConnection.F_END2_ID,
+							workDefinitionSet.get(workConnection
+									.getValue(WorkConnection.F_END2_ID)));
+					workConnectionData.put(WorkConnection.F_INTERVAL,
+							workConnection.getValue(WorkConnection.F_INTERVAL));
+					workConnectionData.put(WorkConnection.F_OPERATOR,
+							workConnection.getValue(WorkConnection.F_OPERATOR));
+					workConnectionData.put(WorkConnection.F_PROJECT_ID,
+							projectTemplate_id);
+					workConnectionData.put(WorkConnection.F_UNIT,
+							workConnection.getValue(WorkConnection.F_UNIT));
+
+					workConnectionData.put(WorkConnection.F__CACCOUNT,
+							accountInfo);
+					workConnectionData.put(WorkConnection.F__CDATE, new Date());
+					workConnectionData.put(WorkConnection.F__EDITOR,
+							workConnection.getValue(WorkConnection.F__EDITOR));
+					workConnectionData.put(WorkConnection.F__ID,
+							workConnection_id);
+					workConnectionData.put(WorkConnection.F__VID, 0);
+					workConnectionData.put(WorkConnection.F_DESC,
+							workConnection.getValue(WorkConnection.F_DESC));
+					workConnectionData.put(WorkConnection.F_DESC_EN,
+							workConnection.getValue(WorkConnection.F_DESC_EN));
+					workConnectionList.add(workConnectionData);
+					workConnection_id = new ObjectId();
+				}
+			}
+
+		}
+		String error = null;
+		DBCollection projectTemplateCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_PROJECT_TEMPLATE);
+		DBCollection budgetItemCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_BUDGET_ITEM);
+		DBCollection roleDefinitionCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_ROLE_DEFINITION);
+		DBCollection workDefinitionCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
+		DBCollection deliverableDefinitionCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_DELIEVERABLE_DEFINITION);
+		DBCollection workConnectionCol = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_WORK_CONNECTION);
+
+		WriteResult projectTemplateWriteResult = projectTemplateCol
+				.insert(projectTemplateList);
+		error = projectTemplateWriteResult.getError();
+		if (error != null) {
+			throw new Exception(error);
+		}
+		WriteResult budgetItemWriteResult = budgetItemCol
+				.insert(budgetItemList);
+		error = budgetItemWriteResult.getError();
+		if (error != null) {
+			throw new Exception(error);
+		}
+		WriteResult roleDefinitionWriteResult = roleDefinitionCol
+				.insert(roleDefinitionList);
+		error = roleDefinitionWriteResult.getError();
+		if (error != null) {
+			throw new Exception(error);
+		}
+		WriteResult workDefinitionWriteResult = workDefinitionCol
+				.insert(workDefinitionList);
+		error = workDefinitionWriteResult.getError();
+		if (error != null) {
+			throw new Exception(error);
+		}
+		WriteResult deliverableDefinitionWriteResult = deliverableDefinitionCol
+				.insert(deliverableDefinitionList);
+		error = deliverableDefinitionWriteResult.getError();
+		if (error != null) {
+			throw new Exception(error);
+		}
+		WriteResult workConnectionWriteResult = workConnectionCol
+				.insert(workConnectionList);
+		error = workConnectionWriteResult.getError();
+		if (error != null) {
+			throw new Exception(error);
+		}
+
+		// 写日志
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "复制项目模版",
+				new Date(), "组织：" + this + "\n项目模版" + selectList.toString(),
+				IModelConstants.DB);
+
 	}
 
 }
