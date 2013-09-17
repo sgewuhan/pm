@@ -118,7 +118,7 @@ public class User extends PrimaryObject {
 	/**
 	 * TODO
 	 * 停用用户
-	 * 之后控制不允许选择
+	 * 只要控制不允许选择
 	 */
 	
 

@@ -171,6 +171,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FLOW_HUMAN_24 = "flow_human_24.png";
 
 	public static final String IMAGE_USER_24 = "user_24.png";
+	
+	public static final String IMAGE_VARIABLE_24 = "variable_24.png";
 
 
 

@@ -1,5 +1,9 @@
 package com.sg.business.model;
 
+import com.mobnut.db.model.IContext;
+import com.mobnut.portal.user.UserSessionContext;
+import com.sg.business.model.event.AccountEvent;
+
 
 /**
  * 角色和用户的关系<p/>
@@ -18,7 +22,16 @@ public class RoleAssignment extends AbstractRoleAssignment{
 		return "角色指派";
 	}
 	/**
-	 * 把人从角色中取消指派的检查
-	 * TODO doRemove 做账户处理
+	 * 删除角色指派
 	 */
+
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		// 账户通知处理
+		String userId = getUserid();
+		UserSessionContext.noticeAccountChanged(userId,  new AccountEvent(
+				AccountEvent.EVENT_ORG_CHANGED, this));
+		
+		super.doRemove(context);
+	}
 }

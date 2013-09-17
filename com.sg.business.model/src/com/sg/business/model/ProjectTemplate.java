@@ -12,6 +12,8 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -73,6 +75,10 @@ public class ProjectTemplate extends PrimaryObject {
 	 * 流程是否启用
 	 */
 	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
+	
+	public static final String POSTFIX_ACTIVATED = "_activated";
+	
+	public static final String POSTFIX_ASSIGNMENT= "_assignment";
 
 	/**
 	 * 变更流程定义
@@ -341,6 +347,16 @@ public class ProjectTemplate extends PrimaryObject {
 	}
 
 	/**
+	 * 返回项目模版的WBS结构根工作定义
+	 * 
+	 * @return WorkDefinition
+	 */
+	public WorkDefinition getWBSRoot() {
+		ObjectId workDefinitionid = (ObjectId) getValue(F_WORK_DEFINITON_ID);
+		return ModelService.createModelObject(WorkDefinition.class, workDefinitionid);
+	}
+	
+	/**
 	 * 返回类型名称
 	 * 
 	 * @return String
@@ -348,5 +364,31 @@ public class ProjectTemplate extends PrimaryObject {
 	@Override
 	public String getTypeName() {
 		return "项目模板";
+	}
+
+	public boolean isWorkflowActivate(String fieldKey) {
+		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
+	}
+
+	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
+		DBObject processData = (DBObject) getValue(fieldKey);
+		if (processData != null) {
+			return new DroolsProcessDefinition(processData);
+		}
+		return null;
+	}
+
+	public ProjectRole getProcessActionAssignment(String key,
+			String nodeActorParameter) {
+		// 取出角色指派
+				DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+				if (data == null) {
+					return null;
+				}
+				ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
+				if (roleId != null) {
+					return ModelService.createModelObject(ProjectRole.class, roleId);
+				}
+				return null;
 	}
 }

@@ -12,6 +12,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 
 /**
  * <p>
@@ -84,6 +85,10 @@ public class WorkDefinition extends AbstractWork implements
 	 * 项目模板工作定义的编辑器Id
 	 */
 	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
+
+	private static final String POSTFIX_ACTIVATED = "_activated";
+
+	private static final String POSTFIX_ASSIGNMENT = "_assignment";
 
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
@@ -458,5 +463,31 @@ public class WorkDefinition extends AbstractWork implements
 		default:
 		}
 		return super.getDefaultEditorId();
+	}
+
+	public boolean isWorkflowActivate(String fieldKey) {
+		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
+	}
+
+	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
+		DBObject processData = (DBObject) getValue(fieldKey);
+		if (processData != null) {
+			return new DroolsProcessDefinition(processData);
+		}
+		return null;
+	}
+
+	public ProjectRole getProcessActionAssignment(String key,
+			String nodeActorParameter) {
+		// 取出角色指派
+		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+		if (data == null) {
+			return null;
+		}
+		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
+		if (roleId != null) {
+			return ModelService.createModelObject(ProjectRole.class, roleId);
+		}
+		return null;
 	}
 }
