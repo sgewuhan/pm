@@ -1355,7 +1355,7 @@
                         type="String">
                   </text>
                   <text
-                        defaultValueProvider="com.sg.business.commons.value.CurrentUser"
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publisher"
@@ -1448,7 +1448,7 @@
                         type="String">
                   </text>
                   <text
-                        defaultValueProvider="com.sg.business.commons.value.CurrentUser"
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publisher"
