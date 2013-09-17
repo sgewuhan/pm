@@ -23,6 +23,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
@@ -130,6 +133,24 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				}
 			});
 		}
+		
+		//添加个人设置
+		item = new MenuItem(dropDownMenu, SWT.PUSH);
+		item.setText("个人变量设置");
+		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_VARIABLE_24));
+		item.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IWorkbenchPage page = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage();
+				try {
+					page.showView("com.mobnut.admin.personalsetting"); 
+				} catch (PartInitException pe) {
+					MessageUtil.showToast(pe);
+				}
+			}
+		});
+		
 
 		headerPic.addMouseListener(new MouseListener() {
 

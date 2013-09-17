@@ -129,6 +129,11 @@
             collection="taskform"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.VariableSetting"
+            collection="variablesetting"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

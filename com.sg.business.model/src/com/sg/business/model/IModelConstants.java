@@ -139,5 +139,12 @@ public interface IModelConstants {
 	 * 公告板
 	 */
 	public static final String C_BULLETINBOARD = "bulletinboard";
+	
+	/**
+	 * 全局设置
+	 */
+	public static final String C_VARIABLESETTING = "variablesetting";
+	
+	
 
 }
