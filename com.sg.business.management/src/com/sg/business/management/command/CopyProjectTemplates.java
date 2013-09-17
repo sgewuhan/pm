@@ -36,7 +36,12 @@ public class CopyProjectTemplates extends AbstractNavigatorHandler {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				//po.doAssignUsers(is.toList(),new CurrentAccountContext());
-				po.doCopyProjectTemplates(is.toList(),new CurrentAccountContext());
+				try {
+					po.doCopyProjectTemplates(is.toList(),new CurrentAccountContext());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				vc.getViewer().refresh(po);
 				super.doOK(is);
 			}
