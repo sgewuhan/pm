@@ -20,7 +20,6 @@ public class GolbaVar extends SingleDBCollectionDataSetFactory {
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition.put(VariableSetting.F_PERSONAL, null);
 			return queryCondition;
-
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 			return new BasicDBObject().append(VariableSetting.F__ID, null);
