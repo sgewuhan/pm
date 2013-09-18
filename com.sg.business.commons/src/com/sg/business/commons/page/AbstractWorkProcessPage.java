@@ -19,6 +19,7 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 
 	private boolean dirty;
 	private IManagedForm form;
+	private ProcessSettingPanel psp;
 
 	public AbstractWorkProcessPage() {
 	}
@@ -31,20 +32,23 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 
 		PrimaryObject po = input.getData();
 
-		ProcessSettingPanel psp = new ProcessSettingPanel(parent,
-				getWorkflowKey(), po,input.isEditable()) {
+		psp = new ProcessSettingPanel(parent,
+				getWorkflowKey(), po, input.isEditable()) {
 			@Override
 			protected void setDirty(boolean b) {
 				AbstractWorkProcessPage.this.setDirty(b);
 			}
+
 		};
 		psp.setRoleDefinitions(getRoleDefinitions(po));
 		psp.createContent();
 		return psp;
 	}
 
+
 	/**
 	 * 获取角色定义
+	 * 
 	 * @param po
 	 * @return
 	 */
@@ -59,7 +63,7 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 		if (project != null) {
 			return project.getProjectRole();
 		}
-		
+
 		return null;
 	}
 
@@ -84,7 +88,7 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 		return dirty;
 	}
 
-	private void setDirty(boolean b) {
+	public void setDirty(boolean b) {
 		this.dirty = b;
 		if (form != null) {
 			form.dirtyStateChanged();

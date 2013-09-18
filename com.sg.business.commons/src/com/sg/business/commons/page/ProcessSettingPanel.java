@@ -15,7 +15,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -31,7 +30,7 @@ public class ProcessSettingPanel extends Composite {
 	private static final int MARGIN = 4;
 	private String key;
 	private PrimaryObject primaryObject;
-	private TableViewer processViewer;
+	private ProcessViewer processViewer;
 	private DroolsProcessDefinition processDefinition;
 	private BasicDBObject processAssignment;
 	private List<PrimaryObject> roleds;
@@ -39,11 +38,12 @@ public class ProcessSettingPanel extends Composite {
 	private Button activeButton;
 	private boolean editable;
 
-	ProcessSettingPanel(Composite parent, String fieldName, PrimaryObject po, boolean editable) {
+	ProcessSettingPanel(Composite parent, String fieldName, PrimaryObject po,
+			boolean editable) {
 		super(parent, SWT.NONE);
 		this.key = fieldName;
 		this.primaryObject = po;
-		this.editable=editable;
+		this.editable = editable;
 		DBObject processData = (DBObject) primaryObject.getValue(key);
 		if (processData != null) {
 			processDefinition = new DroolsProcessDefinition(processData);
@@ -100,9 +100,10 @@ public class ProcessSettingPanel extends Composite {
 		fd.right = new FormAttachment(100);
 
 		// ´´½¨±í
-		Table control = createProcessViewer();
+		processViewer = createProcessViewer(this, key, primaryObject, roleds,
+				editable);
 		fd = new FormData();
-		control.setLayoutData(fd);
+		processViewer.getTable().setLayoutData(fd);
 		fd.top = new FormAttachment(text, MARGIN);
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
@@ -125,9 +126,12 @@ public class ProcessSettingPanel extends Composite {
 		});
 	}
 
-	private Table createProcessViewer() {
-		processViewer = new ProcessViewer(this, key, primaryObject, roleds,editable) {
-			
+	protected ProcessViewer createProcessViewer(Composite parent, String key,
+			PrimaryObject primaryObject, List<PrimaryObject> roleds,
+			boolean editable) {
+		processViewer = new ProcessViewer(parent, key, primaryObject, roleds,
+				editable) {
+
 			@Override
 			protected void processAssignmentUpdated() {
 				setDirty(true);
@@ -135,7 +139,7 @@ public class ProcessSettingPanel extends Composite {
 
 		};
 
-		return processViewer.getTable();
+		return processViewer;
 	}
 
 	private void refresh() {
