@@ -62,10 +62,15 @@ public class ProcessCanvas extends FigureCanvas {
 
 	public void setInput(DroolsProcessDefinition procDefinition,
 			BasicBSONList procHistory) {
-		graphic = buildGraphicContent(procDefinition, procHistory);
+		graphic = buildGraphicContent(procDefinition);
 		this.history = procHistory;
 		setContents(buildGraph(graphic));
 	}
+	
+	public void setInput(DroolsProcessDefinition procDefinition) {
+		setInput(procDefinition,null);
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	private void buildGraphic(NodeContainer nodeContainer,
@@ -125,7 +130,7 @@ public class ProcessCanvas extends FigureCanvas {
 	}
 
 	protected CompoundDirectedGraph buildGraphicContent(
-			DroolsProcessDefinition procDefinition, BasicBSONList procHistory) {
+			DroolsProcessDefinition procDefinition) {
 		Process process = procDefinition.getProcess();
 		if (!(process instanceof NodeContainer)) {
 			return null;

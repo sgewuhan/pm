@@ -250,8 +250,7 @@
             canRead="false"
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.organization.OrgOfBusinessAdminRoleUser"
-            dropTargetListener="com.sg.business.management.dnd.DropOrganization"
-            editorId="editor.copyprojecttemplates"
+            dropTargetListener="com.sg.business.management.dnd.DropProjectTemplate"
             headerVisiable="false"
             id="management.organization.navigaor"
             markupEnabled="true"
@@ -263,7 +262,7 @@
       <table
             canCreate="false"
             dataSet="com.sg.business.model.dataset.projecttemplate.ProjectTemplatesOfOrg"
-            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
+            dragSourceListener="com.sg.business.management.dnd.DragProjectTemplate"
             editorId="editor.projecttemplate"
             headerVisiable="false"
             id="management.projecttemplates"
