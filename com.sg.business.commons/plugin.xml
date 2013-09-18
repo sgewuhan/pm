@@ -1516,5 +1516,23 @@
          </basicpage>
       </editor>
    </extension>
+   <extension
+         point="com.sg.widgets.option">
+      <option
+            id="knowledgebase"
+            label="knowledgebase"
+            value="knowledgebase">
+         <option
+               id="pm"
+               label="项目管理流程库"
+               value="pm">
+         </option>
+         <option
+               id="com.tmt"
+               label="测试流程库"
+               value="com.tmt">
+         </option>
+      </option>
+   </extension>
 
 </plugin>

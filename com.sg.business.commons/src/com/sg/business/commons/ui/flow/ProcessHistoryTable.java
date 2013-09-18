@@ -26,12 +26,12 @@ import com.sg.widgets.Widgets;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-public class ProcessTable extends TableViewer {
+public class ProcessHistoryTable extends TableViewer {
 
 	// private BasicBSONList procHistory;
 	// private DroolsProcessDefinition procDefinition;
 
-	public ProcessTable(Composite parent) {
+	public ProcessHistoryTable(Composite parent) {
 		super(parent, SWT.FULL_SELECTION | SWT.BORDER);
 
 		createTable();

@@ -24,7 +24,7 @@ public class NodeAssignment {
 
 	private Node node;
 
-	protected NodeAssignment(HumanTaskNode node) {
+	public NodeAssignment(HumanTaskNode node) {
 		this.node = node;
 
 		Work work = node.getWork();

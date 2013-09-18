@@ -11,19 +11,23 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 
-public class ProcessDefinitionPage implements IPageDelegator, IFormPart {
+public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
+		IFormPart {
 
 	private boolean dirty;
 	private IManagedForm form;
 	private ProjectTemplate projectTemplate;
 	private List<PrimaryObject> roleDefinitions;
 
-	public ProcessDefinitionPage() {
+	public ProjectTemplateProcessDefinitionPage() {
 	}
 
 	@Override
@@ -48,17 +52,39 @@ public class ProcessDefinitionPage implements IPageDelegator, IFormPart {
 	}
 
 	private Control createTab(Composite tab, final String key) {
-		ProcessSettingPanel psp = new ProcessSettingPanel(tab,key,projectTemplate){
-			@Override
-			protected void setDirty(boolean b) {
-				ProcessDefinitionPage.this.setDirty(b);
-			}
-		};
-		psp.setRoleDefinitions(roleDefinitions);
-		psp.createContent();
-		return psp;
+
+		ProcessSettingPanel2 psp2 = new ProcessSettingPanel2(tab);
+		psp2.setHasActorSelector(true);
+		psp2.setHasProcessSelector(true);
+		psp2.setHasRoleSelector(true);
+		psp2.createContent();
+
+		List<DroolsProcessDefinition> processDefs = getDroolsProcessDefinitions();
+
+		psp2.setProcessDefinitionChioce(processDefs);
+
+		boolean activate = isActivate(key);
+		psp2.setProcessActivated(activate);
+
+		DroolsProcessDefinition processDef = getCurrentDroolsProcessDefinition(key);
+		psp2.setProcessDefinition(processDef);
+
+		return psp2;
 	}
 
+	private DroolsProcessDefinition getCurrentDroolsProcessDefinition(String key) {
+		return projectTemplate.getProcessDefinition(key);
+	}
+
+	private boolean isActivate(String key) {
+		return projectTemplate.isWorkflowActivate(key);
+	}
+
+	private List<DroolsProcessDefinition> getDroolsProcessDefinitions() {
+		//获取模板所属的组织
+		Organization org = projectTemplate.getOrganization();
+		return org.getDroolsProcessDefinitions();
+	}
 
 	private void setDirty(boolean b) {
 		this.dirty = b;
@@ -87,7 +113,7 @@ public class ProcessDefinitionPage implements IPageDelegator, IFormPart {
 
 	@Override
 	public void commit(boolean onSave) {
-		if(onSave){
+		if (onSave) {
 			dirty = false;
 			form.dirtyStateChanged();
 		}
