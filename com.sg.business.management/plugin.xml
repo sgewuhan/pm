@@ -495,7 +495,7 @@
                description="项目的全局流程设置"
                id="processpage"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.ProcessDefinitionPage"
+               pageDelegator="com.sg.business.management.editor.page.ProjectTemplateProcessDefinitionPage"
                title="流程">
          </basicpage>
          <navigatorpage
@@ -1063,7 +1063,7 @@
                         labelVisible="true"
                         name="fulldesc"
                         persistable="true"
-                        required="true"
+                        required="false"
                         type="String">
                   </text>
                   <combo
@@ -1087,6 +1087,7 @@
                         label="流程库"
                         labelVisible="false"
                         name="kbase"
+                        option="knowledgebase"
                         persistable="true"
                         required="false">
                   </list>

@@ -54,17 +54,23 @@ public class ProcessCanvas extends FigureCanvas {
 
 	private BasicBSONList history;
 
-	public ProcessCanvas(Composite parent) {
-		super(parent, SWT.BORDER);
+	public ProcessCanvas(Composite parent,int style) {
+		super(parent, style);
 		getViewport().setContentsTracksHeight(true);
 		getViewport().setContentsTracksWidth(true);
+	}
+	
+	public ProcessCanvas(Composite parent) {
+		this(parent,SWT.BORDER);
 	}
 
 	public void setInput(DroolsProcessDefinition procDefinition,
 			BasicBSONList procHistory) {
 		graphic = buildGraphicContent(procDefinition);
 		this.history = procHistory;
-		setContents(buildGraph(graphic));
+		if(graphic!=null){
+			setContents(buildGraph(graphic));
+		}
 	}
 	
 	public void setInput(DroolsProcessDefinition procDefinition) {
@@ -131,6 +137,10 @@ public class ProcessCanvas extends FigureCanvas {
 
 	protected CompoundDirectedGraph buildGraphicContent(
 			DroolsProcessDefinition procDefinition) {
+		if(procDefinition == null){
+			return null;
+		}
+		
 		Process process = procDefinition.getProcess();
 		if (!(process instanceof NodeContainer)) {
 			return null;

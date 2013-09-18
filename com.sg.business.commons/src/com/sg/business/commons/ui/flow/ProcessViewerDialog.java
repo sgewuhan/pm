@@ -54,7 +54,7 @@ public class ProcessViewerDialog extends Dialog {
 		pc.setInput(procDefinition, procHistory);
 
 		// 创建历史记录
-		final ProcessTable pt = new ProcessTable(sashForm);
+		final ProcessHistoryTable pt = new ProcessHistoryTable(sashForm);
 		pt.setInput(procDefinition, procHistory);
 
 		pc.addNodeSelectListener(new INodeSelectListener() {
