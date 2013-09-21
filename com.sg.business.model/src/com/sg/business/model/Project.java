@@ -27,8 +27,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
-import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
@@ -48,7 +46,7 @@ import com.sg.business.resource.BusinessResource;
  * 
  */
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
-		ILifecycle, ISchedual, IProcessControlable, IReferenceContainer {
+		ILifecycle, ISchedual, IReferenceContainer {
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -1439,12 +1437,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			result.add(checkItem);
 		}
 
+		
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+
 		// 4.1 检查项目变更的流程 ：错误，没有指明流程负责人
 		String title = "检查项目变更流程";
 		String process = F_WF_CHANGE;
 		String editorId = EDITOR_SETPROCESS;
 		String pageId = EDITOR_PAGE_CHANGE_PROCESS;
-		passed = ProjectToolkit.checkProcessInternal(this, this, result, raMap,
+		passed = ProjectToolkit.checkProcessInternal(this, pc, result, raMap,
 				title, process, editorId, pageId);
 		if (passed) {
 			CheckListItem checkItem = new CheckListItem(title);
@@ -1456,7 +1457,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		title = "检查项目提交流程";
 		process = F_WF_COMMIT;
 		pageId = EDITOR_PAGE_COMMIT_PROCESS;
-		passed = ProjectToolkit.checkProcessInternal(this, this, result, raMap,
+		passed = ProjectToolkit.checkProcessInternal(this, pc, result, raMap,
 				title, process, editorId, pageId);
 		if (passed) {
 			CheckListItem checkItem = new CheckListItem(title);
@@ -1472,33 +1473,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-	@Override
-	public String getProcessActionActor(String key, String nodeActorParameter) {
-		DBObject data = getProcessActorsMap(key);
-		if (data == null) {
-			return null;
-		}
-		return (String) data.get(nodeActorParameter);
-	}
-
-	public DBObject getProcessActorsMap(String key) {
-		return (DBObject) getValue(key + POSTFIX_ACTORS);
-	}
-
-	@Override
-	public ProjectRole getProcessActionAssignment(String key,
-			String nodeActorParameter) {
-		// 取出角色指派
-		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
-		if (data == null) {
-			return null;
-		}
-		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
-		if (roleId != null) {
-			return ModelService.createModelObject(ProjectRole.class, roleId);
-		}
-		return null;
-	}
 
 	/**
 	 * 变更工作流是否激活
@@ -1518,19 +1492,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return Boolean.TRUE.equals(getValue(F_WF_COMMIT_ACTIVATED));
 	}
 
-	@Override
-	public boolean isWorkflowActivate(String fieldKey) {
-		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
-	}
-
-	@Override
-	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
-		DBObject processData = (DBObject) getValue(fieldKey);
-		if (processData != null) {
-			return new DroolsProcessDefinition(processData);
-		}
-		return null;
-	}
 
 	public String getLifecycleStatus() {
 		String lc = (String) getValue(F_LIFECYCLE);
@@ -1708,19 +1669,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		}
 		work.setValue(Work.F_PROJECT_ID, get_id());
-		DBObject wfdef = getWorkflowDefinition(F_WF_COMMIT);
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+		DBObject wfdef = pc.getWorkflowDefinition(F_WF_COMMIT);
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
-	}
-
-	private DBObject getWorkflowDefinition(String workflowKey) {
-		DBObject result = new BasicDBObject();
-		result.put("KEY", getValue(workflowKey));
-		result.put(POSTFIX_ACTIVATED, getValue(workflowKey + POSTFIX_ACTIVATED));
-		result.put(POSTFIX_ACTORS, getValue(workflowKey + POSTFIX_ACTORS));
-		result.put(POSTFIX_ASSIGNMENT, getValue(workflowKey
-				+ POSTFIX_ASSIGNMENT));
-		return result;
 	}
 
 	public Object doCancel(IContext context) throws Exception {
@@ -1814,11 +1766,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return (BasicBSONList) getValue(F_TARGETS);
 	}
 
-	@Override
-	public Workflow getWorkflow(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Object[]> checkStartAction(IContext context) throws Exception {
@@ -1868,34 +1815,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @param userid
-	 * @param query
-	 * @return
-	 */
-	public DBObject getCurrentWorkflowTaskData(String key, String userid,
-			boolean query) {
-		String field = key + POSTFIX_TASK;
-		Object value = getValue(field, query);
-		if (value instanceof DBObject) {
-			return (DBObject) ((DBObject) value).get(userid);
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter.equals(IProcessControlable.class)) {
+			return new ProcessControl(this);
 		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * @param key
-	 * @param userid
-	 * @param query
-	 * @return
-	 */
-	public BasicBSONList getWorkflowHistroyData(String key, boolean query) {
-		String field = key + POSTFIX_HISTORY;
-		Object value = getValue(field, query);
-		return (BasicBSONList) value;
-	}
-
+		return super.getAdapter(adapter);
+	}	
 }

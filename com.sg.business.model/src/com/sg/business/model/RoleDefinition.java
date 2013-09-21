@@ -54,11 +54,12 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 		}
 
 		ProjectTemplate projectTemplate = getProjectTemplate();
-
+		ProcessControl pc = (ProcessControl) projectTemplate
+				.getAdapter(IProcessControlable.class);
 		// 2.提交流程上引用
-		if (projectTemplate.isWorkflowActivate(ProjectTemplate.F_WF_COMMIT)) {
+		if (pc.isWorkflowActivate(ProjectTemplate.F_WF_COMMIT)) {
 			// 如果流程已经激活，需要判断是否所有的actor都指派
-			DroolsProcessDefinition pd = projectTemplate
+			DroolsProcessDefinition pd = pc
 					.getProcessDefinition(ProjectTemplate.F_WF_COMMIT);
 			List<NodeAssignment> nalist = pd.getNodesAssignment();
 			for (int i = 0; i < nalist.size(); i++) {
@@ -68,7 +69,7 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 				}
 				String nap = na.getNodeActorParameter();
 				// 检查角色
-				ProjectRole role = projectTemplate.getProcessActionAssignment(
+				AbstractRoleDefinition role = pc.getProcessActionAssignment(
 						ProjectTemplate.F_WF_COMMIT, nap);
 				if (getOrganizationRoleId()
 						.equals(role.getOrganizationRoleId())) {
@@ -82,9 +83,9 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 
 		// 3.变更流程上引用
 
-		if (projectTemplate.isWorkflowActivate(ProjectTemplate.F_WF_CHANGE)) {
+		if (pc.isWorkflowActivate(ProjectTemplate.F_WF_CHANGE)) {
 			// 如果流程已经激活，需要判断是否所有的actor都指派
-			DroolsProcessDefinition pd = projectTemplate
+			DroolsProcessDefinition pd = pc
 					.getProcessDefinition(ProjectTemplate.F_WF_CHANGE);
 			List<NodeAssignment> nalist = pd.getNodesAssignment();
 			for (int i = 0; i < nalist.size(); i++) {
@@ -94,7 +95,7 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 				}
 				String nap = na.getNodeActorParameter();
 				// 检查角色
-				ProjectRole role = projectTemplate.getProcessActionAssignment(
+				AbstractRoleDefinition role = pc.getProcessActionAssignment(
 						ProjectTemplate.F_WF_CHANGE, nap);
 				if (getOrganizationRoleId()
 						.equals(role.getOrganizationRoleId())) {

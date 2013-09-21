@@ -12,6 +12,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
+import com.sg.business.model.IProcessControlable;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -49,28 +50,32 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		} else {
 			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 		}
-		
+
 		// 所有者标记
 		boolean userMarked = work.getMarked(userId);
-		if (userMarked){
+		if (userMarked) {
 			String selectbar = "<img src='"
-					+ getSelectorURL(work,ImageResource.BLUE_BULLETIN)
+					+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
 					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
 			sb.append(selectbar);
-		}else{
+		} else {
 			String selectbar = "<img src='"
-					+ getSelectorURL(work,ImageResource.WHITE_BULLETIN)
+					+ getSelectorURL(work, ImageResource.WHITE_BULLETIN)
 					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
 			sb.append(selectbar);
 
 		}
-		
+
 		if (charger != null) {
 			sb.append("<span style='float:right;padding-right:4px'>");
 			sb.append(charger);
 			sb.append("</span>");
 		}
-		String imageUrl = "<img src='" + getHeaderImageURL(work)
+		
+		IProcessControlable pc = (IProcessControlable) work
+				.getAdapter(IProcessControlable.class);
+
+		String imageUrl = "<img src='" + getHeaderImageURL(work,pc)
 				+ "' style='float:left;padding:6px' width='16' height='16' />";
 		sb.append(imageUrl);
 
@@ -93,20 +98,20 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		sb.append("<br/>");
 		sb.append("<small>");
 
-		sb.append(getWorkflowSummaryInformation(work));
+		sb.append(getWorkflowSummaryInformation(work,pc));
 
 		Date date = work.getPlanStart();
 		String planStart = "";
 		if (date != null) {
 			planStart = sdf.format(date);
 		}
-		
-		
-//		String selectbar = "<img src='"
-//				+ getSelectorURL(work,ImageResource.WHITE_BULLETIN)
-//				+ "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
-//		sb.append(selectbar);
-		
+
+		// String selectbar = "<img src='"
+		// + getSelectorURL(work,ImageResource.WHITE_BULLETIN)
+		// +
+		// "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
+		// sb.append(selectbar);
+
 		sb.append("");
 		sb.append("计划:");
 		sb.append(planStart);
@@ -158,8 +163,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private String getWorkflowSummaryInformation(Work work) {
-		DBObject data = work.getWorkflowTaskData(Work.F_WF_EXECUTE);
+	private String getWorkflowSummaryInformation(Work work,IProcessControlable pc) {
+		DBObject data = pc.getWorkflowTaskData(Work.F_WF_EXECUTE);
 		if (data == null) {
 			return "";
 		}
@@ -174,10 +179,10 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 				if (latestTask == null) {
 					latestTask = task;
 				} else {
-					Object createdon = task.get(Work.F_WF_TASK_CREATEDON);
+					Object createdon = task.get(IProcessControlable.F_WF_TASK_CREATEDON);
 					if (createdon instanceof Date) {
 						Date latestDate = (Date) latestTask
-								.get(Work.F_WF_TASK_CREATEDON);
+								.get(IProcessControlable.F_WF_TASK_CREATEDON);
 						if (((Date) createdon).after(latestDate)) {
 							latestTask = task;
 						}
@@ -193,15 +198,15 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='float:right;padding-right:4px'>");
 		// 根据状态取流程图标
-		Object taskstatus = latestTask.get(Work.F_WF_TASK_STATUS);
+		Object taskstatus = latestTask.get(IProcessControlable.F_WF_TASK_STATUS);
 		sb.append("<img src='" + getTaskStatusImageURL(taskstatus)
 				+ "' style='float:left;padding:6px' width='10' height='10' />");
 
-		Object taskname = latestTask.get(Work.F_WF_TASK_NAME);
+		Object taskname = latestTask.get(IProcessControlable.F_WF_TASK_NAME);
 		sb.append(" ");
 		sb.append(taskname);
 		sb.append(" ");
-		Object owner = latestTask.get(Work.F_WF_TASK_ACTUALOWNER);
+		Object owner = latestTask.get(IProcessControlable.F_WF_TASK_ACTUALOWNER);
 		if (owner instanceof String) {
 			User ownerUser = UserToolkit.getUserById((String) owner);
 			sb.append(ownerUser);
@@ -211,10 +216,9 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 	}
 
 	private String getSelectorURL(Work work, String style) {
-		return FileUtil.getImageURL(style,
-				Widgets.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		return FileUtil.getImageURL(style, Widgets.PLUGIN_ID,
+				BusinessResource.IMAGE_FOLDER);
 	}
-	
 
 	private String getTaskStatusImageURL(Object taskstatus) {
 		if (Status.Created.name().equals(taskstatus)) {
@@ -278,7 +282,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return false;
 	}
 
-	private String getHeaderImageURL(Work work) {
+	private String getHeaderImageURL(Work work,IProcessControlable pc) {
 		if (work.isProjectWBSRoot()) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
@@ -292,7 +296,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
-			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
+			if (pc.isWorkflowActivate(Work.F_WF_EXECUTE)) {
 				return FileUtil.getImageURL(
 						BusinessResource.IMAGE_WORK2_READY_16,
 						BusinessResource.PLUGIN_ID,
@@ -304,13 +308,14 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 						BusinessResource.IMAGE_FOLDER);
 			}
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-			if (work.isWorkflowActivate(Work.F_WF_EXECUTE)) {
+			if (pc.isWorkflowActivate(Work.F_WF_EXECUTE)) {
 				return FileUtil.getImageURL(
 						BusinessResource.IMAGE_WORK2_WIP_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			} else {
-				return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16,
+				return FileUtil.getImageURL(
+						BusinessResource.IMAGE_WORK2_WIP_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER);
 			}

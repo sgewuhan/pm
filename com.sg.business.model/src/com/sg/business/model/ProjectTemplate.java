@@ -12,8 +12,6 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -24,7 +22,7 @@ import com.sg.business.resource.BusinessResource;
  * @author jinxitao
  * 
  */
-public class ProjectTemplate extends PrimaryObject {
+public class ProjectTemplate extends PrimaryObject  {
 
 	/**
 	 * 所属组织
@@ -75,10 +73,10 @@ public class ProjectTemplate extends PrimaryObject {
 	 * 流程是否启用
 	 */
 	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
-	
+
 	public static final String POSTFIX_ACTIVATED = "_activated";
-	
-	public static final String POSTFIX_ASSIGNMENT= "_assignment";
+
+	public static final String POSTFIX_ASSIGNMENT = "_assignment";
 
 	/**
 	 * 变更流程定义
@@ -150,18 +148,19 @@ public class ProjectTemplate extends PrimaryObject {
 		 * 并且该角色的成员与项目负责人保持同步
 		 * 
 		 * 同时需要为项目模板的角色添加进行校验，防止输入系统保留的角色ID
-		 * 
 		 */
 		RoleDefinition projMgr = makeRoleDefinition(null);
 		projMgr.setValue(RoleDefinition.F_ROLE_NUMBER,
 				RoleDefinition.ROLE_PROJECT_MANAGER_ID);
-		projMgr.setValue(RoleDefinition.F_DESC, RoleDefinition.ROLE_PROJECT_MANAGER_TEXT);
+		projMgr.setValue(RoleDefinition.F_DESC,
+				RoleDefinition.ROLE_PROJECT_MANAGER_TEXT);
 		projMgr.doInsert(context);
-		
+
 		projMgr = makeRoleDefinition(null);
 		projMgr.setValue(RoleDefinition.F_ROLE_NUMBER,
 				RoleDefinition.ROLE_PROJECT_GUEST_ID);
-		projMgr.setValue(RoleDefinition.F_DESC, RoleDefinition.ROLE_PROJECT_GUEST_ID);
+		projMgr.setValue(RoleDefinition.F_DESC,
+				RoleDefinition.ROLE_PROJECT_GUEST_ID);
 
 		/*
 		 * *****************************************************************************
@@ -335,9 +334,10 @@ public class ProjectTemplate extends PrimaryObject {
 		Assert.isNotNull(orgId);
 		return ModelService.createModelObject(Organization.class, orgId);
 	}
-	
+
 	/**
 	 * 返回模版中的所有预算定义
+	 * 
 	 * @return
 	 */
 	public List<PrimaryObject> getBudgetItems() {
@@ -357,6 +357,7 @@ public class ProjectTemplate extends PrimaryObject {
 
 	/**
 	 * 返回模版中的所有工作定义
+	 * 
 	 * @return
 	 */
 	public List<PrimaryObject> getWorkDefinitions() {
@@ -366,15 +367,18 @@ public class ProjectTemplate extends PrimaryObject {
 
 	/**
 	 * 返回模版中的所有交付物定义
+	 * 
 	 * @return
 	 */
 	public List<PrimaryObject> getDeliverableDefinitions() {
-		return getRelationById(F__ID, DeliverableDefinition.F_PROJECTTEMPLATE_ID,
+		return getRelationById(F__ID,
+				DeliverableDefinition.F_PROJECTTEMPLATE_ID,
 				DeliverableDefinition.class);
 	}
 
 	/**
 	 * 返回模版中的所有前后置关系
+	 * 
 	 * @return
 	 */
 	public List<PrimaryObject> getWorkConnections() {
@@ -389,9 +393,10 @@ public class ProjectTemplate extends PrimaryObject {
 	 */
 	public WorkDefinition getWBSRoot() {
 		ObjectId workDefinitionid = (ObjectId) getValue(F_WORK_DEFINITON_ID);
-		return ModelService.createModelObject(WorkDefinition.class, workDefinitionid);
+		return ModelService.createModelObject(WorkDefinition.class,
+				workDefinitionid);
 	}
-	
+
 	/**
 	 * 返回类型名称
 	 * 
@@ -402,29 +407,13 @@ public class ProjectTemplate extends PrimaryObject {
 		return "项目模板";
 	}
 
-	public boolean isWorkflowActivate(String fieldKey) {
-		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
-	}
-
-	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
-		DBObject processData = (DBObject) getValue(fieldKey);
-		if (processData != null) {
-			return new DroolsProcessDefinition(processData);
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter.equals(IProcessControlable.class)) {
+			return new ProcessControl(this);
 		}
-		return null;
+		return super.getAdapter(adapter);
 	}
 
-	public ProjectRole getProcessActionAssignment(String key,
-			String nodeActorParameter) {
-		// 取出角色指派
-				DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
-				if (data == null) {
-					return null;
-				}
-				ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
-				if (roleId != null) {
-					return ModelService.createModelObject(ProjectRole.class, roleId);
-				}
-				return null;
-	}
 }

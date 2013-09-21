@@ -40,6 +40,9 @@ public class ProcessSettingPanel2 extends Composite {
 
 		void processActivatedChanged(boolean activated);
 
+		void roleChanged(AbstractRoleDefinition newRole,
+				AbstractRoleDefinition oldRole, NodeAssignment nodeAssignment);
+
 	}
 
 	private ComboViewer processSelecter;
@@ -52,6 +55,7 @@ public class ProcessSettingPanel2 extends Composite {
 	private boolean hasRoleSelector;
 	private ListenerList listeners = new ListenerList();
 	private List<DroolsProcessDefinition> processDefinitionsChoice;
+	private boolean processActivate;
 
 	public void addProcessSettingListener(IProcessSettingListener listener) {
 		listeners.add(listener);
@@ -63,7 +67,6 @@ public class ProcessSettingPanel2 extends Composite {
 
 	public ProcessSettingPanel2(Composite parent) {
 		super(parent, SWT.NONE);
-		createContent();
 	}
 
 	public void createContent() {
@@ -100,6 +103,14 @@ public class ProcessSettingPanel2 extends Composite {
 				ProcessSettingPanel2.this.actorChanged(newActor, oldActor,
 						nodeAssignment, roleDef);
 			}
+
+			@Override
+			public void roleChanged(AbstractRoleDefinition newRole,
+					AbstractRoleDefinition oldRole,
+					NodeAssignment nodeAssignment) {
+				ProcessSettingPanel2.this.roleChanged(newRole, oldRole,
+						nodeAssignment);
+			}
 		});
 		GridData gd = new GridData(SWT.LEFT, SWT.FILL, false, false);
 		gd.widthHint = 300;
@@ -115,6 +126,22 @@ public class ProcessSettingPanel2 extends Composite {
 		fd.left = new FormAttachment(0, 10);
 		fd.right = new FormAttachment(100, -10);
 		fd.bottom = new FormAttachment(100, -10);
+
+		initInputValue();
+	}
+
+	private void initInputValue() {
+		if (activatedChecker != null) {
+			activatedChecker.setSelection(processActivate);
+		}
+		if (processSelecter != null) {
+			processSelecter.setInput(processDefinitionsChoice);
+			processSelecter.setSelection(new StructuredSelection(
+					new Object[] { processDefinition }));
+		} else {
+			activitySelecter.setInput(processDefinition);
+		}
+
 	}
 
 	private void createProcessSelector(Composite parent) {
@@ -190,28 +217,29 @@ public class ProcessSettingPanel2 extends Composite {
 	}
 
 	final public void setProcessActivated(boolean activate) {
-		if (processSelecter != null) {
-			activatedChecker.setSelection(activate);
-		}
+		processActivate = activate;
+		// if (processSelecter != null) {
+		// activatedChecker.setSelection(activate);
+		// }
 	}
 
 	final public void setProcessDefinitionChoice(
 			List<DroolsProcessDefinition> processDefs) {
 		this.processDefinitionsChoice = processDefs;
-		if (processSelecter != null) {
-			processSelecter.setInput(processDefs);
-		}
+		// if (processSelecter != null) {
+		// processSelecter.setInput(processDefs);
+		// }
 	}
 
 	final public void setProcessDefinition(DroolsProcessDefinition processDef) {
 		this.processDefinition = processDef;
-		if (processSelecter != null) {
-			processSelecter.setSelection(new StructuredSelection(
-					new Object[] { processDef }));
-			//set selection will set activiteSelector input.
-		} else {
-			activitySelecter.setInput(processDef);
-		}
+		// if (processSelecter != null) {
+		// processSelecter.setSelection(new StructuredSelection(
+		// new Object[] { processDef }));
+		// // set selection will set activiteSelector input.
+		// } else {
+		// activitySelecter.setInput(processDef);
+		// }
 	}
 
 	final public void setHasProcessSelector(boolean hasProcessSelector) {
@@ -226,7 +254,7 @@ public class ProcessSettingPanel2 extends Composite {
 		this.hasRoleSelector = hasRoleSelector;
 	}
 
-	final private void processChanged(DroolsProcessDefinition oldProcessDef,
+	private void processChanged(DroolsProcessDefinition oldProcessDef,
 			DroolsProcessDefinition newProcessDefinition) {
 		Object[] lis = listeners.getListeners();
 		for (int i = 0; i < lis.length; i++) {
@@ -235,7 +263,7 @@ public class ProcessSettingPanel2 extends Composite {
 		}
 	}
 
-	final private void processActivatedChanged(boolean activated) {
+	private void processActivatedChanged(boolean activated) {
 		Object[] lis = listeners.getListeners();
 		for (int i = 0; i < lis.length; i++) {
 			((IProcessSettingListener) lis[i])
@@ -243,13 +271,23 @@ public class ProcessSettingPanel2 extends Composite {
 		}
 	}
 
-	final private void actorChanged(User newActor, User oldActor,
+	private void actorChanged(User newActor, User oldActor,
 			NodeAssignment nodeAssignment, AbstractRoleDefinition roleDef) {
 		Object[] lis = listeners.getListeners();
 		for (int i = 0; i < lis.length; i++) {
 			((IProcessSettingListener) lis[i]).actorChanged(newActor, oldActor,
 					nodeAssignment, roleDef);
 		}
+	}
+
+	private void roleChanged(AbstractRoleDefinition newRole,
+			AbstractRoleDefinition oldRole, NodeAssignment nodeAssignment) {
+		Object[] lis = listeners.getListeners();
+		for (int i = 0; i < lis.length; i++) {
+			((IProcessSettingListener) lis[i]).roleChanged(newRole, oldRole,
+					nodeAssignment);
+		}
+
 	}
 
 }

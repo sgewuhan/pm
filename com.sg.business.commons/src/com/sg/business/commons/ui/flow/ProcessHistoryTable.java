@@ -20,8 +20,8 @@ import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.model.IProcessControlable;
 import com.sg.business.model.TaskForm;
-import com.sg.business.model.Work;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
@@ -51,7 +51,7 @@ public class ProcessHistoryTable extends TableViewer {
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
-					return "" + dbObject.get(Work.F_WF_TASK_NAME);
+					return "" + dbObject.get(IProcessControlable.F_WF_TASK_NAME);
 				}
 				return super.getText(element);
 			}
@@ -66,7 +66,7 @@ public class ProcessHistoryTable extends TableViewer {
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
-					return "" + dbObject.get("form_" + Work.F_WF_TASK_ACTOR);
+					return "" + dbObject.get("form_" + IProcessControlable.F_WF_TASK_ACTOR);
 				}
 				return super.getText(element);
 			}
@@ -81,7 +81,7 @@ public class ProcessHistoryTable extends TableViewer {
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
-					return "" + dbObject.get("form_" + Work.F_WF_TASK_ACTION);
+					return "" + dbObject.get("form_" + IProcessControlable.F_WF_TASK_ACTION);
 				}
 				return super.getText(element);
 			}
@@ -114,9 +114,9 @@ public class ProcessHistoryTable extends TableViewer {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
 					Object startDate = dbObject.get("form_"
-							+ Work.F_WF_TASK_STARTDATE);
+							+ IProcessControlable.F_WF_TASK_STARTDATE);
 					Object finishDate = dbObject.get("form_"
-							+ Work.F_WF_TASK_FINISHDATE);
+							+ IProcessControlable.F_WF_TASK_FINISHDATE);
 					SimpleDateFormat sdf = new SimpleDateFormat(
 							Utils.SDF_DATETIME_COMPACT_SASH);
 					if (startDate instanceof Date) {

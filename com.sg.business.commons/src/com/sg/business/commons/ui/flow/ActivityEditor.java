@@ -23,8 +23,11 @@ public class ActivityEditor extends Composite {
 
 	public interface IActivityEditListener {
 
-		void actorChanged(User newActor, User oldActor, NodeAssignment nodeAssignment,
-				AbstractRoleDefinition roleDef);
+		void actorChanged(User newActor, User oldActor,
+				NodeAssignment nodeAssignment, AbstractRoleDefinition roleDef);
+
+		void roleChanged(AbstractRoleDefinition newRole,
+				AbstractRoleDefinition oldRole, NodeAssignment nodeAssignment);
 
 	}
 
@@ -37,20 +40,21 @@ public class ActivityEditor extends Composite {
 	private Button actorSelectorButton;
 	private boolean hasActorSelector;
 	private boolean hasRoleSelector;
-	private String navigatorId;
+	private String actorNavigatorId;
 	private DataSet actorDataSet;
 
 	private ListenerList listeners = new ListenerList();
 	private NodeAssignment nodeAssignment;
 	private AbstractRoleDefinition roleDef;
 	private User actor;
+	private DataSet roleDataSet;
+	private String roleNavigatorId;
 
-
-	public void addActiviteEditListener(IActivityEditListener listener) {
+	final public void addActiviteEditListener(IActivityEditListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeActiviteEditListener(IActivityEditListener listener) {
+	final public void removeActiviteEditListener(IActivityEditListener listener) {
 		listeners.remove(listener);
 	}
 
@@ -150,11 +154,11 @@ public class ActivityEditor extends Composite {
 		return new GridData(SWT.LEFT, SWT.CENTER, false, false);
 	}
 
-	public void setInput(NodeAssignment nodeAssignment,
+	final public void setInput(NodeAssignment nodeAssignment,
 			AbstractRoleDefinition roleDef, User actor) {
-		 this.nodeAssignment = nodeAssignment;
-		 this.roleDef = roleDef;
-		 this.actor = actor;
+		this.nodeAssignment = nodeAssignment;
+		this.roleDef = roleDef;
+		this.actor = actor;
 		if (actorSelectorButton != null) {
 			actorSelectorButton.setEnabled(nodeAssignment != null
 					&& nodeAssignment.isNeedAssignment());
@@ -210,62 +214,94 @@ public class ActivityEditor extends Composite {
 			}
 		}
 	}
-	
 
 	private void showActorSelectorNavigator() {
-		NavigatorSelector ns = new NavigatorSelector(getActorNavigatorId()){
+		NavigatorSelector ns = new NavigatorSelector(actorNavigatorId) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				User user = (User) is.getFirstElement();
 				setActor(user);
 				super.doOK(is);
 			}
-			
+
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {
-				
-				if(! super.isSelectEnabled(is)){
+
+				if (!super.isSelectEnabled(is)) {
 					return false;
-				}else{
+				} else {
 					Object element = is.getFirstElement();
 					return element instanceof User;
 				}
 			}
-			
+
 		};
 		ViewerControl vc = ns.getNavigator().getViewerControl();
-		vc.setDataSet(getActorDataSet());
+		vc.setDataSet(actorDataSet);
 		ns.show();
-		
+
 	}
 
-	protected void setActor(User user) {
+	private void setActor(User user) {
 		Object[] lis = listeners.getListeners();
 		for (int i = 0; i < lis.length; i++) {
-			((IActivityEditListener) lis[i]).actorChanged(user,actor,nodeAssignment,roleDef);
+			((IActivityEditListener) lis[i]).actorChanged(user, actor,
+					nodeAssignment, roleDef);
 		}
 		actor = user;
 	}
 
-	protected String getActorNavigatorId() {
-		return navigatorId;
-	}
-
-	protected DataSet getActorDataSet() {
-		return actorDataSet;
-	}
-	
-	public void setNavigatorId(String navigatorId){
-		this.navigatorId = navigatorId;
-	}
-	
-	public void setActorDataSet(DataSet dataset){
-		this.actorDataSet = dataset;
+	private void setRole(AbstractRoleDefinition role) {
+		Object[] lis = listeners.getListeners();
+		for (int i = 0; i < lis.length; i++) {
+			((IActivityEditListener) lis[i]).roleChanged(role,roleDef, 
+					nodeAssignment);
+		}
+		roleDef = role;
 	}
 
 	private void showRoleSelectorNavigator() {
-		// TODO Auto-generated method stub
-		
+		NavigatorSelector ns = new NavigatorSelector(roleNavigatorId) {
+			@Override
+			protected void doOK(IStructuredSelection is) {
+				AbstractRoleDefinition role = (AbstractRoleDefinition) is
+						.getFirstElement();
+				setRole(role);
+				super.doOK(is);
+			}
+
+			@Override
+			protected boolean isSelectEnabled(IStructuredSelection is) {
+
+				if (!super.isSelectEnabled(is)) {
+					return false;
+				} else {
+					Object element = is.getFirstElement();
+					return element instanceof AbstractRoleDefinition;
+				}
+			}
+
+		};
+		ViewerControl vc = ns.getNavigator().getViewerControl();
+		vc.setDataSet(roleDataSet);
+		ns.show();
+
+	}
+
+	final public void setActorNavigatorId(String navigatorId) {
+		this.actorNavigatorId = navigatorId;
+	}
+
+	final public void setActorDataSet(DataSet dataset) {
+		this.actorDataSet = dataset;
+	}
+
+	final public void setRoleNavigatorId(String navigatorId) {
+		this.roleNavigatorId = navigatorId;
+	}
+
+	final public void setRoleDataSet(DataSet dataset) {
+		this.roleDataSet = dataset;
 	}
 
 }
