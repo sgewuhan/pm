@@ -17,7 +17,7 @@ import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.ui.flow.part.SimpleNodeLabel;
 
-public class ActiviteSelecter extends Composite {
+public class ActivitySelecter extends Composite {
 
 	public interface INodeSelectionListener {
 
@@ -31,7 +31,7 @@ public class ActiviteSelecter extends Composite {
 
 	private ListenerList listeners = new ListenerList();
 
-	public ActiviteSelecter(Composite parent) {
+	public ActivitySelecter(Composite parent) {
 		super(parent, SWT.NONE);
 		createContent(this);
 	}

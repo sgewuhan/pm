@@ -61,7 +61,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 
 		List<DroolsProcessDefinition> processDefs = getDroolsProcessDefinitions();
 
-		psp2.setProcessDefinitionChioce(processDefs);
+		psp2.setProcessDefinitionChoice(processDefs);
 
 		boolean activate = isActivate(key);
 		psp2.setProcessActivated(activate);

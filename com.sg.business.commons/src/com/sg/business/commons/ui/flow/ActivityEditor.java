@@ -19,11 +19,11 @@ import com.sg.business.model.User;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ActiviteEditor extends Composite {
+public class ActivityEditor extends Composite {
 
-	public interface IActiviteEditListener {
+	public interface IActivityEditListener {
 
-		void setActor(User newActor, User oldActor, NodeAssignment nodeAssignment,
+		void actorChanged(User newActor, User oldActor, NodeAssignment nodeAssignment,
 				AbstractRoleDefinition roleDef);
 
 	}
@@ -46,15 +46,15 @@ public class ActiviteEditor extends Composite {
 	private User actor;
 
 
-	public void addActiviteEditListener(IActiviteEditListener listener) {
+	public void addActiviteEditListener(IActivityEditListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeActiviteEditListener(IActiviteEditListener listener) {
+	public void removeActiviteEditListener(IActivityEditListener listener) {
 		listeners.remove(listener);
 	}
 
-	ActiviteEditor(Composite parent, boolean hasRoleSelector,
+	ActivityEditor(Composite parent, boolean hasRoleSelector,
 			boolean hasActorSelector) {
 		super(parent, SWT.BORDER);
 		this.hasActorSelector = hasActorSelector;
@@ -70,7 +70,7 @@ public class ActiviteEditor extends Composite {
 		label.setLayoutData(getGridData1());
 
 		activiteName = new Text(parent, SWT.BORDER);
-		activiteName.setLayoutData(getData2());
+		activiteName.setLayoutData(getGridData2());
 		activiteName.setEditable(false);
 
 		// 指派类别
@@ -78,7 +78,7 @@ public class ActiviteEditor extends Composite {
 		label.setText("指派类别");
 		label.setLayoutData(getGridData1());
 		assignmentType = new Text(parent, SWT.BORDER);
-		assignmentType.setLayoutData(getData2());
+		assignmentType.setLayoutData(getGridData2());
 		assignmentType.setEditable(false);
 
 		// 指派规则
@@ -86,7 +86,7 @@ public class ActiviteEditor extends Composite {
 		label.setText("指派规则");
 		label.setLayoutData(getGridData1());
 		assignmentRule = new Text(parent, SWT.BORDER);
-		assignmentRule.setLayoutData(getData2());
+		assignmentRule.setLayoutData(getGridData2());
 		assignmentRule.setEditable(false);
 
 		label = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -140,7 +140,7 @@ public class ActiviteEditor extends Composite {
 		return gd;
 	}
 
-	private GridData getData2() {
+	private GridData getGridData2() {
 		GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		gd.widthHint = 120;
 		return gd;
@@ -242,7 +242,7 @@ public class ActiviteEditor extends Composite {
 	protected void setActor(User user) {
 		Object[] lis = listeners.getListeners();
 		for (int i = 0; i < lis.length; i++) {
-			((IActiviteEditListener) lis[i]).setActor(user,actor,nodeAssignment,roleDef);
+			((IActivityEditListener) lis[i]).actorChanged(user,actor,nodeAssignment,roleDef);
 		}
 		actor = user;
 	}
