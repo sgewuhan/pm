@@ -29,9 +29,17 @@ import com.sg.business.commons.ui.flow.ActivitySelecter.INodeSelectionListener;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.User;
 
-public class ProcessSettingPanel2 extends Composite {
+public abstract class ProcessSettingPanel2 extends Composite {
 
 	public interface IProcessSettingListener {
+
+		public static final int EVENT_ACTOR_CHANGED = 0;
+
+		public static final int EVENT_PROCESS_CHANGED = 1;
+
+		public static final int EVENT_PROCESSACTIVATED_CHANGED = 2;
+
+		public static final int EVENT_ROLE_CHANGED = 3;
 
 		void actorChanged(User newActor, User oldActor,
 				NodeAssignment nodeAssignment, AbstractRoleDefinition roleDef);
@@ -61,6 +69,9 @@ public class ProcessSettingPanel2 extends Composite {
 	private DataSet roleDataSet;
 	private DataSet actorDataSet;
 	private String actorNavigatorId;
+	private AbstractRoleDefinition selectedRole;
+	private User selectedActor;
+	private boolean editable = true;
 
 	public void addProcessSettingListener(IProcessSettingListener listener) {
 		listeners.add(listener);
@@ -92,10 +103,18 @@ public class ProcessSettingPanel2 extends Composite {
 
 	private void createActivityEditor(Composite panel) {
 		activiteEditor = new ActivityEditor(panel, hasRoleSelector,
-				hasActorSelector);
-		activiteEditor.setRoleDataSet(roleDataSet);
+				hasActorSelector) {
+			@Override
+			public DataSet getRoleDataSet() {
+				return ProcessSettingPanel2.this.getRoleDataSet();
+			}
+
+			@Override
+			public DataSet getActorDataSet() {
+				return ProcessSettingPanel2.this.getActorDataSet();
+			}
+		};
 		activiteEditor.setRoleNavigatorId(roleNavigatorId);
-		activiteEditor.setActorDataSet(actorDataSet);
 		activiteEditor.setActorNavigatorId(actorNavigatorId);
 		activiteEditor.addActiviteEditListener(new IActivityEditListener() {
 
@@ -129,6 +148,8 @@ public class ProcessSettingPanel2 extends Composite {
 		fd.left = new FormAttachment(0, 10);
 		fd.right = new FormAttachment(100, -10);
 		fd.bottom = new FormAttachment(100, -10);
+		
+		activiteEditor.setEditable(editable);
 	}
 
 	private void createActivatySelector(Composite panel) {
@@ -140,9 +161,10 @@ public class ProcessSettingPanel2 extends Composite {
 
 			@Override
 			public void selectionChange(NodeAssignment nodeAssignment) {
-				AbstractRoleDefinition roleDef = getRoleDefinition(nodeAssignment);
-				User actor = getActor(nodeAssignment);
-				activiteEditor.setInput(nodeAssignment, roleDef, actor);
+				selectedRole = getRoleDefinition(nodeAssignment);
+				selectedActor = getActor(nodeAssignment);
+				activiteEditor.setInput(nodeAssignment, selectedRole, selectedActor);
+				
 			}
 		});
 	}
@@ -196,8 +218,7 @@ public class ProcessSettingPanel2 extends Composite {
 						}
 						activitySelecter.setInput(input);
 						DroolsProcessDefinition oldProcessDef = processDefinition;
-						processDefinition = input;
-						processChanged(oldProcessDef, processDefinition);
+						processChanged(oldProcessDef, input);
 
 					}
 				});
@@ -219,14 +240,22 @@ public class ProcessSettingPanel2 extends Composite {
 		});
 	}
 
-	protected AbstractRoleDefinition getRoleDefinition(
-			NodeAssignment nodeAssignment) {
-		return null;
-	}
+	/**
+	 * 子类需要覆盖本方法以告知流程节点的角色
+	 * 
+	 * @param nodeAssignment
+	 * @return
+	 */
+	protected abstract AbstractRoleDefinition getRoleDefinition(
+			NodeAssignment nodeAssignment);
 
-	protected User getActor(NodeAssignment nodeAssignment) {
-		return null;
-	}
+	/**
+	 * 子类需覆盖此方法以告知节点的用户
+	 * 
+	 * @param nodeAssignment
+	 * @return
+	 */
+	protected abstract User getActor(NodeAssignment nodeAssignment);
 
 	final public boolean isProcessActivated() {
 		return activatedChecker.getSelection();
@@ -247,6 +276,10 @@ public class ProcessSettingPanel2 extends Composite {
 		// }
 	}
 
+	final public List<DroolsProcessDefinition> getProcessDefinitionChoice() {
+		return processDefinitionsChoice;
+	}
+
 	final public void setProcessDefinition(DroolsProcessDefinition processDef) {
 		this.processDefinition = processDef;
 		// if (processSelecter != null) {
@@ -256,6 +289,10 @@ public class ProcessSettingPanel2 extends Composite {
 		// } else {
 		// activitySelecter.setInput(processDef);
 		// }
+	}
+
+	final public DroolsProcessDefinition getProcessDefinition() {
+		return processDefinition;
 	}
 
 	final public void setHasProcessSelector(boolean hasProcessSelector) {
@@ -277,6 +314,7 @@ public class ProcessSettingPanel2 extends Composite {
 			((IProcessSettingListener) lis[i]).processChanged(
 					newProcessDefinition, oldProcessDef);
 		}
+		processDefinition = newProcessDefinition;
 	}
 
 	private void processActivatedChanged(boolean activated) {
@@ -285,6 +323,7 @@ public class ProcessSettingPanel2 extends Composite {
 			((IProcessSettingListener) lis[i])
 					.processActivatedChanged(activated);
 		}
+		this.processActivate = activated;
 	}
 
 	private void actorChanged(User newActor, User oldActor,
@@ -294,6 +333,8 @@ public class ProcessSettingPanel2 extends Composite {
 			((IProcessSettingListener) lis[i]).actorChanged(newActor, oldActor,
 					nodeAssignment, roleDef);
 		}
+		
+		this.selectedActor = newActor;
 	}
 
 	private void roleChanged(AbstractRoleDefinition newRole,
@@ -303,23 +344,47 @@ public class ProcessSettingPanel2 extends Composite {
 			((IProcessSettingListener) lis[i]).roleChanged(newRole, oldRole,
 					nodeAssignment);
 		}
+		
+		this.selectedRole = newRole;
 
 	}
 
 	public void setRoleNavigatorId(String roleNavigatorId) {
 		this.roleNavigatorId = roleNavigatorId;
 	}
-	
-	public void setRoleDataSet(DataSet roleDataSet){
+
+	public void setRoleDataSet(DataSet roleDataSet) {
 		this.roleDataSet = roleDataSet;
 	}
-	
+
+	public DataSet getRoleDataSet() {
+		return roleDataSet;
+	}
+
 	public void setActorNavigatorId(String actorNavigatorId) {
 		this.actorNavigatorId = actorNavigatorId;
 	}
-	
-	public void setActorDataSet(DataSet actorDataSet){
+
+	public void setActorDataSet(DataSet actorDataSet) {
 		this.actorDataSet = actorDataSet;
 	}
 
+	public DataSet getActorDataSet() {
+		return actorDataSet;
+	}
+	
+	public AbstractRoleDefinition getSelectedRole(){
+		return this.selectedRole;
+	}
+
+	public User getSelectedActor(){
+		return this.selectedActor;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable  = editable;
+		if(activiteEditor!=null&&!activiteEditor.isDisposed()){
+			activiteEditor.setEditable(editable);
+		}
+	}
 }

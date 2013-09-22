@@ -65,6 +65,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 创建工作的编辑器ID
 	 */
 	public static final String EDITOR_CREATE_RUNTIME_WORK = "editor.create.runtimework";
+	
+	
+	/**
+	 * 编辑工作计划
+	 */
+	public static final String EDITOR_WORK_PLAN = "editor.work.plan";
+	
 	/**
 	 * 必需的，不可删除，布尔类型的字段
 	 */

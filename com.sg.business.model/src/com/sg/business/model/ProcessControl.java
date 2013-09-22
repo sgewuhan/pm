@@ -8,7 +8,6 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.runtime.Workflow;
 
 public abstract class ProcessControl implements IProcessControlable {
@@ -76,6 +75,17 @@ public abstract class ProcessControl implements IProcessControlable {
 			return null;
 		}
 		return (String) data.get(nodeActorParameter);
+	}
+
+	@Override
+	public void setProcessActionActor(String key,
+			String nodeActorParameter, String  userid) {
+		DBObject data = getProcessActorsData(key);
+		if(data == null){
+			data = new BasicDBObject();
+			primaryObject.setValue(key + POSTFIX_ACTORS, data);
+		}
+		data.put(nodeActorParameter, userid);
 	}
 
 	@Override
@@ -152,7 +162,7 @@ public abstract class ProcessControl implements IProcessControlable {
 	}
 
 	@Override
-	public void setProcessActionAssignment(String key, NodeAssignment na,
+	public void setProcessActionAssignment(String key,String  nap,
 			AbstractRoleDefinition newRole) {
 		DBObject wfRoleAssignment = (DBObject) getProcessRoleAssignmentData(key);
 		if (wfRoleAssignment == null) {
@@ -160,7 +170,6 @@ public abstract class ProcessControl implements IProcessControlable {
 			setProcessRoleAssignmentData(key, wfRoleAssignment);
 		}
 
-		String nap = na.getNodeActorParameter();
 		if (newRole == null) {
 			setProcessRoleAssignment(key, nap, null);
 		} else {

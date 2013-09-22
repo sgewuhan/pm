@@ -8,6 +8,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
+import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -41,8 +42,15 @@ public class CreateWork extends AbstractNavigatorHandler {
 		po.addEventListener(vc);
 
 		// 使用编辑器打开编辑工作定义
-		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				po.getDefaultEditorId());
+		Configurator conf = null;
+		if(po instanceof Work){
+			conf = Widgets.getEditorRegistry().getConfigurator(
+					"editor.work.plan");
+			
+		}else {
+			conf = Widgets.getEditorRegistry().getConfigurator(
+					po.getDefaultEditorId());
+		}
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, "创建" + po.getTypeName());

@@ -326,27 +326,32 @@ public class ActivityEditor extends Composite {
 		NavigatorSelector ns = new NavigatorSelector(actorNavigatorId) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
-				User user = (User) is.getFirstElement();
-				setActor(user);
+				if(is==null||is.isEmpty()){
+					setActor(null);
+				}else{
+					User user = (User) is.getFirstElement();
+					setActor(user);
+				}
 				super.doOK(is);
 			}
 
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {
+				return true;
 
-				if (!super.isSelectEnabled(is)) {
-					return false;
-				} else {
-					Object element = is.getFirstElement();
-					return element instanceof User;
-				}
+//				if (!super.isSelectEnabled(is)) {
+//					return false;
+//				} else {
+//					Object element = is.getFirstElement();
+//					return element instanceof User;
+//				}
 			}
 
 		};
 		ns.show();
 
 		ViewerControl vc = ns.getNavigator().getViewerControl();
-		vc.setDataSet(actorDataSet);
+		vc.setDataSet(getActorDataSet());
 
 	}
 
@@ -362,7 +367,11 @@ public class ActivityEditor extends Composite {
 		}
 		actor = user;
 		
-		actorText.setText(actor.getLabel());
+		if(actor==null){
+			actorText.setText("");
+		}else{
+			actorText.setText(actor.getLabel());
+		}
 	}
 
 	/**
@@ -377,7 +386,11 @@ public class ActivityEditor extends Composite {
 		}
 		roleDef = role;
 		
-		roleText.setText(role.getLabel());
+		if(role == null){
+			roleText.setText("");
+		}else{
+			roleText.setText(role.getLabel());
+		}
 	}
 
 	/**
@@ -387,27 +400,31 @@ public class ActivityEditor extends Composite {
 		NavigatorSelector ns = new NavigatorSelector(roleNavigatorId) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
-				AbstractRoleDefinition role = (AbstractRoleDefinition) is
-						.getFirstElement();
-				setRole(role);
+				if(is==null||is.isEmpty()){
+					setRole(null);
+				}else{
+					AbstractRoleDefinition role = (AbstractRoleDefinition) is
+							.getFirstElement();
+					setRole(role);
+				}
 				super.doOK(is);
 			}
 
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {
-
-				if (!super.isSelectEnabled(is)) {
-					return false;
-				} else {
-					Object element = is.getFirstElement();
-					return element instanceof AbstractRoleDefinition;
-				}
+				return true;
+//				if (!super.isSelectEnabled(is)) {
+//					return false;
+//				} else {
+//					Object element = is.getFirstElement();
+//					return element instanceof AbstractRoleDefinition;
+//				}
 			}
 
 		};
 		ns.show();
 		ViewerControl vc = ns.getNavigator().getViewerControl();
-		vc.setDataSet(roleDataSet);
+		vc.setDataSet(getRoleDataSet());
 
 	}
 
@@ -427,6 +444,10 @@ public class ActivityEditor extends Composite {
 		this.actorDataSet = dataset;
 	}
 
+	public DataSet getActorDataSet() {
+		return actorDataSet;
+	}
+
 	/**
 	 * 设置角色限定选择器navigatorId
 	 * @param navigatorId
@@ -441,6 +462,20 @@ public class ActivityEditor extends Composite {
 	 */
 	final public void setRoleDataSet(DataSet dataset) {
 		this.roleDataSet = dataset;
+	}
+
+	public DataSet getRoleDataSet() {
+		return roleDataSet;
+	}
+
+	public void setEditable(boolean editable) {
+		if(actorSelectorButton!=null&&!actorSelectorButton.isDisposed()){
+			actorSelectorButton.setEnabled(editable);
+		}
+		
+		if(roleSelectorButton!=null&&!roleSelectorButton.isDisposed()){
+			roleSelectorButton.setEnabled(editable);
+		}
 	}
 
 }

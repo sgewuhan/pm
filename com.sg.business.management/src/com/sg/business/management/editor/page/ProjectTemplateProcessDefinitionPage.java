@@ -14,8 +14,8 @@ import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.commons.ui.flow.ProcessControlSetting;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2.IProcessSettingListener;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.IProcessControlable;
 import com.sg.business.model.Organization;
@@ -115,38 +115,9 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 		psp2.createContent();
 
 		// 添加监听
-		psp2.addProcessSettingListener(new IProcessSettingListener() {
-
-			// 监听活动执行人更改事件
+		psp2.addProcessSettingListener(new ProcessControlSetting(processControl,key){
 			@Override
-			public void actorChanged(User newActor, User oldActor,
-					NodeAssignment nodeAssignment,
-					AbstractRoleDefinition roleDef) {
-				setDirty(true);
-			}
-
-			// 监听流程定义更改事件
-			@Override
-			public void processChanged(
-					DroolsProcessDefinition newProcessDefinition,
-					DroolsProcessDefinition oldProcessDef) {
-				processControl.setProcessDefinition(key, newProcessDefinition);
-				setDirty(true);
-			}
-
-			// 监听流程定义是否启用事件
-			@Override
-			public void processActivatedChanged(boolean activated) {
-				processControl.setWorkflowActivate(key, activated);
-				setDirty(true);
-			}
-
-			// 监听角色限定更改事件
-			@Override
-			public void roleChanged(AbstractRoleDefinition newRole,
-					AbstractRoleDefinition oldRole, NodeAssignment na) {
-				processControl.setProcessActionAssignment(key, na, newRole);
-
+			protected void event(int code) {
 				setDirty(true);
 			}
 		});
