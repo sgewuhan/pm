@@ -544,39 +544,46 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return;
 		}
 
+		BasicDBObject update = new BasicDBObject();
+
 		// 设置变更工作流
 		Object value = pjTempData.get(ProjectTemplate.F_WF_CHANGE);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_CHANGE, value);
+			update.put(ProjectTemplate.F_WF_CHANGE, value);
 		}
 
 		// 设置变更工作流是否激活
 		value = pjTempData.get(ProjectTemplate.F_WF_CHANGE_ACTIVATED);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_CHANGE_ACTIVATED, value);
+			update.put(ProjectTemplate.F_WF_CHANGE_ACTIVATED, value);
 		}
 
 		// 设置变更流程的活动执行人
-		setRoleDBObjectField(get_data(), pjTempData,
+		setRoleDBObjectField(update, pjTempData,
 				ProjectTemplate.F_WF_CHANGE_ASSIGNMENT, roleMap);
 
 		// 设置执行工作流
 		value = pjTempData.get(ProjectTemplate.F_WF_COMMIT);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_COMMIT, value);
+			update.put(ProjectTemplate.F_WF_COMMIT, value);
 		}
 
 		// 设置执行工作流是否激活
 		value = pjTempData.get(ProjectTemplate.F_WF_COMMIT_ACTIVATED);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_COMMIT_ACTIVATED, value);
+			update.put(ProjectTemplate.F_WF_COMMIT_ACTIVATED, value);
 		}
 
 		// 设置执行工作流的活动执行人角色
-		setRoleDBObjectField(get_data(), pjTempData,
+		setRoleDBObjectField(update, pjTempData,
 				ProjectTemplate.F_WF_COMMIT_ASSIGNMENT, roleMap);
 
-		doSave(context);
+		col = getCollection();
+		WriteResult ws = col.update(new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set", update));
+		
+		checkWriteResult(ws);
+		
 	}
 
 	private void doSetupWorkConnectionWithTemplate(ObjectId projectTemplateId,
@@ -1437,7 +1444,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			result.add(checkItem);
 		}
 
-		
 		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
 
 		// 4.1 检查项目变更的流程 ：错误，没有指明流程负责人
@@ -1473,7 +1479,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-
 	/**
 	 * 变更工作流是否激活
 	 * 
@@ -1491,7 +1496,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public boolean isCommitWorkflowActivate() {
 		return Boolean.TRUE.equals(getValue(F_WF_COMMIT_ACTIVATED));
 	}
-
 
 	public String getLifecycleStatus() {
 		String lc = (String) getValue(F_LIFECYCLE);
@@ -1678,7 +1682,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doCancel(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doCancel(context);
-		
+
 		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
 		return this;
 	}
@@ -1686,16 +1690,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doFinish(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doFinish(context);
-		
+
 		DBCollection col = getCollection();
 		DBObject data = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()),
 				null,
 				null,
 				false,
-				new BasicDBObject().append("$set",
-						new BasicDBObject().append(F_LIFECYCLE, STATUS_FINIHED_VALUE)
-						.append(F_ACTUAL_FINISH, new Date())),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject().append(F_LIFECYCLE,
+								STATUS_FINIHED_VALUE).append(F_ACTUAL_FINISH,
+								new Date())),
 
 				true, false);
 		set_data(data);
@@ -1706,7 +1712,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doPause(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doPause(context);
-		
+
 		doChangeLifecycleStatus(context, STATUS_PAUSED_VALUE);
 		return this;
 	}
@@ -1714,21 +1720,22 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doStart(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doStart(context);
-		
-		
+
 		DBCollection col = getCollection();
 		DBObject data = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()),
 				null,
 				null,
 				false,
-				new BasicDBObject().append("$set",
-						new BasicDBObject().append(F_LIFECYCLE, STATUS_WIP_VALUE)
-						.append(F_ACTUAL_START, new Date())),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject().append(F_LIFECYCLE,
+								STATUS_WIP_VALUE).append(F_ACTUAL_START,
+								new Date())),
 
 				true, false);
 		set_data(data);
-		
+
 		return this;
 	}
 
@@ -1765,7 +1772,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public BasicBSONList getTargetList() {
 		return (BasicBSONList) getValue(F_TARGETS);
 	}
-
 
 	@Override
 	public List<Object[]> checkStartAction(IContext context) throws Exception {
@@ -1819,15 +1825,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this){
+			return new ProcessControl(this) {
 
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return ProjectRole.class;
 				}
-				
+
 			};
 		}
 		return super.getAdapter(adapter);
-	}	
+	}
 }
