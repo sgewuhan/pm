@@ -78,20 +78,14 @@ public class ProcessSettingPanel2 extends Composite {
 		Composite panel = new Composite(this, SWT.NONE);
 		panel.setLayout(new GridLayout(2, false));
 
-		activitySelecter = new ActivitySelecter(panel);
-		activitySelecter.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true,
-				false));
+		createActivatySelector(panel);
 
-		activitySelecter.addListener(new INodeSelectionListener() {
+		createActivityEditor(panel);
 
-			@Override
-			public void selectionChange(NodeAssignment nodeAssignment) {
-				AbstractRoleDefinition roleDef = getRoleDefinition(nodeAssignment);
-				User actor = getActor(nodeAssignment);
-				activiteEditor.setInput(nodeAssignment, roleDef, actor);
-			}
-		});
+		initInputValue();
+	}
 
+	private void createActivityEditor(Composite panel) {
 		activiteEditor = new ActivityEditor(panel, hasRoleSelector,
 				hasActorSelector);
 		activiteEditor.addActiviteEditListener(new IActivityEditListener() {
@@ -126,8 +120,22 @@ public class ProcessSettingPanel2 extends Composite {
 		fd.left = new FormAttachment(0, 10);
 		fd.right = new FormAttachment(100, -10);
 		fd.bottom = new FormAttachment(100, -10);
+	}
 
-		initInputValue();
+	private void createActivatySelector(Composite panel) {
+		activitySelecter = new ActivitySelecter(panel);
+		activitySelecter.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true,
+				false));
+
+		activitySelecter.addListener(new INodeSelectionListener() {
+
+			@Override
+			public void selectionChange(NodeAssignment nodeAssignment) {
+				AbstractRoleDefinition roleDef = getRoleDefinition(nodeAssignment);
+				User actor = getActor(nodeAssignment);
+				activiteEditor.setInput(nodeAssignment, roleDef, actor);
+			}
+		});
 	}
 
 	private void initInputValue() {
