@@ -903,8 +903,36 @@
          </activeWhen>
       </handler>
       <handler
+            class="com.sg.business.commons.handler.EditWorkDefinition"
+            commandId="work.edit">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="com.sg.business.model.WorkDefinition">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
             class="com.sg.business.commons.handler.EditWork"
             commandId="work.edit">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="com.sg.business.model.Work">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
       </handler>
       <handler
             class="com.sg.business.commons.handler.RemoveWork"

@@ -2737,7 +2737,7 @@
                style="push">
          </command>
          <command
-               commandId="com.sg.widgets.command.edit"
+               commandId="work.edit"
                icon="image/editwork_24.png"
                label="编辑工作..."
                style="push">
@@ -2750,18 +2750,6 @@
                   </count>
                </with>
             </visibleWhen>
-            <parameter
-                  name="com.sg.widgets.edit.editorid"
-                  value="editor.work.plan">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.pageid"
-                  value="basicpage">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.type"
-                  value="datadialog">
-            </parameter>
          </command>
          <command
                commandId="work.remove"
