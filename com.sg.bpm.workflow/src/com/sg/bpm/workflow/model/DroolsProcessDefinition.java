@@ -148,4 +148,38 @@ public class DroolsProcessDefinition {
 		return ksession;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((kbase == null) ? 0 : kbase.hashCode());
+		result = prime * result
+				+ ((processId == null) ? 0 : processId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DroolsProcessDefinition other = (DroolsProcessDefinition) obj;
+		if (kbase == null) {
+			if (other.kbase != null)
+				return false;
+		} else if (!kbase.equals(other.kbase))
+			return false;
+		if (processId == null) {
+			if (other.processId != null)
+				return false;
+		} else if (!processId.equals(other.processId))
+			return false;
+		return true;
+	}
+	
+	
+
 }

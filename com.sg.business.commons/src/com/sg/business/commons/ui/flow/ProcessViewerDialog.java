@@ -17,7 +17,6 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.ui.flow.part.SimpleNodeLabel;
 import com.sg.business.model.IProcessControlable;
-import com.sg.business.model.Work;
 
 public class ProcessViewerDialog extends Dialog {
 
@@ -54,7 +53,7 @@ public class ProcessViewerDialog extends Dialog {
 		pc.setInput(procDefinition, procHistory);
 
 		// 创建历史记录
-		final ProcessTable pt = new ProcessTable(sashForm);
+		final ProcessHistoryTable pt = new ProcessHistoryTable(sashForm);
 		pt.setInput(procDefinition, procHistory);
 
 		pc.addNodeSelectListener(new INodeSelectListener() {
@@ -73,7 +72,7 @@ public class ProcessViewerDialog extends Dialog {
 							if (element instanceof DBObject) {
 								DBObject dbObject = (DBObject) element;
 								Object taskname = dbObject
-										.get(Work.F_WF_TASK_NAME);
+										.get(IProcessControlable.F_WF_TASK_NAME);
 								return name.equals(taskname);
 							}
 							return false;

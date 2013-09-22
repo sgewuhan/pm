@@ -44,7 +44,9 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		work = (Work) input.getData();
 		editable = input.isEditable();
-		processActors = work.getProcessActorsMap(Work.F_WF_EXECUTE);
+		IProcessControlable pc = (IProcessControlable) work
+				.getAdapter(IProcessControlable.class);
+		processActors = pc.getProcessActorsData(Work.F_WF_EXECUTE);
 		if (processActors == null) {
 			processActors = new BasicDBObject();
 		}
@@ -74,8 +76,7 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 			}
 		};
 
-		DroolsProcessDefinition pd = work
-				.getProcessDefinition(Work.F_WF_EXECUTE);
+		DroolsProcessDefinition pd = pc.getProcessDefinition(Work.F_WF_EXECUTE);
 		if (pd != null) {
 			List<NodeAssignment> na = pd.getNodesAssignment();
 			processViewer.setInput(na);
@@ -155,7 +156,8 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 				}
 			};
 			column.setEditingSupport(editingSupport);
-			column.getColumn().setImage(Widgets.getImage(ImageResource.EDIT_12));
+			column.getColumn()
+					.setImage(Widgets.getImage(ImageResource.EDIT_12));
 
 			ColumnViewerEditorActivationStrategy activationStrategy = new EditorActivationStrategy(
 					viewer);

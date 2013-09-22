@@ -13,7 +13,6 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -24,7 +23,7 @@ import com.sg.business.resource.BusinessResource;
  * @author jinxitao
  * 
  */
-public class ProjectTemplate extends PrimaryObject {
+public class ProjectTemplate extends PrimaryObject  {
 
 	/**
 	 * 所属组织
@@ -358,7 +357,11 @@ public class ProjectTemplate extends PrimaryObject {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * 返回模版中的除根工作外的所有工作定义
+=======
+	 * 返回模版中的所有工作定义
+>>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
 	 * 
 	 * @return
 	 */
@@ -412,16 +415,13 @@ public class ProjectTemplate extends PrimaryObject {
 		return "项目模板";
 	}
 
-	public boolean isWorkflowActivate(String fieldKey) {
-		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
-	}
-
-	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
-		DBObject processData = (DBObject) getValue(fieldKey);
-		if (processData != null) {
-			return new DroolsProcessDefinition(processData);
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter.equals(IProcessControlable.class)) {
+			return new ProcessControl(this);
 		}
-		return null;
+		return super.getAdapter(adapter);
 	}
 
 	public ProjectRole getProcessActionAssignment(String key,

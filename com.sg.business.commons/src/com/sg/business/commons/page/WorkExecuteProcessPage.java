@@ -78,8 +78,9 @@ public class WorkExecuteProcessPage extends AbstractWorkProcessPage {
 						setDirty(true);
 					}
 				};
+				IProcessControlable pc = (IProcessControlable) work.getAdapter(IProcessControlable.class);
 
-				DroolsProcessDefinition pd = work
+				DroolsProcessDefinition pd = pc
 						.getProcessDefinition(Work.F_WF_EXECUTE);
 				if (pd != null) {
 					List<NodeAssignment> na = pd.getNodesAssignment();
@@ -185,7 +186,9 @@ public class WorkExecuteProcessPage extends AbstractWorkProcessPage {
 	}
 	
 	private DBObject getProcessActors(){
-		DBObject processActors = work.getProcessActorsMap(Work.F_WF_EXECUTE);
+		IProcessControlable pc = (IProcessControlable) work.getAdapter(IProcessControlable.class);
+
+		DBObject processActors = pc.getProcessActorsData(Work.F_WF_EXECUTE);
 		if (processActors == null) {
 			processActors = new BasicDBObject();
 			work.setValue(Work.F_WF_EXECUTE

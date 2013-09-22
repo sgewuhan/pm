@@ -155,17 +155,16 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		}
 
 		Project project = getProject();
-
+		IProcessControlable pc = (IProcessControlable) project
+				.getAdapter(IProcessControlable.class);
 		// 2.项目执行流程上引用
-		if (ProjectToolkit.checkProcessInternal(project, Project.F_WF_COMMIT,
-				this)) {
+		if (ProjectToolkit.checkProcessInternal(pc, Project.F_WF_COMMIT, this)) {
 			message.add(new Object[] { "在项目的执行流程中引用了该角色", this,
 					SWT.ICON_WARNING });
 		}
 
 		// 3.项目变更流程上引用
-		if (ProjectToolkit.checkProcessInternal(project, Project.F_WF_CHANGE,
-				this)) {
+		if (ProjectToolkit.checkProcessInternal(pc, Project.F_WF_CHANGE, this)) {
 			message.add(new Object[] { "在项目的变更流程中引用了该角色", this,
 					SWT.ICON_WARNING });
 		}
@@ -184,15 +183,16 @@ public class ProjectRole extends AbstractRoleDefinition implements
 				message.addAll(checkCascadeRemove(childWork));
 			}
 		} else {
+			IProcessControlable pc = (IProcessControlable) work.getAdapter(IProcessControlable.class);
 			// 4.1.工作执行流程上引用
-			if (ProjectToolkit.checkProcessInternal(work, Work.F_WF_EXECUTE,
+			if (ProjectToolkit.checkProcessInternal(pc, Work.F_WF_EXECUTE,
 					this)) {
 				message.add(new Object[] { "在工作的执行流程中引用了该角色", work,
 						SWT.ICON_WARNING });
 			}
 
 			// 4.2.工作变更流程上引用
-			if (ProjectToolkit.checkProcessInternal(work, Work.F_WF_CHANGE,
+			if (ProjectToolkit.checkProcessInternal(pc, Work.F_WF_CHANGE,
 					this)) {
 				message.add(new Object[] { "在工作的变更流程中引用了该角色", work,
 						SWT.ICON_WARNING });

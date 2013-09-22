@@ -1,12 +1,16 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+import org.drools.KnowledgeBase;
+import org.drools.definition.process.Process;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.file.FileUtil;
@@ -21,6 +25,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import com.sg.bpm.service.BPM;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.resource.BusinessResource;
 
@@ -83,6 +89,11 @@ public class Organization extends PrimaryObject {
 	 * 组织类型，组织类型分为法人，事业部，部门和团队
 	 */
 	public static final String F_ORGANIZATION_TYPE = "organizationtype";
+
+	/**
+	 * 组织的流程库，是流程库名称的列表
+	 */
+	public static final String F_KBASE = "kbase";
 
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
@@ -1258,5 +1269,24 @@ public class Organization extends PrimaryObject {
 				new Date(), "组织：" + this + "\n项目模版" + selectList.toString(),
 				IModelConstants.DB);
 
+	}
+
+	public List<DroolsProcessDefinition> getDroolsProcessDefinitions() {
+		Object value = getValue(F_KBASE);
+		ArrayList<DroolsProcessDefinition> result = new ArrayList<DroolsProcessDefinition>();
+		if(value instanceof BasicBSONList){
+			BasicBSONList kbases = (BasicBSONList) value;
+			for (int i = 0; i < kbases.size(); i++) {
+				String kname = (String) kbases.get(i);
+				KnowledgeBase kbase = BPM.getBPMService().getKnowledgeBase(kname);
+				Collection<Process> processList = kbase.getProcesses();
+				Iterator<Process> iter = processList.iterator();
+				while(iter.hasNext()){
+					Process process = iter.next();
+					result.add(new DroolsProcessDefinition(kname, process));
+				}
+			}
+		}
+		return result;
 	}
 }

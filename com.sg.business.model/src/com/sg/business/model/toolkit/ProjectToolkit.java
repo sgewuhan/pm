@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.IProcessControlable;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
@@ -34,8 +35,8 @@ public class ProjectToolkit {
 				String userId = pc.getProcessActionActor(process, nap);
 				if (userId == null) {
 					// 检查角色
-					ProjectRole role = pc.getProcessActionAssignment(process,
-							nap);
+					AbstractRoleDefinition role = pc
+							.getProcessActionAssignment(process, nap);
 					if (role == null) {
 						CheckListItem checkItem = new CheckListItem(title,
 								"流程活动无法确定执行人。" + "活动名称：[" + na.getNodeName()
@@ -115,11 +116,13 @@ public class ProjectToolkit {
 				}
 				String nap = na.getNodeActorParameter();
 				// 检查角色
-				ProjectRole role = pc.getProcessActionAssignment(process, nap);
-				if (projectRole.getOrganizationRoleId().equals(role.getOrganizationRoleId())){
+				AbstractRoleDefinition role = pc.getProcessActionAssignment(
+						process, nap);
+				if (projectRole.getOrganizationRoleId().equals(
+						role.getOrganizationRoleId())) {
 					return true;
 				}
-				
+
 			}
 		}
 		return false;

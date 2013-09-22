@@ -29,7 +29,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
-import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
@@ -50,7 +49,7 @@ import com.sg.widgets.part.BackgroundContext;
  * 
  */
 public class Work extends AbstractWork implements IProjectRelative, ISchedual,
-		IProcessControlable, ILifecycle, IReferenceContainer {
+		ILifecycle, IReferenceContainer {
 
 	/**
 	 * 工作的编辑器ID
@@ -1106,12 +1105,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 			passed = true;
 
+			IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
 			// 4.1 检查工作变更的流程 ：错误，没有指明流程负责人
 			String title = "检查工作变更流程";
 			String process = F_WF_CHANGE;
 			String editorId = Project.EDITOR_CREATE_PLAN;
 			String pageId = Project.EDITOR_PAGE_WBS;
-			passed = ProjectToolkit.checkProcessInternal(project, this, result,
+			passed = ProjectToolkit.checkProcessInternal(project, pc, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
@@ -1123,7 +1123,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
 			title = "检查工作执行流程";
 			process = F_WF_EXECUTE;
-			passed = ProjectToolkit.checkProcessInternal(project, this, result,
+			passed = ProjectToolkit.checkProcessInternal(project, pc, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
@@ -1210,8 +1210,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// throw new Exception("该工作变更流程没有指明流程负责人，" + this);
 			// }
 
+			IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+
 			// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
-			if (!ProjectToolkit.checkProcessInternal(this, F_WF_EXECUTE)) {
+			if (!ProjectToolkit.checkProcessInternal(pc, F_WF_EXECUTE)) {
 				message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
 						SWT.ICON_WARNING });
 			}
@@ -1247,6 +1249,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			message.add(new Object[] { "非级联完成的下级工作未完成或取消", this, SWT.ICON_ERROR });
 		}
 
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+
 		// 2.循环得到下级级联的暂停和进行中状态的工作,
 		// 2.1判断取出工作是否可以完成，判断其是否可以跳过流程完成工作
 		// 2.2判断取出工作的下级非级联完成的工作是否可以完成
@@ -1256,7 +1260,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (childrenWork.size() > 0) {
 			for (int i = 0; i < childrenWork.size(); i++) {
 				Work childWork = (Work) childrenWork.get(i);
-				if (isWorkflowActivate(F_WF_EXECUTE)
+				if (pc.isWorkflowActivate(F_WF_EXECUTE)
 						&& !Boolean.TRUE.equals(childWork
 								.getValue(F_S_CANSKIPTOFINISH))) {
 					message.add(new Object[] { "存在无法跳过进行中的流程完成的下级级联完成工作", this,
@@ -1447,55 +1451,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return (BasicBSONList) getValue(F_PARTICIPATE);
 	}
 
-	/**
-	 * 是否工作流启动
-	 */
-	@Override
-	public boolean isWorkflowActivate(String fieldKey) {
-		return Boolean.TRUE.equals(getValue(fieldKey + POSTFIX_ACTIVATED));
-	}
-
-	@Override
-	public DroolsProcessDefinition getProcessDefinition(String fieldKey) {
-		DBObject processData = (DBObject) getValue(fieldKey);
-		if (processData != null) {
-			return new DroolsProcessDefinition(processData);
-		}
-		return null;
-	}
-
-	@Override
-	public String getProcessActionActor(String key, String nodeActorParameter) {
-		DBObject data = getProcessActorsMap(key);
-		if (data == null) {
-			return null;
-		}
-		return (String) data.get(nodeActorParameter);
-	}
-
-	public DBObject getProcessActorsMap(String key) {
-		return (DBObject) getValue(key + POSTFIX_ACTORS);
-	}
-
-	public DBObject getProcessAssignmentRoleMap(String key) {
-		return (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
-	}
-
-	@Override
-	public ProjectRole getProcessActionAssignment(String key,
-			String nodeActorParameter) {
-		// 取出角色指派
-		DBObject data = getProcessAssignmentRoleMap(key);
-		if (data == null) {
-			return null;
-		}
-		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
-		if (roleId != null) {
-			return ModelService.createModelObject(ProjectRole.class, roleId);
-		}
-		return null;
-	}
-
 	@Override
 	public String getLifecycleStatus() {
 		String lc = (String) getValue(F_LIFECYCLE);
@@ -1618,12 +1573,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void bindingWorkflowDefinition(String workflowKey,
 			DBObject workflowDefinition) {
 		setValue(workflowKey, workflowDefinition.get("KEY"));
-		setValue(workflowKey + POSTFIX_ACTIVATED,
-				workflowDefinition.get(POSTFIX_ACTIVATED));
-		setValue(workflowKey + POSTFIX_ACTORS,
-				workflowDefinition.get(POSTFIX_ACTORS));
-		setValue(workflowKey + POSTFIX_ASSIGNMENT,
-				workflowDefinition.get(POSTFIX_ASSIGNMENT));
+		setValue(workflowKey + IProcessControlable.POSTFIX_ACTIVATED,
+				workflowDefinition.get(IProcessControlable.POSTFIX_ACTIVATED));
+		setValue(workflowKey + IProcessControlable.POSTFIX_ACTORS,
+				workflowDefinition.get(IProcessControlable.POSTFIX_ACTORS));
+		setValue(workflowKey + IProcessControlable.POSTFIX_ASSIGNMENT,
+				workflowDefinition.get(IProcessControlable.POSTFIX_ASSIGNMENT));
 	}
 
 	/**
@@ -1689,9 +1644,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			addParticipate(chargerId);
 		}
 
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+
 		// 获得流程的执行人
-		if (isWorkflowActivate(F_WF_EXECUTE)) {
-			DBObject processActorsMap = getProcessActorsMap(F_WF_EXECUTE);
+		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+			DBObject processActorsMap = pc.getProcessActorsData(F_WF_EXECUTE);
 			if (processActorsMap != null) {
 				Iterator<String> iter = processActorsMap.keySet().iterator();
 				while (iter.hasNext()) {
@@ -1845,10 +1802,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			doStartBefore(context, params);
 
 			// 判定是否使用执行工作流
-			if (isWorkflowActivate(F_WF_EXECUTE)) {
+			IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+			if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
 				// 如果是，启动工作流
-				Workflow wf = getWorkflow(F_WF_EXECUTE);
-				DBObject actors = getProcessActorsMap(F_WF_EXECUTE);
+				Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+				DBObject actors = pc.getProcessActorsData(F_WF_EXECUTE);
 				Map<String, String> actorParameter = null;
 				if (actors != null) {
 					actorParameter = actors.toMap();
@@ -1857,7 +1815,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						actorParameter, params);
 				Assert.isNotNull(processInstance, "流程启动失败");
 
-				update.put(F_WF_EXECUTE + POSTFIX_INSTANCEID,
+				update.put(F_WF_EXECUTE
+						+ IProcessControlable.POSTFIX_INSTANCEID,
 						processInstance.getId());
 			}
 		}
@@ -2027,12 +1986,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
-	public Workflow getWorkflow(String key) {
-		DroolsProcessDefinition processDefintion = getProcessDefinition(key);
-		Workflow wf = new Workflow(processDefintion, this, key);
-		return wf;
-	}
-
 	/**
 	 * 发送工作操作完成的通知
 	 * 
@@ -2132,7 +2085,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public List<User> getPermittedUserOfWorkflowActor(String processKey,
 			String nodeActor) {
-		DBObject processRoleDefinitions = getProcessAssignmentRoleMap(processKey);
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+
+		DBObject processRoleDefinitions = pc
+				.getProcessRoleAssignmentData(processKey);
 		ObjectId _id = (ObjectId) processRoleDefinitions.get(nodeActor);
 
 		List<PrimaryObject> ralist;
@@ -2206,46 +2162,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 
-	 * @param key
-	 * @param userid
-	 * @param query
-	 * @return
-	 */
-	public DBObject getCurrentWorkflowTaskData(String key, String userid,
-			boolean query) {
-		String field = key + POSTFIX_TASK;
-		Object value = getValue(field, query);
-		if (value instanceof DBObject) {
-			return (DBObject) ((DBObject) value).get(userid);
-		}
-		return null;
-	}
-
-	public DBObject getWorkflowTaskData(String key) {
-		String field = key + POSTFIX_TASK;
-		Object value = getValue(field);
-		if (value instanceof DBObject) {
-			return (DBObject) value;
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * 
-	 * @param key
-	 * @param userid
-	 * @param query
-	 * @return
-	 */
-	public BasicBSONList getWorkflowHistroyData(String key, boolean query) {
-		String field = key + POSTFIX_HISTORY;
-		Object value = getValue(field, query);
-		return (BasicBSONList) value;
-	}
-
-	/**
 	 * 使用工作流的任务更新当前工作的流程任务信息
 	 * 
 	 * @param key
@@ -2260,17 +2176,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public boolean doUpdateWorkflowDataByTask(String key, Task task,
 			String userid) throws Exception {
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
 
 		/*
 		 * 获得当前用户的现有流程任务数据 * 如果任务id和状态一致，那么就无需继续更新操作
 		 */
-		DBObject olddata = getCurrentWorkflowTaskData(key, userid, true);
+		DBObject olddata = pc.getCurrentWorkflowTaskData(key, userid, true);
 		if (olddata != null) {
-			Object oldTaskId = olddata.get(F_WF_TASK_ID);
+			Object oldTaskId = olddata.get(IProcessControlable.F_WF_TASK_ID);
 			if (task.getId().equals(oldTaskId)) {
 				TaskData taskData = task.getTaskData();
 				Status status = taskData.getStatus();
-				if (status.name().equals(olddata.get(F_WF_TASK_STATUS))) {
+				if (status.name().equals(
+						olddata.get(IProcessControlable.F_WF_TASK_STATUS))) {
 					return false;
 				}
 			}
@@ -2283,56 +2201,58 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject data = new BasicDBObject();
 
 		// 保存任务id
-		data.put(F_WF_TASK_ID, task.getId());
+		data.put(IProcessControlable.F_WF_TASK_ID, task.getId());
 
 		// 保存任务名称
 		List<I18NText> names = task.getNames();
 		Assert.isLegal(names != null && names.size() > 0, "流程活动名称没有定义");
 		String taskName = names.get(0).getText();
-		data.put(F_WF_TASK_NAME, taskName);
+		data.put(IProcessControlable.F_WF_TASK_NAME, taskName);
 
 		// 保存任务描述
 		List<I18NText> descriptions = task.getDescriptions();
 		if (descriptions != null && descriptions.size() > 0) {
 			String taskComment = descriptions.get(0).getText();
-			data.put(F_WF_TASK_DESC, taskComment);
+			data.put(IProcessControlable.F_WF_TASK_DESC, taskComment);
 		}
 
 		// 保存任务的实际执行人id
 		TaskData taskData = task.getTaskData();
 		org.jbpm.task.User actualOwner = taskData.getActualOwner();
 		String actorId = actualOwner.getId();
-		data.put(F_WF_TASK_ACTUALOWNER, actorId);
+		data.put(IProcessControlable.F_WF_TASK_ACTUALOWNER, actorId);
 
 		// 保存任务的创建者
 		org.jbpm.task.User createdBy = taskData.getCreatedBy();
-		data.put(F_WF_TASK_CREATEDBY, createdBy.getId());
+		data.put(IProcessControlable.F_WF_TASK_CREATEDBY, createdBy.getId());
 
 		// 任务的创建时间
 		Date createdOn = taskData.getCreatedOn();
-		data.put(F_WF_TASK_CREATEDON, createdOn);
+		data.put(IProcessControlable.F_WF_TASK_CREATEDON, createdOn);
 
 		// 任务的流程定义id
 		String processId = taskData.getProcessId();
-		data.put(F_WF_TASK_PROCESSID, processId);
+		data.put(IProcessControlable.F_WF_TASK_PROCESSID, processId);
 
 		// 任务的流程实例id
 		long processInstanceId = taskData.getProcessInstanceId();
-		data.put(F_WF_TASK_PROCESSINSTANCEID, new Long(processInstanceId));
+		data.put(IProcessControlable.F_WF_TASK_PROCESSINSTANCEID, new Long(
+				processInstanceId));
 
 		// 任务状态
 		Status status = taskData.getStatus();
-		data.put(F_WF_TASK_STATUS, status.name());
+		data.put(IProcessControlable.F_WF_TASK_STATUS, status.name());
 
 		// 任务的workitem ID
 		long workItemId = taskData.getWorkItemId();
-		data.put(F_WF_TASK_WORKITEMID, new Long(workItemId));
+		data.put(IProcessControlable.F_WF_TASK_WORKITEMID, new Long(workItemId));
 
 		// 发送任务消息，并保存
 		BackgroundContext context = new BackgroundContext();
 		Message message = doNoticeWorkflow(actorId, taskName, key, context);
 		Assert.isNotNull(message, "消息发送失败");
-		data.put(F_WF_TASK_NOTICEDATE, message.getValue(Message.F_SENDDATE));
+		data.put(IProcessControlable.F_WF_TASK_NOTICEDATE,
+				message.getValue(Message.F_SENDDATE));
 
 		/*
 		 * 由于PrimaryObject对象可能在不同的用户进程中存在多个副本，副本之间数据并不能维护一致。
@@ -2354,7 +2274,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 */
 
 		// 流程的字段名称
-		String field = key + POSTFIX_TASK;
+		String field = key + IProcessControlable.POSTFIX_TASK;
 
 		// 获得本模型对应的集合
 		DBCollection col = getCollection();
@@ -2421,9 +2341,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 提取当前的任务数据
 		Map<String, Object> taskFormData = new HashMap<String, Object>();
-		taskFormData.put(F_WF_TASK_ACTOR, context.getAccountInfo().getUserId());
-		taskFormData.put(F_WF_TASK_STARTDATE, new Date());
-		taskFormData.put(F_WF_TASK_ACTION, TASK_ACTION_START);
+		taskFormData.put(IProcessControlable.F_WF_TASK_ACTOR, context
+				.getAccountInfo().getUserId());
+		taskFormData.put(IProcessControlable.F_WF_TASK_STARTDATE, new Date());
+		taskFormData.put(IProcessControlable.F_WF_TASK_ACTION,
+				IProcessControlable.TASK_ACTION_START);
 
 		doSaveWorkflowHistroy(processKey, task, taskFormData, context);
 	}
@@ -2460,18 +2382,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		Assert.isNotNull(task, "完成流程任务失败");
 
-		taskFormData.put(F_WF_TASK_ACTOR, context.getAccountInfo().getUserId());
-		taskFormData.put(F_WF_TASK_FINISHDATE, new Date());
-		taskFormData.put(F_WF_TASK_ACTION, TASK_ACTION_COMPLETE);
+		taskFormData.put(IProcessControlable.F_WF_TASK_ACTOR, context
+				.getAccountInfo().getUserId());
+		taskFormData.put(IProcessControlable.F_WF_TASK_FINISHDATE, new Date());
+		taskFormData.put(IProcessControlable.F_WF_TASK_ACTION,
+				IProcessControlable.TASK_ACTION_COMPLETE);
 
 		doSaveWorkflowHistroy(processKey, task, taskFormData, context);
 	}
 
 	public Task getTask(String processKey, IContext context) throws Exception {
 		String userid = context.getAccountInfo().getConsignerId();
-		DBObject data = getCurrentWorkflowTaskData(processKey, userid, true);
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+		DBObject data = pc.getCurrentWorkflowTaskData(processKey, userid, true);
 		if (data != null) {
-			Long taskId = (Long) data.get(F_WF_TASK_ID);
+			Long taskId = (Long) data.get(IProcessControlable.F_WF_TASK_ID);
 			Assert.isNotNull(taskId);
 			Task task = WorkflowService.getDefault()
 					.getUserTask(userid, taskId);
@@ -2495,7 +2420,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String userid = context.getAccountInfo().getConsignerId();
 
 		// 取出当前的任务数据
-		DBObject currentData = getCurrentWorkflowTaskData(key, userid, true);
+		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+		DBObject currentData = pc.getCurrentWorkflowTaskData(key, userid, true);
 
 		// 将taskformData补充到当前的任务数据中
 		if (taskFormData != null && !taskFormData.isEmpty()) {
@@ -2508,7 +2434,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		// 将当前的任务数据append到历史数组中
-		String histroyField = key + POSTFIX_HISTORY;
+		String histroyField = key + IProcessControlable.POSTFIX_HISTORY;
 
 		DBCollection col = getCollection();
 		WriteResult wr = col.update(
@@ -2542,12 +2468,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public void mark(String userId, boolean marked) throws Exception {
 		DBCollection col = getCollection();
-		WriteResult ws = col.update(new BasicDBObject().append(F__ID, get_id()),
+		WriteResult ws = col.update(
+				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append("$set", new BasicDBObject().append(
 						F_MARK + "." + userId, marked)));
 		checkWriteResult(ws);
 		DBObject data = (DBObject) getValue(F_MARK);
-		if(data==null){
+		if (data == null) {
 			data = new BasicDBObject();
 			setValue(F_MARK, data);
 		}
@@ -2556,7 +2483,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public boolean getMarked(String userId) {
 		DBObject data = (DBObject) getValue(F_MARK);
-		return data!=null&&Boolean.TRUE.equals(data.get(userId));
+		return data != null && Boolean.TRUE.equals(data.get(userId));
 	}
 
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter.equals(IProcessControlable.class)) {
+			return new ProcessControl(this);
+		}
+		return super.getAdapter(adapter);
+	}	
+
+	
 }

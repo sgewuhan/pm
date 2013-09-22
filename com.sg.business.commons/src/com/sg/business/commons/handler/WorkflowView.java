@@ -1,7 +1,6 @@
 package com.sg.business.commons.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -14,12 +13,22 @@ public class WorkflowView extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		// 假定传入的是流程控制对象
-		Assert.isTrue(selected instanceof IProcessControlable);
-		String key = event.getParameter("process.key");
+		IProcessControlable procCtl;
+		if (selected instanceof IProcessControlable) {
+			procCtl = (IProcessControlable) selected;
+		} else {
+			Object adapter = selected.getAdapter(IProcessControlable.class);
+			if (adapter instanceof IProcessControlable) {
+				procCtl = (IProcessControlable) adapter;
+			}else{
+				return;
+			}
+		}
 
-		IProcessControlable procCtl = (IProcessControlable) selected;
+		String key = event.getParameter("process.key");
 		ProcessViewerDialog pvd = new ProcessViewerDialog(
-				HandlerUtil.getActiveShell(event), procCtl, key,""+selected+"流程记录");
+				HandlerUtil.getActiveShell(event), procCtl, key, "" + selected
+						+ "流程记录");
 		pvd.open();
 	}
 
