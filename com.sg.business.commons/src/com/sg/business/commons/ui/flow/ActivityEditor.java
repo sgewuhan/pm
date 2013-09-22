@@ -19,6 +19,11 @@ import com.sg.business.model.User;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.viewer.ViewerControl;
 
+/**
+ * 流程活动编辑器，显示单个活动节点的详细信息
+ * @author jinxitao
+ *
+ */
 public class ActivityEditor extends Composite {
 
 	public interface IActivityEditListener {
@@ -31,33 +36,110 @@ public class ActivityEditor extends Composite {
 
 	}
 
+	/**
+	 * 活动名称
+	 */
 	private Text activiteName;
+	
+	/**
+	 * 指派名称
+	 */
 	private Text assignmentType;
+	
+	/**
+	 * 指派规则
+	 */
 	private Text assignmentRule;
+	
+	/**
+	 * 角色限定
+	 */
 	private Text roleText;
+	
+	/**
+	 * 选择角色按钮
+	 */
 	private Button roleSelectorButton;
+	
+	/**
+	 * 活动执行人
+	 */
 	private Text actorText;
+	
+	/**
+	 * 选择活动执行人按钮
+	 */
 	private Button actorSelectorButton;
+	
+	/**
+	 * 是否包含活动执行人字段
+	 */
 	private boolean hasActorSelector;
+	
+	/**
+	 * 是否被包含角色限定字段
+	 */
 	private boolean hasRoleSelector;
+	
+	/**
+	 * 活动执行人选择器的navigatorId
+	 */
 	private String actorNavigatorId;
+	
+	/**
+	 * 活动执行人选择器数据源
+	 */
 	private DataSet actorDataSet;
 
 	private ListenerList listeners = new ListenerList();
+	
+	/**
+	 * 活动节点角色指派
+	 */
 	private NodeAssignment nodeAssignment;
+	
+	/**
+	 * 角色定义
+	 */
 	private AbstractRoleDefinition roleDef;
+	
+	/**
+	 * 活动执行人
+	 */
 	private User actor;
+	
+	/**
+	 * 选择角色数据集
+	 */
 	private DataSet roleDataSet;
+	
+	/**
+	 * 选择角色的NavigatorId
+	 */
 	private String roleNavigatorId;
 
+	/**
+	 * 添加监听
+	 * @param listener
+	 */
 	final public void addActiviteEditListener(IActivityEditListener listener) {
 		listeners.add(listener);
 	}
 
+	/**
+	 * 移除监听
+	 * @param listener
+	 */
 	final public void removeActiviteEditListener(IActivityEditListener listener) {
 		listeners.remove(listener);
 	}
 
+	/**
+	 * 构造方法，初始化 hasActorSelector、hasActorSelector字段
+	 * @param parent
+	 * @param hasRoleSelector
+	 * @param hasActorSelector
+	 */
 	ActivityEditor(Composite parent, boolean hasRoleSelector,
 			boolean hasActorSelector) {
 		super(parent, SWT.BORDER);
@@ -66,6 +148,10 @@ public class ActivityEditor extends Composite {
 		createContent(this);
 	}
 
+	/**
+	 * 创建活动节点编辑器
+	 * @param parent
+	 */
 	private void createContent(Composite parent) {
 		setLayout(new GridLayout(3, false));
 		// 活动名称
@@ -138,22 +224,40 @@ public class ActivityEditor extends Composite {
 		}
 	}
 
+	/**
+	 * 页面布局
+	 * @return GridData
+	 */
 	private GridData getGridData3() {
 		GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		gd.widthHint = 120;
 		return gd;
 	}
 
+	/**
+	 * 页面布局
+	 * @return GridData
+	 */
 	private GridData getGridData2() {
 		GridData gd = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		gd.widthHint = 120;
 		return gd;
 	}
 
+	/**
+	 * 页面布局
+	 * @return GridData
+	 */
 	private GridData getGridData1() {
 		return new GridData(SWT.LEFT, SWT.CENTER, false, false);
 	}
 
+	/**
+	 * 设置活动名称，指派类别，指派规则等字段的显示内容
+	 * @param nodeAssignment
+	 * @param roleDef
+	 * @param actor
+	 */
 	final public void setInput(NodeAssignment nodeAssignment,
 			AbstractRoleDefinition roleDef, User actor) {
 		this.nodeAssignment = nodeAssignment;
@@ -167,7 +271,7 @@ public class ActivityEditor extends Composite {
 			roleSelectorButton.setEnabled(nodeAssignment != null
 					&& nodeAssignment.isNeedAssignment());
 		}
-
+        
 		if (nodeAssignment == null) {
 			activiteName.setText("");
 			assignmentType.setText("无需指派");
@@ -215,6 +319,9 @@ public class ActivityEditor extends Composite {
 		}
 	}
 
+	/**
+	 * 弹出活动执行人选择器
+	 */
 	private void showActorSelectorNavigator() {
 		NavigatorSelector ns = new NavigatorSelector(actorNavigatorId) {
 			@Override
@@ -242,6 +349,10 @@ public class ActivityEditor extends Composite {
 
 	}
 
+	/**
+	 * 设置活动执行人
+	 * @param user
+	 */
 	private void setActor(User user) {
 		Object[] lis = listeners.getListeners();
 		for (int i = 0; i < lis.length; i++) {
@@ -251,6 +362,10 @@ public class ActivityEditor extends Composite {
 		actor = user;
 	}
 
+	/**
+	 * 设置角色限定
+	 * @param role
+	 */
 	private void setRole(AbstractRoleDefinition role) {
 		Object[] lis = listeners.getListeners();
 		for (int i = 0; i < lis.length; i++) {
@@ -260,6 +375,9 @@ public class ActivityEditor extends Composite {
 		roleDef = role;
 	}
 
+	/**
+	 * 弹出角色限定选择器
+	 */
 	private void showRoleSelectorNavigator() {
 		NavigatorSelector ns = new NavigatorSelector(roleNavigatorId) {
 			@Override
@@ -288,18 +406,34 @@ public class ActivityEditor extends Composite {
 
 	}
 
+	/**
+	 * 设置活动执行人选择器navigatorId
+	 * @param navigatorId
+	 */
 	final public void setActorNavigatorId(String navigatorId) {
 		this.actorNavigatorId = navigatorId;
 	}
 
+	/**
+	 * 设置活动执行人选择器dataset
+	 * @param dataset
+	 */
 	final public void setActorDataSet(DataSet dataset) {
 		this.actorDataSet = dataset;
 	}
 
+	/**
+	 * 设置角色限定选择器navigatorId
+	 * @param navigatorId
+	 */
 	final public void setRoleNavigatorId(String navigatorId) {
 		this.roleNavigatorId = navigatorId;
 	}
 
+	/**
+	 * 设置角色限定选择器dataset
+	 * @param dataset
+	 */
 	final public void setRoleDataSet(DataSet dataset) {
 		this.roleDataSet = dataset;
 	}

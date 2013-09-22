@@ -11,8 +11,8 @@ import org.eclipse.ui.PlatformUI;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.dnd.DropPrimaryObjectTarget;
+import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class DropProjectTemplate extends DropPrimaryObjectTarget {
@@ -20,36 +20,44 @@ public class DropProjectTemplate extends DropPrimaryObjectTarget {
 	@Override
 	protected void doDrop(String sourceId, List<PrimaryObject> dragsItems,
 			DropTargetEvent event, ViewerControl targetViewerControl) {
-		
-		
+
 		if (dragsItems == null || dragsItems.isEmpty()) {
 			return;
 		}
-		if(event.item == null){
+		if (event.item == null) {
 			return;
 		}
 
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		
-		MessageBox mb = new MessageBox(shell, SWT.ICON_QUESTION|SWT.YES|SWT.NO|SWT.CANCEL);
-		int ret = mb.open();
-		if(ret==SWT.YES){
-			//选择yes
-		}else if(ret==SWT.NO){
-			//选择NO
-		}else{
-			//选择Cancel
-		}
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getShell();
 
-		
+		MessageBox mb = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES
+				| SWT.NO | SWT.CANCEL);
+		mb.setMessage("是否复制当前项目模版到该组织中?");
+		mb.setText("更改项目模版");
+		int ret = mb.open();
+
 		Object targetPo = event.item.getData();
 		if (targetPo instanceof Organization) {
 			Organization org = (Organization) targetPo;
 			for (PrimaryObject po : dragsItems) {
-				if (po instanceof ProjectTemplate) {
-					org.doAddProjectTemplate(po.get_id());
-				} else if (po instanceof WorkDefinition) {
-					org.doAddWorkDefinition(po.get_id());
+				if (ret == SWT.YES) {
+					// 选择yes，复制项目模版
+					try {
+						org.doCopyProjectTemplates(po,
+								new CurrentAccountContext());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else if (ret == SWT.NO) {
+					// 选择NO，移动项目模版归属组织
+					if (po instanceof ProjectTemplate) {
+						org.doAddProjectTemplate(po.get_id());
+						// } else if (po instanceof WorkDefinition) {
+						// org.doAddWorkDefinition(po.get_id());
+					}
+				} else {
+					// 选择Cancel
 				}
 			}
 		}

@@ -12,6 +12,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -356,13 +357,20 @@ public class ProjectTemplate extends PrimaryObject  {
 	}
 
 	/**
+<<<<<<< HEAD
+	 * 返回模版中的除根工作外的所有工作定义
+=======
 	 * 返回模版中的所有工作定义
+>>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
 	 * 
 	 * @return
 	 */
 	public List<PrimaryObject> getWorkDefinitions() {
-		return getRelationById(F__ID, WorkDefinition.F_PROJECT_TEMPLATE_ID,
-				WorkDefinition.class);
+		BasicDBObject query = new BasicDBObject().append(
+				WorkDefinition.F_PROJECT_TEMPLATE_ID, getValue(F__ID)).append(
+				WorkDefinition.F_ROOT_ID,
+				new BasicDBObject().append("$ne", getWBSRoot().get_id()));
+		return getRelationByCondition(WorkDefinition.class, query);
 	}
 
 	/**
@@ -416,4 +424,17 @@ public class ProjectTemplate extends PrimaryObject  {
 		return super.getAdapter(adapter);
 	}
 
+	public ProjectRole getProcessActionAssignment(String key,
+			String nodeActorParameter) {
+		// 取出角色指派
+		DBObject data = (DBObject) getValue(key + POSTFIX_ASSIGNMENT);
+		if (data == null) {
+			return null;
+		}
+		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
+		if (roleId != null) {
+			return ModelService.createModelObject(ProjectRole.class, roleId);
+		}
+		return null;
+	}
 }
