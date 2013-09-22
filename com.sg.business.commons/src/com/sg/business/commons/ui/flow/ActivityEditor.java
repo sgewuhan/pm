@@ -278,7 +278,7 @@ public class ActivityEditor extends Composite {
 			assignmentRule.setText("");
 			roleText.setText("");
 			if (actorText != null) {
-				actorText.setText("");
+				actorText.setText(actor.getLabel());
 			}
 		} else {
 			activiteName.setText(nodeAssignment.getNodeName());
@@ -343,9 +343,10 @@ public class ActivityEditor extends Composite {
 			}
 
 		};
+		ns.show();
+
 		ViewerControl vc = ns.getNavigator().getViewerControl();
 		vc.setDataSet(actorDataSet);
-		ns.show();
 
 	}
 
@@ -360,6 +361,8 @@ public class ActivityEditor extends Composite {
 					nodeAssignment, roleDef);
 		}
 		actor = user;
+		
+		actorText.setText(actor.getLabel());
 	}
 
 	/**
@@ -373,6 +376,8 @@ public class ActivityEditor extends Composite {
 					nodeAssignment);
 		}
 		roleDef = role;
+		
+		roleText.setText(role.getLabel());
 	}
 
 	/**
@@ -400,9 +405,9 @@ public class ActivityEditor extends Composite {
 			}
 
 		};
+		ns.show();
 		ViewerControl vc = ns.getNavigator().getViewerControl();
 		vc.setDataSet(roleDataSet);
-		ns.show();
 
 	}
 

@@ -23,7 +23,7 @@ import com.sg.business.resource.BusinessResource;
  * @author jinxitao
  * 
  */
-public class ProjectTemplate extends PrimaryObject  {
+public class ProjectTemplate extends PrimaryObject {
 
 	/**
 	 * 所属组织
@@ -357,11 +357,8 @@ public class ProjectTemplate extends PrimaryObject  {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * 返回模版中的除根工作外的所有工作定义
-=======
-	 * 返回模版中的所有工作定义
->>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
+	 * 
+	 * 返回模版中的除根工作外的所有工作定义 
 	 * 
 	 * @return
 	 */
@@ -419,7 +416,14 @@ public class ProjectTemplate extends PrimaryObject  {
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this);
+			return new ProcessControl(this) {
+
+				@Override
+				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
+					return RoleDefinition.class;
+				}
+
+			};
 		}
 		return super.getAdapter(adapter);
 	}

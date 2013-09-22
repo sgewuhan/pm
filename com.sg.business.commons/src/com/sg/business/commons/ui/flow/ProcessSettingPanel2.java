@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import com.mobnut.db.model.DataSet;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.ui.flow.ActivityEditor.IActivityEditListener;
@@ -56,6 +57,10 @@ public class ProcessSettingPanel2 extends Composite {
 	private ListenerList listeners = new ListenerList();
 	private List<DroolsProcessDefinition> processDefinitionsChoice;
 	private boolean processActivate;
+	private String roleNavigatorId;
+	private DataSet roleDataSet;
+	private DataSet actorDataSet;
+	private String actorNavigatorId;
 
 	public void addProcessSettingListener(IProcessSettingListener listener) {
 		listeners.add(listener);
@@ -88,6 +93,10 @@ public class ProcessSettingPanel2 extends Composite {
 	private void createActivityEditor(Composite panel) {
 		activiteEditor = new ActivityEditor(panel, hasRoleSelector,
 				hasActorSelector);
+		activiteEditor.setRoleDataSet(roleDataSet);
+		activiteEditor.setRoleNavigatorId(roleNavigatorId);
+		activiteEditor.setActorDataSet(actorDataSet);
+		activiteEditor.setActorNavigatorId(actorNavigatorId);
 		activiteEditor.addActiviteEditListener(new IActivityEditListener() {
 
 			@Override
@@ -149,7 +158,6 @@ public class ProcessSettingPanel2 extends Composite {
 		} else {
 			activitySelecter.setInput(processDefinition);
 		}
-
 	}
 
 	private void createProcessSelector(Composite parent) {
@@ -296,6 +304,22 @@ public class ProcessSettingPanel2 extends Composite {
 					nodeAssignment);
 		}
 
+	}
+
+	public void setRoleNavigatorId(String roleNavigatorId) {
+		this.roleNavigatorId = roleNavigatorId;
+	}
+	
+	public void setRoleDataSet(DataSet roleDataSet){
+		this.roleDataSet = roleDataSet;
+	}
+	
+	public void setActorNavigatorId(String actorNavigatorId) {
+		this.actorNavigatorId = actorNavigatorId;
+	}
+	
+	public void setActorDataSet(DataSet actorDataSet){
+		this.actorDataSet = actorDataSet;
 	}
 
 }

@@ -11,7 +11,7 @@ import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.runtime.Workflow;
 
-public class ProcessControl implements IProcessControlable {
+public abstract class ProcessControl implements IProcessControlable {
 
 	private PrimaryObject primaryObject;
 
@@ -56,10 +56,13 @@ public class ProcessControl implements IProcessControlable {
 		}
 		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
 		if (roleId != null) {
-			return ModelService.createModelObject(ProjectRole.class, roleId);
+			return (AbstractRoleDefinition) ModelService.createModelObject(
+					getRoleDefinitionClass(), roleId);
 		}
 		return null;
 	}
+
+	protected abstract Class<? extends PrimaryObject> getRoleDefinitionClass();
 
 	@Override
 	public DBObject getProcessRoleAssignmentData(String key) {

@@ -2490,10 +2490,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this);
+			return new ProcessControl(this) {
+
+				@Override
+				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
+					return ProjectRole.class;
+				}
+
+			};
 		}
 		return super.getAdapter(adapter);
-	}	
+	}
 
-	
 }

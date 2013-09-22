@@ -1819,7 +1819,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this);
+			return new ProcessControl(this){
+
+				@Override
+				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
+					return ProjectRole.class;
+				}
+				
+			};
 		}
 		return super.getAdapter(adapter);
 	}	
