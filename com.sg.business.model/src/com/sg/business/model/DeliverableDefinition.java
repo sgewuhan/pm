@@ -144,4 +144,13 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 		return EDITOR;
 	}
 
+	/**
+	 * 获取交付物文档
+	 * @return
+	 */
+	public DocumentDefinition getDocumentDefinition() {
+		ObjectId documentDefinitionid = (ObjectId) getValue(F_DOCUMENT_DEFINITION_ID);
+		return ModelService.createModelObject(DocumentDefinition.class, documentDefinitionid);
+	}
+
 }
