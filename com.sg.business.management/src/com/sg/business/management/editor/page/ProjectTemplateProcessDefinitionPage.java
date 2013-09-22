@@ -44,14 +44,18 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 		processControl = (IProcessControlable)projectTemplate.getAdapter(IProcessControlable.class);
 		roleDefinitions = projectTemplate.getRoleDefinitions();
 
+		//项目计划提交流程
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.TOP);
 		CTabItem cti1 = new CTabItem(tabFolder, SWT.NONE);
 		cti1.setText("项目计划提交流程");
+		//为tabFolder添加显示组件
 		Control control1 = createTab(tabFolder, ProjectTemplate.F_WF_COMMIT);
 		cti1.setControl(control1);
 
+		//项目变更流程
 		CTabItem cti2 = new CTabItem(tabFolder, SWT.NONE);
 		cti2.setText("项目变更流程");
+		//为tabFolder添加显示组件
 		Control control2 = createTab(tabFolder, ProjectTemplate.F_WF_CHANGE);
 		cti2.setControl(control2);
 
@@ -66,19 +70,26 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 		psp2.setHasProcessSelector(true);
 		psp2.setHasRoleSelector(true);
 
+		//返回模板所属组织下流程库中的所有组织，作为流程选择器的数据源
 		List<DroolsProcessDefinition> processDefs = getDroolsProcessDefinitions();
-		psp2.setProcessDefinitionChoice(processDefs);
-
+		//添加流程定义选择器
+		psp2.setProcessDefinitionChoice(processDefs);   
+        
 		boolean activate = isActivate(key);
-		psp2.setProcessActivated(activate);
+		 //添加该流程是否启用的选择框
+		psp2.setProcessActivated(activate); 
 
+		//返回当前选中流程
 		DroolsProcessDefinition processDef = getCurrentDroolsProcessDefinition(key);
-		psp2.setProcessDefinition(processDef);
+		//显示当前选中流程的信息
+		psp2.setProcessDefinition(processDef);   
 
 		psp2.createContent();
 
+		//添加监听
 		psp2.addProcessSettingListener(new IProcessSettingListener() {
 
+			//监听活动执行人更改事件
 			@Override
 			public void actorChanged(User newActor, User oldActor,
 					NodeAssignment nodeAssignment,
@@ -86,6 +97,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 				setDirty(true);
 			}
 
+			//监听流程定义更改事件
 			@Override
 			public void processChanged(
 					DroolsProcessDefinition newProcessDefinition,
@@ -94,12 +106,14 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 				setDirty(true);
 			}
 
+			//监听流程定义是否启用事件
 			@Override
 			public void processActivatedChanged(boolean activated) {
 				processControl.setWorkflowActivate(key,activated);
 				setDirty(true);
 			}
 
+			//监听角色限定更改事件
 			@Override
 			public void roleChanged(AbstractRoleDefinition newRole,
 					AbstractRoleDefinition oldRole, NodeAssignment na) {
@@ -111,14 +125,29 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 		return psp2;
 	}
 
+	/**
+	 * 返回当前流程定义
+	 * @param key
+	 *      ,流程定义类型
+	 * @return DroolsProcessDefinition
+	 */
 	private DroolsProcessDefinition getCurrentDroolsProcessDefinition(String key) {
 		return processControl.getProcessDefinition(key);
 	}
 
+	/**
+	 * 判断当前流程是否启用
+	 * @param key
+	 * @return boolean
+	 */
 	private boolean isActivate(String key) {
 		return processControl.isWorkflowActivate(key);
 	}
 
+	/**
+	 * 返回模板所属组织下流程库中所有流程定义
+	 * @return List
+	 */
 	private List<DroolsProcessDefinition> getDroolsProcessDefinitions() {
 		// 获取模板所属的组织
 		Organization org = projectTemplate.getOrganization();
