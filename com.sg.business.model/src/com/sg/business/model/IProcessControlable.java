@@ -4,7 +4,6 @@ import org.bson.types.BasicBSONList;
 
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.runtime.Workflow;
 
 public interface IProcessControlable {
@@ -175,8 +174,11 @@ public interface IProcessControlable {
 
 	void setWorkflowActivate(String key, boolean activated);
 
-	void setProcessActionAssignment(String key, NodeAssignment na,
+	void setProcessActionAssignment(String key, String nodeActorParameter,
 			AbstractRoleDefinition newRole);
+
+	void setProcessActionActor(String key, String nodeActorParameter,
+			String userid);
 
 	/**
 	 * 获得key流程的定义字段值

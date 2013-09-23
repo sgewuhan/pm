@@ -65,6 +65,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 创建工作的编辑器ID
 	 */
 	public static final String EDITOR_CREATE_RUNTIME_WORK = "editor.create.runtimework";
+	
+	
+	/**
+	 * 编辑工作计划
+	 */
+	public static final String EDITOR_WORK_PLAN = "editor.work.plan";
+	
 	/**
 	 * 必需的，不可删除，布尔类型的字段
 	 */
@@ -2490,10 +2497,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this);
+			return new ProcessControl(this) {
+
+				@Override
+				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
+					return ProjectRole.class;
+				}
+
+			};
 		}
 		return super.getAdapter(adapter);
-	}	
+	}
 
-	
 }

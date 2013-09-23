@@ -8,10 +8,9 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.runtime.Workflow;
 
-public class ProcessControl implements IProcessControlable {
+public abstract class ProcessControl implements IProcessControlable {
 
 	private PrimaryObject primaryObject;
 
@@ -56,10 +55,13 @@ public class ProcessControl implements IProcessControlable {
 		}
 		ObjectId roleId = (ObjectId) data.get(nodeActorParameter);
 		if (roleId != null) {
-			return ModelService.createModelObject(ProjectRole.class, roleId);
+			return (AbstractRoleDefinition) ModelService.createModelObject(
+					getRoleDefinitionClass(), roleId);
 		}
 		return null;
 	}
+
+	protected abstract Class<? extends PrimaryObject> getRoleDefinitionClass();
 
 	@Override
 	public DBObject getProcessRoleAssignmentData(String key) {
@@ -73,6 +75,17 @@ public class ProcessControl implements IProcessControlable {
 			return null;
 		}
 		return (String) data.get(nodeActorParameter);
+	}
+
+	@Override
+	public void setProcessActionActor(String key,
+			String nodeActorParameter, String  userid) {
+		DBObject data = getProcessActorsData(key);
+		if(data == null){
+			data = new BasicDBObject();
+			primaryObject.setValue(key + POSTFIX_ACTORS, data);
+		}
+		data.put(nodeActorParameter, userid);
 	}
 
 	@Override
@@ -149,7 +162,7 @@ public class ProcessControl implements IProcessControlable {
 	}
 
 	@Override
-	public void setProcessActionAssignment(String key, NodeAssignment na,
+	public void setProcessActionAssignment(String key,String  nap,
 			AbstractRoleDefinition newRole) {
 		DBObject wfRoleAssignment = (DBObject) getProcessRoleAssignmentData(key);
 		if (wfRoleAssignment == null) {
@@ -157,7 +170,6 @@ public class ProcessControl implements IProcessControlable {
 			setProcessRoleAssignmentData(key, wfRoleAssignment);
 		}
 
-		String nap = na.getNodeActorParameter();
 		if (newRole == null) {
 			setProcessRoleAssignment(key, nap, null);
 		} else {

@@ -544,39 +544,46 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return;
 		}
 
+		BasicDBObject update = new BasicDBObject();
+
 		// 设置变更工作流
 		Object value = pjTempData.get(ProjectTemplate.F_WF_CHANGE);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_CHANGE, value);
+			update.put(ProjectTemplate.F_WF_CHANGE, value);
 		}
 
 		// 设置变更工作流是否激活
 		value = pjTempData.get(ProjectTemplate.F_WF_CHANGE_ACTIVATED);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_CHANGE_ACTIVATED, value);
+			update.put(ProjectTemplate.F_WF_CHANGE_ACTIVATED, value);
 		}
 
 		// 设置变更流程的活动执行人
-		setRoleDBObjectField(get_data(), pjTempData,
+		setRoleDBObjectField(update, pjTempData,
 				ProjectTemplate.F_WF_CHANGE_ASSIGNMENT, roleMap);
 
 		// 设置执行工作流
 		value = pjTempData.get(ProjectTemplate.F_WF_COMMIT);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_COMMIT, value);
+			update.put(ProjectTemplate.F_WF_COMMIT, value);
 		}
 
 		// 设置执行工作流是否激活
 		value = pjTempData.get(ProjectTemplate.F_WF_COMMIT_ACTIVATED);
 		if (value != null) {
-			setValue(ProjectTemplate.F_WF_COMMIT_ACTIVATED, value);
+			update.put(ProjectTemplate.F_WF_COMMIT_ACTIVATED, value);
 		}
 
 		// 设置执行工作流的活动执行人角色
-		setRoleDBObjectField(get_data(), pjTempData,
+		setRoleDBObjectField(update, pjTempData,
 				ProjectTemplate.F_WF_COMMIT_ASSIGNMENT, roleMap);
 
-		doSave(context);
+		col = getCollection();
+		WriteResult ws = col.update(new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set", update));
+		
+		checkWriteResult(ws);
+		
 	}
 
 	private void doSetupWorkConnectionWithTemplate(ObjectId projectTemplateId,
@@ -1833,7 +1840,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this);
+			return new ProcessControl(this) {
+
+				@Override
+				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
+					return ProjectRole.class;
+				}
+
+			};
 		}
 		return super.getAdapter(adapter);
 	}

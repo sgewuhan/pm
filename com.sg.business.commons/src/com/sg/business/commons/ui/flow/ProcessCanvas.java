@@ -75,6 +75,7 @@ public class ProcessCanvas extends FigureCanvas {
 	
 	public void setInput(DroolsProcessDefinition procDefinition) {
 		setInput(procDefinition,null);
+		layout();
 	}
 	
 
