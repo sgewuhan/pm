@@ -1,8 +1,5 @@
 package com.sg.business.commons.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
@@ -10,8 +7,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.AbstractWork;
-import com.sg.business.model.Work;
+import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -21,7 +17,7 @@ import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class CreateWork extends AbstractNavigatorHandler {
+public class CreateWorkDefinition extends AbstractNavigatorHandler {
 
 	@Override
 	protected boolean nullSelectionContinue(ExecutionEvent event) {
@@ -34,7 +30,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 
 		Shell shell = HandlerUtil.getActiveShell(event);
 
-		Work po = ((Work) selected).makeChildWork();
+		WorkDefinition po = ((WorkDefinition) selected).makeChildWork();
 		ViewerControl vc = getCurrentViewerControl(event);
 		Assert.isNotNull(vc);
 
@@ -45,28 +41,16 @@ public class CreateWork extends AbstractNavigatorHandler {
 		po.addEventListener(vc);
 
 		// 使用编辑器打开编辑工作定义
-		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				"editor.work.plan");
-
+		Configurator conf  = Widgets.getEditorRegistry().getConfigurator(
+					po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, "创建" + po.getTypeName());
 			
-			//刷新上级数据
-			List<PrimaryObject> tobeRefresh = new ArrayList<PrimaryObject>();
-			tobeRefresh.add((Work) selected);
-			AbstractWork parent = ((Work) selected).getParent();
-			while(parent!=null){
-				tobeRefresh.add(parent);
-				parent = ((Work) parent).getParent();
-			}
-			vc.getViewer().update(tobeRefresh.toArray(), null);
-			
-
 			// 4. 将更改消息传递到编辑器
 			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
 					new Integer(INavigatorActionListener.REFRESH));
-
+			
 		} catch (Exception e) {
 			MessageUtil.showToast(shell, "创建" + po.getTypeName(),
 					e.getMessage(), SWT.ICON_ERROR);
@@ -74,6 +58,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 
 		// 3. 处理完成后，释放侦听器
 		po.removeEventListener(vc);
+
 
 	}
 

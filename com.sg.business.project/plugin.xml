@@ -1604,6 +1604,7 @@
             <pagecolumn
                   id="2">
                <section
+                     description="负责人将自动加入到参与者"
                      label="团队">
                   <navigatorSelector
                         editable="true"
@@ -1627,7 +1628,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
-                        required="true">
+                        required="false">
                   </list>
                </section>
             </pagecolumn>
@@ -2961,7 +2962,7 @@
                style="push">
          </command>
          <command
-               commandId="com.sg.widgets.command.edit"
+               commandId="work.edit"
                icon="image/editwork_24.png"
                label="编辑工作..."
                style="push">
@@ -2974,18 +2975,6 @@
                   </count>
                </with>
             </visibleWhen>
-            <parameter
-                  name="com.sg.widgets.edit.editorid"
-                  value="editor.work.plan">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.pageid"
-                  value="basicpage">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.type"
-                  value="datadialog">
-            </parameter>
          </command>
          <command
                commandId="work.remove"

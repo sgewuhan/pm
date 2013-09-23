@@ -78,7 +78,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * @return String
 	 */
 	public String getWBSCode() {
-		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
+		AbstractWork parent = (AbstractWork) getParent();
 		if (parent == null) {
 			return "1";
 		} else {
