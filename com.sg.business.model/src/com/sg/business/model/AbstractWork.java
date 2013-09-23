@@ -176,7 +176,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 				return ((Integer) seq).intValue();
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	/**

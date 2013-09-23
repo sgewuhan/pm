@@ -1437,7 +1437,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			result.add(checkItem);
 		}
 
-		
 		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
 
 		// 4.1 检查项目变更的流程 ：错误，没有指明流程负责人
@@ -1473,7 +1472,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-
 	/**
 	 * 变更工作流是否激活
 	 * 
@@ -1491,7 +1489,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public boolean isCommitWorkflowActivate() {
 		return Boolean.TRUE.equals(getValue(F_WF_COMMIT_ACTIVATED));
 	}
-
 
 	public String getLifecycleStatus() {
 		String lc = (String) getValue(F_LIFECYCLE);
@@ -1678,7 +1675,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doCancel(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doCancel(context);
-		
+
 		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
 		return this;
 	}
@@ -1686,16 +1683,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doFinish(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doFinish(context);
-		
+
 		DBCollection col = getCollection();
 		DBObject data = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()),
 				null,
 				null,
 				false,
-				new BasicDBObject().append("$set",
-						new BasicDBObject().append(F_LIFECYCLE, STATUS_FINIHED_VALUE)
-						.append(F_ACTUAL_FINISH, new Date())),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject().append(F_LIFECYCLE,
+								STATUS_FINIHED_VALUE).append(F_ACTUAL_FINISH,
+								new Date())),
 
 				true, false);
 		set_data(data);
@@ -1706,7 +1705,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doPause(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doPause(context);
-		
+
 		doChangeLifecycleStatus(context, STATUS_PAUSED_VALUE);
 		return this;
 	}
@@ -1714,21 +1713,22 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doStart(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doStart(context);
-		
-		
+
 		DBCollection col = getCollection();
 		DBObject data = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()),
 				null,
 				null,
 				false,
-				new BasicDBObject().append("$set",
-						new BasicDBObject().append(F_LIFECYCLE, STATUS_WIP_VALUE)
-						.append(F_ACTUAL_START, new Date())),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject().append(F_LIFECYCLE,
+								STATUS_WIP_VALUE).append(F_ACTUAL_START,
+								new Date())),
 
 				true, false);
 		set_data(data);
-		
+
 		return this;
 	}
 
@@ -1765,7 +1765,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public BasicBSONList getTargetList() {
 		return (BasicBSONList) getValue(F_TARGETS);
 	}
-
 
 	@Override
 	public List<Object[]> checkStartAction(IContext context) throws Exception {
@@ -1815,6 +1814,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
+	/**
+	 * 是否允许提交项目
+	 * @param context
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Object[]> checkCommitAction(IContext context) throws Exception {
+		// 1.检查是否本项目的负责人
+		String userId = context.getAccountInfo().getConsignerId();
+		if (!userId.equals(this.getChargerId())) {
+			throw new Exception("不是本项目负责人，" + this);
+		}
+		return null;
+	}
+
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class adapter) {
@@ -1822,5 +1836,5 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return new ProcessControl(this);
 		}
 		return super.getAdapter(adapter);
-	}	
+	}
 }
