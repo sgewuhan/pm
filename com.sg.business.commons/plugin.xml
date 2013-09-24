@@ -1172,7 +1172,6 @@
          point="com.sg.widgets.column">
       <column
             column="planstart"
-            editingSupport="com.sg.business.commons.editingsupport.PlanStartEditing"
             id="planstart_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
             name="计划开始"
@@ -1181,7 +1180,6 @@
       </column>
       <column
             column="planfinish"
-            editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
             id="planfinish_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
             name="计划完成"

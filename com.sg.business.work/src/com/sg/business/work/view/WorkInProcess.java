@@ -32,7 +32,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 		IContext context = getNavigator().getContext();
 		String userid = context.getAccountInfo().getConsignerId();
 		workSynchronizer = createUserSynchronizer(userid);
-		 doRefresh();
+		doRefresh();
 
 		String _interval = (String) Setting.getUserSetting(context
 				.getAccountInfo().getUserId(),
@@ -41,7 +41,8 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 			Integer interval = Utils.getIntegerValue(_interval);
 			if (interval != null) {
 				repeatWorkSynchronizer = createBackgroundSynchronizer(userid);
-				repeatWorkSynchronizer.start(interval.intValue() *60 * 1000, false);
+				repeatWorkSynchronizer.start(interval.intValue() * 60 * 1000,
+						false);
 			}
 		}
 	}
@@ -59,7 +60,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 					public void run() {
 						WorkInProcess.super.doRefresh();
 						processSync = false;
-//						System.out.println("refresh by: User");
+						// System.out.println("refresh by: User");
 					}
 				});
 			}
@@ -82,7 +83,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 					public void run() {
 						WorkInProcess.super.doRefresh();
 						processSync = false;
-//						System.out.println("refresh by: Background");
+						// System.out.println("refresh by: Background");
 					}
 				});
 			}

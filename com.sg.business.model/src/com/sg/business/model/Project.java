@@ -1332,10 +1332,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return WorkDefinition.VALUE_OPTION;
 	}
 
-	@Override
-	public boolean canDelete(IContext context) {
-		return super.canDelete(context);
-	}
 
 	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
 			String fFinish, String fDuration) throws Exception {
@@ -1555,6 +1551,52 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public boolean canCancel() {
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
+	}
+	
+	@Override
+	public boolean canEdit(IContext context) {
+		//如果项目已经完成、取消，不能编辑
+		String lc = getLifecycleStatus();
+		if(STATUS_CANCELED_VALUE.equals(lc)||STATUS_FINIHED_VALUE.equals(lc)){
+			return false;
+		}
+		
+		//如果是项目负责人，可以编辑
+		String chargerId = getChargerId();
+		String userId = context.getAccountInfo().getConsignerId();
+		if( !userId.equals(chargerId)){
+			return false;
+		}
+		
+		return true;
+//		return super.canEdit(context);
+	}
+	
+	@Override
+	public boolean canDelete(IContext context) {
+		String lc = getLifecycleStatus();
+		if(!STATUS_NONE_VALUE.equals(lc)&&!STATUS_ONREADY_VALUE.equals(lc)){
+			return false;
+		}
+		
+		String chargerId = getChargerId();
+		String userId = context.getAccountInfo().getConsignerId();
+		if( !userId.equals(chargerId)){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	@Override
+	public boolean canRead(IContext context) {
+		//如果是项目参与者，可以打开查看
+		List<?> participates = getParticipatesIdList();
+		String userId = context.getAccountInfo().getConsignerId();
+		
+		return participates!=null&&participates.contains(userId);
+//		return super.canRead(context);
 	}
 
 	@Override
