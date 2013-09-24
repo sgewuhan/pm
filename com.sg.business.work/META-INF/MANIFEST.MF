@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.bpm.workflow;bundle-version="1.0.0",
  com.sg.business.model;bundle-version="1.0.0",
  com.sg.business.commons;bundle-version="1.0.0",
- com.sg.business.resource
+ com.sg.business.resource,
+ com.mobnut.admin;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
