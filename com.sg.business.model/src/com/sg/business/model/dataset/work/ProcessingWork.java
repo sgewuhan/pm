@@ -15,7 +15,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 
@@ -28,24 +30,35 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DataSet getDataSet() {
 		DBCollection col = getCollection();
-		DBCursor cur = col.find(getQueryCondition(),
-				new BasicDBObject().append(Work.F_ROOT_ID, 1));
+		DBCursor cur = col.find(getQueryCondition(), new BasicDBObject()
+				.append(Work.F_ROOT_ID, 1).append(Work.F_PROJECT_ID, 1));
 		List<PrimaryObject> ret = new ArrayList<PrimaryObject>();
 		cur.sort(getSort());
-		while(cur.hasNext()){
+		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
+			// 需要排除未提交的项目
+			Object projectId = dbo.get(Work.F_PROJECT_ID);
+			if (projectId instanceof ObjectId) {
+				// 是项目工作
+				Project project = ModelService.createModelObject(Project.class,
+						(ObjectId) projectId);
+				if(project.getLifecycleStatus().equals(ILifecycle.STATUS_NONE_VALUE)){
+					continue;
+				}
+			}
+
 			ObjectId rootId = (ObjectId) dbo.get(Work.F_ROOT_ID);
-			if(rootId==null){
+			if (rootId == null) {
 				rootId = (ObjectId) dbo.get(Work.F__ID);
 			}
 			Work work = ModelService.createModelObject(Work.class, rootId);
-			if(!ret.contains(work)){
+			if (!ret.contains(work)) {
 				ret.add(work);
 			}
 		}
-		
+
 		return new DataSet(ret);
-		
+
 	}
 
 	/**
@@ -67,7 +80,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 					.put(Work.F_LIFECYCLE,
 							new BasicDBObject().append("$in", new String[] {
 									Work.STATUS_ONREADY_VALUE,
-									Work.STATUS_WIP_VALUE}));
+									Work.STATUS_WIP_VALUE }));
 			return queryCondition;
 
 		} catch (Exception e) {
