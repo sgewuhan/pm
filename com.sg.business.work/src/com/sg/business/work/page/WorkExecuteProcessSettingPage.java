@@ -2,7 +2,6 @@ package com.sg.business.work.page;
 
 import com.sg.business.model.Work;
 
-
 public class WorkExecuteProcessSettingPage extends AbstractWorkProcessSettingPage {
 
 	@Override

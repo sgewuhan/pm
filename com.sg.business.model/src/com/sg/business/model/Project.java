@@ -48,6 +48,7 @@ import com.sg.business.resource.BusinessResource;
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ILifecycle, ISchedual, IReferenceContainer {
 
+
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
 	 */
@@ -579,11 +580,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				ProjectTemplate.F_WF_COMMIT_ASSIGNMENT, roleMap);
 
 		col = getCollection();
-		WriteResult ws = col.update(new BasicDBObject().append(F__ID, get_id()),
+		WriteResult ws = col.update(
+				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append("$set", update));
-		
+
 		checkWriteResult(ws);
-		
+
 	}
 
 	private void doSetupWorkConnectionWithTemplate(ObjectId projectTemplateId,
@@ -1444,7 +1446,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			result.add(checkItem);
 		}
 
-		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 
 		// 4.1 检查项目变更的流程 ：错误，没有指明流程负责人
 		String title = "检查项目变更流程";
@@ -1673,7 +1675,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		}
 		work.setValue(Work.F_PROJECT_ID, get_id());
-		IProcessControlable pc = (IProcessControlable) getAdapter(IProcessControlable.class);
+		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		DBObject wfdef = pc.getWorkflowDefinition(F_WF_COMMIT);
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
@@ -1823,6 +1825,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 是否允许提交项目
+	 * 
 	 * @param context
 	 * @return
 	 * @throws Exception
@@ -1836,17 +1839,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this) {
-
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter.equals(IProcessControl.class)) {
+			return (T) new ProcessControl(this){
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return ProjectRole.class;
 				}
-
 			};
 		}
 		return super.getAdapter(adapter);

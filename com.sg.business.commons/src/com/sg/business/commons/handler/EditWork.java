@@ -11,7 +11,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -41,8 +41,8 @@ public class EditWork extends AbstractNavigatorHandler {
 		work.addEventListener(vc);
 
 		String editorId;
-		IProcessControlable ipc = (IProcessControlable) work
-				.getAdapter(IProcessControlable.class);
+		IProcessControl ipc = (IProcessControl) work
+				.getAdapter(IProcessControl.class);
 		if (work.isSummaryWork()) {
 			editorId = "edit.work.plan.2";
 		} else {

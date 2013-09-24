@@ -9,7 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.check.CheckListItem;
@@ -17,7 +17,7 @@ import com.sg.business.model.check.ICheckListItem;
 
 public class ProjectToolkit {
 	public static boolean checkProcessInternal(Project project,
-			IProcessControlable pc, List<ICheckListItem> result,
+			IProcessControl pc, List<ICheckListItem> result,
 			Map<ObjectId, List<PrimaryObject>> raMap, String title,
 			String process, String editorId, String pageId) {
 		boolean passed = true;
@@ -82,7 +82,7 @@ public class ProjectToolkit {
 		return passed;
 	}
 
-	public static boolean checkProcessInternal(IProcessControlable pc,
+	public static boolean checkProcessInternal(IProcessControl pc,
 			String process) {
 		if (pc.isWorkflowActivate(process)) {
 			// 如果流程已经激活，需要判断是否所有的actor都指派
@@ -103,7 +103,7 @@ public class ProjectToolkit {
 		return true;
 	}
 
-	public static boolean checkProcessInternal(IProcessControlable pc,
+	public static boolean checkProcessInternal(IProcessControl pc,
 			String process, ProjectRole projectRole) {
 		if (pc.isWorkflowActivate(process)) {
 			// 如果流程已经激活，需要判断是否所有的actor都指派

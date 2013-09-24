@@ -1,12 +1,15 @@
-package com.sg.business.work.page;
+package com.sg.business.project.editor.page;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.page.AbstractProcessSettingPage;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.IProcessControl;
@@ -14,26 +17,40 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.User;
-import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.registry.config.BasicPageConfigurator;
 
-public abstract class AbstractWorkProcessSettingPage extends AbstractProcessSettingPage {
+/**
+ * 项目提交时，如果指定了流程，将自动创建独立工作用于项目提交<br/>
+ * 该独立工作的角色设置是组织的角色，而并非项目角色定义。所以，需要覆盖获取角色定义部分的代码
+ * 
+ * @author zhonghua
+ * 
+ */
+public abstract class AbstractProjectProcessSettingPage extends
+		AbstractProcessSettingPage {
 
-	
+	@Override
+	public ProcessSettingPanel2 createPageContent(Composite parent,
+			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
+		ProcessSettingPanel2 psp = super.createPageContent(parent, input, conf);
+		psp.setHasActorSelector(true);
+		return psp;
+	}
+
 	@Override
 	protected IProcessControl getIProcessControl() {
 		PrimaryObjectEditorInput input = getInput();
-		Work work = (Work) input.getData();
-		return (IProcessControl) work.getAdapter(IProcessControl.class);
+		Project project = (Project) input.getData();
+		return (IProcessControl) project
+				.getAdapter(IProcessControl.class);
 	}
 
 	@Override
 	protected DataSet getRoleDataSet() {
 		PrimaryObjectEditorInput input = getInput();
-		Work work = (Work) input.getData();
-		
-		Project project = work.getProject();
+		Project project = (Project) input.getData();
 		if (project != null) {
 			List<PrimaryObject> rds = project.getProjectRole();
 			return new DataSet(rds);
@@ -44,10 +61,8 @@ public abstract class AbstractWorkProcessSettingPage extends AbstractProcessSett
 	@Override
 	protected List<DroolsProcessDefinition> getProcessDefinition() {
 		PrimaryObjectEditorInput input = getInput();
-		Work work = (Work) input.getData();
-		//如果工作是项目的工作，获得项目所属的项目管理职能组织
-		Project project = work.getProject();
-		if(project!=null){
+		Project project = (Project) input.getData();
+		if (project != null) {
 			Organization org = project.getFunctionOrganization();
 			return org.getDroolsProcessDefinitions();
 		}
@@ -73,9 +88,7 @@ public abstract class AbstractWorkProcessSettingPage extends AbstractProcessSett
 
 		} else {
 			PrimaryObjectEditorInput input = getInput();
-			Work work = (Work) input.getData();
-			
-			Project project = work.getProject();
+			Project project = (Project) input.getData();
 			List<?> useridList = project.getParticipatesIdList();
 			for (int i = 0; i < useridList.size(); i++) {
 				String userid = (String) useridList.get(i);
@@ -89,5 +102,4 @@ public abstract class AbstractWorkProcessSettingPage extends AbstractProcessSett
 		// 如果角色定义为空，取项目的参与者
 		return new DataSet(result);
 	}
-
 }

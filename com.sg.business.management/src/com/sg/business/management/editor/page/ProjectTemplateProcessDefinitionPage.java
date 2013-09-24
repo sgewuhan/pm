@@ -17,7 +17,7 @@ import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.ui.flow.ProcessControlSetting;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleDefinition;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.User;
@@ -31,7 +31,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 
 	private boolean dirty;
 	private IManagedForm form;
-	private IProcessControlable processControl;
+	private IProcessControl IProcessControl;
 	private ProjectTemplate projectTemplate;
 
 	public ProjectTemplateProcessDefinitionPage() {
@@ -42,8 +42,8 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		projectTemplate = (ProjectTemplate) input.getData();
-		processControl = (IProcessControlable) projectTemplate
-				.getAdapter(IProcessControlable.class);
+		IProcessControl = (IProcessControl) projectTemplate
+				.getAdapter(IProcessControl.class);
 
 		// 项目计划提交流程
 		CTabFolder tabFolder = new CTabFolder(parent, SWT.TOP);
@@ -71,7 +71,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 			protected AbstractRoleDefinition getRoleDefinition(
 					NodeAssignment nodeAssignment) {
 				if(nodeAssignment!=null){
-					return processControl.getProcessActionAssignment(key,
+					return IProcessControl.getProcessActionAssignment(key,
 							nodeAssignment.getNodeActorParameter());
 				}else{
 					return null;
@@ -80,7 +80,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 
 			@Override
 			protected User getActor(NodeAssignment nodeAssignment) {
-				String userid = processControl.getProcessActionActor(key,
+				String userid = IProcessControl.getProcessActionActor(key,
 						nodeAssignment.getNodeActorParameter());
 				return UserToolkit.getUserById(userid);
 			}
@@ -115,7 +115,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 		psp2.createContent();
 
 		// 添加监听
-		psp2.addProcessSettingListener(new ProcessControlSetting(processControl,key){
+		psp2.addProcessSettingListener(new ProcessControlSetting(IProcessControl,key){
 			@Override
 			protected void event(int code) {
 				setDirty(true);
@@ -132,7 +132,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 	 * @return DroolsProcessDefinition
 	 */
 	private DroolsProcessDefinition getCurrentDroolsProcessDefinition(String key) {
-		return processControl.getProcessDefinition(key);
+		return IProcessControl.getProcessDefinition(key);
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 	 * @return boolean
 	 */
 	private boolean isActivate(String key) {
-		return processControl.isWorkflowActivate(key);
+		return IProcessControl.isWorkflowActivate(key);
 	}
 
 	/**

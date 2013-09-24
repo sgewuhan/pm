@@ -165,6 +165,7 @@ public class ActivitySelecter extends Composite {
 	public void setInput(DroolsProcessDefinition processDefinition) {
 		processCanvas.setInput(processDefinition);
 		processTable.setDataInput(processDefinition);
+		layout();
 	}
 
 	public void addListener(INodeSelectionListener listener) {

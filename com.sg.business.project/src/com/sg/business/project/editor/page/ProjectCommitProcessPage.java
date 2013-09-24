@@ -1,9 +1,5 @@
 package com.sg.business.project.editor.page;
 
-import java.util.List;
-
-import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.page.AbstractWorkProcessPage;
 import com.sg.business.model.Project;
 
 /**
@@ -12,20 +8,13 @@ import com.sg.business.model.Project;
  * @author zhonghua
  *
  */
-public class ProjectCommitProcessPage extends AbstractWorkProcessPage {
+public class ProjectCommitProcessPage extends AbstractProjectProcessSettingPage {
+
 
 	@Override
-	protected String getWorkflowKey() {
+	protected String getProcessKey() {
 		return Project.F_WF_COMMIT;
 	}
 
-	@Override
-	protected List<PrimaryObject> getRoleDefinitions(PrimaryObject po) {
-		if(po instanceof Project){
-			Project project = (Project) po;
-			return project.getProjectRole();
-		}else{
-			return null;
-		}
-	}
+
 }

@@ -22,7 +22,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 import com.sg.widgets.MessageUtil;
 
 public class ProcessSettingPanel extends Composite {
@@ -50,7 +50,7 @@ public class ProcessSettingPanel extends Composite {
 		}
 
 		processAssignment = (BasicDBObject) primaryObject.getValue(key
-				+ IProcessControlable.POSTFIX_ASSIGNMENT);
+				+ IProcessControl.POSTFIX_ASSIGNMENT);
 		if (processAssignment == null) {
 			processAssignment = new BasicDBObject();
 		}
@@ -144,7 +144,7 @@ public class ProcessSettingPanel extends Composite {
 
 	private void refresh() {
 		Object activated = primaryObject.getValue(key
-				+ IProcessControlable.POSTFIX_ACTIVATED);
+				+ IProcessControl.POSTFIX_ACTIVATED);
 		activeButton.setSelection(Boolean.TRUE.equals(activated));
 
 		if (processDefinition != null) {
@@ -193,7 +193,7 @@ public class ProcessSettingPanel extends Composite {
 	}
 
 	private void activate(String key, Boolean b) {
-		primaryObject.setValue(key + IProcessControlable.POSTFIX_ACTIVATED, b);
+		primaryObject.setValue(key + IProcessControl.POSTFIX_ACTIVATED, b);
 		setDirty(true);
 	}
 
