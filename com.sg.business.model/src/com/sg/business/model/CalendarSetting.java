@@ -155,10 +155,6 @@ public class CalendarSetting extends PrimaryObject {
 				&& !Utils.isNullOrEmptyString(getValue(F_VALUE));
 	}
 
-	public static void main(String[] args) {
-		Calendar cal = Calendar.getInstance();
-		System.out.println(cal.get(Calendar.DAY_OF_MONTH));
-	}
 
 	/**
 	 * 返回日历设置记录值
@@ -308,4 +304,24 @@ public class CalendarSetting extends PrimaryObject {
 		Map<String, Double> map = getCalendarWorkingTime();
 		return map.get(yyyyMMddDate);
 	}
+	
+	@Override
+	public boolean canEdit(IContext context) {
+		// TODO Auto-generated method stub
+		return super.canEdit(context);
+	}
+	
+	@Override
+	public boolean canRead(IContext context) {
+		// TODO Auto-generated method stub
+		return super.canRead(context);
+	}
+	
+	@Override
+	public boolean canDelete(IContext context) {
+		// TODO Auto-generated method stub
+		return super.canDelete(context);
+	}
+	
+	
 }

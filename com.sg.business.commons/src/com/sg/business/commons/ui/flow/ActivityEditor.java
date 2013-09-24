@@ -11,12 +11,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.Section;
 
 import com.mobnut.db.model.DataSet;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.User;
 import com.sg.widgets.commons.selector.NavigatorSelector;
+import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.viewer.ViewerControl;
 
 /**
@@ -142,10 +144,16 @@ public class ActivityEditor extends Composite {
 	 */
 	ActivityEditor(Composite parent, boolean hasRoleSelector,
 			boolean hasActorSelector) {
-		super(parent, SWT.BORDER);
+		super(parent, SWT.NONE);
 		this.hasActorSelector = hasActorSelector;
 		this.hasRoleSelector = hasRoleSelector;
-		createContent(this);
+		setLayout(new GridLayout());
+		
+		Section section = new SimpleSection(this,  Section.EXPANDED|Section.SHORT_TITLE_BAR | Section.TWISTIE);
+		section.setText("任务信息以及执行人指派");
+		Composite panel = new Composite(section,SWT.NONE);
+		createContent(panel);
+		section.setClient(panel);
 	}
 
 	/**
@@ -153,7 +161,8 @@ public class ActivityEditor extends Composite {
 	 * @param parent
 	 */
 	private void createContent(Composite parent) {
-		setLayout(new GridLayout(3, false));
+		parent.setLayout(new GridLayout(3, false));
+
 		// 活动名称
 		Label label = new Label(parent, SWT.NONE);
 		label.setText("活动名称");
@@ -470,11 +479,11 @@ public class ActivityEditor extends Composite {
 
 	public void setEditable(boolean editable) {
 		if(actorSelectorButton!=null&&!actorSelectorButton.isDisposed()){
-			actorSelectorButton.setEnabled(editable);
+			actorSelectorButton.setEnabled(nodeAssignment!=null&&editable);
 		}
 		
 		if(roleSelectorButton!=null&&!roleSelectorButton.isDisposed()){
-			roleSelectorButton.setEnabled(editable);
+			roleSelectorButton.setEnabled(nodeAssignment!=null&&editable);
 		}
 	}
 

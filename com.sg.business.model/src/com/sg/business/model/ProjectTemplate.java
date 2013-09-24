@@ -412,17 +412,14 @@ public class ProjectTemplate extends PrimaryObject {
 		return "ÏîÄ¿Ä£°å";
 	}
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter.equals(IProcessControlable.class)) {
-			return new ProcessControl(this) {
-
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter.equals(IProcessControl.class)) {
+			return (T) new ProcessControl(this){
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return RoleDefinition.class;
 				}
-
 			};
 		}
 		return super.getAdapter(adapter);

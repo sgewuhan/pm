@@ -716,424 +716,6 @@
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
-            collectionName="project"
-            dbName="pm2"
-            id="project.editor"
-            image="image/project_24.png"
-            isDefault="true"
-            name="项目计划">
-         <basicpage
-               description="项目的基本信息"
-               id="project.basicpage"
-               image="image/project_24.png"
-               title="基本">
-            <pagecolumn>
-               <section
-                     label="项目摘要">
-                  <fieldgroup
-                        columnCount="2"
-                        makeColumnWidthEqual="false">
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
-                           id="projectnumber"
-                           label="项目编号"
-                           labelVisible="true"
-                           name="projectnumber"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                     <combo
-                           editPart="Combo(Read Only)"
-                           editable="true"
-                           id="status"
-                           label="状态"
-                           labelVisible="false"
-                           name="status"
-                           option="status"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </combo>
-                  </fieldgroup>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="项目名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="description"
-                        label="描述"
-                        labelVisible="true"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-               </section>
-               <section
-                     label="工作令号">
-                  <list
-                        editable="true"
-                        id="workorder"
-                        label="工作令号"
-                        labelVisible="false"
-                        name="workorder"
-                        persistable="true"
-                        required="false"
-                        tooltips="项目关联的工作令号,可以添加多个">
-                  </list>
-               </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
-                     label="项目经理, 部门">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="chargerid"
-                        label="项目经理"
-                        labelVisible="true"
-                        name="chargerid"
-                        persistable="false"
-                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="org_id"
-                        label="项目管理部门"
-                        labelVisible="true"
-                        name="org_id"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="launchorg_id"
-                        label="项目发起部门"
-                        labelVisible="true"
-                        name="launchorg_id"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
-               </section>
-               <section
-                     label="计划">
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="false"
-                        id="planstart"
-                        label="计划开始"
-                        labelVisible="true"
-                        name="planstart"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="false"
-                        id="planfinish"
-                        label="计划完成"
-                        labelVisible="true"
-                        name="planfinish"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <spinner
-                        editable="false"
-                        id="planduration"
-                        label="计划工期(天)"
-                        labelVisible="true"
-                        name="planduration"
-                        persistable="true"
-                        required="false"
-                        spinnerSetting="0,999999,1,100">
-                  </spinner>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="planworks"
-                        label="计划工时(时)"
-                        labelVisible="true"
-                        name="planworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
-               </section>
-               <section
-                     label="实际">
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="false"
-                        id="actualstart"
-                        label="实际开始"
-                        labelVisible="true"
-                        name="actualstart"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="false"
-                        id="actualfinish"
-                        label="实际完成"
-                        labelVisible="true"
-                        name="actualfinish"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <spinner
-                        editable="false"
-                        id="actualduration"
-                        label="实际工期(天)"
-                        labelVisible="true"
-                        name="actualduration"
-                        persistable="true"
-                        required="false"
-                        spinnerSetting="0,999999,1,100">
-                  </spinner>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="actualworks"
-                        label="实际工时(时)"
-                        labelVisible="true"
-                        name="actualworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="项目包含以下选项"
-               id="project.basicpage.3"
-               image="image/options_24.png"
-               pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
-               title="选项">
-         </basicpage>
-         <basicpage
-               description="请输入预算金额"
-               id="project.financial"
-               image="image/financial_24.png"
-               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
-               title="预算">
-         </basicpage>
-         <navigatorpage
-               createAfterSave="true"
-               description="为项目团队的各个角色指定成员"
-               id="project.team"
-               image="image/group_24.png"
-               navigatorId="project.team"
-               title="项目组">
-         </navigatorpage>
-         <navigatorpage
-               id="project.wbs"
-               image="image/wbs_24.png"
-               navigatorId="project.wbs"
-               title="WBS">
-            <navigatoraction
-                  action="com.sg.business.project.action.RecalculateSEQ">
-            </navigatoraction>
-            <navigatoraction
-                  action="com.sg.business.project.action.AutoAssignment">
-            </navigatoraction>
-         </navigatorpage>
-         <navigatorpage
-               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
-               id="project.deliverable"
-               navigatorId="project.deliverable"
-               title="交付物">
-         </navigatorpage>
-         <navigatorpage
-               id="project.documents"
-               navigatorId="project.documents"
-               title="文档">
-         </navigatorpage>
-         <navigatorpage
-               createAfterSave="true"
-               id="project.calendar"
-               navigatorId="project.calendar"
-               title="日历">
-         </navigatorpage>
-         <navigatorpage
-               createAfterSave="true"
-               id="project.bulletinboard"
-               image="image/bulletin_24.png"
-               navigatorId="project.bulletinboard"
-               title="公告">
-         </navigatorpage>
-      </editor>
-      <editor
-            collectionName="project"
-            dbName="pm2"
-            id="project.editor.wizard"
-            image="image/project_72.png"
-            isDefault="false"
-            name="项目">
-         <basicpage
-               description="项目的基本信息"
-               id="project.basicpage.1"
-               title="基本">
-            <pagecolumn>
-               <section
-                     label="项目摘要">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="projectnumber"
-                        label="项目编号"
-                        labelVisible="true"
-                        name="projectnumber"
-                        persistable="true"
-                        required="false"
-                        textMessage="&lt;自动编号&gt;"
-                        type="String">
-                     <extendValueDefinition
-                           type="com.sg.business.commons.numbering.ProjectNumber">
-                     </extendValueDefinition>
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="项目名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="description"
-                        label="描述"
-                        labelVisible="true"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-               </section>
-               <section
-                     label="项目经理、项目管理部门">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="chargerid"
-                        label="项目经理"
-                        labelVisible="true"
-                        name="chargerid"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
-                  <navigatorSelector
-                        id="org_id"
-                        label="项目管理部门"
-                        labelVisible="true"
-                        modelClass="com.sg.business.model.Organization"
-                        name="org_id"
-                        navigatorId="project.managementorg"
-                        navigatorReturnField="_id"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-                  <navigatorSelector
-                        id="launchorg_id"
-                        label="项目发起部门"
-                        labelVisible="true"
-                        modelClass="com.sg.business.model.Organization"
-                        name="launchorg_id"
-                        navigatorId="project.launchorg"
-                        navigatorReturnField="_id"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="请填写项目计划，并选择项目模板"
-               id="project.basicpage.2"
-               title="项目计划和模板">
-            <pagecolumn>
-               <section
-                     label="计划">
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="planstart"
-                        label="计划开始"
-                        labelVisible="true"
-                        name="planstart"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="planfinish"
-                        label="计划完成"
-                        labelVisible="true"
-                        name="planfinish"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-               </section>
-               <section
-                     label="项目模板">
-                  <combo
-                        dataSetFactory="com.sg.business.model.dataset.project.ProjectTemplateOfOrg"
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="projecttemplate_id"
-                        isComputeField="true"
-                        label="项目模板"
-                        labelVisible="true"
-                        name="projecttemplate_id"
-                        persistable="true"
-                        required="true"
-                        type="ObjectId">
-                  </combo>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="您选择的模板提供了以下选项，请确定选择"
-               id="project.basicpage.3"
-               pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
-               title="选项">
-         </basicpage>
-      </editor>
-      <editor
             collectionName="workconnection"
             dbName="pm2"
             id="editor.workConnection"
@@ -1560,375 +1142,6 @@
          </basicpage>
       </editor>
       <editor
-            collectionName="work"
-            dbName="pm2"
-            id="editor.work.plan"
-            image="image/work_24.png"
-            isDefault="false"
-            name="工作计划"
-            titleToolTips="工作">
-         <basicpage
-               description="工作的基本信息"
-               id="basicpage"
-               image="image/work_24.png"
-               title="基本信息">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="true"
-                        type="String"
-                        widthHint="240">
-                  </text>
-                  <checkbox
-                        editable="true"
-                        id="milestone"
-                        label="里程碑"
-                        labelVisible="true"
-                        name="milestone"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-               </section>
-               <section
-                     label="计划">
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="planstart"
-                        label="计划开始"
-                        labelVisible="true"
-                        name="planstart"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="planfinish"
-                        label="计划完成"
-                        labelVisible="true"
-                        name="planfinish"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="planduration"
-                        label="计划工期(天)"
-                        labelVisible="true"
-                        name="planduration"
-                        persistable="true"
-                        required="false"
-                        type="Integer">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="standardworks"
-                        label="标准工时(时)"
-                        labelVisible="true"
-                        name="standardworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="planworks"
-                        label="计划工时(时)"
-                        labelVisible="true"
-                        name="planworks"
-                        persistable="true"
-                        required="true"
-                        type="Double">
-                  </text>
-               </section>
-            </pagecolumn>
-            <pagecolumn
-                  id="2">
-               <section
-                     label="团队">
-                  <navigatorSelector
-                        editable="true"
-                        id="chargerid"
-                        label="负责人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="chargerid"
-                        navigatorId="project.participte.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
-                        editable="true"
-                        id="participate"
-                        label="参与者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
-                        name="participate"
-                        persistable="true"
-                        required="true">
-                  </list>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="说明"
-               id="memopage"
-               image="image/work_24.png"
-               title="说明">
-            <pagecolumn>
-               <section
-                     label="说明">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        heightHint="120"
-                        id="description"
-                        label="说明"
-                        labelVisible="false"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="工作执行流程的执行人"
-               id="processpage1"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.WorkExecuteProcessAssignmentPage"
-               title="流程指派">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="work"
-            dbName="pm2"
-            id="editor.work.setting"
-            image="image/worksetting_24.png"
-            isDefault="false"
-            name="工作设置"
-            titleToolTips="工作">
-         <basicpage
-               description="工作基本设置"
-               id="basicpage"
-               image="image/worksetting_24.png"
-               title="工作基本设置">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="desc"
-                        label="名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="240">
-                  </text>
-                  <checkbox
-                        editable="false"
-                        id="milestone"
-                        label="里程碑"
-                        labelVisible="true"
-                        name="milestone"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="standardworks"
-                        label="标准工时(时)"
-                        labelVisible="true"
-                        name="standardworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
-               </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
-                     label="工作和交付物">
-                  <checkbox
-                        editable="false"
-                        id="s_canbreakdown"
-                        label="是否允许分解工作"
-                        labelVisible="true"
-                        name="s_canbreakdown"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="false"
-                        id="s_canadddeliverables"
-                        label="是否允许添加交付物"
-                        labelVisible="true"
-                        name="s_canadddeliverables"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="false"
-                        id="s_canmodifyplanworks"
-                        label="是否允许修改计划工时"
-                        labelVisible="true"
-                        name="s_canmodifyplanworks"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-               </section>
-               <section
-                     label="开始和完成设定">
-                  <checkbox
-                        editable="false"
-                        id="s_autostartwithparent"
-                        label="上级工作开始时，本工作自动开始"
-                        labelVisible="true"
-                        name="s_autostartwithparent"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="false"
-                        id="s_autofinishwithparent"
-                        label="上级工作完成时，本工作自动完成"
-                        labelVisible="true"
-                        name="s_autofinishwithparent"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="false"
-                        id="s_canskiptofinish"
-                        label="是否可以跳过进行中的流程完成工作"
-                        labelVisible="true"
-                        name="s_canskiptofinish"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="false"
-                        id="s_autofinishwithchildren"
-                        label="下级所有工作完成时，本工作自动完成"
-                        labelVisible="true"
-                        name="s_autofinishwithchildren"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-               </section>
-               <section
-                     label="变更设定">
-                  <checkbox
-                        editable="false"
-                        id="s_workchangeflowmandory"
-                        label="需启动变更流程实施工作的更改"
-                        labelVisible="true"
-                        name="s_workchangeflowmandory"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="false"
-                        id="s_projectchangeflowmandory"
-                        label="需启动项目变更流程实施工作的更改"
-                        labelVisible="true"
-                        name="s_projectchangeflowmandory"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="角色设置"
-               id="settingpage"
-               image="image/worksetting_24.png"
-               title="角色设置">
-            <pagecolumn
-                  id="2">
-               <section
-                     label="指派角色">
-                  <combo
-                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="charger_roled_id"
-                        label="负责人角色"
-                        labelVisible="true"
-                        name="charger_roled_id"
-                        persistable="true"
-                        required="true"
-                        type="ObjectId">
-                  </combo>
-                  <combo
-                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="assignmentcharger_roled_id"
-                        label="指派人角色"
-                        labelVisible="true"
-                        name="assignmentcharger_roled_id"
-                        persistable="true"
-                        required="false"
-                        type="ObjectId">
-                  </combo>
-               </section>
-               <section
-                     label="参与者角色">
-                  <table
-                        ctableId="project.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
-                        editable="true"
-                        id="participate_roled_set"
-                        label="参与者角色"
-                        labelVisible="false"
-                        name="participate_roled_set"
-                        persistable="true"
-                        required="false">
-                  </table>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="工作执行流程设置"
-               id="processpage1"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.WorkExecuteProcessPage"
-               title="工作执行流程设置">
-         </basicpage>
-         <basicpage
-               description="工作变更流程设置"
-               id="processpage2"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.WorkChangeProcessPage"
-               title="工作变更流程设置">
-         </basicpage>
-      </editor>
-      <editor
             collectionName="deliverable"
             dbName="pm2"
             id="work.deliverable"
@@ -2049,252 +1262,6 @@
             </pagecolumn>
          </basicpage>
       </editor>
-      <editor
-            collectionName="project"
-            dbName="pm2"
-            id="project.flow.setting"
-            image="image/project_flow_24.png"
-            isDefault="false"
-            name="项目流程设定">
-         <basicpage
-               description="项目提交流程设置"
-               id="processpage1"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.project.editor.page.ProjectCommitProcessPage"
-               title="项目提交流程设置">
-         </basicpage>
-         <basicpage
-               description="项目变更流程设置"
-               id="processpage2"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.project.editor.page.ProjectChangeProcessPage"
-               title="项目变更流程设置">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="work"
-            dbName="pm2"
-            id="editor.work1"
-            image="image/work_24.png"
-            isDefault="false"
-            name="摘要工作"
-            titleToolTips="工作">
-         <basicpage
-               description="工作的基本信息"
-               id="basicpage"
-               image="image/work_24.png"
-               title="基本信息">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="240">
-                  </text>
-                  <navigatorSelector
-                        editable="true"
-                        id="chargerid"
-                        label="负责人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="chargerid"
-                        navigatorId="project.participte.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <fieldgroup
-                        columnCount="2">
-                     <checkbox
-                           editable="true"
-                           id="milestone"
-                           label="里程碑"
-                           labelVisible="true"
-                           name="milestone"
-                           persistable="true"
-                           required="false">
-                     </checkbox>
-                     <combo
-                           editPart="Combo(Read Only)"
-                           editable="false"
-                           id="status"
-                           label="状态"
-                           labelVisible="true"
-                           name="status"
-                           option="status"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </combo>
-                  </fieldgroup>
-               </section>
-               <section
-                     label="参与者">
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
-                        editable="true"
-                        id="participate"
-                        label="参与者"
-                        labelVisible="false"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
-                        name="participate"
-                        persistable="true"
-                        required="false">
-                  </list>
-               </section>
-            </pagecolumn>
-            <pagecolumn
-                  id="2">
-               <section
-                     label="计划">
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="planstart"
-                        label="计划开始"
-                        labelVisible="true"
-                        name="planstart"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="planfinish"
-                        label="计划完成"
-                        labelVisible="true"
-                        name="planfinish"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <spinner
-                        editable="true"
-                        id="planduration"
-                        label="计划工期(天)"
-                        labelVisible="true"
-                        name="planduration"
-                        persistable="true"
-                        required="false">
-                  </spinner>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="standardworks"
-                        label="标准工时(时)"
-                        labelVisible="true"
-                        name="standardworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="planworks"
-                        label="计划工时(时)"
-                        labelVisible="true"
-                        name="planworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
-               </section>
-               <section
-                     label="实际">
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="false"
-                        id="actualstart"
-                        label="实际开始"
-                        labelVisible="true"
-                        name="actualstart"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="false"
-                        id="actualfinish"
-                        label="实际完成"
-                        labelVisible="true"
-                        name="actualfinish"
-                        persistable="true"
-                        required="false"
-                        type="Date">
-                  </dateTime>
-                  <spinner
-                        editable="false"
-                        id="actualduration"
-                        label="实际工期(天)"
-                        labelVisible="true"
-                        name="actualduration"
-                        persistable="true"
-                        required="false">
-                  </spinner>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="actualworks"
-                        label="实际工时(时)"
-                        labelVisible="true"
-                        name="actualworks"
-                        persistable="true"
-                        required="false"
-                        type="Double">
-                  </text>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="说明"
-               id="memopage"
-               image="image/work_24.png"
-               title="说明">
-            <pagecolumn>
-               <section
-                     label="说明">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        heightHint="120"
-                        id="description"
-                        label="说明"
-                        labelVisible="false"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <navigatorpage
-               id="deliverable"
-               image="image/deliverable_24.png"
-               navigatorId="work.deliverable"
-               title="交付物">
-         </navigatorpage>
-         <basicpage
-               description="工作执行流程的执行人"
-               id="processpage1"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.WorkExecuteProcessAssignmentPage"
-               title="流程指派">
-         </basicpage>
-      </editor>
    </extension>
    <extension
          name="用于选择器"
@@ -2388,7 +1355,7 @@
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.RoleOfProject"
             id="project.team"
-            popupMenu="popup:project.team">
+            popupMenuProvider="com.sg.business.project.menu.ProjectTeamMenuProvider">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -2409,7 +1376,7 @@
             editorId="editor.work"
             fix="1"
             id="project.wbs"
-            popupMenu="popup:project.wbs">
+            popupMenuProvider="com.sg.business.project.menu.ProjectWBSMenuProvider">
          <structure
                modelRelation="work_work">
          </structure>
@@ -2492,7 +1459,7 @@
             editorId="editor.work"
             fix="1"
             id="project.deliverable"
-            popupMenu="popup:project.deliverable">
+            popupMenuProvider="com.sg.business.project.menu.ProjectDeliverableMenuProvider">
          <structure
                modelRelation="work_work">
          </structure>
@@ -2733,17 +1700,8 @@
             <command
                   commandId="com.sg.widgets.command.edit"
                   icon="image/financial_24.png"
-                  label="编制项目预算"
+                  label="项目预算"
                   style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <count
-                           value="+">
-                     </count>
-                  </with>
-               </visibleWhen>
                <parameter
                      name="com.sg.widgets.edit.editorid"
                      value="project.editor">
@@ -2758,15 +1716,6 @@
                   icon="image/group_24.png"
                   label="角色指派"
                   style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <count
-                           value="+">
-                     </count>
-                  </with>
-               </visibleWhen>
                <parameter
                      name="com.sg.widgets.edit.editorid"
                      value="project.editor">
@@ -2787,15 +1736,6 @@
                   icon="image/wbs_24.png"
                   label="WBS和计划"
                   style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <count
-                           value="+">
-                     </count>
-                  </with>
-               </visibleWhen>
                <parameter
                      name="com.sg.widgets.edit.editorid"
                      value="project.editor">
@@ -2810,15 +1750,6 @@
                   icon="image/deliverable_24.png"
                   label="交付物"
                   style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <count
-                           value="+">
-                     </count>
-                  </with>
-               </visibleWhen>
                <parameter
                      name="com.sg.widgets.edit.editorid"
                      value="project.editor">
@@ -2831,17 +1762,8 @@
             <command
                   commandId="com.sg.widgets.command.edit"
                   icon="image/document_24.png"
-                  label="查看项目文档"
+                  label="项目文档"
                   style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <count
-                           value="+">
-                     </count>
-                  </with>
-               </visibleWhen>
                <parameter
                      name="com.sg.widgets.edit.editorid"
                      value="project.editor">
@@ -2858,38 +1780,67 @@
             <command
                   commandId="com.sg.widgets.command.edit"
                   icon="image/flow_24.png"
-                  label="项目流程设置"
+                  label="项目流程"
                   style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <count
-                           value="+">
-                     </count>
-                  </with>
-               </visibleWhen>
                <parameter
                      name="com.sg.widgets.edit.editorid"
                      value="project.flow.setting">
                </parameter>
             </command>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/calendar_24.png"
+                  label="项目工作日设定"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.calendar.setting">
+               </parameter>
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
          </menu>
          <command
                commandId="project.check"
                icon="image/project_check_24.png"
-               label="项目计划提交检查"
+               label="项目计划检查"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <test
+                           args="check"
+                           property="project.operation"
+                           value="true">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <menu
                icon="image/execute_24.png"
-               label="执行">
+               label="项目执行">
             <command
                   commandId="project.commit"
                   icon="image/project_commit_24.png"
                   label="提交"
                   style="push">
             </command>
+            <separator
+                  name="project.separator5"
+                  visible="true">
+            </separator>
             <command
                   commandId="project.start"
                   icon="image/project_start_24.png"
@@ -2909,7 +1860,7 @@
                   style="push">
             </command>
             <separator
-                  name="project.separator5"
+                  name="project.separator6"
                   visible="true">
             </separator>
             <command
@@ -2918,6 +1869,21 @@
                   label="中止"
                   style="push">
             </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <test
+                           args="edit"
+                           property="project.operation"
+                           value="true">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </menu>
          <separator
                name="project.separator1"
@@ -3064,7 +2030,7 @@
                style="push">
          </command>
          <command
-               commandId="com.sg.widgets.command.edit"
+               commandId="work.edit"
                icon="image/editwork_24.png"
                label="编辑工作..."
                style="push">
@@ -3077,18 +2043,6 @@
                   </count>
                </with>
             </visibleWhen>
-            <parameter
-                  name="com.sg.widgets.edit.editorid"
-                  value="editor.work.plan">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.pageid"
-                  value="basicpage">
-            </parameter>
-            <parameter
-                  name="com.sg.widgets.edit.type"
-                  value="datadialog">
-            </parameter>
          </command>
          <command
                commandId="work.remove"
@@ -3689,6 +2643,13 @@
             properties="action"
             type="java.lang.Object">
       </propertyTester>
+      <propertyTester
+            class="com.sg.business.project.test.ProjectOperationTest"
+            id="project.operation.test"
+            namespace="project"
+            properties="operation"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <extension
          name="各类定制工作"
@@ -3809,6 +2770,463 @@
                pageDelegator="com.sg.business.project.editor.page.SelectionUserPage"
                title="移交用户">
          </basicpage>
+      </editor>
+   </extension>
+   <extension
+         name="项目有关的编辑器"
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="project.editor"
+            image="image/project_24.png"
+            isDefault="true"
+            memo="用于编制和查看项目计划使用"
+            name="项目计划">
+         <basicpage
+               description="项目的基本信息"
+               id="project.basicpage"
+               image="image/project_24.png"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="项目摘要">
+                  <fieldgroup
+                        columnCount="2"
+                        makeColumnWidthEqual="false">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="projectnumber"
+                           label="项目编号"
+                           labelVisible="true"
+                           name="projectnumber"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="false"
+                           id="status"
+                           label="状态"
+                           labelVisible="false"
+                           name="status"
+                           option="status"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="项目名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="描述"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="工作令号">
+                  <list
+                        editable="true"
+                        id="workorder"
+                        label="工作令号"
+                        labelVisible="false"
+                        name="workorder"
+                        persistable="true"
+                        required="false"
+                        tooltips="项目关联的工作令号,可以添加多个">
+                  </list>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="项目经理, 部门">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="chargerid"
+                        label="项目经理"
+                        labelVisible="true"
+                        name="chargerid"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="org_id"
+                        label="项目管理部门"
+                        labelVisible="true"
+                        name="org_id"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="launchorg_id"
+                        label="项目发起部门"
+                        labelVisible="true"
+                        name="launchorg_id"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="false"
+                        id="planduration"
+                        label="计划工期(天)"
+                        labelVisible="true"
+                        name="planduration"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
+                  </spinner>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="planworks"
+                        label="计划工时(时)"
+                        labelVisible="true"
+                        name="planworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+               <section
+                     label="实际">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualstart"
+                        label="实际开始"
+                        labelVisible="true"
+                        name="actualstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualfinish"
+                        label="实际完成"
+                        labelVisible="true"
+                        name="actualfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="false"
+                        id="actualduration"
+                        label="实际工期(天)"
+                        labelVisible="true"
+                        name="actualduration"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
+                  </spinner>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="actualworks"
+                        label="实际工时(时)"
+                        labelVisible="true"
+                        name="actualworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="项目选项属性"
+               id="project.basicpage.3"
+               image="image/options_24.png"
+               pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
+               title="选项">
+         </basicpage>
+         <basicpage
+               description="项目预算科目和金额"
+               id="project.financial"
+               image="image/financial_24.png"
+               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               title="预算">
+         </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               description="项目团队的各个角色和成员"
+               id="project.team"
+               image="image/group_24.png"
+               navigatorId="project.team"
+               title="项目组">
+         </navigatorpage>
+         <navigatorpage
+               id="project.wbs"
+               image="image/wbs_24.png"
+               navigatorId="project.wbs"
+               title="WBS">
+            <navigatoraction
+                  action="com.sg.business.project.action.RecalculateSEQ">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.AutoAssignment">
+            </navigatoraction>
+         </navigatorpage>
+         <navigatorpage
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
+               id="project.deliverable"
+               navigatorId="project.deliverable"
+               title="交付物">
+         </navigatorpage>
+         <navigatorpage
+               id="project.documents"
+               navigatorId="project.documents"
+               title="文档">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="project.bulletinboard"
+               image="image/bulletin_24.png"
+               navigatorId="project.bulletinboard"
+               title="公告">
+         </navigatorpage>
+      </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="project.editor.wizard"
+            image="image/project_72.png"
+            isDefault="false"
+            memo="用于创建项目的向导"
+            name="项目">
+         <basicpage
+               description="项目的基本信息"
+               id="project.basicpage.1"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="项目摘要">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="projectnumber"
+                        label="项目编号"
+                        labelVisible="true"
+                        name="projectnumber"
+                        persistable="true"
+                        required="false"
+                        textMessage="&lt;自动编号&gt;"
+                        type="String">
+                     <extendValueDefinition
+                           type="com.sg.business.commons.numbering.ProjectNumber">
+                     </extendValueDefinition>
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="项目名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="描述"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="项目经理、项目管理部门">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="chargerid"
+                        label="项目经理"
+                        labelVisible="true"
+                        name="chargerid"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <navigatorSelector
+                        id="org_id"
+                        label="项目管理部门"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.Organization"
+                        name="org_id"
+                        navigatorId="project.managementorg"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        id="launchorg_id"
+                        label="项目发起部门"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.Organization"
+                        name="launchorg_id"
+                        navigatorId="project.launchorg"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="请填写项目计划，并选择项目模板"
+               id="project.basicpage.2"
+               title="项目计划和模板">
+            <pagecolumn>
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+               </section>
+               <section
+                     label="项目模板">
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.project.ProjectTemplateOfOrg"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="projecttemplate_id"
+                        isComputeField="true"
+                        label="项目模板"
+                        labelVisible="true"
+                        name="projecttemplate_id"
+                        persistable="true"
+                        required="true"
+                        type="ObjectId">
+                  </combo>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="您选择的模板提供了以下选项，请确定选择"
+               id="project.basicpage.3"
+               pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
+               title="选项">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="project.flow.setting"
+            image="image/project_flow_24.png"
+            isDefault="false"
+            memo="用于设定项目流程"
+            name="项目流程设定">
+         <basicpage
+               description="项目提交流程设置"
+               id="processpage1"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.project.editor.page.ProjectCommitProcessPage"
+               title="项目提交流程设置">
+         </basicpage>
+         <basicpage
+               description="项目变更流程设置"
+               id="processpage2"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.project.editor.page.ProjectChangeProcessPage"
+               title="项目变更流程设置">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="project.calendar.setting"
+            image="image/calendar_24.png"
+            isDefault="false"
+            memo="用于设定项目日历"
+            name="项目工作日设定">
+         <navigatorpage
+               createAfterSave="true"
+               id="project.calendar"
+               image="image/calendar_24.png"
+               navigatorId="project.calendar"
+               title="日历">
+         </navigatorpage>
       </editor>
    </extension>
 

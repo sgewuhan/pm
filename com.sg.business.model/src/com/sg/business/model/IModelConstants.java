@@ -140,11 +140,17 @@ public interface IModelConstants {
 	 */
 	public static final String C_BULLETINBOARD = "bulletinboard";
 	
+
 	/**
-	 * 全局设置
+	 * 设置: 默认的项目提交工作的周期,此设置只能用于系统设置Interval
 	 */
-	public static final String C_VARIABLESETTING = "variablesetting";
+	public static final String S_DEFAULT_PROJECT_COMMIT_DURATION = "PROJECT.COMMIT.DURATION";
 	
+	/**
+	 * 设置：待处理工作的刷新周期，此设置可用于用户设置和系统设置
+	 */
+	public static final String S_U_WORK_RESERVED_REFRESH_INTERVAL = "WORK.RESERVED.REFRESH.INTERVAL";
+
 	
 
 }

@@ -35,6 +35,7 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 	private IManagedForm form;
 	private Project project;
 	private Composite content;
+	private boolean editable;
 
 	public ProjectOptionPage() {
 	}
@@ -45,6 +46,7 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());
 		project = (Project) input.getData();
+		this.editable = input.isEditable();
 		project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
 		createOptionContent();
 		return content;
@@ -91,6 +93,8 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 				});
 				settingButton.setSelection(optionsValue != null
 						&& optionsValue.contains(optionName));
+				
+				settingButton.setEnabled(editable);
 			}
 		}
 

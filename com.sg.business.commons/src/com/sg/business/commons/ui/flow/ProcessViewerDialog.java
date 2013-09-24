@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.ui.flow.part.SimpleNodeLabel;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 
 public class ProcessViewerDialog extends Dialog {
 
@@ -24,7 +24,7 @@ public class ProcessViewerDialog extends Dialog {
 	private BasicBSONList procHistory;
 	private String title;
 
-	public ProcessViewerDialog(Shell parentShell, IProcessControlable ipc,
+	public ProcessViewerDialog(Shell parentShell, IProcessControl ipc,
 			String processKey,String title) {
 		super(parentShell);
 		procDefinition = ipc.getProcessDefinition(processKey);
@@ -72,7 +72,7 @@ public class ProcessViewerDialog extends Dialog {
 							if (element instanceof DBObject) {
 								DBObject dbObject = (DBObject) element;
 								Object taskname = dbObject
-										.get(IProcessControlable.F_WF_TASK_NAME);
+										.get(IProcessControl.F_WF_TASK_NAME);
 								return name.equals(taskname);
 							}
 							return false;

@@ -10,7 +10,7 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 
-public abstract class ProcessControl implements IProcessControlable {
+public abstract class ProcessControl implements IProcessControl {
 
 	private PrimaryObject primaryObject;
 
@@ -22,6 +22,13 @@ public abstract class ProcessControl implements IProcessControlable {
 	public boolean isWorkflowActivate(String fieldKey) {
 		return Boolean.TRUE.equals(primaryObject.getValue(fieldKey
 				+ POSTFIX_ACTIVATED));
+	}
+	
+	
+
+	@Override
+	public boolean isWorkflowActivateAndAvailable(String fieldKey) {
+		return isWorkflowActivate(fieldKey)&&getProcessDefinition(fieldKey)!=null;
 	}
 
 	@Override
@@ -136,7 +143,7 @@ public abstract class ProcessControl implements IProcessControlable {
 
 	public void setProcessRoleAssignmentData(String key,
 			DBObject wfRoleAssignment) {
-		primaryObject.setValue(key + IProcessControlable.POSTFIX_ASSIGNMENT,
+		primaryObject.setValue(key + IProcessControl.POSTFIX_ASSIGNMENT,
 				wfRoleAssignment);
 	}
 

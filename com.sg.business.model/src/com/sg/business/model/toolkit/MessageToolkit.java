@@ -9,7 +9,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Message;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
@@ -44,7 +44,7 @@ public class MessageToolkit {
 			String processName) {
 		Message message;
 		String userId;
-		IProcessControlable pc = (IProcessControlable) work.getAdapter(IProcessControlable.class);
+		IProcessControl pc = (IProcessControl) work.getAdapter(IProcessControl.class);
 
 		if (pc.isWorkflowActivate(processKey)) {
 			DBObject map = pc.getProcessActorsData(processKey);
@@ -71,7 +71,7 @@ public class MessageToolkit {
 			String processName) {
 		Message message;
 		String userId;
-		IProcessControlable pc = (IProcessControlable) project.getAdapter(IProcessControlable.class);
+		IProcessControl pc = (IProcessControl) project.getAdapter(IProcessControl.class);
 		if (pc.isWorkflowActivate(processKey)) {
 			DBObject map = pc.getProcessActorsData(processKey);
 			if (map != null) {

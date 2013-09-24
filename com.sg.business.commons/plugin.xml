@@ -871,12 +871,68 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
+            class="com.sg.business.commons.handler.CreateWorkDefinition"
+            commandId="work.create">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="com.sg.business.model.WorkDefinition">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
             class="com.sg.business.commons.handler.CreateWork"
             commandId="work.create">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="com.sg.business.model.Work">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
+      </handler>
+      <handler
+            class="com.sg.business.commons.handler.EditWorkDefinition"
+            commandId="work.edit">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="com.sg.business.model.WorkDefinition">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
       </handler>
       <handler
             class="com.sg.business.commons.handler.EditWork"
             commandId="work.edit">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="com.sg.business.model.Work">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
       </handler>
       <handler
             class="com.sg.business.commons.handler.RemoveWork"
@@ -1116,7 +1172,6 @@
          point="com.sg.widgets.column">
       <column
             column="planstart"
-            editingSupport="com.sg.business.commons.editingsupport.PlanStartEditing"
             id="planstart_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
             name="计划开始"
@@ -1125,7 +1180,6 @@
       </column>
       <column
             column="planfinish"
-            editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
             id="planfinish_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
             name="计划完成"

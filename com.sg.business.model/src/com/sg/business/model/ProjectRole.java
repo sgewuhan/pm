@@ -155,8 +155,8 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		}
 
 		Project project = getProject();
-		IProcessControlable pc = (IProcessControlable) project
-				.getAdapter(IProcessControlable.class);
+		IProcessControl pc = (IProcessControl) project
+				.getAdapter(IProcessControl.class);
 		// 2.项目执行流程上引用
 		if (ProjectToolkit.checkProcessInternal(pc, Project.F_WF_COMMIT, this)) {
 			message.add(new Object[] { "在项目的执行流程中引用了该角色", this,
@@ -183,7 +183,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 				message.addAll(checkCascadeRemove(childWork));
 			}
 		} else {
-			IProcessControlable pc = (IProcessControlable) work.getAdapter(IProcessControlable.class);
+			IProcessControl pc = (IProcessControl) work.getAdapter(IProcessControl.class);
 			// 4.1.工作执行流程上引用
 			if (ProjectToolkit.checkProcessInternal(pc, Work.F_WF_EXECUTE,
 					this)) {

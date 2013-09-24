@@ -54,8 +54,8 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 		}
 
 		ProjectTemplate projectTemplate = getProjectTemplate();
-		ProcessControl pc = (ProcessControl) projectTemplate
-				.getAdapter(IProcessControlable.class);
+		IProcessControl pc = (IProcessControl) projectTemplate
+				.getAdapter(IProcessControl.class);
 		// 2.提交流程上引用
 		if (pc.isWorkflowActivate(ProjectTemplate.F_WF_COMMIT)) {
 			// 如果流程已经激活，需要判断是否所有的actor都指派

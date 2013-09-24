@@ -12,7 +12,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -72,8 +72,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			sb.append("</span>");
 		}
 		
-		IProcessControlable pc = (IProcessControlable) work
-				.getAdapter(IProcessControlable.class);
+		IProcessControl pc = (IProcessControl) work
+				.getAdapter(IProcessControl.class);
 
 		String imageUrl = "<img src='" + getHeaderImageURL(work,pc)
 				+ "' style='float:left;padding:6px' width='16' height='16' />";
@@ -163,7 +163,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private String getWorkflowSummaryInformation(Work work,IProcessControlable pc) {
+	private String getWorkflowSummaryInformation(Work work,IProcessControl pc) {
 		DBObject data = pc.getWorkflowTaskData(Work.F_WF_EXECUTE);
 		if (data == null) {
 			return "";
@@ -179,10 +179,10 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 				if (latestTask == null) {
 					latestTask = task;
 				} else {
-					Object createdon = task.get(IProcessControlable.F_WF_TASK_CREATEDON);
+					Object createdon = task.get(IProcessControl.F_WF_TASK_CREATEDON);
 					if (createdon instanceof Date) {
 						Date latestDate = (Date) latestTask
-								.get(IProcessControlable.F_WF_TASK_CREATEDON);
+								.get(IProcessControl.F_WF_TASK_CREATEDON);
 						if (((Date) createdon).after(latestDate)) {
 							latestTask = task;
 						}
@@ -198,15 +198,15 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='float:right;padding-right:4px'>");
 		// 根据状态取流程图标
-		Object taskstatus = latestTask.get(IProcessControlable.F_WF_TASK_STATUS);
+		Object taskstatus = latestTask.get(IProcessControl.F_WF_TASK_STATUS);
 		sb.append("<img src='" + getTaskStatusImageURL(taskstatus)
 				+ "' style='float:left;padding:6px' width='10' height='10' />");
 
-		Object taskname = latestTask.get(IProcessControlable.F_WF_TASK_NAME);
+		Object taskname = latestTask.get(IProcessControl.F_WF_TASK_NAME);
 		sb.append(" ");
 		sb.append(taskname);
 		sb.append(" ");
-		Object owner = latestTask.get(IProcessControlable.F_WF_TASK_ACTUALOWNER);
+		Object owner = latestTask.get(IProcessControl.F_WF_TASK_ACTUALOWNER);
 		if (owner instanceof String) {
 			User ownerUser = UserToolkit.getUserById((String) owner);
 			sb.append(ownerUser);
@@ -282,7 +282,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return false;
 	}
 
-	private String getHeaderImageURL(Work work,IProcessControlable pc) {
+	private String getHeaderImageURL(Work work,IProcessControl pc) {
 		if (work.isProjectWBSRoot()) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);

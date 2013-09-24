@@ -18,7 +18,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.model.IProcessControlable;
+import com.sg.business.model.IProcessControl;
 import com.sg.business.model.ProjectRole;
 
 public abstract class ProcessViewer extends TableViewer {
@@ -36,10 +36,10 @@ public abstract class ProcessViewer extends TableViewer {
 		this.data = data;
 		this.key = key;
 		processAssignment = (DBObject) data.getValue(key
-				+ IProcessControlable.POSTFIX_ASSIGNMENT);
+				+ IProcessControl.POSTFIX_ASSIGNMENT);
 		if (processAssignment == null) {
 			processAssignment = new BasicDBObject();
-			data.setValue(key + IProcessControlable.POSTFIX_ASSIGNMENT,
+			data.setValue(key + IProcessControl.POSTFIX_ASSIGNMENT,
 					processAssignment);
 		}
 		this.roleDefinitions = roleDefinitions;
@@ -56,10 +56,10 @@ public abstract class ProcessViewer extends TableViewer {
 		this.data = data;
 		this.key = key;
 		processAssignment = (DBObject) data.getValue(key
-				+ IProcessControlable.POSTFIX_ASSIGNMENT);
+				+ IProcessControl.POSTFIX_ASSIGNMENT);
 		if (processAssignment == null) {
 			processAssignment = new BasicDBObject();
-			data.setValue(key + IProcessControlable.POSTFIX_ASSIGNMENT,
+			data.setValue(key + IProcessControl.POSTFIX_ASSIGNMENT,
 					processAssignment);
 		}
 		getTable().setHeaderVisible(true);
@@ -154,7 +154,7 @@ public abstract class ProcessViewer extends TableViewer {
 						processAssignment.put(nodeActorParameter,
 								roled.get_id());
 					}
-					data.setValue(key + IProcessControlable.POSTFIX_ASSIGNMENT,
+					data.setValue(key + IProcessControl.POSTFIX_ASSIGNMENT,
 							processAssignment);
 					processAssignmentUpdated();
 					refresh();

@@ -6,7 +6,7 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 
-public interface IProcessControlable {
+public interface IProcessControl {
 
 	public static final String POSTFIX_ACTIVATED = "_activated";
 
@@ -193,5 +193,12 @@ public interface IProcessControlable {
 	DBObject getProcessRoleAssignmentData(String key);
 
 	DBObject getWorkflowTaskData(String key);
+
+	/**
+	 * key对应的流程是否可用
+	 * @param fWfExecute
+	 * @return
+	 */
+	boolean isWorkflowActivateAndAvailable(String fWfExecute);
 
 }

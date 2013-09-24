@@ -57,7 +57,7 @@ public class WorkActivator extends AbstractUIPlugin {
 	public void startWorkSync() {
 		if(sync == null){
 			sync = new WorkflowSynchronizer(false);
-			sync.start(10*60*1000);
+			sync.start(10*60*1000,false);
 		}
 	}
 
