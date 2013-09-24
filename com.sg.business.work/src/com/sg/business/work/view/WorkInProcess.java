@@ -41,7 +41,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 			Integer interval = Utils.getIntegerValue(_interval);
 			if (interval != null) {
 				repeatWorkSynchronizer = createBackgroundSynchronizer(userid);
-				repeatWorkSynchronizer.start(interval.intValue() * 1000, false);
+				repeatWorkSynchronizer.start(interval.intValue() *60 * 1000, false);
 			}
 		}
 	}
