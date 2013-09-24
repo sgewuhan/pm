@@ -1,5 +1,6 @@
 package com.sg.business.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -185,12 +186,17 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * @return List
 	 */
 	public List<PrimaryObject> getChildrenWork() {
-		DBObject condition = new BasicDBObject().append(F_PARENT_ID, get_id());
-		DBObject sort = new SEQSorter().getBSON();
-		StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
-				getClass(), condition);
-		dsf.setSort(sort);
-		return dsf.getDataSet().getDataItems();
+		ObjectId id = get_id();
+		if (id != null) {
+			DBObject condition = new BasicDBObject().append(F_PARENT_ID, id);
+			DBObject sort = new SEQSorter().getBSON();
+			StructuredDBCollectionDataSetFactory dsf = getRelationDataSetFactory(
+					getClass(), condition);
+			dsf.setSort(sort);
+			return dsf.getDataSet().getDataItems();
+		} else {
+			return new ArrayList<PrimaryObject>();
+		}
 	}
 
 	/**
@@ -360,11 +366,10 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 		return new PrimaryObject[] { parent, upperBrother };
 	}
-	
-	
-    
+
 	/**
 	 * ÷ÿ–¬≈≈¡––Ú∫≈
+	 * 
 	 * @throws Exception
 	 */
 	public void doArrangeWBSCode() throws Exception {

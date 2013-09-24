@@ -70,7 +70,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	/**
 	 * 编辑工作计划
 	 */
-	public static final String EDITOR_WORK_PLAN = "edit.work.plan";
+//	public static final String EDITOR_WORK_PLAN = "edit.work.plan";
 	
 	/**
 	 * 必需的，不可删除，布尔类型的字段

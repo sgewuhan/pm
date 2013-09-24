@@ -194,7 +194,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			public String getText(Object element) {
 				if (element instanceof DroolsProcessDefinition) {
 					DroolsProcessDefinition definition = (DroolsProcessDefinition) element;
-					return definition.getProcessName();
+					return definition.getProcessName()+"["+definition.getKbase()+"]";
 				} else {
 					return "";
 				}

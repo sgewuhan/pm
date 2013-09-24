@@ -46,7 +46,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 
 		// 使用编辑器打开编辑工作定义
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				"edit.work.plan");
+				"edit.work.plan.0");//使用不带流程的工作编辑器进行创建
 
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,

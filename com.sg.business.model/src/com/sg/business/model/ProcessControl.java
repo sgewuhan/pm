@@ -23,6 +23,13 @@ public abstract class ProcessControl implements IProcessControlable {
 		return Boolean.TRUE.equals(primaryObject.getValue(fieldKey
 				+ POSTFIX_ACTIVATED));
 	}
+	
+	
+
+	@Override
+	public boolean isWorkflowActivateAndAvailable(String fieldKey) {
+		return isWorkflowActivate(fieldKey)&&getProcessDefinition(fieldKey)!=null;
+	}
 
 	@Override
 	public void setWorkflowActivate(String key, boolean activated) {

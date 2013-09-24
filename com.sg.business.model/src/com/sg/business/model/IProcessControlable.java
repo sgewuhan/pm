@@ -194,4 +194,11 @@ public interface IProcessControlable {
 
 	DBObject getWorkflowTaskData(String key);
 
+	/**
+	 * key对应的流程是否可用
+	 * @param fWfExecute
+	 * @return
+	 */
+	boolean isWorkflowActivateAndAvailable(String fWfExecute);
+
 }

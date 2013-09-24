@@ -479,11 +479,11 @@ public class ActivityEditor extends Composite {
 
 	public void setEditable(boolean editable) {
 		if(actorSelectorButton!=null&&!actorSelectorButton.isDisposed()){
-			actorSelectorButton.setEnabled(editable);
+			actorSelectorButton.setEnabled(nodeAssignment!=null&&editable);
 		}
 		
 		if(roleSelectorButton!=null&&!roleSelectorButton.isDisposed()){
-			roleSelectorButton.setEnabled(editable);
+			roleSelectorButton.setEnabled(nodeAssignment!=null&&editable);
 		}
 	}
 
