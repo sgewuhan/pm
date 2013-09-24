@@ -40,7 +40,7 @@ public class EditWork extends AbstractNavigatorHandler {
 		work.addEventListener(vc);
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				"editor.work.plan");
+				"edit.work.plan");
 
 		if (conf != null) {
 			try {

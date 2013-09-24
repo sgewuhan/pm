@@ -31,6 +31,8 @@ import com.sg.business.model.User;
 
 public abstract class ProcessSettingPanel2 extends Composite {
 
+	private static final int MARGIN = 0;
+
 	public interface IProcessSettingListener {
 
 		public static final int EVENT_ACTOR_CHANGED = 0;
@@ -143,11 +145,11 @@ public abstract class ProcessSettingPanel2 extends Composite {
 		if (processSelecter != null) {
 			fd.top = new FormAttachment(processSelecter.getControl(), 10);
 		} else {
-			fd.top = new FormAttachment(0, 10);
+			fd.top = new FormAttachment(0, MARGIN);
 		}
-		fd.left = new FormAttachment(0, 10);
-		fd.right = new FormAttachment(100, -10);
-		fd.bottom = new FormAttachment(100, -10);
+		fd.left = new FormAttachment(0, MARGIN);
+		fd.right = new FormAttachment(100, -MARGIN);
+		fd.bottom = new FormAttachment(100, -MARGIN);
 		
 		activiteEditor.setEditable(editable);
 	}
