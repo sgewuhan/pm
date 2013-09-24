@@ -1,7 +1,5 @@
 package com.sg.business.project.handler;
 
-import java.util.List;
-
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -44,32 +42,30 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 	 * @throws Exception
 	 */
 	public void doCommit(Project project, IContext context) throws Exception {
-		List<Object[]> erreyList = project.checkCommitAction(context);
-		if (erreyList != null) {
-			if (project.isCommitWorkflowActivate()) {
-				Work work = project.makeWorkflowCommitableWork(null, context);
-				// 打开定义的用于启动工作的对话框编辑器
-				DataObjectWizard dw = DataObjectWizard.open(work,
-						Work.EDITOR_LAUNCH, true, null);
-				if (dw.getResult() == Window.OK) {
+		project.checkCommitAction(context);
+		if (project.isCommitWorkflowActivate()) {
+			Work work = project.makeWorkflowCommitableWork(null, context);
+			// 打开定义的用于启动工作的对话框编辑器
+			DataObjectWizard dw = DataObjectWizard.open(work,
+					Work.EDITOR_LAUNCH, true, null);
+			if (dw.getResult() == Window.OK) {
 
-					Shell shell = PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getShell();
-					int i = MessageUtil.showMessage(shell, "计划提交",
-							"计划提交工作已经创建，您是否需要立即开始该工作？" + "\n"
-									+ "选择YES将立刻开始提交工作并启动流程。" + "\n"
-									+ "选择NO,您可以在我的工作中重新编辑并在以后提交。", SWT.YES
-									| SWT.NO | SWT.ICON_QUESTION);
-					if (i == SWT.YES) {
-						// 在该编辑器确定后启动工作
-						work.doStart(context);
-						project.doCommitWithWork(work);
-					} else {
-					}
+				Shell shell = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell();
+				int i = MessageUtil.showMessage(shell, "计划提交",
+						"计划提交工作已经创建，您是否需要立即开始该工作？" + "\n"
+								+ "选择YES将立刻开始提交工作并启动流程。" + "\n"
+								+ "选择NO,您可以在我的工作中重新编辑并在以后提交。", SWT.YES | SWT.NO
+								| SWT.ICON_QUESTION);
+				if (i == SWT.YES) {
+					// 在该编辑器确定后启动工作
+					work.doStart(context);
+					project.doCommitWithWork(work);
+				} else {
 				}
-			} else {
-				project.doCommitWithSendMessage(context);
 			}
+		} else {
+			project.doCommitWithSendMessage(context);
 		}
 	}
 

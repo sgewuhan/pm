@@ -12,6 +12,7 @@ import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.admin.dataset.Setting;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
@@ -47,7 +48,6 @@ import com.sg.business.resource.BusinessResource;
  */
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ILifecycle, ISchedual, IReferenceContainer {
-
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -333,6 +333,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public List<PrimaryObject> getCalendarCondition() {
 		ModelRelation mr = ModelService.getModelRelation("project_calendar");
 		return getRelationByModel(mr);
+	}
+	
+	/**
+	 * 获得项目日历计算器
+	 * @return
+	 */
+	public CalendarCaculater getCalendarCaculater() {
+		List<PrimaryObject> conditions = getCalendarCondition();
+		return new CalendarCaculater(conditions);
 	}
 
 	public boolean hasOrganizationRole(Role role) {
@@ -1662,9 +1671,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			work = ModelService.createModelObject(Work.class);
 			work.setValue(Work.F_CHARGER, context.getAccountInfo().getUserId());// 设置负责人为当前用户
 			work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
-			work.setValue(Work.F_PLAN_START, new Date());
+			Date today = new Date();
+			work.setValue(Work.F_PLAN_START, today);
+
+			Date finishDate = today;
+			Object sDuration = Setting
+					.getSystemSetting(IModelConstants.S_DEFAULT_PROJECT_COMMIT_DURATION);
+			if(sDuration !=null){
+				Integer duration = Utils.getIntegerValue(sDuration);
+				if(duration!=null){
+					CalendarCaculater ds = getCalendarCaculater();
+					while(duration >0){
+						finishDate = Utils.getDateAfter(finishDate, 1);
+						if(ds.getWorkingTime(finishDate)>0){
+							duration --;
+						}
+					}
+				}
+			}
+			work.setValue(Work.F_PLAN_FINISH, finishDate);
+
 			work.setValue(Work.F_DESC, "项目计划提交" + " " + this);
 			work.setValue(Work.F_DESCRIPTION, getDesc());
+			work.setValue(Work.F_PLAN_WORKS, new Double(0d));
 			BasicBSONList targets = new BasicBSONList();
 			targets.add(new BasicDBObject().append(SF_TARGET, get_id())
 					.append(SF_TARGET_CLASS, Project.class.getName())
@@ -1680,6 +1709,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
 	}
+
 
 	public Object doCancel(IContext context) throws Exception {
 		Work root = getWBSRoot();
@@ -1827,22 +1857,20 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 是否允许提交项目
 	 * 
 	 * @param context
-	 * @return
 	 * @throws Exception
 	 */
-	public List<Object[]> checkCommitAction(IContext context) throws Exception {
+	public void checkCommitAction(IContext context) throws Exception {
 		// 1.检查是否本项目的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(this.getChargerId())) {
 			throw new Exception("不是本项目负责人，" + this);
 		}
-		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter.equals(IProcessControl.class)) {
-			return (T) new ProcessControl(this){
+			return (T) new ProcessControl(this) {
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return ProjectRole.class;

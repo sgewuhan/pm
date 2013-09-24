@@ -18,21 +18,21 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
-public abstract class AbstractProcessSettingPage extends AbstractFormPageDelegator {
+public abstract class AbstractProcessSettingPage extends
+		AbstractFormPageDelegator {
 
-//	private Work work;
 	private boolean editable;
 	private ProcessSettingPanel2 psp2;
 
 	@Override
-	public ProcessSettingPanel2 createPageContent(Composite parent,
+	final public ProcessSettingPanel2 createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		setFormInput(input);
 		editable = input.isEditable();
 		final IProcessControl IProcessControl = getIProcessControl();
-		
-		psp2 = new ProcessSettingPanel2(parent) {
+
+		psp2 = new ProcessSettingPanel2(parent, getProcessSettingControl()) {
 
 			@Override
 			protected AbstractRoleDefinition getRoleDefinition(
@@ -48,29 +48,23 @@ public abstract class AbstractProcessSettingPage extends AbstractFormPageDelegat
 
 			@Override
 			protected User getActor(NodeAssignment nodeAssignment) {
-				if(nodeAssignment == null){
+				if (nodeAssignment == null) {
 					return null;
 				}
-				String userid = IProcessControl.getProcessActionActor(
-						getProcessKey(),
-						nodeAssignment.getNodeActorParameter());
+				String userid = IProcessControl
+						.getProcessActionActor(getProcessKey(),
+								nodeAssignment.getNodeActorParameter());
 				return UserToolkit.getUserById(userid);
 			}
 
 			@Override
 			public DataSet getActorDataSet() {
 				AbstractRoleDefinition roled = getSelectedRole();
-				return AbstractProcessSettingPage.this
-						.getActorDataSet(roled);
+				return AbstractProcessSettingPage.this.getActorDataSet(roled);
 			}
 
 		};
 
-		psp2.setHasActorSelector(false);
-		psp2.setHasProcessSelector(true);
-		psp2.setHasRoleSelector(true);
-
-		
 		List<DroolsProcessDefinition> processDefs = getProcessDefinition();
 		psp2.setProcessDefinitionChoice(processDefs);
 		// 返回当前选中流程
@@ -78,6 +72,10 @@ public abstract class AbstractProcessSettingPage extends AbstractFormPageDelegat
 				.getProcessDefinition(getProcessKey());
 		// 显示当前选中流程的信息
 		psp2.setProcessDefinition(processDef);
+
+		// 显示该流程是否激活
+		boolean activate = IProcessControl.isWorkflowActivate(getProcessKey());
+		psp2.setProcessActivated(activate);
 
 		// 设置角色的选择器，项目模板中的角色定义
 		psp2.setRoleNavigatorId("commons.generic.tableselector");
@@ -87,7 +85,7 @@ public abstract class AbstractProcessSettingPage extends AbstractFormPageDelegat
 
 		// 设置角色的数据集
 		psp2.setRoleDataSet(getRoleDataSet());
-		
+
 		psp2.createContent();
 
 		// 添加监听
@@ -103,16 +101,17 @@ public abstract class AbstractProcessSettingPage extends AbstractFormPageDelegat
 		return psp2;
 	}
 
-	protected abstract  DataSet getRoleDataSet();
+	protected abstract int getProcessSettingControl();
 
-	protected abstract IProcessControl getIProcessControl() ;
+	protected abstract DataSet getRoleDataSet();
 
-	protected abstract  List<DroolsProcessDefinition> getProcessDefinition();
-	
+	protected abstract IProcessControl getIProcessControl();
+
+	protected abstract List<DroolsProcessDefinition> getProcessDefinition();
+
 	protected abstract String getProcessKey();
 
 	protected abstract DataSet getActorDataSet(AbstractRoleDefinition roled);
-	
 
 	@Override
 	public void commit(boolean onSave) {

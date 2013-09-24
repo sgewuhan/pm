@@ -136,7 +136,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		
 		//添加个人设置
 		item = new MenuItem(dropDownMenu, SWT.PUSH);
-		item.setText("个人变量设置");
+		item.setText("用户设置");
 		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_VARIABLE_24));
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override

@@ -140,10 +140,11 @@ public interface IModelConstants {
 	 */
 	public static final String C_BULLETINBOARD = "bulletinboard";
 	
+
 	/**
-	 * 全局设置
+	 * 设置: 默认的项目提交工作的周期
 	 */
-	public static final String C_VARIABLESETTING = "variablesetting";
+	public static final String S_DEFAULT_PROJECT_COMMIT_DURATION = "PROJECT.COMMIT.DURATION";
 	
 	
 

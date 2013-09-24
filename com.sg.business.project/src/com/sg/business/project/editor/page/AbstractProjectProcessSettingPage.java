@@ -3,8 +3,6 @@ package com.sg.business.project.editor.page;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.widgets.Composite;
-
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
@@ -19,7 +17,6 @@ import com.sg.business.model.ProjectRole;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
-import com.sg.widgets.registry.config.BasicPageConfigurator;
 
 /**
  * 项目提交时，如果指定了流程，将自动创建独立工作用于项目提交<br/>
@@ -32,19 +29,10 @@ public abstract class AbstractProjectProcessSettingPage extends
 		AbstractProcessSettingPage {
 
 	@Override
-	public ProcessSettingPanel2 createPageContent(Composite parent,
-			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		ProcessSettingPanel2 psp = super.createPageContent(parent, input, conf);
-		psp.setHasActorSelector(true);
-		return psp;
-	}
-
-	@Override
 	protected IProcessControl getIProcessControl() {
 		PrimaryObjectEditorInput input = getInput();
 		Project project = (Project) input.getData();
-		return (IProcessControl) project
-				.getAdapter(IProcessControl.class);
+		return (IProcessControl) project.getAdapter(IProcessControl.class);
 	}
 
 	@Override
@@ -102,4 +90,12 @@ public abstract class AbstractProjectProcessSettingPage extends
 		// 如果角色定义为空，取项目的参与者
 		return new DataSet(result);
 	}
+
+	@Override
+	protected int getProcessSettingControl() {
+		return ProcessSettingPanel2.PROCESS_SELECTOR
+				| ProcessSettingPanel2.ROLE_SELECTOR
+				| ProcessSettingPanel2.ACTOR_SELECTOR;
+	}
+
 }

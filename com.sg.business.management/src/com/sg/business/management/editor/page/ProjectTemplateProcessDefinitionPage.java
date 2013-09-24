@@ -65,15 +65,17 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 
 	private Control createTab(Composite tab, final String key) {
 
-		ProcessSettingPanel2 psp2 = new ProcessSettingPanel2(tab) {
+		ProcessSettingPanel2 psp2 = new ProcessSettingPanel2(tab,
+				ProcessSettingPanel2.PROCESS_SELECTOR
+						| ProcessSettingPanel2.ROLE_SELECTOR) {
 
 			@Override
 			protected AbstractRoleDefinition getRoleDefinition(
 					NodeAssignment nodeAssignment) {
-				if(nodeAssignment!=null){
+				if (nodeAssignment != null) {
 					return IProcessControl.getProcessActionAssignment(key,
 							nodeAssignment.getNodeActorParameter());
-				}else{
+				} else {
 					return null;
 				}
 			}
@@ -86,10 +88,6 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 			}
 
 		};
-
-//		psp2.setHasActorSelector(true);
-		psp2.setHasProcessSelector(true);
-		psp2.setHasRoleSelector(true);
 
 		// 返回模板所属组织下流程库中的所有组织，作为流程选择器的数据源
 		List<DroolsProcessDefinition> processDefs = getDroolsProcessDefinitions();
@@ -115,7 +113,8 @@ public class ProjectTemplateProcessDefinitionPage implements IPageDelegator,
 		psp2.createContent();
 
 		// 添加监听
-		psp2.addProcessSettingListener(new ProcessControlSetting(IProcessControl,key){
+		psp2.addProcessSettingListener(new ProcessControlSetting(
+				IProcessControl, key) {
 			@Override
 			protected void event(int code) {
 				setDirty(true);

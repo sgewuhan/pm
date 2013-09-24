@@ -36,7 +36,9 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 		editable = input.isEditable();
 		final IProcessControl IProcessControl = (IProcessControl) work
 				.getAdapter(IProcessControl.class);
-		psp2 = new ProcessSettingPanel2(parent) {
+		psp2 = new ProcessSettingPanel2(parent,
+				ProcessSettingPanel2.ACTOR_SELECTOR
+						| ProcessSettingPanel2.ROLE_SELECTOR) {
 
 			@Override
 			protected AbstractRoleDefinition getRoleDefinition(
@@ -66,10 +68,6 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 			}
 
 		};
-
-		psp2.setHasActorSelector(true);
-		psp2.setHasProcessSelector(false);
-		psp2.setHasRoleSelector(true);
 
 		// 返回当前选中流程
 		DroolsProcessDefinition processDef = IProcessControl
