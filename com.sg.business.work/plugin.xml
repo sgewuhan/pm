@@ -516,30 +516,6 @@
                type="Double">
          </column>
       </table>
-      <table
-            canCreate="true"
-            hasBorder="true"
-            id="work.record">
-         <column
-               column="_caccount"
-               labelProvider="com.sg.widgets.commons.labelprovider.AccountLabelProvider"
-               name="作者"
-               type="String"
-               width="80">
-         </column>
-         <column
-               column="_cdate"
-               name="日期"
-               type="DateTime"
-               width="80">
-         </column>
-         <column
-               column="_info"
-               name="记录"
-               type="String"
-               width="-1">
-         </column>
-      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -1649,16 +1625,17 @@
          <basicpage
                id="basicpage"
                title="工作记录">
-            <pagecolumn>
+            <pagecolumn
+                  id="4">
                <section
-                     label="com.sg.business.work.section2">
+                     label="工作记录">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
-                        id="_caccount"
+                        id="userid"
                         label="作者"
                         labelVisible="true"
-                        name="_caccount"
+                        name="userid"
                         persistable="true"
                         required="false"
                         type="String">
@@ -1666,10 +1643,21 @@
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
-                        id="_cdate"
+                        id="rdate"
                         label="日期"
                         labelVisible="true"
-                        name="_cdate"
+                        name="rdate"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="percent"
+                        label="完成百分比"
+                        labelVisible="true"
+                        name="percent"
                         persistable="true"
                         required="false"
                         type="String">
@@ -1677,27 +1665,14 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        id="_info"
+                        id="desc"
                         label="记录"
                         labelVisible="true"
-                        name="_info"
+                        name="desc"
                         persistable="true"
                         required="false"
                         type="String">
                   </text>
-               </section>
-               <section
-                     label="工作记录">
-                  <table
-                        ctableId="work.record"
-                        editable="false"
-                        id="_record"
-                        label="工作记录"
-                        labelVisible="true"
-                        name="_record"
-                        persistable="true"
-                        required="false">
-                  </table>
                </section>
             </pagecolumn>
          </basicpage>
@@ -2086,6 +2061,12 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="runtimework.record"
+               icon="image/24_blank.png"
+               label="编辑工作记录"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -2160,6 +2141,10 @@
       <command
             id="runtimework.mark"
             name="标记工作">
+      </command>
+      <command
+            id="runtimework.record"
+            name="工作记录">
       </command>
    </extension>
    <extension
@@ -2260,6 +2245,10 @@
       <handler
             class="com.sg.business.work.handler.MarkWork"
             commandId="runtimework.mark">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.EditWorkRecord"
+            commandId="runtimework.record">
       </handler>
    </extension>
    <extension
