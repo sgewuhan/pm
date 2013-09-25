@@ -1953,5 +1953,54 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public Date getActualFinish() {
 		return (Date) getValue(F_ACTUAL_FINISH);
+
+	}
+	
+	/**
+	 * 移交用户
+	 * 
+	 * @param project
+	 * @param users
+	 * @param context
+	 * @throws Exception 
+	 */
+	public void doTransferUsers(Project project, List<User> users,
+			IContext context) throws Exception {
+		DBCollection workCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_WORK);
+		for (User user : users) {
+			//移交指派者
+			WriteResult ws = workCol.update(
+					new BasicDBObject()
+							.append(Work.F_PROJECT_ID, project.get_id())
+							.append(Work.F_ASSIGNER, getValue(ProjectRoleAssignment.F_ROLE_NUMBER))
+							.append(Work.F_LIFECYCLE,
+									new BasicDBObject()
+											.append("$nin", new String[] {
+													Work.STATUS_CANCELED_VALUE,
+													Work.STATUS_FINIHED_VALUE })),
+					new BasicDBObject("$set", (new BasicDBObject().append(
+							Work.F_ASSIGNER, user.getUserid()))), false, true);
+			checkWriteResult(ws);
+			
+			//移交负责人
+			ws = workCol.update(
+					new BasicDBObject()
+							.append(Work.F_PROJECT_ID, project.get_id())
+							.append(Work.F_CHARGER, getValue(ProjectRoleAssignment.F_ROLE_NUMBER))
+							.append(Work.F_LIFECYCLE,
+									new BasicDBObject()
+											.append("$nin", new String[] {
+													Work.STATUS_CANCELED_VALUE,
+													Work.STATUS_FINIHED_VALUE })),
+					new BasicDBObject("$set", (new BasicDBObject().append(
+							Work.F_CHARGER, user.getUserid()))), false, true);
+			checkWriteResult(ws);
+			
+			//移交参与者
+			
+			//移交流程执行者
+			
+		}
 	}
 }

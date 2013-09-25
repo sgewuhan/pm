@@ -360,6 +360,15 @@ public class Organization extends PrimaryObject {
 	}
 
 	/**
+	 * 获取组织项下的用户
+	 * 
+	 * @return List
+	 */
+	public List<PrimaryObject> getUser() {
+		return getRelationById(F__ID, User.F_ORGANIZATION_ID, User.class);
+	}
+	
+	/**
 	 * 获取组织下的所有角色
 	 * 
 	 * @return List
