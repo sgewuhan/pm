@@ -1182,49 +1182,6 @@
       <editor
             collectionName="work"
             dbName="pm2"
-            id="editor.runtimereassignment"
-            name="指派"
-            titleToolTips="工作指派">
-         <basicpage
-               description="工作指派"
-               id="assignmentpage"
-               title="工作指派">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="为工作指派参与者">
-                  <navigatorSelector
-                        editable="true"
-                        id="chargerid"
-                        label="负责人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="chargerid"
-                        navigatorId="work.organization.user"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false"
-                        widthHint="250">
-                  </navigatorSelector>
-                  <list
-                        addTableItemHandler="com.sg.business.work.editor.field.AddParticipateFromOrg"
-                        editable="true"
-                        id="participate"
-                        label="参与者"
-                        labelVisible="false"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
-                        name="participate"
-                        persistable="true"
-                        required="false">
-                  </list>
-               </section>
-            </pagecolumn>
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="work"
-            dbName="pm2"
             id="editor.create.runtimework"
             image="image/work_24.png"
             name="工作"
@@ -1937,13 +1894,13 @@
             </parameter>
          </command>
          <separator
-               name="runtimework.separator1"
+               name="runtimework.separator0"
                visible="true">
          </separator>
          <command
                commandId="work.create"
                icon="image/creatework_24.png"
-               label="创建工作..."
+               label="创建新工作..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2011,106 +1968,41 @@
             </visibleWhen>
          </command>
          <command
+               commandId="work.remove"
+               icon="image/removework_24.png"
+               label="删除工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="delete"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="runtimework.separator1"
+               visible="true">
+         </separator>
+         <command
                commandId="com.sg.widgets.command.edit"
                icon="image/deliverable_24.png"
-               label="交付物"
+               label="管理工作交付物"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
                   value="edit.work.deliverable">
             </parameter>
          </command>
-         <menu
-               icon="image/24_blank.png"
-               label="查看">
-            <command
-                  commandId="runtimework.view.project"
-                  icon="image/project_24.png"
-                  label="查看项目"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate
-                              ifEmpty="false">
-                           <test
-                                 args="openproject"
-                                 property="runtimework.action">
-                           </test>
-                        </iterate>
-                     </and>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="runtimework.view.project"
-                  icon="image/document_24.png"
-                  label="查看项目文档"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate
-                              ifEmpty="false">
-                           <test
-                                 args="openproject"
-                                 property="runtimework.action">
-                           </test>
-                        </iterate>
-                     </and>
-                  </with>
-               </visibleWhen>
-               <parameter
-                     name="work.project.view"
-                     value="work.project.documents">
-               </parameter>
-            </command>
-            <command
-                  commandId="runtimework.view.project"
-                  icon="image/deliverable_24.png"
-                  label="查看项目交付物"
-                  style="push">
-               <visibleWhen
-                     checkEnabled="false">
-                  <with
-                        variable="selection">
-                     <and>
-                        <count
-                              value="1">
-                        </count>
-                        <iterate
-                              ifEmpty="false">
-                           <test
-                                 args="openproject"
-                                 property="runtimework.action">
-                           </test>
-                        </iterate>
-                     </and>
-                  </with>
-               </visibleWhen>
-               <parameter
-                     name="work.project.view"
-                     value="work.project.deliverable">
-               </parameter>
-            </command>
-         </menu>
-         <separator
-               name="runtimework.separator0"
-               visible="true">
-         </separator>
          <command
                commandId="com.sg.widgets.command.edit"
-               icon="image/24_blank.png"
+               icon="image/user_24.png"
                label="指派负责人和参与者"
                style="push">
             <parameter
@@ -2135,13 +2027,19 @@
                      </count>
                      <iterate
                            ifEmpty="false">
-                        <not>
+                        <and>
+                           <not>
+                              <test
+                                    args="iswbsroot"
+                                    property="primaryobject.properties"
+                                    value="true">
+                              </test>
+                           </not>
                            <test
-                                 args="iswbsroot"
-                                 property="primaryobject.properties"
-                                 value="true">
+                                 args="reassignment"
+                                 property="runtimework.action">
                            </test>
-                        </not>
+                        </and>
                      </iterate>
                   </and>
                </with>
@@ -2179,43 +2077,108 @@
                   value="true">
             </parameter>
          </command>
+         <command
+               commandId="runtimework.mark"
+               icon="image/mark_24.png"
+               label="标记"
+               style="push">
+         </command>
          <separator
                name="runtimework.separator2"
+               visible="true">
+         </separator>
+         <menu
+               icon="image/24_blank.png"
+               label="查看项目">
+            <command
+                  commandId="runtimework.view.project"
+                  icon="image/project_24.png"
+                  label="查看项目"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <and>
+                        <count
+                              value="1">
+                        </count>
+                        <iterate
+                              ifEmpty="false">
+                           <test
+                                 args="openproject"
+                                 property="runtimework.action">
+                           </test>
+                        </iterate>
+                     </and>
+                  </with>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="runtimework.view.project"
+                  icon="image/document_24.png"
+                  label="项目文档"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <and>
+                        <count
+                              value="1">
+                        </count>
+                        <iterate
+                              ifEmpty="false">
+                           <test
+                                 args="openproject"
+                                 property="runtimework.action">
+                           </test>
+                        </iterate>
+                     </and>
+                  </with>
+               </visibleWhen>
+               <parameter
+                     name="work.project.view"
+                     value="work.project.documents">
+               </parameter>
+            </command>
+            <command
+                  commandId="runtimework.view.project"
+                  icon="image/deliverable_24.png"
+                  label="项目交付物"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="selection">
+                     <and>
+                        <count
+                              value="1">
+                        </count>
+                        <iterate
+                              ifEmpty="false">
+                           <test
+                                 args="openproject"
+                                 property="runtimework.action">
+                           </test>
+                        </iterate>
+                     </and>
+                  </with>
+               </visibleWhen>
+               <parameter
+                     name="work.project.view"
+                     value="work.project.deliverable">
+               </parameter>
+            </command>
+         </menu>
+         <separator
+               name="runtimework.separator3"
                visible="true">
          </separator>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
                label="更新"
-               style="push">
-         </command>
-         <command
-               commandId="work.remove"
-               icon="image/removework_24.png"
-               label="删除工作"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <test
-                           args="delete"
-                           property="runtimework.action">
-                     </test>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-         <separator
-               name="runtimework.separator1"
-               visible="true">
-         </separator>
-         <command
-               commandId="work.remove"
-               icon="image/mark_24.png"
-               label="标记"
                style="push">
          </command>
       </menuContribution>
@@ -2518,6 +2481,19 @@
                         persistable="true"
                         required="false">
                   </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="assignerid"
+                        label="指派人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="assignerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -2911,9 +2887,19 @@
                         required="false"
                         type="Double">
                   </text>
+                  <fieldgroup
+                        columnCount="1">
+                     <spinner
+                           editable="true"
+                           id="remindbefore"
+                           label="设置在计划完成前提醒(时)"
+                           labelVisible="true"
+                           name="remindbefore"
+                           persistable="true"
+                           required="false">
+                     </spinner>
+                  </fieldgroup>
                </section>
-            </pagecolumn>
-            <pagecolumn>
                <section
                      label="工作和交付物">
                   <checkbox
@@ -2944,6 +2930,8 @@
                         required="false">
                   </checkbox>
                </section>
+            </pagecolumn>
+            <pagecolumn>
                <section
                      label="开始和完成设定">
                   <checkbox
@@ -2998,7 +2986,7 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="角色设置"
+               description="角色设置，用于按角色进行工作分派"
                id="settingpage"
                image="image/worksetting_24.png"
                title="角色设置">
@@ -3015,7 +3003,7 @@
                         labelVisible="true"
                         name="charger_roled_id"
                         persistable="true"
-                        required="true"
+                        required="false"
                         type="ObjectId">
                   </combo>
                   <combo
@@ -3304,6 +3292,50 @@
                         required="false"
                         type="String">
                   </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="editor.runtimereassignment"
+            image="image/user_24.png"
+            name="指派"
+            titleToolTips="工作指派">
+         <basicpage
+               description="工作指派"
+               id="assignmentpage"
+               title="工作指派">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="指派工作负责人和参与者">
+                  <navigatorSelector
+                        editable="true"
+                        id="chargerid"
+                        label="负责人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="chargerid"
+                        navigatorId="work.organization.user"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false"
+                        widthHint="250">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.work.editor.field.AddParticipateFromOrg"
+                        editable="true"
+                        id="participate"
+                        label="参与者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="participate"
+                        persistable="true"
+                        required="false">
+                  </list>
                </section>
             </pagecolumn>
          </basicpage>
