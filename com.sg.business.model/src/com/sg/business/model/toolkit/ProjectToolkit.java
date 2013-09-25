@@ -127,4 +127,25 @@ public class ProjectToolkit {
 		}
 		return false;
 	}
+	
+	public static boolean checkProcessInternal(IProcessControl pc,
+			String process, String userId) {
+		if (pc.isWorkflowActivate(process)) {
+			// 如果流程已经激活，需要判断是否所有的actor都指派
+			DroolsProcessDefinition pd = pc.getProcessDefinition(process);
+			List<NodeAssignment> nalist = pd.getNodesAssignment();
+			for (int i = 0; i < nalist.size(); i++) {
+				NodeAssignment na = nalist.get(i);
+				if (!na.isNeedAssignment()) {
+					continue;
+				}
+				String nap = na.getNodeActorParameter();
+				String processUserId = pc.getProcessActionActor(process, nap);
+				if( userId.equals(processUserId)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

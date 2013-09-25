@@ -65,13 +65,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 创建工作的编辑器ID
 	 */
 	public static final String EDITOR_CREATE_RUNTIME_WORK = "editor.create.runtimework";
-	
-	
+
 	/**
 	 * 编辑工作计划
 	 */
-//	public static final String EDITOR_WORK_PLAN = "edit.work.plan";
-	
+	// public static final String EDITOR_WORK_PLAN = "edit.work.plan";
+
 	/**
 	 * 必需的，不可删除，布尔类型的字段
 	 */
@@ -158,6 +157,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 需启动变更流程实施工作的更改
 	 */
 	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
+	
 
 	public static final String F_MARK = "marked";
 	
@@ -1827,8 +1827,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						actorParameter, params);
 				Assert.isNotNull(processInstance, "流程启动失败");
 
-				update.put(F_WF_EXECUTE
-						+ IProcessControl.POSTFIX_INSTANCEID,
+				update.put(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID,
 						processInstance.getId());
 			}
 		}
@@ -2498,11 +2497,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return data != null && Boolean.TRUE.equals(data.get(userId));
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter.equals(IProcessControl.class)) {
-			return (T) new ProcessControl(this){
+			return (T) new ProcessControl(this) {
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return ProjectRole.class;
@@ -2522,5 +2520,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 	
 	*/
+	public boolean isExecuteWorkflowActivateAndAvailable(){
+		IProcessControl ip = getAdapter(IProcessControl.class);
+		return ip.isWorkflowActivateAndAvailable(F_WF_EXECUTE);
+	}
+
+	public int getRemindBefore() {
+		Object value = getValue(F_REMIND_BEFORE);
+		if(value instanceof Integer){
+			return ((Integer) value).intValue();
+		}
+		return 0;
+	}
 
 }

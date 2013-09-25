@@ -819,9 +819,6 @@ public class Organization extends PrimaryObject {
 		wbsRootData.put(WorkDefinition.F_SEQ,
 				wbsRoot.getValue(WorkDefinition.F_SEQ));
 		wbsRootData
-				.put(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED,
-						wbsRoot.getValue(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED));
-		wbsRootData
 				.put(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
 						wbsRoot.getValue(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH));
 		wbsRootData
@@ -977,10 +974,7 @@ public class Organization extends PrimaryObject {
 				workDefinitionData.put(WorkDefinition.F_ROOT_ID, wbsRoot_id);
 				workDefinitionData.put(WorkDefinition.F_SEQ,
 						workDefinition.getValue(WorkDefinition.F_SEQ));
-				workDefinitionData
-						.put(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED,
-								workDefinition
-										.getValue(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED));
+
 				workDefinitionData
 						.put(WorkDefinition.F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
 								workDefinition
@@ -1283,14 +1277,15 @@ public class Organization extends PrimaryObject {
 	public List<DroolsProcessDefinition> getDroolsProcessDefinitions() {
 		Object value = getValue(F_KBASE);
 		ArrayList<DroolsProcessDefinition> result = new ArrayList<DroolsProcessDefinition>();
-		if(value instanceof BasicBSONList){
+		if (value instanceof BasicBSONList) {
 			BasicBSONList kbases = (BasicBSONList) value;
 			for (int i = 0; i < kbases.size(); i++) {
 				String kname = (String) kbases.get(i);
-				KnowledgeBase kbase = BPM.getBPMService().getKnowledgeBase(kname);
+				KnowledgeBase kbase = BPM.getBPMService().getKnowledgeBase(
+						kname);
 				Collection<Process> processList = kbase.getProcesses();
 				Iterator<Process> iter = processList.iterator();
-				while(iter.hasNext()){
+				while (iter.hasNext()) {
 					Process process = iter.next();
 					result.add(new DroolsProcessDefinition(kname, process));
 				}

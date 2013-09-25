@@ -3,44 +3,33 @@ package com.sg.business.project.page;
 import java.util.List;
 
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.User;
-import com.sg.business.model.Work;
-import com.sg.widgets.ImageResource;
-import com.sg.widgets.Widgets;
 import com.sg.widgets.part.INavigatablePart;
 import com.sg.widgets.part.NavigatorControl;
 
-public class TransferUsersPage extends WizardPage implements INavigatablePart {
+public class ChangeUserOfOrgUserPage extends WizardPage implements
+		INavigatablePart {
 	private NavigatorControl navi;
 	private String navigatorid;
 	private PrimaryObject master;
-	private int id;
 
-	protected TransferUsersPage(String sTitle, String sDescription,
-			String navigatorid, PrimaryObject master, int i) {
-		super(sTitle);
+	protected ChangeUserOfOrgUserPage(String sName,String sTitle, String sDescription,
+			String navigatorid,  PrimaryObject master) {
+		super(sName);
 		setTitle(sTitle);
 		setDescription(sDescription);
 		this.navigatorid = navigatorid;
 		this.master = master;
-		this.id = i;
 	}
 
 	@Override
@@ -53,77 +42,32 @@ public class TransferUsersPage extends WizardPage implements INavigatablePart {
 
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
-						TransferUsersPage.this.getContainer().updateButtons();
-						if (id == 0) {
-							TransferUsersWizard wiz = (TransferUsersWizard) getWizard();
-							IStructuredSelection selection = (IStructuredSelection) event
-									.getSelection();
-							if (selection != null && !selection.isEmpty()) {
-								Object element = selection.getFirstElement();
-								if (element instanceof AbstractRoleAssignment) {
-									AbstractRoleAssignment assignment = (AbstractRoleAssignment) element;
+						ChangeUserOfOrgUserPage.this.getContainer().updateButtons();
+						ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
+						IStructuredSelection selection = (IStructuredSelection) event
+								.getSelection();
+						if (selection != null && !selection.isEmpty()) {
+							Object element = selection.getFirstElement();
+							if (element instanceof User) {
+								User assignment = (User) element;
 
-									wiz.setUserId(assignment.getUserid());
-								} else {
-									wiz.setUserId(null);
-
-								}
+								wiz.setChangeUserId(assignment.getUserid());
 							} else {
-								wiz.setUserId(null);
+								wiz.setChangeUserId(null);
 
 							}
+						} else {
+							wiz.setChangeUserId(null);
 
 						}
 					}
 				});
-
-		if (id == 2) {
-			StructuredViewer viewer = navi.getViewer();
-
-			TreeViewerColumn column = new TreeViewerColumn((TreeViewer) viewer,
-					SWT.LEFT);
-			column.getColumn().setText("¸ºÔðÈË");
-			column.getColumn().setWidth(60);
-			column.setLabelProvider(new ColumnLabelProvider() {
-				@Override
-				public Image getImage(Object element) {
-					Work work = (Work) element;
-					String chargerId = work.getChargerId();
-					TransferUsersWizard wiz = (TransferUsersWizard) getWizard();
-					if (chargerId != null && chargerId.equals(wiz.getUserId())) {
-						return Widgets.getImage(ImageResource.CHECKED_16);
-					} else {
-						return null;
-					}
-				}
-
-				@Override
-				public String getText(Object element) {
-					Work work = (Work) element;
-					return work.getChargerId();
-				}
-			});
-			
-
-		}
-
 		setControl(navi.getViewer().getControl());
 		setPageComplete(true);
 	}
 
 	@Override
 	public boolean canFlipToNextPage() {
-		if (id == 0) {
-			ISelection selection = navi.getViewer().getSelection();
-			if (selection != null && !selection.isEmpty()) {
-				Object element = ((IStructuredSelection) selection)
-						.getFirstElement();
-				if (element instanceof AbstractRoleAssignment) {
-					return true;
-				}
-			}
-			return false;
-		} else if (id == 1) {
 			ISelection selection = navi.getViewer().getSelection();
 			if (selection != null && !selection.isEmpty()) {
 				Object element = ((IStructuredSelection) selection)
@@ -133,8 +77,6 @@ public class TransferUsersPage extends WizardPage implements INavigatablePart {
 				}
 			}
 			return false;
-		}
-		return true;
 	}
 
 	@Override

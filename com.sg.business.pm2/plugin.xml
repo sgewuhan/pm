@@ -84,6 +84,17 @@
          </view>
          <view
                closeable="false"
+               id="com.sg.business.home.mycalendar"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.paused"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
                id="com.sg.business.home.summary"
                minimized="false"
                moveable="false"
@@ -96,22 +107,12 @@
          </view>
          <view
                closeable="false"
-               id="com.sg.business.home.mycalendar"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="com.sg.business.home.summary"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
                id="home.bulletinboard"
                minimized="false"
                moveable="false"
-               relationship="stack"
-               relative="com.sg.business.home.mycalendar"
+               ratio="0.5"
+               relationship="bottom"
+               relative="com.sg.business.home.summary"
                showTitle="true"
                standalone="false"
                visible="true">

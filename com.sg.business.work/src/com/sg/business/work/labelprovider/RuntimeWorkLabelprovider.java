@@ -13,6 +13,7 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IProcessControl;
+import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -27,9 +28,100 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 	public String getText(Object element) {
 		if (element instanceof Work) {
 			Work work = (Work) element;
-			return getRuntimeWorkHTMLLabel(work);
+			if (work.isProjectWBSRoot()) {
+				return getProjectHTMLLabel(work);
+			} else {
+				return getRuntimeWorkHTMLLabel(work);
+			}
 		}
 		return "";
+	}
+
+	private String getProjectHTMLLabel(Work work) {
+		Project project = work.getProject();
+		if (project == null) {
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+
+		// 标记
+		CurrentAccountContext context = new CurrentAccountContext();
+		String userId = context.getAccountInfo().getConsignerId();
+		boolean userMarked = work.getMarked(userId);
+		if (userMarked) {
+			String selectbar = "<img src='"
+					+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
+					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+			sb.append(selectbar);
+		} else {
+			String selectbar = "<img src='"
+					+ getSelectorURL(work, ImageResource.WHITE_BULLETIN)
+					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+			sb.append(selectbar);
+
+		}
+
+		User charger = project.getCharger();
+		if (charger != null) {
+			sb.append("<span style='float:right;padding-right:4px'>");
+			sb.append(charger);
+			sb.append("</span>");
+		}
+
+		String imageUrl = "<img src='"
+				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER)
+				+ "' style='float:left;padding:6px' width='24' height='24' />";
+		sb.append(imageUrl);
+
+		String desc = project.getDesc();
+		desc = Utils.getPlainText(desc);
+		sb.append("<b>项目: " + desc + "</b>");
+
+		String projectNumber = project.getProjectNumber();
+		sb.append(" [" + projectNumber + "]");
+
+		Date _planStart = project.getPlanStart();
+		String planStart = "";
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+
+		if (_planStart != null) {
+			planStart = sdf.format(_planStart);
+		}
+
+		// String selectbar = "<img src='"
+		// + getSelectorURL(work,ImageResource.WHITE_BULLETIN)
+		// +
+		// "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
+		// sb.append(selectbar);
+
+		sb.append(" ");
+		sb.append(planStart);
+		sb.append("~");
+
+		Date _planFinish = project.getPlanFinish();
+		String planFinish = "";
+		if (_planFinish != null) {
+			planFinish = sdf.format(_planFinish);
+		}
+		sb.append(planFinish);
+		sb.append("  ");
+
+		sb.append("<br/><small>");
+		String[] workOrders = project.getWorkOrders();
+		for (int i = 0; i < workOrders.length; i++) {
+			if (i == 0) {
+				sb.append("WON: ");
+			} else {
+				sb.append(" ");
+			}
+			sb.append(workOrders[i]);
+		}
+
+		sb.append("</small></span>");
+		return sb.toString();
 	}
 
 	private String getRuntimeWorkHTMLLabel(Work work) {
@@ -51,31 +143,52 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 		}
 
-		// 所有者标记
-		boolean userMarked = work.getMarked(userId);
-		if (userMarked) {
-			String selectbar = "<img src='"
-					+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
-					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
-			sb.append(selectbar);
-		} else {
-			String selectbar = "<img src='"
-					+ getSelectorURL(work, ImageResource.WHITE_BULLETIN)
-					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
-			sb.append(selectbar);
-
+		// ---------------------------------------------------------------------------
+		//标记
+		Date _planStart = work.getPlanStart();
+		Date _planFinish = work.getPlanFinish();
+		Date _actualStart = work.getActualStart();
+		Date _actualFinish = work.getActualFinish();
+		int remindBefore = work.getRemindBefore();
+		// 首先判断当前时间是否晚于计划完成时间，如果是，显示为超期标签
+		Date now = new Date();
+		String selectbarUrl = null;
+		if (isOwner&&_planFinish != null) {
+			if (now.after(_planFinish)) {
+				selectbarUrl = getSelectorURL(work, ImageResource.RED_BULLETIN);
+			} else if (remindBefore > 0
+					&& (_planFinish.getTime() - now.getTime()) < remindBefore * 3600000) {
+				// 然后判断当前时间是否达到提醒时间
+				selectbarUrl = getSelectorURL(work,
+						ImageResource.YELLOW_BULLETIN);
+			}
 		}
+		if (selectbarUrl == null) {
+			boolean userMarked = work.getMarked(userId);
+			if (userMarked) {
+				selectbarUrl = getSelectorURL(work, ImageResource.BLUE_BULLETIN);
+			} else {
+				selectbarUrl = getSelectorURL(work,
+						ImageResource.WHITE_BULLETIN);
+
+			}
+		}
+		String selectbar = "<img src='"
+				+ selectbarUrl
+				+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+		sb.append(selectbar);
+		//-----------------------------------------------------------------------------------------
 
 		if (charger != null) {
 			sb.append("<span style='float:right;padding-right:4px'>");
 			sb.append(charger);
 			sb.append("</span>");
 		}
-		
+
 		IProcessControl pc = (IProcessControl) work
 				.getAdapter(IProcessControl.class);
 
-		String imageUrl = "<img src='" + getHeaderImageURL(work,pc)
+		String imageUrl = "<img src='" + getHeaderImageURL(work, pc)
 				+ "' style='float:left;padding:6px' width='16' height='16' />";
 		sb.append(imageUrl);
 
@@ -84,26 +197,15 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		workDesc = Utils.getPlainText(workDesc);
 		sb.append(workDesc);
 
-		// BasicBSONList participateIds = work.getParticipatesIdList();
-		// if (participateIds != null && participateIds.size() > 0) {
-		// String pid = (String) participateIds.get(0);
-		// User user = UserToolkit.getUserById(pid);
-		// sb.append(user);
-		// if (participateIds.size() > 1) {
-		// sb.append("...");
-		// }
-		// }
-
 		// 有关时间
 		sb.append("<br/>");
 		sb.append("<small>");
 
-		sb.append(getWorkflowSummaryInformation(work,pc));
+		sb.append(getWorkflowSummaryInformation(work, pc));
 
-		Date date = work.getPlanStart();
 		String planStart = "";
-		if (date != null) {
-			planStart = sdf.format(date);
+		if (_planStart != null) {
+			planStart = sdf.format(_planStart);
 		}
 
 		// String selectbar = "<img src='"
@@ -117,27 +219,24 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		sb.append(planStart);
 		sb.append("~");
 
-		date = work.getPlanFinish();
 		String planFinish = "";
-		if (date != null) {
-			planFinish = sdf.format(date);
+		if (_planFinish != null) {
+			planFinish = sdf.format(_planFinish);
 		}
 		sb.append(planFinish);
 		sb.append("  ");
 
-		date = work.getActualStart();
 		String actualStart = "";
-		if (date != null) {
-			actualStart = sdf.format(date);
+		if (_actualStart != null) {
+			actualStart = sdf.format(_actualStart);
 		}
 		sb.append("实际:");
 		sb.append(actualStart);
 		sb.append("~");
 
-		date = work.getActualFinish();
 		String actualFinish = "";
-		if (date != null) {
-			actualFinish = sdf.format(date);
+		if (_actualFinish != null) {
+			actualFinish = sdf.format(_actualFinish);
 		}
 		sb.append(actualFinish);
 		sb.append("  ");
@@ -163,7 +262,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private String getWorkflowSummaryInformation(Work work,IProcessControl pc) {
+	private String getWorkflowSummaryInformation(Work work, IProcessControl pc) {
 		DBObject data = pc.getWorkflowTaskData(Work.F_WF_EXECUTE);
 		if (data == null) {
 			return "";
@@ -179,7 +278,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 				if (latestTask == null) {
 					latestTask = task;
 				} else {
-					Object createdon = task.get(IProcessControl.F_WF_TASK_CREATEDON);
+					Object createdon = task
+							.get(IProcessControl.F_WF_TASK_CREATEDON);
 					if (createdon instanceof Date) {
 						Date latestDate = (Date) latestTask
 								.get(IProcessControl.F_WF_TASK_CREATEDON);
@@ -282,7 +382,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		return false;
 	}
 
-	private String getHeaderImageURL(Work work,IProcessControl pc) {
+	private String getHeaderImageURL(Work work, IProcessControl pc) {
 		if (work.isProjectWBSRoot()) {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
