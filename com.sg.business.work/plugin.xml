@@ -516,6 +516,30 @@
                type="Double">
          </column>
       </table>
+      <table
+            canCreate="true"
+            hasBorder="true"
+            id="work.record">
+         <column
+               column="_caccount"
+               labelProvider="com.sg.widgets.commons.labelprovider.AccountLabelProvider"
+               name="作者"
+               type="String"
+               width="80">
+         </column>
+         <column
+               column="_cdate"
+               name="日期"
+               type="DateTime"
+               width="80">
+         </column>
+         <column
+               column="_info"
+               name="记录"
+               type="String"
+               width="-1">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -1393,6 +1417,67 @@
                title="工作变更流程">
          </basicpage>
       </editor>
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="editor.create.workrecord"
+            name="工作记录">
+         <basicpage
+               id="basicpage"
+               title="工作记录">
+            <pagecolumn>
+               <section
+                     label="com.sg.business.work.section2">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="_caccount"
+                        label="作者"
+                        labelVisible="true"
+                        name="_caccount"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="_cdate"
+                        label="日期"
+                        labelVisible="true"
+                        name="_cdate"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="_info"
+                        label="记录"
+                        labelVisible="true"
+                        name="_info"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="工作记录">
+                  <table
+                        ctableId="work.record"
+                        editable="false"
+                        id="_record"
+                        label="工作记录"
+                        labelVisible="true"
+                        name="_record"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -1581,23 +1666,18 @@
             </visibleWhen>
          </command>
          <command
-               commandId="runtimework.workrecord"
+               commandId="com.sg.widgets.command.edit"
                icon="image/24_blank.png"
                label="编辑工作记录"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <test
-                           args="workrecord"
-                           property="runtimework.action">
-                     </test>
-                  </iterate>
-               </with>
-            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editor.create.workrecord">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.editable"
+                  value="true">
+            </parameter>
          </command>
          <separator
                name="runtimework.separator2"
@@ -1701,6 +1781,12 @@
                style="push">
          </command>
          <command
+               commandId="runtimework.mark"
+               icon="image/mark_24.png"
+               label="标记"
+               style="push">
+         </command>
+         <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
                label="删除工作"
@@ -1718,12 +1804,6 @@
                   </iterate>
                </with>
             </visibleWhen>
-         </command>
-         <command
-               commandId="runtimework.mark"
-               icon="image/mark_24.png"
-               label="标记"
-               style="push">
          </command>
       </menuContribution>
       <menuContribution
@@ -1845,10 +1925,6 @@
             name="中止">
       </command>
       <command
-            id="runtimework.workrecord"
-            name="编辑工作记录">
-      </command>
-      <command
             id="runtimework.wfview"
             name="查看流程">
          <commandParameter
@@ -1940,9 +2016,6 @@
       <handler
             class="com.sg.business.work.handler.CompleteTask"
             commandId="runtimework.wffinish">
-      </handler>
-      <handler
-            commandId="runtimework.workrecord">
       </handler>
       <handler
             class="com.sg.business.work.handler.ViewProject"
