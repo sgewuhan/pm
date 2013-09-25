@@ -65,13 +65,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 创建工作的编辑器ID
 	 */
 	public static final String EDITOR_CREATE_RUNTIME_WORK = "editor.create.runtimework";
-	
-	
+
 	/**
 	 * 编辑工作计划
 	 */
-//	public static final String EDITOR_WORK_PLAN = "edit.work.plan";
-	
+	// public static final String EDITOR_WORK_PLAN = "edit.work.plan";
+
 	/**
 	 * 必需的，不可删除，布尔类型的字段
 	 */
@@ -1822,8 +1821,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						actorParameter, params);
 				Assert.isNotNull(processInstance, "流程启动失败");
 
-				update.put(F_WF_EXECUTE
-						+ IProcessControl.POSTFIX_INSTANCEID,
+				update.put(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID,
 						processInstance.getId());
 			}
 		}
@@ -2493,11 +2491,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return data != null && Boolean.TRUE.equals(data.get(userId));
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter.equals(IProcessControl.class)) {
-			return (T) new ProcessControl(this){
+			return (T) new ProcessControl(this) {
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return ProjectRole.class;
@@ -2506,7 +2503,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		return super.getAdapter(adapter);
 	}
-	
-	
+
+	/**
+	 * 工作变更流程执行者
+	 * @return
+	 */
+	public BasicDBObject getWFChangeActors() {
+		return (BasicDBObject) getValue(F_WF_CHANGE_ACTORS);
+
+	}
+	/**
+	 * 工作执行流程执行者
+	 * @return
+	 */
+	public BasicDBObject getWFExecuteActors() {
+		return (BasicDBObject) getValue(F_WF_EXECUTE_ACTORS);
+
+	}
 
 }

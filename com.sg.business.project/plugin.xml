@@ -402,60 +402,8 @@
             tree="work.deliverable">
       </navigator>
       <navigator
-            id="project.transfer.wbs"
-            tree="project.transfer.wbs">
-         <filterAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-            <column
-                  columnDefinitionId="milestone">
-            </column>
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="planworks_e">
-            </column>
-            <column
-                  columnDefinitionId="planduration_e">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-            <column
-                  columnDefinitionId="milestone">
-            </column>
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="planworks_e">
-            </column>
-            <column
-                  columnDefinitionId="planduration_e">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
-         </searchAction>
+            id="project.changeuser.wbs"
+            tree="project.changeuser.wbs">
       </navigator>
    </extension>
    <extension
@@ -1631,36 +1579,13 @@
             editorId="editor.work"
             fix="1"
             hasCheck="true"
-            id="project.transfer.wbs">
+            id="project.changeuser.wbs">
          <structure
                modelRelation="work_work">
          </structure>
          <column
                columnDefinitionId="work.desc">
          </column>
-         <column
-               column="assignerid"
-               labelProvider="com.sg.business.project.page.TransferAssigneridLabelProvider"
-               name="指派者"
-               type="Boolean">
-         </column>
-         <column
-               column="participate"
-               labelProvider="com.sg.business.project.page.TransferParticipateLabelProvider"
-               name="参与者"
-               type="Boolean">
-         </column>
-         <column
-               column="execute_actors"
-               labelProvider="com.sg.business.project.page.TransferExecuteActorsLabelProvider"
-               name="执行流程执行者"
-               type="Boolean">
-         </column>
-         <column
-               column="change_actors"
-               labelProvider="com.sg.business.project.page.TransferChangeActorsLabelProvider"
-               name="变更流程执行者"
-               type="Boolean"></column>
       </tree>
    </extension>
    <extension
@@ -1726,7 +1651,7 @@
                </parameter>
             </command>
             <command
-                  commandId="project.transfer"
+                  commandId="project.changeuser"
                   icon="image/24_blank.png"
                   label="移交用户工作"
                   style="push">
@@ -2482,7 +2407,7 @@
             name="项目提交">
       </command>
       <command
-            id="project.transfer"
+            id="project.changeuser"
             name="移交">
       </command>
    </extension>
@@ -2630,8 +2555,8 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.project.handler.TransferUsers"
-            commandId="project.transfer">
+            class="com.sg.business.project.handler.ChangeUser"
+            commandId="project.changeuser">
       </handler>
    </extension>
    <extension
@@ -2748,27 +2673,6 @@
                image="image/workflow_72.png"
                pageDelegator="com.sg.business.commons.page.WorkExecuteProcessAssignmentPage"
                title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="project"
-            dbName="pm2"
-            id="editor.transferuser.edit"
-            image="image/24_blank.png"
-            name="移交用户工作">
-         <basicpage
-               description="选择需要移交的用户"
-               id="basicpage1"
-               image="image/group_24.png"
-               pageDelegator="com.sg.business.project.editor.page.SelectionTeamPage"
-               title="用户组">
-         </basicpage>
-         <basicpage
-               description="选择移交的用户"
-               id="basicpage2"
-               image="image/24_blank.png"
-               pageDelegator="com.sg.business.project.editor.page.SelectionUserPage"
-               title="移交用户">
          </basicpage>
       </editor>
    </extension>

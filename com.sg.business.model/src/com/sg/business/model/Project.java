@@ -22,6 +22,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelRelation;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -334,9 +335,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ModelRelation mr = ModelService.getModelRelation("project_calendar");
 		return getRelationByModel(mr);
 	}
-	
+
 	/**
 	 * 获得项目日历计算器
+	 * 
 	 * @return
 	 */
 	public CalendarCaculater getCalendarCaculater() {
@@ -1332,7 +1334,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return WorkDefinition.VALUE_OPTION;
 	}
 
-
 	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
 			String fFinish, String fDuration) throws Exception {
 		Date start = (Date) getValue(fStart);
@@ -1552,51 +1553,50 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String lc = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lc) || STATUS_PAUSED_VALUE.equals(lc);
 	}
-	
+
 	@Override
 	public boolean canEdit(IContext context) {
-		//如果项目已经完成、取消，不能编辑
+		// 如果项目已经完成、取消，不能编辑
 		String lc = getLifecycleStatus();
-		if(STATUS_CANCELED_VALUE.equals(lc)||STATUS_FINIHED_VALUE.equals(lc)){
+		if (STATUS_CANCELED_VALUE.equals(lc) || STATUS_FINIHED_VALUE.equals(lc)) {
 			return false;
 		}
-		
-		//如果是项目负责人，可以编辑
+
+		// 如果是项目负责人，可以编辑
 		String chargerId = getChargerId();
 		String userId = context.getAccountInfo().getConsignerId();
-		if( !userId.equals(chargerId)){
+		if (!userId.equals(chargerId)) {
 			return false;
 		}
-		
+
 		return true;
-//		return super.canEdit(context);
+		// return super.canEdit(context);
 	}
-	
+
 	@Override
 	public boolean canDelete(IContext context) {
 		String lc = getLifecycleStatus();
-		if(!STATUS_NONE_VALUE.equals(lc)&&!STATUS_ONREADY_VALUE.equals(lc)){
+		if (!STATUS_NONE_VALUE.equals(lc) && !STATUS_ONREADY_VALUE.equals(lc)) {
 			return false;
 		}
-		
+
 		String chargerId = getChargerId();
 		String userId = context.getAccountInfo().getConsignerId();
-		if( !userId.equals(chargerId)){
+		if (!userId.equals(chargerId)) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
 	@Override
 	public boolean canRead(IContext context) {
-		//如果是项目参与者，可以打开查看
+		// 如果是项目参与者，可以打开查看
 		List<?> participates = getParticipatesIdList();
 		String userId = context.getAccountInfo().getConsignerId();
-		
-		return participates!=null&&participates.contains(userId);
-//		return super.canRead(context);
+
+		return participates != null && participates.contains(userId);
+		// return super.canRead(context);
 	}
 
 	@Override
@@ -1719,14 +1719,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Date finishDate = today;
 			Object sDuration = Setting
 					.getSystemSetting(IModelConstants.S_DEFAULT_PROJECT_COMMIT_DURATION);
-			if(sDuration !=null){
+			if (sDuration != null) {
 				Integer duration = Utils.getIntegerValue(sDuration);
-				if(duration!=null){
+				if (duration != null) {
 					CalendarCaculater ds = getCalendarCaculater();
-					while(duration >0){
+					while (duration > 0) {
 						finishDate = Utils.getDateAfter(finishDate, 1);
-						if(ds.getWorkingTime(finishDate)>0){
-							duration --;
+						if (ds.getWorkingTime(finishDate) > 0) {
+							duration--;
 						}
 					}
 				}
@@ -1751,7 +1751,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
 	}
-
 
 	public Object doCancel(IContext context) throws Exception {
 		Work root = getWBSRoot();
@@ -1921,51 +1920,131 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return super.getAdapter(adapter);
 	}
+
 	/**
 	 * 移交用户
 	 * 
-	 * @param project
-	 * @param users
-	 * @param context
-	 * @throws Exception 
+	 * @param changedUserId
+	 * @param changeUserId
+	 * @param changeWork
+	 * @throws Exception
 	 */
-	public void doTransferUsers(Project project, List<User> users,
-			IContext context) throws Exception {
-		DBCollection workCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_WORK);
-		for (User user : users) {
-			//移交指派者
-			WriteResult ws = workCol.update(
-					new BasicDBObject()
-							.append(Work.F_PROJECT_ID, project.get_id())
-							.append(Work.F_ASSIGNER, getValue(ProjectRoleAssignment.F_ROLE_NUMBER))
-							.append(Work.F_LIFECYCLE,
-									new BasicDBObject()
-											.append("$nin", new String[] {
-													Work.STATUS_CANCELED_VALUE,
-													Work.STATUS_FINIHED_VALUE })),
-					new BasicDBObject("$set", (new BasicDBObject().append(
-							Work.F_ASSIGNER, user.getUserid()))), false, true);
-			checkWriteResult(ws);
-			
-			//移交负责人
-			ws = workCol.update(
-					new BasicDBObject()
-							.append(Work.F_PROJECT_ID, project.get_id())
-							.append(Work.F_CHARGER, getValue(ProjectRoleAssignment.F_ROLE_NUMBER))
-							.append(Work.F_LIFECYCLE,
-									new BasicDBObject()
-											.append("$nin", new String[] {
-													Work.STATUS_CANCELED_VALUE,
-													Work.STATUS_FINIHED_VALUE })),
-					new BasicDBObject("$set", (new BasicDBObject().append(
-							Work.F_CHARGER, user.getUserid()))), false, true);
-			checkWriteResult(ws);
-			
-			//移交参与者
-			
-			//移交流程执行者
-			
+	public void doChangeUsers(String changedUserId, String changeUserId,
+			List<PrimaryObject> changeWork, IContext context) throws Exception {
+		boolean canAddUser = false;
+		for (PrimaryObject po : changeWork) {
+			boolean canSave = false;
+			Work work = (Work) po;
+			String lifecycleStatus = work.getLifecycleStatus();
+			if (ILifecycle.STATUS_CANCELED_TEXT.equals(lifecycleStatus))
+				continue;
+			if (ILifecycle.STATUS_CANCELED_TEXT.equals(lifecycleStatus))
+				continue;
+			// 移交负责人
+			if (changedUserId.equals(work.getChargerId())) {
+				canSave = true;
+				work.setValue(Work.F_CHARGER, changeUserId);
+			}
+			// 移交指派者
+			if (changedUserId.equals(work.getAssignerId())) {
+				canSave = true;
+				work.setValue(Work.F_ASSIGNER, changeUserId);
+			}
+			// 移交参与者
+			List<?> participatesIdList = work.getParticipatesIdList();
+			BasicBSONList participates = new BasicDBList();
+			if (participatesIdList != null) {
+				boolean bchange = false;
+				for (int i = 0; i < participatesIdList.size(); i++) {
+					String userId = (String) participatesIdList.get(i);
+					if (userId.equals(changedUserId)) {
+						bchange = true;
+						participates.add(changeUserId);
+					}
+					participates.add(userId);
+				}
+				if (bchange) {
+					canSave = true;
+					work.setValue(Work.F_PARTICIPATE, participates);
+				}
+			}
+			// 移交流程执行者
+			// 执行流程
+			BasicDBObject wfExecuteActorslist = work.getWFExecuteActors();
+			BasicBSONList wfExecuteActors = new BasicDBList();
+			if (wfExecuteActorslist != null) {
+				boolean bchange = false;
+				for (int i = 0; i < wfExecuteActorslist.size(); i++) {
+					String userId = (String) wfExecuteActorslist.get(i);
+					if (userId.equals(changedUserId)) {
+						bchange = true;
+						wfExecuteActors.add(changeUserId);
+					}
+					wfExecuteActors.add(userId);
+				}
+				if (bchange) {
+					canSave = true;
+					work.setValue(Work.F_WF_EXECUTE_ACTORS, wfExecuteActors);
+				}
+			}
+			// 变更流程
+			BasicDBObject wfChangeActorsList = work.getWFChangeActors();
+			BasicBSONList wfChangeActors = new BasicDBList();
+			if (wfChangeActorsList != null) {
+				boolean bchange = false;
+				for (int i = 0; i < wfChangeActorsList.size(); i++) {
+					String userId = (String) wfChangeActorsList.get(i);
+					if (userId.equals(changedUserId)) {
+						bchange = true;
+						wfChangeActors.add(changeUserId);
+					}
+					wfChangeActors.add(userId);
+				}
+				if (bchange) {
+					canSave = true;
+					work.setValue(Work.F_WF_CHANGE_ACTORS, wfChangeActors);
+				}
+			}
+			if (canSave) {
+				canAddUser = true;
+				work.doSave(context);
+			}
+
 		}
+		if (canAddUser) {
+			ProjectRole otherRole = getOtherRole();
+			if (otherRole == null) {
+				otherRole = doAddProjectRole();
+			}
+			if (otherRole.hasOtherAssignment(changeUserId)) {
+				List<User> users = new ArrayList<User>();
+				users.add(UserToolkit.getUserById(changeUserId));
+				otherRole.doAssignUsers(users, context);
+			}
+		}
+	}
+
+	private ProjectRole doAddProjectRole() {
+		DBCollection roleCollection = DBActivator.getCollection(
+				IModelConstants.DB, IModelConstants.C_PROJECT_ROLE);
+		BasicDBObject data = new BasicDBObject();
+		data.put(ProjectRole.F__ID, new ObjectId());
+		data.put(ProjectRole.F_PROJECT_ID, get_id());
+		data.put(ProjectRole.F_ROLE_NUMBER, ProjectRole.ROLE_OTHER_ID);
+		data.put(ProjectRole.F_DESC, ProjectRole.ROLE_OTHER_TEXT);
+		WriteResult wr = roleCollection.insert(data);
+		if (wr.getN() > 0) {
+			return ModelService.createModelObject(data, ProjectRole.class);
+		}
+		return null;
+	}
+
+	private ProjectRole getOtherRole() {
+		return (ProjectRole) getRelationByCondition(
+				ProjectRole.class,
+				new BasicDBObject().append(ProjectRole.F_PROJECT_ID, get_id())
+						.append(ProjectRole.F_ROLE_NUMBER,
+								ProjectRole.ROLE_OTHER_ID)).get(0);
+
 	}
 }

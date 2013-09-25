@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.commons;bundle-version="1.0.0",
  com.sg.business.resource,
  com.sg.widgets,
- com.sg.widgets
+ com.sg.widgets,
+ com.sg.thirdparty
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.project.editor.page

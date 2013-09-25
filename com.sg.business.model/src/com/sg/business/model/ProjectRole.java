@@ -43,6 +43,12 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	public static final String EDITOR_ROLE_DEFINITION_EDIT = "editor.projectrole.edit";
 
 	/**
+	 * 特殊角色/项目角色/其它角色
+	 */
+	public static final String ROLE_OTHER_ID = "OTHER";
+	public static final String ROLE_OTHER_TEXT = "其它角色";
+
+	/**
 	 * 返回角色所属项目
 	 * 
 	 * @return Project
@@ -183,17 +189,17 @@ public class ProjectRole extends AbstractRoleDefinition implements
 				message.addAll(checkCascadeRemove(childWork));
 			}
 		} else {
-			IProcessControl pc = (IProcessControl) work.getAdapter(IProcessControl.class);
+			IProcessControl pc = (IProcessControl) work
+					.getAdapter(IProcessControl.class);
 			// 4.1.工作执行流程上引用
-			if (ProjectToolkit.checkProcessInternal(pc, Work.F_WF_EXECUTE,
-					this)) {
+			if (ProjectToolkit
+					.checkProcessInternal(pc, Work.F_WF_EXECUTE, this)) {
 				message.add(new Object[] { "在工作的执行流程中引用了该角色", work,
 						SWT.ICON_WARNING });
 			}
 
 			// 4.2.工作变更流程上引用
-			if (ProjectToolkit.checkProcessInternal(pc, Work.F_WF_CHANGE,
-					this)) {
+			if (ProjectToolkit.checkProcessInternal(pc, Work.F_WF_CHANGE, this)) {
 				message.add(new Object[] { "在工作的变更流程中引用了该角色", work,
 						SWT.ICON_WARNING });
 			}
@@ -240,6 +246,19 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		} else {
 			return getRelationById(F__ID, ProjectRoleAssignment.F_ROLE_ID,
 					ProjectRoleAssignment.class);
+		}
+	}
+
+	public boolean hasOtherAssignment(String otherUserId) {
+		long count = getRelationCountByCondition(
+				ProjectRole.class,
+				new BasicDBObject().append(ProjectRoleAssignment.F_ROLE_ID,
+						get_id()).append(ProjectRoleAssignment.F_USER_ID,
+						otherUserId));
+		if (count > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
