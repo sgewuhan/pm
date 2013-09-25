@@ -211,6 +211,7 @@
             headerVisiable="false"
             id="work.processing"
             markupEnabled="true"
+            multiSelection="true"
             popupMenu="popup:work.processing">
          <structure
                modelRelation="work_work">
@@ -1624,6 +1625,236 @@
             allPopups="false"
             locationURI="popup:work.processing">
          <command
+               commandId="runtimework.start"
+               icon="image/work_start_24.png"
+               label="开始工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <not>
+                              <test
+                                    args="iswbsroot"
+                                    property="primaryobject.properties"
+                                    value="true">
+                              </test>
+                           </not>
+                           <test
+                                 args="start"
+                                 property="lifecycle.action">
+                           </test>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="runtimework.wfstart"
+               icon="image/start_24.png"
+               label="开始流程任务"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <and>
+                           <test
+                                 args="wip"
+                                 property="lifecycle.status">
+                           </test>
+                           <test
+                                 args="isExecuteWorkflowActivateAndAvailable"
+                                 property="primaryobject.method"
+                                 value="true">
+                           </test>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="runtimework.wffinish"
+               icon="image/complete_24.png"
+               label="完成流程任务"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <and>
+                           <test
+                                 args="wip"
+                                 property="lifecycle.status">
+                           </test>
+                           <test
+                                 args="isExecuteWorkflowActivateAndAvailable"
+                                 property="primaryobject.method"
+                                 value="true">
+                           </test>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="runtimework.finish"
+               icon="image/work_finish_24.png"
+               label="完成工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <not>
+                              <test
+                                    args="iswbsroot"
+                                    property="primaryobject.properties"
+                                    value="true">
+                              </test>
+                           </not>
+                           <test
+                                 args="finish"
+                                 property="lifecycle.action">
+                           </test>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="runtimework.pause"
+               icon="image/work_pause_24.png"
+               label="暂停工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <not>
+                              <test
+                                    args="iswbsroot"
+                                    property="primaryobject.properties"
+                                    value="true">
+                              </test>
+                           </not>
+                           <test
+                                 args="pause"
+                                 property="lifecycle.action">
+                           </test>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="runtimework.cancel"
+               icon="image/work_cancel_24.png"
+               label="取消工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <not>
+                              <test
+                                    args="iswbsroot"
+                                    property="primaryobject.properties"
+                                    value="true">
+                              </test>
+                           </not>
+                           <test
+                                 args="cancel"
+                                 property="lifecycle.action">
+                           </test>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="runtimework.wfview"
+               icon="image/flow_24.png"
+               label="查看流程记录..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate>
+                        <test
+                              args="isExecuteWorkflowActivateAndAvailable"
+                              property="primaryobject.method"
+                              value="true">
+                        </test>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="process.key"
+                  value="wf_execute">
+            </parameter>
+         </command>
+         <separator
+               name="runtimework.separator1"
+               visible="true">
+         </separator>
+         <command
                commandId="runtimework.create"
                icon="image/24_blank.png"
                label="创建工作"
@@ -1651,16 +1882,21 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <not>
-                        <test
-                              args="iswbsroot"
-                              property="primaryobject.properties"
-                              value="true">
-                        </test>
-                     </not>
-                  </iterate>
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <not>
+                           <test
+                                 args="iswbsroot"
+                                 property="primaryobject.properties"
+                                 value="true">
+                           </test>
+                        </not>
+                     </iterate>
+                  </and>
                </with>
             </visibleWhen>
          </command>
@@ -1673,13 +1909,17 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <test
-                           args="modify"
-                           property="runtimework.action">
-                     </test>
-                  </iterate>
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="modify"
+                              property="runtimework.action">
+                        </test>
+                     </iterate></and>
                </with>
             </visibleWhen>
          </command>
@@ -1709,13 +1949,18 @@
                      checkEnabled="false">
                   <with
                         variable="selection">
-                     <iterate
-                           ifEmpty="false">
-                        <test
-                              args="openproject"
-                              property="runtimework.action">
-                        </test>
-                     </iterate>
+                     <and>
+                        <count
+                              value="1">
+                        </count>
+                        <iterate
+                              ifEmpty="false">
+                           <test
+                                 args="openproject"
+                                 property="runtimework.action">
+                           </test>
+                        </iterate>
+                     </and>
                   </with>
                </visibleWhen>
             </command>
@@ -1728,13 +1973,18 @@
                      checkEnabled="false">
                   <with
                         variable="selection">
-                     <iterate
-                           ifEmpty="false">
-                        <test
-                              args="openproject"
-                              property="runtimework.action">
-                        </test>
-                     </iterate>
+                     <and>
+                        <count
+                              value="1">
+                        </count>
+                        <iterate
+                              ifEmpty="false">
+                           <test
+                                 args="openproject"
+                                 property="runtimework.action">
+                           </test>
+                        </iterate>
+                     </and>
                   </with>
                </visibleWhen>
                <parameter
@@ -1751,13 +2001,18 @@
                      checkEnabled="false">
                   <with
                         variable="selection">
-                     <iterate
-                           ifEmpty="false">
-                        <test
-                              args="openproject"
-                              property="runtimework.action">
-                        </test>
-                     </iterate>
+                     <and>
+                        <count
+                              value="1">
+                        </count>
+                        <iterate
+                              ifEmpty="false">
+                           <test
+                                 args="openproject"
+                                 property="runtimework.action">
+                           </test>
+                        </iterate>
+                     </and>
                   </with>
                </visibleWhen>
                <parameter
@@ -1791,16 +2046,21 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <not>
-                        <test
-                              args="iswbsroot"
-                              property="primaryobject.properties"
-                              value="true">
-                        </test>
-                     </not>
-                  </iterate>
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <not>
+                           <test
+                                 args="iswbsroot"
+                                 property="primaryobject.properties"
+                                 value="true">
+                           </test>
+                        </not>
+                     </iterate>
+                  </and>
                </with>
             </visibleWhen>
          </command>
@@ -1813,109 +2073,23 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <test
-                           args="workrecord"
-                           property="runtimework.action">
-                     </test>
-                  </iterate>
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="workrecord"
+                              property="runtimework.action">
+                        </test>
+                     </iterate>
+                  </and>
                </with>
             </visibleWhen>
          </command>
          <separator
                name="runtimework.separator2"
-               visible="true">
-         </separator>
-         <menu
-               icon="image/work2_24.png"
-               label="工作操作">
-            <command
-                  commandId="runtimework.start"
-                  icon="image/work_start_24.png"
-                  label="开始"
-                  style="push">
-            </command>
-            <command
-                  commandId="runtimework.finish"
-                  icon="image/work_finish_24.png"
-                  label="完成"
-                  style="push">
-            </command>
-            <command
-                  commandId="runtimework.pause"
-                  icon="image/work_pause_24.png"
-                  label="暂停"
-                  style="push">
-            </command>
-            <command
-                  commandId="runtimework.cancel"
-                  icon="image/work_cancel_24.png"
-                  label="取消"
-                  style="push">
-            </command>
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <not>
-                        <test
-                              args="iswbsroot"
-                              property="primaryobject.properties"
-                              value="true">
-                        </test>
-                     </not>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </menu>
-         <menu
-               icon="image/24_blank.png"
-               label="流程">
-            <command
-                  commandId="runtimework.wfstart"
-                  icon="image/start_24.png"
-                  label="开始任务"
-                  style="push">
-            </command>
-            <command
-                  commandId="runtimework.wffinish"
-                  icon="image/complete_24.png"
-                  label="完成任务"
-                  style="push">
-            </command>
-            <separator
-                  name="runtimework.separator2.1"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="runtimework.wfview"
-                  icon="image/flow_24.png"
-                  label="查看流程..."
-                  style="push">
-               <parameter
-                     name="process.key"
-                     value="wf_execute">
-               </parameter>
-            </command>
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false">
-                     <test
-                           args="wip"
-                           property="lifecycle.status">
-                     </test>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </menu>
-         <separator
-               name="runtimework.separator1"
                visible="true">
          </separator>
          <command
@@ -1949,6 +2123,10 @@
                label="标记"
                style="push">
          </command>
+         <separator
+               name="runtimework.separator1"
+               visible="true">
+         </separator>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -2091,67 +2269,18 @@
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionStart"
             commandId="runtimework.start">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="start"
-                        property="lifecycle.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionFinish"
             commandId="runtimework.finish">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="finish"
-                        property="lifecycle.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionPause"
             commandId="runtimework.pause">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false">
-                  <test
-                        args="pause"
-                        property="lifecycle.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.commons.handler.LifeCycleActionCancel"
             commandId="runtimework.cancel">
-         <enabledWhen>
-            <with
-                  variable="selection">
-               <iterate
-                     ifEmpty="false"
-                     operator="and">
-                  <test
-                        args="cancel"
-                        property="lifecycle.action">
-                  </test>
-               </iterate>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.sg.business.work.handler.CreateWork"
@@ -2784,15 +2913,6 @@
                         label="是否可以跳过进行中的流程完成工作"
                         labelVisible="true"
                         name="s_canskiptofinish"
-                        persistable="false"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="false"
-                        id="s_autofinishwithchildren"
-                        label="下级所有工作完成时，本工作自动完成"
-                        labelVisible="true"
-                        name="s_autofinishwithchildren"
                         persistable="false"
                         required="false">
                   </checkbox>

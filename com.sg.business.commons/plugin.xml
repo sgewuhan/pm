@@ -1353,6 +1353,13 @@
             properties="properties"
             type="java.lang.Object">
       </propertyTester>
+      <propertyTester
+            class="com.sg.business.commons.test.PrimaryObjectTest"
+            id="primaryobject.method"
+            namespace="primaryobject"
+            properties="method"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

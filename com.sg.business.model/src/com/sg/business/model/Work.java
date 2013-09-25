@@ -2507,6 +2507,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return super.getAdapter(adapter);
 	}
 	
-	
+	public boolean isExecuteWorkflowActivateAndAvailable(){
+		IProcessControl ip = getAdapter(IProcessControl.class);
+		return ip.isWorkflowActivateAndAvailable(F_WF_EXECUTE);
+	}
 
 }
