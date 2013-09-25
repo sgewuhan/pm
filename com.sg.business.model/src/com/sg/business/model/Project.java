@@ -2004,41 +2004,51 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			}
 			// 移交流程执行者
 			// 执行流程
-			BasicDBObject wfExecuteActorslist = work.getWFExecuteActors();
-			BasicBSONList wfExecuteActors = new BasicDBList();
-			if (wfExecuteActorslist != null) {
-				boolean bchange = false;
-				for (int i = 0; i < wfExecuteActorslist.size(); i++) {
-					String userId = (String) wfExecuteActorslist.get(i);
-					if (userId.equals(changedUserId)) {
-						bchange = true;
-						wfExecuteActors.add(changeUserId);
-					}
-					wfExecuteActors.add(userId);
-				}
-				if (bchange) {
-					canSave = true;
-					work.setValue(Work.F_WF_EXECUTE_ACTORS, wfExecuteActors);
+			IProcessControl ip = work.getAdapter(IProcessControl.class);
+			
+			DBObject actorsData = ip.getProcessActorsData(Work.F_WF_EXECUTE);
+			if(actorsData !=null){
+				Iterator<String> iter = actorsData.keySet().iterator();
+				while(iter.hasNext()){
+					String key = iter.next();
+					String userid = (String) actorsData.get(key);
 				}
 			}
+			
+//			BasicBSONList wfExecuteActors = new BasicDBList();
+//			if (wfExecuteActorslist != null) {
+//				boolean bchange = false;
+//				for (int i = 0; i < wfExecuteActorslist.size(); i++) {
+//					String userId = (String) wfExecuteActorslist.get(i);
+//					if (userId.equals(changedUserId)) {
+//						bchange = true;
+//						wfExecuteActors.add(changeUserId);
+//					}
+//					wfExecuteActors.add(userId);
+//				}
+//				if (bchange) {
+//					canSave = true;
+//					work.setValue(Work.F_WF_EXECUTE_ACTORS, wfExecuteActors);
+//				}
+//			}
 			// 变更流程
-			BasicDBObject wfChangeActorsList = work.getWFChangeActors();
-			BasicBSONList wfChangeActors = new BasicDBList();
-			if (wfChangeActorsList != null) {
-				boolean bchange = false;
-				for (int i = 0; i < wfChangeActorsList.size(); i++) {
-					String userId = (String) wfChangeActorsList.get(i);
-					if (userId.equals(changedUserId)) {
-						bchange = true;
-						wfChangeActors.add(changeUserId);
-					}
-					wfChangeActors.add(userId);
-				}
-				if (bchange) {
-					canSave = true;
-					work.setValue(Work.F_WF_CHANGE_ACTORS, wfChangeActors);
-				}
-			}
+//			BasicDBObject wfChangeActorsList = work.getWFChangeActors();
+//			BasicBSONList wfChangeActors = new BasicDBList();
+//			if (wfChangeActorsList != null) {
+//				boolean bchange = false;
+//				for (int i = 0; i < wfChangeActorsList.size(); i++) {
+//					String userId = (String) wfChangeActorsList.get(i);
+//					if (userId.equals(changedUserId)) {
+//						bchange = true;
+//						wfChangeActors.add(changeUserId);
+//					}
+//					wfChangeActors.add(userId);
+//				}
+//				if (bchange) {
+//					canSave = true;
+//					work.setValue(Work.F_WF_CHANGE_ACTORS, wfChangeActors);
+//				}
+//			}
 			if (canSave) {
 				canAddUser = true;
 				work.doSave(context);
