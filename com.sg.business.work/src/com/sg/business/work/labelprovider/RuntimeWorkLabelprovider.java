@@ -13,6 +13,7 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IProcessControl;
+import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -27,9 +28,99 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 	public String getText(Object element) {
 		if (element instanceof Work) {
 			Work work = (Work) element;
-			return getRuntimeWorkHTMLLabel(work);
+			if(work.isProjectWBSRoot()){
+					return getProjectHTMLLabel(work);
+			}else{
+				return getRuntimeWorkHTMLLabel(work);
+			}
 		}
 		return "";
+	}
+
+	private String getProjectHTMLLabel(Work work) {
+		Project project = work.getProject();
+		if(project == null){
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		
+		// 标记
+		CurrentAccountContext context = new CurrentAccountContext();
+		String userId = context.getAccountInfo().getConsignerId();
+		boolean userMarked = work.getMarked(userId);
+		if (userMarked) {
+			String selectbar = "<img src='"
+					+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
+					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
+			sb.append(selectbar);
+		} else {
+			String selectbar = "<img src='"
+					+ getSelectorURL(work, ImageResource.WHITE_BULLETIN)
+					+ "' style='float:right;padding:0px;margin:0px' width='8' height='40' />";
+			sb.append(selectbar);
+
+		}
+		
+		User charger = project.getCharger();
+		if (charger != null) {
+			sb.append("<span style='float:right;padding-right:4px'>");
+			sb.append(charger);
+			sb.append("</span>");
+		}
+		
+		
+		String imageUrl = "<img src='" + FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER)
+				+ "' style='float:left;padding:6px' width='24' height='24' />";
+		sb.append(imageUrl);
+		
+		String desc = project.getDesc();
+		desc = Utils.getPlainText(desc);
+		sb.append("<b>项目: "+desc+"</b>");
+		
+		String projectNumber = project.getProjectNumber();
+		sb.append(" ["+projectNumber+"]");
+
+		Date date = project.getPlanStart();
+		String planStart = "";
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+
+		if (date != null) {
+			planStart = sdf.format(date);
+		}
+
+		// String selectbar = "<img src='"
+		// + getSelectorURL(work,ImageResource.WHITE_BULLETIN)
+		// +
+		// "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
+		// sb.append(selectbar);
+
+		sb.append(" ");
+		sb.append(planStart);
+		sb.append("~");
+
+		date = project.getPlanFinish();
+		String planFinish = "";
+		if (date != null) {
+			planFinish = sdf.format(date);
+		}
+		sb.append(planFinish);
+		sb.append("  ");
+
+		sb.append("<br/><small>");
+		String[] workOrders = project.getWorkOrders();
+		for (int i = 0; i < workOrders.length; i++) {
+			if(i==0){
+				sb.append("WON: ");
+			}else{
+				sb.append(" ");
+			}
+			sb.append(workOrders[i]);
+		}
+		
+		sb.append("</small></span>");
+		return sb.toString();
 	}
 
 	private String getRuntimeWorkHTMLLabel(Work work) {
@@ -51,7 +142,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 		}
 
-		// 所有者标记
+		// 标记
 		boolean userMarked = work.getMarked(userId);
 		if (userMarked) {
 			String selectbar = "<img src='"
@@ -83,16 +174,6 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		String workDesc = work.getDesc();
 		workDesc = Utils.getPlainText(workDesc);
 		sb.append(workDesc);
-
-		// BasicBSONList participateIds = work.getParticipatesIdList();
-		// if (participateIds != null && participateIds.size() > 0) {
-		// String pid = (String) participateIds.get(0);
-		// User user = UserToolkit.getUserById(pid);
-		// sb.append(user);
-		// if (participateIds.size() > 1) {
-		// sb.append("...");
-		// }
-		// }
 
 		// 有关时间
 		sb.append("<br/>");

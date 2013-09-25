@@ -1360,6 +1360,13 @@
             properties="method"
             type="java.lang.Object">
       </propertyTester>
+      <propertyTester
+            class="com.sg.business.commons.test.RuntimeWorkTest"
+            id="runtimework.action"
+            namespace="runtimework"
+            properties="action"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

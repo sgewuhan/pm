@@ -1317,7 +1317,7 @@
             canEdit="true"
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.WorkOfProject"
-            editorId="editor.work"
+            editorId="view.work"
             fix="1"
             id="project.wbs"
             popupMenuProvider="com.sg.business.project.menu.ProjectWBSMenuProvider">
@@ -1400,7 +1400,7 @@
             canEdit="false"
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.WorkOfProject"
-            editorId="editor.work"
+            editorId="work.deliverable"
             fix="1"
             id="project.deliverable"
             popupMenuProvider="com.sg.business.project.menu.ProjectDeliverableMenuProvider">
@@ -1534,7 +1534,7 @@
             canEdit="false"
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.WorkOfWork"
-            editorId="editor.work"
+            editorId="work.deliverable"
             fix="1"
             id="work.deliverable"
             popupMenu="popup:project.deliverable">
@@ -1923,8 +1923,21 @@
          <command
                commandId="work.create"
                icon="image/creatework_24.png"
-               label="添加..."
+               label="创建工作..."
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="createChildWork"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="work.edit"
@@ -1935,9 +1948,18 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="modify"
+                              property="runtimework.action">
+                        </test>
+                     </iterate>
+                  </and>
                </with>
             </visibleWhen>
          </command>
@@ -1950,9 +1972,13 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="delete"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
@@ -2000,9 +2026,17 @@
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <and>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <test
+                              args="move"
+                              property="project.operation"
+                              value="true">
+                        </test>
+                     </iterate>
+                  </and>
                </with>
             </visibleWhen>
          </menu>
@@ -2085,9 +2119,15 @@
                      variable="selection">
                   <iterate
                         ifEmpty="false">
-                     <instanceof
-                           value="com.sg.business.model.Work">
-                     </instanceof>
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
                   </iterate>
                </with>
             </visibleWhen>
@@ -2103,9 +2143,15 @@
                      variable="selection">
                   <iterate
                         ifEmpty="false">
-                     <instanceof
-                           value="com.sg.business.model.Work">
-                     </instanceof>
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
                   </iterate>
                </with>
             </visibleWhen>
@@ -2121,9 +2167,15 @@
                      variable="selection">
                   <iterate
                         ifEmpty="false">
-                     <instanceof
-                           value="com.sg.business.model.Work">
-                     </instanceof>
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
                   </iterate>
                </with>
             </visibleWhen>
@@ -2143,9 +2195,15 @@
                      variable="selection">
                   <iterate
                         ifEmpty="false">
-                     <instanceof
-                           value="com.sg.business.model.Deliverable">
-                     </instanceof>
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Deliverable">
+                        </instanceof>
+                        <test
+                              args="editDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
                   </iterate>
                </with>
             </visibleWhen>
@@ -2183,9 +2241,15 @@
                      variable="selection">
                   <iterate
                         ifEmpty="false">
-                     <instanceof
-                           value="com.sg.business.model.Deliverable">
-                     </instanceof>
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Deliverable">
+                        </instanceof>
+                        <test
+                              args="editDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
                   </iterate>
                </with>
             </visibleWhen>

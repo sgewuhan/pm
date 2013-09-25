@@ -48,6 +48,10 @@ import com.sg.business.resource.BusinessResource;
  */
 public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ILifecycle, ISchedual, IReferenceContainer {
+	/**
+	 * 项目编号
+	 */
+	public static final String F_PROJECT_NUMBER = "projectnumber";
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
@@ -1920,5 +1924,34 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			};
 		}
 		return super.getAdapter(adapter);
+	}
+
+	public String getProjectNumber() {
+		return (String) getValue(F_PROJECT_NUMBER);
+	}
+
+	public String[] getWorkOrders() {
+		Object workOrder = getValue(F_WORK_ORDER);
+		if(workOrder instanceof List<?>){
+			List<?> list = (List<?>) workOrder;
+			return list.toArray(new String[]{});
+		}
+		return new String[]{};
+	}
+
+	public Date getPlanStart() {
+		return (Date) getValue(F_PLAN_START);
+	}
+
+	public Date getPlanFinish() {
+		return (Date) getValue(F_PLAN_FINISH);
+	}
+
+	public Date getActualStart() {
+		return (Date) getValue(F_ACTUAL_START);
+	}
+
+	public Date getActualFinish() {
+		return (Date) getValue(F_ACTUAL_FINISH);
 	}
 }
