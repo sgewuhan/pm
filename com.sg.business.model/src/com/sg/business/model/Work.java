@@ -157,6 +157,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 需启动变更流程实施工作的更改
 	 */
 	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
+	
 
 	public static final String F_MARK = "marked";
 
@@ -2507,6 +2508,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean isExecuteWorkflowActivateAndAvailable(){
 		IProcessControl ip = getAdapter(IProcessControl.class);
 		return ip.isWorkflowActivateAndAvailable(F_WF_EXECUTE);
+	}
+
+	public int getRemindBefore() {
+		Object value = getValue(F_REMIND_BEFORE);
+		if(value instanceof Integer){
+			return ((Integer) value).intValue();
+		}
+		return 0;
 	}
 
 }
