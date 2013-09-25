@@ -1,15 +1,8 @@
 package com.sg.business.model;
 
-import java.util.List;
-
 import org.bson.types.ObjectId;
 
-import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.WriteResult;
 
 /**
  * 项目角色指派

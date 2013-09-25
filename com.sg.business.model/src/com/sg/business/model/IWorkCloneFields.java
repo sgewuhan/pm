@@ -99,11 +99,6 @@ public interface IWorkCloneFields {
 	public static final String F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH = "s_canskiptofinish";
 
 	/**
-	 * 下级所有工作完成时，本工作自动完成"
-	 */
-	public static final String F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED = "s_autofinishwithchildren";
-
-	/**
 	 * 需启动变更流程实施工作的更改"
 	 */
 	public static final String F_SETTING_WORKCHANGE_MANDORY = "s_workchangeflowmandory";
@@ -117,7 +112,6 @@ public interface IWorkCloneFields {
 	 * 需要复制的设置项
 	 */
 	public static final String[] SETTING_FIELDS = new String[] {
-			F_SETTING_AUTOFINISH_WHEN_CHILDREN_FINISHED,
 			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
 			F_SETTING_AUTOSTART_WHEN_PARENT_START,
 			F_SETTING_CAN_ADD_DELIVERABLES, F_SETTING_CAN_BREAKDOWN,

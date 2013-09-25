@@ -1,7 +1,8 @@
-package com.sg.business.work.test;
+package com.sg.business.commons.test;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.sg.business.model.Deliverable;
 import com.sg.business.model.Work;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -40,6 +41,13 @@ public class RuntimeWorkTest extends PropertyTester {
 //				}
 			}
 
+		}else if(receiver instanceof Deliverable){
+			Deliverable deliverable = (Deliverable) receiver;
+			if ("editDeliverable".equals(args[0])) {
+				return deliverable.canEdit(new CurrentAccountContext());
+			}else if("deleteDeliverable".equals(args[0])){
+				return deliverable.canDelete(new CurrentAccountContext());
+			}
 		}
 		return true;
 	}

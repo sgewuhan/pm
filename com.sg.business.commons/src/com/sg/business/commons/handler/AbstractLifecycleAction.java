@@ -14,6 +14,7 @@ import com.sg.business.model.ILifecycle;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.MessageBox;
 import com.sg.widgets.part.ObjectInformationView;
 import com.sg.widgets.viewer.ViewerControl;
 
@@ -34,16 +35,20 @@ public abstract class AbstractLifecycleAction extends AbstractNavigatorHandler {
 				String name = event.getCommand().getName();
 				if (hasError(message)) {
 					MessageUtil.showToast(null, name,
-							"检查发现了一些错误，请查看检查结果，完成修改后重新执行", SWT.ICON_INFORMATION);
+							"检查发现了一些错误，请查看检查结果，完成修改后重新执行。", SWT.ICON_ERROR);
 					showCheckMessages(message, selected);
 				} else {
 					if (message != null && message.size() > 0) {
-						int result = MessageUtil.showMessage(null, name,
-								"检查发现了一些问题，请查看检查结果。" + "\n" + "选择YES忽视警告信息继续操作" + "\n"
-										+ "选择NO中止本次操作" + "\n"
-										+ "选择CANCEL取消本次操作并查看检查结果",
+						MessageBox mb = MessageUtil.createMessageBox(null, name,
+								"检查发现了一些问题，请查看检查结果。" + "\n\n" + "选择 \"继续\" 忽视警告信息继续操作" + "\n"
+										+ "选择 \"中止\" 停止执行本次操作" + "\n"
+										+ "选择 \"查看\" 取消本次操作并查看检查结果",
 								SWT.ICON_WARNING | SWT.YES | SWT.NO
 										| SWT.CANCEL);
+						mb.setButtonText(SWT.YES, "继续");
+						mb.setButtonText(SWT.NO, "中止");
+						mb.setButtonText(SWT.CANCEL, "查看");
+						int result = mb.open();
 						if (result == SWT.NO) {
 							return;
 						}else if(result == SWT.CANCEL){
