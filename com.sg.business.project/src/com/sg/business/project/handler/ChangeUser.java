@@ -15,7 +15,7 @@ public class ChangeUser extends AbstractNavigatorHandler {
 		Project po = (Project)selected;
 		
 		try {
-			ChangeUserWizard.open(po);
+			ChangeUserWizard.open(po,event);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

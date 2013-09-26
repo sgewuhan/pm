@@ -2593,7 +2593,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						new BasicDBObject().append("$set", object), false, true);
 			}
 			if (changeFiled != "") {
-				return "工作：" + getDesc() + "的" + changeFiled;
+				return "\"" + getDesc() + "\"工作的" + changeFiled;
 			} else {
 				return null;
 			}
@@ -2617,18 +2617,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		List<Object[]> message = new ArrayList<Object[]>();
 		String lifecycleStatus = getLifecycleStatus();
 
-		if (ILifecycle.STATUS_CANCELED_TEXT.equals(lifecycleStatus)) {
-			message.add(new Object[] { SWT.ICON_ERROR, this, F_LIFECYCLE,
-					ILifecycle.STATUS_CANCELED_TEXT });
+		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycleStatus)) {
+			message.add(new Object[] { "工作已经取消，无法进行修改", this,
+					SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { SWT.ICON_ERROR, this, F_LIFECYCLE,
-					ILifecycle.STATUS_FINIHED_VALUE });
+			message.add(new Object[] { "工作已经完成，无法进行修改", this,
+					SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
-			message.add(new Object[] { SWT.ICON_WARNING, this, "workflow",
-					ILifecycle.STATUS_WIP_VALUE });
+			message.add(new Object[] { "工作在进行中，不会修改工作流程执行人", this,
+							SWT.ICON_WARNING });
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(getLifecycleStatus())) {
-			message.add(new Object[] { SWT.ICON_WARNING, this, "workflow",
-					ILifecycle.STATUS_PAUSED_VALUE });
+			message.add(new Object[] { "工作已经暂停，不会修改工作流程执行人", this,
+							SWT.ICON_WARNING });
 		}
 
 		return message;
