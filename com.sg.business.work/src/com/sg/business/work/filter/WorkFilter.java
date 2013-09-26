@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.mobnut.commons.util.Utils;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Work;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -128,13 +129,44 @@ public class WorkFilter extends ViewerFilter {
 				}
 			};
 			break;
-			
+
 		case WorkFilterAction.SHOW_DELAYED_WORK:
 			selector = new WorkSelector() {
 				@Override
 				boolean select(Work work, Object nul) {
 					return work.isDelayNow();
 				}
+			};
+			break;
+
+		case WorkFilterAction.SHOW_PLANSTART_FILTER:
+			selector = new WorkSelector() {
+				@Override
+				boolean select(Work work, Object dates) {
+					Date date = work.getPlanStart();
+					if (date != null) {
+						if (dates instanceof Date[]) {
+							return Utils.dateIn((Date[])dates, date);
+						}
+					}
+					return true;
+				}
+			};
+			break;
+
+		case WorkFilterAction.SHOW_PLANFINISH_FILTER:
+			selector = new WorkSelector() {
+				@Override
+				boolean select(Work work, Object dates) {
+					Date date = work.getPlanFinish();
+					if (date != null) {
+						if (dates instanceof Date[]) {
+							return Utils.dateIn((Date[])dates, date);
+						}
+					}
+					return true;
+				}
+
 			};
 			break;
 
@@ -160,15 +192,15 @@ public class WorkFilter extends ViewerFilter {
 		case WorkFilterAction.SHOW_MY_PROJECT_WORK:
 		case WorkFilterAction.SHOW_MARKED_WORK:
 			return selector.select(viewer, work, userid);
-			
+
 		case WorkFilterAction.SHOW_REMIND_WORK:
 		case WorkFilterAction.SHOW_DELAYED_WORK:
 			return selector.select(viewer, work, null);
 
 		case WorkFilterAction.SHOW_PLANFINISH_FILTER:
 		case WorkFilterAction.SHOW_PLANSTART_FILTER:
-			
-			
+			return selector.select(viewer, work, data);
+
 		default:
 			break;
 		}
@@ -178,6 +210,10 @@ public class WorkFilter extends ViewerFilter {
 
 	public void setData(Object data) {
 		this.data = data;
+	}
+
+	public Object getData() {
+		return data;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.sg.business.work.filter;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.jface.action.Action;
@@ -10,6 +11,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.commons.selector.DateFromToSelector;
 import com.sg.widgets.viewer.CTreeViewer;
 
 public class WorkFilterAction extends Action {
@@ -54,20 +56,32 @@ public class WorkFilterAction extends Action {
 	}
 
 	@Override
+	public void setChecked(boolean checked) {
+		super.setChecked(checked);
+
+		if (!checked) {
+			setText(getNameByCode(code));
+		}
+
+	}
+
+	@Override
 	public void run() {
-		if(code == SHOW_PLANSTART_FILTER||code == SHOW_PLANSTART_FILTER){
-			//显示日期选择框
+		boolean check = isChecked();
+
+		if (check
+				&& (code == SHOW_PLANSTART_FILTER || code == SHOW_PLANFINISH_FILTER)) {
+			// 显示日期选择框
 			Date[] fromto = getDateFromTo();
-			if(fromto == null){
+			if (fromto == null) {
 				setChecked(false);
 				return;
-			}else{
+			} else {
 				filter.setData(fromto);
+				setDateText(fromto);
 			}
 		}
-		
 
-		boolean check = isChecked();
 		if (code == SHOW_ALL_PROJECT_WORK) {
 			filterControl.clearAllCheck();
 			// 清除过滤条件
@@ -98,6 +112,26 @@ public class WorkFilterAction extends Action {
 			((CTreeViewer) viewer).expandAll();
 			viewer.setFilters(newFilters);
 		}
+	}
+
+	private void setDateText(Date[] fromto) {
+		String dateText = " [";
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		if (fromto.length > 0 && fromto[0] != null) {
+			dateText += sdf.format(fromto[0]);
+		} else {
+			dateText += " ";
+		}
+
+		dateText += " ~ ";
+		if (fromto.length > 1 && fromto[1] != null) {
+			dateText += sdf.format(fromto[1]);
+		} else {
+			dateText += " ";
+		}
+		dateText += "]";
+
+		setText(getNameByCode(code) + dateText);
 	}
 
 	private static String getNameByCode(int filterCode) {
@@ -133,10 +167,10 @@ public class WorkFilterAction extends Action {
 			return "我标记的工作";
 
 		case SHOW_PLANSTART_FILTER:
-			return "计划某时间段内开始";
+			return "计划开始时间区间";
 
 		case SHOW_PLANFINISH_FILTER:
-			return "计划某时间段内完成";
+			return "计划完成时间区间";
 
 		default:
 			break;
@@ -147,19 +181,20 @@ public class WorkFilterAction extends Action {
 	public ViewerFilter getFilter() {
 		return filter;
 	}
-	
 
 	/**
 	 * 显示两个日期的选择对话框
+	 * 
 	 * @return
 	 */
 	private Date[] getDateFromTo() {
-		DateFromToSelector selector = new DateFromToSelector(viewer.getControl().getShell());
+		DateFromToSelector selector = new DateFromToSelector(viewer
+				.getControl().getShell());
 		int ok = selector.open();
-		if(Dialog.OK == ok){
+		if (Dialog.OK == ok) {
 			return selector.getDate();
 		}
 		return null;
-		
+
 	}
 }
