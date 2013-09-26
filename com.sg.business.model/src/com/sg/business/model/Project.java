@@ -1931,11 +1931,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public String[] getWorkOrders() {
 		Object workOrder = getValue(F_WORK_ORDER);
-		if(workOrder instanceof List<?>){
+		if (workOrder instanceof List<?>) {
 			List<?> list = (List<?>) workOrder;
-			return list.toArray(new String[]{});
+			return list.toArray(new String[] {});
 		}
-		return new String[]{};
+		return new String[] {};
 	}
 
 	public Date getPlanStart() {
@@ -1954,7 +1954,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return (Date) getValue(F_ACTUAL_FINISH);
 
 	}
-	
+
 	/**
 	 * 移交用户
 	 * 
@@ -1965,130 +1965,59 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void doChangeUsers(String changedUserId, String changeUserId,
 			List<PrimaryObject> changeWork, IContext context) throws Exception {
-		boolean canAddUser = false;
+
+		String messageContent = "";
 		for (PrimaryObject po : changeWork) {
-			boolean canSave = false;
 			Work work = (Work) po;
-			String lifecycleStatus = work.getLifecycleStatus();
-			if (ILifecycle.STATUS_CANCELED_TEXT.equals(lifecycleStatus))
-				continue;
-			if (ILifecycle.STATUS_CANCELED_TEXT.equals(lifecycleStatus))
-				continue;
-			// 移交负责人
-			if (changedUserId.equals(work.getChargerId())) {
-				canSave = true;
-				work.setValue(Work.F_CHARGER, changeUserId);
+			String changeWorkUserMessageContent = work.changeWorkUser(
+					changedUserId, changeUserId);
+			if (changeWorkUserMessageContent != null) {
+				messageContent = messageContent + "<br/>"
+						+ changeWorkUserMessageContent;
 			}
-			// 移交指派者
-			if (changedUserId.equals(work.getAssignerId())) {
-				canSave = true;
-				work.setValue(Work.F_ASSIGNER, changeUserId);
-			}
-			// 移交参与者
-			List<?> participatesIdList = work.getParticipatesIdList();
-			BasicBSONList participates = new BasicDBList();
-			if (participatesIdList != null) {
-				boolean bchange = false;
-				for (int i = 0; i < participatesIdList.size(); i++) {
-					String userId = (String) participatesIdList.get(i);
-					if (userId.equals(changedUserId)) {
-						bchange = true;
-						participates.add(changeUserId);
+		}
+		if (messageContent != "") {
+			List<?> oldParticipatesIdList = getParticipatesIdList();
+			BasicBSONList newParticipatesIdList = new BasicDBList();
+			if (oldParticipatesIdList != null) {
+				boolean bchange = true;
+				for (int i = 0; i < oldParticipatesIdList.size(); i++) {
+					String userId = (String) oldParticipatesIdList.get(i);
+					if (userId.equals(changeUserId)) {
+						bchange = false;
+						break;
 					}
-					participates.add(userId);
+					newParticipatesIdList.add(userId);
 				}
 				if (bchange) {
-					canSave = true;
-					work.setValue(Work.F_PARTICIPATE, participates);
+					newParticipatesIdList.add(changeUserId);
+					DBCollection userCol = DBActivator.getCollection(
+							IModelConstants.DB, IModelConstants.C_PROJECT);
+					userCol.update(new BasicDBObject().append(F__ID, get_id()),
+							new BasicDBObject().append("$set",
+									new BasicDBObject().append(F_PARTICIPATE,
+											newParticipatesIdList)), false,
+							true);
 				}
 			}
-			// 移交流程执行者
-			// 执行流程
-			IProcessControl ip = work.getAdapter(IProcessControl.class);
-			
-			DBObject actorsData = ip.getProcessActorsData(Work.F_WF_EXECUTE);
-			if(actorsData !=null){
-				Iterator<String> iter = actorsData.keySet().iterator();
-				while(iter.hasNext()){
-					String key = iter.next();
-					String userid = (String) actorsData.get(key);
-				}
-			}
-			
-//			BasicBSONList wfExecuteActors = new BasicDBList();
-//			if (wfExecuteActorslist != null) {
-//				boolean bchange = false;
-//				for (int i = 0; i < wfExecuteActorslist.size(); i++) {
-//					String userId = (String) wfExecuteActorslist.get(i);
-//					if (userId.equals(changedUserId)) {
-//						bchange = true;
-//						wfExecuteActors.add(changeUserId);
-//					}
-//					wfExecuteActors.add(userId);
-//				}
-//				if (bchange) {
-//					canSave = true;
-//					work.setValue(Work.F_WF_EXECUTE_ACTORS, wfExecuteActors);
-//				}
-//			}
-			// 变更流程
-//			BasicDBObject wfChangeActorsList = work.getWFChangeActors();
-//			BasicBSONList wfChangeActors = new BasicDBList();
-//			if (wfChangeActorsList != null) {
-//				boolean bchange = false;
-//				for (int i = 0; i < wfChangeActorsList.size(); i++) {
-//					String userId = (String) wfChangeActorsList.get(i);
-//					if (userId.equals(changedUserId)) {
-//						bchange = true;
-//						wfChangeActors.add(changeUserId);
-//					}
-//					wfChangeActors.add(userId);
-//				}
-//				if (bchange) {
-//					canSave = true;
-//					work.setValue(Work.F_WF_CHANGE_ACTORS, wfChangeActors);
-//				}
-//			}
-			if (canSave) {
-				canAddUser = true;
-				work.doSave(context);
-			}
 
+			Message message = ModelService.createModelObject(Message.class);
+			message.setValue(Message.F_RECIEVER, newParticipatesIdList);
+			message.setValue(Message.F_DESC, "工作移交通知");
+			message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
+			message.setValue(
+					Message.F_CONTENT,
+					"<span style='font-size:14px'>"
+							+ "您好: "
+							+ "</span><br/><br/>"
+							+ UserToolkit.getUserById(changeUserId)
+									.getUsername()
+							+ "将代替"
+							+ UserToolkit.getUserById(changedUserId)
+									.getUsername() + "作为：<br/>"
+							+ messageContent);
+			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
+			message.doSave(context);
 		}
-		if (canAddUser) {
-			ProjectRole otherRole = getOtherRole();
-			if (otherRole == null) {
-				otherRole = doAddProjectRole();
-			}
-			if (otherRole.hasOtherAssignment(changeUserId)) {
-				List<User> users = new ArrayList<User>();
-				users.add(UserToolkit.getUserById(changeUserId));
-				otherRole.doAssignUsers(users, context);
-			}
-		}
-	}
-
-	private ProjectRole doAddProjectRole() {
-		DBCollection roleCollection = DBActivator.getCollection(
-				IModelConstants.DB, IModelConstants.C_PROJECT_ROLE);
-		BasicDBObject data = new BasicDBObject();
-		data.put(ProjectRole.F__ID, new ObjectId());
-		data.put(ProjectRole.F_PROJECT_ID, get_id());
-		data.put(ProjectRole.F_ROLE_NUMBER, ProjectRole.ROLE_OTHER_ID);
-		data.put(ProjectRole.F_DESC, ProjectRole.ROLE_OTHER_TEXT);
-		WriteResult wr = roleCollection.insert(data);
-		if (wr.getN() > 0) {
-			return ModelService.createModelObject(data, ProjectRole.class);
-		}
-		return null;
-	}
-
-	private ProjectRole getOtherRole() {
-		return (ProjectRole) getRelationByCondition(
-				ProjectRole.class,
-				new BasicDBObject().append(ProjectRole.F_PROJECT_ID, get_id())
-						.append(ProjectRole.F_ROLE_NUMBER,
-								ProjectRole.ROLE_OTHER_ID)).get(0);
-
 	}
 }

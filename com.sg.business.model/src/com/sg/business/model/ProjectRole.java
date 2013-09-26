@@ -43,12 +43,6 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	public static final String EDITOR_ROLE_DEFINITION_EDIT = "editor.projectrole.edit";
 
 	/**
-	 * 特殊角色/项目角色/其它角色
-	 */
-	public static final String ROLE_OTHER_ID = "OTHER";
-	public static final String ROLE_OTHER_TEXT = "其它角色";
-
-	/**
 	 * 返回角色所属项目
 	 * 
 	 * @return Project
