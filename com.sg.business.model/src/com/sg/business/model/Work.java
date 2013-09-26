@@ -2511,16 +2511,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return super.getAdapter(adapter);
 	}
 
-	/*public void makeWorkRecord() {
-		BasicDBList recordData = (BasicDBList) getValue(F_RECORD);
-		if (recordData == null) {
-			recordData = new BasicDBList();
-		}
-		recordData.add(new BasicDBObject().append(F__ID, new ObjectId()));
-		setValue(F_RECORD, recordData);
+	public WorkRecord makeWorkRecord() {
+		DBObject data = new BasicDBObject();
+		data.put(WorkRecord.F_WORK_ID, get_id());
+		WorkRecord po = ModelService.createModelObject(data, WorkRecord.class);
+		return po;
 	}
 	
-	*/
+	
 	public boolean isExecuteWorkflowActivateAndAvailable(){
 		IProcessControl ip = getAdapter(IProcessControl.class);
 		return ip.isWorkflowActivateAndAvailable(F_WF_EXECUTE);

@@ -4,12 +4,10 @@ import org.eclipse.core.commands.ExecutionEvent;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
+import com.sg.business.model.WorkRecord;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
-import com.sg.widgets.part.editor.DataObjectDialog;
-import com.sg.widgets.registry.config.Configurator;
-import com.sg.widgets.registry.config.DataEditorConfigurator;
+import com.sg.widgets.part.editor.DataObjectEditor;
 
 public class EditWorkRecord extends AbstractNavigatorHandler {
 
@@ -17,16 +15,12 @@ public class EditWorkRecord extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		if (selected instanceof Work) {
 			Work work = (Work) selected;
-			
-			Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-					"editor.create.workrecord");
+			WorkRecord po = work.makeWorkRecord();
 			
 			try {
-				
-				
-				 DataObjectDialog.openDialog(null, (DataEditorConfigurator) conf,
-						true, null, "¹¤×÷¼ÇÂ¼");
-				
+				 DataObjectEditor.open(po,"editor.create.workrecord",
+							true, null);
+				 
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}
