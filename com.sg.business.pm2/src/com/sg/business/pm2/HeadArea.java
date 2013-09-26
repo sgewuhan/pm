@@ -321,7 +321,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 			return username + " ÍíÉÏºÃ";
 		case 23:
 		case 24:
-			// return "zzZ..  ";
+			 return username + "zzZ..  ";
 		}
 		return "";
 	}

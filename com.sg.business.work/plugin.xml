@@ -34,6 +34,11 @@
       <navigator
             id="work.processing"
             tree="work.processing">
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="work.finished"
@@ -2247,6 +2252,7 @@
             name="工作">
       </category>
       <command
+            categoryId="work"
             id="runtimework.view.project"
             name="查看项目">
          <commandParameter
@@ -2256,6 +2262,7 @@
          </commandParameter>
       </command>
       <command
+            categoryId="work"
             id="runtimework.view.work"
             name="查看工作">
       </command>
@@ -2280,18 +2287,22 @@
             name="取消">
       </command>
       <command
+            categoryId="work"
             id="runtimework.wfstart"
             name="启动">
       </command>
       <command
+            categoryId="work"
             id="runtimework.wffinish"
             name="完成">
       </command>
       <command
+            categoryId="work"
             id="runtimework.wfcancel"
             name="中止">
       </command>
       <command
+            categoryId="work"
             id="runtimework.wfview"
             name="查看流程">
          <commandParameter
@@ -2301,6 +2312,7 @@
          </commandParameter>
       </command>
       <command
+            categoryId="work"
             id="runtimework.mark"
             name="标记工作">
       </command>

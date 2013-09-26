@@ -188,6 +188,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_VARIABLE_24 = "variable_24.png";
 
+	public static final String IMAGE_24_BLANK = "24_blank.png";
+
 
 
 	/**
