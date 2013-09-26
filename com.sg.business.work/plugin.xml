@@ -2350,16 +2350,6 @@
       </handler>
    </extension>
    <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="com.sg.business.work.test.RuntimeWorkTest"
-            id="runtimework.action"
-            namespace="runtimework"
-            properties="action"
-            type="java.lang.Object">
-      </propertyTester>
-   </extension>
-   <extension
          name="所有与工作有关的编辑器"
          point="com.sg.widgets.dataEditor">
       <editor
@@ -2503,7 +2493,7 @@
                         navigatorId="project.participte.selector"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="true">
+                        required="false">
                   </navigatorSelector>
                </section>
             </pagecolumn>

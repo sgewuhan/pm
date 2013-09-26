@@ -244,7 +244,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * @throws Exception
 	 */
 	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
-		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
+		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
 			throw new Exception("您不能移动顶层的工作");
 		}
@@ -270,7 +270,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * @throws Exception
 	 */
 	public PrimaryObject[] doMoveUp(IContext context) throws Exception {
-		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
+		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
 			throw new Exception("您不能移动顶层的工作");
 		}
@@ -297,12 +297,12 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * @throws Exception
 	 */
 	public PrimaryObject[] doMoveLeft(IContext context) throws Exception {
-		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
+		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
 			throw new Exception("您不能移动顶层的工作");
 		}
 
-		AbstractWork grandpa = (AbstractWork) parent.getParentPrimaryObject();
+		AbstractWork grandpa = (AbstractWork) parent.getParentPrimaryObjectCache();
 
 		List<PrimaryObject> thisChildren = getChildrenWork();
 
@@ -341,7 +341,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * @throws Exception
 	 */
 	public PrimaryObject[] doMoveRight(IContext context) throws Exception {
-		AbstractWork parent = (AbstractWork) getParentPrimaryObject();
+		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
 			throw new Exception("您不能移动顶层的工作");
 		}

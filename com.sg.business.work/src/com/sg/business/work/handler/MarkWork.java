@@ -16,7 +16,7 @@ public class MarkWork extends AbstractNavigatorHandler {
 		if (selected instanceof Work) {
 			String userId = new CurrentAccountContext().getAccountInfo()
 					.getConsignerId();
-			boolean marked = ((Work) selected).getMarked(userId);
+			boolean marked = ((Work) selected).isMarked(userId);
 			try {
 				((Work) selected).mark(userId, !marked);
 				

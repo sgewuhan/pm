@@ -17,7 +17,7 @@ public class CreateStandloneWorkDefinition extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		Organization parentOrg = (Organization) po.getParentPrimaryObject();
+		Organization parentOrg = (Organization) po.getParentPrimaryObjectCache();
 		// 设置项目模板的所属组织
 		parentOrg.makeStandardWorkDefinition((WorkDefinition) po);
 	}

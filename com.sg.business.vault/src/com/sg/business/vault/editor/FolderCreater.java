@@ -17,7 +17,7 @@ public class FolderCreater extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		PrimaryObject parent = po.getParentPrimaryObject();
+		PrimaryObject parent = po.getParentPrimaryObjectCache();
 		ObjectId parentId;
 		ObjectId rootId;
 		String containerCollection, containerDB;

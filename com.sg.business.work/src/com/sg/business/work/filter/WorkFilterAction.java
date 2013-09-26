@@ -1,11 +1,16 @@
 package com.sg.business.work.filter;
 
+import java.util.Date;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
+import com.mobnut.commons.util.Utils;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.viewer.CTreeViewer;
 
 public class WorkFilterAction extends Action {
 
@@ -27,67 +32,94 @@ public class WorkFilterAction extends Action {
 	public static final int SHOW_PLANFINISH_FILTER = 11;// 在某时间段内计划开始
 
 	public static final int filterCount = 12;
-	
+
 	private WorkFilterControl filterControl;
 	private int code;
-	private boolean check = false;
 	private StructuredViewer viewer;
-	private ViewerFilter filter;
+	private WorkFilter filter;
 
 	public WorkFilterAction(WorkFilterControl workFilterControl, int filterCode) {
 		super(getNameByCode(filterCode), IAction.AS_CHECK_BOX);
 		this.filterControl = workFilterControl;
-		setImageDescriptor(BusinessResource.getImageDescriptor(BusinessResource.IMAGE_24_BLANK));
+		setImageDescriptor(BusinessResource
+				.getImageDescriptor(BusinessResource.IMAGE_24_BLANK));
 		this.code = filterCode;
 		viewer = filterControl.getViewer();
-		
+		setChecked(false);
 		initFilter();
 	}
 
 	private void initFilter() {
-		filter = new WorkFilter(code) ;
+		filter = new WorkFilter(code);
 	}
 
 	@Override
 	public void run() {
-		check = !check;
-		if(code == SHOW_ALL_PROJECT_WORK){
-			filterControl.clearAllCheck();
-			//清除过滤条件
-			viewer.resetFilters();
-		}else{
-			filterControl.clearCheck(SHOW_ALL_PROJECT_WORK);
-			//设置过滤条件
-			if(check){
-				viewer.addFilter(filter);
+		if(code == SHOW_PLANSTART_FILTER||code == SHOW_PLANSTART_FILTER){
+			//显示日期选择框
+			Date[] fromto = getDateFromTo();
+			if(fromto == null){
+				setChecked(false);
+				return;
 			}else{
-				viewer.removeFilter(filter);
+				filter.setData(fromto);
 			}
 		}
-		setChecked(check);
-	}
+		
 
+		boolean check = isChecked();
+		if (code == SHOW_ALL_PROJECT_WORK) {
+			filterControl.clearAllCheck();
+			// 清除过滤条件
+			viewer.resetFilters();
+		} else {
+			filterControl.clearCheck(SHOW_ALL_PROJECT_WORK);
+			// 设置过滤条件
+			ViewerFilter[] filters = viewer.getFilters();
+			ViewerFilter[] newFilters = filters;
+			if (check) {
+
+				// 去除矛盾的过滤器符号
+				ViewerFilter[] reverseFilters = filterControl
+						.uncheckReverseFilters(code);
+				// 去除矛盾的过滤器
+				for (int i = 0; i < reverseFilters.length; i++) {
+					newFilters = Utils.removeElementInArray(newFilters,
+							reverseFilters[i], false, ViewerFilter.class);
+				}
+
+				newFilters = Utils.addElementToArray(newFilters, filter, false,
+						ViewerFilter.class);
+			} else {
+				newFilters = Utils.removeElementInArray(newFilters, filter,
+						false, ViewerFilter.class);
+			}
+			viewer.resetFilters();
+			((CTreeViewer) viewer).expandAll();
+			viewer.setFilters(newFilters);
+		}
+	}
 
 	private static String getNameByCode(int filterCode) {
 		switch (filterCode) {
 		case SHOW_ALL_PROJECT_WORK:
 			return "显示全部工作";
-			
+
 		case SHOW_MY_PROJECT_WORK:
 			return "显示项目与我有关的工作";
-		
+
 		case SHOW_WORK_ON_READY:
 			return "准备中的工作";
-		
+
 		case SHOW_WORK_ON_PROGRESS:
 			return "进行中的工作";
 
 		case SHOW_WORK_CHARGED:
 			return "我负责的工作";
-		
+
 		case SHOW_WORK_PATICIPATE:
 			return "我参与的工作";
-		
+
 		case SHOW_WORK_ASSIGNMENT:
 			return "需要我指派的工作";
 
@@ -96,19 +128,38 @@ public class WorkFilterAction extends Action {
 
 		case SHOW_DELAYED_WORK:
 			return "已经超期的工作";
-		
+
 		case SHOW_MARKED_WORK:
 			return "我标记的工作";
 
 		case SHOW_PLANSTART_FILTER:
-			return "在某时间段内计划开始";
-		
+			return "计划某时间段内开始";
+
 		case SHOW_PLANFINISH_FILTER:
-			return "在某时间段内计划开始";
+			return "计划某时间段内完成";
 
 		default:
 			break;
 		}
 		return null;
+	}
+
+	public ViewerFilter getFilter() {
+		return filter;
+	}
+	
+
+	/**
+	 * 显示两个日期的选择对话框
+	 * @return
+	 */
+	private Date[] getDateFromTo() {
+		DateFromToSelector selector = new DateFromToSelector(viewer.getControl().getShell());
+		int ok = selector.open();
+		if(Dialog.OK == ok){
+			return selector.getDate();
+		}
+		return null;
+		
 	}
 }

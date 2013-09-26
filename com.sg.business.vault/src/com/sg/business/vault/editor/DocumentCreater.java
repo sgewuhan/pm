@@ -28,7 +28,7 @@ public class DocumentCreater extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		PrimaryObject parent = po.getParentPrimaryObject();
+		PrimaryObject parent = po.getParentPrimaryObjectCache();
 		if (parent instanceof Folder) {
 			ObjectId parentId = parent.get_id();
 			po.setValue(Document.F_FOLDER_ID, parentId);

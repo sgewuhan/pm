@@ -17,7 +17,7 @@ public class CreateDocumentDefinition extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		Organization parentOrg = (Organization) po.getParentPrimaryObject();
+		Organization parentOrg = (Organization) po.getParentPrimaryObjectCache();
 		parentOrg.makeDocumentDefinition((DocumentDefinition) po);
 	}
 

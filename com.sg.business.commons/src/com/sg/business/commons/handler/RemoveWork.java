@@ -28,7 +28,7 @@ public class RemoveWork extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		Shell shell = HandlerUtil.getActiveShell(event);
-		if(selected.getParentPrimaryObject()==null){
+		if(selected.getParentPrimaryObjectCache()==null){
 			MessageUtil.showToast(shell, "É¾³ý"+selected.getTypeName(), "¶¥¼¶"+selected.getTypeName()+"²»¿ÉÉ¾³ý", SWT.ICON_WARNING);
 			return;
 		}

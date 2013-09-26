@@ -48,7 +48,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		// ±ê¼Ç
 		CurrentAccountContext context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getConsignerId();
-		boolean userMarked = work.getMarked(userId);
+		boolean userMarked = work.isMarked(userId);
 		if (userMarked) {
 			String selectbar = "<img src='"
 					+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
@@ -164,7 +164,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			}
 		}
 		if (selectbarUrl == null) {
-			boolean userMarked = work.getMarked(userId);
+			boolean userMarked = work.isMarked(userId);
 			if (userMarked) {
 				selectbarUrl = getSelectorURL(work, ImageResource.BLUE_BULLETIN);
 			} else {

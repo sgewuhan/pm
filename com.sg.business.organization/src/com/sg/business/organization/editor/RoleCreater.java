@@ -17,7 +17,7 @@ public class RoleCreater extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected void setParentData(PrimaryObject po) {
-		Organization parentOrg = (Organization) po.getParentPrimaryObject();
+		Organization parentOrg = (Organization) po.getParentPrimaryObjectCache();
 		parentOrg.makeRole((Role)po);
 	}
 
