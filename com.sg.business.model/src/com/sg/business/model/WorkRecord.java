@@ -38,6 +38,7 @@ public class WorkRecord extends PrimaryObject {
 				IModelConstants.C_WORK);
 		col.update(new BasicDBObject().append("_id", getValue(F_WORK_ID)),new BasicDBObject().append("$set",
 				new BasicDBObject().append(Work.F_RECORD,dataList)));
+		
 	}
 	
 }
