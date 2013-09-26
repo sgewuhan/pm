@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.admin.dataset.Setting;
@@ -1985,7 +1986,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					String userId = (String) oldParticipatesIdList.get(i);
 					if (userId.equals(changeUserId)) {
 						bchange = false;
-						break;
 					}
 					newParticipatesIdList.add(userId);
 				}
@@ -2019,5 +2019,32 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
 			message.doSave(context);
 		}
+	}
+	
+	public List<Object[]> checkChangeUser(String changedUserId,
+			String changeUserId,List<PrimaryObject> changeWork) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		String lifecycleStatus = getLifecycleStatus();
+
+		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycleStatus)) {
+			message.add(new Object[] { "项目已经取消，无法进行修改", this,
+					SWT.ICON_ERROR });
+		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
+			message.add(new Object[] { "项目已经完成，无法进行修改", this,
+					SWT.ICON_ERROR });
+		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
+			message.add(new Object[] { "项目在进行中，不会修改项目流程执行人", this,
+							SWT.ICON_WARNING });
+		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(getLifecycleStatus())) {
+			message.add(new Object[] { "项目已经暂停，不会修改项目流程执行人", this,
+							SWT.ICON_WARNING });
+		}
+		
+		for (PrimaryObject po : changeWork) {
+			Work work = (Work) po;
+			message.addAll(work.checkChangeWorkUser(changedUserId, changeUserId));
+		}
+
+		return message;
 	}
 }
