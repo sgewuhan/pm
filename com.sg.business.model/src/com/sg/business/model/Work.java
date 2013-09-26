@@ -20,6 +20,7 @@ import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -2506,17 +2507,153 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return super.getAdapter(adapter);
 	}
 
-	/*
-	 * public void makeWorkRecord() { BasicDBList recordData = (BasicDBList)
-	 * getValue(F_RECORD); if (recordData == null) { recordData = new
-	 * BasicDBList(); } recordData.add(new BasicDBObject().append(F__ID, new
-	 * ObjectId())); setValue(F_RECORD, recordData); }
-	 */
-	public boolean isExecuteWorkflowActivateAndAvailable() {
+	public WorkRecord makeWorkRecord() {
+		DBObject data = new BasicDBObject();
+		data.put(WorkRecord.F_WORK_ID, get_id());
+		WorkRecord po = ModelService.createModelObject(data, WorkRecord.class);
+		return po;
+	}
+	
+	
+	public boolean isExecuteWorkflowActivateAndAvailable(){
 		IProcessControl ip = getAdapter(IProcessControl.class);
 		return ip.isWorkflowActivateAndAvailable(F_WF_EXECUTE);
 	}
 
+	/**
+	 * 修改工作负责人、指派者、参与者和工作流程执行者
+	 * 
+	 * @param changedUserId
+	 *            : 需要修改的人员
+	 * @param changeUserId
+	 *            : 修改成该人员
+	 */
+	public String changeWorkUser(String changedUserId, String changeUserId) {
+		if (canChangeWorkUser(changedUserId, changeUserId)) {
+			String changeFiled = "";
+			BasicDBObject object = new BasicDBObject();
+			// 修改负责人
+			if (changedUserId.equals(getChargerId())) {
+				object.put(F_CHARGER, changeUserId);
+				changeFiled = changeFiled + "负责人";
+			}
+			// 修改指派者
+			if (changedUserId.equals(getAssignerId())) {
+				object.put(F_ASSIGNER, changeUserId);
+				if (changeFiled != "") {
+					changeFiled = changeFiled + "、";
+				}
+				changeFiled = changeFiled + "指派者";
+			}
+			// 修改参与者
+			List<?> oldParticipatesIdList = getParticipatesIdList();
+			BasicBSONList newParticipatesIdList = new BasicDBList();
+			if (oldParticipatesIdList != null) {
+				boolean bchange = false;
+				for (int i = 0; i < oldParticipatesIdList.size(); i++) {
+					String userId = (String) oldParticipatesIdList.get(i);
+					if (userId.equals(changedUserId)) {
+						bchange = true;
+						newParticipatesIdList.add(changeUserId);
+					}
+					newParticipatesIdList.add(userId);
+				}
+				if (bchange) {
+					object.put(F_PARTICIPATE, newParticipatesIdList);
+					if (changeFiled != "") {
+						changeFiled = changeFiled + "、";
+					}
+					changeFiled = changeFiled + "参与者";
+				}
+			}
+
+			// 工作流程执行人
+			// 执行工作流程
+			if (changeWorkFlowActors(changedUserId, changeUserId, F_WF_EXECUTE,
+					object)) {
+				if (changeFiled != "") {
+					changeFiled = changeFiled + "、";
+				}
+				changeFiled = changeFiled + "工作执行流程执行者";
+			}
+
+			// 变更工作流程
+			if (changeWorkFlowActors(changedUserId, changeUserId, F_WF_CHANGE,
+					object)) {
+				if (changeFiled != "") {
+					changeFiled = changeFiled + "、";
+				}
+				changeFiled = changeFiled + "工作变更流程执行者";
+			}
+
+			if (object.size() > 0) {
+				DBCollection userCol = DBActivator.getCollection(
+						IModelConstants.DB, IModelConstants.C_WORK);
+				userCol.update(new BasicDBObject().append(F__ID, get_id()),
+						new BasicDBObject().append("$set", object), false, true);
+			}
+			if (changeFiled != "") {
+				return "工作：" + getDesc() + "的" + changeFiled;
+			} else {
+				return null;
+			}
+		}
+		return null;
+	}
+
+	private boolean canChangeWorkUser(String changedUserId, String changeUserId) {
+		return true;
+	}
+
+	/**
+	 * 检查能否修改该工作
+	 * 
+	 * @param changedUserId
+	 * @param changeUserId
+	 * @return
+	 */
+	public List<Object[]> checkChangeWorkUser(String changedUserId,
+			String changeUserId) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		String lifecycleStatus = getLifecycleStatus();
+
+		if (ILifecycle.STATUS_CANCELED_TEXT.equals(lifecycleStatus)) {
+			message.add(new Object[] { SWT.ICON_ERROR, this, F_LIFECYCLE,
+					ILifecycle.STATUS_CANCELED_TEXT });
+		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
+			message.add(new Object[] { SWT.ICON_ERROR, this, F_LIFECYCLE,
+					ILifecycle.STATUS_FINIHED_VALUE });
+		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
+			message.add(new Object[] { SWT.ICON_WARNING, this, "workflow",
+					ILifecycle.STATUS_WIP_VALUE });
+		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(getLifecycleStatus())) {
+			message.add(new Object[] { SWT.ICON_WARNING, this, "workflow",
+					ILifecycle.STATUS_PAUSED_VALUE });
+		}
+
+		return message;
+	}
+
+	private boolean changeWorkFlowActors(String changedUserId,
+			String changeUserId, String process, BasicDBObject object) {
+		IProcessControl ip = getAdapter(IProcessControl.class);
+		boolean hasChange = false;
+		DBObject actorsData = ip.getProcessActorsData(process);
+		if (actorsData != null) {
+			Iterator<String> iter = actorsData.keySet().iterator();
+			while (iter.hasNext()) {
+				String key = iter.next();
+				String userid = (String) actorsData.get(key);
+				if (changedUserId.equals(userid)) {
+					object.put(process + IProcessControl.POSTFIX_ACTORS + "."
+							+ key, changedUserId);
+					hasChange = true;
+				}
+			}
+		}
+		return hasChange;
+	}
+	
 	public int getRemindBefore() {
 		Object value = getValue(F_REMIND_BEFORE);
 		if (value instanceof Integer) {
