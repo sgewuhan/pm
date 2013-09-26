@@ -158,8 +158,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 需启动变更流程实施工作的更改
 	 */
 	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
+	
 
 	public static final String F_MARK = "marked";
+	
+	public static final String F_RECORD = "record";
+	
+	
+	
 
 	/**
 	 * 根据状态返回不同的图标
@@ -2505,7 +2511,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return super.getAdapter(adapter);
 	}
 
-	public boolean isExecuteWorkflowActivateAndAvailable() {
+	/*public void makeWorkRecord() {
+		BasicDBList recordData = (BasicDBList) getValue(F_RECORD);
+		if (recordData == null) {
+			recordData = new BasicDBList();
+		}
+		recordData.add(new BasicDBObject().append(F__ID, new ObjectId()));
+		setValue(F_RECORD, recordData);
+	}
+	
+	*/
+	public boolean isExecuteWorkflowActivateAndAvailable(){
 		IProcessControl ip = getAdapter(IProcessControl.class);
 		return ip.isWorkflowActivateAndAvailable(F_WF_EXECUTE);
 	}
@@ -2642,6 +2658,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 		}
 		return hasChange;
+	}
+	
+	public int getRemindBefore() {
+		Object value = getValue(F_REMIND_BEFORE);
+		if(value instanceof Integer){
+			return ((Integer) value).intValue();
+		}
+		return 0;
 	}
 
 }
