@@ -21,6 +21,7 @@ import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.NavigatorControl;
+import com.sg.widgets.part.editor.IEditorActionListener;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.INavigatorPageBodyPartCreater;
 import com.sg.widgets.part.editor.page.NavigatorPage;
@@ -167,6 +168,11 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater,
 			reloadOptionsColumns();
 			viewer.refresh();
 		}
+	}
+
+	@Override
+	public void editorAction(IEditorActionListener reciever, int code,
+			Object object) {
 	}
 
 }
