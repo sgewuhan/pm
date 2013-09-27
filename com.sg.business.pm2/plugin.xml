@@ -62,7 +62,7 @@
          </view>
          <view
                closeable="false"
-               id="work.finished"
+               id="com.sg.business.home.mycalendar"
                minimized="false"
                moveable="false"
                relationship="stack"
@@ -77,14 +77,14 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="work.finished"
+               relative="com.sg.business.home.mycalendar"
                showTitle="true"
                standalone="false"
                visible="true">
          </view>
          <view
                closeable="false"
-               id="com.sg.business.home.mycalendar"
+               id="work.finished"
                minimized="false"
                moveable="false"
                relationship="stack"
