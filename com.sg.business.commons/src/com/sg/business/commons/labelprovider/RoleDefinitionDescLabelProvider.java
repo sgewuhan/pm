@@ -10,13 +10,18 @@ public class RoleDefinitionDescLabelProvider extends ColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		AbstractRoleDefinition roled = (AbstractRoleDefinition)element;
-		if(roled.isOrganizatioRole()){
-			Role role = roled.getOrganizationRole();
-			Organization org = role.getOrganization();
-			return org.getPath();
-		}else{
-			return "项目角色";
+		if (element instanceof AbstractRoleDefinition) {
+
+			AbstractRoleDefinition roled = (AbstractRoleDefinition) element;
+			if (roled.isOrganizatioRole()) {
+				Role role = roled.getOrganizationRole();
+				Organization org = role.getOrganization();
+				return org.getPath();
+			} else {
+				return "项目角色";
+			}
+		} else {
+			return "";
 		}
 	}
 
