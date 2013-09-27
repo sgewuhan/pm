@@ -1,15 +1,18 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.utils.DBObjectComparator;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -17,10 +20,12 @@ import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
 /**
- * 用户<p/>
+ * 用户
+ * <p/>
  * 用户为公司职员，归属于组织
+ * 
  * @author jinxitao
- *
+ * 
  */
 public class User extends PrimaryObject {
 
@@ -48,7 +53,7 @@ public class User extends PrimaryObject {
 	 * 用户头部照片
 	 */
 	public static final String F_HEADPIC = "headpic";
-	
+
 	/**
 	 * 激活
 	 */
@@ -56,12 +61,14 @@ public class User extends PrimaryObject {
 
 	/**
 	 * 所属组织ID
+	 * 
 	 * @see #Orgainzation
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
-	
+
 	/**
 	 * 所属组织名称
+	 * 
 	 * @see #Orgainzation
 	 */
 	public static final String F_ORGANIZATION_NAME = "organization_name";
@@ -76,8 +83,11 @@ public class User extends PrimaryObject {
 	 */
 	public static final String F_IS_ADMIN = "isadmin";
 
+	private static final String F_LASTOPENED = "lastopened";
+
 	/**
 	 * 获取组织_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getOrganization_id() {
@@ -86,6 +96,7 @@ public class User extends PrimaryObject {
 
 	/**
 	 * 返回用户编号
+	 * 
 	 * @return String
 	 */
 	public String getUserid() {
@@ -94,6 +105,7 @@ public class User extends PrimaryObject {
 
 	/**
 	 * 返回用户名称
+	 * 
 	 * @return String
 	 */
 	public String getUsername() {
@@ -114,13 +126,10 @@ public class User extends PrimaryObject {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * TODO
-	 * 停用用户
-	 * 只要控制不允许选择
+	 * TODO 停用用户 只要控制不允许选择
 	 */
-	
 
 	/**
 	 * 获取用户授予的角色
@@ -175,6 +184,7 @@ public class User extends PrimaryObject {
 
 	/**
 	 * 用户的显示内容
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -184,6 +194,7 @@ public class User extends PrimaryObject {
 
 	/**
 	 * 用户的显示图标
+	 * 
 	 * @return Image
 	 */
 	@Override
@@ -213,11 +224,11 @@ public class User extends PrimaryObject {
 		}
 	}
 
-	
 	/**
 	 * 获得用户具有某角色的组织
+	 * 
 	 * @param roleNumber
-	 *           ,角色编号
+	 *            ,角色编号
 	 * @return
 	 */
 	public List<PrimaryObject> getRoleGrantedOrganization(String roleNumber) {
@@ -231,7 +242,7 @@ public class User extends PrimaryObject {
 		}
 
 		List<PrimaryObject> orgs = new ArrayList<PrimaryObject>();
-		
+
 		// 查询属于可管理的组织
 		DBCollection orgCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
@@ -253,8 +264,9 @@ public class User extends PrimaryObject {
 
 	/**
 	 * 将用户委托至其他用户
+	 * 
 	 * @param consigner
-	 *         ,被委托用户
+	 *            ,被委托用户
 	 * @param context
 	 * @throws Exception
 	 */
@@ -265,10 +277,30 @@ public class User extends PrimaryObject {
 
 	/**
 	 * 返回类型名称
+	 * 
 	 * @return String
 	 */
 	@Override
 	public String getTypeName() {
 		return "用户";
+	}
+
+	public List<DBObject> getLastOpen() {
+		List<?> value = (List<?>) getValue(F_LASTOPENED, true);
+		List<DBObject> result = new ArrayList<DBObject>();
+		if (value != null) {
+			for (int i = 0; i < value.size(); i++) {
+				DBObject element = (DBObject) value.get(i);
+				if (!Utils.contains(result,element,"id")) {
+					result.add(element);
+				}
+			}
+
+			Collections.sort(result, new DBObjectComparator(
+					new String[] { "date,-1" }));
+		}
+
+		return result;
+
 	}
 }

@@ -39,10 +39,6 @@ public class BulletinBoard extends PrimaryObject {
 	 */
 	public static final String F_PROJECT_ID = "project_id";
 
-	/**
-	 * 标题
-	 */
-	public static final String F_DESC = "desc";
 
 	/**
 	 * 公告内容
@@ -130,9 +126,16 @@ public class BulletinBoard extends PrimaryObject {
 		content = Utils.getLimitLengthString(content, 40);
 
 		// 显示标题和内容
-		sb.append("<b>" + label + "</b>");
-		sb.append("<br/>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append(label );
+		sb.append("</span>");
+
+		sb.append("<br/><small>");
+		
 		sb.append(content);
+		
+		sb.append("</small>");
+		
 		return sb.toString();
 	}
 
@@ -152,18 +155,23 @@ public class BulletinBoard extends PrimaryObject {
 		Date date = getPublishDate();
 		String publishDate = sdf.format(date);
 
+
+		sb.append("<span style='padding-left:4px'>");
+		sb.append(punlisher);
+		sb.append("</span>");
+		
+		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append(publishDate);
+		sb.append("</span>");
+		
+		sb.append("<br/>");
+		
 		// 设置发布部门
 		String org = ((Organization) ModelService.createModelObject(
 				Organization.class, getOrganizationId())).getDesc();
-
 		sb.append("<span style='padding-left:4px'>");
-		sb.append("" + punlisher);
+		sb.append(org);
 		sb.append("</span>");
-		sb.append("<span style='float:right;padding-right:4px'>");
-		sb.append("" + publishDate);
-		sb.append("</span>");
-		sb.append("<br/>");
-		sb.append("" + org);
 
 		return sb.toString();
 	}
