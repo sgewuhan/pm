@@ -6,6 +6,7 @@ import java.util.Date;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
@@ -42,9 +43,8 @@ public class WorkFilterAction extends Action {
 
 	public WorkFilterAction(WorkFilterControl workFilterControl, int filterCode) {
 		super(getNameByCode(filterCode), IAction.AS_CHECK_BOX);
+		setImageDescriptor(getImageDescriptorByCode(filterCode));
 		this.filterControl = workFilterControl;
-		setImageDescriptor(BusinessResource
-				.getImageDescriptor(BusinessResource.IMAGE_24_BLANK));
 		this.code = filterCode;
 		viewer = filterControl.getViewer();
 		setChecked(false);
@@ -134,6 +134,58 @@ public class WorkFilterAction extends Action {
 		setText(getNameByCode(code) + dateText);
 	}
 
+	private ImageDescriptor getImageDescriptorByCode(int filterCode) {
+		switch (filterCode) {
+		case SHOW_WORK_ON_READY:
+			return BusinessResource
+					.getImageDescriptor(BusinessResource.IMAGE_READY_24);
+
+		case SHOW_WORK_ON_PROGRESS:
+			return BusinessResource
+					.getImageDescriptor(BusinessResource.IMAGE_START_24);
+
+		case SHOW_WORK_ASSIGNMENT:
+			return BusinessResource
+					.getImageDescriptor(BusinessResource.IMAGE_WORK_ASSIGNMENT_24);
+
+		case SHOW_REMIND_WORK:
+			return BusinessResource
+					.getImageDescriptor(BusinessResource.IMAGE_ALERT_24);
+
+		case SHOW_MARKED_WORK:
+			return BusinessResource
+					.getImageDescriptor(BusinessResource.IMAGE_MARK_24);
+
+		case SHOW_DELAYED_WORK:
+			return BusinessResource
+					.getImageDescriptor(BusinessResource.IMAGE_FLAG_RED_24);
+
+		case SHOW_ALL_PROJECT_WORK:
+			return BusinessResource
+					.getImageDescriptor(BusinessResource.IMAGE_WORK_FILTER_24);
+
+		case SHOW_MY_PROJECT_WORK:
+			// return "显示项目与我有关的工作";
+
+		case SHOW_WORK_CHARGED:
+			// return "我负责的工作";
+
+		case SHOW_WORK_PATICIPATE:
+			// return "我参与的工作";
+
+		case SHOW_PLANSTART_FILTER:
+			// return "计划开始时间区间";
+
+		case SHOW_PLANFINISH_FILTER:
+			// return "计划完成时间区间";
+
+		default:
+			break;
+		}
+		return BusinessResource
+				.getImageDescriptor(BusinessResource.IMAGE_24_BLANK);
+	}
+
 	private static String getNameByCode(int filterCode) {
 		switch (filterCode) {
 		case SHOW_ALL_PROJECT_WORK:
@@ -143,10 +195,10 @@ public class WorkFilterAction extends Action {
 			return "显示项目与我有关的工作";
 
 		case SHOW_WORK_ON_READY:
-			return "准备中的工作";
+			return "准备中";
 
 		case SHOW_WORK_ON_PROGRESS:
-			return "进行中的工作";
+			return "进行中";
 
 		case SHOW_WORK_CHARGED:
 			return "我负责的工作";
@@ -158,10 +210,10 @@ public class WorkFilterAction extends Action {
 			return "需要我指派的工作";
 
 		case SHOW_REMIND_WORK:
-			return "超期预警的工作";
+			return "超期预警";
 
 		case SHOW_DELAYED_WORK:
-			return "已经超期的工作";
+			return "已经超期";
 
 		case SHOW_MARKED_WORK:
 			return "我标记的工作";

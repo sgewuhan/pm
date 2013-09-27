@@ -23,6 +23,10 @@ public class WorkFilterControl {
 		actionMap = new HashMap<Integer, WorkFilterAction>();
 
 		MenuManager menuManager = new MenuManager("#filterMenu");
+		menuManager.add(createAction(WorkFilterAction.SHOW_ALL_PROJECT_WORK));
+		menuManager.add(createAction(WorkFilterAction.SHOW_MY_PROJECT_WORK));
+		menuManager.add(new Separator());
+
 		menuManager.add(createAction(WorkFilterAction.SHOW_WORK_ON_READY));
 		menuManager.add(createAction(WorkFilterAction.SHOW_WORK_ON_PROGRESS));
 		menuManager.add(new Separator());
@@ -32,7 +36,6 @@ public class WorkFilterControl {
 		menuManager.add(createAction(WorkFilterAction.SHOW_DELAYED_WORK));
 		menuManager.add(new Separator());
 
-		menuManager.add(createAction(WorkFilterAction.SHOW_MY_PROJECT_WORK));
 		menuManager.add(createAction(WorkFilterAction.SHOW_WORK_CHARGED));
 		menuManager.add(createAction(WorkFilterAction.SHOW_WORK_PATICIPATE));
 		menuManager.add(createAction(WorkFilterAction.SHOW_WORK_ASSIGNMENT));
@@ -41,8 +44,6 @@ public class WorkFilterControl {
 		menuManager.add(createAction(WorkFilterAction.SHOW_PLANSTART_FILTER));
 		menuManager.add(createAction(WorkFilterAction.SHOW_PLANFINISH_FILTER));
 
-		menuManager.add(new Separator());
-		menuManager.add(createAction(WorkFilterAction.SHOW_ALL_PROJECT_WORK));
 
 		return menuManager;
 	}
