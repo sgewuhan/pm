@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.DocumentDefinition;
+import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
@@ -32,8 +33,10 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 					try {
 						Iterator<?> iter = is.iterator();
 						while (iter.hasNext()) {
-							DocumentDefinition next = (DocumentDefinition) iter.next();
-							DeliverableDefinition po = workd.makeDeliverableDefinition(next);
+							DocumentDefinition next = (DocumentDefinition) iter
+									.next();
+							DeliverableDefinition po = workd
+									.makeDeliverableDefinition(next);
 							po.setParentPrimaryObject(workd);
 							po.addEventListener(vc);
 							po.doSave(new CurrentAccountContext());
@@ -49,8 +52,14 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 			}
 		};
 
+		Organization org = null;
 		ProjectTemplate projectTemplate = workd.getProjectTemplate();
-		ns.setMaster(projectTemplate.getOrganization());
+		if (projectTemplate != null) {
+			org = projectTemplate.getOrganization();
+		} else {
+			org = workd.getOrganization();
+		}
+		ns.setMaster(org);
 		ns.show();
 	}
 
