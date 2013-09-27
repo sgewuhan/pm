@@ -40,6 +40,13 @@ public class Folder extends PrimaryObject {
 	public static final String F_CONTAINER_COLLECTION = "containerCollection";
 
 	/**
+	 * 项目ID
+	 */
+	public static final String F_PROJECT_ID = "project_id";
+
+	public static final String F_IS_PROJECT_FOLDERROOT = "isflderroot";
+
+	/**
 	 * 返回文件夹类型
 	 * @return String
 	 */

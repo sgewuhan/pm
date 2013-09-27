@@ -39,18 +39,18 @@ public class ChangeUserWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		ChangeUserOfTeamPage changeUserOfTeamPage = new ChangeUserOfTeamPage(
-				"team", "项目组", "选择项目组中需要移交的用户", "project.team",
+		ChangeUserOfParticipatePage changeUserOfParticipatePage = new ChangeUserOfParticipatePage(
+				"team", "请选择需要移交的用户", "", "project.team",
 				(PrimaryObject) po);
-		addPage(changeUserOfTeamPage);
+		addPage(changeUserOfParticipatePage);
 
 		ChangeUserOfOrgUserPage changeUserOfOrgUserPage = new ChangeUserOfOrgUserPage(
-				"alluser", "移交用户", "选择移交的用户", "organization.alluser",
+				"alluser", "请选择工作将移交给谁", "", "organization.alluser",
 				(PrimaryObject) org);
 		addPage(changeUserOfOrgUserPage);
 
 		ChangeUserOfWBSPage changeUserOfWBSPage = new ChangeUserOfWBSPage(
-				"wbs", "移交工作", "选择移交的工作", "project.changeuser.wbs",
+				"wbs", "请选择要移交的那些工作", "", "project.changeuser.wbs",
 				(PrimaryObject) po);
 		addPage(changeUserOfWBSPage);
 	}

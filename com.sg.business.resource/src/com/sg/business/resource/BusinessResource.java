@@ -190,6 +190,22 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_24_BLANK = "24_blank.png";
 
+	public static final String IMAGE_READY_24 = "ready_24.png";
+	
+	public static final String IMAGE_START_24 = "start_24.png";
+
+	public static final String IMAGE_ALERT_24 = "alert_24.png";
+
+	public static final String IMAGE_MARK_24 = "mark_24.png";
+	
+	public static final String IMAGE_WORK_ASSIGNMENT_24 = "work_assignment_24.png";
+	
+	public static final String IMAGE_FLAG_RED_24 = "flag_red_24.png";
+
+	public static final String IMAGE_FLAG_YELLOW_24 = "flag_yellow_24.png";
+	
+	public static final String IMAGE_WORK_FILTER_24 = "work_filter_24.png";
+
 
 
 	/**
