@@ -1642,7 +1642,7 @@
             <command
                   commandId="com.sg.widgets.command.edit"
                   icon="image/group_24.png"
-                  label="角色指派"
+                  label="项目组"
                   style="push">
                <parameter
                      name="com.sg.widgets.edit.editorid"
@@ -2880,6 +2880,7 @@
                id="project.team"
                image="image/group_24.png"
                navigatorId="project.team"
+               pageBodyPartCreater="com.sg.business.project.page.ProjectTeamPage"
                title="项目组">
          </navigatorpage>
          <navigatorpage
