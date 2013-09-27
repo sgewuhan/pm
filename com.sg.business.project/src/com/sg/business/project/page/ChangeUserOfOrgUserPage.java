@@ -14,6 +14,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.INavigatablePart;
 import com.sg.widgets.part.NavigatorControl;
 
@@ -23,11 +24,12 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 	private String navigatorid;
 	private PrimaryObject master;
 
-	protected ChangeUserOfOrgUserPage(String sName,String sTitle, String sDescription,
-			String navigatorid,  PrimaryObject master) {
+	protected ChangeUserOfOrgUserPage(String sName, String sTitle,
+			String sDescription, String navigatorid, PrimaryObject master) {
 		super(sName);
 		setTitle(sTitle);
 		setDescription(sDescription);
+		setMessage("将 ? 的工作移交给 ? ");
 		this.navigatorid = navigatorid;
 		this.master = master;
 	}
@@ -42,7 +44,6 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
-						ChangeUserOfOrgUserPage.this.getContainer().updateButtons();
 						ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 						IStructuredSelection selection = (IStructuredSelection) event
 								.getSelection();
@@ -50,16 +51,24 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 							Object element = selection.getFirstElement();
 							if (element instanceof User) {
 								User assignment = (User) element;
-
+								
 								wiz.setChangeUserId(assignment.getUserid());
+								setMessage("将 \""
+										+ UserToolkit.getUserById(wiz
+												.getChangedUserId())
+												+ "\" 的工作移交给 \""
+												+ UserToolkit.getUserById(assignment
+														.getUserid()) + "\" ");
 							} else {
 								wiz.setChangeUserId(null);
-
+								
 							}
 						} else {
 							wiz.setChangeUserId(null);
-
+							
 						}
+						ChangeUserOfOrgUserPage.this.getContainer()
+								.updateButtons();
 					}
 				});
 		setControl(navi.getViewer().getControl());
@@ -68,15 +77,26 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 
 	@Override
 	public boolean canFlipToNextPage() {
-			ISelection selection = navi.getViewer().getSelection();
-			if (selection != null && !selection.isEmpty()) {
-				Object element = ((IStructuredSelection) selection)
-						.getFirstElement();
-				if (element instanceof User) {
+		ISelection selection = navi.getViewer().getSelection();
+		if (selection != null && !selection.isEmpty()) {
+			Object element = ((IStructuredSelection) selection)
+					.getFirstElement();
+			if (element instanceof User) {
+				User assignment = (User) element;
+				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
+				if (wiz.getChangedUserId().equals(assignment.getUserid())) {
+					setErrorMessage("无法将 \""
+							+ UserToolkit.getUserById(wiz
+									.getChangedUserId())
+							+ "\" 的工作移交给 \""
+							+ UserToolkit.getUserById(assignment.getUserid())
+							+ "\" ");
+				} else {
 					return true;
 				}
 			}
-			return false;
+		}
+		return false;
 	}
 
 	@Override
