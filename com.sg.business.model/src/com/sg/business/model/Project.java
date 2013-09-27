@@ -383,6 +383,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return ModelService.createModelObject(wbsRootData, Work.class);
 	}
 
+	private Folder makeFolderRoot() {
+		BasicDBObject folderRootData = new BasicDBObject();
+		folderRootData.put(Folder.F_DESC, getDesc());
+		folderRootData.put(Folder.F_PROJECT_ID, get_id());
+		ObjectId folderRootId = new ObjectId();
+		folderRootData.put(Folder.F__ID, folderRootId);
+		folderRootData.put(Folder.F_ROOT_ID, folderRootId);
+		folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
+		return ModelService.createModelObject(folderRootData, Folder.class);
+	}
+
 	public ProjectRole makeProjectRole(ProjectRole po) {
 		if (po == null) {
 			po = ModelService.createModelObject(ProjectRole.class);
@@ -470,6 +481,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Work root = makeWBSRoot();
 		root.doInsert(context);
 		setValue(Project.F_WORK_ID, root.get_id());
+		
+		//创建根文件夹
+		Folder folderRoot = makeFolderRoot();
+		folderRoot.doInsert(context);
 
 		// 预算
 		ProjectBudget budget = makeBudget(context);
@@ -478,7 +493,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		super.doInsert(context);
 
 		// 复制模板
-		doSetupWithTemplate(root.get_id(), context);
+		doSetupWithTemplate(root.get_id(), context,folderRoot.get_id());
 
 		// 复制系统日历
 		doCopySystemCanlendar();
@@ -527,9 +542,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @param context
 	 * @param wbsRootId
+	 * @param folderRootId 
 	 * @throws Exception
 	 */
-	public void doSetupWithTemplate(ObjectId wbsRootId, IContext context)
+	public void doSetupWithTemplate(ObjectId wbsRootId, IContext context, ObjectId folderRootId)
 			throws Exception {
 		ObjectId id = getProjectTemplateId();
 		if (id == null) {
@@ -541,7 +557,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 复制工作定义
 		Map<ObjectId, DBObject> workMap = doSetupWBSWithTemplate(id, wbsRootId,
-				roleMap, context);
+				folderRootId, roleMap, context);
 
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
@@ -718,7 +734,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	private HashMap<ObjectId, DBObject> doSetupWBSWithTemplate(
 			ObjectId projectTemplateId, ObjectId wbsRootId,
-			Map<ObjectId, DBObject> roleMap, IContext context) throws Exception {
+			ObjectId folderRootId, Map<ObjectId, DBObject> roleMap,
+			IContext context) throws Exception {
 
 		// 取出模板的根工作定义的_id
 		DBCollection pjTempCol = getCollection(IModelConstants.C_PROJECT_TEMPLATE);
@@ -738,8 +755,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
 
 		copyWBSTemplate(rootWorkDefId, wbsRootId, wbsRootId, get_id(), roleMap,
-				worksToBeInsert, documentsToBeInsert, deliverableToInsert,
-				fileToCopy, context);
+				worksToBeInsert, folderRootId, documentsToBeInsert,
+				deliverableToInsert, fileToCopy, context);
 
 		// 保存工作
 		DBCollection workCol = getCollection(IModelConstants.C_WORK);
@@ -907,6 +924,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				get_id()));
 		checkWriteResult(ws);
 
+		// 删除文件夹
+		col = getCollection(IModelConstants.C_FOLDER);
+		ws = col.remove(new BasicDBObject().append(Folder.F_PROJECT_ID,
+				get_id()));
+		checkWriteResult(ws);
+
 		// 删除文档
 		col = getCollection(IModelConstants.C_DOCUMENT);
 		ws = col.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
@@ -930,6 +953,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 *            角色映射，{模板角色Id:目标角色}
 	 * @param worksToInsert
 	 *            将要插入数据库的工作，添加的工作都需要放置到ArrayList中
+	 * @param folderRootId
+	 *            项目目标文档的根Id
 	 * @param documentsToInsert
 	 *            将要插入数据库的文档, {文档模板id:目标文档}
 	 * @param dilerverableToInsert
@@ -942,7 +967,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	private void copyWBSTemplate(ObjectId srcParent, ObjectId tgtParentId,
 			ObjectId tgtRootId, ObjectId projectId,
 			Map<ObjectId, DBObject> roleMap,
-			Map<ObjectId, DBObject> worksToInsert,
+			Map<ObjectId, DBObject> worksToInsert, ObjectId folderRootId,
 			Map<ObjectId, DBObject> documentsToInsert,
 			List<DBObject> dilerverableToInsert, List<DBObject[]> fileToCopy,
 			IContext context) {
@@ -1113,7 +1138,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 							// 如果没有创建，需要创建该文档
 							documentData = copyDocumentFromTemplate(
 									documentsToInsert, fileToCopy,
-									documentTemplateId, projectId);
+									documentTemplateId, projectId, folderRootId);
 						}
 						documentsToInsert.put(documentTemplateId, documentData);
 						ObjectId documentId = (ObjectId) documentData
@@ -1130,8 +1155,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				// 处理子工作
 				copyWBSTemplate((ObjectId) workdef.get(WorkDefinition.F__ID),
 						(ObjectId) work.get(Work.F__ID), tgtRootId, projectId,
-						roleMap, worksToInsert, documentsToInsert,
-						dilerverableToInsert, fileToCopy, context);
+						roleMap, worksToInsert, folderRootId,
+						documentsToInsert, dilerverableToInsert, fileToCopy,
+						context);
 			}
 
 		}
@@ -1141,7 +1167,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	private DBObject copyDocumentFromTemplate(
 			Map<ObjectId, DBObject> documentsToInsert,
 			List<DBObject[]> fileToCopy, ObjectId documentTemplateId,
-			ObjectId projectId) {
+			ObjectId projectId, ObjectId folderRootId) {
 		DBObject documentData;
 		DBCollection docdCol = getCollection(IModelConstants.C_DOCUMENT_DEFINITION);
 		DBObject documentTemplate = docdCol.findOne(new BasicDBObject().append(
@@ -1151,6 +1177,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		documentData.put(Document.F__ID, new ObjectId());
 
 		documentData.put(Document.F_PROJECT_ID, projectId);
+		
+		documentData.put(Document.F_FOLDER_ID, folderRootId);
 
 		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
 		if (value != null) {
@@ -2020,29 +2048,28 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			message.doSave(context);
 		}
 	}
-	
+
 	public List<Object[]> checkChangeUser(String changedUserId,
-			String changeUserId,List<PrimaryObject> changeWork) {
+			String changeUserId, List<PrimaryObject> changeWork) {
 		List<Object[]> message = new ArrayList<Object[]>();
 		String lifecycleStatus = getLifecycleStatus();
 
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { "项目已经取消，无法进行修改", this,
-					SWT.ICON_ERROR });
+			message.add(new Object[] { "项目已经取消，无法进行修改", this, SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { "项目已经完成，无法进行修改", this,
-					SWT.ICON_ERROR });
+			message.add(new Object[] { "项目已经完成，无法进行修改", this, SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
 			message.add(new Object[] { "项目在进行中，不会修改项目流程执行人", this,
-							SWT.ICON_WARNING });
+					SWT.ICON_WARNING });
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(getLifecycleStatus())) {
 			message.add(new Object[] { "项目已经暂停，不会修改项目流程执行人", this,
-							SWT.ICON_WARNING });
+					SWT.ICON_WARNING });
 		}
-		
+
 		for (PrimaryObject po : changeWork) {
 			Work work = (Work) po;
-			message.addAll(work.checkChangeWorkUser(changedUserId, changeUserId));
+			message.addAll(work
+					.checkChangeWorkUser(changedUserId, changeUserId));
 		}
 
 		return message;

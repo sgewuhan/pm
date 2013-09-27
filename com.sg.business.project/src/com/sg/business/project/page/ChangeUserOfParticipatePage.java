@@ -17,13 +17,13 @@ import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.widgets.part.INavigatablePart;
 import com.sg.widgets.part.NavigatorControl;
 
-public class ChangeUserOfTeamPage extends WizardPage implements
+public class ChangeUserOfParticipatePage extends WizardPage implements
 		INavigatablePart {
 	private NavigatorControl navi;
 	private String navigatorid;
 	private PrimaryObject master;
 
-	protected ChangeUserOfTeamPage(String sName, String sTitle,
+	protected ChangeUserOfParticipatePage(String sName, String sTitle,
 			String sDescription, String navigatorid, PrimaryObject master) {
 		super(sName);
 		setTitle(sTitle);
@@ -41,7 +41,7 @@ public class ChangeUserOfTeamPage extends WizardPage implements
 				new ISelectionChangedListener() {
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
-						ChangeUserOfTeamPage.this.getContainer()
+						ChangeUserOfParticipatePage.this.getContainer()
 								.updateButtons();
 						ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 						IStructuredSelection selection = (IStructuredSelection) event

@@ -71,6 +71,8 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	 */
 	public static final String EDITOR = "editor.document.generic";
 
+	
+
 
 	/**
 	 * 返回所属文件夹_id

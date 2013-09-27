@@ -381,7 +381,7 @@
       </navigator>
       <navigator
             id="project.documents"
-            table="project.documents">
+            tree="project.folder">
          <filterAction>
             <column
                   columnDefinitionId="com.sg.widgets.column.desc">
@@ -392,6 +392,9 @@
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </searchAction>
+         <createEditor
+               editorId="editor.folder">
+         </createEditor>
       </navigator>
       <navigator
             id="project.bulletinboard"
@@ -1282,9 +1285,10 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="-1"
             dataSet="com.sg.business.model.dataset.organization.OrgMaster"
-            id="organization.alluser"
-            autoExpandLevel="-1">
+            headerVisiable="false"
+            id="organization.alluser">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -1587,6 +1591,27 @@
                columnDefinitionId="work.desc">
          </column>
       </tree>
+      <tree
+            autoExpandLevel="3"
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.business.model.dataset.project.FolderOfProject"
+            editorId="editor.folder"
+            headerVisiable="false"
+            id="project.folder"
+            popupMenu="popup:project.folder">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
+         </structure>
+      </tree>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -1649,12 +1674,6 @@
                      name="com.sg.widgets.edit.pageid"
                      value="project.team">
                </parameter>
-            </command>
-            <command
-                  commandId="project.changeuser"
-                  icon="image/24_blank.png"
-                  label="移交用户工作"
-                  style="push">
             </command>
             <command
                   commandId="com.sg.widgets.command.edit"
@@ -1810,6 +1829,12 @@
                </with>
             </visibleWhen>
          </menu>
+         <command
+               commandId="project.changeuser"
+               icon="image/24_blank.png"
+               label="项目工作移交"
+               style="push">
+         </command>
          <separator
                name="project.separator1"
                visible="true">
@@ -2365,6 +2390,39 @@
                   value="datadialog">
             </parameter>
          </command>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.folder">
+         <command
+               commandId="com.sg.widgets.command.create"
+               icon="image/create2_24.png"
+               label="创建"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="编辑"
+               style="push"
+               tooltip="image/edit_24.png">
+         </command>
+         <separator
+               name="folder.separator1"
+               visible="true">
+         </separator>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
