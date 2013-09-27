@@ -5,13 +5,6 @@
          point="org.eclipse.ui.views">
       <view
             category="home"
-            class="com.sg.business.home.view.MyWorkView"
-            id="com.sg.business.home.mywork"
-            name="我的工作"
-            restorable="true">
-      </view>
-      <view
-            category="home"
             class="com.sg.business.home.view.BulletinBoardView"
             icon="image/bulletin_24.png"
             id="home.bulletinboard"
@@ -20,28 +13,61 @@
       </view>
       <view
             category="home"
-            class="com.sg.business.home.view.MyCalendar"
-            id="com.sg.business.home.mycalendar"
-            name="日历"
-            restorable="true">
-      </view>
-      <view
-            category="home"
-            class="com.sg.business.home.view.SummaryView"
-            id="com.sg.business.home.summary"
-            name="业务概览"
+            class="com.sg.business.home.view.LastOpened"
+            id="home.lastopen"
+            name="最近编辑"
             restorable="true">
       </view>
       <category
             id="home"
             name="主页">
       </category>
+      <view
+            class="com.sg.business.home.view.MyCalendar"
+            id="home.mycalender"
+            name="日历"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
       <navigator
             id="home.bulletinboard"
             tree="home.bulletinboard">
+         <searchAction>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String">
+            </column>
+            <column
+                  column="publisher"
+                  name="发布人"
+                  type="String">
+            </column>
+            <column
+                  column="publish_date"
+                  name="发布日期"
+                  type="Date">
+            </column>
+         </searchAction>
+         <filterAction>
+            <column
+                  column="desc"
+                  name="标题"
+                  type="String">
+            </column>
+            <column
+                  column="publisher"
+                  name="发布人"
+                  type="String">
+            </column>
+            <column
+                  column="publish_date"
+                  name="发布日期"
+                  type="Date">
+            </column>
+         </filterAction>
       </navigator>
    </extension>
    <extension
