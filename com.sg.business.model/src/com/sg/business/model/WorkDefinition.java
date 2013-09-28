@@ -490,4 +490,18 @@ public class WorkDefinition extends AbstractWork implements
 		}
 		return null;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter.equals(IProcessControl.class)) {
+			return (T) new ProcessControl(this){
+				@Override
+				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
+					return RoleDefinition.class;
+				}
+			};
+		}
+		return super.getAdapter(adapter);
+	}
 }
