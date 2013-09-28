@@ -3,10 +3,13 @@ package com.sg.business.model.toolkit;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sg.business.model.IProcessControl;
@@ -16,12 +19,12 @@ import com.sg.business.model.Work;
 
 public class MessageToolkit {
 
-	public static void appendMessageContent(Message message, String contentLine) {
+	public static void appendCommitMessageContent(Message message, String contentLine) {
 		Object value = message.getValue(Message.F_CONTENT);
 		if (!(value instanceof String)) {
 			message.setValue(Message.F_CONTENT, "<span style='font-size:14px'>"
 					+ "您好: " + "</span><br/><br/>"
-					+ "您收到了提交的项目计划信息。<br/>您在计划中将负责和参与以下工作：<br/><br/>"
+					+ "您收到了提交的计划信息。<br/>您在计划中将负责和参与以下工作：<br/><br/>"
 					+ contentLine);
 		} else {
 			message.setValue(Message.F_CONTENT, (String) value + "<br/>"
@@ -29,19 +32,25 @@ public class MessageToolkit {
 		}
 	}
 
-	public static Message createProjectCommitMessage(String userId) {
-		Message message = ModelService.createModelObject(Message.class);
+	public static Message makeMessage(String userId, String title,String senderId,String content) {
 		BasicDBList recievers = new BasicDBList();
 		recievers.add(userId);
+		return makeMessage(recievers,title,senderId,content);
+	}
+	
+	public static Message makeMessage(List<?> recievers, String title,String senderId,String content) {
+		Message message = ModelService.createModelObject(Message.class);
 		message.setValue(Message.F_RECIEVER, recievers);
-		message.setValue(Message.F_DESC, "项目计划提交通知");
+		message.setValue(Message.F_DESC, title);
 		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
+		message.setValue(Message.F_SENDER, senderId);
+		message.setValue(Message.F_CONTENT, content);
 		return message;
 	}
 
 	public static void appendWorkflowActorMessage(Work work,
 			Map<String, Message> messageList, String processKey,
-			String processName) {
+			String processName, String title,String senderId,String content) {
 		Message message;
 		String userId;
 		IProcessControl pc = (IProcessControl) work.getAdapter(IProcessControl.class);
@@ -55,10 +64,10 @@ public class MessageToolkit {
 					userId = (String) map.get(key);
 					message = messageList.get(userId);
 					if (message == null) {
-						message = MessageToolkit.createProjectCommitMessage(userId);
+						message = makeMessage(userId,title,senderId,content);
 						messageList.put(userId, message);
 					}
-					MessageToolkit.appendMessageContent(message, "参与工作流程，"
+					MessageToolkit.appendCommitMessageContent(message, "参与工作流程，"
 							+ processName + ": " + work.getLabel());
 					message.appendTargets(work, Work.EDITOR, Boolean.TRUE);
 				}
@@ -68,7 +77,7 @@ public class MessageToolkit {
 
 	public static void appendWorkflowActorMessage(Project project,
 			Map<String, Message> messageList, String processKey,
-			String processName) {
+			String processName, String title,String senderId,String content) {
 		Message message;
 		String userId;
 		IProcessControl pc = (IProcessControl) project.getAdapter(IProcessControl.class);
@@ -81,10 +90,10 @@ public class MessageToolkit {
 					userId = (String) map.get(key);
 					message = messageList.get(userId);
 					if (message == null) {
-						message = MessageToolkit.createProjectCommitMessage(userId);
+						message = makeMessage(userId,title,senderId,content);
 						messageList.put(userId, message);
 					}
-					MessageToolkit.appendMessageContent(message, "参与项目流程，"
+					MessageToolkit.appendCommitMessageContent(message, "参与项目流程，"
 							+ processName + ": " + project.getLabel());
 					message.appendTargets(project, Work.EDITOR, Boolean.TRUE);
 				}
@@ -115,5 +124,23 @@ public class MessageToolkit {
 						+ new SimpleDateFormat(Utils.SDF_DATE_WEEKDAY_TIME)
 								.format(new Date()) + "<br/>"
 						+ "（本消息由系统自动代发）");
+	}
+
+	public static void appendMessage(Map<String, Message> messageList,
+			String receiverId, String title, String content,
+			PrimaryObject target, String editId, IContext context) {
+		Message message;
+		if (receiverId == null) {
+			return;
+		}
+		message = messageList.get(receiverId);
+		if (message == null) {
+			message = MessageToolkit.makeMessage(receiverId, title, context
+					.getAccountInfo().getConsignerId(), null);
+			messageList.put(receiverId, message);
+		}
+		MessageToolkit.appendCommitMessageContent(message, content);
+		message.appendTargets(target, editId, Boolean.TRUE);
+		messageList.put(receiverId, message);
 	}
 }

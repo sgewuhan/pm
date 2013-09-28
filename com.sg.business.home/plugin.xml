@@ -94,20 +94,6 @@
                style="SWT.LEFT"
                type="String"
                width="-1"></column>
-         <column
-               column="publisher"
-               labelProvider="com.sg.business.commons.labelprovider.PublisherLabelProvider"
-               name="发布人"
-               style="SWT.LEFT"
-               type="String"
-               width="200"></column>
-         <column
-               column="attachment"
-               labelProvider="com.sg.business.commons.labelprovider.AttachmentLabelProvider"
-               name="附件"
-               style="SWT.CENTER"
-               type="String"
-               width="36"></column>
       </tree>
    </extension>
    <extension
@@ -117,19 +103,19 @@
             locationURI="popup:menu.bulletinboard">
          <command
                commandId="bulletinboard.create"
-               icon="image/create2_24.png"
+               icon="image/bulletin_add_24.png"
                label="新建公告"
                style="push">
          </command>
          <command
                commandId="bulletinboard.reply"
-               icon="image/reply24.png"
+               icon="image/bulleting_reply_24.png"
                label="回复公告"
                style="push">
          </command>
          <command
                commandId="bulletinboard.open"
-               icon="image/open_24.png"
+               icon="image/24_blank.png"
                label="查看公告"
                style="push">
          </command>
@@ -139,7 +125,7 @@
          </separator>
          <command
                commandId="com.sg.widgets.command.edit"
-               icon="image/edit_24.png"
+               icon="image/bulletin_edit_24.png"
                label="编辑"
                style="push">
          </command>
@@ -151,7 +137,7 @@
          </command>
          <command
                commandId="com.sg.widgets.command.delete"
-               icon="image/trash_24.png"
+               icon="image/bulletin_remove_24.png"
                label="删除"
                style="push">
          </command>

@@ -38,7 +38,6 @@ import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
-import com.sg.widgets.part.BackgroundContext;
 
 /**
  * <p>
@@ -1482,94 +1481,63 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @param messageList
 	 *            , 传入待发生的消息列表，如有相同用户的可以合并
+	 * @param context
 	 * @return
 	 */
 	public Map<String, Message> getCommitMessage(
-			Map<String, Message> messageList) {
+			Map<String, Message> messageList, String title, IContext context) {
 		// 1. 取工作负责人
-		appendMessageForCharger(messageList);
+		appendMessageForCharger(messageList, title, context);
 
 		// 2. 取工作指派者
-		appendMessageForAssigner(messageList);
+		appendMessageForAssigner(messageList, title, context);
 
 		// 3. 获取参与者
-		appendMessageForParticipate(messageList);
+		appendMessageForParticipate(messageList, title, context);
 
 		// 4. 获取流程的执行人
-		appendMessageForChangeWorkflowActor(messageList);
+		appendMessageForChangeWorkflowActor(messageList, title, context);
 
-		appendMessageForExecuteWorkflowActor(messageList);
+		appendMessageForExecuteWorkflowActor(messageList, title, context);
 
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childwork = (Work) children.get(i);
-			childwork.getCommitMessage(messageList);
+			childwork.getCommitMessage(messageList, title, context);
 		}
 		return messageList;
 	}
 
-	public void appendMessageForCharger(Map<String, Message> messageList) {
-		Message message;
-		String userId = getChargerId();
-		if (userId != null) {
-			message = messageList.get(userId);
-			if (message == null) {
-				message = MessageToolkit.createProjectCommitMessage(userId);
-				messageList.put(userId, message);
-			}
-			MessageToolkit.appendMessageContent(message, "负责工作" + ": "
-					+ getLabel());
-			message.appendTargets(this, EDITOR, Boolean.TRUE);
-			messageList.put(userId, message);
-		}
+	public void appendMessageForCharger(Map<String, Message> messageList,
+			String title, IContext context) {
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, "负责工作"
+				+ ": " + getLabel(), this, EDITOR, context);
 	}
 
-	public void appendMessageForAssigner(Map<String, Message> messageList) {
-		Message message;
-		String userId;
-		userId = getAssignerId();
-		if (userId != null) {
-			message = messageList.get(userId);
-			if (message == null) {
-				message = MessageToolkit.createProjectCommitMessage(userId);
-				messageList.put(userId, message);
-			}
-			MessageToolkit.appendMessageContent(message, "为工作指派负责人和参与者，工作"
-					+ ": " + getLabel());
-			message.appendTargets(this, EDITOR, Boolean.TRUE);
-			messageList.put(userId, message);
-		}
+	public void appendMessageForAssigner(Map<String, Message> messageList,
+			String title, IContext context) {
+		MessageToolkit.appendMessage(messageList, getChargerId(), title,
+				"为工作指派负责人和参与者，工作" + ": " + getLabel(), this, EDITOR, context);
 	}
 
-	public void appendMessageForParticipate(Map<String, Message> messageList) {
-		Message message;
-		String userId;
-		List<?> userIdList = getParticipatesIdList();
-		if (userIdList != null) {
-			for (int i = 0; i < userIdList.size(); i++) {
-				userId = (String) userIdList.get(i);
-				message = messageList.get(userId);
-				if (message == null) {
-					message = MessageToolkit.createProjectCommitMessage(userId);
-					messageList.put(userId, message);
-				}
-				MessageToolkit.appendMessageContent(message, "参与工作" + ": "
-						+ getLabel());
-				message.appendTargets(this, EDITOR, Boolean.TRUE);
-			}
-		}
+	public void appendMessageForParticipate(Map<String, Message> messageList,
+			String title, IContext context) {
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, "参与工作"
+				+ ": " + getLabel(), this, EDITOR, context);
 	}
 
 	public void appendMessageForExecuteWorkflowActor(
-			Map<String, Message> messageList) {
+			Map<String, Message> messageList, String title, IContext context) {
 		MessageToolkit.appendWorkflowActorMessage(this, messageList,
-				F_WF_EXECUTE, "执行流程");
+				F_WF_EXECUTE, "执行流程", title, context.getAccountInfo()
+						.getConsignerId(), null);
 	}
 
 	public void appendMessageForChangeWorkflowActor(
-			Map<String, Message> messageList) {
+			Map<String, Message> messageList, String title, IContext context) {
 		MessageToolkit.appendWorkflowActorMessage(this, messageList,
-				F_WF_CHANGE, "变更流程");
+				F_WF_CHANGE, "变更流程", title, context.getAccountInfo()
+						.getConsignerId(), null);
 	}
 
 	/**
@@ -1853,7 +1821,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作启动
-		doNoticeWorkAction(context, "工作启动");
+		doNoticeWorkAction(context, "已启动");
 
 		// 调用后处理
 		doStartAfter(context, params);
@@ -1891,7 +1859,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作已暂停
-		doNoticeWorkAction(context, "工作已暂停");
+		doNoticeWorkAction(context, "已暂停");
 
 		// 后处理
 		doPauseAfter(context, params);
@@ -1931,7 +1899,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作已取消
-		doNoticeWorkAction(context, "工作已取消");
+		doNoticeWorkAction(context, "已取消");
 		doCancelAfter(context, params);
 
 		return null;
@@ -1988,7 +1956,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 提示工作已完成
-		doNoticeWorkAction(context, "工作已完成");
+		doNoticeWorkAction(context, "已完成");
 		doFinishAfter(context, params);
 		return null;
 
@@ -2007,31 +1975,46 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public Message doNoticeWorkAction(IContext context, String actionName)
 			throws Exception {
-		Message message = ModelService.createModelObject(Message.class);
 		// 设置收件人
 		BasicBSONList participatesIdList = getParticipatesIdList();
 		if (participatesIdList == null || participatesIdList.isEmpty()) {
 			return null;
 		}
-		message.setValue(Message.F_RECIEVER, participatesIdList);
+		// 排除自己
+		participatesIdList.remove(context.getAccountInfo().getConsignerId());
 
 		// 设置通知标题
-		message.setValue(Message.F_DESC, actionName + "通知");
-		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
-
-		// 设置发件人
-		String userId = context.getAccountInfo().getUserId();
-		String userName = context.getAccountInfo().getUserName();
-		message.setValue(Message.F_SENDER, userId);
-
-		// 设置发送时间
-		message.setValue(Message.F_SENDDATE, new Date());
+		String title = "" + this + " " + actionName;
 
 		// 设置通知内容
-		String content = "<span style='font-size:14px'>" + "您好: "
-				+ "</span><br/><br/>" + userName + "|" + userId + "执行了"
-				+ actionName + getLabel() + "<br/>您是该工作的参与者，请知晓。<br/><br/>";
-		message.setValue(Message.F_CONTENT, content);
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='font-size:14px'>");
+		sb.append("您好: ");
+		sb.append("</span><br/><br/>");
+		sb.append("您参与的工作有新的进展。");
+		sb.append("<br/><br/>");
+
+		sb.append(context.getAccountInfo().getUserId() + "|"
+				+ context.getAccountInfo().getUserName());
+		sb.append(", ");
+		sb.append(actionName);
+		sb.append("工作");
+		sb.append("\"");
+		sb.append(this);
+		sb.append("\"");
+		if (isProjectWork()) {
+			sb.append(" \"");
+			sb.append("项目:");
+			sb.append(getProject());
+			sb.append(" \"");
+		}
+
+		sb.append("<br/><br/>");
+		sb.append("如有不明，请查阅有关工作信息。");
+
+		Message message = MessageToolkit.makeMessage(participatesIdList, title,
+				context.getAccountInfo().getConsignerId(), sb.toString());
+
 		MessageToolkit.appendEndMessage(message);
 
 		// 设置导航附件
@@ -2043,34 +2026,49 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public Message doNoticeWorkflow(String actorId, String taskName,
-			String key, IContext context) throws Exception {
-		Message message = ModelService.createModelObject(Message.class);
-		// 设置收件人
-
-		message.setValue(Message.F_RECIEVER, new String[] { actorId });
+			String key, String action, IContext context) throws Exception {
+		BasicBSONList recievers = getParticipatesIdList();
+		if (recievers == null) {
+			return null;
+		}
+		// 排除自己
+		recievers.remove(actorId);
 
 		// 设置通知标题
-		String actionName = "";
-		if (key.equals(F_WF_EXECUTE)) {
-			actionName = "工作执行流程";
-		} else if (key.equals(F_WF_CHANGE)) {
-			actionName = "工作变更流程";
-		}
-		message.setValue(Message.F_DESC, actionName + "通知");
-		message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
-
-		// 设置发件人
-		String userId = context.getAccountInfo().getUserId();
-		message.setValue(Message.F_SENDER, userId);
-
-		// 设置发送时间
-		message.setValue(Message.F_SENDDATE, new Date());
-
+		String title = "" + this + " " + "流程任务" + taskName + " " + action;
 		// 设置通知内容
-		String content = "<span style='font-size:14px'>" + "您好: "
-				+ "</span><br/><br/>" + "工作: " + getLabel() + "<br/>"
-				+ "流程活动: " + taskName + "<br/>您是该流程活动的执行人，请尽快开始流程活动。<br/><br/>";
-		message.setValue(Message.F_CONTENT, content);
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='font-size:14px'>");
+		sb.append("您好: ");
+		sb.append("</span><br/><br/>");
+		sb.append("您参与的工作有新的进展。");
+		sb.append("<br/><br/>");
+
+		User user = UserToolkit.getUserById(actorId);
+		sb.append(user);
+		sb.append(", ");
+		sb.append(action);
+		sb.append("工作");
+		sb.append("\"");
+		sb.append(this);
+		sb.append("\"");
+		if (isProjectWork()) {
+			sb.append(" \"");
+			sb.append("项目:");
+			sb.append(getProject());
+			sb.append(" \"");
+		}
+		sb.append("的流程任务: ");
+		sb.append("\"");
+		sb.append(taskName);
+		sb.append("\"。");
+
+		sb.append("<br/><br/>");
+		sb.append("如有不明，请查阅有关工作信息和流程历史");
+
+		Message message = MessageToolkit.makeMessage(recievers, title, actorId,
+				sb.toString());
+
 		MessageToolkit.appendEndMessage(message);
 
 		// 设置导航附件
@@ -2255,12 +2253,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		long workItemId = taskData.getWorkItemId();
 		data.put(IProcessControl.F_WF_TASK_WORKITEMID, new Long(workItemId));
 
-		// 发送任务消息，并保存
-		BackgroundContext context = new BackgroundContext();
-		Message message = doNoticeWorkflow(actorId, taskName, key, context);
-		Assert.isNotNull(message, "消息发送失败");
-		data.put(IProcessControl.F_WF_TASK_NOTICEDATE,
-				message.getValue(Message.F_SENDDATE));
+		// // 发送任务消息，并保存
+		// BackgroundContext context = new BackgroundContext();
+		// Message message = doNoticeWorkflow(actorId, taskName, key, context);
+		// Assert.isNotNull(message, "消息发送失败");
+		// data.put(IProcessControl.F_WF_TASK_NOTICEDATE,
+		// message.getValue(Message.F_SENDDATE));
 
 		/*
 		 * 由于PrimaryObject对象可能在不同的用户进程中存在多个副本，副本之间数据并不能维护一致。
@@ -2356,6 +2354,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				IProcessControl.TASK_ACTION_START);
 
 		doSaveWorkflowHistroy(processKey, task, taskFormData, context);
+
+		// 发送任务消息，并保存
+
+		List<I18NText> names = task.getNames();
+		String taskName = "";
+		if (names != null && names.size() > 0) {
+			taskName = names.get(0).getText();
+		}
+		doNoticeWorkflow(userId, taskName, processKey, "已启动", context);
+		// data.put(IProcessControl.F_WF_TASK_NOTICEDATE,
+		// message.getValue(Message.F_SENDDATE));
 	}
 
 	/**
@@ -2397,6 +2406,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				IProcessControl.TASK_ACTION_COMPLETE);
 
 		doSaveWorkflowHistroy(processKey, task, taskFormData, context);
+
+		// 发送任务消息，并保存
+
+		List<I18NText> names = task.getNames();
+		String taskName = "";
+		if (names != null && names.size() > 0) {
+			taskName = names.get(0).getText();
+		}
+		doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
 	}
 
 	public Task getTask(String processKey, IContext context) throws Exception {
@@ -2513,9 +2531,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		WorkRecord po = ModelService.createModelObject(data, WorkRecord.class);
 		return po;
 	}
-	
-	
-	public boolean isExecuteWorkflowActivateAndAvailable(){
+
+	public boolean isExecuteWorkflowActivateAndAvailable() {
 		IProcessControl ip = getAdapter(IProcessControl.class);
 		return ip.isWorkflowActivateAndAvailable(F_WF_EXECUTE);
 	}
@@ -2523,23 +2540,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	/**
 	 * 修改工作负责人、指派者、参与者和工作流程执行者
 	 * 
-	 * @param changedUserId
+	 * @param fromUserId
 	 *            : 需要修改的人员
-	 * @param changeUserId
+	 * @param toUserId
 	 *            : 修改成该人员
 	 */
-	public String changeWorkUser(String changedUserId, String changeUserId) {
-		if (canChangeWorkUser(changedUserId, changeUserId)) {
+	public String changeWorkUser(String fromUserId, String toUserId) {
+		if (canChangeWorkUser(fromUserId, toUserId)) {
 			String changeFiled = "";
 			BasicDBObject object = new BasicDBObject();
 			// 修改负责人
-			if (changedUserId.equals(getChargerId())) {
-				object.put(F_CHARGER, changeUserId);
+			if (fromUserId.equals(getChargerId())) {
+				object.put(F_CHARGER, toUserId);
 				changeFiled = changeFiled + "负责人";
 			}
 			// 修改指派者
-			if (changedUserId.equals(getAssignerId())) {
-				object.put(F_ASSIGNER, changeUserId);
+			if (fromUserId.equals(getAssignerId())) {
+				object.put(F_ASSIGNER, toUserId);
 				if (changeFiled != "") {
 					changeFiled = changeFiled + "、";
 				}
@@ -2552,9 +2569,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				boolean bchange = false;
 				for (int i = 0; i < oldParticipatesIdList.size(); i++) {
 					String userId = (String) oldParticipatesIdList.get(i);
-					if (userId.equals(changedUserId)) {
+					if (userId.equals(fromUserId)) {
 						bchange = true;
-						newParticipatesIdList.add(changeUserId);
+						newParticipatesIdList.add(toUserId);
 					}
 					newParticipatesIdList.add(userId);
 				}
@@ -2569,8 +2586,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			// 工作流程执行人
 			// 执行工作流程
-			if (changeWorkFlowActors(changedUserId, changeUserId, F_WF_EXECUTE,
-					object)) {
+			if (changeWorkFlowActors(fromUserId, toUserId, F_WF_EXECUTE, object)) {
 				if (changeFiled != "") {
 					changeFiled = changeFiled + "、";
 				}
@@ -2578,8 +2594,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 
 			// 变更工作流程
-			if (changeWorkFlowActors(changedUserId, changeUserId, F_WF_CHANGE,
-					object)) {
+			if (changeWorkFlowActors(fromUserId, toUserId, F_WF_CHANGE, object)) {
 				if (changeFiled != "") {
 					changeFiled = changeFiled + "、";
 				}
@@ -2618,17 +2633,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String lifecycleStatus = getLifecycleStatus();
 
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { "工作已经取消，无法进行修改", this,
-					SWT.ICON_ERROR });
+			message.add(new Object[] { "工作已经取消，无法进行修改", this, SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { "工作已经完成，无法进行修改", this,
-					SWT.ICON_ERROR });
+			message.add(new Object[] { "工作已经完成，无法进行修改", this, SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
 			message.add(new Object[] { "工作在进行中，不会修改工作流程执行人", this,
-							SWT.ICON_WARNING });
+					SWT.ICON_WARNING });
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(getLifecycleStatus())) {
 			message.add(new Object[] { "工作已经暂停，不会修改工作流程执行人", this,
-							SWT.ICON_WARNING });
+					SWT.ICON_WARNING });
 		}
 
 		return message;
@@ -2653,7 +2666,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		return hasChange;
 	}
-	
+
 	public int getRemindBefore() {
 		Object value = getValue(F_REMIND_BEFORE);
 		if (value instanceof Integer) {
@@ -2678,6 +2691,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Date now = new Date();
 		Date _planFinish = getPlanFinish();
 		return _planFinish != null && now.after(_planFinish);
+	}
+
+	public boolean isStandloneWork() {
+		Object type = getValue(F_WORK_TYPE);
+		return type instanceof Integer
+				&& ((Integer) type).intValue() == WORK_TYPE_STANDLONE;
+	}
+
+	public boolean isProjectWork() {
+		return !isStandloneWork();
 	}
 
 }

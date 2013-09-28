@@ -27,23 +27,39 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
 	}
 
+	public boolean isStandloneWork(DBObject dbo) {
+		Object type = dbo.get(Work.F_WORK_TYPE);
+		return type instanceof Integer
+				&& ((Integer) type).intValue() == Work.WORK_TYPE_STANDLONE;
+	}
+
+	public boolean isProjectWork(DBObject dbo) {
+		return !isStandloneWork(dbo);
+	}
+
 	@Override
 	public DataSet getDataSet() {
 		DBCollection col = getCollection();
-		DBCursor cur = col.find(getQueryCondition(), new BasicDBObject()
-				.append(Work.F_ROOT_ID, 1).append(Work.F_PROJECT_ID, 1));
+		DBCursor cur = col.find(
+				getQueryCondition(),
+				new BasicDBObject().append(Work.F_ROOT_ID, 1)
+						.append(Work.F_PROJECT_ID, 1)
+						.append(Work.F_WORK_TYPE, 1));
 		List<PrimaryObject> ret = new ArrayList<PrimaryObject>();
 		cur.sort(getSort());
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
-			// 需要排除未提交的项目
-			Object projectId = dbo.get(Work.F_PROJECT_ID);
-			if (projectId instanceof ObjectId) {
-				// 是项目工作
-				Project project = ModelService.createModelObject(Project.class,
-						(ObjectId) projectId);
-				if(project.getLifecycleStatus().equals(ILifecycle.STATUS_NONE_VALUE)){
-					continue;
+			if (isProjectWork(dbo)) {
+				// 需要排除的项目
+				Object projectId = dbo.get(Work.F_PROJECT_ID);
+				if (projectId instanceof ObjectId) {
+					// 是项目工作
+					Project project = ModelService.createModelObject(
+							Project.class, (ObjectId) projectId);
+					String lc = project.getLifecycleStatus();
+					if (!ILifecycle.STATUS_WIP_VALUE.equals(lc)){
+						continue;
+					}
 				}
 			}
 
