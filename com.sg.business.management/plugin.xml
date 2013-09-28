@@ -1278,7 +1278,7 @@
                description="通用工作的流程设置"
                id="processpage"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.WorkdProcessDefinitionPage"
+               pageDelegator="com.sg.business.management.editor.page.GenericWorkdProcessDefinitionPage"
                title="流程">
          </basicpage>
          <versionControl>
@@ -1395,7 +1395,7 @@
                description="通用工作的流程设置"
                id="processpage"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.WorkdProcessDefinitionPage"
+               pageDelegator="com.sg.business.management.editor.page.StandloneWorkdProcessDefinitionPage"
                title="流程">
          </basicpage>
          <versionControl>
@@ -1510,7 +1510,7 @@
                description="通用工作的流程设置"
                id="processpage"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.WorkdProcessDefinitionPage"
+               pageDelegator="com.sg.business.management.editor.page.StandloneWorkdProcessDefinitionPage"
                title="流程">
          </basicpage>
          <versionControl>
@@ -1565,7 +1565,7 @@
                description="通用工作的流程设置"
                id="processpage"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.WorkdProcessDefinitionPage"
+               pageDelegator="com.sg.business.management.editor.page.GenericWorkdProcessDefinitionPage"
                title="流程">
          </basicpage>
          <versionControl>

@@ -1,5 +1,6 @@
 package com.sg.business.management.editor.page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -10,13 +11,19 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.ui.flow.ProcessControlSetting;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleDefinition;
+import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
@@ -26,14 +33,14 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 
-public class WorkdProcessDefinitionPage implements IPageDelegator, IFormPart {
+public class GenericWorkdProcessDefinitionPage implements IPageDelegator, IFormPart {
 
 	private boolean dirty;
 	private IManagedForm form;
 	private IProcessControl IProcessControl;
 	private WorkDefinition workd;
 
-	public WorkdProcessDefinitionPage() {
+	public GenericWorkdProcessDefinitionPage() {
 	}
 
 	@Override
@@ -99,14 +106,18 @@ public class WorkdProcessDefinitionPage implements IPageDelegator, IFormPart {
 		psp2.setProcessDefinition(processDef);
 
 		// 设置角色的选择器，项目模板中的角色定义
-		psp2.setRoleNavigatorId("commons.generic.tableselector");
+		//psp2.setRoleNavigatorId("commons.generic.tableselector");
+		psp2.setRoleNavigatorId("management.roleselector");
 
-		// 设置角色的数据集
-		List<PrimaryObject> rds = workd.getOrganization().getRolesIteration();
+		List<PrimaryObject> rds =new ArrayList<PrimaryObject>();
+		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_ORGANIZATION);
+		DBCursor cur = coll.find(new BasicDBObject().append(Organization.F_PARENT_ID, null));
+		Organization org=ModelService.createModelObject(cur.next(), Organization.class);
+		rds.add(org);
 		psp2.setRoleDataSet(new DataSet(rds));
-
+		
 		psp2.createContent();
-
 		// 添加监听
 		psp2.addProcessSettingListener(new ProcessControlSetting(
 				IProcessControl, key) {
@@ -126,11 +137,7 @@ public class WorkdProcessDefinitionPage implements IPageDelegator, IFormPart {
 	 * @return DroolsProcessDefinition
 	 */
 	private DroolsProcessDefinition getCurrentDroolsProcessDefinition(String key) {
-//		if (IProcessControl != null) {
 			return IProcessControl.getProcessDefinition(key);
-//		} else {
-//			return null;
-//		}
 	}
 
 	/**
@@ -140,11 +147,7 @@ public class WorkdProcessDefinitionPage implements IPageDelegator, IFormPart {
 	 * @return boolean
 	 */
 	private boolean isActivate(String key) {
-//		if (IProcessControl != null) {
 			return IProcessControl.isWorkflowActivate(key);
-//		} else {
-//			return false;
-//		}
 	}
 
 	/**
