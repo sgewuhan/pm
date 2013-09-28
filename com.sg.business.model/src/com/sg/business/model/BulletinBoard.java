@@ -254,7 +254,6 @@ public class BulletinBoard extends PrimaryObject {
 		return !isOtherUser(context);
 	}
 
-
 	@Override
 	public String getTypeName() {
 		return "¹«¸æ";
