@@ -7,7 +7,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
-import com.sg.widgets.part.editor.DataObjectEditor;
+import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class AddMessage extends AbstractNavigatorHandler {
@@ -18,7 +18,7 @@ public class AddMessage extends AbstractNavigatorHandler {
 		 ViewerControl vc = getCurrentViewerControl(event);
 		 message.addEventListener(vc);
 		 try {
-				DataObjectEditor.open(message,Message.EDITOR_SEND, true, null);
+				DataObjectDialog.openDialog(message,Message.EDITOR_SEND, true, null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}

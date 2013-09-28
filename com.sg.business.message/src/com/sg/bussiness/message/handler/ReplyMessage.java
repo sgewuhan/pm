@@ -4,8 +4,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
-import com.sg.widgets.part.editor.DataObjectEditor;
+import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class ReplyMessage extends AbstractNavigatorHandler {
@@ -20,9 +21,9 @@ public class ReplyMessage extends AbstractNavigatorHandler {
 			reply.setParentPrimaryObject(selected);
 			reply.addEventListener(vc);
 			try {
-				DataObjectEditor.open(reply, Message.EDITOR_REPLY, true, null);
+				DataObjectDialog.openDialog(reply, Message.EDITOR_REPLY, true, null);
 			} catch (Exception e) {
-				e.printStackTrace();
+				MessageUtil.showToast(e);
 			}
 		}
 

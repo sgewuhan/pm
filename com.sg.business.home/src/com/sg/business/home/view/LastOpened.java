@@ -64,7 +64,7 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 							.getModelClass(db, col);
 
 					PrimaryObject po = ModelService.createModelObject(
-							modelClass, id);
+							modelClass, id,false);
 
 					StringBuffer sb = new StringBuffer();
 					sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
@@ -76,7 +76,7 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 					sb.append("   "+sdf.format(cal.getTime()));
 					sb.append("</span>");
 					
-					if (po == null) {
+					if (po==null) {
 						sb.append("<del>");
 						sb.append(desc);
 						sb.append("</del>");
