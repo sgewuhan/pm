@@ -105,9 +105,9 @@ public class StandloneWorkdProcessDefinitionPage implements IPageDelegator, IFor
 		DroolsProcessDefinition processDef = getCurrentDroolsProcessDefinition(key);
 		// 显示当前选中流程的信息
 		psp2.setProcessDefinition(processDef);
-
-		// 设置角色的选择器，项目模板中的角色定义
-		psp2.setActorNavigatorId("work.organization.user");
+		
+		
+		psp2.setRoleNavigatorId("management.roleselector");
 
 		List<PrimaryObject> rds =new ArrayList<PrimaryObject>();
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
@@ -115,7 +115,14 @@ public class StandloneWorkdProcessDefinitionPage implements IPageDelegator, IFor
 		DBCursor cur = coll.find(new BasicDBObject().append(Organization.F_PARENT_ID, null));
 		Organization org=ModelService.createModelObject(cur.next(), Organization.class);
 		rds.add(org);
-		psp2.setActorDataSet(new DataSet(rds));
+		psp2.setRoleDataSet(new DataSet(rds));
+		
+		
+		
+
+		// 设置角色的选择器，项目模板中的角色定义
+		psp2.setActorNavigatorId("organization.role");
+        
 		
 		psp2.createContent();
 		// 添加监听

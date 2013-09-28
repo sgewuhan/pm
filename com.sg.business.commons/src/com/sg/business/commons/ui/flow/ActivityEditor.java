@@ -412,6 +412,7 @@ public class ActivityEditor extends Composite {
 				if(is==null||is.isEmpty()){
 					setRole(null);
 				}else{
+					
 					AbstractRoleDefinition role = (AbstractRoleDefinition) is
 							.getFirstElement();
 					setRole(role);

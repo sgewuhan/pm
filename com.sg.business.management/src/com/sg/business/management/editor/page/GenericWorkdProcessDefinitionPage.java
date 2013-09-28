@@ -1,6 +1,5 @@
 package com.sg.business.management.editor.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -11,19 +10,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 
-import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.DataSet;
-import com.mobnut.db.model.ModelService;
-import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.ui.flow.ProcessControlSetting;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleDefinition;
-import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
@@ -68,8 +59,7 @@ public class GenericWorkdProcessDefinitionPage implements IPageDelegator, IFormP
 	private Control createTab(Composite tab, final String key) {
 
 		ProcessSettingPanel2 psp2 = new ProcessSettingPanel2(tab,
-				ProcessSettingPanel2.PROCESS_SELECTOR
-						| ProcessSettingPanel2.ROLE_SELECTOR) {
+				ProcessSettingPanel2.PROCESS_SELECTOR) {
 
 			@Override
 			protected AbstractRoleDefinition getRoleDefinition(
@@ -107,7 +97,7 @@ public class GenericWorkdProcessDefinitionPage implements IPageDelegator, IFormP
 
 		// 设置角色的选择器，项目模板中的角色定义
 		//psp2.setRoleNavigatorId("commons.generic.tableselector");
-		psp2.setRoleNavigatorId("management.roleselector");
+		/*psp2.setRoleNavigatorId("management.roleselector");
 
 		List<PrimaryObject> rds =new ArrayList<PrimaryObject>();
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
@@ -115,7 +105,7 @@ public class GenericWorkdProcessDefinitionPage implements IPageDelegator, IFormP
 		DBCursor cur = coll.find(new BasicDBObject().append(Organization.F_PARENT_ID, null));
 		Organization org=ModelService.createModelObject(cur.next(), Organization.class);
 		rds.add(org);
-		psp2.setRoleDataSet(new DataSet(rds));
+		psp2.setRoleDataSet(new DataSet(rds));*/
 		
 		psp2.createContent();
 		// 添加监听
