@@ -30,6 +30,11 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 	 * 创建角色的编辑器
 	 */
 	public static final String EDITOR_ROLE_DEFINITION_CREATE = "editor.roleDefinition";
+	
+	/**
+	 * 独立工作定义_id
+	 */
+	public static String F_WORKDEFINITION_ID="workdefinition_id";
 
 	/**
 	 * 删除角色检查
@@ -208,4 +213,5 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 	public ObjectId getProjectTemplateId() {
 		return (ObjectId) getValue(F_PROJECT_TEMPLATE_ID);
 	}
+
 }

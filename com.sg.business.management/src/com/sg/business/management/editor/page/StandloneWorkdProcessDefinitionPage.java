@@ -26,6 +26,7 @@ import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Organization;
+import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.User;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -107,15 +108,23 @@ public class StandloneWorkdProcessDefinitionPage implements IPageDelegator, IFor
 		psp2.setProcessDefinition(processDef);
 		
 		
-		psp2.setRoleNavigatorId("management.roleselector");
-
+//		psp2.setRoleNavigatorId("management.roleselector");
+//		List<PrimaryObject> rds =new ArrayList<PrimaryObject>();
+//		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
+//				IModelConstants.C_ORGANIZATION);
+//		DBCursor cur = coll.find(new BasicDBObject().append(Organization.F_PARENT_ID, null));
+//		Organization org=ModelService.createModelObject(cur.next(), Organization.class);
+//		rds.add(org);
+//		psp2.setRoleDataSet(new DataSet(rds));
+		
+		psp2.setRoleNavigatorId("commons.generic.tableselector");
 		List<PrimaryObject> rds =new ArrayList<PrimaryObject>();
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_ORGANIZATION);
-		DBCursor cur = coll.find(new BasicDBObject().append(Organization.F_PARENT_ID, null));
-		Organization org=ModelService.createModelObject(cur.next(), Organization.class);
-		rds.add(org);
-		psp2.setRoleDataSet(new DataSet(rds));
+				IModelConstants.C_ROLE_DEFINITION);
+		DBCursor cur = coll.find(new BasicDBObject().append(RoleDefinition.F_WORKDEFINITION_ID,new BasicDBObject().append("$ne", null)));
+		while(cur.hasNext()){
+			
+		}
 		
 		
 		

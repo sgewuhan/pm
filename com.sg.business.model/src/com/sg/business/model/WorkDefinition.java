@@ -6,11 +6,13 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 
@@ -503,5 +505,22 @@ public class WorkDefinition extends AbstractWork implements
 			};
 		}
 		return super.getAdapter(adapter);
+	}
+
+	public boolean hasOrganizationRole(Role role) {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_ROLE_DEFINITION);
+		long count = col.count(new BasicDBObject().append(
+				RoleDefinition.F_ORGANIZATION_ROLE_ID, role.get_id()).append(
+				RoleDefinition.F_WORKDEFINITION_ID, get_id()));
+		return count != 0;
+	}
+
+	public RoleDefinition makeOrganizationRole(Role role) {
+		RoleDefinition roled = ModelService
+				.createModelObject(RoleDefinition.class);
+		roled.setValue(RoleDefinition.F_ORGANIZATION_ROLE_ID, role.get_id());
+		roled.setValue(RoleDefinition.F_WORKDEFINITION_ID, get_id());
+		return roled;
 	}
 }

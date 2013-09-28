@@ -10,6 +10,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -31,7 +32,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 						Iterator<?> iter = is.iterator();
 						while (iter.hasNext()) {
 							Object next = iter.next();
-							if(next instanceof Role){
+							if (next instanceof Role) {
 								doLinkOrganizationRole(vc, (Role) next);
 							}
 						}
@@ -50,15 +51,26 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 
 	private void doLinkOrganizationRole(ViewerControl vc, Role role)
 			throws Exception {
-		ProjectTemplate master = (ProjectTemplate) vc.getMaster();
 
-		if (master.hasOrganizationRole(role)) {
-			throw new Exception("该角色已经添加");
+		PrimaryObject master = vc.getMaster();
+		RoleDefinition roled = null;
+		if (master instanceof ProjectTemplate) {
+			ProjectTemplate pt = (ProjectTemplate) master;
+			if (pt.hasOrganizationRole(role)) {
+				throw new Exception("该角色已经添加");
+			}
+			roled = pt.makeOrganizationRole(role);
+		} else {
+			WorkDefinition workd = (WorkDefinition) master;
+			if (workd.hasOrganizationRole(role)) {
+				throw new Exception("该角色已经添加");
+			}
+			roled = workd.makeOrganizationRole(role);
 		}
 
-		RoleDefinition roled = master.makeOrganizationRole(role);
 		roled.addEventListener(vc);
 		roled.doSave(new CurrentAccountContext());
+		System.out.println(roled);
 
 	}
 

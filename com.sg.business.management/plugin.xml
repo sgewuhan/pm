@@ -240,6 +240,10 @@
             id="management.copyprojecttemplates"
             tree="management.copyprojecttemplates">
       </navigator>
+      <navigator
+            id="management.standloneworkrole"
+            table="management.standloneworkrole">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -366,6 +370,20 @@
                column="unit"
                name="单位"
                type="String">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefOfWorkDefinition"
+            id="management.standloneworkrole"
+            popupMenu="popup:management.roledefinition">
+         <column
+               columnDefinitionId="roledefinition.number">
+         </column>
+         <column
+               columnDefinitionId="roledefinition.desc">
+         </column>
+         <column
+               columnDefinitionId="roledefinition.description">
          </column>
       </table>
    </extension>
@@ -1379,6 +1397,13 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="rolepage"
+               image="image/role_24.png"
+               navigatorId="management.standloneworkrole"
+               title="角色">
+         </navigatorpage>
          <navigatorpage
                createAfterSave="true"
                id="wbspage"
