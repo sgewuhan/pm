@@ -29,7 +29,7 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_ACTIVATED_16 = "activated_16.png";//$NON-NLS-1$
 
-	public static final String IMAGE_ATTACHMENT_32 = "attachment_32.png";//$NON-NLS-1$
+	public static final String IMAGE_ATTACHMENT_24 = "attachment_24.png";//$NON-NLS-1$
 
 	public static final String IMAGE_DATABASE_16 = "database_16.png";//$NON-NLS-1$
 

@@ -6,7 +6,9 @@ import java.util.List;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -40,8 +42,7 @@ public class ChangeUserWizard extends Wizard {
 	@Override
 	public void addPages() {
 		ChangeUserOfParticipatePage changeUserOfParticipatePage = new ChangeUserOfParticipatePage(
-				"team", "请选择需要移交的用户", "", "project.team",
-				(PrimaryObject) po);
+				"team", "请选择需要移交工作的用户", "", "project.team", (PrimaryObject) po);
 		addPage(changeUserOfParticipatePage);
 
 		ChangeUserOfOrgUserPage changeUserOfOrgUserPage = new ChangeUserOfOrgUserPage(
@@ -63,8 +64,19 @@ public class ChangeUserWizard extends Wizard {
 		if (window != null) {
 			ChangeUserWizard tuw = new ChangeUserWizard(po, org, event);
 			Shell shell = window.getShell();
-			WizardDialog wizardDialog = new WizardDialog(shell, tuw);
+			WizardDialog wizardDialog = new WizardDialog(shell, tuw){
+				@Override
+				protected Point getInitialSize() {
+					// TODO Auto-generated method stub
+					Point size = super.getInitialSize();
+					
+					return new Point(600,size.y);
+				}
+			};
+			
 			wizardDialog.open();
+//			Point size = wizardDialog.getShell().getSize();
+//			wizardDialog.getShell().setSize(400, size.y);
 			return tuw;
 		}
 		return null;
@@ -80,9 +92,33 @@ public class ChangeUserWizard extends Wizard {
 						changeUserId, changeWork);
 				String name = event.getCommand().getName();
 				if (hasError(message)) {
+					WizardPage page = (WizardPage) getPage("wbs");
 					MessageUtil.showToast(null, name,
 							"检查发现了一些错误，请查看检查结果，完成修改后重新执行。", SWT.ICON_ERROR);
-					showCheckMessages(message, po);
+					String newMessage = "";
+					for (int i = 0; i < message.size(); i++) {
+						if (message.get(i) != null && message.get(i).length > 2) {
+
+							Object icon = message.get(i)[2];
+							if (icon instanceof Integer
+									&& ((Integer) icon).intValue() == SWT.ICON_ERROR) {
+								String sMessage = (String) message.get(i)[0];
+								PrimaryObject primaryObject = (PrimaryObject) message
+										.get(i)[1];
+								if (newMessage == "") {
+									newMessage = primaryObject.getDesc() + ":"
+											+ sMessage;
+								} else {
+									newMessage = newMessage + "\n"
+											+ primaryObject.getDesc() + ":"
+											+ sMessage;
+								}
+							}
+						}
+					}
+
+					page.setErrorMessage(newMessage);
+					return false;
 				} else {
 					if (message != null && message.size() > 0) {
 						MessageBox mb = MessageUtil.createMessageBox(null,
@@ -101,6 +137,30 @@ public class ChangeUserWizard extends Wizard {
 						} else if (result == SWT.YES) {
 							po.doChangeUsers(changedUserId, changeUserId,
 									changeWork, context);
+						} else if (result == SWT.NO) {
+							ChangeUserOfWBSPage page = (ChangeUserOfWBSPage) getPage("wbs");
+							String newMessage = "";
+							for (int i = 0; i < message.size(); i++) {
+								if (message.get(i) != null
+										&& message.get(i).length > 2) {
+
+									String sMessage = (String) message.get(i)[0];
+									PrimaryObject primaryObject = (PrimaryObject) message
+											.get(i)[1];
+									if (newMessage == "") {
+										newMessage = primaryObject.getDesc()
+												+ ":" + sMessage;
+									} else {
+										newMessage = newMessage + "\n"
+												+ primaryObject.getDesc() + ":"
+												+ sMessage;
+									}
+								}
+							}
+
+							page.setErrorMessage(null);
+							page.setMessage(newMessage,SWT.ICON_WARNING);
+							return false;
 						}
 					}
 				}
@@ -163,7 +223,7 @@ public class ChangeUserWizard extends Wizard {
 		page.doRefresh();
 	}
 
-	public Object getChangedUserId() {
+	public String getChangedUserId() {
 		return changedUserId;
 	}
 

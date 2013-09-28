@@ -52,13 +52,13 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 
 					@Override
 					public void selectionChanged(SelectionChangedEvent event) {
-						ChangeUserOfWBSPage.this.getContainer().updateButtons();
 						ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 						List<PrimaryObject> changeWork = wiz.getChangeWork();
 						changeWork.clear();
 						Tree control2 =(Tree) getControl();
 						TreeItem[] treeItems = control2.getItems();
 						setChangeWork(changeWork, treeItems);
+						ChangeUserOfWBSPage.this.getContainer().updateButtons();
 					}
 
 					public void setChangeWork(List<PrimaryObject> changeWork,
@@ -90,7 +90,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 				if (chargerId != null
 						&& chargerId.equals(wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}
@@ -112,7 +112,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 				if (assignerId != null
 						&& assignerId.equals(wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}
@@ -137,7 +137,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 					for (int i = 0; i < participatesIdList.size(); i++) {
 						userId = (String) participatesIdList.get(i);
 						if (userId.equals(wiz.getChangedUserId())) {
-							return Widgets.getImage(ImageResource.CHECKED_16);
+							return Widgets.getImage(ImageResource.CHECKED_2_16);
 						}
 					}
 					return null;
@@ -152,8 +152,8 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 			}
 		});
 		column = new TreeViewerColumn((TreeViewer) viewer, SWT.CENTER);
-		column.getColumn().setText("执行流程执行人");
-		column.getColumn().setWidth(140);
+		column.getColumn().setText("执行流程\n执行人");
+		column.getColumn().setWidth(70);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public Image getImage(Object element) {
@@ -163,7 +163,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 						.getAdapter(IProcessControl.class);
 				if (ProjectToolkit.checkProcessInternal(pc, IWorkCloneFields.F_WF_EXECUTE,
 						(String) wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}
@@ -176,8 +176,8 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 			}
 		});
 		column = new TreeViewerColumn((TreeViewer) viewer, SWT.CENTER);
-		column.getColumn().setText("变更流程执行人");
-		column.getColumn().setWidth(140);
+		column.getColumn().setText("变更流程\n执行人");
+		column.getColumn().setWidth(70);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public Image getImage(Object element) {
@@ -187,7 +187,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 						.getAdapter(IProcessControl.class);
 				if (ProjectToolkit.checkProcessInternal(pc, IWorkCloneFields.F_WF_CHANGE,
 						(String) wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}

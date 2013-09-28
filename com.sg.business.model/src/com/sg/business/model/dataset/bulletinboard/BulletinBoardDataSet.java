@@ -109,6 +109,6 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DBObject getSort() {
 		//依据发布日期进行排序
-		return new BasicDBObject().append(BulletinBoard.F_PUBLISH_DATE, -1);
+		return new BasicDBObject().append(BulletinBoard.F__ID, -1);
 	}
 }
