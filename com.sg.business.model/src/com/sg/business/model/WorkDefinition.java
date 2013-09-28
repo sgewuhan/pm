@@ -27,27 +27,6 @@ import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 public class WorkDefinition extends AbstractWork implements
 		IProjectTemplateRelative {
 
-	/**
-	 * 通用工作定义,用于设置{@link #F_WORK_TYPE}的值
-	 */
-	public static final int WORK_TYPE_GENERIC = 0;
-
-	/**
-	 * 独立工作定义,用于设置{@link #F_WORK_TYPE}的值
-	 */
-	public static final int WORK_TYPE_STANDLONE = 1;
-
-	/**
-	 * 项目模板工作定义,用于设置{@link #F_WORK_TYPE}的值
-	 */
-	public static final int WORK_TYPE_PROJECT = 2;
-
-	/**
-	 * 工作定义的类型， 可以使用 <br/>
-	 * {@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE},
-	 * {@link #WORK_TYPE_PROJECT}
-	 */
-	public static final String F_WORK_TYPE = "worktype";
 
 	/**
 	 * 只用于通用工作定义和独立工作定义,保存组织的_id字段值
@@ -489,5 +468,19 @@ public class WorkDefinition extends AbstractWork implements
 			return ModelService.createModelObject(ProjectRole.class, roleId);
 		}
 		return null;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter.equals(IProcessControl.class)) {
+			return (T) new ProcessControl(this){
+				@Override
+				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
+					return RoleDefinition.class;
+				}
+			};
+		}
+		return super.getAdapter(adapter);
 	}
 }

@@ -45,7 +45,7 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 
 		viewer = new TableViewer(parent, SWT.NONE);
 		viewer.getTable().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		final SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATETIME_COMPACT_SASH);
+		final SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		new ColumnAutoResizer(viewer.getTable(), column.getColumn());
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -64,7 +64,7 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 							.getModelClass(db, col);
 
 					PrimaryObject po = ModelService.createModelObject(
-							modelClass, id);
+							modelClass, id,false);
 
 					StringBuffer sb = new StringBuffer();
 					sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
@@ -76,14 +76,16 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 					sb.append("   "+sdf.format(cal.getTime()));
 					sb.append("</span>");
 					
-					if (po == null) {
+					if (po==null) {
 						sb.append("<del>");
 						sb.append(desc);
 						sb.append("</del>");
 					} else {
 						String typeName = po.getTypeName();
 						sb.append(typeName + ": ");
-						sb.append(po.getLabel());
+						String label = po.getLabel();
+						label = Utils.getLimitLengthString(label, 20);
+						sb.append(label);
 					}
 
 

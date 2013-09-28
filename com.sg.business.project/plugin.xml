@@ -51,6 +51,10 @@
                   columnDefinitionId="project.status">
             </column>
             <column
+                  columnDefinitionId="project.status"
+                  name="状态">
+            </column>
+            <column
                   columnDefinitionId="planstart">
             </column>
             <column
@@ -106,7 +110,8 @@
                   columnDefinitionId="project.desc">
             </column>
             <column
-                  columnDefinitionId="project.status">
+                  columnDefinitionId="project.status"
+                  name="状态">
             </column>
             <column
                   columnDefinitionId="planstart">
@@ -1359,6 +1364,7 @@
          </column>
          <columnGroup
                defaultGroup="false"
+               id="team"
                name="负责人和参与者">
             <column
                   columnDefinitionId="chargerid">

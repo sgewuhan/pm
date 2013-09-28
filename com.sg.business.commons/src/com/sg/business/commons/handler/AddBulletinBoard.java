@@ -14,7 +14,6 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.IEditablePart;
 import com.sg.widgets.part.editor.DataObjectDialog;
-import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class AddBulletinBoard extends AbstractNavigatorHandler {
@@ -42,7 +41,7 @@ public class AddBulletinBoard extends AbstractNavigatorHandler {
 						new BasicDBObject(), BulletinBoard.class);
 				bulletinboard.addEventListener(vc);
 				try {
-					DataObjectEditor.open(bulletinboard,
+					DataObjectDialog.openDialog(bulletinboard,
 							BulletinBoard.EDITOR_CREATE, true, null);
 				} catch (Exception e) {
 					MessageUtil.showToast(HandlerUtil.getActiveShell(event),
