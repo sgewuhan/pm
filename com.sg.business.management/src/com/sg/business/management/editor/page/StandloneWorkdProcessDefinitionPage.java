@@ -69,7 +69,8 @@ public class StandloneWorkdProcessDefinitionPage implements IPageDelegator, IFor
 
 		ProcessSettingPanel2 psp2 = new ProcessSettingPanel2(tab,
 				ProcessSettingPanel2.PROCESS_SELECTOR
-						| ProcessSettingPanel2.ROLE_SELECTOR) {
+						| ProcessSettingPanel2.ROLE_SELECTOR
+						| ProcessSettingPanel2.ACTOR_SELECTOR) {
 
 			@Override
 			protected AbstractRoleDefinition getRoleDefinition(
@@ -106,8 +107,7 @@ public class StandloneWorkdProcessDefinitionPage implements IPageDelegator, IFor
 		psp2.setProcessDefinition(processDef);
 
 		// 设置角色的选择器，项目模板中的角色定义
-		//psp2.setRoleNavigatorId("commons.generic.tableselector");
-		psp2.setRoleNavigatorId("management.roleselector");
+		psp2.setActorNavigatorId("work.organization.user");
 
 		List<PrimaryObject> rds =new ArrayList<PrimaryObject>();
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
@@ -115,7 +115,7 @@ public class StandloneWorkdProcessDefinitionPage implements IPageDelegator, IFor
 		DBCursor cur = coll.find(new BasicDBObject().append(Organization.F_PARENT_ID, null));
 		Organization org=ModelService.createModelObject(cur.next(), Organization.class);
 		rds.add(org);
-		psp2.setRoleDataSet(new DataSet(rds));
+		psp2.setActorDataSet(new DataSet(rds));
 		
 		psp2.createContent();
 		// 添加监听
