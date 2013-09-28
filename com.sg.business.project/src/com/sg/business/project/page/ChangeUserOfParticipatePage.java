@@ -14,9 +14,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -38,34 +36,28 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 		this.master = master;
 	}
 
+	
+	
 	@Override
 	public void createControl(Composite parent) {
-		FormData fd = new FormData();
-		fd.top = new FormAttachment(0, 0);
-		fd.left = new FormAttachment(0, 0);
-		fd.right = new FormAttachment(100, 0);
-		fd.bottom = new FormAttachment(100, 0);
 		
-		Composite content = new Composite(parent, SWT.NONE);
-		parent.setLayout(new FormLayout());
-		content.setLayoutData(fd);
-		
-		content.setLayout(new FormLayout());
 		Project project = (Project) master;
-		table = createParticipateList(content, project);
-		table.getTable().setLayoutData(fd);
+		parent.setLayout(new FillLayout());
+		table = createParticipateList(parent, project);
 
-		setControl(content);
+
+		setControl(table.getControl());
+		
+		parent.layout();
 		setPageComplete(true);
 	}
-
+	
 	private TableViewer createParticipateList(Composite parent, Project project) {
 
-		TableViewer viewer = new TableViewer(parent, SWT.NONE);
-		viewer.getTable().setHeaderVisible(false);
-		viewer.getTable().setLinesVisible(true);
+		TableViewer viewer = new TableViewer(parent, SWT.FULL_SELECTION);
+//		viewer.getTable().setHeaderVisible(false);
+		viewer.getTable().setLinesVisible(false);
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
-//		col.getColumn().setText("项目参与者");
 
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override

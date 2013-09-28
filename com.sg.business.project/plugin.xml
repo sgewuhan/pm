@@ -1591,7 +1591,10 @@
                modelRelation="work_work">
          </structure>
          <column
-               columnDefinitionId="work.desc">
+               column="desc"
+               name="工作名称"
+               type="String"
+               width="180">
          </column>
       </tree>
       <tree

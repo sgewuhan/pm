@@ -8,6 +8,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -63,8 +64,19 @@ public class ChangeUserWizard extends Wizard {
 		if (window != null) {
 			ChangeUserWizard tuw = new ChangeUserWizard(po, org, event);
 			Shell shell = window.getShell();
-			WizardDialog wizardDialog = new WizardDialog(shell, tuw);
+			WizardDialog wizardDialog = new WizardDialog(shell, tuw){
+				@Override
+				protected Point getInitialSize() {
+					// TODO Auto-generated method stub
+					Point size = super.getInitialSize();
+					
+					return new Point(600,size.y);
+				}
+			};
+			
 			wizardDialog.open();
+//			Point size = wizardDialog.getShell().getSize();
+//			wizardDialog.getShell().setSize(400, size.y);
 			return tuw;
 		}
 		return null;

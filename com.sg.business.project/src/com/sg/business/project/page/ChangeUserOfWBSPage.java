@@ -90,7 +90,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 				if (chargerId != null
 						&& chargerId.equals(wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}
@@ -112,7 +112,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 				if (assignerId != null
 						&& assignerId.equals(wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}
@@ -137,7 +137,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 					for (int i = 0; i < participatesIdList.size(); i++) {
 						userId = (String) participatesIdList.get(i);
 						if (userId.equals(wiz.getChangedUserId())) {
-							return Widgets.getImage(ImageResource.CHECKED_16);
+							return Widgets.getImage(ImageResource.CHECKED_2_16);
 						}
 					}
 					return null;
@@ -163,7 +163,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 						.getAdapter(IProcessControl.class);
 				if (ProjectToolkit.checkProcessInternal(pc, IWorkCloneFields.F_WF_EXECUTE,
 						(String) wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}
@@ -187,7 +187,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 						.getAdapter(IProcessControl.class);
 				if (ProjectToolkit.checkProcessInternal(pc, IWorkCloneFields.F_WF_CHANGE,
 						(String) wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_16);
+					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
 					return null;
 				}
