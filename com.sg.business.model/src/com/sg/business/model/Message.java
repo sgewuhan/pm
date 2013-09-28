@@ -374,10 +374,14 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			if (recieverList.size() > 0) {
 				String userId = (String) recieverList.get(0);
 				User user = UserToolkit.getUserById(userId);
-				result = user.getLabel();
-				// 如果收件人有多个人，则显示第一个收件人加省略号
-				if (recieverList.size() > 1) {
-					result += " ...";
+				if(user == null){
+					return userId;
+				}else{
+					result = user.getLabel();
+					// 如果收件人有多个人，则显示第一个收件人加省略号
+					if (recieverList.size() > 1) {
+						result += " ...";
+					}
 				}
 			}
 		}
