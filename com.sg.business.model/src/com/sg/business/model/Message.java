@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.BasicBSONList;
+import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
@@ -49,7 +50,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	/**
 	 * 发送日期
 	 */
-	public static final String F_SENDDATE = "senddate";
+	private static final String F_SENDDATE = "senddate";
 
 	/**
 	 * 接收日期
@@ -255,7 +256,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	 * @return String
 	 */
 	public String getImageURLForOpen() {
-		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_OPEN_24,
+		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_24,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
@@ -265,7 +266,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	 * @return String
 	 */
 	public String getImageURL() {
-		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_24,
+		return FileUtil.getImageURL(BusinessResource.IMAGE_MESSAGE_UNREAD_24,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
@@ -292,8 +293,10 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		}
 		StringBuffer sb = new StringBuffer();
 
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+
 		// 添加日期
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATETIME_COMPACT_SASH);
 		Date date = (Date) getValue(F_SENDDATE);
 		String sendDate = sdf.format(date);
 		sb.append("<span style='float:right;padding-right:4px'>");
@@ -321,7 +324,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		// 添加主题
 		String label = getLabel();
 		label = Utils.getPlainText(label);
-		label = Utils.getLimitLengthString(label, 20);
+		label = Utils.getLimitLengthString(label, 40);
 		if (isRead || getValue(F_SENDER).equals(userid)) {
 			sb.append(label);
 		} else {
@@ -334,7 +337,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			sb.append(")");
 		}
 
-		sb.append("<br/>");
+		sb.append("</span><br/>");
 
 		sb.append("<small>");
 		
@@ -345,13 +348,13 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		 * 消息中显示发件人null, 这些发件人是系统发件或者是后台发件
 		 */
 		if (sender == null) {
-			sb.append("发件人:" + senderId);
+			sb.append("From: " + senderId);
 		} else {
-			sb.append("发件人:" + sender);
+			sb.append("From: " + sender);
 		}
 		sb.append("  ");
 		String recieverLabel = getRecieverLabel();
-		sb.append("收件人:" + recieverLabel);
+		sb.append("To: " + recieverLabel);
 		
 		sb.append("</small>");
 
@@ -397,9 +400,14 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		Object value = getValue(F_RECIEVER);
+		
+		String sender = (String) getValue(F_SENDER);
+		if(sender == null ){
+			sender = context.getAccountInfo().getUserId();
+		}
 		if (value instanceof BasicBSONList) {
 			setValue(F_SENDDATE, new Date());
-			setValue(F_SENDER, context.getAccountInfo().getUserId());
+			setValue(F_SENDER, sender);
 			super.doInsert(context);
 
 			// 激活账户通知
@@ -412,7 +420,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 
 		} else if (value instanceof String[]) {
 			setValue(F_SENDDATE, new Date());
-			setValue(F_SENDER, context.getAccountInfo().getUserId());
+			setValue(F_SENDER, sender);
 			super.doInsert(context);
 
 			// 激活账户通知
@@ -457,4 +465,13 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		return (BasicBSONList) getValue(F_TARGETS);
 	}
 
+	@Override
+	public Image getImage() {
+		return BusinessResource.getImage(BusinessResource.IMAGE_MESSAGE_16);
+	}
+	
+	@Override
+	public String getTypeName() {
+		return "消息";
+	}
 }

@@ -4,12 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
+import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.resource.BusinessResource;
 
 /**
  * 公告板
@@ -114,6 +116,11 @@ public class BulletinBoard extends PrimaryObject {
 	 */
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
+		// 设置发布人
+		String publisher = UserToolkit.getUserById(getPublisher())
+				.getUsername();
+
+
 
 		// 设置标题
 		String label = getLabel();
@@ -124,13 +131,34 @@ public class BulletinBoard extends PrimaryObject {
 		String content = getContent();
 		content = Utils.getPlainText(content);
 		content = Utils.getLimitLengthString(content, 40);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		Date date = getPublishDate();
+		String publishDate = sdf.format(date);
 
+		// 设置发布部门
+		String org = ((Organization) ModelService.createModelObject(
+				Organization.class, getOrganizationId())).getDesc();
+		
 		// 显示标题和内容
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
-		sb.append(label );
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'><b>");
+		
+		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append(publisher);
+		sb.append("  ");
+		sb.append(publishDate);
+		
 		sb.append("</span>");
+		
+		
+		sb.append(label );
+		sb.append("</b></span>");
 
 		sb.append("<br/><small>");
+		
+		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append(org);
+		sb.append("</span>");
 		
 		sb.append(content);
 		
@@ -148,7 +176,7 @@ public class BulletinBoard extends PrimaryObject {
 		StringBuffer sb = new StringBuffer();
 
 		// 设置发布人
-		String punlisher = UserToolkit.getUserById(getPublisher())
+		String publisher = UserToolkit.getUserById(getPublisher())
 				.getUsername();
 		// 设置日期
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
@@ -157,7 +185,7 @@ public class BulletinBoard extends PrimaryObject {
 
 
 		sb.append("<span style='padding-left:4px'>");
-		sb.append(punlisher);
+		sb.append(publisher);
 		sb.append("</span>");
 		
 		sb.append("<span style='float:right;padding-right:4px'>");
@@ -240,6 +268,16 @@ public class BulletinBoard extends PrimaryObject {
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public String getTypeName() {
+		return "公告";
+	}
+	
+	@Override
+	public Image getImage() {
+		return BusinessResource.getImage(BusinessResource.IMAGE_BULLETING_16);
 	}
 
 }

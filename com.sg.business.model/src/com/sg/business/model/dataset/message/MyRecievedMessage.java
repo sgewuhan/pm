@@ -6,6 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Message;
+import com.sg.business.model.bson.SendDateSorter;
 import com.sg.widgets.MessageUtil;
 
 public class MyRecievedMessage extends SingleDBCollectionDataSetFactory {
@@ -34,7 +35,7 @@ public class MyRecievedMessage extends SingleDBCollectionDataSetFactory {
 
 	@Override
 	public DBObject getSort() {
-		return new BasicDBObject().append(Message.F_SENDDATE, -1);
+		return new SendDateSorter().getBSON();
 	}
 	
 

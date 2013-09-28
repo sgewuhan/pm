@@ -9,7 +9,7 @@ public class SendDateSorter implements IBSONProvider {
 	
 	@Override
 	public DBObject getBSON() {
-		return new BasicDBObject().append(Message.F_SENDDATE, -1);
+		return new BasicDBObject().append(Message.F__ID, -1);
 	}
 
 }
