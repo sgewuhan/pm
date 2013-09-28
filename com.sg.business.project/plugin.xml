@@ -51,6 +51,10 @@
                   columnDefinitionId="project.status">
             </column>
             <column
+                  columnDefinitionId="project.status"
+                  name="状态">
+            </column>
+            <column
                   columnDefinitionId="planstart">
             </column>
             <column
@@ -106,7 +110,8 @@
                   columnDefinitionId="project.desc">
             </column>
             <column
-                  columnDefinitionId="project.status">
+                  columnDefinitionId="project.status"
+                  name="状态">
             </column>
             <column
                   columnDefinitionId="planstart">
@@ -393,6 +398,7 @@
             </column>
          </searchAction>
          <createEditor
+               createHandler="com.sg.business.project.editor.CreateFolderOfProject"
                editorId="editor.folder">
          </createEditor>
       </navigator>
@@ -1358,6 +1364,7 @@
          </column>
          <columnGroup
                defaultGroup="false"
+               id="team"
                name="负责人和参与者">
             <column
                   columnDefinitionId="chargerid">
@@ -1603,7 +1610,10 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
+            contentProvider="com.sg.business.project.ContentProvider.ProjectFolderContentProvider"
             dataSet="com.sg.business.model.dataset.project.FolderOfProject"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
+            dropTargetListener="com.sg.business.project.dnd.DropProjectFolder"
             editorId="editor.folder"
             headerVisiable="false"
             id="project.folder"

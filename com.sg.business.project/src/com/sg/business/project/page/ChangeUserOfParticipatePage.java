@@ -125,6 +125,7 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 								+ "\" 的工作移交给 \""
 								+ UserToolkit.getUserById(wiz.getChangeUserId())+"\" ");
 					} else {
+						changeUserOfOrgUserPage.setErrorMessage(null);
 						changeUserOfOrgUserPage.setMessage("将 \""
 								+ UserToolkit.getUserById((String) element)
 								+ "\" 的工作移交给 ? ");

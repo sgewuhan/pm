@@ -59,6 +59,7 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 												+ "\" 的工作移交给 \""
 												+ UserToolkit.getUserById(assignment
 														.getUserid()) + "\" ");
+								setErrorMessage(null);
 							} else {
 								wiz.setChangeUserId(null);
 								

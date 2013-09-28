@@ -2415,6 +2415,16 @@
             </parameter>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:main?before=create">
+         <command
+               commandId="work.launch"
+               icon="image/work_launch_24.png"
+               label="发起工作"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2491,6 +2501,11 @@
             id="runtimework.record"
             name="工作记录">
       </command>
+      <command
+            categoryId="work"
+            id="work.launch"
+            name="发起工作">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2537,6 +2552,10 @@
       <handler
             class="com.sg.business.work.handler.EditWorkRecord"
             commandId="runtimework.record">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.LaunchWork"
+            commandId="work.launch">
       </handler>
    </extension>
    <extension

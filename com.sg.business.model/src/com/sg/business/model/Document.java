@@ -11,6 +11,9 @@ import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.WriteResult;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -179,6 +182,24 @@ public class Document extends PrimaryObject implements IProjectRelative{
 			return EDITOR;
 		}else{
 			return editorId;
+		}
+	}
+
+	public void doMoveToOtherFolder(ObjectId get_id) throws Exception {
+		DBCollection col = getCollection();
+		WriteResult ws = col.update(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set", new BasicDBObject().append(F_FOLDER_ID, get_id)));
+
+		checkWriteResult(ws);		
+	}
+
+	public Folder getFolder() {
+		ObjectId folderId = (ObjectId) getValue(F_FOLDER_ID);
+		if (folderId != null) {
+			return ModelService.createModelObject(Folder.class, folderId);
+		} else {
+			return null;
 		}
 	}
 }

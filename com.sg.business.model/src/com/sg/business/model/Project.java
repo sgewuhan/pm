@@ -391,6 +391,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		folderRootData.put(Folder.F__ID, folderRootId);
 		folderRootData.put(Folder.F_ROOT_ID, folderRootId);
 		folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
+		String containerCollection, containerDB;
+		containerCollection = IModelConstants.C_ORGANIZATION;
+		Container container = Container.adapter(this, Container.TYPE_ADMIN_GRANTED);
+		containerDB = (String) container.getValue(Container.F_SOURCE_DB);
+		folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
+		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
 		return ModelService.createModelObject(folderRootData, Folder.class);
 	}
 
@@ -481,8 +487,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Work root = makeWBSRoot();
 		root.doInsert(context);
 		setValue(Project.F_WORK_ID, root.get_id());
-		
-		//创建根文件夹
+
+		// 创建根文件夹
 		Folder folderRoot = makeFolderRoot();
 		folderRoot.doInsert(context);
 
@@ -493,7 +499,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		super.doInsert(context);
 
 		// 复制模板
-		doSetupWithTemplate(root.get_id(), context,folderRoot.get_id());
+		doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
 
 		// 复制系统日历
 		doCopySystemCanlendar();
@@ -542,11 +548,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @param context
 	 * @param wbsRootId
-	 * @param folderRootId 
+	 * @param folderRootId
 	 * @throws Exception
 	 */
-	public void doSetupWithTemplate(ObjectId wbsRootId, IContext context, ObjectId folderRootId)
-			throws Exception {
+	public void doSetupWithTemplate(ObjectId wbsRootId, IContext context,
+			ObjectId folderRootId) throws Exception {
 		ObjectId id = getProjectTemplateId();
 		if (id == null) {
 			return;
@@ -1177,7 +1183,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		documentData.put(Document.F__ID, new ObjectId());
 
 		documentData.put(Document.F_PROJECT_ID, projectId);
-		
+
 		documentData.put(Document.F_FOLDER_ID, folderRootId);
 
 		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
@@ -1639,7 +1645,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public void doCommitWithSendMessage(IContext context) throws Exception {
-		Map<String, Message> msgList = getCommitMessage();
+		Map<String, Message> msgList = getCommitMessage(context);
 		Iterator<Message> iter = msgList.values().iterator();
 		while (iter.hasNext()) {
 			Message message = iter.next();
@@ -1656,81 +1662,68 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 需要发送到项目的负责人，（消息需要关联到项目），<br/>
 	 * 
 	 * @param context
+	 * 
+	 * @param context
 	 * @throws Exception
 	 */
-	private Map<String, Message> getCommitMessage() throws Exception {
+	private Map<String, Message> getCommitMessage(IContext context)
+			throws Exception {
 		Map<String, Message> messageList = new HashMap<String, Message>();
 		// 1. 获取项目负责人
-		appendMessageForCharger(messageList);
+		String title = "项目计划提交" + " " + this;
+		appendMessageForCharger(messageList, title, context);
 		// 2. 获取项目的参与者
 
-		appendMessageForParticipate(messageList);
+		appendMessageForParticipate(messageList, title, context);
 
 		// 3. 项目流程通知
-		appendMessageForChangeWorkflowActor(messageList);
+		appendMessageForChangeWorkflowActor(messageList, title, context);
 
 		// 4. 遍历工作
 		Work root = getWBSRoot();
-		messageList = root.getCommitMessage(messageList);
+		messageList = root.getCommitMessage(messageList, title, context);
 
 		MessageToolkit.appendProjectCommitMessageEndContent(messageList);
 		return messageList;
 	}
 
 	/**
+	 * 向消息清单中添加项目负责人的提醒消息
+	 * 
+	 * @param messageList
+	 * @param context
+	 */
+	public void appendMessageForCharger(Map<String, Message> messageList,
+			String title, IContext context) {
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, "负责项目" + ": "
+				+ getLabel(), this, EDITOR_CREATE_PLAN, context);
+	}
+
+	/**
 	 * 向消息清单中添加项目的参与者提醒消息
 	 * 
 	 * @param messageList
+	 * @param context
 	 */
-	public void appendMessageForParticipate(Map<String, Message> messageList) {
-		Message message;
-		String userId;
-		List<?> userIdList = getParticipatesIdList();
-		if (userIdList != null) {
-			for (int i = 0; i < userIdList.size(); i++) {
-				userId = (String) userIdList.get(i);
-				message = messageList.get(userId);
-				if (message == null) {
-					message = MessageToolkit.createProjectCommitMessage(userId);
-					messageList.put(userId, message);
-				}
-				MessageToolkit.appendMessageContent(message, "参与工作" + ": "
-						+ getLabel());
-				message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
-			}
-		}
+	public void appendMessageForParticipate(Map<String, Message> messageList,
+			String title, IContext context) {
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, "参与项目" + ": "
+				+ getLabel(), this, EDITOR_CREATE_PLAN, context);
 	}
+
+
 
 	/**
 	 * 向消息清单中添加工作流活动执行者的提示消息
 	 * 
 	 * @param messageList
+	 * @param context
 	 */
 	public void appendMessageForChangeWorkflowActor(
-			Map<String, Message> messageList) {
+			Map<String, Message> messageList, String title, IContext context) {
 		MessageToolkit.appendWorkflowActorMessage(this, messageList,
-				F_WF_CHANGE, "项目变更流程");
-	}
-
-	/**
-	 * 向消息清单中添加项目负责人的提醒消息
-	 * 
-	 * @param messageList
-	 */
-	public void appendMessageForCharger(Map<String, Message> messageList) {
-		Message message;
-		String userId = getChargerId();
-		if (userId != null) {
-			message = messageList.get(userId);
-			if (message == null) {
-				message = MessageToolkit.createProjectCommitMessage(userId);
-				messageList.put(userId, message);
-			}
-			MessageToolkit.appendMessageContent(message, "担任项目负责人，项目" + ": "
-					+ getLabel());
-			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
-			messageList.put(userId, message);
-		}
+				F_WF_CHANGE, "项目变更流程", title, context.getAccountInfo()
+						.getConsignerId(), null);
 	}
 
 	/**
@@ -1776,7 +1769,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					.append(SF_TARGET_EDITOR, EDITOR_CREATE_PLAN)
 					.append(SF_TARGET_EDITABLE, Boolean.TRUE));
 			work.setValue(Work.F_TARGETS, targets);
-
+			work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 		}
 		work.setValue(Work.F_PROJECT_ID, get_id());
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);

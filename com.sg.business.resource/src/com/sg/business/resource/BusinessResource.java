@@ -171,6 +171,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_MESSAGE_REPLY_24 = "message_reply_24.png";
 
 	public static final String IMAGE_MESSAGE_OPEN_24 = "message_open_24.png";
+	
+	public static final String IMAGE_MESSAGE_UNREAD_24 = "message_unread_24.png";
 
 	public static final String IMAGE_FLOW_START_24 = "flow_start_24.png";
 
@@ -183,6 +185,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FLOW_ACTIVITIE_24 = "flow_activitie_24.png";
 	
 	public static final String IMAGE_FLOW_HUMAN_24 = "flow_human_24.png";
+	
+	public static final String IMAGE_MESSAGE_16 = "message_16.png";
 
 	public static final String IMAGE_USER_24 = "user_24.png";
 	
@@ -205,6 +209,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FLAG_YELLOW_24 = "flag_yellow_24.png";
 	
 	public static final String IMAGE_WORK_FILTER_24 = "work_filter_24.png";
+
+	public static final String IMAGE_BULLETING_16 = "bulletin_16.png";
 
 
 

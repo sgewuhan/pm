@@ -4,12 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
+import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * 公告板
@@ -38,7 +41,6 @@ public class BulletinBoard extends PrimaryObject {
 	 * 所属项目ID
 	 */
 	public static final String F_PROJECT_ID = "project_id";
-
 
 	/**
 	 * 公告内容
@@ -114,6 +116,9 @@ public class BulletinBoard extends PrimaryObject {
 	 */
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
+		// 设置发布人
+		String publisher = UserToolkit.getUserById(getPublisher())
+				.getUsername();
 
 		// 设置标题
 		String label = getLabel();
@@ -125,17 +130,37 @@ public class BulletinBoard extends PrimaryObject {
 		content = Utils.getPlainText(content);
 		content = Utils.getLimitLengthString(content, 40);
 
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		Date date = getPublishDate();
+		String publishDate = sdf.format(date);
+
+		// 设置发布部门
+		String org = ((Organization) ModelService.createModelObject(
+				Organization.class, getOrganizationId())).getDesc();
+
 		// 显示标题和内容
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
-		sb.append(label );
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'><b>");
+
+		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append(publisher);
+		sb.append("  ");
+		sb.append(publishDate);
+
 		sb.append("</span>");
 
+		sb.append(label);
+		sb.append("</b></span>");
+
 		sb.append("<br/><small>");
-		
+
+		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append(org);
+		sb.append("</span>");
+
 		sb.append(content);
-		
+
 		sb.append("</small>");
-		
+
 		return sb.toString();
 	}
 
@@ -148,24 +173,23 @@ public class BulletinBoard extends PrimaryObject {
 		StringBuffer sb = new StringBuffer();
 
 		// 设置发布人
-		String punlisher = UserToolkit.getUserById(getPublisher())
+		String publisher = UserToolkit.getUserById(getPublisher())
 				.getUsername();
 		// 设置日期
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		Date date = getPublishDate();
 		String publishDate = sdf.format(date);
 
-
 		sb.append("<span style='padding-left:4px'>");
-		sb.append(punlisher);
+		sb.append(publisher);
 		sb.append("</span>");
-		
+
 		sb.append("<span style='float:right;padding-right:4px'>");
 		sb.append(publishDate);
 		sb.append("</span>");
-		
+
 		sb.append("<br/>");
-		
+
 		// 设置发布部门
 		String org = ((Organization) ModelService.createModelObject(
 				Organization.class, getOrganizationId())).getDesc();
@@ -221,25 +245,34 @@ public class BulletinBoard extends PrimaryObject {
 		String userId = context.getAccountInfo().getUserId();
 		// 获取发布人
 		String bulletinboardUserid = getPublisher();
-		if (userId == bulletinboardUserid) {
-			return true;
-		} else {
-			return false;
-		}
+		
+		return !userId.equals(bulletinboardUserid);
+	}
+	
+	public boolean currentUserSessioncanEdit(){
+		CurrentAccountContext context = new CurrentAccountContext();
+		return !isOtherUser(context);
 	}
 
-	/**
-	 * 判断是否为回复信息
-	 * 
-	 * @return : {@link boolean}
-	 */
-	public boolean isReply() {
-		// 根据上级公告ID判断是否为回复信息
-		if (getParentBulletin() == null) {
-			return false;
-		} else {
-			return true;
+
+	@Override
+	public String getTypeName() {
+		return "公告";
+	}
+
+	@Override
+	public Image getImage() {
+		return BusinessResource.getImage(BusinessResource.IMAGE_BULLETING_16);
+	}
+
+	public BulletinBoard makeReply(BulletinBoard reply) {
+		// 设置新公告板的上级公告ID
+		if (reply == null) {
+			reply = ModelService.createModelObject(BulletinBoard.class);
 		}
+		reply.setValue(BulletinBoard.F_PARENT_BULLETIN, get_id());
+		reply.setValue(BulletinBoard.F_PROJECT_ID, getProjectId());
+		return reply;
 	}
 
 }

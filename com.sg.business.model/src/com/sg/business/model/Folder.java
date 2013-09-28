@@ -4,13 +4,18 @@ import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.WriteResult;
 import com.sg.business.resource.BusinessResource;
 
 /**
  * 文件夹
+ * 
  * @author jinxitao
- *
+ * 
  */
 public class Folder extends PrimaryObject {
 
@@ -23,7 +28,7 @@ public class Folder extends PrimaryObject {
 	 * 上级文件夹ID
 	 */
 	public static final String F_PARENT_ID = "parent_id";
-	
+
 	/**
 	 * 根文件夹ID
 	 */
@@ -48,6 +53,7 @@ public class Folder extends PrimaryObject {
 
 	/**
 	 * 返回文件夹类型
+	 * 
 	 * @return String
 	 */
 	public String getFolderType() {
@@ -56,6 +62,7 @@ public class Folder extends PrimaryObject {
 
 	/**
 	 * 返回上级文件夹_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getParent_id() {
@@ -64,6 +71,7 @@ public class Folder extends PrimaryObject {
 
 	/**
 	 * 返回根文件夹_id
+	 * 
 	 * @return ObjectId
 	 */
 	public ObjectId getRoot_id() {
@@ -71,7 +79,17 @@ public class Folder extends PrimaryObject {
 	}
 
 	/**
+	 * 返回项目_id
+	 * 
+	 * @return ObjectId
+	 */
+	public ObjectId getProject_id() {
+		return (ObjectId) getValue(F_PROJECT_ID);
+	}
+
+	/**
 	 * 返回显示图标
+	 * 
 	 * @return Image
 	 */
 	@Override
@@ -81,6 +99,7 @@ public class Folder extends PrimaryObject {
 
 	/**
 	 * 判断是否可以删除
+	 * 
 	 * @param context
 	 * @return boolean
 	 */
@@ -168,6 +187,7 @@ public class Folder extends PrimaryObject {
 
 	/**
 	 * 判断是否存在文件
+	 * 
 	 * @return boolean
 	 */
 	private boolean hasFile() {
@@ -177,19 +197,39 @@ public class Folder extends PrimaryObject {
 
 	/**
 	 * 判断是否存在下级文件夹
+	 * 
 	 * @return boolean
 	 */
 	private boolean hasSubFolder() {
 		return getRelationCountById(Folder.F__ID, Folder.F_PARENT_ID,
 				Folder.class) > 0;
 	}
-	
+
 	/**
 	 * 返回类型名称
 	 */
 	@Override
 	public String getTypeName() {
 		return "目录";
+	}
+
+	public void doMoveToOtherFolder(ObjectId get_id) throws Exception {
+		DBCollection col = getCollection();
+		WriteResult ws = col.update(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_PARENT_ID, get_id)));
+
+		checkWriteResult(ws);
+	}
+
+	public Folder getParentFolder() {
+		ObjectId folderId = (ObjectId) getValue(F_PARENT_ID);
+		if (folderId != null) {
+			return ModelService.createModelObject(Folder.class, folderId);
+		} else {
+			return null;
+		}
 	}
 
 }
