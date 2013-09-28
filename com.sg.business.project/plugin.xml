@@ -393,6 +393,7 @@
             </column>
          </searchAction>
          <createEditor
+               createHandler="com.sg.business.project.editor.CreateFolderOfProject"
                editorId="editor.folder">
          </createEditor>
       </navigator>
@@ -1603,7 +1604,10 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
+            contentProvider="com.sg.business.project.ContentProvider.ProjectFolderContentProvider"
             dataSet="com.sg.business.model.dataset.project.FolderOfProject"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
+            dropTargetListener="com.sg.business.project.dnd.DropProjectFolder"
             editorId="editor.folder"
             headerVisiable="false"
             id="project.folder"

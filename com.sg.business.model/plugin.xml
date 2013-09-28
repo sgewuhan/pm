@@ -203,7 +203,8 @@
             end2Class="com.sg.business.model.Folder"
             end2Key="parent_id"
             id="folder_folder"
-            name="目录下的目录">
+            name="目录下的目录"
+            sort="com.sg.business.model.bson.DescSorter">
       </relation>
       <relation
             end1Class="com.sg.business.model.Folder"
@@ -300,7 +301,8 @@
             end2Class="com.sg.business.model.Document"
             end2Key="folder_id"
             id="folder_document"
-            name="文件夹下的文件">
+            name="文件夹下的文件"
+            sort="com.sg.business.model.bson.DescSorter">
       </relation>
       <relation
             end1Class="com.sg.business.model.Folder"
@@ -308,7 +310,8 @@
             end2Class="com.sg.business.model.Folder"
             end2Key="parent_id"
             id="folder_folder"
-            name="文件夹下的子文件夹">
+            name="文件夹下的子文件夹"
+            sort="com.sg.business.model.bson.DescSorter">
       </relation>
    </extension>
    <extension

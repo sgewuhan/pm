@@ -391,6 +391,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		folderRootData.put(Folder.F__ID, folderRootId);
 		folderRootData.put(Folder.F_ROOT_ID, folderRootId);
 		folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
+		String containerCollection, containerDB;
+		containerCollection = IModelConstants.C_ORGANIZATION;
+		Container container = Container.adapter(this, Container.TYPE_ADMIN_GRANTED);
+		containerDB = (String) container.getValue(Container.F_SOURCE_DB);
+		folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
+		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
 		return ModelService.createModelObject(folderRootData, Folder.class);
 	}
 
@@ -481,8 +487,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Work root = makeWBSRoot();
 		root.doInsert(context);
 		setValue(Project.F_WORK_ID, root.get_id());
-		
-		//创建根文件夹
+
+		// 创建根文件夹
 		Folder folderRoot = makeFolderRoot();
 		folderRoot.doInsert(context);
 
@@ -493,7 +499,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		super.doInsert(context);
 
 		// 复制模板
-		doSetupWithTemplate(root.get_id(), context,folderRoot.get_id());
+		doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
 
 		// 复制系统日历
 		doCopySystemCanlendar();
@@ -542,11 +548,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @param context
 	 * @param wbsRootId
-	 * @param folderRootId 
+	 * @param folderRootId
 	 * @throws Exception
 	 */
-	public void doSetupWithTemplate(ObjectId wbsRootId, IContext context, ObjectId folderRootId)
-			throws Exception {
+	public void doSetupWithTemplate(ObjectId wbsRootId, IContext context,
+			ObjectId folderRootId) throws Exception {
 		ObjectId id = getProjectTemplateId();
 		if (id == null) {
 			return;
@@ -1177,7 +1183,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		documentData.put(Document.F__ID, new ObjectId());
 
 		documentData.put(Document.F_PROJECT_ID, projectId);
-		
+
 		documentData.put(Document.F_FOLDER_ID, folderRootId);
 
 		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
