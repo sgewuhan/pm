@@ -1,7 +1,7 @@
 package com.sg.business.management.editor.page;
 
 import com.sg.business.model.WorkDefinition;
-
+@Deprecated
 public class WorkExecuteProcessPage extends AbstractWorkProcessPage {
 
 	@Override

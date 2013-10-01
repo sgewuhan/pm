@@ -37,6 +37,7 @@ import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 
+@Deprecated
 public class ProcessSettingPanel extends Composite {
 
 	private static final String F_POSTFIX_ASSIGNMENT = "_assignment";
@@ -51,6 +52,7 @@ public class ProcessSettingPanel extends Composite {
 	private Label processLabel;
 	private Button activeButton;
 
+	@Deprecated
 	ProcessSettingPanel(Composite parent, String fieldName, PrimaryObject po) {
 		super(parent, SWT.NONE);
 		this.key = fieldName;

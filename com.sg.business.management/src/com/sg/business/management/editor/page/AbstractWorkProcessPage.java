@@ -13,7 +13,7 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
-
+@Deprecated
 public abstract class AbstractWorkProcessPage implements IPageDelegator,
 		IFormPart {
 

@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.ui.flow.ProcessControlSetting;
@@ -105,7 +106,11 @@ public abstract class AbstractProcessSettingPage extends
 
 	protected abstract DataSet getRoleDataSet();
 
-	protected abstract IProcessControl getIProcessControl();
+	protected IProcessControl getIProcessControl(){
+		PrimaryObjectEditorInput input = getInput();
+		PrimaryObject po = input.getData();
+		return (IProcessControl) po.getAdapter(IProcessControl.class);
+	}
 
 	protected abstract List<DroolsProcessDefinition> getProcessDefinition();
 

@@ -622,13 +622,6 @@
                navigatorId="management.roledefinition"
                title="角色">
          </navigatorpage>
-         <basicpage
-               description="项目的全局流程设置"
-               id="processpage"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.ProjectTemplateProcessDefinitionPage"
-               title="流程">
-         </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="wbstemplatepage"
@@ -648,6 +641,20 @@
                navigatorId="management.workdconnection"
                title="前后置">
          </navigatorpage>
+         <basicpage
+               description="项目提交流程"
+               id="processpage_commit"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateCommitProcessDefPage"
+               title="提交流程">
+         </basicpage>
+         <basicpage
+               description="项目变更流程"
+               id="processpage_change"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateChangeProcessDefPage"
+               title="变更流程">
+         </basicpage>
          <versionControl>
             <fieldname
                   fieldname="all">
@@ -1293,11 +1300,192 @@
                title="交付物">
          </navigatorpage>
          <basicpage
-               description="通用工作的流程设置"
-               id="processpage"
+               description="通用工作的执行流程"
+               id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.GenericWorkdProcessDefinitionPage"
-               title="流程">
+               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdExecuteProcessDefPage"
+               title="执行流程">
+         </basicpage>
+         <basicpage
+               description="通用工作的变更流程"
+               id="processpage_change"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdChangeProcessDefPage"
+               title="变更流程">
+         </basicpage>
+         <versionControl>
+            <fieldname
+                  fieldname="all">
+            </fieldname>
+         </versionControl>
+      </editor>
+      <editor
+            collectionName="workd"
+            dbName="pm2"
+            id="editor.genericWorkDefinition.1"
+            image="image/work_24.png"
+            isDefault="false"
+            name="通用工作定义"
+            titleToolTips="通用工作定义">
+         <basicpage
+               description="通用工作定义是可添加到多项目中工作模块"
+               id="basicpage"
+               image="image/work_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="通用工作的执行流程"
+               id="processpage_execute"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdExecuteProcessDefPage"
+               title="执行流程">
+         </basicpage>
+         <basicpage
+               description="通用工作的执行流程"
+               id="processpage_change"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdChangeProcessDefPage"
+               title="变更流程">
+         </basicpage>
+         <versionControl>
+            <fieldname
+                  fieldname="all">
+            </fieldname>
+         </versionControl>
+      </editor>
+      <editor
+            collectionName="workd"
+            dbName="pm2"
+            id="editor.standloneWorkDefinition.1"
+            image="image/work_24.png"
+            isDefault="false"
+            name="独立工作定义"
+            titleToolTips="独立工作定义">
+         <basicpage
+               description="独立工作定义"
+               id="basicpage"
+               image="image/work_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="description"
+                        label="说明"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="activated"
+                        label="启用"
+                        labelVisible="true"
+                        name="activated"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     label="负责人和参与者角色">
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="charger_roled_id"
+                        label="负责人角色"
+                        labelVisible="true"
+                        name="charger_roled_id"
+                        persistable="true"
+                        required="true"
+                        type="ObjectId">
+                  </combo>
+                  <combo
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="assignmentcharger_roled_id"
+                        label="指派人角色"
+                        labelVisible="true"
+                        name="assignmentcharger_roled_id"
+                        persistable="true"
+                        required="false"
+                        type="ObjectId">
+                  </combo>
+                  <table
+                        ctableId="management.field.participate_roled_set"
+                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
+                        editable="true"
+                        id="participate_roled_set"
+                        label="参与者角色"
+                        labelVisible="true"
+                        name="participate_roled_set"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="独立工作的执行流程"
+               id="processpage_execute"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"
+               title="执行流程">
+         </basicpage>
+         <basicpage
+               description="独立工作的变更流程"
+               id="processpage_change"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdChangeProcessDefPage"
+               title="变更流程">
          </basicpage>
          <versionControl>
             <fieldname
@@ -1314,7 +1502,7 @@
             name="独立工作定义"
             titleToolTips="独立工作定义">
          <basicpage
-               description="独立工作定义是可以不依赖项目单独发起的工作"
+               description="独立工作定义"
                id="basicpage"
                image="image/work_24.png"
                title="基本信息">
@@ -1417,11 +1605,18 @@
                title="交付物">
          </navigatorpage>
          <basicpage
-               description="通用工作的流程设置"
-               id="processpage"
+               description="独立工作的执行流程"
+               id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.StandloneWorkdProcessDefinitionPage"
-               title="流程">
+               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"
+               title="执行流程">
+         </basicpage>
+         <basicpage
+               description="独立工作的变更流程"
+               id="processpage_change"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdChangeProcessDefPage"
+               title="变更流程">
          </basicpage>
          <versionControl>
             <fieldname
@@ -1439,166 +1634,6 @@
             location="after=basicpage"
             targetId="systempage">
       </pageExtendsions>
-      <editor
-            collectionName="workd"
-            dbName="pm2"
-            id="editor.standloneWorkDefinition.1"
-            image="image/work_24.png"
-            isDefault="false"
-            name="独立工作定义"
-            titleToolTips="独立工作定义">
-         <basicpage
-               description="独立工作定义是可以不依赖项目单独发起的工作"
-               id="basicpage"
-               image="image/work_24.png"
-               title="基本信息">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="description"
-                        label="说明"
-                        labelVisible="true"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <checkbox
-                        editable="true"
-                        id="activated"
-                        label="启用"
-                        labelVisible="true"
-                        name="activated"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-               </section>
-            </pagecolumn>
-            <pagecolumn
-                  id="2">
-               <section
-                     label="负责人和参与者角色">
-                  <combo
-                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="charger_roled_id"
-                        label="负责人角色"
-                        labelVisible="true"
-                        name="charger_roled_id"
-                        persistable="true"
-                        required="true"
-                        type="ObjectId">
-                  </combo>
-                  <combo
-                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="assignmentcharger_roled_id"
-                        label="指派人角色"
-                        labelVisible="true"
-                        name="assignmentcharger_roled_id"
-                        persistable="true"
-                        required="false"
-                        type="ObjectId">
-                  </combo>
-                  <table
-                        ctableId="management.field.participate_roled_set"
-                        dataSetFactory="com.sg.business.model.dataset.organization.RoleOfOrgIterationOption"
-                        editable="true"
-                        id="participate_roled_set"
-                        label="参与者角色"
-                        labelVisible="true"
-                        name="participate_roled_set"
-                        persistable="true"
-                        required="false">
-                  </table>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="通用工作的流程设置"
-               id="processpage"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.StandloneWorkdProcessDefinitionPage"
-               title="流程">
-         </basicpage>
-         <versionControl>
-            <fieldname
-                  fieldname="all">
-            </fieldname>
-         </versionControl>
-      </editor>
-      <editor
-            collectionName="workd"
-            dbName="pm2"
-            id="editor.genericWorkDefinition.1"
-            image="image/work_24.png"
-            isDefault="false"
-            name="通用工作定义"
-            titleToolTips="通用工作定义">
-         <basicpage
-               description="通用工作定义是可添加到多项目中工作模块"
-               id="basicpage"
-               image="image/work_24.png"
-               title="基本信息">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="desc"
-                        label="名称"
-                        labelVisible="true"
-                        name="desc"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="description"
-                        label="说明"
-                        labelVisible="true"
-                        name="description"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="通用工作的流程设置"
-               id="processpage"
-               image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.GenericWorkdProcessDefinitionPage"
-               title="流程">
-         </basicpage>
-         <versionControl>
-            <fieldname
-                  fieldname="all">
-            </fieldname>
-         </versionControl>
-      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
