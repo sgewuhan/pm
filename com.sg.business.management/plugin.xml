@@ -375,7 +375,7 @@
       <table
             dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefOfWorkDefinition"
             id="management.standloneworkrole"
-            popupMenu="popup:management.roledefinition">
+            popupMenu="popup:management.roledefinition.1">
          <column
                columnDefinitionId="roledefinition.number">
          </column>
@@ -2558,6 +2558,50 @@
                   <count
                         value="1">
                   </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:management.roledefinition.1">
+         <command
+               commandId="management.roledefinition.link"
+               icon="image/24_blank.png"
+               label="添加组织角色"
+               style="push">
+         </command>
+         <command
+               commandId="management.roledefinition.remove"
+               icon="image/removerole_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="management.roledefinition.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof
+                        value="com.sg.widgets.part.IRefreshablePart">
+                  </instanceof>
                </with>
             </visibleWhen>
          </command>
