@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.bson.types.ObjectId;
@@ -10,6 +11,9 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.WriteResult;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -51,6 +55,11 @@ public class BulletinBoard extends PrimaryObject {
 	 * 上级公告id
 	 */
 	public static final String F_PARENT_BULLETIN = "parent_id";
+
+	/**
+	 * 所有的上级
+	 */
+	public static final String F_SUPER_BULLETIN = "supers";
 
 	/**
 	 * 附件,文件列表型字段
@@ -245,11 +254,11 @@ public class BulletinBoard extends PrimaryObject {
 		String userId = context.getAccountInfo().getUserId();
 		// 获取发布人
 		String bulletinboardUserid = getPublisher();
-		
+
 		return !userId.equals(bulletinboardUserid);
 	}
-	
-	public boolean currentUserSessioncanEdit(){
+
+	public boolean currentUserSessioncanEdit() {
 		CurrentAccountContext context = new CurrentAccountContext();
 		return !isOtherUser(context);
 	}
@@ -264,6 +273,7 @@ public class BulletinBoard extends PrimaryObject {
 		return BusinessResource.getImage(BusinessResource.IMAGE_BULLETING_16);
 	}
 
+	@SuppressWarnings("unchecked")
 	public BulletinBoard makeReply(BulletinBoard reply) {
 		// 设置新公告板的上级公告ID
 		if (reply == null) {
@@ -271,7 +281,25 @@ public class BulletinBoard extends PrimaryObject {
 		}
 		reply.setValue(BulletinBoard.F_PARENT_BULLETIN, get_id());
 		reply.setValue(BulletinBoard.F_PROJECT_ID, getProjectId());
+		Object supers = getValue(F_SUPER_BULLETIN);
+		if (!(supers instanceof ArrayList<?>)) {
+			supers = new ArrayList<ObjectId>();
+		}
+		((ArrayList<ObjectId>) supers).add(get_id());
+		reply.setValue(F_SUPER_BULLETIN, supers);
 		return reply;
+	}
+
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		if(!canDelete(context)){
+			return;
+		}
+		
+		DBCollection col = getCollection();
+		WriteResult ws = col.remove(new BasicDBObject().append(F_SUPER_BULLETIN, get_id()));
+		checkWriteResult(ws);
+		super.doRemove(context);
 	}
 
 }
