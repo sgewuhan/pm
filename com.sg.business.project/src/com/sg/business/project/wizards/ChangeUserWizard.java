@@ -1,4 +1,4 @@
-package com.sg.business.project.page;
+package com.sg.business.project.wizards;
 
 import java.util.ArrayList;
 import java.util.List;

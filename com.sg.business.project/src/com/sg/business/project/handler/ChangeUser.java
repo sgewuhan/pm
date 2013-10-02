@@ -4,7 +4,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
-import com.sg.business.project.page.ChangeUserWizard;
+import com.sg.business.project.wizards.ChangeUserWizard;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 
 public class ChangeUser extends AbstractNavigatorHandler {

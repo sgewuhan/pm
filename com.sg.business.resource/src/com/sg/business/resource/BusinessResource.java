@@ -212,6 +212,13 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_BULLETING_16 = "bulletin_16.png";
 
+	public static final String IMAGE_TEMPLATE_72 = "template_72.png";
+	
+	public static final String IMAGE_SCHEDULE_72 = "schedule_72.png";
+	
+	public static final String IMAGE_WORKFLOW_72 = "workflow_72.png";
+
+
 
 
 	/**

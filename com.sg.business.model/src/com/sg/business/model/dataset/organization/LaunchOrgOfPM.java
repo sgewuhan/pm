@@ -1,4 +1,4 @@
-package com.sg.business.model.dataset.project;
+package com.sg.business.model.dataset.organization;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -319,10 +319,10 @@
          </view>
          <view
                closeable="false"
-               id="management.genericwork.definitions"
+               id="management.projecttemplates"
                minimized="false"
                moveable="false"
-               ratio="0.5"
+               ratio="0.33"
                relationship="right"
                relative="management.organization.navigaor"
                showTitle="true"
@@ -331,23 +331,12 @@
          </view>
          <view
                closeable="false"
-               id="management.projecttemplates"
+               id="management.genericwork.definitions"
                minimized="false"
                moveable="false"
                ratio="0.5"
-               relationship="bottom"
-               relative="management.organization.navigaor"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="management.standlonework.definitions"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="management.genericwork.definitions"
+               relationship="right"
+               relative="management.projecttemplates"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -355,6 +344,18 @@
          <view
                closeable="false"
                id="management.documentdefinition"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="management.projecttemplates"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="management.standlonework.definitions"
                minimized="false"
                moveable="false"
                ratio="0.5"

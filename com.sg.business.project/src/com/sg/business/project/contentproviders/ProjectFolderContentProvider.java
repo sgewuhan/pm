@@ -1,4 +1,4 @@
-package com.sg.business.project.ContentProvider;
+package com.sg.business.project.contentproviders;
 
 import java.util.Collections;
 import java.util.Comparator;

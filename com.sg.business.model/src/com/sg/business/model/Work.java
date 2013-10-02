@@ -54,7 +54,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	/**
 	 * 工作的编辑器ID
 	 */
-	public static final String EDITOR = "editor.work";
+	public static final String EDITOR = "view.work";
 
 	/**
 	 * 工作设置的编辑器ID

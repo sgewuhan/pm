@@ -1,16 +1,20 @@
 package com.sg.business.work.handler;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 
-import com.mobnut.db.model.PrimaryObject;
-import com.sg.widgets.command.AbstractNavigatorHandler;
+import com.sg.business.work.launch.LaunchWorkWizard;
 
-public class LaunchWork extends AbstractNavigatorHandler {
+public class LaunchWork extends AbstractHandler {
+
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		// TODO Auto-generated method stub
-
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		LaunchWorkWizard.OPEN();
+		
+		return null;
 	}
 
+	
 }

@@ -149,7 +149,7 @@
             end1Class="com.sg.business.model.Organization"
             end1Key="_id"
             end2Class="com.sg.business.model.User"
-            end2Condition="com.sg.business.model.ConditionProvider.OrgofUserCondition"
+            end2Condition="com.sg.business.model.condition.OrgofUserCondition"
             end2Key="organization_id"
             id="organization_user"
             name="组织下的用户">
@@ -185,6 +185,15 @@
             end2Key="organization_id"
             id="organization_projecttemplates"
             name="组织下的项目模版">
+      </relation>
+      <relation
+            end1Class="com.sg.business.model.Organization"
+            end1Key="_id"
+            end2Class="com.sg.business.model.WorkDefinition"
+            end2Condition="com.sg.business.model.condition.StandloneWork"
+            end2Key="organization_id"
+            id="organization_standlonework"
+            name="组织下的独立工作">
       </relation>
    </extension>
    <extension

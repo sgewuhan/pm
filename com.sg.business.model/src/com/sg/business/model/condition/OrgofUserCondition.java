@@ -1,4 +1,4 @@
-package com.sg.business.model.ConditionProvider;
+package com.sg.business.model.condition;
 
 import com.mobnut.db.model.IRelationConditionProvider;
 import com.mobnut.db.model.PrimaryObject;
