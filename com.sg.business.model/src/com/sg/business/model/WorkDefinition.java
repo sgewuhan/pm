@@ -1,7 +1,6 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -524,13 +523,11 @@ public class WorkDefinition extends AbstractWork implements
 		if (work == null) {
 			work = ModelService.createModelObject(Work.class);
 			work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
-			Date today = new Date();
-			work.setValue(Work.F_PLAN_START, today);
 		}
 		work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
 		work.setValue(Work.F_WORK_CATAGORY, getValue(F_WORK_CATAGORY));
-		work.setValue(Work.F_PLAN_WORKS, new Double(0d));
 		work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
+		work.setValue(Work.F_WORK_DEFINITION_ID, get_id());
 
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		DBObject wfdef = pc.getWorkflowDefinition(F_WF_EXECUTE);

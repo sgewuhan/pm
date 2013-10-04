@@ -162,6 +162,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public static final String F_RECORD = "record";
 
+	public static final String F_WORK_DEFINITION_ID = "workd_id";
+
 	/**
 	 * 根据状态返回不同的图标
 	 */

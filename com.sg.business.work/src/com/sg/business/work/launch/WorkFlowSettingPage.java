@@ -36,22 +36,23 @@ public class WorkFlowSettingPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		Composite content = new Composite(parent, SWT.NONE);
-		page = new AbstractProcessSettingPage(){
+		page = new AbstractProcessSettingPage() {
 
 			@Override
 			protected int getProcessSettingControl() {
-				return ProcessSettingPanel2.ACTOR_SELECTOR|ProcessSettingPanel2.ROLE_SELECTOR;
+				return ProcessSettingPanel2.ACTOR_SELECTOR
+						| ProcessSettingPanel2.ROLE_SELECTOR;
 			}
 
 			@Override
 			protected DataSet getRoleDataSet() {
-				//不可选择角色
+				// 不可选择角色
 				return null;
 			}
 
 			@Override
 			protected List<DroolsProcessDefinition> getProcessDefinition() {
-				//无需选择流程
+				// 无需选择流程
 				return null;
 			}
 
@@ -78,10 +79,11 @@ public class WorkFlowSettingPage extends WizardPage {
 				}
 				return new DataSet(result);
 			}
-			
+
 		};
 		page.createPageContent(parent, input, null);
-		
+		ProcessSettingPanel2 psp = page.getProcessSettingPanel();
+		psp.setRoleSelectEnable(false);
 		setControl(content);
 	}
 
@@ -90,7 +92,11 @@ public class WorkFlowSettingPage extends WizardPage {
 	}
 
 	public void refresh() {
-		page.refresh();
+		if (page != null){
+			page.refresh();
+			Composite control = (Composite)getControl();
+			control.layout();
+		}
 	}
 
 }

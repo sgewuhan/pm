@@ -1,5 +1,6 @@
 package com.sg.business.work.launch;
 
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Point;
@@ -19,10 +20,13 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 
 public class LaunchWorkWizard extends Wizard {
 
+	private static final String PAGE_LAUNCH_WORK_BASICPAGE = "launch.work.basicpage";
 	private SelectWorkDefinitionPage selectWorkDefinitionPage;
 	private PrimaryObjectEditorInput editorInput;
 	private BasicWizardPage basicPage;
 	private WorkFlowSettingPage flowSettingPage;
+	private boolean startWorkWhenFinish;
+	private ConfirmPage autoStartPage;
 
 	public static LaunchWorkWizard OPEN() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
@@ -66,37 +70,69 @@ public class LaunchWorkWizard extends Wizard {
 		selectWorkDefinitionPage = new SelectWorkDefinitionPage();
 
 		BasicPageConfigurator conf = (BasicPageConfigurator) Widgets
-				.getPageRegistry().getConfigurator("launch.work.basicpage");
+				.getPageRegistry().getConfigurator(PAGE_LAUNCH_WORK_BASICPAGE);
 		basicPage = new BasicWizardPage(conf);
 		basicPage.setInput(editorInput);
 
-		
-		flowSettingPage = new WorkFlowSettingPage();
-		flowSettingPage.setInput(editorInput);
 		addPage(selectWorkDefinitionPage);
 		addPage(basicPage);
-		addPage(flowSettingPage);
-		
-		
+
 	}
-	
 
 	@Override
 	public boolean performFinish() {
 		return true;
 	}
-	
 
 	public void setWorkDefinition(WorkDefinition workd) {
-		//设置流程
-		Work work = (Work)editorInput.getData();
+		// 设置流程
+		Work work = (Work) editorInput.getData();
 		try {
-			workd.makeStandloneWork(work,editorInput.getContext());
-			flowSettingPage.refresh();
+			workd.makeStandloneWork(work, editorInput.getContext());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page == basicPage) {
+			// 判断有无流程，如果无流程，则返回空
+			Work work = (Work) editorInput.getData();
+			if (!work.isExecuteWorkflowActivateAndAvailable()) {
+				return getAutoStartPage();
+			} else {
+				return getFlowSettingPage();
+			}
+		} else if (page == flowSettingPage) {
+			return getAutoStartPage();
+		}
+		return super.getNextPage(page);
+	}
+
+	private IWizardPage getFlowSettingPage() {
+		if (flowSettingPage == null) {
+			flowSettingPage = new WorkFlowSettingPage();
+			flowSettingPage.setInput(editorInput);
+			flowSettingPage.setWizard(this);
+		}else{
+			flowSettingPage.refresh();
+		}
+		return flowSettingPage;
+	}
+
+	private IWizardPage getAutoStartPage() {
+		if(autoStartPage==null){
+			autoStartPage = new ConfirmPage();
+			autoStartPage.setWizard(this);
+		}
+		return autoStartPage;
+
+	}
+
+	public void setStartWorkWhenFinsh(boolean selection) {
+		this.startWorkWhenFinish = selection;
 	}
 
 }

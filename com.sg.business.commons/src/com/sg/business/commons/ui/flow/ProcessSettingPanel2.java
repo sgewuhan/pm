@@ -60,9 +60,9 @@ public abstract class ProcessSettingPanel2 extends Composite {
 	private Button activatedChecker;
 	private ActivitySelecter activitySelecter;
 	private ActivityEditor activiteEditor;
-//	private boolean hasProcessSelector;
-//	private boolean hasActorSelector;
-//	private boolean hasRoleSelector;
+	// private boolean hasProcessSelector;
+	// private boolean hasActorSelector;
+	// private boolean hasRoleSelector;
 	private DroolsProcessDefinition processDefinition;
 	private ListenerList listeners = new ListenerList();
 	private List<DroolsProcessDefinition> processDefinitionsChoice;
@@ -75,13 +75,12 @@ public abstract class ProcessSettingPanel2 extends Composite {
 	private User selectedActor;
 	private boolean editable = true;
 	private int controlStyle;
-	
+
 	public static int PROCESS_SELECTOR = 9 << 1;
-	
+
 	public static int ROLE_SELECTOR = 9 << 2;
 
 	public static int ACTOR_SELECTOR = 9 << 3;
-
 
 	public void addProcessSettingListener(IProcessSettingListener listener) {
 		listeners.add(listener);
@@ -90,13 +89,11 @@ public abstract class ProcessSettingPanel2 extends Composite {
 	public void removeProcessSettingListener(IProcessSettingListener listener) {
 		listeners.remove(listener);
 	}
-	
 
 	public ProcessSettingPanel2(Composite parent, int controlStyle) {
 		super(parent, SWT.NONE);
 		this.controlStyle = controlStyle;
 	}
-
 
 	public void createContent() {
 		setLayout(new FormLayout());
@@ -161,7 +158,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 		fd.left = new FormAttachment(0, MARGIN);
 		fd.right = new FormAttachment(100, -MARGIN);
 		fd.bottom = new FormAttachment(100, -MARGIN);
-		
+
 		activiteEditor.setEditable(editable);
 	}
 
@@ -176,8 +173,9 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			public void selectionChange(NodeAssignment nodeAssignment) {
 				selectedRole = getRoleDefinition(nodeAssignment);
 				selectedActor = getActor(nodeAssignment);
-				activiteEditor.setInput(nodeAssignment, selectedRole, selectedActor);
-				
+				activiteEditor.setInput(nodeAssignment, selectedRole,
+						selectedActor);
+
 			}
 		});
 	}
@@ -205,7 +203,8 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			public String getText(Object element) {
 				if (element instanceof DroolsProcessDefinition) {
 					DroolsProcessDefinition definition = (DroolsProcessDefinition) element;
-					return definition.getProcessName()+"["+definition.getKbase()+"]";
+					return definition.getProcessName() + "["
+							+ definition.getKbase() + "]";
 				} else {
 					return "";
 				}
@@ -308,29 +307,29 @@ public abstract class ProcessSettingPanel2 extends Composite {
 		return processDefinition;
 	}
 
-//	final public void setHasProcessSelector(boolean hasProcessSelector) {
-//		this.hasProcessSelector = hasProcessSelector;
-//	}
-//
-//	final public void setHasActorSelector(boolean hasActorSelector) {
-//		this.hasActorSelector = hasActorSelector;
-//	}
-	
-	private boolean hasActorSelector(){
-		return (controlStyle& ACTOR_SELECTOR) != 0;
-	}
-	
-	private boolean hasRoleSelector(){
-		return (controlStyle& ROLE_SELECTOR) != 0;
-	}
-	
-	private boolean hasProcessSelector(){
-		return (controlStyle& PROCESS_SELECTOR) != 0;
+	// final public void setHasProcessSelector(boolean hasProcessSelector) {
+	// this.hasProcessSelector = hasProcessSelector;
+	// }
+	//
+	// final public void setHasActorSelector(boolean hasActorSelector) {
+	// this.hasActorSelector = hasActorSelector;
+	// }
+
+	private boolean hasActorSelector() {
+		return (controlStyle & ACTOR_SELECTOR) != 0;
 	}
 
-//	final public void setHasRoleSelector(boolean hasRoleSelector) {
-//		this.hasRoleSelector = hasRoleSelector;
-//	}
+	private boolean hasRoleSelector() {
+		return (controlStyle & ROLE_SELECTOR) != 0;
+	}
+
+	private boolean hasProcessSelector() {
+		return (controlStyle & PROCESS_SELECTOR) != 0;
+	}
+
+	// final public void setHasRoleSelector(boolean hasRoleSelector) {
+	// this.hasRoleSelector = hasRoleSelector;
+	// }
 
 	private void processChanged(DroolsProcessDefinition oldProcessDef,
 			DroolsProcessDefinition newProcessDefinition) {
@@ -358,7 +357,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			((IProcessSettingListener) lis[i]).actorChanged(newActor, oldActor,
 					nodeAssignment, roleDef);
 		}
-		
+
 		this.selectedActor = newActor;
 	}
 
@@ -369,7 +368,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			((IProcessSettingListener) lis[i]).roleChanged(newRole, oldRole,
 					nodeAssignment);
 		}
-		
+
 		this.selectedRole = newRole;
 
 	}
@@ -397,19 +396,25 @@ public abstract class ProcessSettingPanel2 extends Composite {
 	public DataSet getActorDataSet() {
 		return actorDataSet;
 	}
-	
-	public AbstractRoleDefinition getSelectedRole(){
+
+	public AbstractRoleDefinition getSelectedRole() {
 		return this.selectedRole;
 	}
 
-	public User getSelectedActor(){
+	public User getSelectedActor() {
 		return this.selectedActor;
 	}
 
 	public void setEditable(boolean editable) {
-		this.editable  = editable;
-		if(activiteEditor!=null&&!activiteEditor.isDisposed()){
+		this.editable = editable;
+		if (activiteEditor != null && !activiteEditor.isDisposed()) {
 			activiteEditor.setEditable(editable);
+		}
+	}
+
+	public void setRoleSelectEnable(boolean enable) {
+		if (activiteEditor != null && !activiteEditor.isDisposed()) {
+			activiteEditor.setRoleSelectEnable(enable);
 		}
 	}
 }
