@@ -31,7 +31,7 @@ public abstract class AbstractProcessSettingPage extends
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		setFormInput(input);
 		editable = input.isEditable();
-		final IProcessControl IProcessControl = getIProcessControl();
+		final IProcessControl ipc = getIProcessControl();
 
 		psp2 = new ProcessSettingPanel2(parent, getProcessSettingControl()) {
 
@@ -39,8 +39,7 @@ public abstract class AbstractProcessSettingPage extends
 			protected AbstractRoleDefinition getRoleDefinition(
 					NodeAssignment nodeAssignment) {
 				if (nodeAssignment != null) {
-					return IProcessControl.getProcessActionAssignment(
-							getProcessKey(),
+					return ipc.getProcessActionAssignment(getProcessKey(),
 							nodeAssignment.getNodeActorParameter());
 				} else {
 					return null;
@@ -52,9 +51,8 @@ public abstract class AbstractProcessSettingPage extends
 				if (nodeAssignment == null) {
 					return null;
 				}
-				String userid = IProcessControl
-						.getProcessActionActor(getProcessKey(),
-								nodeAssignment.getNodeActorParameter());
+				String userid = ipc.getProcessActionActor(getProcessKey(),
+						nodeAssignment.getNodeActorParameter());
 				return UserToolkit.getUserById(userid);
 			}
 
@@ -65,24 +63,23 @@ public abstract class AbstractProcessSettingPage extends
 			}
 
 		};
-
-		List<DroolsProcessDefinition> processDefs = getProcessDefinition();
-		psp2.setProcessDefinitionChoice(processDefs);
-		// 返回当前选中流程
-		DroolsProcessDefinition processDef = IProcessControl
-				.getProcessDefinition(getProcessKey());
-		// 显示当前选中流程的信息
-		psp2.setProcessDefinition(processDef);
-
-		// 显示该流程是否激活
-		boolean activate = IProcessControl.isWorkflowActivate(getProcessKey());
-		psp2.setProcessActivated(activate);
-
 		// 设置角色的选择器，项目模板中的角色定义
 		psp2.setRoleNavigatorId("commons.generic.tableselector");
 
 		// 设置用户的选择器
 		psp2.setActorNavigatorId("commons.generic.tableselector");
+
+		List<DroolsProcessDefinition> processDefs = getProcessDefinition();
+		psp2.setProcessDefinitionChoice(processDefs);
+		// 返回当前选中流程
+		DroolsProcessDefinition processDef = ipc
+				.getProcessDefinition(getProcessKey());
+		// 显示当前选中流程的信息
+		psp2.setProcessDefinition(processDef);
+
+		// 显示该流程是否激活
+		boolean activate = ipc.isWorkflowActivate(getProcessKey());
+		psp2.setProcessActivated(activate);
 
 		// 设置角色的数据集
 		psp2.setRoleDataSet(getRoleDataSet());
@@ -90,8 +87,8 @@ public abstract class AbstractProcessSettingPage extends
 		psp2.createContent();
 
 		// 添加监听
-		psp2.addProcessSettingListener(new ProcessControlSetting(
-				IProcessControl, getProcessKey()) {
+		psp2.addProcessSettingListener(new ProcessControlSetting(ipc,
+				getProcessKey()) {
 			@Override
 			protected void event(int code) {
 				setDirty(true);
@@ -106,7 +103,7 @@ public abstract class AbstractProcessSettingPage extends
 
 	protected abstract DataSet getRoleDataSet();
 
-	protected IProcessControl getIProcessControl(){
+	protected IProcessControl getIProcessControl() {
 		PrimaryObjectEditorInput input = getInput();
 		PrimaryObject po = input.getData();
 		return (IProcessControl) po.getAdapter(IProcessControl.class);
@@ -127,4 +124,26 @@ public abstract class AbstractProcessSettingPage extends
 	public void setFocus() {
 	}
 
+	@Override
+	public void refresh() {
+		final IProcessControl ipc = getIProcessControl();
+
+		List<DroolsProcessDefinition> processDefs = getProcessDefinition();
+		psp2.setProcessDefinitionChoice(processDefs);
+		// 返回当前选中流程
+		DroolsProcessDefinition processDef = ipc
+				.getProcessDefinition(getProcessKey());
+		// 显示当前选中流程的信息
+		psp2.setProcessDefinition(processDef);
+
+		// 显示该流程是否激活
+		boolean activate = ipc.isWorkflowActivate(getProcessKey());
+		psp2.setProcessActivated(activate);
+
+		// 设置角色的数据集
+		psp2.setRoleDataSet(getRoleDataSet());
+		
+		psp2.refresh();
+		super.refresh();
+	}
 }

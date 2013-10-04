@@ -2518,7 +2518,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return (T) new ProcessControl(this) {
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
-					return ProjectRole.class;
+					if(isProjectWork()){
+						return ProjectRole.class;
+					}else{
+						return RoleDefinition.class;
+					}
 				}
 			};
 		}

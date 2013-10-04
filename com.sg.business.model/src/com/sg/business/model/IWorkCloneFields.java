@@ -114,6 +114,11 @@ public interface IWorkCloneFields {
 	public static final String F_REMIND_BEFORE = "remindbefore";
 
 	/**
+	 * 分类
+	 */
+	public static final String F_WORK_CATAGORY = "catagory";
+
+	/**
 	 * 需要复制的设置项
 	 */
 	public static final String[] SETTING_FIELDS = new String[] {
@@ -123,5 +128,5 @@ public interface IWorkCloneFields {
 			F_SETTING_CAN_MODIFY_PLANWORKS,
 			F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
-			F_REMIND_BEFORE };
+			F_REMIND_BEFORE,F_WORK_CATAGORY};
 }

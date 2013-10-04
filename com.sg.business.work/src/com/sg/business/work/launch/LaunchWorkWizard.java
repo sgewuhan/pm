@@ -7,14 +7,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import com.mobnut.db.model.ModelService;
+import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.widgets.Widgets;
+import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.part.editor.page.BasicWizardPage;
+import com.sg.widgets.registry.config.BasicPageConfigurator;
+import com.sg.widgets.registry.config.DataEditorConfigurator;
 
 public class LaunchWorkWizard extends Wizard {
 
 	private SelectWorkDefinitionPage selectWorkDefinitionPage;
-	private SchedualePage schedualPage;
+	private PrimaryObjectEditorInput editorInput;
+	private BasicWizardPage basicPage;
 	private WorkFlowSettingPage flowSettingPage;
-	private WorkDefinition workd;
 
 	public static LaunchWorkWizard OPEN() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
@@ -26,8 +34,8 @@ public class LaunchWorkWizard extends Wizard {
 			WizardDialog wizardDialog = new WizardDialog(shell, wiz) {
 				@Override
 				protected Point getInitialSize() {
-					// Point size = super.getInitialSize();
-					return new Point(600, 800);
+					Point size = super.getInitialSize();
+					return new Point(600, size.y);
 				}
 			};
 
@@ -40,26 +48,55 @@ public class LaunchWorkWizard extends Wizard {
 
 	public LaunchWorkWizard() {
 		setWindowTitle("发起工作");
+		initInput();
+	}
+
+	private void initInput() {
+		Work work = ModelService.createModelObject(Work.class);
+		DataEditorConfigurator editor = (DataEditorConfigurator) Widgets
+				.getEditorRegistry().getConfigurator("editor.work.launch");
+		editorInput = new PrimaryObjectEditorInput(work, editor, null);
+		editorInput.setEditable(true);
+		editorInput.setNeedHostPartListenSaveEvent(false);
+		editorInput.setContext(new CurrentAccountContext());
 	}
 
 	@Override
 	public void addPages() {
 		selectWorkDefinitionPage = new SelectWorkDefinitionPage();
-		schedualPage = new SchedualePage();
+
+		BasicPageConfigurator conf = (BasicPageConfigurator) Widgets
+				.getPageRegistry().getConfigurator("launch.work.basicpage");
+		basicPage = new BasicWizardPage(conf);
+		basicPage.setInput(editorInput);
+
+		
 		flowSettingPage = new WorkFlowSettingPage();
+		flowSettingPage.setInput(editorInput);
 		addPage(selectWorkDefinitionPage);
-		addPage(schedualPage);
+		addPage(basicPage);
 		addPage(flowSettingPage);
+		
+		
 	}
+	
 
 	@Override
 	public boolean performFinish() {
-
 		return true;
 	}
+	
 
 	public void setWorkDefinition(WorkDefinition workd) {
-		this.workd = workd;
+		//设置流程
+		Work work = (Work)editorInput.getData();
+		try {
+			workd.makeStandloneWork(work,editorInput.getContext());
+			flowSettingPage.refresh();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -28,7 +29,6 @@ import com.sg.bpm.workflow.model.DroolsProcessDefinition;
  */
 public class WorkDefinition extends AbstractWork implements
 		IProjectTemplateRelative {
-
 
 	/**
 	 * 只用于通用工作定义和独立工作定义,保存组织的_id字段值
@@ -471,12 +471,11 @@ public class WorkDefinition extends AbstractWork implements
 		}
 		return null;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter.equals(IProcessControl.class)) {
-			return (T) new ProcessControl(this){
+			return (T) new ProcessControl(this) {
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
 					return RoleDefinition.class;
@@ -511,6 +510,32 @@ public class WorkDefinition extends AbstractWork implements
 	public List<PrimaryObject> getRoleDefinitions() {
 		return getRelationById(F__ID, RoleDefinition.F_WORKDEFINITION_ID,
 				RoleDefinition.class);
+	}
+
+	/**
+	 * 根据当前的工作定义，创建独立工作
+	 * 
+	 * @param work
+	 * @param context
+	 * @return
+	 * @throws Exception
+	 */
+	public Work makeStandloneWork(Work work, IContext context) throws Exception {
+		if (work == null) {
+			work = ModelService.createModelObject(Work.class);
+			work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
+			Date today = new Date();
+			work.setValue(Work.F_PLAN_START, today);
+		}
+		work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
+		work.setValue(Work.F_WORK_CATAGORY, getValue(F_WORK_CATAGORY));
+		work.setValue(Work.F_PLAN_WORKS, new Double(0d));
+		work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
+
+		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+		DBObject wfdef = pc.getWorkflowDefinition(F_WF_EXECUTE);
+		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
+		return work;
 	}
 
 }

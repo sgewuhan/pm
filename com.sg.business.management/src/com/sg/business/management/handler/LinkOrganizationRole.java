@@ -70,7 +70,6 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 
 		roled.addEventListener(vc);
 		roled.doSave(new CurrentAccountContext());
-		System.out.println(roled);
 
 	}
 

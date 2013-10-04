@@ -82,13 +82,6 @@ public abstract class ProcessSettingPanel2 extends Composite {
 
 	public static int ACTOR_SELECTOR = 9 << 3;
 
-	public static void main(String[] args) {
-		int style = ACTOR_SELECTOR|ROLE_SELECTOR;
-		System.out.println((style&ACTOR_SELECTOR)==0);
-		System.out.println((style&ROLE_SELECTOR)==0);
-		System.out.println((style&PROCESS_SELECTOR)==0);
-
-	}
 
 	public void addProcessSettingListener(IProcessSettingListener listener) {
 		listeners.add(listener);
@@ -118,7 +111,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 
 		createActivityEditor(panel);
 
-		initInputValue();
+		refresh();
 	}
 
 	private void createActivityEditor(Composite panel) {
@@ -189,7 +182,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 		});
 	}
 
-	private void initInputValue() {
+	public void refresh() {
 		if (activatedChecker != null) {
 			activatedChecker.setSelection(processActivate);
 		}

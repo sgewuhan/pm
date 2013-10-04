@@ -23,6 +23,7 @@ public class SelectWorkDefinitionPage extends WizardPage {
 
 	private NavigatorControl navi;
 	private NavigatablePartAdapter navigatorPart;
+	protected WorkDefinition workd;
 
 	protected SelectWorkDefinitionPage() {
 		super("SELECT_WORK_DEFINITION");
@@ -68,13 +69,12 @@ public class SelectWorkDefinitionPage extends WizardPage {
 
 						setPageComplete(complete);
 
-						LaunchWorkWizard wiz = getWizard();
 						if (complete) {
-							wiz.setWorkDefinition((WorkDefinition) is
-									.getFirstElement());
+							workd = (WorkDefinition) is.getFirstElement();
 						} else {
-							wiz.setWorkDefinition(null);
+							workd = null;
 						}
+						getWizard().setWorkDefinition(workd);
 					}
 				});
 		setControl(content);
@@ -82,6 +82,7 @@ public class SelectWorkDefinitionPage extends WizardPage {
 
 	}
 
+	
 	private NavigatablePartAdapter createNavigatorPart() {
 		return new NavigatablePartAdapter() {
 		};
@@ -91,6 +92,7 @@ public class SelectWorkDefinitionPage extends WizardPage {
 	public LaunchWorkWizard getWizard() {
 		return (LaunchWorkWizard) super.getWizard();
 	}
+	
 	
 	
 }

@@ -143,5 +143,11 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 	@Override
 	public void setFocus() {
 	}
+	
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		super.refresh();
+	}
 
 }

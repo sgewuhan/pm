@@ -93,6 +93,8 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public boolean isSummaryWork() {
 		return hasChildrenWork();
 	}
+	
+	
 
 	/**
 	 * 返回工作定义在WBS中的编号<br/>
@@ -408,5 +410,32 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 			child.doArrangeWBSCode();
 		}
+	}
+	
+	public boolean isGenericWork(){
+		Object type = getValue(F_WORK_TYPE);
+		if(type instanceof Integer){
+			return ((Integer) type).intValue() == WORK_TYPE_GENERIC;
+		}
+		
+		return false;
+	}
+	
+	public boolean isStandloneWork(){
+		Object type = getValue(F_WORK_TYPE);
+		if(type instanceof Integer){
+			return ((Integer) type).intValue() == WORK_TYPE_STANDLONE;
+		}
+		
+		return false;
+	}
+	
+	public boolean isProjectWork(){
+		Object type = getValue(F_WORK_TYPE);
+		if(type instanceof Integer){
+			return ((Integer) type).intValue() == WORK_TYPE_PROJECT;
+		}
+		
+		return false;
 	}
 }

@@ -393,7 +393,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
 		String containerCollection, containerDB;
 		containerCollection = IModelConstants.C_ORGANIZATION;
-		Container container = Container.adapter(this, Container.TYPE_ADMIN_GRANTED);
+		Container container = Container.adapter(this,
+				Container.TYPE_ADMIN_GRANTED);
 		containerDB = (String) container.getValue(Container.F_SOURCE_DB);
 		folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
 		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
@@ -1695,8 +1696,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForCharger(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, "负责项目" + ": "
-				+ getLabel(), this, EDITOR_CREATE_PLAN, context);
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, "负责项目"
+				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context);
 	}
 
 	/**
@@ -1707,11 +1708,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForParticipate(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, "参与项目" + ": "
-				+ getLabel(), this, EDITOR_CREATE_PLAN, context);
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, "参与项目"
+				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context);
 	}
-
-
 
 	/**
 	 * 向消息清单中添加工作流活动执行者的提示消息
@@ -1737,40 +1736,41 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throws Exception {
 		if (work == null) {
 			work = ModelService.createModelObject(Work.class);
-			work.setValue(Work.F_CHARGER, context.getAccountInfo().getUserId());// 设置负责人为当前用户
-			work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
-			Date today = new Date();
-			work.setValue(Work.F_PLAN_START, today);
+			work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
+		}
+		work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
+		Date today = new Date();
+		work.setValue(Work.F_PLAN_START, today);
 
-			Date finishDate = today;
-			Object sDuration = Setting
-					.getSystemSetting(IModelConstants.S_DEFAULT_PROJECT_COMMIT_DURATION);
-			if (sDuration != null) {
-				Integer duration = Utils.getIntegerValue(sDuration);
-				if (duration != null) {
-					CalendarCaculater ds = getCalendarCaculater();
-					while (duration > 0) {
-						finishDate = Utils.getDateAfter(finishDate, 1);
-						if (ds.getWorkingTime(finishDate) > 0) {
-							duration--;
-						}
+		Date finishDate = today;
+		Object sDuration = Setting
+				.getSystemSetting(IModelConstants.S_DEFAULT_PROJECT_COMMIT_DURATION);
+		if (sDuration != null) {
+			Integer duration = Utils.getIntegerValue(sDuration);
+			if (duration != null) {
+				CalendarCaculater ds = getCalendarCaculater();
+				while (duration > 0) {
+					finishDate = Utils.getDateAfter(finishDate, 1);
+					if (ds.getWorkingTime(finishDate) > 0) {
+						duration--;
 					}
 				}
 			}
-			work.setValue(Work.F_PLAN_FINISH, finishDate);
-
-			work.setValue(Work.F_DESC, "项目计划提交" + " " + this);
-			work.setValue(Work.F_DESCRIPTION, getDesc());
-			work.setValue(Work.F_PLAN_WORKS, new Double(0d));
-			BasicBSONList targets = new BasicBSONList();
-			targets.add(new BasicDBObject().append(SF_TARGET, get_id())
-					.append(SF_TARGET_CLASS, Project.class.getName())
-					.append(SF_TARGET_EDITING_TYPE, EDITING_BY_EDITOR)
-					.append(SF_TARGET_EDITOR, EDITOR_CREATE_PLAN)
-					.append(SF_TARGET_EDITABLE, Boolean.TRUE));
-			work.setValue(Work.F_TARGETS, targets);
-			work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 		}
+		work.setValue(Work.F_PLAN_FINISH, finishDate);
+
+		work.setValue(Work.F_DESC, "项目计划提交" + " " + this);
+		work.setValue(Work.F_DESCRIPTION, getDesc());
+		work.setValue(Work.F_PLAN_WORKS, new Double(0d));
+		BasicBSONList targets = new BasicBSONList();
+		targets.add(new BasicDBObject().append(SF_TARGET, get_id())
+				.append(SF_TARGET_CLASS, Project.class.getName())
+				.append(SF_TARGET_EDITING_TYPE, EDITING_BY_EDITOR)
+				.append(SF_TARGET_EDITOR, EDITOR_CREATE_PLAN)
+				.append(SF_TARGET_EDITABLE, Boolean.TRUE));
+		work.setValue(Work.F_TARGETS, targets);
+		work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
+
 		work.setValue(Work.F_PROJECT_ID, get_id());
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		DBObject wfdef = pc.getWorkflowDefinition(F_WF_COMMIT);
