@@ -74,6 +74,8 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	 */
 	public static final String EDITOR = "editor.document.generic";
 
+	public static final String F_WORK_ID = "work_id";
+
 	
 
 

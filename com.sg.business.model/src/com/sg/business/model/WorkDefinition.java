@@ -522,7 +522,6 @@ public class WorkDefinition extends AbstractWork implements
 	public Work makeStandloneWork(Work work, IContext context) throws Exception {
 		if (work == null) {
 			work = ModelService.createModelObject(Work.class);
-			work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
 		}
 		work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
 		work.setValue(Work.F_WORK_CATAGORY, getValue(F_WORK_CATAGORY));

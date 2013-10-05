@@ -223,7 +223,7 @@
       <tree
             canCreate="false"
             canDelete="true"
-            canEdit="false"
+            canEdit="true"
             canRead="true"
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
@@ -3093,7 +3093,7 @@
                         persistable="true"
                         presentation="com.sg.business.commons.field.presentation.ProjectInfomationOfWork"
                         required="true"
-                        type="String"
+                        type="ObjectId"
                         userlabelForReadonly="true"
                         widthHint="240">
                   </text>

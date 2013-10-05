@@ -10,7 +10,6 @@ import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
-import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
@@ -60,6 +59,9 @@ public class LaunchWorkWizard extends Wizard {
 
 	private void initInput() {
 		Work work = ModelService.createModelObject(Work.class);
+		IContext context = new CurrentAccountContext();
+		work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
+
 		DataEditorConfigurator editor = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator("editor.work.launch");
 		editorInput = new PrimaryObjectEditorInput(work, editor, null);
@@ -87,6 +89,8 @@ public class LaunchWorkWizard extends Wizard {
 		Work work = (Work) editorInput.getData();
 		IContext context = new CurrentAccountContext();
 		try {
+			work.copyWorkDefinition(Work.F_WF_EXECUTE,context);
+			
 			work.doSave(context);
 			if(startWorkWhenFinish){
 				work.doStart(context);

@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 
 import com.mobnut.commons.util.Utils;
@@ -33,7 +34,7 @@ public class ConfirmPage extends WizardPage {
 
 	private Label workName;
 
-	private Label workSummary;
+	private Text workSummary;
 
 	private Label planStart;
 
@@ -124,11 +125,12 @@ public class ConfirmPage extends WizardPage {
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4,
 				1));
 
-		workSummary = new Label(panel, SWT.WRAP);
-		GridData layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false,
+		workSummary = new Text(panel, SWT.MULTI|SWT.WRAP);
+		GridData layoutData = new GridData(SWT.FILL, SWT.TOP, false, false,
 				4, 1);
-		layoutData.heightHint = 60;
+		layoutData.heightHint = 40;
 		workSummary.setLayoutData(layoutData);
+		workSummary.setEditable(false);
 
 		label = new Label(panel, SWT.NONE);
 		label.setText("计划开始: ");

@@ -2,6 +2,7 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,14 +21,18 @@ import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.runtime.Workflow;
@@ -1601,19 +1606,140 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
+		ObjectId id = new ObjectId();
+		setValue(F__ID, id);
+
 		if (getValue(F_PARENT_ID) == null) {// 根工作
-			ObjectId id = new ObjectId();
-			setValue(F__ID, id);
 			setValue(F_ROOT_ID, id);
 		} else {
 			AbstractWork parent = getParent();
 			ObjectId rootId = (ObjectId) parent.getValue(F_ROOT_ID);
 			setValue(F_ROOT_ID, rootId);
 		}
-		
-		//处理工作定义的复制
-		
+
+		if (isStandloneWork()) {
+			// 处理文档的复制
+			doCopyDeliveryFromWorkDefinition();
+		}
+
 		super.doInsert(context);
+	}
+
+	private void doCopyDeliveryFromWorkDefinition() throws Exception {
+		// 处理文档
+		
+		Map<ObjectId, DBObject> documentsToInsert = new HashMap<ObjectId,DBObject>();
+		List<DBObject> dilerverableToInsert = new ArrayList<DBObject>();
+		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
+		
+		
+		WorkDefinition workdef = getWorkDefinition();
+
+		DBCollection deliveryDefCol = getCollection(IModelConstants.C_DELIEVERABLE_DEFINITION);
+		DBCursor deliCur = deliveryDefCol.find(new BasicDBObject().append(
+				DeliverableDefinition.F_WORK_DEFINITION_ID,
+				workdef.getValue(WorkDefinition.F__ID)));
+		while (deliCur.hasNext()) {
+			DBObject delidata = deliCur.next();
+			// 根据模板的交付物定义创建交付物关系
+			DBObject deliverableData = new BasicDBObject();
+
+			// 设置工作Id
+			deliverableData.put(Deliverable.F_WORK_ID, get_id());
+
+			// 获得文档模板
+			ObjectId documentTemplateId = (ObjectId) delidata
+					.get(DeliverableDefinition.F_DOCUMENT_DEFINITION_ID);
+			DBObject documentData = copyDocumentFromTemplate(documentsToInsert,
+					fileToCopy, documentTemplateId);
+			documentsToInsert.put(documentTemplateId, documentData);
+			ObjectId documentId = (ObjectId) documentData.get(Document.F__ID);
+			deliverableData.put(Deliverable.F_DOCUMENT_ID, documentId);
+			dilerverableToInsert.add(deliverableData);
+		}
+		
+		
+		
+		// 保存文档
+		DBCollection docCol = getCollection(IModelConstants.C_DOCUMENT);
+		Collection<DBObject> collection = documentsToInsert.values();
+		WriteResult ws;
+		if (!collection.isEmpty()) {
+			ws = docCol.insert(collection.toArray(new DBObject[0]),
+					WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
+
+		// 保存交付物
+		DBCollection deliCol = getCollection(IModelConstants.C_DELIEVERABLE);
+		if (!dilerverableToInsert.isEmpty()) {
+			ws = deliCol.insert(dilerverableToInsert, WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
+
+		// 保存文件
+		for (DBObject[] dbObjects : fileToCopy) {
+			DBObject src = dbObjects[0];
+			DBObject tgt = dbObjects[1];
+
+			String srcDB = (String) src.get(RemoteFile.F_DB);
+			String srcFilename = (String) src.get(RemoteFile.F_FILENAME);
+			String srcNamespace = (String) src.get(RemoteFile.F_NAMESPACE);
+			ObjectId srcID = (ObjectId) src.get(RemoteFile.F_ID);
+
+			String tgtDB = (String) tgt.get(RemoteFile.F_DB);
+			String tgtFilename = (String) tgt.get(RemoteFile.F_FILENAME);
+			String tgtNamespace = (String) tgt.get(RemoteFile.F_NAMESPACE);
+			ObjectId tgtID = (ObjectId) tgt.get(RemoteFile.F_ID);
+
+			FileUtil.copyGridFSFile(srcID, srcDB, srcFilename, srcNamespace,
+					tgtID, tgtDB, tgtFilename, tgtNamespace);
+		}
+		
+	}
+
+	public Map<ObjectId, DBObject> doSetupRoleDefWithWorkDefForStandloneWork(
+			IContext context) throws Exception {
+		// 准备返回值
+		HashMap<ObjectId, DBObject> result = new HashMap<ObjectId, DBObject>();
+
+		WorkDefinition workd = getWorkDefinition();
+		if (workd == null) {
+			return result;
+		}
+		ObjectId workDefinitionId = workd.get_id();
+
+		DBCollection col_roled = getCollection(IModelConstants.C_ROLE_DEFINITION);
+
+		// 查找模板的角色定义
+		DBCursor cur = col_roled.find(new BasicDBObject().append(
+				RoleDefinition.F_WORKDEFINITION_ID, workDefinitionId));
+		while (cur.hasNext()) {
+			DBObject roleddata = cur.next();
+			ObjectId oldId = (ObjectId) roleddata.get(F__ID);
+			roleddata.put(F__ID, new ObjectId());
+
+			result.put(oldId, roleddata);
+		}
+
+		if (!result.isEmpty()) {
+			DBObject[] insertData = result.values().toArray(new DBObject[0]);
+
+			// 插入到数据库
+			WriteResult ws = col_roled.insert(insertData, WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
+
+		return result;
+	}
+
+	public WorkDefinition getWorkDefinition() {
+		Object value = getValue(F_WORK_DEFINITION_ID);
+		if (value instanceof ObjectId) {
+			return ModelService.createModelObject(WorkDefinition.class,
+					(ObjectId) value);
+		}
+		return null;
 	}
 
 	/**
@@ -2710,6 +2836,114 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public boolean isProjectWork() {
 		return !isStandloneWork();
+	}
+
+	public void copyWorkDefinition(String key, IContext context)
+			throws Exception {
+		if (!isStandloneWork()) {
+			return;
+		}
+		Map<ObjectId, DBObject> rolemap = doSetupRoleDefWithWorkDefForStandloneWork(context);
+
+		IProcessControl ipc = getAdapter(IProcessControl.class);
+
+		// 处理角色定义
+		DBObject radata = ipc.getProcessRoleAssignmentData(key);
+		Iterator<String> iterator = radata.keySet().iterator();
+		while (iterator.hasNext()) {
+			String parameter = iterator.next();
+			ObjectId value = (ObjectId) radata.get(parameter);
+			DBObject newRoleDef = rolemap.get(value);
+			if (newRoleDef != null) {
+				RoleDefinition rd = ModelService.createModelObject(newRoleDef,
+						RoleDefinition.class);
+				ipc.setProcessActionAssignment(key, parameter, rd);
+			}
+		}
+
+		// 处理用户设置
+		DBObject acdata = ipc.getProcessActorsData(key);
+		if (acdata == null) {
+			radata = ipc.getProcessRoleAssignmentData(key);
+			iterator = radata.keySet().iterator();
+			while (iterator.hasNext()) {
+				String parameter = iterator.next();
+				ObjectId value = (ObjectId) radata.get(parameter);
+				RoleDefinition rd = ModelService.createModelObject(
+						RoleDefinition.class, value);
+				Role orole = rd.getOrganizationRole();
+				List<PrimaryObject> roleAss = orole.getAssignment();
+				if (!roleAss.isEmpty()) {
+					ipc.setProcessActionActor(key, parameter,
+							((AbstractRoleAssignment) roleAss.get(0))
+									.getUserid());
+				}
+			}
+		}
+
+	}
+
+	private DBObject copyDocumentFromTemplate(
+			Map<ObjectId, DBObject> documentsToInsert,
+			List<DBObject[]> fileToCopy, ObjectId documentTemplateId
+			) {
+		DBObject documentData;
+		DBCollection docdCol = getCollection(IModelConstants.C_DOCUMENT_DEFINITION);
+		DBObject documentTemplate = docdCol.findOne(new BasicDBObject().append(
+				Document.F__ID, documentTemplateId));
+		documentData = new BasicDBObject();
+
+		documentData.put(Document.F__ID, new ObjectId());
+
+		documentData.put(Document.F_WORK_ID, get_id());
+
+		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
+		if (value != null) {
+			documentData.put(Document.F_DESC, value);
+		}
+
+		value = documentTemplate.get(DocumentDefinition.F_DESC_EN);
+		if (value != null) {
+			documentData.put(Document.F_DESC_EN, value);
+		}
+
+		value = new Boolean(Boolean.TRUE.equals(documentTemplate
+				.get(DocumentDefinition.F_ATTACHMENT_CANNOT_EMPTY)));
+		documentData.put(Document.F_ATTACHMENT_CANNOT_EMPTY, value);
+
+		value = documentTemplate.get(DocumentDefinition.F_DESCRIPTION);
+		if (value != null) {
+			documentData.put(Document.F_DESCRIPTION, value);
+		}
+
+		value = documentTemplate.get(DocumentDefinition.F_DOCUMENT_EDITORID);
+		if (value != null) {
+			documentData.put(Document.F__EDITOR, value);
+		}
+
+		// 根据文档的附件创建文件
+		BasicBSONList templateFiles = (BasicBSONList) documentTemplate
+				.get(DocumentDefinition.F_TEMPLATEFILE);
+		if (templateFiles != null) {
+			BasicBSONList documentFiles = new BasicBSONList();
+			for (int i = 0; i < templateFiles.size(); i++) {
+				DBObject templateFile = (DBObject) templateFiles.get(i);
+				DBObject documentFile = new BasicDBObject();
+				documentFile.put(RemoteFile.F_ID, new ObjectId());
+				documentFile.put(RemoteFile.F_FILENAME,
+						templateFile.get(RemoteFile.F_FILENAME));
+				documentFile.put(RemoteFile.F_NAMESPACE,
+						Document.FILE_NAMESPACE);
+				documentFile.put(RemoteFile.F_DB, Document.FILE_DB);
+				documentFiles.add(documentFile);
+				fileToCopy.add(new DBObject[] { templateFile, documentFile });
+			}
+			documentData.put(Document.F_VAULT, documentFiles);
+		}
+		// 完成文档创建
+		documentsToInsert.put(documentTemplateId, documentData);
+
+		return documentData;
 	}
 
 }

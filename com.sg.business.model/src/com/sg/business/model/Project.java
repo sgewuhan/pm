@@ -1004,6 +1004,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				work.put(Work.F_ROOT_ID, tgtRootId);
 
 				work.put(Work.F_PARENT_ID, tgtParentId);
+				
+				work.put(Work.F_WORK_TYPE, Work.WORK_TYPE_PROJECT);
 
 				work.put(Work.F__ID, new ObjectId());
 				/**
