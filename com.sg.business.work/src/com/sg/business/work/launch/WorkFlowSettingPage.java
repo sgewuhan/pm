@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.DataSet;
@@ -35,7 +34,6 @@ public class WorkFlowSettingPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite content = new Composite(parent, SWT.NONE);
 		page = new AbstractProcessSettingPage() {
 
 			@Override
@@ -84,7 +82,7 @@ public class WorkFlowSettingPage extends WizardPage {
 		page.createPageContent(parent, input, null);
 		ProcessSettingPanel2 psp = page.getProcessSettingPanel();
 		psp.setRoleSelectEnable(false);
-		setControl(content);
+		setControl(psp);
 	}
 
 	public void setInput(PrimaryObjectEditorInput input) {

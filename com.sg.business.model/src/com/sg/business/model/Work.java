@@ -1610,6 +1610,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			ObjectId rootId = (ObjectId) parent.getValue(F_ROOT_ID);
 			setValue(F_ROOT_ID, rootId);
 		}
+		
+		//处理工作定义的复制
+		
 		super.doInsert(context);
 	}
 
@@ -2520,9 +2523,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return (T) new ProcessControl(this) {
 				@Override
 				protected Class<? extends PrimaryObject> getRoleDefinitionClass() {
-					if(isProjectWork()){
+					if (isProjectWork()) {
 						return ProjectRole.class;
-					}else{
+					} else {
 						return RoleDefinition.class;
 					}
 				}

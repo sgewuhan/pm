@@ -8,9 +8,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -26,7 +29,7 @@ public class LaunchWorkWizard extends Wizard {
 	private BasicWizardPage basicPage;
 	private WorkFlowSettingPage flowSettingPage;
 	private boolean startWorkWhenFinish;
-	private ConfirmPage autoStartPage;
+	private ConfirmPage comfirmPage;
 
 	public static LaunchWorkWizard OPEN() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
@@ -81,7 +84,19 @@ public class LaunchWorkWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		return true;
+		Work work = (Work) editorInput.getData();
+		IContext context = new CurrentAccountContext();
+		try {
+			work.doSave(context);
+			if(startWorkWhenFinish){
+				work.doStart(context);
+			}
+			return true;
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+			return false;
+		}
+		
 	}
 
 	public void setWorkDefinition(WorkDefinition workd) {
@@ -101,14 +116,19 @@ public class LaunchWorkWizard extends Wizard {
 			// 判断有无流程，如果无流程，则返回空
 			Work work = (Work) editorInput.getData();
 			if (!work.isExecuteWorkflowActivateAndAvailable()) {
-				return getAutoStartPage();
+				return getConfirmPage();
 			} else {
 				return getFlowSettingPage();
 			}
 		} else if (page == flowSettingPage) {
-			return getAutoStartPage();
+			return getConfirmPage();
+		} else if(page == comfirmPage){
+			return null;
+		}else if(page == selectWorkDefinitionPage ){
+			return basicPage;
+		}else {
+			return null;
 		}
-		return super.getNextPage(page);
 	}
 
 	private IWizardPage getFlowSettingPage() {
@@ -122,12 +142,15 @@ public class LaunchWorkWizard extends Wizard {
 		return flowSettingPage;
 	}
 
-	private IWizardPage getAutoStartPage() {
-		if(autoStartPage==null){
-			autoStartPage = new ConfirmPage();
-			autoStartPage.setWizard(this);
+	private IWizardPage getConfirmPage() {
+		if(comfirmPage==null){
+			comfirmPage = new ConfirmPage();
+			comfirmPage.setInput((Work) editorInput.getData());
+			comfirmPage.setWizard(this);
+		}else{
+			comfirmPage.refresh();
 		}
-		return autoStartPage;
+		return comfirmPage;
 
 	}
 
@@ -135,4 +158,12 @@ public class LaunchWorkWizard extends Wizard {
 		this.startWorkWhenFinish = selection;
 	}
 
+	public PrimaryObjectEditorInput getInput(){
+		return editorInput;
+	}
+	
+	@Override
+	public boolean canFinish() {
+		return super.canFinish();
+	}
 }

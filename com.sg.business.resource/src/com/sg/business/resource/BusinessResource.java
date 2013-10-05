@@ -135,7 +135,7 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_CHECK_24 = "check_24.png";
 
-	public static final String IMAGE_WARRING_16 = "warning_16.gif";
+	public static final String IMAGE_WARNING_16 = "warning_16.gif";
 
 	public static final String IMAGE_ERROR_16 = "error_16.gif";
 

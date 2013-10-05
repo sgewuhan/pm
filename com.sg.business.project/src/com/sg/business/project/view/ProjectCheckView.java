@@ -46,7 +46,7 @@ public class ProjectCheckView extends ViewPart {
 				int type = ci.getType();
 				if (type == ICheckListItem.WARRING) {
 					return BusinessResource
-							.getImage(BusinessResource.IMAGE_WARRING_16);
+							.getImage(BusinessResource.IMAGE_WARNING_16);
 				} else if (type == ICheckListItem.ERROR) {
 					return BusinessResource
 							.getImage(BusinessResource.IMAGE_ERROR_16);

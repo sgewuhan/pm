@@ -1,5 +1,7 @@
 package com.sg.business.model;
 
+import java.util.List;
+
 import org.bson.types.BasicBSONList;
 
 import com.mongodb.DBObject;
@@ -200,5 +202,12 @@ public interface IProcessControl {
 	 * @return
 	 */
 	boolean isWorkflowActivateAndAvailable(String fWfExecute);
+
+	/**
+	 * 检查流程是否可以启动
+	 * @param fWfExecute
+	 * @return
+	 */
+	List<String[]> checkProcessRunable(String fWfExecute);
 
 }

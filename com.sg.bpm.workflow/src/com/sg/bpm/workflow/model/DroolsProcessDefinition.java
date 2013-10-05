@@ -179,7 +179,10 @@ public class DroolsProcessDefinition {
 			return false;
 		return true;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return getProcessName() + "[" + getKbase() + "]";
+	}
 
 }
