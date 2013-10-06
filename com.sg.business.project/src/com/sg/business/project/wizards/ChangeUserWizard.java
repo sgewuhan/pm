@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -23,20 +27,21 @@ import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.MessageBox;
 import com.sg.widgets.part.ObjectInformationView;
 
-public class ChangeUserWizard extends Wizard {
+public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 
 	private String changedUserId;
 	private String changeUserId;
 	private Project po;
 	private Organization org;
-	private List<PrimaryObject> changeWork;
-	private ExecutionEvent event;
+	private List<PrimaryObject> changeWork = new ArrayList<PrimaryObject>();
 
-	public ChangeUserWizard(Project po, Organization org, ExecutionEvent event) {
+	public ChangeUserWizard(Project po) {
 		this.po = po;
-		this.org = org;
-		this.setChangeWork(new ArrayList<PrimaryObject>());
-		this.event = event;
+		org = po.getFunctionOrganization();
+	}
+
+	public ChangeUserWizard() {
+
 	}
 
 	@Override
@@ -57,26 +62,25 @@ public class ChangeUserWizard extends Wizard {
 	}
 
 	public static ChangeUserWizard open(Project po, ExecutionEvent event) {
-		Organization org = po.getFunctionOrganization();
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 
 		if (window != null) {
-			ChangeUserWizard tuw = new ChangeUserWizard(po, org, event);
+			ChangeUserWizard tuw = new ChangeUserWizard(po);
 			Shell shell = window.getShell();
-			WizardDialog wizardDialog = new WizardDialog(shell, tuw){
+			WizardDialog wizardDialog = new WizardDialog(shell, tuw) {
 				@Override
 				protected Point getInitialSize() {
 					// TODO Auto-generated method stub
 					Point size = super.getInitialSize();
-					
-					return new Point(600,size.y);
+
+					return new Point(600, size.y);
 				}
 			};
-			
+
 			wizardDialog.open();
-//			Point size = wizardDialog.getShell().getSize();
-//			wizardDialog.getShell().setSize(400, size.y);
+			// Point size = wizardDialog.getShell().getSize();
+			// wizardDialog.getShell().setSize(400, size.y);
 			return tuw;
 		}
 		return null;
@@ -90,10 +94,9 @@ public class ChangeUserWizard extends Wizard {
 			try {
 				List<Object[]> message = po.checkChangeUser(changedUserId,
 						changeUserId, changeWork);
-				String name = event.getCommand().getName();
 				if (hasError(message)) {
 					WizardPage page = (WizardPage) getPage("wbs");
-					MessageUtil.showToast(null, name,
+					MessageUtil.showToast(null, "更改项目成员",
 							"检查发现了一些错误，请查看检查结果，完成修改后重新执行。", SWT.ICON_ERROR);
 					String newMessage = "";
 					for (int i = 0; i < message.size(); i++) {
@@ -122,7 +125,7 @@ public class ChangeUserWizard extends Wizard {
 				} else {
 					if (message != null && message.size() > 0) {
 						MessageBox mb = MessageUtil.createMessageBox(null,
-								name, "检查发现了一些问题，请查看检查结果。" + "\n\n"
+								"更改项目成员", "检查发现了一些问题，请查看检查结果。" + "\n\n"
 										+ "选择 \"继续\" 忽视警告信息继续操作" + "\n"
 										+ "选择 \"中止\" 停止执行本次操作" + "\n"
 										+ "选择 \"查看\" 取消本次操作并查看检查结果",
@@ -159,7 +162,7 @@ public class ChangeUserWizard extends Wizard {
 							}
 
 							page.setErrorMessage(null);
-							page.setMessage(newMessage,SWT.ICON_WARNING);
+							page.setMessage(newMessage, SWT.ICON_WARNING);
 							return false;
 						}
 					}
@@ -241,5 +244,21 @@ public class ChangeUserWizard extends Wizard {
 
 	public void setChangeWork(List<PrimaryObject> changeWork) {
 		this.changeWork = changeWork;
+	}
+
+	@Override
+	public void init(IWorkbench workbench, IStructuredSelection selection) {
+
+		boolean expression = selection != null && !selection.isEmpty()
+				&& selection.getFirstElement() instanceof Project;
+		if(!expression){
+			String message = "您需要选择项目后启动向导";
+			MessageUtil.showToast(message, SWT.ICON_ERROR);
+			Assert.isLegal(expression, message);
+		}else{
+			po = (Project) selection.getFirstElement();
+			org = po.getFunctionOrganization();
+		}
+
 	}
 }

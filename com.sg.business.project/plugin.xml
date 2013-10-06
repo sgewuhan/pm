@@ -2949,5 +2949,13 @@
          </navigatorpage>
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="com.sg.business.project.wizards.ChangeUserWizard"
+            id="project.wizard.changeuser"
+            name="更改用户">
+      </wizard>
+   </extension>
 
 </plugin>

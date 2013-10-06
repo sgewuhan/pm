@@ -42,8 +42,8 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-
-		viewer = new TableViewer(parent, SWT.NONE);
+		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
+		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		final SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);

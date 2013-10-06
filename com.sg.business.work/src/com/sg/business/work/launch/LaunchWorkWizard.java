@@ -1,11 +1,14 @@
 package com.sg.business.work.launch;
 
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.IContext;
@@ -20,7 +23,7 @@ import com.sg.widgets.part.editor.page.BasicWizardPage;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-public class LaunchWorkWizard extends Wizard {
+public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 
 	private static final String PAGE_LAUNCH_WORK_BASICPAGE = "launch.work.basicpage";
 	private SelectWorkDefinitionPage selectWorkDefinitionPage;
@@ -167,5 +170,10 @@ public class LaunchWorkWizard extends Wizard {
 	@Override
 	public boolean canFinish() {
 		return super.canFinish();
+	}
+
+	@Override
+	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		
 	}
 }

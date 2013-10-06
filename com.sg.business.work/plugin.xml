@@ -223,7 +223,7 @@
       <tree
             canCreate="false"
             canDelete="true"
-            canEdit="true"
+            canEdit="false"
             canRead="true"
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.work.ProcessingWork"
@@ -1770,14 +1770,10 @@
                visible="true">
          </separator>
          <command
-               commandId="com.sg.widgets.command.edit"
+               commandId="work.opendeliverable"
                icon="image/deliverable_24.png"
                label="工作交付物"
                style="push">
-            <parameter
-                  name="com.sg.widgets.edit.editorid"
-                  value="edit.work.deliverable">
-            </parameter>
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
@@ -2198,7 +2194,8 @@
                commandId="work.launch"
                icon="image/work_launch_24.png"
                label="发起工作"
-               style="push">
+               style="push"
+               tooltip="创建独立于项目的新工作">
          </command>
       </menuContribution>
    </extension>
@@ -2282,6 +2279,11 @@
             id="work.launch"
             name="发起工作">
       </command>
+      <command
+            categoryId="work"
+            id="work.opendeliverable"
+            name="工作交付物">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2332,6 +2334,10 @@
       <handler
             class="com.sg.business.work.handler.LaunchWork"
             commandId="work.launch">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.OpenDeliverable"
+            commandId="work.opendeliverable">
       </handler>
    </extension>
    <extension
@@ -3495,6 +3501,14 @@
             pageDelegator="com.sg.business.commons.page.WorkExecuteProcessAssignmentPage"
             title="流程">
       </basicpage>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="com.sg.business.work.launch.LaunchWorkWizard"
+            id="work.wizard.launch"
+            name="发起工作">
+      </wizard>
    </extension>
 
 </plugin>
