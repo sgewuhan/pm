@@ -1464,6 +1464,7 @@
                pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"
                title="执行流程">
          </basicpage>
+         <!--取消独立工作定义的变更流程，这个功能没有实际的用途
          <basicpage
                description="独立工作的变更流程"
                id="processpage_change"
@@ -1471,6 +1472,7 @@
                pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage>
+         -->
          <versionControl>
             <fieldname
                   fieldname="all">
@@ -1535,12 +1537,12 @@
                navigatorId="management.standloneworkrole"
                title="角色">
          </navigatorpage>
-         <navigatorpage
+         <!--navigatorpage
                createAfterSave="true"
                id="wbspage"
                navigatorId="management.genericworkd.wbstemplate"
                title="WBS">
-         </navigatorpage>
+         </navigatorpage-->
          <navigatorpage
                createAfterSave="true"
                id="deliverables"
@@ -1554,13 +1556,13 @@
                pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"
                title="执行流程">
          </basicpage>
-         <basicpage
+         <!--basicpage
                description="独立工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
-         </basicpage>
+         </basicpage-->
          <versionControl>
             <fieldname
                   fieldname="all">
@@ -2213,7 +2215,7 @@
                </with>
             </visibleWhen>
          </command>
-         <command
+         <!--command
                commandId="com.sg.widgets.command.edit"
                icon="image/work_24.png"
                label="编辑WBS模板"
@@ -2235,7 +2237,7 @@
                   </count>
                </with>
             </visibleWhen>
-         </command>
+         </command-->
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/deliverable_24.png"

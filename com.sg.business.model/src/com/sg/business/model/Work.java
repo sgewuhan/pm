@@ -1588,20 +1588,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
 				F_ACTUAL_DURATION);
 
-		// 同步负责人、流程活动执行人到工作的参与者。
-		ensureParticipatesConsistency();
-
 		super.doSave(context);
-
-		// Work parent = (Work) getParent();
-		// if (parent != null) {
-		// parent.doUpdateSummarySchedual(calendarCaculater, context);
-		// }else{
-		// doUpdateProjectSchedual(context);
-		// }
 
 		return true;
 
+	}
+
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+		// 同步负责人、流程活动执行人到工作的参与者。
+		ensureParticipatesConsistency();
+		super.doUpdate(context);
 	}
 
 	@Override
@@ -1618,21 +1615,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		if (isStandloneWork()) {
+			copyWorkDefinition(Work.F_WF_EXECUTE, context);
+
 			// 处理文档的复制
-			doCopyDeliveryFromWorkDefinition();
+			copyDeliveryFromWorkDefinition();
 		}
 
+		// 同步负责人、流程活动执行人到工作的参与者。
+		ensureParticipatesConsistency();
 		super.doInsert(context);
 	}
 
-	private void doCopyDeliveryFromWorkDefinition() throws Exception {
+	private void copyDeliveryFromWorkDefinition() throws Exception {
 		// 处理文档
-		
-		Map<ObjectId, DBObject> documentsToInsert = new HashMap<ObjectId,DBObject>();
+
+		Map<ObjectId, DBObject> documentsToInsert = new HashMap<ObjectId, DBObject>();
 		List<DBObject> dilerverableToInsert = new ArrayList<DBObject>();
 		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
-		
-		
+
 		WorkDefinition workdef = getWorkDefinition();
 
 		DBCollection deliveryDefCol = getCollection(IModelConstants.C_DELIEVERABLE_DEFINITION);
@@ -1657,9 +1657,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			deliverableData.put(Deliverable.F_DOCUMENT_ID, documentId);
 			dilerverableToInsert.add(deliverableData);
 		}
-		
-		
-		
+
 		// 保存文档
 		DBCollection docCol = getCollection(IModelConstants.C_DOCUMENT);
 		Collection<DBObject> collection = documentsToInsert.values();
@@ -1695,11 +1693,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			FileUtil.copyGridFSFile(srcID, srcDB, srcFilename, srcNamespace,
 					tgtID, tgtDB, tgtFilename, tgtNamespace);
 		}
-		
+
 	}
 
-	public Map<ObjectId, DBObject> doSetupRoleDefWithWorkDefForStandloneWork(
-			IContext context) throws Exception {
+	/**
+	 * 仅用于独立工作，从工作定义中复制角色
+	 * 
+	 * @param context
+	 * @return
+	 * @throws Exception
+	 */
+	private Map<ObjectId, DBObject> copyRoleDefinition(IContext context)
+			throws Exception {
 		// 准备返回值
 		HashMap<ObjectId, DBObject> result = new HashMap<ObjectId, DBObject>();
 
@@ -1713,13 +1718,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 查找模板的角色定义
 		DBCursor cur = col_roled.find(new BasicDBObject().append(
-				RoleDefinition.F_WORKDEFINITION_ID, workDefinitionId));
+				RoleDefinition.F_WORKDEFINITION_ID, workDefinitionId),
+				new BasicDBObject().append(
+						RoleDefinition.F_ORGANIZATION_ROLE_ID, 1));
 		while (cur.hasNext()) {
 			DBObject roleddata = cur.next();
 			ObjectId oldId = (ObjectId) roleddata.get(F__ID);
-			roleddata.put(F__ID, new ObjectId());
-
-			result.put(oldId, roleddata);
+			BasicDBObject newRoleData = new BasicDBObject().append(
+					RoleDefinition.F_WORK_ID, get_id()).append(
+					RoleDefinition.F_ORGANIZATION_ROLE_ID,
+					roleddata.get(RoleDefinition.F_ORGANIZATION_ROLE_ID)).append(RoleDefinition.F__ID, new ObjectId());
+			result.put(oldId, newRoleData);
 		}
 
 		if (!result.isEmpty()) {
@@ -2843,7 +2852,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (!isStandloneWork()) {
 			return;
 		}
-		Map<ObjectId, DBObject> rolemap = doSetupRoleDefWithWorkDefForStandloneWork(context);
+		Map<ObjectId, DBObject> rolemap = copyRoleDefinition(context);
 
 		IProcessControl ipc = getAdapter(IProcessControl.class);
 
@@ -2885,8 +2894,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	private DBObject copyDocumentFromTemplate(
 			Map<ObjectId, DBObject> documentsToInsert,
-			List<DBObject[]> fileToCopy, ObjectId documentTemplateId
-			) {
+			List<DBObject[]> fileToCopy, ObjectId documentTemplateId) {
 		DBObject documentData;
 		DBCollection docdCol = getCollection(IModelConstants.C_DOCUMENT_DEFINITION);
 		DBObject documentTemplate = docdCol.findOne(new BasicDBObject().append(

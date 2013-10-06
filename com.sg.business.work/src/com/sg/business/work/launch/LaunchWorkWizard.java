@@ -89,8 +89,6 @@ public class LaunchWorkWizard extends Wizard {
 		Work work = (Work) editorInput.getData();
 		IContext context = new CurrentAccountContext();
 		try {
-			work.copyWorkDefinition(Work.F_WF_EXECUTE,context);
-			
 			work.doSave(context);
 			if(startWorkWhenFinish){
 				work.doStart(context);
