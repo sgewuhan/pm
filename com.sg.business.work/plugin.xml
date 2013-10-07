@@ -1380,20 +1380,18 @@
          <basicpage
                id="basicpage"
                title="工作记录">
-            <pagecolumn
-                  id="4">
+            <pagecolumn>
                <section
-                     label="工作记录">
+                     label="概况">
                   <text
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="userid"
-                        label="作者"
+                        label="记录人"
                         labelVisible="true"
                         name="userid"
                         persistable="true"
-                        required="true"
                         type="String">
                   </text>
                   <text
@@ -1401,34 +1399,72 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="rdate"
-                        label="日期"
+                        label="记录日期"
                         labelVisible="true"
                         name="rdate"
                         persistable="true"
-                        required="true"
-                        type="String">
+                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                        presentationFormat="yy/MM/dd E HH:mm:ss"
+                        type="Date">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="percent"
-                        label="完成百分比"
-                        labelVisible="true"
-                        name="percent"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
+                  <fieldgroup
+                        columnCount="2"
+                        makeColumnWidthEqual="false">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="desc"
+                           label="进展状况"
+                           labelVisible="true"
+                           name="desc"
+                           option="进展状况"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="worksfinishedpercent"
+                           label="工作量完成百分比"
+                           labelVisible="true"
+                           name="worksfinishedpercent"
+                           persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.NumberTextPresentation"
+                           presentationFormat="#########.00%"
+                           required="true"
+                           type="Double">
+                     </text>
+                  </fieldgroup>
+               </section>
+               <section
+                     label="工作记录">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        id="desc"
+                        id="content"
                         label="记录"
-                        labelVisible="true"
-                        name="desc"
+                        labelVisible="false"
+                        name="content"
                         persistable="true"
                         required="false"
-                        type="String">
+                        type="String"
+                        widthHint="360">
+                  </text>
+               </section>
+               <section
+                     label="潜在问题和预防">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="control"
+                        label="潜在问题和预防"
+                        labelVisible="false"
+                        name="control"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="360">
                   </text>
                </section>
             </pagecolumn>
@@ -1716,7 +1752,7 @@
          <command
                commandId="runtimework.record"
                icon="image/24_blank.png"
-               label="编辑工作记录"
+               label="提交工作记录"
                style="push">
          </command>
          <command

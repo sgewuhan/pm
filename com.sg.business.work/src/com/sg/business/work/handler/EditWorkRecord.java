@@ -7,7 +7,7 @@ import com.sg.business.model.Work;
 import com.sg.business.model.WorkRecord;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
-import com.sg.widgets.part.editor.DataObjectEditor;
+import com.sg.widgets.part.editor.DataObjectDialog;
 
 public class EditWorkRecord extends AbstractNavigatorHandler {
 
@@ -18,7 +18,7 @@ public class EditWorkRecord extends AbstractNavigatorHandler {
 			WorkRecord po = work.makeWorkRecord();
 			
 			try {
-				 DataObjectEditor.open(po,"editor.create.workrecord",
+				 DataObjectDialog.openDialog(po,"editor.create.workrecord",
 							true, null);
 				 
 			} catch (Exception e) {

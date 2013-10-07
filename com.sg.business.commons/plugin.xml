@@ -480,6 +480,31 @@
                value="canceled">
          </option>
       </option>
+      <option
+            id="进展状况"
+            label="进展状况"
+            value="进展状况">
+         <option
+               id="进度提前"
+               label="进度提前"
+               value="进度提前">
+         </option>
+         <option
+               id="正常进行"
+               label="正常进行"
+               value="正常进行">
+         </option>
+         <option
+               id="进度滞后"
+               label="进度滞后"
+               value="进度滞后">
+         </option>
+         <option
+               id="严重滞后"
+               label="严重滞后"
+               value="严重滞后">
+         </option>
+      </option>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
