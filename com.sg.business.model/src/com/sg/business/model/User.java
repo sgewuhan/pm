@@ -303,4 +303,8 @@ public class User extends PrimaryObject {
 		return result;
 
 	}
+
+	public String getEmail() {
+		return (String) getValue(F_EMAIL);
+	}
 }

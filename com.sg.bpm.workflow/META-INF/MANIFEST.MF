@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.mobnut.db;bundle-version="1.0.0",
  com.sg.widgets;bundle-version="1.0.0",
  com.sg.thirdparty;bundle-version="1.0.0",
- com.mobnut.portal;bundle-version="1.0.0"
+ com.mobnut.portal;bundle-version="1.0.0",
+ com.mobnut.admin;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.bpm.workflow,

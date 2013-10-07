@@ -1622,5 +1622,14 @@
          </option>
       </option>
    </extension>
+   <extension
+         point="org.eclipse.rap.ui.entrypoint">
+      <entrypoint
+            brandingId="com.mobnut.portal.branding.2"
+            class="com.sg.business.commons.Direct"
+            id="com.mobnut.portal.entrypoint.direct"
+            path="/direct">
+      </entrypoint>
+   </extension>
 
 </plugin>

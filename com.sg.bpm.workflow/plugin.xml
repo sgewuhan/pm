@@ -17,5 +17,13 @@
             runtimeSolve="false">
       </actorRule>
    </extension>
+   <extension
+         point="com.mobnut.admin.adminFunction">
+      <adminFunction
+            image="image/lib_48.png"
+            label="流程库"
+            run="com.sg.bpm.workflow.admin.BrowseLib">
+      </adminFunction>
+   </extension>
 
 </plugin>

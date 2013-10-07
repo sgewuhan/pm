@@ -8,6 +8,9 @@ public interface IReferenceContainer {
 	 * 目标列表 {{targetid=ObjectId(""),targetclass="com.sg.business.model.Work",
 	 * targeteditor="work.editor"},{}}
 	 */
+	
+	public static final String SF_TARGET_NAME = "targetname";
+
 	public static final String F_TARGETS = "targets";
 	/**
 	 * 目标对象
@@ -29,9 +32,7 @@ public interface IReferenceContainer {
 	 * 使用何种方式打开，1 - DataObjectEditor, 2. DataObjectDialog, 3. DataObjectWizard
 	 */
 	public static final String SF_TARGET_EDITING_TYPE = "targeteditingtype";
-	public static final int EDITING_BY_EDITOR = 1;
-	public static final int EDITING_BY_DIALOG = 2;
-	public static final int EDITING_BY_WIZARD = 3;
+
 	BasicBSONList getTargetList();
 
 }

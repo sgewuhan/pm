@@ -152,5 +152,6 @@ public interface IModelConstants {
 	public static final String S_U_WORK_RESERVED_REFRESH_INTERVAL = "WORK.RESERVED.REFRESH.INTERVAL";
 
 	
+	public static final String S_PROCESS_BASE_URL = "SYSTEM.PROCESS_BASE_URL";
 
 }

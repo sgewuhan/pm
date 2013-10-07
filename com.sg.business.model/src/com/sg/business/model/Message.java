@@ -2,20 +2,27 @@ package com.sg.business.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.bson.types.BasicBSONList;
+import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.codec.Coder;
+import com.mobnut.commons.email.MailJob;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.portal.Portal;
 import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -296,7 +303,8 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 
 		// 添加日期
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATETIME_COMPACT_SASH);
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				Utils.SDF_DATETIME_COMPACT_SASH);
 		Date date = (Date) getValue(F_SENDDATE);
 		String sendDate = sdf.format(date);
 		sb.append("<span style='float:right;padding-right:4px'>");
@@ -340,12 +348,11 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		sb.append("</span><br/>");
 
 		sb.append("<small>");
-		
+
 		String senderId = (String) getValue(F_SENDER);
 		User sender = UserToolkit.getUserById(senderId);
 		/**
-		 * BUG:10003  zhonghua
-		 * 消息中显示发件人null, 这些发件人是系统发件或者是后台发件
+		 * BUG:10003 zhonghua 消息中显示发件人null, 这些发件人是系统发件或者是后台发件
 		 */
 		if (sender == null) {
 			sb.append("From: " + senderId);
@@ -355,7 +362,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		sb.append("  ");
 		String recieverLabel = getRecieverLabel();
 		sb.append("To: " + recieverLabel);
-		
+
 		sb.append("</small>");
 
 		return sb.toString();
@@ -374,9 +381,9 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			if (recieverList.size() > 0) {
 				String userId = (String) recieverList.get(0);
 				User user = UserToolkit.getUserById(userId);
-				if(user == null){
+				if (user == null) {
 					return userId;
-				}else{
+				} else {
 					result = user.getLabel();
 					// 如果收件人有多个人，则显示第一个收件人加省略号
 					if (recieverList.size() > 1) {
@@ -404,40 +411,128 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		Object value = getValue(F_RECIEVER);
-		
+
 		String sender = (String) getValue(F_SENDER);
-		if(sender == null ){
+		if (sender == null) {
 			sender = context.getAccountInfo().getUserId();
 		}
 		if (value instanceof BasicBSONList) {
 			setValue(F_SENDDATE, new Date());
 			setValue(F_SENDER, sender);
+
+			sendEmailNotice();
 			super.doInsert(context);
 
+			// 使用自动刷新机制取代通知
 			// 激活账户通知
-			BasicBSONList recieverList = (BasicBSONList) value;
-			for (int i = 0; i < recieverList.size(); i++) {
-				UserSessionContext.noticeAccountChanged((String) recieverList
-						.get(i), new AccountEvent(AccountEvent.EVENT_MESSAGE,
-						this));
-			}
+			// BasicBSONList recieverList = (BasicBSONList) value;
+			// for (int i = 0; i < recieverList.size(); i++) {
+			// UserSessionContext.noticeAccountChanged((String) recieverList
+			// .get(i), new AccountEvent(AccountEvent.EVENT_MESSAGE,
+			// this));
+			// }
 
 		} else if (value instanceof String[]) {
 			setValue(F_SENDDATE, new Date());
 			setValue(F_SENDER, sender);
+
+			sendEmailNotice();
 			super.doInsert(context);
 
-			// 激活账户通知
-			String[] recieverList = (String[]) value;
-			for (int i = 0; i < recieverList.length; i++) {
-				UserSessionContext.noticeAccountChanged(recieverList[i],
-						new AccountEvent(AccountEvent.EVENT_MESSAGE, this));
-			}
+			// // 激活账户通知
+			// String[] recieverList = (String[]) value;
+			// for (int i = 0; i < recieverList.length; i++) {
+			// UserSessionContext.noticeAccountChanged(recieverList[i],
+			// new AccountEvent(AccountEvent.EVENT_MESSAGE, this));
+			// }
 		} else {
 			throw new Exception("缺少收件人");
 
 		}
 
+	}
+	
+	
+	public static void main(String[] args) {
+		BasicDBObject a = new BasicDBObject();
+		a.append("id", new ObjectId());
+		a.append("desc", "sdfsdkfjsdkjfjfkd中文g");
+		String string = a.toString();
+		
+		try {
+			String b = null;
+			b = Coder.encryptBASE64(string.getBytes());
+			System.out.println(b);
+
+			byte[] c = Coder.decryptBASE64(b);
+			System.out.println(new String(c));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * 发送邮件通知
+	 */
+	private void sendEmailNotice() {
+
+		Object value = getValue(F_RECIEVER);
+		Set<User> recieverList = new HashSet<User>();
+		if (value instanceof List<?>) {
+			List<?> list = (List<?>) value;
+			for (int i = 0; i < list.size(); i++) {
+				String userId = (String) list.get(i);
+				User user = UserToolkit.getUserById(userId);
+				if (user != null) {
+					recieverList.add(user);
+				}
+			}
+		} else if (value instanceof String[]) {
+			String[] list = (String[]) value;
+			for (int i = 0; i < list.length; i++) {
+				String userId = (String) list[i];
+				User user = UserToolkit.getUserById(userId);
+				if (user != null) {
+					recieverList.add(user);
+				}
+			}
+		}
+
+		String subject = getDesc();
+
+		StringBuffer sb = new StringBuffer();
+		sb.append(getContent());
+
+		BasicBSONList targetlist = getTargetList();
+		if (targetlist != null && targetlist.size() > 0) {
+			sb.append("<br/><br/><br/>请查阅：");
+
+			for (int i = 0; i < targetlist.size(); i++) {
+				sb.append("<br/><a href='"+ Portal.getHttpRoot()+ "/direct?");
+				DBObject target = (DBObject) targetlist.get(i);
+				sb.append("id="+target.get(SF_TARGET));
+				sb.append("&class="+target.get(SF_TARGET_CLASS));
+				sb.append("&editable="+target.get(SF_TARGET_EDITABLE));
+				sb.append("&edittype="+target.get(SF_TARGET_EDITING_TYPE));
+				sb.append("&editor="+target.get(SF_TARGET_EDITOR));
+				sb.append("'>" + target.get(SF_TARGET_NAME) + "</a>");
+
+			}
+		}
+
+		Iterator<User> iter = recieverList.iterator();
+		while (iter.hasNext()) {
+			User reciever = iter.next();
+			String to = reciever.getEmail();
+			String content = reciever.getUsername() + ", " + sb.toString();
+			MailJob job = new MailJob(to, subject, content);
+			job.schedule();
+		}
+	}
+
+	public String getContent() {
+		return (String) getValue(F_CONTENT);
 	}
 
 	/**
@@ -455,6 +550,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 
 		DBObject newElement = new BasicDBObject();
 		newElement.put(SF_TARGET, target.get_id());
+		newElement.put(SF_TARGET_NAME, target.getDesc());
 		newElement.put(SF_TARGET_CLASS, target.getClass().getName());
 		newElement.put(SF_TARGET_EDITOR, editorId);
 		newElement.put(SF_TARGET_EDITABLE, new Boolean(editable));
@@ -473,7 +569,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	public Image getImage() {
 		return BusinessResource.getImage(BusinessResource.IMAGE_MESSAGE_16);
 	}
-	
+
 	@Override
 	public String getTypeName() {
 		return "消息";

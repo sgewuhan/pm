@@ -19,6 +19,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IReferenceContainer;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.UIConstants;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.editor.DataObjectWizard;
@@ -94,11 +95,11 @@ public class ReferenceListPage extends AbstractFormPageDelegator {
 		DocumentModelDefinition md = ModelService.getDocumentModelDefinition(targetClass);
 		PrimaryObject po = ModelService.createModelObject(md.getModelClass(), targetId);
 		try {
-			if(type==null||type.intValue()==IReferenceContainer.EDITING_BY_EDITOR){
+			if(type==null||type.intValue()==UIConstants.EDITING_BY_EDITOR){
 				DataObjectEditor.open(po, editorId, editable, null);
-			}else if(type.intValue()==IReferenceContainer.EDITING_BY_DIALOG){
+			}else if(type.intValue()==UIConstants.EDITING_BY_DIALOG){
 				DataObjectDialog.openDialog(po, editorId, editable, null);
-			}else if(type.intValue()==IReferenceContainer.EDITING_BY_WIZARD){
+			}else if(type.intValue()==UIConstants.EDITING_BY_WIZARD){
 				DataObjectWizard.open(po, editorId, editable, null);
 			}
 		} catch (Exception e) {

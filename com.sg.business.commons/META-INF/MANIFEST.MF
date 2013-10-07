@@ -35,3 +35,5 @@ Export-Package: com.sg.business.commons,
  com.sg.business.commons.test,
  com.sg.business.commons.ui.flow,
  com.sg.business.commons.value
+Import-Package: javax.servlet;version="2.6.0",
+ javax.servlet.http;version="2.6.0"

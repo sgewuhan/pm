@@ -169,6 +169,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public static final String F_WORK_DEFINITION_ID = "workd_id";
 
+	public static final String F_USE_PROJECT_ROLE = "useprojectrole";
+
 	/**
 	 * 根据状态返回不同的图标
 	 */
@@ -1627,13 +1629,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	private void copyDeliveryFromWorkDefinition() throws Exception {
+		WorkDefinition workdef = getWorkDefinition();
+		if(workdef == null){
+			return;
+		}
+		
 		// 处理文档
 
 		Map<ObjectId, DBObject> documentsToInsert = new HashMap<ObjectId, DBObject>();
 		List<DBObject> dilerverableToInsert = new ArrayList<DBObject>();
 		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
 
-		WorkDefinition workdef = getWorkDefinition();
 
 		DBCollection deliveryDefCol = getCollection(IModelConstants.C_DELIEVERABLE_DEFINITION);
 		DBCursor deliCur = deliveryDefCol.find(new BasicDBObject().append(
@@ -2661,12 +2667,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					if (isProjectWork()) {
 						return ProjectRole.class;
 					} else {
-						return RoleDefinition.class;
+						//由项目计划构造的提交工作是独立工作，但是使用了项目的角色
+						if(forceUseProjectRole()){
+							return ProjectRole.class;
+						}else{
+							return RoleDefinition.class;
+						}
 					}
 				}
 			};
 		}
 		return super.getAdapter(adapter);
+	}
+
+	protected boolean forceUseProjectRole() {
+		return Boolean.TRUE.equals(getValue(F_USE_PROJECT_ROLE));
 	}
 
 	public WorkRecord makeWorkRecord() {
@@ -2849,6 +2864,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public void copyWorkDefinition(String key, IContext context)
 			throws Exception {
+		WorkDefinition wd = getWorkDefinition();
+		if(wd == null){
+			return;
+		}
 		if (!isStandloneWork()) {
 			return;
 		}
