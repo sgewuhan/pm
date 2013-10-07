@@ -1378,7 +1378,7 @@
             id="editor.create.workrecord"
             name="工作记录">
          <basicpage
-               id="basicpage"
+               id="workrecord"
                title="工作记录">
             <pagecolumn>
                <section
@@ -3322,6 +3322,13 @@
                   </text>
                </section>
             </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="查看工作记录"
+               id="workrecord"
+               image="image/work_24.png"
+               pageDelegator="com.sg.business.work.page.WorkRecordPage"
+               title="工作记录">
          </basicpage>
       </editor>
       <editor

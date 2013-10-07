@@ -1630,16 +1630,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	private void copyDeliveryFromWorkDefinition() throws Exception {
 		WorkDefinition workdef = getWorkDefinition();
-		if(workdef == null){
+		if (workdef == null) {
 			return;
 		}
-		
+
 		// 处理文档
 
 		Map<ObjectId, DBObject> documentsToInsert = new HashMap<ObjectId, DBObject>();
 		List<DBObject> dilerverableToInsert = new ArrayList<DBObject>();
 		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
-
 
 		DBCollection deliveryDefCol = getCollection(IModelConstants.C_DELIEVERABLE_DEFINITION);
 		DBCursor deliCur = deliveryDefCol.find(new BasicDBObject().append(
@@ -1730,10 +1729,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		while (cur.hasNext()) {
 			DBObject roleddata = cur.next();
 			ObjectId oldId = (ObjectId) roleddata.get(F__ID);
-			BasicDBObject newRoleData = new BasicDBObject().append(
-					RoleDefinition.F_WORK_ID, get_id()).append(
-					RoleDefinition.F_ORGANIZATION_ROLE_ID,
-					roleddata.get(RoleDefinition.F_ORGANIZATION_ROLE_ID)).append(RoleDefinition.F__ID, new ObjectId());
+			BasicDBObject newRoleData = new BasicDBObject()
+					.append(RoleDefinition.F_WORK_ID, get_id())
+					.append(RoleDefinition.F_ORGANIZATION_ROLE_ID,
+							roleddata
+									.get(RoleDefinition.F_ORGANIZATION_ROLE_ID))
+					.append(RoleDefinition.F__ID, new ObjectId());
 			result.put(oldId, newRoleData);
 		}
 
@@ -2667,10 +2668,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					if (isProjectWork()) {
 						return ProjectRole.class;
 					} else {
-						//由项目计划构造的提交工作是独立工作，但是使用了项目的角色
-						if(forceUseProjectRole()){
+						// 由项目计划构造的提交工作是独立工作，但是使用了项目的角色
+						if (forceUseProjectRole()) {
 							return ProjectRole.class;
-						}else{
+						} else {
 							return RoleDefinition.class;
 						}
 					}
@@ -2689,6 +2690,20 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		data.put(WorkRecord.F_WORK_ID, get_id());
 		WorkRecord po = ModelService.createModelObject(data, WorkRecord.class);
 		return po;
+	}
+
+	public List<WorkRecord> getWorkRecord() {
+		Object record = getValue(F_RECORD);
+		List<WorkRecord> result = new ArrayList<WorkRecord>();
+		if (record instanceof List<?>) {
+			for (int i = 0; i < ((List<?>) record).size(); i++) {
+				Object data = ((List<?>) record).get(i);
+				if (data instanceof DBObject) {
+					result.add(0,ModelService.createModelObject((DBObject)data, WorkRecord.class));
+				}
+			}
+		}
+		return result;
 	}
 
 	public boolean isExecuteWorkflowActivateAndAvailable() {
@@ -2865,7 +2880,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void copyWorkDefinition(String key, IContext context)
 			throws Exception {
 		WorkDefinition wd = getWorkDefinition();
-		if(wd == null){
+		if (wd == null) {
 			return;
 		}
 		if (!isStandloneWork()) {
