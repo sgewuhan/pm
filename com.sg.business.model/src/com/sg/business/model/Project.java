@@ -1005,7 +1005,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				work.put(Work.F_ROOT_ID, tgtRootId);
 
 				work.put(Work.F_PARENT_ID, tgtParentId);
-				
+
 				work.put(Work.F_WORK_TYPE, Work.WORK_TYPE_PROJECT);
 
 				work.put(Work.F__ID, new ObjectId());
@@ -1739,7 +1739,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throws Exception {
 		if (work == null) {
 			work = ModelService.createModelObject(Work.class);
-			work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
+			work.setValue(Work.F_CHARGER, context.getAccountInfo()
+					.getConsignerId());// 设置负责人为当前用户
 		}
 		work.setValue(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);// 设置该工作的状态为准备中，以便自动开始
 		work.setValue(Work.F_USE_PROJECT_ROLE, Boolean.TRUE);
@@ -1769,7 +1770,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		BasicBSONList targets = new BasicBSONList();
 		targets.add(new BasicDBObject().append(SF_TARGET, get_id())
 				.append(SF_TARGET_CLASS, Project.class.getName())
-				.append(SF_TARGET_EDITING_TYPE,UIConstants.EDITING_BY_EDITOR)
+				.append(SF_TARGET_EDITING_TYPE, UIConstants.EDITING_BY_EDITOR)
 				.append(SF_TARGET_EDITOR, EDITOR_CREATE_PLAN)
 				.append(SF_TARGET_EDITABLE, Boolean.TRUE));
 		work.setValue(Work.F_TARGETS, targets);
@@ -2070,5 +2071,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		return message;
+	}
+
+	public boolean canChangUser(IContext context) {
+		// 未完成和未取消的
+		String lc = getLifecycleStatus();
+		return (!STATUS_FINIHED_VALUE.equals(lc))
+				&& (!STATUS_CANCELED_VALUE.equals(lc) && (!STATUS_PAUSED_VALUE
+						.equals(lc)));
 	}
 }

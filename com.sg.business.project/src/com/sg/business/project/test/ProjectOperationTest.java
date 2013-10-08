@@ -23,6 +23,10 @@ public class ProjectOperationTest extends PropertyTester {
 					boolean expected = Boolean.TRUE.equals(expectedValue);
 					return expected == project
 							.canDelete(new CurrentAccountContext());
+				} else if ("changeuser".equals(args[0])){
+					boolean expected = Boolean.TRUE.equals(expectedValue);
+					return expected == project
+							.canChangUser(new CurrentAccountContext());
 				} else if ("check".equals(args[0])) {
 					boolean expected = Boolean.TRUE.equals(expectedValue);
 					return expected == (project.canCheck() && project

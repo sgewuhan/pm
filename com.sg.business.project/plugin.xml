@@ -1627,6 +1627,21 @@
                icon="image/24_blank.png"
                label="项目工作移交"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <test
+                           args="changeuser"
+                           property="project.operation"
+                           value="true">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <separator
                name="project.separator1"
