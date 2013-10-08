@@ -141,6 +141,7 @@ public interface IModelConstants {
 	public static final String C_BULLETINBOARD = "bulletinboard";
 	
 
+	
 	/**
 	 * 设置: 默认的项目提交工作的周期,此设置只能用于系统设置Interval
 	 */
@@ -151,7 +152,16 @@ public interface IModelConstants {
 	 */
 	public static final String S_U_WORK_RESERVED_REFRESH_INTERVAL = "WORK.RESERVED.REFRESH.INTERVAL";
 
-	
+	/**
+	 * 设置：收件箱的刷新间隔时间
+	 */
+	public static final String S_U_MESSAGE_RESERVED_REFRESH_INTERVAL = "MESSAGEINBOX.REFRESH.INTERVAL";
+
+	/**
+	 * 流程库的URL地址
+	 * 
+	 */
 	public static final String S_PROCESS_BASE_URL = "SYSTEM.PROCESS_BASE_URL";
+
 
 }
