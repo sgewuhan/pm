@@ -3,8 +3,6 @@ package com.sg.business.commons.handler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.WorkDefinition;
@@ -28,7 +26,7 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 
-		Shell shell = HandlerUtil.getActiveShell(event);
+//		Shell shell = HandlerUtil.getActiveShell(event);
 
 		WorkDefinition po = ((WorkDefinition) selected).makeChildWork();
 		ViewerControl vc = getCurrentViewerControl(event);
@@ -52,8 +50,7 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 					new Integer(INavigatorActionListener.REFRESH));
 			
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, "创建" + po.getTypeName(),
-					e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showToast(e);
 		}
 
 		// 3. 处理完成后，释放侦听器

@@ -897,18 +897,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="工作执行流程"
-               id="processpage1"
+               description="工作的执行流程"
+               id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.WorkExecuteProcessPage"
-               title="工作执行流程">
+               pageDelegator="com.sg.business.management.editor.page.process.ProjectWorkdExecuteProcessDefPage"
+               title="执行流程">
          </basicpage>
          <basicpage
-               description="工作变更流程"
-               id="processpage2"
+               description="工作的变更流程"
+               id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.WorkChangeProcessPage"
-               title="工作变更流程">
+               pageDelegator="com.sg.business.management.editor.page.process.ProjectWorkdChangeProcessDefPage"
+               title="变更流程">
          </basicpage>
       </editor>
       <editor

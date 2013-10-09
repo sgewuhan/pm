@@ -11,6 +11,7 @@ import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Organization;
+import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.WorkDefinition;
@@ -37,8 +38,16 @@ public abstract class AbstractWorkdProcessSettingPage extends
 		PrimaryObjectEditorInput input = getInput();
 		WorkDefinition workd = (WorkDefinition) input.getData();
 		if (workd != null) {
-			Organization org = workd.getOrganization();
-			return org.getDroolsProcessDefinitions();
+			Organization org;
+			if(workd.isProjectWork()){
+				ProjectTemplate pjt = workd.getProjectTemplate();
+				org = pjt.getOrganization();
+			}else{
+				org = workd.getOrganization();
+			}
+			if(org!=null){
+				return org.getDroolsProcessDefinitions();
+			}
 		}
 		return null;
 	}

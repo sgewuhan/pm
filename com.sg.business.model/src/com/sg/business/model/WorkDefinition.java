@@ -502,13 +502,20 @@ public class WorkDefinition extends AbstractWork implements
 	}
 
 	/**
-	 * 返回模板中的角色定义(只能适用于独立工作定义)
+	 * 返回模板中的可用的角色定义
 	 * 
 	 * @return List
 	 */
 	public List<PrimaryObject> getRoleDefinitions() {
-		return getRelationById(F__ID, RoleDefinition.F_WORKDEFINITION_ID,
-				RoleDefinition.class);
+		if (isProjectWork()) {
+			ProjectTemplate pjt = getProjectTemplate();
+			return pjt.getRoleDefinitions();
+		} else if (isStandloneWork()) {
+
+			return getRelationById(F__ID, RoleDefinition.F_WORKDEFINITION_ID,
+					RoleDefinition.class);
+		}
+		return null;
 	}
 
 	/**

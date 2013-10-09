@@ -7,7 +7,7 @@ public class GenericWorkdChangeProcessDefPage extends AbstractWorkdProcessSettin
 
 	@Override
 	protected String getProcessKey() {
-		return WorkDefinition.F_WF_EXECUTE;
+		return WorkDefinition.F_WF_CHANGE;
 	}
 		
 	@Override
