@@ -175,4 +175,10 @@ public class PreviewPage extends WizardPage implements INavigatablePart {
 		} });
 	}
 
+	@Override
+	public void activate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

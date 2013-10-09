@@ -317,4 +317,10 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 		return null;
 	}
 
+	@Override
+	public void activate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -208,4 +208,10 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 		return null;
 	}
 
+	@Override
+	public void activate() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

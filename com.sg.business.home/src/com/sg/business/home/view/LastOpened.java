@@ -274,4 +274,9 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		return getToolBarManager();
 	}
 
+	@Override
+	public void activate() {
+		setFocus();
+	}
+
 }
