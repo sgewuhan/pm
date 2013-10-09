@@ -45,52 +45,56 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		final SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		final SimpleDateFormat sdf = new SimpleDateFormat(
+				Utils.SDF_DATE_COMPACT_SASH);
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		new ColumnAutoResizer(viewer.getTable(), column.getColumn());
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element instanceof DBObject) {
+				try {
 
-					DBObject dbo = (DBObject) element;
+					if (element instanceof DBObject) {
 
-					ObjectId id = (ObjectId) dbo.get("id");
-					String desc = (String) dbo.get("desc");
-					String col = (String) dbo.get("col");
-					String db = (String) dbo.get("db");
+						DBObject dbo = (DBObject) element;
 
-					Class<? extends PrimaryObject> modelClass = ModelService
-							.getModelClass(db, col);
+						ObjectId id = (ObjectId) dbo.get("id");
+						String desc = (String) dbo.get("desc");
+						String col = (String) dbo.get("col");
+						String db = (String) dbo.get("db");
 
-					PrimaryObject po = ModelService.createModelObject(
-							modelClass, id,false);
+						Class<? extends PrimaryObject> modelClass = ModelService
+								.getModelClass(db, col);
 
-					StringBuffer sb = new StringBuffer();
-					sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
+						PrimaryObject po = ModelService.createModelObject(
+								modelClass, id, false);
 
-					sb.append("<span style='float:right'>");
-					Long date = (Long) dbo.get("date");
-					Calendar cal = Calendar.getInstance();
-					cal.setTimeInMillis(date.longValue());
-					sb.append("   "+sdf.format(cal.getTime()));
-					sb.append("</span>");
-					
-					if (po==null) {
-						sb.append("<del>");
-						sb.append(desc);
-						sb.append("</del>");
-					} else {
-						String typeName = po.getTypeName();
-						sb.append(typeName + ": ");
-						String label = po.getLabel();
-						label = Utils.getLimitLengthString(label, 20);
-						sb.append(label);
+						StringBuffer sb = new StringBuffer();
+						sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
+
+						sb.append("<span style='float:right'>");
+						Long date = (Long) dbo.get("date");
+						Calendar cal = Calendar.getInstance();
+						cal.setTimeInMillis(date.longValue());
+						sb.append("   " + sdf.format(cal.getTime()));
+						sb.append("</span>");
+
+						if (po == null) {
+							sb.append("<del>");
+							sb.append(desc);
+							sb.append("</del>");
+						} else {
+							String typeName = po.getTypeName();
+							sb.append(typeName + ": ");
+							String label = po.getLabel();
+							label = Utils.getLimitLengthString(label, 20);
+							sb.append(label);
+						}
+
+						sb.append("</span>");
+						return sb.toString();
 					}
-
-
-					sb.append("</span>");
-					return sb.toString();
+				} catch (Exception e) {
 				}
 				return super.getText(element);
 			}
@@ -106,11 +110,13 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 
 				PrimaryObject po = ModelService.createModelObject(modelClass,
 						id);
-				if (po != null) {
-					return po.getImage();
-				} else {
-					return null;
+				try {
+					if (po != null) {
+						return po.getImage();
+					}
+				} catch (Exception e) {
 				}
+				return null;
 			}
 		});
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
