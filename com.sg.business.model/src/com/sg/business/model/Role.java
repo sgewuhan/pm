@@ -389,4 +389,9 @@ public class Role extends PrimaryObject {
 	public String getTypeName() {
 		return "½ÇÉ«";
 	}
+	
+	@Override
+	public String getDefaultEditorId() {
+		return "editor.organization.role";
+	}
 }

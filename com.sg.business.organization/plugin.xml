@@ -251,7 +251,6 @@
             dataSet="com.sg.business.model.dataset.organization.RoleOfOrg"
             dbName="pm2"
             dropTargetListener="com.sg.business.organization.view.DropUserRole"
-            editorId="editor.organization.role"
             id="organization.role"
             idfield="_id"
             multiSelection="true"
@@ -554,7 +553,7 @@
             name="角色"
             titleToolTips="角色">
          <basicpage
-               description="组织的基本信息"
+               description="角色的基本信息"
                id="basicpage.1"
                title="基本信息">
             <pagecolumn

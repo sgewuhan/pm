@@ -34,4 +34,9 @@ public class RoleAssignment extends AbstractRoleAssignment{
 		
 		super.doRemove(context);
 	}
+	
+	@Override
+	public String getDefaultEditorId() {
+		return "editor.organization.user";
+	}
 }
