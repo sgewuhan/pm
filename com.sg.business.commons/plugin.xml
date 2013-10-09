@@ -4,6 +4,7 @@
    <extension
          point="com.mobnut.admin.adminFunction">
       <adminFunction
+            id="com.sg.business.commons.admin.CalendarSetting"
             image="image/calendar_48.png"
             label="日历"
             run="com.sg.business.commons.admin.CalendarSetting">
