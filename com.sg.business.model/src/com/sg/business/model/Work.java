@@ -573,10 +573,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	@Override
 	public boolean canCancel() {
-		// 检查本工作生命周期状态是否符合:已暂停,进行中
+		// 检查本工作生命周期状态是否符合:已暂停,进行中，准备中
 		String lifeCycle = getLifecycleStatus();
 		return STATUS_WIP_VALUE.equals(lifeCycle)
-				|| STATUS_PAUSED_VALUE.equals(lifeCycle);
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)
+				|| STATUS_ONREADY_VALUE.equals(lifeCycle)
+				|| STATUS_NONE_VALUE.equals(lifeCycle);
 	}
 
 	@Override
@@ -2027,11 +2029,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
-			// 检查下级的工作状态是否为进行中或者已暂停
-			if (STATUS_WIP_VALUE.equals(childWork.getValue(F_LIFECYCLE))
-					|| STATUS_PAUSED_VALUE.equals(childWork
-							.getValue(F_LIFECYCLE))) {
-				// 取消下级工作
+//			// 检查下级的工作状态是否为进行中或者已暂停
+//			if (STATUS_WIP_VALUE.equals(childWork.getValue(F_LIFECYCLE))
+//					|| STATUS_PAUSED_VALUE.equals(childWork
+//							.getValue(F_LIFECYCLE))) {
+//			}
+			// 取消下级工作
+			if(childWork.canCancel()){
 				childWork.doCancel(context);
 			}
 		}
@@ -2084,11 +2088,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
 			// 检查下级的工作状态是否为进行中或已暂停
-			if (STATUS_WIP_VALUE.equals(childWork.getValue(F_LIFECYCLE))
+			String childLC = childWork.getLifecycleStatus();
+			if (STATUS_WIP_VALUE.equals(childLC)
 					|| STATUS_PAUSED_VALUE.equals(childWork
 							.getValue(F_LIFECYCLE))) {
 				// 完成下级工作
 				childWork.doFinish(context);
+			} else if (STATUS_CANCELED_VALUE.equals(childLC)
+					|| STATUS_FINIHED_VALUE.equals(childLC)) {
+			} else {
+				// 取消工作
+				childWork.doCancel(context);
+
 			}
 		}
 
@@ -2699,7 +2710,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			for (int i = 0; i < ((List<?>) record).size(); i++) {
 				Object data = ((List<?>) record).get(i);
 				if (data instanceof DBObject) {
-					result.add(0,ModelService.createModelObject((DBObject)data, WorkRecord.class));
+					result.add(0, ModelService.createModelObject(
+							(DBObject) data, WorkRecord.class));
 				}
 			}
 		}
