@@ -53,7 +53,7 @@ public class PM2Activator extends AbstractUIPlugin {
 
 	private void ensureIndex() {
 		DB db = DBActivator.getDB(IModelConstants.DB);
-		//此处添加程序用于创建独立索引
+		//此处添加程序用于创建唯一索引
 		
 	}
 
