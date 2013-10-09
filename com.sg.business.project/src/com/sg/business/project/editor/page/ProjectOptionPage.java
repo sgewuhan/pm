@@ -227,4 +227,9 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		return true;
 	}
 
+	@Override
+	public boolean canRefresh() {
+		return false;
+	}
+
 }

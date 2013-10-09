@@ -147,6 +147,11 @@ public abstract class AbstractProcessSettingPage extends
 		super.refresh();
 	}
 	
+	@Override
+	public boolean canRefresh() {
+		return true;
+	}
+	
 	public ProcessSettingPanel2 getProcessSettingPanel(){
 		return psp2;
 	}

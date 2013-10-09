@@ -655,6 +655,7 @@
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="deliverables"
                navigatorId="management.deliverables"
                pageBodyPartCreater="com.sg.business.management.editor.page.DeliverablesBody"
@@ -711,7 +712,7 @@
                         labelVisible="true"
                         name="desc"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String"
                         widthHint="240">
                   </text>
@@ -1243,6 +1244,7 @@
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="deliverables"
                navigatorId="management.genericworkd.deliverables"
                title="交付物">
@@ -1382,6 +1384,7 @@
          </basicpage>
          <basicpage
                description="独立工作的执行流程"
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"
@@ -1474,6 +1477,7 @@
          </navigatorpage>
          <basicpage
                description="独立工作的执行流程"
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"

@@ -32,7 +32,7 @@ public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
 				Iterator<?> iterator = is.iterator();
 				while (iterator.hasNext()) {
 					WorkDefinition nworkd = (WorkDefinition) iterator.next();
-					if (Boolean.FALSE.equals(nworkd.isActivated())) {
+					if (!nworkd.isActivated()) {
 						return false;
 					}
 				}

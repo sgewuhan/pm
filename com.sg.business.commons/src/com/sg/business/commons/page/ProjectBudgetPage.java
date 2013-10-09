@@ -168,4 +168,9 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 	public void refresh() {
 	}
 
+	@Override
+	public boolean canRefresh() {
+		return false;
+	}
+
 }

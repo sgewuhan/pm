@@ -9,5 +9,10 @@ public class WorkChangeProcessPage extends AbstractWorkProcessPage {
 		return WorkDefinition.F_WF_CHANGE;
 	}
 
+	@Override
+	public boolean canRefresh() {
+		return false;
+	}
+
 
 }

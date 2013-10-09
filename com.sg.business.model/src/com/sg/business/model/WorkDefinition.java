@@ -511,11 +511,10 @@ public class WorkDefinition extends AbstractWork implements
 			ProjectTemplate pjt = getProjectTemplate();
 			return pjt.getRoleDefinitions();
 		} else if (isStandloneWork()) {
-
 			return getRelationById(F__ID, RoleDefinition.F_WORKDEFINITION_ID,
 					RoleDefinition.class);
 		}
-		return null;
+		return new ArrayList<PrimaryObject>();
 	}
 
 	/**

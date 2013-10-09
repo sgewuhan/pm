@@ -9,4 +9,9 @@ public class WorkExecuteProcessPage extends AbstractWorkProcessPage {
 		return WorkDefinition.F_WF_EXECUTE;
 	}
 
+	@Override
+	public boolean canRefresh() {
+		return false;
+	}
+
 }

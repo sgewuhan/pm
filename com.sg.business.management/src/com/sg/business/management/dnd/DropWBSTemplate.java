@@ -38,6 +38,9 @@ public class DropWBSTemplate extends DropPrimaryObjectTarget {
 		for (PrimaryObject po : dragsItems) {
 			if (po instanceof WorkDefinition) {
 				WorkDefinition srcWorkDefinition = (WorkDefinition) po;
+				if(!srcWorkDefinition.isActivated()){
+					continue;
+				}
 				try {
 					targetWorkDefinition.doImportGenericWorkDefinition(srcWorkDefinition,new CurrentAccountContext());
 				} catch (Exception e) {

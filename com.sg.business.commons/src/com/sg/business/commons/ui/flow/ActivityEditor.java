@@ -302,7 +302,7 @@ public class ActivityEditor extends Composite {
 			roleText.setText("");
 			if (actorText != null && actor != null && !actor.isEmpty()) {
 				actorText.setText(actor.getLabel());
-			} else {
+			} else if(actorText !=null){
 				actorText.setText("");
 			}
 		} else {
@@ -329,7 +329,7 @@ public class ActivityEditor extends Composite {
 			if (roleText != null) {
 				if (roleDef != null && !roleDef.isEmpty()) {
 					roleText.setText(roleDef.getLabel());
-				} else {
+				} else if(roleText!=null){
 					roleText.setText("");
 				}
 			}
@@ -337,7 +337,7 @@ public class ActivityEditor extends Composite {
 			if (actorText != null) {
 				if (actor != null && !actor.isEmpty()) {
 					actorText.setText(actor.getLabel());
-				} else {
+				} else if(actorText!=null){
 					actorText.setText("");
 				}
 			}

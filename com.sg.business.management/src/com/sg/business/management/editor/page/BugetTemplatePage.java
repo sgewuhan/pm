@@ -207,4 +207,9 @@ public class BugetTemplatePage implements IPageDelegator, IFormPart {
 	public void refresh() {
 	}
 
+	@Override
+	public boolean canRefresh() {
+		return false;
+	}
+
 }
