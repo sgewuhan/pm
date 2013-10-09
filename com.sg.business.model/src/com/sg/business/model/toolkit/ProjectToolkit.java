@@ -44,7 +44,7 @@ public class ProjectToolkit {
 						checkItem.setData(project);
 						checkItem.setEditorId(editorId);
 						checkItem.setEditorPageId(pageId);
-						checkItem.setSelection((PrimaryObject) pc);
+						checkItem.setSelection(project);
 						result.add(checkItem);
 						passed = false;
 					} else {
@@ -57,7 +57,7 @@ public class ProjectToolkit {
 							checkItem.setData(project);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection((PrimaryObject) pc);
+							checkItem.setSelection(project);
 							result.add(checkItem);
 							passed = false;
 						} else if (ra.size() > 1) {
@@ -71,7 +71,7 @@ public class ProjectToolkit {
 							checkItem.setData(project);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection((PrimaryObject) pc);
+							checkItem.setSelection(project);
 							result.add(checkItem);
 							passed = false;
 						}

@@ -140,6 +140,9 @@ public class Role extends PrimaryObject {
 
 		for (int i = 0; i < users.size(); i++) {
 			User user = (User) users.get(i);
+			if(!user.isActivated()){
+				continue;
+			}
 			list.add(new BasicDBObject()
 					.append(RoleAssignment.F__TYPE,
 							IModelConstants.C_ROLE_ASSIGNMENT)

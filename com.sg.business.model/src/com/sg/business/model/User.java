@@ -307,4 +307,8 @@ public class User extends PrimaryObject {
 	public String getEmail() {
 		return (String) getValue(F_EMAIL);
 	}
+
+	public boolean isActivated() {
+		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
+	}
 }

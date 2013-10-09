@@ -57,6 +57,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		ILifecycle, IReferenceContainer {
 
 	/**
+	 * 设定工作交付物的编辑器
+	 */
+	public static final String EDIT_WORK_DELIVERABLE = "edit.work.deliverable";
+
+	/**
+	 * 带流程叶子工作编辑器
+	 */
+	public static final String EDIT_WORK_PLAN_1 = "edit.work.plan.1";
+	
+	/**
+	 * 不带流程叶子工作编辑器
+	 */
+	public static final String EDIT_WORK_PLAN_0 = "edit.work.plan.0";
+	
+	
+
+	/**
 	 * 工作的编辑器ID
 	 */
 	public static final String EDITOR = "view.work";
@@ -227,6 +244,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		data.put(F_PROJECT_ID, getValue(F_PROJECT_ID));
 
+		
+		//设置一些基本的选项设定
+		data.put(F_S_CANADDDELIVERABLES, Boolean.TRUE);
+		data.put(F_S_CANBREAKDOWN, Boolean.TRUE);
+		data.put(F_S_CANMODIFYPLANWORKS, Boolean.TRUE);
+		
 		Work po = ModelService.createModelObject(data, Work.class);
 		return po;
 	}
@@ -1195,32 +1218,32 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			Object value = getPlanStart();
 			if (value == null) {
 				message.add(new Object[] { "工作的计划开始时间没有确定", this,
-						SWT.ICON_ERROR });
+						SWT.ICON_ERROR,EDIT_WORK_PLAN_0 });
 			}
 			value = getPlanFinish();
 			if (value == null) {
 				message.add(new Object[] { "工作的计划完成时间没有确定", this,
-						SWT.ICON_ERROR });
+						SWT.ICON_ERROR,EDIT_WORK_PLAN_0 });
 			}
 			// 2.检查工作的计划工时
 			value = getPlanWorks();
 			if (value == null) {
-				message.add(new Object[] { "工作的计划工时没有确定", this, SWT.ICON_ERROR });
+				message.add(new Object[] { "工作的计划工时没有确定", this, SWT.ICON_ERROR,EDIT_WORK_PLAN_0 });
 			}
 			// 3.检查工作名称
 			value = getDesc();
 			if (Utils.isNullOrEmptyString(value)) {
-				message.add(new Object[] { "工作名称为空", this, SWT.ICON_ERROR });
+				message.add(new Object[] { "工作名称为空", this, SWT.ICON_ERROR,EDIT_WORK_PLAN_0 });
 			}
 			// 4.检查负责人
 			value = getCharger();
 			if (value == null) {
-				message.add(new Object[] { "工作负责人为空", this, SWT.ICON_ERROR });
+				message.add(new Object[] { "工作负责人为空", this, SWT.ICON_ERROR,EDIT_WORK_PLAN_0 });
 			}
 			// 5.检查参与者
 			value = getParticipatesIdList();
 			if (!(value instanceof List) || ((List<?>) value).isEmpty()) {
-				message.add(new Object[] { "没有添加工作参与者", this, SWT.ICON_WARNING });
+				message.add(new Object[] { "没有添加工作参与者", this, SWT.ICON_WARNING ,EDIT_WORK_PLAN_0});
 			}
 
 			// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
@@ -1234,13 +1257,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
 			if (!ProjectToolkit.checkProcessInternal(pc, F_WF_EXECUTE)) {
 				message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
-						SWT.ICON_WARNING });
+						SWT.ICON_WARNING ,EDIT_WORK_PLAN_1});
 			}
 
 			// 7.检查工作交付物,警告
 			List<PrimaryObject> docs = getDeliverableDocuments();
 			if (docs.isEmpty()) {
-				message.add(new Object[] { "该工作没有设定交付物", this, SWT.ICON_WARNING });
+				message.add(new Object[] { "该工作没有设定交付物", this, SWT.ICON_WARNING,EDITOR });
 			}
 		}
 		return message;
@@ -1265,7 +1288,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				new BasicDBObject().append("$ne", Boolean.TRUE));
 		long count = getRelationCountByCondition(Work.class, condition);
 		if (count > 0) {
-			message.add(new Object[] { "非级联完成的下级工作未完成或取消", this, SWT.ICON_ERROR });
+			message.add(new Object[] { "非级联完成的下级工作未完成或取消", this, SWT.ICON_ERROR ,EDITOR});
 		}
 
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
@@ -1283,7 +1306,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						&& !Boolean.TRUE.equals(childWork
 								.getValue(F_S_CANSKIPTOFINISH))) {
 					message.add(new Object[] { "存在无法跳过进行中的流程完成的下级级联完成工作", this,
-							SWT.ICON_ERROR });
+							SWT.ICON_ERROR,EDITOR });
 				}
 				message.addAll(checkCascadeFinish(childWork.get_id()));
 			}
