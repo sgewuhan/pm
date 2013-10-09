@@ -37,6 +37,6 @@ public class RoleAssignment extends AbstractRoleAssignment{
 	
 	@Override
 	public String getDefaultEditorId() {
-		return "editor.organization.user";
+		return "editor.organization.roleassignment";
 	}
 }
