@@ -7,8 +7,24 @@ import org.osgi.framework.BundleListener;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.portal.Portal;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.sg.business.model.BudgetItem;
+import com.sg.business.model.Deliverable;
+import com.sg.business.model.DeliverableDefinition;
+import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.ProjectBudget;
+import com.sg.business.model.ProjectRole;
+import com.sg.business.model.ProjectRoleAssignment;
+import com.sg.business.model.ProjectTemplate;
+import com.sg.business.model.Role;
+import com.sg.business.model.RoleAssignment;
+import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.User;
+import com.sg.business.model.WorkConnection;
+import com.sg.business.model.WorkDefinitionConnection;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -20,7 +36,7 @@ public class PM2Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static PM2Activator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -29,23 +45,26 @@ public class PM2Activator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		context.addBundleListener(new BundleListener() {
-			
+
 			@Override
 			public void bundleChanged(BundleEvent event) {
-				if(Portal.PLUGIN_ID.equals(event.getBundle().getSymbolicName())){
-					//初始化
+				if (Portal.PLUGIN_ID
+						.equals(event.getBundle().getSymbolicName())) {
+					// 初始化
 					initialPMSystem();
 				}
 			}
 		});
 	}
-
 
 	protected void initialPMSystem() {
 		ensureIndex();
@@ -53,13 +72,148 @@ public class PM2Activator extends AbstractUIPlugin {
 
 	private void ensureIndex() {
 		DB db = DBActivator.getDB(IModelConstants.DB);
-		//此处添加程序用于创建唯一索引
-		
+		// 此处添加程序用于创建唯一索引
+
+		// 全局设置和用户设置ID和用户ID需要保持唯一
+		ensureIndex(db, IModelConstants.C_SETTING,
+				new BasicDBObject().append("varid", 1).append("userid", 1));
+
+		// 同一组织下角色编号不可重复
+		ensureIndex(
+				db,
+				IModelConstants.C_ROLE,
+				new BasicDBObject().append(Role.F_ORGANIZATION_ID, 1).append(
+						Role.F_ROLE_NUMBER, 1));
+
+		// 同一角色指派用户ID不能重复
+		ensureIndex(
+				db,
+				IModelConstants.C_ROLE_ASSIGNMENT,
+				new BasicDBObject().append(RoleAssignment.F_ROLE_ID, 1).append(
+						RoleAssignment.F_USER_ID, 1));
+
+		// 同一个工作定义不能出现两个相同的交付物定义
+		ensureIndex(
+				db,
+				IModelConstants.C_DELIEVERABLE_DEFINITION,
+				new BasicDBObject().append(
+						DeliverableDefinition.F_WORK_DEFINITION_ID, 1).append(
+						DeliverableDefinition.F_DOCUMENT_DEFINITION_ID, 1));
+
+		// 项目组，同一角色下不能出现相同的用户ID
+		ensureIndex(db, IModelConstants.C_PROJECT_ROLE_ASSIGNMENT,
+				new BasicDBObject().append(ProjectRoleAssignment.F_ROLE_ID, 1)
+						.append(ProjectRoleAssignment.F_USER_ID, 1));
+
+		// 同一项目角色不允许编号相同
+		ensureIndex(
+				db,
+				IModelConstants.C_PROJECT_ROLE,
+				new BasicDBObject().append(ProjectRole.F_PROJECT_ID, 1)
+						.append(ProjectRole.F_ROLE_NUMBER, 1)
+						.append(ProjectRole.F_ORGANIZATION_ROLE_ID, 1));
+
+		// 同一项目模板角色不允许编号相同
+		ensureIndex(
+				db,
+				IModelConstants.C_ROLE_DEFINITION,
+				new BasicDBObject()
+						.append(RoleDefinition.F_PROJECT_TEMPLATE_ID, 1)
+						.append(RoleDefinition.F_ROLE_NUMBER, 1)
+						.append(RoleDefinition.F_ORGANIZATION_ROLE_ID, 1)
+						.append(RoleDefinition.F_WORKDEFINITION_ID, 1)
+						.append(RoleDefinition.F_WORK_ID, 1));
+
+		// 项目中同一个工作不能出现两个相同的交付物
+		ensureIndex(
+				db,
+				IModelConstants.C_DELIEVERABLE,
+				new BasicDBObject().append(Deliverable.F_WORK_ID, 1).append(
+						Deliverable.F_DOCUMENT_ID, 1));
+
+		// 项目模板中前后置关系前置工作定义和后置工作定义id不允许相同
+		ensureIndex(
+				db,
+				IModelConstants.C_WORK_DEFINITION_CONNECTION,
+				new BasicDBObject().append(WorkDefinitionConnection.F_END1_ID,
+						1).append(WorkDefinitionConnection.F_END2_ID, 1));
+
+		// 项目中前后置关系前置工作和后置工作id不允许相同
+		ensureIndex(
+				db,
+				IModelConstants.C_WORK_CONNECTION,
+				new BasicDBObject().append(WorkConnection.F_END1_ID, 1).append(
+						WorkConnection.F_END2_ID, 1));
+
+		// 不允许用户登陆名相同
+		ensureIndex(db, IModelConstants.C_USER,
+				new BasicDBObject().append(User.F_USER_ID, 1));
+
+		// 项目模板中不允许出现重复的预算信息
+		ensureIndex(db, IModelConstants.C_BUDGET_ITEM,
+				new BasicDBObject().append(BudgetItem.F_PROJECTTEMPLATE_ID, 1));
+
+		// 项目中不允许出现重复的预算信息
+		ensureIndex(db, IModelConstants.C_PROJECT_BUDGET,
+				new BasicDBObject().append(ProjectBudget.F_PROJECT_ID, 1));
+
+		// 文件夹下不允许出现重名的文件夹
+		ensureIndex(
+				db,
+				IModelConstants.C_FOLDER,
+				new BasicDBObject().append(Folder.F_PARENT_ID, 1)
+						.append(Folder.F_ROOT_ID, 1).append(Folder.F_DESC, 1));
+
+		// 同一组织中不允许出现重名的项目模板
+		ensureIndex(
+				db,
+				IModelConstants.C_PROJECT_TEMPLATE,
+				new BasicDBObject()
+						.append(ProjectTemplate.F_ORGANIZATION_ID, 1).append(
+								ProjectTemplate.F_DESC, 1));
+
+		// // 同一组织中不允许出现重名的独立/通用工作定义
+		// ensureIndex(
+		// db,
+		// IModelConstants.C_WORK_DEFINITION,
+		// new BasicDBObject().append(WorkDefinition.F_ORGANIZATION_ID, 1)
+		// .append(WorkDefinition.F_DESC, 1)
+		// .append(WorkDefinition.F_WORK_TYPE, 1));
+
+		// 同一项目中不允许出现多个根工作
+		// ensureIndex(
+		// db,
+		// IModelConstants.C_WORK,
+		// new BasicDBObject().append(Work.F_PROJECT_ID, 1)
+		// .append(Work.F_ROOT_ID, 1).append(Work.F_PARENT_ID, 1)
+		// .append(Work.F_WORK_TYPE, 1));
+
+		// 同一项目模板中不允许出现多个根工作定义
+		// ensureIndex(
+		// db,
+		// IModelConstants.C_WORK_DEFINITION,
+		// new BasicDBObject()
+		// .append(WorkDefinition.F_PROJECT_TEMPLATE_ID, 1)
+		// .append(WorkDefinition.F_ROOT_ID, 1)
+		// .append(WorkDefinition.F_PARENT_ID, 1)
+		// .append(WorkDefinition.F_WORK_TYPE, 1));
+	}
+
+	private void ensureIndex(DB db, String colname, BasicDBObject index) {
+		try {
+			DBCollection col = db.getCollection(colname);
+			col.ensureIndex(index, "unique", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
@@ -68,12 +222,11 @@ public class PM2Activator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static PM2Activator getDefault() {
 		return plugin;
 	}
-	
 
 }

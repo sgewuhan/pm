@@ -141,7 +141,8 @@ public interface IModelConstants {
 	public static final String C_BULLETINBOARD = "bulletinboard";
 	
 
-	
+	public static final String C_SETTING = "setting";
+
 	/**
 	 * 设置: 默认的项目提交工作的周期,此设置只能用于系统设置Interval
 	 */
@@ -162,6 +163,7 @@ public interface IModelConstants {
 	 * 
 	 */
 	public static final String S_PROCESS_BASE_URL = "SYSTEM.PROCESS_BASE_URL";
+
 
 
 }
