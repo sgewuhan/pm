@@ -5,6 +5,8 @@ import java.util.Iterator;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
@@ -15,6 +17,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.INavigatorActionListener;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class LinkOrganizationRole extends AbstractNavigatorHandler {
@@ -22,6 +25,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		final ViewerControl vc = getCurrentViewerControl(event);
+		final IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		NavigatorSelector n = new NavigatorSelector("management.roleselector",
 				"选择组织角色") {
 			@Override
@@ -36,6 +40,17 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 								doLinkOrganizationRole(vc, (Role) next);
 							}
 						}
+
+						// send notice
+						if (part instanceof INavigatorActionListener) {
+
+							sendNavigatorActionEvent(
+									(INavigatorActionListener) part,
+									INavigatorActionListener.CREATE,
+									new Integer(
+											INavigatorActionListener.REFRESH));
+						}
+
 						super.doOK(is);
 					} catch (Exception e) {
 						MessageUtil.showToast(e);

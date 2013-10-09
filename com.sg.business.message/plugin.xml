@@ -303,7 +303,8 @@
             limit="100"
             markupEnabled="true"
             multiSelection="true"
-            popupMenu="popup:message.recieved">
+            popupMenu="popup:message.recieved"
+            virtual="true">
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"

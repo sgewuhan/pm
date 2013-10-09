@@ -669,6 +669,7 @@
          </navigatorpage>
          <basicpage
                description="项目提交流程"
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_commit"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateCommitProcessDefPage"
@@ -676,6 +677,7 @@
          </basicpage>
          <basicpage
                description="项目变更流程"
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_change"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateChangeProcessDefPage"
