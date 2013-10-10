@@ -3031,9 +3031,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @param workd
 	 * @param context
+	 * @throws Exception 
 	 */
 	public void doCreateChildFromGenericWorkDefinition(WorkDefinition workdef,
-			IContext context) {
+			IContext context) throws Exception {
 		// 1.处理workd
 		ObjectId tgtParentId = get_id();
 		
@@ -3055,14 +3056,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		
 		ObjectId folderRootId = project.getFolderRootId();
 		
+		ObjectId srcParent = workdef.get_id();
+		
 		DBObject targetParentWorkData = ProjectToolkit.getWorkFromWorkDefinition(tgtParentId, tgtRootId,
 				project, roleMap, folderRootId, documentsToInsert,
 				deliverableToInsert, fileToCopy, context, project.get_id(), seq,
 				workdef.get_data(), null);
-		
+		worksToBeInsert.put(srcParent, targetParentWorkData);
 		tgtParentId = (ObjectId) targetParentWorkData.get(F__ID);
 
-		ObjectId srcParent = workdef.get_id();
 
 
 		ProjectToolkit.copyWBSTemplate(srcParent, tgtParentId, tgtRootId,
@@ -3070,7 +3072,57 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				documentsToInsert, deliverableToInsert, fileToCopy, context);
 		
 		
-		System.out.println();
+		// 保存工作
+		DBCollection workCol = getCollection(IModelConstants.C_WORK);
+		Collection<DBObject> collection = worksToBeInsert.values();
+		WriteResult ws;
+		if (!collection.isEmpty()) {
+			ws = workCol.insert(collection.toArray(new DBObject[0]),
+					WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
 
+		// 保存文档
+		DBCollection docCol = getCollection(IModelConstants.C_DOCUMENT);
+		ws = docCol.remove(new BasicDBObject().append(Document.F_PROJECT_ID,
+				get_id()));
+		checkWriteResult(ws);
+
+		collection = documentsToInsert.values();
+		if (!collection.isEmpty()) {
+			ws = docCol.insert(collection.toArray(new DBObject[0]),
+					WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
+
+		// 保存交付物
+		DBCollection deliCol = getCollection(IModelConstants.C_DELIEVERABLE);
+		ws = deliCol.remove(new BasicDBObject().append(
+				Deliverable.F_PROJECT_ID, get_id()));
+		checkWriteResult(ws);
+
+		if (!deliverableToInsert.isEmpty()) {
+			ws = deliCol.insert(deliverableToInsert, WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
+
+		// 保存文件
+		for (DBObject[] dbObjects : fileToCopy) {
+			DBObject src = dbObjects[0];
+			DBObject tgt = dbObjects[1];
+
+			String srcDB = (String) src.get(RemoteFile.F_DB);
+			String srcFilename = (String) src.get(RemoteFile.F_FILENAME);
+			String srcNamespace = (String) src.get(RemoteFile.F_NAMESPACE);
+			ObjectId srcID = (ObjectId) src.get(RemoteFile.F_ID);
+
+			String tgtDB = (String) tgt.get(RemoteFile.F_DB);
+			String tgtFilename = (String) tgt.get(RemoteFile.F_FILENAME);
+			String tgtNamespace = (String) tgt.get(RemoteFile.F_NAMESPACE);
+			ObjectId tgtID = (ObjectId) tgt.get(RemoteFile.F_ID);
+
+			FileUtil.copyGridFSFile(srcID, srcDB, srcFilename, srcNamespace,
+					tgtID, tgtDB, tgtFilename, tgtNamespace);
+		}
 	}
 }
