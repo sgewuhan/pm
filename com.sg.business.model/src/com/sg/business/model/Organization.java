@@ -367,7 +367,7 @@ public class Organization extends PrimaryObject {
 	public List<PrimaryObject> getUser() {
 		return getRelationById(F__ID, User.F_ORGANIZATION_ID, User.class);
 	}
-	
+
 	/**
 	 * 获取组织下的所有角色
 	 * 
@@ -1292,5 +1292,17 @@ public class Organization extends PrimaryObject {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * 获取当期组织最近的具有文档容器的组织
+	 * @return
+	 */
+	public ObjectId getContainerOrganizationId() {
+		if(isContainer()){
+			return this.get_id();
+		} else{
+			return ((Organization) getParentOrganization()).getContainerOrganizationId();
+		}
 	}
 }

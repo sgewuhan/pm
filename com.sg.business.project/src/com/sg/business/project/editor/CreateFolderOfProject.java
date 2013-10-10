@@ -34,7 +34,7 @@ public class CreateFolderOfProject implements ICreateEditorDelegator {
 			rootId = ((Folder) parent).getRoot_id();
 			projectId = ((Folder) parent).getProject_id();
 			containerDB = parent.getDbName();
-			containerCollection = IModelConstants.C_PROJECT;
+			containerCollection = IModelConstants.C_ORGANIZATION;
 			po.setValue(Folder.F_PARENT_ID, parentId);
 			po.setValue(Folder.F_ROOT_ID, rootId);
 			po.setValue(Folder.F_CONTAINER_DB, containerDB);

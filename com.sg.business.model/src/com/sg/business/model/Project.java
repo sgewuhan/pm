@@ -1792,8 +1792,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public Object doFinish(IContext context) throws Exception {
+		Organization org = getFunctionOrganization();
+		if (org == null) {
+			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+		}
+		ObjectId containerOrganizationId = org.getContainerOrganizationId();
+		if (containerOrganizationId == null) {
+			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+		}
+
 		Work root = getWBSRoot();
 		root.doFinish(context);
+
+		doArchiveProjectFolder(containerOrganizationId);
 
 		DBCollection col = getCollection();
 		DBObject data = col.findAndModify(
@@ -1811,6 +1822,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		set_data(data);
 		return this;
 
+	}
+
+	private void doArchiveProjectFolder(ObjectId containerOrganizationId)
+			throws Exception {
+
+		DBCollection col = getCollection(IModelConstants.C_FOLDER);
+		BasicDBObject folderQuery = new BasicDBObject().append(
+				Folder.F_PROJECT_ID, get_id());
+		WriteResult ws = col.update(folderQuery, new BasicDBObject().append(
+				"$set", new BasicDBObject().append(Folder.F_ROOT_ID,
+						containerOrganizationId)), false, true);
+		checkWriteResult(ws);
 	}
 
 	public Object doPause(IContext context) throws Exception {

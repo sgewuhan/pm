@@ -49,6 +49,9 @@ public class Folder extends PrimaryObject {
 	 */
 	public static final String F_PROJECT_ID = "project_id";
 
+	/**
+	 * 是否项目根文件夹
+	 */
 	public static final String F_IS_PROJECT_FOLDERROOT = "isflderroot";
 
 	/**
