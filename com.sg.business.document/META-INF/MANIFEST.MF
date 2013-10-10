@@ -7,6 +7,8 @@ Bundle-Activator: com.sg.business.document.DocumentActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
- com.sg.widgets;bundle-version="1.0.0"
+ com.sg.widgets;bundle-version="1.0.0",
+ com.sg.business.commons;bundle-version="1.0.0",
+ com.mobnut.db;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

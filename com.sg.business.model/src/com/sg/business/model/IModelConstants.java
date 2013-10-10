@@ -100,6 +100,11 @@ public interface IModelConstants {
 	public static final String SEQ_PROJECT_NUMBER = "projectnumber";
 	
 	/**
+	 * 文档模板自动编号
+	 */
+	public static final String SEQ_DOCUMENT_TEMPLATE_NUMBER = "documenttemplatenumber";
+
+	/**
 	 * 项目角色
 	 */
 	public static final String C_PROJECT_ROLE = "projectrole";
@@ -163,7 +168,6 @@ public interface IModelConstants {
 	 * 
 	 */
 	public static final String S_PROCESS_BASE_URL = "SYSTEM.PROCESS_BASE_URL";
-
 
 
 }
