@@ -6,10 +6,13 @@ import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
@@ -22,6 +25,8 @@ import com.sg.business.resource.BusinessResource;
 public class DeliverableDefinition extends AbstractOptionFilterable {
 
 	
+	public static final String F_DOCUMENTNUMBER = "documentnumber";
+
 	/**
 	 * 交付物所属的工作
 	 */
@@ -73,13 +78,20 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 				}
 			}
 			docdData.put(DocumentDefinition.F_ORGANIZATION_ID,orgId);
-
+			String number = generateAutoIncreaseNumer();
+			docdData.put(F_DOCUMENTNUMBER, number);
 			DocumentDefinition docd = ModelService.createModelObject(docdData,
 					DocumentDefinition.class);
 			docd.doSave(context);
 			setValue(F_DOCUMENT_DEFINITION_ID, docd.get_id());
 		}
 		super.doInsert(context);
+	}
+
+	private String generateAutoIncreaseNumer() {
+		DBCollection ids = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C__IDS);
+		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_TEMPLATE_NUMBER);
+		return String.format("%06x", id).toUpperCase();
 	}
 
 	/**

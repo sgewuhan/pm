@@ -53,6 +53,10 @@ public class DocumentDefinition extends PrimaryObject {
 	 */
 	public static final String F_TEMPLATEFILE = "templatefile";
 
+	public DocumentDefinition() {
+		super();
+		setVersionControledFields(new String[]{F_DESC,F_ATTACHMENT_CANNOT_EMPTY,F_DESCRIPTION,F_DOCUMENT_EDITORID,F_ORGANIZATION_ID,F_TEMPLATEFILE});
+	}
 	/**
 	 * ∑µªÿœ‘ æÕº±Í
 	 * 

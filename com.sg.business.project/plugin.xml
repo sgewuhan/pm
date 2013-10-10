@@ -1802,6 +1802,25 @@
             </visibleWhen>
          </command>
          <command
+               commandId="work.create.fromgenericwork"
+               icon="image/creatework_24.png"
+               label="添加通用工作..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="createChildWork"
+                           property="runtimework.action">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
                commandId="work.edit"
                icon="image/editwork_24.png"
                label="编辑工作..."

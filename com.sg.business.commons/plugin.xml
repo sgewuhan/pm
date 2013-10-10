@@ -847,6 +847,11 @@
       </command>
       <command
             categoryId="com.sg.business.management"
+            id="work.create.fromgenericwork"
+            name="添加通用工作">
+      </command>
+      <command
+            categoryId="com.sg.business.management"
             id="work.edit"
             name="编辑">
       </command>
@@ -995,6 +1000,22 @@
       <handler
             class="com.sg.business.commons.handler.CarlendarTest2"
             commandId="carlendartest2">
+      </handler>
+      <handler
+            class="com.sg.business.commons.handler.CreateWorkFromGeneric"
+            commandId="work.create.fromgenericwork">
+         <activeWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="com.sg.business.model.Work">
+                  </instanceof>
+               </iterate>
+            </with>
+         </activeWhen>
       </handler>
    </extension>
    <extension

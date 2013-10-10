@@ -52,48 +52,49 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
+				if (!check(element)) {
+					return "";
+				}
+
 				try {
 
-					if (element instanceof DBObject) {
+					DBObject dbo = (DBObject) element;
 
-						DBObject dbo = (DBObject) element;
+					ObjectId id = (ObjectId) dbo.get("id");
+					String desc = (String) dbo.get("desc");
+					String col = (String) dbo.get("col");
+					String db = (String) dbo.get("db");
 
-						ObjectId id = (ObjectId) dbo.get("id");
-						String desc = (String) dbo.get("desc");
-						String col = (String) dbo.get("col");
-						String db = (String) dbo.get("db");
+					Class<? extends PrimaryObject> modelClass = ModelService
+							.getModelClass(db, col);
 
-						Class<? extends PrimaryObject> modelClass = ModelService
-								.getModelClass(db, col);
+					PrimaryObject po = ModelService.createModelObject(
+							modelClass, id, false);
 
-						PrimaryObject po = ModelService.createModelObject(
-								modelClass, id, false);
+					StringBuffer sb = new StringBuffer();
+					sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
 
-						StringBuffer sb = new StringBuffer();
-						sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
+					sb.append("<span style='float:right'>");
+					Long date = (Long) dbo.get("date");
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(date.longValue());
+					sb.append("   " + sdf.format(cal.getTime()));
+					sb.append("</span>");
 
-						sb.append("<span style='float:right'>");
-						Long date = (Long) dbo.get("date");
-						Calendar cal = Calendar.getInstance();
-						cal.setTimeInMillis(date.longValue());
-						sb.append("   " + sdf.format(cal.getTime()));
-						sb.append("</span>");
-
-						if (po == null) {
-							sb.append("<del>");
-							sb.append(desc);
-							sb.append("</del>");
-						} else {
-							String typeName = po.getTypeName();
-							sb.append(typeName + ": ");
-							String label = po.getLabel();
-							label = Utils.getLimitLengthString(label, 20);
-							sb.append(label);
-						}
-
-						sb.append("</span>");
-						return sb.toString();
+					if (po == null) {
+						sb.append("<del>");
+						sb.append(desc);
+						sb.append("</del>");
+					} else {
+						String typeName = po.getTypeName();
+						sb.append(typeName + ": ");
+						String label = po.getLabel();
+						label = Utils.getLimitLengthString(label, 20);
+						sb.append(label);
 					}
+
+					sb.append("</span>");
+					return sb.toString();
 				} catch (Exception e) {
 				}
 				return super.getText(element);
@@ -101,6 +102,9 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 
 			@Override
 			public Image getImage(Object element) {
+				if (!check(element)) {
+					return null;
+				}
 				DBObject dbo = (DBObject) element;
 				ObjectId id = (ObjectId) dbo.get("id");
 				String col = (String) dbo.get("col");
@@ -122,6 +126,28 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		setInput();
 		getSite().setSelectionProvider(viewer);
+	}
+
+	protected boolean check(Object element) {
+		if (!(element instanceof DBObject)) {
+			return false;
+		}
+
+		DBObject dbo = (DBObject) element;
+		Object value = dbo.get("id");
+		if (!(value instanceof ObjectId)) {
+			return false;
+		}
+		value = dbo.get("col");
+		if (!(value instanceof String)) {
+			return false;
+		}
+		value = dbo.get("db");
+		if (!(value instanceof String)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private void setInput() {

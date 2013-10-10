@@ -43,6 +43,7 @@ import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -3021,6 +3022,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		documentsToInsert.put(documentTemplateId, documentData);
 
 		return documentData;
+	}
+
+	/**
+	 * 通过通用工作定义创建新工作
+	 * @param workd
+	 * @param context
+	 */
+	public void doCreateChildFromGenericWorkDefinition(WorkDefinition workd,
+			IContext context) {
+		//1.复制工作定义
+		
+		//2.
 	}
 
 }
