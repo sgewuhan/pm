@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
@@ -15,6 +16,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.INavigatorActionListener;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
@@ -23,6 +25,8 @@ public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
 		final Work work = (Work) selected;
 		final ViewerControl vc = getCurrentViewerControl(event);
+		final INavigatorActionListener part = (INavigatorActionListener) HandlerUtil
+				.getActivePart(event);
 
 		NavigatorSelector ns = new NavigatorSelector(
 				"management.documentdefinition") {
@@ -32,11 +36,18 @@ public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 					try {
 						Iterator<?> iter = is.iterator();
 						while (iter.hasNext()) {
-							DocumentDefinition next = (DocumentDefinition) iter.next();
-							Deliverable po = work.makeDeliverableDefinition(next);
+							DocumentDefinition next = (DocumentDefinition) iter
+									.next();
+							Deliverable po = work
+									.makeDeliverableDefinition(next);
 							po.setParentPrimaryObject(work);
 							po.addEventListener(vc);
 							po.doSave(new CurrentAccountContext());
+							// 4. 将更改消息传递到编辑器
+							sendNavigatorActionEvent(part,
+									INavigatorActionListener.CUSTOMER,
+									new Integer(
+											INavigatorActionListener.REFRESH));
 						}
 						super.doOK(is);
 					} catch (Exception e) {

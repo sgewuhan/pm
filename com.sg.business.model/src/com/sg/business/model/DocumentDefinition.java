@@ -216,8 +216,9 @@ public class DocumentDefinition extends PrimaryObject {
 		}
 
 		// 根据文档的附件创建文件
-		BasicBSONList tfiles = (BasicBSONList) getValue(DocumentDefinition.F_TEMPLATEFILE);
-		if (tfiles != null) {
+		Object val = getValue(DocumentDefinition.F_TEMPLATEFILE);
+		if (val instanceof List<?>) {
+			List<?> tfiles = (List<?>)val;
 			BasicBSONList documentFiles = new BasicBSONList();
 			for (int i = 0; i < tfiles.size(); i++) {
 				DBObject tFile = (DBObject) tfiles.get(i);

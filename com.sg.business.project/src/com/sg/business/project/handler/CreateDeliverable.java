@@ -11,6 +11,7 @@ import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
+import com.sg.widgets.part.INavigatorActionListener;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
@@ -45,6 +46,9 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, "添加" + po.getTypeName());
+			// 4. 将更改消息传递到编辑器
+			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
+					new Integer(INavigatorActionListener.REFRESH));
 		} catch (Exception e) {
 			e.printStackTrace();
 			MessageUtil.showToast(shell, "添加" + po.getTypeName(),
