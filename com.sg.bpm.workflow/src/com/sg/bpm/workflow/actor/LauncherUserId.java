@@ -1,6 +1,7 @@
 package com.sg.bpm.workflow.actor;
 
 import com.sg.bpm.service.actor.IActorIdProvider;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class LauncherUserId implements IActorIdProvider {
 
@@ -9,8 +10,7 @@ public class LauncherUserId implements IActorIdProvider {
 
 	@Override
 	public String getActorId(Object[] input) {
-		// TODO Auto-generated method stub
-		return null;
+		return new CurrentAccountContext().getAccountInfo().getUserId();
 	}
 
 }
