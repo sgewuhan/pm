@@ -57,7 +57,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 					Project project = ModelService.createModelObject(
 							Project.class, (ObjectId) projectId);
 					String lc = project.getLifecycleStatus();
-					if (!ILifecycle.STATUS_WIP_VALUE.equals(lc)){
+					if (!ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
 						continue;
 					}
 				}
@@ -90,7 +90,13 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 			String userid = account.getConsignerId();
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
-			queryCondition.put(Work.F_PARTICIPATE, userid);
+			queryCondition
+					.put("$or",
+							new BasicDBObject[] {
+									new BasicDBObject().append(
+											Work.F_PARTICIPATE, userid),
+									new BasicDBObject().append(Work.F_ASSIGNER,
+											userid) });
 			// 生命周期状态为准备、进行中
 			queryCondition
 					.put(Work.F_LIFECYCLE,
