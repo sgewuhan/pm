@@ -45,7 +45,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 
-		// 标记
+		// **********************************************************************************
+		// 右侧第一行，标记
 		CurrentAccountContext context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getConsignerId();
 		boolean userMarked = work.isMarked(userId);
@@ -62,6 +63,20 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		}
 
+		// **********************************************************************************
+		// 右侧第一行，需要指派以及负责人图标
+		// 如果需要再指派，添加再指派图标
+		String assignerId = work.getAssignerId();
+		if (userId.equals(assignerId)) {
+			String imageUrl = "<img src='"
+					+ FileUtil.getImageURL(
+							BusinessResource.IMAGE_REASSIGNMENT_24,
+							BusinessResource.PLUGIN_ID,
+							BusinessResource.IMAGE_FOLDER)
+					+ "' style='float:right;padding-right:4px' width='24' height='24' />";
+			sb.append(imageUrl);
+		}
+
 		User charger = project.getCharger();
 		if (charger != null) {
 			sb.append("<span style='float:right;padding-right:4px'>");
@@ -69,6 +84,8 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 			sb.append("</span>");
 		}
 
+		// **********************************************************************************
+		// 左侧第一行，工作图标
 		String imageUrl = "<img src='"
 				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 						BusinessResource.PLUGIN_ID,
@@ -144,7 +161,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		}
 
 		// ---------------------------------------------------------------------------
-		//标记
+		// 标记
 		Date _planStart = work.getPlanStart();
 		Date _planFinish = work.getPlanFinish();
 		Date _actualStart = work.getActualStart();
@@ -153,7 +170,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		// 首先判断当前时间是否晚于计划完成时间，如果是，显示为超期标签
 		Date now = new Date();
 		String selectbarUrl = null;
-		if (isOwner&&_planFinish != null) {
+		if (isOwner && _planFinish != null) {
 			if (now.after(_planFinish)) {
 				selectbarUrl = getSelectorURL(work, ImageResource.RED_BULLETIN);
 			} else if (remindBefore > 0
@@ -177,12 +194,24 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 				+ selectbarUrl
 				+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
 		sb.append(selectbar);
-		//-----------------------------------------------------------------------------------------
+		// -----------------------------------------------------------------------------------------
 
+		
 		if (charger != null) {
 			sb.append("<span style='float:right;padding-right:4px'>");
 			sb.append(charger);
 			sb.append("</span>");
+		}
+
+		String assignerId = work.getAssignerId();
+		if (userId.equals(assignerId)) {
+			String imageUrl = "<img src='"
+					+ FileUtil.getImageURL(
+							BusinessResource.IMAGE_REASSIGNMENT_16,
+							BusinessResource.PLUGIN_ID,
+							BusinessResource.IMAGE_FOLDER)
+							+ "' style='float:right' width='16' height='16' />";
+			sb.append(imageUrl);
 		}
 
 		IProcessControl pc = (IProcessControl) work
