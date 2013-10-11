@@ -16,7 +16,7 @@ import com.sg.widgets.commons.editingsupport.IEditingSupportor;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
-public abstract class SchedualEditing implements IEditingSupportor {
+public abstract class SchedualEditingBackup implements IEditingSupportor {
 
 	@Override
 	public EditingSupport createEditingSupport(ColumnViewer viewer,
@@ -28,8 +28,8 @@ public abstract class SchedualEditing implements IEditingSupportor {
 		} else if (Utils.TYPE_DATETIME.equals(type)) {
 			style = style | SWT.LONG;
 		}
-		final CellEditor editor = new SchedualCellEditor((Composite) viewer.getControl());
-		
+		final DateCellEditor editor = new DateCellEditor(
+				(Composite) viewer.getControl(), style);
 		EditingSupport es = new EditingSupport(viewer) {
 
 			@Override

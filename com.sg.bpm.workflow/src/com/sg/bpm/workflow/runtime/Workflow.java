@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,8 +23,10 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.service.HTService;
+import com.sg.bpm.service.RuleAssignment;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.bpm.workflow.model.NodeAssignment;
 
 public class Workflow {
 
@@ -34,11 +37,13 @@ public class Workflow {
 
 	/**
 	 * 根据定义获得工作流
+	 * 
 	 * @param processDefintion
 	 * @param host
 	 * @param key
 	 */
-	public Workflow(DroolsProcessDefinition processDefintion, PrimaryObject host,String key) {
+	public Workflow(DroolsProcessDefinition processDefintion,
+			PrimaryObject host, String key) {
 		this.host = host;
 		this.processDefintion = processDefintion;
 		this.key = key;
@@ -46,6 +51,7 @@ public class Workflow {
 
 	/**
 	 * 根据流程实例获得工作流
+	 * 
 	 * @param processId
 	 * @param processInstanceId
 	 * @throws Exception
@@ -53,24 +59,25 @@ public class Workflow {
 	public Workflow(String processId, long processInstanceId) throws Exception {
 		processDefintion = new DroolsProcessDefinition(processId);
 		Assert.isNotNull(processDefintion, "无法确定流程ID对应的流程定义");
-		StatefulKnowledgeSession session = processDefintion.getKnowledgeSession();
+		StatefulKnowledgeSession session = processDefintion
+				.getKnowledgeSession();
 		Assert.isNotNull(session, "无法获得流程定义的知识库进程");
 		WorkflowProcessInstance pi = (WorkflowProcessInstance) session
 				.getProcessInstance(processInstanceId);
 		WorkflowProcessInstance instance = (WorkflowProcessInstance) pi;
 		String jsonContent = (String) instance.getVariable(PROCESS_VAR_CONTENT);
-		
-		
-		Assert.isLegal(jsonContent!=null, "获取模型的json参数不可为空");
+
+		Assert.isLegal(jsonContent != null, "获取模型的json参数不可为空");
 		DBObject result = (DBObject) JSON.parse(jsonContent);
-		Assert.isLegal(result!=null, "获取模型的参数无法解析为正确的JSON字符串");
+		Assert.isLegal(result != null, "获取模型的参数无法解析为正确的JSON字符串");
 		key = (String) result.get("key");
 		String className = (String) result.get("class");
 		DBObject data = (DBObject) result.get("data");
-		DocumentModelDefinition modelDef = ModelService.getDocumentModelDefinition(className);
-		Assert.isNotNull(modelDef, "无法确定类的模型定义:"+className);
+		DocumentModelDefinition modelDef = ModelService
+				.getDocumentModelDefinition(className);
+		Assert.isNotNull(modelDef, "无法确定类的模型定义:" + className);
 		host = ModelService.createModelObject(data, modelDef.getModelClass());
-		
+
 	}
 
 	public ProcessInstance startHumanProcess(
@@ -79,10 +86,10 @@ public class Workflow {
 		if (params == null) {
 			params = new HashMap<String, Object>();
 		}
-		
+
 		HTService ts = BPM.getHumanTaskService();
 		Set<String> relativeUserId = new HashSet<String>();
-		
+
 		if (actorParameter != null) {
 			Collection<String> idSet = actorParameter.values();
 			Iterator<String> iter = idSet.iterator();
@@ -107,26 +114,43 @@ public class Workflow {
 		final BasicDBObject result = new BasicDBObject();
 		result.put("data", host.get_data());
 		result.put("key", key);
-		result.put("class",host.getClass().getName());
+		result.put("class", host.getClass().getName());
 		String var = JSON.serialize(result);
-		
-		params.put(PROCESS_VAR_CONTENT, var);
-		
-		ProcessInstance pi = WorkflowService.getDefault().startHumanProcess(processDefintion,params);
-		
-		for (String userId : relativeUserId) {
-			UserSessionContext.noticeAccountChanged(userId, new IAccountEvent(){
-				@Override
-				public String getEventCode() {
-					return IAccountEvent.EVENT_PROCESS_START;
-				}
 
-				@Override
-				public Object getEventData() {
-					return host;
+		params.put(PROCESS_VAR_CONTENT, var);
+
+		// 设置执行人规则
+		List<NodeAssignment> naslist = processDefintion.getNodesAssignment();
+		for (int i = 0; i < naslist.size(); i++) {
+			NodeAssignment na = naslist.get(i);
+			if (na.isRuleAssignment()) {
+				String para = na.getRuleAssignmentName();
+				RuleAssignment rules = BPM.getRuleService().getRuleAssignment(
+						para.substring(9));
+				String actorId = rules.getActorId(new Object[] { host });
+				if (actorId != null) {
+					params.put(para, actorId);
 				}
-				
-			});
+			}
+		}
+
+		ProcessInstance pi = WorkflowService.getDefault().startHumanProcess(
+				processDefintion, params);
+
+		for (String userId : relativeUserId) {
+			UserSessionContext.noticeAccountChanged(userId,
+					new IAccountEvent() {
+						@Override
+						public String getEventCode() {
+							return IAccountEvent.EVENT_PROCESS_START;
+						}
+
+						@Override
+						public Object getEventData() {
+							return host;
+						}
+
+					});
 		}
 
 		return pi;
