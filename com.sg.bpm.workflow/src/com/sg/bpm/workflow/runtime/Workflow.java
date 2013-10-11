@@ -124,7 +124,7 @@ public class Workflow {
 		for (int i = 0; i < naslist.size(); i++) {
 			NodeAssignment na = naslist.get(i);
 			if (na.isRuleAssignment()) {
-				String para = na.getRuleAssignmentName();
+				String para = na.getNodeActorParameter();
 				RuleAssignment rules = BPM.getRuleService().getRuleAssignment(
 						para.substring(9));
 				String actorId = rules.getActorId(new Object[] { host });

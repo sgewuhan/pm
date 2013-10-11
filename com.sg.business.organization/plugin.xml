@@ -293,6 +293,7 @@
             dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             editorId="editor.organization.user"
             id="organization.user"
+            limit="-1"
             multiSelection="true"
             popupMenu="popup:organization.user"
             queryMode="false">
