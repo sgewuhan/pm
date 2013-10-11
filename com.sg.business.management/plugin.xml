@@ -1173,12 +1173,17 @@
                   <list
                         editable="true"
                         id="kbase"
-                        label="流程库"
-                        labelVisible="false"
+                        label="组织流程库名称"
+                        labelVisible="true"
                         name="kbase"
                         option="knowledgebase"
                         persistable="true"
                         required="false">
+                     <fieldaction
+                           handler="com.sg.business.management.editor.ReloadKnowledgebase"
+                           image="image/reload_base_16.png"
+                           name="management.reloadknowledgebase">
+                     </fieldaction>
                   </list>
                </section>
             </pagecolumn>
