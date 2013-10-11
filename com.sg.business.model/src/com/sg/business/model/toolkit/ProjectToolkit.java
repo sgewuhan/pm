@@ -570,6 +570,11 @@ public class ProjectToolkit {
 		if (value != null) {
 			documentData.put(Document.F_DESC_EN, value);
 		}
+		
+		value = documentTemplate.get(DocumentDefinition.F_DOCUMENT_TYPE);
+		if (value != null) {
+			documentData.put(Document.F_DOCUMENT_TYPE, value);
+		}
 
 		value = new Boolean(Boolean.TRUE.equals(documentTemplate
 				.get(DocumentDefinition.F_ATTACHMENT_CANNOT_EMPTY)));
