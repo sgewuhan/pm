@@ -33,6 +33,26 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            editorId="pm2.projectcommit.audit"
+            name="审核"
+            persistentFields="choice"
+            processDefinitionId="pm.genericapprovalprocess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="pm2.projectcommit.approval"
+            name="批准"
+            persistentFields="choice"
+            processDefinitionId="pm.genericapprovalprocess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
