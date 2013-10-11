@@ -1228,6 +1228,7 @@
       </column>
       <column
             column="planfinish"
+            editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
             id="planfinish_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
             name="计划完成"
