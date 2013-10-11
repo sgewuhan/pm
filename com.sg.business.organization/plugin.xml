@@ -714,6 +714,11 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="scenario"
+               pageDelegator="com.sg.business.organization.editor.UserScenrioSetting"
+               title="使用场景">
+         </basicpage>
       </editor>
       <editor
             collectionName="account"

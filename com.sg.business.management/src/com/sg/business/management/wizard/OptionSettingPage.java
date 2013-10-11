@@ -28,23 +28,28 @@ public class OptionSettingPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 
-		Composite content = new Composite(parent,SWT.NONE);
+		Composite content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());
 
 		ProjectPreviewer wiz = (ProjectPreviewer) getWizard();
 		ProjectTemplate template = wiz.getProjectTemplate();
 		List<?> standardOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
-		createOptionSetting(content, standardOptions, "标准");
-		
+		if (standardOptions != null && standardOptions.size() > 0) {
+			createOptionSetting(content, standardOptions, "标准");
+		}
+
 		List<?> productTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
-		createOptionSetting(content, productTypeOptions, "产品类型");
+		if (productTypeOptions != null && productTypeOptions.size() > 0) {
+			createOptionSetting(content, productTypeOptions, "产品类型");
+		}
 
 		List<?> projectTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
-		createOptionSetting(content, projectTypeOptions, "项目类型");
-
+		if (projectTypeOptions != null && projectTypeOptions.size() > 0) {
+			createOptionSetting(content, projectTypeOptions, "项目类型");
+		}
 		setControl(content);
 		setPageComplete(true);
 	}
@@ -54,8 +59,8 @@ public class OptionSettingPage extends WizardPage {
 		return true;
 	}
 
-	private Composite createOptionSetting(Composite parent, List<?> standardOptions,
-			final String title) {
+	private Composite createOptionSetting(Composite parent,
+			List<?> standardOptions, final String title) {
 		Section section = new Section(parent, Section.CLIENT_INDENT
 				| Section.SHORT_TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
 
@@ -86,7 +91,8 @@ public class OptionSettingPage extends WizardPage {
 			settingButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					addFilterCondition(title,optionName,settingButton.getSelection());
+					addFilterCondition(title, optionName,
+							settingButton.getSelection());
 				}
 			});
 		}
@@ -98,7 +104,7 @@ public class OptionSettingPage extends WizardPage {
 	protected void addFilterCondition(String optionSet, String option,
 			boolean selection) {
 		ProjectPreviewer wiz = (ProjectPreviewer) getWizard();
-		wiz.setFilterCondition(optionSet, option,selection);
+		wiz.setFilterCondition(optionSet, option, selection);
 	}
 
 }
