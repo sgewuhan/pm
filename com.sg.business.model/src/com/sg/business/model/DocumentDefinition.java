@@ -54,6 +54,8 @@ public class DocumentDefinition extends PrimaryObject {
 	 */
 	public static final String F_TEMPLATEFILE = "templatefile";
 
+	public static final String F_DOCUMENT_TYPE = "documenttype";
+
 	public DocumentDefinition() {
 		super();
 		setVersionControledFields(new String[] { F_DESC,
