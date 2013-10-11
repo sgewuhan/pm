@@ -733,6 +733,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return false;
 		}
 
+		if (isMandatory()) {
+			return false;
+		}
 		if (isProjectWBSRoot()) {
 			return false;
 		}
@@ -902,22 +905,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 1.判断是否是本级的负责人
 			Work parent = (Work) getParent();
 			if (parent != null) {
-				if (!userId.equals(parent.getChargerId())) {
+				if (parent.hasPermission(context)) {
 					throw new Exception("不是工作负责人，" + parent);
 				}
-			} else {
-				throw new Exception("本工作不能取消，" + this);
-			}
-
-			if (isMandatory()) {
-				throw new Exception("本工作不能取消，" + this);
-			}
-
-			// 2.判断上级工作生命周期状态是否符合：进行中
-			// 如果不在进行中，返回false
-			Work parentWork = (Work) getParent();
-			if (parentWork != null) {
-				if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
+				if (!STATUS_WIP_VALUE.equals(parent.getLifecycleStatus())) {
 					throw new Exception("上级工作不在进行中，" + this);
 				}
 			} else {
@@ -927,6 +918,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						throw new Exception("项目不在进行中，" + this);
 					}
 				}
+
+				throw new Exception("本工作不能取消，" + this);
+			}
+
+			if (isMandatory()) {
+				throw new Exception("本工作不能取消，" + this);
 			}
 		}
 		return null;
