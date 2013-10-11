@@ -357,8 +357,8 @@ public class Role extends PrimaryObject {
 	 */
 	private boolean isReservedNumber(String rn) {
 		return rn != null
-				&& (rn.toUpperCase().startsWith("T") || rn.toUpperCase()
-						.startsWith("P"));
+				&& (rn.toUpperCase().startsWith("T0") || rn.toUpperCase()
+						.startsWith("P0"));
 	}
 
 	/**
