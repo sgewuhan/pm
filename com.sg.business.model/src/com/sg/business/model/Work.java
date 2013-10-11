@@ -662,8 +662,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void cancelCheck(IContext context) throws Exception {
 		// 1.判断是否是本级的负责人
 		String userId = context.getAccountInfo().getConsignerId();
-		if (!userId.equals(getChargerId())) {
-			throw new Exception("不是本工作负责人，" + this);
+		Work parent = (Work) getParent();
+		if (parent != null) {
+			if (!userId.equals(parent.getChargerId())) {
+				throw new Exception("不是工作负责人，" + parent);
+			}
+		} else {
+			throw new Exception("本工作不能取消，" + this);
+		}
+
+		if (isMandatory()) {
+			throw new Exception("本工作不能取消，" + this);
 		}
 
 		// 2.判断上级工作生命周期状态是否符合：进行中
@@ -681,6 +690,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				}
 			}
 		}
+	}
+
+	public boolean isMandatory() {
+		return Boolean.TRUE.equals(getValue(F_MANDATORY));
 	}
 
 	/**
@@ -886,13 +899,33 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				}
 			}
 		} else {
-			if (!userId.equals(getChargerId())) {
-				throw new Exception("不是本工作负责人，" + this);
+			// 1.判断是否是本级的负责人
+			Work parent = (Work) getParent();
+			if (parent != null) {
+				if (!userId.equals(parent.getChargerId())) {
+					throw new Exception("不是工作负责人，" + parent);
+				}
+			} else {
+				throw new Exception("本工作不能取消，" + this);
 			}
+
+			if (isMandatory()) {
+				throw new Exception("本工作不能取消，" + this);
+			}
+
+			// 2.判断上级工作生命周期状态是否符合：进行中
+			// 如果不在进行中，返回false
 			Work parentWork = (Work) getParent();
 			if (parentWork != null) {
 				if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
 					throw new Exception("上级工作不在进行中，" + this);
+				}
+			} else {
+				Project project = getProject();
+				if (project != null) {
+					if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
+						throw new Exception("项目不在进行中，" + this);
+					}
 				}
 			}
 		}
@@ -3031,47 +3064,45 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @param workd
 	 * @param context
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void doCreateChildFromGenericWorkDefinition(WorkDefinition workdef,
 			IContext context) throws Exception {
 		// 1.处理workd
 		ObjectId tgtParentId = get_id();
-		
+
 		ObjectId tgtRootId = getRoot().get_id();
-		
+
 		Project project = getProject();
 
 		HashMap<ObjectId, DBObject> worksToBeInsert = new HashMap<ObjectId, DBObject>();
-		
+
 		HashMap<ObjectId, DBObject> documentsToInsert = new HashMap<ObjectId, DBObject>();
-		
+
 		List<DBObject> deliverableToInsert = new ArrayList<DBObject>();
-		
+
 		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
-		
+
 		Map<ObjectId, DBObject> roleMap = new HashMap<ObjectId, DBObject>();
 
 		int seq = getMaxChildSeq();
-		
+
 		ObjectId folderRootId = project.getFolderRootId();
-		
+
 		ObjectId srcParent = workdef.get_id();
-		
-		DBObject targetParentWorkData = ProjectToolkit.getWorkFromWorkDefinition(tgtParentId, tgtRootId,
-				project, roleMap, folderRootId, documentsToInsert,
-				deliverableToInsert, fileToCopy, context, project.get_id(), seq,
-				workdef.get_data(), null);
+
+		DBObject targetParentWorkData = ProjectToolkit
+				.getWorkFromWorkDefinition(tgtParentId, tgtRootId, project,
+						roleMap, folderRootId, documentsToInsert,
+						deliverableToInsert, fileToCopy, context,
+						project.get_id(), seq, workdef.get_data(), null);
 		worksToBeInsert.put(srcParent, targetParentWorkData);
 		tgtParentId = (ObjectId) targetParentWorkData.get(F__ID);
-
-
 
 		ProjectToolkit.copyWBSTemplate(srcParent, tgtParentId, tgtRootId,
 				project, roleMap, worksToBeInsert, folderRootId,
 				documentsToInsert, deliverableToInsert, fileToCopy, context);
-		
-		
+
 		// 保存工作
 		DBCollection workCol = getCollection(IModelConstants.C_WORK);
 		Collection<DBObject> collection = worksToBeInsert.values();
