@@ -150,7 +150,9 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 				if (projectId != null) {
 					docdData.put(Document.F_PROJECT_ID, projectId);
 				}
+				Project project = ModelService.createModelObject(Project.class, projectId);
 				doc = ModelService.createModelObject(docdData, Document.class);
+				doc.setValue(Document.F_FOLDER_ID, project.getFolderRootId());
 				doc.doSave(context);
 			} else {
 				// ´æÔÚÎÄµµÄ£°å

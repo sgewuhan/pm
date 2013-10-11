@@ -2785,6 +2785,7 @@
                title="交付物">
          </navigatorpage>
          <navigatorpage
+               editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="project.documents"
                navigatorId="project.documents"
                title="文档">

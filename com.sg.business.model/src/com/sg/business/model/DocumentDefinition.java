@@ -20,8 +20,9 @@ import com.sg.business.resource.BusinessResource;
 
 /**
  * 文档模板定义
+ * 
  * @author jinxitao
- *
+ * 
  */
 public class DocumentDefinition extends PrimaryObject {
 
@@ -55,8 +56,11 @@ public class DocumentDefinition extends PrimaryObject {
 
 	public DocumentDefinition() {
 		super();
-		setVersionControledFields(new String[]{F_DESC,F_ATTACHMENT_CANNOT_EMPTY,F_DESCRIPTION,F_DOCUMENT_EDITORID,F_ORGANIZATION_ID,F_TEMPLATEFILE});
+		setVersionControledFields(new String[] { F_DESC,
+				F_ATTACHMENT_CANNOT_EMPTY, F_DESCRIPTION, F_DOCUMENT_EDITORID,
+				F_ORGANIZATION_ID, F_TEMPLATEFILE });
 	}
+
 	/**
 	 * 返回显示图标
 	 * 
@@ -162,6 +166,7 @@ public class DocumentDefinition extends PrimaryObject {
 
 	/**
 	 * 返回类型名称
+	 * 
 	 * @retrun String
 	 */
 	@Override
@@ -171,17 +176,23 @@ public class DocumentDefinition extends PrimaryObject {
 
 	/**
 	 * 创建文档
+	 * 
 	 * @param projectId
-	 *           文档所属项目_id
+	 *            文档所属项目_id
 	 * @param context
-	             ,上下文
+	 *            ,上下文
 	 * @return Document
 	 * @throws Exception
 	 */
-	public Document doCreateDocument(ObjectId projectId, IContext context) throws Exception {
+	public Document doCreateDocument(ObjectId projectId, IContext context)
+			throws Exception {
 		BasicDBObject documentData = new BasicDBObject();
 		documentData.put(Document.F__ID, new ObjectId());
 		documentData.put(Document.F_PROJECT_ID, projectId);
+
+		Project project = ModelService.createModelObject(Project.class,
+				projectId);
+		documentData.put(Document.F_FOLDER_ID, project.getFolderRootId());
 
 		Object value = getValue(F_DESC);
 		if (value != null) {
@@ -218,21 +229,21 @@ public class DocumentDefinition extends PrimaryObject {
 				dFile.put(RemoteFile.F_DB, Document.FILE_DB);
 				documentFiles.add(dFile);
 
-				FileUtil.copyGridFSFile(
-						(ObjectId)tFile.get(RemoteFile.F_ID),
-						(String)tFile.get(RemoteFile.F_DB),
-						(String)tFile.get(RemoteFile.F_FILENAME),
-						(String)tFile.get(RemoteFile.F_NAMESPACE),
-						
-						(ObjectId)dFile.get(RemoteFile.F_ID), 
-						(String)dFile.get(RemoteFile.F_DB),
-						(String)dFile.get(RemoteFile.F_FILENAME),
-						(String)dFile.get(RemoteFile.F_NAMESPACE));
+				FileUtil.copyGridFSFile((ObjectId) tFile.get(RemoteFile.F_ID),
+						(String) tFile.get(RemoteFile.F_DB),
+						(String) tFile.get(RemoteFile.F_FILENAME),
+						(String) tFile.get(RemoteFile.F_NAMESPACE),
+
+						(ObjectId) dFile.get(RemoteFile.F_ID),
+						(String) dFile.get(RemoteFile.F_DB),
+						(String) dFile.get(RemoteFile.F_FILENAME),
+						(String) dFile.get(RemoteFile.F_NAMESPACE));
 			}
 			documentData.put(Document.F_VAULT, documentFiles);
 		}
-		
-		Document doc = ModelService.createModelObject(documentData, Document.class);
+
+		Document doc = ModelService.createModelObject(documentData,
+				Document.class);
 		doc.doInsert(context);
 		return doc;
 	}
