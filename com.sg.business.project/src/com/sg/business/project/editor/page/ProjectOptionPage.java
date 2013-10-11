@@ -209,21 +209,21 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	@Override
 	public boolean checkValidOnSave() {
-		List<?> value = (List<?>) project
-				.getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
-		if (value == null || value.size() == 0) {
-			return false;
-		}
-		value = (List<?>) project
-				.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
-		if (value == null || value.size() == 0) {
-			return false;
-		}
-		value = (List<?>) project
-				.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
-		if (value == null || value.size() == 0) {
-			return false;
-		}
+//		List<?> value = (List<?>) project
+//				.getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
+//		if (value == null || value.size() == 0) {
+//			return false;
+//		}
+//		value = (List<?>) project
+//				.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
+//		if (value == null || value.size() == 0) {
+//			return false;
+//		}
+//		value = (List<?>) project
+//				.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
+//		if (value == null || value.size() == 0) {
+//			return false;
+//		}
 		return true;
 	}
 

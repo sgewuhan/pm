@@ -1365,6 +1365,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		root.doCancel(context);
 
 		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
+		
+		//TODO 发送项目消息到参与者
+
 		return this;
 	}
 
@@ -1397,6 +1400,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 				true, false);
 		set_data(data);
+		
+		//TODO 发送项目消息到参与者
+
 		return this;
 
 	}
@@ -1418,6 +1424,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		root.doPause(context);
 
 		doChangeLifecycleStatus(context, STATUS_PAUSED_VALUE);
+		
+		//TODO 发送项目消息到参与者
 		return this;
 	}
 
@@ -1440,6 +1448,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				true, false);
 		set_data(data);
 
+		
+		//TODO 发送项目消息到参与者
 		return this;
 	}
 
@@ -1532,11 +1542,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @throws Exception
 	 */
 	public void checkCommitAction(IContext context) throws Exception {
+		reload();
+		
 		// 1.检查是否本项目的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(this.getChargerId())) {
 			throw new Exception("不是本项目负责人，" + this);
 		}
+		
+		//TODO 需要检查是否已经创建了提交工作，如果是，则不能提交，如果生命周期状态不对，也不能提交
 	}
 
 	@SuppressWarnings("unchecked")

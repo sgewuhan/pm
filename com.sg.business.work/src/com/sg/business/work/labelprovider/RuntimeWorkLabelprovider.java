@@ -102,7 +102,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 
 		Date _planStart = project.getPlanStart();
 		String planStart = "";
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_MONTH_DATE_COMPACT_SASH);
 
 		if (_planStart != null) {
 			planStart = sdf.format(_planStart);
@@ -146,7 +146,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		String userId = context.getAccountInfo().getConsignerId();
 
 		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_MONTH_DATE_COMPACT_SASH);
 
 		User charger = work.getCharger();
 
@@ -244,7 +244,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		// sb.append(selectbar);
 
 		sb.append("");
-		sb.append("计划:");
+		sb.append("P:");
 		sb.append(planStart);
 		sb.append("~");
 
@@ -259,7 +259,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		if (_actualStart != null) {
 			actualStart = sdf.format(_actualStart);
 		}
-		sb.append("实际:");
+		sb.append("A:");
 		sb.append(actualStart);
 		sb.append("~");
 
@@ -270,7 +270,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		sb.append(actualFinish);
 		sb.append("  ");
 
-		sb.append("工期:");
+		sb.append("D:");
 
 		Integer actualDuration = work.getActualDuration();
 		if (actualDuration == null) {

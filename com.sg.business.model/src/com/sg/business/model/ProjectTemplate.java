@@ -230,6 +230,14 @@ public class ProjectTemplate extends PrimaryObject {
 		col.remove(new BasicDBObject().append(
 				WorkDefinition.F_PROJECT_TEMPLATE_ID, get_id()));
 	}
+	
+	@Override
+	public boolean canEdit(IContext context) {
+		if(isActivated()){
+			return false;
+		}
+		return super.canEdit(context);
+	}
 
 	/**
 	 * 删除模板中的预算定义

@@ -8,6 +8,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -132,7 +134,7 @@ public class ProjectCheckView extends ViewPart {
 				return "";
 			}
 		});
-		
+
 		column = new TableViewerColumn(viewer, SWT.LEFT);
 		column.getColumn().setText("∂‘œÛ");
 		column.getColumn().setWidth(160);
@@ -142,9 +144,9 @@ public class ProjectCheckView extends ViewPart {
 			public Image getImage(Object element) {
 				ICheckListItem ci = (ICheckListItem) element;
 				PrimaryObject data = ci.getSelection();
-				if(data !=null){
+				if (data != null) {
 					return ((PrimaryObject) data).getImage();
-				}else{
+				} else {
 					return null;
 				}
 			}
@@ -156,7 +158,7 @@ public class ProjectCheckView extends ViewPart {
 				if (data != null) {
 					return ((PrimaryObject) data).getTypeName() + ":"
 							+ ((PrimaryObject) data).getLabel();
-				}else{
+				} else {
 					return "";
 				}
 			}
@@ -194,10 +196,10 @@ public class ProjectCheckView extends ViewPart {
 								NavigatorPage navigatorPage = (NavigatorPage) page;
 								ViewerControl vc = navigatorPage.getNavigator()
 										.getViewerControl();
-								vc.getViewer()
-										.setSelection(
-												new StructuredSelection(
-														new Object[] {selection}), true);
+								vc.getViewer().setSelection(
+										new StructuredSelection(
+												new Object[] { selection }),
+										true);
 							}
 						}
 					} catch (Exception e) {
@@ -210,6 +212,19 @@ public class ProjectCheckView extends ViewPart {
 
 	public void setInput(Object input) {
 		viewer.setInput(input);
+		viewer.setFilters(new ViewerFilter[] { new ViewerFilter() {
+
+			@Override
+			public boolean select(Viewer viewer, Object parentElement,
+					Object element) {
+				if (element instanceof ICheckListItem) {
+					ICheckListItem iCheckListItem = (ICheckListItem) element;
+					return ICheckListItem.WARRING == iCheckListItem.getType()
+							|| ICheckListItem.ERROR == iCheckListItem.getType();
+				}
+				return false;
+			}
+		} });
 	}
 
 	@Override

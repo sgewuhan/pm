@@ -235,4 +235,8 @@ public class Folder extends PrimaryObject {
 		}
 	}
 
+	@Override
+	public String getDefaultEditorId() {
+		return "editor.folder";
+	}
 }

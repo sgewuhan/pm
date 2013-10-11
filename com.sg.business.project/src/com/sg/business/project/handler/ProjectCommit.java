@@ -25,11 +25,10 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 			Project project = (Project) selected;
 			try {
 				doCommit(project, new CurrentAccountContext());
-				vc.getViewer().update(selected, null);
-
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}
+			vc.getViewer().update(selected, null);
 		}
 	}
 

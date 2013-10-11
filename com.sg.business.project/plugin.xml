@@ -1294,7 +1294,7 @@
             limit="100"
             markupEnabled="true"
             multiSelection="true"
-            popupMenu="popup:menu.project.bulletinboard">
+            popupMenuProvider="com.sg.business.project.menu.ProjectBulletinMenuProvider">
          <structure
                modelRelation="bulletinboard_bulletinboard">
          </structure>
@@ -1392,10 +1392,9 @@
             dataSet="com.sg.business.model.dataset.project.FolderOfProject"
             dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             dropTargetListener="com.sg.business.project.dnd.DropProjectFolder"
-            editorId="editor.folder"
             headerVisiable="false"
             id="project.folder"
-            popupMenu="popup:project.folder">
+            popupMenuProvider="com.sg.business.project.menu.ProjectFolderMenuProvider">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -2237,8 +2236,21 @@
          <command
                commandId="com.sg.widgets.command.create"
                icon="image/create2_24.png"
-               label="创建"
+               label="创建文件夹"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.sg.business.model.Folder">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
@@ -2598,7 +2610,7 @@
                <section
                      label="工作令号">
                   <list
-                        editable="true"
+                        editable="false"
                         id="workorder"
                         label="工作令号"
                         labelVisible="false"

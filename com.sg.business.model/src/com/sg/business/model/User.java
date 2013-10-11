@@ -13,6 +13,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBObjectComparator;
+import com.mobnut.portal.Portal;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -222,6 +223,13 @@ public class User extends PrimaryObject {
 		} else {
 			super.doRemove(context);
 		}
+	}
+	
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		// TODO 读取默认场景，写入
+//		String id = Portal.getDefault().getDefaultScenarioId();
+		super.doInsert(context);
 	}
 
 	/**
