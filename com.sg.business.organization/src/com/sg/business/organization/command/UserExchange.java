@@ -351,7 +351,7 @@ public class UserExchange {
 			Organization org = userExchange.getPmOrgByOrganizationNumber();
 
 			user = ModelService.createModelObject(User.class);
-			user.setValue(User.F_USER_ID, userExchange.getUnitId());
+			user.setValue(User.F_USER_ID, userExchange.getUserId());
 			user.setValue(User.F_EMAIL, userExchange.geteMail());
 			user.setValue(User.F_ORGANIZATION_ID, org.get_id());
 			user.setValue(User.F_ORGANIZATION_NAME, org.getDesc());
