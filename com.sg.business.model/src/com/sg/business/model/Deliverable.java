@@ -150,7 +150,8 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 				if (projectId != null) {
 					docdData.put(Document.F_PROJECT_ID, projectId);
 				}
-				Project project = ModelService.createModelObject(Project.class, projectId);
+				Project project = ModelService.createModelObject(Project.class,
+						projectId);
 				doc = ModelService.createModelObject(docdData, Document.class);
 				doc.setValue(Document.F_FOLDER_ID, project.getFolderRootId());
 				doc.doSave(context);
@@ -180,14 +181,15 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 		/**
 		 * 如果是项目工作的交付物，项目经理可以删除，工作的负责人可以删除
 		 * 
-		 * 如果工作在准备中、无状态时，可以删除
+		 * 如果工作在完成时终止时暂停不可以删除
 		 */
 
 		Work work = getWork();
 		String lc = work.getLifecycleStatus();
 
-		if (!Work.STATUS_NONE_VALUE.equals(lc)
-				&& !Work.STATUS_ONREADY_VALUE.equals(lc)) {
+		if (Work.STATUS_CANCELED_VALUE.equals(lc)
+				&& Work.STATUS_FINIHED_VALUE.equals(lc)
+				&& Work.STATUS_PAUSED_VALUE.equals(lc)) {
 			return false;
 		}
 
@@ -204,14 +206,16 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 		Work work = getWork();
 		String lc = work.getLifecycleStatus();
 
-		if (!Work.STATUS_NONE_VALUE.equals(lc)
-				&& !Work.STATUS_ONREADY_VALUE.equals(lc)) {
+		if (Work.STATUS_CANCELED_VALUE.equals(lc)
+				&& Work.STATUS_FINIHED_VALUE.equals(lc)
+				&& Work.STATUS_PAUSED_VALUE.equals(lc)) {
 			return false;
 		}
 
 		if (!work.hasPermission(context)) {
 			return false;
 		}
+		
 		return super.canEdit(context);
 	}
 }

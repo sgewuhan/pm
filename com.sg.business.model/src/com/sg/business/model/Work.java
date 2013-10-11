@@ -659,38 +659,38 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
-	public void cancelCheck(IContext context) throws Exception {
-		// 1.判断是否是本级的负责人
-		String userId = context.getAccountInfo().getConsignerId();
-		Work parent = (Work) getParent();
-		if (parent != null) {
-			if (!userId.equals(parent.getChargerId())) {
-				throw new Exception("不是工作负责人，" + parent);
-			}
-		} else {
-			throw new Exception("本工作不能取消，" + this);
-		}
-
-		if (isMandatory()) {
-			throw new Exception("本工作不能取消，" + this);
-		}
-
-		// 2.判断上级工作生命周期状态是否符合：进行中
-		// 如果不在进行中，返回false
-		Work parentWork = (Work) getParent();
-		if (parentWork != null) {
-			if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
-				throw new Exception("上级工作不在进行中，" + this);
-			}
-		} else {
-			Project project = getProject();
-			if (project != null) {
-				if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
-					throw new Exception("项目不在进行中，" + this);
-				}
-			}
-		}
-	}
+	// public void cancelCheck(IContext context) throws Exception {
+	// // 1.判断是否是本级的负责人
+	// String userId = context.getAccountInfo().getConsignerId();
+	// Work parent = (Work) getParent();
+	// if (parent != null) {
+	// if (!userId.equals(parent.getChargerId())) {
+	// throw new Exception("不是工作负责人，" + parent);
+	// }
+	// } else {
+	// throw new Exception("本工作不能取消，" + this);
+	// }
+	//
+	// if (isMandatory()) {
+	// throw new Exception("本工作不能取消，" + this);
+	// }
+	//
+	// // 2.判断上级工作生命周期状态是否符合：进行中
+	// // 如果不在进行中，返回false
+	// Work parentWork = (Work) getParent();
+	// if (parentWork != null) {
+	// if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
+	// throw new Exception("上级工作不在进行中，" + this);
+	// }
+	// } else {
+	// Project project = getProject();
+	// if (project != null) {
+	// if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
+	// throw new Exception("项目不在进行中，" + this);
+	// }
+	// }
+	// }
+	// }
 
 	public boolean isMandatory() {
 		return Boolean.TRUE.equals(getValue(F_MANDATORY));
@@ -890,8 +890,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 2.判断上级工作生命周期状态是否符合：进行中
 		// 如果不在进行中，返回false
 		String userId = context.getAccountInfo().getConsignerId();
+		Project project = getProject();
 		if (isProjectWBSRoot()) {
-			Project project = getProject();
 			if (!userId.equals(project.getChargerId())) {
 				throw new Exception("不是本项目负责人，" + this);
 			}
@@ -905,20 +905,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 1.判断是否是本级的负责人
 			Work parent = (Work) getParent();
 			if (parent != null) {
-				if (parent.hasPermission(context)) {
-					throw new Exception("不是工作负责人，" + parent);
-				}
 				if (!STATUS_WIP_VALUE.equals(parent.getLifecycleStatus())) {
 					throw new Exception("上级工作不在进行中，" + this);
 				}
+				if (parent.isProjectWBSRoot()) {
+					if (!userId.equals(project.getChargerId())) {
+						throw new Exception("不是本项目负责人，" + this);
+					}
+				} else {
+					if (parent.hasPermission(context)) {
+						throw new Exception("不是工作负责人，" + parent);
+					}
+				}
 			} else {
-				Project project = getProject();
 				if (project != null) {
 					if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
 						throw new Exception("项目不在进行中，" + this);
 					}
 				}
-
 				throw new Exception("本工作不能取消，" + this);
 			}
 
@@ -1017,7 +1021,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void checkAndCalculateDuration(String fStart, String fFinish,
 			String fDuration) throws Exception {
-		//TODO 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
+		// TODO 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
 		Date start = (Date) getValue(fStart);
 		if (start != null) {
 			start = Utils.getDayBegin(start).getTime();
@@ -1684,6 +1688,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 同步负责人、流程活动执行人到工作的参与者。
 		ensureParticipatesConsistency();
+
+		// 缺省可以添加交付物
+		Object value = getValue(F_S_CANADDDELIVERABLES);
+		if (value == null) {
+			setValue(F_S_CANADDDELIVERABLES, Boolean.TRUE);
+		}
+
 		super.doInsert(context);
 	}
 
@@ -2761,7 +2772,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public List<WorkRecord> getWorkRecord() {
-		Object record = getValue(F_RECORD);
+		Object record = getValue(F_RECORD, true);
 		List<WorkRecord> result = new ArrayList<WorkRecord>();
 		if (record instanceof List<?>) {
 			for (int i = 0; i < ((List<?>) record).size(); i++) {

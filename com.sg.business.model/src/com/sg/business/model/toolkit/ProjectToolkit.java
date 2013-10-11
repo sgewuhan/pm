@@ -331,10 +331,17 @@ public class ProjectToolkit {
 		}
 
 		// ∏¥÷∆…Ë÷√œÓ
-		for (int i = 0; i < IWorkCloneFields.SETTING_FIELDS.length; i++) {
-			value = workdef.get(IWorkCloneFields.SETTING_FIELDS[i]);
-			if (value != null) {
-				work.put(IWorkCloneFields.SETTING_FIELDS[i], value);
+		if (new Integer(WorkDefinition.WORK_TYPE_GENERIC).equals(workdef
+				.get(WorkDefinition.F_WORK_TYPE))) {
+			work.put(IWorkCloneFields.F_SETTING_CAN_ADD_DELIVERABLES, Boolean.TRUE);
+			work.put(IWorkCloneFields.F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
+			work.put(IWorkCloneFields.F_SETTING_CAN_MODIFY_PLANWORKS, Boolean.TRUE);
+		} else {
+			for (int i = 0; i < IWorkCloneFields.SETTING_FIELDS.length; i++) {
+				value = workdef.get(IWorkCloneFields.SETTING_FIELDS[i]);
+				if (value != null) {
+					work.put(IWorkCloneFields.SETTING_FIELDS[i], value);
+				}
 			}
 		}
 
@@ -570,7 +577,7 @@ public class ProjectToolkit {
 		if (value != null) {
 			documentData.put(Document.F_DESC_EN, value);
 		}
-		
+
 		value = documentTemplate.get(DocumentDefinition.F_DOCUMENT_TYPE);
 		if (value != null) {
 			documentData.put(Document.F_DOCUMENT_TYPE, value);

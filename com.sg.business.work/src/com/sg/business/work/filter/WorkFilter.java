@@ -189,6 +189,7 @@ public class WorkFilter extends ViewerFilter {
 
 		case WorkFilterAction.SHOW_WORK_ASSIGNMENT:
 		case WorkFilterAction.SHOW_WORK_CHARGED:
+		case WorkFilterAction.SHOW_WORK_PATICIPATE:
 		case WorkFilterAction.SHOW_MY_PROJECT_WORK:
 		case WorkFilterAction.SHOW_MARKED_WORK:
 			return selector.select(viewer, work, userid);

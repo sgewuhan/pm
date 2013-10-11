@@ -62,10 +62,6 @@
                createHandler="com.sg.business.vault.editor.FolderCreater"
                editorId="editor.folder">
          </createEditor>
-         <createEditor
-               createHandler="com.sg.business.vault.editor.DocumentCreater"
-               editorId="editor.document.generic">
-         </createEditor>
       </navigator>
       <navigator
             id="vault.folder.granted"
@@ -84,10 +80,6 @@
                createHandler="com.sg.business.vault.editor.FolderCreater"
                editorId="editor.folder">
          </createEditor>
-         <createEditor
-               createHandler="com.sg.business.vault.editor.DocumentCreater"
-               editorId="editor.document.generic">
-         </createEditor>
       </navigator>
       <navigator
             id="vault.folder.admin"
@@ -105,10 +97,6 @@
          <createEditor
                createHandler="com.sg.business.vault.editor.FolderCreater"
                editorId="editor.folder">
-         </createEditor>
-         <createEditor
-               createHandler="com.sg.business.vault.editor.DocumentCreater"
-               editorId="editor.document.generic">
          </createEditor>
       </navigator>
       <navigator
