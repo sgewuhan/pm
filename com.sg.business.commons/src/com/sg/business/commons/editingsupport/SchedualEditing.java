@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.model.IContext;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.editingsupport.IEditingSupportor;
@@ -29,6 +30,8 @@ public abstract class SchedualEditing implements IEditingSupportor {
 		} else if (Utils.TYPE_DATETIME.equals(type)) {
 			style = style | SWT.LONG;
 		}
+		final IContext content = new CurrentAccountContext();
+		
 		final CellEditor editor = new SchedualCellEditor((Composite) viewer.getControl());
 		
 		EditingSupport es = new EditingSupport(viewer) {
@@ -42,7 +45,11 @@ public abstract class SchedualEditing implements IEditingSupportor {
 			protected boolean canEdit(Object element) {
 				if (element instanceof Work) {
 					Work work = (Work) element;
-					return !work.isSummaryWork();
+					if(work.isSummaryWork()){
+						return false;
+					}else{
+						return work.canEdit(content);
+					}
 				}
 				return false;
 			}
