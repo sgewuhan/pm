@@ -916,7 +916,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						throw new Exception("不是本项目负责人，" + this);
 					}
 				} else {
-					if (parent.hasPermission(context)) {
+					if (!parent.hasPermission(context)) {
 						throw new Exception("不是工作负责人，" + parent);
 					}
 				}
@@ -1024,7 +1024,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void checkAndCalculateDuration(String fStart, String fFinish,
 			String fDuration) throws Exception {
-		// TODO 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
 		Date start = (Date) getValue(fStart);
 		if (start != null) {
 			start = Utils.getDayBegin(start).getTime();
@@ -1040,6 +1039,26 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (start.after(finish)) {
 				throw new Exception("开始日期必须早于完成日期");
 			}
+			
+			//增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
+			Project project = getProject();
+		    Date pstart=project.getPlanStart();
+		    if (pstart != null) {
+		    	pstart = Utils.getDayBegin(pstart).getTime();
+			}
+
+			Date pfinish =project.getPlanFinish();
+			if (pfinish != null) {
+				pfinish = Utils.getDayEnd(pfinish).getTime();
+			}
+			
+			if(start.before(pstart)){
+				throw new Exception("工作的开始时间不能早于项目的开始时间");
+			}
+			if(finish.after(pfinish)){
+				throw new Exception("工作的结束时间不能晚于项目的结束时间");
+			}
+			
 			// 计算工期
 			Calendar sdate = Utils.getDayBegin(start);
 			Calendar edate = Utils.getDayEnd(finish);
@@ -1388,21 +1407,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (userId.equals(getChargerId())) {
 			return true;
 		} else {
-			return parentPermission(context, userId);
-		}
-	}
-
-	public boolean parentPermission(IContext context, String userId) {
-		Work parent = (Work) getParent();
-		if (parent != null) {
-			return parent.hasPermission(context);
-		} else {
-			// 是Root工作，判断是否是项目经理
-			Project project = getProject();
-			if (project != null) {
-				return userId.equals(project.getChargerId());
+			Work parent = (Work) getParent();
+			if (parent != null) {
+				return parent.hasPermission(context);
 			} else {
-				return false;
+				// 是Root工作，判断是否是项目经理
+				Project project = getProject();
+				if (project != null) {
+					return userId.equals(project.getChargerId());
+				} else {
+					return false;
+				}
 			}
 		}
 	}
