@@ -1021,7 +1021,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void checkAndCalculateDuration(String fStart, String fFinish,
 			String fDuration) throws Exception {
-		// TODO 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
 		Date start = (Date) getValue(fStart);
 		if (start != null) {
 			start = Utils.getDayBegin(start).getTime();
@@ -1037,6 +1036,26 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (start.after(finish)) {
 				throw new Exception("开始日期必须早于完成日期");
 			}
+			
+			//增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
+			Project project = getProject();
+		    Date pstart=project.getPlanStart();
+		    if (pstart != null) {
+		    	pstart = Utils.getDayBegin(pstart).getTime();
+			}
+
+			Date pfinish =project.getPlanFinish();
+			if (pfinish != null) {
+				pfinish = Utils.getDayEnd(pfinish).getTime();
+			}
+			
+			if(start.before(pstart)){
+				throw new Exception("工作的开始时间不能早于项目的开始时间");
+			}
+			if(finish.after(pfinish)){
+				throw new Exception("工作的结束时间不能晚于项目的结束时间");
+			}
+			
 			// 计算工期
 			Calendar sdate = Utils.getDayBegin(start);
 			Calendar edate = Utils.getDayEnd(finish);
