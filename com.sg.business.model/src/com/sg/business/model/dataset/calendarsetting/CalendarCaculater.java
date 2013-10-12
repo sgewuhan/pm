@@ -115,4 +115,28 @@ public class CalendarCaculater {
 		return count;
 	}
 
+	/**
+	 * 获取工作时间（小时）
+	 * 
+	 * @param startDate
+	 *            ： 起始日期
+	 * @param endDate
+	 *            ： 终止日期
+	 * @return 工作时间（天）
+	 */
+	public double getWorkingHours(Date startDate, Date endDate) {
+		double count = 0;
+		Calendar sdate = Utils.getDayBegin(startDate);
+		Calendar edate = Utils.getDayEnd(endDate);
+
+		// 循环计算工作时间天数
+		Calendar current = sdate;
+		while (current.before(edate)) {
+			Date d = current.getTime();
+			count += getWorkingTime(d);
+			current.set(Calendar.DATE, current.get(Calendar.DATE) + 1);
+		}
+		return count;
+	}
+
 }

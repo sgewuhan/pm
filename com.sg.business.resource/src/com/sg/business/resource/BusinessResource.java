@@ -222,6 +222,10 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_REASSIGNMENT_24 = "reassignment_24.png";
 
+	public static final String IMAGE_FLAG_RED_16 = "flag_red_16.png";
+	
+	public static final String IMAGE_FLAG_YELLOW_16 = "flag_yellow_16.png";
+
 
 	/**
 	 * Returns the shared instance
