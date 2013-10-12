@@ -496,7 +496,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		folderRoot.doInsert(context);
 		setValue(Project.F_FOLDER_ID, folderRoot.get_id());
 
-
 		// 预算
 		ProjectBudget budget = makeBudget(context);
 		budget.doInsert(context);
@@ -765,9 +764,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
 
-		ProjectToolkit.copyWBSTemplate(rootWorkDefId, wbsRootId, wbsRootId, this, roleMap,
-				worksToBeInsert, folderRootId, documentsToBeInsert,
-				deliverableToInsert, fileToCopy, context);
+		ProjectToolkit.copyWBSTemplate(rootWorkDefId, wbsRootId, wbsRootId,
+				this, roleMap, worksToBeInsert, folderRootId,
+				documentsToBeInsert, deliverableToInsert, fileToCopy, context);
 
 		// 保存工作
 		DBCollection workCol = getCollection(IModelConstants.C_WORK);
@@ -949,10 +948,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		super.doRemove(context);
 	}
-
-
-
-
 
 	public void checkAndCalculateDuration(CalendarCaculater cc, String fStart,
 			String fFinish, String fDuration) throws Exception {
@@ -1360,17 +1355,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return work;
 	}
 
+	/**
+	 * 取消项目
+	 */
 	public Object doCancel(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doCancel(context);
 
 		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
-		
-		//TODO 发送项目消息到参与者
+
+		// 发送项目消息到参与者
+		doNoticeProjectAction(context, "已取消");
 
 		return this;
 	}
 
+	/**
+	 * 完成项目
+	 */
 	public Object doFinish(IContext context) throws Exception {
 		Organization org = getFunctionOrganization();
 		if (org == null) {
@@ -1400,8 +1402,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 				true, false);
 		set_data(data);
-		
-		//TODO 发送项目消息到参与者
+
+		// 发送项目消息到参与者
+		doNoticeProjectAction(context, "已完成");
 
 		return this;
 
@@ -1419,16 +1422,23 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		checkWriteResult(ws);
 	}
 
+	/**
+	 * 暂停项目
+	 */
 	public Object doPause(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doPause(context);
 
 		doChangeLifecycleStatus(context, STATUS_PAUSED_VALUE);
-		
-		//TODO 发送项目消息到参与者
+
+		// 发送项目消息到参与者
+		doNoticeProjectAction(context, "已暂停");
 		return this;
 	}
 
+	/**
+	 * 启动项目
+	 */
 	public Object doStart(IContext context) throws Exception {
 		Work root = getWBSRoot();
 		root.doStart(context);
@@ -1448,9 +1458,66 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				true, false);
 		set_data(data);
 
-		
-		//TODO 发送项目消息到参与者
+		// 发送项目消息到参与者
+		doNoticeProjectAction(context, "已启动");
 		return this;
+	}
+
+	/**
+	 * 发送项目操作完成的通知
+	 * 
+	 * @param context
+	 *            当前的上下文
+	 * @param actionName
+	 *            操作的文本名称
+	 * @return
+	 * @throws Exception
+	 *             发送消息出现的错误
+	 */
+	public Message doNoticeProjectAction(IContext context, String actionName)
+			throws Exception {
+		// 设置收件人
+		BasicBSONList participatesIdList = (BasicBSONList) getParticipatesIdList();
+		if (participatesIdList == null || participatesIdList.isEmpty()) {
+			return null;
+		}
+		// 排除自己
+		participatesIdList.remove(context.getAccountInfo().getConsignerId());
+
+		// 设置通知标题
+		String title = "" + this + " " + actionName;
+
+		// 设置通知内容
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='font-size:14px'>");
+		sb.append("您好: ");
+		sb.append("</span><br/><br/>");
+		sb.append("您参与的项目有新的进展。");
+		sb.append("<br/><br/>");
+
+		sb.append(context.getAccountInfo().getUserId() + "|"
+				+ context.getAccountInfo().getUserName());
+		sb.append(", ");
+		sb.append(actionName);
+		sb.append("项目");
+		sb.append("\"");
+		sb.append(this);
+		sb.append("\"");
+
+		sb.append("<br/><br/>");
+		sb.append("如有不明，请查阅有关工作信息。");
+
+		Message message = MessageToolkit.makeMessage(participatesIdList, title,
+				context.getAccountInfo().getConsignerId(), sb.toString());
+
+		MessageToolkit.appendEndMessage(message);
+
+		// 设置导航附件
+		message.appendTargets(this, EDITOR_CREATE_PLAN, false);
+
+		message.doSave(context);
+
+		return message;
 	}
 
 	/**
@@ -1543,14 +1610,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void checkCommitAction(IContext context) throws Exception {
 		reload();
-		
+
 		// 1.检查是否本项目的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(this.getChargerId())) {
 			throw new Exception("不是本项目负责人，" + this);
 		}
-		
-		//TODO 需要检查是否已经创建了提交工作，如果是，则不能提交，如果生命周期状态不对，也不能提交
+
+		// TODO 需要检查是否已经创建了提交工作，如果是，则不能提交，如果生命周期状态不对，也不能提交
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1698,13 +1765,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public ObjectId getFolderRootId() {
 		return (ObjectId) getValue(F_FOLDER_ID);
 	}
-	
-	public Folder getFolderRoot(){
+
+	public Folder getFolderRoot() {
 		ObjectId id = getFolderRootId();
-		if(id!=null){
+		if (id != null) {
 			return ModelService.createModelObject(Folder.class, id);
 		}
-		
+
 		return null;
 	}
 }
