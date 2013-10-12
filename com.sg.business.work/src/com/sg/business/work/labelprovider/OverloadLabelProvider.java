@@ -11,7 +11,7 @@ public class OverloadLabelProvider extends ColumnLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		Work work = (Work)element;
-		int count = work.getOverloadCount();
+//		int count = work.getOverloadCount();
 		
 		
 		// TODO Auto-generated method stub
