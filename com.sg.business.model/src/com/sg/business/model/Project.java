@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
-import org.eclipse.rap.rwt.internal.lifecycle.LifeCycle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
@@ -31,7 +30,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
-import com.sg.business.model.bpmservice.LifecycleService;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
@@ -1619,7 +1617,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throw new Exception("不是本项目负责人，" + this);
 		}
 
-		// TODO
 		// 需要检查是否已经创建了提交工作，如果是，则不能提交，如果生命周期状态不对，也不能提交
 
 		// 判断当前项目状态是否可以进行提交
