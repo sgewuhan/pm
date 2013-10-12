@@ -1068,7 +1068,8 @@
             headerVisiable="true"
             id="management.roledefinition"
             multiSelection="true"
-            popupMenu="popup:management.roledefinition">
+            popupMenu="popup:management.roledefinition"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                columnDefinitionId="roledefinition.number">
          </column>

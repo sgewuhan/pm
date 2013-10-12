@@ -38,7 +38,7 @@ public class BugetTemplatePage implements IPageDelegator, IFormPart {
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		this.input = input;
-
+		boolean ediable = input.isEditable();
 		PrimaryObject pjTemplate = input.getData();
 
 		// 创建根据默认的预算科目创建一棵树并具有勾选框。
@@ -56,7 +56,8 @@ public class BugetTemplatePage implements IPageDelegator, IFormPart {
 			}
 		}
 
-		viewer = new TreeViewer(parent, SWT.FULL_SELECTION | SWT.CHECK);
+		viewer = new TreeViewer(parent,
+				ediable ? (SWT.FULL_SELECTION | SWT.CHECK) : SWT.FULL_SELECTION);
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.setContentProvider(new BudgetItemTreeContentProvider());
 		viewer.setInput(defaultRoot.getChildren());
@@ -64,7 +65,9 @@ public class BugetTemplatePage implements IPageDelegator, IFormPart {
 		// 设置勾选状态
 		setCheckedItem(viewer.getTree().getItems(), templateRoot.getChildren());
 		// 添加勾选侦听器，勾选下级后上级自动被勾选
-		setCheckListner();
+		if(ediable){
+			setCheckListner();
+		}
 		return (Composite) viewer.getControl();
 	}
 

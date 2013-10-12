@@ -1091,7 +1091,8 @@
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.RoleOfProject"
             id="project.team"
-            popupMenuProvider="com.sg.business.project.menu.ProjectTeamMenuProvider">
+            popupMenu="popup:project.team"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -1115,7 +1116,8 @@
             editorId="view.work"
             fix="1"
             id="project.wbs"
-            popupMenuProvider="com.sg.business.project.menu.ProjectWBSMenuProvider">
+            popupMenu="popup:project.wbs"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <structure
                modelRelation="work_work">
          </structure>
@@ -1199,7 +1201,8 @@
             editorId="work.deliverable"
             fix="1"
             id="project.deliverable"
-            popupMenuProvider="com.sg.business.project.menu.ProjectDeliverableMenuProvider">
+            popupMenu="popup:project.deliverable"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <structure
                modelRelation="work_work">
          </structure>
@@ -1294,7 +1297,8 @@
             limit="100"
             markupEnabled="true"
             multiSelection="true"
-            popupMenuProvider="com.sg.business.project.menu.ProjectBulletinMenuProvider">
+            popupMenu="popup:menu.project.bulletinboard"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <structure
                modelRelation="bulletinboard_bulletinboard">
          </structure>
@@ -1394,7 +1398,8 @@
             dropTargetListener="com.sg.business.project.dnd.DropProjectFolder"
             headerVisiable="false"
             id="project.folder"
-            popupMenuProvider="com.sg.business.project.menu.ProjectFolderMenuProvider">
+            popupMenu="popup:project.folder"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
