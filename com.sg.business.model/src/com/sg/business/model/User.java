@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
@@ -14,6 +15,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBObjectComparator;
 import com.mobnut.portal.Portal;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -85,6 +87,8 @@ public class User extends PrimaryObject {
 	public static final String F_IS_ADMIN = "isadmin";
 
 	private static final String F_LASTOPENED = "lastopened";
+	
+	public static final String F_SCENARIO="scenario";
 
 	/**
 	 * 获取组织_id
@@ -227,8 +231,21 @@ public class User extends PrimaryObject {
 	
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		// TODO 读取默认场景，写入
-//		String id = Portal.getDefault().getDefaultScenarioId();
+		String id = Portal.getDefault().getDefaultScenarioId();
+		
+		BasicDBList scenarioList;
+		Object value = getValue(F_SCENARIO);
+		if (value!=null&&value instanceof BasicBSONList) {
+			scenarioList = (BasicDBList)value;
+			if(!scenarioList.contains(value)){
+				scenarioList.add(id);
+			}
+		}else{
+			scenarioList=new BasicDBList();
+			scenarioList.add(id);
+			setValue(F_SCENARIO, scenarioList);
+		}
+		
 		super.doInsert(context);
 	}
 
