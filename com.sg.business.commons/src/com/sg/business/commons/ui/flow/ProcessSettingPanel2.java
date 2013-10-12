@@ -408,8 +408,16 @@ public abstract class ProcessSettingPanel2 extends Composite {
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 		if (activiteEditor != null && !activiteEditor.isDisposed()) {
-			activiteEditor.setEditable(editable);
+			activiteEditor.setRoleSelectEnable(editable);
+			activiteEditor.setActorSelectEnable(editable);
 		}
+		if (activatedChecker != null && !activatedChecker.isDisposed()) {
+			activatedChecker.setEnabled(editable);
+		}
+		if (processSelecter != null && !processSelecter.getControl().isDisposed()) {
+			processSelecter.getControl().setEnabled(editable);
+		}
+		
 	}
 
 	public void setRoleSelectEnable(boolean enable) {
