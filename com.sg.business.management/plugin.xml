@@ -341,7 +341,8 @@
       <table
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjectTemplate"
             id="management.workdconnection"
-            popupMenu="popup:management.workdconnection">
+            popupMenu="popup:management.workdconnection"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                column="end1label"
                labelProvider="com.sg.business.commons.labelprovider.End1WorkDefLabelProvider"
@@ -398,7 +399,8 @@
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefOfProjectTemplate"
             dropTargetListener="com.sg.business.management.dnd.DropWBSTemplate"
             id="management.wbstemplate"
-            popupMenu="popup:management.wbstemplate">
+            popupMenu="popup:management.wbstemplate"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                columnDefinitionId="work.desc">
          </column>
@@ -438,7 +440,8 @@
             dropTargetListener="com.sg.business.management.dnd.DropDeliverable"
             fix="1"
             id="management.deliverables"
-            popupMenu="popup:management.deliverables">
+            popupMenu="popup:management.deliverables"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                column="desc"
                name="名称"

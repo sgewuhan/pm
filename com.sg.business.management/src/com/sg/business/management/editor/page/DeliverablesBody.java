@@ -155,7 +155,7 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater,
 
 				@Override
 				protected boolean canEdit(Object element) {
-					return true;
+					return projectTemplate.canEdit(new CurrentAccountContext());
 				}
 			});
 		}
