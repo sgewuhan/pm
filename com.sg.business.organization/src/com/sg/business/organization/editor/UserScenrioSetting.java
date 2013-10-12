@@ -20,11 +20,7 @@ import com.sg.widgets.registry.config.BasicPageConfigurator;
 public class UserScenrioSetting extends AbstractFormPageDelegator {
 	
 	private Button[] buttons;
-
-	public UserScenrioSetting() {
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
