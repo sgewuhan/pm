@@ -1327,8 +1327,8 @@
             autoExpandLevel="-1"
             canCreate="false"
             canDelete="false"
-            canEdit="false"
-            canRead="false"
+            canEdit="true"
+            canRead="true"
             dataSet="com.sg.business.model.dataset.project.WorkOfWork"
             editorId="work.deliverable"
             fix="1"
@@ -2089,7 +2089,29 @@
             </visibleWhen>
          </command>
          <command
-               commandId="project.viewdeliverabledocument"
+               commandId="project.editdeliverabledocument"
+               icon="image/edit_24.png"
+               label="编辑文档"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <instanceof
+                           value="com.sg.business.model.Deliverable">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="deliverabledocument.editable"
+                  value="true">
+            </parameter>
+         </command>
+         <command
+               commandId="project.editdeliverabledocument"
                icon="image/document_24.png"
                label="查看文档..."
                style="push">
@@ -2105,6 +2127,10 @@
                   </iterate>
                </with>
             </visibleWhen>
+            <parameter
+                  name="deliverabledocument.editable"
+                  value="false">
+            </parameter>
          </command>
          <separator
                name="project.deliverable.separator2"
@@ -2256,8 +2282,7 @@
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
                label="编辑"
-               style="push"
-               tooltip="image/edit_24.png">
+               style="push">
          </command>
          <separator
                name="folder.separator1"
@@ -2325,13 +2350,18 @@
       </command>
       <command
             categoryId="project"
-            id="project.viewdeliverabledocument"
-            name="查看交付物文档">
+            id="project.linkdeliverable"
+            name="链接交付物文档">
       </command>
       <command
             categoryId="project"
-            id="project.linkdeliverable"
-            name="链接交付物文档">
+            id="project.editdeliverabledocument"
+            name="编辑交付物文档">
+         <commandParameter
+               id="deliverabledocument.editable"
+               name="editable"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             categoryId="project"
@@ -2408,8 +2438,8 @@
             commandId="project.deletedeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.ViewDeliverableDocument"
-            commandId="project.viewdeliverabledocument">
+            class="com.sg.business.project.handler.EditDeliverableDocument"
+            commandId="project.editdeliverabledocument">
       </handler>
       <handler
             class="com.sg.business.project.handler.LinkDeliverable"
