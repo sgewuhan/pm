@@ -1617,7 +1617,25 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throw new Exception("不是本项目负责人，" + this);
 		}
 
-		// TODO 需要检查是否已经创建了提交工作，如果是，则不能提交，如果生命周期状态不对，也不能提交
+		// 需要检查是否已经创建了提交工作，如果是，则不能提交，如果生命周期状态不对，也不能提交
+
+		// 判断当前项目状态是否可以进行提交
+		String lc = getLifecycleStatus();
+		if (!STATUS_NONE_VALUE.equals(lc)) {
+			throw new Exception("项目当前状态不允许进行提交，" + this);
+		}
+
+		// 判断是否具有提交工作
+		BasicDBObject condition = new BasicDBObject();
+		condition.put(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
+		condition.put(Work.F_PROJECT_ID, get_id());
+		condition.put(Work.F_LIFECYCLE,
+				new BasicDBObject().append("$nin", new String[] {
+						STATUS_CANCELED_VALUE, STATUS_FINIHED_VALUE }));
+		
+		if(getRelationCountByCondition(Work.class, condition)>0){
+			throw new Exception("该项目已经进行过提交操作，" + this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
