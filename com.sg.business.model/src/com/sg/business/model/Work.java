@@ -914,7 +914,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						throw new Exception("不是本项目负责人，" + this);
 					}
 				} else {
-					if (parent.hasPermission(context)) {
+					if (!parent.hasPermission(context)) {
 						throw new Exception("不是工作负责人，" + parent);
 					}
 				}
@@ -1386,21 +1386,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (userId.equals(getChargerId())) {
 			return true;
 		} else {
-			return parentPermission(context, userId);
-		}
-	}
-
-	public boolean parentPermission(IContext context, String userId) {
-		Work parent = (Work) getParent();
-		if (parent != null) {
-			return parent.hasPermission(context);
-		} else {
-			// 是Root工作，判断是否是项目经理
-			Project project = getProject();
-			if (project != null) {
-				return userId.equals(project.getChargerId());
+			Work parent = (Work) getParent();
+			if (parent != null) {
+				return parent.hasPermission(context);
 			} else {
-				return false;
+				// 是Root工作，判断是否是项目经理
+				Project project = getProject();
+				if (project != null) {
+					return userId.equals(project.getChargerId());
+				} else {
+					return false;
+				}
 			}
 		}
 	}
@@ -2761,7 +2757,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					}
 				}
 			};
-		} 
+		}
 		return super.getAdapter(adapter);
 	}
 
@@ -2951,13 +2947,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Date _planFinish = getPlanFinish();
 		return _planFinish != null && now.after(_planFinish);
 	}
-	
-	public boolean isDelayed(){
+
+	public boolean isDelayed() {
 		Date _planFinish = getPlanFinish();
 		Date _actualFinish = getActualFinish();
-		if(_actualFinish!=null){
+		if (_actualFinish != null) {
 			return _actualFinish.after(_planFinish);
-		}else{
+		} else {
 			return new Date().after(_planFinish);
 		}
 	}
@@ -3183,30 +3179,29 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 获得超量分配的倍速
+	 * 
 	 * @return
 	 */
 	public float getOverloadCount() {
-		if(!isProjectWork()){
+		if (!isProjectWork()) {
 			return 0f;
 		}
 		BasicBSONList idlist = getParticipatesIdList();
-		if(idlist==null||idlist.size()<1){
+		if (idlist == null || idlist.size() < 1) {
 			return 0f;
 		}
-//		getPlanWorks()
-		
-		
-		//获取计划工作天数
+		// getPlanWorks()
+
+		// 获取计划工作天数
 		Date planStart = getPlanStart();
 		Date planFinih = getPlanFinish();
-		
+
 		CalendarCaculater cc = getProject().getCalendarCaculater();
 		double hours = cc.getWorkingHours(planStart, planFinih);
-		//获得满额工时
-		double totalWorkHourAvailabel = hours*idlist.size();
+		// 获得满额工时
+		double totalWorkHourAvailabel = hours * idlist.size();
 		//
-		
-		
+
 		// TODO Auto-generated method stub
 		return 0;
 	}
