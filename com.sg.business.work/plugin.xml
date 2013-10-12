@@ -568,14 +568,14 @@
             limit="200"
             virtual="true">
          <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
                column="alert1"
                columnSorter="com.sg.business.work.labelprovider.Alert1Sorter"
                labelProvider="com.sg.business.work.labelprovider.Alert1LabelProvider"
                toolTipText="超期预警"
                width="24">
-         </column>
-         <column
-               columnDefinitionId="project.status">
          </column>
          <column
                column="overload"

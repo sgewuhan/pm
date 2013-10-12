@@ -187,6 +187,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public static final String F_USE_PROJECT_ROLE = "useprojectrole";
 
+	private Double overCount = null;
+
 	/**
 	 * 根据状态返回不同的图标
 	 */
@@ -1660,8 +1662,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		super.doSave(context);
 
+		resetCaculateCache();
 		return true;
 
+	}
+
+	private void resetCaculateCache() {
+		overCount = null;
 	}
 
 	@Override
@@ -2761,7 +2768,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					}
 				}
 			};
-		} 
+		}
 		return super.getAdapter(adapter);
 	}
 
@@ -2951,13 +2958,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Date _planFinish = getPlanFinish();
 		return _planFinish != null && now.after(_planFinish);
 	}
-	
-	public boolean isDelayed(){
+
+	public boolean isDelayed() {
 		Date _planFinish = getPlanFinish();
 		Date _actualFinish = getActualFinish();
-		if(_actualFinish!=null){
+		if (_actualFinish != null) {
 			return _actualFinish.after(_planFinish);
-		}else{
+		} else {
 			return new Date().after(_planFinish);
 		}
 	}
@@ -3182,32 +3189,40 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 获得超量分配的倍速
+	 * 获得超量分配的倍数（按计划工时）
+	 * 
 	 * @return
+	 * @throws Exception
 	 */
-	public float getOverloadCount() {
-		if(!isProjectWork()){
-			return 0f;
+	public double getOverloadCount() throws Exception {
+		if (overCount != null) {
+			return overCount;
+		}
+
+		if (!isProjectWork()) {
+			throw new Exception("只有项目工作才能进行超量计算");
 		}
 		BasicBSONList idlist = getParticipatesIdList();
-		if(idlist==null||idlist.size()<1){
-			return 0f;
+		if (idlist == null || idlist.size() < 1) {
+			throw new Exception("工作没有指定参与者");
 		}
-//		getPlanWorks()
-		
-		
-		//获取计划工作天数
+		Double planWorks = getPlanWorks();
+		if (planWorks == null) {
+			throw new Exception("工作没有指定计划工时");
+		}
+
+		// 获取计划工作天数
 		Date planStart = getPlanStart();
 		Date planFinih = getPlanFinish();
-		
+
 		CalendarCaculater cc = getProject().getCalendarCaculater();
 		double hours = cc.getWorkingHours(planStart, planFinih);
-		//获得满额工时
-		double totalWorkHourAvailabel = hours*idlist.size();
-		//
-		
-		
-		// TODO Auto-generated method stub
-		return 0;
+		// 按参与者数量X工作时间可用的获得满额工时
+		double totalWorkHourAvailable = hours * idlist.size();
+		if (totalWorkHourAvailable == 0) {
+			throw new Exception("无可用计划工时");
+		}
+		overCount = planWorks / totalWorkHourAvailable;
+		return overCount;
 	}
 }
