@@ -1039,32 +1039,59 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (start.after(finish)) {
 				throw new Exception("开始日期必须早于完成日期");
 			}
-			
-			//增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
-			Project project = getProject();
-		    Date pstart=project.getPlanStart();
-		    if (pstart != null) {
-		    	pstart = Utils.getDayBegin(pstart).getTime();
-			}
 
-			Date pfinish =project.getPlanFinish();
-			if (pfinish != null) {
-				pfinish = Utils.getDayEnd(pfinish).getTime();
-			}
-			
-			if(start.before(pstart)){
-				throw new Exception("工作的开始时间不能早于项目的开始时间");
-			}
-			if(finish.after(pfinish)){
-				throw new Exception("工作的结束时间不能晚于项目的结束时间");
-			}
-			
 			// 计算工期
 			Calendar sdate = Utils.getDayBegin(start);
 			Calendar edate = Utils.getDayEnd(finish);
 			long l = (edate.getTimeInMillis() - sdate.getTimeInMillis())
 					/ (1000 * 60 * 60 * 24);
 			setValue(fDuration, new Integer((int) l));
+		}
+	}
+
+	/**
+	 * 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
+	 * 
+	 * @throws Exception
+	 */
+	public void checkProjectTimeline() throws Exception {
+		Date start = getPlanStart();
+		if (start != null) {
+			start = Utils.getDayBegin(start).getTime();
+		}
+
+		Date finish = getPlanFinish();
+		if (finish != null) {
+			finish = Utils.getDayEnd(finish).getTime();
+		}
+
+		if (start == null || finish == null) {
+			return;
+		}
+
+		Project project = getProject();
+		if (isProjectWork()) {
+			return;
+		}
+		Date projstart = project.getPlanStart();
+		if (projstart != null) {
+			projstart = Utils.getDayBegin(projstart).getTime();
+		} else {
+			return;
+		}
+
+		Date projfinish = project.getPlanFinish();
+		if (projfinish != null) {
+			projfinish = Utils.getDayEnd(projfinish).getTime();
+		} else {
+			return;
+		}
+
+		if (start.before(projstart)) {
+			throw new Exception("工作的开始时间不能早于项目的开始时间");
+		}
+		if (finish.after(projfinish)) {
+			throw new Exception("工作的结束时间不能晚于项目的结束时间");
 		}
 	}
 
@@ -1672,8 +1699,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
+
 		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
 				F_ACTUAL_DURATION);
+
+		checkProjectTimeline();
 
 		super.doSave(context);
 

@@ -74,13 +74,12 @@ public class UserScenrioSetting extends AbstractFormPageDelegator {
 
 	@Override
 	public void commit(boolean onSave) {
-		// TODO Auto-generated method stub
-
+		setDirty(false);
+		
 	}
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
 
 	}
 	
