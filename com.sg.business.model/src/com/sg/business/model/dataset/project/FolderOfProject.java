@@ -15,7 +15,7 @@ public class FolderOfProject extends MasterDetailDataSetFactory {
 
 	@Override
 	protected String getDetailCollectionKey() {
-		return Folder.F_PROJECT_ID;
+		return Folder.F__ID;
 	}
 
 

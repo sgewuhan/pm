@@ -15,7 +15,7 @@ public class ViewWork extends AbstractNavigatorHandler {
 		if (selected instanceof Work) {
 			Work work = (Work) selected;
 			try {
-				 DataObjectEditor.open(work,"view.work",
+				 DataObjectEditor.open(work,Work.EDITOR,
 						false, null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);

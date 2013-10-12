@@ -21,7 +21,7 @@ public class ViewProject extends AbstractNavigatorHandler {
 			}
 			String pageid = event.getParameter("work.project.view");
 			try {
-				DataObjectEditor editor = DataObjectEditor.open(project,"project.editor",
+				DataObjectEditor editor = DataObjectEditor.open(project,Project.EDITOR_CREATE_PLAN,
 						false, null);
 				if(pageid!=null){
 					editor.setActivePage(pageid);
