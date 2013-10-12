@@ -38,6 +38,7 @@ import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -1385,17 +1386,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (userId.equals(getChargerId())) {
 			return true;
 		} else {
-			Work parent = (Work) getParent();
-			if (parent != null) {
-				return parent.hasPermission(context);
+			return parentPermission(context, userId);
+		}
+	}
+
+	public boolean parentPermission(IContext context, String userId) {
+		Work parent = (Work) getParent();
+		if (parent != null) {
+			return parent.hasPermission(context);
+		} else {
+			// 是Root工作，判断是否是项目经理
+			Project project = getProject();
+			if (project != null) {
+				return userId.equals(project.getChargerId());
 			} else {
-				// 是Root工作，判断是否是项目经理
-				Project project = getProject();
-				if (project != null) {
-					return userId.equals(project.getChargerId());
-				} else {
-					return false;
-				}
+				return false;
 			}
 		}
 	}
@@ -2946,6 +2951,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Date _planFinish = getPlanFinish();
 		return _planFinish != null && now.after(_planFinish);
 	}
+	
+	public boolean isDelayed(){
+		Date _planFinish = getPlanFinish();
+		Date _actualFinish = getActualFinish();
+		if(_actualFinish!=null){
+			return _actualFinish.after(_planFinish);
+		}else{
+			return new Date().after(_planFinish);
+		}
+	}
 
 	public boolean isStandloneWork() {
 		Object type = getValue(F_WORK_TYPE);
@@ -3164,5 +3179,35 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			FileUtil.copyGridFSFile(srcID, srcDB, srcFilename, srcNamespace,
 					tgtID, tgtDB, tgtFilename, tgtNamespace);
 		}
+	}
+
+	/**
+	 * 获得超量分配的倍速
+	 * @return
+	 */
+	public float getOverloadCount() {
+		if(!isProjectWork()){
+			return 0f;
+		}
+		BasicBSONList idlist = getParticipatesIdList();
+		if(idlist==null||idlist.size()<1){
+			return 0f;
+		}
+//		getPlanWorks()
+		
+		
+		//获取计划工作天数
+		Date planStart = getPlanStart();
+		Date planFinih = getPlanFinish();
+		
+		CalendarCaculater cc = getProject().getCalendarCaculater();
+		double hours = cc.getWorkingHours(planStart, planFinih);
+		//获得满额工时
+		double totalWorkHourAvailabel = hours*idlist.size();
+		//
+		
+		
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

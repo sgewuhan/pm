@@ -28,6 +28,18 @@
             name="已暂停"
             restorable="true">
       </view>
+      <view
+            category="work"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="work.ownerworklist"
+            name="我的工作">
+      </view>
+      <view
+            category="work"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="work.teamworklist"
+            name="部门的工作">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -216,6 +228,14 @@
       <navigator
             id="work.organization.user"
             tree="work.organization.user">
+      </navigator>
+      <navigator
+            id="work.ownerworklist"
+            table="work.ownerworklist">
+      </navigator>
+      <navigator
+            id="work.teamworklist"
+            table="work.teamworklist">
       </navigator>
    </extension>
    <extension
@@ -535,6 +555,75 @@
                column="worktime"
                name="每天工时（小时）"
                type="Double">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            dataSet="com.sg.business.model.dataset.work.OwnerWorkDataSet"
+            fix="3"
+            id="work.ownerworklist"
+            limit="200"
+            virtual="true">
+         <column
+               column="alert1"
+               columnSorter="com.sg.business.work.labelprovider.Alert1Sorter"
+               labelProvider="com.sg.business.work.labelprovider.Alert1LabelProvider"
+               toolTipText="超期预警"
+               width="24">
+         </column>
+         <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
+               column="overload"
+               columnSorter="com.sg.business.work.labelprovider.OverloadSorter"
+               labelProvider="com.sg.business.work.labelprovider.OverloadLabelProvider"
+               toolTipText="工作超量分配"
+               width="24">
+         </column>
+         <column
+               columnDefinitionId="work.desc"
+               width="-1">
+         </column>
+         <column
+               column="project"
+               columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
+               labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+               name="项目"
+               width="180">
+         </column>
+         <column
+               columnDefinitionId="planstart">
+         </column>
+         <column
+               columnDefinitionId="planfinish">
+         </column>
+         <column
+               columnDefinitionId="planworks">
+         </column>
+         <column
+               columnDefinitionId="planduration">
+         </column>
+         <column
+               columnDefinitionId="actualstart">
+         </column>
+         <column
+               columnDefinitionId="actualfinish">
+         </column>
+         <column
+               columnDefinitionId="actualworks">
+         </column>
+         <column
+               columnDefinitionId="actualduration">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="participate">
          </column>
       </table>
    </extension>

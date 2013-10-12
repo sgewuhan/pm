@@ -20,6 +20,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.work"
+            name="工作">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.visualization"
             name="绩效视图">
       </perspective>
@@ -123,7 +128,7 @@
                minimized="false"
                moveable="false"
                ratio="0.5"
-               relationship="right"
+               relationship="stack"
                relative="home.bulletinboard"
                showTitle="true"
                standalone="false"
@@ -395,9 +400,64 @@
                visible="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.work">
+         <view
+               closeable="false"
+               id="work.ownerworklist"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
+      <scenario
+            id="project"
+            name="项目管理">
+         <perspective
+               default="true"
+               id="perspective.home">
+         </perspective>
+         <perspective
+               id="perspective.project">
+         </perspective>
+         <perspective
+               id="perspective.work">
+         </perspective>
+         <perspective
+               id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="document"
+            name="文档管理">
+         <perspective
+               default="true"
+               id="perspective.home">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+         <perspective
+               id="perspective.system">
+         </perspective>
+      </scenario>
       <scenario
             id="manager"
             name="业务管理">
@@ -410,10 +470,27 @@
                id="perspective.organization">
          </perspective>
          <perspective
-               id="perspective.project">
+               id="perspective.management">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="system"
+            name="系统管理">
+         <perspective
+               default="true"
+               id="perspective.home">
          </perspective>
          <perspective
                id="perspective.management">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+         <perspective
+               id="perspective.system">
          </perspective>
       </scenario>
    </extension>
