@@ -1,10 +1,10 @@
 package com.sg.business.commons.editingsupport;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -20,11 +20,16 @@ public class ActivatedCellEditor extends CellEditor {
 	public ActivatedCellEditor(Composite control) {
 		super(control);
 	}
+	
+	@Override
+	protected int getDoubleClickTimeout() {
+		return 0;
+	}
 
 	@Override
 	protected Control createControl(Composite parent) {
 		button = new Button(parent,SWT.PUSH);
-		button.setData(RWT.CUSTOM_VARIANT, "whitebutton_s");
+		button.setBackground(new Color(parent.getDisplay(), 255,255,255));
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

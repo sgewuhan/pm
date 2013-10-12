@@ -130,7 +130,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		String[] workOrders = project.getWorkOrders();
 		for (int i = 0; i < workOrders.length; i++) {
 			if (i == 0) {
-				sb.append("WON: ");
+				sb.append("<b>WON</b>:");
 			} else {
 				sb.append(" ");
 			}
@@ -244,7 +244,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		// sb.append(selectbar);
 
 		sb.append("");
-		sb.append("P:");
+		sb.append("<b>P</b>:");
 		sb.append(planStart);
 		sb.append("~");
 
@@ -259,7 +259,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		if (_actualStart != null) {
 			actualStart = sdf.format(_actualStart);
 		}
-		sb.append("A:");
+		sb.append("<b>A</b>:");
 		sb.append(actualStart);
 		sb.append("~");
 
@@ -270,7 +270,7 @@ public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
 		sb.append(actualFinish);
 		sb.append("  ");
 
-		sb.append("D:");
+		sb.append("<b>D</b>:");
 
 		Integer actualDuration = work.getActualDuration();
 		if (actualDuration == null) {
