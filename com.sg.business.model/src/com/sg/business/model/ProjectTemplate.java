@@ -23,17 +23,13 @@ import com.sg.business.resource.BusinessResource;
  * @author jinxitao
  * 
  */
-public class ProjectTemplate extends PrimaryObject {
+public class ProjectTemplate extends PrimaryObject{
 
 	/**
 	 * 所属组织
 	 */
 	public static final String F_ORGANIZATION_ID = "organization_id";
 
-	/**
-	 * 是否启用
-	 */
-	public static final String F_ACTIVATED = "activated";
 
 	/**
 	 * 预算定义ID
@@ -93,6 +89,9 @@ public class ProjectTemplate extends PrimaryObject {
 	 * 变更流程定义中的指派
 	 */
 	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
+
+
+	public static final String F_ACTIVATED = "activated";
 
 	/**
 	 * 返回显示图标
@@ -198,7 +197,8 @@ public class ProjectTemplate extends PrimaryObject {
 	 * 该模板是否已经启用
 	 */
 	public boolean isActivated() {
-		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
+		IActivateSwitch adapter = getAdapter(IActivateSwitch.class);
+		return adapter.isActivated();
 	}
 
 	/**
@@ -429,6 +429,8 @@ public class ProjectTemplate extends PrimaryObject {
 					return RoleDefinition.class;
 				}
 			};
+		}else if(adapter.equals(IActivateSwitch.class)){
+			return (T) new ActivateSwitch(this);
 		}
 		return super.getAdapter(adapter);
 	}
@@ -446,4 +448,5 @@ public class ProjectTemplate extends PrimaryObject {
 		}
 		return null;
 	}
+
 }
