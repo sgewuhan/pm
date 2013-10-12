@@ -2756,7 +2756,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					}
 				}
 			};
-		}
+		} 
 		return super.getAdapter(adapter);
 	}
 

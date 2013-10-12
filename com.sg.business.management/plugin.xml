@@ -1836,6 +1836,12 @@
                visible="true">
          </separator>
          <command
+               commandId="generic.activateswith"
+               icon="image/status_24.png"
+               label="启用/停用"
+               style="push">
+         </command>
+         <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
                label="更新"
@@ -2200,6 +2206,12 @@
                visible="true">
          </separator>
          <command
+               commandId="generic.activateswith"
+               icon="image/status_24.png"
+               label="启用/停用"
+               style="push">
+         </command>
+         <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
                label="更新"
@@ -2298,6 +2310,12 @@
                name="management.projecttemplates.separator1"
                visible="true">
          </separator>
+         <command
+               commandId="generic.activateswith"
+               icon="image/status_24.png"
+               label="启用/停用"
+               style="push">
+         </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
@@ -2509,6 +2527,11 @@
             id="management.roledefinition.link"
             name="添加组织角色">
       </command>
+      <command
+            categoryId="com.sg.business.management"
+            id="generic.activateswith"
+            name="启用停用开关">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2527,6 +2550,18 @@
       <handler
             class="com.sg.business.management.handler.LinkOrganizationRole"
             commandId="management.roledefinition.link">
+      </handler>
+      <handler
+            class="com.sg.business.management.handler.SwitchActivation"
+            commandId="generic.activateswith">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <count
+                     value="+">
+               </count>
+            </with>
+         </enabledWhen>
       </handler>
    </extension>
    <extension

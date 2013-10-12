@@ -480,6 +480,12 @@ public class WorkDefinition extends AbstractWork implements
 					return RoleDefinition.class;
 				}
 			};
+		}else if (adapter.equals(IActivateSwitch.class)) {
+			if (isStandloneWork() || isGenericWork()) {
+				return (T) new ActivateSwitch(this);
+			} else {
+				return null;
+			}
 		}
 		return super.getAdapter(adapter);
 	}
