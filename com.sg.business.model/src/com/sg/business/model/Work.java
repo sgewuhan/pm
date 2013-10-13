@@ -98,6 +98,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_MANDATORY = "mandatory";
 
 	/**
+	 * 归档的，不可删除，布尔类型的字段
+	 */
+	public static final String F_ARCHIVE = "archive";
+
+	/**
 	 * 负责人的id userid
 	 */
 	public static final String F_CHARGER = "chargerid";
@@ -150,21 +155,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_S_AUTOSTARTWITHPARENT = "s_autostartwithparent";
 
 	/**
-	 * 是否允许添加交付物
-	 */
-	public static final String F_S_CANADDDELIVERABLES = "s_canadddeliverables";
-
-	/**
-	 * 是否允许分解工作
-	 */
-	public static final String F_S_CANBREAKDOWN = "s_canbreakdown";
-
-	/**
-	 * 是否允许修改计划工时
-	 */
-	public static final String F_S_CANMODIFYPLANWORKS = "s_canmodifyplanworks";
-
-	/**
 	 * 是否可以跳过进行中的流程完成工作
 	 */
 	public static final String F_S_CANSKIPTOFINISH = "s_canskiptofinish";
@@ -186,6 +176,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_WORK_DEFINITION_ID = "workd_id";
 
 	public static final String F_USE_PROJECT_ROLE = "useprojectrole";
+
+	public static final String[] ARCHIVE_FIELDS = new String[] {
+			F_ASSIGNMENT_CHARGER_ROLE_ID, F_CHARGER_ROLE_ID,
+			F_PARTICIPATE_ROLE_SET, F_S_AUTOFINISHWITHCHILDREN,
+			F_S_AUTOFINISHWITHPARENT, F_S_AUTOSTARTWITHPARENT,
+			F_SETTING_CAN_ADD_DELIVERABLES, F_SETTING_CAN_BREAKDOWN, F_SETTING_CAN_MODIFY_PLANWORKS,
+			F_S_CANSKIPTOFINISH, F_S_PROJECTCHANGEFLOWMANDORY,
+			F_S_WORKCHANGEFLOWMANDORY ,F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH};
 
 	/**
 	 * 根据状态返回不同的图标
@@ -244,9 +242,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		data.put(F_PROJECT_ID, getValue(F_PROJECT_ID));
 
 		// 设置一些基本的选项设定
-		data.put(F_S_CANADDDELIVERABLES, Boolean.TRUE);
-		data.put(F_S_CANBREAKDOWN, Boolean.TRUE);
-		data.put(F_S_CANMODIFYPLANWORKS, Boolean.TRUE);
+		data.put(F_SETTING_CAN_ADD_DELIVERABLES, Boolean.TRUE);
+		data.put(F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
+		data.put(F_SETTING_CAN_MODIFY_PLANWORKS, Boolean.TRUE);
 
 		Work po = ModelService.createModelObject(data, Work.class);
 		return po;
@@ -697,6 +695,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return Boolean.TRUE.equals(getValue(F_MANDATORY));
 	}
 
+	public boolean isArchive() {
+		return Boolean.TRUE.equals(getValue(F_ARCHIVE));
+	}
+
 	/**
 	 * 能否点击编辑
 	 */
@@ -787,7 +789,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 2. 当是摘要工作时，是否设置了允许分解，如果没有，返回false
 		if (!isSummaryWork()
-				&& !Boolean.TRUE.equals(getValue(F_S_CANBREAKDOWN))) {
+				&& !Boolean.TRUE.equals(getValue(F_SETTING_CAN_BREAKDOWN))) {
 			return false;
 		}
 
@@ -817,7 +819,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		// 3.如果设置了不能添加交付物，返回假
-		if (!Boolean.TRUE.equals(getValue(F_S_CANADDDELIVERABLES))) {
+		if (!Boolean.TRUE.equals(getValue(F_SETTING_CAN_ADD_DELIVERABLES))) {
 			return false;
 		}
 
@@ -1691,9 +1693,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		ensureParticipatesConsistency();
 
 		// 缺省可以添加交付物
-		Object value = getValue(F_S_CANADDDELIVERABLES);
+		Object value = getValue(F_SETTING_CAN_ADD_DELIVERABLES);
 		if (value == null) {
-			setValue(F_S_CANADDDELIVERABLES, Boolean.TRUE);
+			setValue(F_SETTING_CAN_ADD_DELIVERABLES, Boolean.TRUE);
 		}
 
 		super.doInsert(context);

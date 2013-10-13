@@ -103,7 +103,8 @@ public class ProjectRole extends AbstractRoleDefinition implements
 					.append(ProjectRoleAssignment.F_ROLE_ID, get_id())
 					.append(ProjectRoleAssignment.F_ROLE_NUMBER,
 							getRoleNumber())
-					.append(ProjectRoleAssignment.F_ROLE_NAME, getDesc()));
+					.append(ProjectRoleAssignment.F_ROLE_NAME, getDesc())
+					.append(ProjectRoleAssignment.F_PROJECT_ID, getProjectId()));
 
 			userIds[i] = user.getUserid();
 		}
