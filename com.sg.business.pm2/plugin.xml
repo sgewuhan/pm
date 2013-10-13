@@ -414,6 +414,17 @@
                standalone="false"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="work.teamworklist"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.ownerworklist"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
    </extension>
    <extension
