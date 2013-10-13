@@ -185,6 +185,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			F_S_CANSKIPTOFINISH, F_S_PROJECTCHANGEFLOWMANDORY,
 			F_S_WORKCHANGEFLOWMANDORY ,F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH};
 
+	private Double overCount = null;
+
 	/**
 	 * 根据状态返回不同的图标
 	 */
@@ -1024,7 +1026,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	public void checkAndCalculateDuration(String fStart, String fFinish,
 			String fDuration) throws Exception {
-		// TODO 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
 		Date start = (Date) getValue(fStart);
 		if (start != null) {
 			start = Utils.getDayBegin(start).getTime();
@@ -1040,12 +1041,59 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (start.after(finish)) {
 				throw new Exception("开始日期必须早于完成日期");
 			}
+
 			// 计算工期
 			Calendar sdate = Utils.getDayBegin(start);
 			Calendar edate = Utils.getDayEnd(finish);
 			long l = (edate.getTimeInMillis() - sdate.getTimeInMillis())
 					/ (1000 * 60 * 60 * 24);
 			setValue(fDuration, new Integer((int) l));
+		}
+	}
+
+	/**
+	 * 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
+	 * 
+	 * @throws Exception
+	 */
+	public void checkProjectTimeline() throws Exception {
+		Date start = getPlanStart();
+		if (start != null) {
+			start = Utils.getDayBegin(start).getTime();
+		}
+
+		Date finish = getPlanFinish();
+		if (finish != null) {
+			finish = Utils.getDayEnd(finish).getTime();
+		}
+
+		if (start == null || finish == null) {
+			return;
+		}
+
+		Project project = getProject();
+		if (isProjectWork()) {
+			return;
+		}
+		Date projstart = project.getPlanStart();
+		if (projstart != null) {
+			projstart = Utils.getDayBegin(projstart).getTime();
+		} else {
+			return;
+		}
+
+		Date projfinish = project.getPlanFinish();
+		if (projfinish != null) {
+			projfinish = Utils.getDayEnd(projfinish).getTime();
+		} else {
+			return;
+		}
+
+		if (start.before(projstart)) {
+			throw new Exception("工作的开始时间不能早于项目的开始时间");
+		}
+		if (finish.after(projfinish)) {
+			throw new Exception("工作的结束时间不能晚于项目的结束时间");
 		}
 	}
 
@@ -1653,13 +1701,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
+
 		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
 				F_ACTUAL_DURATION);
 
+		checkProjectTimeline();
+
 		super.doSave(context);
 
+		resetCaculateCache();
 		return true;
 
+	}
+
+	private void resetCaculateCache() {
+		overCount = null;
 	}
 
 	@Override
@@ -3180,19 +3236,27 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 获得超量分配的倍速
+	 * 获得超量分配的倍数（按计划工时）
 	 * 
 	 * @return
+	 * @throws Exception
 	 */
-	public float getOverloadCount() {
+	public double getOverloadCount() throws Exception {
+		if (overCount != null) {
+			return overCount;
+		}
+
 		if (!isProjectWork()) {
-			return 0f;
+			throw new Exception("只有项目工作才能进行超量计算");
 		}
 		BasicBSONList idlist = getParticipatesIdList();
 		if (idlist == null || idlist.size() < 1) {
-			return 0f;
+			throw new Exception("工作没有指定参与者");
 		}
-		// getPlanWorks()
+		Double planWorks = getPlanWorks();
+		if (planWorks == null) {
+			throw new Exception("工作没有指定计划工时");
+		}
 
 		// 获取计划工作天数
 		Date planStart = getPlanStart();
@@ -3200,11 +3264,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		CalendarCaculater cc = getProject().getCalendarCaculater();
 		double hours = cc.getWorkingHours(planStart, planFinih);
-		// 获得满额工时
-		double totalWorkHourAvailabel = hours * idlist.size();
-		//
-
-		// TODO Auto-generated method stub
-		return 0;
+		// 按参与者数量X工作时间可用的获得满额工时
+		double totalWorkHourAvailable = hours * idlist.size();
+		if (totalWorkHourAvailable == 0) {
+			throw new Exception("无可用计划工时");
+		}
+		overCount = planWorks / totalWorkHourAvailable;
+		return overCount;
 	}
 }

@@ -1,11 +1,19 @@
 package com.sg.business.work.labelprovider;
 
+import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.Work;
 import com.sg.widgets.commons.sorter.PrimaryObjectSortorFactory;
+import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class OverloadSorter extends PrimaryObjectSortorFactory {
 
-	public OverloadSorter() {
-		// TODO Auto-generated constructor stub
+	@Override
+	protected Object getValue(PrimaryObject po, ColumnConfigurator configurator) {
+		Work work = (Work) po;
+		try {
+			return work.getOverloadCount();
+		} catch (Exception e) {
+		}
+		return -1;
 	}
-
 }
