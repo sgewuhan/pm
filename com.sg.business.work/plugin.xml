@@ -232,6 +232,98 @@
       <navigator
             id="work.ownerworklist"
             table="work.ownerworklist">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.status">
+            </column>
+            <column
+                  columnDefinitionId="work.desc"
+                  width="-1">
+            </column>
+            <column
+                  column="project"
+                  columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
+                  labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+                  name="项目"
+                  width="180">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.status">
+            </column>
+            <column
+                  columnDefinitionId="work.desc"
+                  width="-1">
+            </column>
+            <column
+                  column="project"
+                  columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
+                  labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+                  name="项目"
+                  width="180">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="work.teamworklist"
@@ -259,6 +351,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
+               lazyDisplay="true"
                name="工作"
                style="SWT.LEFT"
                type="String"

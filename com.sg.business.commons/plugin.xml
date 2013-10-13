@@ -1124,6 +1124,7 @@
       <column
             column="planstart"
             id="planstart"
+            lazyDisplay="true"
             name="计划开始"
             type="Date"
             width="72">
@@ -1131,6 +1132,7 @@
       <column
             column="planfinish"
             id="planfinish"
+            lazyDisplay="true"
             name="计划完成"
             type="Date"
             width="72">
@@ -1138,6 +1140,7 @@
       <column
             column="planduration"
             id="planduration"
+            lazyDisplay="true"
             name="计划工期"
             type="Integer"
             width="72">
@@ -1145,6 +1148,7 @@
       <column
             column="planworks"
             id="planworks"
+            lazyDisplay="true"
             name="计划工时"
             type="Integer"
             width="72">
@@ -1152,6 +1156,7 @@
       <column
             column="actualstart"
             id="actualstart"
+            lazyDisplay="true"
             name="实际开始"
             type="Date"
             width="72">
@@ -1159,6 +1164,7 @@
       <column
             column="actualfinish"
             id="actualfinish"
+            lazyDisplay="true"
             name="实际完成"
             type="Date"
             width="72">
@@ -1166,6 +1172,7 @@
       <column
             column="actualduration"
             id="actualduration"
+            lazyDisplay="true"
             name="实际工期"
             type="Integer"
             width="72">
@@ -1173,6 +1180,7 @@
       <column
             column="actualworks"
             id="actualworks"
+            lazyDisplay="true"
             name="实际工时"
             type="Integer"
             width="72">
@@ -1231,6 +1239,7 @@
             columnSorter="com.sg.business.commons.labelprovider.WorkOverloadSorter"
             id="work.overload"
             labelProvider="com.sg.business.commons.labelprovider.WorkOverloadLabelProvider"
+            lazyDisplay="true"
             name=" "
             toolTipText="工作超量\n灰:严重资源过量\n蓝:资源过量\n绿:基本正常\n黄:资源不足\n红:资源严重不足"
             type="String"
@@ -1244,6 +1253,7 @@
             editingSupport="com.sg.business.commons.editingsupport.PlanStartEditing"
             id="planstart_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
+            lazyDisplay="true"
             name="计划开始"
             type="Date"
             width="72">
@@ -1253,6 +1263,7 @@
             editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
             id="planfinish_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
+            lazyDisplay="true"
             name="计划完成"
             type="Date"
             width="72">
@@ -1261,6 +1272,7 @@
             column="planduration"
             id="planduration_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
+            lazyDisplay="true"
             name="计划工期"
             style="SWT.RIGHT"
             type="Integer"
@@ -1270,6 +1282,7 @@
             column="planworks"
             id="planworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
+            lazyDisplay="true"
             name="计划工时"
             style="SWT.RIGHT"
             type="Double"
@@ -1279,6 +1292,7 @@
             column="actualstart"
             id="actualstart_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
+            lazyDisplay="true"
             name="实际开始"
             type="Date"
             width="72">
@@ -1287,6 +1301,7 @@
             column="actualfinish"
             id="actualfinish_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
+            lazyDisplay="true"
             name="实际完成"
             type="Date"
             width="72">
@@ -1295,6 +1310,7 @@
             column="actualduration"
             id="actualduration_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
+            lazyDisplay="true"
             name="实际工期"
             style="SWT.RIGHT"
             type="Integer"
@@ -1304,6 +1320,7 @@
             column="actualworks"
             id="actualworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
+            lazyDisplay="true"
             name="实际工时"
             style="SWT.RIGHT"
             type="Double"

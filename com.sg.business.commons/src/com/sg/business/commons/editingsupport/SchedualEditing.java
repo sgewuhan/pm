@@ -75,6 +75,10 @@ public abstract class SchedualEditing implements IEditingSupportor {
 						getViewer().update(toUpdate.toArray(), null);
 					} catch (Exception e) {
 						MessageUtil.showToast(e);
+						try {
+							work.reload(getFieldName());
+						} catch (Exception e1) {
+						}
 					}
 				}
 			}

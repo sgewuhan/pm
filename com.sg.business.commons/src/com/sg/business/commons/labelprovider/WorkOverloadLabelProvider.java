@@ -1,14 +1,20 @@
 package com.sg.business.commons.labelprovider;
 
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.sg.business.model.Work;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
-public class WorkOverloadLabelProvider extends ColumnLabelProvider {
+public class WorkOverloadLabelProvider extends ConfiguratorColumnLabelProvider {
 
-	public Image getRealImage(Object element) {
+
+	@Override
+	public String getText(Object element) {
+		return "";
+	}
+	
+	public Image getImage(Object element) {
 		Work work = (Work) element;
 		try {
 			double count = work.getOverloadCount();
