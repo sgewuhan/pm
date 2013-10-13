@@ -9,15 +9,14 @@ public class Alert1Sorter extends PrimaryObjectSortorFactory {
 
 	@Override
 	protected Object getValue(PrimaryObject po, ColumnConfigurator configurator) {
-		Work work = (Work)po;
-		if(work.isDelayed()){
+		Work work = (Work) po;
+		if (work.isDelayed()) {
 			return 9;
 		}
-		if(work.isRemindNow()){
+		if (work.isRemindNow()) {
 			return 8;
 		}
 		return 0;
 	}
-
 
 }
