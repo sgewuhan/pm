@@ -36,7 +36,7 @@
       </view>
       <view
             category="work"
-            class="com.sg.widgets.part.view.TableNavigator"
+            class="com.sg.business.work.view.DeptWork"
             id="work.teamworklist"
             name="部门的工作">
       </view>
@@ -237,15 +237,11 @@
                   columnDefinitionId="project.status">
             </column>
             <column
-                  columnDefinitionId="work.desc"
-                  width="-1">
+                  columnDefinitionId="work.desc">
             </column>
             <column
                   column="project"
-                  columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
-                  labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
-                  name="项目"
-                  width="180">
+                  name="项目">
             </column>
             <column
                   columnDefinitionId="planstart">
@@ -283,15 +279,7 @@
                   columnDefinitionId="project.status">
             </column>
             <column
-                  columnDefinitionId="work.desc"
-                  width="-1">
-            </column>
-            <column
-                  column="project"
-                  columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
-                  labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
-                  name="项目"
-                  width="180">
+                  columnDefinitionId="work.desc">
             </column>
             <column
                   columnDefinitionId="planstart">
@@ -324,10 +312,6 @@
                   columnDefinitionId="participate">
             </column>
          </searchAction>
-      </navigator>
-      <navigator
-            id="work.teamworklist"
-            table="work.teamworklist">
       </navigator>
    </extension>
    <extension
