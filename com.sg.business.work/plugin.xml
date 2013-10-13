@@ -571,18 +571,10 @@
                columnDefinitionId="project.status">
          </column>
          <column
-               column="alert1"
-               columnSorter="com.sg.business.work.labelprovider.Alert1Sorter"
-               labelProvider="com.sg.business.work.labelprovider.Alert1LabelProvider"
-               toolTipText="超期预警"
-               width="24">
+               columnDefinitionId="work.overtime">
          </column>
          <column
-               column="overload"
-               columnSorter="com.sg.business.work.labelprovider.OverloadSorter"
-               labelProvider="com.sg.business.work.labelprovider.OverloadLabelProvider"
-               toolTipText="工作超量分配"
-               width="24">
+               columnDefinitionId="work.overload">
          </column>
          <column
                columnDefinitionId="work.desc"

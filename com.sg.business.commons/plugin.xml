@@ -1216,6 +1216,26 @@
             type="String"
             width="120">
       </column>
+      <column
+            column="overtime"
+            columnSorter="com.sg.business.commons.labelprovider.WorkOvertimeSorter"
+            id="work.overtime"
+            labelProvider="com.sg.business.commons.labelprovider.WorkOvertimeLabelProvider"
+            name=" "
+            toolTipText="超期预警\n红:已超期\n黄:预警"
+            type="String"
+            width="24">
+      </column>
+      <column
+            column="overload"
+            columnSorter="com.sg.business.commons.labelprovider.WorkOverloadSorter"
+            id="work.overload"
+            labelProvider="com.sg.business.commons.labelprovider.WorkOverloadLabelProvider"
+            name=" "
+            toolTipText="工作超量\n灰:严重资源过量\n蓝:资源过量\n绿:基本正常\n黄:资源不足\n红:资源严重不足"
+            type="String"
+            width="24">
+      </column>
    </extension>
    <extension
          point="com.sg.widgets.column">
