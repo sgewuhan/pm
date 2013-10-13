@@ -139,26 +139,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public static final String F_IS_PROJECT_WBSROOT = "iswbsroot";
 
-	/**
-	 * 下级所有工作完成时，本工作自动完成
-	 */
-	public static final String F_S_AUTOFINISHWITHCHILDREN = "s_autofinishwithchildren";
-
-	/**
-	 * 是否可以跳过进行中的流程完成工作
-	 */
-	public static final String F_S_CANSKIPTOFINISH = "s_canskiptofinish";
-
-	/**
-	 * 需启动项目变更流程实施工作的更改
-	 */
-	public static final String F_S_PROJECTCHANGEFLOWMANDORY = "s_projectchangeflowmandory";
-
-	/**
-	 * 需启动变更流程实施工作的更改
-	 */
-	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
-
 	public static final String F_MARK = "marked";
 
 	public static final String F_RECORD = "record";
@@ -169,11 +149,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public static final String[] ARCHIVE_FIELDS = new String[] {
 			F_ASSIGNMENT_CHARGER_ROLE_ID, F_CHARGER_ROLE_ID,
-			F_PARTICIPATE_ROLE_SET, F_S_AUTOFINISHWITHCHILDREN,
-			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_SETTING_AUTOSTART_WHEN_PARENT_START,
-			F_SETTING_CAN_ADD_DELIVERABLES, F_SETTING_CAN_BREAKDOWN, F_SETTING_CAN_MODIFY_PLANWORKS,
-			F_S_CANSKIPTOFINISH, F_S_PROJECTCHANGEFLOWMANDORY,
-			F_S_WORKCHANGEFLOWMANDORY ,F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH};
+			F_PARTICIPATE_ROLE_SET, F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
+			F_SETTING_AUTOSTART_WHEN_PARENT_START,
+			F_SETTING_CAN_ADD_DELIVERABLES, F_SETTING_CAN_BREAKDOWN,
+			F_SETTING_CAN_MODIFY_PLANWORKS,
+			F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
+			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
+			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
+			F_WF_EXECUTE_ASSIGNMENT,F_TARGETS,F_WF_CHANGE+IProcessControl.POSTFIX_TASK };
 
 	private Double overCount = null;
 
@@ -1382,8 +1365,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			for (int i = 0; i < childrenWork.size(); i++) {
 				Work childWork = (Work) childrenWork.get(i);
 				if (pc.isWorkflowActivate(F_WF_EXECUTE)
-						&& !Boolean.TRUE.equals(childWork
-								.getValue(F_S_CANSKIPTOFINISH))) {
+						&& !Boolean.TRUE
+								.equals(childWork
+										.getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
 					message.add(new Object[] { "存在无法跳过进行中的流程完成的下级级联完成工作", this,
 							SWT.ICON_ERROR, EDITOR });
 				}

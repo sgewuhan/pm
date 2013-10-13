@@ -1430,7 +1430,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 归档项目工作
 		col = getCollection(IModelConstants.C_WORK);
-		ws = col.update(q, new BasicDBObject().append(Work.F_ARCHIVE, Boolean.TRUE), false, true);
+		BasicDBObject update = new BasicDBObject();
+		update.put(Work.F_ARCHIVE, Boolean.TRUE);
+		for (String archiveField : Work.ARCHIVE_FIELDS) {
+			update.put(archiveField, null);
+		}
+		ws = col.update(q, new BasicDBObject().append("$set", update), false, true);
 		checkWriteResult(ws);
 
 
@@ -1445,9 +1450,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		col = getCollection(IModelConstants.C_FOLDER);
-		BasicDBObject folderQuery = new BasicDBObject().append(
-				Folder.F_PROJECT_ID, get_id());
-		ws = col.update(folderQuery, new BasicDBObject().append(
+		ws = col.update(q, new BasicDBObject().append(
 				"$set", new BasicDBObject().append(Folder.F_ROOT_ID,
 						containerOrganizationId)), false, true);
 		checkWriteResult(ws);
