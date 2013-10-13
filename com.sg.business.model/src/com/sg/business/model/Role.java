@@ -82,11 +82,17 @@ public class Role extends PrimaryObject {
 	public static final String ROLE_VAULT_GUEST_TEXT = "文档访问者";
 
 	/**
+	 * 基础角色/组织角色/部门经理
+	 */
+	public static final String ROLE_DEPT_MANAGER_ID = "T005";
+	public static final String ROLE_DEPT_MANAGER_TEXT = "管理者";
+	
+	/**
 	 * 系统角色ID
 	 */
 	public static final String[] ROLE_ID_SYSTEM = new String[] { ROLE_ADMIN_ID,
 			ROLE_ORGANIZATION_ADMIN_ID, ROLE_PROJECT_ADMIN_ID,
-			ROLE_BUSINESS_ADMIN_ID, ROLE_VAULT_ADMIN_ID, ROLE_VAULT_GUEST_ID };
+			ROLE_BUSINESS_ADMIN_ID, ROLE_VAULT_ADMIN_ID, ROLE_VAULT_GUEST_ID ,ROLE_DEPT_MANAGER_ID};
 
 	/**
 	 * 系统角色名称
@@ -94,7 +100,7 @@ public class Role extends PrimaryObject {
 	public static final String[] ROLE_NAME_SYSTEM = new String[] {
 			ROLE_ADMIN_TEXT, ROLE_ORGANIZATION_ADMIN_TEXT,
 			ROLE_BUSINESS_ADMIN_TEXT, ROLE_PROJECT_ADMIN_TEXT,
-			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT };
+			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,ROLE_DEPT_MANAGER_TEXT };
 
 	/**
 	 * 角色在系统中的的显示内容
@@ -344,6 +350,8 @@ public class Role extends PrimaryObject {
 				} else {
 					return false;
 				}
+			}else{
+				return true;
 			}
 		}
 		return false;

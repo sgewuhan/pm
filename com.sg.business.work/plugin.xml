@@ -681,28 +681,89 @@
                width="180">
          </column>
          <column
-               columnDefinitionId="planstart">
+               columnDefinitionId="planstart_c">
          </column>
          <column
-               columnDefinitionId="planfinish">
+               columnDefinitionId="planfinish_c">
          </column>
          <column
-               columnDefinitionId="planworks">
+               columnDefinitionId="planworks_c">
          </column>
          <column
-               columnDefinitionId="planduration">
+               columnDefinitionId="planduration_c">
          </column>
          <column
-               columnDefinitionId="actualstart">
+               columnDefinitionId="actualstart_c">
          </column>
          <column
-               columnDefinitionId="actualfinish">
+               columnDefinitionId="actualfinish_c">
          </column>
          <column
-               columnDefinitionId="actualworks">
+               columnDefinitionId="actualworks_c">
          </column>
          <column
-               columnDefinitionId="actualduration">
+               columnDefinitionId="actualduration_c">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="participate">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            dataSet="com.sg.business.model.dataset.work.TeamWorkDataSet"
+            fix="3"
+            id="work.teamworklist"
+            limit="200"
+            virtual="true">
+         <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
+               columnDefinitionId="work.overtime">
+         </column>
+         <column
+               columnDefinitionId="work.overload">
+         </column>
+         <column
+               columnDefinitionId="work.desc"
+               width="-1">
+         </column>
+         <column
+               column="project"
+               columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
+               labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+               name="项目"
+               width="180">
+         </column>
+         <column
+               columnDefinitionId="planstart_c">
+         </column>
+         <column
+               columnDefinitionId="planfinish_c">
+         </column>
+         <column
+               columnDefinitionId="planworks_c">
+         </column>
+         <column
+               columnDefinitionId="planduration_c">
+         </column>
+         <column
+               columnDefinitionId="actualstart_c">
+         </column>
+         <column
+               columnDefinitionId="actualfinish_c">
+         </column>
+         <column
+               columnDefinitionId="actualworks_c">
+         </column>
+         <column
+               columnDefinitionId="actualduration_c">
          </column>
          <column
                columnDefinitionId="chargerid">

@@ -779,6 +779,7 @@
             column="seq"
             id="work.seq"
             labelProvider="com.sg.business.commons.labelprovider.WBSCodeLabelprovider"
+            lazyDisplay="true"
             name="WBS序号"
             type="Integer"
             width="60">
@@ -1124,7 +1125,6 @@
       <column
             column="planstart"
             id="planstart"
-            lazyDisplay="true"
             name="计划开始"
             type="Date"
             width="72">
@@ -1132,7 +1132,6 @@
       <column
             column="planfinish"
             id="planfinish"
-            lazyDisplay="true"
             name="计划完成"
             type="Date"
             width="72">
@@ -1140,7 +1139,6 @@
       <column
             column="planduration"
             id="planduration"
-            lazyDisplay="true"
             name="计划工期"
             type="Integer"
             width="72">
@@ -1148,7 +1146,6 @@
       <column
             column="planworks"
             id="planworks"
-            lazyDisplay="true"
             name="计划工时"
             type="Integer"
             width="72">
@@ -1156,7 +1153,6 @@
       <column
             column="actualstart"
             id="actualstart"
-            lazyDisplay="true"
             name="实际开始"
             type="Date"
             width="72">
@@ -1164,7 +1160,6 @@
       <column
             column="actualfinish"
             id="actualfinish"
-            lazyDisplay="true"
             name="实际完成"
             type="Date"
             width="72">
@@ -1172,7 +1167,6 @@
       <column
             column="actualduration"
             id="actualduration"
-            lazyDisplay="true"
             name="实际工期"
             type="Integer"
             width="72">
@@ -1180,7 +1174,6 @@
       <column
             column="actualworks"
             id="actualworks"
-            lazyDisplay="true"
             name="实际工时"
             type="Integer"
             width="72">
@@ -1340,6 +1333,82 @@
             name="里程碑"
             type="Boolean"
             width="60">
+      </column>
+      <column
+            column="planstart"
+            id="planstart_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
+            lazyDisplay="true"
+            name="计划开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planfinish"
+            id="planfinish_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
+            lazyDisplay="true"
+            name="计划完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="planduration"
+            id="planduration_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
+            lazyDisplay="true"
+            name="计划工期"
+            style="SWT.RIGHT"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="planworks"
+            id="planworks_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
+            lazyDisplay="true"
+            name="计划工时"
+            style="SWT.RIGHT"
+            type="Double"
+            width="72">
+      </column>
+      <column
+            column="actualstart"
+            id="actualstart_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
+            lazyDisplay="true"
+            name="实际开始"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualfinish"
+            id="actualfinish_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
+            lazyDisplay="true"
+            name="实际完成"
+            type="Date"
+            width="72">
+      </column>
+      <column
+            column="actualduration"
+            id="actualduration_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
+            lazyDisplay="true"
+            name="实际工期"
+            style="SWT.RIGHT"
+            type="Integer"
+            width="72">
+      </column>
+      <column
+            column="actualworks"
+            id="actualworks_c"
+            labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
+            lazyDisplay="true"
+            name="实际工时"
+            style="SWT.RIGHT"
+            type="Double"
+            width="72">
       </column>
    </extension>
    <extension

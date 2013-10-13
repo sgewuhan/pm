@@ -335,6 +335,74 @@ public class Organization extends PrimaryObject {
 		super.doRemove(context);
 	}
 
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		boolean success = super.doSave(context);
+		if (!success) {
+			return false;
+		}
+
+		/*
+		 * 处理角色，以下程序从SaveHandler中移植
+		 */
+		// 如果组织是具有项目管理职能的组织，需要自动添加项目管理员角色
+		if (Boolean.TRUE.equals(isFunctionDepartment())) {
+			/*
+			 * // 判断是否存在这个role,如果不存在再添加。这个判断通过建立唯一索引来解决可以免除事务处理的问题。 boolean
+			 * hasRole = hasRole(Role.ROLE_PROJECT_ADMIN_ID); if (!hasRole) {
+			 * doAddRole(Role.ROLE_PROJECT_ADMIN_ID,
+			 * Role.ROLE_PROJECT_ADMIN_TEXT); }
+			 * 
+			 * 
+			 * hasRole = hasRole(Role.ROLE_BUSINESS_ADMIN_ID); if (!hasRole) {
+			 * doAddRole(Role.ROLE_BUSINESS_ADMIN_ID,
+			 * Role.ROLE_BUSINESS_ADMIN_TEXT); }
+			 */
+			// 已经通过索引进行了判断，因此注释以上程序
+			try {
+				doAddRole(Role.ROLE_PROJECT_ADMIN_ID,
+						Role.ROLE_PROJECT_ADMIN_TEXT);
+			} catch (Exception e) {
+			}
+			try {
+				doAddRole(Role.ROLE_BUSINESS_ADMIN_ID,
+						Role.ROLE_BUSINESS_ADMIN_TEXT);
+			} catch (Exception e) {
+			}
+
+		}
+
+		// 如果组织是具有文档容器的组织，需要自动添加文档访问者和文档管理员的角色
+		if (Boolean.TRUE.equals(isContainer())) {
+			/*
+			 * // 判断是否存在这个role boolean hasRole =
+			 * hasRole(Role.ROLE_VAULT_ADMIN_ID); if (!hasRole) {
+			 * doAddRole(Role.ROLE_VAULT_ADMIN_ID, Role.ROLE_VALUT_ADMIN_TEXT);
+			 * } hasRole = hasRole(Role.ROLE_VAULT_GUEST_ID); if (!hasRole) {
+			 * doAddRole(Role.ROLE_VAULT_GUEST_ID, Role.ROLE_VAULT_GUEST_TEXT);
+			 * }
+			 */
+			// 已经通过索引进行了判断，因此注释以上程序
+			try {
+
+				doAddRole(Role.ROLE_VAULT_ADMIN_ID, Role.ROLE_VALUT_ADMIN_TEXT);
+			} catch (Exception e) {
+			}
+			try {
+				doAddRole(Role.ROLE_VAULT_GUEST_ID, Role.ROLE_VAULT_GUEST_TEXT);
+			} catch (Exception e) {
+			}
+		}
+
+		// 增加管理者角色
+		try {
+			doAddRole(Role.ROLE_DEPT_MANAGER_ID, Role.ROLE_DEPT_MANAGER_TEXT);
+		} catch (Exception e) {
+		}
+		return true;
+
+	}
+
 	/**
 	 * 获取组织的上级组织
 	 * 
@@ -411,8 +479,9 @@ public class Organization extends PrimaryObject {
 	 * @param roleName
 	 *            , 角色名称
 	 * @return Role
+	 * @throws Exception
 	 */
-	public Role doAddRole(String roleNumber, String roleName) {
+	public Role doAddRole(String roleNumber, String roleName) throws Exception {
 		DBCollection roleCollection = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_ROLE);
 		BasicDBObject data = new BasicDBObject();
@@ -421,10 +490,8 @@ public class Organization extends PrimaryObject {
 		data.put(Role.F_ROLE_NUMBER, roleNumber);
 		data.put(Role.F_DESC, roleName);
 		WriteResult wr = roleCollection.insert(data);
-		if (wr.getN() > 0) {
-			return ModelService.createModelObject(data, Role.class);
-		}
-		return null;
+		checkWriteResult(wr);
+		return ModelService.createModelObject(data, Role.class);
 	}
 
 	/**
@@ -1296,13 +1363,15 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 获取当期组织最近的具有文档容器的组织
+	 * 
 	 * @return
 	 */
 	public ObjectId getContainerOrganizationId() {
-		if(isContainer()){
+		if (isContainer()) {
 			return this.get_id();
-		} else{
-			return ((Organization) getParentOrganization()).getContainerOrganizationId();
+		} else {
+			return ((Organization) getParentOrganization())
+					.getContainerOrganizationId();
 		}
 	}
 }

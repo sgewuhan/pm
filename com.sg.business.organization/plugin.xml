@@ -351,7 +351,6 @@
             isDefault="true"
             labelFieldName="desc"
             name="顶级组织"
-            saveHandler="com.sg.business.organization.editor.OrganizationSaveHandler"
             titleToolTips="顶级组织">
          <basicpage
                description="组织的基本信息"
@@ -446,7 +445,6 @@
             isDefault="true"
             labelFieldName="desc"
             name="部门和团队"
-            saveHandler="com.sg.business.organization.editor.OrganizationSaveHandler"
             titleToolTips="部门和团队">
          <basicpage
                description="组织的基本信息"
