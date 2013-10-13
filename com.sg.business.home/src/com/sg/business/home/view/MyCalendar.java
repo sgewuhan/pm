@@ -17,8 +17,10 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.AbstractWork;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.fullcalendar.CalendarEvent;
@@ -80,14 +82,28 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		if (planStart == null || planFinish == null) {
 			return null;
 		}
-
 		CalendarEvent event = new CalendarEvent();
 		event.setId(work.get_id().toString());
-		Object value = work.getValue(Work.F_DESCRIPTION);
-		String description = value == null ? "" : value.toString();
+		Project project = work.getProject();
+		if (project != null) {
+			Object proStatus = project.getLifecycleStatus();
+			if (proStatus == null
+					|| ILifecycle.STATUS_NONE_VALUE.equals(proStatus)) {
+				Integer workType = (Integer) work
+						.getValue(AbstractWork.F_WORK_TYPE);
+				if (!(workType != null && AbstractWork.WORK_TYPE_STANDLONE == workType)) {
+					return null;
+				}
+			}
+			event.setTitle(project.getLabel() + "/" + work.getLabel());
+		} else {
+			event.setTitle(work.getLabel());
+		}
+		Object workDesc = work.getValue(Work.F_DESCRIPTION);
+		String description = workDesc == null ? "" : workDesc.toString();
 		event.setDescription(description);
 		event.setNoticeMessage(0);
-		event.setTitle(work.getLabel());
+
 		event.setStart(planStart);
 		event.setEnd(planFinish);
 
