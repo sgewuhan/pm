@@ -1,4 +1,4 @@
-package com.sg.business.work.labelprovider;
+package com.sg.business.commons.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
@@ -6,7 +6,7 @@ import org.eclipse.swt.graphics.Image;
 import com.sg.business.model.Work;
 import com.sg.business.resource.BusinessResource;
 
-public class Alert1LabelProvider extends ColumnLabelProvider {
+public class WorkOvertimeLabelProvider extends ColumnLabelProvider {
 	@Override
 	public String getText(Object element) {
 		return "";
