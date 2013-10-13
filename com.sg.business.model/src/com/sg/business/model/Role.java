@@ -42,6 +42,11 @@ public class Role extends PrimaryObject {
 	 * 角色编号
 	 */
 	public static final String F_ROLE_NUMBER = "rolenumber";
+	
+	/**
+	 * 默认编辑器
+	 */
+	public static final String EDITOR_DEFAULT = "editor.organization.role";
 
 	/**
 	 * 基础角色/组织角色/系统管理员
@@ -395,6 +400,6 @@ public class Role extends PrimaryObject {
 	
 	@Override
 	public String getDefaultEditorId() {
-		return "editor.organization.role";
+		return EDITOR_DEFAULT;
 	}
 }
