@@ -145,16 +145,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_S_AUTOFINISHWITHCHILDREN = "s_autofinishwithchildren";
 
 	/**
-	 * 上级工作完成时，本工作自动完成
-	 */
-	public static final String F_S_AUTOFINISHWITHPARENT = "s_autofinishwithparent";
-
-	/**
-	 * 上级工作开始时，本工作自动开始
-	 */
-	public static final String F_S_AUTOSTARTWITHPARENT = "s_autostartwithparent";
-
-	/**
 	 * 是否可以跳过进行中的流程完成工作
 	 */
 	public static final String F_S_CANSKIPTOFINISH = "s_canskiptofinish";
@@ -180,7 +170,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String[] ARCHIVE_FIELDS = new String[] {
 			F_ASSIGNMENT_CHARGER_ROLE_ID, F_CHARGER_ROLE_ID,
 			F_PARTICIPATE_ROLE_SET, F_S_AUTOFINISHWITHCHILDREN,
-			F_S_AUTOFINISHWITHPARENT, F_S_AUTOSTARTWITHPARENT,
+			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_SETTING_AUTOSTART_WHEN_PARENT_START,
 			F_SETTING_CAN_ADD_DELIVERABLES, F_SETTING_CAN_BREAKDOWN, F_SETTING_CAN_MODIFY_PLANWORKS,
 			F_S_CANSKIPTOFINISH, F_S_PROJECTCHANGEFLOWMANDORY,
 			F_S_WORKCHANGEFLOWMANDORY ,F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH};
@@ -1372,7 +1362,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE }));
-		condition.put(F_S_AUTOFINISHWITHPARENT,
+		condition.put(F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
 				new BasicDBObject().append("$ne", Boolean.TRUE));
 		long count = getRelationCountByCondition(Work.class, condition);
 		if (count > 0) {
@@ -1385,7 +1375,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 2.循环得到下级级联的暂停和进行中状态的工作,
 		// 2.1判断取出工作是否可以完成，判断其是否可以跳过流程完成工作
 		// 2.2判断取出工作的下级非级联完成的工作是否可以完成
-		condition.put(F_S_AUTOFINISHWITHPARENT, Boolean.TRUE);
+		condition.put(F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, Boolean.TRUE);
 		List<PrimaryObject> childrenWork = getRelationByCondition(Work.class,
 				condition);
 		if (childrenWork.size() > 0) {
