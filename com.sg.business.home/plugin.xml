@@ -90,6 +90,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               lazyDisplay="true"
                name="标题"
                style="SWT.LEFT"
                type="String"

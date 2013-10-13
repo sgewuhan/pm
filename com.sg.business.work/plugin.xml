@@ -232,6 +232,98 @@
       <navigator
             id="work.ownerworklist"
             table="work.ownerworklist">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.status">
+            </column>
+            <column
+                  columnDefinitionId="work.desc"
+                  width="-1">
+            </column>
+            <column
+                  column="project"
+                  columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
+                  labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+                  name="项目"
+                  width="180">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.status">
+            </column>
+            <column
+                  columnDefinitionId="work.desc"
+                  width="-1">
+            </column>
+            <column
+                  column="project"
+                  columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
+                  labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+                  name="项目"
+                  width="180">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="work.teamworklist"
@@ -259,6 +351,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
+               lazyDisplay="true"
                name="工作"
                style="SWT.LEFT"
                type="String"
@@ -568,21 +661,13 @@
             limit="200"
             virtual="true">
          <column
-               column="alert1"
-               columnSorter="com.sg.business.work.labelprovider.Alert1Sorter"
-               labelProvider="com.sg.business.work.labelprovider.Alert1LabelProvider"
-               toolTipText="超期预警"
-               width="24">
-         </column>
-         <column
                columnDefinitionId="project.status">
          </column>
          <column
-               column="overload"
-               columnSorter="com.sg.business.work.labelprovider.OverloadSorter"
-               labelProvider="com.sg.business.work.labelprovider.OverloadLabelProvider"
-               toolTipText="工作超量分配"
-               width="24">
+               columnDefinitionId="work.overtime">
+         </column>
+         <column
+               columnDefinitionId="work.overload">
          </column>
          <column
                columnDefinitionId="work.desc"

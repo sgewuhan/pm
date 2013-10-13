@@ -420,6 +420,7 @@
          point="com.mobnut.portal.scenario">
       <scenario
             id="project"
+            isDefault="true"
             name="项目管理">
          <perspective
                default="true"
@@ -460,7 +461,6 @@
       </scenario>
       <scenario
             id="manager"
-            isDefault="true"
             name="业务管理">
          <perspective
                default="true"

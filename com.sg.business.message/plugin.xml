@@ -308,6 +308,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               lazyDisplay="true"
                name="标题"
                type="String"
                width="-1">

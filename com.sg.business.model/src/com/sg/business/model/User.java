@@ -235,9 +235,9 @@ public class User extends PrimaryObject {
 		
 		BasicDBList scenarioList;
 		Object value = getValue(F_SCENARIO);
-		if (value!=null&&value instanceof BasicBSONList) {
+		if (value instanceof BasicBSONList) {
 			scenarioList = (BasicDBList)value;
-			if(!scenarioList.contains(value)){
+			if(!scenarioList.contains(id)){
 				scenarioList.add(id);
 			}
 		}else{

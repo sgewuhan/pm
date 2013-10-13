@@ -23,6 +23,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelRelation;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -1359,21 +1360,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 取消项目
 	 */
 	public Object doCancel(IContext context) throws Exception {
-		Work root = getWBSRoot();
-		root.doCancel(context);
-
-		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
-
-		// 发送项目消息到参与者
-		doNoticeProjectAction(context, "已取消");
-
-		return this;
-	}
-
-	/**
-	 * 完成项目
-	 */
-	public Object doFinish(IContext context) throws Exception {
 		Organization org = getFunctionOrganization();
 		if (org == null) {
 			throw new Exception("项目无管理部门或管理部门被删除，" + this);
@@ -1384,9 +1370,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		Work root = getWBSRoot();
-		root.doFinish(context);
+		root.doCancel(context);
 
-		doArchiveProjectFolder(containerOrganizationId);
+		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
+
+		// 发送项目消息到参与者
+		doNoticeProjectAction(context, "已取消");
+
+		doArchive(context);
+
+		return this;
+	}
+
+	/**
+	 * 完成项目
+	 */
+	public Object doFinish(IContext context) throws Exception {
+		Work root = getWBSRoot();
+		root.doFinish(context);
 
 		DBCollection col = getCollection();
 		DBObject data = col.findAndModify(
@@ -1406,20 +1407,62 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 发送项目消息到参与者
 		doNoticeProjectAction(context, "已完成");
 
+		doArchive(context);
+
 		return this;
 
 	}
 
-	private void doArchiveProjectFolder(ObjectId containerOrganizationId)
-			throws Exception {
+	public void doArchive(IContext context) throws Exception {
+		//1.归档项目角色
+		BasicDBObject q = new BasicDBObject();
+		q.put(IProjectRelative.F_PROJECT_ID, get_id());
 
-		DBCollection col = getCollection(IModelConstants.C_FOLDER);
-		BasicDBObject folderQuery = new BasicDBObject().append(
-				Folder.F_PROJECT_ID, get_id());
-		WriteResult ws = col.update(folderQuery, new BasicDBObject().append(
+		// 删除角色指派
+		DBCollection col = getCollection(IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
+		WriteResult ws = col.remove(q);
+		checkWriteResult(ws);
+
+		// 删除项目角色
+		col = getCollection(IModelConstants.C_PROJECT_ROLE);
+		ws = col.remove(q);
+		checkWriteResult(ws);
+
+		// 归档项目工作
+		col = getCollection(IModelConstants.C_WORK);
+		BasicDBObject update = new BasicDBObject();
+		update.put(Work.F_ARCHIVE, Boolean.TRUE);
+		for (String archiveField : Work.ARCHIVE_FIELDS) {
+			update.put(archiveField, null);
+		}
+		ws = col.update(q, new BasicDBObject().append("$set", update), false, true);
+		checkWriteResult(ws);
+
+
+		// 归档项目文件
+		Organization org = getFunctionOrganization();
+		if (org == null) {
+			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+		}
+		ObjectId containerOrganizationId = org.getContainerOrganizationId();
+		if (containerOrganizationId == null) {
+			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+		}
+
+		col = getCollection(IModelConstants.C_FOLDER);
+		ws = col.update(q, new BasicDBObject().append(
 				"$set", new BasicDBObject().append(Folder.F_ROOT_ID,
 						containerOrganizationId)), false, true);
 		checkWriteResult(ws);
+
+		// 归档项目公告
+		col= getCollection(IModelConstants.C_BULLETINBOARD);
+		ws = col.remove(q);
+		checkWriteResult(ws);
+
+		// 写日志
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "项目归档",
+				new Date(), this.getLabel(), IModelConstants.DB);
 	}
 
 	/**
@@ -1575,6 +1618,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (!userId.equals(this.getChargerId())) {
 			throw new Exception("不是本项目负责人，" + this);
 		}
+		
+		// 2.检查项目是否可以进行归档
+		Organization org = getFunctionOrganization();
+		if (org == null) {
+			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+		}
+		ObjectId containerOrganizationId = org.getContainerOrganizationId();
+		if (containerOrganizationId == null) {
+			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+		}
+		//TODO 归档判断是否完整
+
 		return null;
 	}
 
@@ -1589,6 +1644,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 2.检查项目的工作是否满足启动条件
 		Work work = getWBSRoot();
 		message.addAll(work.checkCascadeFinish(work.get_id()));
+
+		// 3.检查项目是否可以进行归档
+		Organization org = getFunctionOrganization();
+		if (org == null) {
+			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+		}
+		ObjectId containerOrganizationId = org.getContainerOrganizationId();
+		if (containerOrganizationId == null) {
+			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+		}
+		//TODO 归档判断是否完整
+
 		return message;
 	}
 
@@ -1629,11 +1696,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		BasicDBObject condition = new BasicDBObject();
 		condition.put(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 		condition.put(Work.F_PROJECT_ID, get_id());
-		condition.put(Work.F_LIFECYCLE,
+		condition.put(
+				Work.F_LIFECYCLE,
 				new BasicDBObject().append("$nin", new String[] {
 						STATUS_CANCELED_VALUE, STATUS_FINIHED_VALUE }));
-		
-		if(getRelationCountByCondition(Work.class, condition)>0){
+
+		if (getRelationCountByCondition(Work.class, condition) > 0) {
 			throw new Exception("该项目已经进行过提交操作，" + this);
 		}
 	}

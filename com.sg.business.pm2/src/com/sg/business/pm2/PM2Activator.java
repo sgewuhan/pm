@@ -23,6 +23,7 @@ import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.User;
+import com.sg.business.model.Work;
 import com.sg.business.model.WorkConnection;
 import com.sg.business.model.WorkDefinitionConnection;
 
@@ -171,6 +172,10 @@ public class PM2Activator extends AbstractUIPlugin {
 				new BasicDBObject()
 						.append(ProjectTemplate.F_ORGANIZATION_ID, 1).append(
 								ProjectTemplate.F_DESC, 1));
+
+		// 创建工作归档字段索引
+		DBCollection col = db.getCollection(IModelConstants.C_WORK);
+		col.createIndex(new BasicDBObject().append(Work.F_ARCHIVE, 1));
 
 		// // 同一组织中不允许出现重名的独立/通用工作定义
 		// ensureIndex(

@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.bson.types.BasicBSONList;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.swt.graphics.Image;
 import org.jbpm.task.Status;
 
 import com.mobnut.commons.util.Utils;
@@ -20,10 +20,16 @@ import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class RuntimeWorkLabelprovider extends ColumnLabelProvider {
+public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
+	@Override
+	public Image getImage(Object element) {
+		return null;
+	}
+	
 	@Override
 	public String getText(Object element) {
 		if (element instanceof Work) {

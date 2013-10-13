@@ -98,6 +98,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_MANDATORY = "mandatory";
 
 	/**
+	 * 归档的，不可删除，布尔类型的字段
+	 */
+	public static final String F_ARCHIVE = "archive";
+
+	/**
 	 * 负责人的id userid
 	 */
 	public static final String F_CHARGER = "chargerid";
@@ -134,51 +139,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public static final String F_IS_PROJECT_WBSROOT = "iswbsroot";
 
-	/**
-	 * 下级所有工作完成时，本工作自动完成
-	 */
-	public static final String F_S_AUTOFINISHWITHCHILDREN = "s_autofinishwithchildren";
-
-	/**
-	 * 上级工作完成时，本工作自动完成
-	 */
-	public static final String F_S_AUTOFINISHWITHPARENT = "s_autofinishwithparent";
-
-	/**
-	 * 上级工作开始时，本工作自动开始
-	 */
-	public static final String F_S_AUTOSTARTWITHPARENT = "s_autostartwithparent";
-
-	/**
-	 * 是否允许添加交付物
-	 */
-	public static final String F_S_CANADDDELIVERABLES = "s_canadddeliverables";
-
-	/**
-	 * 是否允许分解工作
-	 */
-	public static final String F_S_CANBREAKDOWN = "s_canbreakdown";
-
-	/**
-	 * 是否允许修改计划工时
-	 */
-	public static final String F_S_CANMODIFYPLANWORKS = "s_canmodifyplanworks";
-
-	/**
-	 * 是否可以跳过进行中的流程完成工作
-	 */
-	public static final String F_S_CANSKIPTOFINISH = "s_canskiptofinish";
-
-	/**
-	 * 需启动项目变更流程实施工作的更改
-	 */
-	public static final String F_S_PROJECTCHANGEFLOWMANDORY = "s_projectchangeflowmandory";
-
-	/**
-	 * 需启动变更流程实施工作的更改
-	 */
-	public static final String F_S_WORKCHANGEFLOWMANDORY = "s_workchangeflowmandory";
-
 	public static final String F_MARK = "marked";
 
 	public static final String F_RECORD = "record";
@@ -186,6 +146,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_WORK_DEFINITION_ID = "workd_id";
 
 	public static final String F_USE_PROJECT_ROLE = "useprojectrole";
+
+	public static final String[] ARCHIVE_FIELDS = new String[] {
+			F_ASSIGNMENT_CHARGER_ROLE_ID, F_CHARGER_ROLE_ID,
+			F_PARTICIPATE_ROLE_SET, F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
+			F_SETTING_AUTOSTART_WHEN_PARENT_START,
+			F_SETTING_CAN_ADD_DELIVERABLES, F_SETTING_CAN_BREAKDOWN,
+			F_SETTING_CAN_MODIFY_PLANWORKS,
+			F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
+			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
+			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
+			F_WF_EXECUTE_ASSIGNMENT,F_TARGETS,F_WF_CHANGE+IProcessControl.POSTFIX_TASK };
+
+	private Double overCount = null;
 
 	/**
 	 * 根据状态返回不同的图标
@@ -244,9 +217,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		data.put(F_PROJECT_ID, getValue(F_PROJECT_ID));
 
 		// 设置一些基本的选项设定
-		data.put(F_S_CANADDDELIVERABLES, Boolean.TRUE);
-		data.put(F_S_CANBREAKDOWN, Boolean.TRUE);
-		data.put(F_S_CANMODIFYPLANWORKS, Boolean.TRUE);
+		data.put(F_SETTING_CAN_ADD_DELIVERABLES, Boolean.TRUE);
+		data.put(F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
+		data.put(F_SETTING_CAN_MODIFY_PLANWORKS, Boolean.TRUE);
 
 		Work po = ModelService.createModelObject(data, Work.class);
 		return po;
@@ -697,6 +670,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return Boolean.TRUE.equals(getValue(F_MANDATORY));
 	}
 
+	public boolean isArchive() {
+		return Boolean.TRUE.equals(getValue(F_ARCHIVE));
+	}
+
 	/**
 	 * 能否点击编辑
 	 */
@@ -787,7 +764,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 2. 当是摘要工作时，是否设置了允许分解，如果没有，返回false
 		if (!isSummaryWork()
-				&& !Boolean.TRUE.equals(getValue(F_S_CANBREAKDOWN))) {
+				&& !Boolean.TRUE.equals(getValue(F_SETTING_CAN_BREAKDOWN))) {
 			return false;
 		}
 
@@ -817,7 +794,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		// 3.如果设置了不能添加交付物，返回假
-		if (!Boolean.TRUE.equals(getValue(F_S_CANADDDELIVERABLES))) {
+		if (!Boolean.TRUE.equals(getValue(F_SETTING_CAN_ADD_DELIVERABLES))) {
 			return false;
 		}
 
@@ -1037,32 +1014,59 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (start.after(finish)) {
 				throw new Exception("开始日期必须早于完成日期");
 			}
-			
-			//增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
-			Project project = getProject();
-		    Date pstart=project.getPlanStart();
-		    if (pstart != null) {
-		    	pstart = Utils.getDayBegin(pstart).getTime();
-			}
 
-			Date pfinish =project.getPlanFinish();
-			if (pfinish != null) {
-				pfinish = Utils.getDayEnd(pfinish).getTime();
-			}
-			
-			if(start.before(pstart)){
-				throw new Exception("工作的开始时间不能早于项目的开始时间");
-			}
-			if(finish.after(pfinish)){
-				throw new Exception("工作的结束时间不能晚于项目的结束时间");
-			}
-			
 			// 计算工期
 			Calendar sdate = Utils.getDayBegin(start);
 			Calendar edate = Utils.getDayEnd(finish);
 			long l = (edate.getTimeInMillis() - sdate.getTimeInMillis())
 					/ (1000 * 60 * 60 * 24);
 			setValue(fDuration, new Integer((int) l));
+		}
+	}
+
+	/**
+	 * 增加检测 工作的开始时间不能早于项目的开始时间，结束时间不能晚于项目的结束时间
+	 * 
+	 * @throws Exception
+	 */
+	public void checkProjectTimeline() throws Exception {
+		Date start = getPlanStart();
+		if (start != null) {
+			start = Utils.getDayBegin(start).getTime();
+		}
+
+		Date finish = getPlanFinish();
+		if (finish != null) {
+			finish = Utils.getDayEnd(finish).getTime();
+		}
+
+		if (start == null || finish == null) {
+			return;
+		}
+
+		Project project = getProject();
+		if (isProjectWork()) {
+			return;
+		}
+		Date projstart = project.getPlanStart();
+		if (projstart != null) {
+			projstart = Utils.getDayBegin(projstart).getTime();
+		} else {
+			return;
+		}
+
+		Date projfinish = project.getPlanFinish();
+		if (projfinish != null) {
+			projfinish = Utils.getDayEnd(projfinish).getTime();
+		} else {
+			return;
+		}
+
+		if (start.before(projstart)) {
+			throw new Exception("工作的开始时间不能早于项目的开始时间");
+		}
+		if (finish.after(projfinish)) {
+			throw new Exception("工作的结束时间不能晚于项目的结束时间");
 		}
 	}
 
@@ -1341,7 +1345,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE }));
-		condition.put(F_S_AUTOFINISHWITHPARENT,
+		condition.put(F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
 				new BasicDBObject().append("$ne", Boolean.TRUE));
 		long count = getRelationCountByCondition(Work.class, condition);
 		if (count > 0) {
@@ -1354,15 +1358,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 2.循环得到下级级联的暂停和进行中状态的工作,
 		// 2.1判断取出工作是否可以完成，判断其是否可以跳过流程完成工作
 		// 2.2判断取出工作的下级非级联完成的工作是否可以完成
-		condition.put(F_S_AUTOFINISHWITHPARENT, Boolean.TRUE);
+		condition.put(F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, Boolean.TRUE);
 		List<PrimaryObject> childrenWork = getRelationByCondition(Work.class,
 				condition);
 		if (childrenWork.size() > 0) {
 			for (int i = 0; i < childrenWork.size(); i++) {
 				Work childWork = (Work) childrenWork.get(i);
 				if (pc.isWorkflowActivate(F_WF_EXECUTE)
-						&& !Boolean.TRUE.equals(childWork
-								.getValue(F_S_CANSKIPTOFINISH))) {
+						&& !Boolean.TRUE
+								.equals(childWork
+										.getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
 					message.add(new Object[] { "存在无法跳过进行中的流程完成的下级级联完成工作", this,
 							SWT.ICON_ERROR, EDITOR });
 				}
@@ -1670,13 +1675,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		checkAndCalculateDuration(F_PLAN_START, F_PLAN_FINISH, F_PLAN_DURATION);
+
 		checkAndCalculateDuration(F_ACTUAL_START, F_ACTUAL_FINISH,
 				F_ACTUAL_DURATION);
 
+		checkProjectTimeline();
+
 		super.doSave(context);
 
+		resetCaculateCache();
 		return true;
 
+	}
+
+	private void resetCaculateCache() {
+		overCount = null;
 	}
 
 	@Override
@@ -1710,9 +1723,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		ensureParticipatesConsistency();
 
 		// 缺省可以添加交付物
-		Object value = getValue(F_S_CANADDDELIVERABLES);
+		Object value = getValue(F_SETTING_CAN_ADD_DELIVERABLES);
 		if (value == null) {
-			setValue(F_S_CANADDDELIVERABLES, Boolean.TRUE);
+			setValue(F_SETTING_CAN_ADD_DELIVERABLES, Boolean.TRUE);
 		}
 
 		super.doInsert(context);
@@ -3197,19 +3210,27 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 获得超量分配的倍速
+	 * 获得超量分配的倍数（按计划工时）
 	 * 
 	 * @return
+	 * @throws Exception
 	 */
-	public float getOverloadCount() {
+	public double getOverloadCount() throws Exception {
+		if (overCount != null) {
+			return overCount;
+		}
+
 		if (!isProjectWork()) {
-			return 0f;
+			throw new Exception("只有项目工作才能进行超量计算");
 		}
 		BasicBSONList idlist = getParticipatesIdList();
 		if (idlist == null || idlist.size() < 1) {
-			return 0f;
+			throw new Exception("工作没有指定参与者");
 		}
-		// getPlanWorks()
+		Double planWorks = getPlanWorks();
+		if (planWorks == null) {
+			throw new Exception("工作没有指定计划工时");
+		}
 
 		// 获取计划工作天数
 		Date planStart = getPlanStart();
@@ -3217,11 +3238,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		CalendarCaculater cc = getProject().getCalendarCaculater();
 		double hours = cc.getWorkingHours(planStart, planFinih);
-		// 获得满额工时
-		double totalWorkHourAvailabel = hours * idlist.size();
-		//
-
-		// TODO Auto-generated method stub
-		return 0;
+		// 按参与者数量X工作时间可用的获得满额工时
+		double totalWorkHourAvailable = hours * idlist.size();
+		if (totalWorkHourAvailable == 0) {
+			throw new Exception("无可用计划工时");
+		}
+		overCount = planWorks / totalWorkHourAvailable;
+		return overCount;
 	}
 }
