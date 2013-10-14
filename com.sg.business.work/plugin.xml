@@ -1701,6 +1701,10 @@
                                  property="primaryobject.method"
                                  value="false">
                            </test>
+                           <test
+                                 args="workrecord"
+                                 property="runtimework.action">
+                           </test>
                         </and>
                      </iterate>
                   </and>
