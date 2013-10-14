@@ -53,6 +53,18 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="审批"
+            processDefinitionId="pm.systemprojectapprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="reviewer_list"
+               taskFormFieldName="reviewer_list">
+         </processParameter>
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -132,6 +144,66 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.systemprojectapprove.audit"
+            name="系统部评审审批">
+         <basicpage
+               id="basicpage1"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写批准意见、结论和评审专家组成员">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="批准"
+                        labelVisible="false"
+                        name="choice"
+                        option="通过及预审"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <radio
+                        editable="true"
+                        id="pretrial"
+                        label="资料预审"
+                        labelVisible="false"
+                        name="pretrial"
+                        option="是否资料预审"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        editable="true"
+                        id="reviewer_list"
+                        label="参与者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="reviewer_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="com.sg.widgets.option">
@@ -166,6 +238,20 @@
                id="整改"
                label="整改"
                value="整改">
+         </option>
+      </option>
+      <option
+            id="是否资料预审"
+            label="是否资料预审">
+         <option
+               id="预审"
+               label="预审"
+               value="预审">
+         </option>
+         <option
+               id="不预审"
+               label="不预审"
+               value="不预审">
          </option>
       </option>
    </extension>
