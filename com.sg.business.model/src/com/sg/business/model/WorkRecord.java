@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -57,13 +58,21 @@ public class WorkRecord extends PrimaryObject {
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		ObjectId workId = (ObjectId) getValue(F_WORK_ID);
-
+		
 		DBCollection col = getCollection(IModelConstants.C_WORK);
-
 		col.update(
 				new BasicDBObject().append(Work.F__ID, workId),
 				new BasicDBObject().append("$push",
 						new BasicDBObject().append(Work.F_RECORD, get_data())));
+		
+		Work work = ModelService.createModelObject(Work.class, workId);
+		Double planWorks = work.getPlanWorks();
+		Double workPercent = (Double)get_data().get(F_WORKS_FINISHED_PERCENT);
+		col.update(
+				new BasicDBObject().append(Work.F__ID, workId),
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(Work.F_ACTUAL_WORKS, planWorks*workPercent)));
+		
 	}
 
 	@Override
