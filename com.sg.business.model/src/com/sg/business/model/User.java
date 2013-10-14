@@ -87,8 +87,8 @@ public class User extends PrimaryObject {
 	public static final String F_IS_ADMIN = "isadmin";
 
 	private static final String F_LASTOPENED = "lastopened";
-	
-	public static final String F_SCENARIO="scenario";
+
+	public static final String F_SCENARIO = "scenario";
 
 	/**
 	 * 获取组织_id
@@ -228,24 +228,24 @@ public class User extends PrimaryObject {
 			super.doRemove(context);
 		}
 	}
-	
+
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		String id = Portal.getDefault().getDefaultScenarioId();
-		
+
 		BasicDBList scenarioList;
 		Object value = getValue(F_SCENARIO);
 		if (value instanceof BasicBSONList) {
-			scenarioList = (BasicDBList)value;
-			if(!scenarioList.contains(id)){
+			scenarioList = (BasicDBList) value;
+			if (!scenarioList.contains(id)) {
 				scenarioList.add(id);
 			}
-		}else{
-			scenarioList=new BasicDBList();
+		} else {
+			scenarioList = new BasicDBList();
 			scenarioList.add(id);
 			setValue(F_SCENARIO, scenarioList);
 		}
-		
+
 		super.doInsert(context);
 	}
 
@@ -256,7 +256,8 @@ public class User extends PrimaryObject {
 	 *            ,角色编号
 	 * @return
 	 */
-	public List<PrimaryObject> getRoleGrantedOrganization(String roleNumber) {
+	public List<PrimaryObject> getRoleGrantedInFunctionDepartmentOrganization(
+			String roleNumber) {
 
 		List<PrimaryObject> roles = getRoles(roleNumber);
 
@@ -287,6 +288,44 @@ public class User extends PrimaryObject {
 		return orgs;
 	}
 
+	
+	/**
+	 * 获得用户具有某角色的组织
+	 * 
+	 * @param roleNumber
+	 *            ,角色编号
+	 * @return
+	 */
+	public List<PrimaryObject> getRoleGrantedInAllOrganization(
+			String roleNumber) {
+
+		List<PrimaryObject> roles = getRoles(roleNumber);
+
+		// 取出这些角色的所属组织的id
+		ObjectId[] orgIds = new ObjectId[roles.size()];
+		for (int i = 0; i < roles.size(); i++) {
+			orgIds[i] = ((Role) roles.get(i)).getOrganization_id();
+		}
+
+		List<PrimaryObject> orgs = new ArrayList<PrimaryObject>();
+
+		// 查询属于可管理的组织
+		DBCollection orgCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_ORGANIZATION);
+		DBObject condition = new BasicDBObject();
+		condition.put(Organization.F__ID,
+				new BasicDBObject().append("$in", orgIds));
+		DBCursor cur = orgCol.find(condition);
+		while (cur.hasNext()) {
+			Organization org = ModelService.createModelObject(cur.next(),
+					Organization.class);
+			if (!orgs.contains(org)) {
+				orgs.add(org);
+			}
+		}
+
+		return orgs;
+	}
 	/**
 	 * 将用户委托至其他用户
 	 * 
@@ -316,7 +355,7 @@ public class User extends PrimaryObject {
 		if (value != null) {
 			for (int i = 0; i < value.size(); i++) {
 				DBObject element = (DBObject) value.get(i);
-				if (!Utils.contains(result,element,"id")) {
+				if (!Utils.contains(result, element, "id")) {
 					result.add(element);
 				}
 			}
@@ -335,5 +374,14 @@ public class User extends PrimaryObject {
 
 	public boolean isActivated() {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if(adapter == IWorksSummary.class){
+			return (T) new SummaryUserWorks(this);
+		}
+		return super.getAdapter(adapter);
 	}
 }

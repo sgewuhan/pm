@@ -519,10 +519,10 @@ public class Organization extends PrimaryObject {
 		Organization parent = (Organization) organization
 				.getParentOrganization();
 		while (parent != null) {
-			if (parent.equals(organization)) {
+			if (parent.equals(this)) {
 				return true;
 			}
-			parent = (Organization) organization.getParentOrganization();
+			parent = (Organization) parent.getParentOrganization();
 		}
 		return false;
 	}
@@ -1373,5 +1373,14 @@ public class Organization extends PrimaryObject {
 			return ((Organization) getParentOrganization())
 					.getContainerOrganizationId();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if(adapter == IWorksSummary.class){
+			return (T) new SummaryOrganizationWorks(this);
+		}
+		return super.getAdapter(adapter);
 	}
 }

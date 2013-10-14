@@ -45,7 +45,7 @@ public class OrgOfBusinessAdminRoleUser extends DataSetFactory {
 		User currentUser = ModelService.createModelObject(User.class, useroid);
 		
 		//获得用户具有业务管理员(组织角色)的组织
-		List<PrimaryObject> orgs = currentUser.getRoleGrantedOrganization(Role.ROLE_BUSINESS_ADMIN_ID);
+		List<PrimaryObject> orgs = currentUser.getRoleGrantedInFunctionDepartmentOrganization(Role.ROLE_BUSINESS_ADMIN_ID);
 
 		//获取当前用户可访问的组织集合数
 		count = orgs.size();

@@ -57,7 +57,7 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 			User user = UserToolkit.getUserById(userId);
 			//获取当前用户具有业务管理员角色的组织
 			List<PrimaryObject> orglist = user
-					.getRoleGrantedOrganization(Role.ROLE_BUSINESS_ADMIN_ID);
+					.getRoleGrantedInFunctionDepartmentOrganization(Role.ROLE_BUSINESS_ADMIN_ID);
 			ObjectId[] ids = new ObjectId[orglist.size()];
 			for (int i = 0; i < ids.length; i++) {
 				ids[i] = orglist.get(i).get_id();

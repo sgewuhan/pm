@@ -39,6 +39,7 @@ import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
+import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -147,6 +148,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public static final String F_USE_PROJECT_ROLE = "useprojectrole";
 
+	public static final String F_PERFORMENCE = "performence";
+
 	public static final String[] ARCHIVE_FIELDS = new String[] {
 			F_ASSIGNMENT_CHARGER_ROLE_ID, F_CHARGER_ROLE_ID,
 			F_PARTICIPATE_ROLE_SET, F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
@@ -156,7 +159,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
 			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
-			F_WF_EXECUTE_ASSIGNMENT,F_TARGETS,F_WF_CHANGE+IProcessControl.POSTFIX_TASK };
+			F_WF_EXECUTE_ASSIGNMENT, F_TARGETS,
+			F_WF_CHANGE + IProcessControl.POSTFIX_TASK };
+
+	/**
+	 * 绩效记录字段
+	 */
+	private static final String F_SF_PERFORMENCE_USERID = "userid";
+
+	private static final String F_SF_PERFORMENCE_DATE = "date";
+
+	private static final String F_SF_PERFORMENCE_ACTUALWORKS = "actualworks";
 
 	private Double overCount = null;
 
@@ -2208,6 +2221,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		update.put(F_LIFECYCLE, STATUS_FINIHED_VALUE);
 		// 设置工作的实际完成时间
 		update.put(F_ACTUAL_FINISH, new Date());
+		
+		
+		//处理绩效数据
+		
+		
+		
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()), null, null, false,
@@ -3245,5 +3264,109 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		overCount = planWorks / totalWorkHourAvailable;
 		return overCount;
+	}
+
+	/**
+	 * 获得某个参与者在某天的实际工时
+	 * 
+	 * @param userid
+	 * @param date
+	 * @return
+	 */
+	public double getParticipatesActualWorks(String userid, Date date) {
+
+		// 首先读取performence记录
+		BasicBSONList performence = getPerformence();
+		if (performence != null) {// 根据绩效记录获取
+			for (int i = 0; i < performence.size(); i++) {
+				DBObject item = (DBObject) performence.get(i);
+				String _userid = (String) item.get(F_SF_PERFORMENCE_USERID);
+				if (userid.equals(_userid)) {
+					Date _date = (Date) item.get(F_SF_PERFORMENCE_DATE);
+					// 按天比较，相同
+					if (date.getTime() / (24 * 60 * 60 * 1000) == _date
+							.getTime() / (24 * 60 * 60 * 1000)) {
+						Double value = (Double) item
+								.get(F_SF_PERFORMENCE_ACTUALWORKS);
+						if (value != null) {
+							return value.doubleValue();
+						} else {
+							return 0d;
+						}
+					}
+				}
+			}
+			return 0d;
+		} else {
+			// 没有绩效记录的，如果工作已经完成，按照计划工时，根据参与者数量和工期进行分摊
+			String ls = getLifecycleStatus();
+			if (STATUS_FINIHED_VALUE.equals(ls)) {
+				Double works = getActualWorks();
+				if (works == null) {
+					works = getPlanWorks();
+				}
+				if (works == null) {
+					return 0d;
+				}
+				
+				//当天是否在实际开始和时间完成之间
+				Date as = getActualStart();
+				Date af = getActualFinish();
+				if(date.getTime()<as.getTime()||date.getTime()>af.getTime()){
+					return 0d;
+				}
+				
+				// 取当天是否为工作日
+				Double workingTimeOfDateUseCache = getWorkingTimeOfDateUseCache(date);
+				if (workingTimeOfDateUseCache==0d) {
+					return 0d;
+				}
+
+				BasicBSONList ids = getParticipatesIdList();
+				if (ids != null) {
+					return works / ids.size();
+				} else {
+					return 0d;
+				}
+			} else {
+				return 0d;
+			}
+		}
+	}
+
+	private Double getWorkingTimeOfDateUseCache(Date date) {
+		long key = date.getTime() / (24 * 60 * 60 * 1000);
+		if (workingDateUseCache == null) {
+			workingDateUseCache = new HashMap<Long, Double>();
+		}
+		Double workingTime = workingDateUseCache.get(key);
+		if (workingTime == null) {
+			Project project = getProject();
+			CalendarCaculater cc;
+			if (project != null) {
+				cc = project.getCalendarCaculater();
+			} else {
+				List<PrimaryObject> conditions = new SystemCalendar()
+						.getDataSet().getDataItems();
+				cc = new CalendarCaculater(conditions);
+			}
+			workingTime = cc.getWorkingTime(date);
+			workingDateUseCache.put(key, workingTime);
+		}
+		return workingTime;
+	}
+
+	private Boolean isSummaryWorkUseCache;
+	private HashMap<Long, Double> workingDateUseCache;
+
+	private boolean isSummaryWorkUseCache() {
+		if (isSummaryWorkUseCache == null) {
+			isSummaryWorkUseCache = isSummaryWork();
+		}
+		return isSummaryWorkUseCache;
+	}
+
+	private BasicBSONList getPerformence() {
+		return (BasicBSONList) getValue(F_PERFORMENCE);
 	}
 }
