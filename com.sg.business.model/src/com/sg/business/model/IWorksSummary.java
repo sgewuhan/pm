@@ -1,11 +1,6 @@
 package com.sg.business.model;
 
 import java.util.Date;
-import java.util.HashMap;
-
-import org.bson.types.ObjectId;
-
-import com.mobnut.db.model.PrimaryObject;
 
 public interface IWorksSummary {
 
@@ -23,6 +18,6 @@ public interface IWorksSummary {
 	 * @param cache 
 	 * @return
 	 */
-	double getWorksSummaryOfDay(Date date, HashMap<ObjectId,PrimaryObject> cache);
+	double getWorksSummaryOfDay(Date date);
 
 }

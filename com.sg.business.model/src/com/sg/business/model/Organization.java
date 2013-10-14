@@ -95,6 +95,7 @@ public class Organization extends PrimaryObject {
 	 */
 	public static final String F_KBASE = "kbase";
 
+
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
 	 * 
@@ -1375,11 +1376,16 @@ public class Organization extends PrimaryObject {
 		}
 	}
 	
+	private SummaryOrganizationWorks summary;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if(adapter == IWorksSummary.class){
-			return (T) new SummaryOrganizationWorks(this);
+			if(summary == null){
+				summary = new SummaryOrganizationWorks(this);
+			}
+			return (T) summary;
 		}
 		return super.getAdapter(adapter);
 	}

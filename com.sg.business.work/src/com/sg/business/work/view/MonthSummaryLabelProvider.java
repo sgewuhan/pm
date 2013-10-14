@@ -1,11 +1,9 @@
 package com.sg.business.work.view;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -15,7 +13,6 @@ public class MonthSummaryLabelProvider extends ColumnLabelProvider {
 
 	private int currentYear;
 	private int month;
-	private HashMap<ObjectId,PrimaryObject> cache;
 
 	public MonthSummaryLabelProvider(int currentYear, int month) {
 		this.currentYear = currentYear;
@@ -46,11 +43,12 @@ public class MonthSummaryLabelProvider extends ColumnLabelProvider {
 		cal.set(Calendar.MILLISECOND, 999);
 		Date end = cal.getTime();
 		double summary = ws.getWorksSummary(start,end);
-		return ""+(summary==0?"":summary);
-	}
-
-	public void setCache(HashMap<ObjectId,PrimaryObject> cache) {
-		this.cache = cache;
+		if(summary == 0){
+			return "";
+		}else{
+			DecimalFormat df = new DecimalFormat("#########");
+			return df.format(summary);
+		}
 	}
 
 

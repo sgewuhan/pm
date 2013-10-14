@@ -288,7 +288,6 @@ public class User extends PrimaryObject {
 		return orgs;
 	}
 
-	
 	/**
 	 * 获得用户具有某角色的组织
 	 * 
@@ -296,8 +295,7 @@ public class User extends PrimaryObject {
 	 *            ,角色编号
 	 * @return
 	 */
-	public List<PrimaryObject> getRoleGrantedInAllOrganization(
-			String roleNumber) {
+	public List<PrimaryObject> getRoleGrantedInAllOrganization(String roleNumber) {
 
 		List<PrimaryObject> roles = getRoles(roleNumber);
 
@@ -326,6 +324,7 @@ public class User extends PrimaryObject {
 
 		return orgs;
 	}
+
 	/**
 	 * 将用户委托至其他用户
 	 * 
@@ -375,12 +374,17 @@ public class User extends PrimaryObject {
 	public boolean isActivated() {
 		return Boolean.TRUE.equals(getValue(F_ACTIVATED));
 	}
-	
+
+	private SummaryUserWorks summary;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
-		if(adapter == IWorksSummary.class){
-			return (T) new SummaryUserWorks(this);
+		if (adapter == IWorksSummary.class) {
+			if (summary == null) {
+				summary = new SummaryUserWorks(this);
+			}
+			return (T) summary;
 		}
 		return super.getAdapter(adapter);
 	}
