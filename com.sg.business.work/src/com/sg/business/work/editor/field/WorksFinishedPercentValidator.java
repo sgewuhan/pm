@@ -9,6 +9,9 @@ public class WorksFinishedPercentValidator extends AbstractValidator {
 	@Override
 	protected String getValidMessage(PrimaryObject data) {
 		Object value = getValueForUpdate();
+		if(value == null){
+			return null;
+		}
 		if(value instanceof Number){
 			Number number = (Number) value;
 			if(number.doubleValue()>1){

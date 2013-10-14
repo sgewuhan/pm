@@ -40,16 +40,6 @@ public class SummaryUserWorks implements IWorksSummary {
 						Work.STATUS_FINIHED_VALUE, Work.STATUS_WIP_VALUE }));
 
 		BasicDBObject fields = new BasicDBObject();
-		fields.put(Work.F_LIFECYCLE, 1);
-		fields.put(Work.F_PARTICIPATE, 1);
-		fields.put(Work.F_PLAN_START, 1);
-		fields.put(Work.F_PLAN_FINISH, 1);
-		fields.put(Work.F_PLAN_WORKS, 1);
-		fields.put(Work.F_PLAN_DURATION, 1);
-		fields.put(Work.F_ACTUAL_START, 1);
-		fields.put(Work.F_ACTUAL_FINISH, 1);
-		fields.put(Work.F_ACTUAL_WORKS, 1);
-		fields.put(Work.F_ACTUAL_DURATION, 1);
 		fields.put(Work.F_PERFORMENCE, 1);
 
 		double result = 0d;

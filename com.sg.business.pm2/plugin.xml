@@ -111,6 +111,13 @@
                visible="true">
          </view>
          <view
+               id="work.performence.record"
+               minimized="false"
+               closeable="false"
+               relationship="stack"
+               relative="message.recieved">
+         </view>
+         <view
                closeable="false"
                id="home.bulletinboard"
                minimized="false"

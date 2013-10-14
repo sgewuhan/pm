@@ -169,5 +169,12 @@ public interface IModelConstants {
 	 */
 	public static final String S_PROCESS_BASE_URL = "SYSTEM.PROCESS_BASE_URL";
 
+	/**
+	 * 
+	 * 工时绩效数据
+	 * work_id, user_id, datecode, works
+	 */
+	public static final String C_WORKS_PERFORMENCE = "worksperformence";
+
 
 }
