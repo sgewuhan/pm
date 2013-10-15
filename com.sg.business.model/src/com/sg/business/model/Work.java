@@ -2230,11 +2230,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 设置工作的实际完成时间
 		update.put(F_ACTUAL_FINISH, new Date());
 
-		// //处理绩效数据
-		// update.put(F_PERFORMENCE_ISSUMMARY, isSummaryWork());
-		// DBObject value = calculateWorksAllocateTable();
-		// update.put(F_PERFORMENCE_WORKS_ALLOCATE_TABLE, value);
-
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()), null, null, false,
@@ -2244,8 +2239,26 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 提示工作已完成
 		doNoticeWorkAction(context, "已完成");
 		doFinishAfter(context, params);
+
+		doCalculatePerformence(context);
 		return null;
 
+	}
+
+	/**
+	 * 计算处理实际工时的分担
+	 * 
+	 * @param context
+	 */
+	private void doCalculatePerformence(IContext context) {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				
+			}
+		});
+		t.setDaemon(true);
+		t.run();
 	}
 
 	/**
@@ -3440,7 +3453,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				.append(WorksPerformence.F_WORKID, get_id())
 				.append(WorksPerformence.F_USERID, userid)
 				.append(WorksPerformence.F_DATECODE, dateCode));
-		if(data!=null){
+		if (data != null) {
 			return ModelService.createModelObject(data, WorksPerformence.class);
 		}
 		return null;
@@ -3453,9 +3466,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		po.setValue(WorksPerformence.F_WORKID, get_id());
 		po.setValue(WorksPerformence.F_USERID, userid);
 		po.setValue(WorksPerformence.F_COMMITDATE, new Date());
-		
+
 		Project project = getProject();
-		if(project!=null){
+		if (project != null) {
 			po.setValue(WorksPerformence.F_PROJECTDESC, project.getLabel());
 		}
 		po.setValue(WorksPerformence.F_WORKDESC, getLabel());
