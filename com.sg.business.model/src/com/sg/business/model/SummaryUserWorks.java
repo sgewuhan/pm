@@ -34,6 +34,10 @@ public class SummaryUserWorks implements IWorksSummary {
 		long endDateValue = end.getTime() / (24 * 60 * 60 * 1000);
 
 		double ret = 0d;
+		
+		if (result == null) {
+			aggregation();
+		}
 		Iterator<DBObject> iter = result.results().iterator();
 		while (iter.hasNext()) {
 			DBObject data = iter.next();
