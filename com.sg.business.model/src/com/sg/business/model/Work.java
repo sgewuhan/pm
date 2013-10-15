@@ -27,6 +27,7 @@ import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -2250,11 +2251,106 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @param context
 	 */
-	private void doCalculatePerformence(IContext context) {
+	private void doCalculatePerformence(final IContext context) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				
+
+				// 如果该工作完成状态才能够计算绩效
+				String lc = getLifecycleStatus();
+				if (!Status.Completed.equals(lc)) {
+					return;
+				}
+
+				// 只计算项目工作
+				if (!isProjectWork()) {
+					return;
+				}
+
+				// 不计算摘要工作
+				if (isSummaryWork()) {
+					return;
+				}
+
+				// 如果手工填报过工时，不自动计算
+				if (hasManualRecordPerformence()) {
+					return;
+				}
+
+				// 得到实际工时，如果没有，获取计划工时
+				Double works = getActualWorks();
+				if (works == null) {
+					works = getPlanWorks();
+				}
+				if (works == null) {
+					return;
+				}
+
+				// 得到实际开始时间和实际完成时间
+				Date start = getActualStart();
+				Date finish = getActualFinish();
+				if (start == null || finish == null) {
+					return;
+				}
+
+				// 得到工作的参与者
+				BasicBSONList participatesIds = getParticipatesIdList();
+				if (participatesIds == null || participatesIds.size() < 1) {
+					return;
+				}
+
+				// 得到日历计算器
+				Project project = getProject();
+				CalendarCaculater calCaculater = project.getCalendarCaculater();
+
+				Calendar currentCal = Calendar.getInstance();
+				currentCal.setTime(start);
+				Calendar finishCal = Calendar.getInstance();
+				finishCal.setTime(finish);
+
+				// 遍历计算每天的工时
+				// 按人天进行平均
+				int workDays = calCaculater.getWorkingDays(start, finish);
+				double personDayWorks = works
+						/ (participatesIds.size() * workDays);
+
+				List<WorksPerformence> records = new ArrayList<WorksPerformence>();
+
+				while (currentCal.before(finishCal)) {
+					Date date = currentCal.getTime();
+					double workingTime = calCaculater.getWorkingTime(date);
+
+					// 排除非工作时间
+					if (workingTime <= 0) {
+						continue;
+					}
+
+					long dateCode = currentCal.getTimeInMillis()
+							/ (24 * 60 * 60 * 1000);
+					for (int i = 0; i < participatesIds.size(); i++) {
+						WorksPerformence po = makeWorksPerformence(
+								(String) participatesIds.get(i), new Long(
+										dateCode));
+						po.setValue(WorksPerformence.F_WORKS, new Double(
+								personDayWorks));
+						po.setValue(WorksPerformence.F_DESC, "[系统计算]");
+						records.add(po);
+					}
+				}
+
+				DBCollection col = getCollection(IModelConstants.C_WORKS_PERFORMENCE);
+				DBObject[] data = new DBObject[records.size()];
+				for (int i = 0; i < records.size(); i++) {
+					data[i] = records.get(i).get_data();
+				}
+				col.insert(data, WriteConcern.NORMAL);
+
+				try {
+					DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
+							"自动分摊实际工时", new Date(), "工作完工时计算工时数据",
+							IModelConstants.DB);
+				} catch (Exception e) {
+				}
 			}
 		});
 		t.setDaemon(true);
@@ -3459,18 +3555,33 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return null;
 	}
 
-	public WorksPerformence makeWorksPerformence(String userid) {
+	public boolean hasManualRecordPerformence() {
+		DBCollection col = getCollection(IModelConstants.C_WORKS_PERFORMENCE);
+		long count = col.count(new BasicDBObject().append(
+				WorksPerformence.F_WORKID, get_id()));
+		return count > 0;
+	}
+
+	public WorksPerformence makeTodayWorksPerformence(String userid) {
+		Long dateCode = new Long(new Date().getTime() / (24 * 60 * 60 * 1000));
+		return makeWorksPerformence(userid, dateCode);
+	}
+
+	public WorksPerformence makeWorksPerformence(String userid, Long dateCode) {
 		DBObject data = new BasicDBObject();
 		WorksPerformence po = ModelService.createModelObject(data,
 				WorksPerformence.class);
 		po.setValue(WorksPerformence.F_WORKID, get_id());
 		po.setValue(WorksPerformence.F_USERID, userid);
 		po.setValue(WorksPerformence.F_COMMITDATE, new Date());
+		po.setValue(WorksPerformence.F_DATECODE, dateCode);
 
 		Project project = getProject();
 		if (project != null) {
 			po.setValue(WorksPerformence.F_PROJECTDESC, project.getLabel());
+			po.setValue(WorksPerformence.F_PROJECTID, project.get_id());
 		}
+
 		po.setValue(WorksPerformence.F_WORKDESC, getLabel());
 		po.setValue(WorksPerformence.F_PLANWORKS, getPlanWorks());
 

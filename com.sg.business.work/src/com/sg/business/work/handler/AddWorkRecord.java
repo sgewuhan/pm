@@ -33,7 +33,7 @@ public class AddWorkRecord extends AbstractNavigatorHandler {
 					return;
 				}
 			}else{
-				po = work.makeWorksPerformence(userid);
+				po = work.makeTodayWorksPerformence(userid);
 			}
 
 			try {
