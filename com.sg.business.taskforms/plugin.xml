@@ -170,12 +170,11 @@
       </option>
    </extension>
    <extension
-         name="淡定"
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             editorId="pm.systemprojectapprove.audit"
             name="系统部评审审批"
-            persistentFields="comment,choice,pretrial,reviewer_list"
+            persistentFields="comment,choice,pretrial,reviewer_list,reviewer_admin"
             processDefinitionId="pm.systemprojectapprove">
          <processParameter
                processParameterName="choice"
@@ -189,6 +188,10 @@
                processParameterName="pretrial"
                taskFormFieldName="pretrial">
          </processParameter>
+         <processParameter
+               processParameterName="reviewer_admin"
+               taskFormFieldName="reviewer_admin">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="pm.systemprojectapprove.reviewplan"
@@ -198,6 +201,16 @@
          <processParameter
                processParameterName="review"
                taskFormFieldName="review">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="pm.systemprojectapprove.expertgroupreview"
+            name="专家组预审"
+            persistentFields="comment,choice_s"
+            processDefinitionId="pm.systemprojectapprove">
+         <processParameter
+               processParameterName="choice_s"
+               taskFormFieldName="choice_s">
          </processParameter>
       </taskForm>
       <taskForm
@@ -262,11 +275,24 @@
                         required="false"
                         type="String">
                   </radio>
+                  <navigatorSelector
+                        editable="true"
+                        id="reviewer_admin"
+                        label="评审组组长"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="reviewer_admin"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="reviewer_list"
-                        label="参与者"
+                        label="评审组"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
@@ -307,6 +333,44 @@
                         labelVisible="false"
                         name="review"
                         option="是否批准"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.systemprojectapprove.expertgroupreview"
+            name="专家组预审">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写预审意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="预审意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice_s"
+                        label="预审结论"
+                        labelVisible="false"
+                        name="choice_s"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
