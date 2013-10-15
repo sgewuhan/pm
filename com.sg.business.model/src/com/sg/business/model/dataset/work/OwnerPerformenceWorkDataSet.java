@@ -17,7 +17,7 @@ public class OwnerPerformenceWorkDataSet extends
 		// 当前用户的
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
-		condition.put(Work.F_PARTICIPATE, userId);
+		condition.put(Work.F_CHARGER, userId);
 		// 只需要进行中的
 		condition.put(Work.F_LIFECYCLE, Work.STATUS_WIP_VALUE);
 
