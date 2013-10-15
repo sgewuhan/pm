@@ -29,7 +29,7 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 
 		IWorksSummary ws = ((PrimaryObject) element)
 				.getAdapter(IWorksSummary.class);
-		if(ws == null){
+		if (ws == null) {
 			return 0d;
 		}
 		Calendar cal = Calendar.getInstance();
@@ -40,10 +40,6 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 
 		double summary = ws.getWorksSummaryOfDay(date);
 		return summary;
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(new Date().getTime()/(60*24*60*1000));
 	}
 
 	@Override
@@ -67,12 +63,19 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 		if (workingHours == 0) {
 			cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
 					225, 225, 225));
+		} else {
+			Calendar cal = Calendar.getInstance();
+			if ((cal.get(Calendar.YEAR) == currentYear)
+					&& (cal.get(Calendar.MONTH) == month)
+					&& (cal.get(Calendar.DATE) == dayOfMonth)) {
+				cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
+						0xe2,0xf0,0xb6));
+			}
 		}
 	}
 
 	public void setWorkingHours(double hours) {
 		workingHours = hours;
 	}
-
 
 }

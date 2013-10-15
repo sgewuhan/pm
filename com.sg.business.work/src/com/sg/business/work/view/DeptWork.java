@@ -15,8 +15,10 @@ import org.eclipse.nebula.jface.gridviewer.GridViewerEditor;
 import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.nebula.widgets.grid.GridColumnGroup;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.service.ServerPushSession;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.ViewPart;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -39,19 +41,42 @@ public class DeptWork extends ViewPart implements IRefreshablePart {
 	public void createPartControl(Composite parent) {
 		viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL);
 		viewer.getGrid().setHeaderVisible(true);
-
-		createLabelColumn();
-		Calendar calendar = Calendar.getInstance();
-		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH);
-		for (int i = month - groupcount + 1; i < month + 1; i++) {
-			createMonthGroup(year, i, month == i);
-		}
-
 		viewer.setContentProvider(new DepartmentWorksContentProvider());
 		createGridViewerEditor();
 
-		loadData();
+		
+		final Display display = parent.getDisplay();
+		final ServerPushSession push = new ServerPushSession();
+		push.start();
+		Thread t = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				display.syncExec(new Runnable(){
+
+					@Override
+					public void run() {
+						createLabelColumn();
+						Calendar calendar = Calendar.getInstance();
+						int year = calendar.get(Calendar.YEAR);
+						int month = calendar.get(Calendar.MONTH);
+						for (int i = month - groupcount + 1; i < month + 1; i++) {
+							createMonthGroup(year, i, month == i);
+						}
+
+						loadData();		
+						push.stop();
+					}
+					
+				});
+				
+			}
+			
+		});
+		t.setDaemon(true);
+		t.start();
+		
+
 	}
 
 	private void createLabelColumn() {
@@ -207,6 +232,8 @@ public class DeptWork extends ViewPart implements IRefreshablePart {
 	}
 
 	private void loadData() {
+		
+		
 		// 获取当前用户担任管理者角色的部门
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
