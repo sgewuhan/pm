@@ -21,25 +21,29 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 	public DateSummaryLabelProvider(int currentYear, int month, int dayOfMonth) {
 		this.currentYear = currentYear;
 		this.month = month;
+
 		this.dayOfMonth = dayOfMonth;
 	}
 
 	private double getSummary(Object element) {
+
 		IWorksSummary ws = ((PrimaryObject) element)
 				.getAdapter(IWorksSummary.class);
+		if(ws == null){
+			return 0d;
+		}
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, currentYear);
 		cal.set(Calendar.MONTH, month);
 		cal.set(Calendar.DATE, dayOfMonth);
-
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
 		Date date = cal.getTime();
 
 		double summary = ws.getWorksSummaryOfDay(date);
 		return summary;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(new Date().getTime()/(60*24*60*1000));
 	}
 
 	@Override
@@ -69,5 +73,6 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 	public void setWorkingHours(double hours) {
 		workingHours = hours;
 	}
+
 
 }

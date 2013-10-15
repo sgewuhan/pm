@@ -2294,11 +2294,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					return;
 				}
 
-				// 得到工作的参与者
-				BasicBSONList participatesIds = getParticipatesIdList();
-				if (participatesIds == null || participatesIds.size() < 1) {
-					return;
-				}
+				// 得到工作的参与者(不计算参与者)
+				// BasicBSONList participatesIds = getParticipatesIdList();
+				// if (participatesIds == null || participatesIds.size() < 1) {
+				// return;
+				// }
 
 				// 得到日历计算器
 				Project project = getProject();
@@ -2312,10 +2312,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				// 遍历计算每天的工时
 				// 按人天进行平均
 				int workDays = calCaculater.getWorkingDays(start, finish);
-				double personDayWorks = works
-						/ (participatesIds.size() * workDays);
+				double personDayWorks = works / workDays;
 
 				List<WorksPerformence> records = new ArrayList<WorksPerformence>();
+
+				String chargerId = getChargerId();
 
 				while (currentCal.before(finishCal)) {
 					Date date = currentCal.getTime();
@@ -2328,15 +2329,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 					long dateCode = currentCal.getTimeInMillis()
 							/ (24 * 60 * 60 * 1000);
-					for (int i = 0; i < participatesIds.size(); i++) {
-						WorksPerformence po = makeWorksPerformence(
-								(String) participatesIds.get(i), new Long(
-										dateCode));
-						po.setValue(WorksPerformence.F_WORKS, new Double(
-								personDayWorks));
-						po.setValue(WorksPerformence.F_DESC, "[系统计算]");
-						records.add(po);
-					}
+					WorksPerformence po = makeWorksPerformence(chargerId,
+							new Long(dateCode));
+					po.setValue(WorksPerformence.F_WORKS, new Double(
+							personDayWorks));
+					po.setValue(WorksPerformence.F_DESC, "[系统计算]");
+					records.add(po);
 				}
 
 				DBCollection col = getCollection(IModelConstants.C_WORKS_PERFORMENCE);
@@ -2369,8 +2367,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @throws Exception
 	 *             发送消息出现的错误
 	 */
-	public Message doNoticeWorkAction(IContext context, String actionName)
-			throws Exception {
+	private Message doNoticeWorkActionInternal(IContext context,
+			String actionName) throws Exception {
 		// 设置收件人
 		BasicBSONList participatesIdList = getParticipatesIdList();
 		if (participatesIdList == null || participatesIdList.isEmpty()) {
@@ -2380,7 +2378,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		participatesIdList.remove(context.getAccountInfo().getConsignerId());
 
 		// 设置通知标题
-		String title = "" + this + " " + actionName;
+		Project project = getProject();
+
+		String title = (project == null ? "" : project.getLabel()) + " " + this
+				+ " " + actionName;
 
 		// 设置通知内容
 		StringBuffer sb = new StringBuffer();
@@ -2421,7 +2422,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return message;
 	}
 
-	public Message doNoticeWorkflow(String actorId, String taskName,
+	private Message doNoticeWorkflowInternal(String actorId, String taskName,
 			String key, String action, IContext context) throws Exception {
 		BasicBSONList recievers = getParticipatesIdList();
 		if (recievers == null) {
@@ -2431,7 +2432,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		recievers.remove(actorId);
 
 		// 设置通知标题
-		String title = "" + this + " " + "流程任务" + taskName + " " + action;
+		Project project = getProject();
+		String title = (project == null ? "" : project.getLabel()) + this + " "
+				+ "流程任务" + taskName + " " + action;
 		// 设置通知内容
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='font-size:14px'>");
@@ -2472,6 +2475,42 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		message.doSave(context);
 		return message;
+	}
+
+	private void doNoticeWorkflow(final String actorId, final String taskName,
+			final String key, final String action, final IContext context) {
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					doNoticeWorkflowInternal(actorId, taskName, key, action, context);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
+		t.setDaemon(true);
+		t.start();
+	}
+
+	private void doNoticeWorkAction(final IContext context,
+			final String actionName) {
+		Thread t = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					doNoticeWorkActionInternal(context, actionName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
+		t.setDaemon(true);
+		t.start();
 	}
 
 	@Override

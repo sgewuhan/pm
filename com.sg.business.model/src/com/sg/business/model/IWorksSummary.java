@@ -1,6 +1,9 @@
 package com.sg.business.model;
 
 import java.util.Date;
+import java.util.List;
+
+import com.mobnut.db.model.PrimaryObject;
 
 public interface IWorksSummary {
 
@@ -19,5 +22,12 @@ public interface IWorksSummary {
 	 * @return
 	 */
 	double getWorksSummaryOfDay(Date date);
+
+	/**
+	 * 获得某个日期的工作记录的工作
+	 * @param dateCode
+	 * @return
+	 */
+	List<PrimaryObject[]> getWorkOfWorksSummaryOfDateCode(String userid,Date date);
 
 }

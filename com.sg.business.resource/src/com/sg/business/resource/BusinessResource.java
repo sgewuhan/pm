@@ -240,6 +240,10 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_SUMMARY_16 = "summary_16.png";
 
+	public static final String IMAGE_RIGHT_16 = "right_16.png";
+
+	public static final String IMAGE_NAVI_24 = "navigate_24.png";
+
 
 	/**
 	 * Returns the shared instance

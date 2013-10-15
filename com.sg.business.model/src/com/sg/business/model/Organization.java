@@ -1376,17 +1376,4 @@ public class Organization extends PrimaryObject {
 		}
 	}
 	
-	private SummaryOrganizationWorks summary;
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T getAdapter(Class<T> adapter) {
-		if(adapter == IWorksSummary.class){
-			if(summary == null){
-				summary = new SummaryOrganizationWorks(this);
-			}
-			return (T) summary;
-		}
-		return super.getAdapter(adapter);
-	}
 }
