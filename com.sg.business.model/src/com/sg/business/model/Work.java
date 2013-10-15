@@ -1052,6 +1052,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @throws Exception
 	 */
 	public void checkProjectTimeline() throws Exception {
+		Project project = getProject();
+		if (!isProjectWork()) {
+			return;
+		}
+
 		Date start = getPlanStart();
 		if (start != null) {
 			start = Utils.getDayBegin(start).getTime();
@@ -1066,10 +1071,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return;
 		}
 
-		Project project = getProject();
-		if (isProjectWork()) {
-			return;
-		}
 		Date projstart = project.getPlanStart();
 		if (projstart != null) {
 			projstart = Utils.getDayBegin(projstart).getTime();
