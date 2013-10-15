@@ -20,8 +20,8 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.work"
-            name="工作">
+            id="perspective.resource"
+            name="资源">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -408,7 +408,7 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
-            targetID="perspective.work">
+            targetID="perspective.resource">
          <view
                closeable="false"
                id="work.ownerworklist"
@@ -448,7 +448,7 @@
                id="perspective.project">
          </perspective>
          <perspective
-               id="perspective.work">
+               id="perspective.resource">
          </perspective>
          <perspective
                id="perspective.visualization">

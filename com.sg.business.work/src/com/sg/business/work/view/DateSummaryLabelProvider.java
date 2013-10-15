@@ -21,21 +21,21 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 	public DateSummaryLabelProvider(int currentYear, int month, int dayOfMonth) {
 		this.currentYear = currentYear;
 		this.month = month;
+
 		this.dayOfMonth = dayOfMonth;
 	}
 
 	private double getSummary(Object element) {
+
 		IWorksSummary ws = ((PrimaryObject) element)
 				.getAdapter(IWorksSummary.class);
+		if (ws == null) {
+			return 0d;
+		}
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, currentYear);
 		cal.set(Calendar.MONTH, month);
 		cal.set(Calendar.DATE, dayOfMonth);
-
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
 		Date date = cal.getTime();
 
 		double summary = ws.getWorksSummaryOfDay(date);
@@ -63,6 +63,14 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 		if (workingHours == 0) {
 			cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
 					225, 225, 225));
+		} else {
+			Calendar cal = Calendar.getInstance();
+			if ((cal.get(Calendar.YEAR) == currentYear)
+					&& (cal.get(Calendar.MONTH) == month)
+					&& (cal.get(Calendar.DATE) == dayOfMonth)) {
+				cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
+						0xe2,0xf0,0xb6));
+			}
 		}
 	}
 

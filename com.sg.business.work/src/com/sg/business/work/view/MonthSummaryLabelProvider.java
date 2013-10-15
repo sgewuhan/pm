@@ -22,6 +22,10 @@ public class MonthSummaryLabelProvider extends ColumnLabelProvider {
 	@Override
 	public String getText(Object element) {
 		IWorksSummary ws = ((PrimaryObject)element).getAdapter(IWorksSummary.class);
+		if(ws == null){
+			return "";
+		}
+		
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, currentYear);
 		cal.set(Calendar.MONTH, month);
