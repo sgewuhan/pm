@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.widgets.commons.model.IEditorSaveHandler;
 
 //import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 
@@ -136,6 +137,17 @@ public class TaskFormConfig {
 		}
 
 		return result;
+
+	}
+
+	public IEditorSaveHandler getSaveHandler() {
+		try {
+			IEditorSaveHandler handler = (IEditorSaveHandler) ic
+					.createExecutableExtension("saveHandler");
+			return handler;
+		} catch (CoreException e) {
+		}
+		return null;
 
 	}
 

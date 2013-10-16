@@ -49,7 +49,7 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 					true, null, "创建" + po.getTypeName());
 
 			// 4. 将更改消息传递到编辑器
-			sendNavigatorActionEvent((INavigatorActionListener) part,
+			sendNavigatorActionEvent(part,
 					INavigatorActionListener.CUSTOMER, new Integer(
 							INavigatorActionListener.REFRESH));
 

@@ -55,7 +55,7 @@ public class RemoveRoleDefinition extends AbstractNavigatorHandler {
 			selected.doRemove(new CurrentAccountContext());
 			if (part instanceof INavigatorActionListener) {
 				// 通知编辑器发生了更改，侦听编辑器动作的页面可以进行响应
-				sendNavigatorActionEvent((INavigatorActionListener) part,
+				sendNavigatorActionEvent(part,
 						INavigatorActionListener.CREATE, new Integer(
 								INavigatorActionListener.REFRESH));
 			}

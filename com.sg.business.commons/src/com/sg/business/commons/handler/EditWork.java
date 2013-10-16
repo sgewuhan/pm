@@ -74,7 +74,7 @@ public class EditWork extends AbstractNavigatorHandler {
 				vc.getViewer().update(tobeRefresh.toArray(), null);
 
 				// 4. 将更改消息传递到编辑器
-				sendNavigatorActionEvent((INavigatorActionListener) part,
+				sendNavigatorActionEvent(part,
 						INavigatorActionListener.CUSTOMER, new Integer(
 								INavigatorActionListener.REFRESH));
 

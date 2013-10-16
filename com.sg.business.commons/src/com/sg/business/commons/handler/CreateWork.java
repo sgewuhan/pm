@@ -68,7 +68,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 			
 
 			// 4. 将更改消息传递到编辑器
-			sendNavigatorActionEvent((INavigatorActionListener) part, INavigatorActionListener.CUSTOMER,
+			sendNavigatorActionEvent( part, INavigatorActionListener.CUSTOMER,
 					new Integer(INavigatorActionListener.REFRESH));
 
 		} catch (Exception e) {
