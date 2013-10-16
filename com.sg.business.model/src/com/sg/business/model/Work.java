@@ -2256,8 +2256,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @param context
 	 */
-	public void doCaculateWorksAllocated(final IContext context) {
-		Job job = new Job("计算工时分配"){
+	public void doCaculateWorksAllocated(IContext context) {
+		final String userid = context.getAccountInfo().getUserId();
+		Job job = new Job("计算工时分配") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				// 如果该工作是准备中，进行时才能够计算分配
@@ -2360,16 +2361,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				col.insert(data, WriteConcern.NORMAL);
 
 				try {
-					DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
-							"自动分配计划工时", new Date(), "分配计划工时数据",
+					DBUtil.SAVELOG(userid, "自动分配计划工时", new Date(), "分配计划工时数据",
 							IModelConstants.DB);
 				} catch (Exception e) {
 				}
 				return org.eclipse.core.runtime.Status.OK_STATUS;
 			}
-			
+
 		};
-		
+
 		job.setUser(false);
 		job.schedule();
 	}
@@ -2385,7 +2385,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 */
 	public void doCalculatePerformence(final IContext context) {
-		Job job = new Job("计算实际工时"){
+		final String userid = context.getAccountInfo().getUserId();
+
+		Job job = new Job("计算实际工时") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 
@@ -2477,16 +2479,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				col.insert(data, WriteConcern.NORMAL);
 
 				try {
-					DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
-							"自动分摊实际工时", new Date(), "工作完工时计算工时数据",
-							IModelConstants.DB);
+					DBUtil.SAVELOG(userid, "自动分摊实际工时", new Date(),
+							"工作完工时计算工时数据", IModelConstants.DB);
 				} catch (Exception e) {
 				}
 				return org.eclipse.core.runtime.Status.OK_STATUS;
 			}
-			
+
 		};
-		
+
 		job.setUser(false);
 		job.schedule();
 	}
@@ -2613,43 +2614,46 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	private void doNoticeWorkflow(final String actorId, final String taskName,
-			final String key, final String action, final IContext context) {
-		Job job = new Job("发送流程通知"){
+			final String key, final String action, final IContext context)
+			throws Exception {
+		doNoticeWorkflowInternal(actorId, taskName, key, action, context);
 
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					doNoticeWorkflowInternal(actorId, taskName, key, action,
-							context);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return org.eclipse.core.runtime.Status.OK_STATUS;
-			}
-
-
-		};
-		job.schedule();
+		// Job job = new Job("发送流程通知"){
+		//
+		// @Override
+		// protected IStatus run(IProgressMonitor monitor) {
+		// try {
+		// doNoticeWorkflowInternal(actorId, taskName, key, action,
+		// context);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// return org.eclipse.core.runtime.Status.OK_STATUS;
+		// }
+		//
+		//
+		// };
+		// job.schedule();
 	}
 
 	private void doNoticeWorkAction(final IContext context,
-			final String actionName) {
-		Job job = new Job("发送工作通知"){
+			final String actionName) throws Exception {
+		doNoticeWorkActionInternal(context, actionName);
 
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					doNoticeWorkActionInternal(context, actionName);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				return org.eclipse.core.runtime.Status.OK_STATUS;
-			}
-
-
-		};
-		job.schedule();
+		// Job job = new Job("发送工作通知"){
+		//
+		// @Override
+		// protected IStatus run(IProgressMonitor monitor) {
+		// try {
+		// doNoticeWorkActionInternal(context, actionName);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		//
+		// return org.eclipse.core.runtime.Status.OK_STATUS;
+		// }
+		// };
+		// job.schedule();
 	}
 
 	@Override
