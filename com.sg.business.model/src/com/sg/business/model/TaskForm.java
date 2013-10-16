@@ -1,6 +1,9 @@
 package com.sg.business.model;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 
 public class TaskForm extends PrimaryObject {
@@ -19,5 +22,10 @@ public class TaskForm extends PrimaryObject {
 	
 	@Override
 	public void doUpdate(IContext context) throws Exception {
+	}
+
+	public Work getWork() {
+		ObjectId workid = (ObjectId) getValue(F_WORK_ID);
+		return ModelService.createModelObject(Work.class, workid);
 	}
 }
