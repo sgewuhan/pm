@@ -2616,44 +2616,43 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	private void doNoticeWorkflow(final String actorId, final String taskName,
 			final String key, final String action, final IContext context)
 			throws Exception {
-		doNoticeWorkflowInternal(actorId, taskName, key, action, context);
+		// doNoticeWorkflowInternal(actorId, taskName, key, action, context);
 
-		// Job job = new Job("发送流程通知"){
-		//
-		// @Override
-		// protected IStatus run(IProgressMonitor monitor) {
-		// try {
-		// doNoticeWorkflowInternal(actorId, taskName, key, action,
-		// context);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// return org.eclipse.core.runtime.Status.OK_STATUS;
-		// }
-		//
-		//
-		// };
-		// job.schedule();
+		Job job = new Job("发送流程通知") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					doNoticeWorkflowInternal(actorId, taskName, key, action,
+							context);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return org.eclipse.core.runtime.Status.OK_STATUS;
+			}
+
+		};
+		job.schedule();
 	}
 
 	private void doNoticeWorkAction(final IContext context,
 			final String actionName) throws Exception {
-		doNoticeWorkActionInternal(context, actionName);
-
-		// Job job = new Job("发送工作通知"){
-		//
-		// @Override
-		// protected IStatus run(IProgressMonitor monitor) {
-		// try {
 		// doNoticeWorkActionInternal(context, actionName);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		//
-		// return org.eclipse.core.runtime.Status.OK_STATUS;
-		// }
-		// };
-		// job.schedule();
+
+		Job job = new Job("发送工作通知") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					doNoticeWorkActionInternal(context, actionName);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				return org.eclipse.core.runtime.Status.OK_STATUS;
+			}
+		};
+		job.schedule();
 	}
 
 	@Override
