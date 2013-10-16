@@ -1,10 +1,13 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
@@ -21,17 +24,19 @@ public class EditDeliverable extends AbstractNavigatorHandler {
 	private static final String TITLE = "编辑交付物";
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
+		final Shell shell = part.getSite().getShell();
 		MessageUtil.showToast(shell, TITLE, "您需要选择一个交付物", SWT.ICON_WARNING);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl currentViewerControl, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
+		final Shell shell = part.getSite().getShell();
 
-		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
 		selected.addEventListener(currentViewerControl);
@@ -39,13 +44,14 @@ public class EditDeliverable extends AbstractNavigatorHandler {
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				Deliverable.EDITOR_SETTING);
 		try {
-			DataObjectDialog.openDialog(selected, (DataEditorConfigurator) conf,
-					true, null, TITLE);
+			DataObjectDialog.openDialog(selected,
+					(DataEditorConfigurator) conf, true, null, TITLE);
 		} catch (Exception e) {
 			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
 		}
 
 		selected.removeEventListener(currentViewerControl);
 	}
+
 
 }

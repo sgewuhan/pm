@@ -1,10 +1,12 @@
 package com.sg.business.management.handler;
 
 import java.util.Iterator;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.DeliverableDefinition;
@@ -21,9 +23,10 @@ import com.sg.widgets.viewer.ViewerControl;
 public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			final ViewerControl currentViewerControl, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		final WorkDefinition workd = (WorkDefinition) selected;
-		final ViewerControl vc = getCurrentViewerControl(event);
 
 		NavigatorSelector ns = new NavigatorSelector(
 				"management.documentdefinition") {
@@ -38,7 +41,7 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 							DeliverableDefinition po = workd
 									.makeDeliverableDefinition(next);
 							po.setParentPrimaryObject(workd);
-							po.addEventListener(vc);
+							po.addEventListener(currentViewerControl);
 							po.doSave(new CurrentAccountContext());
 						}
 						super.doOK(is);

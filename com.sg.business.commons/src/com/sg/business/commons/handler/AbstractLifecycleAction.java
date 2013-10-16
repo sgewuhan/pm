@@ -1,10 +1,13 @@
 package com.sg.business.commons.handler;
 
 import java.util.List;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -25,22 +28,23 @@ public abstract class AbstractLifecycleAction extends AbstractNavigatorHandler {
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 		if (selected instanceof ILifecycle) {
-			ViewerControl vc = getCurrentViewerControl(event);
 			ILifecycle lc = (ILifecycle) selected;
 			CurrentAccountContext context = new CurrentAccountContext();
 			try {
 				List<Object[]> message = checkBeforeExecute(lc, context);
-				String name = event.getCommand().getName();
+				String name = command.getName();
 				if (hasError(message)) {
 					MessageUtil.showToast(null, name,
 							"检查发现了一些错误，请查看检查结果，完成修改后重新执行。", SWT.ICON_ERROR);
 					showCheckMessages(message, selected);
 				} else {
 					if (message != null && message.size() > 0) {
-						MessageBox mb = MessageUtil.createMessageBox(null, name,
-								"检查发现了一些问题，请查看检查结果。" + "\n\n" + "选择 \"继续\" 忽视警告信息继续操作" + "\n"
+						MessageBox mb = MessageUtil.createMessageBox(null,
+								name, "检查发现了一些问题，请查看检查结果。" + "\n\n"
+										+ "选择 \"继续\" 忽视警告信息继续操作" + "\n"
 										+ "选择 \"中止\" 停止执行本次操作" + "\n"
 										+ "选择 \"查看\" 取消本次操作并查看检查结果",
 								SWT.ICON_WARNING | SWT.YES | SWT.NO
@@ -51,7 +55,7 @@ public abstract class AbstractLifecycleAction extends AbstractNavigatorHandler {
 						int result = mb.open();
 						if (result == SWT.NO) {
 							return;
-						}else if(result == SWT.CANCEL){
+						} else if (result == SWT.CANCEL) {
 							showCheckMessages(message, selected);
 							return;
 						}

@@ -1,9 +1,12 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectRole;
@@ -18,15 +21,18 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler {
 	private static final String TITLE = "删除项目角色";
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
+		final Shell shell = part.getSite().getShell();
 		MessageUtil.showToast(shell, TITLE, "您需要选择一个角色或用户指派", SWT.ICON_WARNING);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
+		final Shell shell = part.getSite().getShell();
 
 		if (selected instanceof RoleAssignment) {
 			MessageUtil.showToast(shell, TITLE, "组织上的角色指派需在组织管理中移除",
@@ -37,7 +43,7 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler {
 			// 解决项目经理角色的问题
 			ProjectRole projectRole = (ProjectRole) selected;
 			if (projectRole.isSystemRole()) {
-				MessageUtil.showToast("您不能删除系统角色",SWT.ICON_WARNING);
+				MessageUtil.showToast("您不能删除系统角色", SWT.ICON_WARNING);
 				return;
 			}
 
@@ -50,7 +56,6 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler {
 			return;
 		}
 
-		ViewerControl vc = getCurrentViewerControl(event);
 		selected.addEventListener(vc);
 
 		try {
@@ -60,5 +65,6 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler {
 					SWT.ICON_WARNING);
 		}
 	}
+
 
 }

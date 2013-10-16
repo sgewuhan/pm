@@ -1,8 +1,11 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
@@ -17,9 +20,9 @@ import com.sg.widgets.viewer.ViewerControl;
 public class ChargerAssignment extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 		final AbstractWork work = (AbstractWork) selected;
-		ViewerControl vc = getCurrentViewerControl(event);
 		work.addEventListener(vc);
 		NavigatorSelector ns = new NavigatorSelector(
 				getNavigatorId(work)) {

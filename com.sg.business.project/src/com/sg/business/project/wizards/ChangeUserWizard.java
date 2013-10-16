@@ -3,7 +3,6 @@ package com.sg.business.project.wizards;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -61,7 +60,7 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 		addPage(changeUserOfWBSPage);
 	}
 
-	public static ChangeUserWizard open(Project po, ExecutionEvent event) {
+	public static ChangeUserWizard open(Project po) {
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 

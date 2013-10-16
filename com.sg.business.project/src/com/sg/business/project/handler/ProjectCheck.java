@@ -1,10 +1,13 @@
 package com.sg.business.project.handler;
 
 import java.util.List;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -14,11 +17,14 @@ import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.project.view.ProjectCheckView;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
+import com.sg.widgets.viewer.ViewerControl;
 
 public class ProjectCheck extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl currentViewerControl, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		if (selected instanceof Project) {
 			Project project = (Project) selected;
 			List<ICheckListItem> result = project.checkPlan();
@@ -26,14 +32,16 @@ public class ProjectCheck extends AbstractNavigatorHandler {
 			IWorkbenchPage page = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage();
 			try {
-				ProjectCheckView part = (ProjectCheckView) page
+				ProjectCheckView part1 = (ProjectCheckView) page
 						.showView("project.view.check");
-				part.setInput(result);
-				MessageUtil.showToast("项目计划检查完成，双击条目定位检查目标", SWT.ICON_INFORMATION);
+				part1.setInput(result);
+				MessageUtil.showToast("项目计划检查完成，双击条目定位检查目标",
+						SWT.ICON_INFORMATION);
 			} catch (PartInitException e) {
 				MessageUtil.showToast(e);
 			}
 		}
 	}
+
 
 }

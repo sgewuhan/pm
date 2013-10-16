@@ -2,12 +2,14 @@ package com.sg.business.commons.handler;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.DataSetFactory;
 import com.mobnut.db.model.PrimaryObject;
@@ -17,18 +19,20 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class CarlendarTest1 extends AbstractNavigatorHandler {
+
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		ViewerControl v = getCurrentViewerControl(event);
-		DataSetFactory dsf = v.getDataSetFactory();
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
+		DataSetFactory dsf = vc.getDataSetFactory();
 		CalendarCaculater ds = new CalendarCaculater(dsf.getDataSet()
 				.getDataItems());
-		Shell parentShell = HandlerUtil.getActiveShell(event);
+		Shell parentShell = part.getSite().getShell();
 		InputDialog input = new InputDialog(parentShell, "测试某天是否为工作日",
 				"请输入yyyyMMdd格式的日期",
 				new SimpleDateFormat("yyyyMMdd").format(new Date()), null);

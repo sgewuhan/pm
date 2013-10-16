@@ -1,9 +1,11 @@
 package com.sg.business.management.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
@@ -21,19 +23,18 @@ public class CreateWorkConnection extends AbstractNavigatorHandler {
 	private static final String TITLE = "创建工作顺序关系";
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		
-		Shell shell = HandlerUtil.getActiveShell(event);
-		ViewerControl vc = getCurrentViewerControl(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 		ProjectTemplate master = (ProjectTemplate) vc.getMaster();
 		WorkDefinitionConnection wdc = master.makeWorkDefinitionConnection();
 		wdc.addEventListener(vc);
-		
+
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				WorkDefinitionConnection.EDITOR);
 		try {
@@ -41,7 +42,8 @@ public class CreateWorkConnection extends AbstractNavigatorHandler {
 					true, null, TITLE);
 		} catch (Exception e) {
 			e.printStackTrace();
-			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
+			MessageUtil.showToast(part.getSite().getShell(), TITLE,
+					e.getMessage(), SWT.ICON_ERROR);
 		}
 	}
 

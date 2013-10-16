@@ -1,11 +1,12 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
@@ -21,16 +22,16 @@ import com.sg.widgets.viewer.ViewerControl;
 public class CreateWorkFromGeneric extends AbstractNavigatorHandler {
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		MessageUtil.showToast("您需要选择一个上级", SWT.ICON_WARNING);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected,final IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 
-		final IWorkbenchPart part = HandlerUtil.getActivePart(event);
-		ViewerControl vc = getCurrentViewerControl(event);
 		final ColumnViewer viewer = vc.getViewer();
 		final Work work = ((Work) selected);
 		Project project = work.getProject();

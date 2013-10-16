@@ -1,11 +1,14 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
@@ -18,38 +21,39 @@ import com.sg.widgets.viewer.ViewerControl;
 public class WorkMoveDown extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "下移工作定义";
-	
+
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个工作定义", SWT.ICON_WARNING);
-		return false;
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
+		MessageUtil.showToast(part.getSite().getShell(), TITLE, "您需要选择一个工作定义",
+				SWT.ICON_WARNING);
+		return super.nullSelectionContinue(part, vc, command);
 	}
-	
+
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
+		Shell shell = part.getSite().getShell();
 		try {
-			PrimaryObject[] relativeObjects = ((AbstractWork)selected).doMoveDown(new CurrentAccountContext());
-			
-			ViewerControl vc = getCurrentViewerControl(event);
+			PrimaryObject[] relativeObjects = ((AbstractWork) selected)
+					.doMoveDown(new CurrentAccountContext());
+
 			ColumnViewer viewer = vc.getViewer();
-			for(int i=0;i<relativeObjects.length;i++){
+			for (int i = 0; i < relativeObjects.length; i++) {
 				viewer.refresh(relativeObjects[i]);
 			}
 			viewer.setSelection(new StructuredSelection(selected), true);
-			
+
 			/**********************************************************
-			 * [BUG:20]
-			 * 将更改消息传递到编辑器
+			 * [BUG:20] 将更改消息传递到编辑器
 			 */
-			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
+			sendNavigatorActionEvent(part, INavigatorActionListener.CUSTOMER,
 					new Integer(INavigatorActionListener.REFRESH));
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_WARNING);
+			MessageUtil.showToast(shell, TITLE, e.getMessage(),
+					SWT.ICON_WARNING);
 		}
-		
-	}
 
+	}
 
 }

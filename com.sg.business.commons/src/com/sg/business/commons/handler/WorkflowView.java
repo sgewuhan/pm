@@ -1,18 +1,23 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.ui.handlers.HandlerUtil;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.commons.ui.flow.ProcessViewerDialog;
 import com.sg.business.model.IProcessControl;
 import com.sg.widgets.command.AbstractNavigatorHandler;
+import com.sg.widgets.viewer.ViewerControl;
 
 public class WorkflowView extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		// 假定传入的是流程控制对象
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) { // 假定传入的是流程控制对象
 		IProcessControl procCtl;
 		if (selected instanceof IProcessControl) {
 			procCtl = (IProcessControl) selected;
@@ -20,18 +25,17 @@ public class WorkflowView extends AbstractNavigatorHandler {
 			Object adapter = selected.getAdapter(IProcessControl.class);
 			if (adapter instanceof IProcessControl) {
 				procCtl = (IProcessControl) adapter;
-			}else{
+			} else {
 				return;
 			}
 		}
 
-		String key = event.getParameter("process.key");
-		ProcessViewerDialog pvd = new ProcessViewerDialog(
-				HandlerUtil.getActiveShell(event), procCtl, key, "" + selected
-						+ "流程记录");
+		String key = (String) parameters.get("process.key");
+		Shell shell = part.getSite().getShell();
+		ProcessViewerDialog pvd = new ProcessViewerDialog(shell, procCtl, key,
+				"" + selected + "流程记录");
 		pvd.open();
-		
-		
+
 	}
 
 }

@@ -1,9 +1,12 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.MessageUtil;
@@ -14,14 +17,16 @@ import com.sg.widgets.viewer.ViewerControl;
 public class RemovePrimaryObject extends AbstractNavigatorHandler {
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		MessageUtil.showToast("您需要选择一项", SWT.ICON_WARNING);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
+		Shell shell = part.getSite().getShell();
 
 		int yes = MessageUtil.showMessage(shell, "删除" + selected.getTypeName(),
 				"您确定要删除吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
@@ -30,7 +35,6 @@ public class RemovePrimaryObject extends AbstractNavigatorHandler {
 			return;
 		}
 
-		ViewerControl vc = getCurrentViewerControl(event);
 		selected.addEventListener(vc);
 
 		try {

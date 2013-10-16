@@ -2282,12 +2282,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				// 记录上级工作，准备删除
 				List<ObjectId> syncRemove = new ArrayList<ObjectId>();
 				Work parent = (Work) getParent();
-				while (parent != null) {
-					syncRemove.add(parent.get_id());
-					parent = (Work) getParent();
-					if (parent.isProjectWBSRoot()) {
+				int loopcount = 0;
+				while (parent != null&&loopcount<20) {
+					loopcount++;
+					if (syncRemove.contains(parent.get_id())) {
 						break;
 					}
+					syncRemove.add(parent.get_id());
+					parent = (Work) getParent();
 				}
 
 				// 如果是摘要工作，准备删除

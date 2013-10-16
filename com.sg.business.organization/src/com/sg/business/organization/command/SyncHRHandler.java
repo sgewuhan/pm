@@ -1,13 +1,15 @@
 package com.sg.business.organization.command;
 
+import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -16,10 +18,11 @@ import com.sg.widgets.viewer.ViewerControl;
 public class SyncHRHandler extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		final Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			final ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
+		final Shell shell = part.getSite().getShell();
 		final SyncHR syncHR = new SyncHR();
-		final ViewerControl vc = getCurrentViewerControl(event);
 		syncHR.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent event) {
@@ -64,14 +67,16 @@ public class SyncHRHandler extends AbstractNavigatorHandler {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			vc.refreshViewer();
 		}
 
 	}
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
+
 }

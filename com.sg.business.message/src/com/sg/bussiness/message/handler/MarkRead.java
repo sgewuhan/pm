@@ -1,10 +1,12 @@
 package com.sg.bussiness.message.handler;
 
 import java.util.Iterator;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
@@ -16,8 +18,8 @@ import com.sg.widgets.viewer.ViewerControl;
 public class MarkRead extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		ViewerControl vc = getCurrentViewerControl(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 		IStructuredSelection ssel = (IStructuredSelection) vc.getViewer()
 				.getSelection();
 		Iterator<?> iter = ssel.iterator();
@@ -37,6 +39,5 @@ public class MarkRead extends AbstractNavigatorHandler {
 		vc.getViewer().setSelection(new StructuredSelection(new Object[] {}));
 
 	}
-
 
 }

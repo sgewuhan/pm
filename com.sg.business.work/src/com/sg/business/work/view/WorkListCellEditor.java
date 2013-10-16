@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -58,9 +59,32 @@ public class WorkListCellEditor extends CellEditor {
 				user.getUserid(), cal.getTime());
 		
 		
-		Point p = cell.getControl().toDisplay(cell.getBounds().x,
-				cell.getBounds().y + cell.getBounds().height);
-		open(worklist, p);
+		Rectangle cellBounds = cell.getBounds();
+		Point location = cell.getControl().toDisplay(cellBounds.x,
+				cellBounds.y);
+		
+		Rectangle displayBounds = cell.getControl().getDisplay().getBounds();
+		
+		Point size = shell.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+
+		
+//		Point p = cell.getControl().toDisplay(cell.getBounds().x,
+//				cell.getBounds().y + cell.getBounds().height);
+		
+		//能否与控件横向对齐显示
+		if(location.x + size.x >displayBounds.width){
+			location.x = displayBounds.width - size.x -1;
+		}
+		
+		//能否在控件下方显示
+		if(location.y +cellBounds.height+ size.y >displayBounds.height){
+			location.y = location.y - size.y;
+		}else{
+			location.y = location.y + cellBounds.height;
+		}
+		
+		
+		open(worklist, location);
 
 		super.activate(activationEvent);
 	}
@@ -102,13 +126,36 @@ public class WorkListCellEditor extends CellEditor {
 		});
 
 		col = new TableViewerColumn(viewer, SWT.LEFT);
+		col.getColumn().setText("计划工时");
+		col.getColumn().setWidth(60);
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				PrimaryObject[] pos = (PrimaryObject[]) element;
+				if(pos[1]==null){
+					return "";
+				}
+				Object works = pos[1].getValue(WorksPerformence.F_WORKS);
+				if (works instanceof Double) {
+					double value = ((Double) works).doubleValue();
+					DecimalFormat df = new DecimalFormat("#####");
+					return df.format(value);
+				}
+				return "";
+			}
+		});
+		
+		col = new TableViewerColumn(viewer, SWT.LEFT);
 		col.getColumn().setText("实际工时");
 		col.getColumn().setWidth(60);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				PrimaryObject[] pos = (PrimaryObject[]) element;
-				Object works = pos[1].getValue(WorksPerformence.F_WORKS);
+				if(pos[2]==null){
+					return "";
+				}
+				Object works = pos[2].getValue(WorksPerformence.F_WORKS);
 				if (works instanceof Double) {
 					double value = ((Double) works).doubleValue();
 					DecimalFormat df = new DecimalFormat("#####");
