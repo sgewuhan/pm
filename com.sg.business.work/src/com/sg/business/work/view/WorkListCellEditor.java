@@ -83,7 +83,6 @@ public class WorkListCellEditor extends CellEditor {
 			location.y = location.y + cellBounds.height;
 		}
 		
-		
 		open(worklist, location);
 
 		super.activate(activationEvent);
@@ -132,10 +131,10 @@ public class WorkListCellEditor extends CellEditor {
 			@Override
 			public String getText(Object element) {
 				PrimaryObject[] pos = (PrimaryObject[]) element;
-				if(pos[1]==null){
+				if(pos[2]==null){
 					return "";
 				}
-				Object works = pos[1].getValue(WorksPerformence.F_WORKS);
+				Object works = pos[2].getValue(WorksPerformence.F_WORKS);
 				if (works instanceof Double) {
 					double value = ((Double) works).doubleValue();
 					DecimalFormat df = new DecimalFormat("#####");
@@ -152,10 +151,10 @@ public class WorkListCellEditor extends CellEditor {
 			@Override
 			public String getText(Object element) {
 				PrimaryObject[] pos = (PrimaryObject[]) element;
-				if(pos[2]==null){
+				if(pos[1]==null){
 					return "";
 				}
-				Object works = pos[2].getValue(WorksPerformence.F_WORKS);
+				Object works = pos[1].getValue(WorksPerformence.F_WORKS);
 				if (works instanceof Double) {
 					double value = ((Double) works).doubleValue();
 					DecimalFormat df = new DecimalFormat("#####");

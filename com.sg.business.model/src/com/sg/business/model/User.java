@@ -20,6 +20,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.bpm.service.BPM;
+import com.sg.bpm.service.HTService;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -246,6 +248,9 @@ public class User extends PrimaryObject {
 			setValue(F_SCENARIO, scenarioList);
 		}
 
+		//将用户添加到流程数据库
+		HTService ts = BPM.getHumanTaskService();
+		ts.addParticipateUser(getUserid());
 		super.doInsert(context);
 	}
 

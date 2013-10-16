@@ -51,10 +51,10 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 	@Override
 	public void update(ViewerCell cell) {
 		Object element = cell.getElement();
-		if (currentYear == 2013 && month == 9 && dayOfMonth == 22) {
-			System.out.println(element);
-			System.out.println();
-		}
+//		if (currentYear == 2013 && month == 9 && dayOfMonth == 22) {
+//			System.out.println(element);
+//			System.out.println();
+//		}
 
 		double summary = getSummary(element);
 		if (summary == 0) {
