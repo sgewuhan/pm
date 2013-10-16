@@ -55,7 +55,7 @@ public class CreateWorkFromGeneric extends AbstractNavigatorHandler {
 					work.doCreateChildFromGenericWorkDefinition(workd,
 							new CurrentAccountContext());
 					viewer.refresh(work);
-					sendNavigatorActionEvent((INavigatorActionListener) part,
+					sendNavigatorActionEvent(part,
 							INavigatorActionListener.CUSTOMER, new Integer(
 									INavigatorActionListener.REFRESH));
 				} catch (Exception e) {

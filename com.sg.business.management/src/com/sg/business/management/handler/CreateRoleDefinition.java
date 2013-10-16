@@ -49,7 +49,7 @@ public class CreateRoleDefinition extends AbstractNavigatorHandler {
 
 			if (part instanceof INavigatorActionListener) {
 
-				sendNavigatorActionEvent((INavigatorActionListener) part,
+				sendNavigatorActionEvent(part,
 						INavigatorActionListener.CREATE, new Integer(
 								INavigatorActionListener.REFRESH));
 			}
