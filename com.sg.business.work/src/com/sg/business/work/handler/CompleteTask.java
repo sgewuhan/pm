@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.swt.SWT;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.Status;
@@ -31,6 +32,8 @@ public class CompleteTask extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+		ViewerControl vc = getCurrentViewerControl(event);
+		ColumnViewer viewer = vc.getViewer();
 		if (selected instanceof Work) {
 			try {
 				CurrentAccountContext context = new CurrentAccountContext();
@@ -116,9 +119,9 @@ public class CompleteTask extends AbstractNavigatorHandler {
 						taskFormData, context);
 
 				// 3.刷新表格
-				ViewerControl vc = getCurrentViewerControl(event);
-				vc.getViewer().update(work, null);
+				viewer.update(work, null);
 			} catch (Exception e) {
+				e.printStackTrace();
 				MessageUtil.showToast("完成流程任务", e);
 			}
 		}
