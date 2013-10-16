@@ -172,9 +172,13 @@ public interface IModelConstants {
 	/**
 	 * 
 	 * 工时绩效数据
-	 * work_id, user_id, datecode, works
 	 */
 	public static final String C_WORKS_PERFORMENCE = "worksperformence";
+
+	/**
+	 * 工时分配数据
+	 */
+	public static final String C_WORKS_ALLOCATE = "worksallocate";
 
 
 }

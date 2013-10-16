@@ -13,7 +13,7 @@ public interface IWorksSummary {
 	 * @param end
 	 * @return
 	 */
-	double getWorksSummary(Date start, Date end);
+	double getWorksPerformenceSummary(Date start, Date end);
 
 	/**
 	 * 获得某个日期的实际工时
@@ -21,7 +21,7 @@ public interface IWorksSummary {
 	 * @param cache 
 	 * @return
 	 */
-	double getWorksSummaryOfDay(Date date);
+	double getWorkPerformenceSummaryOfDay(Date date);
 
 	/**
 	 * 获得某个日期的工作记录的工作
@@ -29,5 +29,16 @@ public interface IWorksSummary {
 	 * @return
 	 */
 	List<PrimaryObject[]> getWorkOfWorksSummaryOfDateCode(String userid,Date date);
+
+	
+	/**
+	 * 获得某个日期的计划工时
+	 * @param date
+	 * @param cache 
+	 * @return
+	 */
+	double getWorksAllocateSummaryOfDay(Date date);
+
+	double getWorksAllocateSummary(Date start, Date end);
 
 }

@@ -46,13 +46,14 @@ public class MonthSummaryLabelProvider extends ColumnLabelProvider {
 		cal.set(Calendar.SECOND, 59);
 		cal.set(Calendar.MILLISECOND, 999);
 		Date end = cal.getTime();
-		double summary = ws.getWorksSummary(start,end);
-		if(summary == 0){
-			return "";
-		}else{
-			DecimalFormat df = new DecimalFormat("#########");
-			return df.format(summary);
-		}
+		double performenceWorks = ws.getWorksPerformenceSummary(start,end);
+		double allocateWorks = ws.getWorksAllocateSummary(start,end);
+
+		DecimalFormat df = new DecimalFormat("#########");
+		String _performenceWorks = performenceWorks==0?"":df.format(performenceWorks);
+		String _allocateWorks = allocateWorks==0?"":df.format(allocateWorks);
+		
+		return _performenceWorks+"/"+_allocateWorks;
 	}
 
 

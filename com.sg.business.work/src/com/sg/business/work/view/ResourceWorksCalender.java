@@ -36,7 +36,7 @@ import com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.IRefreshablePart;
 
-public class DeptWork extends ViewPart implements IRefreshablePart {
+public class ResourceWorksCalender extends ViewPart implements IRefreshablePart {
 
 	private int groupcount = 3;
 	private GridTreeViewer viewer;
