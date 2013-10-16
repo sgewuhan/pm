@@ -252,7 +252,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="audit"
+            editorId="pm.systemprojectapprove.resultaudit"
             name="处理结果审核"
             persistentFields="comment,choice"
             processDefinitionId="pm.systemprojectapprove">
@@ -534,17 +534,17 @@
                         required="false"
                         type="String">
                   </radio>
-                  <text
-                        editPart="Text(Single Line)"
+                  <radio
                         editable="true"
                         id="choice_sum_1"
                         label="评审结论"
-                        labelVisible="true"
+                        labelVisible="false"
                         name="choice_sum_1"
+                        option="是否通过"
                         persistable="true"
                         required="false"
-                        type="Boolean">
-                  </text>
+                        type="String">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
@@ -578,7 +578,7 @@
                         label="是否通过"
                         labelVisible="false"
                         name="choice"
-                        option="是否整改"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
