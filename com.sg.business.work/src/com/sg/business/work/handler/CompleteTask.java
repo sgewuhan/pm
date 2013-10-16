@@ -90,7 +90,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 						taskForm = (TaskForm) config.getTaskFormInput(taskForm);
 
 						DataObjectDialog dialog = DataObjectDialog.openDialog(
-								taskForm, ec, true, null, "流程表单");
+								taskForm, ec, true, config.getSaveHandler(), "流程表单");
 						int code = dialog.getReturnCode();
 						if (code != DataObjectDialog.OK) {
 							return;
