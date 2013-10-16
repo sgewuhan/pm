@@ -121,6 +121,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 				// 3.刷新表格
 				vc.getViewer().update(work, null);
 			} catch (Exception e) {
+				e.printStackTrace();
 				MessageUtil.showToast("完成流程任务", e);
 			}
 		}
