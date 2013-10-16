@@ -5,18 +5,18 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.sg.business.work.view.ResourceWorksCalender;
+import com.sg.business.work.view.OrgResCalender;
 
 public abstract class TeamResourceHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ResourceWorksCalender part = (ResourceWorksCalender) HandlerUtil.getActivePart(event);
+		OrgResCalender part = (OrgResCalender) HandlerUtil.getActivePart(event);
 		
 		execute(part);
 		return null;
 	}
 
-	protected abstract void execute(ResourceWorksCalender part);
+	protected abstract void execute(OrgResCalender part);
 
 }

@@ -1,4 +1,4 @@
-package com.sg.business.work.view;
+package com.sg.business.work.labelprovider;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.ViewerCell;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.IWorksSummary;
+import com.sg.business.model.User;
 import com.sg.widgets.Widgets;
 
 public class DateSummaryLabelProvider extends ColumnLabelProvider {
@@ -51,31 +52,32 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 	@Override
 	public void update(ViewerCell cell) {
 		Object element = cell.getElement();
-//		if (currentYear == 2013 && month == 9 && dayOfMonth == 22) {
-//			System.out.println(element);
-//			System.out.println();
-//		}
+		// if (currentYear == 2013 && month == 9 && dayOfMonth == 22) {
+		// System.out.println(element);
+		// System.out.println();
+		// }
 
 		double summary = getSummary(element);
-		if (summary == 0) {
+		if (summary < 1) {
 			cell.setText("");
 		} else {
 			DecimalFormat df = new DecimalFormat("#########");
 			cell.setText(df.format(summary));
 		}
-		if (summary > workingHours) {
-			cell.setForeground(Widgets.getColor(cell.getControl().getDisplay(),
-					255, 0, 0));
-		} else {
 
+		if (element instanceof User) {
+			if (summary > workingHours) {
+				cell.setForeground(Widgets.getColor(cell.getControl().getDisplay(),
+						255, 0, 0));
+			}
 		}
-
+		
 		if (workingHours == 0) {
-			cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
-					225, 225, 225));
+			cell.setBackground(Widgets.getColor(cell.getControl()
+					.getDisplay(), 225, 225, 225));
 		} else if (isToday()) {
-			cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
-					0xe2, 0xf0, 0xb6));
+			cell.setBackground(Widgets.getColor(cell.getControl()
+					.getDisplay(), 0xe2, 0xf0, 0xb6));
 		}
 	}
 
