@@ -175,7 +175,8 @@
             editorId="pm.systemprojectapprove.audit"
             name="审批"
             persistentFields="comment,choice,pretrial,reviewer_list,reviewer_admin"
-            processDefinitionId="pm.systemprojectapprove">
+            processDefinitionId="pm.systemprojectapprove"
+            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
