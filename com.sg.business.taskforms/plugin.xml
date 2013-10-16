@@ -181,6 +181,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
