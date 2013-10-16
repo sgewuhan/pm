@@ -2,8 +2,10 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
 
@@ -111,7 +113,6 @@ public class SummaryUserWorks implements IWorksSummary {
 		return 0d;
 	}
 	
-
 	private void aggregationPerformence() {
 		performenceResult = aggregation(colPerformence);
 	}
@@ -147,20 +148,51 @@ public class SummaryUserWorks implements IWorksSummary {
 		
 		
 		ArrayList<PrimaryObject[]> ret = new ArrayList<PrimaryObject[]>();
+		
+		
+		
 		DBCursor cur = colPerformence.find(
 				new BasicDBObject().append(WorksPerformence.F_USERID, userid)
-						.append(WorksPerformence.F_DATECODE, dateCode),
-				new BasicDBObject().append(WorksPerformence.F_WORKID, 1));
+						.append(WorksPerformence.F_DATECODE, dateCode));
+		
+		Map<Work,AbstractWorksMetadata[]> map = new HashMap<Work,AbstractWorksMetadata[]>();
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
 			ObjectId workid = (ObjectId) next.get(WorksPerformence.F_WORKID);
-			ObjectId _id = (ObjectId) next.get(WorksPerformence.F__ID);
+//			ObjectId _id = (ObjectId) next.get(WorksPerformence.F__ID);
 			Work work = ModelService.createModelObject(Work.class, workid);
 			WorksPerformence wp = ModelService.createModelObject(
-					WorksPerformence.class, _id);
-			ret.add(new PrimaryObject[] { work, wp });
+					next,WorksPerformence.class);
+			AbstractWorksMetadata[] data = new AbstractWorksMetadata[2];
+			data[0] = wp;
+			map.put(work, data);
 		}
-
+		
+		cur = colAllocate.find(
+				new BasicDBObject().append(WorksPerformence.F_USERID, userid)
+						.append(WorksPerformence.F_DATECODE, dateCode));
+		
+		while (cur.hasNext()) {
+			DBObject next = cur.next();
+			ObjectId workid = (ObjectId) next.get(WorksPerformence.F_WORKID);
+//			ObjectId _id = (ObjectId) next.get(WorksPerformence.F__ID);
+			Work work = ModelService.createModelObject(Work.class, workid);
+			WorksAllocate ap = ModelService.createModelObject(
+					next,WorksAllocate.class);
+			AbstractWorksMetadata[] data = map.get(work);
+			if(data==null){
+				data = new AbstractWorksMetadata[2];
+			}
+			data[1] = ap;
+			map.put(work, data);
+		}
+		
+		Iterator<Work> iter = map.keySet().iterator();
+		while(iter.hasNext()){
+			Work work = iter.next();
+			AbstractWorksMetadata[] value = map.get(work);
+			ret.add(new PrimaryObject[]{work,value[0],value[1]});
+		}
 		return ret;
 	}
 

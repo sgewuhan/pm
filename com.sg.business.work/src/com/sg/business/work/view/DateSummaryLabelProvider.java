@@ -25,7 +25,7 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 		this.dayOfMonth = dayOfMonth;
 	}
 
-	private double getSummary(Object element, boolean isPlan) {
+	private double getSummary(Object element) {
 
 		IWorksSummary ws = ((PrimaryObject) element)
 				.getAdapter(IWorksSummary.class);
@@ -38,15 +38,25 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 		cal.set(Calendar.DATE, dayOfMonth);
 		Date date = cal.getTime();
 
-		double summary = isPlan?ws.getWorksAllocateSummaryOfDay(date):ws.getWorkPerformenceSummaryOfDay(date);
-		return summary;
+		Calendar today = Calendar.getInstance();
+		if (today.get(Calendar.YEAR) <= currentYear
+				&& today.get(Calendar.MONTH) <= month
+				&& today.get(Calendar.DATE) <= dayOfMonth) {
+			return ws.getWorksAllocateSummaryOfDay(date);
+		} else {
+			return ws.getWorkPerformenceSummaryOfDay(date);
+		}
 	}
 
 	@Override
 	public void update(ViewerCell cell) {
 		Object element = cell.getElement();
+		if (currentYear == 2013 && month == 9 && dayOfMonth == 22) {
+			System.out.println(element);
+			System.out.println();
+		}
 
-		double summary = getSummary(element,isToday());
+		double summary = getSummary(element);
 		if (summary == 0) {
 			cell.setText("");
 		} else {
