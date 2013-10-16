@@ -19,26 +19,47 @@ import com.mongodb.DBObject;
 public class SummaryUserWorks implements IWorksSummary {
 
 	private User user;
-	private AggregationOutput result;
-	private DBCollection col;
+
+	private DBCollection colPerformence;
+	private DBCollection colAllocate;
+
+	private AggregationOutput performenceResult;
+	private AggregationOutput allocateResult;
 
 	public SummaryUserWorks(PrimaryObject po) {
 		this.user = (User) po;
-		col = DBActivator.getCollection(IModelConstants.DB,
+		colPerformence = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_WORKS_PERFORMENCE);
+		colAllocate = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_WORKS_ALLOCATE);
 	}
 
 	@Override
-	public double getWorksSummary(Date start, Date end) {
+	public double getWorksPerformenceSummary(Date start, Date end) {
+		
+		if (performenceResult == null) {
+			aggregationPerformence();
+		}
+
+		return getWorksSummary(start,end,performenceResult);
+	}
+	
+	@Override
+	public double getWorksAllocateSummary(Date start, Date end) {
+		if (allocateResult == null) {
+			aggregationAllocate();
+		}
+		
+		return getWorksSummary(start,end,allocateResult);
+	}
+	
+	private double getWorksSummary(Date start, Date end,AggregationOutput aggregation){
 		long startDateValue = start.getTime() / (24 * 60 * 60 * 1000);
 		long endDateValue = end.getTime() / (24 * 60 * 60 * 1000);
 
 		double ret = 0d;
 		
-		if (result == null) {
-			aggregation();
-		}
-		Iterator<DBObject> iter = result.results().iterator();
+		Iterator<DBObject> iter = aggregation.results().iterator();
 		while (iter.hasNext()) {
 			DBObject data = iter.next();
 			Object id = data.get("_id");
@@ -50,19 +71,29 @@ public class SummaryUserWorks implements IWorksSummary {
 					ret += ((Double) val).doubleValue();
 				}
 			}
-
 		}
-
 		return ret;
 	}
 
 	@Override
-	public double getWorksSummaryOfDay(Date date) {
-		if (result == null) {
-			aggregation();
+	public double getWorkPerformenceSummaryOfDay(Date date) {
+		if (performenceResult == null) {
+			aggregationPerformence();
 		}
 		
+		return getWorksSummaryOfDay(date,performenceResult);
+	}
+	
+	@Override
+	public double getWorksAllocateSummaryOfDay(Date date) {
+		if (allocateResult == null) {
+			aggregationAllocate();
+		}
 		
+		return getWorksSummaryOfDay(date,allocateResult);
+	}
+	
+	private double getWorksSummaryOfDay(Date date,AggregationOutput result) {
 		long dateValue = date.getTime() / (24 * 60 * 60 * 1000);
 		
 		Iterator<DBObject> iter = result.results().iterator();
@@ -79,10 +110,17 @@ public class SummaryUserWorks implements IWorksSummary {
 		}
 		return 0d;
 	}
+	
 
-	private void aggregation() {
-		// 获取该用户的工作，进行中，已完成的
+	private void aggregationPerformence() {
+		performenceResult = aggregation(colPerformence);
+	}
 
+	private void aggregationAllocate() {
+		allocateResult = aggregation(colAllocate);
+	}
+	
+	private AggregationOutput aggregation(DBCollection col) {
 		DBObject match = new BasicDBObject();
 		match.put(
 				"$match",
@@ -98,8 +136,9 @@ public class SummaryUserWorks implements IWorksSummary {
 						new BasicDBObject().append("$sum", "$"
 								+ WorksPerformence.F_WORKS)));
 
-		result = col.aggregate(match, group);
+		return col.aggregate(match, group);
 	}
+
 	
 	@Override
 	public List<PrimaryObject[]> getWorkOfWorksSummaryOfDateCode(String userid,
@@ -108,7 +147,7 @@ public class SummaryUserWorks implements IWorksSummary {
 		
 		
 		ArrayList<PrimaryObject[]> ret = new ArrayList<PrimaryObject[]>();
-		DBCursor cur = col.find(
+		DBCursor cur = colPerformence.find(
 				new BasicDBObject().append(WorksPerformence.F_USERID, userid)
 						.append(WorksPerformence.F_DATECODE, dateCode),
 				new BasicDBObject().append(WorksPerformence.F_WORKID, 1));

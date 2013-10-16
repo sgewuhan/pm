@@ -13,6 +13,9 @@ import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.drools.runtime.process.ProcessInstance;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.jbpm.task.I18NText;
@@ -1685,9 +1688,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	@Override
 	public boolean doSave(IContext context) throws Exception {
-		// if (calendarCaculater == null) {
-		// calendarCaculater = new CalendarCaculater(getProjectId());
-		// }
 
 		/**
 		 * BUG:10006
@@ -1707,6 +1707,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		super.doSave(context);
 
 		resetCaculateCache();
+
+		// 计算计划工时分配
+		doCaculateWorksAllocated(context);
+
 		return true;
 
 	}
@@ -2248,34 +2252,162 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	/**
-	 * 计算处理实际工时的分担
+	 * 计算处理计划工时的分配
 	 * 
 	 * @param context
 	 */
-	private void doCalculatePerformence(final IContext context) {
-		Thread t = new Thread(new Runnable() {
+	public void doCaculateWorksAllocated(final IContext context) {
+		Job job = new Job("计算工时分配"){
 			@Override
-			public void run() {
-
-				// 如果该工作完成状态才能够计算绩效
+			protected IStatus run(IProgressMonitor monitor) {
+				// 如果该工作是准备中，进行时才能够计算分配
 				String lc = getLifecycleStatus();
-				if (!Status.Completed.equals(lc)) {
-					return;
+				if (!Utils.inArray(lc, new String[] { STATUS_ONREADY_VALUE,
+						STATUS_WIP_VALUE })) {
+					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
 				// 只计算项目工作
 				if (!isProjectWork()) {
-					return;
+					return org.eclipse.core.runtime.Status.OK_STATUS;
+				}
+				Project project = getProject();
+				lc = project.getLifecycleStatus();
+				if (!Utils.inArray(lc, new String[] { STATUS_ONREADY_VALUE,
+						STATUS_WIP_VALUE })) {
+					return org.eclipse.core.runtime.Status.OK_STATUS;
+				}
+
+				// 记录上级工作，准备删除
+				List<ObjectId> syncRemove = new ArrayList<ObjectId>();
+				Work parent = (Work) getParent();
+				while (parent != null) {
+					syncRemove.add(parent.get_id());
+					parent = (Work) getParent();
+					if (parent.isProjectWBSRoot()) {
+						break;
+					}
+				}
+
+				// 如果是摘要工作，准备删除
+				if (isSummaryWork()) {
+					syncRemove.add(get_id());
+				}
+
+				// 得到计划工时
+				Double works = getPlanWorks();
+				if (works == null || works.doubleValue() == 0d) {
+					syncRemove.add(get_id());
+				}
+
+				// 得到实际开始时间和实际完成时间
+				Date start = getPlanStart();
+				Date finish = getPlanFinish();
+				if (start == null || finish == null) {
+					syncRemove.add(get_id());
+				}
+
+				DBCollection col = getCollection(IModelConstants.C_WORKS_ALLOCATE);
+				col.remove(new BasicDBObject().append(WorksAllocate.F_WORKID,
+						new BasicDBObject().append("$in", syncRemove)),
+						WriteConcern.NORMAL);
+
+				// 如果手工填报过工时，不自动计算
+				if (hasManualRecordAllocate()) {
+					return org.eclipse.core.runtime.Status.OK_STATUS;
+				}
+
+				// 得到日历计算器
+				CalendarCaculater calCaculater = project.getCalendarCaculater();
+
+				Calendar currentCal = Calendar.getInstance();
+				currentCal.setTime(start);
+				Calendar finishCal = Calendar.getInstance();
+				finishCal.setTime(finish);
+
+				// 遍历计算每天的工时
+				// 按人天进行平均
+				int workDays = calCaculater.getWorkingDays(start, finish);
+				double personDayWorks = works / workDays;
+
+				List<WorksPerformence> records = new ArrayList<WorksPerformence>();
+
+				String chargerId = getChargerId();
+
+				while (currentCal.before(finishCal)) {
+					Date date = currentCal.getTime();
+					double workingTime = calCaculater.getWorkingTime(date);
+
+					// 排除非工作时间
+					if (workingTime > 0) {
+
+						long dateCode = currentCal.getTimeInMillis()
+								/ (24 * 60 * 60 * 1000);
+						WorksPerformence po = makeWorksPerformence(chargerId,
+								new Long(dateCode));
+						po.setValue(WorksPerformence.F_WORKS, new Double(
+								personDayWorks));
+						po.setValue(WorksPerformence.F_DESC, "[系统计算]");
+						records.add(po);
+					}
+					currentCal.add(Calendar.DATE, 1);
+				}
+
+				DBObject[] data = new DBObject[records.size()];
+				for (int i = 0; i < records.size(); i++) {
+					data[i] = records.get(i).get_data();
+				}
+				col.insert(data, WriteConcern.NORMAL);
+
+				try {
+					DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
+							"自动分配计划工时", new Date(), "分配计划工时数据",
+							IModelConstants.DB);
+				} catch (Exception e) {
+				}
+				return org.eclipse.core.runtime.Status.OK_STATUS;
+			}
+			
+		};
+		
+		job.setUser(false);
+		job.schedule();
+	}
+
+	protected boolean hasManualRecordAllocate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * 计算处理实际工时的分担
+	 * 
+	 * @param context
+	 */
+	public void doCalculatePerformence(final IContext context) {
+		Job job = new Job("计算实际工时"){
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+
+				// 如果该工作完成状态才能够计算绩效
+				String lc = getLifecycleStatus();
+				if (!STATUS_FINIHED_VALUE.equals(lc)) {
+					return org.eclipse.core.runtime.Status.OK_STATUS;
+				}
+
+				// 只计算项目工作
+				if (!isProjectWork()) {
+					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
 				// 不计算摘要工作
 				if (isSummaryWork()) {
-					return;
+					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
 				// 如果手工填报过工时，不自动计算
 				if (hasManualRecordPerformence()) {
-					return;
+					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
 				// 得到实际工时，如果没有，获取计划工时
@@ -2284,14 +2416,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					works = getPlanWorks();
 				}
 				if (works == null) {
-					return;
+					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
 				// 得到实际开始时间和实际完成时间
 				Date start = getActualStart();
 				Date finish = getActualFinish();
 				if (start == null || finish == null) {
-					return;
+					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
 				// 得到工作的参与者(不计算参与者)
@@ -2323,18 +2455,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					double workingTime = calCaculater.getWorkingTime(date);
 
 					// 排除非工作时间
-					if (workingTime <= 0) {
-						continue;
+					if (workingTime > 0) {
+						long dateCode = currentCal.getTimeInMillis()
+								/ (24 * 60 * 60 * 1000);
+						WorksPerformence po = makeWorksPerformence(chargerId,
+								new Long(dateCode));
+						po.setValue(WorksPerformence.F_WORKS, new Double(
+								personDayWorks));
+						po.setValue(WorksPerformence.F_DESC, "[系统计算]");
+						records.add(po);
 					}
 
-					long dateCode = currentCal.getTimeInMillis()
-							/ (24 * 60 * 60 * 1000);
-					WorksPerformence po = makeWorksPerformence(chargerId,
-							new Long(dateCode));
-					po.setValue(WorksPerformence.F_WORKS, new Double(
-							personDayWorks));
-					po.setValue(WorksPerformence.F_DESC, "[系统计算]");
-					records.add(po);
+					currentCal.add(Calendar.DATE, 1);
 				}
 
 				DBCollection col = getCollection(IModelConstants.C_WORKS_PERFORMENCE);
@@ -2350,10 +2482,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 							IModelConstants.DB);
 				} catch (Exception e) {
 				}
+				return org.eclipse.core.runtime.Status.OK_STATUS;
 			}
-		});
-		t.setDaemon(true);
-		t.run();
+			
+		};
+		
+		job.setUser(false);
+		job.schedule();
 	}
 
 	/**
@@ -2479,38 +2614,42 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	private void doNoticeWorkflow(final String actorId, final String taskName,
 			final String key, final String action, final IContext context) {
-		Thread t = new Thread(new Runnable() {
+		Job job = new Job("发送流程通知"){
 
 			@Override
-			public void run() {
+			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					doNoticeWorkflowInternal(actorId, taskName, key, action, context);
+					doNoticeWorkflowInternal(actorId, taskName, key, action,
+							context);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				return org.eclipse.core.runtime.Status.OK_STATUS;
 			}
 
-		});
-		t.setDaemon(true);
-		t.start();
+
+		};
+		job.schedule();
 	}
 
 	private void doNoticeWorkAction(final IContext context,
 			final String actionName) {
-		Thread t = new Thread(new Runnable() {
+		Job job = new Job("发送工作通知"){
 
 			@Override
-			public void run() {
+			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					doNoticeWorkActionInternal(context, actionName);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+				return org.eclipse.core.runtime.Status.OK_STATUS;
 			}
 
-		});
-		t.setDaemon(true);
-		t.start();
+
+		};
+		job.schedule();
 	}
 
 	@Override

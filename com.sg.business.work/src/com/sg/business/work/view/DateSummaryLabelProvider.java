@@ -25,7 +25,7 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 		this.dayOfMonth = dayOfMonth;
 	}
 
-	private double getSummary(Object element) {
+	private double getSummary(Object element, boolean isPlan) {
 
 		IWorksSummary ws = ((PrimaryObject) element)
 				.getAdapter(IWorksSummary.class);
@@ -38,7 +38,7 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 		cal.set(Calendar.DATE, dayOfMonth);
 		Date date = cal.getTime();
 
-		double summary = ws.getWorksSummaryOfDay(date);
+		double summary = isPlan?ws.getWorksAllocateSummaryOfDay(date):ws.getWorkPerformenceSummaryOfDay(date);
 		return summary;
 	}
 
@@ -46,7 +46,7 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 	public void update(ViewerCell cell) {
 		Object element = cell.getElement();
 
-		double summary = getSummary(element);
+		double summary = getSummary(element,isToday());
 		if (summary == 0) {
 			cell.setText("");
 		} else {
@@ -63,15 +63,17 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 		if (workingHours == 0) {
 			cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
 					225, 225, 225));
-		} else {
-			Calendar cal = Calendar.getInstance();
-			if ((cal.get(Calendar.YEAR) == currentYear)
-					&& (cal.get(Calendar.MONTH) == month)
-					&& (cal.get(Calendar.DATE) == dayOfMonth)) {
-				cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
-						0xe2,0xf0,0xb6));
-			}
+		} else if (isToday()) {
+			cell.setBackground(Widgets.getColor(cell.getControl().getDisplay(),
+					0xe2, 0xf0, 0xb6));
 		}
+	}
+
+	public boolean isToday() {
+		Calendar cal = Calendar.getInstance();
+		return (cal.get(Calendar.YEAR) == currentYear)
+				&& (cal.get(Calendar.MONTH) == month)
+				&& (cal.get(Calendar.DATE) == dayOfMonth);
 	}
 
 	public void setWorkingHours(double hours) {

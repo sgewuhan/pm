@@ -2706,7 +2706,7 @@
                      label="计划">
                   <dateTime
                         editPart="DateDialog"
-                        editable="false"
+                        editable="true"
                         id="planstart"
                         label="计划开始"
                         labelVisible="true"
@@ -2717,7 +2717,7 @@
                   </dateTime>
                   <dateTime
                         editPart="DateDialog"
-                        editable="false"
+                        editable="true"
                         id="planfinish"
                         label="计划完成"
                         labelVisible="true"
