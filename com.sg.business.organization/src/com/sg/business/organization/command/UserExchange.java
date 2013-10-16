@@ -108,7 +108,10 @@ public class UserExchange {
 
 	public String getUnitId() {
 		if (unitId == null) {
-			unitId = getPmOrgByOrganizationNumber().getOrganizationNumber();
+			Organization org = getPmOrgByOrganizationNumber();
+			if (org != null) {
+				unitId = org.getOrganizationNumber();
+			}
 		}
 		return unitId;
 	}
@@ -282,7 +285,13 @@ public class UserExchange {
 	 * @return
 	 */
 	public boolean getDifferentUnitId(UserExchange otherUser) {
-		return getUnitId().equals(otherUser.getUnitId());
+		String unitId = getUnitId();
+		String otherUserUnitId = otherUser.getUnitId();
+		if (unitId != null && otherUserUnitId != null) {
+			return unitId.equals(otherUserUnitId);
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -353,11 +362,12 @@ public class UserExchange {
 			user = ModelService.createModelObject(User.class);
 			user.setValue(User.F_USER_ID, userExchange.getUserId());
 			user.setValue(User.F_EMAIL, userExchange.geteMail());
-			user.setValue(User.F_ORGANIZATION_ID, org.get_id());
-			user.setValue(User.F_ORGANIZATION_NAME, org.getDesc());
 			user.setValue(User.F_USER_NAME, userExchange.getUserName());
 			user.setValue(User.F_ACTIVATED, Boolean.TRUE);
-
+			if (org != null) {
+				user.setValue(User.F_ORGANIZATION_ID, org.get_id());
+				user.setValue(User.F_ORGANIZATION_NAME, org.getDesc());
+			}
 			try {
 				user.doSave(new BackgroundContext());
 			} catch (Exception e) {
@@ -372,11 +382,21 @@ public class UserExchange {
 	 * @return
 	 */
 	public Organization getPmOrgByOrganizationNumber() {
-		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_ORGANIZATION);
-		DBObject org = coll.findOne(new BasicDBObject().append(
-				Organization.F_ORGANIZATION_NUMBER, unitId));
-		return ModelService.createModelObject(org, Organization.class);
+		DBObject org;
+		if (unitId != null) {
+			DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
+					IModelConstants.C_ORGANIZATION);
+			org = coll.findOne(new BasicDBObject().append(
+					Organization.F_ORGANIZATION_NUMBER, unitId));
+			return ModelService.createModelObject(org, Organization.class);
+		} else {
+			if (pmUnitId != null) {
+				return ModelService.createModelObject(Organization.class,
+						pmUnitId);
+			} else {
+				return null;
+			}
+		}
 	}
 
 	/**

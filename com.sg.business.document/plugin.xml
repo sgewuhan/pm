@@ -33,6 +33,23 @@
                value="类型2">
          </option>
       </option>
+      <option
+            id="pdm集成版本策略">
+         <option
+               id="强制更新发布版本"
+               label="强制更新发布版本"
+               value="FORCEUPDATE">
+         </option>
+         <option
+               id="升级发布版本"
+               label="升级发布版本"
+               value="VERSIONUPDATE">
+         </option>
+         <option
+               id="忽略已发布文件，创建新文件"
+               label="忽略已发布文件，创建新文件">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -134,6 +151,98 @@
                         persistable="true"
                         required="false">
                   </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="PDM集成设置"
+               id="adapter"
+               image="image/plugins_24.png"
+               title="PDM适配器">
+            <pagecolumn>
+               <section
+                     label="DCPDM文档">
+                  <checkbox
+                        editable="true"
+                        id="adaptdcpdm"
+                        label="同步到DCPDM"
+                        labelVisible="true"
+                        name="adaptdcpdm"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="dcpdm_classouid"
+                        label="类OUID"
+                        labelVisible="true"
+                        name="dcpdm_classouid"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <table
+                        ctableId="pdmadapter.fieldmaptable"
+                        editable="true"
+                        id="dcpdm_fieldmap"
+                        label="字段映射表"
+                        labelVisible="true"
+                        name="dcpdm_fieldmap"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+               <section
+                     label="Windchill文档">
+                  <checkbox
+                        editable="true"
+                        id="adaptwindchill"
+                        label="同步到Windchill"
+                        labelVisible="true"
+                        name="adaptwindchill"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="windchill_class"
+                        label="类名称"
+                        labelVisible="true"
+                        name="windchill_class"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <table
+                        ctableId="pdmadapter.fieldmaptable"
+                        editable="true"
+                        id="dcpdm_fieldmap"
+                        label="字段映射表"
+                        labelVisible="true"
+                        name="dcpdm_fieldmap"
+                        persistable="true"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="发布版本设置">
+                  <radio
+                        defaultValue="FORCEUPDATE"
+                        editable="true"
+                        id="adapt_update"
+                        label="发布版本更新策略"
+                        labelVisible="false"
+                        name="adapt_update"
+                        option="pdm集成版本策略"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        wrapRadio="true">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
@@ -315,6 +424,23 @@
             location="after=basicpage1"
             targetId="filepage">
       </pageExtendsions>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            hasBorder="true"
+            id="pdmadapter.fieldmaptable">
+         <column
+               column="from"
+               name="FROM"
+               type="String">
+         </column>
+         <column
+               column="to"
+               name="TO"
+               type="String">
+         </column>
+      </table>
    </extension>
 
 </plugin>
