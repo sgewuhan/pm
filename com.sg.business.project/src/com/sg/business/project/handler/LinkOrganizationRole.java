@@ -1,10 +1,12 @@
 package com.sg.business.project.handler;
 
 import java.util.Iterator;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
@@ -19,8 +21,9 @@ import com.sg.widgets.viewer.ViewerControl;
 public class LinkOrganizationRole extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		final ViewerControl vc = getCurrentViewerControl(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			final ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		NavigatorSelector n = new NavigatorSelector("management.roleselector",
 				"选择组织角色") {
 			@Override
@@ -31,7 +34,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 						Iterator<?> iter = is.iterator();
 						while (iter.hasNext()) {
 							Object next = iter.next();
-							if(next instanceof Role){
+							if (next instanceof Role) {
 								doLinkOrganizationRole(vc, (Role) next);
 							}
 						}
@@ -63,8 +66,10 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 	}
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
+
 
 }

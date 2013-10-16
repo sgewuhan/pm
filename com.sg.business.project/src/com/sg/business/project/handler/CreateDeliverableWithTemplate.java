@@ -1,11 +1,12 @@
 package com.sg.business.project.handler;
 
 import java.util.Iterator;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
@@ -22,11 +23,10 @@ import com.sg.widgets.viewer.ViewerControl;
 public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, final IWorkbenchPart part,
+			final ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		final Work work = (Work) selected;
-		final ViewerControl vc = getCurrentViewerControl(event);
-		final INavigatorActionListener part = (INavigatorActionListener) HandlerUtil
-				.getActivePart(event);
 
 		NavigatorSelector ns = new NavigatorSelector(
 				"management.documentdefinition") {
@@ -64,5 +64,6 @@ public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 		ns.setMaster(project.getFunctionOrganization());
 		ns.show();
 	}
+
 
 }

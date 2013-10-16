@@ -1,6 +1,10 @@
 package com.sg.bussiness.message.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
@@ -13,16 +17,17 @@ import com.sg.widgets.viewer.ViewerControl;
 public class OpenMessage extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		if (selected instanceof Message) {
 			Message message = (Message) selected;
 
 			try {
 				message.doMarkRead(new CurrentAccountContext(), Boolean.TRUE);
-				ViewerControl vc = getCurrentViewerControl(event);
 				vc.getViewer().update(selected, null);
-			    Object isHtmlBody = message.getValue(Message.F_ISHTMLBODY);
-				if (isHtmlBody!=null&&isHtmlBody.equals(Boolean.TRUE)) {
+				Object isHtmlBody = message.getValue(Message.F_ISHTMLBODY);
+				if (isHtmlBody != null && isHtmlBody.equals(Boolean.TRUE)) {
 					DataObjectEditor.open(message, Message.EDITOR_HTMLVIEW,
 							false, null);
 				} else {

@@ -1,10 +1,13 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
@@ -20,18 +23,20 @@ import com.sg.widgets.viewer.ViewerControl;
 public class CreateDeliverable extends AbstractNavigatorHandler {
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		MessageUtil.showToast("您需要选择工作后添加交付物", SWT.ICON_WARNING);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl currentViewerControl, Command command,
+			Map<String, Object> parameters,IStructuredSelection selection) {
+		final Shell shell = part.getSite().getShell();
 
 		PrimaryObject po = ((AbstractWork) selected)
 				.makeDeliverableDefinition();
-		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
 		// 以下两句很重要，使树currentViewerControl够侦听到保存事件， 更新树上的节点
@@ -47,7 +52,7 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, "添加" + po.getTypeName());
 			// 4. 将更改消息传递到编辑器
-			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
+			sendNavigatorActionEvent(part, INavigatorActionListener.CUSTOMER,
 					new Integer(INavigatorActionListener.REFRESH));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,5 +63,6 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 		// 3. 处理完成后，释放侦听器
 		po.removeEventListener(currentViewerControl);
 	}
+
 
 }

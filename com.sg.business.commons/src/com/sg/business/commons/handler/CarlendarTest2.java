@@ -3,12 +3,14 @@ package com.sg.business.commons.handler;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.DataSetFactory;
 import com.mobnut.db.model.PrimaryObject;
@@ -19,15 +21,17 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class CarlendarTest2 extends AbstractNavigatorHandler {
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		ViewerControl v = getCurrentViewerControl(event);
-		DataSetFactory dsf = v.getDataSetFactory();
-		Shell parentShell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters,
+			IStructuredSelection selection) {
+		DataSetFactory dsf = vc.getDataSetFactory();
+		Shell parentShell = part.getSite().getShell();
 
 		CalendarCaculater ds = new CalendarCaculater(dsf.getDataSet()
 				.getDataItems());

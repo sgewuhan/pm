@@ -1,8 +1,11 @@
 package com.sg.business.organization.command;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
@@ -11,11 +14,14 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.viewer.ViewerControl;
 
 public class Consign extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl currentViewerControl, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		final User user = (User) selected;
 		// 显示用户选择器
 		NavigatorSelector ns = new NavigatorSelector("organization.user") {
@@ -28,7 +34,7 @@ public class Consign extends AbstractNavigatorHandler {
 				try {
 					user.doConsignTo(consigner, new CurrentAccountContext());
 					MessageUtil.showToast("用户：" + user + "已被托管到：" + consigner
-							+", "+ user + "再次登录后，托管自动取消",
+							+ ", " + user + "再次登录后，托管自动取消",
 							SWT.ICON_INFORMATION);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
@@ -38,5 +44,6 @@ public class Consign extends AbstractNavigatorHandler {
 		};
 		ns.show();
 	}
+
 
 }

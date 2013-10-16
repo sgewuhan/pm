@@ -1,10 +1,12 @@
 package com.sg.business.management.handler;
 
 import java.util.Iterator;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
@@ -19,9 +21,9 @@ import com.sg.widgets.viewer.ViewerControl;
 public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			final ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 		final WorkDefinition workd = (WorkDefinition) selected;
-		final ViewerControl vc = getCurrentViewerControl(event);
 		workd.addEventListener(vc);
 		NavigatorSelector ns = new NavigatorSelector(
 				"management.genericwork.definitions") {

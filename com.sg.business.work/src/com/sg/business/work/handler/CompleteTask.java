@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.Status;
 import org.jbpm.task.Task;
@@ -30,7 +32,9 @@ import com.sg.widgets.viewer.ViewerControl;
 public class CompleteTask extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		if (selected instanceof Work) {
 			try {
 				CurrentAccountContext context = new CurrentAccountContext();
@@ -106,17 +110,15 @@ public class CompleteTask extends AbstractNavigatorHandler {
 						taskFormData = infoProvider
 								.getWorkflowInformation(taskForm);
 					}
-					
+
 					taskFormData.put("editor", taskFormEditorId);
 				}
-
 
 				// 2. 完成工作流任务
 				work.doCompleteTask(Work.F_WF_EXECUTE, taskInputParameter,
 						taskFormData, context);
 
 				// 3.刷新表格
-				ViewerControl vc = getCurrentViewerControl(event);
 				vc.getViewer().update(work, null);
 			} catch (Exception e) {
 				MessageUtil.showToast("完成流程任务", e);
@@ -125,9 +127,11 @@ public class CompleteTask extends AbstractNavigatorHandler {
 	}
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		MessageUtil.showToast("请选择工作后执行完成流程任务操作", SWT.ICON_INFORMATION);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
+
 
 }

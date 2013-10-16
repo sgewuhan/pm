@@ -1,8 +1,12 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.WorkDefinition;
@@ -18,18 +22,17 @@ import com.sg.widgets.viewer.ViewerControl;
 public class CreateWorkDefinition extends AbstractNavigatorHandler {
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		MessageUtil.showToast("您需要选择一个上级", SWT.ICON_WARNING);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-
-//		Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 
 		WorkDefinition po = ((WorkDefinition) selected).makeChildWork();
-		ViewerControl vc = getCurrentViewerControl(event);
 		Assert.isNotNull(vc);
 
 		// 以下两句很重要，使树currentViewerControl够侦听到保存事件， 更新树上的节点
@@ -39,23 +42,23 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 		po.addEventListener(vc);
 
 		// 使用编辑器打开编辑工作定义
-		Configurator conf  = Widgets.getEditorRegistry().getConfigurator(
-					po.getDefaultEditorId());
+		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
+				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
 					true, null, "创建" + po.getTypeName());
-			
+
 			// 4. 将更改消息传递到编辑器
-			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
-					new Integer(INavigatorActionListener.REFRESH));
-			
+			sendNavigatorActionEvent((INavigatorActionListener) part,
+					INavigatorActionListener.CUSTOMER, new Integer(
+							INavigatorActionListener.REFRESH));
+
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
 
 		// 3. 处理完成后，释放侦听器
 		po.removeEventListener(vc);
-
 
 	}
 

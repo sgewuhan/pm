@@ -1,6 +1,10 @@
 package com.sg.bussiness.message.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -13,21 +17,23 @@ import com.sg.widgets.viewer.ViewerControl;
 public class AddMessage extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		 Message message = ModelService.createModelObject(Message.class);
-		 ViewerControl vc = getCurrentViewerControl(event);
-		 message.addEventListener(vc);
-		 try {
-				DataObjectDialog.openDialog(message,Message.EDITOR_SEND, true, null);
-			} catch (Exception e) {
-				MessageUtil.showToast(e);
-			}
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
+		Message message = ModelService.createModelObject(Message.class);
+		message.addEventListener(vc);
+		try {
+			DataObjectDialog.openDialog(message, Message.EDITOR_SEND, true,
+					null);
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+		}
 	}
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
-	
 
 }

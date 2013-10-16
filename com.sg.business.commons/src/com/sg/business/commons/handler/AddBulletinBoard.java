@@ -1,9 +1,12 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -18,12 +21,15 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class AddBulletinBoard extends AbstractNavigatorHandler {
 
-	public void execute(PrimaryObject selected, ExecutionEvent event) {
-		IWorkbenchPart part = HandlerUtil.getActivePart(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
+
 		if (part instanceof IEditablePart) {
-			String hasproject = event.getParameter("bulletinboard.hasproject");
+			Shell shell = part.getSite().getShell();
+
+			String hasproject = (String) parameters
+					.get("bulletinboard.hasproject");
 			// 判断当前选择是否为公告板
-			ViewerControl vc = getCurrentViewerControl(event);
 			Project master = (Project) vc.getMaster();
 			if ("true".equals(hasproject)) {
 				BulletinBoard bulletinboard = master.makeBulletinBoard(null);
@@ -33,8 +39,8 @@ public class AddBulletinBoard extends AbstractNavigatorHandler {
 							BulletinBoard.EDITOR_CREATE, true, null);
 
 				} catch (Exception e) {
-					MessageUtil.showToast(HandlerUtil.getActiveShell(event),
-							"创建公告板", e.getMessage(), SWT.ICON_ERROR);
+					MessageUtil.showToast(shell, "创建公告板", e.getMessage(),
+							SWT.ICON_ERROR);
 				}
 			} else {
 				BulletinBoard bulletinboard = ModelService.createModelObject(
@@ -44,8 +50,8 @@ public class AddBulletinBoard extends AbstractNavigatorHandler {
 					DataObjectDialog.openDialog(bulletinboard,
 							BulletinBoard.EDITOR_CREATE, true, null);
 				} catch (Exception e) {
-					MessageUtil.showToast(HandlerUtil.getActiveShell(event),
-							"创建公告板", e.getMessage(), SWT.ICON_ERROR);
+					MessageUtil.showToast(shell, "创建公告板", e.getMessage(),
+							SWT.ICON_ERROR);
 				}
 			}
 
@@ -53,7 +59,9 @@ public class AddBulletinBoard extends AbstractNavigatorHandler {
 	}
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
+
 }

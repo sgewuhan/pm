@@ -1,9 +1,13 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.IContext;
@@ -19,9 +23,10 @@ import com.sg.widgets.viewer.ViewerControl;
 public class ProjectCommit extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		if (selected instanceof Project) {
-			ViewerControl vc = getCurrentViewerControl(event);
 			Project project = (Project) selected;
 			try {
 				doCommit(project, new CurrentAccountContext());
@@ -68,5 +73,6 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 			project.doCommitWithSendMessage(context);
 		}
 	}
+
 
 }

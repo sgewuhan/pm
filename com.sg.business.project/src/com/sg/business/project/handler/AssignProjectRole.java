@@ -1,11 +1,12 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
@@ -24,9 +25,10 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 	private static final String TITLE = "指派成员";
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		final Shell shell = HandlerUtil.getActiveShell(event);
-		final IWorkbenchPart part = HandlerUtil.getActivePart(event);
+	protected void execute(PrimaryObject selected, final IWorkbenchPart part,
+			final ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
+		final Shell shell = part.getSite().getShell();
 		if (!(selected instanceof ProjectRole)) {
 			MessageUtil
 					.showToast(shell, TITLE, "只能对项目角色指派成员", SWT.ICON_WARNING);
@@ -44,7 +46,6 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 
 		Organization org = project.getFunctionOrganization();
 
-		final ViewerControl vc = getCurrentViewerControl(event);
 		// 显示用户选择器
 		// 可选择项目所属职能部门的及下级部门的所有成员
 		NavigatorSelector ns = new NavigatorSelector("organization.alluser") {
@@ -57,12 +58,9 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 					vc.expandItem(rd);
 
 					// 4. 将更改消息传递到编辑器
-					if (part instanceof INavigatorActionListener) {
-						sendNavigatorActionEvent(
-								(INavigatorActionListener) part,
+						sendNavigatorActionEvent( part,
 								INavigatorActionListener.CREATE, new Integer(
 										INavigatorActionListener.REFRESH));
-					}
 				} catch (Exception e) {
 					MessageUtil.showToast(TITLE, e);
 				}
@@ -80,5 +78,6 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 		ns.show();
 
 	}
+
 
 }

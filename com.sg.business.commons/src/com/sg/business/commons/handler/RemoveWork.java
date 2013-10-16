@@ -1,12 +1,14 @@
 package com.sg.business.commons.handler;
 
 import java.util.List;
+import java.util.Map;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
@@ -20,14 +22,16 @@ public class RemoveWork extends AbstractNavigatorHandler {
 
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		MessageUtil.showToast("您需要选择一项执行删除", SWT.ICON_WARNING);
-		return super.nullSelectionContinue(event);
+		return super.nullSelectionContinue(part, vc, command);
 	}
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl currentViewerControl, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
+		Shell shell = part.getSite().getShell();
 		if(selected.getParentPrimaryObjectCache()==null){
 			MessageUtil.showToast(shell, "删除"+selected.getTypeName(), "顶级"+selected.getTypeName()+"不可删除", SWT.ICON_WARNING);
 			return;
@@ -39,7 +43,6 @@ public class RemoveWork extends AbstractNavigatorHandler {
 			return;
 		}
 		
-		ViewerControl currentViewerControl = getCurrentViewerControl(event);
 		Assert.isNotNull(currentViewerControl);
 
 		//如果是工作，需要刷新开始和完成时间
@@ -54,7 +57,7 @@ public class RemoveWork extends AbstractNavigatorHandler {
 			selected.doRemove(new CurrentAccountContext());
 			
 			// 4. 将更改消息传递到编辑器
-			sendNavigatorActionEvent(event, INavigatorActionListener.CUSTOMER,
+			sendNavigatorActionEvent(part, INavigatorActionListener.CUSTOMER,
 					new Integer(INavigatorActionListener.REFRESH));
 			
 		} catch (Exception e) {

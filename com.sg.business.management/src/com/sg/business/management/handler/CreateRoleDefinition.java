@@ -1,10 +1,12 @@
 package com.sg.business.management.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
@@ -24,36 +26,35 @@ public class CreateRoleDefinition extends AbstractNavigatorHandler {
 
 
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
-
+	
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		final IWorkbenchPart part = HandlerUtil.getActivePart(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 
-		Shell shell = HandlerUtil.getActiveShell(event);
-		ViewerControl vc = getCurrentViewerControl(event);
+		Shell shell = part.getSite().getShell();
 		ProjectTemplate master = (ProjectTemplate) vc.getMaster();
 		RoleDefinition rd = master.makeRoleDefinition(null);
 		rd.addEventListener(vc);
-		
+
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				RoleDefinition.EDITOR_ROLE_DEFINITION_CREATE);
 		try {
 			DataObjectDialog.openDialog(rd, (DataEditorConfigurator) conf,
 					true, null, TITLE);
-			
+
 			if (part instanceof INavigatorActionListener) {
 
-				sendNavigatorActionEvent(
-						(INavigatorActionListener) part,
-						INavigatorActionListener.CREATE,
-						new Integer(
+				sendNavigatorActionEvent((INavigatorActionListener) part,
+						INavigatorActionListener.CREATE, new Integer(
 								INavigatorActionListener.REFRESH));
 			}
 		} catch (Exception e) {
 			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
-		}		
+		}
 	}
 }

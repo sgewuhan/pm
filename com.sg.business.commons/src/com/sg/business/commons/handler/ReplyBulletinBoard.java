@@ -1,6 +1,10 @@
 package com.sg.business.commons.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.BulletinBoard;
@@ -21,7 +25,8 @@ public class ReplyBulletinBoard extends AbstractNavigatorHandler {
 	 * 点击回复按钮执行事件
 	 */
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 		// 判断当前选择是否为公告板
 		if (selected instanceof BulletinBoard) {
 			// 获取当前选择的公告板
@@ -29,7 +34,6 @@ public class ReplyBulletinBoard extends AbstractNavigatorHandler {
 			// 创建新公告板
 			BulletinBoard reply = bulletinboard.makeReply(null);
 
-			ViewerControl vc = getCurrentViewerControl(event);
 			reply.setParentPrimaryObject(selected);
 			reply.addEventListener(vc);
 			// 使用回复编辑器打开新创建的公告板

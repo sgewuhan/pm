@@ -1,8 +1,11 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
@@ -18,9 +21,10 @@ import com.sg.widgets.viewer.ViewerControl;
 public class LinkDeliverable extends AbstractNavigatorHandler {
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			final ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
 		final Work work = (Work) selected;
-		final ViewerControl vc = getCurrentViewerControl(event);
 
 		NavigatorSelector ns = new NavigatorSelector(
 				"project.deliverable.selector") {
@@ -39,14 +43,16 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 				if (is != null && !is.isEmpty()) {
 					try {
 						Object o = is.getFirstElement();
-						if(o instanceof Deliverable){
+						if (o instanceof Deliverable) {
 							Deliverable deliverable = (Deliverable) o;
 							Document document = deliverable.getDocument();
-							if(document!=null){
-								work.doAddDeliverable(document,new CurrentAccountContext());
+							if (document != null) {
+								work.doAddDeliverable(document,
+										new CurrentAccountContext());
 								vc.getViewer().refresh(work, true);
-							}else{
-								MessageUtil.showToast("选择的交付物不包含文档", SWT.ICON_WARNING);
+							} else {
+								MessageUtil.showToast("选择的交付物不包含文档",
+										SWT.ICON_WARNING);
 							}
 						}
 						super.doOK(is);
@@ -64,5 +70,6 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 		ns.setMaster(project);
 		ns.show();
 	}
+
 
 }

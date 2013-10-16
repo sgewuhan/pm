@@ -1,9 +1,12 @@
 package com.sg.business.project.handler;
 
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.Map;
+
+import org.eclipse.core.commands.Command;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
@@ -16,18 +19,19 @@ import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class CreateProjectRole extends AbstractNavigatorHandler{
+public class CreateProjectRole extends AbstractNavigatorHandler {
 
 	private static final String TITLE = "´´½¨½ÇÉ«";
 
 	@Override
-	protected void execute(PrimaryObject selected, ExecutionEvent event) {
-		Shell shell = HandlerUtil.getActiveShell(event);
-		ViewerControl vc = getCurrentViewerControl(event);
+	protected void execute(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl vc, Command command,
+			Map<String, Object> parameters, IStructuredSelection selection) {
+		final Shell shell = part.getSite().getShell();
 		Project master = (Project) vc.getMaster();
 		ProjectRole rd = master.makeProjectRole(null);
 		rd.addEventListener(vc);
-		
+
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				ProjectRole.EDITOR_ROLE_DEFINITION_CREATE);
 		try {
@@ -35,12 +39,14 @@ public class CreateProjectRole extends AbstractNavigatorHandler{
 					true, null, TITLE);
 		} catch (Exception e) {
 			MessageUtil.showToast(shell, TITLE, e.getMessage(), SWT.ICON_ERROR);
-		}		
+		}
 	}
-	
+
 	@Override
-	protected boolean nullSelectionContinue(ExecutionEvent event) {
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
 		return true;
 	}
+
 
 }
