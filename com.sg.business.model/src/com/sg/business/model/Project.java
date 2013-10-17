@@ -1243,6 +1243,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Message message = iter.next();
 			message.doSave(context);
 		}
+		
+		doReady(context);
 	}
 
 	public void doCommitWithWork(Work work) {
