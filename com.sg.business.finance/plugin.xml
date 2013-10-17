@@ -30,16 +30,16 @@
          point="org.eclipse.ui.views">
       <view
             class="com.sg.widgets.part.view.TableNavigator"
-            id="commons.admin.devaccount"
+            id="financial.accountnumber"
             name="研发费用科目表"
             restorable="true">
-      </view>
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
       <navigator
-            id="commons.admin.devaccount"
-            table="commons.admin.devaccount">
+            id="financial.accountnumber"
+            table="financial.accountnumber">
          <filterAction>
             <column
                   column="desc"
@@ -71,7 +71,7 @@
       <table
             dataSet="com.sg.business.model.dataset.financial.CostAccountSetting"
             editorId="editor.devaccountnumber"
-            id="commons.admin.devaccount">
+            id="financial.accountnumber">
          <column
                column="desc"
                name="科目名称"

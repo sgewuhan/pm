@@ -48,6 +48,11 @@
             id="perspective.system"
             name="系统">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.finance"
+            name="财务">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -432,6 +437,9 @@
                standalone="false"
                visible="true">
          </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.finance">
       </perspectiveExtension>
    </extension>
    <extension
