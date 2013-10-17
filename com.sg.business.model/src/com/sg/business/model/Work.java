@@ -2283,7 +2283,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				List<ObjectId> syncRemove = new ArrayList<ObjectId>();
 				Work parent = (Work) getParent();
 				int loopcount = 0;
-				while (parent != null&&loopcount<20) {
+				while (parent != null && loopcount < 20) {
 					loopcount++;
 					if (syncRemove.contains(parent.get_id())) {
 						break;
@@ -3770,5 +3770,26 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		po.setValue(WorksPerformence.F_PLANWORKS, getPlanWorks());
 
 		return po;
+	}
+
+	public void doAddParticipateList(List<?> userList) throws Exception {
+		List<String> allUser = new ArrayList<String>();
+		BasicBSONList participates = getParticipatesIdList();
+		for (Object obj : userList) {
+			if (!allUser.contains(obj)) {
+				allUser.add((String) obj);
+			}
+		}
+		for (Object obj : participates) {
+			if (!allUser.contains(obj)) {
+				allUser.add((String) obj);
+			}
+		}
+		DBCollection col = getCollection();
+		WriteResult ws = col.update(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_PARTICIPATE, allUser)));
+		checkWriteResult(ws);
 	}
 }

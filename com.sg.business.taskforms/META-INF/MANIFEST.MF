@@ -10,4 +10,6 @@ Require-Bundle: com.sg.bpm.workflow;bundle-version="1.0.0",
  com.sg.bpm.service;bundle-version="1.0.0",
  com.sg.business.commons;bundle-version="1.0.0",
  org.eclipse.equinox.registry,
- org.eclipse.rap.ui;bundle-version="2.2.0"
+ org.eclipse.rap.ui;bundle-version="2.2.0",
+ com.mobnut.db,
+ com.sg.business.model
