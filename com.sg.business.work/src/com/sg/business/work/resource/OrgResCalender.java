@@ -1,4 +1,4 @@
-package com.sg.business.work.view;
+package com.sg.business.work.resource;
 
 import java.util.ArrayList;
 import java.util.List;

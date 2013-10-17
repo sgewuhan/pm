@@ -1,4 +1,4 @@
-package com.sg.business.work.view;
+package com.sg.business.work.resource;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -29,8 +29,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.CalendarToolkit;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.labelprovider.DateSummaryLabelProvider;
-import com.sg.business.work.labelprovider.MonthSummaryLabelProvider;
+import com.sg.business.work.view.WorkListCellEditor;
 import com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider;
 import com.sg.widgets.part.IRefreshablePart;
 

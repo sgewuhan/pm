@@ -130,16 +130,14 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 		DBObject group = new BasicDBObject();
 		group.put(
 				"$group",
-				new BasicDBObject().append("_id",
-						"$" + WorksPerformence.F_DATECODE).append(
-						WorksPerformence.F_WORKS,
-						new BasicDBObject().append("$sum", "$"
-								+ WorksPerformence.F_WORKS)));
+				getGroupCondition(data));
 
 		return col.aggregate(match, group);
 	}
 
 	
+	protected abstract Object getGroupCondition(PrimaryObject data) ;
+
 	protected abstract Object getMatchCondition(PrimaryObject data);
 	
 	@Override
