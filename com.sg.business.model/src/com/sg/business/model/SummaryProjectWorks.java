@@ -5,14 +5,14 @@ import com.mongodb.BasicDBObject;
 
 public class SummaryProjectWorks extends AbstractWorksSummary {
 
-
 	public SummaryProjectWorks(PrimaryObject po) {
 		super(po);
 	}
 
 	@Override
 	protected Object getMatchCondition(PrimaryObject data) {
-		return new BasicDBObject().append(WorksPerformence.F_PROJECTID, data.get_id());
+		return new BasicDBObject().append(WorksPerformence.F_PROJECTID,
+				data.get_id());
 	}
 
 	@Override

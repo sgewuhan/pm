@@ -244,6 +244,16 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_NAVI_24 = "navigate_24.png";
 
+	public static final String IMAGE_PROJECT_FINISH_16 = "project_finish_16.png";
+
+	public static final String IMAGE_PROJECT_ONREADY_16 = "project_commit_16.png";
+
+	public static final String IMAGE_PROJECT_CANCEL_16 = "project_stop_16.png";
+
+	public static final String IMAGE_PROJECT_PAUSED_16 = "project_pause_16.png";
+
+	public static final String IMAGE_PROJECT_WIP_16 = "project_start_16.png";
+
 
 	/**
 	 * Returns the shared instance

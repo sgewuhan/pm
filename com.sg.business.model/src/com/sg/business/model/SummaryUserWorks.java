@@ -31,4 +31,5 @@ public class SummaryUserWorks extends AbstractWorksSummary {
 				new BasicDBObject().append("$sum", "$"
 						+ WorksPerformence.F_WORKS));
 	}
+
 }
