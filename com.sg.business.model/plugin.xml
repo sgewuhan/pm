@@ -144,6 +144,11 @@
             collection="worksallocate"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.CostAccount"
+            collection="costaccount"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

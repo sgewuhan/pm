@@ -20,11 +20,13 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.model,
+ com.sg.business.model.bpmservice,
  com.sg.business.model.bson,
  com.sg.business.model.check,
  com.sg.business.model.condition,
  com.sg.business.model.dataset.bulletinboard,
  com.sg.business.model.dataset.calendarsetting,
+ com.sg.business.model.dataset.financial,
  com.sg.business.model.dataset.folder,
  com.sg.business.model.dataset.message,
  com.sg.business.model.dataset.organization,

@@ -12,8 +12,15 @@
       <adminFunction
             id="com.sg.business.commons.admin.BPMAccountSync"
             image="image/user_48.png"
-            label="同步用户数据"
+            label="同步用户"
             run="com.sg.business.commons.admin.BPMAccountSync">
+      </adminFunction>
+      <adminFunction
+            id="com.sg.business.commons.admin.DevAccountNumberSetting"
+            image="image/item_48.png"
+            label="研发费用科目"
+            run="com.sg.business.commons.admin.DevAccountNumberSetting"
+            tooltip="设置SAP">
       </adminFunction>
    </extension>
    <extension
@@ -22,6 +29,12 @@
             class="com.sg.widgets.part.view.TableNavigator"
             id="commons.admin.calendar"
             name="日历设置"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="commons.admin.devaccount"
+            name="研发费用科目表"
             restorable="true">
       </view>
    </extension>
@@ -139,6 +152,34 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="commons.admin.devaccount"
+            table="commons.admin.devaccount">
+         <filterAction>
+            <column
+                  column="desc"
+                  name="科目名称"
+                  type="String">
+            </column>
+            <column
+                  column="accountnumber"
+                  name="代码"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="desc"
+                  name="科目名称"
+                  type="String">
+            </column>
+            <column
+                  column="accountnumber"
+                  name="代码"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -196,6 +237,23 @@
             id="commons.generic.tableselector">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.financial.CostAccountSetting"
+            editorId="editor.devaccountnumber"
+            id="commons.admin.devaccount">
+         <column
+               column="desc"
+               name="科目名称"
+               type="String"
+               width="120">
+         </column>
+         <column
+               column="accountnumber"
+               name="代码"
+               type="String"
+               width="120">
          </column>
       </table>
    </extension>
@@ -317,6 +375,43 @@
                         persistable="true"
                         required="false"
                         textMessage="&lt;,分割多个值&gt;"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="costaccount"
+            dbName="pm2"
+            id="editor.devaccountnumber"
+            name="科目">
+         <basicpage
+               id="basicpage1"
+               title="基本信息">
+            <pagecolumn>
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="科目名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="accountnumber"
+                        label="科目代码"
+                        labelVisible="true"
+                        name="accountnumber"
+                        persistable="true"
+                        required="true"
                         type="String">
                   </text>
                </section>

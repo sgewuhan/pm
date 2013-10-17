@@ -35,6 +35,7 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 				MessageUtil.showToast(e);
 			}
 			vc.getViewer().update(selected, null);
+			vc.getViewer().setSelection(null);
 		}
 	}
 
