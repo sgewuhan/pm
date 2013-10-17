@@ -509,6 +509,9 @@
             id="project.navigator.management"
             popupMenu="popup:project.navigator">
          <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
                columnDefinitionId="project.projectnumber">
          </column>
          <column
@@ -516,9 +519,6 @@
          </column>
          <column
                columnDefinitionId="chargerid">
-         </column>
-         <column
-               columnDefinitionId="project.status">
          </column>
          <columnGroup
                defaultGroup="false"

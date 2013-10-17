@@ -1,4 +1,4 @@
-package com.sg.business.work.view;
+package com.sg.business.work.resource;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -197,6 +197,9 @@ public class WorkListCellEditor extends CellEditor {
 //	}
 
 	private void open(List<PrimaryObject[]> worklist, Point p) {
+		if(worklist==null||worklist.isEmpty()){
+			return;
+		}
 		viewer.setInput(worklist);
 		shell.pack();
 		shell.setLocation(p);
