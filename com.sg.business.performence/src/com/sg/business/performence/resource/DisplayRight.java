@@ -1,4 +1,4 @@
-package com.sg.business.work.resource;
+package com.sg.business.performence.resource;
 
 
 public class DisplayRight extends TeamResourceHandler {

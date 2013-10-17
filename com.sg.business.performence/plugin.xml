@@ -5,62 +5,62 @@
          point="org.eclipse.ui.views">
       <view
             category="work"
-            class="com.sg.business.work.resource.OrgResCalender"
-            id="work.teamworklist"
+            class="com.sg.business.performence.resource.OrgResCalender"
+            id="performence.works.org"
             name="部门资源工时">
       </view>
       <view
             category="work"
-            class="com.sg.business.work.resource.ProjectResCalender"
-            id="work.projectworklist"
+            class="com.sg.business.performence.resource.ProjectResCalender"
+            id="performence.works.project"
             name="项目资源工时">
       </view>
       <view
             category="work"
-            class="com.sg.business.work.resource.OrgProjectResCalender"
-            id="work.organizationprojectworklist"
+            class="com.sg.business.performence.resource.OrgProjectResCalender"
+            id="performence.works.project.org"
             name="部门项目工时">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.work.resource.DisplayYear"
-            commandId="work.teamworklist.displayyear">
+            class="com.sg.business.performence.resource.DisplayYear"
+            commandId="performence.works.org.displayyear">
       </handler>
       <handler
-            class="com.sg.business.work.resource.Display3Month"
-            commandId="work.teamworklist.display3month">
+            class="com.sg.business.performence.resource.Display3Month"
+            commandId="performence.works.org.display3month">
       </handler>
       <handler
-            class="com.sg.business.work.resource.DisplayLeft"
-            commandId="work.teamworklist.displayleft">
+            class="com.sg.business.performence.resource.DisplayLeft"
+            commandId="performence.works.org.displayleft">
       </handler>
       <handler
-            class="com.sg.business.work.resource.DisplayRight"
-            commandId="work.teamworklist.displayright">
+            class="com.sg.business.performence.resource.DisplayRight"
+            commandId="performence.works.org.displayright">
       </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
             categoryId="work"
-            id="work.teamworklist.displayyear"
+            id="performence.works.org.displayyear"
             name="显示全年">
       </command>
       <command
             categoryId="work"
-            id="work.teamworklist.display3month"
+            id="performence.works.org.display3month"
             name="显示最近三个月">
       </command>
       <command
             categoryId="work"
-            id="work.teamworklist.displayleft"
+            id="performence.works.org.displayleft"
             name="显示更早">
       </command>
       <command
             categoryId="work"
-            id="work.teamworklist.displayright"
+            id="performence.works.org.displayright"
             name="显示更晚">
       </command>
    </extension>
@@ -68,9 +68,9 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:work.teamworklist?after=additions">
+            locationURI="toolbar:performence.works.org?after=additions">
          <command
-               commandId="work.teamworklist.displayyear"
+               commandId="performence.works.org.displayyear"
                icon="image/cal1_24.png"
                label="显示全年"
                style="push">
@@ -85,7 +85,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="work.teamworklist.display3month"
+               commandId="performence.works.org.display3month"
                icon="image/cal2_24.png"
                label="显示最近3个月"
                style="push">
@@ -100,7 +100,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="work.teamworklist.displayleft"
+               commandId="performence.works.org.displayleft"
                icon="image/left_24.png"
                label="显示更早"
                style="push">
@@ -115,7 +115,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="work.teamworklist.displayright"
+               commandId="performence.works.org.displayright"
                icon="image/right_24.png"
                label="显示更晚"
                style="push">
@@ -132,9 +132,9 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:work.projectworklist?after=additions">
+            locationURI="toolbar:performence.works.project?after=additions">
          <command
-               commandId="work.teamworklist.displayyear"
+               commandId="performence.works.org.displayyear"
                icon="image/cal1_24.png"
                label="显示全年"
                style="push">
@@ -149,7 +149,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="work.teamworklist.display3month"
+               commandId="performence.works.org.display3month"
                icon="image/cal2_24.png"
                label="显示最近3个月"
                style="push">
@@ -164,7 +164,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="work.teamworklist.displayleft"
+               commandId="performence.works.org.displayleft"
                icon="image/left_24.png"
                label="显示更早"
                style="push">
@@ -179,7 +179,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="work.teamworklist.displayright"
+               commandId="performence.works.org.displayright"
                icon="image/right_24.png"
                label="显示更晚"
                style="push">
