@@ -1,4 +1,4 @@
-package com.sg.business.commons.admin;
+package com.sg.business.finance.admin;
 
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;

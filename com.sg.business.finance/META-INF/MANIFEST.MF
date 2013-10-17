@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.mobnut.db;bundle-version="1.0.0",
  com.sg.widgets,
  com.sg.thirdparty;bundle-version="1.0.0",
- com.mobnut.commons
+ com.mobnut.commons,
+ com.sg.business.model;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: com.sg.business.model
