@@ -10,6 +10,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -33,10 +34,10 @@ public class ProjectCheckView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
-		viewer.getTable().setHeaderVisible(true);
+		//viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
-		// viewer.getTable().setData(RWT.MARKUP_ENABLED, true);
-		// viewer.getTable().setData(RWT.CUSTOM_ITEM_HEIGHT, 64);
+		viewer.getTable().setData(RWT.MARKUP_ENABLED, true);
+		viewer.getTable().setData(RWT.CUSTOM_ITEM_HEIGHT, 64);
 
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		column.getColumn().setText("");
