@@ -95,7 +95,6 @@ public class Organization extends PrimaryObject {
 	 */
 	public static final String F_KBASE = "kbase";
 
-
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
 	 * 
@@ -1375,5 +1374,41 @@ public class Organization extends PrimaryObject {
 					.getContainerOrganizationId();
 		}
 	}
-	
+
+	private SummaryOrganizationWorks summary;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == IWorksSummary.class) {
+			if (summary == null) {
+				summary = new SummaryOrganizationWorks(this);
+			}
+			return (T) summary;
+		}
+		return super.getAdapter(adapter);
+	}
+
+	/**
+	 * 是否逐级查询
+	 * 
+	 * @param hierarchy
+	 * @return
+	 */
+	public List<String> getMemberIds(boolean hierarchy) {
+		List<String> result = new ArrayList<String>();
+		List<PrimaryObject> users = getUser();
+		for (int i = 0; i < users.size(); i++) {
+			result.add(((User) users.get(i)).getUserid());
+		}
+		if (hierarchy) {
+			List<PrimaryObject> children = getChildrenOrganization();
+			for (int i = 0; i < children.size(); i++) {
+				Organization subOrg = (Organization) children.get(i);
+				result.addAll(subOrg.getMemberIds(hierarchy));
+			}
+		}
+
+		return result;
+	}
 }

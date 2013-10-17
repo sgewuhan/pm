@@ -174,6 +174,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public static final String F_FOLDER_ID = "folder_id";
 
+	
+	private SummaryProjectWorks summary;
 	/**
 	 * 返回类型名称
 	 * 
@@ -1715,6 +1717,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					return ProjectRole.class;
 				}
 			};
+		}else if (adapter == IWorksSummary.class) {
+			if(summary==null){
+				summary = new SummaryProjectWorks(this);
+			}
+			return (T) summary ;
 		}
 		return super.getAdapter(adapter);
 	}
@@ -1860,4 +1867,5 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		return null;
 	}
+	
 }

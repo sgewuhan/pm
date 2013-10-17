@@ -36,9 +36,15 @@
       </view>
       <view
             category="work"
-            class="com.sg.business.work.view.ResourceWorksCalender"
+            class="com.sg.business.work.view.OrgResCalender"
             id="work.teamworklist"
-            name="资源工时">
+            name="部门资源">
+      </view>
+      <view
+            category="work"
+            class="com.sg.business.work.view.ProjectResCalender"
+            id="work.projectworklist"
+            name="项目资源">
       </view>
       <view
             category="work"
@@ -2327,6 +2333,70 @@
       <menuContribution
             allPopups="false"
             locationURI="toolbar:work.teamworklist?after=additions">
+         <command
+               commandId="work.teamworklist.displayyear"
+               icon="image/cal1_24.png"
+               label="显示全年"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="work.teamworklist.display3month"
+               icon="image/cal2_24.png"
+               label="显示最近3个月"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="work.teamworklist.displayleft"
+               icon="image/left_24.png"
+               label="显示更早"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="work.teamworklist.displayright"
+               icon="image/right_24.png"
+               label="显示更晚"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:work.projectworklist?after=additions">
          <command
                commandId="work.teamworklist.displayyear"
                icon="image/cal1_24.png"

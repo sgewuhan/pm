@@ -1,4 +1,4 @@
-package com.sg.business.work.view;
+package com.sg.business.work.labelprovider;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;

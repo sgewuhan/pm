@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.Viewer;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
 
-public class DepartmentWorksContentProvider implements ITreeContentProvider {
+public class OrgResContentProvider implements ITreeContentProvider {
 
 	@Override
 	public void dispose() {

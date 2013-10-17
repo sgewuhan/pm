@@ -411,7 +411,7 @@
             targetID="perspective.resource">
          <view
                closeable="false"
-               id="work.ownerworklist"
+               id="work.teamworklist"
                minimized="false"
                moveable="false"
                ratio="0.3"
@@ -423,11 +423,11 @@
          </view>
          <view
                closeable="false"
-               id="work.teamworklist"
+               id="work.projectworklist"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="work.ownerworklist"
+               relative="work.teamworklist"
                showTitle="true"
                standalone="false"
                visible="true">

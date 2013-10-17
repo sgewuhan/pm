@@ -1,6 +1,5 @@
 package com.sg.business.work.view;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +9,7 @@ import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.nebula.jface.gridviewer.GridTreeViewer;
 import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.jface.gridviewer.GridViewerEditor;
@@ -26,17 +26,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.ViewPart;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.Organization;
-import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.CalendarToolkit;
-import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.work.labelprovider.DateSummaryLabelProvider;
+import com.sg.business.work.labelprovider.MonthSummaryLabelProvider;
 import com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider;
-import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.IRefreshablePart;
 
-public class ResourceWorksCalender extends ViewPart implements IRefreshablePart {
+public abstract class ResourceCalender extends ViewPart implements
+		IRefreshablePart {
 
 	private int groupcount = 3;
 	private GridTreeViewer viewer;
@@ -44,22 +43,23 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 	private Calendar calendar;
 	private GridColumn labelColumn;
 	private Font font;
-	private HashMap<GridColumnGroup,Boolean> groupCache = new HashMap<GridColumnGroup,Boolean>();
+	private HashMap<GridColumnGroup, Boolean> groupCache = new HashMap<GridColumnGroup, Boolean>();
 
 	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL);
 		viewer.getGrid().setHeaderVisible(true);
-		viewer.setContentProvider(new DepartmentWorksContentProvider());
+		viewer.setContentProvider(getContentProvider());
 		viewer.setAutoExpandLevel(-1);
 
 		createGridViewerEditor();
 
 		calendar = Calendar.getInstance();
-		font = new Font(parent.getDisplay(),
-				"Arial", 14, SWT.NORMAL);
+		font = new Font(parent.getDisplay(), "Arial", 14, SWT.NORMAL);
 		setDisplay3Month();
 	}
+
+	protected abstract IContentProvider getContentProvider();
 
 	private void createLabelColumn() {
 		if (labelColumn != null) {
@@ -82,10 +82,11 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 		vColumn.setLabelProvider(new PrimaryObjectLabelProvider());
 	}
 
-	private void createMonthGroup(final int year, final int month, boolean expand) {
+	private void createMonthGroup(final int year, final int month,
+			boolean expand) {
 		final GridColumnGroup group = new GridColumnGroup(viewer.getGrid(),
 				SWT.TOGGLE);
-		
+
 		final Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.YEAR, year);
 		calendar.set(Calendar.MONTH, month);
@@ -95,29 +96,29 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 
 		group.setText(monthName);
 
-		if(expand){
+		if (expand) {
 			int days = calendar.getActualMaximum(Calendar.DATE);
 			for (int i = 0; i < days; i++) {
 				createDayColumn(group, year, month, i + 1);
 			}
 			groupLoadColumns(group);
 		}
-		
+
 		createSummaryColumn(group, year, month);
 
 		group.addTreeListener(new TreeListener() {
-			
+
 			@Override
 			public void treeExpanded(TreeEvent e) {
-				if(!isGroupColumnsLoaded(group)){
+				if (!isGroupColumnsLoaded(group)) {
 					int days = calendar.getActualMaximum(Calendar.DATE);
 					for (int i = 0; i < days; i++) {
 						createDayColumn(group, year, month, i + 1);
-					}	
+					}
 					viewer.refresh(true);
 				}
 			}
-			
+
 			@Override
 			public void treeCollapsed(TreeEvent e) {
 			}
@@ -129,8 +130,8 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 	private void groupLoadColumns(GridColumnGroup group) {
 		groupCache.put(group, Boolean.TRUE);
 	}
-	
-	private boolean isGroupColumnsLoaded(GridColumnGroup group){
+
+	private boolean isGroupColumnsLoaded(GridColumnGroup group) {
 		return Boolean.TRUE.equals(groupCache.get(group));
 	}
 
@@ -176,7 +177,7 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 
 		GridViewerColumn vColumn = new GridViewerColumn(viewer, column);
 
-		final DateSummaryLabelProvider labelProvider = new DateSummaryLabelProvider(
+		DateSummaryLabelProvider labelProvider = new DateSummaryLabelProvider(
 				year, month, dateOfMonth);
 
 		Calendar cal = Calendar.getInstance();
@@ -234,37 +235,14 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 			return;
 		}
 
-		// 获取当前用户担任管理者角色的部门
-		String userId = new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
-		User user = UserToolkit.getUserById(userId);
-		List<PrimaryObject> orglist = user
-				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
-		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
-
-		for (int i = 0; i < orglist.size(); i++) {
-			Organization org = (Organization) orglist.get(i);
-			boolean hasParent = false;
-			for (int j = 0; j < input.size(); j++) {
-				Organization inputOrg = (Organization) input.get(j);
-				if (inputOrg.isSuperOf(org)) {
-					hasParent = true;
-					break;
-				}
-				if (org.isSuperOf(inputOrg)) {
-					input.remove(j);
-					break;
-				}
-			}
-			if (!hasParent) {
-				input.add(org);
-			}
-		}
+		List<PrimaryObject> input = getInput();
 
 		viewer.setInput(input);
 		hasLoaded = true;
 
 	}
+
+	protected abstract List<PrimaryObject> getInput();
 
 	private void createGridViewerEditor() {
 		ColumnViewerEditorActivationStrategy strategy = new ColumnViewerEditorActivationStrategy(
@@ -322,7 +300,7 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 
 						labelColumn.setText("" + year);
 						loadData(false);
-						
+
 						push.stop();
 					}
 
@@ -358,7 +336,7 @@ public class ResourceWorksCalender extends ViewPart implements IRefreshablePart 
 		groupcount = 3;
 		createGrid();
 	}
-	
+
 	@Override
 	public void dispose() {
 		font.dispose();
