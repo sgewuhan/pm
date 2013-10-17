@@ -191,6 +191,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	@Override
 	public Image getImage() {
+		String lc = getLifecycleStatus();
+		if(STATUS_CANCELED_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_CANCEL_16);
+		}else if(STATUS_FINIHED_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_FINISH_16);
+		}else if(STATUS_ONREADY_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_ONREADY_16);
+		}else if(STATUS_PAUSED_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_PAUSED_16);
+		}else if(STATUS_WIP_VALUE.equals(lc)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_WIP_16);
+		}
+		
 		return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_16);
 	}
 
@@ -1230,6 +1243,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Message message = iter.next();
 			message.doSave(context);
 		}
+		
+		doReady(context);
 	}
 
 	public void doCommitWithWork(Work work) {

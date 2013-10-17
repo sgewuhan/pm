@@ -1,4 +1,4 @@
-package com.sg.business.work.view;
+package com.sg.business.work.resource;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -29,8 +29,6 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.CalendarToolkit;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.labelprovider.DateSummaryLabelProvider;
-import com.sg.business.work.labelprovider.MonthSummaryLabelProvider;
 import com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider;
 import com.sg.widgets.part.IRefreshablePart;
 
@@ -42,6 +40,7 @@ public abstract class ResourceCalender extends ViewPart implements
 	private boolean hasLoaded;
 	private Calendar calendar;
 	private GridColumn labelColumn;
+	
 	private Font font;
 	private HashMap<GridColumnGroup, Boolean> groupCache = new HashMap<GridColumnGroup, Boolean>();
 
@@ -80,6 +79,26 @@ public abstract class ResourceCalender extends ViewPart implements
 
 		GridViewerColumn vColumn = new GridViewerColumn(viewer, labelColumn);
 		vColumn.setLabelProvider(new PrimaryObjectLabelProvider());
+		
+		
+		//»ã×ÜÁÐ
+		GridColumn summaryColumn = new GridColumn(viewer.getGrid(), SWT.NONE);
+		summaryColumn.setWidth(80);
+		// column.setImage( image );
+		// column.setSort( SWT.DOWN );
+		// column.setFooterImage( image );
+		summaryColumn.setAlignment(SWT.RIGHT);
+		summaryColumn.setHeaderFont(font);
+		// column.setFooterFont( new Font( column.getDisplay(), "Segoe Script",
+		// 16, SWT.NORMAL ) );
+		// column.setSummary( false );
+		// column.setMinimumWidth( 100 );
+		summaryColumn.setText("P/A");
+		summaryColumn.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_SUMMARY_16));
+		vColumn = new GridViewerColumn(viewer, summaryColumn);
+		vColumn.setLabelProvider(new TotalSummaryLabelProvider());
+		
 	}
 
 	private void createMonthGroup(final int year, final int month,
@@ -149,7 +168,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		column.setDetail(false);
 		column.setSummary(true); // column.setMinimumWidth( 100 );
 		// column.setDetail(true);
-		column.setText("");
+		column.setText("P/A");
 		column.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_SUMMARY_16));
 

@@ -180,5 +180,7 @@ public interface IModelConstants {
 	 */
 	public static final String C_WORKS_ALLOCATE = "worksallocate";
 
+	public static final String C_COSTACCOUNT = "costaccount";
+
 
 }

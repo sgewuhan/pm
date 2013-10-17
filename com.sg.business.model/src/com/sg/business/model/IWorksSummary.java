@@ -41,4 +41,8 @@ public interface IWorksSummary {
 
 	double getWorksAllocateSummary(Date start, Date end);
 
+	double getWorksPerformenceTotalSummary();
+
+	double getWorksAllocateTotalSummary();
+
 }

@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.bson.types.BasicBSONList;
-import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
-import com.mobnut.commons.codec.Coder;
 import com.mobnut.commons.email.MailJob;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
@@ -453,24 +451,24 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	}
 	
 	
-	public static void main(String[] args) {
-		BasicDBObject a = new BasicDBObject();
-		a.append("id", new ObjectId());
-		a.append("desc", "sdfsdkfjsdkjfjfkd中文g");
-		String string = a.toString();
-		
-		try {
-			String b = null;
-			b = Coder.encryptBASE64(string.getBytes());
-			System.out.println(b);
-
-			byte[] c = Coder.decryptBASE64(b);
-			System.out.println(new String(c));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
+//	public static void main(String[] args) {
+//		BasicDBObject a = new BasicDBObject();
+//		a.append("id", new ObjectId());
+//		a.append("desc", "sdfsdkfjsdkjfjfkd中文g");
+//		String string = a.toString();
+//		
+//		try {
+//			String b = null;
+//			b = Coder.encryptBASE64(string.getBytes());
+//			System.out.println(b);
+//
+//			byte[] c = Coder.decryptBASE64(b);
+//			System.out.println(new String(c));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
 
 	/**
 	 * 发送邮件通知

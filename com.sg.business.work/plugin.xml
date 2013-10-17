@@ -36,15 +36,15 @@
       </view>
       <view
             category="work"
-            class="com.sg.business.work.view.OrgResCalender"
+            class="com.sg.business.work.resource.OrgResCalender"
             id="work.teamworklist"
-            name="部门资源">
+            name="部门资源工时">
       </view>
       <view
             category="work"
-            class="com.sg.business.work.view.ProjectResCalender"
+            class="com.sg.business.work.resource.ProjectResCalender"
             id="work.projectworklist"
-            name="项目资源">
+            name="项目资源工时">
       </view>
       <view
             category="work"
@@ -2638,19 +2638,19 @@
             commandId="work.editrecord">
       </handler>
       <handler
-            class="com.sg.business.work.handler.DisplayYear"
+            class="com.sg.business.work.resource.DisplayYear"
             commandId="work.teamworklist.displayyear">
       </handler>
       <handler
-            class="com.sg.business.work.handler.Display3Month"
+            class="com.sg.business.work.resource.Display3Month"
             commandId="work.teamworklist.display3month">
       </handler>
       <handler
-            class="com.sg.business.work.handler.DisplayLeft"
+            class="com.sg.business.work.resource.DisplayLeft"
             commandId="work.teamworklist.displayleft">
       </handler>
       <handler
-            class="com.sg.business.work.handler.DisplayRight"
+            class="com.sg.business.work.resource.DisplayRight"
             commandId="work.teamworklist.displayright">
       </handler>
    </extension>
