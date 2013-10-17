@@ -48,6 +48,12 @@
       </view>
       <view
             category="work"
+            class="com.sg.business.work.resource.OrgProjectResCalender"
+            id="work.organizationprojectworklist"
+            name="部门项目工时">
+      </view>
+      <view
+            category="work"
             class="com.sg.widgets.part.view.TableNavigator"
             id="work.performence.record"
             name="工作记录">
