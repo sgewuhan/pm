@@ -103,34 +103,45 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		String description = workDesc == null ? "" : workDesc.toString();
 		event.setDescription(description);
 		event.setNoticeMessage(0);
-
 		event.setStart(planStart);
 		event.setEnd(planFinish);
 
-		String lc = work.getLifecycleStatus();
-
-		if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
-			// 暂停中的工作
-			event.setColor(ICalendarEvent.COLOR_GRAY);
-		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)
-				|| ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
-			// 沒有開始的工作
-			if (work.getPlanStart().after(new Date())) {
-				// 還沒到計劃開始時間
-				event.setColor(ICalendarEvent.COLOR_BLUES[2]);
-			} else {
-				// 已經到了計劃開始時間
-				event.setColor(ICalendarEvent.COLOR_YELLOWS[2]);
-			}
-		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-			// 已经到了计划完成时间但是没有完成
-			if (work.getPlanFinish().before(new Date())) {
-				event.setColor(ICalendarEvent.COLOR_REDS[2]);
-			} else {
-				event.setColor(ICalendarEvent.COLOR_GREENS[2]);
-			}
+		// String lc = work.getLifecycleStatus();
+		// if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
+		// // 暂停中的工作
+		// event.setColor(ICalendarEvent.COLOR_GRAY);
+		// } else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)
+		// || ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
+		// // 沒有開始的工作
+		// if (work.getPlanStart().after(new Date())) {
+		// // 還沒到計劃開始時間
+		// event.setColor(ICalendarEvent.COLOR_BLUES[2]);
+		// } else {
+		// // 已經到了計劃開始時間
+		// event.setColor(ICalendarEvent.COLOR_YELLOWS[2]);
+		// }
+		// } else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+		// // 已经到了计划完成时间但是没有完成
+		// if (work.getPlanFinish().before(new Date())) {
+		// event.setColor(ICalendarEvent.COLOR_REDS[2]);
+		// } else {
+		// event.setColor(ICalendarEvent.COLOR_GREENS[2]);
+		// }
+		// } else {
+		// return null;
+		// }
+		//
+		int remindBefore = work.getRemindBefore();
+		// 首先判断当前时间是否晚于计划完成时间，如果是，显示为超期标签
+		Date now = new Date();
+		if (now.after(planFinish)) {
+			event.setColor(ICalendarEvent.COLOR_REDS[2]);
+		} else if (remindBefore > 0
+				&& (planFinish.getTime() - now.getTime()) < remindBefore * 3600000) {
+			// 然后判断当前时间是否达到提醒时间
+			event.setColor(ICalendarEvent.COLOR_YELLOWS[2]);
 		} else {
-			return null;
+			event.setColor(ICalendarEvent.COLOR_BLUES[2]);
 		}
 		return event;
 	}
