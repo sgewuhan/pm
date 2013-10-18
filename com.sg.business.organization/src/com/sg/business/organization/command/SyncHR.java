@@ -84,7 +84,7 @@ public class SyncHR extends Job {
 			UserExchange pmUserExchange = userExchange
 					.getByPmUser(hrUserExchange.getUserId());
 			if (hrUserExchange.getDifferentUnitId(pmUserExchange)) {
-				updateUserSet.add(userExchange);
+				updateUserSet.add(pmUserExchange);
 			}
 		}
 		// 插入用户集合

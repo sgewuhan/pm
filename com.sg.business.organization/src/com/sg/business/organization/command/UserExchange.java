@@ -55,32 +55,32 @@ public class UserExchange {
 	/**
 	 * 消息标题
 	 */
-	public static String MESSAGE_DESC = "系统消息：PM系统中存在用户需要";
+	public static final String MESSAGE_DESC = "系统消息：PM系统中存在用户需要";
 
 	/**
 	 * 消息内容（后半部分）
 	 */
-	public static String MESSAGE_CONTENT_AFTER1 = "”需要被";
+	public static final String MESSAGE_CONTENT_AFTER1 = "”需要被";
 
 	/**
 	 * 消息内容（后半部分）
 	 */
-	public static String MESSAGE_CONTENT_AFTER2 = "，请在PM系统中将该用户参与或管理的项目进行移交！";
+	public static final String MESSAGE_CONTENT_AFTER2 = "，请在PM系统中将该用户参与或管理的项目进行移交！";
 
 	/**
 	 * 消息内容（前半部分）
 	 */
-	public static String MESSAGE_CONTENT_BEFORE = "HR系统中用户：“";
+	public static final String MESSAGE_CONTENT_BEFORE = "HR系统中用户：“";
 
 	/**
 	 * 删除
 	 */
-	public static String MESSAGE_SENDTYPE_DELETE = "删除";
+	public static final String MESSAGE_SENDTYPE_DELETE = "删除";
 
 	/**
 	 * 修改
 	 */
-	public static String MESSAGE_SENDTYPE_UPDATE = "更改归属组织";
+	public static final String MESSAGE_SENDTYPE_UPDATE = "更改归属组织";
 
 	public String getUserId() {
 		return userId;
@@ -288,7 +288,7 @@ public class UserExchange {
 		String unitId = getUnitId();
 		String otherUserUnitId = otherUser.getUnitId();
 		if (unitId != null && otherUserUnitId != null) {
-			return unitId.equals(otherUserUnitId);
+			return !unitId.equals(otherUserUnitId);
 		} else {
 			return false;
 		}
