@@ -44,7 +44,7 @@ public abstract class ResourceCalender extends ViewPart implements
 
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL);
+		viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL|SWT.V_SCROLL);
 		viewer.getGrid().setHeaderVisible(true);
 		viewer.setContentProvider(getContentProvider());
 		viewer.setAutoExpandLevel(-1);
@@ -84,7 +84,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		// column.setImage( image );
 		// column.setSort( SWT.DOWN );
 		// column.setFooterImage( image );
-		summaryColumn.setAlignment(SWT.RIGHT);
+		summaryColumn.setAlignment(SWT.CENTER);
 		summaryColumn.setHeaderFont(font);
 		// column.setFooterFont( new Font( column.getDisplay(), "Segoe Script",
 		// 16, SWT.NORMAL ) );
@@ -157,7 +157,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		// column.setImage( image );
 		// column.setSort( SWT.DOWN );
 		// column.setFooterImage( image );
-		column.setAlignment(SWT.RIGHT);
+		column.setAlignment(SWT.CENTER);
 		// column.setHeaderFont( new Font( column.getDisplay(), "Comic Sans MS",
 		// 16, SWT.NORMAL ) );
 		// column.setFooterFont( new Font( column.getDisplay(), "Segoe Script",
