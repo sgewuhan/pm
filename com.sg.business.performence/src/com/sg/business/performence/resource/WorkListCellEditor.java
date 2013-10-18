@@ -77,7 +77,7 @@ public class WorkListCellEditor extends CellEditor {
 		}
 		
 		//能否在控件下方显示
-		if(location.y +cellBounds.height+ size.y >displayBounds.height){
+		if(location.y +cellBounds.height+ size.y >=displayBounds.height){
 			location.y = location.y - size.y;
 		}else{
 			location.y = location.y + cellBounds.height;
