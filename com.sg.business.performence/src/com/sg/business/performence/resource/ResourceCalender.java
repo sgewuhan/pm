@@ -1,10 +1,9 @@
-package com.sg.business.work.resource;
+package com.sg.business.performence.resource;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
@@ -26,7 +25,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.ViewPart;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.User;
 import com.sg.business.model.toolkit.CalendarToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider;
@@ -36,11 +34,11 @@ public abstract class ResourceCalender extends ViewPart implements
 		IRefreshablePart {
 
 	private int groupcount = 3;
-	private GridTreeViewer viewer;
+	protected GridTreeViewer viewer;
 	private boolean hasLoaded;
 	private Calendar calendar;
 	private GridColumn labelColumn;
-	
+
 	private Font font;
 	private HashMap<GridColumnGroup, Boolean> groupCache = new HashMap<GridColumnGroup, Boolean>();
 
@@ -79,9 +77,8 @@ public abstract class ResourceCalender extends ViewPart implements
 
 		GridViewerColumn vColumn = new GridViewerColumn(viewer, labelColumn);
 		vColumn.setLabelProvider(new PrimaryObjectLabelProvider());
-		
-		
-		//汇总列
+
+		// 汇总列
 		GridColumn summaryColumn = new GridColumn(viewer.getGrid(), SWT.NONE);
 		summaryColumn.setWidth(80);
 		// column.setImage( image );
@@ -98,7 +95,7 @@ public abstract class ResourceCalender extends ViewPart implements
 				.getImage(BusinessResource.IMAGE_SUMMARY_16));
 		vColumn = new GridViewerColumn(viewer, summaryColumn);
 		vColumn.setLabelProvider(new TotalSummaryLabelProvider());
-		
+
 	}
 
 	private void createMonthGroup(final int year, final int month,
@@ -208,30 +205,11 @@ public abstract class ResourceCalender extends ViewPart implements
 		labelProvider.setWorkingHours(hours);
 		vColumn.setLabelProvider(labelProvider);
 
-		vColumn.setEditingSupport(new EditingSupport(viewer) {
-
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				return new WorkListCellEditor(viewer.getGrid(), (User) element,
-						year, month, dateOfMonth);
-			}
-
-			@Override
-			protected boolean canEdit(Object element) {
-				return element instanceof User;
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				return "";
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
-			}
-
-		});
+		vColumn.setEditingSupport(getEditingSupport(year, month, dateOfMonth));
 	}
+
+	protected abstract EditingSupport getEditingSupport(int year, int month,
+			int dateOfMonth);
 
 	@Override
 	public void setFocus() {

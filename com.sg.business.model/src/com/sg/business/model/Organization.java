@@ -369,6 +369,11 @@ public class Organization extends PrimaryObject {
 						Role.ROLE_BUSINESS_ADMIN_TEXT);
 			} catch (Exception e) {
 			}
+			try {
+				doAddRole(Role.ROLE_FINANCIAL_MANAGER_ID,
+						Role.ROLE_FINANCIAL_MANAGER_TEXT);
+			} catch (Exception e) {
+			}
 
 		}
 

@@ -1,8 +1,10 @@
-package com.sg.business.work.resource;
+package com.sg.business.performence.resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IContentProvider;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -50,6 +52,34 @@ public class OrgResCalender extends ResourceCalender {
 			}
 		}
 		return input;
+	}
+
+	@Override
+	protected EditingSupport getEditingSupport(final int year, final int month,
+			final int dateOfMonth) {
+		return new EditingSupport(viewer) {
+
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				return new WorkListCellEditor(viewer.getGrid(), (User) element,
+						year, month, dateOfMonth);
+			}
+
+			@Override
+			protected boolean canEdit(Object element) {
+				return element instanceof User;
+			}
+
+			@Override
+			protected Object getValue(Object element) {
+				return "";
+			}
+
+			@Override
+			protected void setValue(Object element, Object value) {
+			}
+
+		};
 	}
 
 

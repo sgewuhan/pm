@@ -1,4 +1,4 @@
-package com.sg.business.work.resource;
+package com.sg.business.performence.resource;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

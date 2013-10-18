@@ -1,10 +1,13 @@
-package com.sg.business.work.resource;
+package com.sg.business.performence.resource;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -67,6 +70,44 @@ public class ProjectResCalender extends ResourceCalender {
 		}
 
 		return input;
+	}
+
+	@Override
+	protected EditingSupport getEditingSupport(final int year, final int month,
+			final int dateOfMonth) {
+		return new EditingSupport(viewer) {
+
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+				return new WorkListCellEditor(viewer.getGrid(), (User) (sel.getFirstElement()),
+						year, month, dateOfMonth);
+			}
+
+			@Override
+			protected boolean canEdit(Object element) {
+//				System.out.println(element);
+//				Object id = ((PrimaryObject) element).getValue("$projectid");
+//				if(id instanceof ObjectId){
+//					Project project = ModelService.createModelObject(Project.class, (ObjectId)id);
+//					System.out.println(project);
+//				}
+				IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+
+				
+				return (sel.getFirstElement()) instanceof User;
+			}
+
+			@Override
+			protected Object getValue(Object element) {
+				return "";
+			}
+
+			@Override
+			protected void setValue(Object element, Object value) {
+			}
+
+		};
 	}
 
 }

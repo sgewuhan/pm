@@ -25,7 +25,7 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 
 	private AggregationOutput performenceResult;
 	private AggregationOutput allocateResult;
-	private PrimaryObject data;
+	protected PrimaryObject data;
 
 	public AbstractWorksSummary(PrimaryObject po) {
 		this.data = po;
@@ -142,9 +142,7 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 
 		ArrayList<PrimaryObject[]> ret = new ArrayList<PrimaryObject[]>();
 
-		DBCursor cur = colPerformence.find(new BasicDBObject().append(
-				WorksPerformence.F_USERID, userid).append(
-				WorksPerformence.F_DATECODE, dateCode));
+		DBCursor cur = colPerformence.find(getDateCondition(userid, dateCode));
 
 		Map<Work, AbstractWorksMetadata[]> map = new HashMap<Work, AbstractWorksMetadata[]>();
 		while (cur.hasNext()) {
@@ -159,9 +157,7 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 			map.put(work, data);
 		}
 
-		cur = colAllocate.find(new BasicDBObject().append(
-				WorksPerformence.F_USERID, userid).append(
-				WorksPerformence.F_DATECODE, dateCode));
+		cur = colAllocate.find(getDateCondition(userid, dateCode));
 
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
@@ -185,6 +181,12 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 			ret.add(new PrimaryObject[] { work, value[0], value[1] });
 		}
 		return ret;
+	}
+
+	protected BasicDBObject getDateCondition(String userid, long dateCode) {
+		return new BasicDBObject().append(
+				WorksPerformence.F_USERID, userid).append(
+				WorksPerformence.F_DATECODE, dateCode);
 	}
 
 	@Override

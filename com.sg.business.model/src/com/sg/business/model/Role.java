@@ -42,7 +42,7 @@ public class Role extends PrimaryObject {
 	 * 角色编号
 	 */
 	public static final String F_ROLE_NUMBER = "rolenumber";
-	
+
 	/**
 	 * 默认编辑器
 	 */
@@ -91,13 +91,20 @@ public class Role extends PrimaryObject {
 	 */
 	public static final String ROLE_DEPT_MANAGER_ID = "T005";
 	public static final String ROLE_DEPT_MANAGER_TEXT = "管理者";
-	
+
+	/**
+	 * 基础角色/组织角色/部门经理
+	 */
+	public static final String ROLE_FINANCIAL_MANAGER_ID = "T006";
+	public static final String ROLE_FINANCIAL_MANAGER_TEXT = "财务经理";
+
 	/**
 	 * 系统角色ID
 	 */
 	public static final String[] ROLE_ID_SYSTEM = new String[] { ROLE_ADMIN_ID,
 			ROLE_ORGANIZATION_ADMIN_ID, ROLE_PROJECT_ADMIN_ID,
-			ROLE_BUSINESS_ADMIN_ID, ROLE_VAULT_ADMIN_ID, ROLE_VAULT_GUEST_ID ,ROLE_DEPT_MANAGER_ID};
+			ROLE_BUSINESS_ADMIN_ID, ROLE_VAULT_ADMIN_ID, ROLE_VAULT_GUEST_ID,
+			ROLE_DEPT_MANAGER_ID, ROLE_FINANCIAL_MANAGER_ID };
 
 	/**
 	 * 系统角色名称
@@ -105,7 +112,8 @@ public class Role extends PrimaryObject {
 	public static final String[] ROLE_NAME_SYSTEM = new String[] {
 			ROLE_ADMIN_TEXT, ROLE_ORGANIZATION_ADMIN_TEXT,
 			ROLE_BUSINESS_ADMIN_TEXT, ROLE_PROJECT_ADMIN_TEXT,
-			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,ROLE_DEPT_MANAGER_TEXT };
+			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,
+			ROLE_DEPT_MANAGER_TEXT, ROLE_FINANCIAL_MANAGER_TEXT };
 
 	/**
 	 * 角色在系统中的的显示内容
@@ -137,7 +145,7 @@ public class Role extends PrimaryObject {
 	}
 
 	/**
-	 * 添加用户到角色中 
+	 * 添加用户到角色中
 	 * 
 	 * @param users
 	 *            ，用户集合
@@ -151,7 +159,7 @@ public class Role extends PrimaryObject {
 
 		for (int i = 0; i < users.size(); i++) {
 			User user = (User) users.get(i);
-			if(!user.isActivated()){
+			if (!user.isActivated()) {
 				continue;
 			}
 			list.add(new BasicDBObject()
@@ -171,7 +179,7 @@ public class Role extends PrimaryObject {
 			UserSessionContext.noticeAccountChanged(user.getUserid(),
 					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
 		}
-		
+
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "为角色指派用户",
 				new Date(), "角色：" + this + "\n用户" + users.toString(),
 				IModelConstants.DB);
@@ -355,7 +363,7 @@ public class Role extends PrimaryObject {
 				} else {
 					return false;
 				}
-			}else{
+			} else {
 				return true;
 			}
 		}
@@ -405,7 +413,7 @@ public class Role extends PrimaryObject {
 	public String getTypeName() {
 		return "角色";
 	}
-	
+
 	@Override
 	public String getDefaultEditorId() {
 		return EDITOR_DEFAULT;
