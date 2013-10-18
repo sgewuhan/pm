@@ -24,6 +24,17 @@ public class SummaryUserWorks extends AbstractWorksSummary {
 	}
 	
 	@Override
+	protected BasicDBObject getDateCondition(String userid, long dateCode) {
+		BasicDBObject condition = super.getDateCondition(userid, dateCode);
+		if(data.hasKey("$projectid")){
+			Object projectid = data.getValue("$projectid");
+			condition.put(WorksPerformence.F_PROJECTID, projectid);
+		}
+		
+		return condition;
+	}
+	
+	@Override
 	protected Object getGroupCondition(PrimaryObject data) {
 		return new BasicDBObject().append("_id",
 				"$" + WorksPerformence.F_DATECODE).append(
