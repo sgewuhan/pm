@@ -652,6 +652,7 @@
       <table
             dataSet="com.sg.business.model.dataset.project.ProjectParticipate"
             id="project.participte.selector"
+            headerVisiable="false"
             multiSelection="true">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
@@ -1042,12 +1043,18 @@
             table="project.participte.selector">
          <filterAction>
             <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </searchAction>
       </navigator>
