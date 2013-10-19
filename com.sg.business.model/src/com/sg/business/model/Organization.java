@@ -94,6 +94,11 @@ public class Organization extends PrimaryObject {
 	 * 组织的流程库，是流程库名称的列表
 	 */
 	public static final String F_KBASE = "kbase";
+	
+	/**
+	 * 组织代码，用于设定与组织有关的编码
+	 */
+	public static final String F_CODE = "code";
 
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
@@ -1415,5 +1420,9 @@ public class Organization extends PrimaryObject {
 		}
 
 		return result;
+	}
+
+	public String getCode() {
+		return (String) getValue(F_CODE);
 	}
 }

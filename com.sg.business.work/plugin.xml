@@ -1788,41 +1788,6 @@
             </visibleWhen>
          </command>
          <command
-               commandId="runtimework.record"
-               icon="image/24_blank.png"
-               label="提交工作记录"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <and>
-                     <count
-                           value="1">
-                     </count>
-                     <iterate
-                           ifEmpty="false">
-                        <and>
-                           <test
-                                 args="wip"
-                                 property="lifecycle.status">
-                           </test>
-                           <test
-                                 args="isProjectWBSRoot"
-                                 property="primaryobject.method"
-                                 value="false">
-                           </test>
-                           <test
-                                 args="workrecord"
-                                 property="runtimework.action">
-                           </test>
-                        </and>
-                     </iterate>
-                  </and>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
                commandId="runtimework.view.work"
                icon="image/work_24.png"
                label="查看工作"

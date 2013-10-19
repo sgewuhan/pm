@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -507,6 +508,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public void doInsert(IContext context) throws Exception {
 		setValue(F__ID, new ObjectId());
 
+		// 生成编码
+		generateCode();
+
 		// 创建根工作定义
 		Work root = makeWBSRoot();
 		root.doInsert(context);
@@ -529,6 +533,32 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制系统日历
 		doCopySystemCanlendar();
 
+	}
+	
+	private void generateCode() throws Exception {
+		Organization org = getFunctionOrganization();
+		if (org == null) {
+			throw new Exception("缺少项目管理职能组织");
+		}
+
+		String code = org.getCode();
+		if (code == null) {
+			throw new Exception("项目管理职能组织没有定义代码");
+		}
+
+		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C__IDS);
+
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		
+		String prefix = code + (""+year).substring(2);
+		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_PROJECT_NUMBER + "." + prefix);
+		String seq = String.format("%03x", id).toUpperCase();
+		
+		String codeValue = prefix+seq;
+		setValue(F_PROJECT_NUMBER, codeValue);
+		
 	}
 
 	private void doCopySystemCanlendar() throws Exception {

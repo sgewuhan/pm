@@ -2486,7 +2486,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 				try {
 					DBUtil.SAVELOG(userid, "自动分摊实际工时", new Date(),
-							"工作完工时计算工时数据", IModelConstants.DB);
+							"工作完成时计算工时数据", IModelConstants.DB);
 				} catch (Exception e) {
 				}
 				return org.eclipse.core.runtime.Status.OK_STATUS;
