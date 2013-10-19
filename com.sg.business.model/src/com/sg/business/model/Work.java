@@ -2314,8 +2314,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				col.remove(new BasicDBObject().append(WorksAllocate.F_WORKID,
 						new BasicDBObject().append("$in", syncRemove)),
 						WriteConcern.NORMAL);
-				
-				if (works == null || works.doubleValue() == 0d) {
+
+				if (works == null || works.doubleValue() == 0d || start == null
+						|| finish == null) {
 					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 

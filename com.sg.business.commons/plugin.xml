@@ -1279,6 +1279,7 @@
       </column>
       <column
             column="planworks"
+            editingSupport="com.sg.business.commons.editingsupport.PlanWorksEditing"
             id="planworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
             lazyDisplay="true"
