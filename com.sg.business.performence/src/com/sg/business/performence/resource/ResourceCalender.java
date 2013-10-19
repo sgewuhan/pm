@@ -54,6 +54,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		calendar = Calendar.getInstance();
 		font = new Font(parent.getDisplay(), "Arial", 14, SWT.NORMAL);
 		setDisplay3Month();
+		
 	}
 
 	protected abstract IContentProvider getContentProvider();
@@ -338,5 +339,13 @@ public abstract class ResourceCalender extends ViewPart implements
 	public void dispose() {
 		font.dispose();
 		super.dispose();
+	}
+
+	public void expandAll() {
+		viewer.expandAll();
+	}
+
+	public void collapse() {
+		viewer.collapseAll();
 	}
 }
