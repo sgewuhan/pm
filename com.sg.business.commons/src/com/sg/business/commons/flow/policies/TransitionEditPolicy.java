@@ -23,7 +23,7 @@ import com.sg.business.commons.flow.model.StructuredActivity;
 import com.sg.business.commons.flow.model.Transition;
 import com.sg.business.commons.flow.model.commands.DeleteConnectionCommand;
 import com.sg.business.commons.flow.model.commands.SplitTransitionCommand;
-import com.sg.business.commons.flow.parts.TransitionPart;
+import com.sg.business.commons.flow.part.TransitionPart;
 
 /**
  * EditPolicy for Transitions. Supports deletion and "splitting", i.e. adding an

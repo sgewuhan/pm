@@ -20,7 +20,7 @@ import com.sg.business.commons.flow.model.Transition;
 import com.sg.business.commons.flow.model.commands.ConnectionCreateCommand;
 import com.sg.business.commons.flow.model.commands.ReconnectSourceCommand;
 import com.sg.business.commons.flow.model.commands.ReconnectTargetCommand;
-import com.sg.business.commons.flow.parts.ActivityPart;
+import com.sg.business.commons.flow.part.ActivityPart;
 
 /**
  * 

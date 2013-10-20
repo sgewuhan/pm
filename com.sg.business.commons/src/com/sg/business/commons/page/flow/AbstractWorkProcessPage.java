@@ -3,6 +3,8 @@ package com.sg.business.commons.page.flow;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Composite;
+
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
@@ -13,25 +15,50 @@ import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
+import com.sg.business.model.Role;
+import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
+import com.sg.business.model.dataset.organization.UserDataSetFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.registry.config.BasicPageConfigurator;
 
-public abstract class AbstractWorkProcessPage extends
-		AbstractProcessPage {
+public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
+
+	protected Work getWork() {
+		PrimaryObjectEditorInput input = getInput();
+		Work work = (Work) input.getData();
+		return work;
+	}
+	
+	@Override
+	protected String getActorNavigatorId() {
+		
+		
+		
+		return super.getActorNavigatorId();
+	}
+	
+
+	@Override
+	public ProcessSettingPanel2 createPageContent(Composite parent,
+			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
+		ProcessSettingPanel2 psp = super.createPageContent(parent, input, conf);
+		// 控制角色限定在工作中不可被修改
+		psp.setRoleSelectEnable(false);
+		return psp;
+	}
 
 	@Override
 	protected IProcessControl getIProcessControl() {
-		PrimaryObjectEditorInput input = getInput();
-		Work work = (Work) input.getData();
+		Work work = getWork();
 		return (IProcessControl) work.getAdapter(IProcessControl.class);
 	}
 
 	@Override
 	protected DataSet getRoleDataSet() {
-		PrimaryObjectEditorInput input = getInput();
-		Work work = (Work) input.getData();
+		Work work = getWork();
 
 		Project project = work.getProject();
 		if (project != null) {
@@ -43,8 +70,7 @@ public abstract class AbstractWorkProcessPage extends
 
 	@Override
 	protected List<DroolsProcessDefinition> getProcessDefinition() {
-		PrimaryObjectEditorInput input = getInput();
-		Work work = (Work) input.getData();
+		Work work = getWork();
 		// 如果工作是项目的工作，获得项目所属的项目管理职能组织
 		Project project = work.getProject();
 		if (project != null) {
@@ -56,11 +82,24 @@ public abstract class AbstractWorkProcessPage extends
 
 	@Override
 	protected DataSet getActorDataSet(AbstractRoleDefinition roled) {
+		Work work = getWork();
+
 		// 如果角色定义不为空，取角色下的用户
+		List<PrimaryObject> assignments = null;
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		if (roled instanceof ProjectRole) {
 			ProjectRole projectRole = (ProjectRole) roled;
-			List<PrimaryObject> assignments = projectRole.getAssignment();
+			assignments = projectRole.getAssignment();
+		} else if (roled instanceof RoleDefinition) {
+			RoleDefinition roledef = (RoleDefinition) roled;
+			Role role = roledef.getOrganizationRole();
+			if (role != null) {
+				assignments = role.getAssignment();
+			}
+		}
+
+		// 指派不为空
+		if (assignments != null) {
 			for (int i = 0; i < assignments.size(); i++) {
 				AbstractRoleAssignment ass = (AbstractRoleAssignment) assignments
 						.get(i);
@@ -70,12 +109,12 @@ public abstract class AbstractWorkProcessPage extends
 					result.add(user);
 				}
 			}
+			return new DataSet(result);
+		}
 
-		} else {
-			PrimaryObjectEditorInput input = getInput();
-			Work work = (Work) input.getData();
-
-			Project project = work.getProject();
+		// 当无法取得指派时，从项目中获得人员
+		Project project = work.getProject();
+		if (project != null) {
 			List<?> useridList = project.getParticipatesIdList();
 			for (int i = 0; i < useridList.size(); i++) {
 				String userid = (String) useridList.get(i);
@@ -84,10 +123,12 @@ public abstract class AbstractWorkProcessPage extends
 					result.add(user);
 				}
 			}
+			return new DataSet(result);
+		}else{
+			//没有定义项目的工作（独立工作）
+			return new UserDataSetFactory().getDataSet();
+			
 		}
-
-		// 如果角色定义为空，取项目的参与者
-		return new DataSet(result);
 	}
 
 	@Override

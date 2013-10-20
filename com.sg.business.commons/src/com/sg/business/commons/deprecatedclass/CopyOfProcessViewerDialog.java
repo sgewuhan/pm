@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.flow.model.DroolsProcessDiagram;
-import com.sg.business.commons.flow.parts.ActivityPartFactory;
+import com.sg.business.commons.flow.part.ActivityPartFactory;
 import com.sg.business.model.IProcessControl;
 
 public class CopyOfProcessViewerDialog extends Dialog {

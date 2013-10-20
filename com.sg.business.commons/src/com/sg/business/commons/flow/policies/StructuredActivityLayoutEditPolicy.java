@@ -26,7 +26,7 @@ import com.sg.business.commons.flow.model.Activity;
 import com.sg.business.commons.flow.model.StructuredActivity;
 import com.sg.business.commons.flow.model.commands.AddCommand;
 import com.sg.business.commons.flow.model.commands.CreateCommand;
-import com.sg.business.commons.flow.parts.SimpleActivityPart;
+import com.sg.business.commons.flow.part.SimpleActivityPart;
 
 /**
  * @author Daniel Lee

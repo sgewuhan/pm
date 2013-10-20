@@ -21,8 +21,8 @@ import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.flow.model.DroolsProcessDiagram;
 import com.sg.business.commons.flow.model.NodeActivity;
-import com.sg.business.commons.flow.parts.ActivityPartFactory;
-import com.sg.business.commons.flow.parts.SimpleActivityPart;
+import com.sg.business.commons.flow.part.ActivityPartFactory;
+import com.sg.business.commons.flow.part.SimpleActivityPart;
 import com.sg.widgets.part.SimpleSection;
 
 /**

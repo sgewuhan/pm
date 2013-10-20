@@ -15,7 +15,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import com.sg.business.commons.flow.parts.DummyLayout;
+import com.sg.business.commons.flow.part.DummyLayout;
 
 /**
  * 

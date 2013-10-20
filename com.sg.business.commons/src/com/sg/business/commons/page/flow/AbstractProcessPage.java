@@ -26,7 +26,7 @@ public abstract class AbstractProcessPage extends
 	private ProcessSettingPanel2 psp2;
 
 	@Override
-	final public ProcessSettingPanel2 createPageContent(Composite parent,
+	public ProcessSettingPanel2 createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		setFormInput(input);
@@ -62,12 +62,22 @@ public abstract class AbstractProcessPage extends
 				return AbstractProcessPage.this.getActorDataSet(roled);
 			}
 
-		};
-		// 设置角色的选择器，项目模板中的角色定义
-		psp2.setRoleNavigatorId("commons.generic.tableselector");
+			@Override
+			protected String getRoleNavigatorId() {
+				return AbstractProcessPage.this.getRoleNavigatorId();
+			}
 
-		// 设置用户的选择器
-		psp2.setActorNavigatorId("commons.generic.tableselector");
+			@Override
+			protected String getActorNavigatorId() {
+				return AbstractProcessPage.this.getActorNavigatorId();
+			}
+
+		};
+//		// 设置角色的选择器，项目模板中的角色定义
+//		psp2.setRoleNavigatorId(getRoleNavigatorId());
+//
+//		// 设置用户的选择器
+//		psp2.setActorNavigatorId(getActorNavigatorId());
 
 		List<DroolsProcessDefinition> processDefs = getProcessDefinition();
 		psp2.setProcessDefinitionChoice(processDefs);
@@ -96,7 +106,16 @@ public abstract class AbstractProcessPage extends
 		});
 
 		psp2.setEditable(editable);
+		
 		return psp2;
+	}
+
+	protected String getRoleNavigatorId() {
+		return "commons.generic.tableselector";
+	}
+	
+	protected String getActorNavigatorId() {
+		return "commons.generic.tableselector";
 	}
 
 	protected abstract int getProcessSettingControl();

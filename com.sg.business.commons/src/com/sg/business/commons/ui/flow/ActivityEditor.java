@@ -30,7 +30,7 @@ import com.sg.widgets.viewer.ViewerControl;
  * @author jinxitao
  * 
  */
-public class ActivityEditor extends Composite {
+public abstract class ActivityEditor extends Composite {
 
 	public interface IActivityEditListener {
 
@@ -87,10 +87,10 @@ public class ActivityEditor extends Composite {
 	 */
 	private boolean hasRoleSelector;
 
-	/**
-	 * 活动执行人选择器的navigatorId
-	 */
-	private String actorNavigatorId;
+//	/**
+//	 * 活动执行人选择器的navigatorId
+//	 */
+//	private String actorNavigatorId;
 
 	/**
 	 * 活动执行人选择器数据源
@@ -119,10 +119,10 @@ public class ActivityEditor extends Composite {
 	 */
 	private DataSet roleDataSet;
 
-	/**
-	 * 选择角色的NavigatorId
-	 */
-	private String roleNavigatorId;
+//	/**
+//	 * 选择角色的NavigatorId
+//	 */
+//	private String roleNavigatorId;
 
 	private boolean roleSelectEnable = true;
 
@@ -358,7 +358,7 @@ public class ActivityEditor extends Composite {
 	 * 弹出活动执行人选择器
 	 */
 	private void showActorSelectorNavigator() {
-		NavigatorSelector ns = new NavigatorSelector(actorNavigatorId) {
+		NavigatorSelector ns = new NavigatorSelector(getActorNavigatorId()) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is == null || is.isEmpty()) {
@@ -389,6 +389,8 @@ public class ActivityEditor extends Composite {
 		vc.setDataSet(getActorDataSet());
 
 	}
+
+	protected abstract String getActorNavigatorId();
 
 	/**
 	 * 设置活动执行人
@@ -434,7 +436,7 @@ public class ActivityEditor extends Composite {
 	 * 弹出角色限定选择器
 	 */
 	private void showRoleSelectorNavigator() {
-		NavigatorSelector ns = new NavigatorSelector(roleNavigatorId) {
+		NavigatorSelector ns = new NavigatorSelector(getRoleNavigatorId()) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is == null || is.isEmpty()) {
@@ -466,14 +468,16 @@ public class ActivityEditor extends Composite {
 
 	}
 
-	/**
-	 * 设置活动执行人选择器navigatorId
-	 * 
-	 * @param navigatorId
-	 */
-	final public void setActorNavigatorId(String navigatorId) {
-		this.actorNavigatorId = navigatorId;
-	}
+	protected abstract String getRoleNavigatorId() ;
+
+//	/**
+//	 * 设置活动执行人选择器navigatorId
+//	 * 
+//	 * @param navigatorId
+//	 */
+//	final public void setActorNavigatorId(String navigatorId) {
+//		this.actorNavigatorId = navigatorId;
+//	}
 
 	/**
 	 * 设置活动执行人选择器dataset
@@ -488,14 +492,14 @@ public class ActivityEditor extends Composite {
 		return actorDataSet;
 	}
 
-	/**
-	 * 设置角色限定选择器navigatorId
-	 * 
-	 * @param navigatorId
-	 */
-	final public void setRoleNavigatorId(String navigatorId) {
-		this.roleNavigatorId = navigatorId;
-	}
+//	/**
+//	 * 设置角色限定选择器navigatorId
+//	 * 
+//	 * @param navigatorId
+//	 */
+//	final public void setRoleNavigatorId(String navigatorId) {
+//		this.roleNavigatorId = navigatorId;
+//	}
 
 	/**
 	 * 设置角色限定选择器dataset

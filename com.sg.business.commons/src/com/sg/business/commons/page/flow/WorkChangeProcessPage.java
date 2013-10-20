@@ -14,7 +14,7 @@ public class WorkChangeProcessPage extends AbstractWorkProcessPage {
 
 	@Override
 	protected int getProcessSettingControl() {
-		return ProcessSettingPanel2.PROCESS_SELECTOR|ProcessSettingPanel2.ROLE_SELECTOR|ProcessSettingPanel2.ACTOR_SELECTOR;
+		return ProcessSettingPanel2.ROLE_SELECTOR|ProcessSettingPanel2.ACTOR_SELECTOR;
 	}
 
 }

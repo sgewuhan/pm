@@ -13,7 +13,7 @@ package com.sg.business.commons.flow.policies;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import com.sg.business.commons.flow.figures.SimpleActivityLabel;
-import com.sg.business.commons.flow.parts.SimpleActivityPart;
+import com.sg.business.commons.flow.part.SimpleActivityPart;
 
 /**
  * Handles selection of SimpleActivites. Primary selection is denoted by

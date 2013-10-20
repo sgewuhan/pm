@@ -39,7 +39,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import com.sg.business.commons.flow.FlowEditorPaletteFactory;
 import com.sg.business.commons.flow.actions.FlowContextMenuProvider;
 import com.sg.business.commons.flow.model.ActivityDiagram;
-import com.sg.business.commons.flow.parts.ActivityPartFactory;
+import com.sg.business.commons.flow.part.ActivityPartFactory;
 
 /**
  * 

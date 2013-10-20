@@ -68,6 +68,18 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 						.getActorDataSet(roled);
 			}
 
+			@Override
+			protected String getRoleNavigatorId() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			protected String getActorNavigatorId() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
 		};
 
 		// 返回当前选中流程
@@ -76,11 +88,11 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 		// 显示当前选中流程的信息
 		psp2.setProcessDefinition(processDef);
 
-		// 设置角色的选择器，项目模板中的角色定义
-		psp2.setRoleNavigatorId("commons.generic.tableselector");
-
-		// 设置用户的选择器
-		psp2.setActorNavigatorId("commons.generic.tableselector");
+//		// 设置角色的选择器，项目模板中的角色定义
+//		psp2.setRoleNavigatorId("commons.generic.tableselector");
+//
+//		// 设置用户的选择器
+//		psp2.setActorNavigatorId("commons.generic.tableselector");
 
 		// 设置角色的数据集
 		Project project = work.getProject();
