@@ -11,13 +11,13 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -101,13 +101,14 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			createProcessSelector(this);
 		}
 
-		Composite panel = new Composite(this, SWT.NONE);
-		panel.setLayout(new GridLayout(2, false));
+		SashForm panel = new SashForm(this, SWT.HORIZONTAL);
+//		panel.setLayout(new GridLayout(2, false));
 
 		createActivatySelector(panel);
 
 		createActivityEditor(panel);
 
+		panel.setWeights(new int[]{2,1});
 		refresh();
 	}
 

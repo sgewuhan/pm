@@ -11,7 +11,9 @@
 package com.sg.business.commons.flow.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
@@ -31,6 +33,8 @@ public class Activity extends FlowElement {
 	private String name = "Activity";
 	private List<Transition> outputs = new ArrayList<Transition>();
 	private int sortIndex;
+
+	private List<Map<String, Object>> history;
 
 	public Activity() {
 	}
@@ -136,6 +140,28 @@ public class Activity extends FlowElement {
 		String className = getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
 		return className + "(" + name + ")";
+	}
+
+	public void setHistory(List<Map<String, Object>> history) {
+		this.history = history;
+	}
+
+	public List<Map<String, Object>> getHistory() {
+		return history;
+	}
+
+	public boolean isCompleted() {
+		if (history != null) {
+			Iterator<Map<String, Object>> iter = history.iterator();
+			while (iter.hasNext()) {
+				Map<String, Object> historyItem = iter.next();
+				if ("complete".equals(historyItem.get("form_action"))) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 }

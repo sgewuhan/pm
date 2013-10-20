@@ -13,8 +13,8 @@ import com.sg.bpm.workflow.model.NodeAssignment;
 
 public class ProcessTableViewer extends TableViewer {
 
-	public ProcessTableViewer(Composite parent) {
-		super(parent, SWT.FULL_SELECTION|SWT.BORDER);
+	public ProcessTableViewer(Composite parent,int style) {
+		super(parent, SWT.FULL_SELECTION|SWT.BORDER|style);
 //		getTable().setHeaderVisible(true);
 		getTable().setLinesVisible(false);
 		setContentProvider(ArrayContentProvider.getInstance());

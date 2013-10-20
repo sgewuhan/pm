@@ -17,7 +17,6 @@ import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
@@ -47,7 +46,7 @@ import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.ui.flow.part.SimpleNodeLabel;
 import com.sg.widgets.Widgets;
 
-public class ProcessCanvas extends FigureCanvas {
+public class ProcessCanvas1 extends FigureCanvas {
 
 	private CompoundDirectedGraph graphic;
 
@@ -55,13 +54,13 @@ public class ProcessCanvas extends FigureCanvas {
 
 	private BasicBSONList history;
 
-	public ProcessCanvas(Composite parent, int style) {
+	public ProcessCanvas1(Composite parent, int style) {
 		super(parent, style);
 		getViewport().setContentsTracksHeight(true);
 		getViewport().setContentsTracksWidth(true);
 	}
 
-	public ProcessCanvas(Composite parent) {
+	public ProcessCanvas1(Composite parent) {
 		this(parent, SWT.BORDER);
 	}
 

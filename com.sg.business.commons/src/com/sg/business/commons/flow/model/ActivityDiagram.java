@@ -23,6 +23,5 @@ public class ActivityDiagram extends ParallelActivity {
 	 */
 	public ActivityDiagram() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 }
