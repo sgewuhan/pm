@@ -1,9 +1,9 @@
-package com.sg.business.management.editor.page.process;
+package com.sg.business.commons.page.flow;
 
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.WorkDefinition;
 
-public class GenericWorkdChangeProcessDefPage extends AbstractWorkdProcessSettingPage{
+public class GenericWorkdChangeProcessDefPage extends AbstractWorkdProcessPage{
 
 	@Override
 	protected String getProcessKey() {

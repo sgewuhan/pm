@@ -1,9 +1,9 @@
-package com.sg.business.management.editor.page.process;
+package com.sg.business.commons.page.flow;
 
 import com.sg.business.model.WorkDefinition;
 
 
-public class StandloneWorkdExecuteProcessDefPage extends AbstractWorkdProcessSettingPage{
+public class StandloneWorkdExecuteProcessDefPage extends AbstractWorkdProcessPage{
 
 	@Override
 	protected String getProcessKey() {

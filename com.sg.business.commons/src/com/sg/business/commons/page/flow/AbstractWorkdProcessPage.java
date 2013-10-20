@@ -1,4 +1,4 @@
-package com.sg.business.management.editor.page.process;
+package com.sg.business.commons.page.flow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.commons.page.flow.AbstractProcessPage;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
@@ -18,7 +17,7 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public abstract class AbstractWorkdProcessSettingPage extends
+public abstract class AbstractWorkdProcessPage extends
 		AbstractProcessPage {
 
 
