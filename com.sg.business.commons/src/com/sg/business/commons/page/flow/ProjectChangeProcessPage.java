@@ -1,8 +1,8 @@
-package com.sg.business.project.editor.page;
+package com.sg.business.commons.page.flow;
 
 import com.sg.business.model.Project;
 
-public class ProjectChangeProcessPage extends AbstractProjectProcessSettingPage {
+public class ProjectChangeProcessPage extends AbstractProjectProcessPage {
 
 	@Override
 	protected String getProcessKey() {

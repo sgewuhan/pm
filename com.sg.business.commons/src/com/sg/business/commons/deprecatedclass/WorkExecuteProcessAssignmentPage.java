@@ -1,4 +1,4 @@
-package com.sg.business.commons.page;
+package com.sg.business.commons.deprecatedclass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
+@Deprecated
 public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator {
 
 	private Work work;

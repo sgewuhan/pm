@@ -1,4 +1,4 @@
-package com.sg.business.commons.page;
+package com.sg.business.commons.page.flow;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
-public abstract class AbstractProcessSettingPage extends
+public abstract class AbstractProcessPage extends
 		AbstractFormPageDelegator {
 
 	private boolean editable;
@@ -59,7 +59,7 @@ public abstract class AbstractProcessSettingPage extends
 			@Override
 			public DataSet getActorDataSet() {
 				AbstractRoleDefinition roled = getSelectedRole();
-				return AbstractProcessSettingPage.this.getActorDataSet(roled);
+				return AbstractProcessPage.this.getActorDataSet(roled);
 			}
 
 		};

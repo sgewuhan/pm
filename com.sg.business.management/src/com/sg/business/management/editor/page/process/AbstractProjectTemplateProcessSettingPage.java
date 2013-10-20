@@ -5,7 +5,7 @@ import java.util.List;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.commons.page.AbstractProcessSettingPage;
+import com.sg.business.commons.page.flow.AbstractProcessPage;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Organization;
@@ -13,7 +13,7 @@ import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
 public abstract class AbstractProjectTemplateProcessSettingPage extends
-		AbstractProcessSettingPage {
+		AbstractProcessPage {
 
 
 	@Override

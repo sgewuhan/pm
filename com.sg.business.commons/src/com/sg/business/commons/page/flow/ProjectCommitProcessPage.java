@@ -1,4 +1,4 @@
-package com.sg.business.project.editor.page;
+package com.sg.business.commons.page.flow;
 
 import com.sg.business.model.Project;
 
@@ -8,7 +8,7 @@ import com.sg.business.model.Project;
  * @author zhonghua
  *
  */
-public class ProjectCommitProcessPage extends AbstractProjectProcessSettingPage {
+public class ProjectCommitProcessPage extends AbstractProjectProcessPage {
 
 
 	@Override

@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.commons.page.AbstractProcessSettingPage;
+import com.sg.business.commons.page.flow.AbstractProcessPage;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
@@ -24,7 +24,7 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 public class WorkFlowSettingPage extends WizardPage {
 
 	private PrimaryObjectEditorInput input;
-	private AbstractProcessSettingPage page;
+	private AbstractProcessPage page;
 
 	protected WorkFlowSettingPage() {
 		super("WORKFLOW_SETTING_PAGE");
@@ -35,7 +35,7 @@ public class WorkFlowSettingPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		page = new AbstractProcessSettingPage() {
+		page = new AbstractProcessPage() {
 
 			@Override
 			protected int getProcessSettingControl() {
