@@ -1,9 +1,9 @@
-package com.sg.business.work.page;
+package com.sg.business.commons.page.flow;
 
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
 import com.sg.business.model.Work;
 
-public class WorkChangeProcessSettingPage extends AbstractWorkProcessSettingPage {
+public class WorkChangeProcessPage extends AbstractWorkProcessPage {
 
 	
 	

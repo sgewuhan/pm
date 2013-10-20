@@ -1163,14 +1163,14 @@
                description="工作执行流程"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkExecuteProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkChangeProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
       </editor>
@@ -1360,14 +1360,14 @@
                description="工作执行流程"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkExecuteProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkChangeProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
       </editor>
@@ -3424,14 +3424,14 @@
                description="工作执行流程设置"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkExecuteProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="工作执行流程设置">
          </basicpage>
          <basicpage
                description="工作变更流程设置"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkChangeProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
                title="工作变更流程设置">
          </basicpage>
       </editor>
