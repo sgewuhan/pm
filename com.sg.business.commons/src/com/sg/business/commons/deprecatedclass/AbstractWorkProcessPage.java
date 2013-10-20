@@ -1,4 +1,4 @@
-package com.sg.business.commons.page;
+package com.sg.business.commons.deprecatedclass;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 
+@Deprecated
 public abstract class AbstractWorkProcessPage implements IPageDelegator,
 		IFormPart {
 

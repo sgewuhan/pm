@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.flow;
+package com.sg.business.commons.deprecatedclass;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.gef.editparts.ScalableRootEditPart;

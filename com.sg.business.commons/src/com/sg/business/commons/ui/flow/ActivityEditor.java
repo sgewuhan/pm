@@ -5,6 +5,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -155,14 +158,21 @@ public class ActivityEditor extends Composite {
 		super(parent, SWT.NONE);
 		this.hasActorSelector = hasActorSelector;
 		this.hasRoleSelector = hasRoleSelector;
-		setLayout(new GridLayout());
+		setLayout(new FormLayout());
 
 		Section section = new SimpleSection(this, Section.EXPANDED
-				| Section.SHORT_TITLE_BAR | Section.TWISTIE);
+				| Section.SHORT_TITLE_BAR );
 		section.setText("任务信息以及执行人指派");
 		Composite panel = new Composite(section, SWT.NONE);
 		createContent(panel);
 		section.setClient(panel);
+		
+		FormData fd = new FormData();
+		section.setLayoutData(fd);
+		fd.top = new FormAttachment(0,0);
+		fd.left = new FormAttachment(0,10);
+		fd.right = new FormAttachment(100,-10);
+		fd.bottom = new FormAttachment(100,-10);
 	}
 
 	/**

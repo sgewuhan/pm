@@ -108,7 +108,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 
 		createActivityEditor(panel);
 
-		panel.setWeights(new int[]{2,1});
+		panel.setWeights(new int[]{1,1});
 		refresh();
 	}
 
@@ -165,7 +165,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 
 	private void createActivatySelector(Composite panel) {
 		activitySelecter = new ActivitySelecter(panel);
-		activitySelecter.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true,
+		activitySelecter.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false,
 				false));
 
 		activitySelecter.addListener(new INodeSelectionListener() {

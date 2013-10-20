@@ -1,4 +1,4 @@
-package com.sg.business.commons.page;
+package com.sg.business.commons.deprecatedclass;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
+import com.sg.business.commons.page.ProcessViewer;
 import com.sg.business.model.IProcessControl;
 import com.sg.widgets.MessageUtil;
 

@@ -2,7 +2,7 @@ package com.sg.business.management.editor.page.process;
 
 import com.sg.business.model.ProjectTemplate;
 
-public class ProjectTemplateChangeProcessDefPage extends AbstractProjecttProcessSettingPage{
+public class ProjectTemplateChangeProcessDefPage extends AbstractProjectTemplateProcessSettingPage{
 
 	@Override
 	protected String getProcessKey() {

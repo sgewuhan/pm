@@ -12,7 +12,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public abstract class AbstractProjecttProcessSettingPage extends
+public abstract class AbstractProjectTemplateProcessSettingPage extends
 		AbstractProcessSettingPage {
 
 

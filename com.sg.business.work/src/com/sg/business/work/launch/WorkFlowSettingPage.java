@@ -16,6 +16,7 @@ import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
+import com.sg.business.model.dataset.organization.UserDataSetFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -63,19 +64,24 @@ public class WorkFlowSettingPage extends WizardPage {
 			protected DataSet getActorDataSet(AbstractRoleDefinition roled) {
 				// 如果角色定义不为空，取角色下的用户
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-				Role role = roled.getOrganizationRole();
-				List<PrimaryObject> assignments = role.getAssignment();
-				for (int i = 0; i < assignments.size(); i++) {
-					AbstractRoleAssignment ass = (AbstractRoleAssignment) assignments
-							.get(i);
-					String userid = ass.getUserid();
-					User user = UserToolkit.getUserById(userid);
-					if (!result.contains(user)) {
-						result.add(user);
-					}
+				if (roled != null) {
+					Role role = roled.getOrganizationRole();
+					List<PrimaryObject> assignments = role.getAssignment();
+					for (int i = 0; i < assignments.size(); i++) {
+						AbstractRoleAssignment ass = (AbstractRoleAssignment) assignments
+								.get(i);
+						String userid = ass.getUserid();
+						User user = UserToolkit.getUserById(userid);
+						if (!result.contains(user)) {
+							result.add(user);
+						}
 
+					}
+					return new DataSet(result);
+				}else{//限定角色为空，可以从组织选择用户
+					return new UserDataSetFactory().getDataSet();
 				}
-				return new DataSet(result);
+
 			}
 
 		};
@@ -90,9 +96,9 @@ public class WorkFlowSettingPage extends WizardPage {
 	}
 
 	public void refresh() {
-		if (page != null){
+		if (page != null) {
 			page.refresh();
-			Composite control = (Composite)getControl();
+			Composite control = (Composite) getControl();
 			control.layout();
 		}
 	}
