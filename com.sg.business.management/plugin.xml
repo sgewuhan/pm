@@ -675,7 +675,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_commit"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateCommitProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateCommitProcessDefPage"
                title="提交流程">
          </basicpage>
          <basicpage
@@ -683,7 +683,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateChangeProcessDefPage"
                title="变更流程">
          </basicpage>
          <versionControl>
