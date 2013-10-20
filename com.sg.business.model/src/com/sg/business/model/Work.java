@@ -1308,10 +1308,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
 			}
 			// 2.检查工作的计划工时
-			value = getPlanWorks();
-			if (value == null) {
-				message.add(new Object[] { "工作的计划工时没有确定", this, SWT.ICON_ERROR,
-						EDIT_WORK_PLAN_0 });
+			// 如果是独立工作可以跳过本步骤
+			if (!isStandloneWork()) {
+				value = getPlanWorks();
+				if (value == null) {
+					message.add(new Object[] { "工作的计划工时没有确定", this,
+							SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
+				}
 			}
 			// 3.检查工作名称
 			value = getDesc();
