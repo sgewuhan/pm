@@ -17,6 +17,7 @@ import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
@@ -54,30 +55,29 @@ public class ProcessCanvas extends FigureCanvas {
 
 	private BasicBSONList history;
 
-	public ProcessCanvas(Composite parent,int style) {
+	public ProcessCanvas(Composite parent, int style) {
 		super(parent, style);
 		getViewport().setContentsTracksHeight(true);
 		getViewport().setContentsTracksWidth(true);
 	}
-	
+
 	public ProcessCanvas(Composite parent) {
-		this(parent,SWT.BORDER);
+		this(parent, SWT.BORDER);
 	}
 
 	public void setInput(DroolsProcessDefinition procDefinition,
 			BasicBSONList procHistory) {
 		graphic = buildGraphicContent(procDefinition);
 		this.history = procHistory;
-		if(graphic!=null){
+		if (graphic != null) {
 			setContents(buildGraph(graphic));
 		}
 	}
-	
+
 	public void setInput(DroolsProcessDefinition procDefinition) {
-		setInput(procDefinition,null);
+		setInput(procDefinition, null);
 		layout();
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	private void buildGraphic(NodeContainer nodeContainer,
@@ -138,10 +138,10 @@ public class ProcessCanvas extends FigureCanvas {
 
 	protected CompoundDirectedGraph buildGraphicContent(
 			DroolsProcessDefinition procDefinition) {
-		if(procDefinition == null){
+		if (procDefinition == null) {
 			return null;
 		}
-		
+
 		Process process = procDefinition.getProcess();
 		if (!(process instanceof NodeContainer)) {
 			return null;
@@ -157,9 +157,11 @@ public class ProcessCanvas extends FigureCanvas {
 
 	public Figure buildGraph(CompoundDirectedGraph graph) {
 		Figure contents = new Panel();
+		
 		contents.setFont(new Font(null, "Î¢ÈíÑÅºÚ", 12, 0));
 		contents.setBackgroundColor(ColorConstants.white);
-		contents.setLayoutManager(new XYLayout());
+		XYLayout manager = new XYLayout();
+		contents.setLayoutManager(manager);
 
 		for (int i = 0; i < graph.subgraphs.size(); i++) {
 			Subgraph s = (Subgraph) graph.subgraphs.get(i);
@@ -175,6 +177,7 @@ public class ProcessCanvas extends FigureCanvas {
 			Edge edge = graph.edges.getEdge(i);
 			buildEdgeFigure(contents, edge);
 		}
+		
 		return contents;
 	}
 

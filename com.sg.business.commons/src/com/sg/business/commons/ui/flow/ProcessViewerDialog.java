@@ -48,6 +48,9 @@ public class ProcessViewerDialog extends Dialog {
 	protected Control createDialogArea(Composite parent) {
 		Composite content = (Composite) super.createDialogArea(parent);
 		SashForm sashForm = new SashForm(content, SWT.HORIZONTAL);
+		
+		ProcessViewer pv = new ProcessViewer();
+		
 		// 创建流程图画板
 		ProcessCanvas pc = new ProcessCanvas(sashForm);
 		pc.setInput(procDefinition, procHistory);
