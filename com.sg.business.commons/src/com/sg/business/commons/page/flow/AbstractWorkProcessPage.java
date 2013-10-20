@@ -34,8 +34,19 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 	
 	@Override
 	protected String getActorNavigatorId() {
-		
-		
+		//如果是非项目工作
+		Work work = getWork();
+		Project project = work.getProject();
+		if(project==null){
+			//没有关联项目的独立工作
+			ProcessSettingPanel2 psp = getProcessSettingPanel();
+			AbstractRoleDefinition role = psp.getSelectedRole();
+			if(role == null){
+				//没有定义角色限定的
+//				return 
+				
+			}
+		}
 		
 		return super.getActorNavigatorId();
 	}
