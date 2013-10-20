@@ -748,7 +748,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khblueprintapprove.check"
-            name="空气弹簧项目部图纸校核">
+            name="空气弹簧项目部校核">
          <basicpage
                id="page1"
                title="校核">
@@ -786,7 +786,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khblueprintapprove.auditor"
-            name="空气弹簧项目部图纸审核">
+            name="空气弹簧项目部审核">
          <basicpage
                id="page1"
                title="审核">
@@ -824,7 +824,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khblueprintapprove.craft"
-            name="空气弹簧项目部图纸工艺">
+            name="空气弹簧项目部工艺">
          <basicpage
                id="page1"
                title="工艺">
@@ -862,7 +862,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khblueprintapprove.standardize"
-            name="空气弹簧项目部图纸标准化">
+            name="空气弹簧项目部标准化">
          <basicpage
                id="page1"
                title="标准化">
@@ -900,7 +900,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khblueprintapprove.approve"
-            name="空气弹簧项目部图纸批准">
+            name="空气弹簧项目部批准">
          <basicpage
                id="page1"
                title="批准">
@@ -934,6 +934,37 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="kh.khblueprintapprove.auditor"
+            name="审核"
+            persistentFields="choice,comment"
+            processDefinitionId="kh.khdocumentapprove1">
+         <processParameter
+               processParameterName="comment"
+               taskFormFieldName="comment">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="kh.khblueprintapprove.approve"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="kh.khdocumentapprove1">
+         <processParameter
+               processParameterName="comment"
+               taskFormFieldName="comment">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
    </extension>
 
 </plugin>
