@@ -375,16 +375,16 @@
                width="180">
          </column>
          <column
-               columnDefinitionId="planstart_e">
+               columnDefinitionId="planstart_c">
          </column>
          <column
-               columnDefinitionId="planfinish_e">
+               columnDefinitionId="planfinish_c">
          </column>
          <column
-               columnDefinitionId="planworks_e">
+               columnDefinitionId="planworks_c">
          </column>
          <column
-               columnDefinitionId="planduration_e">
+               columnDefinitionId="planduration_c">
          </column>
          <column
                column="mandatory"
@@ -406,16 +406,16 @@
                defaultGroup="false"
                name="实际进度">
             <column
-                  columnDefinitionId="actualstart_e">
+                  columnDefinitionId="actualstart_c">
             </column>
             <column
-                  columnDefinitionId="actualfinish_e">
+                  columnDefinitionId="actualfinish_c">
             </column>
             <column
-                  columnDefinitionId="actualworks_e">
+                  columnDefinitionId="actualworks_c">
             </column>
             <column
-                  columnDefinitionId="actualduration_e">
+                  columnDefinitionId="actualduration_c">
             </column>
          </columnGroup>
       </tree>
@@ -442,16 +442,16 @@
                columnDefinitionId="work.seq">
          </column>
          <column
-               columnDefinitionId="planstart_e">
+               columnDefinitionId="planstart_c">
          </column>
          <column
-               columnDefinitionId="planfinish_e">
+               columnDefinitionId="planfinish_c">
          </column>
          <column
-               columnDefinitionId="planworks_e">
+               columnDefinitionId="planworks_c">
          </column>
          <column
-               columnDefinitionId="planduration_e">
+               columnDefinitionId="planduration_c">
          </column>
          <columnGroup
                defaultGroup="false"
@@ -467,16 +467,16 @@
                defaultGroup="false"
                name="实际进度">
             <column
-                  columnDefinitionId="actualstart_e">
+                  columnDefinitionId="actualstart_c">
             </column>
             <column
-                  columnDefinitionId="actualfinish_e">
+                  columnDefinitionId="actualfinish_c">
             </column>
             <column
-                  columnDefinitionId="actualworks_e">
+                  columnDefinitionId="actualworks_c">
             </column>
             <column
-                  columnDefinitionId="actualduration_e">
+                  columnDefinitionId="actualduration_c">
             </column>
          </columnGroup>
          <columnGroup
