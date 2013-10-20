@@ -19,7 +19,6 @@ import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
-import com.sg.business.model.dataset.organization.UserDataSetFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
@@ -42,9 +41,7 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			ProcessSettingPanel2 psp = getProcessSettingPanel();
 			AbstractRoleDefinition role = psp.getSelectedRole();
 			if(role == null){
-				//没有定义角色限定的
-//				return 
-				
+				return "organization.user.selector";
 			}
 		}
 		
@@ -137,8 +134,7 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			return new DataSet(result);
 		}else{
 			//没有定义项目的工作（独立工作）
-			return new UserDataSetFactory().getDataSet();
-			
+			return null;
 		}
 	}
 

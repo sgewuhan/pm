@@ -205,6 +205,24 @@
             id="organization.inserthr"
             tree="organization.inserthr">
       </navigator>
+      <navigator
+            id="organization.user.selector"
+            tree="organization.user.selector">
+         <filterAction>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -279,6 +297,33 @@
       </tree>
       <tree
             id="organization.inserthr">
+      </tree>
+      <tree
+            autoExpandLevel="-1"
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            collectionName="organization"
+            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
+            dbName="pm2"
+            editorId="editor.organization.team"
+            headerVisiable="false"
+            id="organization.user.selector"
+            idfield="_id"
+            multiSelection="false">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               type="String"
+               width="-1">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
       </tree>
    </extension>
    <extension

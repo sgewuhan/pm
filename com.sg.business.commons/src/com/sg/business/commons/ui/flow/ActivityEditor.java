@@ -20,7 +20,7 @@ import com.mobnut.db.model.DataSet;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.User;
-import com.sg.widgets.commons.selector.NavigatorSelector;
+import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.viewer.ViewerControl;
 
@@ -87,10 +87,10 @@ public abstract class ActivityEditor extends Composite {
 	 */
 	private boolean hasRoleSelector;
 
-//	/**
-//	 * 活动执行人选择器的navigatorId
-//	 */
-//	private String actorNavigatorId;
+	// /**
+	// * 活动执行人选择器的navigatorId
+	// */
+	// private String actorNavigatorId;
 
 	/**
 	 * 活动执行人选择器数据源
@@ -119,10 +119,10 @@ public abstract class ActivityEditor extends Composite {
 	 */
 	private DataSet roleDataSet;
 
-//	/**
-//	 * 选择角色的NavigatorId
-//	 */
-//	private String roleNavigatorId;
+	// /**
+	// * 选择角色的NavigatorId
+	// */
+	// private String roleNavigatorId;
 
 	private boolean roleSelectEnable = true;
 
@@ -161,18 +161,18 @@ public abstract class ActivityEditor extends Composite {
 		setLayout(new FormLayout());
 
 		Section section = new SimpleSection(this, Section.EXPANDED
-				| Section.SHORT_TITLE_BAR );
+				| Section.SHORT_TITLE_BAR);
 		section.setText("任务信息以及执行人指派");
 		Composite panel = new Composite(section, SWT.NONE);
 		createContent(panel);
 		section.setClient(panel);
-		
+
 		FormData fd = new FormData();
 		section.setLayoutData(fd);
-		fd.top = new FormAttachment(0,0);
-		fd.left = new FormAttachment(0,10);
-		fd.right = new FormAttachment(100,-10);
-		fd.bottom = new FormAttachment(100,-10);
+		fd.top = new FormAttachment(0, 0);
+		fd.left = new FormAttachment(0, 10);
+		fd.right = new FormAttachment(100, -10);
+		fd.bottom = new FormAttachment(100, -10);
 	}
 
 	/**
@@ -312,7 +312,7 @@ public abstract class ActivityEditor extends Composite {
 			roleText.setText("");
 			if (actorText != null && actor != null && !actor.isEmpty()) {
 				actorText.setText(actor.getLabel());
-			} else if(actorText !=null){
+			} else if (actorText != null) {
 				actorText.setText("");
 			}
 		} else {
@@ -339,7 +339,7 @@ public abstract class ActivityEditor extends Composite {
 			if (roleText != null) {
 				if (roleDef != null && !roleDef.isEmpty()) {
 					roleText.setText(roleDef.getLabel());
-				} else if(roleText!=null){
+				} else if (roleText != null) {
 					roleText.setText("");
 				}
 			}
@@ -347,7 +347,7 @@ public abstract class ActivityEditor extends Composite {
 			if (actorText != null) {
 				if (actor != null && !actor.isEmpty()) {
 					actorText.setText(actor.getLabel());
-				} else if(actorText!=null){
+				} else if (actorText != null) {
 					actorText.setText("");
 				}
 			}
@@ -358,36 +358,40 @@ public abstract class ActivityEditor extends Composite {
 	 * 弹出活动执行人选择器
 	 */
 	private void showActorSelectorNavigator() {
-		NavigatorSelector ns = new NavigatorSelector(getActorNavigatorId()) {
+		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
+				getActorNavigatorId()) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is == null || is.isEmpty()) {
 					setActor(null);
 				} else {
-					User user = (User) is.getFirstElement();
-					setActor(user);
+					Object firstElement = is.getFirstElement();
+					if (firstElement instanceof User) {
+						User user = (User) firstElement;
+						setActor(user);
+					}
 				}
 				super.doOK(is);
 			}
 
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {
-				return true;
-
-				// if (!super.isSelectEnabled(is)) {
-				// return false;
-				// } else {
-				// Object element = is.getFirstElement();
-				// return element instanceof User;
-				// }
+				if (!super.isSelectEnabled(is)) {
+					return false;
+				} else {
+					Object element = is.getFirstElement();
+					return element instanceof User;
+				}
 			}
 
 		};
-		ns.show();
+		ns.show(getShell(), actorText);
 
 		ViewerControl vc = ns.getNavigator().getViewerControl();
-		vc.setDataSet(getActorDataSet());
-
+		DataSet ds = getActorDataSet();
+		if (ds != null) {
+			vc.setDataSet(ds);
+		}
 	}
 
 	protected abstract String getActorNavigatorId();
@@ -436,7 +440,8 @@ public abstract class ActivityEditor extends Composite {
 	 * 弹出角色限定选择器
 	 */
 	private void showRoleSelectorNavigator() {
-		NavigatorSelector ns = new NavigatorSelector(getRoleNavigatorId()) {
+		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
+				getRoleNavigatorId()) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is == null || is.isEmpty()) {
@@ -462,22 +467,25 @@ public abstract class ActivityEditor extends Composite {
 			}
 
 		};
-		ns.show();
+		ns.show(getShell(), roleText);
 		ViewerControl vc = ns.getNavigator().getViewerControl();
-		vc.setDataSet(getRoleDataSet());
+		DataSet ds = getRoleDataSet();
+		if (ds != null) {
+			vc.setDataSet(ds);
+		}
 
 	}
 
-	protected abstract String getRoleNavigatorId() ;
+	protected abstract String getRoleNavigatorId();
 
-//	/**
-//	 * 设置活动执行人选择器navigatorId
-//	 * 
-//	 * @param navigatorId
-//	 */
-//	final public void setActorNavigatorId(String navigatorId) {
-//		this.actorNavigatorId = navigatorId;
-//	}
+	// /**
+	// * 设置活动执行人选择器navigatorId
+	// *
+	// * @param navigatorId
+	// */
+	// final public void setActorNavigatorId(String navigatorId) {
+	// this.actorNavigatorId = navigatorId;
+	// }
 
 	/**
 	 * 设置活动执行人选择器dataset
@@ -492,14 +500,14 @@ public abstract class ActivityEditor extends Composite {
 		return actorDataSet;
 	}
 
-//	/**
-//	 * 设置角色限定选择器navigatorId
-//	 * 
-//	 * @param navigatorId
-//	 */
-//	final public void setRoleNavigatorId(String navigatorId) {
-//		this.roleNavigatorId = navigatorId;
-//	}
+	// /**
+	// * 设置角色限定选择器navigatorId
+	// *
+	// * @param navigatorId
+	// */
+	// final public void setRoleNavigatorId(String navigatorId) {
+	// this.roleNavigatorId = navigatorId;
+	// }
 
 	/**
 	 * 设置角色限定选择器dataset
