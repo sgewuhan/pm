@@ -9,6 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
+import com.sg.business.model.Project;
 
 public class MessageServiceTest001 extends MessageService {
 
@@ -17,8 +18,8 @@ public class MessageServiceTest001 extends MessageService {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		String messageTitle="yyyyyy";
-		String messageContent="yyyy";
+		String messageTitle="tttttt";
+		String messageContent="cccccc";
 		@SuppressWarnings("unchecked")
 		List<String> receivers=(List<String>) getMessageReceiverId("reviewer_list");
 		
@@ -28,6 +29,7 @@ public class MessageServiceTest001 extends MessageService {
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
 			if (host instanceof IProjectRelative) {
 				IProjectRelative lp = (IProjectRelative) host;
+				Project project = lp.getProject();
 				try {
 					DBObject processData = WorkflowUtils
 							.getProcessInfoFromJSON(jsonContent);
@@ -35,7 +37,7 @@ public class MessageServiceTest001 extends MessageService {
 					String processName = (String) processData
 							.get("processName");
 					if ("message".equals(getOperation())) {
-						sendMessage(messageTitle,messageContent,receivers,new BPMServiceContext(processName,
+						sendMessage(messageTitle,messageContent,receivers,project,"project.editor",new BPMServiceContext(processName,
 								processId));
 					}
 				} catch (Exception e) {
@@ -74,8 +76,8 @@ public class MessageServiceTest001 extends MessageService {
 	public List<?> getMessageReceiverId(String receiverList){
 		List<String> receivers=new ArrayList<String>();
 		Object receiver = getInputValue(receiverList);
-		if(receivers instanceof List){
-			return (List<?>)receivers;
+		if(receiver instanceof List){
+			return (List<?>)receiver;
 		}else if(receiver instanceof String){
 			receivers.add((String)receiver);
 			return receivers;
