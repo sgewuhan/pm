@@ -44,7 +44,8 @@ public abstract class ResourceCalender extends ViewPart implements
 
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL|SWT.V_SCROLL);
+		viewer = new GridTreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL
+				| SWT.V_SCROLL);
 		viewer.getGrid().setHeaderVisible(true);
 		viewer.setContentProvider(getContentProvider());
 		viewer.setAutoExpandLevel(-1);
@@ -54,7 +55,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		calendar = Calendar.getInstance();
 		font = new Font(parent.getDisplay(), "Arial", 14, SWT.NORMAL);
 		setDisplay3Month();
-		
+
 	}
 
 	protected abstract IContentProvider getContentProvider();
