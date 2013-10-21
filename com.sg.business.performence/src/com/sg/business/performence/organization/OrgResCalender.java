@@ -1,4 +1,4 @@
-package com.sg.business.performence.resource;
+package com.sg.business.performence.organization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,8 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.performence.ui.calendar.ResourceCalender;
+import com.sg.business.performence.ui.calendar.WorkListCellEditor;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class OrgResCalender extends ResourceCalender {
@@ -22,6 +24,8 @@ public class OrgResCalender extends ResourceCalender {
 	protected IContentProvider getContentProvider() {
 		return new OrgResContentProvider();
 	}
+	
+	
 
 	@Override
 	protected List<PrimaryObject> getInput() {
@@ -30,8 +34,7 @@ public class OrgResCalender extends ResourceCalender {
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
 		User user = UserToolkit.getUserById(userId);
-		List<PrimaryObject> orglist = user
-				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
+		List<PrimaryObject> orglist = getOrganizationRoots(user);
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
 
 		for (int i = 0; i < orglist.size(); i++) {
@@ -53,6 +56,13 @@ public class OrgResCalender extends ResourceCalender {
 			}
 		}
 		return input;
+	}
+
+
+
+	protected List<PrimaryObject> getOrganizationRoots(User user) {
+		return user
+				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
 	}
 
 	@Override

@@ -383,6 +383,12 @@
             operation="message"
             serviceProvider="com.sg.business.model.bpmservice.ProjectService">
       </service>
+      <service
+            interface="message.service.action"
+            name="项目状态服务"
+            operation="message"
+            serviceProvider="com.sg.business.model.bpmservice.MessageServiceTest001">
+      </service>
    </extension>
 
 </plugin>
