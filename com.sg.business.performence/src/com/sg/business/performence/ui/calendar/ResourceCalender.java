@@ -33,7 +33,7 @@ import com.sg.widgets.part.IRefreshablePart;
 public abstract class ResourceCalender extends ViewPart implements
 		IRefreshablePart {
 
-	private int groupcount = 3;
+	protected int groupcount = 3;
 	protected GridTreeViewer viewer;
 	private boolean hasLoaded;
 	private Calendar calendar;
@@ -54,9 +54,14 @@ public abstract class ResourceCalender extends ViewPart implements
 
 		calendar = Calendar.getInstance();
 		font = new Font(parent.getDisplay(), "Arial", 14, SWT.NORMAL);
-		setDisplay3Month();
-
+		initdata();
 	}
+
+
+	protected void initdata() {
+		setDisplay3Month();
+	}
+	
 
 	protected abstract IContentProvider getContentProvider();
 
@@ -262,7 +267,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		GridViewerEditor.create(viewer, strategy, feature);
 	}
 
-	private void disposeGrid() {
+	protected void disposeGrid() {
 		GridColumnGroup[] gps = viewer.getGrid().getColumnGroups();
 		for (int i = 0; i < gps.length; i++) {
 			gps[i].dispose();
@@ -270,7 +275,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		groupCache.clear();
 	}
 
-	private void createGrid() {
+	protected void createGrid() {
 		final Display display = getSite().getShell().getDisplay();
 		final ServerPushSession push = new ServerPushSession();
 		push.start();

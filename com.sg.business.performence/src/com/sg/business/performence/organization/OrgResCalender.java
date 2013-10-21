@@ -24,6 +24,8 @@ public class OrgResCalender extends ResourceCalender {
 	protected IContentProvider getContentProvider() {
 		return new OrgResContentProvider();
 	}
+	
+	
 
 	@Override
 	protected List<PrimaryObject> getInput() {
@@ -32,8 +34,7 @@ public class OrgResCalender extends ResourceCalender {
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
 		User user = UserToolkit.getUserById(userId);
-		List<PrimaryObject> orglist = user
-				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
+		List<PrimaryObject> orglist = getOrganizationRoots(user);
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
 
 		for (int i = 0; i < orglist.size(); i++) {
@@ -55,6 +56,13 @@ public class OrgResCalender extends ResourceCalender {
 			}
 		}
 		return input;
+	}
+
+
+
+	protected List<PrimaryObject> getOrganizationRoots(User user) {
+		return user
+				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
 	}
 
 	@Override
