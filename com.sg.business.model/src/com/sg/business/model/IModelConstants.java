@@ -95,7 +95,7 @@ public interface IModelConstants {
 	public static final String C__IDS = "ids";
 
 	/**
-	 * 项目编号的自动编号序列名称
+	 * 项目编号的自动编号序列名称,在Project.doInsert()中的编码使用
 	 */
 	public static final String SEQ_PROJECT_NUMBER = "projectnumber";
 	

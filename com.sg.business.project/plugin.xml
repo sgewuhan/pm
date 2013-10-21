@@ -507,7 +507,7 @@
             dataSet="com.sg.business.model.dataset.project.ManagementProject"
             editorId="project.editor"
             id="project.navigator.management"
-            popupMenu="popup:project.navigator">
+            popupMenu="popup:project.navigator.management">
          <column
                columnDefinitionId="project.status">
          </column>
@@ -652,6 +652,7 @@
       <table
             dataSet="com.sg.business.model.dataset.project.ProjectParticipate"
             id="project.participte.selector"
+            headerVisiable="false"
             multiSelection="true">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
@@ -1042,12 +1043,18 @@
             table="project.participte.selector">
          <filterAction>
             <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </searchAction>
       </navigator>
@@ -1578,11 +1585,11 @@
          </command>
          <menu
                icon="image/execute_24.png"
-               label="项目执行">
+               label="执行">
             <command
                   commandId="project.commit"
                   icon="image/project_commit_24.png"
-                  label="提交"
+                  label="提交项目计划"
                   style="push">
             </command>
             <separator
@@ -1592,19 +1599,268 @@
             <command
                   commandId="project.start"
                   icon="image/project_start_24.png"
-                  label="启动"
+                  label="项目启动"
                   style="push">
             </command>
             <command
                   commandId="project.pause"
                   icon="image/project_pause_24.png"
-                  label="暂停"
+                  label="项目暂停"
                   style="push">
             </command>
             <command
                   commandId="project.finish"
                   icon="image/project_finish_24.png"
-                  label="完工"
+                  label="项目完成"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <test
+                           args="edit"
+                           property="project.operation"
+                           value="true">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </menu>
+         <separator
+               name="project.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="project.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="加入对比"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.navigator.management">
+         <command
+               commandId="com.sg.widgets.command.create"
+               icon="image/project_24.png"
+               id="create"
+               label="项目创建向导..."
+               style="push">
+         </command>
+         <separator
+               name="project.separator0"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="打开"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <menu
+               icon="image/24_blank.png"
+               label="编辑和设定">
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/financial_24.png"
+                  label="项目预算"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.editor">
+               </parameter>
+               <parameter
+                     name="com.sg.widgets.edit.pageid"
+                     value="project.financial">
+               </parameter>
+            </command>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/group_24.png"
+                  label="项目组"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.editor">
+               </parameter>
+               <parameter
+                     name="com.sg.widgets.edit.pageid"
+                     value="project.team">
+               </parameter>
+            </command>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/wbs_24.png"
+                  label="WBS和计划"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.editor">
+               </parameter>
+               <parameter
+                     name="com.sg.widgets.edit.pageid"
+                     value="project.wbs">
+               </parameter>
+            </command>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/deliverable_24.png"
+                  label="交付物"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.editor">
+               </parameter>
+               <parameter
+                     name="com.sg.widgets.edit.pageid"
+                     value="project.deliverable">
+               </parameter>
+            </command>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/document_24.png"
+                  label="项目文档"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.editor">
+               </parameter>
+               <parameter
+                     name="com.sg.widgets.edit.pageid"
+                     value="project.documents">
+               </parameter>
+            </command>
+            <separator
+                  name="project.separator4"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/flow_24.png"
+                  label="项目流程"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.flow.setting">
+               </parameter>
+            </command>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/calendar_24.png"
+                  label="项目工作日设定"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.calendar.setting">
+               </parameter>
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </menu>
+         <command
+               commandId="project.check"
+               icon="image/project_check_24.png"
+               label="项目计划检查"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <test
+                           args="check"
+                           property="project.operation"
+                           value="true">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <menu
+               icon="image/execute_24.png"
+               label="执行">
+            <command
+                  commandId="project.commit"
+                  icon="image/project_commit_24.png"
+                  label="提交项目计划"
+                  style="push">
+            </command>
+            <separator
+                  name="project.separator5"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="project.start"
+                  icon="image/project_start_24.png"
+                  label="项目启动"
+                  style="push">
+            </command>
+            <command
+                  commandId="project.pause"
+                  icon="image/project_pause_24.png"
+                  label="项目暂停"
+                  style="push">
+            </command>
+            <command
+                  commandId="project.finish"
+                  icon="image/project_finish_24.png"
+                  label="项目完成"
                   style="push">
             </command>
             <separator
@@ -1614,7 +1870,7 @@
             <command
                   commandId="project.cancel"
                   icon="image/project_stop_24.png"
-                  label="中止"
+                  label="项目中止"
                   style="push">
             </command>
             <visibleWhen
@@ -2603,12 +2859,12 @@
                         makeColumnWidthEqual="false">
                      <text
                            editPart="Text(Single Line)"
-                           editable="true"
+                           editable="false"
                            id="projectnumber"
                            label="项目编号"
                            labelVisible="true"
                            name="projectnumber"
-                           persistable="true"
+                           persistable="false"
                            required="false"
                            type="String">
                      </text>
@@ -2868,21 +3124,6 @@
                      label="项目摘要">
                   <text
                         editPart="Text(Single Line)"
-                        editable="false"
-                        id="projectnumber"
-                        label="项目编号"
-                        labelVisible="true"
-                        name="projectnumber"
-                        persistable="true"
-                        required="false"
-                        textMessage="&lt;自动编号&gt;"
-                        type="String">
-                     <extendValueDefinition
-                           type="com.sg.business.commons.numbering.ProjectNumber">
-                     </extendValueDefinition>
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
                         label="项目名称"
@@ -3010,14 +3251,14 @@
                description="项目提交流程设置"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.project.editor.page.ProjectCommitProcessPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectCommitProcessPage"
                title="项目提交流程设置">
          </basicpage>
          <basicpage
                description="项目变更流程设置"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.project.editor.page.ProjectChangeProcessPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectChangeProcessPage"
                title="项目变更流程设置">
          </basicpage>
       </editor>

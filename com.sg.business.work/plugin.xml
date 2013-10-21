@@ -375,16 +375,16 @@
                width="180">
          </column>
          <column
-               columnDefinitionId="planstart_e">
+               columnDefinitionId="planstart_c">
          </column>
          <column
-               columnDefinitionId="planfinish_e">
+               columnDefinitionId="planfinish_c">
          </column>
          <column
-               columnDefinitionId="planworks_e">
+               columnDefinitionId="planworks_c">
          </column>
          <column
-               columnDefinitionId="planduration_e">
+               columnDefinitionId="planduration_c">
          </column>
          <column
                column="mandatory"
@@ -406,16 +406,16 @@
                defaultGroup="false"
                name="实际进度">
             <column
-                  columnDefinitionId="actualstart_e">
+                  columnDefinitionId="actualstart_c">
             </column>
             <column
-                  columnDefinitionId="actualfinish_e">
+                  columnDefinitionId="actualfinish_c">
             </column>
             <column
-                  columnDefinitionId="actualworks_e">
+                  columnDefinitionId="actualworks_c">
             </column>
             <column
-                  columnDefinitionId="actualduration_e">
+                  columnDefinitionId="actualduration_c">
             </column>
          </columnGroup>
       </tree>
@@ -442,16 +442,16 @@
                columnDefinitionId="work.seq">
          </column>
          <column
-               columnDefinitionId="planstart_e">
+               columnDefinitionId="planstart_c">
          </column>
          <column
-               columnDefinitionId="planfinish_e">
+               columnDefinitionId="planfinish_c">
          </column>
          <column
-               columnDefinitionId="planworks_e">
+               columnDefinitionId="planworks_c">
          </column>
          <column
-               columnDefinitionId="planduration_e">
+               columnDefinitionId="planduration_c">
          </column>
          <columnGroup
                defaultGroup="false"
@@ -467,16 +467,16 @@
                defaultGroup="false"
                name="实际进度">
             <column
-                  columnDefinitionId="actualstart_e">
+                  columnDefinitionId="actualstart_c">
             </column>
             <column
-                  columnDefinitionId="actualfinish_e">
+                  columnDefinitionId="actualfinish_c">
             </column>
             <column
-                  columnDefinitionId="actualworks_e">
+                  columnDefinitionId="actualworks_c">
             </column>
             <column
-                  columnDefinitionId="actualduration_e">
+                  columnDefinitionId="actualduration_c">
             </column>
          </columnGroup>
          <columnGroup
@@ -1163,14 +1163,14 @@
                description="工作执行流程"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkExecuteProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkChangeProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
       </editor>
@@ -1360,14 +1360,14 @@
                description="工作执行流程"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkExecuteProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="工作执行流程">
          </basicpage>
          <basicpage
                description="工作变更流程"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkChangeProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
                title="工作变更流程">
          </basicpage>
       </editor>
@@ -1782,41 +1782,6 @@
                               args="modify"
                               property="runtimework.action">
                         </test>
-                     </iterate>
-                  </and>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="runtimework.record"
-               icon="image/24_blank.png"
-               label="提交工作记录"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <and>
-                     <count
-                           value="1">
-                     </count>
-                     <iterate
-                           ifEmpty="false">
-                        <and>
-                           <test
-                                 args="wip"
-                                 property="lifecycle.status">
-                           </test>
-                           <test
-                                 args="isProjectWBSRoot"
-                                 property="primaryobject.method"
-                                 value="false">
-                           </test>
-                           <test
-                                 args="workrecord"
-                                 property="runtimework.action">
-                           </test>
-                        </and>
                      </iterate>
                   </and>
                </with>
@@ -2811,7 +2776,297 @@
                description="工作执行流程的执行人"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.WorkExecuteProcessAssignmentPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               title="执行流程">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="edit.work.plan.3"
+            image="image/work_24.png"
+            isDefault="false"
+            memo="不带有流程用于叶子独立工作的计划制定"
+            name="独立工作"
+            titleToolTips="独立工作">
+         <basicpage
+               description="工作的基本信息"
+               id="basicpage"
+               image="image/work_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="milestone"
+                        label="里程碑"
+                        labelVisible="true"
+                        name="milestone"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="planduration"
+                        isComputeField="true"
+                        label="计划工期(天)"
+                        labelVisible="true"
+                        name="planduration"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.SummaryPlanDuration"
+                        required="false"
+                        type="Integer">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     description="负责人将自动加入到参与者"
+                     label="团队">
+                  <navigatorSelector
+                        editable="true"
+                        id="chargerid"
+                        label="负责人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="chargerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        editable="true"
+                        id="participate"
+                        label="参与者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="participate"
+                        persistable="true"
+                        required="false">
+                  </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="assignerid"
+                        label="指派人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="assignerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="说明"
+               id="memopage"
+               image="image/work_24.png"
+               title="说明">
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="120"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="work"
+            dbName="pm2"
+            id="edit.work.plan.4"
+            image="image/work_24.png"
+            isDefault="false"
+            memo="带有流程用于叶子独立工作的计划制定"
+            name="独立工作"
+            titleToolTips="工作">
+         <basicpage
+               description="工作的基本信息"
+               id="basicpage"
+               image="image/work_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="milestone"
+                        label="里程碑"
+                        labelVisible="true"
+                        name="milestone"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="planduration"
+                        isComputeField="true"
+                        label="计划工期(天)"
+                        labelVisible="true"
+                        name="planduration"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.SummaryPlanDuration"
+                        required="false"
+                        type="Integer">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     description="负责人将自动加入到参与者"
+                     label="团队">
+                  <navigatorSelector
+                        editable="true"
+                        id="chargerid"
+                        label="负责人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="chargerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        editable="true"
+                        id="participate"
+                        label="参与者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="participate"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="说明"
+               id="memopage"
+               image="image/work_24.png"
+               title="说明">
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="120"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="工作执行流程的执行人"
+               id="processpage1"
+               image="image/flow_24.png"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="执行流程">
          </basicpage>
       </editor>
@@ -3169,14 +3424,14 @@
                description="工作执行流程设置"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkExecuteProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="工作执行流程设置">
          </basicpage>
          <basicpage
                description="工作变更流程设置"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.work.page.WorkChangeProcessSettingPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
                title="工作变更流程设置">
          </basicpage>
       </editor>
@@ -3568,7 +3823,7 @@
                description="请设置工作执行流程的执行人"
                id="processpage1"
                image="image/workflow_72.png"
-               pageDelegator="com.sg.business.commons.page.WorkExecuteProcessAssignmentPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
                title="流程">
          </basicpage>
       </editor>
@@ -3642,7 +3897,7 @@
             description="请设置工作执行流程的执行人"
             id="launch.work.processpage"
             image="image/workflow_72.png"
-            pageDelegator="com.sg.business.commons.page.WorkExecuteProcessAssignmentPage"
+               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
             title="流程">
       </basicpage>
    </extension>

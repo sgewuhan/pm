@@ -29,7 +29,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 	public Image getImage(Object element) {
 		return null;
 	}
-	
+
 	@Override
 	public String getText(Object element) {
 		if (element instanceof Work) {
@@ -108,7 +108,8 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		Date _planStart = project.getPlanStart();
 		String planStart = "";
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_MONTH_DATE_COMPACT_SASH);
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				Utils.SDF_MONTH_DATE_COMPACT_SASH);
 
 		if (_planStart != null) {
 			planStart = sdf.format(_planStart);
@@ -152,7 +153,8 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		String userId = context.getAccountInfo().getConsignerId();
 
 		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_MONTH_DATE_COMPACT_SASH);
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				Utils.SDF_MONTH_DATE_COMPACT_SASH);
 
 		User charger = work.getCharger();
 
@@ -168,24 +170,31 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		// ---------------------------------------------------------------------------
 		// 标记
+		String selectbarUrl = null;
 		Date _planStart = work.getPlanStart();
 		Date _planFinish = work.getPlanFinish();
 		Date _actualStart = work.getActualStart();
 		Date _actualFinish = work.getActualFinish();
 		int remindBefore = work.getRemindBefore();
 		// 首先判断当前时间是否晚于计划完成时间，如果是，显示为超期标签
-		Date now = new Date();
-		String selectbarUrl = null;
-		if (isOwner && _planFinish != null) {
-			if (now.after(_planFinish)) {
-				selectbarUrl = getSelectorURL(work, ImageResource.RED_BULLETIN);
-			} else if (remindBefore > 0
-					&& (_planFinish.getTime() - now.getTime()) < remindBefore * 3600000) {
-				// 然后判断当前时间是否达到提醒时间
-				selectbarUrl = getSelectorURL(work,
-						ImageResource.YELLOW_BULLETIN);
+		String lc = work.getLifecycleStatus();
+		if (Work.STATUS_CANCELED_VALUE.equals(lc)
+				|| Work.STATUS_FINIHED_VALUE.equals(lc)) {
+		} else {
+			Date now = new Date();
+			if (isOwner && _planFinish != null) {
+				if (now.after(_planFinish)) {
+					selectbarUrl = getSelectorURL(work,
+							ImageResource.RED_BULLETIN);
+				} else if (remindBefore > 0
+						&& (_planFinish.getTime() - now.getTime()) < remindBefore * 3600000) {
+					// 然后判断当前时间是否达到提醒时间
+					selectbarUrl = getSelectorURL(work,
+							ImageResource.YELLOW_BULLETIN);
+				}
 			}
 		}
+
 		if (selectbarUrl == null) {
 			boolean userMarked = work.isMarked(userId);
 			if (userMarked) {
@@ -202,7 +211,6 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		sb.append(selectbar);
 		// -----------------------------------------------------------------------------------------
 
-		
 		if (charger != null) {
 			sb.append("<span style='float:right;padding-right:4px'>");
 			sb.append(charger);
@@ -216,7 +224,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 							BusinessResource.IMAGE_REASSIGNMENT_16,
 							BusinessResource.PLUGIN_ID,
 							BusinessResource.IMAGE_FOLDER)
-							+ "' style='float:right' width='16' height='16' />";
+					+ "' style='float:right' width='16' height='16' />";
 			sb.append(imageUrl);
 		}
 

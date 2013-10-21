@@ -3,6 +3,8 @@ package com.sg.business.commons.ui.flow;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -193,5 +195,22 @@ public class ProcessHistoryTable extends TableViewer {
 		// this.procHistory = procHistory;
 		setInput(procHistory);
 	}
+
+	public void setInput(Object procDefinition,
+			List<Map<String, Object>> history) {
+
+		BasicBSONList list = new BasicBSONList();
+		if(history!=null){
+			Iterator<Map<String, Object>> iter = history.iterator();
+			while(iter.hasNext()){
+				Map<String, Object> map = iter.next();
+				list.add(new BasicDBObject(map));
+			}
+		}
+		setInput(list);
+
+		
+	}
+	
 	
 }

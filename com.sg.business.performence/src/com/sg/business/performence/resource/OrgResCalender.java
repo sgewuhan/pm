@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
@@ -61,13 +62,15 @@ public class OrgResCalender extends ResourceCalender {
 
 			@Override
 			protected CellEditor getCellEditor(Object element) {
-				return new WorkListCellEditor(viewer.getGrid(), (User) element,
+				IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+				return new WorkListCellEditor(viewer.getGrid(), (User) (sel.getFirstElement()),
 						year, month, dateOfMonth);
 			}
 
 			@Override
 			protected boolean canEdit(Object element) {
-				return element instanceof User;
+				IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+				return sel.getFirstElement() instanceof User;
 			}
 
 			@Override

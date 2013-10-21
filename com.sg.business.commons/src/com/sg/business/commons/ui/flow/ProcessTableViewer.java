@@ -1,5 +1,8 @@
 package com.sg.business.commons.ui.flow;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -13,25 +16,25 @@ import com.sg.bpm.workflow.model.NodeAssignment;
 
 public class ProcessTableViewer extends TableViewer {
 
-	public ProcessTableViewer(Composite parent) {
-		super(parent, SWT.FULL_SELECTION|SWT.BORDER);
-//		getTable().setHeaderVisible(true);
+	public ProcessTableViewer(Composite parent, int style) {
+		super(parent, SWT.FULL_SELECTION | SWT.BORDER | style);
+		// getTable().setHeaderVisible(true);
 		getTable().setLinesVisible(false);
 		setContentProvider(ArrayContentProvider.getInstance());
-		setLabelProvider(new LabelProvider(){
+		setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
 				String name = ((NodeAssignment) element).getNodeName();
-				boolean needAss = ((NodeAssignment) element).isNeedAssignment();
-				if(needAss){
-					return name+"[需指派]";
-				}else{
-					return name;
-				}
-						
+//				boolean needAss = ((NodeAssignment) element).isNeedAssignment();
+//				if (needAss) {
+//					return name + "[需指派]";
+//				} else {
+//					return name;
+//				}
+				return name;
 			}
 		});
-//		createColumns(this);
+		// createColumns(this);
 	}
 
 	protected void createColumns(ProcessTableViewer processViewer) {
@@ -126,7 +129,16 @@ public class ProcessTableViewer extends TableViewer {
 		if (processDefinition == null) {
 			setInput(null);
 		} else {
-			setInput(processDefinition.getNodesAssignment());
+			List<NodeAssignment> nodesAssignment = processDefinition
+					.getNodesAssignment();
+			ArrayList<NodeAssignment> input = new ArrayList<NodeAssignment>();
+			for (int i = 0; i < nodesAssignment.size(); i++) {
+				NodeAssignment na = nodesAssignment.get(i);
+				if (na.isNeedAssignment()) {
+					input.add(na);
+				}
+			}
+			setInput(input);
 		}
 	}
 }

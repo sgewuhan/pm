@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,8 +175,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public static final String F_FOLDER_ID = "folder_id";
 
-	
-	private SummaryProjectWorks summary;
+	private SummaryProjectWorks summaryProjectWorks;
+
 	/**
 	 * 返回类型名称
 	 * 
@@ -192,18 +193,23 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	@Override
 	public Image getImage() {
 		String lc = getLifecycleStatus();
-		if(STATUS_CANCELED_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_CANCEL_16);
-		}else if(STATUS_FINIHED_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_FINISH_16);
-		}else if(STATUS_ONREADY_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_ONREADY_16);
-		}else if(STATUS_PAUSED_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_PAUSED_16);
-		}else if(STATUS_WIP_VALUE.equals(lc)){
-			return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_WIP_16);
+		if (STATUS_CANCELED_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_PROJECT_CANCEL_16);
+		} else if (STATUS_FINIHED_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_PROJECT_FINISH_16);
+		} else if (STATUS_ONREADY_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_PROJECT_ONREADY_16);
+		} else if (STATUS_PAUSED_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_PROJECT_PAUSED_16);
+		} else if (STATUS_WIP_VALUE.equals(lc)) {
+			return BusinessResource
+					.getImage(BusinessResource.IMAGE_PROJECT_WIP_16);
 		}
-		
+
 		return BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_16);
 	}
 
@@ -502,6 +508,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public void doInsert(IContext context) throws Exception {
 		setValue(F__ID, new ObjectId());
 
+		// 生成编码
+		generateCode();
+
 		// 创建根工作定义
 		Work root = makeWBSRoot();
 		root.doInsert(context);
@@ -524,6 +533,32 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制系统日历
 		doCopySystemCanlendar();
 
+	}
+	
+	private void generateCode() throws Exception {
+		Organization org = getFunctionOrganization();
+		if (org == null) {
+			throw new Exception("缺少项目管理职能组织");
+		}
+
+		String code = org.getCode();
+		if (code == null) {
+			throw new Exception("项目管理职能组织没有定义代码");
+		}
+
+		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C__IDS);
+
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		
+		String prefix = code + (""+year).substring(2);
+		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_PROJECT_NUMBER + "." + prefix);
+		String seq = String.format("%03x", id).toUpperCase();
+		
+		String codeValue = prefix+seq;
+		setValue(F_PROJECT_NUMBER, codeValue);
+		
 	}
 
 	private void doCopySystemCanlendar() throws Exception {
@@ -1243,7 +1278,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Message message = iter.next();
 			message.doSave(context);
 		}
-		
+
 		doReady(context);
 	}
 
@@ -1431,7 +1466,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public void doArchive(IContext context) throws Exception {
-		//1.归档项目角色
+		// 1.归档项目角色
 		BasicDBObject q = new BasicDBObject();
 		q.put(IProjectRelative.F_PROJECT_ID, get_id());
 
@@ -1452,9 +1487,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		for (String archiveField : Work.ARCHIVE_FIELDS) {
 			update.put(archiveField, null);
 		}
-		ws = col.update(q, new BasicDBObject().append("$set", update), false, true);
+		ws = col.update(q, new BasicDBObject().append("$set", update), false,
+				true);
 		checkWriteResult(ws);
-
 
 		// 归档项目文件
 		Organization org = getFunctionOrganization();
@@ -1467,13 +1502,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		col = getCollection(IModelConstants.C_FOLDER);
-		ws = col.update(q, new BasicDBObject().append(
-				"$set", new BasicDBObject().append(Folder.F_ROOT_ID,
+		ws = col.update(q, new BasicDBObject().append("$set",
+				new BasicDBObject().append(Folder.F_ROOT_ID,
 						containerOrganizationId)), false, true);
 		checkWriteResult(ws);
 
 		// 归档项目公告
-		col= getCollection(IModelConstants.C_BULLETINBOARD);
+		col = getCollection(IModelConstants.C_BULLETINBOARD);
 		ws = col.remove(q);
 		checkWriteResult(ws);
 
@@ -1635,7 +1670,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (!userId.equals(this.getChargerId())) {
 			throw new Exception("不是本项目负责人，" + this);
 		}
-		
+
 		// 2.检查项目是否可以进行归档
 		Organization org = getFunctionOrganization();
 		if (org == null) {
@@ -1645,7 +1680,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (containerOrganizationId == null) {
 			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
 		}
-		//TODO 归档判断是否完整
+		// TODO 归档判断是否完整
 
 		return null;
 	}
@@ -1671,7 +1706,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (containerOrganizationId == null) {
 			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
 		}
-		//TODO 归档判断是否完整
+		// TODO 归档判断是否完整
 
 		return message;
 	}
@@ -1732,11 +1767,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					return ProjectRole.class;
 				}
 			};
-		}else if (adapter == IWorksSummary.class) {
-			if(summary==null){
-				summary = new SummaryProjectWorks(this);
+		} else if (adapter == IWorksSummary.class) {
+			if (summaryProjectWorks == null) {
+				summaryProjectWorks = new SummaryProjectWorks(this);
 			}
-			return (T) summary ;
+			return (T) summaryProjectWorks;
 		}
 		return super.getAdapter(adapter);
 	}
@@ -1882,5 +1917,5 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		return null;
 	}
-	
+
 }
