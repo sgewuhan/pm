@@ -1,4 +1,4 @@
-package com.sg.business.performence.resource;
+package com.sg.business.performence.project;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +16,8 @@ import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.performence.ui.calendar.ResourceCalender;
+import com.sg.business.performence.ui.calendar.WorkListCellEditor;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectResCalender extends ResourceCalender {

@@ -5,47 +5,53 @@
          point="org.eclipse.ui.views">
       <view
             category="work"
-            class="com.sg.business.performence.resource.OrgResCalender"
+            class="com.sg.business.performence.organization.OrgResCalender"
             id="performence.works.org"
             name="部门资源工时">
       </view>
       <view
             category="work"
-            class="com.sg.business.performence.resource.ProjectResCalender"
+            class="com.sg.business.performence.project.ProjectResCalender"
             id="performence.works.project"
             name="项目资源工时">
       </view>
       <view
             category="work"
-            class="com.sg.business.performence.resource.OrgProjectResCalender"
+            class="com.sg.business.performence.orgproject.OrgProjectResCalender"
             id="performence.works.project.org"
             name="部门项目工时">
+      </view>
+      <view
+            category="work"
+            class="com.sg.business.performence.works.WorksRegister"
+            id="works.register"
+            name="工时记录">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.performence.resource.DisplayYear"
+            class="com.sg.business.performence.ui.handler.DisplayYear"
             commandId="performence.works.org.displayyear">
       </handler>
       <handler
-            class="com.sg.business.performence.resource.Display3Month"
+            class="com.sg.business.performence.ui.handler.Display3Month"
             commandId="performence.works.org.display3month">
       </handler>
       <handler
-            class="com.sg.business.performence.resource.DisplayLeft"
+            class="com.sg.business.performence.ui.handler.DisplayLeft"
             commandId="performence.works.org.displayleft">
       </handler>
       <handler
-            class="com.sg.business.performence.resource.DisplayRight"
+            class="com.sg.business.performence.ui.handler.DisplayRight"
             commandId="performence.works.org.displayright">
       </handler>
       <handler
-            class="com.sg.business.performence.resource.ExpandAll"
+            class="com.sg.business.performence.ui.handler.ExpandAll"
             commandId="performence.expandAll">
       </handler>
       <handler
-            class="com.sg.business.performence.resource.Collapse"
+            class="com.sg.business.performence.ui.handler.Collapse"
             commandId="performence.collapse">
       </handler>
    </extension>
@@ -163,6 +169,82 @@
       <menuContribution
             allPopups="false"
             locationURI="toolbar:performence.works.project?after=additions">
+         <command
+               commandId="performence.works.org.displayyear"
+               icon="image/cal1_24.png"
+               label="显示全年"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="performence.works.org.display3month"
+               icon="image/cal2_24.png"
+               label="显示最近3个月"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="performence.works.org.displayleft"
+               icon="image/left_24.png"
+               label="显示更早"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="performence.works.org.displayright"
+               icon="image/right_24.png"
+               label="显示更晚"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="performence.collapse"
+               icon="image/collapse_24.png"
+               label="收起"
+               style="push">
+         </command>
+         <command
+               commandId="performence.expandAll"
+               icon="image/expand_24.png"
+               label="展开全部"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:performence.works.project.org?after=additions">
          <command
                commandId="performence.works.org.displayyear"
                icon="image/cal1_24.png"

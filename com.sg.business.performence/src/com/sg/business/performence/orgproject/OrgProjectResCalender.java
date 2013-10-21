@@ -1,4 +1,4 @@
-package com.sg.business.performence.resource;
+package com.sg.business.performence.orgproject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.performence.ui.calendar.ResourceCalender;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class OrgProjectResCalender extends ResourceCalender {
@@ -55,7 +56,6 @@ public class OrgProjectResCalender extends ResourceCalender {
 	@Override
 	protected EditingSupport getEditingSupport(int year, int month,
 			int dateOfMonth) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
