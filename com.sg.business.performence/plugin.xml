@@ -25,7 +25,13 @@
             category="work"
             class="com.sg.business.performence.works.WorksRegister"
             id="works.register"
-            name="工时记录">
+            name="部门工时记录">
+      </view>
+      <view
+            category="work"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="work.performence.record"
+            name="今日工作记录">
       </view>
    </extension>
    <extension
@@ -425,10 +431,15 @@
             </column>
          </filterAction>
       </navigator>
+      <navigator
+            id="work.performence.record"
+            table="work.performence.record">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="-1"
             dataSet="com.sg.business.model.dataset.organization.ProjManagedOrgOfCurrentUser"
             id="works.register">
          <column
@@ -617,6 +628,36 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.work.OwnerPerformenceWorkDataSet"
+            fullSelection="true"
+            headerVisiable="false"
+            id="work.performence.record"
+            markupEnabled="true"
+            popupMenu="popup:work.performence.record">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.performence.works.RuntimeWorkLabelprovider2"
+               lazyDisplay="true"
+               name="工作"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               labelProvider="com.sg.business.performence.works.TodaysRecordLabelProvider"
+               name="今日记录"
+               width="40">
+         </column>
+      </table>
    </extension>
 
 </plugin>

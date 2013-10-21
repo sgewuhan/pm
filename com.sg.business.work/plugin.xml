@@ -34,12 +34,6 @@
             id="work.ownerworklist"
             name="我的工作">
       </view>
-      <view
-            category="work"
-            class="com.sg.widgets.part.view.TableNavigator"
-            id="work.performence.record"
-            name="工作记录">
-      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -312,10 +306,6 @@
                   columnDefinitionId="participate">
             </column>
          </searchAction>
-      </navigator>
-      <navigator
-            id="work.performence.record"
-            table="work.performence.record">
       </navigator>
       <navigator
             id="work.workperformenceofwork"
@@ -762,33 +752,6 @@
          </column>
          <column
                columnDefinitionId="participate">
-         </column>
-      </table>
-      <table
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="true"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.work.OwnerPerformenceWorkDataSet"
-            fullSelection="true"
-            headerVisiable="false"
-            id="work.performence.record"
-            markupEnabled="true"
-            popupMenu="popup:work.performence.record">
-         <column
-               column="desc"
-               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider2"
-               lazyDisplay="true"
-               name="工作"
-               style="SWT.LEFT"
-               type="String"
-               width="-1">
-         </column>
-         <column
-               labelProvider="com.sg.business.work.labelprovider.TodaysRecordLabelProvider"
-               name="今日记录"
-               width="40">
          </column>
       </table>
       <table
