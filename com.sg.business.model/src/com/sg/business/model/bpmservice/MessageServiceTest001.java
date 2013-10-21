@@ -47,12 +47,6 @@ public class MessageServiceTest001 extends MessageService {
 			}
 		}
 		return result;
-	
-
-		
-		
-		
-		
 	}
 	
 	
