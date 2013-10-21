@@ -35,6 +35,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.worksreg"
+            name="工时">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.organization"
             name="组织">
       </perspective>
@@ -52,11 +57,6 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.system"
             name="系统">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.worksreg"
-            name="工时">
       </perspective>
    </extension>
    <extension
