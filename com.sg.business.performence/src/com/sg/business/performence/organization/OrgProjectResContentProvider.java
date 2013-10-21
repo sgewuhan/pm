@@ -1,4 +1,4 @@
-package com.sg.business.performence.resource;
+package com.sg.business.performence.organization;
 
 import java.util.List;
 

@@ -30,6 +30,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.finance"
+            name="财务">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.organization"
             name="组织">
       </perspective>
@@ -50,8 +55,8 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.finance"
-            name="财务">
+            id="perspective.worksreg"
+            name="工时">
       </perspective>
    </extension>
    <extension
@@ -449,6 +454,21 @@
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.finance">
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.worksreg">
+         <view
+               closeable="false"
+               id="works.register"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
    </extension>
    <extension
