@@ -56,7 +56,6 @@ public class OrgProjectResCalender extends ResourceCalender {
 	@Override
 	protected EditingSupport getEditingSupport(int year, int month,
 			int dateOfMonth) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
