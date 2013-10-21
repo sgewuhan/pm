@@ -675,7 +675,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_commit"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateCommitProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateCommitProcessDefPage"
                title="提交流程">
          </basicpage>
          <basicpage
@@ -683,7 +683,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.ProjectTemplateChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateChangeProcessDefPage"
                title="变更流程">
          </basicpage>
          <versionControl>
@@ -906,14 +906,14 @@
                description="工作的执行流程"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.ProjectWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdExecuteProcessDefPage"
                title="执行流程">
          </basicpage>
          <basicpage
                description="工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.ProjectWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage>
       </editor>
@@ -1263,14 +1263,14 @@
                description="通用工作的执行流程"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
                title="执行流程">
          </basicpage>
          <basicpage
                description="通用工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage>
          <versionControl>
@@ -1325,14 +1325,14 @@
                description="通用工作的执行流程"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
                title="执行流程">
          </basicpage>
          <basicpage
                description="通用工作的执行流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.GenericWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage>
          <versionControl>
@@ -1397,7 +1397,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
                title="执行流程">
          </basicpage>
          <!--取消独立工作定义的变更流程，这个功能没有实际的用途
@@ -1405,7 +1405,7 @@
                description="独立工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage>
          -->
@@ -1490,14 +1490,14 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
                title="执行流程">
          </basicpage>
          <!--basicpage
                description="独立工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.management.editor.page.process.StandloneWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage-->
          <versionControl>

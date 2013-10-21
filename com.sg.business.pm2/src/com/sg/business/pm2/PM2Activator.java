@@ -15,6 +15,7 @@ import com.sg.business.model.Deliverable;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectRoleAssignment;
@@ -76,25 +77,23 @@ public class PM2Activator extends AbstractUIPlugin {
 		// 此处添加程序用于创建唯一索引
 
 		// 全局设置和用户设置ID和用户ID需要保持唯一
-		ensureIndex(db, IModelConstants.C_SETTING,
-				new BasicDBObject().append("varid", 1).append("userid", 1));
+		ensureUniqureIndex(db, IModelConstants.C_SETTING, new BasicDBObject()
+				.append("varid", 1).append("userid", 1));
 
 		// 同一组织下角色编号不可重复
-		ensureIndex(
-				db,
-				IModelConstants.C_ROLE,
-				new BasicDBObject().append(Role.F_ORGANIZATION_ID, 1).append(
-						Role.F_ROLE_NUMBER, 1));
+		ensureUniqureIndex(db, IModelConstants.C_ROLE, new BasicDBObject()
+				.append(Role.F_ORGANIZATION_ID, 1)
+				.append(Role.F_ROLE_NUMBER, 1));
 
 		// 同一角色指派用户ID不能重复
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_ROLE_ASSIGNMENT,
 				new BasicDBObject().append(RoleAssignment.F_ROLE_ID, 1).append(
 						RoleAssignment.F_USER_ID, 1));
 
 		// 同一个工作定义不能出现两个相同的交付物定义
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_DELIEVERABLE_DEFINITION,
 				new BasicDBObject().append(
@@ -102,12 +101,12 @@ public class PM2Activator extends AbstractUIPlugin {
 						DeliverableDefinition.F_DOCUMENT_DEFINITION_ID, 1));
 
 		// 项目组，同一角色下不能出现相同的用户ID
-		ensureIndex(db, IModelConstants.C_PROJECT_ROLE_ASSIGNMENT,
+		ensureUniqureIndex(db, IModelConstants.C_PROJECT_ROLE_ASSIGNMENT,
 				new BasicDBObject().append(ProjectRoleAssignment.F_ROLE_ID, 1)
 						.append(ProjectRoleAssignment.F_USER_ID, 1));
 
 		// 同一项目角色不允许编号相同
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_PROJECT_ROLE,
 				new BasicDBObject().append(ProjectRole.F_PROJECT_ID, 1)
@@ -115,7 +114,7 @@ public class PM2Activator extends AbstractUIPlugin {
 						.append(ProjectRole.F_ORGANIZATION_ROLE_ID, 1));
 
 		// 同一项目模板角色不允许编号相同
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_ROLE_DEFINITION,
 				new BasicDBObject()
@@ -126,90 +125,92 @@ public class PM2Activator extends AbstractUIPlugin {
 						.append(RoleDefinition.F_WORK_ID, 1));
 
 		// 项目中同一个工作不能出现两个相同的交付物
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_DELIEVERABLE,
 				new BasicDBObject().append(Deliverable.F_WORK_ID, 1).append(
 						Deliverable.F_DOCUMENT_ID, 1));
 
 		// 项目模板中前后置关系前置工作定义和后置工作定义id不允许相同
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_WORK_DEFINITION_CONNECTION,
 				new BasicDBObject().append(WorkDefinitionConnection.F_END1_ID,
 						1).append(WorkDefinitionConnection.F_END2_ID, 1));
 
 		// 项目中前后置关系前置工作和后置工作id不允许相同
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_WORK_CONNECTION,
 				new BasicDBObject().append(WorkConnection.F_END1_ID, 1).append(
 						WorkConnection.F_END2_ID, 1));
 
 		// 不允许用户登陆名相同
-		ensureIndex(db, IModelConstants.C_USER,
+		ensureUniqureIndex(db, IModelConstants.C_USER,
 				new BasicDBObject().append(User.F_USER_ID, 1));
 
 		// 项目模板中不允许出现重复的预算信息
-		ensureIndex(db, IModelConstants.C_BUDGET_ITEM,
+		ensureUniqureIndex(db, IModelConstants.C_BUDGET_ITEM,
 				new BasicDBObject().append(BudgetItem.F_PROJECTTEMPLATE_ID, 1));
 
 		// 项目中不允许出现重复的预算信息
-		ensureIndex(db, IModelConstants.C_PROJECT_BUDGET,
+		ensureUniqureIndex(db, IModelConstants.C_PROJECT_BUDGET,
 				new BasicDBObject().append(ProjectBudget.F_PROJECT_ID, 1));
 
 		// 文件夹下不允许出现重名的文件夹
-		ensureIndex(
-				db,
-				IModelConstants.C_FOLDER,
-				new BasicDBObject().append(Folder.F_PARENT_ID, 1)
-						.append(Folder.F_ROOT_ID, 1).append(Folder.F_DESC, 1));
+		ensureUniqureIndex(db, IModelConstants.C_FOLDER, new BasicDBObject()
+				.append(Folder.F_PARENT_ID, 1).append(Folder.F_ROOT_ID, 1)
+				.append(Folder.F_DESC, 1));
 
 		// 同一组织中不允许出现重名的项目模板
-		ensureIndex(
+		ensureUniqureIndex(
 				db,
 				IModelConstants.C_PROJECT_TEMPLATE,
 				new BasicDBObject()
 						.append(ProjectTemplate.F_ORGANIZATION_ID, 1).append(
 								ProjectTemplate.F_DESC, 1));
 
+		// 组织代码唯一
+		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
+				new BasicDBObject().append(Organization.F_CODE, 1));
+
+		
 		// 创建工作归档字段索引
-		DBCollection col = db.getCollection(IModelConstants.C_WORK);
-		col.createIndex(new BasicDBObject().append(Work.F_ARCHIVE, 1));
+		ensureIndex(db, IModelConstants.C_WORK,
+				new BasicDBObject().append(Work.F_ARCHIVE, 1));
 
-		// // 同一组织中不允许出现重名的独立/通用工作定义
-		// ensureIndex(
-		// db,
-		// IModelConstants.C_WORK_DEFINITION,
-		// new BasicDBObject().append(WorkDefinition.F_ORGANIZATION_ID, 1)
-		// .append(WorkDefinition.F_DESC, 1)
-		// .append(WorkDefinition.F_WORK_TYPE, 1));
-
-		// 同一项目中不允许出现多个根工作
-		// ensureIndex(
-		// db,
-		// IModelConstants.C_WORK,
-		// new BasicDBObject().append(Work.F_PROJECT_ID, 1)
-		// .append(Work.F_ROOT_ID, 1).append(Work.F_PARENT_ID, 1)
-		// .append(Work.F_WORK_TYPE, 1));
-
-		// 同一项目模板中不允许出现多个根工作定义
-		// ensureIndex(
-		// db,
-		// IModelConstants.C_WORK_DEFINITION,
-		// new BasicDBObject()
-		// .append(WorkDefinition.F_PROJECT_TEMPLATE_ID, 1)
-		// .append(WorkDefinition.F_ROOT_ID, 1)
-		// .append(WorkDefinition.F_PARENT_ID, 1)
-		// .append(WorkDefinition.F_WORK_TYPE, 1));
+		
+		/**
+		 * 请注意！！！
+		 * 
+		 * 创建索引时当索引重复或者已经创建时，在某些数据库设置下，将要抛出错误
+		 * 如果数据库已经保存有问题的数据，也将抛出错误。
+		 * 
+		 * 如果不忽略这些错误将导致本bundle无法正常启动，并且索引创建不完整
+		 * 
+		 * 要求使用
+		 * ensureUniqureIndex
+		 * ensureIndex
+		 * 以上两个方法创建索引以避免该问题
+		 * 
+		 */
 	}
 
 	private void ensureIndex(DB db, String colname, BasicDBObject index) {
 		try {
 			DBCollection col = db.getCollection(colname);
+			col.createIndex(index);
+		} catch (Exception e) {
+//			e.printStackTrace();
+		}
+	}
+
+	private void ensureUniqureIndex(DB db, String colname, BasicDBObject index) {
+		try {
+			DBCollection col = db.getCollection(colname);
 			col.ensureIndex(index, "unique", true);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

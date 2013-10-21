@@ -11,13 +11,13 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -67,10 +67,10 @@ public abstract class ProcessSettingPanel2 extends Composite {
 	private ListenerList listeners = new ListenerList();
 	private List<DroolsProcessDefinition> processDefinitionsChoice;
 	private boolean processActivate;
-	private String roleNavigatorId;
+//	private String roleNavigatorId;
 	private DataSet roleDataSet;
 	private DataSet actorDataSet;
-	private String actorNavigatorId;
+//	private String actorNavigatorId;
 	private AbstractRoleDefinition selectedRole;
 	private User selectedActor;
 	private boolean editable = true;
@@ -101,13 +101,14 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			createProcessSelector(this);
 		}
 
-		Composite panel = new Composite(this, SWT.NONE);
-		panel.setLayout(new GridLayout(2, false));
+		SashForm panel = new SashForm(this, SWT.HORIZONTAL);
+//		panel.setLayout(new GridLayout(2, false));
 
 		createActivatySelector(panel);
 
 		createActivityEditor(panel);
 
+		panel.setWeights(new int[]{1,1});
 		refresh();
 	}
 
@@ -123,9 +124,17 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			public DataSet getActorDataSet() {
 				return ProcessSettingPanel2.this.getActorDataSet();
 			}
+
+			@Override
+			protected String getActorNavigatorId() {
+				return ProcessSettingPanel2.this.getActorNavigatorId();
+			}
+
+			@Override
+			protected String getRoleNavigatorId() {
+				return ProcessSettingPanel2.this.getRoleNavigatorId();
+			}
 		};
-		activiteEditor.setRoleNavigatorId(roleNavigatorId);
-		activiteEditor.setActorNavigatorId(actorNavigatorId);
 		activiteEditor.addActiviteEditListener(new IActivityEditListener() {
 
 			@Override
@@ -162,9 +171,13 @@ public abstract class ProcessSettingPanel2 extends Composite {
 		activiteEditor.setEditable(editable);
 	}
 
+	protected abstract String getRoleNavigatorId();
+
+	protected abstract String getActorNavigatorId() ;
+
 	private void createActivatySelector(Composite panel) {
 		activitySelecter = new ActivitySelecter(panel);
-		activitySelecter.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true,
+		activitySelecter.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false,
 				false));
 
 		activitySelecter.addListener(new INodeSelectionListener() {
@@ -373,9 +386,9 @@ public abstract class ProcessSettingPanel2 extends Composite {
 
 	}
 
-	public void setRoleNavigatorId(String roleNavigatorId) {
-		this.roleNavigatorId = roleNavigatorId;
-	}
+//	public void setRoleNavigatorId(String roleNavigatorId) {
+//		this.roleNavigatorId = roleNavigatorId;
+//	}
 
 	public void setRoleDataSet(DataSet roleDataSet) {
 		this.roleDataSet = roleDataSet;
@@ -385,9 +398,9 @@ public abstract class ProcessSettingPanel2 extends Composite {
 		return roleDataSet;
 	}
 
-	public void setActorNavigatorId(String actorNavigatorId) {
-		this.actorNavigatorId = actorNavigatorId;
-	}
+//	public void setActorNavigatorId(String actorNavigatorId) {
+//		this.actorNavigatorId = actorNavigatorId;
+//	}
 
 	public void setActorDataSet(DataSet actorDataSet) {
 		this.actorDataSet = actorDataSet;

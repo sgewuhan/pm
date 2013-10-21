@@ -35,7 +35,8 @@ public class EditWork extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, final IWorkbenchPart part,
-			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
+			ViewerControl vc, Command command, Map<String, Object> parameters,
+			IStructuredSelection selection) {
 		Work work = (Work) selected;
 		Shell shell = part.getSite().getShell();
 
@@ -49,10 +50,18 @@ public class EditWork extends AbstractNavigatorHandler {
 		if (work.isSummaryWork()) {
 			editorId = "edit.work.plan.2";
 		} else {
-			if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
-				editorId = "edit.work.plan.1";
+			if (work.isStandloneWork()) {
+				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
+					editorId = "edit.work.plan.4";
+				} else {
+					editorId = "edit.work.plan.3";
+				}
 			} else {
-				editorId = "edit.work.plan.0";
+				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
+					editorId = "edit.work.plan.1";
+				} else {
+					editorId = "edit.work.plan.0";
+				}
 			}
 		}
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(

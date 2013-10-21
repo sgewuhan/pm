@@ -26,12 +26,22 @@
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.visualization"
-            name="绩效视图">
+            name="绩效">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.finance"
+            name="财务">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.worksreg"
+            name="工时">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.organization"
-            name="组织管理">
+            name="组织">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -47,11 +57,6 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.system"
             name="系统">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.finance"
-            name="财务">
       </perspective>
    </extension>
    <extension
@@ -327,33 +332,9 @@
                id="management.organization.navigaor"
                minimized="false"
                moveable="false"
-               ratio="0.5"
+               ratio="0.4"
                relationship="left"
                relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="management.projecttemplates"
-               minimized="false"
-               moveable="false"
-               ratio="0.33"
-               relationship="right"
-               relative="management.organization.navigaor"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="management.genericwork.definitions"
-               minimized="false"
-               moveable="false"
-               ratio="0.5"
-               relationship="right"
-               relative="management.projecttemplates"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -364,7 +345,30 @@
                minimized="false"
                moveable="false"
                ratio="0.5"
+               relationship="right"
+               relative="management.organization.navigaor"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="management.projecttemplates"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
                relationship="bottom"
+               relative="management.organization.navigaor"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="management.genericwork.definitions"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
                relative="management.projecttemplates"
                showTitle="true"
                standalone="false"
@@ -375,8 +379,7 @@
                id="management.standlonework.definitions"
                minimized="false"
                moveable="false"
-               ratio="0.5"
-               relationship="bottom"
+               relationship="stack"
                relative="management.genericwork.definitions"
                showTitle="true"
                standalone="false"
@@ -451,6 +454,21 @@
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.finance">
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.worksreg">
+         <view
+               closeable="false"
+               id="works.register"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
    </extension>
    <extension

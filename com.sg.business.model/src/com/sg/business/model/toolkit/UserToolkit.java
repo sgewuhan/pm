@@ -45,4 +45,5 @@ public class UserToolkit {
 				User.F_USER_ID, userId));
 		return ModelService.createModelObject(userData, User.class);
 	}
+
 }

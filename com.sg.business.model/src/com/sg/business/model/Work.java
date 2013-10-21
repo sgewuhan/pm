@@ -1308,10 +1308,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
 			}
 			// 2.检查工作的计划工时
-			value = getPlanWorks();
-			if (value == null) {
-				message.add(new Object[] { "工作的计划工时没有确定", this, SWT.ICON_ERROR,
-						EDIT_WORK_PLAN_0 });
+			// 如果是独立工作可以跳过本步骤
+			if (!isStandloneWork()) {
+				value = getPlanWorks();
+				if (value == null) {
+					message.add(new Object[] { "工作的计划工时没有确定", this,
+							SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
+				}
 			}
 			// 3.检查工作名称
 			value = getDesc();
@@ -2314,8 +2317,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				col.remove(new BasicDBObject().append(WorksAllocate.F_WORKID,
 						new BasicDBObject().append("$in", syncRemove)),
 						WriteConcern.NORMAL);
-				
-				if (works == null || works.doubleValue() == 0d) {
+
+				if (works == null || works.doubleValue() == 0d || start == null
+						|| finish == null) {
 					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
@@ -2486,7 +2490,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 				try {
 					DBUtil.SAVELOG(userid, "自动分摊实际工时", new Date(),
-							"工作完工时计算工时数据", IModelConstants.DB);
+							"工作完成时计算工时数据", IModelConstants.DB);
 				} catch (Exception e) {
 				}
 				return org.eclipse.core.runtime.Status.OK_STATUS;
