@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IContentProvider;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.performence.calendar.ResourceCalender;
+import com.sg.business.performence.ui.calendar.ResourceCalender;
 
 public class WorksRegister extends ResourceCalender {
 
