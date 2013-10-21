@@ -72,6 +72,10 @@
             class="com.sg.business.performence.ui.handler.EditWorkRecord"
             commandId="runtimework.record">
       </handler>
+      <handler
+            class="com.sg.business.performence.ui.handler.AppendWorkRecord"
+            commandId="work.appendrecord">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -114,6 +118,11 @@
             categoryId="work"
             id="work.editrecord"
             name="编辑/查看">
+      </command>
+      <command
+            categoryId="work"
+            id="work.appendrecord"
+            name="补报工作记录">
       </command>
    </extension>
    <extension
@@ -391,6 +400,57 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:works.register">
+         <command
+               commandId="work.appendrecord"
+               icon="image/log_add_24.png"
+               label="补报工作记录"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/log_24.png"
+               label="编辑/查看"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editor.create.workrecord">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.editable"
+                  value="true">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.sg.business.model.WorksPerformence">
+                     </instanceof>
+                  </iterate>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
+         </command>
+         <separator
+               name="work.performence.record.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -440,8 +500,11 @@
          point="com.sg.widgets.tree">
       <tree
             autoExpandLevel="-1"
+            canEdit="true"
             dataSet="com.sg.business.model.dataset.organization.ProjManagedOrgOfCurrentUser"
-            id="works.register">
+            editorId="editor.append.workrecord"
+            id="works.register"
+            popupMenu="popup:works.register">
          <column
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
                width="320">
@@ -609,6 +672,117 @@
                         type="Date"
                         userlabelForReadonly="true">
                   </text>
+               </section>
+               <section
+                     label="工作记录">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="content"
+                        label="记录"
+                        labelVisible="false"
+                        name="content"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="360">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="worksperformence"
+            dbName="pm2"
+            id="editor.append.workrecord"
+            image="image/log_24.png"
+            name="补录工作记录">
+         <basicpage
+               id="workrecord"
+               image="image/log_24.png"
+               title="工作记录">
+            <pagecolumn>
+               <section
+                     label="概况">
+                  <navigatorSelector
+                        editable="true"
+                        id="workid"
+                        label="工作"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Work"
+                        name="workid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="userid"
+                        label="工作负责人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="userid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="进展记录">
+                  <combo
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="desc"
+                        label="进展状况"
+                        labelVisible="true"
+                        name="desc"
+                        option="进展状况"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </combo>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="works"
+                        label="今天本工作已完成工时(时)"
+                        labelVisible="true"
+                        name="works"
+                        persistable="true"
+                        presentation="com.sg.widgets.commons.valuepresentation.NumberTextPresentation"
+                        presentationFormat="#########.00"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="worksfinishedpercent"
+                        inputValidator="com.sg.business.performence.works.WorksFinishedPercentValidator"
+                        label="工作量累计完成百分比"
+                        labelVisible="true"
+                        name="worksfinishedpercent"
+                        persistable="true"
+                        presentation="com.sg.widgets.commons.valuepresentation.NumberTextPresentation"
+                        presentationFormat="#########.00%"
+                        required="false"
+                        type="Double">
+                  </text>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="commitdate"
+                        label="记录日期"
+                        labelVisible="true"
+                        name="commitdate"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
                </section>
                <section
                      label="工作记录">
