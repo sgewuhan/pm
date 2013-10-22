@@ -70,10 +70,27 @@ public class PM2Activator extends AbstractUIPlugin {
 
 	protected void initialPMSystem() {
 		ensureIndex();
+		// 正式发行需删除本程序
+		mntRemoveBeforeRelease();
+	}
+
+	private void mntRemoveBeforeRelease() {
+		DB db = DBActivator.getDB(IModelConstants.DB);
+		DBCollection col = db.getCollection(IModelConstants.C_WORKS_ALLOCATE);
+		col.update(
+				new BasicDBObject(),
+				new BasicDBObject().append("$rename",
+						new BasicDBObject().append("projectid", "project_id")));
+		col = db.getCollection(IModelConstants.C_WORKS_PERFORMENCE);
+		col.update(
+				new BasicDBObject(),
+				new BasicDBObject().append("$rename",
+						new BasicDBObject().append("projectid", "project_id")));
 	}
 
 	private void ensureIndex() {
 		DB db = DBActivator.getDB(IModelConstants.DB);
+
 		// 此处添加程序用于创建唯一索引
 
 		// 全局设置和用户设置ID和用户ID需要保持唯一
@@ -174,24 +191,18 @@ public class PM2Activator extends AbstractUIPlugin {
 		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
 				new BasicDBObject().append(Organization.F_CODE, 1));
 
-		
 		// 创建工作归档字段索引
 		ensureIndex(db, IModelConstants.C_WORK,
 				new BasicDBObject().append(Work.F_ARCHIVE, 1));
 
-		
 		/**
 		 * 请注意！！！
 		 * 
-		 * 创建索引时当索引重复或者已经创建时，在某些数据库设置下，将要抛出错误
-		 * 如果数据库已经保存有问题的数据，也将抛出错误。
+		 * 创建索引时当索引重复或者已经创建时，在某些数据库设置下，将要抛出错误 如果数据库已经保存有问题的数据，也将抛出错误。
 		 * 
 		 * 如果不忽略这些错误将导致本bundle无法正常启动，并且索引创建不完整
 		 * 
-		 * 要求使用
-		 * ensureUniqureIndex
-		 * ensureIndex
-		 * 以上两个方法创建索引以避免该问题
+		 * 要求使用 ensureUniqureIndex ensureIndex 以上两个方法创建索引以避免该问题
 		 * 
 		 */
 	}
@@ -201,7 +212,7 @@ public class PM2Activator extends AbstractUIPlugin {
 			DBCollection col = db.getCollection(colname);
 			col.createIndex(index);
 		} catch (Exception e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -210,7 +221,7 @@ public class PM2Activator extends AbstractUIPlugin {
 			DBCollection col = db.getCollection(colname);
 			col.ensureIndex(index, "unique", true);
 		} catch (Exception e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 

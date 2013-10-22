@@ -257,6 +257,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FLOW_ACTIVITY_FINISH_24 = "human_complete_24.png";
 
 	public static final String IMAGE_FLOW_ACTIVITY_UNFINISH_24 = "human_uncomplete_24.png";
+	
+	public static final String IMAGE_LOG_16 = "log_16.png";
 
 
 	/**

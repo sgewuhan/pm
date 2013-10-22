@@ -172,23 +172,23 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="pm.systemprojectapprove.audit"
+            editorId="xt.systemprojectapprove.audit"
             name="审批"
             persistentFields="comment,choice,pretrial,reviewer_list,reviewer_admin"
-            processDefinitionId="pm.systemprojectapprove"
+            processDefinitionId="xt.systemprojectapprove"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
+               processParameterName="pretrial"
+               taskFormFieldName="pretrial">
+         </processParameter>
+         <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
-         </processParameter>
-         <processParameter
-               processParameterName="pretrial"
-               taskFormFieldName="pretrial">
          </processParameter>
          <processParameter
                processParameterName="reviewer_admin"
@@ -269,8 +269,8 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.systemprojectapprove.audit"
-            name="系统部评审审批">
+            id="xt.systemprojectapprove.audit"
+            name="审批">
          <basicpage
                id="basicpage1"
                title="审批">

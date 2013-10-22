@@ -1,4 +1,4 @@
-package com.sg.business.work.editor.field;
+package com.sg.business.performence.works;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.commons.valuevalidator.AbstractValidator;

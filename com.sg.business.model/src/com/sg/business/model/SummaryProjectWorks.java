@@ -12,7 +12,7 @@ public class SummaryProjectWorks extends AbstractWorksSummary {
 
 	@Override
 	protected Object getMatchCondition(PrimaryObject data) {
-		BasicDBObject result = new BasicDBObject().append(WorksPerformence.F_PROJECTID,
+		BasicDBObject result = new BasicDBObject().append(WorksPerformence.F_PROJECT_ID,
 				data.get_id());
 		Object participate = data.getValue("$participate");
 		if(participate instanceof String[]){
