@@ -391,12 +391,20 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
+               <and>
+                  <with
+                        variable="selection">
+                     <count
+                           value="1">
+                     </count>
+                  </with>
+                  <with
+                        variable="activePartId">
+                     <equals
+                           value="work.performence.record">
+                     </equals>
+                  </with>
+               </and>
             </visibleWhen>
          </command>
       </menuContribution>
