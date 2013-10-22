@@ -371,7 +371,8 @@
             end2Class="com.sg.business.model.WorksPerformence"
             end2Key="userid"
             id="user_worksperformence"
-            name="用户的工时记录">
+            name="用户的工时记录"
+            sort="com.sg.business.model.bson.WorksPerformenceSorter">
       </relation>
       <relation
             end1Class="com.sg.business.model.Work"

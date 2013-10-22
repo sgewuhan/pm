@@ -538,13 +538,6 @@
                width="90">
          </column>
          <column
-               column="datecode"
-               labelProvider="com.sg.business.performence.works.DateCodeLabelProvider"
-               name="提交日期"
-               type="Date"
-               width="120">
-         </column>
-         <column
                column="projectdesc"
                name="项目"
                type="String"
