@@ -495,6 +495,28 @@
             id="work.performence.record"
             table="work.performence.record">
       </navigator>
+      <navigator
+            id="works.append.userselector"
+            tree="works.append.userselector">
+         <searchAction>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+         </searchAction>
+         <filterAction>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+         </filterAction>
+      </navigator>
+      <navigator
+            id="works.append.workselector"
+            tree="works.append.workselector">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -549,6 +571,30 @@
          </structure>
          <structure
                modelRelation="user_worksperformence">
+         </structure>
+      </tree>
+      <tree
+            dataSet="com.sg.business.model.dataset.organization.ProjManagedOrgOfCurrentUser"
+            id="works.append.userselector">
+         <column
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               width="-1">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+      </tree>
+      <tree
+            dataSet="com.sg.business.model.dataset.project.ManagementProject2"
+            id="works.append.workselector">
+         <column
+               columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <structure
+               modelRelation="work_work">
          </structure>
       </tree>
    </extension>
@@ -709,10 +755,10 @@
                         id="workid"
                         label="工作"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
                         modelClass="com.sg.business.model.Work"
                         name="workid"
-                        navigatorId="project.participte.selector"
+                        navigatorId="works.append.workselector"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="true">
@@ -725,7 +771,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="userid"
-                        navigatorId="project.participte.selector"
+                        navigatorId="works.append.userselector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">

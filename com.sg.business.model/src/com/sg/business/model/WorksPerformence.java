@@ -15,11 +15,11 @@ public class WorksPerformence extends AbstractWorksMetadata {
 		return BusinessResource.getImage(BusinessResource.IMAGE_LOG_16);
 	}
 	
-	@Override
-	public String getLabel() {
-		return getDesc()+" "+getLogDate();
-		
-	}
+//	@Override
+//	public String getLabel() {
+//		return getDesc()+" "+getLogDate();
+//		
+//	}
 
 	public String getLogDate() {
 		Long dateCode = (Long) getValue(F_DATECODE);
