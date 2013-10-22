@@ -545,13 +545,6 @@
                width="120">
          </column>
          <column
-               column="userid"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="提交人"
-               type="String"
-               width="120">
-         </column>
-         <column
                column="projectdesc"
                name="项目"
                type="String"
@@ -574,7 +567,9 @@
          </structure>
       </tree>
       <tree
+            autoExpandLevel="2"
             dataSet="com.sg.business.model.dataset.organization.ProjManagedOrgOfCurrentUser"
+            headerVisiable="false"
             id="works.append.userselector">
          <column
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
@@ -588,13 +583,15 @@
          </structure>
       </tree>
       <tree
-            dataSet="com.sg.business.model.dataset.project.ManagementProject2"
+            autoExpandLevel="-1"
+            dataSet="com.sg.business.model.dataset.project.ManagementProjectRootWork"
+            headerVisiable="false"
             id="works.append.workselector">
          <column
                columnDefinitionId="com.sg.widgets.column.desc">
          </column>
          <structure
-               modelRelation="work_work">
+               modelRelation="work_workwip">
          </structure>
       </tree>
    </extension>
@@ -709,7 +706,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="commitdate"
-                        label="记录日期"
+                        label="填报日期"
                         labelVisible="true"
                         name="commitdate"
                         persistable="true"
@@ -755,11 +752,12 @@
                         id="workid"
                         label="工作"
                         labelVisible="true"
-                        labelprovider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+                        labelprovider="com.sg.business.performence.works.PerformenceWorkLabelProvider"
                         modelClass="com.sg.business.model.Work"
                         name="workid"
                         navigatorId="works.append.workselector"
                         navigatorReturnField="_id"
+                        navigatorSelectorControl="com.sg.business.performence.works.WorkSelectControl"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -773,6 +771,7 @@
                         name="userid"
                         navigatorId="works.append.userselector"
                         navigatorReturnField="userid"
+                        navigatorSelectorControl="com.sg.business.performence.works.UserSelectControl"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -821,12 +820,12 @@
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
-                        id="commitdate"
+                        id="datecode"
                         label="记录日期"
                         labelVisible="true"
-                        name="commitdate"
+                        name="datecode"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="Date">
                   </dateTime>
                </section>

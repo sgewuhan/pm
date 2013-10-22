@@ -3771,7 +3771,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Project project = getProject();
 		if (project != null) {
 			po.setValue(WorksPerformence.F_PROJECTDESC, project.getLabel());
-			po.setValue(WorksPerformence.F_PROJECTID, project.get_id());
+			po.setValue(WorksPerformence.F_PROJECT_ID, project.get_id());
 		}
 
 		po.setValue(WorksPerformence.F_WORKDESC, getLabel());
