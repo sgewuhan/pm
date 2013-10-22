@@ -364,6 +364,28 @@
       </relation>
    </extension>
    <extension
+         point="com.mobnut.db.modelRelation">
+      <relation
+            end1Class="com.sg.business.model.User"
+            end1Key="userid"
+            end2Class="com.sg.business.model.WorksPerformence"
+            end2Key="userid"
+            id="user_worksperformence"
+            name="用户的工时记录"
+            sort="com.sg.business.model.bson.WorksPerformenceSorter">
+      </relation>
+      <relation
+            end1Class="com.sg.business.model.Work"
+            end1Key="_id"
+            end2Class="com.sg.business.model.Work"
+            end2Condition="com.sg.business.model.bson.WipWorkCondition"
+            end2Key="parent_id"
+            id="work_workwip"
+            name="WBS分解结构 进行中"
+            sort="com.sg.business.model.bson.SEQSorter">
+      </relation>
+   </extension>
+   <extension
          point="com.sg.bpm.service.serviceTask">
       <service
             interface="lifecycle.service.action"

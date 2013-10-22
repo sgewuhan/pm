@@ -17,7 +17,7 @@ public class SummaryUserWorks extends AbstractWorksSummary {
 		//是否需要根据项目进行聚合
 		if(data.hasKey("$projectid")){
 			Object projectid = data.getValue("$projectid");
-			condition.put(WorksPerformence.F_PROJECTID, projectid);
+			condition.put(WorksPerformence.F_PROJECT_ID, projectid);
 		}
 		
 		return condition;
@@ -28,7 +28,7 @@ public class SummaryUserWorks extends AbstractWorksSummary {
 		BasicDBObject condition = super.getDateCondition(userid, dateCode);
 		if(data.hasKey("$projectid")){
 			Object projectid = data.getValue("$projectid");
-			condition.put(WorksPerformence.F_PROJECTID, projectid);
+			condition.put(WorksPerformence.F_PROJECT_ID, projectid);
 		}
 		
 		return condition;

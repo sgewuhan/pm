@@ -1,4 +1,4 @@
-package com.sg.business.work.handler;
+package com.sg.business.performence.ui.handler;
 
 import java.util.Map;
 
@@ -8,14 +8,12 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
-import com.sg.business.model.WorkRecord;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
-import com.sg.widgets.part.editor.DataObjectDialog;
+import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.viewer.ViewerControl;
 
-@Deprecated
-public class EditWorkRecord extends AbstractNavigatorHandler {
+public class OpenWorkRecord extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
@@ -23,17 +21,15 @@ public class EditWorkRecord extends AbstractNavigatorHandler {
 			Map<String, Object> parameters, IStructuredSelection selection) {
 		if (selected instanceof Work) {
 			Work work = (Work) selected;
-			WorkRecord po = work.makeWorkRecord();
 
 			try {
-				DataObjectDialog.openDialog(po, "editor.create.workrecord",
-						true, null);
-
+				DataObjectEditor editor = DataObjectEditor.open(work,
+						"view.work", false, null);
+				editor.setActivePage("workrecord");
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}
 		}
-
 	}
 
 

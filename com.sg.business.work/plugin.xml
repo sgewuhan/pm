@@ -34,12 +34,6 @@
             id="work.ownerworklist"
             name="我的工作">
       </view>
-      <view
-            category="work"
-            class="com.sg.widgets.part.view.TableNavigator"
-            id="work.performence.record"
-            name="工作记录">
-      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -312,10 +306,6 @@
                   columnDefinitionId="participate">
             </column>
          </searchAction>
-      </navigator>
-      <navigator
-            id="work.performence.record"
-            table="work.performence.record">
       </navigator>
       <navigator
             id="work.workperformenceofwork"
@@ -762,33 +752,6 @@
          </column>
          <column
                columnDefinitionId="participate">
-         </column>
-      </table>
-      <table
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="true"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.work.OwnerPerformenceWorkDataSet"
-            fullSelection="true"
-            headerVisiable="false"
-            id="work.performence.record"
-            markupEnabled="true"
-            popupMenu="popup:work.performence.record">
-         <column
-               column="desc"
-               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider2"
-               lazyDisplay="true"
-               name="工作"
-               style="SWT.LEFT"
-               type="String"
-               width="-1">
-         </column>
-         <column
-               labelProvider="com.sg.business.work.labelprovider.TodaysRecordLabelProvider"
-               name="今日记录"
-               width="40">
          </column>
       </table>
       <table
@@ -1369,143 +1332,6 @@
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
                title="工作变更流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="worksperformence"
-            dbName="pm2"
-            id="editor.create.workrecord"
-            image="image/log_24.png"
-            name="工作记录">
-         <basicpage
-               id="workrecord"
-               image="image/log_24.png"
-               title="工作记录">
-            <pagecolumn>
-               <section
-                     label="概况">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="projectdesc"
-                        label="项目"
-                        labelVisible="true"
-                        name="projectdesc"
-                        persistable="false"
-                        required="false"
-                        type="String"
-                        userlabelForReadonly="true">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="workdesc"
-                        label="工作"
-                        labelVisible="true"
-                        name="workdesc"
-                        persistable="false"
-                        required="false"
-                        type="String"
-                        userlabelForReadonly="true">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="planworks"
-                        label="计划工时"
-                        labelVisible="true"
-                        name="planworks"
-                        persistable="false"
-                        presentation="com.sg.widgets.commons.valuepresentation.NumberTextPresentation"
-                        presentationFormat="#########.00"
-                        required="false"
-                        type="Double"
-                        userlabelForReadonly="true">
-                  </text>
-               </section>
-               <section
-                     label="进展记录">
-                  <combo
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="desc"
-                        label="进展状况"
-                        labelVisible="true"
-                        name="desc"
-                        option="进展状况"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </combo>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="works"
-                        label="今天本工作已完成工时(时)"
-                        labelVisible="true"
-                        name="works"
-                        persistable="true"
-                        presentation="com.sg.widgets.commons.valuepresentation.NumberTextPresentation"
-                        presentationFormat="#########.00"
-                        required="true"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="worksfinishedpercent"
-                        inputValidator="com.sg.business.work.editor.field.WorksFinishedPercentValidator"
-                        label="工作量累计完成百分比"
-                        labelVisible="true"
-                        name="worksfinishedpercent"
-                        persistable="true"
-                        presentation="com.sg.widgets.commons.valuepresentation.NumberTextPresentation"
-                        presentationFormat="#########.00%"
-                        required="false"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="userid"
-                        label="填报人"
-                        labelVisible="true"
-                        name="userid"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
-                        type="String"
-                        userlabelForReadonly="true">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="commitdate"
-                        label="记录日期"
-                        labelVisible="true"
-                        name="commitdate"
-                        persistable="true"
-                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
-                        presentationFormat="yy/MM/dd E HH:mm:ss"
-                        type="Date"
-                        userlabelForReadonly="true">
-                  </text>
-               </section>
-               <section
-                     label="工作记录">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="content"
-                        label="记录"
-                        labelVisible="false"
-                        name="content"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="360">
-                  </text>
-               </section>
-            </pagecolumn>
          </basicpage>
       </editor>
    </extension>
@@ -2238,51 +2064,6 @@
                tooltip="创建独立于项目的新工作">
          </command>
       </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:work.performence.record">
-         <command
-               commandId="work.addrecord"
-               icon="image/log_add_24.png"
-               label="填报工作记录"
-               style="push">
-         </command>
-         <command
-               commandId="work.editrecord"
-               icon="image/log_24.png"
-               label="编辑/查看"
-               style="push">
-         </command>
-         <separator
-               name="work.performence.record.separator1"
-               visible="true">
-         </separator>
-         <command
-               commandId="com.sg.widgets.command.refresh"
-               icon="image/refresh_24.png"
-               label="更新"
-               style="push">
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:work.performence.record?after=additions">
-         <command
-               commandId="work.addrecord"
-               icon="image/log_add_24.png"
-               label="填报工作记录"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2369,16 +2150,6 @@
             id="work.opendeliverable"
             name="工作交付物">
       </command>
-      <command
-            categoryId="work"
-            id="work.addrecord"
-            name="填报工作记录">
-      </command>
-      <command
-            categoryId="work"
-            id="work.editrecord"
-            name="编辑/查看">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2423,24 +2194,12 @@
             commandId="runtimework.mark">
       </handler>
       <handler
-            class="com.sg.business.work.handler.EditWorkRecord"
-            commandId="runtimework.record">
-      </handler>
-      <handler
             class="com.sg.business.work.handler.LaunchWork"
             commandId="work.launch">
       </handler>
       <handler
             class="com.sg.business.work.handler.OpenDeliverable"
             commandId="work.opendeliverable">
-      </handler>
-      <handler
-            class="com.sg.business.work.handler.AddWorkRecord"
-            commandId="work.addrecord">
-      </handler>
-      <handler
-            class="com.sg.business.work.handler.OpenWorkRecord"
-            commandId="work.editrecord">
       </handler>
    </extension>
    <extension
