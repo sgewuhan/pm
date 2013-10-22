@@ -529,8 +529,9 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             canEdit="true"
+            contentProvider="com.sg.business.performence.works.PerformenceContentProvider"
             dataSet="com.sg.business.model.dataset.organization.ProjManagedOrgOfCurrentUser"
             editorId="editor.append.workrecord"
             id="works.register"
@@ -878,6 +879,15 @@
                width="40">
          </column>
       </table>
+   </extension>
+   <extension
+         point="com.mobnut.db.documentModelAdapter">
+      <doc
+            class="com.sg.business.performence.works.MonthFolder"
+            collection="monthfolder"
+            db="pm2"
+            id="pm2.monthfolder">
+      </doc>
    </extension>
 
 </plugin>
