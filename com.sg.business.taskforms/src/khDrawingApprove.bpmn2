@@ -31,7 +31,7 @@
     </bpmn2:operation>
   </bpmn2:interface>
   <bpmn2:itemDefinition id="__561B2665-42EC-464C-8E7E-172853176F6E_contentInputItem" structureRef="String"/>
-  <bpmn2:process id="kh.khblueprintapprove" drools:packageName="kh" name="&#31354;&#27668;&#24377;&#31783;&#39033;&#30446;&#37096;&#22270;&#32440;&#23457;&#25209;&#27969;&#31243;" isExecutable="true">
+  <bpmn2:process id="kh.khDrawingApprove" drools:packageName="kh" name="&#31354;&#27668;&#24377;&#31783;&#39033;&#30446;&#37096;&#22270;&#32440;&#23457;&#25209;&#27969;&#31243;" isExecutable="true">
     <bpmn2:property id="act_check" itemSubjectRef="_act_checkItem"/>
     <bpmn2:property id="act_auditor" itemSubjectRef="_act_auditorItem"/>
     <bpmn2:property id="act_craft" itemSubjectRef="_act_craftItem"/>
@@ -311,7 +311,7 @@
     <bpmn2:sequenceFlow id="_561B2665-42EC-464C-8E7E-172853176F6E-_D46CD89D-ADAC-4126-A864-5858E8FD351E" sourceRef="_561B2665-42EC-464C-8E7E-172853176F6E" targetRef="_D46CD89D-ADAC-4126-A864-5858E8FD351E"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_phqNUjmiEeOdn4piepGWnQ">
-    <bpmndi:BPMNPlane id="_phqNUzmiEeOdn4piepGWnQ" bpmnElement="kh.khblueprintapprove">
+    <bpmndi:BPMNPlane id="_phqNUzmiEeOdn4piepGWnQ" bpmnElement="kh.khDrawingApprove">
       <bpmndi:BPMNShape id="_phqNVDmiEeOdn4piepGWnQ" bpmnElement="_7BC6B7D8-C22E-4994-BA8D-F2AF1EBBDEB2">
         <dc:Bounds height="30.0" width="30.0" x="30.0" y="240.0"/>
       </bpmndi:BPMNShape>

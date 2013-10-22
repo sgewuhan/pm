@@ -22,7 +22,7 @@
     </bpmn2:operation>
   </bpmn2:interface>
   <bpmn2:itemDefinition id="__FBBC9EE4-F85E-4AED-8D70-0F67FFE38FD2_contentInputItem" structureRef="String"/>
-  <bpmn2:process id="kh.khdocumentapprove1" drools:packageName="kh" name="&#31354;&#31783;&#25991;&#20214;&#23457;&#25209;&#27969;&#31243;1" isExecutable="true">
+  <bpmn2:process id="kh.khDocumentApprove1" drools:packageName="kh" name="&#31354;&#31783;&#25991;&#20214;&#23457;&#25209;&#27969;&#31243;1" isExecutable="true">
     <bpmn2:property id="act_auditor" itemSubjectRef="_act_auditorItem"/>
     <bpmn2:property id="act_approve" itemSubjectRef="_act_approveItem"/>
     <bpmn2:property id="content" itemSubjectRef="_contentItem"/>
@@ -169,7 +169,7 @@
     <bpmn2:sequenceFlow id="_FBBC9EE4-F85E-4AED-8D70-0F67FFE38FD2-_48D9C0E9-29EA-4F3B-905C-D0D4CBEDE27E" sourceRef="_FBBC9EE4-F85E-4AED-8D70-0F67FFE38FD2" targetRef="_48D9C0E9-29EA-4F3B-905C-D0D4CBEDE27E"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_r5kf7jmiEeOdn4piepGWnQ">
-    <bpmndi:BPMNPlane id="_r5kf7zmiEeOdn4piepGWnQ" bpmnElement="kh.khdocumentapprove1">
+    <bpmndi:BPMNPlane id="_r5kf7zmiEeOdn4piepGWnQ" bpmnElement="kh.khDocumentApprove1">
       <bpmndi:BPMNShape id="_r5kf8DmiEeOdn4piepGWnQ" bpmnElement="_97B786EF-C3B8-4880-A7C1-FD019FA6235B">
         <dc:Bounds height="30.0" width="30.0" x="81.0" y="180.0"/>
       </bpmndi:BPMNShape>
