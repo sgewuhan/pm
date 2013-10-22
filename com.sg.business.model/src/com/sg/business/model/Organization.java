@@ -94,7 +94,7 @@ public class Organization extends PrimaryObject {
 	 * 组织的流程库，是流程库名称的列表
 	 */
 	public static final String F_KBASE = "kbase";
-	
+
 	/**
 	 * 组织代码，用于设定与组织有关的编码
 	 */
@@ -341,12 +341,20 @@ public class Organization extends PrimaryObject {
 	}
 
 	@Override
-	public boolean doSave(IContext context) throws Exception {
-		boolean success = super.doSave(context);
-		if (!success) {
-			return false;
-		}
+	public void doInsert(IContext context) throws Exception {
+		super.doInsert(context);
 
+		doSaveAfter();
+	}
+
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+		super.doUpdate(context);
+
+		doSaveAfter();
+	}
+
+	protected void doSaveAfter() {
 		/*
 		 * 处理角色，以下程序从SaveHandler中移植
 		 */
@@ -409,8 +417,6 @@ public class Organization extends PrimaryObject {
 			doAddRole(Role.ROLE_DEPT_MANAGER_ID, Role.ROLE_DEPT_MANAGER_TEXT);
 		} catch (Exception e) {
 		}
-		return true;
-
 	}
 
 	/**
@@ -479,6 +485,24 @@ public class Organization extends PrimaryObject {
 		return getRelationCountByCondition(Role.class,
 				new BasicDBObject().append(Role.F_ROLE_NUMBER, roleNumber)
 						.append(Role.F_ORGANIZATION_ID, get_id())) > 0;
+	}
+	
+	/**
+	 * 检查组织下是否包含某个角色
+	 * 
+	 * @param roleNumber
+	 *            ,角色编号
+	 * @return boolean
+	 */
+	public Role getRole(String roleNumber) {
+		List<PrimaryObject> roleList = getRelationByCondition(Role.class,
+				new BasicDBObject().append(Role.F_ROLE_NUMBER, roleNumber)
+						.append(Role.F_ORGANIZATION_ID, get_id()));
+		if (roleList != null && roleList.size() >0){
+			return (Role) roleList.get(0);
+		} else {
+		return null;
+		}
 	}
 
 	/**

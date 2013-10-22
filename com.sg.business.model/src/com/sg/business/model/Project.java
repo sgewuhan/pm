@@ -560,7 +560,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		setValue(F_PROJECT_NUMBER, codeValue);
 		
 	}
-
+	
 	private void doCopySystemCanlendar() throws Exception {
 		SystemCalendar sc = new SystemCalendar();
 		DataSet d = sc.getDataSet();
