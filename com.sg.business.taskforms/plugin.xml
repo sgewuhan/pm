@@ -706,7 +706,7 @@
             editorId="pm.projectchange1.application"
             name="设计更改申请"
             persistentFields="developable"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="developable"
                taskFormFieldName="developable">
@@ -716,7 +716,7 @@
             editorId="pm.projectchange1.check"
             name="更改方案校核"
             persistentFields="choice_check,comment_check"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="choice_check"
                taskFormFieldName="choice_check">
@@ -730,7 +730,7 @@
             editorId="pm.projectchange1.craft"
             name="更改方案工艺审核"
             persistentFields="choice_craft,comment_craft"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="choice_craft"
                taskFormFieldName="choice_craft">
@@ -744,7 +744,7 @@
             editorId="pm.projectchange1.auditor"
             name="更改方案审核"
             persistentFields="choice_auditor,comment_auditor"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="choice_auditor"
                taskFormFieldName="choice_auditor">
@@ -758,7 +758,7 @@
             editorId="pm.projectchange1.purchase"
             name="更改方案采购审批"
             persistentFields="choice_purchase,comment_purchase"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="choice_purchase"
                taskFormFieldName="choice_purchase">
@@ -772,7 +772,7 @@
             editorId="pm.projectchange1.plan"
             name="更改方案计划审批"
             persistentFields="choice_plan,comment_plan"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="choice_plan"
                taskFormFieldName="choice_plan">
@@ -786,7 +786,7 @@
             editorId="pm.projectchange1.develop"
             name="更改方案开发中心审批"
             persistentFields="choice_develop,comment_develop"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="choice_develop"
                taskFormFieldName="choice_develop">
@@ -800,7 +800,7 @@
             editorId="pm.projectchange1.approve"
             name="更改方案批准"
             persistentFields="choice_approve,comment_approve"
-            processDefinitionId="pm.projectchange1">
+            processDefinitionId="tb.projectchange1">
          <processParameter
                processParameterName="choice_approve"
                taskFormFieldName="choice_approve">
