@@ -8,6 +8,11 @@
             id="com.sg.business.developer.perspective"
             name="开发者演示">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="com.sg.business.developer.perspective2"
+            name="胡洋的测试">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -43,8 +48,21 @@
             db="pm2"
             id="demo2">
       </doc>
+      <doc
+            class="com.sg.business.developer.model.hy"
+            collection="hy"
+            db="pm2"
+            id="hy">
+      </doc>
+      <doc
+            class="com.sg.business.developer.model.hy1"
+            collection="hy1"
+            db="pm2"
+            id="hy1">
+      </doc>
    </extension>
    <extension
+         id="visualization.demoview"
          point="com.sg.widgets.navigator">
       <navigator
             id="developer.tree"
@@ -73,13 +91,36 @@
                editorId="editor.developer.table">
          </createEditor>
       </navigator>
+      <navigator
+            id="visualization.demoview"
+            provideSelection="true"
+            tree="developer.tree">
+      </navigator>
+      <navigator
+            id="hy.tree"
+            provideSelection="true"
+            tree="developer.tree">
+         <createEditor
+               createHandler="com.sg.business.developer.handler.hyCreateHandler"
+               editorId="editor.developer.hytree">
+         </createEditor>
+      </navigator>
+      <navigator
+            id="hy.table"
+            provideSelection="true"
+            table="developer.table">
+         <createEditor
+               createHandler="com.sg.business.developer.handler.hy1CreateHandler"
+               editorId="editor.developer.hytable">
+         </createEditor>
+      </navigator>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="com.sg.widgets.part.view.TreeNavigator"
-            id="developer.tree"
-            name="Tree"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="hy.table"
+            name="hyTable"
             restorable="true">
       </view>
       <view
@@ -88,6 +129,29 @@
             name="Table"
             restorable="true">
       </view>
+      <view
+            class="com.sg.business.developer.ViewPart1"
+            id="com.sg.business.developer.view1"
+            name="name"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.business.developer.ViewPart2"
+            id="com.sg.business.developer.view2"
+            name="name"
+            restorable="true">
+      </view>
+      <view
+            category="com.free.menu.category.hy"
+            class="com.scom.sg.widgets.part.view.TreeNavigator"
+            id="hy.tree"
+            name="hy.tree"
+            restorable="true">
+      </view>
+      <category
+            id="com.free.menu.category.hy"
+            name="hy.Menu">
+      </category>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -108,11 +172,28 @@
                type="Boolean">
          </column>
       </table>
+      <table
+            dataSet="com.sg.business.developer.dataset.hy1DataSet"
+            id="hy.table">
+         <column
+               column="desc"
+               name="说明1"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="necessary"
+               name="有效1"
+               style="SWT.CENTER"
+               type="Boolean">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
-            dataSet="com.sg.business.developer.dataset.Demo1DataSet"
+            dataSet="com.sg.business.developer.dataset.hy1DataSet"
             id="developer.tree"
             popupMenu="popup:com.sg.widget.navigator">
          <structure
@@ -120,15 +201,34 @@
          </structure>
          <column
                column="desc"
-               name="说明"
+               name="描叙"
                style="SWT.LEFT"
                type="String"
                width="-1"></column>
          <column
                column="necessary"
-               name="有效"
+               name="是否必须"
                style="SWT.CENTER"
                type="Boolean"></column>
+      </tree>
+      <tree
+            dataSet="com.sg.business.developer.dataset.hy1DataSet"
+            id="hy.tree">
+         <structure
+               modelRelation="hy_hy">
+         </structure>
+         <column
+               column="necessary"
+               name="有效1"
+               style="SWT.CENTER"
+               type="Boolean">
+         </column>
+         <column
+               column="desc"
+               name="说明"
+               style="SWT.LEFT"
+               type="String">
+         </column>
       </tree>
    </extension>
    <extension
@@ -140,6 +240,14 @@
             end2Key="parent_id"
             id="demo1_demo1"
             name="树下节点">
+      </relation>
+      <relation
+            end1Class="com.sg.business.developer.model.hy"
+            end1Key="_id"
+            end2Class="com.sg.business.developer.model.hy"
+            end2Key="parent_id"
+            id="hy_hy"
+            name="胡洋的树下节点">
       </relation>
    </extension>
    <extension
@@ -256,6 +364,184 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="hy"
+            dbName="pm2"
+            id="editor.developer.hytree"
+            name="胡洋的树编辑器"
+            titleToolTips="HYTree编辑器">
+         <basicpage
+               id="com.sg.business.developer.basicpage1"
+               title="com.sg.business.developer.basicpage1">
+            <pagecolumn
+                  id="基本信息1">
+               <section
+                     label="基本信息1">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="说明1"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="necessary"
+                        label="有效1"
+                        labelVisible="true"
+                        name="necessary"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="hy1"
+            dbName="pm2"
+            id="editor.developer.hytable"
+            name="胡洋的表编辑器">
+         <basicpage
+               id="com.sg.business.developer.basicpage2"
+               title="com.sg.business.developer.basicpage2">
+            <pagecolumn
+                  id="基本信息1">
+               <section
+                     description="基本信息1"
+                     label="基本信息1">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="说明1"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <checkbox
+                        editable="true"
+                        id="necessary"
+                        label="有效1"
+                        labelVisible="true"
+                        name="necessary"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.mobnut.db.documentModelAdapter">
+      <doc
+            class="com.sg.business.developer.model.Test"
+            collection="test"
+            db="pm2">
+      </doc>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="com.sg.business.developer.perspective1"
+            name="TEST">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="testview"
+            name="testview"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="testview"
+            table="testview">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            dataSet="com.sg.business.developer.dataset.TestDataSet"
+            id="testview">
+         <column
+               column="desc"
+               name="desc"
+               style="SWT.LEFT"
+               type="String">
+         </column>
+      </table>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="com.sg.business.developer.perspective1">
+         <view
+               closeable="false"
+               id="testview"
+               minimized="false"
+               ratio="0.5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="visualization.demoview"
+               minimized="false"
+               relationship="stack"
+               relative="testview">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="com.scom.sg.widgets.part.view.TreeNavigator"
+            id="visualization.demoview"
+            name="表单演示"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="com.mobnut.db.modelRelation">
+      <relation
+            end1Class="com.sg.business.developer.Dem01"
+            end1Key="_id"
+            end2Class="com.sg.business.developer.Dem01"
+            end2Key="parent_id"
+            id="demo_demo"
+            name="演示树形结构">
+      </relation>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="com.sg.business.developer.perspective2">
+         <view
+               id="hy.table"
+               minimized="false"
+               ratio="0.7"
+               relationship="right"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="hy.tree"
+               minimized="false"
+               relationship="left"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
    </extension>
 
 </plugin>
