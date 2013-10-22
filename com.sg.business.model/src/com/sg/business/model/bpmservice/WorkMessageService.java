@@ -17,12 +17,6 @@ public class WorkMessageService extends MessageService {
 	public Map<String, Object> run(Object parameter) {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
-
-		String messageTitle="tttttt";
-		String messageContent="cccccc";
-		@SuppressWarnings("unchecked")
-		List<String> receivers=(List<String>) getMessageReceiverId("reviewer_list");
-		
 		Object content = getInputValue("content");
 		if (content instanceof String) {
 			String jsonContent = (String) content;
@@ -36,7 +30,18 @@ public class WorkMessageService extends MessageService {
 					String processId = (String) processData.get("processId");
 					String processName = (String) processData
 							.get("processName");
-					if ("message".equals(getOperation())) {
+					if ("meetingnotice".equals(getOperation())) {
+						String messageTitle="评审会议通知";
+						String messageContent="会议评审";
+						@SuppressWarnings("unchecked")
+						List<String> receivers=(List<String>) getMessageReceiverId("reviewer_list");
+						sendMessage(messageTitle,messageContent,receivers,project,"project.editor",new BPMServiceContext(processName,
+								processId));
+					}else if("worknotification".equals(getOperation())){
+						String messageTitle="工作完成通知";
+						String messageContent="工作完成";
+						@SuppressWarnings("unchecked")
+						List<String> receivers=(List<String>) getMessageReceiverId("reviewer_list");
 						sendMessage(messageTitle,messageContent,receivers,project,"project.editor",new BPMServiceContext(processName,
 								processId));
 					}
