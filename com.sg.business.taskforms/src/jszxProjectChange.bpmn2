@@ -21,7 +21,7 @@
       <bpmn2:inMessageRef>_A82EE111-AA83-46BD-A59B-7C8E9CABFE96_InMessage</bpmn2:inMessageRef>
     </bpmn2:operation>
   </bpmn2:interface>
-  <bpmn2:process id="jszx.ProjectChange" drools:packageName="jszx" name="&#39033;&#30446;&#21464;&#26356;&#36807;&#31243;" isExecutable="true">
+  <bpmn2:process id="jszx.jszxProjectChange" drools:packageName="jszx" name="&#39033;&#30446;&#21464;&#26356;&#36807;&#31243;" isExecutable="true">
     <bpmn2:property id="act_rule_launcher" itemSubjectRef="_act_rule_launcherItem"/>
     <bpmn2:property id="act_prj_admin" itemSubjectRef="_act_prj_adminItem"/>
     <bpmn2:property id="act_rule_dept_manager" itemSubjectRef="_act_rule_dept_managerItem"/>
@@ -246,7 +246,7 @@
     <bpmn2:sequenceFlow id="_EB299E73-E72F-4895-9497-B66D10139B81" sourceRef="_7CEE0764-B0F0-4891-91CE-F8AF7E104D0E" targetRef="_67DC89C0-9B9C-42DD-B060-DE31CA05F5B5"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_AacC4TreEeOfKYk56EzdFg">
-    <bpmndi:BPMNPlane id="_AacC4jreEeOfKYk56EzdFg" bpmnElement="jszx.ProjectChange">
+    <bpmndi:BPMNPlane id="_AacC4jreEeOfKYk56EzdFg" bpmnElement="jszx.jszxProjectChange">
       <bpmndi:BPMNShape id="_AacC4zreEeOfKYk56EzdFg" bpmnElement="_01BEAEE8-FEF1-4F24-B23C-98B44DE5452F">
         <dc:Bounds height="30.0" width="30.0" x="45.0" y="242.0"/>
       </bpmndi:BPMNShape>

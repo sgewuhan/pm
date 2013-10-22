@@ -34,7 +34,7 @@
   </bpmn2:interface>
   <bpmn2:itemDefinition id="_90A4E63B-42F8-4A3E-9E48-0159569F71CC_multiInstanceItemType"/>
   <bpmn2:itemDefinition id="_choice_nItem"/>
-  <bpmn2:process id="jszx.ProjectReview2" drools:packageName="jszx" name="&#39033;&#30446;&#35780;&#23457;&#36807;&#31243;" isExecutable="true">
+  <bpmn2:process id="jszx.jszxProjectReview" drools:packageName="jszx" name="&#39033;&#30446;&#35780;&#23457;&#36807;&#31243;" isExecutable="true">
     <bpmn2:property id="act_reviewer_list" itemSubjectRef="_act_reviewer_listItem"/>
     <bpmn2:property id="act_rule_launcher" itemSubjectRef="_act_rule_launcherItem"/>
     <bpmn2:property id="act_rule_dept_manager" itemSubjectRef="_act_rule_dept_managerItem"/>
@@ -494,7 +494,7 @@
     <bpmn2:sequenceFlow id="_4F16821A-8334-4582-A7F6-22330AD610A6" sourceRef="_3F1F565A-7C86-43BA-8CE8-7EB960E884F2" targetRef="_ED4CA436-603D-4F80-9226-5DBE7FA38F31"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_iYSErTriEeOfKYk56EzdFg">
-    <bpmndi:BPMNPlane id="_iYSErjriEeOfKYk56EzdFg" bpmnElement="jszx.ProjectReview2">
+    <bpmndi:BPMNPlane id="_iYSErjriEeOfKYk56EzdFg" bpmnElement="jszx.jszxProjectReview">
       <bpmndi:BPMNShape id="_iYSErzriEeOfKYk56EzdFg" bpmnElement="_4A0B2762-0CBC-470D-B29A-D0416B810CA5">
         <dc:Bounds height="30.0" width="30.0" x="45.0" y="84.0"/>
       </bpmndi:BPMNShape>

@@ -17,7 +17,7 @@
   <bpmn2:itemDefinition id="__93DC99C9-5D6B-41B7-9A72-69A230CC1DFA_choiceOutputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__E62B3A88-852B-48D7-88D1-4E658CAE841F_contentInputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__7A7BAA90-AA49-475C-9360-C5644369CB00_choiceOutputItem" structureRef="String"/>
-  <bpmn2:process id="pm.genericapprovalprocess" drools:packageName="pm" name="genericapprovalprocess" isExecutable="true">
+  <bpmn2:process id="pm.pmGenericApprovalProcess" drools:packageName="pm" name="pmGenericApprovalProcess" isExecutable="true">
     <bpmn2:property id="act_rule_launcher" itemSubjectRef="_act_rule_launcherItem"/>
     <bpmn2:property id="act_auditor" itemSubjectRef="_act_auditorItem"/>
     <bpmn2:property id="act_approver" itemSubjectRef="_act_approverItem"/>
@@ -208,7 +208,7 @@
     <bpmn2:sequenceFlow id="_28CC0527-E5AC-4C60-B64D-F583522B3A7F" sourceRef="_E62B3A88-852B-48D7-88D1-4E658CAE841F" targetRef="_FCAA69EA-DFE5-4888-B25A-4C369A60D06A"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_SrV5ajrcEeOfKYk56EzdFg">
-    <bpmndi:BPMNPlane id="_SrV5azrcEeOfKYk56EzdFg" bpmnElement="pm.genericapprovalprocess">
+    <bpmndi:BPMNPlane id="_SrV5azrcEeOfKYk56EzdFg" bpmnElement="pm.pmGenericApprovalProcess">
       <bpmndi:BPMNShape id="_SrV5bDrcEeOfKYk56EzdFg" bpmnElement="_E2C43AEE-F477-4730-9ABD-92B4B7790A20">
         <dc:Bounds height="30.0" width="30.0" x="15.0" y="351.0"/>
       </bpmndi:BPMNShape>

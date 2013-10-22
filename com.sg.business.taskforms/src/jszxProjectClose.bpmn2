@@ -8,7 +8,7 @@
   <bpmn2:itemDefinition id="_choiceItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_projectIdItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_contentItem" structureRef="String"/>
-  <bpmn2:process id="jszx.ProjectClose" drools:packageName="jszx" name="&#39033;&#30446;&#30003;&#35831;" isExecutable="true">
+  <bpmn2:process id="jszx.jszxProjectClose" drools:packageName="jszx" name="&#39033;&#30446;&#30003;&#35831;" isExecutable="true">
     <bpmn2:property id="act_rule_launcher" itemSubjectRef="_act_rule_launcherItem"/>
     <bpmn2:property id="act_rule_dept_manager" itemSubjectRef="_act_rule_dept_managerItem"/>
     <bpmn2:property id="act_prj_admin" itemSubjectRef="_act_prj_adminItem"/>
@@ -226,7 +226,7 @@
     <bpmn2:sequenceFlow id="_9669B479-F6B0-4C67-8BD7-8F596DBFAF45" sourceRef="_DF2E7F50-AECE-467D-BD46-ED5366F30149" targetRef="_B6218827-70E3-4A70-A162-88AC6B41A888"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_s9uj6zrjEeOfKYk56EzdFg">
-    <bpmndi:BPMNPlane id="_s9uj7DrjEeOfKYk56EzdFg" bpmnElement="jszx.ProjectClose">
+    <bpmndi:BPMNPlane id="_s9uj7DrjEeOfKYk56EzdFg" bpmnElement="jszx.jszxProjectClose">
       <bpmndi:BPMNShape id="_s9uj7TrjEeOfKYk56EzdFg" bpmnElement="_FCB55A11-8CA3-4DFF-9608-C7816D999A06">
         <dc:Bounds height="30.0" width="30.0" x="18.0" y="355.0"/>
       </bpmndi:BPMNShape>

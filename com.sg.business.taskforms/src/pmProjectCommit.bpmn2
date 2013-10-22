@@ -29,7 +29,7 @@
   <bpmn2:itemDefinition id="__E3E09D83-97F5-4D76-BB74-A63554A3A1DA_contentInputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__88AAD6BF-F9F9-458F-A97B-226059CBDF8A_contentInputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__7981510D-FEC5-4F2F-97D7-C2C56AE0509B_contentInputItem" structureRef="String"/>
-  <bpmn2:process id="pm.projectcommit" drools:packageName="pm" name="&#39033;&#30446;&#35745;&#21010;&#25552;&#20132;">
+  <bpmn2:process id="pm.pmProjectCommit" drools:packageName="pm" name="&#39033;&#30446;&#35745;&#21010;&#25552;&#20132;">
     <bpmn2:property id="act_auditor" itemSubjectRef="_act_auditorItem"/>
     <bpmn2:property id="act_manager" itemSubjectRef="_act_managerItem"/>
     <bpmn2:property id="content" itemSubjectRef="_contentItem"/>
@@ -187,7 +187,7 @@
     </bpmn2:endEvent>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_fENigRzrEeO_E6SHZvRoBA">
-    <bpmndi:BPMNPlane id="_fENighzrEeO_E6SHZvRoBA" bpmnElement="pm.projectcommit">
+    <bpmndi:BPMNPlane id="_fENighzrEeO_E6SHZvRoBA" bpmnElement="pm.pmProjectCommit">
       <bpmndi:BPMNShape id="_fENigxzrEeO_E6SHZvRoBA" bpmnElement="_3667578D-6483-4EFE-8D84-DB38D072EBB3">
         <dc:Bounds height="30.0" width="30.0" x="105.0" y="175.0"/>
       </bpmndi:BPMNShape>

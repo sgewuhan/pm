@@ -50,7 +50,7 @@
   <bpmn2:itemDefinition id="__295CF323-0526-4383-B108-36E6ADCFAE0B_abarbeitungOutputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__B17FEF4E-DFA2-4239-8D0A-CB6B44216B16_choice_sum_1OutputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__B17FEF4E-DFA2-4239-8D0A-CB6B44216B16_abarbeitungOutputItem" structureRef="String"/>
-  <bpmn2:process id="pm.systemprojectapprove" drools:packageName="pm" name="&#31995;&#32479;&#37096;&#36890;&#29992;&#23457;&#25209;&#27969;&#31243;" isExecutable="true">
+  <bpmn2:process id="pm.xtProjectApprove" drools:packageName="pm" name="&#31995;&#32479;&#37096;&#36890;&#29992;&#23457;&#25209;&#27969;&#31243;" isExecutable="true">
     <bpmn2:property id="act_rule_launcher" itemSubjectRef="_act_rule_launcherItem"/>
     <bpmn2:property id="act_approve" itemSubjectRef="_act_approveItem"/>
     <bpmn2:property id="reviewer_list" itemSubjectRef="_reviewer_listItem"/>
@@ -652,7 +652,7 @@
     <bpmn2:sequenceFlow id="_347D5092-B2B6-4FF2-B666-6A225D8987E3" sourceRef="_B17FEF4E-DFA2-4239-8D0A-CB6B44216B16" targetRef="_3D6EE5A4-8C0C-4299-99B7-4B2077497EAC"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_DvTdoDZ8EeOMuMEPMX2P-Q">
-    <bpmndi:BPMNPlane id="_DvTdoTZ8EeOMuMEPMX2P-Q" bpmnElement="pm.systemprojectapprove">
+    <bpmndi:BPMNPlane id="_DvTdoTZ8EeOMuMEPMX2P-Q" bpmnElement="pm.xtProjectApprove">
       <bpmndi:BPMNShape id="_DvTdojZ8EeOMuMEPMX2P-Q" bpmnElement="_8A10EAD0-7A50-4806-A918-080F772A3CFA">
         <dc:Bounds height="30.0" width="30.0" x="8.0" y="179.0"/>
       </bpmndi:BPMNShape>

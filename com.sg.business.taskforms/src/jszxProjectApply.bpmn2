@@ -55,7 +55,7 @@
   <bpmn2:itemDefinition id="__A3E11A78-980C-44AE-B015-5DEA809E5FB4_choiceOutputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__136FEA97-6D10-48CA-BBD1-17A6E60EB12B_choiceOutputItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__136FEA97-6D10-48CA-BBD1-17A6E60EB12B_commentOutputItem" structureRef="String"/>
-  <bpmn2:process id="jszx.ProjectApply2" drools:packageName="jszx" name="&#25216;&#26415;&#25903;&#25345;&#22996;&#25176;&#25209;&#20934;&#36807;&#31243;" isExecutable="true">
+  <bpmn2:process id="jszx.jszxProjectApply" drools:packageName="jszx" name="&#25216;&#26415;&#25903;&#25345;&#22996;&#25176;&#25209;&#20934;&#36807;&#31243;" isExecutable="true">
     <bpmn2:property id="act_rule_launcher" itemSubjectRef="_act_rule_launcherItem"/>
     <bpmn2:property id="dept_manager" itemSubjectRef="_dept_managerItem"/>
     <bpmn2:property id="chief_engineer" itemSubjectRef="_chief_engineerItem"/>
@@ -567,7 +567,7 @@
     <bpmn2:sequenceFlow id="_8A2490DC-D46C-4BFD-8653-A3EC6FEF95F9" sourceRef="_75DF3910-A491-43BD-BDC5-F9472A4F1A22" targetRef="_C1E5BFE2-CA74-4C44-83A1-A86FB5BA8681"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_0ELl1zrfEeOfKYk56EzdFg">
-    <bpmndi:BPMNPlane id="_0ELl2DrfEeOfKYk56EzdFg" bpmnElement="jszx.ProjectApply2">
+    <bpmndi:BPMNPlane id="_0ELl2DrfEeOfKYk56EzdFg" bpmnElement="jszx.jszxProjectApply">
       <bpmndi:BPMNShape id="_0ELl2TrfEeOfKYk56EzdFg" bpmnElement="_CD2C0005-152E-420D-BB20-231031A95537">
         <dc:Bounds height="80.0" width="100.0" x="105.0" y="145.0"/>
       </bpmndi:BPMNShape>
