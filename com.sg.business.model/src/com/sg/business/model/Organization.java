@@ -486,6 +486,24 @@ public class Organization extends PrimaryObject {
 				new BasicDBObject().append(Role.F_ROLE_NUMBER, roleNumber)
 						.append(Role.F_ORGANIZATION_ID, get_id())) > 0;
 	}
+	
+	/**
+	 * 检查组织下是否包含某个角色
+	 * 
+	 * @param roleNumber
+	 *            ,角色编号
+	 * @return boolean
+	 */
+	public Role getRole(String roleNumber) {
+		List<PrimaryObject> roleList = getRelationByCondition(Role.class,
+				new BasicDBObject().append(Role.F_ROLE_NUMBER, roleNumber)
+						.append(Role.F_ORGANIZATION_ID, get_id()));
+		if (roleList != null && roleList.size() >0){
+			return (Role) roleList.get(0);
+		} else {
+		return null;
+		}
+	}
 
 	/**
 	 * 添加组织的一个角色
