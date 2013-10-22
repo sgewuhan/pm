@@ -11,7 +11,7 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 
-public class MessageServiceTest001 extends MessageService {
+public class WorkMessageService extends MessageService {
 
 	@Override
 	public Map<String, Object> run(Object parameter) {

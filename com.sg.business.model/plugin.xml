@@ -384,10 +384,10 @@
             serviceProvider="com.sg.business.model.bpmservice.ProjectService">
       </service>
       <service
-            interface="message.service.action"
-            name="项目状态服务"
-            operation="message"
-            serviceProvider="com.sg.business.model.bpmservice.MessageServiceTest001">
+            interface="work.service.action"
+            name="工作消息服务"
+            operation="worknotification"
+            serviceProvider="com.sg.business.model.bpmservice.WorkMessageService">
       </service>
    </extension>
 
