@@ -17,6 +17,12 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class AppendWorkRecord extends AbstractNavigatorHandler {
 
+	
+	@Override
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
+		return true;
+	}
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
 			ViewerControl vc, Command command, Map<String, Object> parameters,
