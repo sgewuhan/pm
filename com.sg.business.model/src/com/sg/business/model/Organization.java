@@ -486,22 +486,46 @@ public class Organization extends PrimaryObject {
 				new BasicDBObject().append(Role.F_ROLE_NUMBER, roleNumber)
 						.append(Role.F_ORGANIZATION_ID, get_id())) > 0;
 	}
-	
+
 	/**
-	 * 检查组织下是否包含某个角色
+	 * 获取组织下包含的某个角色
 	 * 
 	 * @param roleNumber
 	 *            ,角色编号
-	 * @return boolean
+	 * @param selectType
+	 *            ,查找方式,int 类型,-1为向下查找,0为不查找,1为向上查找
+	 * @return Role
 	 */
-	public Role getRole(String roleNumber) {
+	public Role getRole(String roleNumber, int selectType) {
 		List<PrimaryObject> roleList = getRelationByCondition(Role.class,
 				new BasicDBObject().append(Role.F_ROLE_NUMBER, roleNumber)
 						.append(Role.F_ORGANIZATION_ID, get_id()));
-		if (roleList != null && roleList.size() >0){
+		if (roleList != null && roleList.size() > 0) {
 			return (Role) roleList.get(0);
 		} else {
-		return null;
+			switch (selectType) {
+			case -1:
+				List<PrimaryObject> childrenOrgs = getChildrenOrganization();
+				if (childrenOrgs != null && childrenOrgs.size() > 0) {
+					for (int i = 0; i < childrenOrgs.size(); i++) {
+						Organization childrenOrg = (Organization) childrenOrgs
+								.get(i);
+						Role role = childrenOrg.getRole(roleNumber, selectType);
+						if (role != null) {
+							return role;
+						}
+					}
+				}
+				return null;
+			case 1:
+				Organization parentOrg = (Organization) getParentOrganization();
+				if(parentOrg != null){
+					return parentOrg.getRole(roleNumber, selectType);
+				}
+				return null;
+			default:
+				return null;
+			}
 		}
 	}
 
