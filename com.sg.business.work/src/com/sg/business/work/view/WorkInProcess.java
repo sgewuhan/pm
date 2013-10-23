@@ -107,7 +107,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 		syncUserListener = new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent event) {
-				display.syncExec(new Runnable() {
+				display.asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						WorkInProcess.super.doRefresh();
