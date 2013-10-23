@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
@@ -18,14 +19,16 @@ import com.sg.business.performence.ui.calendar.WorkListCellEditor;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class OrgResCalender extends ResourceCalender {
-
+	@Override
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		setTitleToolTip("“我”管理部门的各员工实际工时");
+	}
 
 	@Override
 	protected IContentProvider getContentProvider() {
 		return new OrgResContentProvider();
 	}
-	
-	
 
 	@Override
 	protected List<PrimaryObject> getInput() {
