@@ -1443,10 +1443,42 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="jszx.jszxProjectClose.establishment"
-            name="编制项目结题申请"
-            processDefinitionId="jszx.jszxProjectClose">
+            name="提交委托"
+            processDefinitionId="jszxProjectApply">
       </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskforms"
+            dbName="pm2"
+            id="jszxProjectApply.apply"
+            name="提交委托">
+         <basicpage
+               id="page1"
+               title="com.sg.business.taskforms.basicpage1">
+            <pagecolumn>
+               <section
+                     label="请确定技术支持研究室主任和首席室">
+                  <navigatorSelector
+                        editable="true"
+                        id="com.sg.business.taskforms.navigatorSelector1"
+                        labelVisible="true"
+                        modelClass="com.sg.business.taskforms.PrimaryObject:1"
+                        name="com.sg.business.taskforms.navigatorSelector1"
+                        navigatorId="com.sg.business.taskforms.navigatorSelector1"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">

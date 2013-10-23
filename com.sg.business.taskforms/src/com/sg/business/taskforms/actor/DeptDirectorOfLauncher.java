@@ -22,15 +22,12 @@ public class DeptDirectorOfLauncher implements IActorIdProvider {
 		String chargerId = work.getChargerId();
 		User loginUser = UserToolkit.getUserById(chargerId);
 		Organization org = loginUser.getOrganization();
-		while (org != null) {
-			Role role = org.getRole("Director");
-			if (role != null) {
-				List<PrimaryObject> assignment = role.getAssignment();
-				if (assignment != null && assignment.size() > 0) {
-					return ((RoleAssignment) assignment.get(0)).getUserid();
-				}
+		Role role = org.getRole("Director", 1);
+		if (role != null) {
+			List<PrimaryObject> assignment = role.getAssignment();
+			if (assignment != null && assignment.size() > 0) {
+				return ((RoleAssignment) assignment.get(0)).getUserid();
 			}
-			org = (Organization) org.getParentOrganization();
 		}
 		return ((User) UserToolkit.getAdmin().get(0)).getUserid();
 	}

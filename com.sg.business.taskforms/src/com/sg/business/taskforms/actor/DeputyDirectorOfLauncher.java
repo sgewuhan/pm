@@ -18,21 +18,19 @@ public class DeputyDirectorOfLauncher implements IActorIdProvider {
 
 	@Override
 	public String getActorId(Object[] input) {
-		Work work = (Work) input[0];
-		String chargerId = work.getChargerId();
-		User loginUser = UserToolkit.getUserById(chargerId);
-		Organization org = loginUser.getOrganization();
-		while (org != null) {
-			Role role = org.getRole("DeputyDirector");
-			if (role != null) {
-				List<PrimaryObject> assignment = role.getAssignment();
-				if (assignment != null && assignment.size() > 0) {
-					return ((RoleAssignment) assignment.get(0)).getUserid();
-				}
-			}
-			org = (Organization) org.getParentOrganization();
+	
+	Work work = (Work) input[0];
+	String chargerId = work.getChargerId();
+	User loginUser = UserToolkit.getUserById(chargerId);
+	Organization org = loginUser.getOrganization();
+	Role role = org.getRole("DeputyDirector", 1);
+	if (role != null) {
+		List<PrimaryObject> assignment = role.getAssignment();
+		if (assignment != null && assignment.size() > 0) {
+			return ((RoleAssignment) assignment.get(0)).getUserid();
 		}
-		return ((User) UserToolkit.getAdmin().get(0)).getUserid();
 	}
+	return ((User) UserToolkit.getAdmin().get(0)).getUserid();
+}
 
 }
