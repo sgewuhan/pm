@@ -11,9 +11,9 @@ import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 
-public class DeptDirectorOfLauncher implements IActorIdProvider {
+public class DeputyDirectorOfLauncher implements IActorIdProvider {
 
-	public DeptDirectorOfLauncher() {
+	public DeputyDirectorOfLauncher() {
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class DeptDirectorOfLauncher implements IActorIdProvider {
 		User loginUser = UserToolkit.getUserById(chargerId);
 		Organization org = loginUser.getOrganization();
 		while (org != null) {
-			Role role = org.getRole("Director");
+			Role role = org.getRole("DeputyDirector");
 			if (role != null) {
 				List<PrimaryObject> assignment = role.getAssignment();
 				if (assignment != null && assignment.size() > 0) {

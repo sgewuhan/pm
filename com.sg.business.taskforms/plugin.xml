@@ -1473,6 +1473,11 @@
             id="dept_director"
             name="流程发起人所在研究室主任">
       </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.DeputyDirectorOfLauncher"
+            id="deputy_director"
+            name="流程发起人所在部门常务副主任">
+      </actorRule>
    </extension>
    
  </plugin>
