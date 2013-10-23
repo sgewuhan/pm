@@ -1,5 +1,6 @@
 package com.sg.business.model.bpmservice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +33,36 @@ public  abstract class MessageService extends ServiceProvider{
 		}
 		
 	}
+	
+	public String getMessageContent(String messageContent){
+		Object content = getInputValue(messageContent);
+		if(content instanceof String){
+			return (String)content;
+		}
+		else return null;
+	}
+	
+	public String getMessageSender(String messageSender){
+		Object sender = getInputValue(messageSender);
+		if(sender instanceof String){
+			return (String)sender;
+		}
+		else return null;
+		
+	}
+	
+	public List<?> getMessageReceiverId(String receiverList){
+		List<String> receivers=new ArrayList<String>();
+		Object receiver = getInputValue(receiverList);
+		if(receiver instanceof List){
+			return (List<?>)receiver;
+		}else if(receiver instanceof String){
+			receivers.add((String)receiver);
+			return receivers;
+		}
+		else return null;
+	}
+
 	
 	
 	
