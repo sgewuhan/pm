@@ -382,12 +382,6 @@ public class Organization extends PrimaryObject {
 						Role.ROLE_BUSINESS_ADMIN_TEXT);
 			} catch (Exception e) {
 			}
-			try {
-				doAddRole(Role.ROLE_FINANCIAL_MANAGER_ID,
-						Role.ROLE_FINANCIAL_MANAGER_TEXT);
-			} catch (Exception e) {
-			}
-
 		}
 
 		// 如果组织是具有文档容器的组织，需要自动添加文档访问者和文档管理员的角色
@@ -415,6 +409,12 @@ public class Organization extends PrimaryObject {
 		// 增加管理者角色
 		try {
 			doAddRole(Role.ROLE_DEPT_MANAGER_ID, Role.ROLE_DEPT_MANAGER_TEXT);
+		} catch (Exception e) {
+		}
+		
+		try {
+			doAddRole(Role.ROLE_FINANCIAL_MANAGER_ID,
+					Role.ROLE_FINANCIAL_MANAGER_TEXT);
 		} catch (Exception e) {
 		}
 	}

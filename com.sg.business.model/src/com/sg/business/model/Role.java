@@ -93,7 +93,7 @@ public class Role extends PrimaryObject {
 	public static final String ROLE_DEPT_MANAGER_TEXT = "管理者";
 
 	/**
-	 * 基础角色/组织角色/部门经理
+	 * 基础角色/组织角色/财务经理
 	 */
 	public static final String ROLE_FINANCIAL_MANAGER_ID = "T006";
 	public static final String ROLE_FINANCIAL_MANAGER_TEXT = "财务经理";
