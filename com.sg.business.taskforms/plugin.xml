@@ -1510,6 +1510,11 @@
             id="deputy_director"
             name="流程发起人所在部门常务副主任">
       </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.ProjectAdminOfProject"
+            id="prj_admin"
+            name="项目所在管理部门的项目管理员">
+      </actorRule>
    </extension>
    
  </plugin>
