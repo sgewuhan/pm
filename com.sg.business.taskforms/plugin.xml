@@ -1761,6 +1761,24 @@
                </pagecolumn>
             </basicpage>
             <basicpage
+                  id="page3"
+                  title="评审意见">
+               <pagecolumn>
+                  <section
+                        label="评审意见附件">
+                     <file
+                           editPart="OfficeFileUploader"
+                           editable="true"
+                           id="commentfile"
+                           labelVisible="true"
+                           name="commentfile"
+                           persistable="true"
+                           required="false">
+                     </file>
+                  </section>
+               </pagecolumn>
+            </basicpage>
+            <basicpage
                   id="page2"
                   pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                   title="流程记录">
@@ -1895,6 +1913,7 @@
          </taskForm>
          <taskForm
                editorId="jszx.jszxProjectReview.expertgroupreview"
+               inputHandler="com.sg.business.taskforms.handler.ProjectReviewReviewOfJSZX"
                name="专家意见形式审查"
                persistentFields="reviewer,comment_s,choice_s,choice"
                processDefinitionId="jszx.jszxProjectReview">

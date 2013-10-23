@@ -3,7 +3,14 @@ package com.sg.business.taskforms.handler;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.BasicBSONList;
+import org.drools.runtime.process.WorkflowProcessInstance;
+import org.jbpm.task.Task;
+
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.DBObject;
+import com.sg.bpm.service.BPM;
+import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.taskform.ITaskFormInputHandler;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
 import com.sg.business.model.IProcessControl;
@@ -16,17 +23,21 @@ public class ProjectReviewConvenerOfJSZX implements ITaskFormInputHandler {
 	public ProjectReviewConvenerOfJSZX() {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public PrimaryObject getTaskFormInputData(PrimaryObject taskFormData,
-			TaskFormConfig taskFormConfig) {
+			TaskFormConfig taskFormConfig, Task task) {
 		if (taskFormData instanceof TaskForm) {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			Work work = taskForm.getWork();
-			List<Map<String, Object>> historys = (List<Map<String, Object>>) work
-					.getValue(IWorkCloneFields.F_WF_EXECUTE
-							+ IProcessControl.POSTFIX_HISTORY);
-			for (Map<String, Object> history : historys) {
+			IProcessControl ip = work.getAdapter(IProcessControl.class);
+			BasicBSONList historys = ip.getWorkflowHistroyData(
+					IWorkCloneFields.F_WF_EXECUTE, true);
+			// List<Map<String, Object>> historys = (List<Map<String, Object>>)
+			// work
+			// .getValue(IWorkCloneFields.F_WF_EXECUTE
+			// + IProcessControl.POSTFIX_HISTORY);
+			for (int i = 0; i < historys.size(); i++) {
+				DBObject history = (DBObject) historys.get(i);
 				String taskname = (String) history
 						.get(IProcessControl.F_WF_TASK_NAME);
 				if ("Ìá½»ÆÀÉó".equals(taskname)) {
