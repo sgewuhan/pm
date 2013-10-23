@@ -87,7 +87,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 									taskFormEditorId);
 					if (ec instanceof DataEditorConfigurator) {
 						// 如果使用了input提供者，调用input提供者的方法来获得taskForm
-						taskForm = (TaskForm) config.getTaskFormInput(taskForm);
+						taskForm = (TaskForm) config.getTaskFormInput(taskForm,task);
 
 						DataObjectDialog dialog = DataObjectDialog.openDialog(
 								taskForm, ec, true, config.getSaveHandler(), "流程表单");

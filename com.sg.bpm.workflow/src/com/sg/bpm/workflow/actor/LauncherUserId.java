@@ -2,7 +2,6 @@ package com.sg.bpm.workflow.actor;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.service.actor.IActorIdProvider;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class LauncherUserId implements IActorIdProvider {
 

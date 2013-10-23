@@ -252,10 +252,12 @@
                columnDefinitionId="organization.isContainer">
          </column>
          <column
-               columnDefinitionId="organization.description">
+               columnDefinitionId="organization.costCenterCode">
          </column>
          <column
-               columnDefinitionId="organization.costCenterCode">
+               column="companycode"
+               name="公司代码"
+               type="String">
          </column>
          <structure
                modelRelation="organization_organization">
@@ -437,7 +439,7 @@
                         name="organizationtype"
                         option="com.sg.business.option.organizationType"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </combo>
                   <text
                         editPart="Text(Single Line)"
@@ -448,6 +450,17 @@
                         name="code"
                         persistable="true"
                         required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="companycode"
+                        label="公司代码"
+                        labelVisible="true"
+                        name="companycode"
+                        persistable="true"
+                        required="false"
                         type="String">
                   </text>
                   <text
@@ -564,6 +577,17 @@
                         name="code"
                         persistable="true"
                         required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="companycode"
+                        label="公司代码"
+                        labelVisible="true"
+                        name="companycode"
+                        persistable="true"
+                        required="false"
                         type="String">
                   </text>
                   <text

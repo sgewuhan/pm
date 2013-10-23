@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
@@ -15,7 +16,13 @@ import com.sg.business.performence.ui.calendar.ResourceCalender;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class OrgProjectResCalender extends ResourceCalender {
-
+	
+	@Override
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		setTitleToolTip("“我”管理部门的各项目实际工时");
+	}
+	
 	@Override
 	protected IContentProvider getContentProvider() {
 		return new OrgProjectResContentProvider();

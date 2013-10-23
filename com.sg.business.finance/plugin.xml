@@ -33,6 +33,12 @@
             id="financial.accountnumber"
             name="研发费用科目表"
             restorable="true">
+      </view>
+      <view
+            class="com.sg.widgets.part.view.TreeNavigator"
+            id="finance.org.navigator"
+            name="成本中心"
+            restorable="true">
       </view>
    </extension>
    <extension
@@ -64,6 +70,10 @@
                   type="String">
             </column>
          </searchAction>
+      </navigator>
+      <navigator
+            id="finance.org.navigator"
+            tree="finance.org.navigator">
       </navigator>
    </extension>
    <extension
@@ -125,6 +135,13 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            dataSet="com.sg.business.model.dataset.finance.FinanceOrganizationDataSet"
+            id="finance.org.navigator">
+      </tree>
    </extension>
 
 </plugin>
