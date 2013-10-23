@@ -100,6 +100,22 @@ public class Organization extends PrimaryObject {
 	 */
 	public static final String F_CODE = "code";
 
+	
+	/**
+	 * 公司代码，与SAP对应的公司代码
+	 */
+	public static final String F_COMPANYCODE = "companycode";
+
+	/**
+	 * 组织类型
+	 */
+	public static final String ORG_TYPE_COMPANY = "法人";
+	
+	public static final String ORG_TYPE_BUSINESS_UNIT = "事业部";
+
+	public static final String ORG_TYPE_DEPARTMENT = "部门";
+	
+	public static final String ORG_TYPE_TEAM = "团队";
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
 	 * 
@@ -413,8 +429,12 @@ public class Organization extends PrimaryObject {
 		}
 		
 		try {
-			doAddRole(Role.ROLE_FINANCIAL_MANAGER_ID,
-					Role.ROLE_FINANCIAL_MANAGER_TEXT);
+			//如果是事业部组织需要建立财务经理角色
+			String type = getOrganizationType();
+			if(ORG_TYPE_COMPANY.equals(type)||ORG_TYPE_BUSINESS_UNIT.equals(type)){
+				doAddRole(Role.ROLE_FINANCIAL_MANAGER_ID,
+						Role.ROLE_FINANCIAL_MANAGER_TEXT);
+			}
 		} catch (Exception e) {
 		}
 	}
