@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.jbpm.task.Task;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
@@ -51,12 +52,13 @@ public class TaskFormConfig {
 		return editorId;
 	}
 
-	public PrimaryObject getTaskFormInput(PrimaryObject taskFormData) {
+	public PrimaryObject getTaskFormInput(PrimaryObject taskFormData, Task task) {
 
 		try {
 			ITaskFormInputHandler inputDelegator = (ITaskFormInputHandler) ic
 					.createExecutableExtension("inputHandler");
 			if (inputDelegator != null) {
+				inputDelegator.setTast(task);
 				return inputDelegator.getTaskFormInputData(taskFormData, this);
 			}
 		} catch (CoreException e) {
