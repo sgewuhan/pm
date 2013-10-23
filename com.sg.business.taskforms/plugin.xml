@@ -1443,6 +1443,7 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+<<<<<<< HEAD
             name="提交委托"
             processDefinitionId="jszxProjectApply">
       </taskForm>
@@ -1479,6 +1480,38 @@
                title="流程">
          </basicpage>
       </editor>
+=======
+            editorId="jszx.jszxProjectClose.establishment"
+            name="编制项目结题申请"
+            processDefinitionId="jszx.jszxProjectClose">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="jszx.jszxProjectClose.establishment"
+            name="编制项目结题申请">
+         <basicpage
+               id="basicpage1"
+               title="审批">
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      </extension>
+      <extension
+         point="com.sg.bpm.service.actorRule">
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.DeptDirectorOfLauncher"
+            id="dept_director"
+            name="流程发起人所在研究室主任">
+      </actorRule>
+>>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
    </extension>
    
  </plugin>

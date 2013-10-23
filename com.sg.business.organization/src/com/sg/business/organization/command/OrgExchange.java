@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.ModelService;
@@ -16,7 +17,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.WriteResult;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.sqldb.utility.SQLResult;
@@ -147,7 +147,7 @@ public class OrgExchange {
 	private void initByPm(String id) throws Exception {
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
-		if(coll == null ){
+		if (coll == null) {
 			throw new Exception("无法连接PM数据库");
 		}
 		DBObject condition;
@@ -209,31 +209,31 @@ public class OrgExchange {
 	 *            : 组织编号
 	 */
 	private void initBySql(String id) throws Exception {
-			SQLResult result;
-			// 判断是否顶级组织
-			// 为null表示为顶级组织，这是通过ldunitid=‘1’来获取HR组织
-			// 不为null表示为非顶级组织，这时通过unitid来获取HR组织
-			if (id == null) {
-				result = SQLUtil.SQL_QUERY("hr",
-						"select * from pm_unit where ldunitid = '1'");
-				// result =
-				// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where ldunitid = '1'");
-			} else {
-				result = SQLUtil.SQL_QUERY("hr",
-						"select * from pm_unit where unitid = '" + id + "'");
+		SQLResult result;
+		// 判断是否顶级组织
+		// 为null表示为顶级组织，这是通过ldunitid=‘1’来获取HR组织
+		// 不为null表示为非顶级组织，这时通过unitid来获取HR组织
+		if (id == null) {
+			result = SQLUtil.SQL_QUERY("hr",
+					"select * from pm_unit where ldunitid = '1'");
+			// result =
+			// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where ldunitid = '1'");
+		} else {
+			result = SQLUtil.SQL_QUERY("hr",
+					"select * from pm_unit where unitid = '" + id + "'");
 
-				// result =
-				// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where unitid = '"
-				// + id + "'");
-			}
-			// 构造HR系统的组织
-			if (!result.isEmpty()) {
-				List<SQLRow> dataSet = result.getData();
-				SQLRow row = dataSet.get(0);
-				orgId = "" + row.getValue("unitid");
-				desc = "" + row.getValue("unitname");
-				children.addAll(initBySqlChildren(this));
-			}
+			// result =
+			// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where unitid = '"
+			// + id + "'");
+		}
+		// 构造HR系统的组织
+		if (!result.isEmpty()) {
+			List<SQLRow> dataSet = result.getData();
+			SQLRow row = dataSet.get(0);
+			orgId = "" + row.getValue("unitid");
+			desc = "" + row.getValue("unitname");
+			children.addAll(initBySqlChildren(this));
+		}
 	}
 
 	/**
@@ -430,36 +430,42 @@ public class OrgExchange {
 	 *            : PM系统的parentId
 	 */
 	public void doAddHR(OrgExchange otherOrg, ObjectId _id, ObjectId parentId) {
-		DBCollection roleCollection = DBActivator.getCollection(
-				IModelConstants.DB, IModelConstants.C_ORGANIZATION);
+		Organization org = ModelService.createModelObject(Organization.class);
 
 		// 设置插入的组织信息
-		BasicDBObject data = new BasicDBObject();
-		data.put(Organization.F_ORGANIZATION_NUMBER, otherOrg.orgId);
-		data.put(Organization.F_FULLDESC, otherOrg.desc);
+		org.setValue(Organization.F_ORGANIZATION_NUMBER, otherOrg.orgId);
+		org.setValue(Organization.F_FULLDESC, otherOrg.desc);
 		// 如果没有父组织，则默认将全称作为简称，如果存在，则简称将去掉和父组相同的部分
 		// 同时设置组织的编辑器，如果没有父组织，则使用顶级组织编辑器，如果存在，则使用部门和团队编辑器
 		if (otherOrg.parent == null) {
-			data.put(Organization.F_DESC, otherOrg.desc);
-			data.put(PrimaryObject.F__EDITOR, Organization.EDITOR_TEAM);
+			org.setValue(Organization.F_DESC, otherOrg.desc);
+			org.setValue(PrimaryObject.F__EDITOR, Organization.EDITOR_TEAM);
+			String alphaString = Utils.getAlphaString(otherOrg.desc);
+			alphaString = (alphaString + "000").substring(0, 3);
+			org.setValue(Organization.F_CODE, alphaString);
 		} else {
-			data.put(Organization.F_DESC,
-					otherOrg.desc.replaceFirst(otherOrg.parent.desc, ""));
-			data.put(PrimaryObject.F__EDITOR, Organization.EDITOR_SUBTEAM);
+			String desc = otherOrg.desc.replaceFirst(otherOrg.parent.desc, "");
+			org.setValue(Organization.F_DESC,
+					desc);
+			org.setValue(PrimaryObject.F__EDITOR, Organization.EDITOR_SUBTEAM);
+			String alphaString = Utils.getAlphaString(desc);
+			alphaString = (alphaString + "000").substring(0, 3);
+			org.setValue(Organization.F_CODE, alphaString);
 		}
 		// 设置系统信息
 		DBObject accountInfo = new BasicDBObject();
 		AccountInfo account = new BackgroundContext().getAccountInfo();
 		accountInfo.put("userid", account.getUserId());
 		accountInfo.put("username", account.getUserName());
-		data.put(Organization.F__ID, _id);
-		data.put(Organization.F_PARENT_ID, parentId);
-		data.put(PrimaryObject.F__CDATE, new Date());
-		data.put(PrimaryObject.F__CACCOUNT, accountInfo);
+		org.setValue(Organization.F__ID, _id);
+		org.setValue(Organization.F_PARENT_ID, parentId);
+		org.setValue(PrimaryObject.F__CDATE, new Date());
+		org.setValue(PrimaryObject.F__CACCOUNT, accountInfo);
 
-		WriteResult wr = roleCollection.insert(data);
-		if (wr.getN() > 0) {
-			ModelService.createModelObject(data, Organization.class);
+		try {
+			org.doInsert(new BackgroundContext());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

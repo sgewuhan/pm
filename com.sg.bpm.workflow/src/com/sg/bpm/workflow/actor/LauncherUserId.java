@@ -1,5 +1,6 @@
 package com.sg.bpm.workflow.actor;
 
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.service.actor.IActorIdProvider;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -10,7 +11,9 @@ public class LauncherUserId implements IActorIdProvider {
 
 	@Override
 	public String getActorId(Object[] input) {
-		return new CurrentAccountContext().getAccountInfo().getUserId();
+		PrimaryObject work = (PrimaryObject) input[0];
+		String value = (String) work.getValue("chargerid", true);
+		return value;
 	}
 
 }
