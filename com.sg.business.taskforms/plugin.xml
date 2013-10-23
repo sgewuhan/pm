@@ -37,7 +37,7 @@
             editorId="pm2.projectcommit.audit"
             name="审核"
             persistentFields="choice"
-            processDefinitionId="pm.genericapprovalprocess">
+            processDefinitionId="pm.pmGenericApprovalProcess">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -47,7 +47,7 @@
             editorId="pm2.projectcommit.approval"
             name="批准"
             persistentFields="choice"
-            processDefinitionId="pm.genericapprovalprocess">
+            processDefinitionId="pm.pmGenericApprovalProcess">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -93,6 +93,11 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -123,13 +128,18 @@
                         label="批准"
                         labelVisible="false"
                         name="choice"
-                        option="是否批准"
+                        option="是否批准2"
                         persistable="true"
                         required="false"
                         type="String">
                   </radio>
                </section>
             </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
          </basicpage>
       </editor>
    </extension>
@@ -1621,6 +1631,11 @@
                   </section>
                </pagecolumn>
             </basicpage>
+            <basicpage
+                  id="page2"
+                  pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+                  title="流程记录">
+            </basicpage>
          </editor>
          <editor
                collectionName="taskform"
@@ -1658,6 +1673,11 @@
                      </radio>
                   </section>
                </pagecolumn>
+            </basicpage>
+            <basicpage
+                  id="page2"
+                  pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+                  title="流程记录">
             </basicpage>
          </editor>
       </extension>
