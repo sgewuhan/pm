@@ -58,8 +58,7 @@ public class TaskFormConfig {
 			ITaskFormInputHandler inputDelegator = (ITaskFormInputHandler) ic
 					.createExecutableExtension("inputHandler");
 			if (inputDelegator != null) {
-				inputDelegator.setTast(task);
-				return inputDelegator.getTaskFormInputData(taskFormData, this);
+				return inputDelegator.getTaskFormInputData(taskFormData, this,task);
 			}
 		} catch (CoreException e) {
 		}

@@ -7,8 +7,6 @@ import com.mobnut.db.model.PrimaryObject;
 
 public interface ITaskFormInputHandler {
 
-	PrimaryObject getTaskFormInputData(PrimaryObject taskFormData, TaskFormConfig taskFormConfig);
-
-	void setTast(Task task);
+	PrimaryObject getTaskFormInputData(PrimaryObject taskFormData, TaskFormConfig taskFormConfig, Task task);
 
 }
