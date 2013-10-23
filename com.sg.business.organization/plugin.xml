@@ -252,10 +252,12 @@
                columnDefinitionId="organization.isContainer">
          </column>
          <column
-               columnDefinitionId="organization.description">
+               columnDefinitionId="organization.costCenterCode">
          </column>
          <column
-               columnDefinitionId="organization.costCenterCode">
+               column="companycode"
+               name="公司代码"
+               type="String">
          </column>
          <structure
                modelRelation="organization_organization">
