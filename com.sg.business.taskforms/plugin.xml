@@ -1407,6 +1407,11 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -1444,6 +1449,11 @@
                   </radio>
                </section>
             </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
          </basicpage>
          <basicpage
                id="page2"
@@ -1565,6 +1575,7 @@
                title="流程">
          </basicpage>
       </editor>
+<<<<<<< HEAD
       <editor
             collectionName="taskforms"
             dbName="pm2"
@@ -1699,6 +1710,8 @@
             </pagecolumn>
          </basicpage>
       </editor>
+=======
+>>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
    </extension>
       <extension
          point="com.sg.bpm.service.actorRule">
