@@ -411,6 +411,18 @@
             operation="worknotification"
             serviceProvider="com.sg.business.model.bpmservice.WorkMessageService">
       </service>
+      <service
+            interface="projectchange.service.action"
+            name="项目变更消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.model.bpmservice.ProjectChangeMessageService">
+      </service>
+      <service
+            interface="projectclose.service.action"
+            name="项目结题消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.model.bpmservice.ProjectCloseMessageService">
+      </service>
    </extension>
 
 </plugin>

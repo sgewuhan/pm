@@ -13,6 +13,7 @@ import org.drools.KnowledgeBase;
 import org.drools.definition.process.Process;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.AccountInfo;
@@ -100,6 +101,22 @@ public class Organization extends PrimaryObject {
 	 */
 	public static final String F_CODE = "code";
 
+	
+	/**
+	 * 公司代码，与SAP对应的公司代码
+	 */
+	public static final String F_COMPANY_CODE = "companycode";
+
+	/**
+	 * 组织类型
+	 */
+	public static final String ORG_TYPE_COMPANY = "法人";
+	
+	public static final String ORG_TYPE_BUSINESS_UNIT = "事业部";
+
+	public static final String ORG_TYPE_DEPARTMENT = "部门";
+	
+	public static final String ORG_TYPE_TEAM = "团队";
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
 	 * 
@@ -342,13 +359,35 @@ public class Organization extends PrimaryObject {
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
+		doSaveBefore();
+		
 		super.doInsert(context);
 
 		doSaveAfter();
 	}
 
+	private void doSaveBefore() throws Exception {
+		//检查如果是事业部类型的组织，组织代码必须填写
+		String type = getOrganizationType();
+		if(Utils.isNullOrEmpty(type)){
+			throw new Exception("公司类型不可为空");
+		}
+		if(ORG_TYPE_COMPANY.equals(type)||ORG_TYPE_BUSINESS_UNIT.equals(type)){
+			String companyCode = getCompanyCode();
+			if(Utils.isNullOrEmpty(companyCode)){
+				throw new Exception("事业部或公司类型的组织需要具有\"公司代码\"");
+			}
+		}
+	}
+
+	private String getCompanyCode() {
+		return (String) getValue(F_COMPANY_CODE);
+	}
+
 	@Override
 	public void doUpdate(IContext context) throws Exception {
+		doSaveBefore();
+		
 		super.doUpdate(context);
 
 		doSaveAfter();
@@ -382,12 +421,6 @@ public class Organization extends PrimaryObject {
 						Role.ROLE_BUSINESS_ADMIN_TEXT);
 			} catch (Exception e) {
 			}
-			try {
-				doAddRole(Role.ROLE_FINANCIAL_MANAGER_ID,
-						Role.ROLE_FINANCIAL_MANAGER_TEXT);
-			} catch (Exception e) {
-			}
-
 		}
 
 		// 如果组织是具有文档容器的组织，需要自动添加文档访问者和文档管理员的角色
@@ -415,6 +448,16 @@ public class Organization extends PrimaryObject {
 		// 增加管理者角色
 		try {
 			doAddRole(Role.ROLE_DEPT_MANAGER_ID, Role.ROLE_DEPT_MANAGER_TEXT);
+		} catch (Exception e) {
+		}
+		
+		try {
+			//如果是事业部组织需要建立财务经理角色
+			String type = getOrganizationType();
+			if(ORG_TYPE_COMPANY.equals(type)||ORG_TYPE_BUSINESS_UNIT.equals(type)){
+				doAddRole(Role.ROLE_FINANCIAL_MANAGER_ID,
+						Role.ROLE_FINANCIAL_MANAGER_TEXT);
+			}
 		} catch (Exception e) {
 		}
 	}
