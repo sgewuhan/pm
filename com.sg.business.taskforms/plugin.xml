@@ -1512,15 +1512,6 @@
          </processParameter>
       </taskForm>
    </extension>
-      <extension
-         point="com.sg.bpm.service.actorRule">
-      <actorRule
-            actorIdProvider="com.sg.business.taskforms.actor.ProjectAdminOfProject"
-            id="prj_admin"
-            name="项目所在管理部门的项目管理员">
-      </actorRule>
-   </extension>
-   
  </plugin>
    
 
