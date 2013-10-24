@@ -5,10 +5,10 @@ import java.util.Arrays;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.rap.addons.autosuggest.AutoSuggest;
-import org.eclipse.rap.addons.autosuggest.ColumnDataProvider;
-import org.eclipse.rap.addons.autosuggest.ColumnTemplate;
-import org.eclipse.rap.addons.autosuggest.DataSource;
+//import org.eclipse.rap.addons.autosuggest.AutoSuggest;
+//import org.eclipse.rap.addons.autosuggest.ColumnDataProvider;
+//import org.eclipse.rap.addons.autosuggest.ColumnTemplate;
+//import org.eclipse.rap.addons.autosuggest.DataSource;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -38,7 +38,7 @@ public class RNDCost extends ViewPart {
 
 	private TableViewer viewer;
 	private Shell columnLocator;
-	private DataSource dataSource;
+//	private DataSource dataSource;
 
 	public RNDCost() {
 
@@ -65,7 +65,7 @@ public class RNDCost extends ViewPart {
 			text.addListener(SWT.Modify, clientListener);
 		}
 
-		createDataSource(text);
+//		createDataSource(text);
 
 		FormData fd = new FormData();
 		text.setLayoutData(fd);
@@ -92,37 +92,37 @@ public class RNDCost extends ViewPart {
 		});
 	}
 
-	private void createDataSource(Text text) {
-		dataSource = new DataSource();
-		dataSource.setTemplate(new ColumnTemplate(60,120)); // the column
-																	// widths
-		
-		TableColumn[] columns = viewer.getTable().getColumns();
-		final String[][] suggestArray = new String[columns.length][2];
-		for (int i = 0; i < columns.length; i++) {
-			suggestArray[i][0] = (String) columns[i].getData("accountNumber");
-			suggestArray[i][1] = (String) columns[i].getData("accountName");
-		}
-		
-		ColumnDataProvider dataProvider = new ColumnDataProvider() {
-			public Iterable<?> getSuggestions() {
-				return Arrays.asList(suggestArray); 
-			}
-
-			public String getValue(Object element) {
-				String[] value = (String[]) element;
-				return value[0];
-			}
-
-			public String[] getTexts(Object element) {
-				String[] value = (String[]) element;
-				return new String[] { value[0], value[1] };
-			}
-		};
-		dataSource.setDataProvider(dataProvider);
-		AutoSuggest autoSuggest = new AutoSuggest(text);
-		autoSuggest.setDataSource(dataSource);
-	}
+//	private void createDataSource(Text text) {
+//		dataSource = new DataSource();
+//		dataSource.setTemplate(new ColumnTemplate(60,120)); // the column
+//																	// widths
+//		
+//		TableColumn[] columns = viewer.getTable().getColumns();
+//		final String[][] suggestArray = new String[columns.length][2];
+//		for (int i = 0; i < columns.length; i++) {
+//			suggestArray[i][0] = (String) columns[i].getData("accountNumber");
+//			suggestArray[i][1] = (String) columns[i].getData("accountName");
+//		}
+//		
+//		ColumnDataProvider dataProvider = new ColumnDataProvider() {
+//			public Iterable<?> getSuggestions() {
+//				return Arrays.asList(suggestArray); 
+//			}
+//
+//			public String getValue(Object element) {
+//				String[] value = (String[]) element;
+//				return value[0];
+//			}
+//
+//			public String[] getTexts(Object element) {
+//				String[] value = (String[]) element;
+//				return new String[] { value[0], value[1] };
+//			}
+//		};
+//		dataSource.setDataProvider(dataProvider);
+//		AutoSuggest autoSuggest = new AutoSuggest(text);
+//		autoSuggest.setDataSource(dataSource);
+//	}
 
 	private void createColumns() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
