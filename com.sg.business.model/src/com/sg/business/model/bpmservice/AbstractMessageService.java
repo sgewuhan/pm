@@ -22,6 +22,7 @@ public abstract class AbstractMessageService extends ServiceProvider {
 		Object content = getInputValue("content");
 		if (content instanceof String) {
 			String jsonContent = (String) content;
+			
 			try {
 				DBObject processData = WorkflowUtils
 						.getProcessInfoFromJSON(jsonContent);

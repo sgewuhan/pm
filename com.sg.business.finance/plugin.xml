@@ -35,9 +35,15 @@
             restorable="true">
       </view>
       <view
-            class="com.sg.widgets.part.view.TreeNavigator"
+            class="com.sg.widgets.part.view.TableNavigator"
             id="finance.org.navigator"
-            name="成本中心"
+            name="成本中心导航"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.business.finance.view.RNDCost"
+            id="finance.rndcost"
+            name="研发费用"
             restorable="true">
       </view>
    </extension>
@@ -73,7 +79,7 @@
       </navigator>
       <navigator
             id="finance.org.navigator"
-            tree="finance.org.navigator">
+            table="finance.org.navigator">
       </navigator>
    </extension>
    <extension
@@ -93,6 +99,29 @@
                name="代码"
                type="String"
                width="120">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.finance.FinanceOrganizationDataSet"
+            id="finance.org.navigator">
+         <column
+               column="fulldesc"
+               name="组织全称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               columnDefinitionId="organization.costCenterCode">
+         </column>
+         <column
+               column="companycode"
+               name="公司代码"
+               type="String">
          </column>
       </table>
    </extension>
@@ -135,13 +164,6 @@
             </pagecolumn>
          </basicpage>
       </editor>
-   </extension>
-   <extension
-         point="com.sg.widgets.tree">
-      <tree
-            dataSet="com.sg.business.model.dataset.finance.FinanceOrganizationDataSet"
-            id="finance.org.navigator">
-      </tree>
    </extension>
 
 </plugin>

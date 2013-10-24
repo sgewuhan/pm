@@ -1,15 +1,18 @@
 package com.sg.business.taskforms.handler;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.drools.runtime.process.NodeInstance;
-import org.drools.runtime.process.WorkflowProcessInstance;
+import org.bson.types.BasicBSONList;
 import org.jbpm.task.Task;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.bpm.workflow.WorkflowService;
+import com.mongodb.DBObject;
 import com.sg.bpm.workflow.taskform.ITaskFormInputHandler;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
+import com.sg.business.model.IProcessControl;
+import com.sg.business.model.IWorkCloneFields;
+import com.sg.business.model.TaskForm;
+import com.sg.business.model.Work;
 
 
 public class ProjectReviewReviewOfJSZX implements ITaskFormInputHandler {
@@ -20,19 +23,28 @@ public class ProjectReviewReviewOfJSZX implements ITaskFormInputHandler {
 	@Override
 	public PrimaryObject getTaskFormInputData(PrimaryObject taskFormData,
 			TaskFormConfig taskFormConfig, Task task) {
-		long processInstanceId = task.getTaskData().getProcessInstanceId();
-		String processId = task.getTaskData().getProcessId();
-		try {
-			WorkflowProcessInstance process = WorkflowService.getDefault().getProcessInstance(processId, processInstanceId);
-			Collection<NodeInstance> nodeInstances = process.getNodeInstances();
-			
-			Object reviewer = process.getVariable("reviewer");
-			System.out.println(reviewer);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (taskFormData instanceof TaskForm) {
+			TaskForm taskForm = (TaskForm) taskFormData;
+			Work work = taskForm.getWork();
+			IProcessControl ip = work.getAdapter(IProcessControl.class);
+			BasicBSONList historys = ip.getWorkflowHistroyData(
+					IWorkCloneFields.F_WF_EXECUTE, true);
+			for (int i = 0; i < historys.size(); i++) {
+				DBObject history = (DBObject) historys.get(i);
+				String taskname = (String) history
+						.get(IProcessControl.F_WF_TASK_NAME);
+				if ("Ìá½»ÆÀÉó".equals(taskname)) {
+					List<?> form_reviewer_list = (List<?>) history
+							.get("form_reviewer_list");
+					if (form_reviewer_list != null) {
+						taskForm.setValue("reviewer_list_s",
+								(Object) form_reviewer_list);
+					}
+				}
+			}
+			return taskForm;
 		}
-		return taskFormData;
+		return null;
 	}
 
 	
