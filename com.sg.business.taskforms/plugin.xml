@@ -2328,7 +2328,7 @@
                   title="审核">
                <pagecolumn>
                   <section
-                        label="请填写评审意见和结论">
+                        label="请填写专家意见和结论">
                      <text
                            editPart="Text(Multi Line)"
                            editable="true"
@@ -2357,10 +2357,10 @@
             </basicpage>
             <basicpage
                   id="page3"
-                  title="评审意见">
+                  title="附件">
                <pagecolumn>
                   <section
-                        label="评审意见附件">
+                        label="意见附件">
                      <file
                            editPart="OfficeFileUploader"
                            editable="true"
@@ -2389,36 +2389,13 @@
                   title="审核">
                <pagecolumn>
                   <section
-                        label="专家评审意见和结论">
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="false"
-                           id="reviewer"
-                           label="评审专家"
-                           labelVisible="true"
-                           name="reviewer"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                     <text
-                           editPart="Text(Multi Line)"
-                           editable="false"
-                           id="comment_s"
-                           label="评审意见"
-                           labelVisible="false"
-                           name="comment_s"
-                           persistable="true"
-                           required="false"
-                           type="String"
-                           widthHint="320">
-                     </text>
+                        label="请填写形式审查结论">
                      <radio
-                           editable="false"
-                           id="choice_s"
-                           label="评审结论"
+                           editable="true"
+                           id="choice"
+                           label="形式审查结论"
                            labelVisible="false"
-                           name="choice_s"
+                           name="choice"
                            option="是否通过"
                            persistable="true"
                            required="false"
@@ -2426,11 +2403,126 @@
                      </radio>
                   </section>
                   <section
-                        label="请填写形式审查结论">
+                        label="请选择需要重新评审的专家">
+                     <list
+                           addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                           defaultValueProvider="com.sg.business.taskforms.value.ProjectReviewConvenerOfJSZX"
+                           editable="true"
+                           id="reviewer_list_s"
+                           label="评审组"
+                           labelVisible="true"
+                           name="reviewer_list_s"
+                           persistable="true"
+                           required="false">
+                     </list>
+                  </section>
+               </pagecolumn>
+            </basicpage>
+            <basicpage
+                  id="page2"
+                  pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+                  title="流程记录">
+            </basicpage>
+         </editor>
+         <editor
+               collectionName="taskform"
+               dbName="pm2"
+               id="jszx.jszxProjectReview.replyexpertgroup"
+               name="专家意见回复">
+            <basicpage
+                  id="page1"
+                  title="评审意见">
+               <pagecolumn>
+                  <section
+                        label="回复专家意见">
+                     <file
+                           editPart="OfficeFileUploader"
+                           editable="true"
+                           id="commentfile"
+                           labelVisible="true"
+                           name="commentfile"
+                           persistable="true"
+                           required="false">
+                     </file>
+                  </section>
+               </pagecolumn>
+            </basicpage>
+            <basicpage
+                  id="page2"
+                  pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+                  title="流程记录">
+            </basicpage>
+         </editor>
+         <editor
+               collectionName="taskform"
+               dbName="pm2"
+               id="jszx.jszxProjectReview.confirmtime"
+               name="确定评审会时间">
+            <basicpage
+                  id="page1"
+                  title="评审意见">
+               <pagecolumn>
+                  <section
+                        label="确定评审会时间">
+                     <dateTime
+                           defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                           editPart="DateDialog"
+                           editable="true"
+                           id="confirmtime"
+                           label="评审会时间"
+                           labelVisible="true"
+                           name="confirmtime"
+                           persistable="true"
+                           required="false"
+                           type="Date">
+                     </dateTime>
+                  </section>
+               </pagecolumn>
+            </basicpage>
+            <basicpage
+                  id="page2"
+                  pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+                  title="流程记录">
+            </basicpage>
+         </editor>
+         <editor
+               collectionName="taskform"
+               dbName="pm2"
+               id="jszx.jszxProjectReview.meetingreview"
+               name="评审会">
+            <basicpage
+                  id="page1"
+                  title="审核">
+               <pagecolumn>
+                  <section
+                        label="请填写会议评审意见和结论">
+                     <text
+                           editPart="Text(Multi Line)"
+                           editable="true"
+                           id="comment"
+                           label="评审意见"
+                           labelVisible="false"
+                           name="comment"
+                           persistable="true"
+                           required="false"
+                           type="String"
+                           widthHint="320">
+                     </text>
+                     <radio
+                           editable="true"
+                           id="abarbeitung"
+                           label="是否整改"
+                           labelVisible="false"
+                           name="abarbeitung"
+                           option="是否整改"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </radio>
                      <radio
                            editable="true"
                            id="choice"
-                           label="形式审查结论"
+                           label="评审结论"
                            labelVisible="false"
                            name="choice"
                            option="是否通过"
@@ -2447,6 +2539,35 @@
                   title="流程记录">
             </basicpage>
          </editor>
+         <editor
+               collectionName="taskform"
+               dbName="pm2"
+               id="jszx.jszxProjectReview.correction"
+               name="整改">
+            <basicpage
+                  id="page1"
+                  title="评审意见">
+               <pagecolumn>
+                  <section
+                        label="整改结果发布">
+                     <file
+                           editPart="OfficeFileUploader"
+                           editable="true"
+                           id="commentfile"
+                           labelVisible="true"
+                           name="commentfile"
+                           persistable="true"
+                           required="false">
+                     </file>
+                  </section>
+               </pagecolumn>
+            </basicpage>
+            <basicpage
+                  id="page2"
+                  pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+                  title="流程记录">
+            </basicpage>
+         </editor>
       </extension>
       <extension
             point="com.sg.bpm.workflow.taskForm">
@@ -2454,7 +2575,8 @@
                editorId="jszx.jszxProjectReview.application"
                name="提交评审"
                persistentFields="reviewer_list"
-               processDefinitionId="jszx.jszxProjectReview">
+               processDefinitionId="jszx.jszxProjectReview"
+               saveHandler="com.sg.business.taskforms.handler.jszxProjectReviewAuditSave">
             <processParameter
                   processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                   processParameterName="reviewer_list"
@@ -2490,7 +2612,8 @@
                inputHandler="com.sg.business.taskforms.handler.ProjectReviewConvenerOfJSZX"
                name="修改评审专家"
                persistentFields="reviewer_list,review_convener"
-               processDefinitionId="jszx.jszxProjectReview">
+               processDefinitionId="jszx.jszxProjectReview"
+               saveHandler="com.sg.business.taskforms.handler.jszxProjectReviewAuditSave">
             <processParameter
                   processParameterName="review_convener"
                   taskFormFieldName="review_convener">
@@ -2503,19 +2626,75 @@
          <taskForm
                editorId="jszx.jszxProjectReview.expertgroupcountersign"
                name="专家评审"
-               persistentFields="choice,comment"
+               persistentFields="choice,comment,commentfile"
                processDefinitionId="jszx.jszxProjectReview">
          </taskForm>
          <taskForm
                editorId="jszx.jszxProjectReview.expertgroupreview"
                inputHandler="com.sg.business.taskforms.handler.ProjectReviewReviewOfJSZX"
                name="专家意见形式审查"
-               persistentFields="reviewer,comment_s,choice_s,choice"
+               persistentFields="reviewer_list_s,choice"
                processDefinitionId="jszx.jszxProjectReview">
             <processParameter
                   processParameterName="choice"
                   taskFormFieldName="choice">
             </processParameter>
+            <processParameter
+                  processParameterName="reviewer_list_s"
+                  taskFormFieldName="reviewer_list_s">
+            </processParameter>
+         </taskForm>
+         <taskForm
+               editorId="jszx.jszxProjectReview.replyexpertgroup"
+               name="专家意见回复"
+               persistentFields="commentfile"
+               processDefinitionId="jszx.jszxProjectReview">
+         </taskForm>
+         <taskForm
+               editorId="jszx.jszxProjectReview.confirmtime"
+               name="确定评审会时间"
+               persistentFields="confirmtime"
+               processDefinitionId="jszx.jszxProjectReview">
+            <processParameter
+                  processParameterName="confirmtime"
+                  taskFormFieldName="confirmtime">
+            </processParameter>
+         </taskForm>
+         <taskForm
+               editorId="jszx.jszxProjectReview.meetingreview"
+               name="评审会"
+               persistentFields="comment,choice,abarbeitung"
+               processDefinitionId="jszx.jszxProjectReview">
+            <processParameter
+                  processParameterName="choice"
+                  taskFormFieldName="choice">
+            </processParameter>
+            <processParameter
+                  processParameterName="abarbeitung"
+                  taskFormFieldName="abarbeitung">
+            </processParameter>
+         </taskForm>
+         <taskForm
+               editorId="jszx.jszxProjectReview.expertgroupcountersign"
+               name="专家意见"
+               persistentFields="choice,comment,commentfile"
+               processDefinitionId="jszx.jszxProjectReview">
+         </taskForm>
+         <taskForm
+               editorId="jszx.jszxProjectReview.deptdirector"
+               name="整改项复审"
+               persistentFields="choice,comment"
+               processDefinitionId="jszx.jszxProjectReview">
+            <processParameter
+                  processParameterName="choice"
+                  taskFormFieldName="choice">
+            </processParameter>
+         </taskForm>
+         <taskForm
+               editorId="jszx.jszxProjectReview.correction"
+               name="整改"
+               persistentFields="commentfile"
+               processDefinitionId="jszx.jszxProjectReview">
          </taskForm>
       </extension>
       <extension
