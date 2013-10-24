@@ -1205,7 +1205,6 @@
                      label="请选择需要重新评审的专家">
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
-                        defaultValueProvider="com.sg.business.taskforms.value.ProjectReviewConvenerOfJSZX"
                         editable="true"
                         id="reviewer_list_s"
                         label="评审组"
