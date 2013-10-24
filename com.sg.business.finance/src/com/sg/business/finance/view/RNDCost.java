@@ -1,16 +1,24 @@
 package com.sg.business.finance.view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.eclipse.jface.fieldassist.ContentProposal;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposal;
+import org.eclipse.jface.fieldassist.IContentProposalProvider;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-//import org.eclipse.rap.addons.autosuggest.AutoSuggest;
-//import org.eclipse.rap.addons.autosuggest.ColumnDataProvider;
-//import org.eclipse.rap.addons.autosuggest.ColumnTemplate;
-//import org.eclipse.rap.addons.autosuggest.DataSource;
+import org.eclipse.rap.addons.autosuggest.AutoSuggest;
+import org.eclipse.rap.addons.autosuggest.ColumnDataProvider;
+import org.eclipse.rap.addons.autosuggest.ColumnTemplate;
+import org.eclipse.rap.addons.autosuggest.DataSource;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
@@ -36,9 +44,52 @@ import com.sg.business.model.IModelConstants;
 
 public class RNDCost extends ViewPart {
 
+	class DataSourceProposal implements IContentProposalProvider {
+
+		public DataSourceProposal() {
+		}
+
+		@Override
+		public IContentProposal[] getProposals(String contents, int position) {
+			ArrayList<ContentProposal> result = new ArrayList<ContentProposal>();
+			for (int i = 0; i < suggestArray.length; i++) {
+				for (int j = 0; j < suggestArray[i].length; j++) {
+					if (suggestArray[i][j].startsWith(contents)) {
+						ContentProposal cp = new ContentProposal(
+								suggestArray[i][0], suggestArray[i][1]) {
+							@Override
+							public String getLabel() {
+								return getContent() + "|" + getDescription();
+							}
+						};
+						result.add(cp);
+					} else {
+						String alphaValue = Utils.getAlphaString(
+								suggestArray[i][j]).toLowerCase();
+						if (alphaValue.startsWith(contents)) {
+							ContentProposal cp = new ContentProposal(
+									suggestArray[i][0], suggestArray[i][1]) {
+								@Override
+								public String getLabel() {
+									return getContent() + "|"
+											+ getDescription();
+								}
+							};
+							result.add(cp);
+						}
+					}
+				}
+			}
+			return result.toArray(new IContentProposal[0]);
+		}
+
+	}
+
 	private TableViewer viewer;
 	private Shell columnLocator;
-//	private DataSource dataSource;
+	private DataSource dataSource;
+	private String[][] suggestArray;
+	private Text inputCode;
 
 	public RNDCost() {
 
@@ -52,77 +103,135 @@ public class RNDCost extends ViewPart {
 		createColumns();
 
 		createColumnLocator();
+		
+		createKeyBinding();
+	}
+
+	private void createKeyBinding() {
+//		Display display = getSite().getShell().getDisplay();
+//		
+//		keys = (String[]) display.getData(RWT.ACTIVE_KEYS);
+//		String[] newkeys = Utils.addElementToArray(keys, "CTRL+F3", true, String.class);
+//		display.setData( RWT.ACTIVE_KEYS, newkeys );
+//		display.addFilter( SWT.KeyDown, new Listener() {
+//		  public void handleEvent( Event event ) {
+//		    if( event.stateMask == SWT.CTRL && event.keyCode == SWT.F3 ) {
+//		      showInput();
+//		    }
+//		  }
+//		} );		
 	}
 
 	private void createColumnLocator() {
 		columnLocator = new Shell(getSite().getShell(), SWT.BORDER);
 		columnLocator.setLayout(new FormLayout());
-		Text text = new Text(columnLocator, SWT.BORDER);
-		String scriptCode = Utils.getClientListener(Utils.TYPE_INTEGER);
-		if (scriptCode != null) {
-			ClientListener clientListener = new ClientListener(scriptCode);
-			text.addListener(SWT.Verify, clientListener);
-			text.addListener(SWT.Modify, clientListener);
-		}
-
-//		createDataSource(text);
-
+		inputCode = new Text(columnLocator, SWT.BORDER);
 		FormData fd = new FormData();
-		text.setLayoutData(fd);
+		inputCode.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 1);
 		fd.top = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.bottom = new FormAttachment(100, -1);
-		fd.width = 80;
+		fd.width = 120;
 		columnLocator.pack();
-		columnLocator.addShellListener(new ShellListener() {
+
+		createSuggest();
+
+		if (Utils.isIE8Client()) {
+			IContentProposalProvider pp = new DataSourceProposal();
+
+			ContentProposalAdapter cpa = new ContentProposalAdapter(inputCode,
+					new TextContentAdapter(), pp, null,null);
+			cpa.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+
+		} else {
+			String scriptCode = Utils.getClientListener(Utils.TYPE_INTEGER);
+			if (scriptCode != null) {
+				ClientListener clientListener = new ClientListener(scriptCode);
+				inputCode.addListener(SWT.Verify, clientListener);
+				inputCode.addListener(SWT.Modify, clientListener);
+			}
+
+			createDataSource();
+			AutoSuggest autoSuggest = new AutoSuggest(inputCode);
+			autoSuggest.setDataSource(dataSource);
+
+			columnLocator.addShellListener(new ShellListener() {
+
+				@Override
+				public void shellDeactivated(ShellEvent e) {
+					columnLocator.setVisible(false);
+				}
+
+				@Override
+				public void shellClosed(ShellEvent e) {
+				}
+
+				@Override
+				public void shellActivated(ShellEvent e) {
+				}
+			});
+		}
+
+		inputCode.addKeyListener(new KeyListener() {
 
 			@Override
-			public void shellDeactivated(ShellEvent e) {
-				columnLocator.setVisible(false);
+			public void keyReleased(KeyEvent e) {
 			}
 
 			@Override
-			public void shellClosed(ShellEvent e) {
-			}
-
-			@Override
-			public void shellActivated(ShellEvent e) {
+			public void keyPressed(KeyEvent e) {
+				if (e.character == '\r') {
+					columnLocator.setVisible(false);
+					scrollColumn(inputCode.getText());
+				}
 			}
 		});
 	}
 
-//	private void createDataSource(Text text) {
-//		dataSource = new DataSource();
-//		dataSource.setTemplate(new ColumnTemplate(60,120)); // the column
-//																	// widths
-//		
-//		TableColumn[] columns = viewer.getTable().getColumns();
-//		final String[][] suggestArray = new String[columns.length][2];
-//		for (int i = 0; i < columns.length; i++) {
-//			suggestArray[i][0] = (String) columns[i].getData("accountNumber");
-//			suggestArray[i][1] = (String) columns[i].getData("accountName");
-//		}
-//		
-//		ColumnDataProvider dataProvider = new ColumnDataProvider() {
-//			public Iterable<?> getSuggestions() {
-//				return Arrays.asList(suggestArray); 
-//			}
-//
-//			public String getValue(Object element) {
-//				String[] value = (String[]) element;
-//				return value[0];
-//			}
-//
-//			public String[] getTexts(Object element) {
-//				String[] value = (String[]) element;
-//				return new String[] { value[0], value[1] };
-//			}
-//		};
-//		dataSource.setDataProvider(dataProvider);
-//		AutoSuggest autoSuggest = new AutoSuggest(text);
-//		autoSuggest.setDataSource(dataSource);
-//	}
+	protected void scrollColumn(String text) {
+		TableColumn[] columns = viewer.getTable().getColumns();
+		for (int i = 0; i < columns.length; i++) {
+			String number = (String) columns[i].getData("accountNumber");
+			if(number.equals(text)){
+				viewer.getTable().showColumn(columns[i]);
+			}
+		}
+	}
+
+	private void createDataSource() {
+		if (dataSource != null) {
+			return;
+		}
+		dataSource = new DataSource();
+		dataSource.setTemplate(new ColumnTemplate(120, 200)); // the column
+																// widths
+		ColumnDataProvider dataProvider = new ColumnDataProvider() {
+			public Iterable<?> getSuggestions() {
+				return Arrays.asList(suggestArray);
+			}
+
+			public String getValue(Object element) {
+				String[] value = (String[]) element;
+				return value[0];
+			}
+
+			public String[] getTexts(Object element) {
+				String[] value = (String[]) element;
+				return new String[] { value[0], value[1] };
+			}
+		};
+		dataSource.setDataProvider(dataProvider);
+	}
+
+	private void createSuggest() {
+		TableColumn[] columns = viewer.getTable().getColumns();
+		suggestArray = new String[columns.length][2];
+		for (int i = 0; i < columns.length; i++) {
+			suggestArray[i][0] = (String) columns[i].getData("accountNumber");
+			suggestArray[i][1] = (String) columns[i].getData("accountName");
+		}
+	}
 
 	private void createColumns() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
@@ -155,27 +264,37 @@ public class RNDCost extends ViewPart {
 		column.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				showInput(column);
+				showInput();
 			}
 		});
 	}
 
-	protected void showInput(TableColumn column) {
+	protected void showInput() {
 
 		Table table = viewer.getTable();
 		Point location = table.toDisplay(0, 0);
 		// 定位横向显示位置
-		TableColumn[] columns = table.getColumns();
-		for (int i = 0; i < columns.length; i++) {
-			if (columns[i] != column) {
-				location.x += (columns[i].getWidth());
-			} else {
-				break;
-			}
+//		TableColumn[] columns = table.getColumns();
+//		for (int i = 0; i < columns.length; i++) {
+//			if (columns[i] != column) {
+//				location.x += (columns[i].getWidth());
+//			} else {
+//				break;
+//			}
+//		}
+		location.y += 60;
+
+		if (columnLocator.isDisposed() || columnLocator == null) {
+			createColumnLocator();
 		}
-		location.y += table.getItemHeight();
 		columnLocator.setLocation(location);
-		columnLocator.open();
+		if (!columnLocator.isVisible()) {
+			columnLocator.setVisible(true);
+		} else {
+			columnLocator.open();
+		}
+		inputCode.setFocus();
+		inputCode.selectAll();
 		// shell.setLocation(location);
 	}
 
