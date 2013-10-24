@@ -858,6 +858,7 @@
                taskFormFieldName="review_convener">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -879,6 +880,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                processParameterName="reviewer_list_s"
                taskFormFieldName="reviewer_list_s">
          </processParameter>
@@ -1104,6 +1106,7 @@
                         id="reviewer_list"
                         label="评审组"
                         labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="false">
@@ -1209,6 +1212,7 @@
                         id="reviewer_list_s"
                         label="评审组"
                         labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list_s"
                         persistable="true"
                         required="false">
