@@ -215,9 +215,14 @@
                value="整改">
          </option>
          <option
-               id="不整改"
-               label="不整改"
-               value="不整改">
+               id="通过"
+               label="通过"
+               value="通过">
+         </option>
+         <option
+               id="不通过"
+               label="不通过"
+               value="不通过">
          </option>
       </option>
       <option
@@ -1511,6 +1516,14 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.actorRule">
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.ProjectAdminOfProject"
+            id="prj_admin"
+            name="项目所在管理部门的项目管理员">
+      </actorRule>
    </extension>
  </plugin>
    

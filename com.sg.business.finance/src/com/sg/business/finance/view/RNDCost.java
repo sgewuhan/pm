@@ -1,7 +1,5 @@
 package com.sg.business.finance.view;
 
-import java.util.Arrays;
-
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
