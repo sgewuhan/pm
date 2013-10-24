@@ -14,7 +14,7 @@ import com.sg.business.model.Message;
 import com.sg.business.model.Project;
 import com.sg.business.model.toolkit.MessageToolkit;
 
-public class WorkMessageService extends MessageService {
+public class WorkMessageService extends AbstractMessageService {
 
 	@Override
 	public String getMessageTitle() {

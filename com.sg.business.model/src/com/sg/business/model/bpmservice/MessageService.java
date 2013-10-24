@@ -1,96 +1,76 @@
 package com.sg.business.model.bpmservice;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import com.mobnut.db.model.IContext;
+import org.bson.types.ObjectId;
+
+import com.mobnut.db.model.DocumentModelDefinition;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.DBObject;
-import com.sg.bpm.service.task.ServiceProvider;
-import com.sg.bpm.workflow.utils.WorkflowUtils;
-import com.sg.business.model.Message;
-import com.sg.business.model.toolkit.MessageToolkit;
 
-public abstract class MessageService extends ServiceProvider {
+public class MessageService extends AbstractMessageService {
+
+	private static final String TITLE = "msg_title";
+	private static final String CONTENT = "msg_content";
+	private static final String RECEIVERS = "msg_receivers";
+	private static final String EDITOR = "msg_editor";
+	private static final String CLASSNAME = "msg_class";
+	private static final String TARGET = "msg_target";
 
 	@Override
-	public Map<String, Object> run(Object parameter) {
-
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
-		if (content instanceof String) {
-			String jsonContent = (String) content;
-			try {
-				DBObject processData = WorkflowUtils
-						.getProcessInfoFromJSON(jsonContent);
-				String processId = (String) processData.get("processId");
-				String processName = (String) processData.get("processName");
-
-				String messageTitle = getMessageTitle();
-				String messageContent = getMessageContent();
-				List<String> receivers = getReceiverList();
-				String editId = getEditorId();
-				PrimaryObject target = getTarget();
-				if (editId != null) {
-					sendMessage(messageTitle, messageContent, receivers,
-							target, editId, new BPMServiceContext(processName,
-									processId));
-				} else {
-					sendMessage(receivers, messageTitle, messageContent,
-							new BPMServiceContext(processName, processId));
-				}
-
-			} catch (Exception e) {
-				result.put("returnCode", "ERROR");
-				result.put("returnMessage", e.getMessage());
-			}
-		}
-		return result;
-	}
-
-	public void sendMessage(String messageTitle, String messageContent,
-			List<String> receiverList, PrimaryObject target, String editId,
-			IContext context) {
-
-		Map<String, Message> msgList = new HashMap<String, Message>();
-		for (String userId : receiverList) {
-			msgList.put(userId, null);
-			MessageToolkit.appendMessage(msgList, userId, messageTitle,
-					messageContent, target, editId, context);
-		}
-		Iterator<Message> iter = msgList.values().iterator();
-		while (iter.hasNext()) {
-			Message message = iter.next();
-			try {
-				message.doSave(context);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public String getMessageTitle() {
+		try{
+			return (String) getInputValue(TITLE);
+			
+		}catch(Exception e){
+			return null;
 		}
 	}
 
-	public void sendMessage(List<String> recievers, String title,
-			String content, IContext context) {
-		if (recievers != null) {
-			Message message = MessageToolkit.makeMessage(recievers, title,
-					context.getAccountInfo().getConsignerId(), content);
-			try {
-				message.doSave(context);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	@Override
+	public String getMessageContent() {
+		try{
+			return (String)getInputValue(CONTENT);
+		}catch(Exception e){
+			return null;
 		}
 	}
 
-	public abstract String getMessageTitle();
+	@Override
+	public List<String> getReceiverList() {
+		try{
+			String receiverList=(String) getInputValue(RECEIVERS);
+			String[] receivers = receiverList.split(",");
+			return  Arrays.asList(receivers);
+			
+		}catch(Exception e){
+			return null;
+		}
+	}
 
-	public abstract String getMessageContent();
+	@Override
+	public String getEditorId() {
+		try{
+			return (String) getInputValue(EDITOR);
+		}catch(Exception e){
+			return null;
+		}
+	}
 
-	public abstract List<String> getReceiverList();
+	@Override
+	public PrimaryObject getTarget() {
+		try{
+			String target=(String) getInputValue(TARGET);
+			String className=(String) getInputValue(CLASSNAME);
+			DocumentModelDefinition documentModelDefinition = ModelService.getDocumentModelDefinition(className);
+			Class<? extends PrimaryObject> class1 = documentModelDefinition.getModelClass();
+			ObjectId _id=new ObjectId(target);
+			return ModelService.createModelObject(class1, _id);
+		}catch(Exception e){
+			return null;
+			
+		}
+	}
 
-	public abstract String getEditorId();
-
-	public abstract PrimaryObject getTarget();
 }

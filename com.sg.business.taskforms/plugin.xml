@@ -1496,34 +1496,52 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            editorId="jszx.jszxProjectApply.apply"
             name="申请技术支持"
-            processDefinitionId="jszxProjectApply">
+            persistentFields="dept,act_chief_master"
+            processDefinitionId="jszx.jszxProjectApply">
+         <processParameter
+               processParameterName="dept"
+               taskFormFieldName="act_dept_director">
+         </processParameter>
+         <processParameter
+               processParameterName="act_chief_master"
+               taskFormFieldName="act_chief_master">
+         </processParameter>
+         <processParameter
+               processParameterName="dept"
+               taskFormFieldName="act_deputy_director">
+         </processParameter>
+         <processParameter
+               processParameterName="dept"
+               taskFormFieldName="act_prj_admin">
+         </processParameter>
       </taskForm>
       <taskForm
-            editorId="jszxProjectApply.depcheck"
+            editorId="jszx.jszxProjectApply.audit"
             name="申请部门审核"
-            persistentFields="choice"
-            processDefinitionId="jszxProjectApply">
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="jszxProjectApply.depapproval"
+            editorId="jszx.jszxProjectApply.approval"
             name="申请部门总工批准"
-            persistentFields="choice"
-            processDefinitionId="jszxProjectApply">
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="jszxProjectApply.chiefengineer"
+            editorId="jszx.jszxProjectApply.audit"
             name="首席师审核"
-            persistentFields="choice"
-            processDefinitionId="jszxProjectApply">
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -1531,182 +1549,196 @@
       </taskForm>
       <taskForm
             name="受托研究室主任审核"
-            persistentFields="choice,act_work"
-            processDefinitionId="jszxProjectApply">
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterName="act_work"
-               taskFormFieldName="act_work">
+               processParameterName="act_worker"
+               taskFormFieldName="act_worker">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.approval"
+            name="常务副主任批准"
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="确定工作令号"
+            processDefinitionId="jszx.jszxProjectApply">
+         <processParameter
+               processParameterName="project_number"
+               taskFormFieldName="project_number">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.audit"
+            name="首席师审核_委托工作"
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.audit"
+            name="受托研究室主任审核_委托工作"
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.audit"
+            name="申请人确认工作"
+            persistentFields="comment,choice"
+            processDefinitionId="jszx.jszxProjectApply">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
-            collectionName="taskforms"
+            collectionName="taskform"
             dbName="pm2"
-            id="jszxProjectApply.apply"
+            id="jszx.jszxProjectApply.audit"
+            name="审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="jszx.jszxProjectApply.approval"
+            name="批准">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否批准2"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="jszx.jszxProjectApply.apply"
             name="申请技术支持">
          <basicpage
-               id="page1"
-               title="申请技术支持">
+               id="basicpage1"
+               title="审批">
             <pagecolumn>
                <section
-                     label="请确定技术委托组织、部门及相关审核人员">
+                     label="请选择委托部门">
                   <navigatorSelector
                         editable="true"
-                        id="com.sg.business.taskforms.navigatorSelector1"
+                        id="dept"
+                        label="委托部门"
                         labelVisible="true"
-                        modelClass="com.sg.business.taskforms.PrimaryObject:1"
-                        name="com.sg.business.taskforms.navigatorSelector1"
-                        navigatorId="com.sg.business.taskforms.navigatorSelector1"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="dept"
+                        navigatorId="organization.navigator"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        editable="true"
+                        id="act_chief_master"
+                        label="首席师"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="act_chief_master"
                         persistable="true"
                         required="false">
-                  </navigatorSelector>
+                  </list>
                </section>
             </pagecolumn>
          </basicpage>
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskforms"
-            dbName="pm2"
-            id="jszxProjectApply.depcheck"
-            name="申请部门审核">
-         <basicpage
-               id="page1"
-               title="申请部门审核">
-            <pagecolumn>
-               <section
-                     label="请审核此次技术支持申请是否通过">
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="审核结论"
-                        labelVisible="true"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskforms"
-            dbName="pm2"
-            id="jszxProjectApply.depapproval"
-            name="申请部门总工批准">
-         <basicpage
-               id="page1"
-               title="申请部门总工批准">
-            <pagecolumn>
-               <section
-                     label="请确定此次技术支持申请是否通过">
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="审批结论"
-                        labelVisible="true"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskforms"
-            dbName="pm2"
-            id="jszxProjectApply.chiefengineer"
-            name="首席师审核">
-         <basicpage
-               id="page1"
-               title="首席师审核">
-            <pagecolumn>
-               <section
-                     label="请审核是否接受此次技术支持申请">
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="审核结论"
-                        labelVisible="true"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskforms"
-            dbName="pm2"
-            id="jszxProjectApply.deptmanager"
-            name="受托研究室主任审核">
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-         <basicpage
-               id="page1"
-               title="受托研究室主任审核">
-            <pagecolumn>
-               <section
-                     label="请审核是否接受此次技术支持申请并确定技术支持工作负责人">
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="审核结论"
-                        labelVisible="true"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <navigatorSelector
-                        editable="true"
-                        id="com.sg.business.taskforms.navigatorSelector1"
-                        labelVisible="true"
-                        modelClass="com.sg.business.taskforms.PrimaryObject:1"
-                        name="com.sg.business.taskforms.navigatorSelector1"
-                        navigatorId="com.sg.business.taskforms.navigatorSelector1"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-            </pagecolumn>
+               title="流程记录">
          </basicpage>
       </editor>
    </extension>
@@ -2320,6 +2352,9 @@
                      columnDefinitionId="account.username">
                </column>
             </searchAction>
+         </navigator>
+         <navigator
+               id="com.sg.business.taskforms.navigator1">
          </navigator>
       </extension>
    

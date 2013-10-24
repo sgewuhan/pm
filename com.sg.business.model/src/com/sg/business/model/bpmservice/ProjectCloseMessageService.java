@@ -7,7 +7,7 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 
-public class ProjectCloseMessageService extends MessageService {
+public class ProjectCloseMessageService extends AbstractMessageService {
 
 
 	@Override
