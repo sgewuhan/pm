@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.bpm.workflow,
  com.sg.business.model,
  com.sg.thirdparty,
- com.sg.widgets
+ com.sg.widgets,
+ com.mobnut.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

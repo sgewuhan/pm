@@ -894,25 +894,25 @@
       <taskForm
             editorId="jszx.jszxProjectReview.confirmtime"
             name="确定评审会时间"
-            persistentFields="confirmtime"
+            persistentFields="confirmtime,confirmaddress"
             processDefinitionId="jszx.jszxProjectReview">
          <processParameter
                processParameterName="confirmtime"
                taskFormFieldName="confirmtime">
          </processParameter>
+         <processParameter
+               processParameterName="confirmaddress"
+               taskFormFieldName="confirmaddress">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectReview.meetingreview"
             name="评审会"
-            persistentFields="comment,choice,abarbeitung"
+            persistentFields="comment,choice"
             processDefinitionId="jszx.jszxProjectReview">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
-         </processParameter>
-         <processParameter
-               processParameterName="abarbeitung"
-               taskFormFieldName="abarbeitung">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1265,7 +1265,7 @@
                title="评审意见">
             <pagecolumn>
                <section
-                     label="确定评审会时间">
+                     label="确定评审会时间及地点">
                   <dateTime
                         defaultValueProvider="com.sg.business.commons.value.TodayDefault"
                         editPart="DateDialog"
@@ -1276,8 +1276,21 @@
                         name="confirmtime"
                         persistable="true"
                         required="false"
-                        type="Date">
+                        type="Time">
                   </dateTime>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        label="评审会地点"
+                        labelVisible="false"
+                        name="confirmaddress"
+                        persistable="true"
+                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1312,22 +1325,11 @@
                   </text>
                   <radio
                         editable="true"
-                        id="abarbeitung"
-                        label="是否整改"
-                        labelVisible="false"
-                        name="abarbeitung"
-                        option="是否整改"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <radio
-                        editable="true"
                         id="choice"
                         label="评审结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否通过"
+                        option="是否整改"
                         persistable="true"
                         required="false"
                         type="String">
@@ -1370,6 +1372,21 @@
                title="流程记录">
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="jszxprojectreview.service.action"
+            name="项目评审评审会消息"
+            operation="meetingmessage"
+            serviceProvider="com.tmt.jszx.bpmservice.ProjectReviewServiceOfJSZX">
+      </service>
+      <service
+            interface="jszxprojectreview.service.action"
+            name="项目评审流程完成消息"
+            operation="workmessage"
+            serviceProvider="com.tmt.jszx.bpmservice.ProjectReviewServiceOfJSZX">
+      </service>
    </extension>
    <extension
          point="com.sg.widgets.table">
