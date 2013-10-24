@@ -1523,24 +1523,6 @@
          </basicpage>
       </editor>
    </extension>
-   <extension
-         point="com.sg.widgets.dataEditor">
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="jszx.jszxProjectClose.establishment"
-            name="编制项目结题申请">
-         <basicpage
-               id="basicpage1"
-               title="审批">
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-      </editor>
-      </extension>
       <extension
          point="com.sg.bpm.service.actorRule">
       <actorRule
