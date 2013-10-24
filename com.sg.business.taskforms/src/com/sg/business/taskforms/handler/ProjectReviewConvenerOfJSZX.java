@@ -36,6 +36,7 @@ public class ProjectReviewConvenerOfJSZX implements ITaskFormInputHandler {
 			// work
 			// .getValue(IWorkCloneFields.F_WF_EXECUTE
 			// + IProcessControl.POSTFIX_HISTORY);
+			long wk = task.getTaskData().getWorkItemId();
 			for (int i = 0; i < historys.size(); i++) {
 				DBObject history = (DBObject) historys.get(i);
 				String taskname = (String) history
