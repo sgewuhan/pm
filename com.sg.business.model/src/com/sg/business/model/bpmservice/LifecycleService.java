@@ -27,7 +27,16 @@ public class LifecycleService extends ServiceProvider {
 					String processId = (String) processData.get("processId");
 					String processName = (String) processData
 							.get("processName");
-					lc.doFinish(new BPMServiceContext(processName, processId));
+					
+					if ("finish".equals(getOperation())) {
+						lc.doFinish(new BPMServiceContext(processName, processId));
+					} else if ("cancel".equals(getOperation())) {
+						lc.doCancel(new BPMServiceContext(processName, processId));
+					}
+					
+					
+					
+					
 				} catch (Exception e) {
 					result.put("returnCode", "ERROR");
 					result.put("returnMessage", e.getMessage());
