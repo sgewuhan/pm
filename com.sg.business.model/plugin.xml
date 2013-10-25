@@ -394,6 +394,12 @@
             serviceProvider="com.sg.business.model.bpmservice.LifecycleService">
       </service>
       <service
+            interface="lifecycle.service.action"
+            name="生命周期操作服务"
+            operation="cancel"
+            serviceProvider="com.sg.business.model.bpmservice.LifecycleService">
+      </service>
+      <service
             interface="project.service.action"
             name="项目状态服务"
             operation="ready"
@@ -404,12 +410,6 @@
             name="项目状态服务"
             operation="message"
             serviceProvider="com.sg.business.model.bpmservice.ProjectService">
-      </service>
-      <service
-            interface="work.service.action"
-            name="工作消息服务"
-            operation="worknotification"
-            serviceProvider="com.sg.business.model.bpmservice.WorkMessageService">
       </service>
       <service
             interface="projectchange.service.action"

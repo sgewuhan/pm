@@ -293,7 +293,7 @@
             editorId="xt.systemprojectapprove.audit"
             name="审批"
             persistentFields="comment,choice,pretrial,reviewer_list,reviewer_admin"
-            processDefinitionId="xt.systemprojectapprove"
+            processDefinitionId="xtProjectApprove"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="choice"
@@ -317,7 +317,7 @@
             editorId="pm.systemprojectapprove.expertgroupreview"
             name="专家组预审"
             persistentFields="comment,choice_s"
-            processDefinitionId="pm.systemprojectapprove">
+            processDefinitionId="xtProjectApprove">
          <processParameter
                processParameterName="choice_s"
                taskFormFieldName="choice_s">
@@ -327,7 +327,7 @@
             editorId="pm.systemprojectapprove.reviewplan"
             name="评审实施计划"
             persistentFields="comment,review"
-            processDefinitionId="pm.systemprojectapprove">
+            processDefinitionId="xtProjectApprove">
          <processParameter
                processParameterName="review"
                taskFormFieldName="review">
@@ -337,7 +337,7 @@
             editorId="pm.systemprojectapprove.expertgroupcountersign"
             name="专家组会签"
             persistentFields="comment,choice_s_1"
-            processDefinitionId="pm.systemprojectapprove">
+            processDefinitionId="xtProjectApprove">
          <processParameter
                processParameterName="choice_s_1"
                taskFormFieldName="choice_s_1">
@@ -347,7 +347,7 @@
             editorId="pm.systemprojectapprove.reviewteamleader"
             name="评审组组长审批"
             persistentFields="comment,abarbeitung"
-            processDefinitionId="pm.systemprojectapprove">
+            processDefinitionId="xtProjectApprove">
          <processParameter
                processParameterName="choice_sum_1"
                taskFormFieldName="choice_sum_1">
@@ -361,7 +361,7 @@
             editorId="pm.systemprojectapprove.meetingreview"
             name="会议评审"
             persistentFields="comment,choice_sum_1,abarbeitung"
-            processDefinitionId="pm.systemprojectapprove">
+            processDefinitionId="xtProjectApprove">
          <processParameter
                processParameterName="choice_sum_1"
                taskFormFieldName="choice_sum_1">
@@ -375,7 +375,7 @@
             editorId="pm.systemprojectapprove.resultaudit"
             name="处理结果审核"
             persistentFields="comment,choice"
-            processDefinitionId="pm.systemprojectapprove">
+            processDefinitionId="xtProjectApprove">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
