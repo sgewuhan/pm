@@ -14,16 +14,15 @@ import com.sg.business.model.toolkit.UserToolkit;
 
 public class ProjectReviewServiceOfJSZX extends MessageService {
 
-	private String operation;
 
 	public ProjectReviewServiceOfJSZX() {
 	}
 
 	@Override
 	public String getMessageTitle() {
-		if ("meetingmessage".equals(operation)) {
+		if ("meetingmessage".equals(getOperation())) {
 			return "项目评审会议通知";
-		} else if ("workmessage".equals(operation)) {
+		} else if ("workmessage".equals(getOperation())) {
 			return "项目评审通知";
 		} else {
 			return super.getMessageTitle();
@@ -34,7 +33,7 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 	public String getMessageContent() {
 		Project pro = (Project) getTarget();
 		if (pro != null) {
-			if ("meetingmessage".equals(operation)) {
+			if ("meetingmessage".equals(getOperation())) {
 				try {
 					String content = "请各位评审专家于";
 					Date confirmTime = Utils
@@ -55,7 +54,7 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 				} catch (Exception e) {
 					return null;
 				}
-			} else if ("workmessage".equals(operation)) {
+			} else if ("workmessage".equals(getOperation())) {
 				try {
 					String content= "項目:"+pro.getLabel();
 					String choice = (String) getInputValue("choice");

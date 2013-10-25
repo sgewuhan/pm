@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
@@ -22,7 +23,7 @@ public abstract class AbstractMessageService extends ServiceProvider {
 		Object content = getInputValue("content");
 		if (content instanceof String) {
 			String jsonContent = (String) content;
-			
+
 			try {
 				DBObject processData = WorkflowUtils
 						.getProcessInfoFromJSON(jsonContent);
@@ -31,16 +32,23 @@ public abstract class AbstractMessageService extends ServiceProvider {
 
 				String messageTitle = getMessageTitle();
 				String messageContent = getMessageContent();
+
+				BasicDBList receiverList = new BasicDBList();
 				List<String> receivers = getReceiverList();
+				for (String receiver : receivers) {
+					receiverList.add(receiver);
+				}
+
 				String editId = getEditorId();
 				PrimaryObject target = getTarget();
 				if (editId != null) {
-					sendMessage(messageTitle, messageContent, receivers,
-							target, editId, new BPMServiceContext(processName,
-									processId));
-				} else {
-					sendMessage(receivers, messageTitle, messageContent,
+					sendMessage(messageTitle, messageContent,
+							(List) receiverList, target, editId,
 							new BPMServiceContext(processName, processId));
+				} else {
+					sendMessage((List) receiverList, messageTitle,
+							messageContent, new BPMServiceContext(processName,
+									processId));
 				}
 
 			} catch (Exception e) {
