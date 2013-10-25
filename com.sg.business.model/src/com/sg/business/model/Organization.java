@@ -1486,8 +1486,20 @@ public class Organization extends PrimaryObject {
 				summary = new SummaryOrganizationWorks(this);
 			}
 			return (T) summary;
+		}else if(adapter == CostCenterDuration.class){
+			if(isCostCenter()){
+				return (T) new CostCenterDuration(this);
+			}
 		}
 		return super.getAdapter(adapter);
+	}
+
+	public boolean isCostCenter() {
+		Object value = getValue(F_COST_CENTER_CODE);
+		if(value instanceof String){
+			return !((String) value).isEmpty();
+		}
+		return false;
 	}
 
 	/**

@@ -1,7 +1,8 @@
-package com.sg.business.finance.view;
+package com.sg.business.finance.rndcost;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import org.eclipse.jface.fieldassist.ContentProposal;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
@@ -9,12 +10,14 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.rap.addons.autosuggest.AutoSuggest;
 import org.eclipse.rap.addons.autosuggest.ColumnDataProvider;
 import org.eclipse.rap.addons.autosuggest.ColumnTemplate;
 import org.eclipse.rap.addons.autosuggest.DataSource;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.scripting.ClientListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -40,9 +43,11 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.CostAccount;
+import com.sg.business.model.CostCenterDuration;
+import com.sg.business.model.IAccountDuration;
 import com.sg.business.model.IModelConstants;
 
-public class RNDCost extends ViewPart {
+public class RNDCostAdjustmentView extends ViewPart {
 
 	class DataSourceProposal implements IContentProposalProvider {
 
@@ -54,7 +59,7 @@ public class RNDCost extends ViewPart {
 			ArrayList<ContentProposal> result = new ArrayList<ContentProposal>();
 			for (int i = 0; i < suggestArray.length; i++) {
 				for (int j = 0; j < suggestArray[i].length; j++) {
-					if (suggestArray[i][j].startsWith(contents)) {
+					if (suggestArray[i][j].contains(contents)) {
 						ContentProposal cp = new ContentProposal(
 								suggestArray[i][0], suggestArray[i][1]) {
 							@Override
@@ -66,7 +71,7 @@ public class RNDCost extends ViewPart {
 					} else {
 						String alphaValue = Utils.getAlphaString(
 								suggestArray[i][j]).toLowerCase();
-						if (alphaValue.startsWith(contents)) {
+						if (alphaValue.contains(contents)) {
 							ContentProposal cp = new ContentProposal(
 									suggestArray[i][0], suggestArray[i][1]) {
 								@Override
@@ -90,8 +95,9 @@ public class RNDCost extends ViewPart {
 	private DataSource dataSource;
 	private String[][] suggestArray;
 	private Text inputCode;
+	private ArrayList<IAccountDuration> input;
 
-	public RNDCost() {
+	public RNDCostAdjustmentView() {
 
 	}
 
@@ -99,27 +105,26 @@ public class RNDCost extends ViewPart {
 	public void createPartControl(Composite parent) {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		viewer.getTable().setHeaderVisible(true);
+		viewer.getTable().setLinesVisible(true);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		
 		createColumns();
 
 		createColumnLocator();
 		
-		createKeyBinding();
+		loadData();
 	}
 
-	private void createKeyBinding() {
-//		Display display = getSite().getShell().getDisplay();
-//		
-//		keys = (String[]) display.getData(RWT.ACTIVE_KEYS);
-//		String[] newkeys = Utils.addElementToArray(keys, "CTRL+F3", true, String.class);
-//		display.setData( RWT.ACTIVE_KEYS, newkeys );
-//		display.addFilter( SWT.KeyDown, new Listener() {
-//		  public void handleEvent( Event event ) {
-//		    if( event.stateMask == SWT.CTRL && event.keyCode == SWT.F3 ) {
-//		      showInput();
-//		    }
-//		  }
-//		} );		
+
+	private void loadData() {
+		//获取成本中心按期间的各科目金额
+		input = new ArrayList<IAccountDuration>();
+		CostCenterDuration ccd = new CostCenterDuration();
+		Calendar cal = Calendar.getInstance();
+		ccd.setYearDuration(cal.get(Calendar.YEAR));
+		ccd.setMonthDuration(cal.get(Calendar.MONTH)+1);
+		input.add(ccd);
+		viewer.setInput(input);
 	}
 
 	private void createColumnLocator() {
@@ -134,8 +139,6 @@ public class RNDCost extends ViewPart {
 		fd.bottom = new FormAttachment(100, -1);
 		fd.width = 120;
 		columnLocator.pack();
-
-		createSuggest();
 
 		if (Utils.isIE8Client()) {
 			IContentProposalProvider pp = new DataSourceProposal();
@@ -193,7 +196,7 @@ public class RNDCost extends ViewPart {
 		TableColumn[] columns = viewer.getTable().getColumns();
 		for (int i = 0; i < columns.length; i++) {
 			String number = (String) columns[i].getData("accountNumber");
-			if(number.equals(text)){
+			if(text.equals(number)){
 				viewer.getTable().showColumn(columns[i]);
 			}
 		}
@@ -224,30 +227,49 @@ public class RNDCost extends ViewPart {
 		dataSource.setDataProvider(dataProvider);
 	}
 
-	private void createSuggest() {
-		TableColumn[] columns = viewer.getTable().getColumns();
-		suggestArray = new String[columns.length][2];
-		for (int i = 0; i < columns.length; i++) {
-			suggestArray[i][0] = (String) columns[i].getData("accountNumber");
-			suggestArray[i][1] = (String) columns[i].getData("accountName");
-		}
-	}
-
 	private void createColumns() {
+		createLabelColumn();
+		
+		
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_COSTACCOUNT);
 		DBCursor cur = col.find();
+		int i = 0;
+		suggestArray = new String[cur.size()][2];
+
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
 			String accountNumber = (String) next.get(CostAccount.accountnumber);
 			String accountName = (String) next.get(CostAccount.F_DESC);
 			createColumn(accountNumber, accountName);
+			suggestArray[i][0] = accountNumber;
+			suggestArray[i][1] = accountName;
+			i++;
 		}
+		
 	}
 
-	private void createColumn(String accountNumber, String accountName) {
+	private void createLabelColumn() {
+		TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
+				SWT.LEFT);
+		viewerColumn.setLabelProvider(new ColumnLabelProvider());
+		final TableColumn column = viewerColumn.getColumn();
+		column.setData(RWT.CUSTOM_VARIANT, "selector");
+		column.setWidth(120);
+		column.setText("成本对象");
+		column.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				showInput();
+			}
+		});
+	}
+
+	private TableColumn createColumn(String accountNumber, String accountName) {
 		TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
 				SWT.RIGHT);
+		viewerColumn.setLabelProvider(new AccountDurationLabelProvider(accountNumber));
+		
 		final TableColumn column = viewerColumn.getColumn();
 		column.setWidth(70);
 		String columnTitle;
@@ -267,6 +289,8 @@ public class RNDCost extends ViewPart {
 				showInput();
 			}
 		});
+		
+		return column;
 	}
 
 	protected void showInput() {
