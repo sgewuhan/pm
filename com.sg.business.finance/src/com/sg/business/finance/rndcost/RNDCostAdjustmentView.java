@@ -174,9 +174,6 @@ public class RNDCostAdjustmentView extends ViewPart {
 				}
 			});
 		}
-		//10.99.9.17
-		//qwaszx!@#
-		//administrator
 		inputCode.addKeyListener(new KeyListener() {
 
 			@Override
