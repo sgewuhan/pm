@@ -55,6 +55,27 @@ public class Folder extends PrimaryObject {
 	public static final String F_IS_PROJECT_FOLDERROOT = "isflderroot";
 
 	/**
+	 * 是否流程生成文件夹
+	 */
+	public static final String F_IS_WORKFLOW_FOLDER = "iswfflder";
+
+	/**
+	 * 是否项目根文件夹
+	 * @return
+	 */
+	public boolean isFolderRoot() {
+		return Boolean.TRUE.equals(getValue(F_IS_PROJECT_FOLDERROOT));
+	}
+
+	/**
+	 * 是否流程生成文件夹
+	 * @return
+	 */
+	public boolean isWFFolder() {
+		return Boolean.TRUE.equals(getValue(F_IS_WORKFLOW_FOLDER));
+	}
+
+	/**
 	 * 返回文件夹类型
 	 * 
 	 * @return String
