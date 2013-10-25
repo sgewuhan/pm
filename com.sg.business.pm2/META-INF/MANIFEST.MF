@@ -2,27 +2,27 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Pm2
 Bundle-SymbolicName: com.sg.business.pm2;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.pm2.PM2Activator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
  com.mobnut.db,
  com.mobnut.commons,
- com.mobnut.design;bundle-version="1.5.0",
+ com.mobnut.design,
  com.mobnut.portal,
  com.sg.thirdparty,
- com.sg.widgets;bundle-version="1.0.0",
- com.sg.business.message;bundle-version="1.0.0",
- com.sg.business.home;bundle-version="1.0.0",
- com.sg.business.model;bundle-version="1.0.0",
- com.sg.business.organization;bundle-version="1.0.0",
- com.sg.business.project;bundle-version="1.0.0",
- com.sg.business.management;bundle-version="1.0.0",
- com.sg.business.vault;bundle-version="1.0.0",
- com.sg.business.visualization;bundle-version="1.0.0",
- com.sg.business.work;bundle-version="1.0.0",
- com.sg.business.resource;bundle-version="1.0.0",
- com.sg.business.performence;bundle-version="1.0.0"
+ com.sg.widgets,
+ com.sg.business.message,
+ com.sg.business.home,
+ com.sg.business.model,
+ com.sg.business.organization,
+ com.sg.business.project,
+ com.sg.business.management,
+ com.sg.business.vault,
+ com.sg.business.visualization,
+ com.sg.business.work,
+ com.sg.business.resource,
+ com.sg.business.performence
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

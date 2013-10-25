@@ -2,20 +2,20 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BusinessManagement
 Bundle-SymbolicName: com.sg.business.management;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.management.ManagementActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
- com.sg.business.organization;bundle-version="1.0.0",
- com.sg.widgets;bundle-version="1.0.0",
- com.sg.business.model;bundle-version="1.0.0",
+ com.sg.business.organization,
+ com.sg.widgets,
+ com.sg.business.model,
  com.mobnut.db,
- org.eclipse.rap.ui.forms;bundle-version="2.1.0",
- com.sg.business.resource;bundle-version="1.0.0",
- com.sg.thirdparty;bundle-version="1.0.0",
- com.sg.bpm.service;bundle-version="1.0.0",
- com.sg.bpm.workflow;bundle-version="1.0.0",
- com.sg.business.commons;bundle-version="1.0.0"
+ org.eclipse.rap.ui.forms,
+ com.sg.business.resource,
+ com.sg.thirdparty,
+ com.sg.bpm.service,
+ com.sg.bpm.workflow,
+ com.sg.business.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

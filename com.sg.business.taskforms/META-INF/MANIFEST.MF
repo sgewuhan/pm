@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Taskforms
 Bundle-SymbolicName: com.sg.business.taskforms;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Vendor: SG
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: com.sg.bpm.service;bundle-version="1.0.0",
- com.sg.business.commons;bundle-version="1.0.0",
+Require-Bundle: com.sg.bpm.service,
+ com.sg.business.commons,
  org.eclipse.equinox.registry,
- org.eclipse.rap.ui;bundle-version="2.2.0",
+ org.eclipse.rap.ui,
  com.mobnut.db,
  com.sg.bpm.workflow,
  com.sg.business.model,

@@ -2,21 +2,21 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Performence
 Bundle-SymbolicName: com.sg.business.performence;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.performence.PerformenceActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui,
  org.eclipse.rap.nebula.widgets.grid,
  org.eclipse.rap.nebula.jface.gridviewer,
- org.eclipse.rap.ui.forms;bundle-version="2.2.0",
+ org.eclipse.rap.ui.forms,
  com.mobnut.db,
- com.mobnut.commons;bundle-version="1.0.0",
- com.sg.widgets;bundle-version="1.0.0",
+ com.mobnut.commons,
+ com.sg.widgets,
  com.sg.bpm.service,
- com.sg.business.commons;bundle-version="1.0.0",
- com.sg.business.model;bundle-version="1.0.0",
- com.sg.thirdparty;bundle-version="1.0.0",
- com.sg.business.resource;bundle-version="1.0.0"
+ com.sg.business.commons,
+ com.sg.business.model,
+ com.sg.thirdparty,
+ com.sg.business.resource
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

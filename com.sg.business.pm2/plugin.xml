@@ -823,5 +823,17 @@
          </option>
       </option>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="com.mobnut.portal.main"
+            name="vis">
+         <property
+               name="appName"
+               value="vis">
+         </property>
+      </product>
+   </extension>
 
 </plugin>

@@ -2,18 +2,18 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Workflow
 Bundle-SymbolicName: com.sg.bpm.workflow;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.bpm.workflow.WorkflowService
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
- com.sg.bpm.service;bundle-version="1.0.0",
+ com.sg.bpm.service,
  com.mobnut.commons,
- com.mobnut.db;bundle-version="1.0.0",
- com.sg.widgets;bundle-version="1.0.0",
- com.sg.thirdparty;bundle-version="1.0.0",
- com.mobnut.portal;bundle-version="1.0.0",
- com.mobnut.admin;bundle-version="1.0.0"
+ com.mobnut.db,
+ com.sg.widgets,
+ com.sg.thirdparty,
+ com.mobnut.portal,
+ com.mobnut.admin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.bpm.workflow,

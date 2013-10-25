@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Visualization
 Bundle-SymbolicName: com.sg.business.visualization;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.visualization.VisualizationActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
- com.sg.widgets;bundle-version="1.0.0",
- com.sg.business.model;bundle-version="1.0.0",
- com.mobnut.db;bundle-version="1.0.0",
- com.sg.thirdparty;bundle-version="1.0.0"
+ com.sg.widgets,
+ com.sg.business.model,
+ com.mobnut.db,
+ com.sg.thirdparty
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
