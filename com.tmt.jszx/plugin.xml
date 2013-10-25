@@ -242,6 +242,7 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
+                        navigatorSelectorControl="com.tmt.jszx.navigatorSelectorContol.DeptSelectContor"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
