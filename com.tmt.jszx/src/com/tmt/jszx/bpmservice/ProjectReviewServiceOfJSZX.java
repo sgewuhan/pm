@@ -2,6 +2,7 @@ package com.tmt.jszx.bpmservice;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
@@ -9,11 +10,11 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
+import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
 import com.sg.business.model.toolkit.UserToolkit;
 
 public class ProjectReviewServiceOfJSZX extends MessageService {
-
 
 	public ProjectReviewServiceOfJSZX() {
 	}
@@ -56,14 +57,14 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 				}
 			} else if ("workmessage".equals(getOperation())) {
 				try {
-					String content= "項目:"+pro.getLabel();
+					String content = "項目:" + pro.getLabel();
 					String choice = (String) getInputValue("choice");
 					if ("整改".equals(choice)) {
-						content = content+ "评审通过并且整改完成!";
+						content = content + "评审通过并且整改完成!";
 					} else if ("通过".equals(choice)) {
-						content = content+ "评审通过!";
+						content = content + "评审通过!";
 					} else if ("不通过".equals(choice)) {
-						content = content+ "评审不通过，请重新添加评审工作.";
+						content = content + "评审不通过，请重新添加评审工作.";
 					}
 					return content;
 				} catch (Exception e) {
@@ -89,4 +90,23 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getReceiverList() {
+		if ("meetingmessage".equals(getOperation())) {
+			return super.getReceiverList();
+		} else {
+			Object content = getInputValue("content");
+			if (content instanceof String) {
+				String jsonContent = (String) content;
+				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
+				if (host instanceof Work) {
+					Work work = (Work) host;
+					List<?> participatesIdList = work.getParticipatesIdList();
+					return (List<String>) participatesIdList;
+				}
+			}
+			return null;
+		}
+	}
 }
