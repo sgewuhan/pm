@@ -598,7 +598,8 @@
             editorId="jszx.jszxProjectReview.replyexpertgroup"
             name="专家意见回复"
             persistentFields="commentfile"
-            processDefinitionId="jszx.jszxProjectReview">
+            processDefinitionId="jszx.jszxProjectReview"
+            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertCommentfileOfJSZX">
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectReview.confirmtime"
@@ -628,7 +629,8 @@
             editorId="jszx.jszxProjectReview.expertgroupcountersign"
             name="专家意见"
             persistentFields="choice,comment,commentfile"
-            processDefinitionId="jszx.jszxProjectReview">
+            processDefinitionId="jszx.jszxProjectReview"
+            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertCommentfileOfJSZX">
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectReview.deptdirector"
@@ -644,7 +646,8 @@
             editorId="jszx.jszxProjectReview.correction"
             name="整改"
             persistentFields="commentfile"
-            processDefinitionId="jszx.jszxProjectReview">
+            processDefinitionId="jszx.jszxProjectReview"
+            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertCommentfileOfJSZX">
       </taskForm>
    </extension>
    <extension
@@ -742,7 +745,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="review_convener"
-                        navigatorId="taskforms.reviewer"
+                        navigatorId="taskforms.reviewer.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
