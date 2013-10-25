@@ -126,7 +126,7 @@
             editorId="jszx.jszxProjectApply.approval"
             name="申请人确认工作"
             persistentFields="choice,comment"
-            processDefinitionId="jszx.jszxProjectApply">
+            processDefinitionId="jszx.jszxProjectApply.audit">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -242,6 +242,7 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
+                        navigatorSelectorControl="com.tmt.jszx.navigatorSelectorContol.DeptSelectContor"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -575,7 +576,8 @@
             editorId="jszx.jszxProjectReview.expertgroupcountersign"
             name="专家评审"
             persistentFields="choice,comment,commentfile"
-            processDefinitionId="jszx.jszxProjectReview">
+            processDefinitionId="jszx.jszxProjectReview"
+            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertCommentfileOfJSZX">
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectReview.expertgroupreview"
@@ -991,10 +993,9 @@
                         editable="true"
                         id="confirmaddress"
                         label="评审会地点"
-                        labelVisible="false"
+                        labelVisible="true"
                         name="confirmaddress"
                         persistable="true"
-                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
                         required="false"
                         type="String"
                         widthHint="320">
