@@ -1,5 +1,6 @@
 package com.sg.business.model.bpmservice;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,56 +21,78 @@ public class MessageService extends AbstractMessageService {
 
 	@Override
 	public String getMessageTitle() {
-		try{
+		try {
 			return (String) getInputValue(TITLE);
-			
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
 	public String getMessageContent() {
-		try{
-			return (String)getInputValue(CONTENT);
-		}catch(Exception e){
+		try {
+			return (String) getInputValue(CONTENT);
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
 	public List<String> getReceiverList() {
-		try{
-			String receiverList=(String) getInputValue(RECEIVERS);
-			String[] receivers = receiverList.split(",");
-			return  Arrays.asList(receivers);
-			
-		}catch(Exception e){
+		try {
+			Object inputValue = getInputValue(RECEIVERS);
+			System.out.println(1);
+			if (inputValue instanceof String) {
+				String receiverList = (String) getInputValue(RECEIVERS);
+				String[] receivers = receiverList.split(",");
+				return Arrays.asList(receivers);
+			} else if (inputValue instanceof ArrayList<?>) {
+				ArrayList<?> arrayList = (ArrayList<?>) inputValue;
+				List<String> receivers = new ArrayList<String>();
+				for (Object object : arrayList) {
+					if (object instanceof String) {
+						String string = (String) object;
+						receivers.add(string);
+					}
+				}
+				if (receivers != null && receivers.size() > 0) {
+					return receivers;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
 	public String getEditorId() {
-		try{
+		try {
 			return (String) getInputValue(EDITOR);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
 	public PrimaryObject getTarget() {
-		try{
-			String target=(String) getInputValue(TARGET);
-			String className=(String) getInputValue(CLASSNAME);
-			DocumentModelDefinition documentModelDefinition = ModelService.getDocumentModelDefinition(className);
-			Class<? extends PrimaryObject> class1 = documentModelDefinition.getModelClass();
-			ObjectId _id=new ObjectId(target);
+		try {
+			String target = (String) getInputValue(TARGET);
+			String className = (String) getInputValue(CLASSNAME);
+			DocumentModelDefinition documentModelDefinition = ModelService
+					.getDocumentModelDefinition(className);
+			Class<? extends PrimaryObject> class1 = documentModelDefinition
+					.getModelClass();
+			ObjectId _id = new ObjectId(target);
 			return ModelService.createModelObject(class1, _id);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return null;
-			
+
 		}
 	}
 
