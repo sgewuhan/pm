@@ -16,6 +16,7 @@ import com.sg.business.model.toolkit.MessageToolkit;
 
 public abstract class AbstractMessageService extends ServiceProvider {
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Map<String, Object> run(Object parameter) {
 
@@ -33,8 +34,9 @@ public abstract class AbstractMessageService extends ServiceProvider {
 				String messageTitle = getMessageTitle();
 				String messageContent = getMessageContent();
 
-				BasicDBList receiverList = new BasicDBList();
+				
 				List<String> receivers = getReceiverList();
+				BasicDBList receiverList = new BasicDBList();
 				for (String receiver : receivers) {
 					receiverList.add(receiver);
 				}
