@@ -1,4 +1,4 @@
-package com.sg.business.taskforms.handler;
+package com.tmt.jszx.handler;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import com.sg.business.model.Work;
 import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public class jszxProjectReviewAuditSave implements IDataObjectDialogCallback {
+public class ProjectReviewAuditSaveOfJSZX implements IDataObjectDialogCallback {
 
-	public jszxProjectReviewAuditSave() {
+	public ProjectReviewAuditSaveOfJSZX() {
 	}
 
 	@Override
