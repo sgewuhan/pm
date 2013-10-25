@@ -3,6 +3,8 @@ package com.sg.business.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jface.util.Util;
+
 public class CostCenterDuration implements IAccountDuration{
 
 	private Organization organization;
@@ -47,7 +49,11 @@ public class CostCenterDuration implements IAccountDuration{
 	}
 	
 	public void setOrganization(Organization org){
+		if(Util.equals(organization, org)){
+			return;
+		}
 		this.organization = org;
+		accountData = null;
 	}
 	
 	@Override
