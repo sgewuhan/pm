@@ -104,7 +104,6 @@ public class Workflow {
 				} else {
 					ts.addParticipateUser(item);
 					relativeUserId.add(item);
-
 				}
 			}
 
