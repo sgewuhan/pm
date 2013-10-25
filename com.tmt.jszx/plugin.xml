@@ -240,22 +240,24 @@
                         labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
                         name="dept"
-                        navigatorId="organization.navigator"
+                        navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                  <navigatorSelector
                         editable="true"
                         id="chief_master"
                         label="首席师"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
                         name="chief_master"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
-                  </list>
+                        required="true">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -281,11 +283,11 @@
                         id="worker"
                         label="执行人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
-                        modelClass="com.sg.business.model.Organization"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
                         name="worker"
-                        navigatorId="organization.navigator"
-                        navigatorReturnField="_id"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -1095,22 +1097,10 @@
       </service>
    </extension>
    <extension
-         point="com.sg.widgets.table">
-      <table
-            dataSet="com.tmt.jszx.dataset.TaskFormsReviewer"
-            headerVisiable="false"
-            id="taskforms.reviewer.selector"
-            multiSelection="true">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-      </table>
-   </extension>
-   <extension
          point="com.sg.widgets.navigator">
       <navigator
-            id="taskforms.reviewer"
-            table="taskforms.reviewer.selector">
+            id="jszx.project_apply.worker.selector"
+            table="jszx.project_apply.worker.selector">
          <filterAction>
             <column
                   columnDefinitionId="account.userid">
@@ -1129,17 +1119,86 @@
          </searchAction>
       </navigator>
       <navigator
-            id="jszx.organization.navigator"
-            tree="jszx.organization.navigator">
+            id="taskforms.organization.navigator"
+            tree="taskforms.organization.navigator">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </searchAction>
       </navigator>
+      <navigator
+            id="taskforms.reviewer.selector"
+            table="taskforms.reviewer.selector">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            dataSet="com.tmt.jszx.dataset.TaskFormsReviewer"
+            headerVisiable="false"
+            id="taskforms.reviewer.selector"
+            multiSelection="true">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.jszx.dataset.TaskFormWorker"
+            headerVisiable="false"
+            id="jszx.project_apply.worker.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
-            id="jszx.organization.navigator">
+            autoExpandLevel="-1"
+            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
+            id="taskforms.organization.navigator">
          <column
                columnDefinitionId="com.sg.widgets.column.desc">
          </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
       </tree>
    </extension>
 
