@@ -190,6 +190,10 @@ public class PM2Activator extends AbstractUIPlugin {
 		// 组织代码唯一
 		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
 				new BasicDBObject().append(Organization.F_CODE, 1));
+		
+		// 成本中心代码唯一
+		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
+				new BasicDBObject().append(Organization.F_COST_CENTER_CODE, 1));
 
 		// 创建工作归档字段索引
 		ensureIndex(db, IModelConstants.C_WORK,

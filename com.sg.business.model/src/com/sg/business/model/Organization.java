@@ -1486,10 +1486,6 @@ public class Organization extends PrimaryObject {
 				summary = new SummaryOrganizationWorks(this);
 			}
 			return (T) summary;
-		}else if(adapter == CostCenterDuration.class){
-			if(isCostCenter()){
-				return (T) new CostCenterDuration(this);
-			}
 		}
 		return super.getAdapter(adapter);
 	}
