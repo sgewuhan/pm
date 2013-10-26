@@ -149,6 +149,11 @@
             collection="costaccount"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.RNDPeriodCost"
+            collection="rndcost"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

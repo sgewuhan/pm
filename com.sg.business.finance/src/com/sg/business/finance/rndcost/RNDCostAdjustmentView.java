@@ -44,7 +44,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.CostAccount;
 import com.sg.business.model.CostCenterDuration;
-import com.sg.business.model.IAccountDuration;
+import com.sg.business.model.IAccountPeriod;
 import com.sg.business.model.IModelConstants;
 
 public class RNDCostAdjustmentView extends ViewPart {
@@ -95,7 +95,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 	private DataSource dataSource;
 	private String[][] suggestArray;
 	private Text inputCode;
-	private ArrayList<IAccountDuration> input;
+	private ArrayList<IAccountPeriod> input;
 
 	public RNDCostAdjustmentView() {
 
@@ -117,7 +117,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 
 	private void loadData() {
 		// 获取成本中心按期间的各科目金额
-		input = new ArrayList<IAccountDuration>();
+		input = new ArrayList<IAccountPeriod>();
 		CostCenterDuration ccd = new CostCenterDuration();
 		Calendar cal = Calendar.getInstance();
 		ccd.setYearDuration(cal.get(Calendar.YEAR));
@@ -229,7 +229,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 		createLabelColumn();
 
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_COSTACCOUNT);
+				IModelConstants.C_COSTACCOUNT_ITEM);
 		DBCursor cur = col.find();
 		int i = 0;
 		suggestArray = new String[cur.size()][2];

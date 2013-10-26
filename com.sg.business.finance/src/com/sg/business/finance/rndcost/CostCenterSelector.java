@@ -21,7 +21,7 @@ public class CostCenterSelector extends EditingSupport {
 
 	public CostCenterSelector(ColumnViewer viewer) {
 		super(viewer);
-		
+
 		createEditor((Composite) viewer.getControl());
 	}
 
@@ -46,17 +46,17 @@ public class CostCenterSelector extends EditingSupport {
 
 	@Override
 	protected Object getValue(Object element) {
-//		if (element instanceof CostCenterDuration) {
-//			return element.toString();
-//		}
+		// if (element instanceof CostCenterDuration) {
+		// return element.toString();
+		// }
 		return null;
 	}
 
 	@Override
 	protected void setValue(Object element, Object value) {
 		if (element instanceof CostCenterDuration) {
-			CostCenterDuration ccd = (CostCenterDuration) element;
-			ccd.setOrganization((Organization) value);
+			((CostCenterDuration) element)
+					.setOrganization((Organization) value);
 			getViewer().update(element, null);
 		}
 	}
