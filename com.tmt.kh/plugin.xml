@@ -14,7 +14,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="kh.khDocumentApprove.approval"
+            editorId="kh.khDocumentApprove.audit"
             name="批准"
             persistentFields="comment,choice"
             processDefinitionId="kh.khDocumentApprove1">
@@ -225,6 +225,15 @@
                title="流程记录">
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="khmessage.service.action"
+            name="文档审批消息1"
+            operation="documentapprove1"
+            serviceProvider="com.tmt.kh.bpmservice.ApproveMessageOfKH">
+      </service>
    </extension>
 
 </plugin>
