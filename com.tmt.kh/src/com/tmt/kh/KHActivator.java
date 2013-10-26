@@ -6,18 +6,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class khActivator extends AbstractUIPlugin {
+public class KHActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "com.tmt.kh"; //$NON-NLS-1$
 
 	// The shared instance
-	private static khActivator plugin;
+	private static KHActivator plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public khActivator() {
+	public KHActivator() {
 	}
 
 	/*
@@ -43,7 +43,7 @@ public class khActivator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static khActivator getDefault() {
+	public static KHActivator getDefault() {
 		return plugin;
 	}
 
