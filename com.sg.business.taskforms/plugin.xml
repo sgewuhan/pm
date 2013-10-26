@@ -254,20 +254,6 @@
          </option>
       </option>
       <option
-            id="是否批准2"
-            label="是否批准2">
-         <option
-               id="批准"
-               label="批准"
-               value="批准">
-         </option>
-         <option
-               id="不批准"
-               label="不批准"
-               value="不批准">
-         </option>
-      </option>
-      <option
             id="评审批准"
             label="评审批准">
          <option
@@ -290,7 +276,7 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="xt.systemprojectapprove.audit"
+            editorId="xtProjectApprove.audit.audit"
             name="审批"
             persistentFields="comment,choice,pretrial,reviewer_list,reviewer_admin"
             processDefinitionId="xtProjectApprove"
@@ -314,7 +300,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="pm.systemprojectapprove.expertgroupreview"
+            editorId="xtProjectApprove.audit.expertgroupreview"
             name="专家组预审"
             persistentFields="comment,choice_s"
             processDefinitionId="xtProjectApprove">
@@ -324,7 +310,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="pm.systemprojectapprove.reviewplan"
+            editorId="xtProjectApprove.audit.reviewplan"
             name="评审实施计划"
             persistentFields="comment,review"
             processDefinitionId="xtProjectApprove">
@@ -334,7 +320,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="pm.systemprojectapprove.expertgroupcountersign"
+            editorId="xtProjectApprove.audit.expertgroupcountersign"
             name="专家组会签"
             persistentFields="comment,choice_s_1"
             processDefinitionId="xtProjectApprove">
@@ -344,7 +330,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="pm.systemprojectapprove.reviewteamleader"
+            editorId="xtProjectApprove.audit.reviewteamleader"
             name="评审组组长审批"
             persistentFields="comment,abarbeitung"
             processDefinitionId="xtProjectApprove">
@@ -358,7 +344,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="pm.systemprojectapprove.meetingreview"
+            editorId="xtProjectApprove.audit.meetingreview"
             name="会议评审"
             persistentFields="comment,choice_sum_1,abarbeitung"
             processDefinitionId="xtProjectApprove">
@@ -372,7 +358,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="pm.systemprojectapprove.resultaudit"
+            editorId="xtProjectApprove.audit.resultaudit"
             name="处理结果审核"
             persistentFields="comment,choice"
             processDefinitionId="xtProjectApprove">
@@ -387,7 +373,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xt.systemprojectapprove.audit"
+            id="xtProjectApprove.audit"
             name="审批">
          <basicpage
                id="basicpage1"
@@ -465,7 +451,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.systemprojectapprove.reviewplan"
+            id="xtProjectApprove.reviewplan"
             name="评审实施计划">
          <basicpage
                id="page1"
@@ -508,7 +494,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.systemprojectapprove.expertgroupreview"
+            id="xtProjectApprove.expertgroupreview"
             name="专家组预审">
          <basicpage
                id="page1"
@@ -551,7 +537,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.systemprojectapprove.expertgroupcountersign"
+            id="xtProjectApprove.expertgroupcountersign"
             name="专家组会签">
          <basicpage
                id="page1"
@@ -594,7 +580,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.systemprojectapprove.reviewteamleader"
+            id="xtProjectApprove.reviewteamleader"
             name="评审组组长审批">
          <basicpage
                id="page1"
@@ -647,7 +633,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.systemprojectapprove.meetingreview"
+            id="xtProjectApprove.meetingreview"
             name="会议评审">
          <basicpage
                id="page1"
@@ -701,7 +687,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.systemprojectapprove.resultaudit"
+            id="xtProjectApprove.resultaudit"
             name="处理结果审核">
          <basicpage
                id="page1"
