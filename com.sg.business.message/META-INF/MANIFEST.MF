@@ -2,19 +2,18 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Message
 Bundle-SymbolicName: com.sg.business.message;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.message.MessageActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
- org.eclipse.rap.ui.forms;bundle-version="2.1.0",
- org.eclipse.rap.ui.forms;bundle-version="2.1.0",
+ org.eclipse.rap.ui.forms,
  org.eclipse.core.runtime,
- com.mobnut.db;bundle-version="1.0.0",
- com.mobnut.portal;bundle-version="1.0.0",
- com.sg.thirdparty;bundle-version="1.0.0",
- com.sg.widgets;bundle-version="1.0.0",
- com.sg.business.model;bundle-version="1.0.0",
- com.sg.business.commons;bundle-version="1.0.0",
+ com.mobnut.db,
+ com.mobnut.portal,
+ com.sg.thirdparty,
+ com.sg.widgets,
+ com.sg.business.model,
+ com.sg.business.commons,
  org.eclipse.core.expressions,
  com.mobnut.admin,
  com.mobnut.commons

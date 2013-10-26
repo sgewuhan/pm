@@ -2,22 +2,22 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Project
 Bundle-SymbolicName: com.sg.business.project;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.project.ProjectActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.ui.forms,
  org.eclipse.core.runtime,
  org.eclipse.core.expressions,
- com.mobnut.commons;bundle-version="1.0.0",
- com.mobnut.db;bundle-version="1.0.0",
- com.mobnut.portal;bundle-version="1.0.0",
+ com.mobnut.commons,
+ com.mobnut.db,
+ com.mobnut.portal,
  com.sg.thirdparty,
- com.sg.widgets;bundle-version="1.0.0",
- com.sg.bpm.service;bundle-version="1.0.0",
- com.sg.bpm.workflow;bundle-version="1.0.0",
- com.sg.business.model;bundle-version="1.0.0",
- com.sg.business.commons;bundle-version="1.0.0",
+ com.sg.widgets,
+ com.sg.bpm.service,
+ com.sg.bpm.workflow,
+ com.sg.business.model,
+ com.sg.business.commons,
  com.sg.business.resource,
  com.sg.widgets,
  com.sg.widgets,

@@ -107,22 +107,21 @@ public class RNDCostAdjustmentView extends ViewPart {
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		
+
 		createColumns();
 
 		createColumnLocator();
-		
+
 		loadData();
 	}
 
-
 	private void loadData() {
-		//获取成本中心按期间的各科目金额
+		// 获取成本中心按期间的各科目金额
 		input = new ArrayList<IAccountDuration>();
 		CostCenterDuration ccd = new CostCenterDuration();
 		Calendar cal = Calendar.getInstance();
 		ccd.setYearDuration(cal.get(Calendar.YEAR));
-		ccd.setMonthDuration(cal.get(Calendar.MONTH)+1);
+		ccd.setMonthDuration(cal.get(Calendar.MONTH) + 1);
 		input.add(ccd);
 		viewer.setInput(input);
 	}
@@ -144,7 +143,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 			IContentProposalProvider pp = new DataSourceProposal();
 
 			ContentProposalAdapter cpa = new ContentProposalAdapter(inputCode,
-					new TextContentAdapter(), pp, null,null);
+					new TextContentAdapter(), pp, null, null);
 			cpa.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 
 		} else {
@@ -175,7 +174,6 @@ public class RNDCostAdjustmentView extends ViewPart {
 				}
 			});
 		}
-
 		inputCode.addKeyListener(new KeyListener() {
 
 			@Override
@@ -196,7 +194,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 		TableColumn[] columns = viewer.getTable().getColumns();
 		for (int i = 0; i < columns.length; i++) {
 			String number = (String) columns[i].getData("accountNumber");
-			if(text.equals(number)){
+			if (text.equals(number)) {
 				viewer.getTable().showColumn(columns[i]);
 			}
 		}
@@ -229,8 +227,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 
 	private void createColumns() {
 		createLabelColumn();
-		
-		
+
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_COSTACCOUNT);
 		DBCursor cur = col.find();
@@ -246,12 +243,10 @@ public class RNDCostAdjustmentView extends ViewPart {
 			suggestArray[i][1] = accountName;
 			i++;
 		}
-		
 	}
 
 	private void createLabelColumn() {
-		TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
-				SWT.LEFT);
+		TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.setLabelProvider(new ColumnLabelProvider());
 		final TableColumn column = viewerColumn.getColumn();
 		column.setData(RWT.CUSTOM_VARIANT, "selector");
@@ -263,13 +258,17 @@ public class RNDCostAdjustmentView extends ViewPart {
 				showInput();
 			}
 		});
+
+		viewerColumn.setEditingSupport(new CostCenterSelector(viewer));
+
 	}
 
 	private TableColumn createColumn(String accountNumber, String accountName) {
 		TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
 				SWT.RIGHT);
-		viewerColumn.setLabelProvider(new AccountDurationLabelProvider(accountNumber));
-		
+		viewerColumn.setLabelProvider(new AccountDurationLabelProvider(
+				accountNumber));
+
 		final TableColumn column = viewerColumn.getColumn();
 		column.setWidth(70);
 		String columnTitle;
@@ -289,7 +288,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 				showInput();
 			}
 		});
-		
+
 		return column;
 	}
 
@@ -297,15 +296,6 @@ public class RNDCostAdjustmentView extends ViewPart {
 
 		Table table = viewer.getTable();
 		Point location = table.toDisplay(0, 0);
-		// 定位横向显示位置
-//		TableColumn[] columns = table.getColumns();
-//		for (int i = 0; i < columns.length; i++) {
-//			if (columns[i] != column) {
-//				location.x += (columns[i].getWidth());
-//			} else {
-//				break;
-//			}
-//		}
 		location.y += 60;
 
 		if (columnLocator.isDisposed() || columnLocator == null) {
@@ -319,12 +309,11 @@ public class RNDCostAdjustmentView extends ViewPart {
 		}
 		inputCode.setFocus();
 		inputCode.selectAll();
-		// shell.setLocation(location);
 	}
 
 	@Override
 	public void setFocus() {
-
+		viewer.getControl().setFocus();
 	}
 
 	@Override

@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Document
 Bundle-SymbolicName: com.sg.business.document;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.document.DocumentActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
- com.sg.widgets;bundle-version="1.0.0",
- com.sg.business.commons;bundle-version="1.0.0",
- com.mobnut.db;bundle-version="1.0.0"
+ com.sg.widgets,
+ com.sg.business.commons,
+ com.mobnut.db
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
