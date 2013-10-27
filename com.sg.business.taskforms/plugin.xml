@@ -128,7 +128,7 @@
                         label="批准"
                         labelVisible="false"
                         name="choice"
-                        option="是否批准2"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
@@ -276,7 +276,7 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="xtProjectApprove.audit.audit"
+            editorId="xtProjectApprove.audit"
             name="审批"
             persistentFields="comment,choice,pretrial,reviewer_list,reviewer_admin"
             processDefinitionId="xtProjectApprove"
@@ -300,7 +300,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.audit.expertgroupreview"
+            editorId="xtProjectApprove.expertgroupreview"
             name="专家组预审"
             persistentFields="comment,choice_s"
             processDefinitionId="xtProjectApprove">
@@ -310,7 +310,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.audit.reviewplan"
+            editorId="xtProjectApprove.reviewplan"
             name="评审实施计划"
             persistentFields="comment,review"
             processDefinitionId="xtProjectApprove">
@@ -320,7 +320,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.audit.expertgroupcountersign"
+            editorId="xtProjectApprove.expertgroupcountersign"
             name="专家组会签"
             persistentFields="comment,choice_s_1"
             processDefinitionId="xtProjectApprove">
@@ -330,7 +330,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.audit.reviewteamleader"
+            editorId="xtProjectApprove.reviewteamleader"
             name="评审组组长审批"
             persistentFields="comment,abarbeitung"
             processDefinitionId="xtProjectApprove">
@@ -344,7 +344,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.audit.meetingreview"
+            editorId="xtProjectApprove.meetingreview"
             name="会议评审"
             persistentFields="comment,choice_sum_1,abarbeitung"
             processDefinitionId="xtProjectApprove">
@@ -358,7 +358,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.audit.resultaudit"
+            editorId="xtProjectApprove.resultaudit"
             name="处理结果审核"
             persistentFields="comment,choice"
             processDefinitionId="xtProjectApprove">

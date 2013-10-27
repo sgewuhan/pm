@@ -502,7 +502,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否批准2"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
@@ -780,7 +780,7 @@
          <navigatorpage
                createAfterSave="false"
                id="taskforms.reviewer"
-               navigatorId="taskforms.reviewer"
+               navigatorId="taskforms.reviewer.selector"
                title="评审组">
          </navigatorpage>
          <basicpage
@@ -1105,26 +1105,6 @@
       <navigator
             id="jszx.project_apply.worker.selector"
             table="jszx.project_apply.worker.selector">
-         <filterAction>
-            <column
-                  columnDefinitionId="account.userid">
-            </column>
-            <column
-                  columnDefinitionId="account.username">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="account.userid">
-            </column>
-            <column
-                  columnDefinitionId="account.username">
-            </column>
-         </searchAction>
-      </navigator>
-      <navigator
-            id="jszx.project_apply.chiefMaster.selector"
-            table="jszx.project_apply.chiefMaster.selector">
          <filterAction>
             <column
                   columnDefinitionId="account.userid">

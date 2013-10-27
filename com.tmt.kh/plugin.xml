@@ -19,7 +19,6 @@
             persistentFields="comment,choice"
             processDefinitionId="kh.khDocumentApprove1">
          <processParameter
-               processParameterDelegator="comment,choice"
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
@@ -43,7 +42,6 @@
             persistentFields="comment,choice"
             processDefinitionId="kh.khDocumentApprove2">
          <processParameter
-               processParameterDelegator="comment,choice"
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
@@ -77,7 +75,6 @@
             persistentFields="comment,choice"
             processDefinitionId="kh.khDocumentApprove3">
          <processParameter
-               processParameterDelegator="comment,choice"
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
@@ -131,7 +128,6 @@
             persistentFields="comment,choice"
             processDefinitionId="kh.khDrawingApprove">
          <processParameter
-               processParameterDelegator="comment,choice"
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
@@ -211,7 +207,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否批准2"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
