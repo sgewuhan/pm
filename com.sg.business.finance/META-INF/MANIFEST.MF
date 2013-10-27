@@ -5,15 +5,16 @@ Bundle-SymbolicName: com.sg.business.finance;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.finance.FinanceActivator
 Bundle-Vendor: SG
-Require-Bundle: org.eclipse.core.runtime,
+Require-Bundle: javax.servlet,
  org.eclipse.rap.ui,
- com.mobnut.admin,
+ org.eclipse.rap.addons.autosuggest,
+ org.eclipse.core.runtime,
  com.mobnut.db,
+ com.mobnut.admin,
+ com.mobnut.commons,
  com.sg.widgets,
  com.sg.thirdparty,
- com.mobnut.commons,
  com.sg.business.model,
- org.eclipse.rap.addons.autosuggest,
- javax.servlet
+ com.sg.business.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
