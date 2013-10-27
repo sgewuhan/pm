@@ -380,7 +380,7 @@ public class Organization extends PrimaryObject {
 		}
 	}
 
-	private String getCompanyCode() {
+	public String getCompanyCode() {
 		return (String) getValue(F_COMPANY_CODE);
 	}
 

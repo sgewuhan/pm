@@ -100,7 +100,7 @@ public class CostCenterViewer extends TableViewer {
 				accountNumber));
 
 		final TableColumn column = viewerColumn.getColumn();
-		column.setWidth(70);
+		column.setWidth(120);
 		String columnTitle;
 		if (accountName.contains("-")) {
 			columnTitle = accountName.replace('-', '\n');
@@ -109,7 +109,6 @@ public class CostCenterViewer extends TableViewer {
 		}
 		column.setText(columnTitle);
 		column.setToolTipText(accountName + "(" + accountNumber + ")\n点输入定位列");
-		column.setAlignment(SWT.CENTER);
 		column.setData("accountNumber", accountNumber);
 		column.setData("accountName", accountName);
 		column.addSelectionListener(new SelectionAdapter() {

@@ -1,5 +1,8 @@
 package com.sg.business.finance.rndcost;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.util.Util;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -9,6 +12,7 @@ import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.commons.eai.RNDPeriodCostAdapter;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
@@ -49,6 +53,8 @@ public class CostCenterDuration implements IStructuredContentProvider {
 				rndPeriodCost = ModelService.createModelObject(dbo,
 						RNDPeriodCost.class);
 			} else {
+				String costCenterCode = organization.getCostCenterCode();
+				rndPeriodCost = readRNDPeriodCost(costCenterCode);
 				rndPeriodCost = ModelService.createModelObject(
 						new BasicDBObject(), RNDPeriodCost.class);
 				rndPeriodCost.setValue(RNDPeriodCost.F_COSTCENTERCODE,
@@ -58,6 +64,19 @@ public class CostCenterDuration implements IStructuredContentProvider {
 			rndPeriodCost = ModelService.createModelObject(new BasicDBObject(),
 					RNDPeriodCost.class);
 		}
+	}
+
+	private RNDPeriodCost readRNDPeriodCost(String costCenterCode) {
+		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
+		
+		
+		Map<String,Object> parameter = new HashMap<String,Object>();
+		
+		parameter.put(RNDPeriodCostAdapter.YEAR, year);
+		parameter.put(RNDPeriodCostAdapter.MONTH, month);
+		parameter.put(RNDPeriodCostAdapter.ORGCODE, organization.getCompanyCode());
+		parameter.put(RNDPeriodCostAdapter.COSECENTERCODE, organization.getCostCenterCode());
+		return adapter.getData(parameter);
 	}
 
 	@Override

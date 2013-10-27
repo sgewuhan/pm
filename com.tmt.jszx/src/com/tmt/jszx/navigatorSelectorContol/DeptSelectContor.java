@@ -19,9 +19,9 @@ public class DeptSelectContor implements INavigatorSelectorControl {
 		Object element = is.getFirstElement();
 		if(element instanceof Organization){
 			Organization org=(Organization)element;
-			Role chiefEngineer = org.getRole("ChiefEngineer", 1);
-			Role deputyDirector = org.getRole("DeputyDirector", 1);
-			Role director = org.getRole("Director", 1);
+			Role chiefEngineer = org.getRole(Role.ROLE_CHIEF_ENGINEER_ID, 1);
+			Role deputyDirector = org.getRole(Role.ROLE_DEPUTY_DIRECTOR_ID, 1);
+			Role director = org.getRole(Role.ROLE_DIRECTOR_ID, 1);
 			if(chiefEngineer==null||deputyDirector==null||director==null){
 				return false;
 			}

@@ -20,7 +20,7 @@ public class AccountDurationLabelProvider extends ColumnLabelProvider {
 		if(value == null){
 			return "";
 		}
-		DecimalFormat df = new DecimalFormat("########.00");
+		DecimalFormat df = new DecimalFormat("#,###,###,###.00");
 		return df.format(value.doubleValue());
 	}
 
