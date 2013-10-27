@@ -31,7 +31,7 @@ public class CostCenterViewer extends TableViewer {
 		
 		final Table costCenterTable = this.getTable();
 		costCenterTable.setHeaderVisible(true);
-		costCenterTable.setLinesVisible(true);
+//		costCenterTable.setLinesVisible(true);
 		costCenterTable.setData(RWT.FIXED_COLUMNS,new Integer(1));
 		costCenterTable.getHorizontalBar().setVisible(false);
 		
