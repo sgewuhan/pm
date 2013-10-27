@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import com.sg.business.model.IAccountDuration;
+import com.sg.business.model.IAccountPeriod;
 
 public class AccountDurationLabelProvider extends ColumnLabelProvider {
 
@@ -16,7 +16,7 @@ public class AccountDurationLabelProvider extends ColumnLabelProvider {
 	
 	@Override
 	public String getText(Object element) {
-		Double value = ((IAccountDuration)element).getAccountValue(accountNumber);
+		Double value = ((IAccountPeriod)element).getAccountValue(accountNumber);
 		if(value == null){
 			return "";
 		}

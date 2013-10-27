@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.CostCenterDuration;
 import com.sg.business.model.Organization;
 import com.sg.business.model.dataset.finance.FinanceOrganizationDataSet;
 
@@ -21,7 +20,7 @@ public class CostCenterSelector extends EditingSupport {
 
 	public CostCenterSelector(ColumnViewer viewer) {
 		super(viewer);
-		
+
 		createEditor((Composite) viewer.getControl());
 	}
 
@@ -41,24 +40,21 @@ public class CostCenterSelector extends EditingSupport {
 
 	@Override
 	protected boolean canEdit(Object element) {
-		return element instanceof CostCenterDuration;
+		return true;
 	}
 
 	@Override
 	protected Object getValue(Object element) {
-//		if (element instanceof CostCenterDuration) {
-//			return element.toString();
-//		}
 		return null;
 	}
 
 	@Override
 	protected void setValue(Object element, Object value) {
-		if (element instanceof CostCenterDuration) {
-			CostCenterDuration ccd = (CostCenterDuration) element;
-			ccd.setOrganization((Organization) value);
-			getViewer().update(element, null);
-		}
+		CostCenterDurationQueryParameter input = (CostCenterDurationQueryParameter) getViewer()
+				.getInput();
+		getViewer().setInput(
+				new CostCenterDurationQueryParameter(input.year, input.month,
+						(Organization) value));
 	}
 
 }

@@ -180,7 +180,22 @@ public interface IModelConstants {
 	 */
 	public static final String C_WORKS_ALLOCATE = "worksallocate";
 
-	public static final String C_COSTACCOUNT = "costaccount";
+	/**
+	 * 成本科目对照表
+	 */
+	public static final String C_COSTACCOUNT_ITEM = "costaccount";
+
+	/**
+	 * 成本中心的期间成本（从SAP获取）
+	 */
+	public static final String C_RND_PEROIDCOST_COSTCENTER = "rndcost";
+	
+
+	/**
+	 * 工作令号的期间成本（分摊计算后保存）
+	 */
+	public static final String C_RND_PEROIDCOST_ALLOCATION = "rndcostallocation";
+
 
 
 }

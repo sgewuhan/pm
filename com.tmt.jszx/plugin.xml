@@ -207,7 +207,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否批准2"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
@@ -246,19 +246,19 @@
                         persistable="true"
                         required="true">
                   </navigatorSelector>
-                  <navigatorSelector
+                  <combo
+                        editPart="Combo(Read Only)"
                         editable="true"
                         id="chief_master"
+                        isComputeField="true"
                         label="首席师"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
                         name="chief_master"
-                        navigatorId="project.participte.selector"
-                        navigatorReturnField="userid"
+                        optionProvider="com.tmt.jszx.option.ChiefEngineerOption"
                         persistable="true"
-                        required="true">
-                  </navigatorSelector>
+                        required="false"
+                        type="DBObject">
+                  </combo>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1105,6 +1105,26 @@
       <navigator
             id="jszx.project_apply.worker.selector"
             table="jszx.project_apply.worker.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="jszx.project_apply.chiefMaster.selector"
+            table="jszx.project_apply.chiefMaster.selector">
          <filterAction>
             <column
                   columnDefinitionId="account.userid">
