@@ -234,6 +234,18 @@
             operation="documentapprove1"
             serviceProvider="com.tmt.kh.bpmservice.ApproveMessageOfKH">
       </service>
+      <service
+            interface="khmessage.service.action"
+            name="文档审批消息2"
+            operation="documentapprove2"
+            serviceProvider="com.tmt.kh.bpmservice.ApproveMessageOfKH">
+      </service>
+      <service
+            interface="khmessage.service.action"
+            name="文档审批消息3"
+            operation="documentapprove3"
+            serviceProvider="com.tmt.kh.bpmservice.ApproveMessageOfKH">
+      </service>
    </extension>
 
 </plugin>
