@@ -126,7 +126,7 @@
             editorId="jszx.jszxProjectApply.approval"
             name="申请人确认工作"
             persistentFields="choice,comment"
-            processDefinitionId="jszx.jszxProjectApply.audit">
+            processDefinitionId="jszx.jszxProjectApply">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
