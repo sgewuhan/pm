@@ -3,6 +3,7 @@ package com.tmt.jszx.navigatorSelectorContol;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 import com.sg.business.model.Organization;
+import com.sg.business.model.Role;
 import com.sg.widgets.part.editor.fields.INavigatorSelectorControl;
 
 public class DeptSelectContor implements INavigatorSelectorControl {
@@ -18,6 +19,12 @@ public class DeptSelectContor implements INavigatorSelectorControl {
 		Object element = is.getFirstElement();
 		if(element instanceof Organization){
 			Organization org=(Organization)element;
+			Role chiefEngineer = org.getRole(Role.ROLE_CHIEF_ENGINEER_ID, 1);
+			Role deputyDirector = org.getRole(Role.ROLE_DEPUTY_DIRECTOR_ID, 1);
+			Role director = org.getRole(Role.ROLE_DIRECTOR_ID, 1);
+			if(chiefEngineer==null||deputyDirector==null||director==null){
+				return false;
+			}
 		} 
 		return true;
 	}

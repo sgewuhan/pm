@@ -246,19 +246,19 @@
                         persistable="true"
                         required="true">
                   </navigatorSelector>
-                  <navigatorSelector
+                  <combo
+                        editPart="Combo(Read Only)"
                         editable="true"
                         id="chief_master"
+                        isComputeField="true"
                         label="首席师"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
                         name="chief_master"
-                        navigatorId="jszx.project_apply.chiefMaster.selector"
-                        navigatorReturnField="userid"
+                        optionProvider="com.tmt.jszx.option.ChiefEngineerOption"
                         persistable="true"
-                        required="true">
-                  </navigatorSelector>
+                        required="false"
+                        type="DBObject">
+                  </combo>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1206,14 +1206,6 @@
             dataSet="com.tmt.jszx.dataset.TaskFormWorker"
             headerVisiable="false"
             id="jszx.project_apply.worker.selector">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-      </table>
-      <table
-            dataSet="com.tmt.jszx.dataset.TaskFormChiefMaster"
-            headerVisiable="false"
-            id="jszx.project_apply.chiefMaster.selector">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
