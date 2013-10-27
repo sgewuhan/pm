@@ -143,4 +143,20 @@ public class MessageToolkit {
 		message.appendTargets(target, editId, Boolean.TRUE);
 		messageList.put(receiverId, message);
 	}
+	public static void appendNoCommitMessage(Map<String, Message> messageList,
+			String receiverId, String title, String content,
+			PrimaryObject target, String editId, IContext context) {
+		Message message;
+		if (receiverId == null) {
+			return;
+		}
+		message = messageList.get(receiverId);
+		if (message == null) {
+			message = MessageToolkit.makeMessage(receiverId, title, context
+					.getAccountInfo().getConsignerId(), null);
+			messageList.put(receiverId, message);
+		}
+		message.appendTargets(target, editId, Boolean.TRUE);
+		messageList.put(receiverId, message);
+	}
 }

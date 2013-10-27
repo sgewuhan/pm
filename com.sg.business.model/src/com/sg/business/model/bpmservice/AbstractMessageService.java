@@ -68,7 +68,7 @@ public abstract class AbstractMessageService extends ServiceProvider {
 		Map<String, Message> msgList = new HashMap<String, Message>();
 		for (String userId : receiverList) {
 			msgList.put(userId, null);
-			MessageToolkit.appendMessage(msgList, userId, messageTitle,
+			MessageToolkit.appendNoCommitMessage(msgList, userId, messageTitle,
 					messageContent, target, editId, context);
 		}
 		Iterator<Message> iter = msgList.values().iterator();

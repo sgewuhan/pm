@@ -14,7 +14,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="kh.khDocumentApprove.audit"
+            editorId="kh.khDocumentApprove.approval"
             name="批准"
             persistentFields="comment,choice"
             processDefinitionId="kh.khDocumentApprove1">
@@ -60,7 +60,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="kh.khDocumentApprove.audit"
+            editorId="kh.khDocumentApprove.check"
             name="校核"
             persistentFields="comment,choice"
             processDefinitionId="kh.khDocumentApprove3">
@@ -83,7 +83,7 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="kh.khDocumentApprove.audit"
+            editorId="kh.khDocumentApprove.check"
             name="校核"
             persistentFields="comment,choice"
             processDefinitionId="kh.khDrawingApprove">
@@ -103,7 +103,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="kh.khDocumentApprove.audit"
+            editorId="kh.khDocumentApprove.craft"
             name="工艺"
             persistentFields="comment,choice"
             processDefinitionId="kh.khDrawingApprove">
@@ -123,7 +123,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="kh.khDocumentApprove.approval"
+            editorId="kh.khDocumentApprove.standardize"
             name="批准"
             persistentFields="comment,choice"
             processDefinitionId="kh.khDrawingApprove">
@@ -183,6 +183,135 @@
             dbName="pm2"
             id="kh.khDocumentApprove.approval"
             name="批准">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kh.khDocumentApprove.check"
+            name="校核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kh.khDocumentApprove.craft"
+            name="工艺">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kh.khDocumentApprove.standardize"
+            name="标准化">
          <basicpage
                id="page1"
                title="审核">
