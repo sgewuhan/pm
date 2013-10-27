@@ -28,7 +28,7 @@ public class ChiefEngineerOption implements IFieldOptionProvider {
 		Object dept = ((PrimaryObject)data).getValue("dept");
 		if(dept instanceof ObjectId){
 			Organization org = ModelService.createModelObject(Organization.class, (ObjectId)dept);
-	        Role role = org.getRole("ChiefEngineer", 1);
+	        Role role = org.getRole(Role.ROLE_CHIEF_ENGINEER_ID, 1);
 	        if (role != null) {
 				List<PrimaryObject> assignment = role.getAssignment();
 				if (assignment != null && assignment.size() > 0) {
