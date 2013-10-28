@@ -17,6 +17,8 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class DropProjectFolder extends DropPrimaryObjectTarget {
 
+	
+	
 	@Override
 	protected void doDrop(String sourceId, List<PrimaryObject> dragsItems,
 			DropTargetEvent event, ViewerControl targetViewerControl) {

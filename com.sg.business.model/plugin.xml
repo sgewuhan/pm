@@ -154,6 +154,16 @@
             collection="rndcost"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.WorkOrderPeriodCost"
+            collection="workordercost"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.CompanyWorkOrder"
+            collection="companyworkorders"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

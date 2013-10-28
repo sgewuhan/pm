@@ -121,12 +121,6 @@ public class RNDPeriodCostAdapter {
 
 		
 		
-		
-		
-		
-		
-		
-		
 		// 保存到数据库
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_RND_PEROIDCOST_COSTCENTER);

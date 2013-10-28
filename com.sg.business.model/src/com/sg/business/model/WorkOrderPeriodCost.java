@@ -1,12 +1,8 @@
 package com.sg.business.model;
 
-import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 
-public class RNDPeriodCost extends PrimaryObject implements IAccountPeriod {
+public class WorkOrderPeriodCost extends PrimaryObject implements IAccountPeriod {
 
 	public static final String F_YEAR = "year";
 
@@ -14,6 +10,8 @@ public class RNDPeriodCost extends PrimaryObject implements IAccountPeriod {
 
 	public static final String F_COSTCENTERCODE = "costcenter";
 
+	public static final String F_WORKORDER = "workorder";
+	
 	@Override
 	public Double getAccountValue(String accountNumber) {
 		return (Double) getValue(accountNumber);
@@ -32,17 +30,6 @@ public class RNDPeriodCost extends PrimaryObject implements IAccountPeriod {
 		} else {
 			return costCode + label;
 		}
-	}
-
-	public Organization getOrganization() {
-		DBCollection col = getCollection(IModelConstants.C_ORGANIZATION);
-		DBObject data = col.findOne(new BasicDBObject().append(
-				Organization.F_COST_CENTER_CODE, getCostCode()));
-
-		if (data != null) {
-			return ModelService.createModelObject(data, Organization.class);
-		}
-		return null;
 	}
 
 }
