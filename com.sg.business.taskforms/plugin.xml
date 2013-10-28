@@ -303,55 +303,51 @@
       <taskForm
             editorId="tbProjectApprove.expertgroupreview"
             name="专家组预审"
-            persistentFields="comment,choice_s"
+            persistentFields="comment,choice"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_s"
-               taskFormFieldName="choice_s">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
             editorId="tbProjectApprove.reviewplan"
             name="评审实施计划"
-            persistentFields="comment,review"
+            persistentFields="comment,choice"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="review"
-               taskFormFieldName="review">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
             editorId="tbProjectApprove.expertgroupcountersign"
             name="专家组会签"
-            persistentFields="comment,choice_s_1"
+            persistentFields="comment,choice"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_s_1"
-               taskFormFieldName="choice_s_1">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
             editorId="tbProjectApprove.reviewteamleader"
             name="评审组组长审批"
-            persistentFields="comment,abarbeitung"
+            persistentFields="comment,choice"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_sum_1"
-               taskFormFieldName="choice_sum_1">
-         </processParameter>
-         <processParameter
-               processParameterName="abarbeitung"
-               taskFormFieldName="abarbeitung">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
             editorId="tbProjectApprove.meetingreview"
             name="会议评审"
-            persistentFields="comment,choice_sum_1"
+            persistentFields="comment,choice"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_sum_1"
-               taskFormFieldName="choice_sum_1">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
@@ -437,49 +433,6 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tbProjectApprove.reviewplan"
-            name="评审实施计划">
-         <basicpage
-               id="page1"
-               title="审核">
-            <pagecolumn>
-               <section
-                     label="请填评审实施意见和计划">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        label="评审实施计划意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="review"
-                        label="评审实施计划"
-                        labelVisible="false"
-                        name="review"
-                        option="评审实施计划"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
             id="tbProjectApprove.expertgroupreview"
             name="专家组预审">
          <basicpage
@@ -502,11 +455,54 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_s"
+                        id="choice"
                         label="预审结论"
                         labelVisible="false"
-                        name="choice_s"
+                        name="choice"
                         option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectApprove.reviewplan"
+            name="评审实施计划">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填评审实施意见和计划">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="评审实施计划意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审实施计划"
+                        labelVisible="false"
+                        name="choice"
+                        option="评审实施计划"
                         persistable="true"
                         required="false"
                         type="String">
@@ -545,10 +541,10 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_s_1"
+                        id="choice"
                         label="会签结论"
                         labelVisible="false"
-                        name="choice_s_1"
+                        name="choice"
                         option="是否通过"
                         persistable="true"
                         required="false"
@@ -588,21 +584,10 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_sum_1"
-                        label="是否通过"
-                        labelVisible="false"
-                        name="choice_sum_1"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <radio
-                        editable="true"
-                        id="abarbeitung"
+                        id="choice"
                         label="是否整改"
                         labelVisible="false"
-                        name="abarbeitung"
+                        name="choice"
                         option="是否整改"
                         persistable="true"
                         required="false"
@@ -641,10 +626,10 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_sum_1"
+                        id="choice"
                         label="评审结论"
                         labelVisible="false"
-                        name="choice_sum_1"
+                        name="choice"
                         option="是否整改"
                         persistable="true"
                         required="false"
