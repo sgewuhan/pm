@@ -95,6 +95,38 @@ public interface IModelConstants {
 	public static final String C__IDS = "ids";
 
 	/**
+	 * 
+	 * 工时绩效数据
+	 */
+	public static final String C_WORKS_PERFORMENCE = "worksperformence";
+
+	/**
+	 * 工时分配数据
+	 */
+	public static final String C_WORKS_ALLOCATE = "worksallocate";
+
+	/**
+	 * 成本科目对照表
+	 */
+	public static final String C_COSTACCOUNT_ITEM = "costaccount";
+
+	/**
+	 * 成本中心的期间成本（从SAP获取）
+	 */
+	public static final String C_RND_PEROIDCOST_COSTCENTER = "rndcost";
+	
+
+	/**
+	 * 工作令号的期间成本（分摊计算后保存）
+	 */
+	public static final String C_RND_PEROIDCOST_ALLOCATION = "rndcostallocation";
+
+	/**
+	 * 组织id对应的工作令号
+	 */
+	public static final String C_COMPANY_WORKORDER = "companyworkorders";
+	
+	/**
 	 * 项目编号的自动编号序列名称,在Project.doInsert()中的编码使用
 	 */
 	public static final String SEQ_PROJECT_NUMBER = "projectnumber";
@@ -163,6 +195,7 @@ public interface IModelConstants {
 	 */
 	public static final String S_U_MESSAGE_RESERVED_REFRESH_INTERVAL = "MESSAGEINBOX.REFRESH.INTERVAL";
 
+	
 	/**
 	 * 流程库的URL地址
 	 * 
@@ -170,36 +203,41 @@ public interface IModelConstants {
 	public static final String S_PROCESS_BASE_URL = "SYSTEM.PROCESS_BASE_URL";
 
 	/**
-	 * 
-	 * 工时绩效数据
+	 * SAP客户端最大连接数
 	 */
-	public static final String C_WORKS_PERFORMENCE = "worksperformence";
+	public static final String S_EAI_SAP_MAXCONN = "EAI.SAP.MAXCONN";
+
 
 	/**
-	 * 工时分配数据
+	 * SAP客户端名称
 	 */
-	public static final String C_WORKS_ALLOCATE = "worksallocate";
+	public static final String S_EAI_SAP_CLIENT = "EAI.SAP.CLIENT";
 
 	/**
-	 * 成本科目对照表
+	 * SAP客户端用户ID
 	 */
-	public static final String C_COSTACCOUNT_ITEM = "costaccount";
+	public static final String S_EAI_SAP_USERID = "EAI.SAP.USERID";
 
 	/**
-	 * 成本中心的期间成本（从SAP获取）
+	 * SAP用户登录密码
 	 */
-	public static final String C_RND_PEROIDCOST_COSTCENTER = "rndcost";
-	
+	public static final String S_EAI_SAP_PASSWORD = "EAI.SAP.PASSWORD";
 
 	/**
-	 * 工作令号的期间成本（分摊计算后保存）
+	 * SAP语言设置
 	 */
-	public static final String C_RND_PEROIDCOST_ALLOCATION = "rndcostallocation";
+	public static final String S_EAI_SAP_LANGUAGE = "EAI.SAP.LANG";
 
 	/**
-	 * 组织id对应的工作令号
+	 * SAP主机IP
 	 */
-	public static final String C_COMPANY_WORKORDER = "companyworkorders";
+	public static final String S_EAI_SAP_HOST = "EAI.SAP.HOST";
+
+	/**
+	 * SAP实例编号
+	 */
+	public static final String S_EAI_SAP_INSTANCENUMBER = "EAI.SAP.INSTANCENUMBER";
+
 
 
 
