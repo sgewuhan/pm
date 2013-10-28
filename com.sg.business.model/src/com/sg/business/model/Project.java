@@ -466,25 +466,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
+		// 同步工作令号到公司
+		ensureWorkOrderRelativeToCompany(context);
+
 		boolean saved = super.doSave(context);
 		if (saved) {
 			// 同步项目经理角色
 			// [bug:18]
 			// 确保项目经理角色的人员与项目负责人一致
 			ensureProjectManagerRole(context);
-			
-			
-			//同步工作令号到公司
-			ensureWorkOrderRelativeToCompany(context);
+
 		}
 		return saved;
 	}
 
-	private void ensureWorkOrderRelativeToCompany(IContext context) {
+	private void ensureWorkOrderRelativeToCompany(IContext context)
+			throws Exception {
 		Object wonList = getValue(F_WORK_ORDER);
-		if(wonList instanceof List<?>){
+		if (wonList instanceof List<?>) {
 			Organization org = getFunctionOrganization();
 			Organization company = org.getCompany();
+			if (company == null) {
+				throw new Exception("项目所在管理组织或上级没有定义公司代码,无法保存工作令号，项目保存失败");
+			}
 			company.doSaveWorkOrders((List<?>) wonList);
 		}
 	}
@@ -547,7 +551,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		doCopySystemCanlendar();
 
 	}
-	
+
 	private void generateCode() throws Exception {
 		Organization org = getFunctionOrganization();
 		if (org == null) {
@@ -564,16 +568,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
-		
-		String prefix = code + (""+year).substring(2);
-		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_PROJECT_NUMBER + "." + prefix);
+
+		String prefix = code + ("" + year).substring(2);
+		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_PROJECT_NUMBER
+				+ "." + prefix);
 		String seq = String.format("%03x", id).toUpperCase();
-		
-		String codeValue = prefix+seq;
+
+		String codeValue = prefix + seq;
 		setValue(F_PROJECT_NUMBER, codeValue);
-		
+
 	}
-	
+
 	private void doCopySystemCanlendar() throws Exception {
 		SystemCalendar sc = new SystemCalendar();
 		DataSet d = sc.getDataSet();
