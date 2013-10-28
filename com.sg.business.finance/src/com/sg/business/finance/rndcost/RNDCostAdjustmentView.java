@@ -86,8 +86,6 @@ public class RNDCostAdjustmentView extends ViewPart {
 							RNDPeriodCost.class);
 				} else {
 					rndPeriodCost = readRNDPeriodCost(costCenterCode);
-					rndPeriodCost.setValue(RNDPeriodCost.F_COSTCENTERCODE,
-							organization.getCostCenterCode());
 				}
 
 				// 获取工作令号分摊数据
@@ -128,6 +126,8 @@ public class RNDCostAdjustmentView extends ViewPart {
 			parameter.put(WorkOrderPeriodCostAdapter.MONTH, month);
 			parameter.put(WorkOrderPeriodCostAdapter.COSECENTERCODE,
 					organization.getCostCenterCode());
+			parameter.put(WorkOrderPeriodCostAdapter.RNDCOST, rndPeriodCost);
+
 			return adapter.getData(parameter);
 		}
 

@@ -16,6 +16,7 @@ public abstract class AbstractWorksMetadata extends PrimaryObject implements
 	public static final String F_WORKID = "workid";
 	public static final String F_USERID = "userid";
 	public static final String F_COMMITDATE = "commitdate";
+	//完成工时
 	public static final String F_WORKS = "works";
 	public static final String F_DATECODE = "datecode";
 	public static final String F_PROJECTDESC = "projectdesc";

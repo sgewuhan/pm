@@ -196,6 +196,11 @@ public interface IModelConstants {
 	 */
 	public static final String C_RND_PEROIDCOST_ALLOCATION = "rndcostallocation";
 
+	/**
+	 * 组织id对应的工作令号
+	 */
+	public static final String C_COMPANY_WORKORDER = "companyworkorders";
+
 
 
 }

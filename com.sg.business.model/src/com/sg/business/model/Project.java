@@ -472,8 +472,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// [bug:18]
 			// 确保项目经理角色的人员与项目负责人一致
 			ensureProjectManagerRole(context);
+			
+			
+			//同步工作令号到公司
+			ensureWorkOrderRelativeToCompany(context);
 		}
 		return saved;
+	}
+
+	private void ensureWorkOrderRelativeToCompany(IContext context) {
+		Object wonList = getValue(F_WORK_ORDER);
+		if(wonList instanceof List<?>){
+			Organization org = getFunctionOrganization();
+			Organization company = org.getCompany();
+			company.doSaveWorkOrders((List<?>) wonList);
+		}
 	}
 
 	/**

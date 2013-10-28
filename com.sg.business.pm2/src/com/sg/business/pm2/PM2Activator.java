@@ -11,6 +11,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.sg.business.model.BudgetItem;
+import com.sg.business.model.CompanyWorkOrder;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.Folder;
@@ -88,7 +89,6 @@ public class PM2Activator extends AbstractUIPlugin {
 						new BasicDBObject().append("projectid", "project_id")));
 
 	}
-
 
 	private void ensureIndex() {
 		DB db = DBActivator.getDB(IModelConstants.DB);
@@ -196,6 +196,11 @@ public class PM2Activator extends AbstractUIPlugin {
 		// 成本中心代码唯一
 		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
 				new BasicDBObject().append(Organization.F_COST_CENTER_CODE, 1));
+
+		// 设置公司和工作令号对应表的唯一索引
+		ensureUniqureIndex(db, IModelConstants.C_COMPANY_WORKORDER,
+				new BasicDBObject().append(CompanyWorkOrder.F_ORGANIZATION_ID, 1)
+						.append(CompanyWorkOrder.F_WORKORDER, 1));
 
 		// 创建工作归档字段索引
 		ensureIndex(db, IModelConstants.C_WORK,
