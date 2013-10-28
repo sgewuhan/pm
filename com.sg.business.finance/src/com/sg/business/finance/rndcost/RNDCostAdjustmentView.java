@@ -37,6 +37,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.WorkOrderPeriodCost;
+import com.sg.widgets.MessageUtil;
 
 @SuppressWarnings("restriction")
 public class RNDCostAdjustmentView extends ViewPart {
@@ -85,7 +86,11 @@ public class RNDCostAdjustmentView extends ViewPart {
 					rndPeriodCost = ModelService.createModelObject(dbo,
 							RNDPeriodCost.class);
 				} else {
-					rndPeriodCost = readRNDPeriodCost(costCenterCode);
+					try {
+						rndPeriodCost = readRNDPeriodCost(costCenterCode);
+					} catch (Exception e) {
+						MessageUtil.showToast(e);
+					}
 				}
 
 				// 获取工作令号分摊数据
@@ -131,7 +136,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 			return adapter.getData(parameter);
 		}
 
-		private RNDPeriodCost readRNDPeriodCost(String costCenterCode) {
+		private RNDPeriodCost readRNDPeriodCost(String costCenterCode) throws Exception {
 			RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
 
 			Map<String, Object> parameter = new HashMap<String, Object>();

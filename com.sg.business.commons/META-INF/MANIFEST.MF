@@ -43,3 +43,5 @@ Export-Package: com.sg.business.commons,
  com.sg.business.commons.value
 Import-Package: javax.servlet,
  javax.servlet.http
+Bundle-ClassPath: libs/sapjco.jar,
+ .

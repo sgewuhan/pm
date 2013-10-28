@@ -1,16 +1,16 @@
 package com.sg.business.commons.eai;
 
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
+import com.sg.business.commons.eai.sap.JCO_ZXFUN_PM_YFFY;
 import com.sg.business.model.CostAccount;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.RNDPeriodCost;
@@ -23,7 +23,8 @@ public class RNDPeriodCostAdapter {
 	public static final String YEAR = "year";
 	public static final String MONTH = "month";
 
-	public RNDPeriodCost getData(Map<String, Object> parameter) {
+	public RNDPeriodCost getData(Map<String, Object> parameter)
+			throws Exception {
 		Object year = parameter.get(YEAR);
 		Object month = parameter.get(MONTH);
 		if (!(year instanceof Integer) || !(month instanceof Integer)) {
@@ -41,30 +42,31 @@ public class RNDPeriodCostAdapter {
 		}
 
 		Object account = parameter.get(ACCOUNTNUMERS);
-		if (account!=null&&!(account instanceof String[])) {
+		if (account != null && !(account instanceof String[])) {
 			throw new IllegalArgumentException("科目表  account 参数错误");
 		}
 
 		RNDPeriodCost[] result = runGetData(new String[] { (String) org },
-				new String[] { (String) cost }, (int) year, (int) month, (String[])account);
+				new String[] { (String) cost }, (int) year, (int) month,
+				(String[]) account);
 
 		return result[0];
 	}
 
-	public Date[] getStartAndEnd(Integer year, Integer month) {
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, year);
-		cal.set(Calendar.MONTH, month - 1);
-		cal.set(Calendar.DATE, 1);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		Date start = cal.getTime();
-		cal.add(Calendar.MILLISECOND, -1);
-		Date end = cal.getTime();
-		return new Date[] { start, end };
-	}
+	// public Date[] getStartAndEnd(Integer year, Integer month) {
+	// Calendar cal = Calendar.getInstance();
+	// cal.set(Calendar.YEAR, year);
+	// cal.set(Calendar.MONTH, month - 1);
+	// cal.set(Calendar.DATE, 1);
+	// cal.set(Calendar.HOUR_OF_DAY, 0);
+	// cal.set(Calendar.MINUTE, 0);
+	// cal.set(Calendar.SECOND, 0);
+	// cal.set(Calendar.MILLISECOND, 0);
+	// Date start = cal.getTime();
+	// cal.add(Calendar.MILLISECOND, -1);
+	// Date end = cal.getTime();
+	// return new Date[] { start, end };
+	// }
 
 	public String[] getDefaultAccounts() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
@@ -94,33 +96,39 @@ public class RNDPeriodCostAdapter {
 	 * @param account
 	 *            , 研发成本科目, 为空时取全部科目
 	 * @return
+	 * @throws Exception
 	 */
 	public RNDPeriodCost[] runGetData(String[] orgCodeArray,
-			String[] costCodeArray, int year, int month, String[] account) {
+			String[] costCodeArray, int year, int month, String[] account)
+			throws Exception {
 		if (account == null) {
 			account = getDefaultAccounts();
 		}
 
 		RNDPeriodCost[] result = new RNDPeriodCost[orgCodeArray.length];
-		
+
+		JCO_ZXFUN_PM_YFFY func = new JCO_ZXFUN_PM_YFFY();
+		Map<String, Map<String, Double>> ret = func.getJSDZB(orgCodeArray,
+				costCodeArray, year, month, account);
+
 		// 以下代码模拟已经获得了SAP的数据
-		DBObject[] sr = new BasicDBObject[orgCodeArray.length];
-		for (int i = 0; i < sr.length; i++) {
+		DBObject[] sr = new BasicDBObject[ret.size()];
+		Iterator<String> iter = ret.keySet().iterator();
+		int i=0;
+		while(iter.hasNext()){
+			String costCenterCode = iter.next();
 			sr[i] = new BasicDBObject();
-			sr[i].put(RNDPeriodCost.F_COSTCENTERCODE, costCodeArray[i]);
+			sr[i].put(RNDPeriodCost.F_COSTCENTERCODE, costCenterCode);
 			sr[i].put(RNDPeriodCost.F_MONTH, new Integer(month));
 			sr[i].put(RNDPeriodCost.F_YEAR, new Integer(year));
 			sr[i].put(RNDPeriodCost.F__CDATE, new Date());
-			for (int j = 0; j < account.length; j++) {
-				double value = (Math.random() * 100000);
-				sr[i].put(account[j], new Double(value));
+			Map<String, Double> values = ret.get(costCenterCode);
+			if(values!=null){
+				sr[i].putAll(values);
 			}
-			
-			result[i] = ModelService.createModelObject(sr[i], RNDPeriodCost.class);
 		}
+		
 
-		
-		
 		// 保存到数据库
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_RND_PEROIDCOST_COSTCENTER);

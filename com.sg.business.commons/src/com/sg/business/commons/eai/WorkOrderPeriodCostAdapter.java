@@ -82,7 +82,11 @@ public class WorkOrderPeriodCostAdapter {
 		Map<String, Double> workOrderMapWorks = new HashMap<String, Double>();
 
 		Organization company = org.getCompany();
-
+		if (company == null) {
+			throw new IllegalArgumentException("成本中心无法获得对应的公司代码");
+		}
+		
+		
 		// 2. 级联获得组织下非成本中心组织的所有员工userid
 		Set<String> userIds = getCostCenterUserIdList(org);
 		String[] userIdArr = userIds.toArray(new String[0]);
@@ -207,7 +211,9 @@ public class WorkOrderPeriodCostAdapter {
 			toBeInsert.add(wopc);
 		}
 
-		costAllocateCol.insert(toBeInsert);
+		if(toBeInsert.size()>0){
+			costAllocateCol.insert(toBeInsert);
+		}
 
 		//准备返回
 		ArrayList<WorkOrderPeriodCost> result = new ArrayList<WorkOrderPeriodCost>();
