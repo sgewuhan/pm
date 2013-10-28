@@ -1,10 +1,9 @@
 package com.sg.business.commons.eai.sap;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import com.mobnut.commons.util.Utils;
 import com.sap.mw.jco.IFunctionTemplate;
 import com.sap.mw.jco.IRepository;
 import com.sap.mw.jco.JCO;
@@ -26,20 +25,6 @@ public class JCO_ZXFUN_PM_YFFY {
 
 	private static final String FUNCTION_NAME = "ZXFUN_PM_YFFY";
 
-	private SAPConnectionPool connPool;
-
-	private Client client;
-
-	private IRepository repository;
-
-	public JCO_ZXFUN_PM_YFFY() {
-		connPool = new SAPConnectionPool();
-		client = connPool.connSAP();
-		repository = JCO.createRepository(REPOSITORY_NAME,
-				SAPConnectionPool.POOL_NAME);
-
-	}
-
 	/**
 	 * 
 	 * @param orgCodeArray
@@ -54,9 +39,15 @@ public class JCO_ZXFUN_PM_YFFY {
 	 *            , 科目
 	 * @throws Exception
 	 */
-	public List<Map<String, Double>> getJSDZB(String[] orgCodeArray,
+	public Map<String, Map<String, Double>> getJSDZB(String[] orgCodeArray,
 			String[] costCodeArray, int year, int month, String[] account)
 			throws Exception {
+
+		SAPConnectionPool connPool = new SAPConnectionPool();
+		Client client = connPool.connSAP();
+		IRepository repository = JCO.createRepository(REPOSITORY_NAME,
+				SAPConnectionPool.POOL_NAME);
+
 		IFunctionTemplate ftemplate = repository
 				.getFunctionTemplate(FUNCTION_NAME);
 
@@ -65,23 +56,20 @@ public class JCO_ZXFUN_PM_YFFY {
 					"Can not get function template, Name:" + FUNCTION_NAME);
 		}
 
-		List<Map<String, Double>> ret = new ArrayList<Map<String, Double>>();
+		Map<String, Map<String, Double>> ret = new HashMap<String, Map<String, Double>>();
 		try {
 
 			Function function = ftemplate.getFunction();
 			ParameterList input_variable = function.getImportParameterList();
-			ParameterList input_table = function.getTableParameterList();
-
 			input_variable.setValue(year, PARAMETER_YEAR);
 			input_variable.setValue(month, PARAMETER_MONTH);
 
+			ParameterList input_table = function.getTableParameterList();
 			Table tableIn = input_table.getTable(PARAMETER_COST_CENTER);
-
 			for (int i = 0; i < costCodeArray.length; i++) {
 				tableIn.appendRow();
 				tableIn.setValue(costCodeArray[i], "KOSTL");
 			}
-
 			function.setTableParameterList(input_table);
 
 			client.execute(function);
@@ -91,7 +79,7 @@ public class JCO_ZXFUN_PM_YFFY {
 			String sMESSAGE = function.getExportParameterList().getString(
 					"MESSAGE"); //
 			if (sRESULT.equals("E")) {
-				throw new Exception("函数执行出错" + sMESSAGE);
+				throw new Exception("ERROR: " + sMESSAGE);
 			}
 
 			Table result = function.getTableParameterList().getTable(
@@ -99,23 +87,41 @@ public class JCO_ZXFUN_PM_YFFY {
 			if (result.getNumRows() > 0) {
 				while (result.nextRow()) {
 
-					Map<String, Double> row = new HashMap<String, Double>();
+					Map<String, Object> row = new HashMap<String, Object>();
 
 					for (FieldIterator e = result.fields(); e.hasMoreElements();) {
 						JCO.Field field = e.nextField();
 						String key = field.getName();
-						Double value = 0d;
-						try {
-							value = Double.parseDouble(field.getString());
-						} catch (Exception ex) {
-						}
-						row.put(key, value);
+						row.put(key, field.getValue());
 
 					}
 
-					ret.add(row);
+					/**
+					 * 转置数据
+					 */
+					String _costCenterNumber = (String) row.get("KOSTL");
+					String _cost = (String) row.get("WKGBTR");
+					String _accountNumber = (String) row.get("KSTAR");
+
+					Map<String, Double> rowData = ret.get(_costCenterNumber);
+					if (rowData == null) {
+						rowData = new HashMap<String, Double>();
+						ret.put(_costCenterNumber, rowData);
+					}
+					Double cost = 0d;
+					if (!Utils.isNullOrEmpty(_cost)) {
+						try{
+							cost = Double.parseDouble(_cost);
+						}catch(Exception e){}
+					}
+					Double _summay = rowData.get(_accountNumber);
+					if(_summay == null){
+						_summay = cost;
+					}else{
+						_summay += cost;
+					}
+					rowData.put(_accountNumber, _summay);
 				}
-				;
 			}
 		} finally {
 			JCO.releaseClient(client);

@@ -1534,6 +1534,8 @@ public class Organization extends PrimaryObject {
 			if (parent != null) {
 				return parent.getCompany();
 			}
+		}else{
+			return this;
 		}
 		return null;
 	}
