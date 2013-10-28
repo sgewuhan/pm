@@ -25,7 +25,7 @@ public class ProjectAdmin implements IProcessParameterDelegator {
 		Object value = taskFormData.getValue(taskDatakey);
 		if(value instanceof ObjectId){
 			Organization org = ModelService.createModelObject(Organization.class, (ObjectId)value);
-			Role role = org.getRole("T002", 1);
+			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 1);
 			if (role != null) {
 				List<PrimaryObject> assignment = role.getAssignment();
 				if (assignment != null && assignment.size() > 0) {
