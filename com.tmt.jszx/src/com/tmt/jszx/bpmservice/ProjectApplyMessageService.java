@@ -1,35 +1,36 @@
-package com.sg.business.model.bpmservice;
+package com.tmt.jszx.bpmservice;
 
 import java.util.List;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
-import com.sg.business.model.IProjectRelative;
-import com.sg.business.model.Project;
+import com.sg.business.model.Work;
+import com.sg.business.model.bpmservice.MessageService;
 
-public class ProjectChangeMessageService extends MessageService {
+public class ProjectApplyMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "项目变更通知";
+		return "技术委托通知";
 	}
 
 	@Override
 	public String getMessageContent() {
 		Object choice = getInputValue("choice");
 		if ("通过".equals((String) choice)) {
-			return "项目" + getTarget().getLabel() + "：允许变更";
+			return "工作" + getTarget().getLabel() + "：委托接受";
 		} else {
-			return "项目" + getTarget().getLabel() + "：不允许变更";
+			return "工作" + getTarget().getLabel() + "：委托否决";
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
-		Project pro = (Project) getTarget();
-		if (pro != null) {
-			return (List<String>) (pro.getParticipatesIdList());
+		Work work = (Work) getTarget();
+		if (work != null) {
+			List<?> participatesIdList = work.getParticipatesIdList();
+			return (List<String>) participatesIdList;
 		} else
 			return null;
 	}
@@ -45,15 +46,12 @@ public class ProjectChangeMessageService extends MessageService {
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-			if (host instanceof IProjectRelative) {
-				IProjectRelative lp = (IProjectRelative) host;
-				Project project = lp.getProject();
-				return project;
+			if (host instanceof Work) {
+				Work work = (Work) host;
+				return work;
 			}
 		}
 		return null;
 	}
+
 }
-
-
-

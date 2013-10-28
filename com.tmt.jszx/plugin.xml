@@ -1100,6 +1100,12 @@
             operation="workmessage"
             serviceProvider="com.tmt.jszx.bpmservice.ProjectReviewServiceOfJSZX">
       </service>
+      <service
+            interface="jszxprojectapply.service.action"
+            name="技术支持消息"
+            operation="message"
+            serviceProvider="com.tmt.jszx.bpmservice.ProjectApplyMessageService">
+      </service>
    </extension>
    <extension
          point="com.sg.widgets.navigator">

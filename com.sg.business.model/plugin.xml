@@ -438,6 +438,12 @@
             operation="message"
             serviceProvider="com.sg.business.model.bpmservice.ProjectCloseMessageService">
       </service>
+      <service
+            interface="defaultmessage.service.action"
+            name="默认消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.model.bpmservice.MessageService">
+      </service>
    </extension>
 
 </plugin>

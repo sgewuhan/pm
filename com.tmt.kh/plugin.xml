@@ -371,6 +371,12 @@
             operation="documentapprove3"
             serviceProvider="com.tmt.kh.bpmservice.ApproveMessageOfKH">
       </service>
+      <service
+            interface="khmessage.service.action"
+            name="图纸审批消息"
+            operation="documentApprove"
+            serviceProvider="com.tmt.kh.bpmservice.ApproveMessageOfKH">
+      </service>
    </extension>
 
 </plugin>
