@@ -31,7 +31,7 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.audit"
             name="评审组组长审批"
-            persistentFields="choice"
+            persistentFields="choice,comment"
             processDefinitionId="kfzx.kfzxMeetingReview">
          <processParameter
                processParameterName="choice"
@@ -198,6 +198,37 @@
                title="流程记录">
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            name="转批申请"
+            processDefinitionId="kfzx.kfzxSubconcessions">
+         <processParameter
+               processParameterName="data_audit"
+               taskFormFieldName="data_audit">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="项目负责人审核"
+            processDefinitionId="kfzx.kfzxSubconcessions">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="资料初审"
+            processDefinitionId="kfzx.kfzxSubconcessions">
+         <processParameter
+               processParameterName="qm"
+               taskFormFieldName="qm">
+         </processParameter>
+         <processParameter
+               processParameterName="craft"
+               taskFormFieldName="craft">
+         </processParameter>
+      </taskForm>
    </extension>
 
 </plugin>
