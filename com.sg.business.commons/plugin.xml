@@ -652,6 +652,7 @@
             column="organization_id"
             id="account.organizationpath"
             labelProvider="com.sg.business.commons.labelprovider.UserOrganizationPathLabelprovider"
+            lazyDisplay="true"
             name="组织"
             type="String"
             width="80">
@@ -660,6 +661,7 @@
             column="organization_id"
             id="account.roleassignment"
             labelProvider="com.sg.business.commons.labelprovider.UserRoleAssignmentLabelprovider"
+            lazyDisplay="true"
             name="角色"
             type="String"
             width="80">
