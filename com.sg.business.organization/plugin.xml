@@ -343,7 +343,8 @@
             limit="-1"
             multiSelection="true"
             popupMenu="popup:organization.user"
-            queryMode="false">
+            queryMode="false"
+            virtual="true">
          <column
                columnDefinitionId="account.userid">
          </column>
@@ -449,7 +450,7 @@
                         labelVisible="true"
                         name="code"
                         persistable="true"
-                        required="true"
+                        required="false"
                         type="String">
                   </text>
                   <text
@@ -576,7 +577,7 @@
                         labelVisible="true"
                         name="code"
                         persistable="true"
-                        required="true"
+                        required="false"
                         type="String">
                   </text>
                   <text

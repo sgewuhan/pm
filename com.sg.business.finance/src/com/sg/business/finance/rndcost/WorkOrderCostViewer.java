@@ -33,7 +33,7 @@ public class WorkOrderCostViewer extends TableViewer {
 		TableViewerColumn viewerColumn = new TableViewerColumn(this, SWT.LEFT);
 		viewerColumn.setLabelProvider(new ColumnLabelProvider() );
 		final TableColumn column = viewerColumn.getColumn();
-		column.setWidth(180);
+		column.setWidth(120);
 	}
 
 	private TableColumn createColumn( String accountNumber,

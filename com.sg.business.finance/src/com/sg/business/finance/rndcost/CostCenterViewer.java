@@ -79,7 +79,7 @@ public class CostCenterViewer extends TableViewer {
 			}
 		});
 		final TableColumn column = viewerColumn.getColumn();
-		column.setWidth(180);
+		column.setWidth(120);
 		column.setText("成本对象");
 		column.addSelectionListener(new SelectionAdapter() {
 			@Override
