@@ -74,6 +74,7 @@ public class ProjectReviewExpertCommentfileOfJSZX implements
 					folderCondition.put(Folder.F_PROJECT_ID, project.get_id());
 					folderCondition.put(Folder.F_ROOT_ID, project.getFolderRootId());
 					folderCondition.put(Folder.F_PARENT_ID, project.getFolderRootId());
+					
 					List<PrimaryObject> folderList = project
 							.getRelationByCondition(Folder.class, folderCondition);
 					if (folderList != null && folderList.size() > 0) {
