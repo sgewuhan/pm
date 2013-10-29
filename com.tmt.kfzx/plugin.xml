@@ -577,5 +577,14 @@
          </basicpage>
       </editor>
    </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="kfzxmessage.service.action"
+            name="文件图纸审核消息"
+            operation="approvemessage"
+            serviceProvider="com.tmt.kfzx.bpmservice.ApproveMessageOfKFZX">
+      </service>
+   </extension>
 
 </plugin>
