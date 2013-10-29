@@ -4,7 +4,22 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            editorId="kfzx.kfzxMeetingReview.confirm"
             name="确认评审组成员"
+            persistentFields="review_admin,reviewer_list"
+            processDefinitionId="kfzx.kfzxMeetingReview">
+         <processParameter
+               processParameterName="review_admin"
+               taskFormFieldName="review_admin">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="reviewer_list"
+               taskFormFieldName="reviewer_list">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="评审意见录入"
             persistentFields="review_admin"
             processDefinitionId="kfzx.kfzxMeetingReview">
          <processParameter
@@ -13,14 +28,105 @@
          </processParameter>
       </taskForm>
       <taskForm
-            name="确认评审组成员"
-            persistentFields="review_admin"
+            editorId="kfzx.kfzxMeetingReview.audit"
+            name="评审组组长审批"
+            persistentFields="choice"
             processDefinitionId="kfzx.kfzxMeetingReview">
          <processParameter
-               processParameterName="review_admin"
-               taskFormFieldName="review_admin">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kfzx.kfzxMeetingReview.confirm"
+            name="审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectApprove.audit"
+            name="确认评审组成员">
+         <basicpage
+               id="basicpage1"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写批准意见、结论和评审专家组成员">
+                  <navigatorSelector
+                        editable="true"
+                        id="reviewer_admin"
+                        label="评审组组长"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="reviewer_admin"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        editable="true"
+                        id="reviewer_list"
+                        label="评审组"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="reviewer_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
    </extension>
 
 </plugin>

@@ -7,6 +7,7 @@ Bundle-Vendor: TMT
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.rap.ui;bundle-version="2.2.0",
  com.sg.bpm.service,
- com.sg.bpm.workflow
+ com.sg.bpm.workflow,
+ com.sg.widgets
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

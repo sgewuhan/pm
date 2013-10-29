@@ -255,7 +255,7 @@
                         label="首席师"
                         labelVisible="true"
                         name="chief_master"
-                        optionProvider="com.tmt.jszx.option.ChiefEngineerOption"
+                        optionProvider="com.tmt.jszx.option.ChiefMasterOption"
                         persistable="true"
                         required="false"
                         type="DBObject">
@@ -359,7 +359,7 @@
       </actorRule>
       <actorRule
             actorIdProvider="com.tmt.jszx.actor.ChiefEngineerOfLauncher"
-            id="deputy_director"
+            id="chief_engineer"
             name="流程发起人所在部门总工">
       </actorRule>
    </extension>
