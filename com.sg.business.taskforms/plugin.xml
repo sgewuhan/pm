@@ -1139,6 +1139,15 @@
             name="项目所在管理部门的项目管理员">
       </actorRule>
    </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="projectapprove.reviewer.reservice.action"
+            name="评审会议通知"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ProjcetApproveReviewerMessageService">
+      </service>
+   </extension>
  </plugin>
    
 
