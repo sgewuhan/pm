@@ -306,7 +306,7 @@
             editorId="kfzxApprove.craft"
             name="工艺审核"
             persistentFields="choice,comment"
-            processDefinitionId="kfzxDrawingApproveOfA">
+            processDefinitionId="kfzx.kfzxDrawingApproveOfA">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -316,7 +316,7 @@
             editorId="kfzxApprove.auditor"
             name="审核"
             persistentFields="choice,comment"
-            processDefinitionId="kfzxDrawingApproveOfA">
+            processDefinitionId="kfzx.kfzxDrawingApproveOfA">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -326,7 +326,7 @@
             editorId="kfzxApprove.approve"
             name="批准"
             persistentFields="choice,comment"
-            processDefinitionId="kfzxDrawingApproveOfA">
+            processDefinitionId="kfzx.kfzxDrawingApproveOfA">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -339,7 +339,7 @@
             editorId="kfzxApprove.check"
             name="校核"
             persistentFields="choice,comment"
-            processDefinitionId="kfzxDrawingApproveOfBC">
+            processDefinitionId="kfzx.kfzxDrawingApproveOfBC">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -349,7 +349,7 @@
             editorId="kfzxApprove.craft"
             name="工艺审核"
             persistentFields="choice,comment"
-            processDefinitionId="kfzxDrawingApproveOfBC">
+            processDefinitionId="kfzx.kfzxDrawingApproveOfBC">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -359,7 +359,7 @@
             editorId="kfzxApprove.approve"
             name="批准"
             persistentFields="choice,comment"
-            processDefinitionId="kfzxDrawingApproveOfBC">
+            processDefinitionId="kfzx.kfzxDrawingApproveOfBC">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -533,6 +533,11 @@
                   </radio>
                   </section>
             </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
          </basicpage>
       </editor>
    </extension>
