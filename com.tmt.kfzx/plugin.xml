@@ -19,8 +19,9 @@
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="kfzx.kfzxMeetingReview.option"
             name="评审意见录入"
-            persistentFields="review_admin"
+            persistentFields="commentfile"
             processDefinitionId="kfzx.kfzxMeetingReview">
          <processParameter
                processParameterName="review_admin"
@@ -43,7 +44,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="kfzx.kfzxMeetingReview.confirm"
+            id="kfzx.kfzxMeetingReview.audit"
             name="审核">
          <basicpage
                id="page1"
@@ -86,7 +87,36 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tbProjectApprove.audit"
+            id="kfzx.kfzxMeetingReview.option"
+            name="评审意见录入">
+         <basicpage
+               id="page1"
+               title="评审意见">
+            <pagecolumn>
+               <section
+                     label="评审意见">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="commentfile"
+                        labelVisible="true"
+                        name="commentfile"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kfzx.kfzxMeetingReview.confirm"
             name="确认评审组成员">
          <basicpage
                id="basicpage1"
@@ -501,6 +531,42 @@
                         required="false"
                         type="String">
                   </radio>
+                  </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="kfzx.kfzxProjrctStart.meetingminutes"
+            name="上传会议纪要"
+            persistentFields="commentfile"
+            processDefinitionId="kfzx.kfzxProjrctStart">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kfzx.kfzxProjrctStart.meetingminutes"
+            name="上传会议纪要">
+         <basicpage
+               id="page1"
+               title="评审意见">
+            <pagecolumn>
+               <section
+                     label="会议纪要">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="commentfile"
+                        labelVisible="true"
+                        name="commentfile"
+                        persistable="true"
+                        required="false">
+                  </file>
                </section>
             </pagecolumn>
          </basicpage>
