@@ -165,5 +165,16 @@
          </basicpage>
       </editor>
    </extension>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            day="1"
+            id="finance.schedual.rndcostallocation"
+            name="上月研发费用获取和计算"
+            rule="month"
+            run="com.sg.business.finance.schedual.RunRNDCostAllocation"
+            time="0:05:00">
+      </schedualJob>
+   </extension>
 
 </plugin>

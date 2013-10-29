@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -126,6 +127,7 @@ public class RNDPeriodCostAdapter {
 			if(values!=null){
 				sr[i].putAll(values);
 			}
+			i++;
 		}
 		
 
@@ -133,6 +135,10 @@ public class RNDPeriodCostAdapter {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_RND_PEROIDCOST_COSTCENTER);
 		col.insert(sr, WriteConcern.NORMAL);
+		
+		for (int j = 0; j < sr.length; j++) {
+			result[j] = ModelService.createModelObject(sr[j],RNDPeriodCost.class );
+		}
 		return result;
 	}
 

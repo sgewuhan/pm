@@ -90,6 +90,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 						rndPeriodCost = readRNDPeriodCost(costCenterCode);
 					} catch (Exception e) {
 						MessageUtil.showToast(e);
+						return;
 					}
 				}
 
@@ -228,7 +229,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 		costCenterViewer.setContentProvider(ccd);
 		Calendar cal = Calendar.getInstance();
 		costCenterViewer.setInput(new CostCenterDurationQueryParameter(cal
-				.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, null));
+				.get(Calendar.YEAR), cal.get(Calendar.MONTH) , null));//取上个月的数据
 
 		workOrderViewer.setInput(ccd.getWorkOrdersCostAllocation());
 
