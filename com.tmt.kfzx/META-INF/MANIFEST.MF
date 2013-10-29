@@ -9,6 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.bpm.service,
  com.sg.bpm.workflow,
  com.sg.widgets,
- com.sg.business.commons
+ com.sg.business.commons,
+ com.sg.business.model;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
