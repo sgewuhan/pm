@@ -1,10 +1,12 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Kfzx
-Bundle-SymbolicName: com.tmt.kfzx
+Bundle-SymbolicName: com.tmt.kfzx;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.tmt.kfzx.KFZXActivator
 Bundle-Vendor: TMT
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.rap.ui;bundle-version="2.2.0"
+ org.eclipse.rap.ui;bundle-version="2.2.0",
+ com.sg.bpm.service,
+ com.sg.bpm.workflow
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
