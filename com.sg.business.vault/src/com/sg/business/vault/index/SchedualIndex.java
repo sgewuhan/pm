@@ -11,16 +11,12 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.bson.types.ObjectId;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
@@ -32,8 +28,9 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.IModelConstants;
 
-public class IndexJob extends Job {
+public class SchedualIndex implements Runnable {
 
 	private DBCollection collection;
 	private String field;
@@ -43,13 +40,12 @@ public class IndexJob extends Job {
 	public static String indexPath = System.getProperty("user.dir")
 			+ File.separator + "index";
 
-	public IndexJob(String dbName, String collectionName, String field) {
-		super("½¨Á¢Ë÷Òý");
-		this.dbName = dbName;
-		this.collectionName = collectionName;
+	public SchedualIndex() {
+		this.dbName = IModelConstants.DB;
+		this.collectionName = IModelConstants.C_DOCUMENT;
 		this.db = DBActivator.getDB(dbName);
 		this.collection = this.db.getCollection(collectionName);
-		this.field = field;
+		this.field = com.sg.business.model.Document.F_VAULT;
 		File file = new File(indexPath);
 		if (!file.isDirectory()) {
 			file.mkdir();
@@ -57,14 +53,12 @@ public class IndexJob extends Job {
 	}
 
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
+	public void run() {
 		try {
 			build();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		return Status.OK_STATUS;
 	}
 
 	public void build() throws IOException {
@@ -140,5 +134,4 @@ public class IndexJob extends Job {
 				.append("_summary", null), new BasicDBObject().append("$set",
 				new BasicDBObject().append("_summary", summary)));
 	}
-
 }

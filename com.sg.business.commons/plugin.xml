@@ -9,12 +9,12 @@
             label="日历"
             run="com.sg.business.commons.admin.CalendarSetting">
       </adminFunction>
-      <adminFunction
+      <!--adminFunction
             id="com.sg.business.commons.admin.BPMAccountSync"
             image="image/user_48.png"
             label="同步用户"
             run="com.sg.business.commons.admin.BPMAccountSync">
-      </adminFunction>
+      </adminFunction-->
    </extension>
    <extension
          point="org.eclipse.ui.views">
