@@ -64,6 +64,22 @@ public class ApproveMessageOfKH extends MessageService {
 			} catch (Exception e) {
 				return null;
 			}
+		}else if ("documentApprove".equals(messageOperation)) {
+			try {
+				if (host instanceof Work) {
+					Work work = (Work) host;
+					String content = "工作:" + work.getLabel();
+					String choice = (String) getInputValue("choice");
+					if ("通过".equals(choice)) {
+						content = content + "审批通过!";
+					} else if ("不通过".equals(choice)) {
+						content = content + "审批不通过.";
+					}
+					return content;
+				}
+			} catch (Exception e) {
+				return null;
+			}
 		}
 		return super.getMessageContent();
 	}
@@ -86,6 +102,12 @@ public class ApproveMessageOfKH extends MessageService {
 				return (List<String>) participatesIdList;
 			}
 		} else if ("documentapprove3".equals(messageOperation)) {
+			if (host instanceof Work) {
+				Work work = (Work) host;
+				List<?> participatesIdList = work.getParticipatesIdList();
+				return (List<String>) participatesIdList;
+			}
+		}else if ("documentApprove".equals(messageOperation)) {
 			if (host instanceof Work) {
 				Work work = (Work) host;
 				List<?> participatesIdList = work.getParticipatesIdList();
@@ -125,6 +147,15 @@ public class ApproveMessageOfKH extends MessageService {
 					return (Work) host;
 				}
 			}
+		}else if ("documentApprove".equals(messageOperation)) {
+			Object content = getInputValue("content");
+			if (content instanceof String) {
+				String jsonContent = (String) content;
+				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
+				if (host instanceof Work) {
+					return (Work) host;
+				}
+			}
 		}
 		return super.getTarget();
 	}
@@ -138,6 +169,8 @@ public class ApproveMessageOfKH extends MessageService {
 			return "文档审批通知";
 		}else if ("documentapprove3".equals(messageOperation)) {
 			return "文档审批通知";
+		}else if ("documentApprove".equals(messageOperation)) {
+			return "图纸审批通知";
 		}
 		return super.getMessageTitle();
 	}
@@ -150,6 +183,8 @@ public class ApproveMessageOfKH extends MessageService {
 		} else if ("documentapprove2".equals(messageOperation)) {
 			return Work.EDITOR;
 		}else if ("documentapprove3".equals(messageOperation)) {
+			return Work.EDITOR;
+		}else if ("documentApprove".equals(messageOperation)) {
 			return Work.EDITOR;
 		}
 		return super.getEditorId();

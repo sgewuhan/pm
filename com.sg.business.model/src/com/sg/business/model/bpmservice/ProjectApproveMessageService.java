@@ -7,20 +7,20 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 
-public class ProjectChangeMessageService extends MessageService {
+public class ProjectApproveMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "项目变更通知";
+		return "项目审批通知";
 	}
 
 	@Override
 	public String getMessageContent() {
 		Object choice = getInputValue("choice");
 		if ("通过".equals((String) choice)) {
-			return "项目" + getTarget().getLabel() + "：允许变更";
+			return "项目" + getTarget().getLabel() + "：审批通过";
 		} else {
-			return "项目" + getTarget().getLabel() + "：不允许变更";
+			return "项目" + getTarget().getLabel() + "：审批不通过";
 		}
 	}
 
@@ -36,7 +36,7 @@ public class ProjectChangeMessageService extends MessageService {
 
 	@Override
 	public String getEditorId() {
-     	return null;
+     	return Project.EDITOR_CREATE_PLAN;
 	}
 
 	@Override
@@ -54,6 +54,4 @@ public class ProjectChangeMessageService extends MessageService {
 		return null;
 	}
 }
-
-
 

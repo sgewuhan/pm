@@ -32,8 +32,7 @@ public class ProjectCloseMessageService extends AbstractMessageService {
 
 	@Override
 	public String getEditorId() {
-//		return Project.EDITOR_CREATE_PLAN;
-		return null;
+ 	  return null;
 	}
 
 	@Override

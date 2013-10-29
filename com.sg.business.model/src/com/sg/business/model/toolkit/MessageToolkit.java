@@ -156,6 +156,7 @@ public class MessageToolkit {
 					.getAccountInfo().getConsignerId(), null);
 			messageList.put(receiverId, message);
 		}
+		message.setValue(Message.F_CONTENT, content);
 		message.appendTargets(target, editId, Boolean.TRUE);
 		messageList.put(receiverId, message);
 	}

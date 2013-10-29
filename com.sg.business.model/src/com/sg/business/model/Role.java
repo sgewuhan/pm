@@ -99,14 +99,17 @@ public class Role extends PrimaryObject {
 	public static final String ROLE_FINANCIAL_MANAGER_TEXT = "财务经理";
 	
 	
-	public static final String ROLE_CHIEF_ENGINEER_ID = "ChiefEngineer";
-	public static final String ROLE_CHIEF_ENGINEER_TEXT = "首席师";
+	public static final String ROLE_CHIEF_ENGINEER_ID = "Chief Engineer";
+	public static final String ROLE_CHIEF_ENGINEER_TEXT = "总工";
 	
-	public static final String ROLE_DEPUTY_DIRECTOR_ID = "DeputyDirector";
+	public static final String ROLE_DEPUTY_DIRECTOR_ID = "Deputy Director";
 	public static final String ROLE_DEPUTY_DIRECTOR_TEXT = "常务副主任";
 	
 	public static final String ROLE_DIRECTOR_ID = "Director";
 	public static final String ROLE_DIRECTOR_TEXT = "研究室主任";
+	
+	public static final String ROLE_CHIEF_MASTER_ID = "Chief Master";
+	public static final String ROLE_CHIEF_MASTER_TEXT = "首席师";
 
 
 	/**
@@ -125,6 +128,8 @@ public class Role extends PrimaryObject {
 			ROLE_BUSINESS_ADMIN_TEXT, ROLE_PROJECT_ADMIN_TEXT,
 			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,
 			ROLE_DEPT_MANAGER_TEXT, ROLE_FINANCIAL_MANAGER_TEXT };
+
+	
 
 	/**
 	 * 角色在系统中的的显示内容

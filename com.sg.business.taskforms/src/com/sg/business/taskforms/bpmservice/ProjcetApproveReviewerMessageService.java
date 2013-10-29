@@ -1,42 +1,44 @@
-package com.sg.business.model.bpmservice;
+package com.sg.business.taskforms.bpmservice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
+import com.sg.business.model.bpmservice.MessageService;
 
-public class ProjectChangeMessageService extends MessageService {
+public class ProjcetApproveReviewerMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "项目变更通知";
+		return "评审会议通知";
 	}
 
 	@Override
 	public String getMessageContent() {
 		Object choice = getInputValue("choice");
 		if ("通过".equals((String) choice)) {
-			return "项目" + getTarget().getLabel() + "：允许变更";
+			return "项目" + getTarget().getLabel() + "：审批通过";
 		} else {
-			return "项目" + getTarget().getLabel() + "：不允许变更";
+			return "项目" + getTarget().getLabel() + "：审批不通过";
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
-		Project pro = (Project) getTarget();
-		if (pro != null) {
-			return (List<String>) (pro.getParticipatesIdList());
+		Object obj = getInputValue("reviewer_list");
+		if (obj instanceof ArrayList) {
+			return (List<String>)obj;
 		} else
 			return null;
 	}
 
 	@Override
 	public String getEditorId() {
-     	return null;
+     	return Project.EDITOR_CREATE_PLAN;
 	}
 
 	@Override
@@ -54,6 +56,3 @@ public class ProjectChangeMessageService extends MessageService {
 		return null;
 	}
 }
-
-
-

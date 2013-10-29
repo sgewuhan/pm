@@ -255,7 +255,7 @@
                         label="首席师"
                         labelVisible="true"
                         name="chief_master"
-                        optionProvider="com.tmt.jszx.option.ChiefEngineerOption"
+                        optionProvider="com.tmt.jszx.option.ChiefMasterOption"
                         persistable="true"
                         required="false"
                         type="DBObject">
@@ -359,7 +359,7 @@
       </actorRule>
       <actorRule
             actorIdProvider="com.tmt.jszx.actor.ChiefEngineerOfLauncher"
-            id="deputy_director"
+            id="chief_engineer"
             name="流程发起人所在部门总工">
       </actorRule>
    </extension>
@@ -1099,6 +1099,18 @@
             name="项目评审流程完成消息"
             operation="workmessage"
             serviceProvider="com.tmt.jszx.bpmservice.ProjectReviewServiceOfJSZX">
+      </service>
+      <service
+            interface="jszxprojectapply.service.action"
+            name="技术支持消息"
+            operation="message"
+            serviceProvider="com.tmt.jszx.bpmservice.ProjectApplyMessageService">
+      </service>
+      <service
+            interface="jszxprojectapply.service.action"
+            name="文件归档"
+            operation="archive"
+            serviceProvider="com.tmt.jszx.bpmservice.ProjectApplyArchiveService">
       </service>
    </extension>
    <extension

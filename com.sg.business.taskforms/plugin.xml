@@ -205,6 +205,11 @@
                label="不预审"
                value="不预审">
          </option>
+         <option
+               id="不通过"
+               label="不通过"
+               value="不通过">
+         </option>
       </option>
       <option
             id="是否整改"
@@ -276,18 +281,14 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="xtProjectApprove.audit"
+            editorId="tbProjectApprove.audit"
             name="审批"
-            persistentFields="comment,choice,pretrial,reviewer_list,reviewer_admin"
-            processDefinitionId="xtProjectApprove"
+            persistentFields="comment,choice,reviewer_list,reviewer_admin"
+            processDefinitionId="tb.tbProjectApprove"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
-         </processParameter>
-         <processParameter
-               processParameterName="pretrial"
-               taskFormFieldName="pretrial">
          </processParameter>
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
@@ -300,68 +301,60 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.expertgroupreview"
+            editorId="tbProjectApprove.expertgroupreview"
             name="专家组预审"
-            persistentFields="comment,choice_s"
-            processDefinitionId="xtProjectApprove">
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_s"
-               taskFormFieldName="choice_s">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.reviewplan"
+            editorId="tbProjectApprove.reviewplan"
             name="评审实施计划"
-            persistentFields="comment,review"
-            processDefinitionId="xtProjectApprove">
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="review"
-               taskFormFieldName="review">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.expertgroupcountersign"
+            editorId="tbProjectApprove.expertgroupcountersign"
             name="专家组会签"
-            persistentFields="comment,choice_s_1"
-            processDefinitionId="xtProjectApprove">
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_s_1"
-               taskFormFieldName="choice_s_1">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.reviewteamleader"
+            editorId="tbProjectApprove.reviewteamleader"
             name="评审组组长审批"
-            persistentFields="comment,abarbeitung"
-            processDefinitionId="xtProjectApprove">
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_sum_1"
-               taskFormFieldName="choice_sum_1">
-         </processParameter>
-         <processParameter
-               processParameterName="abarbeitung"
-               taskFormFieldName="abarbeitung">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.meetingreview"
+            editorId="tbProjectApprove.meetingreview"
             name="会议评审"
-            persistentFields="comment,choice_sum_1,abarbeitung"
-            processDefinitionId="xtProjectApprove">
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
-               processParameterName="choice_sum_1"
-               taskFormFieldName="choice_sum_1">
-         </processParameter>
-         <processParameter
-               processParameterName="abarbeitung"
-               taskFormFieldName="abarbeitung">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.resultaudit"
+            editorId="tbProjectApprove.resultaudit"
             name="处理结果审核"
             persistentFields="comment,choice"
-            processDefinitionId="xtProjectApprove">
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -373,7 +366,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtProjectApprove.audit"
+            id="tbProjectApprove.audit"
             name="审批">
          <basicpage
                id="basicpage1"
@@ -396,20 +389,9 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="批准"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <radio
-                        editable="true"
-                        id="pretrial"
                         label="资料预审"
                         labelVisible="false"
-                        name="pretrial"
+                        name="choice"
                         option="是否资料预审"
                         persistable="true"
                         required="false"
@@ -426,7 +408,7 @@
                         navigatorId="project.participte.selector"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="true">
+                        required="false">
                   </navigatorSelector>
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
@@ -451,50 +433,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtProjectApprove.reviewplan"
-            name="评审实施计划">
-         <basicpage
-               id="page1"
-               title="审核">
-            <pagecolumn>
-               <section
-                     label="请填评审实施意见和计划">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        label="评审实施计划意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="review"
-                        label="评审实施计划"
-                        labelVisible="false"
-                        name="review"
-                        option="评审实施计划"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="xtProjectApprove.expertgroupreview"
+            id="tbProjectApprove.expertgroupreview"
             name="专家组预审">
          <basicpage
                id="page1"
@@ -516,10 +455,10 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_s"
+                        id="choice"
                         label="预审结论"
                         labelVisible="false"
-                        name="choice_s"
+                        name="choice"
                         option="是否通过"
                         persistable="true"
                         required="false"
@@ -537,7 +476,50 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtProjectApprove.expertgroupcountersign"
+            id="tbProjectApprove.reviewplan"
+            name="评审实施计划">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填评审实施意见和计划">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="评审实施计划意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审实施计划"
+                        labelVisible="false"
+                        name="choice"
+                        option="评审实施计划"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectApprove.expertgroupcountersign"
             name="专家组会签">
          <basicpage
                id="page1"
@@ -559,10 +541,10 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_s_1"
+                        id="choice"
                         label="会签结论"
                         labelVisible="false"
-                        name="choice_s_1"
+                        name="choice"
                         option="是否通过"
                         persistable="true"
                         required="false"
@@ -580,7 +562,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtProjectApprove.reviewteamleader"
+            id="tbProjectApprove.reviewteamleader"
             name="评审组组长审批">
          <basicpage
                id="page1"
@@ -602,21 +584,10 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_sum_1"
-                        label="是否通过"
-                        labelVisible="false"
-                        name="choice_sum_1"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <radio
-                        editable="true"
-                        id="abarbeitung"
+                        id="choice"
                         label="是否整改"
                         labelVisible="false"
-                        name="abarbeitung"
+                        name="choice"
                         option="是否整改"
                         persistable="true"
                         required="false"
@@ -633,7 +604,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtProjectApprove.meetingreview"
+            id="tbProjectApprove.meetingreview"
             name="会议评审">
          <basicpage
                id="page1"
@@ -655,22 +626,11 @@
                   </text>
                   <radio
                         editable="true"
-                        id="abarbeitung"
-                        label="是否整改"
-                        labelVisible="false"
-                        name="abarbeitung"
-                        option="是否整改"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <radio
-                        editable="true"
-                        id="choice_sum_1"
+                        id="choice"
                         label="评审结论"
                         labelVisible="false"
-                        name="choice_sum_1"
-                        option="是否通过"
+                        name="choice"
+                        option="是否整改"
                         persistable="true"
                         required="false"
                         type="String">
@@ -687,7 +647,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtProjectApprove.resultaudit"
+            id="tbProjectApprove.resultaudit"
             name="处理结果审核">
          <basicpage
                id="page1"
@@ -1178,6 +1138,15 @@
             id="prj_admin"
             name="项目所在管理部门的项目管理员">
       </actorRule>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="projectapprove.reviewer.reservice.action"
+            name="评审会议通知"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ProjcetApproveReviewerMessageService">
+      </service>
    </extension>
  </plugin>
    
