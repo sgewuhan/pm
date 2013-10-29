@@ -31,7 +31,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.commons.eai.RNDPeriodCostAdapter;
 import com.sg.business.commons.eai.WorkOrderPeriodCostAdapter;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
@@ -86,12 +85,17 @@ public class RNDCostAdjustmentView extends ViewPart {
 					rndPeriodCost = ModelService.createModelObject(dbo,
 							RNDPeriodCost.class);
 				} else {
-					try {
-						rndPeriodCost = readRNDPeriodCost(costCenterCode);
-					} catch (Exception e) {
-						MessageUtil.showToast(e);
-						return;
-					}
+					MessageUtil.showToast(
+							"无法获取期间研发成本数据：" + organization.getCostCenterCode()
+									+ "\n" + year + "-" + month,
+							SWT.ICON_WARNING);
+
+					// try {
+					// rndPeriodCost = readRNDPeriodCost(costCenterCode);
+					// } catch (Exception e) {
+					// MessageUtil.showToast(e);
+					// return;
+					// }
 				}
 
 				// 获取工作令号分摊数据
@@ -109,9 +113,10 @@ public class RNDCostAdjustmentView extends ViewPart {
 								.createModelObject(dbObject,
 										WorkOrderPeriodCost.class));
 					}
-				}else{
+				} else {
 					workOrdersCostAllocation.clear();
-					workOrdersCostAllocation.addAll(readWorkOrderPeriodCost(costCenterCode));
+					workOrdersCostAllocation
+							.addAll(readWorkOrderPeriodCost(costCenterCode));
 				}
 			} else {
 				// 创建空对象用于选择
@@ -125,7 +130,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 		private Collection<? extends WorkOrderPeriodCost> readWorkOrderPeriodCost(
 				String costCenterCode) {
 			WorkOrderPeriodCostAdapter adapter = new WorkOrderPeriodCostAdapter();
-			
+
 			Map<String, Object> parameter = new HashMap<String, Object>();
 
 			parameter.put(WorkOrderPeriodCostAdapter.YEAR, year);
@@ -137,19 +142,20 @@ public class RNDCostAdjustmentView extends ViewPart {
 			return adapter.getData(parameter);
 		}
 
-		private RNDPeriodCost readRNDPeriodCost(String costCenterCode) throws Exception {
-			RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
-
-			Map<String, Object> parameter = new HashMap<String, Object>();
-
-			parameter.put(RNDPeriodCostAdapter.YEAR, year);
-			parameter.put(RNDPeriodCostAdapter.MONTH, month);
-			parameter.put(RNDPeriodCostAdapter.ORGCODE,
-					organization.getCompanyCode());
-			parameter.put(RNDPeriodCostAdapter.COSECENTERCODE,
-					organization.getCostCenterCode());
-			return adapter.getData(parameter);
-		}
+		// private RNDPeriodCost readRNDPeriodCost(String costCenterCode) throws
+		// Exception {
+		// RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
+		//
+		// Map<String, Object> parameter = new HashMap<String, Object>();
+		//
+		// parameter.put(RNDPeriodCostAdapter.YEAR, year);
+		// parameter.put(RNDPeriodCostAdapter.MONTH, month);
+		// parameter.put(RNDPeriodCostAdapter.ORGCODE,
+		// organization.getCompanyCode());
+		// parameter.put(RNDPeriodCostAdapter.COSECENTERCODE,
+		// organization.getCostCenterCode());
+		// return adapter.getData(parameter);
+		// }
 
 		@Override
 		public void dispose() {
@@ -229,7 +235,7 @@ public class RNDCostAdjustmentView extends ViewPart {
 		costCenterViewer.setContentProvider(ccd);
 		Calendar cal = Calendar.getInstance();
 		costCenterViewer.setInput(new CostCenterDurationQueryParameter(cal
-				.get(Calendar.YEAR), cal.get(Calendar.MONTH) , null));//取上个月的数据
+				.get(Calendar.YEAR), cal.get(Calendar.MONTH), null));// 取上个月的数据
 
 		workOrderViewer.setInput(ccd.getWorkOrdersCostAllocation());
 

@@ -21,6 +21,7 @@ import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectRoleAssignment;
 import com.sg.business.model.ProjectTemplate;
+import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.RoleDefinition;
@@ -190,17 +191,27 @@ public class PM2Activator extends AbstractUIPlugin {
 								ProjectTemplate.F_DESC, 1));
 
 		// 组织代码唯一
-//		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
-//				new BasicDBObject().append(Organization.F_CODE, 1));
+		// ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
+		// new BasicDBObject().append(Organization.F_CODE, 1));
 
 		// 成本中心代码唯一
 		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
 				new BasicDBObject().append(Organization.F_COST_CENTER_CODE, 1));
 
 		// 设置公司和工作令号对应表的唯一索引
-		ensureUniqureIndex(db, IModelConstants.C_COMPANY_WORKORDER,
-				new BasicDBObject().append(CompanyWorkOrder.F_ORGANIZATION_ID, 1)
-						.append(CompanyWorkOrder.F_WORKORDER, 1));
+		ensureUniqureIndex(
+				db,
+				IModelConstants.C_COMPANY_WORKORDER,
+				new BasicDBObject().append(CompanyWorkOrder.F_ORGANIZATION_ID,
+						1).append(CompanyWorkOrder.F_WORKORDER, 1));
+
+		// 确保成本中心的每期数据唯一
+		ensureUniqureIndex(
+				db,
+				IModelConstants.C_RND_PEROIDCOST_COSTCENTER,
+				new BasicDBObject().append(RNDPeriodCost.F_COSTCENTERCODE, 1)
+						.append(RNDPeriodCost.F_MONTH, 1)
+						.append(RNDPeriodCost.F_YEAR, 1));
 
 		// 创建工作归档字段索引
 		ensureIndex(db, IModelConstants.C_WORK,
