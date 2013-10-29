@@ -103,16 +103,15 @@ public class RNDPeriodCostAdapter {
 			String[] costCodeArray, int year, int month, String[] account)
 			throws Exception {
 		if (account == null) {
-			account = getDefaultAccounts();
+//			account = getDefaultAccounts();
 		}
 
-		RNDPeriodCost[] result = new RNDPeriodCost[orgCodeArray.length];
+		RNDPeriodCost[] result = new RNDPeriodCost[costCodeArray.length];
 
 		JCO_ZXFUN_PM_YFFY func = new JCO_ZXFUN_PM_YFFY();
 		Map<String, Map<String, Double>> ret = func.getJSDZB(orgCodeArray,
 				costCodeArray, year, month, account);
 
-		// 以下代码模拟已经获得了SAP的数据
 		DBObject[] sr = new BasicDBObject[ret.size()];
 		Iterator<String> iter = ret.keySet().iterator();
 		int i=0;

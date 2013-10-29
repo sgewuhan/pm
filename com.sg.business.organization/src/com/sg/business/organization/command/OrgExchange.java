@@ -215,16 +215,13 @@ public class OrgExchange {
 		// 不为null表示为非顶级组织，这时通过unitid来获取HR组织
 		if (id == null) {
 			result = SQLUtil.SQL_QUERY("hr",
-					"select * from pm_unit where ldunitid = '1'");
-			// result =
-			// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where ldunitid = '1'");
+					"select * from tb_nczz.pm_unit where ldunitid = '1'");
 		} else {
-			result = SQLUtil.SQL_QUERY("hr",
-					"select * from pm_unit where unitid = '" + id + "'");
 
-			// result =
-			// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where unitid = '"
-			// + id + "'");
+			result = SQLUtil
+					.SQL_QUERY("hr",
+							"select * from tb_nczz.pm_unit where unitid = '"
+									+ id + "'");
 		}
 		// 构造HR系统的组织
 		if (!result.isEmpty()) {
@@ -250,11 +247,8 @@ public class OrgExchange {
 		try {
 			// 通过ldunitid来获取子组织
 			result = SQLUtil.SQL_QUERY("hr",
-					"select * from pm_unit where ldunitid = '"
+					"select * from tb_nczz.pm_unit where ldunitid = '"
 							+ parentOrgExchange.orgId + "'");
-			// result =
-			// SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_unit where ldunitid = '"+
-			// parentOrgExchange.orgId + "'");
 			if (!result.isEmpty()) {
 				// 循环构造当前组织的子组织
 				Iterator<SQLRow> iter = result.iterator();
@@ -445,8 +439,7 @@ public class OrgExchange {
 			org.setValue(Organization.F_CODE, alphaString);
 		} else {
 			String desc = otherOrg.desc.replaceFirst(otherOrg.parent.desc, "");
-			org.setValue(Organization.F_DESC,
-					desc);
+			org.setValue(Organization.F_DESC, desc);
 			org.setValue(PrimaryObject.F__EDITOR, Organization.EDITOR_SUBTEAM);
 			String alphaString = Utils.getAlphaString(desc);
 			alphaString = (alphaString + "000").substring(0, 3);

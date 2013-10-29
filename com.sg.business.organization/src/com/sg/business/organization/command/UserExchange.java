@@ -198,7 +198,7 @@ public class UserExchange {
 			// 获取用户
 			if (hrOrgId != null) {
 				result = SQLUtil.SQL_QUERY("hr",
-						"select * from pm_emp where unit = '" + hrOrgId + "'");
+						"select * from tb_nczz.pm_emp where unit = '" + hrOrgId + "'");
 			} else {
 				String query = "";
 				DBCollection coll = DBActivator.getCollection(
@@ -220,15 +220,13 @@ public class UserExchange {
 				}
 				if (query != "") {
 					result = SQLUtil.SQL_QUERY("hr",
-							"select * from pm_emp where unit in ('" + query
-									+ "')");
+							"select * from tb_nczz.pm_emp where unit in ('"
+									+ query + "')");
 				} else {
-					result = SQLUtil.SQL_QUERY("hr", "select * from pm_emp ");
+					result = SQLUtil.SQL_QUERY("hr",
+							"select * from tb_nczz.pm_emp ");
 				}
 			}
-			// result
-			// =SQLUtil.SQL_QUERY("hr","select * from tb_nczz.pm_emp where unitid = '"+
-			// + "'");
 			if (!result.isEmpty()) {
 				// 循环构造用户
 				Iterator<SQLRow> iter = result.iterator();
