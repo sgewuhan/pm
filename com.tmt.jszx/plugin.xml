@@ -1106,6 +1106,12 @@
             operation="message"
             serviceProvider="com.tmt.jszx.bpmservice.ProjectApplyMessageService">
       </service>
+      <service
+            interface="jszxprojectapply.service.action"
+            name="文件归档"
+            operation="archive"
+            serviceProvider="com.tmt.jszx.bpmservice.ProjectApplyArchiveService">
+      </service>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
