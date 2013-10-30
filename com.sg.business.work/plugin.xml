@@ -3668,5 +3668,8 @@
             name="发起工作">
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+   </extension>
 
 </plugin>
