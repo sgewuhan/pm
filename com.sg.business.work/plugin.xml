@@ -3670,6 +3670,13 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
+      <view
+            category="work"
+            class="com.sg.business.work.view.WorkFlowReservedTask"
+            id="workflow.taskreserved"
+            name="流程任务"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>
