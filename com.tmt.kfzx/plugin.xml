@@ -389,7 +389,7 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.confirm"
             name="确认评审组成员"
-            persistentFields="reviewer_admin,reviewer_list"
+            persistentFields="reviewer_admin,reviewer_list,confirmtime,confirmaddress"
             processDefinitionId="kfzx.kfzxMeetingReview">
          <processParameter
                processParameterName="reviewer_admin"
@@ -399,6 +399,14 @@
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmtime"
+               taskFormFieldName="confirmtime">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmaddress"
+               taskFormFieldName="confirmaddress">
          </processParameter>
       </taskForm>
       <taskForm
@@ -456,6 +464,30 @@
                         persistable="true"
                         required="false">
                   </list>
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="confirmtime"
+                        label="评审会时间"
+                        labelVisible="true"
+                        name="confirmtime"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        label="评审会地点"
+                        labelVisible="true"
+                        name="confirmaddress"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
