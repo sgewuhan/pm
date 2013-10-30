@@ -440,13 +440,13 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="project.participte.selector"
+                        navigatorId="organization.user"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        addTableItemHandler="com.tmt.kfzx.field.action.AddRiewerList"
                         editable="true"
                         id="reviewer_list"
                         label="评审组"
