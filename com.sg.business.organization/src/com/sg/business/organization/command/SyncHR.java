@@ -176,6 +176,7 @@ public class SyncHR extends Job {
 			doSyscHROrganization();
 			return Status.OK_STATUS;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new MultiStatus(OrganizationActivator.PLUGIN_ID, IStatus.ERROR, "²éÑ¯Êý¾Ý", e);
 		}
 

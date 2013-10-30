@@ -41,7 +41,7 @@ public class IndexJob extends Job {
 	private String dbName;
 	private String collectionName;
 	public static String indexPath = System.getProperty("user.dir")
-			+ File.separator + "index";;
+			+ File.separator + "index";
 
 	public IndexJob(String dbName, String collectionName, String field) {
 		super("½¨Á¢Ë÷Òý");

@@ -386,5 +386,16 @@
             run="com.sg.business.vault.index.Index">
       </adminFunction>
    </extension>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            day="-3"
+            id="vault.index"
+            name="建立全文检索索引"
+            rule="month"
+            run="com.sg.business.vault.index.SchedualIndex"
+            time="23:00:00">
+      </schedualJob>
+   </extension>
 
 </plugin>

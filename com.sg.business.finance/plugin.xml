@@ -76,6 +76,32 @@
                   type="String">
             </column>
          </searchAction>
+         <exportAction>
+            <column
+                  column="desc"
+                  name="科目名称"
+                  type="String">
+            </column>
+            <column
+                  column="accountnumber"
+                  name="代码"
+                  type="String">
+            </column>
+         </exportAction>
+         <importAction>
+            <column
+                  column="desc"
+                  isKey="true"
+                  name="科目名称"
+                  type="String">
+            </column>
+            <column
+                  column="accountnumber"
+                  isKey="true"
+                  name="代码"
+                  type="String">
+            </column>
+         </importAction>
       </navigator>
       <navigator
             id="finance.org.navigator"
@@ -85,7 +111,9 @@
    <extension
          point="com.sg.widgets.table">
       <table
+            collectionName="costaccount"
             dataSet="com.sg.business.model.dataset.financial.CostAccountSetting"
+            dbName="pm2"
             editorId="editor.devaccountnumber"
             id="financial.accountnumber">
          <column
@@ -164,6 +192,17 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            day="1"
+            id="finance.schedual.rndcostallocation"
+            name="上月研发费用获取和计算"
+            rule="month"
+            run="com.sg.business.finance.schedual.RunRNDCostAllocation"
+            time="0:05:00">
+      </schedualJob>
    </extension>
 
 </plugin>

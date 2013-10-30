@@ -123,6 +123,8 @@ public class JCO_ZXFUN_PM_YFFY {
 					rowData.put(_accountNumber, _summay);
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			JCO.releaseClient(client);
 		}

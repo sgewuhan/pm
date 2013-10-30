@@ -29,14 +29,14 @@ public class WorkflowSynchronizer extends RepeatJob {
 		super("更新流程信息");
 		this.client = client;
 	}
-	
+
 	public WorkflowSynchronizer() {
 		super("更新流程信息");
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		if(client){
+		if (client) {
 			monitor.beginTask("正在同步工作流任务...", IProgressMonitor.UNKNOWN);
 		}
 		if (userId != null) {
@@ -76,23 +76,24 @@ public class WorkflowSynchronizer extends RepeatJob {
 					Work work = (Work) host;
 					work.reload();
 					work.doUpdateWorkflowDataByTask(flowKey, tasks[i], userid);
-					
-//					UserSessionContext.noticeAccountChanged(userid, new AccountEvent(
-//							IAccountEvent.EVENT_PROCESS_TASKUPDATEED, work));
-					
+
+					// UserSessionContext.noticeAccountChanged(userid, new
+					// AccountEvent(
+					// IAccountEvent.EVENT_PROCESS_TASKUPDATEED, work));
+
 					updated.add(work);
 				}
 			} catch (Exception e) {
-				//流程不存在
-				//work被删除
-//				e.printStackTrace();
+				// 流程不存在
+				// work被删除
+				// e.printStackTrace();
 			}
 		}
 		return updated;
 	}
-	
-	
-	public void synchronizeUserTask(String userid,Work targetWork) throws Exception {
+
+	public void synchronizeUserTask(String userid, Work targetWork)
+			throws Exception {
 		Task[] tasks = WorkflowService.getDefault().getUserTasks(userid);
 		for (int i = 0; i < tasks.length; i++) {
 			TaskData taskData = tasks[i].getTaskData();
@@ -106,18 +107,20 @@ public class WorkflowSynchronizer extends RepeatJob {
 				String flowKey = workflow.getKey();
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
-					if(work.get_id().equals(targetWork.get_id())){
-						targetWork.doUpdateWorkflowDataByTask(flowKey, tasks[i], userid);
+					if (work.get_id().equals(targetWork.get_id())) {
+						targetWork.doUpdateWorkflowDataByTask(flowKey,
+								tasks[i], userid);
 						return;
 					}
 				}
 			} catch (Exception e) {
-				//流程不存在
-				//work被删除
+				// 流程不存在
+				// work被删除
 				e.printStackTrace();
 			}
 		}
-		throw new Exception("用户:"+userid+"\n"+"工作:"+targetWork+"\n\n"+"没有满足条件的流程任务。");
+		throw new Exception("用户:" + userid + "\n" + "工作:" + targetWork + "\n\n"
+				+ "没有满足条件的流程任务。");
 	}
 
 	public void setUserId(String userId) {

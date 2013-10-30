@@ -11,6 +11,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.mobnut.commons,
  com.mobnut.design,
  com.mobnut.portal,
+ com.mobnut.admin;bundle-version="1.0.0",
+ com.sg.business.performence,
  com.sg.thirdparty,
  com.sg.widgets,
  com.sg.business.message,
@@ -23,6 +25,6 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.visualization,
  com.sg.business.work,
  com.sg.business.resource,
- com.sg.business.performence
+ com.sg.bpm.service
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

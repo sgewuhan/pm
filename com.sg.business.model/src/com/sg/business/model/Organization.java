@@ -250,6 +250,17 @@ public class Organization extends PrimaryObject {
 	 */
 	@Override
 	public Image getImage() {
+
+		String orgType = getOrganizationType();
+		if(ORG_TYPE_COMPANY.equals(orgType)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_COMPANY_16);
+		}
+		if(ORG_TYPE_BUSINESS_UNIT.equals(orgType)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_BU_16);
+		}
+		if(ORG_TYPE_DEPARTMENT.equals(orgType)){
+			return BusinessResource.getImage(BusinessResource.IMAGE_DEPTARTMENT_16);
+		}
 		if (getValue(F_PARENT_ID) == null) {
 			return BusinessResource.getImage(BusinessResource.IMAGE_ORG_16);
 		} else {
@@ -379,6 +390,14 @@ public class Organization extends PrimaryObject {
 				throw new Exception("事业部或公司类型的组织需要具有\"公司代码\"");
 			}
 		}
+		
+		if(isFunctionDepartment()){
+			String code = getCode();
+			if (Utils.isNullOrEmpty(code)) {
+				throw new Exception("具有项目管理职能的组织需要具有\"代码\"");
+			}
+		}
+		
 	}
 
 	public String getCompanyCode() {

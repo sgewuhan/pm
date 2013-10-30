@@ -48,7 +48,6 @@ public class SAPConnectionPool {
 				: (String) value;
 
 		Client mConnection = null;
-		;
 		try {
 			Pool pool = JCO.getClientPoolManager().getPool(POOL_NAME);
 			if (pool == null) {

@@ -9,12 +9,12 @@
             label="日历"
             run="com.sg.business.commons.admin.CalendarSetting">
       </adminFunction>
-      <adminFunction
+      <!--adminFunction
             id="com.sg.business.commons.admin.BPMAccountSync"
             image="image/user_48.png"
             label="同步用户"
             run="com.sg.business.commons.admin.BPMAccountSync">
-      </adminFunction>
+      </adminFunction-->
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -652,6 +652,7 @@
             column="organization_id"
             id="account.organizationpath"
             labelProvider="com.sg.business.commons.labelprovider.UserOrganizationPathLabelprovider"
+            lazyDisplay="true"
             name="组织"
             type="String"
             width="80">
@@ -660,6 +661,7 @@
             column="organization_id"
             id="account.roleassignment"
             labelProvider="com.sg.business.commons.labelprovider.UserRoleAssignmentLabelprovider"
+            lazyDisplay="true"
             name="角色"
             type="String"
             width="80">
