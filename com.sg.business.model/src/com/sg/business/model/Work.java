@@ -279,7 +279,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (children.size() == 0) {
 			Object value = getValue(F_PLAN_START);
 			if (value instanceof Date) {
-				return Utils.getDayBegin((Date)value).getTime();
+				return Utils.getDayBegin((Date) value).getTime();
 			} else {
 				return null;
 			}
@@ -292,19 +292,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					start = s;
 				}
 			}
-			
-			//如果下级没有计划开始，取自己的计划开始
-			if(start!=null){
+
+			// 如果下级没有计划开始，取自己的计划开始
+			if (start != null) {
 				return start;
-			}else{
+			} else {
 				Object value = getValue(F_PLAN_START);
 				if (value instanceof Date) {
-					return Utils.getDayBegin((Date)value).getTime();
+					return Utils.getDayBegin((Date) value).getTime();
 				} else {
 					return null;
 				}
 			}
-			
+
 		}
 	}
 
@@ -318,7 +318,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (children.size() == 0) {
 			Object value = getValue(F_PLAN_FINISH);
 			if (value instanceof Date) {
-				return Utils.getDayEnd((Date)value).getTime();
+				return Utils.getDayEnd((Date) value).getTime();
 			} else {
 				return null;
 			}
@@ -331,18 +331,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					finish = f;
 				}
 			}
-			
-			if(finish!=null){
+
+			if (finish != null) {
 				return finish;
-			}else{
+			} else {
 				Object value = getValue(F_PLAN_FINISH);
 				if (value instanceof Date) {
-					return Utils.getDayEnd((Date)value).getTime();
+					return Utils.getDayEnd((Date) value).getTime();
 				} else {
 					return null;
 				}
 			}
-			
+
 		}
 	}
 
@@ -905,7 +905,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		// 3.判断本工作及其下级工作的必要信息是否录入
-		message.addAll(checkCascadeStart());
+		message.addAll(checkCascadeStart(false));
 		return message;
 	}
 
@@ -1307,28 +1307,36 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	/**
 	 * 项目的工作检查必要信息是否录入
 	 * 
+	 * 2013-10-31 修改 zhonghua
+	 * 
+	 * 级联检查下级工作时，只考虑需同步启动的工作
+	 * 
 	 * @return
 	 */
-	public List<Object[]> checkCascadeStart() {
+	public List<Object[]> checkCascadeStart(boolean warningCheck) {
 		List<Object[]> message = new ArrayList<Object[]>();
 		// 检查下级工作，非摘要工作不处理
 		List<PrimaryObject> childrenWork = getChildrenWork();
 		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
 			for (int i = 0; i < childrenWork.size(); i++) {
 				Work childWork = (Work) childrenWork.get(i);
-				message.addAll(childWork.checkCascadeStart());
+				// 通过warningCheck，降低下级的检查标准
+				message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
+						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
 			}
 		} else {
 			// 1.检查工作的计划开始和计划完成
 			Object value = getPlanStart();
 			if (value == null) {
 				message.add(new Object[] { "工作的计划开始时间没有确定", this,
-						SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
+						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
+						EDIT_WORK_PLAN_0 });
 			}
 			value = getPlanFinish();
 			if (value == null) {
 				message.add(new Object[] { "工作的计划完成时间没有确定", this,
-						SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
+						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
+						EDIT_WORK_PLAN_0 });
 			}
 			// 2.检查工作的计划工时
 			// 如果是独立工作可以跳过本步骤
@@ -1336,7 +1344,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				value = getPlanWorks();
 				if (value == null) {
 					message.add(new Object[] { "工作的计划工时没有确定", this,
-							SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
+							SWT.ICON_WARNING ,
+							EDIT_WORK_PLAN_0 });
 				}
 			}
 			// 3.检查工作名称
@@ -1348,7 +1357,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 4.检查负责人
 			value = getCharger();
 			if (value == null) {
-				message.add(new Object[] { "工作负责人为空", this, SWT.ICON_ERROR,
+				message.add(new Object[] { "工作负责人为空", this,
+						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
 						EDIT_WORK_PLAN_0 });
 			}
 			// 5.检查参与者
@@ -1369,7 +1379,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
 			if (!ProjectToolkit.checkProcessInternal(pc, F_WF_EXECUTE)) {
 				message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
-						SWT.ICON_WARNING, EDIT_WORK_PLAN_1 });
+						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
+						EDIT_WORK_PLAN_1 });
 			}
 
 			// 7.检查工作交付物,警告
