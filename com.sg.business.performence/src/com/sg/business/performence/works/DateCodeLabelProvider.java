@@ -12,6 +12,7 @@ public class DateCodeLabelProvider extends ColumnLabelProvider {
 		if(element instanceof WorksPerformence){
 			return ((WorksPerformence) element).getLogDate();
 		}
+		
 		return "";
 	}
 }
