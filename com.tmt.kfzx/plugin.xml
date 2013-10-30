@@ -623,8 +623,7 @@
             editorId="kfzx.kfzxProjrctStart.meetingnotice"
             name="下发会议通知"
             persistentFields="confirmtime,confirmaddress"
-            processDefinitionId="kfzx.kfzxProjrctStart"
-            saveHandler="com.tmt.kfzx.handler.MeetingReviewCommentfile">
+            processDefinitionId="kfzx.kfzxProjrctStart">
          <processParameter
                processParameterName="confirmtime"
                taskFormFieldName="confirmtime">
@@ -638,15 +637,8 @@
             editorId="kfzx.kfzxProjrctStart.meetingminutes"
             name="上传会议纪要"
             persistentFields="commentfile"
-            processDefinitionId="kfzx.kfzxProjrctStart">
-         <processParameter
-               processParameterName="confirmtime"
-               taskFormFieldName="confirmtime">
-         </processParameter>
-         <processParameter
-               processParameterName="confirmaddress"
-               taskFormFieldName="confirmaddress">
-         </processParameter>
+            processDefinitionId="kfzx.kfzxProjrctStart"
+            saveHandler="com.tmt.kfzx.handler.MeetingReviewCommentfile">
       </taskForm>
    </extension>
    <extension
