@@ -389,11 +389,11 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.confirm"
             name="确认评审组成员"
-            persistentFields="review_admin,reviewer_list"
+            persistentFields="reviewer_admin,reviewer_list"
             processDefinitionId="kfzx.kfzxMeetingReview">
          <processParameter
-               processParameterName="review_admin"
-               taskFormFieldName="review_admin">
+               processParameterName="reviewer_admin"
+               taskFormFieldName="reviewer_admin">
          </processParameter>
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
@@ -404,12 +404,9 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.option"
             name="评审意见录入"
-            persistentFields="commentfile"
-            processDefinitionId="kfzx.kfzxMeetingReview">
-         <processParameter
-               processParameterName="review_admin"
-               taskFormFieldName="review_admin">
-         </processParameter>
+            persistentFields="choice,comment,commentfile"
+            processDefinitionId="kfzx.kfzxMeetingReview"
+            saveHandler="com.tmt.kfzx.handler.MeetingReviewCommentfile">
       </taskForm>
       <taskForm
             editorId="kfzx.kfzxMeetingReview.audit"
@@ -424,78 +421,6 @@
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="kfzx.kfzxMeetingReview.audit"
-            name="审核">
-         <basicpage
-               id="page1"
-               title="审核">
-            <pagecolumn>
-               <section
-                     label="请填写意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="结论"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="kfzx.kfzxMeetingReview.option"
-            name="评审意见录入">
-         <basicpage
-               id="page1"
-               title="评审意见">
-            <pagecolumn>
-               <section
-                     label="评审意见">
-                  <file
-                        editPart="OfficeFileUploader"
-                        editable="true"
-                        id="commentfile"
-                        labelVisible="true"
-                        name="commentfile"
-                        persistable="true"
-                        required="false">
-                  </file>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-      </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
@@ -531,6 +456,110 @@
                         persistable="true"
                         required="false">
                   </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kfzx.kfzxMeetingReview.option"
+            name="评审意见录入">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写评审意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="评审意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="commentfile"
+                        labelVisible="true"
+                        name="commentfile"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="kfzx.kfzxMeetingReview.audit"
+            name="审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
