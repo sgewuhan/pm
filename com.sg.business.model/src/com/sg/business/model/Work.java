@@ -277,9 +277,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public Date getPlanStart() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
-			Date d = (Date) getValue(F_PLAN_START);
-			if (d != null) {
-				return Utils.getDayBegin(d).getTime();
+			Object value = getValue(F_PLAN_START);
+			if (value instanceof Date) {
+				return Utils.getDayBegin((Date)value).getTime();
 			} else {
 				return null;
 			}
@@ -292,7 +292,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					start = s;
 				}
 			}
-			return start;
+			
+			//如果下级没有计划开始，取自己的计划开始
+			if(start!=null){
+				return start;
+			}else{
+				Object value = getValue(F_PLAN_START);
+				if (value instanceof Date) {
+					return Utils.getDayBegin((Date)value).getTime();
+				} else {
+					return null;
+				}
+			}
+			
 		}
 	}
 
@@ -304,9 +316,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public Date getPlanFinish() {
 		List<PrimaryObject> children = getChildrenWork();
 		if (children.size() == 0) {
-			Date d = (Date) getValue(F_PLAN_FINISH);
-			if (d != null) {
-				return Utils.getDayEnd(d).getTime();
+			Object value = getValue(F_PLAN_FINISH);
+			if (value instanceof Date) {
+				return Utils.getDayEnd((Date)value).getTime();
 			} else {
 				return null;
 			}
@@ -319,7 +331,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					finish = f;
 				}
 			}
-			return finish;
+			
+			if(finish!=null){
+				return finish;
+			}else{
+				Object value = getValue(F_PLAN_FINISH);
+				if (value instanceof Date) {
+					return Utils.getDayEnd((Date)value).getTime();
+				} else {
+					return null;
+				}
+			}
+			
 		}
 	}
 
