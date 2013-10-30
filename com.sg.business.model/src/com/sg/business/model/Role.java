@@ -113,6 +113,12 @@ public class Role extends PrimaryObject {
 	
 	public static final String ROLE_CHIEF_MASTER_ID = "Chief Master";
 	public static final String ROLE_CHIEF_MASTER_TEXT = "首席师";
+	
+	public static final String ROLE_DATAAUDIT_ID = "Data Audit";
+	public static final String ROLE_DATAAUDIT_TEXT = "资料审核员";
+	
+	public static final String ROLE_DEVELOPMENTDIRECTOR_ID = "Development Director";
+	public static final String ROLE_DEVELOPMENTDIRECTOR_TEXT = "开发中心主任";
 
 
 	/**
@@ -131,6 +137,10 @@ public class Role extends PrimaryObject {
 			ROLE_BUSINESS_ADMIN_TEXT, ROLE_PROJECT_ADMIN_TEXT,
 			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,
 			ROLE_DEPT_MANAGER_TEXT, ROLE_FINANCIAL_MANAGER_TEXT };
+
+	
+
+	
 
 	
 
