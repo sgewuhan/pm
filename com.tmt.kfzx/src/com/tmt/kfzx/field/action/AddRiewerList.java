@@ -24,7 +24,6 @@ public class AddRiewerList implements IAddTableItemHandler {
 		PrimaryObject master = part.getInput().getData();
 		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
 				"organization.user") {
-			
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if(is==null||is.isEmpty()){
