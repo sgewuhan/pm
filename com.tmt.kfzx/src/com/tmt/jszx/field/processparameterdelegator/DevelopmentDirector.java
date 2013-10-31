@@ -8,30 +8,24 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.taskform.IProcessParameterDelegator;
 import com.sg.business.model.Organization;
-import com.sg.business.model.Role;
-import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.taskforms.IRoleConstance;
 
 public class DevelopmentDirector implements IProcessParameterDelegator {
 
-	public DevelopmentDirector() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public Object getValue(String processParameter, String taskDatakey,
 			PrimaryObject taskFormData) {
 		Object value = taskFormData.getValue(taskDatakey);
-		if(value instanceof ObjectId){
-			Organization org = ModelService.createModelObject(Organization.class, (ObjectId)value);
-			Role role = org.getRole(IRoleConstance.ROLE_DEVELOPMENTDIRECTOR_ID, 1);
-			if (role != null) {
-				List<PrimaryObject> assignment = role.getAssignment();
-				if (assignment != null && assignment.size() > 0) {
-					return ((RoleAssignment) assignment.get(0)).getUserid();
-				}
+		if (value instanceof ObjectId) {
+			Organization org = ModelService.createModelObject(
+					Organization.class, (ObjectId) value);
+			List<String> users = org.getRoleAssignmentUserIds(
+					IRoleConstance.ROLE_DEVELOPMENTDIRECTOR_ID, 1);
+			if(!users.isEmpty()){
+				return users.get(0);
 			}
 		}
 		return ((User) UserToolkit.getAdmin().get(0)).getUserid();
