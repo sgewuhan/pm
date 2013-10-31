@@ -453,7 +453,8 @@
       <service
             interface="worktoproject.service.action"
             name="附加工作至项目服务"
-            operation="toproject">
+            operation="toproject"
+            serviceProvider="com.sg.business.model.bpmservice.WorkToProjectService">
       </service>
    </extension>
 
