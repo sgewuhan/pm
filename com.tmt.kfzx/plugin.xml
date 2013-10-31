@@ -782,6 +782,7 @@
                taskFormFieldName="number">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                processParameterName="product"
                taskFormFieldName="product">
          </processParameter>
