@@ -41,12 +41,12 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.processparameterdelegator.GetDeptLeaderByDepartmentOfTB"
+               processParameterDelegator="com.tmt.tb.field.parameter.GetDeptLeaderByDepartmentOfTB"
                processParameterName="dept_leader"
                taskFormFieldName="dept_leader">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.processparameterdelegator.GetProjectAdminByDepartmentOfTB"
+               processParameterDelegator="com.tmt.tb.field.parameter.GetProjectAdminByDepartmentOfTB"
                processParameterName="prj_admin"
                taskFormFieldName="prj_admin">
          </processParameter>

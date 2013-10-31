@@ -769,6 +769,18 @@
             operation="approvemessage"
             serviceProvider="com.tmt.kfzx.bpmservice.ApproveMessageOfKFZX">
       </service>
+      <service
+            interface="kfzxmeetingmessage.service.action"
+            name="开发中心会议通知消息"
+            operation="meetingmessage"
+            serviceProvider="com.tmt.kfzx.bpmservice.MeetingMessageOfKFZX">
+      </service>
+      <service
+            interface="kfzxmeetingmessage.service.action"
+            name="开发中心会议通知消息"
+            operation="workmessage"
+            serviceProvider="com.tmt.kfzx.bpmservice.MeetingMessageOfKFZX">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -782,6 +794,7 @@
                taskFormFieldName="number">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
                processParameterName="product"
                taskFormFieldName="product">
          </processParameter>
@@ -790,12 +803,12 @@
                taskFormFieldName="prj_manager">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.jszx.field.processparameterdelegator.DataAudit"
+               processParameterDelegator="com.tmt.kfzx.field.parameter.DataAudit"
                processParameterName="data_audit"
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.jszx.field.processparameterdelegator.DevelopmentDirector"
+               processParameterDelegator="com.tmt.kfzx.field.parameter.DevelopmentDirector"
                processParameterName="development_director"
                taskFormFieldName="dept">
          </processParameter>
@@ -924,7 +937,7 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
-                        navigatorSelectorControl="com.tmt.kfzx.navigatorSelectorContol.DeptSelectContor"
+                        navigatorSelectorControl="com.tmt.kfzx.field.control.DeptSelectContor"
                         persistable="true"
                         required="true">
                   </navigatorSelector>

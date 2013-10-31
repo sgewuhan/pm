@@ -3051,6 +3051,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		return null;
 	}
+	
+	public Task getExecuteTask(IContext context) throws Exception {
+		return getTask(Work.F_WF_EXECUTE,context);
+	}
 
 	/**
 	 * 保存流程的历史记录

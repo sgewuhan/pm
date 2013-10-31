@@ -10,7 +10,7 @@
             processDefinitionId="jszx.jszxProjectApply"
             saveHandler="com.tmt.jszx.savehandler.ApplySave">
          <processParameter
-               processParameterDelegator="com.tmt.jszx.field.processparameterdelegator.DeptDirector"
+               processParameterDelegator="com.tmt.jszx.field.parameter.DeptDirector"
                processParameterName="dept_director"
                taskFormFieldName="dept">
          </processParameter>
@@ -19,12 +19,12 @@
                taskFormFieldName="chief_master">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.jszx.field.processparameterdelegator.DeputyDirector"
+               processParameterDelegator="com.tmt.jszx.field.parameter.DeputyDirector"
                processParameterName="deputy_director"
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.jszx.field.processparameterdelegator.ProjectAdmin"
+               processParameterDelegator="com.tmt.jszx.field.parameter.ProjectAdmin"
                processParameterName="prj_admin"
                taskFormFieldName="dept">
          </processParameter>
@@ -243,7 +243,7 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
-                        navigatorSelectorControl="com.tmt.jszx.navigatorSelectorContol.DeptSelectContor"
+                        navigatorSelectorControl="com.tmt.jszx.field.control.DeptSelectControl"
                         persistable="true"
                         required="true">
                   </navigatorSelector>

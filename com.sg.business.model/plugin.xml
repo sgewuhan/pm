@@ -450,6 +450,11 @@
             operation="message"
             serviceProvider="com.sg.business.model.bpmservice.ProjectApproveMessageService">
       </service>
+      <service
+            interface="worktoproject.service.action"
+            name="附加工作至项目服务"
+            operation="toproject">
+      </service>
    </extension>
 
 </plugin>
