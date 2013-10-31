@@ -769,6 +769,18 @@
             operation="approvemessage"
             serviceProvider="com.tmt.kfzx.bpmservice.ApproveMessageOfKFZX">
       </service>
+      <service
+            interface="kfzxmeetingmessage.service.action"
+            name="开发中心会议通知消息"
+            operation="meetingmessage"
+            serviceProvider="com.tmt.kfzx.bpmservice.MeetingMessageOfKFZX">
+      </service>
+      <service
+            interface="kfzxmeetingmessage.service.action"
+            name="开发中心会议通知消息"
+            operation="workmessage"
+            serviceProvider="com.tmt.kfzx.bpmservice.MeetingMessageOfKFZX">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
