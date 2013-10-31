@@ -408,11 +408,15 @@
                processParameterName="confirmaddress"
                taskFormFieldName="confirmaddress">
          </processParameter>
+         <processParameter
+               processParameterName="confirmdata"
+               taskFormFieldName="confirmdata">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="kfzx.kfzxMeetingReview.option"
             name="评审意见录入"
-            persistentFields="choice,comment,commentfile"
+            persistentFields="comment,commentfile"
             processDefinitionId="kfzx.kfzxMeetingReview"
             saveHandler="com.tmt.kfzx.handler.MeetingReviewCommentfile">
       </taskForm>
@@ -444,14 +448,25 @@
                         defaultValueProvider="com.sg.business.commons.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
-                        id="confirmtime"
-                        label="评审会时间"
+                        id="confirmdata"
+                        label="评审会日期"
                         labelVisible="true"
-                        name="confirmtime"
+                        name="confirmdata"
                         persistable="true"
                         required="false"
                         type="Time">
                   </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtime"
+                        label="评审会议时间"
+                        labelVisible="true"
+                        name="confirmtime"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -520,17 +535,6 @@
                         type="String"
                         widthHint="320">
                   </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="评审结论"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
@@ -632,6 +636,10 @@
                processParameterName="confirmaddress"
                taskFormFieldName="confirmaddress">
          </processParameter>
+         <processParameter
+               processParameterName="confirmdata"
+               taskFormFieldName="confirmdata">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="kfzx.kfzxProjrctStart.meetingminutes"
@@ -653,7 +661,7 @@
                title="审批">
             <pagecolumn>
                <section
-                     label="请填写批准意见、结论和评审专家组成员">
+                     label="请确定评审组组长和评审组成员">
                   <navigatorSelector
                         editable="true"
                         id="reviewer_admin"
@@ -702,14 +710,25 @@
                         defaultValueProvider="com.sg.business.commons.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
+                        id="confirmdata"
+                        label="评审会日期"
+                        labelVisible="true"
+                        name="confirmdata"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
                         id="confirmtime"
                         label="评审会时间"
                         labelVisible="true"
                         name="confirmtime"
                         persistable="true"
                         required="false"
-                        type="Time">
-                  </dateTime>
+                        type="String">
+                  </text>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -771,15 +790,21 @@
       </service>
       <service
             interface="kfzxmeetingmessage.service.action"
-            name="开发中心会议通知消息"
+            name="开发中心试制评审会议通知消息"
             operation="meetingmessage"
             serviceProvider="com.tmt.kfzx.bpmservice.MeetingMessageOfKFZX">
       </service>
       <service
-            interface="kfzxmeetingmessage.service.action"
-            name="开发中心会议通知消息"
+            interface="kfzxmeetingmessage.service.action1"
+            name="开发中心试制评审通过通知消息"
             operation="workmessage"
             serviceProvider="com.tmt.kfzx.bpmservice.MeetingMessageOfKFZX">
+      </service>
+      <service
+            interface="kfzxprojectstart.service.action"
+            name="开发中心项目启动会议消息 "
+            operation="meetingmessage"
+            serviceProvider="com.tmt.kfzx.bpmservice.projectstartMessageOfKFZX">
       </service>
    </extension>
    <extension

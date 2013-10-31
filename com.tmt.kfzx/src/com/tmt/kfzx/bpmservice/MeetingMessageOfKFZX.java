@@ -39,10 +39,11 @@ public class MeetingMessageOfKFZX extends AbstractMessageService {
 				try {
 					String content = "请各位评审专家于";
 					Date confirmTime = Utils
-							.getDateValue(getInputValue("confirmtime"));
+							.getDateValue(getInputValue("confirmdata"));
 					SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE);
-					content = content + sdf.format(confirmTime);
-					content = content + "在：";
+					content ="   " +content + sdf.format(confirmTime );
+					content = " 日   " +content + (String) getInputValue("confirmtime");
+					content = content + "在";
 					String confirmAddress = (String) getInputValue("confirmaddress");
 					content = content + confirmAddress;
 					content = content + "参加";
@@ -51,7 +52,7 @@ public class MeetingMessageOfKFZX extends AbstractMessageService {
 					String projectadminId = (String) getInputValue("act_rule_launcher");
 					User projectadmin = UserToolkit.getUserById(projectadminId);
 					content = content + projectadmin.getUsername();
-					content = content + "联系";
+					content = content + "联系!";
 					return content;
 				} catch (Exception e) {
 					return null;
@@ -101,7 +102,7 @@ public class MeetingMessageOfKFZX extends AbstractMessageService {
 
 	@Override
 	public String getEditorId() {
-		return Project.EDITOR_CREATE_PLAN;
+		return null;
 	}
 
 	@Override
