@@ -21,7 +21,6 @@ public class WorkHoldon extends AccountSensitiveTableView {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
 		// 刷新工作流信息
 		IContext context = getNavigator().getContext();
 		String userid = context.getAccountInfo().getConsignerId();
@@ -49,7 +48,8 @@ public class WorkHoldon extends AccountSensitiveTableView {
 	@Override
 	public void doRefresh() {
 		if (processSync) {
-			MessageUtil.showToast(null,getPartName(),"请稍候, 正在处理更新。", SWT.ICON_INFORMATION);
+			MessageUtil.showToast(null, getPartName(), "请稍候, 正在处理更新。",
+					SWT.ICON_INFORMATION);
 			return;
 		}
 		workSynchronizer.schedule();
@@ -64,8 +64,7 @@ public class WorkHoldon extends AccountSensitiveTableView {
 
 	@Override
 	public void accountChanged(final IAccountEvent event) {
-		if (IAccountEvent.EVENT_CONSIGNER_CHANGED.equals(event
-						.getEventCode())) {
+		if (IAccountEvent.EVENT_CONSIGNER_CHANGED.equals(event.getEventCode())) {
 			super.accountChanged(event);
 		}
 	}
