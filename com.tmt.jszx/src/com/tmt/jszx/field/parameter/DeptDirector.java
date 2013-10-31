@@ -1,4 +1,4 @@
-package com.tmt.jszx.field.processparameterdelegator;
+package com.tmt.jszx.field.parameter;
 
 import com.sg.business.taskforms.AbstractRoleParameterDelegator;
 import com.sg.business.taskforms.IRoleConstance;

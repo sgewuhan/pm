@@ -1,4 +1,4 @@
-package com.tmt.jszx.field.processparameterdelegator;
+package com.tmt.jszx.field.parameter;
 
 import java.util.List;
 
@@ -12,20 +12,20 @@ import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.taskforms.IRoleConstance;
 
-public class ProjectAdmin implements IProcessParameterDelegator {
+public class DeputyDirector implements IProcessParameterDelegator {
 
-	public ProjectAdmin() {
+	public DeputyDirector() {
 	}
 
 	@Override
 	public Object getValue(String processParameter, String taskDatakey,
 			PrimaryObject taskFormData) {
-
 		Object value = taskFormData.getValue(taskDatakey);
 		if(value instanceof ObjectId){
 			Organization org = ModelService.createModelObject(Organization.class, (ObjectId)value);
-			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 1);
+			Role role = org.getRole(IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, 1);
 			if (role != null) {
 				List<PrimaryObject> assignment = role.getAssignment();
 				if (assignment != null && assignment.size() > 0) {
@@ -35,5 +35,6 @@ public class ProjectAdmin implements IProcessParameterDelegator {
 		}
 		return ((User) UserToolkit.getAdmin().get(0)).getUserid();
 	}
+
 
 }
