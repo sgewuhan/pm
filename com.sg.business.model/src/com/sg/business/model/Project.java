@@ -82,6 +82,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public static final String F_WORK_ID = "work_id";
 
+	public static final String F_DESCRIPTION ="description";
+	
 	/**
 	 * ‘§À„ID
 	 */
