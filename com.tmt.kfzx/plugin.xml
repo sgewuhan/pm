@@ -937,7 +937,7 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
-                        navigatorSelectorControl="com.tmt.kfzx.navigatorSelectorContol.DeptSelectContor"
+                        navigatorSelectorControl="com.tmt.kfzx.field.control.DeptSelectContor"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
