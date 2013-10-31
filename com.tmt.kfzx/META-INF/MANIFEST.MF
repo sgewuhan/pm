@@ -13,6 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.business.model;bundle-version="1.0.0",
  com.sg.thirdparty,
  com.sg.widgets,
- com.mobnut.commons
+ com.mobnut.commons,
+ com.sg.business.taskforms
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
