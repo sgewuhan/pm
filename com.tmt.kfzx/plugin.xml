@@ -803,12 +803,12 @@
                taskFormFieldName="prj_manager">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.jszx.field.processparameterdelegator.DataAudit"
+               processParameterDelegator="com.tmt.kfzx.field.parameter.DataAudit"
                processParameterName="data_audit"
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.jszx.field.processparameterdelegator.DevelopmentDirector"
+               processParameterDelegator="com.tmt.kfzx.field.parameter.DevelopmentDirector"
                processParameterName="development_director"
                taskFormFieldName="dept">
          </processParameter>
