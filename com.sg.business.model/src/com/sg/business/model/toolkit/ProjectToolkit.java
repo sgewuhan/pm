@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+import org.eclipse.core.runtime.Assert;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.file.RemoteFile;
@@ -112,10 +113,12 @@ public class ProjectToolkit {
 				if (!na.isNeedAssignment()) {
 					continue;
 				}
-				String nap = na.getNodeActorParameter();
-				String userId = pc.getProcessActionActor(process, nap);
-				if (userId == null) {
-					return false;
+				if(na.forceAssignment()){
+					String nap = na.getNodeActorParameter();
+					String userId = pc.getProcessActionActor(process, nap);
+					if (userId == null) {
+						return false;
+					}
 				}
 			}
 		}
@@ -509,6 +512,7 @@ public class ProjectToolkit {
 				String key = iter.next();
 				ObjectId roleId = (ObjectId) dbo.get(key);
 				DBObject tgtRole = roleMap.get(roleId);
+				Assert.isNotNull(tgtRole, "目标角色不存在，请检查项目模板的工作："+work.get(Work.F_DESC));
 				ObjectId tgtRoleId = (ObjectId) tgtRole.get(ProjectRole.F__ID);
 				actors.put(key, tgtRoleId);
 			}
@@ -526,6 +530,7 @@ public class ProjectToolkit {
 				DBObject srcRole = (DBObject) valueList.get(i);
 				ObjectId srcRoleId = (ObjectId) srcRole.get(ProjectRole.F__ID);
 				DBObject tgtRole = roleMap.get(srcRoleId);
+				Assert.isNotNull(tgtRole, "目标角色不存在，请检查项目模板的工作："+work.get(Work.F_DESC));
 				if (tgtRole != null) {
 					Object tgtRoleId = tgtRole.get(ProjectRole.F__ID);
 					if (tgtRoleId != null) {
@@ -543,6 +548,7 @@ public class ProjectToolkit {
 		ObjectId srcRoleId = (ObjectId) workdef.get(roleFieldName);
 		if (srcRoleId != null) {
 			DBObject tgtRole = roleMap.get(srcRoleId);
+			Assert.isNotNull(tgtRole, "目标角色不存在，请检查项目模板的工作："+work.get(Work.F_DESC));
 			if (tgtRole != null) {
 				Object value = tgtRole.get(ProjectRole.F__ID);
 				if (value != null) {

@@ -25,12 +25,13 @@ public class ProcessTableViewer extends TableViewer {
 			@Override
 			public String getText(Object element) {
 				String name = ((NodeAssignment) element).getNodeName();
-//				boolean needAss = ((NodeAssignment) element).isNeedAssignment();
-//				if (needAss) {
-//					return name + "[–Ë÷∏≈…]";
-//				} else {
-//					return name;
-//				}
+				// boolean needAss = ((NodeAssignment)
+				// element).isNeedAssignment();
+				// if (needAss) {
+				// }
+				if(((NodeAssignment) element).forceAssignment()){
+					return name + "(*)";
+				}
 				return name;
 			}
 		});
