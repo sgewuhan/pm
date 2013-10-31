@@ -53,8 +53,10 @@ public class WorkToProjectService extends ServiceProvider {
 						ObjectId project_id = project.get_id();
 						Folder folderRoot = project.getFolderRoot();
 						Work rootwork = project.getWBSRoot();
+						int maxChildSeq = rootwork.getMaxChildSeq();
 						work.setValue(Work.F_PARENT_ID, rootwork.get_id());
 						work.setValue(Work.F_PROJECT_ID, project_id);
+						work.setValue(Work.F_SEQ, maxChildSeq+1);
 						work.doSave((new BPMServiceContext(processName,
 								processId)));
 
