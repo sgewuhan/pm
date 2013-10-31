@@ -113,10 +113,12 @@ public class ProjectToolkit {
 				if (!na.isNeedAssignment()) {
 					continue;
 				}
-				String nap = na.getNodeActorParameter();
-				String userId = pc.getProcessActionActor(process, nap);
-				if (userId == null) {
-					return false;
+				if(na.forceAssignment()){
+					String nap = na.getNodeActorParameter();
+					String userId = pc.getProcessActionActor(process, nap);
+					if (userId == null) {
+						return false;
+					}
 				}
 			}
 		}
