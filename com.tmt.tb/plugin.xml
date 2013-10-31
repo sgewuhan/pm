@@ -41,14 +41,19 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.processparameterdelegator.GetDeptLeaderByDepartmentOfTB"
+               processParameterDelegator="com.tmt.tb.field.parameter.GetDeptLeaderByDepartmentOfTB"
                processParameterName="dept_leader"
                taskFormFieldName="dept_leader">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.processparameterdelegator.GetProjectAdminByDepartmentOfTB"
+               processParameterDelegator="com.tmt.tb.field.parameter.GetProjectAdminByDepartmentOfTB"
                processParameterName="prj_admin"
                taskFormFieldName="prj_admin">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="dept"
+               taskFormFieldName="dept">
          </processParameter>
       </taskForm>
       <taskForm
@@ -78,6 +83,42 @@
             name="创建项目"
             persistentFields="standloneworkdesc,standloneworkdescription,standloneworkplanstart,standloneworkplanfinish,projecttemplate_id,standardset,producttype,projecttype"
             processDefinitionId="tb.tbProjectApplication">
+         <processParameter
+               processParameterName="standloneworkdescription"
+               taskFormFieldName="standloneworkdescription">
+         </processParameter>
+         <processParameter
+               processParameterName="standloneworkplanstart"
+               taskFormFieldName="standloneworkplanstart">
+         </processParameter>
+         <processParameter
+               processParameterName="standloneworkplanfinish"
+               taskFormFieldName="standloneworkplanfinish">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="projecttemplate_id"
+               taskFormFieldName="projecttemplate_id">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="standardset"
+               taskFormFieldName="standardset">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="producttype"
+               taskFormFieldName="producttype">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="projecttype"
+               taskFormFieldName="projecttype">
+         </processParameter>
+         <processParameter
+               processParameterName="standloneworkdesc"
+               taskFormFieldName="standloneworkdesc">
+         </processParameter>
       </taskForm>
    </extension>
    <extension

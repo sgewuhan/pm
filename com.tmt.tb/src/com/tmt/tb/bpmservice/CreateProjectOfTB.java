@@ -8,11 +8,10 @@ import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
-import com.sg.business.model.IProcessControl;
-import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
@@ -23,7 +22,6 @@ public class CreateProjectOfTB extends ServiceProvider {
 	public CreateProjectOfTB() {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> run(Object parameter) {
 
@@ -42,145 +40,105 @@ public class CreateProjectOfTB extends ServiceProvider {
 					Work work = (Work) host;
 					ObjectId launchorg_id = null;
 					ObjectId org_id = null;
-					Object projecttemplate_id = null;
-					Object desc = null;
-					Object projecttype = null;
-					Object standardset = null;
-					Object producttype = null;
-					Object planfinish = null;
-					Object planstart = null;
-					List<Map<String, Object>> historys = (List<Map<String, Object>>) work
-							.getValue(IWorkCloneFields.F_WF_EXECUTE
-									+ IProcessControl.POSTFIX_HISTORY);
-					for (Map<String, Object> history : historys) {
-						String taskname = (String) history
-								.get(IProcessControl.F_WF_TASK_NAME);
-						if ("批准".equals(taskname)) {
-							ObjectId form_dept = (ObjectId) history
-									.get("form_dept");
-							if (form_dept != null) {
-								Organization org = ModelService
-										.createModelObject(Organization.class,
-												form_dept);
-								launchorg_id = org.get_id();
-								while (!org.isFunctionDepartment()) {
-									org = (Organization) org
-											.getParentOrganization();
-								}
-								if (org != null) {
-									org_id = org.get_id();
-								}
-							}
-						} else if ("创建项目".equals(taskname)) {
-							Object form_projecttemplate_id = history
-									.get("form_projecttemplate_id");
-							if (form_projecttemplate_id != null) {
-								projecttemplate_id = form_projecttemplate_id;
-							}
-							Object form_standloneworkdesc = history
-									.get("form_standloneworkdesc");
-							if (form_standloneworkdesc != null) {
-								desc = form_standloneworkdesc;
-							}
-							Object form_projecttype = history
-									.get("form_projecttype");
-							if (form_projecttype != null) {
-								projecttype = form_projecttype;
-							}
-							Object form_standardset = history
-									.get("form_standardset");
-							if (form_standardset != null) {
-								standardset = form_standardset;
-							}
-							Object form_producttype = history
-									.get("form_standardset");
-							if (form_producttype != null) {
-								producttype = form_producttype;
-							}
-							Object form_standloneworkplanfinish = history
-									.get("form_standloneworkplanfinish");
-							if(form_standloneworkplanfinish != null){
-								planfinish = form_standloneworkplanfinish;
-							}
-							Object form_standloneworkplanstart = history
-									.get("form_standloneworkplanstart");
-							if(form_standloneworkplanstart != null){
-								planstart = form_standloneworkplanstart;
-							}
+					String dept = (String) getInputValue("dept");
+					if (dept != null) {
+						launchorg_id = new ObjectId(dept);
+						Organization org = ModelService.createModelObject(
+								Organization.class, launchorg_id);
+						while (!org.isFunctionDepartment()) {
+							org = (Organization) org.getParentOrganization();
+						}
+						if (org != null) {
+							org_id = org.get_id();
 						}
 					}
-					String workOrder = (String) work.getValue("prj_number");
-					String prj_manager = (String) work.getValue("prj_manager");
-					
-					if(workOrder == null ){
+					String inputValue = (String) getInputValue("projecttemplate_id");
+					ObjectId projecttemplate_id = new ObjectId(inputValue);
+					Object desc = getInputValue("standloneworkdesc");
+					Object description = getInputValue("standloneworkdescription");
+					Object projecttype = getInputValue("projecttype");
+					Object standardset = getInputValue("standardset");
+					Object producttype = getInputValue("producttype");
+					Object planfinish = getInputValue("standloneworkplanfinish");
+					Object planstart = getInputValue("standloneworkplanstart");
+					String workOrder = (String) getInputValue("prj_number");
+					String prj_manager = (String) getInputValue("prj_manager");
+
+					if (workOrder == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入工作令号无法新建项目");
 						return result;
 					}
-					if(prj_manager == null ){
+					if (prj_manager == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入项目经理无法新建项目");
 						return result;
 					}
-					if(desc == null ){
+					if (desc == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入项目名称无法新建项目");
 						return result;
 					}
-					if(launchorg_id == null ){
+					if (launchorg_id == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入项目发起部门无法新建项目");
 						return result;
 					}
-					if(org_id == null ){
+					if (org_id == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入项目管理部门无法新建项目");
 						return result;
 					}
-					if(projecttemplate_id == null ){
+					if (inputValue == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入项目模版无法新建项目");
 						return result;
 					}
-					if(planfinish == null ){
+					if (planfinish == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入项目计划完成时间无法新建项目");
 						return result;
 					}
-					if(planstart == null ){
+					if (planstart == null) {
 						result.put("returnCode", "ERROR");
 						result.put("returnMessage", "未录入项目计划开始时间无法新建项目");
 						return result;
 					}
-					
-					Project project = ModelService
-							.createModelObject(Project.class);
-					project.setValue(Project.F_DESC, desc);
-					project.setValue(Project.F_LAUNCH_ORGANIZATION,
+
+					BasicDBObject projectObject = new BasicDBObject();
+					projectObject.put(Project.F_DESC, desc);
+					projectObject.put(Project.F_DESCRIPTION, description);
+					projectObject.put(Project.F_LAUNCH_ORGANIZATION,
 							launchorg_id);
-					project.setValue(Project.F_FUNCTION_ORGANIZATION, org_id);
-					project.setValue(Project.F_CHARGER, prj_manager);
-					project.setValue(Project.F_WORK_ORDER, workOrder);
-					project.setValue(Project.F_PROJECT_TEMPLATE_ID,
+					projectObject.put(Project.F_FUNCTION_ORGANIZATION, org_id);
+					projectObject.put(Project.F_CHARGER, prj_manager);
+					projectObject.put(Project.F_WORK_ORDER, workOrder);
+					projectObject.put(Project.F_PROJECT_TEMPLATE_ID,
 							projecttemplate_id);
-					project.setValue(Project.F_PLAN_FINISH,
-							planfinish);
-					project.setValue(Project.F_PLAN_START,
-							planstart);
+					projectObject.put(Project.F_PLAN_FINISH, planfinish);
+					projectObject.put(Project.F_PLAN_START, planstart);
 
 					if (projecttype != null) {
-						project.setValue(Project.F_PROJECT_TYPE_OPTION,
+						projectObject.put(Project.F_PROJECT_TYPE_OPTION,
 								projecttype);
 					}
 					if (standardset != null) {
-						project.setValue(Project.F_STANDARD_SET_OPTION,
+						projectObject.put(Project.F_STANDARD_SET_OPTION,
 								standardset);
 					}
 					if (producttype != null) {
-						project.setValue(Project.F_PRODUCT_TYPE_OPTION,
+						projectObject.put(Project.F_PRODUCT_TYPE_OPTION,
 								producttype);
 					}
+					List<PrimaryObject> projectList = work
+							.getRelationByCondition(Project.class,
+									projectObject);
+					if (projectList != null && projectList.size() > 0) {
+						return result;
+					}
 
+					Project project = ModelService.createModelObject(
+							projectObject, Project.class);
 					project.doSave(new BPMServiceContext(processName, processId));
 				} else {
 					result.put("returnCode", "ERROR");

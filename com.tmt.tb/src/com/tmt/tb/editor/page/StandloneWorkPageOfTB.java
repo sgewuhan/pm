@@ -35,6 +35,7 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 		IPrimaryObjectValueChangeListener, IValidable {
 
 	private boolean dirty;
+	@SuppressWarnings("unused")
 	private IManagedForm form;
 	private TaskForm taskForm;
 	private Composite content;
@@ -136,7 +137,6 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 
 	public void setDirty(boolean b) {
 		dirty = b;
-		form.dirtyStateChanged();
 	}
 
 	@Override

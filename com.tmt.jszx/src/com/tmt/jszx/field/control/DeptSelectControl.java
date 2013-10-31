@@ -1,14 +1,15 @@
-package com.tmt.jszx.navigatorSelectorContol;
+package com.tmt.jszx.field.control;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
+import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.part.editor.fields.INavigatorSelectorControl;
 
-public class DeptSelectContor implements INavigatorSelectorControl {
+public class DeptSelectControl implements INavigatorSelectorControl {
 
-	public DeptSelectContor() {
+	public DeptSelectControl() {
 	}
 
 	@Override
@@ -19,10 +20,10 @@ public class DeptSelectContor implements INavigatorSelectorControl {
 		Object element = is.getFirstElement();
 		if(element instanceof Organization){
 			Organization org =  (Organization)element;
-			Role chiefEngineer = org.getRole(Role.ROLE_CHIEF_ENGINEER_ID, 1);
-			Role deputyDirector = org.getRole(Role.ROLE_DEPUTY_DIRECTOR_ID, 1);
-			Role director = org.getRole(Role.ROLE_DIRECTOR_ID, 1);
-			if(chiefEngineer==null||deputyDirector==null||director==null){
+			Role chiefMaster = org.getRole(IRoleConstance.ROLE_CHIEF_MASTER_ID, 1);
+			Role deputyDirector = org.getRole(IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, 1);
+			Role director = org.getRole(IRoleConstance.ROLE_DIRECTOR_ID, 1);
+			if(chiefMaster==null||deputyDirector==null||director==null){
 				return false;
 			}
 		} 

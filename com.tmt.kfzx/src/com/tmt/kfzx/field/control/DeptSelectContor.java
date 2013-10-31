@@ -1,4 +1,4 @@
-package com.tmt.kfzx.navigatorSelectorContol;
+package com.tmt.kfzx.field.control;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 

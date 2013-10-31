@@ -15,6 +15,7 @@ import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
@@ -33,28 +34,38 @@ public class ApplySave implements IDataObjectDialogCallback {
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
+		/**
+		 * 可以使用以下的语句直接添加chief_master字段的内容到work
+		 */
+		// taskform.addWorkParticipatesFromField(new String[]{"chief_master"});
 		List<String> userList = new ArrayList<String>();
 		String chiefMaster = (String) taskform.getValue("chief_master");
 		Object dept = taskform.getValue("dept");
-		
-		String deptDirector = getValueByDept(dept,Role.ROLE_DIRECTOR_ID);
-		String deputyDirector =getValueByDept(dept,Role.ROLE_DEPUTY_DIRECTOR_ID);
-		String proAdmin = getValueByDept(dept,Role.ROLE_PROJECT_ADMIN_ID);
-		
+		// ***************************************************
+
+		String deptDirector = getValueByDept(dept, IRoleConstance.ROLE_DIRECTOR_ID);
+		String deputyDirector = getValueByDept(dept,
+				IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID);
+		String proAdmin = getValueByDept(dept, Role.ROLE_PROJECT_ADMIN_ID);
+
 		userList.add(deptDirector);
 		userList.add(chiefMaster);
 		userList.add(deputyDirector);
 		userList.add(proAdmin);
+
+		/**
+		 * 可以直接调用taskform的addWorkParticipates方法
+		 */
 		Work work = taskform.getWork();
 		work.doAddParticipateList(userList);
 		return true;
 	}
-	
-	
-	public String getValueByDept(Object dept,String roleNumber) {
 
-		if(dept instanceof ObjectId){
-			Organization org = ModelService.createModelObject(Organization.class, (ObjectId)dept);
+	public String getValueByDept(Object dept, String roleNumber) {
+
+		if (dept instanceof ObjectId) {
+			Organization org = ModelService.createModelObject(
+					Organization.class, (ObjectId) dept);
 			Role role = org.getRole(roleNumber, 1);
 			if (role != null) {
 				List<PrimaryObject> assignment = role.getAssignment();
