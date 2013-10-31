@@ -860,7 +860,7 @@
       <taskForm
             editorId="kfzx.kfzxSubconcessions.meetingconfirmed"
             name="会议确认"
-            persistentFields="review_admin,reviewer_list"
+            persistentFields="review_admin,reviewer_list,choice"
             processDefinitionId="kfzx.kfzxSubconcessions">
          <processParameter
                processParameterName="review_admin"
@@ -871,13 +871,16 @@
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="kfzx.kfzxSubconcessions.reviewform"
             name="上传转批评审表"
             persistentFields="commentfile,choice,comment"
-            processDefinitionId="kfzx.kfzxSubconcessions"
-            saveHandler="com.tmt.kfzx.handler.MeetingReviewCommentfile">
+            processDefinitionId="kfzx.kfzxSubconcessions">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
