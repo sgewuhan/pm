@@ -666,7 +666,6 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="rolenumber"
-                        inputValidator="com.sg.business.commons.field.validator.RoleNumberInputValidator"
                         label="角色编号"
                         labelVisible="true"
                         name="rolenumber"
@@ -1263,5 +1262,16 @@
             class="com.sg.business.organization.command.Consign"
             commandId="organization.consignUser">
       </handler>
+   </extension>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            day="999999"
+            id="org.importuser"
+            name="导入用户数据"
+            rule="month"
+            run="com.sg.business.organization.command.ImportUser"
+            time="0:0:0">
+      </schedualJob>
    </extension>
 </plugin>

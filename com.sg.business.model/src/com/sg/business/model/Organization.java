@@ -382,20 +382,20 @@ public class Organization extends PrimaryObject {
 		// 检查如果是事业部类型的组织，组织代码必须填写
 		String type = getOrganizationType();
 		if (Utils.isNullOrEmpty(type)) {
-			throw new Exception("公司类型不可为空");
+			throw new Exception("公司类型不可为空"+this);
 		}
 		if (ORG_TYPE_COMPANY.equals(type)
 				|| ORG_TYPE_BUSINESS_UNIT.equals(type)) {
 			String companyCode = getCompanyCode();
 			if (Utils.isNullOrEmpty(companyCode)) {
-				throw new Exception("事业部或公司类型的组织需要具有\"公司代码\"");
+				throw new Exception("事业部或公司类型的组织需要具有\"公司代码\""+this);
 			}
 		}
 
 		if (isFunctionDepartment()) {
 			String code = getCode();
 			if (Utils.isNullOrEmpty(code)) {
-				throw new Exception("具有项目管理职能的组织需要具有\"代码\"");
+				throw new Exception("具有项目管理职能的组织需要具有\"代码\""+this);
 			}
 		}
 

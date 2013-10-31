@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.commons,
  com.sg.sqldb,
  com.sg.thirdparty,
- com.mobnut.db
+ com.mobnut.db,
+ com.mobnut.admin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
