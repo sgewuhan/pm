@@ -58,6 +58,11 @@
             id="perspective.system"
             name="系统">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.workflow"
+            name="流程">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -886,6 +891,14 @@
             name="数据库初始化"
             rule="month"
             run="com.sg.business.pm2.setup.DBInit"
+            time="0:0:0">
+      </schedualJob>
+      <schedualJob
+            day="999999"
+            id="pm2.mntpack"
+            name="维护角色数据"
+            rule="month"
+            run="com.sg.business.pm2.set.MntRole"
             time="0:0:0">
       </schedualJob>
    </extension>

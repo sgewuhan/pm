@@ -95,6 +95,10 @@ public class NodeAssignment {
 
 		return actorParameter != null  && (!isRuleAssignment())&&(!isDynamic);
 	}
+	
+	public boolean forceAssignment(){
+		return actorParameter != null && actorParameter.startsWith("act_");
+	}
 
 
 	public boolean isRuleAssignment() {

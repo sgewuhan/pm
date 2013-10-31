@@ -102,6 +102,9 @@ public class Role extends PrimaryObject {
 	public static final String ROLE_CHIEF_ENGINEER_ID = "Chief Engineer";
 	public static final String ROLE_CHIEF_ENGINEER_TEXT = "总工";
 	
+	public static final String ROLE_PROJECR_APPROVER_ID = "Project Approver";
+	public static final String ROLE_PROJECR_APPROVER_TEXT = "立项批准者";
+	
 	public static final String ROLE_DEPUTY_DIRECTOR_ID = "Deputy Director";
 	public static final String ROLE_DEPUTY_DIRECTOR_TEXT = "常务副主任";
 	

@@ -31,9 +31,10 @@ public abstract class SchedualEditing implements IEditingSupportor {
 			style = style | SWT.LONG;
 		}
 		final IContext content = new CurrentAccountContext();
-		
-		final CellEditor editor = new SchedualCellEditor((Composite) viewer.getControl());
-		
+
+		final CellEditor editor = new SchedualCellEditor(
+				(Composite) viewer.getControl());
+
 		EditingSupport es = new EditingSupport(viewer) {
 
 			@Override
@@ -45,9 +46,11 @@ public abstract class SchedualEditing implements IEditingSupportor {
 			protected boolean canEdit(Object element) {
 				if (element instanceof Work) {
 					Work work = (Work) element;
-					if(work.isSummaryWork()){
+					// if(work.isSummaryWork()){
+					// 更改了摘要工作的计划原则
+					if (work.isProjectWBSRoot()) {
 						return false;
-					}else{
+					} else {
 						return work.canEdit(content);
 					}
 				}
