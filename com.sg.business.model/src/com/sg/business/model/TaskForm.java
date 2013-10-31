@@ -48,7 +48,7 @@ public class TaskForm extends PrimaryObject {
 	 * @param fieldlist
 	 * @throws Exception
 	 */
-	public void addWorkParticipatesFromField(String[] fieldlist)
+	public void doAddWorkParticipatesFromField(String[] fieldlist)
 			throws Exception {
 		Work work = getWork();
 		Assert.isNotNull(work, "任务表单无法确定关联的工作");
@@ -69,7 +69,7 @@ public class TaskForm extends PrimaryObject {
 		work.doAddParticipateList(userList);
 	}
 	
-	public void addWorkParticipates(List<String> useridlist) throws Exception{
+	public void doAddWorkParticipates(List<String> useridlist) throws Exception{
 		Work work = getWork();
 		Assert.isNotNull(work, "任务表单无法确定关联的工作");
 		work.doAddParticipateList(useridlist);
