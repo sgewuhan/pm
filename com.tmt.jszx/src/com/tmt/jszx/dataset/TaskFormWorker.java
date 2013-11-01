@@ -30,7 +30,6 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public DataSet getDataSet() {
 		if (master != null) {
