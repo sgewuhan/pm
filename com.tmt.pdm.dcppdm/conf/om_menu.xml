@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="euc-kr" ?> 
+<menu>
+	<mainMenu name="Synchronize">
+		<subMenu name="AutoCAD" event="dyna.CADIntegration.generateAdater.AutoCADPackage"></subMenu>
+	</mainMenu>
+	<mainMenu name="CAD Integration">
+		<subMenu name="AutoCAD" event="dyna.CADIntegration.generateAdater.AutoCADPackage"></subMenu>
+		<subMenu name="Catia V4" event="dyna.CADIntegration.generateAdater.CATIAv4Package"></subMenu>
+		<subMenu name="Catia V5" event="dyna.CADIntegration.generateAdater.CATIAv5Package"></subMenu>
+		<subMenu name="I-Deas" event="dyna.CADIntegration.generateAdater.IDEASPackage"></subMenu>
+	 	<subMenu name="Inventor" event="dyna.CADIntegration.generateAdater.InventorPackage"></subMenu>
+		<subMenu name="ProEngineer" event="dyna.CADIntegration.generateAdater.ProEPackage"></subMenu>
+		<subMenu name="SolidWorks" event="dyna.CADIntegration.generateAdater.SolidWorksPackage"></subMenu>
+	 	<subMenu name="Unigraphics" event="dyna.CADIntegration.generateAdater.UGPackage"></subMenu>
+	 	<subMenu name="SolidEdge" event="dyna.CADIntegration.generateAdater.SolidEdgePackage"></subMenu>
+		<subMenu name="PowerPCB" event="dyna.CADIntegration.generateAdater.PowerPCBPackage"></subMenu>
+	</mainMenu>
+</menu>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proei>
+	<autocreate>
+		<asm-class>bdgAssembly</asm-class>
+		<prt-class>bdgPart</prt-class>
+	</autocreate>
+	<search>
+		<class>bdgProd^bdgPart^bdgAssembly^bdgPartS</class>
+	</search>
+	<ps-class>PStructure</ps-class>
+	<checkin-fields>
+		<proeparam>物料编码^PTC_COMMON_NAME^workorder^长^宽^高^内径^外径^球半径^标准代号^规格^材料</proeparam>
+		<bdgProd>
+			<pdmfield>md$number^md$description^workorder^proe_length^proe_width^proe_hight^proe_ir^proe_or^proe_gr^stdNo^spec^material</pdmfield>
+		</bdgProd>
+		<bdgAssembly>
+			<pdmfield>md$number^md$description^workorder^proe_length^proe_width^proe_hight^proe_ir^proe_or^proe_gr^stdNo^spec^material</pdmfield>
+		</bdgAssembly>
+		<bdgProd>
+			<pdmfield>md$number^md$description^workorder^proe_length^proe_width^proe_hight^proe_ir^proe_or^proe_gr^stdNo^spec^material</pdmfield>
+		</bdgProd>
+		<bdgPart>
+			<pdmfield>md$number^md$description^workorder^proe_length^proe_width^proe_hight^proe_ir^proe_or^proe_gr^stdNo^spec^material</pdmfield>
+		</bdgPart>
+		<bdgPartS>
+			<pdmfield>md$number^md$description^workorder^proe_length^proe_width^proe_hight^proe_ir^proe_or^proe_gr^stdNo^spec^material</pdmfield>
+		</bdgPartS>
+	</checkin-fields>
+	<ASM-CLASS>bdg ProEngineer Assembly</ASM-CLASS>
+	<PRT-CLASS>bdg ProEngineer Part</PRT-CLASS>
+	<DRW-CLASS>bdg ProEngineer Drawing</DRW-CLASS>
+</proei>

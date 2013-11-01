@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="GB2312"?>
+<yfconf>
+	<dataparm>
+		<dbcommand></dbcommand>
+		<filepath>d:\ts</filepath>
+		<filenametempl>1.txt</filenametempl>
+		<filenamegetdata>data.txt</filenamegetdata>
+		<filenamesimsetdata>simdata.txt</filenamesimsetdata>
+		<filenamemulsetdata>muldata.txt</filenamemulsetdata>
+		<filenamegensetdata>gendata.txt</filenamegensetdata>
+		<filenamegysetdata>gydata.txt</filenamegysetdata>
+		<filenamegetnum>num.txt</filenamegetnum>
+		<tablemark>tab</tablemark>
+		<fieldmark>field</fieldmark>
+		<fieldmarkset>field</fieldmarkset>
+		<standbyparmtempl></standbyparmtempl>
+		<standbyparmgetdata>data</standbyparmgetdata>
+		<standbyparmsimsetdata>data</standbyparmsimsetdata>
+		<standbyparmmulsetdata>data</standbyparmmulsetdata>
+		<split>\t</split>
+	</dataparm>
+	<yfclassconf>
+		<物料信息>ITEM</物料信息>
+		<标准BOM>BOM</标准BOM>
+		<工程BOM>E-BOM</工程BOM>
+		<BOM变更单>CHANGE</BOM变更单>
+		<工程BOM变更单>E-CHANGE</工程BOM变更单>
+		<工艺信息>GONGYI</工艺信息>
+		<工作中心>GZZX</工作中心>
+		<工艺路线>GYLX</工艺路线>
+		<编码原则>NumberRule</编码原则>
+	</yfclassconf>
+	<yfcodetype>
+		<品号编码>1</品号编码>
+		<客户编码>2</客户编码>
+		<供应商编码>3</供应商编码>
+		<固定资产编码>4</固定资产编码>
+		<产品序号编码>5</产品序号编码>
+	</yfcodetype>
+</yfconf>

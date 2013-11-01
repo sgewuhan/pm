@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="euc-kr" ?>
+<viewer_config>
+	<!--
+		It specified Viewer Type, Viewer installed path & Viewer execute file.
+		 -->
+	<viewer>
+		<!--
+			Web DynaView    : W
+			CS  DynaView    : C
+			All USED        : A (Currently not applicable)
+			OTHER           : O
+		-->
+		<!-- 
+		
+		<type>W</type>
+		<path>URL</path>
+		<name>argument name</name>
+		
+		<type>C</type>
+		<path>Viewer installed path</path>
+		<name>Viewer execute file</name>
+        --> 
+  
+        <!-- 
+		<type>W</type>
+		<path>http://web.inops.co.kr/viewer.jsp</path>
+		<name>filename</name>
+      	-->  
+
+ 
+	</viewer>
+	
+	<!--
+		Characteristics of Original CAD files or Translated files.
+				
+		name            : File Type ID which PDM manages
+		isViewHierarchy : When reading the file, if or not need the Child file of the file.
+		isAttach       : When adding the file into PDM, if it is added as Attach type or not.
+
+	 -->
+	<config>
+		<!-- CAD ID
+			ProEngineer	= "PE",
+			AutoCAD 	= "AC",
+			CATIAv4 	= "V4",
+			CATIAv5 	= "V5",
+			IDEAS 		= "ID",
+			Inventor 	= "IN",
+			SolidWorks 	= "SW",
+			Unigraphics	= "UG"
+		-->
+		<!-- File Type ID
+		        ProEngineer
+		                assy : proe-assembly
+		                part : proe-part
+		                draw : proe-drawing
+		        AutoCAD
+		                part : acad-drawing
+		        Catia v5
+		                assy : catia5-product
+		                part : catia5-part
+		                draw : catia5-drawing
+		        Catia v4
+		                part : catia4-model
+		        IDEAS (Not yet classified.)
+		                assy :
+		                part :
+		                draw :
+		        Inventor
+		                assy : inventor6-product
+		                part : inventor6-part
+		                draw : inventor6-drawing
+		        SolidWorks
+		                assy : sw-assembly
+		                part : sw-part
+		                draw : sw-drawing
+		        Unigraphics
+		                assy : ug-product
+		                part : ug-part
+		                draw : ug-drawing
+		        Translated file (Below can be changed with definitions in CDMS.xml file)
+        		        VRML : VRML
+	        	        STEP : STEP
+		                HPGL : HPGL
+		-->
+		<cad name="ProEngineer" id="PE">
+			<fileid name="proe-assembly" isViewHierarchy="true" isAttach="true"></fileid>
+			<fileid name="proe-part" isViewHierarchy="false" isAttach="true"></fileid>
+			<fileid name="proe-drawing" isViewHierarchy="false" isAttach="true"></fileid>
+			<fileid name="VRML" isViewHierarchy="true" isAttach="true"></fileid>
+			<fileid name="STEP" isViewHierarchy="false" isAttach="true"></fileid>
+			<fileid name="HPGL" isViewHierarchy="false" isAttach="true"></fileid>		
+		</cad>
+<!--		
+		<cad name="CATIAv5" id="V5">
+			<fileid name="catia5-product" isViewHierarchy="true" isAttach="true"></fileid>
+			<fileid name="catia5-part" isViewHierarchy="false" isAttach="true"></fileid>
+			<fileid name="catia5-drawing" isViewHierarchy="false" isAttach="true"></fileid>
+			<fileid name="VRML" isViewHierarchy="false" isAttach="true"></fileid>
+			<fileid name="STEP" isViewHierarchy="false" isAttach="true"></fileid>
+			<fileid name="HPGL" isViewHierarchy="false" isAttach="true"></fileid>		
+		</cad>
+	-->
+		<cad name="AutoCAD" id="AC">
+			<fileid name="HPGL" isViewHierarchy="false" isAttach="false"></fileid>
+			<fileid name="DWG" isViewHierarchy="false" isAttach="false"></fileid>
+			<fileid name="Preview" isViewHierarchy="false" isAttach="true"></fileid>
+		</cad>	
+		
+	</config>
+</viewer_config>

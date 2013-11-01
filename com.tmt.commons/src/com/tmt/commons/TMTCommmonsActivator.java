@@ -52,12 +52,12 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 
 	private void loadDB() {
 		String folderName = System.getProperty("user.dir") //$NON-NLS-1$
-				+ "/conf/";//$NON-NLS-1$
+				+ "/configuration/";//$NON-NLS-1$
 		File folder = new File(folderName);
 		FilenameFilter filter = new FilenameFilter() {
 			@Override
 			public boolean accept(File file, String name) {
-				return name.toLowerCase().endsWith(".db");
+				return name.toLowerCase().endsWith(".dbconf");
 			}
 		};
 		String[] files = folder.list(filter );

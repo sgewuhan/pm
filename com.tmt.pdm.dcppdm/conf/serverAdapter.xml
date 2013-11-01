@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='euc-kr'?>
+
+<!--
+    DynaMOAD Server v.1.0.0
+    (C) Copyright Innovative PLM Solutions, LTD. 2003.
+-->
+
+<serverAdapter>
+
+    <!-- 
+        AppletAdapter    Applet adapter for web access
+     -->
+    <adapter-list>
+        AppletAdapter
+    </adapter-list>
+
+    <AppletAdapter>
+        <id>AppletAdapter</id>
+        <name>AppletAdapter</name>
+        <desc>Applet adapter for web access</desc>
+        <class>dyna.adapter.AppletAdapter</class>
+    </AppletAdapter>
+    
+      
+    <!--
+        Applet Comunication Port
+        Default Value : 5558
+        When Setting Another Port, You Must Set Same Port to Applet Using Client Program in Web Version
+        : /doc/etc/applettools.jsp (File Up/Down Applet)
+        , /doc/jsp/objectselect/JsChartView.jsp (Gantt/Pert Chart Applet)
+        , /doc/jsp/process/JsLayoutCenter.jsp (W/F Applet)
+        , /doc/jsp/objectselect/JsObjectLink.jsp (Model/BOM Mapper Applet)
+        Setting Contents(If Setting Value is 5123) : <param name="port" value="5123">
+    -->
+    <port>5123</port>
+    
+    <!--
+    	Web Application File Upload Port
+    	Default Value : 5777
+    -->
+    <!--uploadport>5775</uploadport-->
+    
+    <!--
+    	Web Application File Download Port
+    	Default Value : 5778
+    -->
+    <!--downloadport>5776</downloadport-->
+
+    <!--
+        Dyna Alerter Port
+        Default Value : 5779
+    -->
+    <!-- alertport>5551</alertport-->
+
+</serverAdapter>

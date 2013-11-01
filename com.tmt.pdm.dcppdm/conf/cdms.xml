@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="euc-kr" ?> 
+<cdms>
+
+	<!-- 
+		To make 'Part Classification' and 'Mandatory field' of 'New' menu.
+		If there is nothing specified, 'New' window do not show them. 
+	  -->
+        
+        <part>
+	
+		<!-- OM Defined Part Package Name -->
+		<packageName></packageName>
+		
+		<!-- Rool Class OUID and Name of OM defined Part -->
+		<ouid></ouid>
+		<name></name>
+	</part>
+	
+	<!-- It is used to check the Model which CDMS defined in OM  -->
+	<model>
+		<!-- 
+			Name Field OUID from OM defined FCADFile Class(Foundation Package)
+		-->
+		<ouid>86054a45</ouid>
+		<name>name</name>
+		<!-- 
+			Among the Group of OM defined Model Class, 
+			Group name which will be shown in CDMS New Window and Model Information Window.
+		 -->
+		<infoGroupName>Information,Remarks</infoGroupName>
+	</model>
+	
+	
+	<!-- It is used to be able or protect Model name duplication. (Currently not yet deployed) -->
+	<permitDuplicateModel>
+		false
+	</permitDuplicateModel>
+
+	<!-- 
+		From 'New' Window, the Java Class is programmed to make Drawing Name based on the creation rule.
+		Java Class can be modified for different customer's requirement.
+		If not specified, it applys default logic.
+		
+		Default Logic:
+			If there is Part Classification on 'New' Window -> Part Classification + Serial
+			If there is no Part Classification on 'New' Window -> Drawing Classification ID + Serial
+	-->
+
+	<customevent>
+		dyna.CADIntegration.customevent.ChinaModelName
+	</customevent>
+	
+
+	<!-- 
+		It is used to make various kinds of Translation File.
+		The recorded types are displayed in Check In Window
+ChinaModelName  GMBModelName
+		name : Name of files displayed in CheckIn Window.
+		ext  : File Extension created after File Translation.
+	 -->
+	<transtype>
+	
+		<!-- 2D Drawing File Translation Type <type name="DWF" ext="dwf"/> 			<type name="DXF" ext="dxf"/> -->
+		<d2d>
+
+				<type name="DWG" ext="dwg"/>
+			
+		</d2d>
+		<!-- 3D Model File Translation Type  -->
+		<d3d>
+			<type name="VRML" ext="wrl"/>
+			<type name="STEP" ext="stp"/>
+			<type name="IGES" ext="igs"/>			
+		</d3d>
+	</transtype>
+	
+	 
+		When OM defines Drawing Key In, it refers Field of different Class based on Key In Type.
+		Ouid of Class.
+	<!-- 
+	<keyintype>
+		<type name="TIT">86056cff</type>
+		<type name="BOM">86056cff,86056d6d</type>
+		<type name="ECO">800017ce</type>
+	</keyintype>
+	-->
+
+
+        <defaultpath>D:\ts</defaultpath>
+
+	
+        <encoding>euc-cn</encoding>
+	<locale>zh</locale>
+</cdms>
