@@ -1,4 +1,4 @@
-package com.tmt.tb.actor;
+package com.sg.business.taskforms.actor;
 
 import java.util.List;
 
@@ -10,10 +10,11 @@ import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.taskforms.IRoleConstance;
 
-public class DeptLeaderOfLauncher implements IActorIdProvider {
+public class DeptDirectorOfLauncher implements IActorIdProvider {
 
-	public DeptLeaderOfLauncher() {
+	public DeptDirectorOfLauncher() {
 	}
 
 	@Override
@@ -22,7 +23,7 @@ public class DeptLeaderOfLauncher implements IActorIdProvider {
 		String chargerId = work.getChargerId();
 		User loginUser = UserToolkit.getUserById(chargerId);
 		Organization org = loginUser.getOrganization();
-		Role role = org.getRole(Role.ROLE_DEPT_MANAGER_ID, 0);
+		Role role = org.getRole(IRoleConstance.ROLE_DIRECTOR_ID, 1);
 		if (role != null) {
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null && assignment.size() > 0) {

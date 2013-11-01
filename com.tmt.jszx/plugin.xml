@@ -351,24 +351,6 @@
       </editor>
    </extension>
    <extension
-         point="com.sg.bpm.service.actorRule">
-      <actorRule
-            actorIdProvider="com.tmt.jszx.actor.DeptDirectorOfLauncher"
-            id="dept_director"
-            name="流程发起人所在研究室主任">
-      </actorRule>
-      <actorRule
-            actorIdProvider="com.tmt.jszx.actor.DeputyDirectorOfLauncher"
-            id="deputy_director"
-            name="流程发起人所在部门常务副主任">
-      </actorRule>
-      <actorRule
-            actorIdProvider="com.tmt.jszx.actor.ChiefEngineerOfLauncher"
-            id="chief_engineer"
-            name="流程发起人所在部门总工">
-      </actorRule>
-   </extension>
-   <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             editorId="jszx.jszxProjectChange.audit"
