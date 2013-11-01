@@ -28,6 +28,10 @@
                processParameterName="prj_admin"
                taskFormFieldName="dept">
          </processParameter>
+         <processParameter
+               processParameterName="dept"
+               taskFormFieldName="dept">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectApply.audit"
