@@ -18,13 +18,11 @@ public class projectstartMessageOfKFZX extends AbstractMessageService {
 
 	@Override
 	public String getMessageTitle() {
-		// TODO Auto-generated method stub
 		return "项目启动会议通知";
 	}
 
 	@Override
 	public String getMessageContent() {
-		// TODO Auto-generated method stub
 		Project pro = (Project) getTarget();
 		String content = "请各位评审专家于";
 		Date confirmTime = Utils
@@ -45,9 +43,9 @@ public class projectstartMessageOfKFZX extends AbstractMessageService {
 		return content;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
-		// TODO Auto-generated method stub
 		List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list");
 		String reviewer_admin=(String)getInputValue("reviewer_admin");
 		if(!reviewerList.contains(reviewer_admin)){
@@ -59,13 +57,11 @@ public class projectstartMessageOfKFZX extends AbstractMessageService {
 
 	@Override
 	public String getEditorId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PrimaryObject getTarget() {
-		// TODO Auto-generated method stub
 		Object content = getInputValue("content");
 		if (content instanceof String) {
 			String jsonContent = (String) content;
