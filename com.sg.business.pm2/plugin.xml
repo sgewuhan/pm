@@ -893,14 +893,14 @@
             run="com.sg.business.pm2.setup.DBInit"
             time="0:0:0">
       </schedualJob>
-      <schedualJob
+      <!--schedualJob
             day="999999"
             id="pm2.mntpack"
             name="维护角色数据"
             rule="month"
             run="com.sg.business.pm2.set.MntRole"
             time="0:0:0">
-      </schedualJob>
+      </schedualJob-->
    </extension>
 
 </plugin>

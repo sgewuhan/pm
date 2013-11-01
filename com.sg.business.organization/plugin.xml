@@ -1047,7 +1047,7 @@
 
    <extension
          point="org.eclipse.ui.menus">
-      <menuContribution
+      <!--menuContribution
             allPopups="false"
             locationURI="toolbar:main?after=application.separator">
          <command
@@ -1066,7 +1066,7 @@
                </with>
             </visibleWhen>
          </command>
-      </menuContribution>
+      </menuContribution-->
       <menuContribution
             allPopups="true"
             locationURI="popup:organization.user">
