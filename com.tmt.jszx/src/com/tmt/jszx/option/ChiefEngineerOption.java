@@ -16,9 +16,9 @@ import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.commons.options.IFieldOptionProvider;
 import com.sg.widgets.registry.config.Option;
 
-public class ChiefMasterOption implements IFieldOptionProvider {
+public class ChiefEngineerOption implements IFieldOptionProvider {
 
-	public ChiefMasterOption() {
+	public ChiefEngineerOption() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,7 +29,7 @@ public class ChiefMasterOption implements IFieldOptionProvider {
 		Object dept = ((PrimaryObject)data).getValue("dept");
 		if(dept instanceof ObjectId){
 			Organization org = ModelService.createModelObject(Organization.class, (ObjectId)dept);
-	        Role role = org.getRole(IRoleConstance.ROLE_CHIEF_MASTER_ID, 1);
+	        Role role = org.getRole(IRoleConstance.ROLE_CHIEF_ENGINEER_ID, 1);
 	        if (role != null) {
 				List<PrimaryObject> assignment = role.getAssignment();
 				if (assignment != null && assignment.size() > 0) {

@@ -26,11 +26,6 @@ public interface IRoleConstance {
 	public static final String ROLE_DIRECTOR_ID = "Director";
 	public static final String ROLE_DIRECTOR_TEXT = "研究室主任";
 	
-	/**
-	 * 首席师
-	 */
-	public static final String ROLE_CHIEF_MASTER_ID = "Chief Master";
-	public static final String ROLE_CHIEF_MASTER_TEXT = "首席师";
 	
 	/**
 	 * 资料审核员
