@@ -253,6 +253,83 @@
                   type="String">
             </column>
          </searchAction>
+         <importAction>
+            <column
+                  column="desc"
+                  importRequired="true"
+                  isKey="true"
+                  name="项目名称"
+                  type="String">
+            </column>
+            <column
+                  column="chargerid"
+                  importRequired="true"
+                  name="负责人Id"
+                  type="String">
+            </column>
+            <column
+                  column="participate"
+                  importRequired="false"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2StringArray"
+                  name="参与者">
+            </column>
+            <column
+                  column="description"
+                  importRequired="false"
+                  name="描述"
+                  type="String">
+            </column>
+            <column
+                  column="launchorg_id"
+                  importRequired="true"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2ObjectId"
+                  name="发起部门">
+            </column>
+            <column
+                  column="org_id"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2ObjectId"
+                  name="管理部门"
+                  type="String">
+            </column>
+            <column
+                  column="status"
+                  importRequired="true"
+                  name="状态"
+                  type="String">
+            </column>
+            <column
+                  column="planstart"
+                  name="计划开始"
+                  type="Date">
+            </column>
+            <column
+                  column="planfinish"
+                  name="计划完成"
+                  type="Date">
+            </column>
+            <column
+                  column="actualstart"
+                  name="实际开始"
+                  type="Date">
+            </column>
+            <column
+                  column="actualfinish"
+                  name="实际完成"
+                  type="Date">
+            </column>
+            <column
+                  column="_temp_itemcode"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2StringArray"
+                  name="物资编码"
+                  type="String">
+            </column>
+            <column
+                  column="workorder"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2StringArray"
+                  name="工作令号"
+                  type="String">
+            </column>
+         </importAction>
       </navigator>
       <navigator
             id="project.team"
@@ -504,7 +581,9 @@
             canCreate="true"
             canDelete="true"
             canEdit="true"
+            collectionName="project"
             dataSet="com.sg.business.model.dataset.project.ManagementProject"
+            dbName="pm2"
             editorId="project.editor"
             id="project.navigator.management"
             popupMenu="popup:project.navigator.management">
