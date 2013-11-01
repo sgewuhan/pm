@@ -307,6 +307,16 @@ public class WorkDefinition extends AbstractWork implements
 
 	}
 
+	@Override
+	public boolean canEdit(IContext context) {
+		if (getWorkDefinitionType() != Work.WORK_TYPE_PROJECT) {
+			if (isActivated()) {
+				return false;
+			}
+		}
+		return super.canEdit(context);
+	}
+
 	/**
 	 * ¸´ÖÆ´´½¨
 	 * 
@@ -480,7 +490,7 @@ public class WorkDefinition extends AbstractWork implements
 					return RoleDefinition.class;
 				}
 			};
-		}else if (adapter.equals(IActivateSwitch.class)) {
+		} else if (adapter.equals(IActivateSwitch.class)) {
 			if (isStandloneWork() || isGenericWork()) {
 				return (T) new ActivateSwitch(this);
 			} else {

@@ -303,7 +303,8 @@
             editorId="editor.standloneWorkDefinition"
             headerVisiable="false"
             id="management.standlonework.definitions"
-            popupMenu="popup:management.standlonework.definitions">
+            popupMenu="popup:management.standlonework.definitions"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                columnDefinitionId="work.desc.1">
          </column>
@@ -380,7 +381,8 @@
       <table
             dataSet="com.sg.business.model.dataset.projecttemplate.RoleDefOfWorkDefinition"
             id="management.standloneworkrole"
-            popupMenu="popup:management.roledefinition.1">
+            popupMenu="popup:management.roledefinition.1"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                columnDefinitionId="roledefinition.number">
          </column>
@@ -406,6 +408,11 @@
          </column>
          <column
                columnDefinitionId="work.seq">
+         </column>
+         <column
+               column="wf_execute_activated"
+               name="流程状态"
+               type="Boolean">
          </column>
          <column
                column="wf_execute"
@@ -460,12 +467,24 @@
             autoExpandLevel="-1"
             dataSet="com.sg.business.model.dataset.projecttemplate.GenericWorkDef"
             id="management.genericworkd.wbstemplate"
-            popupMenu="popup:management.genericworkd.wbstemplate">
+            popupMenu="popup:management.genericworkd.wbstemplate"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <structure
                modelRelation="workd_workd">
          </structure>
          <column
                columnDefinitionId="work.desc">
+         </column>
+         <column
+               column="wf_execute_activated"
+               name="流程状态"
+               type="Boolean">
+         </column>
+         <column
+               column="wf_execute"
+               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+               name="流程"
+               width="100">
          </column>
       </tree>
       <tree
@@ -474,7 +493,8 @@
             dropTargetListener="com.sg.business.management.dnd.DropDeliverable"
             fix="1"
             id="management.genericworkd.deliverables"
-            popupMenu="popup:management.deliverables">
+            popupMenu="popup:management.deliverables"
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                column="desc"
                name="名称"
