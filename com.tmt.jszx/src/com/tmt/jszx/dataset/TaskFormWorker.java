@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
+import org.drools.runtime.process.WorkflowProcessInstance;
 import org.jbpm.task.Task;
+import org.jbpm.task.TaskData;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.bpm.workflow.WorkflowService;
+import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.IWorkCloneFields;
@@ -36,7 +40,9 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 			if (master instanceof TaskForm) {
 				TaskForm taskForm = (TaskForm) master;
 				try {
-					Task executeTask = taskForm.getExecuteTask(new CurrentAccountContext());
+					Object value = taskForm.getProcessInstanceVarible("dept",new CurrentAccountContext());
+
+					System.out.println();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
