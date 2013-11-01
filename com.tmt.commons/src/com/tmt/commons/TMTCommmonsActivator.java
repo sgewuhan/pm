@@ -71,7 +71,7 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(System.getProperty("user.dir") //$NON-NLS-1$
-					+ "/conf/" + name); //$NON-NLS-1$
+					+ "/configuration/" + name); //$NON-NLS-1$
 			is = new BufferedInputStream(fis);
 			Properties props = new Properties();
 			props.load(is);
