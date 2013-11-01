@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            day="99999"
+            id="dcppdm.importkh"
+            name="同步空簧DCPDM文档"
+            rule="month"
+            run="com.tmt.pdm.dcppdm.sync.ImportKH"
+            time="0:0:0">
+      </schedualJob>
+   </extension>
+
+</plugin>
