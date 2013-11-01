@@ -22,7 +22,7 @@ public class DeptSelectControl implements INavigatorSelectorControl {
 			Organization org =  (Organization)element;
 			Role chiefEngineer = org.getRole(IRoleConstance.ROLE_CHIEF_ENGINEER_ID, 1);
 			Role deputyDirector = org.getRole(IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, 1);
-			Role director = org.getRole(IRoleConstance.ROLE_DIRECTOR_ID, 1);
+			Role director = org.getRole(Role.ROLE_DEPT_MANAGER_ID, 1);
 			if(chiefEngineer==null||deputyDirector==null||director==null){
 				return false;
 			}

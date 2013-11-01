@@ -23,8 +23,8 @@ public interface IRoleConstance {
 	/**
 	 * 研究室主任
 	 */
-	public static final String ROLE_DIRECTOR_ID = "Director";
-	public static final String ROLE_DIRECTOR_TEXT = "研究室主任";
+//	public static final String ROLE_DIRECTOR_ID = "Director";
+//	public static final String ROLE_DIRECTOR_TEXT = "研究室主任";
 	
 	
 	/**

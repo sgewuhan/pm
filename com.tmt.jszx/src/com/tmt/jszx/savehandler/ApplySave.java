@@ -43,7 +43,7 @@ public class ApplySave implements IDataObjectDialogCallback {
 		Object dept = taskform.getValue("dept");
 		// ***************************************************
 
-		String deptDirector = getValueByDept(dept, IRoleConstance.ROLE_DIRECTOR_ID);
+		String deptDirector = getValueByDept(dept, Role.ROLE_DEPT_MANAGER_ID);
 		String deputyDirector = getValueByDept(dept,
 				IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID);
 		String proAdmin = getValueByDept(dept, Role.ROLE_PROJECT_ADMIN_ID);
