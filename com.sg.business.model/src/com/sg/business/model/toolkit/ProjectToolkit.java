@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.Assert;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -113,7 +114,7 @@ public class ProjectToolkit {
 				if (!na.isNeedAssignment()) {
 					continue;
 				}
-				if(na.forceAssignment()){
+				if (na.forceAssignment()) {
 					String nap = na.getNodeActorParameter();
 					String userId = pc.getProcessActionActor(process, nap);
 					if (userId == null) {
@@ -336,9 +337,11 @@ public class ProjectToolkit {
 		// 复制设置项
 		if (new Integer(WorkDefinition.WORK_TYPE_GENERIC).equals(workdef
 				.get(WorkDefinition.F_WORK_TYPE))) {
-			work.put(IWorkCloneFields.F_SETTING_CAN_ADD_DELIVERABLES, Boolean.TRUE);
+			work.put(IWorkCloneFields.F_SETTING_CAN_ADD_DELIVERABLES,
+					Boolean.TRUE);
 			work.put(IWorkCloneFields.F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
-			work.put(IWorkCloneFields.F_SETTING_CAN_MODIFY_PLANWORKS, Boolean.TRUE);
+			work.put(IWorkCloneFields.F_SETTING_CAN_MODIFY_PLANWORKS,
+					Boolean.TRUE);
 		} else {
 			for (int i = 0; i < IWorkCloneFields.SETTING_FIELDS.length; i++) {
 				value = workdef.get(IWorkCloneFields.SETTING_FIELDS[i]);
@@ -512,7 +515,8 @@ public class ProjectToolkit {
 				String key = iter.next();
 				ObjectId roleId = (ObjectId) dbo.get(key);
 				DBObject tgtRole = roleMap.get(roleId);
-				Assert.isNotNull(tgtRole, "目标角色不存在，请检查项目模板的工作："+work.get(Work.F_DESC));
+				Assert.isNotNull(tgtRole,
+						"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
 				ObjectId tgtRoleId = (ObjectId) tgtRole.get(ProjectRole.F__ID);
 				actors.put(key, tgtRoleId);
 			}
@@ -530,7 +534,8 @@ public class ProjectToolkit {
 				DBObject srcRole = (DBObject) valueList.get(i);
 				ObjectId srcRoleId = (ObjectId) srcRole.get(ProjectRole.F__ID);
 				DBObject tgtRole = roleMap.get(srcRoleId);
-				Assert.isNotNull(tgtRole, "目标角色不存在，请检查项目模板的工作："+work.get(Work.F_DESC));
+				Assert.isNotNull(tgtRole,
+						"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
 				if (tgtRole != null) {
 					Object tgtRoleId = tgtRole.get(ProjectRole.F__ID);
 					if (tgtRoleId != null) {
@@ -548,7 +553,8 @@ public class ProjectToolkit {
 		ObjectId srcRoleId = (ObjectId) workdef.get(roleFieldName);
 		if (srcRoleId != null) {
 			DBObject tgtRole = roleMap.get(srcRoleId);
-			Assert.isNotNull(tgtRole, "目标角色不存在，请检查项目模板的工作："+work.get(Work.F_DESC));
+			Assert.isNotNull(tgtRole,
+					"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
 			if (tgtRole != null) {
 				Object value = tgtRole.get(ProjectRole.F__ID);
 				if (value != null) {
@@ -630,6 +636,144 @@ public class ProjectToolkit {
 
 	private static DBCollection getCollection(String collectionName) {
 		return DBActivator.getCollection(IModelConstants.DB, collectionName);
+	}
+
+	/**
+	 * 创建项目，并将传入的工作添加到项目的根工作下。并返回创建的项目
+	 * 
+	 * @param standloneWork
+	 *            :独立工作
+	 * @param desc
+	 *            :项目名称
+	 * @param description
+	 *            :项目说明
+	 * @param launchorg_id
+	 *            :发起部门ID
+	 * @param org_id
+	 *            :项目管理部门ID
+	 * @param prj_manager
+	 *            :项目经理
+	 * @param workOrder
+	 *            :工作令号
+	 * @param projecttemplate_id
+	 *            :项目模板ID
+	 * @param planfinish
+	 *            :计划完成时间
+	 * @param planstart
+	 *            :计划开始时间
+	 * @param projecttype
+	 *            :项目类型选项集
+	 * @param standardset
+	 *            :适用标准集
+	 * @param producttype
+	 *            :产品类型选项集
+	 * @param context
+	 *            :
+	 * @return :
+	 * @throws Exception
+	 */
+	public static Project doCreateNewProject(Work standloneWork, String desc,
+			String description, ObjectId launchorg_id, ObjectId org_id,
+			String prj_manager, String workOrder, ObjectId projecttemplate_id,
+			Object planfinish, Object planstart, Object projecttype,
+			Object standardset, Object producttype, IContext context)
+			throws Exception {
+
+		if (workOrder == null) {
+			throw new Exception("未录入工作令号无法新建项目");
+		}
+		if (prj_manager == null) {
+			throw new Exception("未录入项目经理无法新建项目");
+		}
+		if (desc == null) {
+			throw new Exception("未录入项目名称无法新建项目");
+		}
+		if (launchorg_id == null) {
+			throw new Exception("未录入项目发起部门无法新建项目");
+		}
+		if (org_id == null) {
+			throw new Exception("未录入项目管理部门无法新建项目");
+		}
+		if (planfinish == null) {
+			throw new Exception("未录入项目计划完成时间无法新建项目");
+		}
+		if (planstart == null) {
+			throw new Exception("未录入项目计划开始时间无法新建项目");
+		}
+
+		BasicDBObject projectObject = new BasicDBObject();
+		projectObject.put(Project.F_DESC, desc);
+		projectObject.put(Project.F_DESCRIPTION, description);
+		projectObject.put(Project.F_LAUNCH_ORGANIZATION, launchorg_id);
+		projectObject.put(Project.F_FUNCTION_ORGANIZATION, org_id);
+		projectObject.put(Project.F_CHARGER, prj_manager);
+		projectObject.put(Project.F_WORK_ORDER, workOrder);
+		projectObject.put(Project.F_PROJECT_TEMPLATE_ID, projecttemplate_id);
+		projectObject.put(Project.F_PLAN_FINISH, planfinish);
+		projectObject.put(Project.F_PLAN_START, planstart);
+		projectObject.put(Project.F__EDITOR, Project.EDITOR_CREATE_PLAN);
+
+		if (projecttype != null) {
+			projectObject.put(Project.F_PROJECT_TYPE_OPTION, projecttype);
+		}
+		if (standardset != null) {
+			projectObject.put(Project.F_STANDARD_SET_OPTION, standardset);
+		}
+		if (producttype != null) {
+			projectObject.put(Project.F_PRODUCT_TYPE_OPTION, producttype);
+		}
+		List<PrimaryObject> projectList = standloneWork.getRelationByCondition(
+				Project.class, projectObject);
+		if (projectList != null && projectList.size() > 0) {
+			return null;
+		}
+		Project project = ModelService.createModelObject(projectObject,
+				Project.class);
+		project.doSave(context);
+		ObjectId projectId = project.get_id();
+
+		Work wbsRoot = project.getWBSRoot();
+
+		standloneWork.setValue(Work.F_ROOT_ID, wbsRoot);
+		standloneWork.setValue(Work.F_PROJECT_ID, projectId);
+		int seq = wbsRoot.getMaxChildSeq();
+		standloneWork.setValue(Work.F_SEQ, new Integer(seq + 1));
+		standloneWork.doSave(context);
+		DBCollection col;
+		List<PrimaryObject> deliverableList = standloneWork.getDeliverable();
+		if (deliverableList != null && deliverableList.size() > 0) {
+			col = getCollection(IModelConstants.C_DELIEVERABLE);
+			ObjectId[] deliverableIdList = new ObjectId[deliverableList.size()];
+			for (int i = 0; i < deliverableList.size(); i++) {
+				PrimaryObject po = deliverableList.get(i);
+				deliverableIdList[i] = po.get_id();
+			}
+			col.update(new BasicDBObject().append(Deliverable.F__ID,
+					new BasicDBObject().append("$in", deliverableIdList)),
+					new BasicDBObject().append("$set", new BasicDBObject()
+							.append(Deliverable.F_PROJECT_ID, projectId)),
+					false, true);
+		}
+
+		List<PrimaryObject> documentList = standloneWork
+				.getDeliverableDocuments();
+		if (documentList != null && documentList.size() > 0) {
+			col = getCollection(IModelConstants.C_DOCUMENT);
+			ObjectId[] documentIdList = new ObjectId[documentList.size()];
+			for (int i = 0; i < documentList.size(); i++) {
+				PrimaryObject po = documentList.get(i);
+				documentIdList[i] = po.get_id();
+			}
+			col.update(new BasicDBObject().append(Document.F__ID,
+					new BasicDBObject().append("$in", documentIdList)),
+					new BasicDBObject().append(
+							"$set",
+							new BasicDBObject().append(Document.F_PROJECT_ID,
+									projectId).append(Document.F_FOLDER_ID,
+									project.getFolderRootId())), false, true);
+		}
+
+		return project;
 	}
 
 }
