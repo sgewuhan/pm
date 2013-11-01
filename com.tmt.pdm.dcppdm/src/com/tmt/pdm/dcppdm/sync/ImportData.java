@@ -40,6 +40,9 @@ public abstract class ImportData implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Commons.LOGGER.info("Import Finished.");
+
 	}
 
 	/***
@@ -84,11 +87,13 @@ public abstract class ImportData implements Runnable {
 		}
 		
 		doc.setValue(Document.F_VAULT, fileList);
-
+		doc.setValue(Document.F_FOLDER_ID, getFolderId());
 		doc.doInsert(new BackgroundContext());
 
 		Commons.LOGGER.info("Import Successs."+doso);
 	}
+
+	protected abstract ObjectId getFolderId();
 
 	private void transferPDMField(HashMap valueMap, DBObject data) {
 		Iterator iter = valueMap.keySet().iterator();
@@ -98,14 +103,14 @@ public abstract class ImportData implements Runnable {
 			String field = key.replaceAll("\\@", "_");
 			field = field.replaceAll("\\$", "_");
 			field = field.replaceAll("\\.", "_");
-			data.put(field, valueMap.get(key));
+			data.put("pdm_"+field, valueMap.get(key));
 		}
 	}
 
 	private DBObject syncFile(Document doc, HashMap tempMap)
 			throws IIPRequestException, FileNotFoundException {
 		// String fileTypeId = (String) tempMap.get("md$filetype.id");
-		// String fileTypeDescription = (String) tempMap.get("md$description");
+		 String fileTypeDescription = (String) tempMap.get("md$description");
 		// // local
 		// // full
 		// // file
@@ -120,17 +125,33 @@ public abstract class ImportData implements Runnable {
 		// String checkInUserId = (String) tempMap.get("md$user.id");
 		// String checkInUserName = (String) tempMap.get("md$user.name");
 
-		String path = Starter.dss.getLocalPath(filePath);
-		FileInputStream in = new FileInputStream(path);
-		File file = new File(filePath);
-		DB db = getDB();
-		String fileName = file.getName();
-		FileUtil.upload(in, fileName, getNamespace(), db);
+		final String path = Starter.dss.getLocalPath(filePath);
+		File file = new File(fileTypeDescription);
+		final DB db = getDB();
+		final String fileName = file.getName();
+		final ObjectId fid = new ObjectId();
+
+		Thread t = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					FileInputStream in = new FileInputStream(path);
+					FileUtil.upload(in,fid, fileName, getNamespace(), db);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
+		t.start();
 
 		RemoteFile rf = RemoteFile.createEmptyRemoteFile(db.getName(),
 				getNamespace());
 		rf.setFileName(fileName);
 		DBObject refData = rf.getOutputRefData();
+		refData.put("_id", fid);
 		transferPDMField(tempMap, refData);
 		return refData;
 	}

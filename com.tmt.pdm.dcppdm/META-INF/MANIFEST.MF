@@ -1,6 +1,6 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Dcppdm
-Bundle-SymbolicName: com.tmt.pdm.client;singleton:=true
+Bundle-SymbolicName: com.tmt.pdm.dcpdm;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.tmt.pdm.dcpdm.DCPDM
 Bundle-Vendor: SG
@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.rap.ui,
  com.mobnut.db;bundle-version="1.0.0",
  com.sg.widgets;bundle-version="1.0.0",
  com.mobnut.commons;bundle-version="1.0.0",
- com.tmt.pdm.dcpdmclient;bundle-version="1.0.0",
- org.apache.log4j;bundle-version="1.2.13"
+ org.apache.log4j;bundle-version="1.2.13",
+ com.tmt.pdm.client;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
