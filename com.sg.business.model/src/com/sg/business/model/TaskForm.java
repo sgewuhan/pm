@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.drools.runtime.process.WorkflowProcessInstance;
 import org.eclipse.core.runtime.Assert;
 import org.jbpm.task.Task;
+import org.jbpm.task.TaskData;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.bpm.workflow.WorkflowService;
 
 public class TaskForm extends PrimaryObject {
 
@@ -73,5 +76,19 @@ public class TaskForm extends PrimaryObject {
 		Work work = getWork();
 		Assert.isNotNull(work, "任务表单无法确定关联的工作");
 		work.doAddParticipateList(useridlist);
+	}
+
+	public Object getProcessInstanceVarible(String varible, IContext context) throws Exception {
+		Task executeTask = getExecuteTask(context);
+		Assert.isNotNull(executeTask, "无法获得流程任务");
+		TaskData taskData = executeTask.getTaskData();
+		Assert.isNotNull(taskData);
+		String processId = taskData.getProcessId();
+		long processInstanceId = taskData.getProcessInstanceId();
+		WorkflowProcessInstance process = WorkflowService.getDefault().getProcessInstance(processId, processInstanceId);
+		Assert.isNotNull(process,"无法获得流程实例");
+
+		Object value = process.getVariable(varible);
+		return value;
 	}
 }
