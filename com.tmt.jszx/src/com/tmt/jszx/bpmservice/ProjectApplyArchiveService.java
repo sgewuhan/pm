@@ -36,7 +36,8 @@ public class ProjectApplyArchiveService extends ServiceProvider {
 				String processName = (String) host.getValue("processName");
 				if (host instanceof Work) {
 					Work work = (Work) host;
-					ObjectId orgId=(ObjectId) getInputValue("dept");
+					String dept=(String) getInputValue("dept");
+					ObjectId orgId=new ObjectId(dept);
 						if (orgId != null) {
 							Organization org = ModelService.createModelObject(
 									Organization.class, orgId);

@@ -35,11 +35,11 @@ public class ApplySave implements IDataObjectDialogCallback {
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
 		/**
-		 * 可以使用以下的语句直接添加chief_master字段的内容到work
+		 * 可以使用以下的语句直接添加chief_engineer字段的内容到work
 		 */
 		// taskform.addWorkParticipatesFromField(new String[]{"chief_master"});
 		List<String> userList = new ArrayList<String>();
-		String chiefMaster = (String) taskform.getValue("chief_master");
+		String chiefMaster = (String) taskform.getValue("chief_engineer");
 		Object dept = taskform.getValue("dept");
 		// ***************************************************
 

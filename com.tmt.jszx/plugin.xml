@@ -29,6 +29,7 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
          </processParameter>
