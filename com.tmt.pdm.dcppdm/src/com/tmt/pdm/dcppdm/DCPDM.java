@@ -26,25 +26,25 @@ public class DCPDM extends AbstractUIPlugin {
 	// The shared instance
 	private static DCPDM plugin;
 
-	public Client dfw;
+	public static Client dfw;
 
-	public DOS dos;
+	public static DOS dos;
 
-	public NDS nds;
+	public static NDS nds;
 
-	public DTM dtm;
+	public static DTM dtm;
 
-	public AUS aus;
+	public static AUS aus;
 
-	public DSS dss;
+	public static DSS dss;
 
-	public MSR msr;
+	public static MSR msr;
 
-	public WFM wfm;
+	public static WFM wfm;
 
-	public ACL acl;
+	public static ACL acl;
 
-	public WKS wks;
+	public static WKS wks;
 
 	/**
 	 * The constructor
@@ -99,5 +99,5 @@ public class DCPDM extends AbstractUIPlugin {
 	public static DCPDM getDefault() {
 		return plugin;
 	}
-
+	
 }
