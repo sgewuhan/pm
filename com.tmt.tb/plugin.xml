@@ -2,14 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="com.sg.bpm.service.actorRule">
-      <actorRule
-            actorIdProvider="com.tmt.tb.actor.DeptLeaderOfLauncher"
-            id="dept_leader"
-            name="流程发起人所在部门的管理者">
-      </actorRule>
-   </extension>
-   <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             editorId="tbprojectapplication.application"

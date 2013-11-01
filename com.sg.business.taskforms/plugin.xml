@@ -285,6 +285,31 @@
             id="prj_admin"
             name="项目所在管理部门的项目管理员">
       </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.SupervisorOfLauncher"
+            id="supervisor"
+            name="项目发起人所在部门的管理者">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.DeptLeaderOfLauncher"
+            id="dept_leader"
+            name="流程发起人所在部门的管理者">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.DeptDirectorOfLauncher"
+            id="dept_director"
+            name="流程发起人所在研究室主任">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.DeputyDirectorOfLauncher"
+            id="deputy_director"
+            name="流程发起人所在部门常务副主任">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.ChiefEngineerOfLauncher"
+            id="chief_engineer"
+            name="流程发起人所在部门总工">
+      </actorRule>
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">
