@@ -1,4 +1,4 @@
-package com.sg.business.taskforms.bpmservice;
+package com.tmt.tb.bpmservice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.bpmservice.MessageService;
 
-public class ProjcetApproveReviewerMessageService extends MessageService {
+public class ProjcetApproveMessageOfTB extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
