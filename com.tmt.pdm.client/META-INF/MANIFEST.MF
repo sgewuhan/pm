@@ -79,8 +79,12 @@ Bundle-ClassPath: libs/920classes12.jar,
  libs/xml.jar,
  libs/xsdlib.jar,
  .
-Export-Package: dyna.framework,
+Export-Package: com.tmt.pdm.client,
+ dyna.framework,
  dyna.framework.iip,
  dyna.framework.service,
  dyna.framework.service.dos,
  dyna.framework.starter
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: com.tmt.pdm.client.Starter
+Require-Bundle: org.eclipse.osgi

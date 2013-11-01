@@ -19,7 +19,7 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.sg.business.model.Document;
 import com.sg.widgets.part.BackgroundContext;
-import com.tmt.pdm.dcppdm.DCPDM;
+import com.tmt.pdm.client.Starter;
 
 import dyna.framework.iip.IIPRequestException;
 import dyna.framework.service.dos.DOSChangeable;
@@ -48,7 +48,7 @@ public abstract class ImportData implements Runnable {
 	 * @throws Exception
 	 */
 	private void run(String classOuid) throws Exception {
-		ArrayList result = DCPDM.dos.list(classOuid);
+		ArrayList result = Starter.dos.list(classOuid);
 		for (int i = 0; i < result.size(); i++) {
 			ArrayList item = (ArrayList) result.get(i);
 			String ouid = (String) item.get(0);
@@ -57,7 +57,7 @@ public abstract class ImportData implements Runnable {
 	}
 
 	private void syncItem(String ouid) throws Exception {
-		DOSChangeable doso = DCPDM.dos.get(ouid);
+		DOSChangeable doso = Starter.dos.get(ouid);
 		HashMap valueMap = doso.getValueMap();
 
 		BasicDBObject data = new BasicDBObject();
@@ -68,7 +68,7 @@ public abstract class ImportData implements Runnable {
 
 		Document doc = ModelService.createModelObject(data, Document.class);
 		doc.setValue(Document.F__ID, new ObjectId());
-		ArrayList files = DCPDM.dos.listFile(ouid);
+		ArrayList files = Starter.dos.listFile(ouid);
 		HashMap tempMap;
 		if (files == null) {
 			return;
@@ -120,7 +120,7 @@ public abstract class ImportData implements Runnable {
 		// String checkInUserId = (String) tempMap.get("md$user.id");
 		// String checkInUserName = (String) tempMap.get("md$user.name");
 
-		String path = DCPDM.dss.getLocalPath(filePath);
+		String path = Starter.dss.getLocalPath(filePath);
 		FileInputStream in = new FileInputStream(path);
 		File file = new File(filePath);
 		DB db = getDB();

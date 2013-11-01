@@ -1,8 +1,8 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Dcppdm
-Bundle-SymbolicName: com.tmt.pdm.dcppdm;singleton:=true
+Bundle-SymbolicName: com.tmt.pdm.client;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: com.tmt.pdm.dcppdm.DCPDM
+Bundle-Activator: com.tmt.pdm.dcpdm.DCPDM
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
