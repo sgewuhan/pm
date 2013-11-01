@@ -1,0 +1,12 @@
+Bundle-ManifestVersion: 2
+Bundle-Name: Commons
+Bundle-SymbolicName: com.tmt.commons
+Bundle-Version: 1.0.0
+Bundle-Activator: com.tmt.commons.TMTCommmonsActivator
+Bundle-Vendor: TMT
+Require-Bundle: org.eclipse.rap.ui,
+ org.eclipse.core.runtime,
+ com.sg.thirdparty,
+ com.mobnut.db
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
