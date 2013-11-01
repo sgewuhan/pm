@@ -365,6 +365,7 @@ public class UserExchange {
 			if (org != null) {
 				user.setValue(User.F_ORGANIZATION_ID, org.get_id());
 				user.setValue(User.F_ORGANIZATION_NAME, org.getDesc());
+				user.setValue("_orgnumber", org.getOrganizationNumber());
 			}
 			try {
 				user.doSave(new BackgroundContext());
