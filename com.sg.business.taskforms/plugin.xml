@@ -285,6 +285,11 @@
             id="prj_admin"
             name="项目所在管理部门的项目管理员">
       </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.SupervisorOfLauncher"
+            id="supervisor"
+            name="项目发起人所在部门的管理者">
+      </actorRule>
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">
