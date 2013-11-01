@@ -1107,7 +1107,7 @@
             serviceProvider="com.tmt.jszx.bpmservice.ProjectApplyMessageService">
       </service>
       <service
-            interface="jszxprojectapply.service.action"
+            interface="jszxprojectapply.dataservice.action"
             name="文件归档"
             operation="archive"
             serviceProvider="com.tmt.jszx.bpmservice.ProjectApplyArchiveService">
