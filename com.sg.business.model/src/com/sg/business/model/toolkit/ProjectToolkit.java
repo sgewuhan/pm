@@ -640,10 +640,10 @@ public class ProjectToolkit {
 	}
 
 	/**
-	 * 创建项目，并将传入的工作添加到项目的根工作下。并返回创建的项目
+	 * 创建项目，并将该工作添加到项目的根工作下。并返回创建的项目
 	 * 
 	 * @param work
-	 *            :独立工作
+	 *            :要添加的工作（该工作已被持久化）
 	 * @param desc
 	 *            :项目名称
 	 * @param description
@@ -680,6 +680,7 @@ public class ProjectToolkit {
 			Object standardset, Object producttype, IContext context)
 			throws Exception {
 
+		//校验是否可以依据传入的参数创建项目
 		if (workOrder == null) {
 			throw new Exception("未录入工作令号无法新建项目");
 		}
@@ -702,6 +703,7 @@ public class ProjectToolkit {
 			throw new Exception("未录入项目计划开始时间无法新建项目");
 		}
 
+		//依据工作创建项目
 		BasicDBObject projectObject = new BasicDBObject();
 		projectObject.put(Project.F_DESC, desc);
 		projectObject.put(Project.F_DESCRIPTION, description);
@@ -732,21 +734,36 @@ public class ProjectToolkit {
 				Project.class);
 		project.doSave(context);
 
+		//将工作添加到创建的项目中
 		ProjectToolkit.doProjectAddStandloneWork(work, project, context);
 
 		return project;
 	}
 
+	/**
+	 * 将工作添加到项目的根工作中
+	 * @param work :要添加的工作（该工作已被持久化）
+	 * @param project :加如工作的项目（该项目已被持久化）
+	 * @param context 
+	 * @throws Exception
+	 */
 	public static void doProjectAddStandloneWork(Work work, Project project,
 			IContext context) throws Exception {
+		if(project == null){
+			throw new Exception("请该项目未创建");
+		}
+		
 		ObjectId projectId = project.get_id();
 		Work wbsRoot = project.getWBSRoot();
 
+		//将工作添加到项目根工作中
 		work.setValue(Work.F_ROOT_ID, wbsRoot);
 		work.setValue(Work.F_PROJECT_ID, projectId);
 		int seq = wbsRoot.getMaxChildSeq();
 		work.setValue(Work.F_SEQ, new Integer(seq + 1));
 		work.doSave(context);
+		
+		//添加工作的交付物
 		DBCollection col;
 		List<PrimaryObject> deliverableList = work.getDeliverable();
 		if (deliverableList != null && deliverableList.size() > 0) {
@@ -768,6 +785,7 @@ public class ProjectToolkit {
 			}
 		}
 
+		//添加工作的文档
 		List<PrimaryObject> documentList = work.getDeliverableDocuments();
 		if (documentList != null && documentList.size() > 0) {
 			col = getCollection(IModelConstants.C_DOCUMENT);
