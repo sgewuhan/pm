@@ -18,6 +18,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
@@ -641,7 +642,7 @@ public class ProjectToolkit {
 	/**
 	 * 创建项目，并将传入的工作添加到项目的根工作下。并返回创建的项目
 	 * 
-	 * @param standloneWork
+	 * @param work
 	 *            :独立工作
 	 * @param desc
 	 *            :项目名称
@@ -672,7 +673,7 @@ public class ProjectToolkit {
 	 * @return :
 	 * @throws Exception
 	 */
-	public static Project doCreateNewProject(Work standloneWork, String desc,
+	public static Project doCreateNewProject(Work work, String desc,
 			String description, ObjectId launchorg_id, ObjectId org_id,
 			String prj_manager, String workOrder, ObjectId projecttemplate_id,
 			Object planfinish, Object planstart, Object projecttype,
@@ -722,7 +723,7 @@ public class ProjectToolkit {
 		if (producttype != null) {
 			projectObject.put(Project.F_PRODUCT_TYPE_OPTION, producttype);
 		}
-		List<PrimaryObject> projectList = standloneWork.getRelationByCondition(
+		List<PrimaryObject> projectList = work.getRelationByCondition(
 				Project.class, projectObject);
 		if (projectList != null && projectList.size() > 0) {
 			return null;
@@ -730,17 +731,24 @@ public class ProjectToolkit {
 		Project project = ModelService.createModelObject(projectObject,
 				Project.class);
 		project.doSave(context);
-		ObjectId projectId = project.get_id();
 
+		ProjectToolkit.doProjectAddStandloneWork(work, project, context);
+
+		return project;
+	}
+
+	public static void doProjectAddStandloneWork(Work work, Project project,
+			IContext context) throws Exception {
+		ObjectId projectId = project.get_id();
 		Work wbsRoot = project.getWBSRoot();
 
-		standloneWork.setValue(Work.F_ROOT_ID, wbsRoot);
-		standloneWork.setValue(Work.F_PROJECT_ID, projectId);
+		work.setValue(Work.F_ROOT_ID, wbsRoot);
+		work.setValue(Work.F_PROJECT_ID, projectId);
 		int seq = wbsRoot.getMaxChildSeq();
-		standloneWork.setValue(Work.F_SEQ, new Integer(seq + 1));
-		standloneWork.doSave(context);
+		work.setValue(Work.F_SEQ, new Integer(seq + 1));
+		work.doSave(context);
 		DBCollection col;
-		List<PrimaryObject> deliverableList = standloneWork.getDeliverable();
+		List<PrimaryObject> deliverableList = work.getDeliverable();
 		if (deliverableList != null && deliverableList.size() > 0) {
 			col = getCollection(IModelConstants.C_DELIEVERABLE);
 			ObjectId[] deliverableIdList = new ObjectId[deliverableList.size()];
@@ -748,15 +756,19 @@ public class ProjectToolkit {
 				PrimaryObject po = deliverableList.get(i);
 				deliverableIdList[i] = po.get_id();
 			}
-			col.update(new BasicDBObject().append(Deliverable.F__ID,
+			WriteResult ws = col.update(new BasicDBObject().append(
+					Deliverable.F__ID,
 					new BasicDBObject().append("$in", deliverableIdList)),
 					new BasicDBObject().append("$set", new BasicDBObject()
 							.append(Deliverable.F_PROJECT_ID, projectId)),
 					false, true);
+			String error = ws.getError();
+			if (error != null) {
+				throw new Exception(error);
+			}
 		}
 
-		List<PrimaryObject> documentList = standloneWork
-				.getDeliverableDocuments();
+		List<PrimaryObject> documentList = work.getDeliverableDocuments();
 		if (documentList != null && documentList.size() > 0) {
 			col = getCollection(IModelConstants.C_DOCUMENT);
 			ObjectId[] documentIdList = new ObjectId[documentList.size()];
@@ -764,16 +776,19 @@ public class ProjectToolkit {
 				PrimaryObject po = documentList.get(i);
 				documentIdList[i] = po.get_id();
 			}
-			col.update(new BasicDBObject().append(Document.F__ID,
+			WriteResult ws = col.update(new BasicDBObject().append(
+					Document.F__ID,
 					new BasicDBObject().append("$in", documentIdList)),
 					new BasicDBObject().append(
 							"$set",
 							new BasicDBObject().append(Document.F_PROJECT_ID,
 									projectId).append(Document.F_FOLDER_ID,
 									project.getFolderRootId())), false, true);
+			String error = ws.getError();
+			if (error != null) {
+				throw new Exception(error);
+			}
 		}
-
-		return project;
 	}
 
 }
