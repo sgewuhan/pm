@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
+import org.jbpm.task.Task;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
@@ -16,6 +17,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.Work;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class TaskFormWorker extends MasterDetailDataSetFactory {
 
@@ -34,25 +36,30 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 		if (master != null) {
 			if (master instanceof TaskForm) {
 				TaskForm taskForm = (TaskForm) master;
-				Work work = taskForm.getWork();
-				List<Map<String, Object>> historys = (List<Map<String, Object>>) work
-						.getValue(IWorkCloneFields.F_WF_EXECUTE
-								+ IProcessControl.POSTFIX_HISTORY);
-
-				for (Map<String, Object> history : historys) {
-					String taskname = (String) history
-							.get(IProcessControl.F_WF_TASK_NAME);
-					if ("申请技术支持".equals(taskname)) {
-						Object dept = history.get("form_dept");
-						if (dept instanceof ObjectId) {
-							List<PrimaryObject> allUser = new ArrayList<PrimaryObject>();
-							Organization org = ModelService.createModelObject(
-									Organization.class, (ObjectId) dept);
-							return new DataSet(searchUser(allUser, org));
-						}
-					}
-
+				try {
+					Task executeTask = taskForm.getExecuteTask(new CurrentAccountContext());
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+//				Work work = taskForm.getWork();
+//				List<Map<String, Object>> historys = (List<Map<String, Object>>) work
+//						.getValue(IWorkCloneFields.F_WF_EXECUTE
+//								+ IProcessControl.POSTFIX_HISTORY);
+//
+//				for (Map<String, Object> history : historys) {
+//					String taskname = (String) history
+//							.get(IProcessControl.F_WF_TASK_NAME);
+//					if ("申请技术支持".equals(taskname)) {
+//						Object dept = history.get("form_dept");
+//						if (dept instanceof ObjectId) {
+//							List<PrimaryObject> allUser = new ArrayList<PrimaryObject>();
+//							Organization org = ModelService.createModelObject(
+//									Organization.class, (ObjectId) dept);
+//							return new DataSet(searchUser(allUser, org));
+//						}
+//					}
+//
+//				}
 			}
 		}
 		return super.getDataSet();
