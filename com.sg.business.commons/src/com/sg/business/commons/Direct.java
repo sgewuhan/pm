@@ -31,7 +31,7 @@ public class Direct implements EntryPoint {
 		if (returnCode == 1) {
 			return 0;
 		}
-		UserSessionContext.getSession().setDisplay(display);
+		UserSessionContext.getSession().initialize(display);
 
 		// ExitConfirmation confirmation = RWT.getClient().getService(
 		// ExitConfirmation.class );
