@@ -359,7 +359,7 @@ public abstract class ActivityEditor extends Composite {
 	 */
 	private void showActorSelectorNavigator() {
 		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
-				getActorNavigatorId()) {
+				getActorNavigatorId(roleDef)) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is == null || is.isEmpty()) {
@@ -394,7 +394,7 @@ public abstract class ActivityEditor extends Composite {
 		}
 	}
 
-	protected abstract String getActorNavigatorId();
+	protected abstract String getActorNavigatorId(AbstractRoleDefinition roleDef);
 
 	/**
 	 * 设置活动执行人

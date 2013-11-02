@@ -164,6 +164,11 @@
             collection="companyworkorders"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.UserTask"
+            collection="usertask"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

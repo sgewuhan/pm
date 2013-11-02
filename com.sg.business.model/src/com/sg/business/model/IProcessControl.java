@@ -23,61 +23,73 @@ public interface IProcessControl {
 	/**
 	 * 当前的流程任务
 	 */
+	@Deprecated
 	public static final String POSTFIX_TASK = "_task";
 
 	/**
 	 * 任务字段,任务id
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_ID = "taskid";
 
 	/**
 	 * 任务字段,任务名称
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_NAME = "taskname";
 
 	/**
 	 * 任务字段，任务备注
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_DESC = "description";
 
 	/**
 	 * 任务字段,实际的活动所有者
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_ACTUALOWNER = "actualowner";
 
 	/**
 	 * 任务字段，任务的创建者
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_CREATEDBY = "createdby";
 
 	/**
 	 * 任务字段，创建时间
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_CREATEDON = "createdon";
 
 	/**
 	 * 任务字段，流程定义id
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_PROCESSID = "processid";
 
 	/**
 	 * 任务字段，流程实例id
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_PROCESSINSTANCEID = "instanceid";
 
 	/**
 	 * 任务字段，任务状态
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_STATUS = "status";
 
 	/**
 	 * 任务字段，流程实例id
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_WORKITEMID = "workitemid";
 
 	/**
 	 * 任务字段，通知日期
 	 */
+	@Deprecated
 	public static final String F_WF_TASK_NOTICEDATE = "noticedate";
 
 	/**
@@ -153,15 +165,6 @@ public interface IProcessControl {
 	 */
 	String getProcessActionActor(String key, String nodeActorParameter);
 
-	/**
-	 * 获得key流程实例中某个userid为执行的当前的流程任务数据
-	 * 
-	 * @param key
-	 * @param userid
-	 * @param query
-	 * @return
-	 */
-	DBObject getCurrentWorkflowTaskData(String key, String userid, boolean query);
 
 	/**
 	 * 获得key流程实例的历史数据

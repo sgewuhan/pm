@@ -158,7 +158,7 @@ public class WorkflowService extends AbstractUIPlugin {
 	 * @param userid
 	 * @return
 	 */
-	public Task[] getUserTasks(String userid) {
+	public Task[] getUserAssignedTasks(String userid) {
 		TaskClient taskClient = getBackgroundTaskClient();
 
 		BlockingTaskSummaryResponseHandler handler = new BlockingTaskSummaryResponseHandler();

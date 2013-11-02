@@ -104,23 +104,26 @@ public abstract class ProcessControl implements IProcessControl {
 		return (DBObject) primaryObject.getValue(key + POSTFIX_ACTORS);
 	}
 
-	/**
-	 * 
-	 * @param key
-	 * @param userid
-	 * @param query
-	 * @return
-	 */
-	public DBObject getCurrentWorkflowTaskData(String key, String userid,
-			boolean query) {
-		String field = key + POSTFIX_TASK;
-		Object value = primaryObject.getValue(field, query);
-		if (value instanceof DBObject) {
-			return (DBObject) ((DBObject) value).get(userid);
-		}
-		return null;
-	}
+//	@Override
+//	public UserTask getUserTask(String userid,Long taskId) {
+//		Object hostId = primaryObject.getValue(PrimaryObject.F__ID);
+//		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+//				IModelConstants.C_USERTASK);
+//		BasicDBObject query = new BasicDBObject();
+//		query.put(UserTask.F_HOST_ID, hostId);
+//		query.put(UserTask.F_HOST_COLLECTION, primaryObject.getCollectionName());
+//		query.put(UserTask.F_USERID, userid);
+//		query.put(UserTask.F_TASKID, taskId);
+//		DBObject data  = col.findOne(query);
+//
+//		if(data!=null){
+//			return ModelService.createModelObject(data, UserTask.class);
+//		}
+//
+//		return null;
+//	}
 
+	@Deprecated
 	public DBObject getWorkflowTaskData(String key) {
 		String field = key + POSTFIX_TASK;
 		Object value = primaryObject.getValue(field);
@@ -226,8 +229,10 @@ public abstract class ProcessControl implements IProcessControl {
 								"流程任务:\"" + nodeName + "\""
 										+ ", 无法确定执行人，流程可能无法正常执行。" });
 					} else {
-						result.add(new String[] { "info",
-								"流程任务:\"" + nodeName + "\"" + ", 执行人[" + user+"]。" });
+						result.add(new String[] {
+								"info",
+								"流程任务:\"" + nodeName + "\"" + ", 执行人[" + user
+										+ "]。" });
 					}
 				} else {
 					AbstractRoleDefinition rd = getProcessActionAssignment(key,
@@ -276,7 +281,8 @@ public abstract class ProcessControl implements IProcessControl {
 								result.add(new String[] {
 										"info",
 										"流程任务:\"" + nodeName + "\""
-												+ ", 通过角色指派到[" + userList+"]。" });
+												+ ", 通过角色指派到[" + userList
+												+ "]。" });
 							}
 
 						}

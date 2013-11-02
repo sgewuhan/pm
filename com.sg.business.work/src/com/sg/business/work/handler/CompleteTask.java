@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.Command;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
-import org.jbpm.task.I18NText;
-import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -19,6 +16,7 @@ import com.sg.bpm.workflow.taskform.IValidationHandler;
 import com.sg.bpm.workflow.taskform.IWorkflowInfoProvider;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
 import com.sg.business.model.TaskForm;
+import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.work.WorkflowSynchronizer;
 import com.sg.widgets.MessageUtil;
@@ -33,39 +31,45 @@ public class CompleteTask extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
-			ViewerControl vc, Command command,
-			Map<String, Object> parameters, IStructuredSelection selection) {
+			ViewerControl vc, Command command, Map<String, Object> parameters,
+			IStructuredSelection selection) {
 		if (selected instanceof Work) {
 			try {
-				CurrentAccountContext context = new CurrentAccountContext();
-
 				Work work = (Work) selected;
-
 				WorkflowSynchronizer sync = new WorkflowSynchronizer();
-				sync.synchronizeUserTask(context.getAccountInfo()
-						.getConsignerId(), work);
+				CurrentAccountContext context = new CurrentAccountContext();
+				String userid = context.getAccountInfo().getConsignerId();
+				List<UserTask> userTasks = sync.synchronizeUserTask(userid,
+						work);
+
+				if (userTasks.isEmpty()) {
+					MessageUtil.showToast("没有您需要执行的流程任务", SWT.ICON_INFORMATION);
+					return;
+				}
+
+				UserTask executeTask;
+				if (userTasks.size() > 1) {
+					// TODO 显示选择器选择流程
+					executeTask = userTasks.get(0);
+				} else {
+					executeTask = userTasks.get(0);
+				}
 
 				// 判断是否先开始
-				Task task = work.getTask(Work.F_WF_EXECUTE, context);
-				Status taskstatus = task.getTaskData().getStatus();
-				boolean canStartTask = WorkflowService.canStartTask(taskstatus
-						.name());
+				String taskstatus = executeTask.getStatus();
+				boolean canStartTask = WorkflowService.canStartTask(taskstatus);
 				if (canStartTask) {
 					MessageUtil.showToast("工作的流程任务尚未开始，系统自动开始任务",
 							SWT.ICON_INFORMATION);
-					work.doStartTask(Work.F_WF_EXECUTE, context);
+					work.doStartTask(Work.F_WF_EXECUTE, executeTask, context);
 				}
 
 				// 1. 检查是否定义了流程表单,并通过表单进行控制
-				String procDefId = task.getTaskData().getProcessId();
-				List<I18NText> names = task.getNames();
-				Assert.isTrue(names.size() > 0, "缺少任务名称");
-
-				String taskName = names.get(0).getText();
 				// 获得任务表单配置
-				TaskFormConfig config = WorkflowService.getDefault()
-						.getTaskFormConfig(procDefId, taskName);
-				TaskForm taskForm = work.makeTaskForm();
+				TaskFormConfig config = executeTask.getTaskFormConfig();
+				Task task = executeTask.getTask();
+				TaskForm taskForm = executeTask.makeTaskForm();
+
 				Map<String, Object> taskInputParameter = null;
 				Map<String, Object> taskFormData = new HashMap<String, Object>();
 
@@ -87,10 +91,12 @@ public class CompleteTask extends AbstractNavigatorHandler {
 									taskFormEditorId);
 					if (ec instanceof DataEditorConfigurator) {
 						// 如果使用了input提供者，调用input提供者的方法来获得taskForm
-						taskForm = (TaskForm) config.getTaskFormInput(taskForm,task);
+						taskForm = (TaskForm) config.getTaskFormInput(taskForm,
+								task);
 
 						DataObjectDialog dialog = DataObjectDialog.openDialog(
-								taskForm, ec, true, config.getSaveHandler(), "流程表单");
+								taskForm, ec, true, config.getSaveHandler(),
+								"流程表单");
 						int code = dialog.getReturnCode();
 						if (code != DataObjectDialog.OK) {
 							return;
@@ -115,7 +121,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 				}
 
 				// 2. 完成工作流任务
-				work.doCompleteTask(Work.F_WF_EXECUTE, taskInputParameter,
+				work.doCompleteTask(Work.F_WF_EXECUTE,executeTask, taskInputParameter,
 						taskFormData, context);
 
 				// 3.刷新表格
@@ -133,6 +139,5 @@ public class CompleteTask extends AbstractNavigatorHandler {
 		MessageUtil.showToast("请选择工作后执行完成流程任务操作", SWT.ICON_INFORMATION);
 		return super.nullSelectionContinue(part, vc, command);
 	}
-
 
 }

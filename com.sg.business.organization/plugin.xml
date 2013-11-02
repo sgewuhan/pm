@@ -301,7 +301,7 @@
             id="organization.inserthr">
       </tree>
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             canCreate="true"
             canDelete="true"
             canEdit="true"
@@ -312,7 +312,8 @@
             headerVisiable="false"
             id="organization.user.selector"
             idfield="_id"
-            multiSelection="false">
+            multiSelection="false"
+            virtual="true">
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"

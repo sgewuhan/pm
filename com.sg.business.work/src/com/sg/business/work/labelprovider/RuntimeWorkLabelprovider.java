@@ -2,7 +2,6 @@ package com.sg.business.work.labelprovider;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.swt.graphics.Image;
@@ -10,11 +9,11 @@ import org.jbpm.task.Status;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
-import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
+import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
@@ -244,7 +243,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		sb.append("<br/>");
 		sb.append("<small>");
 
-		sb.append(getWorkflowSummaryInformation(work, pc));
+		sb.append(getWorkflowSummaryInformation(work));
 
 		String planStart = "";
 		if (_planStart != null) {
@@ -305,51 +304,24 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private String getWorkflowSummaryInformation(Work work, IProcessControl pc) {
-		DBObject data = pc.getWorkflowTaskData(Work.F_WF_EXECUTE);
-		if (data == null) {
-			return "";
-		}
-
-		DBObject latestTask = null;
-		Iterator<String> iter = data.keySet().iterator();
-		while (iter.hasNext()) {
-			String key = (String) iter.next();
-			Object value = data.get(key);
-			if (value instanceof DBObject) {
-				DBObject task = (DBObject) value;
-				if (latestTask == null) {
-					latestTask = task;
-				} else {
-					Object createdon = task
-							.get(IProcessControl.F_WF_TASK_CREATEDON);
-					if (createdon instanceof Date) {
-						Date latestDate = (Date) latestTask
-								.get(IProcessControl.F_WF_TASK_CREATEDON);
-						if (((Date) createdon).after(latestDate)) {
-							latestTask = task;
-						}
-					}
-				}
-			}
-		}
-
-		if (latestTask == null) {
+	private String getWorkflowSummaryInformation(Work work) {
+		UserTask userTask = work.getLastTask();
+		if(userTask == null){
 			return "";
 		}
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='float:right;padding-right:4px'>");
 		// 根据状态取流程图标
-		Object taskstatus = latestTask.get(IProcessControl.F_WF_TASK_STATUS);
+		Object taskstatus = userTask.getValue(UserTask.F_STATUS);
 		sb.append("<img src='" + getTaskStatusImageURL(taskstatus)
 				+ "' style='float:left;padding:6px' width='10' height='10' />");
 
-		Object taskname = latestTask.get(IProcessControl.F_WF_TASK_NAME);
+		Object taskname = userTask.getValue(UserTask.F_DESC);
 		sb.append(" ");
 		sb.append(taskname);
 		sb.append(" ");
-		Object owner = latestTask.get(IProcessControl.F_WF_TASK_ACTUALOWNER);
+		Object owner = userTask.getValue(UserTask.F_ACTUALOWNER);
 		if (owner instanceof String) {
 			User ownerUser = UserToolkit.getUserById((String) owner);
 			sb.append(ownerUser);

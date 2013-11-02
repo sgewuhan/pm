@@ -126,8 +126,8 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			}
 
 			@Override
-			protected String getActorNavigatorId() {
-				return ProcessSettingPanel2.this.getActorNavigatorId();
+			protected String getActorNavigatorId(AbstractRoleDefinition roled) {
+				return ProcessSettingPanel2.this.getActorNavigatorId(roled);
 			}
 
 			@Override
@@ -173,7 +173,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 
 	protected abstract String getRoleNavigatorId();
 
-	protected abstract String getActorNavigatorId() ;
+	protected abstract String getActorNavigatorId(AbstractRoleDefinition roled) ;
 
 	private void createActivatySelector(Composite panel) {
 		activitySelecter = new ActivitySelecter(panel);
