@@ -1104,7 +1104,7 @@
          point="com.sg.widgets.navigator">
       <navigator
             id="jszx.project_apply.worker.selector"
-            table="jszx.project_apply.worker.selector">
+            tree="jszx.project_apply.worker.selector">
          <filterAction>
             <column
                   columnDefinitionId="account.userid">
@@ -1182,14 +1182,6 @@
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
-      <table
-            dataSet="com.tmt.jszx.dataset.TaskFormWorker"
-            headerVisiable="false"
-            id="jszx.project_apply.worker.selector">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-      </table>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1202,6 +1194,25 @@
          </column>
          <structure
                modelRelation="organization_organization">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.jszx.dataset.TaskFormWorker"
+            id="jszx.project_apply.worker.selector"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               type="String"
+               width="-1">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
          </structure>
       </tree>
    </extension>

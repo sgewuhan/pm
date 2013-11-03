@@ -35,8 +35,10 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 					ObjectId orgid=new ObjectId((String)dept);
 					Organization org = ModelService.createModelObject(
 							Organization.class, orgid);
-					List<PrimaryObject> allUser = new ArrayList<PrimaryObject>();
-					return new DataSet(searchUser(allUser, org));
+				
+					List<PrimaryObject> orgList = new ArrayList<PrimaryObject>();
+					orgList.add(org);
+					return new DataSet(orgList);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,7 +66,7 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 		return super.getDataSet();
 	}
 
-	private List<PrimaryObject> searchUser(List<PrimaryObject> list,
+/*	private List<PrimaryObject> searchUser(List<PrimaryObject> list,
 			Organization org) {
 		list.addAll(org.getUser());
 		List<PrimaryObject> childrenOrgs = org.getChildrenOrganization();
@@ -75,5 +77,5 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 			}
 		}
 		return list;
-	}
+	}*/
 }
