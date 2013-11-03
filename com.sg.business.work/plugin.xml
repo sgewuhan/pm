@@ -3761,6 +3761,16 @@
       </wizard>
    </extension>
    <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.work.handler.TaskActionTest"
+            id="work.taskaction"
+            namespace="work.taskaction"
+            properties="start,finish"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+   <extension
          point="org.eclipse.ui.views">
       <view
             category="work"
@@ -3792,14 +3802,33 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="com.sg.business.work.handler.TaskActionTest"
-            id="work.taskaction"
-            namespace="work.taskaction"
-            properties="start,finish"
-            type="java.lang.Object">
-      </propertyTester>
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="workflow.taskreserved"
+            table="workflow.taskreserved">
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.usertask.OwnerReservedTaskDataSet"
+            headerVisiable="false"
+            id="workflow.taskreserved"
+            markupEnabled="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.work.labelprovider.UserTaskLabelProvider"
+               lazyDisplay="true"
+               name="desc"
+               width="-1">
+         </column>
+      </table>
    </extension>
 
 </plugin>

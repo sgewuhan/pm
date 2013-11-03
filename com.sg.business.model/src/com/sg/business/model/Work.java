@@ -39,6 +39,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
@@ -2601,7 +2602,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return message;
 	}
 
-
 	private void doNoticeWorkAction(final IContext context,
 			final String actionName) throws Exception {
 		// doNoticeWorkActionInternal(context, actionName);
@@ -2883,6 +2883,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 保存任务id
 		userTask.setValue(UserTask.F_WORK_ID, get_id());
+
+		userTask.setValue(UserTask.F_WORK_DESC, getDesc());
+
 		// 任务状态
 		userTask.setValue(UserTask.F_STATUS, status.name());
 
@@ -2891,7 +2894,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		userTask.setValue(UserTask.F_TASKID, task.getId());
 
 		userTask.setValue(UserTask.F_PROCESSKEY, flowKey);
-
 
 		// 保存任务名称
 		List<I18NText> names = task.getNames();
@@ -2924,9 +2926,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String processId = taskData.getProcessId();
 		userTask.setValue(UserTask.F_PROCESSID, processId);
 
+		//流程名称
+		DroolsProcessDefinition pd = new DroolsProcessDefinition(processId);
+		String processName = pd.getProcess().getName();
+		userTask.setValue(UserTask.F_PROCESSNAME, processName);
+
 		// 任务的流程实例id
 		long processInstanceId = taskData.getProcessInstanceId();
-		userTask.setValue(UserTask.F_PROCESSINSTANCEID, new Long(processInstanceId));
+		userTask.setValue(UserTask.F_PROCESSINSTANCEID, new Long(
+				processInstanceId));
 
 		// 任务的workitem ID
 		long workItemId = taskData.getWorkItemId();
@@ -2978,12 +2986,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 */
 		// 发送任务消息，并保存
 
-//		List<I18NText> names = task.getNames();
-//		String taskName = "";
-//		if (names != null && names.size() > 0) {
-//			taskName = names.get(0).getText();
-//		}
-//		doNoticeWorkflow(userId, taskName, processKey, "已启动", context);
+		// List<I18NText> names = task.getNames();
+		// String taskName = "";
+		// if (names != null && names.size() > 0) {
+		// taskName = names.get(0).getText();
+		// }
+		// doNoticeWorkflow(userId, taskName, processKey, "已启动", context);
 		// data.put(IProcessControl.F_WF_TASK_NOTICEDATE,
 		// message.getValue(Message.F_SENDDATE));
 	}
@@ -3034,14 +3042,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		/**
 		 * 移到了UserTask的保存事件
 		 */
-//		// 发送任务消息，并保存
-//
-//		List<I18NText> names = task.getNames();
-//		String taskName = "";
-//		if (names != null && names.size() > 0) {
-//			taskName = names.get(0).getText();
-//		}
-//		doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
+		// // 发送任务消息，并保存
+		//
+		// List<I18NText> names = task.getNames();
+		// String taskName = "";
+		// if (names != null && names.size() > 0) {
+		// taskName = names.get(0).getText();
+		// }
+		// doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
 	}
 
 	public List<UserTask> getReservedUserTasks(String userId) {

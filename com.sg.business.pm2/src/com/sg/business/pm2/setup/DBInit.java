@@ -67,6 +67,16 @@ public class DBInit implements Runnable {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
+
+		setting = new BasicDBObject();
+		setting.put("varid", "TASK.DELAYMARK");
+		setting.put("desc", "流程任务延迟标记时间（分钟）");
+		setting.put("value", "1");
+		try {
+			col.insert(setting);
+		} catch (Exception e) {
+		}
+		
 		setting = new BasicDBObject();
 		setting.put("varid", "WORK.RESERVED.REFRESH.INTERVAL");
 		setting.put("desc", "待办工作刷新周期(分钟)");

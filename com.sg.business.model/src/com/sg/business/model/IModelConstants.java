@@ -249,6 +249,11 @@ public interface IModelConstants {
 	 */
 	public static final String C_USERTASK = "usertask";
 
+	/**
+	 * 流程任务延迟标记时间（分钟）
+	 */
+	public static final String S_S_TASK_DELAY = "TASK.DELAYMARK";
+
 
 
 }

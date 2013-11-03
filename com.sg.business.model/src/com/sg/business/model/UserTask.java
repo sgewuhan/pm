@@ -26,6 +26,9 @@ import com.sg.business.model.toolkit.MessageToolkit;
 public class UserTask extends PrimaryObject {
 
 	public static final String F_WORK_ID = "work_id";
+	
+	public static final String F_WORK_DESC = "work_desc";
+
 
 	public static final String F_USERID = "userid";
 
@@ -60,6 +63,11 @@ public class UserTask extends PrimaryObject {
 	 * 任务字段，流程定义id
 	 */
 	public static final String F_PROCESSID = "processid";
+
+	/**
+	 * 流程名称
+	 */
+	public static final String F_PROCESSNAME = "processname";
 
 	/**
 	 * 任务字段，流程实例id
@@ -232,7 +240,7 @@ public class UserTask extends PrimaryObject {
 
 		// 设置通知标题
 		Project project = work.getProject();
-		String title = (project == null ? "" : project.getLabel()) + this + " "
+		String title = (project == null ? "" : project.getLabel()) + work + " "
 				+ "流程任务: " + taskName;
 		// 设置通知内容
 		StringBuffer sb = new StringBuffer();
@@ -249,7 +257,7 @@ public class UserTask extends PrimaryObject {
 		if (work.isProjectWork()) {
 			sb.append(" \"");
 			sb.append("项目:");
-			sb.append(work.getProject());
+			sb.append(project);
 			sb.append(" \"");
 		}
 		sb.append("流程任务: ");
@@ -281,6 +289,14 @@ public class UserTask extends PrimaryObject {
 				new BasicDBObject().append("$set",
 						new BasicDBObject().append(F_NOTICEDATE, new Date())));
 		checkWriteResult(ws);
+	}
+
+	public Date getCreatedOn() {
+		return getDateValue(F_CREATEDON);
+	}
+
+	public String getProcessName() {
+		return getStringValue(F_PROCESSNAME);
 	}
 
 }

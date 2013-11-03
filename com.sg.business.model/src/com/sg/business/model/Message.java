@@ -414,7 +414,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		if (sender == null) {
 			sender = context.getAccountInfo().getUserId();
 		}
-		if (value instanceof BasicBSONList) {
+		if (value instanceof List<?>) {
 			setValue(F_SENDDATE, new Date());
 			setValue(F_SENDER, sender);
 
