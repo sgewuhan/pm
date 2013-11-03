@@ -106,7 +106,19 @@ public class UserTask extends PrimaryObject {
 	}
 
 	public Long getTaskId() {
-		return (Long) getValue(F_TASKID);
+		Object value = getValue(F_TASKID);
+		if(value instanceof Number){
+			return new Long(((Number) value).longValue());
+		}
+		return null;
+	}
+	
+	public Long getProcessInstanceId(){
+		Object value = getValue(F_PROCESSINSTANCEID);
+		if(value instanceof Number){
+			return new Long(((Number) value).longValue());
+		}
+		return null;
 	}
 
 	public String getProcessId() {

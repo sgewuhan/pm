@@ -31,40 +31,43 @@ public class StartTask extends AbstractNavigatorHandler {
 		if (selected instanceof Work) {
 			UserTask userTask = null;
 			Object _usertask = parameters.get("runtimework.usertask");
-			try{
-				DBObject userTaskData = (DBObject) JSON.parse((String) _usertask);
-				userTask = ModelService.createModelObject(userTaskData,UserTask.class);
+			try {
+				DBObject userTaskData = (DBObject) JSON
+						.parse((String) _usertask);
+				userTask = ModelService.createModelObject(userTaskData,
+						UserTask.class);
 
-			}catch(Exception e){}
-			if(userTask==null){
+			} catch (Exception e) {
+			}
+			if (userTask == null) {
 				Object _userTaskId = parameters.get("runtimework.usertask_id");
-				if(_userTaskId!=null){
-					ObjectId _id = new ObjectId((String)_userTaskId);
-					userTask = ModelService.createModelObject(UserTask.class, _id,false);
+				if (_userTaskId != null) {
+					ObjectId _id = new ObjectId((String) _userTaskId);
+					userTask = ModelService.createModelObject(UserTask.class,
+							_id, false);
 				}
 			}
-			
+
 			try {
 				Work work = (Work) selected;
 				WorkflowSynchronizer sync = new WorkflowSynchronizer();
 				CurrentAccountContext context = new CurrentAccountContext();
 				String userid = context.getAccountInfo().getConsignerId();
-				
-				if(userTask == null){
+
+				if (userTask == null) {
 					List<UserTask> userTasks = sync.synchronizeUserTask(userid,
 							work);
-					
+
 					if (userTasks.isEmpty()) {
-						MessageUtil.showToast("没有您需要执行的流程任务", SWT.ICON_INFORMATION);
+						MessageUtil.showToast("没有您需要执行的流程任务",
+								SWT.ICON_INFORMATION);
 						return;
 					}
-					
+
 					userTask = userTasks.get(0);
-						
 				}
 
-				work.doStartTask(Work.F_WF_EXECUTE, userTask,
-						context);
+				work.doStartTask(Work.F_WF_EXECUTE, userTask, context);
 				vc.getViewer().update(work, null);
 				vc.getViewer().setSelection(new StructuredSelection());
 			} catch (Exception e) {

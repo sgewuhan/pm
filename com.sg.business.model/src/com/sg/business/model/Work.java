@@ -3015,8 +3015,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 更新旧的相同任务Id的数据为完成
 		WriteResult ws = col.update(new BasicDBObject().append(
-				UserTask.F_TASKID, task.getId()), new BasicDBObject().append(
-				UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.TRUE));
+				UserTask.F_TASKID, task.getId()), new BasicDBObject().append("$set", new BasicDBObject().append(
+				UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.TRUE)));
 		checkWriteResult(ws);
 
 		ws = col.insert(data);
@@ -3157,7 +3157,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		query.put(UserTask.F_WORK_ID, get_id());
 		query.put(UserTask.F_USERID, userId);
 		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
-		query.put(UserTask.F_STATUS, Status.Reserved.name());
+		query.put(UserTask.F_STATUS, name);
 		DBCursor cur = col.find(query);
 		List<UserTask> result = new ArrayList<UserTask>();
 		while (cur.hasNext()) {

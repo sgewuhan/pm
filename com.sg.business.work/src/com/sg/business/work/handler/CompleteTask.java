@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -11,7 +12,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 import org.jbpm.task.Task;
 
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.taskform.IValidationHandler;
 import com.sg.bpm.workflow.taskform.IWorkflowInfoProvider;
@@ -35,41 +39,59 @@ public class CompleteTask extends AbstractNavigatorHandler {
 			ViewerControl vc, Command command, Map<String, Object> parameters,
 			IStructuredSelection selection) {
 		if (selected instanceof Work) {
+
+			UserTask userTask = null;
+			Object _usertask = parameters.get("runtimework.usertask");
+			try {
+				DBObject userTaskData = (DBObject) JSON
+						.parse((String) _usertask);
+				userTask = ModelService.createModelObject(userTaskData,
+						UserTask.class);
+
+			} catch (Exception e) {
+			}
+			if (userTask == null) {
+				Object _userTaskId = parameters.get("runtimework.usertask_id");
+				if (_userTaskId != null) {
+					ObjectId _id = new ObjectId((String) _userTaskId);
+					userTask = ModelService.createModelObject(UserTask.class,
+							_id, false);
+				}
+			}
+
 			try {
 				Work work = (Work) selected;
 				WorkflowSynchronizer sync = new WorkflowSynchronizer();
 				CurrentAccountContext context = new CurrentAccountContext();
 				String userid = context.getAccountInfo().getConsignerId();
-				List<UserTask> userTasks = sync.synchronizeUserTask(userid,
-						work);
 
-				if (userTasks.isEmpty()) {
-					MessageUtil.showToast("没有您需要执行的流程任务", SWT.ICON_INFORMATION);
-					return;
+				if (userTask == null) {
+
+					List<UserTask> userTasks = sync.synchronizeUserTask(userid,
+							work);
+
+					if (userTasks.isEmpty()) {
+						MessageUtil.showToast("没有您需要执行的流程任务",
+								SWT.ICON_INFORMATION);
+						return;
+					}
+
+					userTask = userTasks.get(0);
 				}
-
-				UserTask executeTask;
-				if (userTasks.size() > 1) {
-					// TODO 显示选择器选择流程
-					executeTask = userTasks.get(0);
-				} else {
-					executeTask = userTasks.get(0);
-				}
-
 				// 判断是否先开始
-				String taskstatus = executeTask.getStatus();
+				String taskstatus = userTask.getStatus();
 				boolean canStartTask = WorkflowService.canStartTask(taskstatus);
 				if (canStartTask) {
 					MessageUtil.showToast("工作的流程任务尚未开始，系统自动开始任务",
 							SWT.ICON_INFORMATION);
-					work.doStartTask(Work.F_WF_EXECUTE, executeTask, context);
+					work.doStartTask(Work.F_WF_EXECUTE, userTask, context);
 				}
 
 				// 1. 检查是否定义了流程表单,并通过表单进行控制
 				// 获得任务表单配置
-				TaskFormConfig config = executeTask.getTaskFormConfig();
-				Task task = executeTask.getTask();
-				TaskForm taskForm = executeTask.makeTaskForm();
+				TaskFormConfig config = userTask.getTaskFormConfig();
+				Task task = userTask.getTask();
+				TaskForm taskForm = userTask.makeTaskForm();
 
 				Map<String, Object> taskInputParameter = null;
 				Map<String, Object> taskFormData = new HashMap<String, Object>();
@@ -122,8 +144,8 @@ public class CompleteTask extends AbstractNavigatorHandler {
 				}
 
 				// 2. 完成工作流任务
-				work.doCompleteTask(Work.F_WF_EXECUTE,executeTask, taskInputParameter,
-						taskFormData, context);
+				work.doCompleteTask(Work.F_WF_EXECUTE, userTask,
+						taskInputParameter, taskFormData, context);
 
 				// 3.刷新表格
 				vc.getViewer().update(work, null);
