@@ -3123,14 +3123,50 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 获取最近的任务
 	 * @return
 	 */
-	public UserTask getLastTask() {
+	public UserTask getLastDisplayTask(String userId) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_WORK_ID, get_id());
 		DBCursor cur = col.find(query)
-				.sort(new BasicDBObject().append(UserTask.F__ID, -1)).limit(1);
-		if(cur.hasNext()){
-			return ModelService.createModelObject(cur.next(), UserTask.class);
+				.sort(new BasicDBObject().append(UserTask.F__ID, -1));
+		UserTask otherUserReservedTask = null;
+		//如果有用户Id的任务，显示该用户Id的任务
+		UserTask userReservedTask = null;
+		UserTask laskTask = null;
+		while(cur.hasNext()){
+			
+			UserTask ut = ModelService.createModelObject(cur.next(), UserTask.class);
+			
+			if(ut.isReserved()){
+				if(ut.getUserId().equals(userId)){
+					if(userReservedTask == null){
+						userReservedTask = ut;
+					}
+				}else{
+					if(otherUserReservedTask == null){
+						otherUserReservedTask = ut;
+					}
+				}
+			}else{
+				if(laskTask== null){
+					laskTask = ut;
+				}
+			}
+			
+			//有用户预留的任务优先返回
+			if(userReservedTask!=null){
+				return userReservedTask;
+			}
+			
+			
+			if(otherUserReservedTask!=null){
+				return otherUserReservedTask;
+			}
+			
+			if(laskTask!=null){
+				return laskTask;
+			}
+			
 		}
 		
 		return null;

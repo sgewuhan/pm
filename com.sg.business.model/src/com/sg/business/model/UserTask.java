@@ -3,6 +3,7 @@ package com.sg.business.model;
 import java.util.Iterator;
 
 import org.bson.types.ObjectId;
+import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 
 import com.mobnut.commons.util.Utils;
@@ -150,6 +151,10 @@ public class UserTask extends PrimaryObject {
 		taskForm.setValue(TaskForm.F_WORK_ID, data.get(Work.F__ID));
 		taskForm.setValue(TaskForm.F_USER_TASK_ID, get_id());
 		return taskForm;
+	}
+
+	public boolean isReserved() {
+		return Status.Reserved.name().equals(getStringValue(F_STATUS));
 	}
 
 }

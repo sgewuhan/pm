@@ -243,7 +243,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		sb.append("<br/>");
 		sb.append("<small>");
 
-		sb.append(getWorkflowSummaryInformation(work));
+		sb.append(getWorkflowSummaryInformation(work,userId));
 
 		String planStart = "";
 		if (_planStart != null) {
@@ -304,8 +304,8 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private String getWorkflowSummaryInformation(Work work) {
-		UserTask userTask = work.getLastTask();
+	private String getWorkflowSummaryInformation(Work work,String userId) {
+		UserTask userTask = work.getLastDisplayTask(userId);
 		if(userTask == null){
 			return "";
 		}
