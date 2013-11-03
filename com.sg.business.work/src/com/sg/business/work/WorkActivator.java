@@ -2,8 +2,11 @@ package com.sg.business.work;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleListener;
 
 import com.mobnut.admin.dataset.Setting;
+import com.mobnut.portal.Portal;
 import com.sg.business.model.IModelConstants;
 
 /**
@@ -35,8 +38,17 @@ public class WorkActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		context.addBundleListener(new BundleListener() {
 
-		startWorkSync();
+			@Override
+			public void bundleChanged(BundleEvent event) {
+				if (Portal.PLUGIN_ID
+						.equals(event.getBundle().getSymbolicName())) {
+					// ≥ı ºªØ
+					startWorkSync();
+				}
+			}
+		});
 	}
 
 	/*
@@ -49,6 +61,7 @@ public class WorkActivator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+		
 		stopWorkSync();
 	}
 
