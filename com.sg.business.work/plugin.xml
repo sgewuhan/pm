@@ -1341,40 +1341,6 @@
             allPopups="false"
             locationURI="popup:work.processing">
          <command
-               commandId="runtimework.start"
-               icon="image/work_start_24.png"
-               label="开始工作"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <and>
-                     <count
-                           value="1">
-                     </count>
-                     <iterate
-                           ifEmpty="false"
-                           operator="and">
-                        <and>
-                           <not>
-                              <test
-                                    args="iswbsroot"
-                                    property="primaryobject.properties"
-                                    value="true">
-                              </test>
-                           </not>
-                           <test
-                                 args="start"
-                                 property="lifecycle.action">
-                           </test>
-                        </and>
-                     </iterate>
-                  </and>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
                commandId="runtimework.wfstart"
                icon="image/start_24.png"
                label="开始流程任务"
@@ -1505,6 +1471,72 @@
             </visibleWhen>
          </menu>
          <command
+               commandId="runtimework.wfview"
+               icon="image/flow_24.png"
+               label="查看流程记录..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate>
+                        <test
+                              args="isExecuteWorkflowActivateAndAvailable"
+                              property="primaryobject.method"
+                              value="true">
+                        </test>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="process.key"
+                  value="wf_execute">
+            </parameter>
+         </command>
+         <separator
+               name="runtimework.separator4"
+               visible="true">
+         </separator>
+         <command
+               commandId="runtimework.start"
+               icon="image/work_start_24.png"
+               label="开始工作"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <and>
+                           <not>
+                              <test
+                                    args="iswbsroot"
+                                    property="primaryobject.properties"
+                                    value="true">
+                              </test>
+                           </not>
+                           <test
+                                 args="start"
+                                 property="lifecycle.action">
+                           </test>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
                commandId="runtimework.finish"
                icon="image/work_finish_24.png"
                label="完成工作"
@@ -1605,34 +1637,6 @@
                   </and>
                </with>
             </visibleWhen>
-         </command>
-         <command
-               commandId="runtimework.wfview"
-               icon="image/flow_24.png"
-               label="查看流程记录..."
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <and>
-                     <count
-                           value="1">
-                     </count>
-                     <iterate>
-                        <test
-                              args="isExecuteWorkflowActivateAndAvailable"
-                              property="primaryobject.method"
-                              value="true">
-                        </test>
-                     </iterate>
-                  </and>
-               </with>
-            </visibleWhen>
-            <parameter
-                  name="process.key"
-                  value="wf_execute">
-            </parameter>
          </command>
          <separator
                name="runtimework.separator0"

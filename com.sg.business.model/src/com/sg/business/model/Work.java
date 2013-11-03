@@ -3015,8 +3015,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 更新旧的相同任务Id的数据为完成
 		WriteResult ws = col.update(new BasicDBObject().append(
-				UserTask.F_TASKID, task.getId()), new BasicDBObject().append("$set", new BasicDBObject().append(
-				UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.TRUE)));
+				UserTask.F_TASKID, task.getId()), new BasicDBObject().append(
+				"$set", new BasicDBObject().append(
+						UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.TRUE)),
+				false, true);
 		checkWriteResult(ws);
 
 		ws = col.insert(data);
@@ -3145,19 +3147,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_WORK_ID, get_id());
 		query.put(UserTask.F_USERID, userId);
-		query.put("$or", new BasicDBObject[] { new BasicDBObject().append(
-				UserTask.F_STATUS, Status.Reserved.name()), new BasicDBObject().append(
-						UserTask.F_STATUS, Status.InProgress.name())});
+		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
+		query.put(
+				"$or",
+				new BasicDBObject[] {
+						new BasicDBObject().append(UserTask.F_STATUS,
+								Status.Reserved.name()),
+						new BasicDBObject().append(UserTask.F_STATUS,
+								Status.InProgress.name()) });
 		return col.count(query);
 	}
 
-	public List<UserTask> getUserTasks(String userId, String name) {
+	public List<UserTask> getUserTasks(String userId, String status) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_WORK_ID, get_id());
 		query.put(UserTask.F_USERID, userId);
 		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
-		query.put(UserTask.F_STATUS, name);
+		query.put(UserTask.F_STATUS, status);
 		DBCursor cur = col.find(query);
 		List<UserTask> result = new ArrayList<UserTask>();
 		while (cur.hasNext()) {
@@ -3168,12 +3175,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return result;
 	}
 
-	public long countUserTasks(String userId, String name) {
+	public long countUserTasks(String userId, String status) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_WORK_ID, get_id());
 		query.put(UserTask.F_USERID, userId);
-		query.put(UserTask.F_STATUS, Status.Reserved.name());
+		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
+		query.put(UserTask.F_STATUS, status);
 		return col.count(query);
 	}
 
