@@ -1399,6 +1399,11 @@
                                  property="primaryobject.method"
                                  value="true">
                            </test>
+                           <test
+                                 args="countReservedUserTasks"
+                                 property="primaryobject.method"
+                                 value="1">
+                           </test>
                         </and>
                      </iterate>
                   </and>
@@ -1410,9 +1415,41 @@
                id="runtimework.wfstart.menu"
                label="开始流程任务">
             <dynamic
-                  class="com.sg.business.work.handler.UserStartTaskSelectMenu"
-                  id="work.usertaskselector.menu">
+                  class="com.sg.business.work.menu.UserStartTaskSelectMenu"
+                  id="runtimework.wfstart.menu.dynamic">
             </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <and>
+                           <test
+                                 args="wip"
+                                 property="lifecycle.status">
+                           </test>
+                           <test
+                                 args="isExecuteWorkflowActivateAndAvailable"
+                                 property="primaryobject.method"
+                                 value="true">
+                           </test>
+                           <not>
+                              <test
+                                    args="countReservedUserTasks"
+                                    property="primaryobject.method"
+                                    value="1">
+                              </test>
+                           </not>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
          </menu>
          <command
                commandId="runtimework.wffinish"
@@ -1439,12 +1476,58 @@
                                  property="primaryobject.method"
                                  value="true">
                            </test>
+                           <test
+                                 args="countReservedAndInprogressUserTasks"
+                                 property="primaryobject.method"
+                                 value="1">
+                           </test>
                         </and>
                      </iterate>
                   </and>
                </with>
             </visibleWhen>
          </command>
+         <menu
+               icon="image/complete_24.png"
+               id="runtimework.wffinish.menu"
+               label="完成流程任务">
+            <dynamic
+                  class="com.sg.business.work.menu.UserFinishTaskSelectMenu"
+                  id="runtimework.wffinish.menu.dynamic">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <and>
+                           <test
+                                 args="wip"
+                                 property="lifecycle.status">
+                           </test>
+                           <test
+                                 args="isExecuteWorkflowActivateAndAvailable"
+                                 property="primaryobject.method"
+                                 value="true">
+                           </test>
+                           <not>
+                              <test
+                                    args="countReservedAndInprogressUserTasks"
+                                    property="primaryobject.method"
+                                    value="1">
+                              </test>
+                           </not>
+                        </and>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </menu>
          <command
                commandId="runtimework.finish"
                icon="image/work_finish_24.png"

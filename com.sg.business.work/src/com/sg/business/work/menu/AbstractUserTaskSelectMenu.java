@@ -1,4 +1,4 @@
-package com.sg.business.work.handler;
+package com.sg.business.work.menu;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ import com.sg.business.model.Work;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class UserStartTaskSelectMenu extends CompoundContributionItem {
+public abstract class AbstractUserTaskSelectMenu extends CompoundContributionItem {
 
 	@Override
 	protected IContributionItem[] getContributionItems() {
@@ -34,9 +34,8 @@ public class UserStartTaskSelectMenu extends CompoundContributionItem {
 			if (activePage != null) {
 				IWorkbenchPart part = activePage.getActivePart();
 				if (part != null) {
-
 					IStructuredSelection selection = (IStructuredSelection) activePage
-							.getSelection("work.processing");
+							.getSelection(part.getSite().getId());
 					if (!selection.isEmpty()
 							&& (selection.getFirstElement() instanceof Work)) {
 						return getContributionItems(
@@ -50,10 +49,14 @@ public class UserStartTaskSelectMenu extends CompoundContributionItem {
 		return new IContributionItem[0];
 	}
 
+	// private String getPartId() {
+	// return "work.processing";
+	// }
+
 	private IContributionItem[] getContributionItems(Work work,
 			IWorkbenchPart part) {
 		String userId = new CurrentAccountContext().getConsignerId();
-		List<UserTask> userTasks = work.getReservedUserTasks(userId);
+		List<UserTask> userTasks = getUserTask(work, userId);
 
 		IContributionItem[] result = new IContributionItem[userTasks.size()];
 		for (int i = 0; i < result.length; i++) {
@@ -62,18 +65,20 @@ public class UserStartTaskSelectMenu extends CompoundContributionItem {
 		return result;
 	}
 
+	protected abstract List<UserTask> getUserTask(Work work, String userId);
+
 	private IContributionItem createContributionItem(UserTask userTask,
 			IWorkbenchPart part) {
 		IServiceLocator serviceLocator = ((WorkbenchPart) part).getSite();
-		String id = "work.processing.starttask";
 		Map<String, Object> para = new HashMap<String, Object>();
-		try{
+		try {
 			String _userTask = JSON.serialize(userTask.get_data());
 			para.put("runtimework.usertask", _userTask);
-		}catch(Exception e){
+		} catch (Exception e) {
 		}
 		para.put("runtimework.usertask_id", userTask.get_id().toString());
-		ImageDescriptor icon = BusinessResource.getImageDescriptor(BusinessResource.IMAGE_24_BLANK);
+		ImageDescriptor icon = BusinessResource
+				.getImageDescriptor(BusinessResource.IMAGE_24_BLANK);
 		String label = userTask.getTaskName();
 		String mnemonic = null;
 		String tooltip = null;
@@ -81,10 +86,14 @@ public class UserStartTaskSelectMenu extends CompoundContributionItem {
 		String helpContextId = null;
 		boolean visiableEnabled = false;
 		CommandContributionItemParameter parameter = new CommandContributionItemParameter(
-				serviceLocator, id, "runtimework.wfstart",
-				para, icon, null, null, label, mnemonic, tooltip, style,
-				helpContextId, visiableEnabled);
+				serviceLocator, getContributionId(), getCommandId(), para, icon, null,
+				null, label, mnemonic, tooltip, style, helpContextId,
+				visiableEnabled);
 		return new CommandContributionItem(parameter);
 
 	}
+
+	protected abstract String getCommandId();
+
+	protected abstract String getContributionId();
 }

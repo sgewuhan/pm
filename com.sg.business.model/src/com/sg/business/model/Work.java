@@ -162,7 +162,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
 			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
-			F_WF_EXECUTE_ASSIGNMENT, F_TARGETS};
+			F_WF_EXECUTE_ASSIGNMENT, F_TARGETS };
 
 	private Double overCount = null;
 
@@ -2946,10 +2946,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		DBObject data = col.findOne(query);
 
-		if (data!=null) {
+		if (data != null) {
 			return ModelService.createModelObject(data, UserTask.class);
 		}
-		
+
 		/*
 		 * 构造需要保存的任务数据
 		 */
@@ -2957,27 +2957,26 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		data = new BasicDBObject();
 
 		data.put(UserTask.F__ID, new ObjectId());
-		
+
 		// 保存任务id
 		data.put(UserTask.F_WORK_ID, get_id());
 		// 任务状态
 		data.put(UserTask.F_STATUS, status.name());
-		
+
 		data.put(UserTask.F_USERID, userid);
-		
+
 		data.put(UserTask.F_TASKID, task.getId());
 
 		data.put(UserTask.F_PROCESSKEY, flowKey);
-		
-		data.put(UserTask.F_CREATEDON, new Date());
 
+		data.put(UserTask.F_CREATEDON, new Date());
 
 		// 保存任务名称
 		List<I18NText> names = task.getNames();
 		Assert.isLegal(names != null && names.size() > 0, "流程活动名称没有定义");
 		String taskName = names.get(0).getText();
 		data.put(UserTask.F_DESC, taskName);
-		data.put(UserTask.F_TASK_NAME, taskName);//兼容history
+		data.put(UserTask.F_TASK_NAME, taskName);// 兼容history
 
 		// 保存任务描述
 		List<I18NText> descriptions = task.getDescriptions();
@@ -3007,14 +3006,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		long processInstanceId = taskData.getProcessInstanceId();
 		data.put(UserTask.F_PROCESSINSTANCEID, new Long(processInstanceId));
 
-
 		// 任务的workitem ID
 		long workItemId = taskData.getWorkItemId();
 		data.put(UserTask.F_WORKITEMID, new Long(workItemId));
 
-		WriteResult ws = col.insert(data);
+		// 该任务未完成
+		data.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
+
+		// 更新旧的相同任务Id的数据为完成
+		WriteResult ws = col.update(new BasicDBObject().append(
+				UserTask.F_TASKID, task.getId()), new BasicDBObject().append(
+				UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.TRUE));
 		checkWriteResult(ws);
-		
+
+		ws = col.insert(data);
+		checkWriteResult(ws);
+
 		return ModelService.createModelObject(data, UserTask.class);
 	}
 
@@ -3022,15 +3029,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return Boolean.TRUE.equals(getValue(F_IS_PROJECT_WBSROOT));
 	}
 
-	
-
 	public void doStartTask(String processKey, UserTask userTask,
 			IContext context) throws Exception {
 		String lc = getLifecycleStatus();
 		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
 
-//		Task task = userTask.getTask();
-//		Assert.isNotNull(task, "无法获得当前的流程任务");
+		// Task task = userTask.getTask();
+		// Assert.isNotNull(task, "无法获得当前的流程任务");
 
 		String taskstatus = userTask.getStatus();
 		boolean canStartTask = WorkflowService.canStartTask(taskstatus);
@@ -3039,7 +3044,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Long taskId = userTask.getTaskId();
 		String userId = context.getAccountInfo().getConsignerId();
 		Task task = WorkflowService.getDefault().startTask(userId, taskId);
-		
+
 		UserTask newUserTask = doSaveUserTask(processKey, task, userId);
 
 		Assert.isNotNull(task, "开始流程任务失败");
@@ -3073,20 +3078,20 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 *            ，流程key 目前只有{@link IWorkCloneFields#F_WF_EXECUTE}
 	 *            {@link IWorkCloneFields#F_WF_CHANGE}<br/>
 	 *            可以支持绑定更多的流程定义
-	 * @param executeTask 
+	 * @param executeTask
 	 * @param taskFormData
 	 * @param context
 	 * @throws Exception
 	 */
-	public void doCompleteTask(String processKey,
-			UserTask executeTask, Map<String, Object> inputParameter,
+	public void doCompleteTask(String processKey, UserTask executeTask,
+			Map<String, Object> inputParameter,
 			Map<String, Object> taskFormData, IContext context)
 			throws Exception {
 		String lc = getLifecycleStatus();
 		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
 
-//		Task task = getTask(processKey, context);
-//		Assert.isNotNull(task, "无法获得当前的流程任务");
+		// Task task = getTask(processKey, context);
+		// Assert.isNotNull(task, "无法获得当前的流程任务");
 
 		String taskstatus = executeTask.getStatus();
 		boolean canStartTask = WorkflowService.canFinishTask(taskstatus);
@@ -3096,7 +3101,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String userId = context.getAccountInfo().getConsignerId();
 		Task task = WorkflowService.getDefault().completeTask(taskId, userId,
 				inputParameter);
-		
+
 		UserTask newUserTask = doSaveUserTask(processKey, task, userId);
 
 		Assert.isNotNull(task, "完成流程任务失败");
@@ -3119,40 +3124,51 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
 	}
 
-	
-
 	public List<UserTask> getReservedUserTasks(String userId) {
-		return getUserTasks(userId,Status.Reserved.name());
+		return getUserTasks(userId, Status.Reserved.name());
 	}
-	
+
 	public long countReservedUserTasks(String userId) {
-		return countUserTasks(userId,Status.Reserved.name());
+		return countUserTasks(userId, Status.Reserved.name());
 	}
-	
+
 	public List<UserTask> getInprogressUserTasks(String userId) {
-		return getUserTasks(userId,Status.InProgress.name());
+		return getUserTasks(userId, Status.InProgress.name());
 	}
-	
+
 	public long countInprogressUserTasks(String userId) {
-		return countUserTasks(userId,Status.InProgress.name());
+		return countUserTasks(userId, Status.InProgress.name());
 	}
-	
+
+	public long countReservedAndInprogressUserTasks(String userId) {
+		DBCollection col = getCollection(IModelConstants.C_USERTASK);
+		DBObject query = new BasicDBObject();
+		query.put(UserTask.F_WORK_ID, get_id());
+		query.put(UserTask.F_USERID, userId);
+		query.put(
+				UserTask.F_STATUS,
+				new BasicDBObject().append("$or", new String[] {
+						Status.Reserved.name(), Status.InProgress.name() }));
+		return col.count(query);
+	}
+
 	public List<UserTask> getUserTasks(String userId, String name) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_WORK_ID, get_id());
 		query.put(UserTask.F_USERID, userId);
+		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
 		query.put(UserTask.F_STATUS, Status.Reserved.name());
 		DBCursor cur = col.find(query);
 		List<UserTask> result = new ArrayList<UserTask>();
-		while(cur.hasNext()){
+		while (cur.hasNext()) {
 			DBObject data = cur.next();
 			result.add(ModelService.createModelObject(data, UserTask.class));
 		}
-		
+
 		return result;
 	}
-	
+
 	public long countUserTasks(String userId, String name) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
@@ -3164,99 +3180,100 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	/**
 	 * 获取最近的显示的任务
+	 * 
 	 * @return
 	 */
 	public UserTask getLastDisplayTask(String userId) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_WORK_ID, get_id());
-		DBCursor cur = col.find(query)
-				.sort(new BasicDBObject().append(UserTask.F__ID, -1));
+		DBCursor cur = col.find(query).sort(
+				new BasicDBObject().append(UserTask.F__ID, -1));
 		UserTask otherUserReservedTask = null;
-		//如果有用户Id的任务，显示该用户Id的任务
+		// 如果有用户Id的任务，显示该用户Id的任务
 		UserTask userReservedTask = null;
 		UserTask laskTask = null;
-		while(cur.hasNext()){
-			
-			UserTask ut = ModelService.createModelObject(cur.next(), UserTask.class);
-			
-			if(ut.isReserved()){
-				if(ut.getUserId().equals(userId)){
-					if(userReservedTask == null){
+		while (cur.hasNext()) {
+
+			UserTask ut = ModelService.createModelObject(cur.next(),
+					UserTask.class);
+
+			if (ut.isReserved()) {
+				if (ut.getUserId().equals(userId)) {
+					if (userReservedTask == null) {
 						userReservedTask = ut;
 					}
-				}else{
-					if(otherUserReservedTask == null){
+				} else {
+					if (otherUserReservedTask == null) {
 						otherUserReservedTask = ut;
 					}
 				}
-			}else{
-				if(laskTask== null){
+			} else {
+				if (laskTask == null) {
 					laskTask = ut;
 				}
 			}
-			
-			//有用户预留的任务优先返回
-			if(userReservedTask!=null){
+
+			// 有用户预留的任务优先返回
+			if (userReservedTask != null) {
 				return userReservedTask;
 			}
-			
-			
-			if(otherUserReservedTask!=null){
+
+			if (otherUserReservedTask != null) {
 				return otherUserReservedTask;
 			}
-			
-			if(laskTask!=null){
+
+			if (laskTask != null) {
 				return laskTask;
 			}
-			
+
 		}
-		
+
 		return null;
 	}
-	
 
-//	/**
-//	 * replaced by getReservedUserTasks()
-//	 * @param processKey
-//	 * @param context
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	@Deprecated
-//	public Task getTask(String processKey, IContext context) throws Exception {
-//		String userid = context.getAccountInfo().getConsignerId();
-//
-//		DBCollection col = getCollection(IModelConstants.C_USERTASK);
-//		DBObject query = new BasicDBObject();
-//		query.put(UserTask.F_PROCESSKEY, processKey);
-//		query.put(UserTask.F_USERID, userid);
-//		query.put(UserTask.F_WORK_ID, get_id());
-//
-//		DBObject fields = new BasicDBObject();
-//		fields.put(UserTask.F_TASKID, 1);
-//		DBCursor cur = col.find(query, fields);
-//
-//		while (cur.hasNext()) {
-//			Long taskId = (Long) cur.next().get(UserTask.F_TASKID);
-//
-//			return WorkflowService.getDefault().getUserTask(userid, taskId);
-//		}
-//
-//		// if (data != null) {
-//		// Long taskId = (Long) data.get(IProcessControl.F_WF_TASK_ID);
-//		// Assert.isNotNull(taskId);
-//		// Task task = WorkflowService.getDefault()
-//		// .getUserTask(userid, taskId);
-//		// return task;
-//		// }
-//		return null;
-//	}
-//
-//	@Deprecated
-//	public Task getExecuteTask(IContext context) throws Exception {
-//		return getTask(Work.F_WF_EXECUTE, context);
-//	}
+	// /**
+	// * replaced by getReservedUserTasks()
+	// * @param processKey
+	// * @param context
+	// * @return
+	// * @throws Exception
+	// */
+	// @Deprecated
+	// public Task getTask(String processKey, IContext context) throws Exception
+	// {
+	// String userid = context.getAccountInfo().getConsignerId();
+	//
+	// DBCollection col = getCollection(IModelConstants.C_USERTASK);
+	// DBObject query = new BasicDBObject();
+	// query.put(UserTask.F_PROCESSKEY, processKey);
+	// query.put(UserTask.F_USERID, userid);
+	// query.put(UserTask.F_WORK_ID, get_id());
+	//
+	// DBObject fields = new BasicDBObject();
+	// fields.put(UserTask.F_TASKID, 1);
+	// DBCursor cur = col.find(query, fields);
+	//
+	// while (cur.hasNext()) {
+	// Long taskId = (Long) cur.next().get(UserTask.F_TASKID);
+	//
+	// return WorkflowService.getDefault().getUserTask(userid, taskId);
+	// }
+	//
+	// // if (data != null) {
+	// // Long taskId = (Long) data.get(IProcessControl.F_WF_TASK_ID);
+	// // Assert.isNotNull(taskId);
+	// // Task task = WorkflowService.getDefault()
+	// // .getUserTask(userid, taskId);
+	// // return task;
+	// // }
+	// return null;
+	// }
+	//
+	// @Deprecated
+	// public Task getExecuteTask(IContext context) throws Exception {
+	// return getTask(Work.F_WF_EXECUTE, context);
+	// }
 
 	/**
 	 * 保存流程的历史记录
@@ -3294,7 +3311,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		checkWriteResult(wr);
 
 	}
-
 
 	public void mark(String userId, boolean marked) throws Exception {
 		DBCollection col = getCollection();

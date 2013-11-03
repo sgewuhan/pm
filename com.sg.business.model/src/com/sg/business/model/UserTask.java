@@ -96,6 +96,11 @@ public class UserTask extends PrimaryObject {
 	 */
 	public static final String F_PROCESSKEY = "processkey";
 
+	/**
+	 * 该活动生命周期是否已经改变
+	 */
+	public static final String F_LIFECYCLE_CHANGE_FLAG = "lifecyclechanged";
+
 	public String getStatus() {
 		return (String) getValue(F_STATUS);
 	}
