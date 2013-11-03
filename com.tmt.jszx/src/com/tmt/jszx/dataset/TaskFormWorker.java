@@ -2,24 +2,15 @@ package com.tmt.jszx.dataset;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.types.ObjectId;
-import org.drools.runtime.process.WorkflowProcessInstance;
-import org.jbpm.task.Task;
-import org.jbpm.task.TaskData;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.bpm.workflow.WorkflowService;
-import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.IProcessControl;
-import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.Organization;
 import com.sg.business.model.TaskForm;
-import com.sg.business.model.Work;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -40,9 +31,12 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 			if (master instanceof TaskForm) {
 				TaskForm taskForm = (TaskForm) master;
 				try {
-					Object value = taskForm.getProcessInstanceVarible("dept",new CurrentAccountContext());
-
-					System.out.println();
+					Object dept = taskForm.getProcessInstanceVarible("dept",new CurrentAccountContext());
+					ObjectId orgid=new ObjectId((String)dept);
+					Organization org = ModelService.createModelObject(
+							Organization.class, orgid);
+					List<PrimaryObject> allUser = new ArrayList<PrimaryObject>();
+					return new DataSet(searchUser(allUser, org));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
