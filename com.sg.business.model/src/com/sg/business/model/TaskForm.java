@@ -45,7 +45,7 @@ public class TaskForm extends PrimaryObject {
 		return userTask.getTask();
 	}
 
-	private UserTask getUserTask() {
+	public UserTask getUserTask() {
 		return ModelService.createModelObject(UserTask.class, getObjectIdValue(F_USER_TASK_ID));
 	}
 
