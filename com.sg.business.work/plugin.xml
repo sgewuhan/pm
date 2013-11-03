@@ -1395,14 +1395,9 @@
                                  property="lifecycle.status">
                            </test>
                            <test
-                                 args="isExecuteWorkflowActivateAndAvailable"
-                                 property="primaryobject.method"
+                                 args="single"
+                                 property="work.taskaction.start"
                                  value="true">
-                           </test>
-                           <test
-                                 args="countReservedUserTasks"
-                                 property="primaryobject.method"
-                                 value="1">
                            </test>
                         </and>
                      </iterate>
@@ -1434,17 +1429,10 @@
                                  property="lifecycle.status">
                            </test>
                            <test
-                                 args="isExecuteWorkflowActivateAndAvailable"
-                                 property="primaryobject.method"
-                                 value="true">
+                                 args="single"
+                                 property="work.taskaction.start"
+                                 value="false">
                            </test>
-                           <not>
-                              <test
-                                    args="countReservedUserTasks"
-                                    property="primaryobject.method"
-                                    value="1">
-                              </test>
-                           </not>
                         </and>
                      </iterate>
                   </and>
@@ -1472,14 +1460,9 @@
                                  property="lifecycle.status">
                            </test>
                            <test
-                                 args="isExecuteWorkflowActivateAndAvailable"
-                                 property="primaryobject.method"
+                                 args="single"
+                                 property="work.taskaction.finish"
                                  value="true">
-                           </test>
-                           <test
-                                 args="countReservedAndInprogressUserTasks"
-                                 property="primaryobject.method"
-                                 value="1">
                            </test>
                         </and>
                      </iterate>
@@ -1511,17 +1494,10 @@
                                  property="lifecycle.status">
                            </test>
                            <test
-                                 args="isExecuteWorkflowActivateAndAvailable"
-                                 property="primaryobject.method"
-                                 value="true">
+                                 args="single"
+                                 property="work.taskaction.finish"
+                                 value="false">
                            </test>
-                           <not>
-                              <test
-                                    args="countReservedAndInprogressUserTasks"
-                                    property="primaryobject.method"
-                                    value="1">
-                              </test>
-                           </not>
                         </and>
                      </iterate>
                   </and>
@@ -3779,6 +3755,16 @@
             name="流程任务"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.work.handler.TaskActionTest"
+            id="work.taskaction"
+            namespace="work.taskaction"
+            properties="start,finish"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>
