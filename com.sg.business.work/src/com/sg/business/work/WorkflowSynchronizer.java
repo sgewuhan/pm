@@ -79,7 +79,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
 					work.reload();
-					work.doSaveUserTask(flowKey, tasks[i], userid);
+					work.doSaveUserTask(flowKey, tasks[i], null,userid);
 
 					// UserSessionContext.noticeAccountChanged(userid, new
 					// AccountEvent(
@@ -114,7 +114,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 					Work work = (Work) host;
 					if (work.get_id().equals(targetWork.get_id())) {
 						UserTask userTask = targetWork.doSaveUserTask(flowKey,
-								tasks[i], userid);
+								tasks[i],null, userid);
 						ret.add(userTask);
 					}
 				}

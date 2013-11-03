@@ -21,7 +21,7 @@ public class WorkFlowReservedTask extends TableNavigator {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		Table table = (Table) getNavigator().getControl();
+		Table table = (Table) navi.getControl();
 		table.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == RWT.HYPERLINK) {

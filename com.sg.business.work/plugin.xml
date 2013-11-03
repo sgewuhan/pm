@@ -3807,6 +3807,13 @@
             id="workflow.taskreserved"
             table="workflow.taskreserved">
       </navigator>
+      <navigator
+            id="workflow.taskhistory"
+            table="workflow.taskhistory">
+         <masterProvider
+               id="workflow.taskreserved">
+         </masterProvider>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -3824,6 +3831,25 @@
          <column
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.UserTaskLabelProvider"
+               lazyDisplay="true"
+               name="desc"
+               width="-1">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.usertask.TaskHistoryDataSet"
+            headerVisiable="false"
+            id="workflow.taskhistory"
+            markupEnabled="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.work.labelprovider.UserTaskHistoryLabelProvider"
                lazyDisplay="true"
                name="desc"
                width="-1">

@@ -22,8 +22,13 @@ import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
 import com.sg.business.model.toolkit.MessageToolkit;
+import com.sg.business.model.toolkit.UserToolkit;
 
 public class UserTask extends PrimaryObject {
+
+	public static final String F_FORM_CHOICE = "form_choice";
+	
+	public static final String F_FORM_COMMENT = "form_comment";
 
 	public static final String F_WORK_ID = "work_id";
 	
@@ -118,6 +123,7 @@ public class UserTask extends PrimaryObject {
 	 * 该活动生命周期是否已经改变
 	 */
 	public static final String F_LIFECYCLE_CHANGE_FLAG = "lifecyclechanged";
+
 
 	public String getStatus() {
 		return (String) getValue(F_STATUS);
@@ -297,6 +303,27 @@ public class UserTask extends PrimaryObject {
 
 	public String getProcessName() {
 		return getStringValue(F_PROCESSNAME);
+	}
+
+	public String getWorkName() {
+		return getStringValue(F_WORK_DESC);
+	}
+
+	public User getActualOwner() {
+		String userId = getStringValue(F_ACTUALOWNER);
+		return UserToolkit.getUserById(userId);
+	}
+
+	public String getChoice() {
+		return getStringValue(F_FORM_CHOICE);
+	}
+	
+	public String getComment() {
+		return getStringValue(F_FORM_COMMENT);
+	}
+
+	public ObjectId getWorkId() {
+		return getObjectIdValue(F_WORK_ID);
 	}
 
 }

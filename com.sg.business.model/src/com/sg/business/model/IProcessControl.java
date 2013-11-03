@@ -173,6 +173,7 @@ public interface IProcessControl {
 	 * @param query
 	 * @return
 	 */
+	@Deprecated
 	BasicBSONList getWorkflowHistroyData(String key, boolean query);
 
 	void setProcessDefinition(String key, DroolsProcessDefinition definition);

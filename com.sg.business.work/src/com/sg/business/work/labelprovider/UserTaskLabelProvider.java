@@ -50,12 +50,12 @@ public class UserTaskLabelProvider extends ConfiguratorColumnLabelProvider {
 	public String getText(Object element) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
-		// 显示工作的内容
+		// 显示流程任务的内容
 		appendUserTaskInfo((UserTask) element, sb);
 
 		sb.append("<br/>");
 
-		// 显示流程任务的内容
+		// 显示工作的内容
 		sb.append("<small>");
 		appendWorkInfo((UserTask) element, sb);
 		sb.append("</small>");
@@ -111,7 +111,7 @@ public class UserTaskLabelProvider extends ConfiguratorColumnLabelProvider {
 	private void appendMark(UserTask userTask, StringBuffer sb) {
 		String status = userTask.getStatus();
 		if(status.equals(Status.Reserved.name())){
-			Date createOn = userTask.getCreatedOn();
+			Date createOn = userTask.get_cdate();
 			Date now = new Date();
 			sb.append("<a href=\""
 					+ userTask.get_id().toString()+"@"+"start"

@@ -16,7 +16,7 @@ import com.sg.bpm.workflow.WorkflowService;
 
 public class TaskForm extends PrimaryObject {
 
-	public static final String F_WORK_ID = "workid";
+	public static final String F_WORK_ID = "work_id";
 	public static final String F_EDITOR = "form_editor";
 	public static final String F_USER_TASK_ID = "usertask_id";
 
