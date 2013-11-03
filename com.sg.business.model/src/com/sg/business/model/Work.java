@@ -3145,10 +3145,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_WORK_ID, get_id());
 		query.put(UserTask.F_USERID, userId);
-		query.put(
-				UserTask.F_STATUS,
-				new BasicDBObject().append("$or", new String[] {
-						Status.Reserved.name(), Status.InProgress.name() }));
+		query.put("$or", new BasicDBObject[] { new BasicDBObject().append(
+				UserTask.F_STATUS, Status.Reserved.name()), new BasicDBObject().append(
+						UserTask.F_STATUS, Status.InProgress.name())});
 		return col.count(query);
 	}
 

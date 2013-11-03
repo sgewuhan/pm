@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 import org.jbpm.task.Task;
@@ -126,6 +127,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 
 				// 3.刷新表格
 				vc.getViewer().update(work, null);
+				vc.getViewer().setSelection(new StructuredSelection());
 			} catch (Exception e) {
 				e.printStackTrace();
 				MessageUtil.showToast("完成流程任务", e);
