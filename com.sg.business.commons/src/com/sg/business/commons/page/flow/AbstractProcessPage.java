@@ -68,8 +68,8 @@ public abstract class AbstractProcessPage extends
 			}
 
 			@Override
-			protected String getActorNavigatorId() {
-				return AbstractProcessPage.this.getActorNavigatorId();
+			protected String getActorNavigatorId(AbstractRoleDefinition roled) {
+				return AbstractProcessPage.this.getActorNavigatorId(roled);
 			}
 
 		};
@@ -114,7 +114,7 @@ public abstract class AbstractProcessPage extends
 		return "commons.generic.tableselector";
 	}
 	
-	protected String getActorNavigatorId() {
+	protected String getActorNavigatorId(AbstractRoleDefinition roled) {
 		return "commons.generic.tableselector";
 	}
 

@@ -75,6 +75,15 @@ public class DBInit implements Runnable {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
+		
+		setting = new BasicDBObject();
+		setting.put("varid", "WORK.RESERVED.REFRESH.SYSTEM");
+		setting.put("desc", "待办工作刷新周期(分钟)");
+		setting.put("value", "5");
+		try {
+			col.insert(setting);
+		} catch (Exception e) {
+		}
 		setting = new BasicDBObject();
 		setting.put("varid", "MESSAGEINBOX.REFRESH.INTERVAL");
 		setting.put("desc", "消息刷新周期(分钟)");

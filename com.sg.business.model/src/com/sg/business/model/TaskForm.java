@@ -18,6 +18,7 @@ public class TaskForm extends PrimaryObject {
 
 	public static final String F_WORK_ID = "workid";
 	public static final String F_EDITOR = "form_editor";
+	public static final String F_USER_TASK_ID = "usertask_id";
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
@@ -39,9 +40,13 @@ public class TaskForm extends PrimaryObject {
 	}
 
 	public Task getExecuteTask(IContext context) throws Exception {
-		Work work = getWork();
-		Assert.isNotNull(work, "任务表单无法确定关联的工作");
-		return work.getExecuteTask(context);
+		UserTask userTask = getUserTask();
+		Assert.isNotNull(userTask, "任务表单无法确定关联的工作");
+		return userTask.getTask();
+	}
+
+	private UserTask getUserTask() {
+		return ModelService.createModelObject(UserTask.class, getObjectIdValue(F_USER_TASK_ID));
 	}
 
 	/**

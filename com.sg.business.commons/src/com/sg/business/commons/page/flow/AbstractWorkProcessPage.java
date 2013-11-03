@@ -32,7 +32,7 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 	}
 	
 	@Override
-	protected String getActorNavigatorId() {
+	protected String getActorNavigatorId(AbstractRoleDefinition roled) {
 		//如果是非项目工作
 		Work work = getWork();
 		Project project = work.getProject();
@@ -45,7 +45,7 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			}
 		}
 		
-		return super.getActorNavigatorId();
+		return super.getActorNavigatorId(roled);
 	}
 	
 

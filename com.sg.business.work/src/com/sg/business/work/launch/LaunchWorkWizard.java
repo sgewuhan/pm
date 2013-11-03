@@ -44,7 +44,7 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 				@Override
 				protected Point getInitialSize() {
 					Point size = super.getInitialSize();
-					return new Point(600, size.y);
+					return new Point(660, size.y);
 				}
 			};
 

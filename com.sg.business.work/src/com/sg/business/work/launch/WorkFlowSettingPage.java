@@ -16,7 +16,7 @@ import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
-import com.sg.business.model.dataset.organization.UserDataSetFactory;
+import com.sg.business.model.dataset.organization.OrgRoot;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -59,6 +59,15 @@ public class WorkFlowSettingPage extends WizardPage {
 			protected String getProcessKey() {
 				return Work.F_WF_EXECUTE;
 			}
+			
+			@Override
+			protected String getActorNavigatorId(AbstractRoleDefinition roled) {
+				if(roled == null){
+					return "organization.user.selector";
+				}
+				
+				return super.getActorNavigatorId(roled);
+			}
 
 			@Override
 			protected DataSet getActorDataSet(AbstractRoleDefinition roled) {
@@ -75,11 +84,14 @@ public class WorkFlowSettingPage extends WizardPage {
 						if (!result.contains(user)) {
 							result.add(user);
 						}
-
 					}
 					return new DataSet(result);
-				}else{//限定角色为空，可以从组织选择用户
-					return new UserDataSetFactory().getDataSet();
+				} else {// 限定角色为空，可以从组织选择用户
+					OrgRoot factory = new OrgRoot();
+//					UserDataSetFactory factory = new UserDataSetFactory();
+//					factory.setQueryCondition(new BasicDBObject().append(
+//							User.F_ACTIVATED, Boolean.TRUE));
+					return factory.getDataSet();
 				}
 
 			}

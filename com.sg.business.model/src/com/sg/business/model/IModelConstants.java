@@ -190,6 +190,12 @@ public interface IModelConstants {
 	 */
 	public static final String S_U_WORK_RESERVED_REFRESH_INTERVAL = "WORK.RESERVED.REFRESH.INTERVAL";
 
+	
+	/**
+	 * 设置：待处理工作的刷新周期，此设置可用于系统设置
+	 */
+	public static final String S_S_WORK_RESERVED_REFRESH_INTERVAL = "WORK.RESERVED.REFRESH.SYSTEM";
+
 	/**
 	 * 设置：收件箱的刷新间隔时间
 	 */
@@ -238,6 +244,10 @@ public interface IModelConstants {
 	 */
 	public static final String S_EAI_SAP_INSTANCENUMBER = "EAI.SAP.INSTANCENUMBER";
 
+	/**
+	 * 用户的流程任务
+	 */
+	public static final String C_USERTASK = "usertask";
 
 
 

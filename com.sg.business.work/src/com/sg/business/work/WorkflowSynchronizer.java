@@ -1,7 +1,9 @@
 package com.sg.business.work;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -13,10 +15,12 @@ import org.jbpm.task.TaskData;
 import com.mobnut.commons.job.RepeatJob;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.portal.Portal;
 import com.mongodb.BasicDBObject;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.User;
+import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.UserDataSetFactory;
 
@@ -61,7 +65,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 
 	public Set<Work> synchronizeUserTask(String userid) {
 		Set<Work> updated = new HashSet<Work>();
-		Task[] tasks = WorkflowService.getDefault().getUserTasks(userid);
+		Task[] tasks = WorkflowService.getDefault().getUserAssignedTasks(userid);
 		for (int i = 0; i < tasks.length; i++) {
 			TaskData taskData = tasks[i].getTaskData();
 
@@ -75,7 +79,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
 					work.reload();
-					work.doUpdateWorkflowDataByTask(flowKey, tasks[i], userid);
+					work.doSaveUserTask(flowKey, tasks[i], userid);
 
 					// UserSessionContext.noticeAccountChanged(userid, new
 					// AccountEvent(
@@ -92,9 +96,10 @@ public class WorkflowSynchronizer extends RepeatJob {
 		return updated;
 	}
 
-	public void synchronizeUserTask(String userid, Work targetWork)
+	public List<UserTask> synchronizeUserTask(String userid, Work targetWork)
 			throws Exception {
-		Task[] tasks = WorkflowService.getDefault().getUserTasks(userid);
+		Task[] tasks = WorkflowService.getDefault().getUserAssignedTasks(userid);
+		ArrayList<UserTask> ret = new ArrayList<UserTask>();
 		for (int i = 0; i < tasks.length; i++) {
 			TaskData taskData = tasks[i].getTaskData();
 
@@ -108,19 +113,22 @@ public class WorkflowSynchronizer extends RepeatJob {
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
 					if (work.get_id().equals(targetWork.get_id())) {
-						targetWork.doUpdateWorkflowDataByTask(flowKey,
+						UserTask userTask = targetWork.doSaveUserTask(flowKey,
 								tasks[i], userid);
-						return;
+						ret.add(userTask);
 					}
 				}
+				
+				
 			} catch (Exception e) {
 				// 流程不存在
 				// work被删除
-				e.printStackTrace();
+				if(Portal.getDefault().isDevelopMode()){
+					e.printStackTrace();
+				}
 			}
 		}
-		throw new Exception("用户:" + userid + "\n" + "工作:" + targetWork + "\n\n"
-				+ "没有满足条件的流程任务。");
+		return ret;
 	}
 
 	public void setUserId(String userId) {

@@ -75,7 +75,7 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 			}
 
 			@Override
-			protected String getActorNavigatorId() {
+			protected String getActorNavigatorId(AbstractRoleDefinition roled) {
 				// TODO Auto-generated method stub
 				return null;
 			}
