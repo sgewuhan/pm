@@ -1405,6 +1405,14 @@
                </with>
             </visibleWhen>
          </command>
+         <menu
+               id="runtimework.wfstart.menu"
+               label="开始流程任务">
+            <dynamic
+                  class="com.sg.business.work.handler.UserStartTaskSelectMenu"
+                  id="work.usertaskselector.menu">
+            </dynamic>
+         </menu>
          <command
                commandId="runtimework.wffinish"
                icon="image/complete_24.png"
@@ -2109,12 +2117,22 @@
       <command
             categoryId="work"
             id="runtimework.wfstart"
-            name="启动">
+            name="开始任务">
+         <commandParameter
+               id="runtimework.usertask"
+               name="流程任务"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="runtimework.usertask_id"
+               name="流程任务ID"
+               optional="true">
+         </commandParameter>
       </command>
       <command
             categoryId="work"
             id="runtimework.wffinish"
-            name="完成">
+            name="完成任务">
       </command>
       <command
             categoryId="work"

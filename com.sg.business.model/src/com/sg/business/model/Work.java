@@ -3119,8 +3119,51 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
 	}
 
+	
+
+	public List<UserTask> getReservedUserTasks(String userId) {
+		return getUserTasks(userId,Status.Reserved.name());
+	}
+	
+	public long countReservedUserTasks(String userId) {
+		return countUserTasks(userId,Status.Reserved.name());
+	}
+	
+	public List<UserTask> getInprogressUserTasks(String userId) {
+		return getUserTasks(userId,Status.InProgress.name());
+	}
+	
+	public long countInprogressUserTasks(String userId) {
+		return countUserTasks(userId,Status.InProgress.name());
+	}
+	
+	public List<UserTask> getUserTasks(String userId, String name) {
+		DBCollection col = getCollection(IModelConstants.C_USERTASK);
+		DBObject query = new BasicDBObject();
+		query.put(UserTask.F_WORK_ID, get_id());
+		query.put(UserTask.F_USERID, userId);
+		query.put(UserTask.F_STATUS, Status.Reserved.name());
+		DBCursor cur = col.find(query);
+		List<UserTask> result = new ArrayList<UserTask>();
+		while(cur.hasNext()){
+			DBObject data = cur.next();
+			result.add(ModelService.createModelObject(data, UserTask.class));
+		}
+		
+		return result;
+	}
+	
+	public long countUserTasks(String userId, String name) {
+		DBCollection col = getCollection(IModelConstants.C_USERTASK);
+		DBObject query = new BasicDBObject();
+		query.put(UserTask.F_WORK_ID, get_id());
+		query.put(UserTask.F_USERID, userId);
+		query.put(UserTask.F_STATUS, Status.Reserved.name());
+		return col.count(query);
+	}
+
 	/**
-	 * 获取最近的任务
+	 * 获取最近的显示的任务
 	 * @return
 	 */
 	public UserTask getLastDisplayTask(String userId) {
@@ -3974,5 +4017,4 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						new BasicDBObject().append(F_PARTICIPATE, allUser)));
 		checkWriteResult(ws);
 	}
-
 }

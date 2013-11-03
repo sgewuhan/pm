@@ -24,6 +24,9 @@ public class StartTask extends AbstractNavigatorHandler {
 			ViewerControl vc, Command command, Map<String, Object> parameters,
 			IStructuredSelection selection) {
 		if (selected instanceof Work) {
+			
+			
+			
 			try {
 				Work work = (Work) selected;
 				WorkflowSynchronizer sync = new WorkflowSynchronizer();
