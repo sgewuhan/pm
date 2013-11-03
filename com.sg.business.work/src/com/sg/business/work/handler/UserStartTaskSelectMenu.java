@@ -68,7 +68,7 @@ public class UserStartTaskSelectMenu extends CompoundContributionItem {
 		String id = "work.processing.starttask";
 		Map<String, Object> para = new HashMap<String, Object>();
 		try{
-			String _userTask = JSON.serialize(userTask);
+			String _userTask = JSON.serialize(userTask.get_data());
 			para.put("runtimework.usertask", _userTask);
 		}catch(Exception e){
 		}
