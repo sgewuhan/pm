@@ -10,6 +10,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.workflow"
+            name="流程">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
             name="项目">
       </perspective>
@@ -57,11 +62,6 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.system"
             name="系统">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.workflow"
-            name="流程">
       </perspective>
    </extension>
    <extension
@@ -482,6 +482,57 @@
                ratio="0.3"
                relationship="left"
                relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.workflow">
+         <view
+               closeable="false"
+               id="workflow.taskreserved"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="workflow.workdelivery"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="right"
+               relative="workflow.taskreserved"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="workflow.document.previewer"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="bottom"
+               relative="workflow.workdelivery"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="workflow.taskhistory"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="workflow.taskreserved"
                showTitle="true"
                standalone="false"
                visible="true">

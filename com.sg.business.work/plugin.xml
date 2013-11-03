@@ -3769,6 +3769,27 @@
             name="流程任务"
             restorable="true">
       </view>
+      <view
+            category="work"
+            class="com.sg.business.work.view.WorkFlowHistory"
+            id="workflow.taskhistory"
+            name="流程历史"
+            restorable="true">
+      </view>
+      <view
+            category="work"
+            class="com.sg.business.work.view.WorkFlowWorkDelivery"
+            id="workflow.workdelivery"
+            name="交付物"
+            restorable="true">
+      </view>
+      <view
+            category="work"
+            class="com.sg.business.work.view.WorkFlowWorkDeliveryPreviewer"
+            id="workflow.document.previewer"
+            name="文件预览"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">

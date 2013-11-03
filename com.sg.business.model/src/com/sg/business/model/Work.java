@@ -48,6 +48,7 @@ import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.part.BackgroundContext;
 
 /**
  * <p>
@@ -2600,82 +2601,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return message;
 	}
 
-	private Message doNoticeWorkflowInternal(String actorId, String taskName,
-			String key, String action, IContext context) throws Exception {
-		BasicBSONList recievers = getParticipatesIdList();
-		if (recievers == null) {
-			return null;
-		}
-		// 排除自己
-		recievers.remove(actorId);
-
-		// 设置通知标题
-		Project project = getProject();
-		String title = (project == null ? "" : project.getLabel()) + this + " "
-				+ "流程任务" + taskName + " " + action;
-		// 设置通知内容
-		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='font-size:14px'>");
-		sb.append("您好: ");
-		sb.append("</span><br/><br/>");
-		sb.append("您参与的工作有新的进展。");
-		sb.append("<br/><br/>");
-
-		User user = UserToolkit.getUserById(actorId);
-		sb.append(user);
-		sb.append(", ");
-		sb.append(action);
-		sb.append("工作");
-		sb.append("\"");
-		sb.append(this);
-		sb.append("\"");
-		if (isProjectWork()) {
-			sb.append(" \"");
-			sb.append("项目:");
-			sb.append(getProject());
-			sb.append(" \"");
-		}
-		sb.append("的流程任务: ");
-		sb.append("\"");
-		sb.append(taskName);
-		sb.append("\"。");
-
-		sb.append("<br/><br/>");
-		sb.append("如有不明，请查阅有关工作信息和流程历史");
-
-		Message message = MessageToolkit.makeMessage(recievers, title, actorId,
-				sb.toString());
-
-		MessageToolkit.appendEndMessage(message);
-
-		// 设置导航附件
-		message.appendTargets(this, EDITOR, false);
-
-		message.doSave(context);
-		return message;
-	}
-
-	private void doNoticeWorkflow(final String actorId, final String taskName,
-			final String key, final String action, final IContext context)
-			throws Exception {
-		// doNoticeWorkflowInternal(actorId, taskName, key, action, context);
-
-		Job job = new Job("发送流程通知") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					doNoticeWorkflowInternal(actorId, taskName, key, action,
-							context);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return org.eclipse.core.runtime.Status.OK_STATUS;
-			}
-
-		};
-		job.schedule();
-	}
 
 	private void doNoticeWorkAction(final IContext context,
 			final String actionName) throws Exception {
@@ -2954,77 +2879,64 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 * 构造需要保存的任务数据
 		 */
 
-		data = new BasicDBObject();
-
-		data.put(UserTask.F__ID, new ObjectId());
+		UserTask userTask = ModelService.createModelObject(UserTask.class);
 
 		// 保存任务id
-		data.put(UserTask.F_WORK_ID, get_id());
+		userTask.setValue(UserTask.F_WORK_ID, get_id());
 		// 任务状态
-		data.put(UserTask.F_STATUS, status.name());
+		userTask.setValue(UserTask.F_STATUS, status.name());
 
-		data.put(UserTask.F_USERID, userid);
+		userTask.setValue(UserTask.F_USERID, userid);
 
-		data.put(UserTask.F_TASKID, task.getId());
+		userTask.setValue(UserTask.F_TASKID, task.getId());
 
-		data.put(UserTask.F_PROCESSKEY, flowKey);
+		userTask.setValue(UserTask.F_PROCESSKEY, flowKey);
 
-		data.put(UserTask.F_CREATEDON, new Date());
 
 		// 保存任务名称
 		List<I18NText> names = task.getNames();
 		Assert.isLegal(names != null && names.size() > 0, "流程活动名称没有定义");
 		String taskName = names.get(0).getText();
-		data.put(UserTask.F_DESC, taskName);
-		data.put(UserTask.F_TASK_NAME, taskName);// 兼容history
+		userTask.setValue(UserTask.F_DESC, taskName);
+		userTask.setValue(UserTask.F_TASK_NAME, taskName);// 兼容history
 
 		// 保存任务描述
 		List<I18NText> descriptions = task.getDescriptions();
 		if (descriptions != null && descriptions.size() > 0) {
 			String taskComment = descriptions.get(0).getText();
-			data.put(UserTask.F_DESCRIPTION, taskComment);
+			userTask.setValue(UserTask.F_DESCRIPTION, taskComment);
 		}
 
 		// 保存任务的实际执行人id
 		org.jbpm.task.User actualOwner = taskData.getActualOwner();
 		String actorId = actualOwner.getId();
-		data.put(UserTask.F_ACTUALOWNER, actorId);
+		userTask.setValue(UserTask.F_ACTUALOWNER, actorId);
 
 		// 保存任务的创建者
 		org.jbpm.task.User createdBy = taskData.getCreatedBy();
-		data.put(UserTask.F_CREATEDBY, createdBy.getId());
+		userTask.setValue(UserTask.F_CREATEDBY, createdBy.getId());
 
 		// 任务的创建时间
 		Date createdOn = taskData.getCreatedOn();
-		data.put(UserTask.F_CREATEDON, createdOn);
+		userTask.setValue(UserTask.F_CREATEDON, createdOn);
 
 		// 任务的流程定义id
 		String processId = taskData.getProcessId();
-		data.put(UserTask.F_PROCESSID, processId);
+		userTask.setValue(UserTask.F_PROCESSID, processId);
 
 		// 任务的流程实例id
 		long processInstanceId = taskData.getProcessInstanceId();
-		data.put(UserTask.F_PROCESSINSTANCEID, new Long(processInstanceId));
+		userTask.setValue(UserTask.F_PROCESSINSTANCEID, new Long(processInstanceId));
 
 		// 任务的workitem ID
 		long workItemId = taskData.getWorkItemId();
-		data.put(UserTask.F_WORKITEMID, new Long(workItemId));
+		userTask.setValue(UserTask.F_WORKITEMID, new Long(workItemId));
 
 		// 该任务未完成
-		data.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
+		userTask.setValue(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
 
-		// 更新旧的相同任务Id的数据为完成
-		WriteResult ws = col.update(new BasicDBObject().append(
-				UserTask.F_TASKID, task.getId()), new BasicDBObject().append(
-				"$set", new BasicDBObject().append(
-						UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.TRUE)),
-				false, true);
-		checkWriteResult(ws);
-
-		ws = col.insert(data);
-		checkWriteResult(ws);
-
-		return ModelService.createModelObject(data, UserTask.class);
+		userTask.doSave(new BackgroundContext());
+		return userTask;
 	}
 
 	public boolean isProjectWBSRoot() {
@@ -3061,14 +2973,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		doSaveWorkflowHistroy(processKey, newUserTask, taskFormData, context);
 
+		/**
+		 * 移到了UserTask的保存事件
+		 */
 		// 发送任务消息，并保存
 
-		List<I18NText> names = task.getNames();
-		String taskName = "";
-		if (names != null && names.size() > 0) {
-			taskName = names.get(0).getText();
-		}
-		doNoticeWorkflow(userId, taskName, processKey, "已启动", context);
+//		List<I18NText> names = task.getNames();
+//		String taskName = "";
+//		if (names != null && names.size() > 0) {
+//			taskName = names.get(0).getText();
+//		}
+//		doNoticeWorkflow(userId, taskName, processKey, "已启动", context);
 		// data.put(IProcessControl.F_WF_TASK_NOTICEDATE,
 		// message.getValue(Message.F_SENDDATE));
 	}
@@ -3116,14 +3031,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		doSaveWorkflowHistroy(processKey, newUserTask, taskFormData, context);
 
-		// 发送任务消息，并保存
-
-		List<I18NText> names = task.getNames();
-		String taskName = "";
-		if (names != null && names.size() > 0) {
-			taskName = names.get(0).getText();
-		}
-		doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
+		/**
+		 * 移到了UserTask的保存事件
+		 */
+//		// 发送任务消息，并保存
+//
+//		List<I18NText> names = task.getNames();
+//		String taskName = "";
+//		if (names != null && names.size() > 0) {
+//			taskName = names.get(0).getText();
+//		}
+//		doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
 	}
 
 	public List<UserTask> getReservedUserTasks(String userId) {
