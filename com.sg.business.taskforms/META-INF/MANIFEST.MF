@@ -13,5 +13,8 @@ Require-Bundle: com.sg.bpm.service,
  com.sg.bpm.workflow,
  com.sg.business.model,
  com.sg.thirdparty,
- com.sg.widgets
-Export-Package: com.sg.business.taskforms
+ com.sg.widgets,
+ org.eclipse.rap.ui.forms;bundle-version="2.2.0",
+ com.mobnut.commons;bundle-version="1.0.0"
+Export-Package: com.sg.business.taskforms,
+ com.sg.business.taskforms.field

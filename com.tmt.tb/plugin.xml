@@ -205,6 +205,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="审核意见"
                         labelVisible="false"
                         name="comment"
@@ -226,11 +227,12 @@
                   </radio>
                </section>
                <section
-                     label="请选择分发部门">
+                     label="请选择承担部门">
                   <navigatorSelector
                         editable="true"
                         id="dept"
-                        label="分发部门"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="承担部门"
                         labelVisible="true"
                         modelClass="com.sg.business.model.Organization"
                         name="dept"
@@ -1326,6 +1328,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="2"
             dataSet="com.tmt.tb.dataset.OrganizationSelectorOfTaskforms"
             headerVisiable="false"
             id="tb.taskforms.organization.selector">
