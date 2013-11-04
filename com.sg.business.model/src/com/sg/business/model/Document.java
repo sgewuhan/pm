@@ -1,11 +1,14 @@
 package com.sg.business.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.admin.dataset.Setting;
 import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
@@ -14,21 +17,36 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
- * 文档
- * 工作完成后产生的文档
+ * 文档 工作完成后产生的文档
+ * 
  * @author jinxitao
- *
+ * 
  */
-public class Document extends PrimaryObject implements IProjectRelative{
+public class Document extends PrimaryObject implements IProjectRelative {
 
+	public static final String[] DEFAULT_MAJOR_VID_SEQ = new String[] { "A",
+			"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+	public static final String STATUS_RELEASED_ID = "released";
+	public static final String STATUS_RELEASED_TEXT = "已发布";
+
+	public static final String STATUS_WORKING_ID = "working";
+	public static final String STATUS_WORKING_TEXT = "工作中";
+
+	public static final String STATUS_DEPOSED_ID = "deposed";
+	public static final String STATUS_DEPOSED_TEXT = "已废弃";
+
+	
 	/**
 	 * 文档类型
 	 */
 	public static final String F_DOCUMENT_TYPE = "documenttype";
-	
+
 	/**
 	 * 文档编号
 	 */
@@ -68,7 +86,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 	 * 数据库名称
 	 */
 	public static final String FILE_DB = "pm2";
-	
+
 	/**
 	 * 文档编辑器ID
 	 */
@@ -76,46 +94,96 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	public static final String F_WORK_ID = "work_id";
 
-	
+	public static final String F_MAJOR_VID = "major_vid";
 
+	public static final String F_LIFECYCLE = "status";
+
+	public static final String F_LOCK = "islocked";
+
+	public static final String F_LOCKED_BY = "lockedby";
+
+	public static final String F_LOCKED_ON = "lockdate";
+
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		makeMajorVersionNumber();
+		makeLifecycleStatus();
+		return super.doSave(context);
+	}
+
+	private void makeLifecycleStatus() {
+		String lc = getLifecycle();
+		if(Utils.isNullOrEmpty(lc)){
+			setValue(F_LIFECYCLE, STATUS_WORKING_ID);
+		}
+	}
+
+	private void makeMajorVersionNumber() {
+		Object mvid = getValue(F_MAJOR_VID);
+		if (!(mvid instanceof String)) {
+			String[] seq = getMajorVersionSeq();
+			setValue(F_MAJOR_VID, seq[0]);
+		}
+	}
+
+	private String[] getMajorVersionSeq() {
+		String value = (String) Setting
+				.getSystemSetting(IModelConstants.S_MAJOR_VID_SEQ);
+		String[] seq = null;
+		if (value != null) {
+			try {
+				seq = value.split(",");
+			} catch (Exception e) {
+			}
+		}
+		if (seq == null) {
+			seq = DEFAULT_MAJOR_VID_SEQ;
+		}
+		return seq;
+	}
 
 	/**
 	 * 返回所属文件夹_id
-	 * @return  ObjectId
+	 * 
+	 * @return ObjectId
 	 */
 	public ObjectId getParent_id() {
 		return (ObjectId) getValue(F_FOLDER_ID);
 	}
-	
+
 	/**
 	 * 返回文档类型
+	 * 
 	 * @return String
 	 */
-	public String getDocumentType(){
+	public String getDocumentType() {
 		return (String) getValue(F_DOCUMENT_TYPE);
 	}
-	
+
 	/**
 	 * 返回摘要信息
+	 * 
 	 * @return String
 	 */
-	public String getSummary(){
+	public String getSummary() {
 		return (String) getValue(F__SUMMARY);
 	}
-	
+
 	/**
-	 * 返回文档编号 
+	 * 返回文档编号
+	 * 
 	 * @return String
 	 */
-	public String getDocumentNumber(){
+	public String getDocumentNumber() {
 		return (String) getValue(F_DOCUMENT_NUMBER);
 	}
 
 	/**
 	 * 返回文档附件的存储目录
+	 * 
 	 * @return
 	 */
-	public RemoteFileSet getVault(){
+	public RemoteFileSet getVault() {
 		List<RemoteFile> files = getFileValue(F_VAULT);
 		RemoteFileSet rs = new RemoteFileSet(getDbName(), getCollectionName());
 		rs.setOriginalRemoteFileSet(files);
@@ -125,6 +193,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 返回显示图标
+	 * 
 	 * @return Image
 	 */
 	@Override
@@ -134,6 +203,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 判断是否可以编辑
+	 * 
 	 * @return boolean
 	 */
 	@Override
@@ -143,6 +213,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 判断是否只读
+	 * 
 	 * @return boolean
 	 */
 	@Override
@@ -152,6 +223,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 返回类型名称
+	 * 
 	 * @return String
 	 */
 	@Override
@@ -161,6 +233,7 @@ public class Document extends PrimaryObject implements IProjectRelative{
 
 	/**
 	 * 返回所属项目
+	 * 
 	 * @return Project
 	 */
 	@Override
@@ -172,17 +245,18 @@ public class Document extends PrimaryObject implements IProjectRelative{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 返回默认编辑器ID
+	 * 
 	 * @return String
 	 */
 	@Override
 	public String getDefaultEditorId() {
 		String editorId = get_editor();
-		if(Utils.isNullOrEmpty(editorId)){
+		if (Utils.isNullOrEmpty(editorId)) {
 			return EDITOR;
-		}else{
+		} else {
 			return editorId;
 		}
 	}
@@ -191,9 +265,10 @@ public class Document extends PrimaryObject implements IProjectRelative{
 		DBCollection col = getCollection();
 		WriteResult ws = col.update(
 				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", new BasicDBObject().append(F_FOLDER_ID, get_id)));
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_FOLDER_ID, get_id)));
 
-		checkWriteResult(ws);		
+		checkWriteResult(ws);
 	}
 
 	public Folder getFolder() {
@@ -204,4 +279,51 @@ public class Document extends PrimaryObject implements IProjectRelative{
 			return null;
 		}
 	}
+
+	public String getTypeIconURL() {
+		String type = getDocumentType();
+		if (type != null) {
+			return FileUtil.getImageURL("doc_" + type + "_24.png",
+					BusinessResource.PLUGIN_ID);
+		}
+
+		return FileUtil.getImageURL("doc_generic_24.png",
+				BusinessResource.PLUGIN_ID);
+	}
+
+	public String getRevId() {
+		Integer vid = getIntegerValue(F__VID);
+		String release = getStringValue(F_MAJOR_VID);
+		return release + "." + vid;
+	}
+
+	public String getLifecycle() {
+		return getStringValue(F_LIFECYCLE);
+	}
+	
+	public String getLifecycleName() {
+		String lc = getStringValue(F_LIFECYCLE);
+		if(STATUS_DEPOSED_ID.equals(lc)){
+			return STATUS_DEPOSED_TEXT;
+		}else if(STATUS_RELEASED_ID.equals(lc)){
+			return STATUS_RELEASED_TEXT;
+		}else if(STATUS_WORKING_ID.equals(lc)){
+			return STATUS_WORKING_TEXT;
+		}
+		return null;
+	}
+
+	public boolean isLocked() {
+		return Boolean.TRUE.equals(getValue(F_LOCK));
+	}
+
+	public User lockedBy() {
+		String userId = getStringValue(F_LOCKED_BY);
+		return UserToolkit.getUserById(userId);
+	}
+
+	public Date lockOn() {
+		return getDateValue(F_LOCKED_ON);
+	}
+
 }

@@ -3816,7 +3816,7 @@
       </navigator>
       <navigator
             id="workflow.workdelivery"
-            table="workflow.workdelivery">
+            tree="workflow.workdelivery">
          <masterProvider
                id="workflow.taskreserved">
          </masterProvider>
@@ -3862,17 +3862,21 @@
                width="-1">
          </column>
       </table>
-      <table
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.usertask.RelatitedWorkDeliveryDataSet"
-            headerVisiable="false"
-            id="workflow.workdelivery"
-            markupEnabled="true"
-            virtual="true">
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+       <tree
+             canCreate="false"
+             canDelete="false"
+             canEdit="false"
+             canRead="false"
+             contentProvider="com.sg.business.work.view.DocumentFileContentProvider"
+             customItemHeight="40"
+             dataSet="com.sg.business.model.dataset.usertask.RelatitedWorkDeliveryDataSet"
+             headerVisiable="false"
+             id="workflow.workdelivery"
+             markupEnabled="true"
+             virtual="true">
          <column
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.UserTaskDocumentLabelProvider"
@@ -3880,7 +3884,7 @@
                name="desc"
                width="-1">
          </column>
-      </table>
+      </tree>
    </extension>
 
 </plugin>
