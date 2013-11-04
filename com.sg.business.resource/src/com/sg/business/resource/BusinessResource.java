@@ -271,6 +271,8 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_PASS_32 = "pass_32.png";
 
+	public static final String IMAGE_DOCUMENT_24 = "document_24.png";
+
 
 	/**
 	 * Returns the shared instance

@@ -6,8 +6,6 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -139,27 +137,30 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 		if (doc_id == null) {
 			Document doc;
 			ObjectId projectId = (ObjectId) getValue(F_PROJECT_ID);
+			ObjectId folderId = null;
+			if (projectId != null) {
+				Project project = ModelService.createModelObject(Project.class,
+						projectId);
+				folderId = project.getFolderRootId();
+			}
+			ObjectId workId = getObjectIdValue(F_WORK_ID);
 
 			// 判断是否存在文档模板
 			ObjectId docd_id = (ObjectId) getValue(F_DOCUMENT_DEFINITION_ID);
 			if (docd_id == null) {// 不存在文档模板
-				DBObject docdData = new BasicDBObject();
-				docdData.put(Document.F_DESC, getDesc());
+				doc = ModelService.createModelObject(Document.class);
+				doc.setValue(Document.F_DESC, getDesc());
 
 				// 获取交付物所属项目
-				if (projectId != null) {
-					docdData.put(Document.F_PROJECT_ID, projectId);
-				}
-				Project project = ModelService.createModelObject(Project.class,
-						projectId);
-				doc = ModelService.createModelObject(docdData, Document.class);
-				doc.setValue(Document.F_FOLDER_ID, project.getFolderRootId());
+				doc.setValue(Document.F_PROJECT_ID, projectId);
+				doc.setValue(Document.F_FOLDER_ID, folderId);
+				doc.setValue(Document.F_WORK_ID, workId);
 				doc.doSave(context);
 			} else {
 				// 存在文档模板
 				DocumentDefinition docd = ModelService.createModelObject(
 						DocumentDefinition.class, docd_id);
-				doc = docd.doCreateDocument(projectId, context);
+				doc = docd.doCreateDocument(projectId, folderId,workId, context);
 			}
 
 			setValue(F_DOCUMENT_ID, doc.get_id());
@@ -215,7 +216,7 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 		if (!work.hasPermission(context)) {
 			return false;
 		}
-		
+
 		return super.canEdit(context);
 	}
 }

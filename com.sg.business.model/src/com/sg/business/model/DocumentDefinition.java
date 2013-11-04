@@ -186,15 +186,13 @@ public class DocumentDefinition extends PrimaryObject {
 	 * @return Document
 	 * @throws Exception
 	 */
-	public Document doCreateDocument(ObjectId projectId, IContext context)
+	public Document doCreateDocument(ObjectId projectId, ObjectId folderId,ObjectId workId,IContext context)
 			throws Exception {
 		BasicDBObject documentData = new BasicDBObject();
 		documentData.put(Document.F__ID, new ObjectId());
 		documentData.put(Document.F_PROJECT_ID, projectId);
-
-		Project project = ModelService.createModelObject(Project.class,
-				projectId);
-		documentData.put(Document.F_FOLDER_ID, project.getFolderRootId());
+		documentData.put(Document.F_WORK_ID, workId);
+		documentData.put(Document.F_FOLDER_ID, folderId);
 
 		Object value = getValue(F_DESC);
 		if (value != null) {

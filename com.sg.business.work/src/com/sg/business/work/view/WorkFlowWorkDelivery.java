@@ -11,7 +11,7 @@ public class WorkFlowWorkDelivery extends TableNavigator {
 	protected void updatePartName(IWorkbenchPart part) {
 		if (master != null) {
 			String workname = ((UserTask)master).getWorkName();
-			setPartName(workname+" ½»¸¶Îï"); 
+			setPartName(workname+" ÎÄµµ"); 
 		} else {
 			setPartName(originalPartName);
 		}

@@ -3874,25 +3874,11 @@
             markupEnabled="true"
             virtual="true">
          <column
-               columnDefinitionId="document.documentNumber">
-         </column>
-         <column
-               columnDefinitionId="com.sg.widgets.column.desc">
-         </column>
-         <column
-               columnDefinitionId="document.documentType">
-         </column>
-         <column
-               columnDefinitionId="generic._caccount">
-         </column>
-         <column
-               columnDefinitionId="generic._cdate">
-         </column>
-         <column
-               columnDefinitionId="generic._maccount">
-         </column>
-         <column
-               columnDefinitionId="generic._mdate">
+               column="desc"
+               labelProvider="com.sg.business.work.labelprovider.UserTaskDocumentLabelProvider"
+               lazyDisplay="true"
+               name="desc"
+               width="-1">
          </column>
       </table>
    </extension>
