@@ -42,25 +42,6 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-//				Work work = taskForm.getWork();
-//				List<Map<String, Object>> historys = (List<Map<String, Object>>) work
-//						.getValue(IWorkCloneFields.F_WF_EXECUTE
-//								+ IProcessControl.POSTFIX_HISTORY);
-//
-//				for (Map<String, Object> history : historys) {
-//					String taskname = (String) history
-//							.get(IProcessControl.F_WF_TASK_NAME);
-//					if ("申请技术支持".equals(taskname)) {
-//						Object dept = history.get("form_dept");
-//						if (dept instanceof ObjectId) {
-//							List<PrimaryObject> allUser = new ArrayList<PrimaryObject>();
-//							Organization org = ModelService.createModelObject(
-//									Organization.class, (ObjectId) dept);
-//							return new DataSet(searchUser(allUser, org));
-//						}
-//					}
-//
-//				}
 			}
 		}
 		return super.getDataSet();
