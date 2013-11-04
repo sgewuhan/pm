@@ -3814,6 +3814,13 @@
                id="workflow.taskreserved">
          </masterProvider>
       </navigator>
+      <navigator
+            id="workflow.workdelivery"
+            table="workflow.workdelivery">
+         <masterProvider
+               id="workflow.taskreserved">
+         </masterProvider>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -3853,6 +3860,39 @@
                lazyDisplay="true"
                name="desc"
                width="-1">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.usertask.RelatitedWorkDeliveryDataSet"
+            headerVisiable="false"
+            id="workflow.workdelivery"
+            markupEnabled="true"
+            virtual="true">
+         <column
+               columnDefinitionId="document.documentNumber">
+         </column>
+         <column
+               columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <column
+               columnDefinitionId="document.documentType">
+         </column>
+         <column
+               columnDefinitionId="generic._caccount">
+         </column>
+         <column
+               columnDefinitionId="generic._cdate">
+         </column>
+         <column
+               columnDefinitionId="generic._maccount">
+         </column>
+         <column
+               columnDefinitionId="generic._mdate">
          </column>
       </table>
    </extension>

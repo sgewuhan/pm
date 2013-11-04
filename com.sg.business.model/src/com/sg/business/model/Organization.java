@@ -1601,4 +1601,16 @@ public class Organization extends PrimaryObject {
 		}
 		return result;
 	}
+
+	public PrimaryObject getFunctionOrganization() {
+		if(isFunctionDepartment()){
+			return this;
+		}else{
+			Organization parent = (Organization) getParentOrganization();
+			if(parent!=null){
+				return parent.getFunctionOrganization();
+			}
+		}
+		return null;
+	}
 }

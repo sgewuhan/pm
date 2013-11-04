@@ -1,24 +1,20 @@
 package com.sg.business.work.view;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.IWorkbenchPart;
 
-public class WorkFlowWorkDelivery extends ViewPart {
+import com.sg.business.model.UserTask;
+import com.sg.widgets.part.view.TableNavigator;
 
-	public WorkFlowWorkDelivery() {
-		// TODO Auto-generated constructor stub
-	}
+public class WorkFlowWorkDelivery extends TableNavigator {
 
 	@Override
-	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-
+	protected void updatePartName(IWorkbenchPart part) {
+		if (master != null) {
+			String workname = ((UserTask)master).getWorkName();
+			setPartName(workname+" ½»¸¶Îï"); 
+		} else {
+			setPartName(originalPartName);
+		}
 	}
 
 }
