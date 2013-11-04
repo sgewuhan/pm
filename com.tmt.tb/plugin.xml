@@ -1378,5 +1378,62 @@
             serviceProvider="com.tmt.tb.bpmservice.ProjcetApproveMessageOfTB">
       </service>
    </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            name="设计更改申请"
+            persistentFields="developable,check,qm,plan,craft,approve,auditor,purchase,develop,prj_number"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="developable"
+               taskFormFieldName="developable">
+         </processParameter>
+         <processParameter
+               processParameterName="check"
+               taskFormFieldName="check">
+         </processParameter>
+         <processParameter
+               processParameterName="qm"
+               taskFormFieldName="qm">
+         </processParameter>
+         <processParameter
+               processParameterName="plan"
+               taskFormFieldName="plan">
+         </processParameter>
+         <processParameter
+               processParameterName="craft"
+               taskFormFieldName="craft">
+         </processParameter>
+         <processParameter
+               processParameterName="approve"
+               taskFormFieldName="approve">
+         </processParameter>
+         <processParameter
+               processParameterName="auditor"
+               taskFormFieldName="auditor">
+         </processParameter>
+         <processParameter
+               processParameterName="purchase"
+               taskFormFieldName="purchase">
+         </processParameter>
+         <processParameter
+               processParameterName="prj_number"
+               taskFormFieldName="prj_number">
+         </processParameter>
+         <processParameter
+               processParameterName="develop"
+               taskFormFieldName="develop">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="com.tmt.tb.editor1"
+            dbName="com.tmt.tb.editor1"
+            id="com.tmt.tb.editor1"
+            name="com.tmt.tb.editor1">
+      </editor>
+   </extension>
 
 </plugin>
