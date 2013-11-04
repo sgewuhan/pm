@@ -1403,16 +1403,32 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.checkdep_leader"
             name="客户设计更改输入"
-            persistentFields="dep_leader"
+            persistentFields="dept,dept_leader"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
-               processParameterName="dep_leader"
-               taskFormFieldName="dep_leader">
+               processParameterDelegator="com.tmt.tb.field.parameter.DeptLeader"
+               processParameterName="dept_leader"
+               taskFormFieldName="dept">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="dept"
+               taskFormFieldName="dept">
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="tbProjectChangeForCustomers.checkworker"
             name="需求确认和工作指派"
+            persistentFields="comment,choice"
             processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="worker"
+               taskFormFieldName="worker">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
       </taskForm>
    </extension>
    <extension
@@ -1430,13 +1446,13 @@
                      label="请选择接收设计变更部门">
                   <navigatorSelector
                         editable="true"
-                        id="dep_leader"
+                        id="dept"
                         label="设计更改部门"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
-                        modelClass="com.sg.business.model.User"
-                        name="dep_leader"
-                        navigatorId="organization.user.selector"
+                        modelClass="com.sg.business.model.Organization"
+                        name="dept"
+                        navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
                         navigatorSelectorControl="com.tmt.jszx.field.control.DeptSelectControl"
                         persistable="true"
@@ -1452,10 +1468,66 @@
          </basicpage>
       </editor>
       <editor
-            collectionName="com.tmt.tb.editor2"
-            dbName="com.tmt.tb.editor2"
-            id="com.tmt.tb.editor2"
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForCustomers.checkworker"
             name="需求确认和工作指派">
+         <basicpage
+               id="page1"
+               title="需求确认和工作指派">
+            <pagecolumn>
+               <section
+                     label="请选择接收设计变更部门">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <navigatorSelector
+                        editable="true"
+                        id="worker"
+                        label="执行人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="worker"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForCustomers.checker"
+            name="设计更改">
       </editor>
    </extension>
    <extension
