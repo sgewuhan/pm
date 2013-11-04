@@ -22,10 +22,18 @@ import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
 import com.sg.business.model.toolkit.MessageToolkit;
+import com.sg.business.model.toolkit.UserToolkit;
 
 public class UserTask extends PrimaryObject {
 
+	public static final String F_FORM_CHOICE = "form_choice";
+	
+	public static final String F_FORM_COMMENT = "form_comment";
+
 	public static final String F_WORK_ID = "work_id";
+	
+	public static final String F_WORK_DESC = "work_desc";
+
 
 	public static final String F_USERID = "userid";
 
@@ -60,6 +68,11 @@ public class UserTask extends PrimaryObject {
 	 * 任务字段，流程定义id
 	 */
 	public static final String F_PROCESSID = "processid";
+
+	/**
+	 * 流程名称
+	 */
+	public static final String F_PROCESSNAME = "processname";
 
 	/**
 	 * 任务字段，流程实例id
@@ -110,6 +123,7 @@ public class UserTask extends PrimaryObject {
 	 * 该活动生命周期是否已经改变
 	 */
 	public static final String F_LIFECYCLE_CHANGE_FLAG = "lifecyclechanged";
+
 
 	public String getStatus() {
 		return (String) getValue(F_STATUS);
@@ -232,7 +246,7 @@ public class UserTask extends PrimaryObject {
 
 		// 设置通知标题
 		Project project = work.getProject();
-		String title = (project == null ? "" : project.getLabel()) + this + " "
+		String title = (project == null ? "" : project.getLabel()) + work + " "
 				+ "流程任务: " + taskName;
 		// 设置通知内容
 		StringBuffer sb = new StringBuffer();
@@ -249,7 +263,7 @@ public class UserTask extends PrimaryObject {
 		if (work.isProjectWork()) {
 			sb.append(" \"");
 			sb.append("项目:");
-			sb.append(work.getProject());
+			sb.append(project);
 			sb.append(" \"");
 		}
 		sb.append("流程任务: ");
@@ -281,6 +295,35 @@ public class UserTask extends PrimaryObject {
 				new BasicDBObject().append("$set",
 						new BasicDBObject().append(F_NOTICEDATE, new Date())));
 		checkWriteResult(ws);
+	}
+
+	public Date getCreatedOn() {
+		return getDateValue(F_CREATEDON);
+	}
+
+	public String getProcessName() {
+		return getStringValue(F_PROCESSNAME);
+	}
+
+	public String getWorkName() {
+		return getStringValue(F_WORK_DESC);
+	}
+
+	public User getActualOwner() {
+		String userId = getStringValue(F_ACTUALOWNER);
+		return UserToolkit.getUserById(userId);
+	}
+
+	public String getChoice() {
+		return getStringValue(F_FORM_CHOICE);
+	}
+	
+	public String getComment() {
+		return getStringValue(F_FORM_COMMENT);
+	}
+
+	public ObjectId getWorkId() {
+		return getObjectIdValue(F_WORK_ID);
 	}
 
 }

@@ -710,7 +710,15 @@ public class ProjectToolkit {
 		projectObject.put(Project.F_LAUNCH_ORGANIZATION, launchorg_id);
 		projectObject.put(Project.F_FUNCTION_ORGANIZATION, org_id);
 		projectObject.put(Project.F_CHARGER, prj_manager);
-		projectObject.put(Project.F_WORK_ORDER, workOrder);
+		
+		/**
+		 * BUG: ZHONGHUA
+		 * 工作令号字段是 数组类型
+		 */
+//		projectObject.put(Project.F_WORK_ORDER, workOrder);
+		projectObject.put(Project.F_WORK_ORDER, new String[]{workOrder});
+		
+		
 		projectObject.put(Project.F_PROJECT_TEMPLATE_ID, projecttemplate_id);
 		projectObject.put(Project.F_PLAN_FINISH, planfinish);
 		projectObject.put(Project.F_PLAN_START, planstart);

@@ -550,6 +550,9 @@
                id="perspective.home">
          </perspective>
          <perspective
+               id="perspective.workflow">
+         </perspective>
+         <perspective
                id="perspective.project">
          </perspective>
          <perspective
@@ -576,6 +579,9 @@
                id="perspective.home">
          </perspective>
          <perspective
+               id="perspective.workflow">
+         </perspective>
+         <perspective
                id="perspective.vault">
          </perspective>
          <perspective
@@ -591,6 +597,9 @@
          <perspective
                default="true"
                id="perspective.home">
+         </perspective>
+         <perspective
+               id="perspective.workflow">
          </perspective>
          <perspective
                default="true"
@@ -609,6 +618,9 @@
          <perspective
                default="true"
                id="perspective.home">
+         </perspective>
+         <perspective
+               id="perspective.workflow">
          </perspective>
          <perspective
                id="perspective.management">
@@ -876,6 +888,11 @@
                id="MESSAGEINBOX.REFRESH.INTERVAL"
                label="MESSAGEINBOX.REFRESH.INTERVAL"
                value="MESSAGEINBOX.REFRESH.INTERVAL">
+         </option>
+         <option
+               id="TASK.DELAYMARK"
+               label="TASK.DELAYMARK"
+               value="TASK.DELAYMARK">
          </option>
          <option
                id="SYSTEM.PROCESS_BASE_URL"

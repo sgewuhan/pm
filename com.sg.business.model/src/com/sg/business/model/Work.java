@@ -39,6 +39,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
+import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
@@ -2601,7 +2602,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return message;
 	}
 
-
 	private void doNoticeWorkAction(final IContext context,
 			final String actionName) throws Exception {
 		// doNoticeWorkActionInternal(context, actionName);
@@ -2854,8 +2854,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	// return true;
 	// }
 
-	public UserTask doSaveUserTask(String flowKey, Task task, String userid)
-			throws Exception {
+	public UserTask doSaveUserTask(String flowKey, Task task,
+			Map<String, Object> taskMetaData, String userid) throws Exception {
 
 		TaskData taskData = task.getTaskData();
 		Status status = taskData.getStatus();
@@ -2871,69 +2871,90 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		DBObject data = col.findOne(query);
 
+		UserTask userTask;
+
 		if (data != null) {
-			return ModelService.createModelObject(data, UserTask.class);
+			userTask = ModelService.createModelObject(data, UserTask.class);
+		} else {
+			/*
+			 * 构造需要保存的任务数据
+			 */
+			userTask = ModelService.createModelObject(UserTask.class);
+
+			// 保存任务id
+			userTask.setValue(UserTask.F_WORK_ID, get_id());
+
+			userTask.setValue(UserTask.F_WORK_DESC, getDesc());
+
+			// 任务状态
+			userTask.setValue(UserTask.F_STATUS, status.name());
+
+			userTask.setValue(UserTask.F_USERID, userid);
+
+			userTask.setValue(UserTask.F_TASKID, task.getId());
+
+			userTask.setValue(UserTask.F_PROCESSKEY, flowKey);
+
+			// 保存任务名称
+			List<I18NText> names = task.getNames();
+			Assert.isLegal(names != null && names.size() > 0, "流程活动名称没有定义");
+			String taskName = names.get(0).getText();
+			userTask.setValue(UserTask.F_DESC, taskName);
+			userTask.setValue(UserTask.F_TASK_NAME, taskName);// 兼容history
+
+			// 保存任务描述
+			List<I18NText> descriptions = task.getDescriptions();
+			if (descriptions != null && descriptions.size() > 0) {
+				String taskComment = descriptions.get(0).getText();
+				userTask.setValue(UserTask.F_DESCRIPTION, taskComment);
+			}
+
+			// 保存任务的实际执行人id
+			org.jbpm.task.User actualOwner = taskData.getActualOwner();
+			String actorId = actualOwner.getId();
+			userTask.setValue(UserTask.F_ACTUALOWNER, actorId);
+
+			// 保存任务的创建者
+			org.jbpm.task.User createdBy = taskData.getCreatedBy();
+			userTask.setValue(UserTask.F_CREATEDBY, createdBy.getId());
+
+			// 任务的创建时间
+			Date createdOn = taskData.getCreatedOn();
+			userTask.setValue(UserTask.F_CREATEDON, createdOn);
+
+			// 任务的流程定义id
+			String processId = taskData.getProcessId();
+			userTask.setValue(UserTask.F_PROCESSID, processId);
+
+			// 流程名称
+			DroolsProcessDefinition pd = new DroolsProcessDefinition(processId);
+			String processName = pd.getProcess().getName();
+			userTask.setValue(UserTask.F_PROCESSNAME, processName);
+
+			// 任务的流程实例id
+			long processInstanceId = taskData.getProcessInstanceId();
+			userTask.setValue(UserTask.F_PROCESSINSTANCEID, new Long(
+					processInstanceId));
+
+			// 任务的workitem ID
+			long workItemId = taskData.getWorkItemId();
+			userTask.setValue(UserTask.F_WORKITEMID, new Long(workItemId));
+
+			// 该任务未完成
+			userTask.setValue(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
+
 		}
 
-		/*
-		 * 构造需要保存的任务数据
-		 */
-
-		UserTask userTask = ModelService.createModelObject(UserTask.class);
-
-		// 保存任务id
-		userTask.setValue(UserTask.F_WORK_ID, get_id());
-		// 任务状态
-		userTask.setValue(UserTask.F_STATUS, status.name());
-
-		userTask.setValue(UserTask.F_USERID, userid);
-
-		userTask.setValue(UserTask.F_TASKID, task.getId());
-
-		userTask.setValue(UserTask.F_PROCESSKEY, flowKey);
-
-
-		// 保存任务名称
-		List<I18NText> names = task.getNames();
-		Assert.isLegal(names != null && names.size() > 0, "流程活动名称没有定义");
-		String taskName = names.get(0).getText();
-		userTask.setValue(UserTask.F_DESC, taskName);
-		userTask.setValue(UserTask.F_TASK_NAME, taskName);// 兼容history
-
-		// 保存任务描述
-		List<I18NText> descriptions = task.getDescriptions();
-		if (descriptions != null && descriptions.size() > 0) {
-			String taskComment = descriptions.get(0).getText();
-			userTask.setValue(UserTask.F_DESCRIPTION, taskComment);
+		// 保存表单数据
+		// 将taskformData补充到当前的任务数据中
+		if (taskMetaData != null && !taskMetaData.isEmpty()) {
+			Iterator<String> iterator = taskMetaData.keySet().iterator();
+			while (iterator.hasNext()) {
+				String next = iterator.next();
+				String field = "form_" + next;
+				userTask.setValue(field, taskMetaData.get(next));
+			}
 		}
-
-		// 保存任务的实际执行人id
-		org.jbpm.task.User actualOwner = taskData.getActualOwner();
-		String actorId = actualOwner.getId();
-		userTask.setValue(UserTask.F_ACTUALOWNER, actorId);
-
-		// 保存任务的创建者
-		org.jbpm.task.User createdBy = taskData.getCreatedBy();
-		userTask.setValue(UserTask.F_CREATEDBY, createdBy.getId());
-
-		// 任务的创建时间
-		Date createdOn = taskData.getCreatedOn();
-		userTask.setValue(UserTask.F_CREATEDON, createdOn);
-
-		// 任务的流程定义id
-		String processId = taskData.getProcessId();
-		userTask.setValue(UserTask.F_PROCESSID, processId);
-
-		// 任务的流程实例id
-		long processInstanceId = taskData.getProcessInstanceId();
-		userTask.setValue(UserTask.F_PROCESSINSTANCEID, new Long(processInstanceId));
-
-		// 任务的workitem ID
-		long workItemId = taskData.getWorkItemId();
-		userTask.setValue(UserTask.F_WORKITEMID, new Long(workItemId));
-
-		// 该任务未完成
-		userTask.setValue(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
 
 		userTask.doSave(new BackgroundContext());
 		return userTask;
@@ -2959,31 +2980,31 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String userId = context.getAccountInfo().getConsignerId();
 		Task task = WorkflowService.getDefault().startTask(userId, taskId);
 
-		UserTask newUserTask = doSaveUserTask(processKey, task, userId);
-
 		Assert.isNotNull(task, "开始流程任务失败");
 
 		// 提取当前的任务数据
-		Map<String, Object> taskFormData = new HashMap<String, Object>();
-		taskFormData.put(IProcessControl.F_WF_TASK_ACTOR, context
+		Map<String, Object> taskMetaData = new HashMap<String, Object>();
+		taskMetaData.put(IProcessControl.F_WF_TASK_ACTOR, context
 				.getAccountInfo().getUserId());
-		taskFormData.put(IProcessControl.F_WF_TASK_STARTDATE, new Date());
-		taskFormData.put(IProcessControl.F_WF_TASK_ACTION,
+		taskMetaData.put(IProcessControl.F_WF_TASK_STARTDATE, new Date());
+		taskMetaData.put(IProcessControl.F_WF_TASK_ACTION,
 				IProcessControl.TASK_ACTION_START);
 
-		doSaveWorkflowHistroy(processKey, newUserTask, taskFormData, context);
+		UserTask newUserTask = doSaveUserTask(processKey, task, taskMetaData,
+				userId);
+		doSaveWorkflowHistroy(processKey, newUserTask, taskMetaData, context);
 
 		/**
 		 * 移到了UserTask的保存事件
 		 */
 		// 发送任务消息，并保存
 
-//		List<I18NText> names = task.getNames();
-//		String taskName = "";
-//		if (names != null && names.size() > 0) {
-//			taskName = names.get(0).getText();
-//		}
-//		doNoticeWorkflow(userId, taskName, processKey, "已启动", context);
+		// List<I18NText> names = task.getNames();
+		// String taskName = "";
+		// if (names != null && names.size() > 0) {
+		// taskName = names.get(0).getText();
+		// }
+		// doNoticeWorkflow(userId, taskName, processKey, "已启动", context);
 		// data.put(IProcessControl.F_WF_TASK_NOTICEDATE,
 		// message.getValue(Message.F_SENDDATE));
 	}
@@ -2996,13 +3017,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 *            {@link IWorkCloneFields#F_WF_CHANGE}<br/>
 	 *            可以支持绑定更多的流程定义
 	 * @param executeTask
-	 * @param taskFormData
+	 * @param taskMetaData
 	 * @param context
 	 * @throws Exception
 	 */
 	public void doCompleteTask(String processKey, UserTask executeTask,
 			Map<String, Object> inputParameter,
-			Map<String, Object> taskFormData, IContext context)
+			Map<String, Object> taskMetaData, IContext context)
 			throws Exception {
 		String lc = getLifecycleStatus();
 		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), "工作当前状态不允许执行流程操作");
@@ -3019,29 +3040,29 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Task task = WorkflowService.getDefault().completeTask(taskId, userId,
 				inputParameter);
 
-		UserTask newUserTask = doSaveUserTask(processKey, task, userId);
-
 		Assert.isNotNull(task, "完成流程任务失败");
 
-		taskFormData.put(IProcessControl.F_WF_TASK_ACTOR, context
+		taskMetaData.put(IProcessControl.F_WF_TASK_ACTOR, context
 				.getAccountInfo().getUserId());
-		taskFormData.put(IProcessControl.F_WF_TASK_FINISHDATE, new Date());
-		taskFormData.put(IProcessControl.F_WF_TASK_ACTION,
+		taskMetaData.put(IProcessControl.F_WF_TASK_FINISHDATE, new Date());
+		taskMetaData.put(IProcessControl.F_WF_TASK_ACTION,
 				IProcessControl.TASK_ACTION_COMPLETE);
 
-		doSaveWorkflowHistroy(processKey, newUserTask, taskFormData, context);
+		UserTask newUserTask = doSaveUserTask(processKey, task, taskMetaData,
+				userId);
+		doSaveWorkflowHistroy(processKey, newUserTask, taskMetaData, context);
 
 		/**
 		 * 移到了UserTask的保存事件
 		 */
-//		// 发送任务消息，并保存
-//
-//		List<I18NText> names = task.getNames();
-//		String taskName = "";
-//		if (names != null && names.size() > 0) {
-//			taskName = names.get(0).getText();
-//		}
-//		doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
+		// // 发送任务消息，并保存
+		//
+		// List<I18NText> names = task.getNames();
+		// String taskName = "";
+		// if (names != null && names.size() > 0) {
+		// taskName = names.get(0).getText();
+		// }
+		// doNoticeWorkflow(userId, taskName, processKey, "已完成", context);
 	}
 
 	public List<UserTask> getReservedUserTasks(String userId) {
@@ -3201,7 +3222,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	// }
 
 	/**
-	 * 保存流程的历史记录
+	 * 保存流程的历史记录,本方法已被取代，即将删除
 	 * 
 	 * @param key
 	 * @param newUserTask
@@ -3209,6 +3230,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param context
 	 * @throws Exception
 	 */
+	@Deprecated
 	private void doSaveWorkflowHistroy(String key, UserTask newUserTask,
 			Map<String, Object> taskFormData, IContext context)
 			throws Exception {

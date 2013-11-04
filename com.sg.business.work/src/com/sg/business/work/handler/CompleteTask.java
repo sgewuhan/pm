@@ -12,6 +12,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 import org.jbpm.task.Task;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
@@ -87,65 +88,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 					work.doStartTask(Work.F_WF_EXECUTE, userTask, context);
 				}
 
-				// 1. 检查是否定义了流程表单,并通过表单进行控制
-				// 获得任务表单配置
-				TaskFormConfig config = userTask.getTaskFormConfig();
-				Task task = userTask.getTask();
-				TaskForm taskForm = userTask.makeTaskForm();
-
-				Map<String, Object> taskInputParameter = null;
-				Map<String, Object> taskFormData = new HashMap<String, Object>();
-
-				if (config != null) {
-					// 执行表单打开前的校验
-					IValidationHandler validator = config
-							.getValidationHandler();
-					if (validator != null) {
-						boolean valid = validator.validate(work);
-						if (!valid) {
-							throw new Exception(validator.getMessage());
-						}
-					}
-
-					// 是否定义了编辑器，如果定义了编辑器，打开编辑器
-					String taskFormEditorId = config.getEditorId();
-					DataEditorConfigurator ec = (DataEditorConfigurator) Widgets
-							.getEditorRegistry().getConfigurator(
-									taskFormEditorId);
-					if (ec instanceof DataEditorConfigurator) {
-						// 如果使用了input提供者，调用input提供者的方法来获得taskForm
-						taskForm = (TaskForm) config.getTaskFormInput(taskForm,
-								task);
-
-						DataObjectDialog dialog = DataObjectDialog.openDialog(
-								taskForm, ec, true, config.getSaveHandler(),
-								"流程表单");
-						int code = dialog.getReturnCode();
-						if (code != DataObjectDialog.OK) {
-							return;
-						}
-					}
-
-					taskInputParameter = config.getInputParameter(taskForm);
-					// 获取taskform中需要持久化的字段
-					String[] fields = config.getPersistentFields();
-					for (int i = 0; i < fields.length; i++) {
-						Object value = taskForm.getValue(fields[i]);
-						taskFormData.put(fields[i], value);
-					}
-					IWorkflowInfoProvider infoProvider = config
-							.getWorkflowInformationProvider();
-					if (infoProvider != null) {
-						taskFormData = infoProvider
-								.getWorkflowInformation(taskForm);
-					}
-
-					taskFormData.put("editor", taskFormEditorId);
-				}
-
-				// 2. 完成工作流任务
-				work.doCompleteTask(Work.F_WF_EXECUTE, userTask,
-						taskInputParameter, taskFormData, context);
+				doComplete(userTask, work, context);
 
 				// 3.刷新表格
 				vc.getViewer().update(work, null);
@@ -155,6 +98,69 @@ public class CompleteTask extends AbstractNavigatorHandler {
 				MessageUtil.showToast("完成流程任务", e);
 			}
 		}
+	}
+
+	public void doComplete(UserTask userTask, Work work,
+			IContext context) throws Exception {
+		// 1. 检查是否定义了流程表单,并通过表单进行控制
+		// 获得任务表单配置
+		TaskFormConfig config = userTask.getTaskFormConfig();
+		Task task = userTask.getTask();
+		TaskForm taskForm = userTask.makeTaskForm();
+
+		Map<String, Object> taskInputParameter = null;
+		Map<String, Object> taskFormData = new HashMap<String, Object>();
+
+		if (config != null) {
+			// 执行表单打开前的校验
+			IValidationHandler validator = config
+					.getValidationHandler();
+			if (validator != null) {
+				boolean valid = validator.validate(work);
+				if (!valid) {
+					throw new Exception(validator.getMessage());
+				}
+			}
+
+			// 是否定义了编辑器，如果定义了编辑器，打开编辑器
+			String taskFormEditorId = config.getEditorId();
+			DataEditorConfigurator ec = (DataEditorConfigurator) Widgets
+					.getEditorRegistry().getConfigurator(
+							taskFormEditorId);
+			if (ec instanceof DataEditorConfigurator) {
+				// 如果使用了input提供者，调用input提供者的方法来获得taskForm
+				taskForm = (TaskForm) config.getTaskFormInput(taskForm,
+						task);
+
+				DataObjectDialog dialog = DataObjectDialog.openDialog(
+						taskForm, ec, true, config.getSaveHandler(),
+						"流程表单");
+				int code = dialog.getReturnCode();
+				if (code != DataObjectDialog.OK) {
+					return;
+				}
+			}
+
+			taskInputParameter = config.getInputParameter(taskForm);
+			// 获取taskform中需要持久化的字段
+			String[] fields = config.getPersistentFields();
+			for (int i = 0; i < fields.length; i++) {
+				Object value = taskForm.getValue(fields[i]);
+				taskFormData.put(fields[i], value);
+			}
+			IWorkflowInfoProvider infoProvider = config
+					.getWorkflowInformationProvider();
+			if (infoProvider != null) {
+				taskFormData = infoProvider
+						.getWorkflowInformation(taskForm);
+			}
+
+			taskFormData.put("editor", taskFormEditorId);
+		}
+
+		// 2. 完成工作流任务
+		work.doCompleteTask(Work.F_WF_EXECUTE, userTask,
+				taskInputParameter, taskFormData, context);
 	}
 
 	@Override

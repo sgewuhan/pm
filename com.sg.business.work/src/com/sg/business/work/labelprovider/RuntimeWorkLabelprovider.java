@@ -250,12 +250,6 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 			planStart = sdf.format(_planStart);
 		}
 
-		// String selectbar = "<img src='"
-		// + getSelectorURL(work,ImageResource.WHITE_BULLETIN)
-		// +
-		// "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
-		// sb.append(selectbar);
-
 		sb.append("");
 		sb.append("<b>P</b>:");
 		sb.append(planStart);

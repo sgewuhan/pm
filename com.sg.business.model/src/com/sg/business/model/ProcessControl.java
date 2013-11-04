@@ -141,7 +141,7 @@ public abstract class ProcessControl implements IProcessControl {
 	 * @param query
 	 * @return
 	 */
-	@Override
+	@Override @Deprecated
 	public BasicBSONList getWorkflowHistroyData(String key, boolean query) {
 		String field = key + POSTFIX_HISTORY;
 		Object value = primaryObject.getValue(field, query);
