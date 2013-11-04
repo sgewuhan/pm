@@ -1,13 +1,13 @@
-package com.tmt.kfzx.field.control;
+package com.tmt.tb.field.control;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 import com.sg.business.model.Organization;
 import com.sg.widgets.part.editor.fields.INavigatorSelectorControl;
 
-public class DeptSelectContor implements INavigatorSelectorControl {
+public class DeptSelectContorOfTB implements INavigatorSelectorControl {
 
-	public DeptSelectContor() {
+	public DeptSelectContorOfTB() {
 	}
 
 	@Override
