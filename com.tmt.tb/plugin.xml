@@ -1384,9 +1384,62 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            editorId="tbProjectChangeForCustomers.checkdep_leader"
             name="客户设计更改输入"
-            processDefinitionId="tbProjectChangeForCustomers">
+            persistentFields="dep_leader"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="dep_leader"
+               taskFormFieldName="dep_leader">
+         </processParameter>
       </taskForm>
+      <taskForm
+            name="需求确认和工作指派"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForCustomers.checkdep_leader"
+            name="客户设计更改输入">
+         <basicpage
+               id="page1"
+               title="设计更改">
+            <pagecolumn>
+               <section
+                     label="请选择接收设计变更部门">
+                  <navigatorSelector
+                        editable="true"
+                        id="dep_leader"
+                        label="设计更改部门"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        modelClass="com.sg.business.model.User"
+                        name="dep_leader"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="_id"
+                        navigatorSelectorControl="com.tmt.jszx.field.control.DeptSelectControl"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="com.tmt.tb.editor2"
+            dbName="com.tmt.tb.editor2"
+            id="com.tmt.tb.editor2"
+            name="需求确认和工作指派">
+      </editor>
    </extension>
 
 </plugin>
