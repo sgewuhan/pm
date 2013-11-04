@@ -1378,5 +1378,12 @@
             serviceProvider="com.tmt.tb.bpmservice.ProjcetApproveMessageOfTB">
       </service>
    </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            name="客户设计更改输入"
+            processDefinitionId="tbProjectChangeForCustomers">
+      </taskForm>
+   </extension>
 
 </plugin>
