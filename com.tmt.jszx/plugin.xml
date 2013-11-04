@@ -248,7 +248,7 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
-                        navigatorSelectorControl="com.tmt.jszx.field.control.DeptSelectControl"
+                        navigatorSelectorControl="com.tmt.jszx.field.control.DeptSelectControlOfJSZX"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
