@@ -7,9 +7,9 @@ import com.sg.business.model.Role;
 import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.part.editor.fields.INavigatorSelectorControl;
 
-public class DeptSelectControl implements INavigatorSelectorControl {
+public class DeptSelectControlOfJSZX implements INavigatorSelectorControl {
 
-	public DeptSelectControl() {
+	public DeptSelectControlOfJSZX() {
 	}
 
 	@Override
