@@ -9,6 +9,7 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
  com.sg.widgets,
  com.sg.business.commons,
- com.mobnut.db
+ com.mobnut.db,
+ com.sg.business.model
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
