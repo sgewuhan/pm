@@ -9,8 +9,12 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSFile;
+import com.mongodb.util.JSON;
 import com.sg.business.model.Document;
+import com.sg.business.model.User;
 import com.sg.business.resource.BusinessResource;
 
 public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
@@ -25,11 +29,11 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		if (element instanceof Document) {
 			Document doc = (Document) element;
 			return getDocumentText(doc);
-		} else if(element instanceof RemoteFile){
+		} else if (element instanceof RemoteFile) {
 			RemoteFile remoteFile = (RemoteFile) element;
 			return getRemoteFileText(remoteFile);
 		}
-		
+
 		return "";
 
 	}
@@ -39,9 +43,9 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		GridFSFile gsFile = remoteFile.getGridFSFile();
 		Date uploadDate = gsFile.getUploadDate();
 		long length = gsFile.getLength();
-//		String md5 = gsFile.getMD5();
-//		DBObject meta = gsFile.getMetaData();
-		
+		// String md5 = gsFile.getMD5();
+		// DBObject meta = gsFile.getMetaData();
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 
@@ -51,15 +55,28 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 
 		// 显示文档图标
 		sb.append("<img src='");
-		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_FILE_24, BusinessResource.PLUGIN_ID));
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_FILE_24,
+				BusinessResource.PLUGIN_ID));
 		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />");
 
 		// 显示文件名称
+
+		// String url = FileUtil.getDownloadUrl(remoteFile.getDbName(),
+		// remoteFile.getNamespace(), remoteFile.getObjectId(), fileName);
+		// url = url.replaceAll("\\&", "&amp;");
+
+		sb.append("<a href='");
+		DBObject dbo = new BasicDBObject();
+		dbo.put("d", remoteFile.getDbName());
+		dbo.put("n", remoteFile.getNamespace());
+		dbo.put("o", remoteFile.getObjectId());
+		dbo.put("a", fileName);
+		sb.append(JSON.serialize(dbo) +  "@download");
+		
+		sb.append("' target=\"_rwt\">");
 		sb.append(fileName);
+		sb.append("</a>");
 
-		
-
-		
 		sb.append("<br/>");
 		// 显示大小
 		sb.append(getLength(length));
@@ -68,31 +85,26 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("</small>");
 
 		sb.append("</span>");
-		return sb.toString();
-		
+		String text = sb.toString();
+		return text;
 	}
 
 	private String getLength(long length) {
-		if(length>=1000*1000*1000){//TB
-			double r = length/(1000*1000*1000d);
-			return String.format("%.2f",r)+"TB"; 
-		}else if(length>=1000*1000){
-			double r = length/(1000*1000d);
-			return String.format("%.2f",r)+"MB"; 
-		}else if(length>=1000){
-			double r = length/(1000d);
-			return String.format("%.2f",r)+"KB"; 
-		}else{
-			return length +"Byte";
+		if (length >= 1000 * 1000 * 1000) {// TB
+			double r = length / (1000 * 1000 * 1000d);
+			return String.format("%.2f", r) + "TB";
+		} else if (length >= 1000 * 1000) {
+			double r = length / (1000 * 1000d);
+			return String.format("%.2f", r) + "MB";
+		} else if (length >= 1000) {
+			double r = length / (1000d);
+			return String.format("%.2f", r) + "KB";
+		} else {
+			return length + "Byte";
 		}
-			
+
 	}
-	
-	public static void main(String[] args) {
-		long length = 928388338;
-		double r = length/(1000*1000*1000d);
-		System.out.println(String.format("%.2f",r));
-	}
+
 
 	private String getDocumentText(Document doc) {
 		StringBuffer sb = new StringBuffer();
@@ -104,16 +116,14 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("|");
 		sb.append(ca.getUserId());
 		sb.append("</span>");
-		
-		//下载链接
+
+		// 下载链接
 		sb.append("<span style='float:right;padding-right:4px'>");
-		sb.append("<a href=\"" + doc.get_id().toString() + "@"
-				+ "downloadall" + "\" target=\"_rwt\">");
+		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall"
+				+ "\" target=\"_rwt\">");
 		sb.append("<img src='");
-		sb.append(FileUtil.getImageURL(
-				BusinessResource.IMAGE_DOWNLOAD_16X12,
-				BusinessResource.PLUGIN_ID,
-				BusinessResource.IMAGE_FOLDER));
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWNLOAD_16X12,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
 		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='16' height='12' />");
 		sb.append("</a>");
 		sb.append("</span>");
@@ -123,6 +133,16 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append(doc.getTypeIconURL());
 		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />");
 
+		if(doc.isLocked()){
+			sb.append("<img src='");
+			sb.append(FileUtil.getImageURL(
+					BusinessResource.IMAGE_LOCK_16,
+					BusinessResource.PLUGIN_ID,
+					BusinessResource.IMAGE_FOLDER));
+			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />");
+		}
+		
+		
 		// 显示文件名称
 		String desc = doc.getDesc();
 		desc = Utils.getPlainText(desc);
@@ -137,13 +157,26 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("Rev:");
 		sb.append(rev);
 		sb.append("</b>");
-		
+
 		// 显示状态
 		String status = doc.getLifecycleName();
 		sb.append(" <span style='color:rgb(0,128,0)'>");
 		sb.append(status);
 		sb.append("</span>");
 
+		if(doc.isLocked()){
+			sb.append("  锁定(");
+			User lockuser = doc.getLockedBy();
+			if(lockuser!=null){
+				sb.append(lockuser);
+			}
+			Date date = doc.getLockOn();
+			if(date!=null){
+				sb.append(", ");
+				sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", date));
+			}
+			sb.append(")");
+		}
 		
 		sb.append("<br/>");
 		sb.append("<small>");

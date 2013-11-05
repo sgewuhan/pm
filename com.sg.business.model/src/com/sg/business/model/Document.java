@@ -317,13 +317,17 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		return Boolean.TRUE.equals(getValue(F_LOCK));
 	}
 
-	public User lockedBy() {
+	public User getLockedBy() {
 		String userId = getStringValue(F_LOCKED_BY);
+		if(Utils.isNullOrEmpty(userId)){
+			return null;
+		}
 		return UserToolkit.getUserById(userId);
 	}
 
-	public Date lockOn() {
+	public Date getLockOn() {
 		return getDateValue(F_LOCKED_ON);
 	}
+
 
 }

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.bson.types.ObjectId;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -27,6 +29,8 @@ import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.ModelService;
 import com.mongodb.DB;
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import com.sg.business.model.Document;
 import com.sg.business.model.UserTask;
 import com.sg.widgets.part.view.TreeNavigator;
@@ -41,16 +45,23 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == RWT.HYPERLINK) {
 					try {
-						String _id = event.text.substring(
+						String _data = event.text.substring(
 								event.text.lastIndexOf("/") + 1,
 								event.text.indexOf("@"));
 						String action = event.text.substring(event.text
 								.indexOf("@") + 1);
-						Document doc = ModelService.createModelObject(
-								Document.class, new ObjectId(_id));
 						if ("downloadall".equals(action)) {
+							Document doc = ModelService.createModelObject(
+									Document.class, new ObjectId(_data));
 							download(doc);
-						} else {
+						} else if("download".equals(action)){
+							_data = URLDecoder.decode(_data, "utf-8");
+							DBObject dbo = (DBObject) JSON.parse(_data);
+							String db = (String) dbo.get("d");
+							String namespace = (String) dbo.get("n");
+							String oid = (String) dbo.get("o");
+							String fileName = (String) dbo.get("a");
+							FileUtil.download(getViewSite().getShell(),db, namespace, oid, fileName);
 						}
 						doRefresh();
 					} catch (Exception e) {
@@ -166,6 +177,11 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 
 	@Override
 	public boolean canRead() {
+		IStructuredSelection selection = navi.getViewerControl().getSelection();
+		if(selection!=null&&!selection.isEmpty()){
+			Object selected = selection.getFirstElement();
+			return selected instanceof Document;
+		}
 		return false;
 	}
 
