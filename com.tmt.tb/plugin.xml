@@ -6,11 +6,32 @@
       <taskForm
             editorId="tbprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number"
-            processDefinitionId="tb.tbProjectApplication">
+            persistentFields="prj_number,dept_leader,prj_admin,dept"
+            processDefinitionId="tb.tbProjectApplication"
+            saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB">
          <processParameter
                processParameterName="prj_number"
                taskFormFieldName="prj_number">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.GetDeptLeaderByDepartmentOfTB"
+               processParameterName="dept_leader"
+               taskFormFieldName="dept_leader">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="dept"
+               taskFormFieldName="dept">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.GetProjectAdminByDepartmentOfTB"
+               processParameterName="prj_admin"
+               taskFormFieldName="prj_admin">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.GetProjectFinancialByDepartmentOfTB"
+               processParameterName="prj_financial"
+               taskFormFieldName="prj_financial">
          </processParameter>
       </taskForm>
       <taskForm
@@ -24,28 +45,53 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="tbprojectapplication.approve"
-            name="批准"
-            persistentFields="choice,comment,dept_leader,prj_admin,dept"
+            editorId="tbprojectapplication.reviewer"
+            name="确认评审组"
+            persistentFields="reviewer_list,choice,confirmtime,confirmaddress"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.GetDeptLeaderByDepartmentOfTB"
-               processParameterName="dept_leader"
-               taskFormFieldName="dept_leader">
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="reviewer_list"
+               taskFormFieldName="reviewer_list">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.GetProjectAdminByDepartmentOfTB"
-               processParameterName="prj_admin"
-               taskFormFieldName="prj_admin">
+               processParameterName="confirmtime"
+               taskFormFieldName="confirmtime">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
-               processParameterName="dept"
-               taskFormFieldName="dept">
+               processParameterName="confirmaddress"
+               taskFormFieldName="confirmaddress">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tb.tbProjectReview.expertgroupcountersign"
+            name="专家评审"
+            persistentFields="choice,comment,commentfile"
+            processDefinitionId="tb.tbProjectReview"
+            saveHandler="com.tmt.tb.handler.ProjectReviewExpertCommentfileOfTB">
+      </taskForm>
+      <taskForm
+            editorId="tb.tbProjectReview.meetingreview"
+            name="会议评审"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectReview">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbprojectapplication.approve"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectApplication">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
@@ -73,7 +119,7 @@
       <taskForm
             editorId="tbprojectapplication.createproject"
             name="创建项目"
-            persistentFields="standloneworkdesc,standloneworkdescription,standloneworkplanstart,standloneworkplanfinish,projecttemplate_id,standardset,producttype,projecttype"
+            persistentFields="standloneworkdesc,standloneworkdescription,standloneworkplanstart,standloneworkplanfinish,projecttemplate_id,standardset,producttype,projecttype,budget_id"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="standloneworkdescription"
@@ -111,6 +157,51 @@
                processParameterName="standloneworkdesc"
                taskFormFieldName="standloneworkdesc">
          </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="budget_id"
+               taskFormFieldName="budget_id">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbprojectapplication.financial"
+            name="财务审核"
+            persistentFields="choice,changeworkorder,changebudget"
+            processDefinitionId="tb.tbProjectApplication">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="changeworkorder"
+               taskFormFieldName="changeworkorder">
+         </processParameter>
+         <processParameter
+               processParameterName="changebudget"
+               taskFormFieldName="changebudget">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbprojectapplication.workorder"
+            inputHandler="com.tmt.tb.handler.ProjectApplicationWorkOrderOfTB"
+            name="修改工作令号"
+            persistentFields="prj_number"
+            processDefinitionId="tb.tbProjectApplication">
+         <processParameter
+               processParameterName="prj_number"
+               taskFormFieldName="prj_number">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbprojectapplication.budget"
+            name="修改预算"
+            persistentFields="budget_id"
+            processDefinitionId="tb.tbProjectApplication">
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="budget_id"
+               taskFormFieldName="budget_id">
+         </processParameter>
       </taskForm>
    </extension>
    <extension
@@ -138,6 +229,21 @@
                         type="String"
                         widthHint="320">
                   </text>
+               </section>
+               <section
+                     label="请选择承担部门">
+                  <navigatorSelector
+                        editable="true"
+                        id="dept"
+                        label="承担部门"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.Organization"
+                        name="dept"
+                        navigatorId="tb.taskforms.organization.selector"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -194,6 +300,181 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
+            id="tbprojectapplication.reviewer"
+            name="确认评审组">
+         <basicpage
+               id="basicpage1"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请确认评审方式">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审方式"
+                        labelVisible="false"
+                        name="choice"
+                        option="评审方式"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+               <section
+                     label="请填写评审组成员">
+                  <list
+                        addTableItemHandler="com.tmt.tb.field.action.AddRiewerListOfTB"
+                        editable="true"
+                        id="reviewer_list"
+                        inputValidator="com.tmt.tb.field.CheckReviewerOfTBProjectApplication"
+                        label="评审组"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="reviewer_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="确定评审会时间及地点">
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="confirmtime"
+                        inputValidator="com.tmt.tb.field.CheckConfirmOfTBProjectApplication"
+                        label="评审会时间"
+                        labelVisible="true"
+                        name="confirmtime"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        inputValidator="com.tmt.tb.field.CheckConfirmOfTBProjectApplication"
+                        label="评审会地点"
+                        labelVisible="true"
+                        name="confirmaddress"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tb.tbProjectReview.expertgroupcountersign"
+            name="专家评审">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写专家意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="评审意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="commentfile"
+                        labelVisible="true"
+                        name="commentfile"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tb.tbProjectReview.meetingreview"
+            name="会议评审">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写会议评审意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="评审意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否整改"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
             id="tbprojectapplication.approve"
             name="批准">
          <basicpage
@@ -207,7 +488,7 @@
                         editable="true"
                         id="comment"
                         inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="审核意见"
+                        label="批准意见"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -218,7 +499,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="审核结论"
+                        label="批准结论"
                         labelVisible="false"
                         name="choice"
                         option="是否整改"
@@ -226,22 +507,6 @@
                         required="true"
                         type="String">
                   </radio>
-               </section>
-               <section
-                     label="请选择承担部门">
-                  <navigatorSelector
-                        editable="true"
-                        id="dept"
-                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="承担部门"
-                        labelVisible="true"
-                        modelClass="com.sg.business.model.Organization"
-                        name="dept"
-                        navigatorId="tb.taskforms.organization.selector"
-                        navigatorReturnField="_id"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -399,6 +664,103 @@
                id="project.basicpage.3"
                pageDelegator="com.tmt.tb.editor.page.StandloneWorkPageOfTB"
                title="选项">
+         </basicpage>
+         <basicpage
+               description="项目预算科目和金额"
+               id="project.basicpage.4"
+               pageDelegator="com.tmt.tb.editor.page.ProjectBudgetOfCreateProjectPage"
+               title="预算">
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="task"
+            dbName="pm2"
+            id="tbprojectapplication.financial"
+            name="财务审核">
+         <basicpage
+               description="项目的基本信息"
+               id="project.basicpage.1"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="请确认工作令号">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="prj_number"
+                        label="工作令号"
+                        labelVisible="true"
+                        name="prj_number"
+                        persistable="true"
+                        type="String"
+                        widthHint="320">
+                  </text>
+               </section>
+               <section
+                     label="请填写审核意见和结论">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="审核结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否整改"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+                  <radio
+                        editable="true"
+                        id="changeworkorder"
+                        label="工作令号是否有误"
+                        labelVisible="false"
+                        name="changeworkorder"
+                        option="是\否"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+                  <radio
+                        editable="true"
+                        id="changebudget"
+                        label="预算是否有误"
+                        labelVisible="false"
+                        name="changebudget"
+                        option="是\否"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="项目预算科目和金额"
+               id="project.basicpage.4"
+               pageDelegator="com.tmt.tb.editor.page.ProjectBudgetOfTaskFormPage"
+               title="预算">
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="task"
+            dbName="pm2"
+            id="tbprojectapplication.budget"
+            name="修改预算">
+         <basicpage
+               description="项目预算科目和金额"
+               id="project.basicpage.4"
+               pageDelegator="com.tmt.tb.editor.page.ProjectBudgetOfTaskFormPage"
+               title="预算">
          </basicpage>
          <basicpage
                id="page2"
@@ -1353,6 +1715,7 @@
          </structure>
       </tree>
       <tree
+            autoExpandLevel="2"
             dataSet="com.tmt.tb.dataset.UserSelectorOfTaskforms"
             headerVisiable="false"
             id="tb.taskforms.user.selector">
@@ -1397,12 +1760,13 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            name="设计更改申请"
-            persistentFields="developable,check,qm,plan,craft,approve,auditor,purchase,develop,prj_number"
+            editorId="tbProjectChangeForDesign.designapplication"
+            name="设计更改"
+            persistentFields="choice"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="developable"
-               taskFormFieldName="developable">
+               taskFormFieldName="choice">
          </processParameter>
          <processParameter
                processParameterName="check"
@@ -1441,14 +1805,437 @@
                taskFormFieldName="develop">
          </processParameter>
       </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.audit"
+            name="更改方案校核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.craft"
+            name="更改方案工艺审核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="craft_new"
+               taskFormFieldName="craft_new">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.audit"
+            name="更改方案审核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.audit"
+            name="更改方案批准"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.purchase"
+            name="更改方案采购审批"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="purchase_new"
+               taskFormFieldName="purchase_new">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.develop"
+            name="更改方案开发中心审批"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="develop_new"
+               taskFormFieldName="develop_new">
+         </processParameter>
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
-            collectionName="com.tmt.tb.editor1"
-            dbName="com.tmt.tb.editor1"
-            id="com.tmt.tb.editor1"
-            name="com.tmt.tb.editor1">
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.designapplication"
+            name="设计更改申请">
+         <basicpage
+               id="page1"
+               title="设计更改申请">
+            <pagecolumn>
+               <section
+                     label="设计更改申请">
+                  <navigatorSelector
+                        editable="true"
+                        id="check"
+                        label="请确定更改方案校核人员"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="check"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="auditor"
+                        label="请确定更改方案审核人员"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="auditor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="approve"
+                        label="请确定更改方案批准人员"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="approve"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="qm"
+                        label="请确定检验标准修改人员"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.Organization"
+                        name="qm"
+                        navigatorId="organization.user.selector"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="check"
+                        label="请确定更改方案在制品处理人员"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="check"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="craft"
+                        label="请确定更改方案工艺审核人员"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="craft"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="purchase"
+                        label="请确定更改方案采购审核人员"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="purchase"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="develop"
+                        label="请确定更改方开发中心审核人员"
+                        labelVisible="true"
+                        labelprovider="userid"
+                        modelClass="com.sg.business.model.Organization"
+                        name="develop"
+                        navigatorId="organization.user.selector"
+                        navigatorSelectorControl="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="prj_number"
+                        label="请输入变更项目的工作令号"
+                        labelVisible="true"
+                        name="prj_number"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="变更方案是否需要开发中心审核"
+                        labelVisible="true"
+                        name="choice"
+                        option="是\否"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.audit"
+            name="审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.craft"
+            name="更改方案工艺审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <navigatorSelector
+                        editable="true"
+                        id="craft_new"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="工艺文件修订者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="craft_new"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.purchase"
+            name="更改方案采购审批">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <navigatorSelector
+                        editable="true"
+                        id="purchase_new"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="采购制品处理者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="purchase_new"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.develop"
+            name="更改方案开发中心审批">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <navigatorSelector
+                        editable="true"
+                        id="develop_new"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="开发中心方案执行者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="develop_new"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
       </editor>
       </extension>
 
@@ -1483,6 +2270,134 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.check"
+            name="设计更改"
+            persistentFields="choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="developable"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="check"
+               taskFormFieldName="check">
+         </processParameter>
+         <processParameter
+               processParameterName="qm"
+               taskFormFieldName="qm">
+         </processParameter>
+         <processParameter
+               processParameterName="plan"
+               taskFormFieldName="plan">
+         </processParameter>
+         <processParameter
+               processParameterName="craft"
+               taskFormFieldName="craft">
+         </processParameter>
+         <processParameter
+               processParameterName="approve"
+               taskFormFieldName="approve">
+         </processParameter>
+         <processParameter
+               processParameterName="auditor"
+               taskFormFieldName="auditor">
+         </processParameter>
+         <processParameter
+               processParameterName="purchase"
+               taskFormFieldName="purchase">
+         </processParameter>
+         <processParameter
+               processParameterName="develop"
+               taskFormFieldName="develop">
+         </processParameter>
+         <processParameter
+               processParameterName="prj_number"
+               taskFormFieldName="prj_number">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.audit"
+            name="更改方案校核"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.craft"
+            name="更改方案工艺审核"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="craft_new"
+               taskFormFieldName="craft_new">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.audit"
+            name="更改方案审核"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.audit"
+            name="更改方案批准"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.purchase"
+            name="更改方案采购审批"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="purchase_new"
+               taskFormFieldName="purchase_new">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.develop"
+            name="更改方案开发中心审批"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="develop_new"
+               taskFormFieldName="develop_new">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForCustomers.audit"
+            name="更改方案客户审核"
+            persistentFields="comment,choice"
+            processDefinitionId="tb.tbProjectChangeForCustomers">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -1507,7 +2422,6 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
-                        navigatorSelectorControl="com.tmt.tb.field.control.DeptSelectControl"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -1530,7 +2444,21 @@
                title="需求确认和工作指派">
             <pagecolumn>
                <section
-                     label="请选择接收设计变更部门">
+                     label="需求确认和工作指派">
+                  <navigatorSelector
+                        editable="true"
+                        id="worker"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="设计更改者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="worker"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -1554,19 +2482,6 @@
                         required="false"
                         type="String">
                   </radio>
-                  <navigatorSelector
-                        editable="true"
-                        id="worker"
-                        label="执行人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="worker"
-                        navigatorId="jszx.project_apply.worker.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1579,8 +2494,370 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tbProjectChangeForCustomers.checker"
+            id="tbProjectChangeForCustomers.check"
             name="设计更改">
+         <basicpage
+               id="page1"
+               title="需求确认和工作指派">
+            <pagecolumn>
+               <section
+                     label="设计更改执行者确认">
+                  <navigatorSelector
+                        editable="true"
+                        id="check"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="方案校核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="check"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="qm"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="检验标准修订者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="qm"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="plan"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="制品处理者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="plan"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="craft"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="工艺文件修订者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="craft"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="approve"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="更改方案批准者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="approve"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="auditor"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="更改方案审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="auditor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="purchase"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="更改方案采购审批者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="purchase"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="develop"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="开发中心审批者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="develop"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="prj_number"
+                        label="工作令号"
+                        labelVisible="true"
+                        name="工作令号"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="变更方案是否需要开发中心审核"
+                        labelVisible="false"
+                        name="choice"
+                        option="是\否"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForCustomers.audit"
+            name="审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForCustomers.craft"
+            name="更改方案工艺审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <navigatorSelector
+                        editable="true"
+                        id="craft_new"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="工艺文件修订者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="craft_new"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForCustomers.purchase"
+            name="更改方案采购审批">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <navigatorSelector
+                        editable="true"
+                        id="purchase_new"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="采购制品处理者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="purchase_new"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForCustomers.develop"
+            name="更改方案开发中心审批">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <navigatorSelector
+                        editable="true"
+                        id="develop_new"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="开发中心方案执行者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="develop_new"
+                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
       </editor>
    </extension>
    <extension
