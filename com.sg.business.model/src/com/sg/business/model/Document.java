@@ -1,14 +1,28 @@
 package com.sg.business.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.graphics.Image;
 
+import com.artofsolving.jodconverter.DocumentConverter;
+import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
+import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
+import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
 import com.mobnut.admin.dataset.Setting;
+import com.mobnut.commons.Commons;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
+import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
@@ -41,7 +55,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String STATUS_DEPOSED_ID = "deposed";
 	public static final String STATUS_DEPOSED_TEXT = "已废弃";
 
-	
 	/**
 	 * 文档类型
 	 */
@@ -105,15 +118,90 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String F_LOCKED_ON = "lockdate";
 
 	@Override
+	protected String[] getVersionFields() {
+		return new String[] { "$all" };
+	}
+
+	@Override
 	public boolean doSave(IContext context) throws Exception {
 		makeMajorVersionNumber();
 		makeLifecycleStatus();
-		return super.doSave(context);
+		boolean saved = super.doSave(context);
+
+		generatePreview();
+
+		return saved;
+	}
+
+	protected void generatePreview() {
+		Job job = new Job("generate preview internal") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				OpenOfficeConnection connection = new SocketOpenOfficeConnection(
+						Commons.getOfficeServerIP(), Commons.getOfficeSocket());
+				try {
+					connection.connect();
+				} catch (ConnectException e) {
+					return Status.CANCEL_STATUS;
+				}
+
+				// convert
+				DocumentConverter converter = new OpenOfficeDocumentConverter(
+						connection);
+
+				File serverFile;
+				File previewFile;
+				ObjectId previewOid;
+
+				List<RemoteFile> files = getGridFSFileValue(F_VAULT);
+				if (files != null && files.size() > 0) {
+					for (int i = 0; i < files.size(); i++) {
+						GridFSFilePrevieweUtil previewUtil = new GridFSFilePrevieweUtil();
+						RemoteFile remoteFile = files.get(i);
+						if (previewUtil.isPreviewAvailable()) {
+							continue;
+						}
+						String pathname = System.getProperty("user.dir")
+								+ "/temp";
+						try {
+							serverFile = remoteFile.createServerFile(pathname);
+						} catch (IOException e1) {
+							continue;
+						}
+						previewUtil.setRemoteFile(remoteFile);
+
+						previewOid = new ObjectId();
+						String masterfileName = serverFile.getName();
+						String previewFileName = masterfileName.substring(0,
+								masterfileName.lastIndexOf(".")) + ".pdf";
+						previewFile = new File(serverFile.getParent() + "/"
+								+ previewFileName);
+
+						// 如果目标路径不存在, 则新建该路径
+						if (!previewFile.getParentFile().exists()) {
+							previewFile.getParentFile().mkdirs();
+						}
+
+						converter.convert(serverFile, previewFile);
+						remoteFile.setPreviewUploaded(previewFile, previewOid);
+						try {
+							remoteFile.addPreview();
+						} catch (FileNotFoundException e) {
+							continue;
+						}
+
+					}
+				}
+				connection.disconnect();
+				return Status.OK_STATUS;
+			}
+		};
+		job.schedule();
 	}
 
 	private void makeLifecycleStatus() {
 		String lc = getLifecycle();
-		if(Utils.isNullOrEmpty(lc)){
+		if (Utils.isNullOrEmpty(lc)) {
 			setValue(F_LIFECYCLE, STATUS_WORKING_ID);
 		}
 	}
@@ -208,7 +296,18 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 */
 	@Override
 	public boolean canEdit(IContext context) {
-		return super.canEdit(context);
+		String lc = getLifecycle();
+		if (lc.equals(STATUS_WORKING_ID)) {
+			if (isLocked()) {
+				String userId = context.getAccountInfo().getConsignerId();
+				String lockedBy = getStringValue(F_LOCKED_BY);
+				return userId.equals(lockedBy);
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -282,7 +381,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	public String getTypeIconURL() {
 		String type = getDocumentType();
-		if (type != null) {
+		if (!Utils.isNullOrEmpty(type)) {
 			return FileUtil.getImageURL("doc_" + type + "_24.png",
 					BusinessResource.PLUGIN_ID);
 		}
@@ -300,14 +399,14 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public String getLifecycle() {
 		return getStringValue(F_LIFECYCLE);
 	}
-	
+
 	public String getLifecycleName() {
 		String lc = getStringValue(F_LIFECYCLE);
-		if(STATUS_DEPOSED_ID.equals(lc)){
+		if (STATUS_DEPOSED_ID.equals(lc)) {
 			return STATUS_DEPOSED_TEXT;
-		}else if(STATUS_RELEASED_ID.equals(lc)){
+		} else if (STATUS_RELEASED_ID.equals(lc)) {
 			return STATUS_RELEASED_TEXT;
-		}else if(STATUS_WORKING_ID.equals(lc)){
+		} else if (STATUS_WORKING_ID.equals(lc)) {
 			return STATUS_WORKING_TEXT;
 		}
 		return null;
@@ -317,13 +416,25 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		return Boolean.TRUE.equals(getValue(F_LOCK));
 	}
 
-	public User lockedBy() {
+	public User getLockedBy() {
 		String userId = getStringValue(F_LOCKED_BY);
+		if (Utils.isNullOrEmpty(userId)) {
+			return null;
+		}
 		return UserToolkit.getUserById(userId);
 	}
 
-	public Date lockOn() {
+	public Date getLockOn() {
 		return getDateValue(F_LOCKED_ON);
+	}
+
+	public String getEditor() {
+		return EDITOR;
+	}
+
+	@Override
+	public boolean canDelete(IContext context) {
+		return canEdit(context);
 	}
 
 }

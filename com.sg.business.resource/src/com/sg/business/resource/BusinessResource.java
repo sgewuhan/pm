@@ -29,6 +29,7 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_ACTIVATED_16 = "activated_16.png";//$NON-NLS-1$
 	public static final String IMAGE_DENIED_32 = "denied_32.png";//$NON-NLS-1$
+	public static final String IMAGE_LOCK_16 = "lock_16.png";//$NON-NLS-1$
 
 	public static final String IMAGE_ATTACHMENT_24 = "attachment_24.png";//$NON-NLS-1$
 
@@ -275,7 +276,7 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_FILE_24 = "file_24.png";
 
-	public static final String IMAGE_DOWNLOAD_16X12 = "download_16x12.png";
+	public static final String IMAGE_DOWNLOAD_15X10 = "download_15x10.png";
 
 
 	/**

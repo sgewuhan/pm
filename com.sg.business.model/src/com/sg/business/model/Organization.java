@@ -105,6 +105,17 @@ public class Organization extends PrimaryObject {
 	 * 公司代码，与SAP对应的公司代码
 	 */
 	public static final String F_COMPANY_CODE = "companycode";
+	
+	/**
+	 * PDM 图文档容器代码
+	 */
+	public static final String F_PDM_DOC_DRAWING_COMTAINER = "pdmcontainer";
+	
+	/**
+	 * PDM 零部件容器代码
+	 */
+	private static final String F_PDM_PART_COMTAINER = "pdmpartcontainer";
+
 
 	/**
 	 * 组织类型
@@ -116,6 +127,9 @@ public class Organization extends PrimaryObject {
 	public static final String ORG_TYPE_DEPARTMENT = "部门";
 
 	public static final String ORG_TYPE_TEAM = "团队";
+
+	public static final String F_FILEBASE = "filebase";
+
 
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
@@ -398,7 +412,18 @@ public class Organization extends PrimaryObject {
 				throw new Exception("具有项目管理职能的组织需要具有\"代码\""+this);
 			}
 		}
+		
+		if(isContainer()){
+			String code = getFileBase();
+			if (Utils.isNullOrEmpty(code)) {
+				throw new Exception("具有文档容器的组织需要具有\"容器代码\""+this);
+			}
+		}
 
+	}
+
+	public String getFileBase() {
+		return getStringValue(F_FILEBASE);
 	}
 
 	public String getCompanyCode() {
@@ -1497,6 +1522,20 @@ public class Organization extends PrimaryObject {
 					.getContainerOrganizationId();
 		}
 	}
+	
+	/**
+	 * 获取当期组织最近的具有文档容器的组织
+	 * 
+	 * @return
+	 */
+	public Organization getContainerOrganization() {
+		if (isContainer()) {
+			return this;
+		} else {
+			return ((Organization) getParentOrganization())
+					.getContainerOrganization();
+		}
+	}
 
 	private SummaryOrganizationWorks summary;
 
@@ -1612,5 +1651,13 @@ public class Organization extends PrimaryObject {
 			}
 		}
 		return null;
+	}
+
+	public List<?> getDocumentAndDrawingContainerCode() {
+		return getListValue(F_PDM_DOC_DRAWING_COMTAINER);
+	}
+	
+	public List<?> getPartContainerCode() {
+		return getListValue(F_PDM_PART_COMTAINER);
 	}
 }
