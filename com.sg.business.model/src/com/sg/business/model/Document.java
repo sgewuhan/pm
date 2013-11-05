@@ -156,8 +156,10 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				List<RemoteFile> files = getGridFSFileValue(F_VAULT);
 				if (files != null && files.size() > 0) {
 					for (int i = 0; i < files.size(); i++) {
-						GridFSFilePrevieweUtil previewUtil = new GridFSFilePrevieweUtil();
 						RemoteFile remoteFile = files.get(i);
+						GridFSFilePrevieweUtil previewUtil = new GridFSFilePrevieweUtil();
+						previewUtil.setRemoteFile(remoteFile);
+
 						if (previewUtil.isPreviewAvailable()) {
 							continue;
 						}
@@ -168,7 +170,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						} catch (IOException e1) {
 							continue;
 						}
-						previewUtil.setRemoteFile(remoteFile);
 
 						previewOid = new ObjectId();
 						String masterfileName = serverFile.getName();

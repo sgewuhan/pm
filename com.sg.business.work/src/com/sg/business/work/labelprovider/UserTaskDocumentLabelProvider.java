@@ -137,10 +137,13 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("</span>");
 
 		AccountInfo ca = doc.get_caccount();
-		sb.append(" ");
-		sb.append(ca.getUserName());
-		sb.append("|");
-		sb.append(ca.getUserId());
+		if (ca != null) {
+
+			sb.append(" ");
+			sb.append(ca.getUserName());
+			sb.append("|");
+			sb.append(ca.getUserId());
+		}
 
 		sb.append("</span>");
 

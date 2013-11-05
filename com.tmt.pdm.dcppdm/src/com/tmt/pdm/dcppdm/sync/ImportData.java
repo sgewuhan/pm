@@ -14,7 +14,6 @@ import com.mobnut.commons.Commons;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.ModelService;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.sg.business.model.Document;
@@ -60,19 +59,19 @@ public abstract class ImportData implements Runnable {
 	}
 
 	public void syncItem(String ouid,Document doc) throws Exception {
+		if(doc==null){
+			doc = ModelService.createModelObject(Document.class);
+			doc.setValue(Document.F__ID, new ObjectId());
+		}
+
 		DOSChangeable doso = Starter.dos.get(ouid);
 		HashMap valueMap = doso.getValueMap();
 
-		BasicDBObject data = new BasicDBObject();
-		data.put(Document.F_DOCUMENT_NUMBER, doso.get("md$number"));
-		data.put(Document.F_DESC, doso.get("md$description"));
-		data.put("pdm_ouid", ouid);
-		transferPDMField(valueMap, data);
+		doc.setValue(Document.F_DOCUMENT_NUMBER, doso.get("md$number"));
+		doc.setValue(Document.F_DESC, doso.get("md$description"));
+		doc.setValue("pdm_ouid", ouid);
+		transferPDMField(valueMap, doc.get_data());
 
-		if(doc==null){
-			doc = ModelService.createModelObject(data, Document.class);
-			doc.setValue(Document.F__ID, new ObjectId());
-		}
 		ArrayList files = Starter.dos.listFile(ouid);
 		HashMap tempMap;
 		if (files == null) {
