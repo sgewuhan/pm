@@ -14,7 +14,6 @@ import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSFile;
 import com.mongodb.util.JSON;
 import com.sg.business.model.Document;
-import com.sg.business.model.User;
 import com.sg.business.resource.BusinessResource;
 
 public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
@@ -111,22 +110,39 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
 
 		sb.append("<span style='float:right;padding-right:14px'>");
+
+		// 显示状态
+		String status = doc.getLifecycleName();
+		sb.append(" <span style='color:rgb(0,128,0)'>");
+		sb.append(status);
+
+		if(doc.isLocked()){
+			sb.append(", 已锁定");
+//			sb.append("[");
+//			User lockuser = doc.getLockedBy();
+//			if(lockuser!=null){
+//				sb.append(lockuser);
+//			}
+//			Date date = doc.getLockOn();
+//			if(date!=null){
+//				sb.append(", ");
+//				sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", date));
+//			}
+//			sb.append("]");
+//			sb.append(" ");
+		}
+		
+		sb.append("</span>");
+
+
 		AccountInfo ca = doc.get_caccount();
+		sb.append(" ");
 		sb.append(ca.getUserName());
 		sb.append("|");
 		sb.append(ca.getUserId());
+		
 		sb.append("</span>");
 
-		// 下载链接
-		sb.append("<span style='float:right;padding-right:4px'>");
-		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall"
-				+ "\" target=\"_rwt\">");
-		sb.append("<img src='");
-		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWNLOAD_16X12,
-				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='16' height='12' />");
-		sb.append("</a>");
-		sb.append("</span>");
 
 		// 显示文档图标
 		sb.append("<img src='");
@@ -157,26 +173,18 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("Rev:");
 		sb.append(rev);
 		sb.append("</b>");
-
-		// 显示状态
-		String status = doc.getLifecycleName();
-		sb.append(" <span style='color:rgb(0,128,0)'>");
-		sb.append(status);
+		
+		// 下载链接
+		sb.append("<span style='padding-left:4px'>");
+		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall"
+				+ "\" target=\"_rwt\">");
+		sb.append("<img src='");
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWNLOAD_15X10,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='15' height='10' />");
+		sb.append("</a>");
 		sb.append("</span>");
 
-		if(doc.isLocked()){
-			sb.append("  锁定(");
-			User lockuser = doc.getLockedBy();
-			if(lockuser!=null){
-				sb.append(lockuser);
-			}
-			Date date = doc.getLockOn();
-			if(date!=null){
-				sb.append(", ");
-				sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", date));
-			}
-			sb.append(")");
-		}
 		
 		sb.append("<br/>");
 		sb.append("<small>");
