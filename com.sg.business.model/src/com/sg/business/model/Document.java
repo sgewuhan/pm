@@ -41,7 +41,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String STATUS_DEPOSED_ID = "deposed";
 	public static final String STATUS_DEPOSED_TEXT = "已废弃";
 
-	
 	/**
 	 * 文档类型
 	 */
@@ -103,6 +102,11 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String F_LOCKED_BY = "lockedby";
 
 	public static final String F_LOCKED_ON = "lockdate";
+	
+	@Override
+	protected String[] getVersionFields() {
+		return new String[]{"$all"};
+	}
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
@@ -113,7 +117,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	private void makeLifecycleStatus() {
 		String lc = getLifecycle();
-		if(Utils.isNullOrEmpty(lc)){
+		if (Utils.isNullOrEmpty(lc)) {
 			setValue(F_LIFECYCLE, STATUS_WORKING_ID);
 		}
 	}
@@ -208,6 +212,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 */
 	@Override
 	public boolean canEdit(IContext context) {
+		if(isLocked()){
+			return false;
+		}
 		return super.canEdit(context);
 	}
 
@@ -282,7 +289,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	public String getTypeIconURL() {
 		String type = getDocumentType();
-		if (type != null) {
+		if (!Utils.isNullOrEmpty(type)) {
 			return FileUtil.getImageURL("doc_" + type + "_24.png",
 					BusinessResource.PLUGIN_ID);
 		}
@@ -300,14 +307,14 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public String getLifecycle() {
 		return getStringValue(F_LIFECYCLE);
 	}
-	
+
 	public String getLifecycleName() {
 		String lc = getStringValue(F_LIFECYCLE);
-		if(STATUS_DEPOSED_ID.equals(lc)){
+		if (STATUS_DEPOSED_ID.equals(lc)) {
 			return STATUS_DEPOSED_TEXT;
-		}else if(STATUS_RELEASED_ID.equals(lc)){
+		} else if (STATUS_RELEASED_ID.equals(lc)) {
 			return STATUS_RELEASED_TEXT;
-		}else if(STATUS_WORKING_ID.equals(lc)){
+		} else if (STATUS_WORKING_ID.equals(lc)) {
 			return STATUS_WORKING_TEXT;
 		}
 		return null;
@@ -319,7 +326,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	public User getLockedBy() {
 		String userId = getStringValue(F_LOCKED_BY);
-		if(Utils.isNullOrEmpty(userId)){
+		if (Utils.isNullOrEmpty(userId)) {
 			return null;
 		}
 		return UserToolkit.getUserById(userId);
@@ -328,6 +335,18 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public Date getLockOn() {
 		return getDateValue(F_LOCKED_ON);
 	}
-
+	
+	public String getEditor() {
+		return EDITOR;
+	}
+	
+	@Override
+	public boolean canDelete(IContext context) {
+		if(isLocked()){
+			return false;
+		}
+		return super.canDelete(context);
+	}
+	
 
 }
