@@ -21,16 +21,67 @@
       <option
             id="文档类型"
             label="文档类型"
+            optionContribution="com.sg.business.document.DocTypeOption"
             value="文档类型">
          <option
-               id="doc.1"
-               label="类型1"
-               value="类型1">
+               id="generic"
+               label="通用文档"
+               value="generic">
          </option>
          <option
-               id="doc.2"
-               label="类型2"
-               value="类型2">
+               id="drawing"
+               label="图纸"
+               value="drawing">
+         </option>
+         <option
+               id="design"
+               label="设计文档"
+               value="design">
+         </option>
+         <option
+               id="program"
+               label="方案"
+               value="program">
+         </option>
+         <option
+               id="report"
+               label="报告"
+               value="report">
+         </option>
+         <option
+               id="data"
+               label="表单"
+               value="data">
+         </option>
+         <option
+               id="book"
+               label="手册"
+               value="book">
+         </option>
+         <option
+               id="news"
+               label="文献"
+               value="news">
+         </option>
+         <option
+               id="note"
+               label="笔记"
+               value="note">
+         </option>
+         <option
+               id="memo"
+               label="备忘录"
+               value="memo">
+         </option>
+         <option
+               id="mail"
+               label="邮件"
+               value="mail">
+         </option>
+         <option
+               id="sticky"
+               label="便签"
+               value="sticky">
          </option>
       </option>
       <option
@@ -96,8 +147,8 @@
                         type="String"
                         widthHint="240">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
+                  <combo
+                        editPart="Combo(Read Only)"
                         editable="true"
                         id="documenttype"
                         label="文档类型"
@@ -107,7 +158,7 @@
                         persistable="true"
                         required="false"
                         type="String">
-                  </text>
+                  </combo>
                   <combo
                         editPart="Combo(Read Only)"
                         editable="true"
@@ -348,13 +399,13 @@
             collectionName="document"
             dbName="pm2"
             id="document.projectproposal"
-            image="image/document_24.png"
+            image="image/doc_data_24.png"
             name="立项简表"
             titleToolTips="立项简表">
          <basicpage
                description="文档基本信息"
                id="basicpage1"
-               image="image/document_24.png"
+               image="image/doc_data_24.png"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -382,17 +433,18 @@
                         required="true"
                         type="String">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
+                  <combo
+                        editPart="Combo(Read Only)"
                         editable="true"
                         id="documenttype"
                         label="文档类型"
                         labelVisible="true"
                         name="documenttype"
+                        option="文档类型"
                         persistable="true"
                         required="false"
                         type="String">
-                  </text>
+                  </combo>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"

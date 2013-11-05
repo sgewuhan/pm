@@ -254,6 +254,11 @@ public interface IModelConstants {
 	 */
 	public static final String S_S_TASK_DELAY = "TASK.DELAYMARK";
 
+	/**
+	 * 逗号分割的主要版本号序列
+	 */
+	public static final String S_MAJOR_VID_SEQ = "MAJOR_VID_SEQ";
+
 
 
 }

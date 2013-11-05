@@ -2136,6 +2136,26 @@
                tooltip="创建独立于项目的新工作">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:main?after=common.separator">
+         <command
+               commandId="document.showpreview"
+               icon="image/preview_24.png"
+               label="显示预览"
+               style="toggle"
+               tooltip="显示预览视图">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.workflow">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2242,6 +2262,10 @@
             id="work.opendeliverable"
             name="工作交付物">
       </command>
+      <command
+            id="document.showpreview"
+            name="显示预览">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2292,6 +2316,10 @@
       <handler
             class="com.sg.business.work.handler.OpenDeliverable"
             commandId="work.opendeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.ShowPreview"
+            commandId="document.showpreview">
       </handler>
    </extension>
    <extension
@@ -3814,6 +3842,13 @@
                id="workflow.taskreserved">
          </masterProvider>
       </navigator>
+      <navigator
+            id="workflow.workdelivery"
+            tree="workflow.workdelivery">
+         <masterProvider
+               id="workflow.taskreserved">
+         </masterProvider>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -3855,6 +3890,29 @@
                width="-1">
          </column>
       </table>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+       <tree
+             canCreate="false"
+             canDelete="false"
+             canEdit="false"
+             canRead="false"
+             contentProvider="com.sg.business.work.view.DocumentFileContentProvider"
+             customItemHeight="40"
+             dataSet="com.sg.business.model.dataset.usertask.RelatitedWorkDeliveryDataSet"
+             headerVisiable="false"
+             id="workflow.workdelivery"
+             markupEnabled="true"
+             virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.work.labelprovider.UserTaskDocumentLabelProvider"
+               lazyDisplay="true"
+               name="desc"
+               width="-1">
+         </column>
+      </tree>
    </extension>
 
 </plugin>

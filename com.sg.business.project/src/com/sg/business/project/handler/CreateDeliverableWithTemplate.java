@@ -11,7 +11,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.DocumentDefinition;
+import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
+import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -61,7 +63,16 @@ public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 		};
 
 		Project project = work.getProject();
-		ns.setMaster(project.getFunctionOrganization());
+		if(project == null){
+			if(work.isStandloneWork()){
+				//独立工作，选择发起人所在的项目管理职能组织
+				User charger = work.getCharger();
+				Organization org = charger.getOrganization();
+				ns.setMaster(org.getFunctionOrganization());
+			}
+		}else{
+			ns.setMaster(project.getFunctionOrganization());
+		}
 		ns.show();
 	}
 
