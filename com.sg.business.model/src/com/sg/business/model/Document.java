@@ -102,10 +102,10 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String F_LOCKED_BY = "lockedby";
 
 	public static final String F_LOCKED_ON = "lockdate";
-	
+
 	@Override
 	protected String[] getVersionFields() {
-		return new String[]{"$all"};
+		return new String[] { "$all" };
 	}
 
 	@Override
@@ -212,10 +212,18 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 */
 	@Override
 	public boolean canEdit(IContext context) {
-		if(isLocked()){
+		String lc = getLifecycle();
+		if (lc.equals(STATUS_WORKING_ID)) {
+			if (isLocked()) {
+				String userId = context.getAccountInfo().getConsignerId();
+				String lockedBy = getStringValue(F_LOCKED_BY);
+				return userId.equals(lockedBy);
+			}else{
+				return true;
+			}
+		} else {
 			return false;
 		}
-		return super.canEdit(context);
 	}
 
 	/**
@@ -335,18 +343,14 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public Date getLockOn() {
 		return getDateValue(F_LOCKED_ON);
 	}
-	
+
 	public String getEditor() {
 		return EDITOR;
 	}
-	
+
 	@Override
 	public boolean canDelete(IContext context) {
-		if(isLocked()){
-			return false;
-		}
-		return super.canDelete(context);
+		return canEdit(context);
 	}
-	
 
 }
