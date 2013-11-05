@@ -1756,10 +1756,6 @@
             operation="message"
             serviceProvider="com.tmt.tb.bpmservice.ProjcetApproveMessageOfTB">
       </service>
-      <service
-            interface="com.tmt.tb.service1"
-            name="文件归档">
-      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -2869,11 +2865,11 @@
       <taskForm
             editorId="tb.tbSubconcessions.application"
             name="转批申请"
-            persistentFields="number,product,prj_manager,dept"
+            persistentFields="workorder,product,prj_manager,dept"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
-               processParameterName="number"
-               taskFormFieldName="number">
+               processParameterName="workorder"
+               taskFormFieldName="workorder">
          </processParameter>
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
@@ -3047,10 +3043,10 @@
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
-                        id="number"
+                        id="workorder"
                         label="工作令号"
                         labelVisible="true"
-                        name="number"
+                        name="workorder"
                         persistable="true"
                         required="false"
                         type="String">
