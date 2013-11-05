@@ -257,6 +257,25 @@
                value="修改评审组">
          </option>
       </option>
+      <option
+            id="评审方式"
+            label="评审方式">
+         <option
+               id="会签评审"
+               label="会签评审"
+               value="会签评审">
+         </option>
+         <option
+               id="会议评审"
+               label="会议评审"
+               value="会议评审">
+         </option>
+         <option
+               id="不评审"
+               label="不评审"
+               value="不评审">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.service.actorRule">

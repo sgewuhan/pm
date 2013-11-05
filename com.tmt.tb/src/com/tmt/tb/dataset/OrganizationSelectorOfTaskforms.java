@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class OrganizationSelectorOfTaskforms extends MasterDetailDataSetFactory {
 
@@ -27,11 +27,16 @@ public class OrganizationSelectorOfTaskforms extends MasterDetailDataSetFactory 
 	public DataSet getDataSet() {
 		if (master != null) {
 			if (master instanceof TaskForm) {
-				String userId = new CurrentAccountContext().getAccountInfo()
-						.getConsignerId();;
-				User user = UserToolkit.getUserById(userId );
-				List<PrimaryObject> orgList = user.getRoleGrantedInAllOrganization(IRoleConstance.ROLE_PROJECR_APPROVER_ID);
-				return new DataSet(orgList);
+				TaskForm taskForm = (TaskForm) master;
+				BasicDBObject actors = (BasicDBObject) taskForm
+						.getValue("wf_execute_actors");
+				if (actors != null) {
+					String userId = (String) actors.get("act_cheif_engineer");
+					User user = UserToolkit.getUserById(userId);
+					List<PrimaryObject> orgList = user
+							.getRoleGrantedInAllOrganization(IRoleConstance.ROLE_PROJECR_APPROVER_ID);
+					return new DataSet(orgList);
+				}
 			}
 		}
 		return super.getDataSet();
