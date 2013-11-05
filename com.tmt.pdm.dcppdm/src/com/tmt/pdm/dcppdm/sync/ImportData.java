@@ -55,11 +55,11 @@ public abstract class ImportData implements Runnable {
 		for (int i = 0; i < result.size(); i++) {
 			ArrayList item = (ArrayList) result.get(i);
 			String ouid = (String) item.get(0);
-			syncItem(ouid);
+			syncItem(ouid,null);
 		}
 	}
 
-	private void syncItem(String ouid) throws Exception {
+	public void syncItem(String ouid,Document doc) throws Exception {
 		DOSChangeable doso = Starter.dos.get(ouid);
 		HashMap valueMap = doso.getValueMap();
 
@@ -69,8 +69,10 @@ public abstract class ImportData implements Runnable {
 		data.put("pdm_ouid", ouid);
 		transferPDMField(valueMap, data);
 
-		Document doc = ModelService.createModelObject(data, Document.class);
-		doc.setValue(Document.F__ID, new ObjectId());
+		if(doc==null){
+			doc = ModelService.createModelObject(data, Document.class);
+			doc.setValue(Document.F__ID, new ObjectId());
+		}
 		ArrayList files = Starter.dos.listFile(ouid);
 		HashMap tempMap;
 		if (files == null) {
@@ -82,18 +84,20 @@ public abstract class ImportData implements Runnable {
 			tempMap = (HashMap) files.get(j); // a row of search result
 			if (tempMap == null)
 				continue;
-			DBObject ref = syncFile(doc, tempMap);
+			DBObject ref = syncFile( tempMap);
 			fileList.add(ref);
 		}
 		
 		doc.setValue(Document.F_VAULT, fileList);
 		doc.setValue(Document.F_FOLDER_ID, getFolderId());
-		doc.doInsert(new BackgroundContext());
+		doc.doSave(new BackgroundContext());
 
 		Commons.LOGGER.info("Import Successs."+doso);
 	}
 
-	protected abstract ObjectId getFolderId();
+	protected ObjectId getFolderId(){
+		return null;
+	}
 
 	private void transferPDMField(HashMap valueMap, DBObject data) {
 		Iterator iter = valueMap.keySet().iterator();
@@ -107,7 +111,7 @@ public abstract class ImportData implements Runnable {
 		}
 	}
 
-	private DBObject syncFile(Document doc, HashMap tempMap)
+	private DBObject syncFile( HashMap tempMap)
 			throws IIPRequestException, FileNotFoundException {
 		// String fileTypeId = (String) tempMap.get("md$filetype.id");
 		 String fileTypeDescription = (String) tempMap.get("md$description");

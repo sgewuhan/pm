@@ -12,5 +12,50 @@
             time="0:0:0">
       </schedualJob>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.deliverable?after=project.linkdeliverable">
+         <command
+               commandId="deliverable.linkpdm"
+               icon="image/24_blank.png"
+               label="链接PDM图文档..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="deliverable.linkpdm"
+            name="链接PDM图文档">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.tmt.pdm.dcpdm.handler.LinkPDMDocAndDraw"
+            commandId="deliverable.linkpdm">
+      </handler>
+   </extension>
 
 </plugin>

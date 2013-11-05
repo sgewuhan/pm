@@ -376,6 +376,24 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <vaultpage
+               description="文件"
+               id="filepage"
+               image="image/folder_24.png"
+               title="文件">
+            <file
+                  editPart="OfficeFileUploader"
+                  editable="true"
+                  filebase="com.sg.business.model.OrganizationDistributeFileBase"
+                  generatePreview="true"
+                  id="vault"
+                  label="文件"
+                  labelVisible="false"
+                  name="vault"
+                  persistable="true"
+                  required="false">
+            </file>
+         </vaultpage>
          <versionControl>
             <fieldname
                   fieldname="$all">
@@ -386,11 +404,6 @@
             id="editor.document.generic"
             location="after=basicpage1"
             targetId="document.systempage">
-      </pageExtendsions>
-      <pageExtendsions
-            id="editor.document.generic"
-            location="after=basicpage1"
-            targetId="filepage">
       </pageExtendsions>
       <basicpage
             createAfterSave="true"
