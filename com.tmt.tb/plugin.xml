@@ -1760,7 +1760,8 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            name="设计更改申请"
+            editorId="tbProjectChangeForDesign.designapplication"
+            name="设计更改"
             persistentFields="developable,check,qm,plan,craft,approve,auditor,purchase,develop,prj_number"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
@@ -1804,6 +1805,46 @@
                taskFormFieldName="develop">
          </processParameter>
       </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.check"
+            name="更改方案校核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.craft"
+            name="更改方案工艺审核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.auditor"
+            name="更改方案审核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChangeForDesign.approve"
+            name="更改方案批准"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChangeForDesign">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -1829,6 +1870,7 @@
                         label="变更方案是否需要开发中心审核"
                         labelVisible="true"
                         name="developable"
+                        option="是\否"
                         persistable="true"
                         required="false"
                         type="DBObject">
@@ -1946,6 +1988,178 @@
                         persistable="true"
                         required="false">
                   </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.check"
+            name="更改方案校核">
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
+         </basicpage>
+         <basicpage
+               id="page1"
+               title="更改方案校核">
+            <pagecolumn>
+               <section
+                     label="更改方案校核">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="审核意见"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="是否通过"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.craft"
+            name="更改方案工艺审核">
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
+         </basicpage>
+         <basicpage
+               id="page1"
+               title="更改方案校核">
+            <pagecolumn>
+               <section
+                     label="更改方案工艺审核">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="审核意见"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="是否通过"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.auditor"
+            name="更改方案审核">
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
+         </basicpage>
+         <basicpage
+               id="page1"
+               title="更改方案审核">
+            <pagecolumn>
+               <section
+                     label="更改方案审核">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="审核意见"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="是否通过"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbProjectChangeForDesign.approve"
+            name="更改方案审核">
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
+         </basicpage>
+         <basicpage
+               id="page1"
+               title="更改方案审核">
+            <pagecolumn>
+               <section
+                     label="更改方案审核">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="审核意见"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="是否通过"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="DBObject">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
