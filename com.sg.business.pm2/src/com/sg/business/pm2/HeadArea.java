@@ -235,7 +235,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 	// }
 
 	private void setHeadPic(User user) {
-		List<RemoteFile> headpics = user.getFileValue(User.F_HEADPIC);
+		List<RemoteFile> headpics = user.getGridFSFileValue(User.F_HEADPIC);
 		String imageURL = null;
 		if (headpics != null && headpics.size() > 0) {
 			try {

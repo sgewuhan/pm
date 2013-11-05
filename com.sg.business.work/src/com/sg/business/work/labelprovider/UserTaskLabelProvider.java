@@ -66,7 +66,7 @@ public class UserTaskLabelProvider extends ConfiguratorColumnLabelProvider {
 
 	private void appendUserTaskInfo(UserTask userTask, StringBuffer sb) {
 		Date createOn = userTask.getCreatedOn();
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:14px'>");
 		sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", createOn));
 		sb.append("</span>");
 
@@ -85,7 +85,7 @@ public class UserTaskLabelProvider extends ConfiguratorColumnLabelProvider {
 		Work work = userTask.getWork();
 		User charger = work.getCharger();
 		if (charger != null) {
-			sb.append("<span style='float:right;padding-right:4px'>");
+			sb.append("<span style='float:right;padding-right:14px'>");
 			sb.append(charger);
 			sb.append("</span>");
 		}

@@ -58,7 +58,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 				.getAccountInfo().getConsignerId());
 		ref.put(Work.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
-						ILifecycle.STATUS_NONE_VALUE,
+//						ILifecycle.STATUS_NONE_VALUE,
 						ILifecycle.STATUS_ONREADY_VALUE,
 						ILifecycle.STATUS_WIP_VALUE,
 						ILifecycle.STATUS_PAUSED_VALUE }));

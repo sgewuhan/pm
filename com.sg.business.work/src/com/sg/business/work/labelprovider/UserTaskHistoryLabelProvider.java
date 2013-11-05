@@ -84,7 +84,7 @@ public class UserTaskHistoryLabelProvider extends
 
 	private void appendUserTaskInfo(UserTask userTask, StringBuffer sb) {
 		String status = userTask.getStatus();
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:14px'>");
 		User owner = userTask.getActualOwner();
 		sb.append(owner);
 		sb.append(" ");
