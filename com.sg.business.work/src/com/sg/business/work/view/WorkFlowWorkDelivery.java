@@ -157,7 +157,7 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 
 	@Override
 	public boolean canCreate() {
-		return false;
+		return master != null;
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 
 	@Override
 	public boolean canEdit() {
-		return false;
+		return selectDocument();
 	}
 
 	@Override
@@ -177,12 +177,22 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 
 	@Override
 	public boolean canRead() {
+		return selectDocument();
+	}
+
+	private boolean selectDocument() {
 		IStructuredSelection selection = navi.getViewerControl().getSelection();
 		if(selection!=null&&!selection.isEmpty()){
 			Object selected = selection.getFirstElement();
 			return selected instanceof Document;
 		}
 		return false;
+	}
+	
+	@Override
+	public void doCreate() {
+		// TODO Auto-generated method stub
+		super.doCreate();
 	}
 
 }

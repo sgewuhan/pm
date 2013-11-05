@@ -9,6 +9,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
+import com.mobnut.portal.Portal;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSFile;
@@ -42,15 +43,11 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		GridFSFile gsFile = remoteFile.getGridFSFile();
 		Date uploadDate = gsFile.getUploadDate();
 		long length = gsFile.getLength();
-		// String md5 = gsFile.getMD5();
+		String md5 = gsFile.getMD5();
 		// DBObject meta = gsFile.getMetaData();
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
-
-		sb.append("<span style='float:right;padding-right:14px'>");
-		sb.append(String.format(Utils.FORMATE_DATE_FULL, uploadDate));
-		sb.append("</span>");
 
 		// 显示文档图标
 		sb.append("<img src='");
@@ -70,17 +67,23 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		dbo.put("n", remoteFile.getNamespace());
 		dbo.put("o", remoteFile.getObjectId());
 		dbo.put("a", fileName);
-		sb.append(JSON.serialize(dbo) +  "@download");
-		
+		sb.append(JSON.serialize(dbo) + "@download");
+
 		sb.append("' target=\"_rwt\">");
 		sb.append(fileName);
 		sb.append("</a>");
 
 		sb.append("<br/>");
 		// 显示大小
-		sb.append(getLength(length));
 		sb.append("<small>");
-
+		sb.append(" 大小:");
+		sb.append(getLength(length));
+		sb.append(" 上传时间:");
+		sb.append(String.format(Utils.FORMATE_DATE_FULL, uploadDate));
+		if (Portal.getDefault().isDevelopMode()) {
+			sb.append(" MD5:");
+			sb.append(md5);
+		}
 		sb.append("</small>");
 
 		sb.append("</span>");
@@ -104,7 +107,6 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 
 	}
 
-
 	private String getDocumentText(Document doc) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
@@ -116,49 +118,44 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append(" <span style='color:rgb(0,128,0)'>");
 		sb.append(status);
 
-		if(doc.isLocked()){
+		if (doc.isLocked()) {
 			sb.append(", 已锁定");
-//			sb.append("[");
-//			User lockuser = doc.getLockedBy();
-//			if(lockuser!=null){
-//				sb.append(lockuser);
-//			}
-//			Date date = doc.getLockOn();
-//			if(date!=null){
-//				sb.append(", ");
-//				sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", date));
-//			}
-//			sb.append("]");
-//			sb.append(" ");
+			// sb.append("[");
+			// User lockuser = doc.getLockedBy();
+			// if(lockuser!=null){
+			// sb.append(lockuser);
+			// }
+			// Date date = doc.getLockOn();
+			// if(date!=null){
+			// sb.append(", ");
+			// sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", date));
+			// }
+			// sb.append("]");
+			// sb.append(" ");
 		}
-		
-		sb.append("</span>");
 
+		sb.append("</span>");
 
 		AccountInfo ca = doc.get_caccount();
 		sb.append(" ");
 		sb.append(ca.getUserName());
 		sb.append("|");
 		sb.append(ca.getUserId());
-		
-		sb.append("</span>");
 
+		sb.append("</span>");
 
 		// 显示文档图标
 		sb.append("<img src='");
 		sb.append(doc.getTypeIconURL());
 		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />");
 
-		if(doc.isLocked()){
+		if (doc.isLocked()) {
 			sb.append("<img src='");
-			sb.append(FileUtil.getImageURL(
-					BusinessResource.IMAGE_LOCK_16,
-					BusinessResource.PLUGIN_ID,
-					BusinessResource.IMAGE_FOLDER));
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_LOCK_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
 			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />");
 		}
-		
-		
+
 		// 显示文件名称
 		String desc = doc.getDesc();
 		desc = Utils.getPlainText(desc);
@@ -173,7 +170,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("Rev:");
 		sb.append(rev);
 		sb.append("</b>");
-		
+
 		// 下载链接
 		sb.append("<span style='padding-left:4px'>");
 		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall"
@@ -185,7 +182,6 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("</a>");
 		sb.append("</span>");
 
-		
 		sb.append("<br/>");
 		sb.append("<small>");
 		// 显示创建时间，创建人
