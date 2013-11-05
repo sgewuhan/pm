@@ -184,7 +184,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 * @return
 	 */
 	public RemoteFileSet getVault() {
-		List<RemoteFile> files = getFileValue(F_VAULT);
+		List<RemoteFile> files = getGridFSFileValue(F_VAULT);
 		RemoteFileSet rs = new RemoteFileSet(getDbName(), getCollectionName());
 		rs.setOriginalRemoteFileSet(files);
 		rs.setUpdatedRemoteFileSet(files);

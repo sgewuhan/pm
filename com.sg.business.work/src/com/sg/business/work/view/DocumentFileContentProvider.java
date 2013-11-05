@@ -12,7 +12,7 @@ public class DocumentFileContentProvider extends RelationContentProvider {
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof Document) {
 			Document doc = (Document) parentElement;
-			List<RemoteFile> files = doc.getFileValue(Document.F_VAULT);
+			List<RemoteFile> files = doc.getGridFSFileValue(Document.F_VAULT);
 			return files.toArray();
 		} else {
 			return new Object[0];
@@ -21,13 +21,7 @@ public class DocumentFileContentProvider extends RelationContentProvider {
 
 	@Override
 	public boolean hasChildren(Object parentElement) {
-		if (parentElement instanceof Document) {
-			Document doc = (Document) parentElement;
-			List<RemoteFile> files = doc.getFileValue(Document.F_VAULT);
-			return !files.isEmpty();
-		} else {
-			return false;
-		}
+		return getChildren(parentElement).length>0;
 	}
 	
 	@Override
