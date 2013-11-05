@@ -8,17 +8,19 @@ public abstract class AbstractCheckFieldByChoice extends AbstractValidator {
 	public AbstractCheckFieldByChoice() {
 	}
 
-
 	@Override
 	protected String getValidMessage(PrimaryObject data) {
 		String choice = data.getStringValue("choice");
-		if(choicePassValue(choice)){
-			String name = getFieldConfigurator().getLabel();
-			return "请确定\""+name+"\"";
+		if (choicePassValue(choice)) {
+			String label = getFieldConfigurator().getLabel();
+			String name = getFieldConfigurator().getName();
+			Object value = data.getValue(name);
+			if (value == null) {
+				return "请确定\"" + label + "\"";
+			}
 		}
 		return null;
 	}
-
 
 	protected abstract boolean choicePassValue(String choice);
 
