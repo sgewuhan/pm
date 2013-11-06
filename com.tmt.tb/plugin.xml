@@ -1749,12 +1749,6 @@
             operation="applicationfinishmessage"
             serviceProvider="com.tmt.tb.bpmservice.ApplicationMessageOfTB">
       </service>
-      <service
-            interface="projectapprove.reviewer.reservice.action"
-            name="评审会议通知"
-            operation="message"
-            serviceProvider="com.tmt.tb.bpmservice.ProjcetApproveMessageOfTB">
-      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
