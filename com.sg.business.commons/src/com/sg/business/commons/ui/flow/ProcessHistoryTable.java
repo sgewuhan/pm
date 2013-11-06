@@ -53,7 +53,7 @@ public class ProcessHistoryTable extends TableViewer {
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
-					return "" + dbObject.get(IProcessControl.F_WF_TASK_NAME);
+					return "" + dbObject.get("taskname");
 				}
 				return super.getText(element);
 			}

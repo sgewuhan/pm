@@ -62,7 +62,7 @@ public class WorkFlowRecord implements IPageDelegator {
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbo = (DBObject) element;
-					return "" + dbo.get(IProcessControl.F_WF_TASK_NAME);
+					return "" + dbo.get("taskname");
 				}
 				return super.getText(element);
 			}
