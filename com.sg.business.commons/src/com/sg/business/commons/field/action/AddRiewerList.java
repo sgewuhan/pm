@@ -1,4 +1,4 @@
-package com.tmt.tb.field.action;
+package com.sg.business.commons.field.action;
 
 import java.util.Iterator;
 
@@ -13,9 +13,9 @@ import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IAddTableItemHandler;
 
-public class AddRiewerListOfTB implements IAddTableItemHandler {
+public class AddRiewerList implements IAddTableItemHandler {
 
-	public AddRiewerListOfTB() {
+	public AddRiewerList() {
 		// TODO Auto-generated constructor stub
 	}
 

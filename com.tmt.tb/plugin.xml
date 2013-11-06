@@ -323,7 +323,7 @@
                <section
                      label="请填写评审组成员">
                   <list
-                        addTableItemHandler="com.tmt.tb.field.action.AddRiewerListOfTB"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
                         editable="true"
                         id="reviewer_list"
                         inputValidator="com.tmt.tb.field.CheckReviewerOfTBProjectApplication"
@@ -775,8 +775,7 @@
             editorId="tbProjectApprove.audit"
             name="审批"
             persistentFields="comment,choice,reviewer_list,reviewer_admin"
-            processDefinitionId="tb.tbProjectApprove"
-            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -896,13 +895,13 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="project.participte.selector"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
                         editable="true"
                         id="reviewer_list"
                         label="评审组"
@@ -1749,12 +1748,6 @@
             name="立项审批通过消息"
             operation="applicationfinishmessage"
             serviceProvider="com.tmt.tb.bpmservice.ApplicationMessageOfTB">
-      </service>
-      <service
-            interface="projectapprove.reviewer.reservice.action"
-            name="评审会议通知"
-            operation="message"
-            serviceProvider="com.tmt.tb.bpmservice.ProjcetApproveMessageOfTB">
       </service>
    </extension>
    <extension
@@ -3237,7 +3230,7 @@
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.tmt.tb.field.action.AddRiewerListOfTB"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
                         editable="true"
                         id="reviewer_list"
                         label="专家组成员"
