@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -23,6 +25,8 @@ import com.mobnut.commons.Commons;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
+import com.mobnut.db.file.GridServerFile;
+import com.mobnut.db.file.IServerFile;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
@@ -116,6 +120,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String F_LOCKED_BY = "lockedby";
 
 	public static final String F_LOCKED_ON = "lockdate";
+
+	public static final String F_PDM_OUID = "pdm_ouid";
 
 	@Override
 	protected String[] getVersionFields() {
@@ -436,6 +442,37 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	@Override
 	public boolean canDelete(IContext context) {
 		return canEdit(context);
+	}
+
+	/**
+	 * 是否链接到了PDM
+	 * 
+	 * @return
+	 */
+	public boolean isLinkedPDM() {
+		return getValue(F_PDM_OUID) != null;
+	}
+
+	public List<IServerFile> getServerFileValue() {
+		if (isLinkedPDM()) {
+			String name = getCollectionName();
+			IFileServerDelegator fsd = ModelActivator
+					.getFileServerDelegator(name);
+			Assert.isNotNull(fsd, "没有定义文件服务器");
+			return fsd.getFiles(this);
+		}else{
+			List<RemoteFile> remoteFiles = getGridFSFileValue(F_VAULT);
+			List<IServerFile> result = new ArrayList<IServerFile>();
+			for (int i = 0; i < remoteFiles.size(); i++) {
+				result.add(new GridServerFile(remoteFiles.get(i)));
+			}
+			
+			return result;
+		}
+	}
+
+	public String getPDMOuid() {
+		return getStringValue(F_PDM_OUID);
 	}
 
 }

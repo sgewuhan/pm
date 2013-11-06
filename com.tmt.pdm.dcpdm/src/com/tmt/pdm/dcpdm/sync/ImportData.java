@@ -69,7 +69,7 @@ public abstract class ImportData implements Runnable {
 
 		doc.setValue(Document.F_DOCUMENT_NUMBER, doso.get("md$number"));
 		doc.setValue(Document.F_DESC, doso.get("md$description"));
-		doc.setValue("pdm_ouid", ouid);
+		doc.setValue(Document.F_PDM_OUID, ouid);
 		transferPDMField(valueMap, doc.get_data());
 
 		ArrayList files = Starter.dos.listFile(ouid);
