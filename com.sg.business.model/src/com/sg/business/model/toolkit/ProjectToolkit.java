@@ -272,7 +272,7 @@ public class ProjectToolkit {
 		if (WorkDefinition.VALUE_MANDATORY.equals(optionValue)) {
 			work.put(Work.F_MANDATORY, Boolean.TRUE);
 		}
-
+		
 		// 设置工作的描述字段
 		Object value = workdef.get(WorkDefinition.F_DESC);
 		if (value != null) {
@@ -281,6 +281,11 @@ public class ProjectToolkit {
 		value = workdef.get(WorkDefinition.F_DESC_EN);
 		if (value != null) {
 			work.put(Work.F_DESC_EN, value);
+		}
+		//设置里程碑任务
+		value = workdef.get(WorkDefinition.F_MILESTONE);
+		if (value != null) {
+			work.put(Work.F_MILESTONE, value);
 		}
 
 		// 设置变更工作流
@@ -408,7 +413,7 @@ public class ProjectToolkit {
 					// 如果没有创建，需要创建该文档
 					documentData = copyDocumentFromTemplate(documentsToInsert,
 							fileToCopy, documentTemplateId, projectId,
-							folderRootId);
+							folderRootId,context);
 				}
 				documentsToInsert.put(documentTemplateId, documentData);
 				ObjectId documentId = (ObjectId) documentData
@@ -568,46 +573,47 @@ public class ProjectToolkit {
 	private static DBObject copyDocumentFromTemplate(
 			Map<ObjectId, DBObject> documentsToInsert,
 			List<DBObject[]> fileToCopy, ObjectId documentTemplateId,
-			ObjectId projectId, ObjectId folderRootId) {
-		DBObject documentData;
+			ObjectId projectId, ObjectId folderRootId, IContext context) {
 		DBCollection docdCol = getCollection(IModelConstants.C_DOCUMENT_DEFINITION);
 		DBObject documentTemplate = docdCol.findOne(new BasicDBObject().append(
 				Document.F__ID, documentTemplateId));
-		documentData = new BasicDBObject();
+		
+		Document document = ModelService.createModelObject(Document.class);
+		
+		
+		document.setValue(Document.F__ID, new ObjectId());
 
-		documentData.put(Document.F__ID, new ObjectId());
+		document.setValue(Document.F_PROJECT_ID, projectId);
 
-		documentData.put(Document.F_PROJECT_ID, projectId);
-
-		documentData.put(Document.F_FOLDER_ID, folderRootId);
+		document.setValue(Document.F_FOLDER_ID, folderRootId);
 
 		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
 		if (value != null) {
-			documentData.put(Document.F_DESC, value);
+			document.setValue(Document.F_DESC, value);
 		}
 
 		value = documentTemplate.get(DocumentDefinition.F_DESC_EN);
 		if (value != null) {
-			documentData.put(Document.F_DESC_EN, value);
+			document.setValue(Document.F_DESC_EN, value);
 		}
 
 		value = documentTemplate.get(DocumentDefinition.F_DOCUMENT_TYPE);
 		if (value != null) {
-			documentData.put(Document.F_DOCUMENT_TYPE, value);
+			document.setValue(Document.F_DOCUMENT_TYPE, value);
 		}
 
 		value = new Boolean(Boolean.TRUE.equals(documentTemplate
 				.get(DocumentDefinition.F_ATTACHMENT_CANNOT_EMPTY)));
-		documentData.put(Document.F_ATTACHMENT_CANNOT_EMPTY, value);
+		document.setValue(Document.F_ATTACHMENT_CANNOT_EMPTY, value);
 
 		value = documentTemplate.get(DocumentDefinition.F_DESCRIPTION);
 		if (value != null) {
-			documentData.put(Document.F_DESCRIPTION, value);
+			document.setValue(Document.F_DESCRIPTION, value);
 		}
 
 		value = documentTemplate.get(DocumentDefinition.F_DOCUMENT_EDITORID);
 		if (value != null) {
-			documentData.put(Document.F__EDITOR, value);
+			document.setValue(Document.F__EDITOR, value);
 		}
 
 		// 根据文档的附件创建文件
@@ -627,12 +633,20 @@ public class ProjectToolkit {
 				documentFiles.add(documentFile);
 				fileToCopy.add(new DBObject[] { templateFile, documentFile });
 			}
-			documentData.put(Document.F_VAULT, documentFiles);
+			document.setValue(Document.F_VAULT, documentFiles);
 		}
+		
+		//处理文档的默认值
+		document.initVerStatus();
+		document.initVersionNumber();
+		
+		//处理文档的默认值
+		document.initInsertDefault(document.get_data(), context);
+		
 		// 完成文档创建
-		documentsToInsert.put(documentTemplateId, documentData);
+		documentsToInsert.put(documentTemplateId, document.get_data());
 
-		return documentData;
+		return document.get_data();
 	}
 
 	private static DBCollection getCollection(String collectionName) {

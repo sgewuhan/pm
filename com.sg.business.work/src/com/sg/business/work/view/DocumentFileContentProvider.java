@@ -21,7 +21,8 @@ public class DocumentFileContentProvider extends RelationContentProvider {
 
 	@Override
 	public boolean hasChildren(Object parentElement) {
-		return getChildren(parentElement).length > 0;
+		return parentElement instanceof Document;
+//		return getChildren(parentElement).length > 0;
 	}
 
 	@Override

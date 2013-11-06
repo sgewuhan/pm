@@ -861,6 +861,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		collection = documentsToBeInsert.values();
 		if (!collection.isEmpty()) {
+			//保存文档时需要文档的保存前的预处理
 			ws = docCol.insert(collection.toArray(new DBObject[0]),
 					WriteConcern.NORMAL);
 			checkWriteResult(ws);

@@ -95,6 +95,10 @@ public class DBClear implements Runnable {
 		// 清除实际工时
 		col = getCol(IModelConstants.C_WORKS_PERFORMENCE);
 		col.drop();
+		
+		// 清除用户任务
+		col = getCol(IModelConstants.C_USERTASK);
+		col.drop();
 
 		// 清除用户的最近打开
 		col = getCol("account");

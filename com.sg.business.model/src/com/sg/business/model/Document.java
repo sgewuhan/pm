@@ -130,8 +130,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
-		makeMajorVersionNumber();
-		makeLifecycleStatus();
+		initVersionNumber();
+		initVerStatus();
 		boolean saved = super.doSave(context);
 
 		generatePreview();
@@ -205,15 +205,16 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		};
 		job.schedule();
 	}
+	
 
-	private void makeLifecycleStatus() {
+	public void initVerStatus() {
 		String lc = getLifecycle();
 		if (Utils.isNullOrEmpty(lc)) {
 			setValue(F_LIFECYCLE, STATUS_WORKING_ID);
 		}
 	}
 
-	private void makeMajorVersionNumber() {
+	public void initVersionNumber() {
 		Object mvid = getValue(F_MAJOR_VID);
 		if (!(mvid instanceof String)) {
 			String[] seq = getMajorVersionSeq();
@@ -221,7 +222,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 	}
 
-	private String[] getMajorVersionSeq() {
+	public  String[] getMajorVersionSeq() {
 		String value = (String) Setting
 				.getSystemSetting(IModelConstants.S_MAJOR_VID_SEQ);
 		String[] seq = null;
@@ -474,5 +475,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public String getPDMOuid() {
 		return getStringValue(F_PDM_OUID);
 	}
+
 
 }

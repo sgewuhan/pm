@@ -56,7 +56,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		// String url = FileUtil.getDownloadUrl(remoteFile.getDbName(),
 		// remoteFile.getNamespace(), remoteFile.getObjectId(), fileName);
 		// url = url.replaceAll("\\&", "&amp;");
-		
+
 		if (serverFile instanceof OSServerFile) {
 			sb.append("<img src='");
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_OUTREP_16,
@@ -163,8 +163,10 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		desc = Utils.getPlainText(desc);
 		sb.append(desc);
 		String docNum = doc.getDocumentNumber();
-		sb.append("|");
-		sb.append(docNum);
+		if (!Utils.isNullOrEmpty(docNum)) {
+			sb.append("|");
+			sb.append(docNum);
+		}
 
 		// ÏÔÊ¾°æ±¾
 		String rev = doc.getRevId();

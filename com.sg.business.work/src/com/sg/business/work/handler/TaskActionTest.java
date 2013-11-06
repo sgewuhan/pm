@@ -13,6 +13,9 @@ public class TaskActionTest extends PropertyTester {
 	@Override
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
+		if(!(receiver instanceof Work)){
+			return false;
+		}
 		Work work = (Work) receiver;
 		String userId = new CurrentAccountContext().getConsignerId();
 		if(!work.isExecuteWorkflowActivateAndAvailable()){
