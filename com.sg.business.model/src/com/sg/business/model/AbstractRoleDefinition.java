@@ -137,8 +137,8 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 	 */
 	public boolean isReservedNumber(String rn) {
 		return rn != null
-				&& (rn.toUpperCase().startsWith("T") || rn.toUpperCase()
-						.startsWith("P"));
+				&& (rn.toUpperCase().startsWith("T0") || rn.toUpperCase()
+						.startsWith("P0"));
 	}
 
 	/**
