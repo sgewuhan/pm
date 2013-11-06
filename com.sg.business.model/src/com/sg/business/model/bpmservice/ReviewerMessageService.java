@@ -17,17 +17,22 @@ public class ReviewerMessageService extends MessageService {
 
 	@Override
 	public String getMessageContent() {
-		return "参加评审会议";
+		Object messageConten = getInputValue("messagecontent");
+		return (String)messageConten;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
-		Object obj = getInputValue("reviewer_list");
-		if (obj instanceof ArrayList) {
-			return (List<String>)obj;
-		} else
-			return null;
+		
+		List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list");
+		String reviewer_admin=(String)getInputValue("reviewer_admin");
+		if(!reviewerList.contains(reviewer_admin)){
+			
+			reviewerList.add(reviewer_admin);
+		}
+		 return reviewerList;
+		
 	}
 
 	@Override

@@ -463,7 +463,7 @@
             serviceProvider="com.sg.business.model.bpmservice.WorkToProjectService">
       </service>
       <service
-            interface="projectapprove.reviewer.reservice.action"
+            interface="meetingmessage.service.action"
             name="评审会议通知"
             operation="message"
             serviceProvider="com.sg.business.model.bpmservice.ReviewerMessageService">
