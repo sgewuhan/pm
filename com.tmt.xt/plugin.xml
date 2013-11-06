@@ -199,6 +199,10 @@
                processParameterName="reviewer_admin"
                taskFormFieldName="reviewer_admin">
          </processParameter>
+         <processParameter
+               processParameterName="messagecontent"
+               taskFormFieldName="messagecontent">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbProjectApprove.expertgroupreview"
@@ -297,6 +301,17 @@
                         required="false"
                         type="String">
                   </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="messagecontent"
+                        label="评审会议通知"
+                        labelVisible="true"
+                        name="messagecontent"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                   <navigatorSelector
                         editable="true"
                         id="reviewer_admin"
