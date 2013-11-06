@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="workevent" name="WorkEvent" schema="schema/workevent.exsd"/>
+   <extension-point id="fileserver" name="FileServer" schema="schema/fileserver.exsd"/>
    <extension
          point="com.mobnut.db.documentModelAdapter">
       <doc

@@ -9,6 +9,8 @@ import org.osgi.framework.BundleContext;
 
 import com.sg.business.model.event.IEventAction;
 import com.sg.business.model.event.IWorkFilter;
+import com.sg.business.model.registry.FileServerConfigurator;
+import com.sg.business.model.registry.FileServerRegistry;
 import com.sg.business.model.registry.WorkEventConfigurator;
 import com.sg.business.model.registry.WorkEventRegistry;
 import com.sg.widgets.registry.config.Configurator;
@@ -23,6 +25,7 @@ public class ModelActivator implements BundleActivator {
 	}
 
 	private WorkEventRegistry workEventRegistry;
+	private FileServerRegistry fileServerRegistry;
 	private static ModelActivator PLUGINS;
 
 	/*
@@ -36,6 +39,13 @@ public class ModelActivator implements BundleActivator {
 		ModelActivator.context = bundleContext;
 		PLUGINS = this;
 		loadWorkEvent();
+		loadFileServer();
+
+	}
+
+	private void loadFileServer() {
+		fileServerRegistry = new FileServerRegistry();
+		fileServerRegistry.init();
 	}
 
 	private void loadWorkEvent() {
@@ -56,6 +66,19 @@ public class ModelActivator implements BundleActivator {
 				}
 			}
 		}
+	}
+	
+	public static IFileServerDelegator getFileServerDelegator(String documentType){
+		Collection<Configurator> confs = PLUGINS.fileServerRegistry.getConfigurators();
+		Iterator<Configurator> iter = confs.iterator();
+		while(iter!=null&&iter.hasNext()){
+			FileServerConfigurator conf= (FileServerConfigurator) iter.next();
+			if(conf.getDocument().equals(documentType)){
+				return conf.getFileServerDelegator();
+			}
+		}
+		
+		return null;
 	}
 	
 	/*

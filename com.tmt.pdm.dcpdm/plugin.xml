@@ -57,5 +57,20 @@
             commandId="deliverable.linkpdm">
       </handler>
    </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <basicpage
+            id="pdm.vault"
+            pageDelegator="com.tmt.pdm.dcpdm.page.PDMVaultPage"
+            title="PDM">
+      </basicpage>
+   </extension>
+   <extension
+         point="com.sg.business.model.fileserver">
+      <fileserver
+            document="document"
+            fileServerDelegator="com.tmt.pdm.dcpdm.FileServerDelegator">
+      </fileserver>
+   </extension>
 
 </plugin>

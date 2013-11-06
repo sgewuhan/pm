@@ -7,13 +7,10 @@ import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
-import com.mobnut.db.file.RemoteFile;
+import com.mobnut.commons.util.file.OSServerFile;
+import com.mobnut.db.file.IServerFile;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.portal.Portal;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.gridfs.GridFSFile;
-import com.mongodb.util.JSON;
 import com.sg.business.model.Document;
 import com.sg.business.resource.BusinessResource;
 
@@ -29,21 +26,20 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		if (element instanceof Document) {
 			Document doc = (Document) element;
 			return getDocumentText(doc);
-		} else if (element instanceof RemoteFile) {
-			RemoteFile remoteFile = (RemoteFile) element;
-			return getRemoteFileText(remoteFile);
+		} else if (element instanceof IServerFile) {
+			IServerFile serverFile = (IServerFile) element;
+			return getRemoteFileText(serverFile);
 		}
 
 		return "";
 
 	}
 
-	private String getRemoteFileText(RemoteFile remoteFile) {
-		String fileName = remoteFile.getFileName();
-		GridFSFile gsFile = remoteFile.getGridFSFile();
-		Date uploadDate = gsFile.getUploadDate();
-		long length = gsFile.getLength();
-		String md5 = gsFile.getMD5();
+	private String getRemoteFileText(IServerFile serverFile) {
+		String fileName = serverFile.getFileName();
+		Date uploadDate = serverFile.getUploadDate();
+		long length = serverFile.getLength();
+		String md5 = serverFile.getMD5();
 		// DBObject meta = gsFile.getMetaData();
 
 		StringBuffer sb = new StringBuffer();
@@ -60,14 +56,17 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		// String url = FileUtil.getDownloadUrl(remoteFile.getDbName(),
 		// remoteFile.getNamespace(), remoteFile.getObjectId(), fileName);
 		// url = url.replaceAll("\\&", "&amp;");
+		
+		if (serverFile instanceof OSServerFile) {
+			sb.append("<img src='");
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_OUTREP_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />");
+		}
 
 		sb.append("<a href='");
-		DBObject dbo = new BasicDBObject();
-		dbo.put("d", remoteFile.getDbName());
-		dbo.put("n", remoteFile.getNamespace());
-		dbo.put("o", remoteFile.getObjectId());
-		dbo.put("a", fileName);
-		sb.append(JSON.serialize(dbo) + "@download");
+		String downloadURL = serverFile.getDownloadURL();
+		sb.append(downloadURL + "@download");
 
 		sb.append("' target=\"_rwt\">");
 		sb.append(fileName);
