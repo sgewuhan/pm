@@ -1,23 +1,19 @@
 package com.sg.business.commons.labelprovider;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Work;
+import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
-public class WorkActualStart extends ColumnLabelProvider {
+public class WorkActualStart extends ConfiguratorColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
 		if (element instanceof Work) {
-			SimpleDateFormat sdf = new SimpleDateFormat(
-					Utils.SDF_DATE_COMPACT_SASH);
 			Date value = ((Work) element).getActualStart();
 			if (value != null) {
-				return sdf.format(value);
+				return String.format(Utils.FORMATE_DATE_COMPACT_SASH, value);
 			}
 		}
 		return "";

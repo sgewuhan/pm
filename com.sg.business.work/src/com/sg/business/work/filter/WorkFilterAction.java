@@ -1,6 +1,5 @@
 package com.sg.business.work.filter;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.jface.action.Action;
@@ -116,16 +115,15 @@ public class WorkFilterAction extends Action {
 
 	private void setDateText(Date[] fromto) {
 		String dateText = " [";
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		if (fromto.length > 0 && fromto[0] != null) {
-			dateText += sdf.format(fromto[0]);
+			dateText += String.format(Utils.FORMATE_DATE_COMPACT_SASH, fromto[0]);
 		} else {
 			dateText += " ";
 		}
 
 		dateText += " ~ ";
 		if (fromto.length > 1 && fromto[1] != null) {
-			dateText += sdf.format(fromto[1]);
+			dateText += String.format(Utils.FORMATE_DATE_COMPACT_SASH, fromto[1]);
 		} else {
 			dateText += " ";
 		}

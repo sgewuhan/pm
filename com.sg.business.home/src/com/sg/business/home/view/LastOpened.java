@@ -1,6 +1,5 @@
 package com.sg.business.home.view;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -45,8 +44,8 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		final SimpleDateFormat sdf = new SimpleDateFormat(
-				Utils.SDF_DATE_COMPACT_SASH);
+//		final SimpleDateFormat sdf = new SimpleDateFormat(
+//				Utils.SDF_DATE_COMPACT_SASH);
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		new ColumnAutoResizer(viewer.getTable(), column.getColumn());
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -78,7 +77,7 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 					Long date = (Long) dbo.get("date");
 					Calendar cal = Calendar.getInstance();
 					cal.setTimeInMillis(date.longValue());
-					sb.append("   " + sdf.format(cal.getTime()));
+					sb.append("   " + String.format(Utils.FORMATE_DATE_COMPACT_SASH, cal));
 					sb.append("</span>");
 
 					if (po == null) {

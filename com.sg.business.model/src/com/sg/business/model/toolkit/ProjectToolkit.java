@@ -339,6 +339,12 @@ public class ProjectToolkit {
 		if (value != null) {
 			work.put(IWorkCloneFields.F_STANDARD_WORKS, value);
 		}
+		
+		//设置提醒时间
+		value = workdef.get(IWorkCloneFields.F_REMIND_BEFORE);
+		if (value != null) {
+			work.put(IWorkCloneFields.F_REMIND_BEFORE, value);
+		}
 
 		// 复制设置项
 		if (new Integer(WorkDefinition.WORK_TYPE_GENERIC).equals(workdef

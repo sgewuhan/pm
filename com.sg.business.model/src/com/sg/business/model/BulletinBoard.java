@@ -1,6 +1,5 @@
 package com.sg.business.model;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -139,9 +138,8 @@ public class BulletinBoard extends PrimaryObject {
 		content = Utils.getPlainText(content);
 		content = Utils.getLimitLengthString(content, 40);
 
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		Date date = getPublishDate();
-		String publishDate = sdf.format(date);
+		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH, date);
 
 		// 设置发布部门
 		String org = ((Organization) ModelService.createModelObject(
@@ -185,9 +183,8 @@ public class BulletinBoard extends PrimaryObject {
 		String publisher = UserToolkit.getUserById(getPublisher())
 				.getUsername();
 		// 设置日期
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		Date date = getPublishDate();
-		String publishDate = sdf.format(date);
+		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH, date);
 
 		sb.append("<span style='padding-left:4px'>");
 		sb.append(publisher);
