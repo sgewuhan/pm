@@ -476,5 +476,19 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		return getStringValue(F_PDM_OUID);
 	}
 
+	public void checkMandatory() throws Exception {
+		//检查文档编号
+		if(getDocumentNumber()==null){
+			throw new Exception("文档缺少编号："+this);
+		}
+		
+		//检查文件
+		List<IServerFile> sf = getServerFileValue();
+		if(sf.isEmpty()){
+			throw new Exception("必须交付的文档缺少附件");
+		}
+		
+	}
+
 
 }

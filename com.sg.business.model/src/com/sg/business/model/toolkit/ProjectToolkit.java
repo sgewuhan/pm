@@ -525,6 +525,8 @@ public class ProjectToolkit {
 						"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
 				ObjectId tgtRoleId = (ObjectId) tgtRole.get(ProjectRole.F__ID);
 				actors.put(key, tgtRoleId);
+				//标记该角色已使用
+				tgtRole.put("used", Boolean.TRUE);
 			}
 			work.put(fieldName, actors);
 		}
@@ -547,6 +549,8 @@ public class ProjectToolkit {
 					if (tgtRoleId != null) {
 						participates.add(new BasicDBObject().append("_id",
 								tgtRoleId));
+						//标记该角色已使用
+						tgtRole.put("used", Boolean.TRUE);
 					}
 				}
 			}
@@ -565,6 +569,8 @@ public class ProjectToolkit {
 				Object value = tgtRole.get(ProjectRole.F__ID);
 				if (value != null) {
 					work.put(roleFieldName, value);
+					//标记该角色已使用
+					tgtRole.put("used", Boolean.TRUE);
 				}
 			}
 		}

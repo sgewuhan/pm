@@ -3153,6 +3153,9 @@
                navigatorId="project.team"
                pageBodyPartCreater="com.sg.business.project.wizards.ProjectTeamPage"
                title="项目组">
+            <navigatoraction
+                  action="com.sg.business.project.action.FilterUnAssignment">
+            </navigatoraction>
          </navigatorpage>
          <navigatorpage
                id="project.wbs"
