@@ -1,4 +1,4 @@
-package com.tmt.pdm.dcppdm.sync;
+package com.tmt.pdm.dcpdm.sync;
 
 import java.io.File;
 import java.io.FileInputStream;

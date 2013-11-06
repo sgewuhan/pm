@@ -1,4 +1,4 @@
-package com.tmt.pdm.dcppdm.sync;
+package com.tmt.pdm.dcpdm.sync;
 
 import org.bson.types.ObjectId;
 
