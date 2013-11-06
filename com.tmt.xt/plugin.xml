@@ -281,29 +281,6 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        id="comment"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="资料预审"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否资料预审"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
                         id="messagecontent"
                         label="评审会议通知"
                         labelVisible="true"
@@ -336,6 +313,29 @@
                         persistable="true"
                         required="false">
                   </list>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="资料预审"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否资料预审"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
