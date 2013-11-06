@@ -43,6 +43,7 @@ public class ProcessHistoryTable extends TableViewer {
 	private void createTable() {
 		getTable().setLinesVisible(true);
 		getTable().setHeaderVisible(true);
+		
 
 		// 创建任务名称列
 		TableViewerColumn col = new TableViewerColumn(this, SWT.LEFT);
