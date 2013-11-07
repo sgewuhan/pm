@@ -2222,9 +2222,27 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+			
 			Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+			List<UserTask> reservedTasks = getAllUserTasks(Status.Reserved.name());
+			for (int i = 0; i < reservedTasks.size(); i++) {
+				UserTask userTask = reservedTasks.get(i);
+				TaskData taskData = userTask.getTask().getTaskData();
+				long workItemId = taskData.getWorkItemId();
+				try{
+					wf.abortWorkItem(workItemId);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				userTask.setValue(UserTask.F_STATUS, Status.Exited.name());
+				userTask.doSave(context);
+			}
+
 			Long instanceId = getExecuteProcessId();
-			wf.abortProcess(instanceId.longValue());
+			try{
+				wf.abortProcess(instanceId.longValue());
+			}catch(Exception e){}
+			
 		}
 
 		DBObject update = new BasicDBObject();
@@ -3169,6 +3187,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return col.count(query);
 	}
 
+	public List<UserTask> getAllUserTasks(String status) {
+		DBCollection col = getCollection(IModelConstants.C_USERTASK);
+		DBObject query = new BasicDBObject();
+		query.put(UserTask.F_WORK_ID, get_id());
+		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
+		query.put(UserTask.F_STATUS, status);
+		DBCursor cur = col.find(query);
+		List<UserTask> result = new ArrayList<UserTask>();
+		while (cur.hasNext()) {
+			DBObject data = cur.next();
+			result.add(ModelService.createModelObject(data, UserTask.class));
+		}
+
+		return result;
+	}
+	
+	
 	public List<UserTask> getUserTasks(String userId, String status) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
