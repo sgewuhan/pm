@@ -163,5 +163,10 @@ public class Workflow {
 		return key;
 	}
 
+	public void abortProcess(long processId) {
+		StatefulKnowledgeSession session = processDefintion.getKnowledgeSession();
+		session.abortProcessInstance(processId);
+	}
+
 
 }
