@@ -996,19 +996,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				}
 			}
 		}
-		
-		//检查下级必须的交付物是否上传了附件
+
+		// 检查下级必须的交付物是否上传了附件
 		List<PrimaryObject> delis = getDeliverable();
-		if(delis!=null){
-			for(int i = 0 ; i <delis.size();i++){
+		if (delis != null) {
+			for (int i = 0; i < delis.size(); i++) {
 				Deliverable deli = (Deliverable) delis.get(i);
-				if(deli.isMandatory()){
+				if (deli.isMandatory()) {
 					Document doc = deli.getDocument();
 					doc.checkMandatory();
 				}
 			}
 		}
-		
+
 		// 3.判断下级级联完成的工作是否可以完成，非级联完成的工作是否已经在已完成状态或已取消状态
 		message.addAll(checkCascadeFinish(get_id()));
 		return message;
@@ -2109,8 +2109,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
 				// 如果是，启动工作流
 				String lc = getLifecycleStatus();
-				if(!STATUS_PAUSED_VALUE.equals(lc)){
-					
+				if (!STATUS_PAUSED_VALUE.equals(lc)) {
+
 					Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
 					DBObject actors = pc.getProcessActorsData(F_WF_EXECUTE);
 					Map<String, String> actorParameter = null;
@@ -2120,8 +2120,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					ProcessInstance processInstance = wf.startHumanProcess(
 							actorParameter, params);
 					Assert.isNotNull(processInstance, "流程启动失败");
-					
-					update.put(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID,
+
+					update.put(F_WF_EXECUTE
+							+ IProcessControl.POSTFIX_INSTANCEID,
 							processInstance.getId());
 				}
 			}
@@ -2205,13 +2206,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
-		
+
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
-			Workflow workflow = pc.getWorkflow(F_WF_EXECUTE);
-//			workflow.cancelProcess();
+			Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+			Long instanceId = getLongValue(F_WF_EXECUTE
+					+ IProcessControl.POSTFIX_INSTANCEID);
+			wf.abortProcess(instanceId.longValue());
 		}
-        
+
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
