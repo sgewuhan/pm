@@ -553,6 +553,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 复制系统日历
 		doCopySystemCanlendar();
+		
+//		//自动设置任务执行人
+//		doAssignmentByRole(context);
 
 	}
 
