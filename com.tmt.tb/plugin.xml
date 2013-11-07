@@ -1086,7 +1086,7 @@
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1129,7 +1129,7 @@
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1173,7 +1173,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1318,7 +1318,7 @@
                         name="developable"
                         option="是\否"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1362,7 +1362,7 @@
                         name="choice_check"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>

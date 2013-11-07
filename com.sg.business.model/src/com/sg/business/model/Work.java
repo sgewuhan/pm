@@ -2304,21 +2304,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 */
 
 		// 检查流程是否完成
-		if (Boolean.TRUE
-				.equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
-			ProcessInstance pi = getExecuteProcess();
-			if (pi != null) {
-				if (pi.getState() != ProcessInstance.STATE_COMPLETED
-						|| pi.getState() != ProcessInstance.STATE_ABORTED) {
-					IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
-					if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
-						Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
-						Long instanceId = getExecuteProcessId();
-						wf.abortProcess(instanceId.longValue());
-					}
-				}
-			}
-		}
+//		if (Boolean.TRUE
+//				.equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
+//			ProcessInstance pi = getExecuteProcess();
+//			if (pi != null) {
+//				if (pi.getState() != ProcessInstance.STATE_COMPLETED
+//						|| pi.getState() != ProcessInstance.STATE_ABORTED) {
+//					IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+//					if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+//						Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+//						Long instanceId = getExecuteProcessId();
+//						wf.abortProcess(instanceId.longValue());
+//					}
+//				}
+//			}
+//		}
 
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
