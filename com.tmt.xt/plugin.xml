@@ -123,7 +123,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -166,7 +166,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -300,7 +300,7 @@
                         navigatorId="organization.user"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
@@ -311,7 +311,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </list>
                   <radio
                         editable="true"
@@ -321,7 +321,7 @@
                         name="choice"
                         option="是否资料预审"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
