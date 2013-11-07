@@ -196,6 +196,8 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 	
 	@Override
 	public void doCreate() {
+		
+		
 		super.doCreate();
 	}
 

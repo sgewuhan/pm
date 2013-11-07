@@ -19,7 +19,7 @@
             locationURI="popup:project.deliverable?after=project.linkdeliverable">
          <command
                commandId="deliverable.linkpdm"
-               icon="image/24_blank.png"
+               icon="image/rep_document_24.png"
                label="链接PDM图文档..."
                style="push">
             <visibleWhen
@@ -42,11 +42,25 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:workflow.workdelivery?after=additions">
+         <command
+               commandId="workflow.deliverable.linkpdm"
+               icon="image/rep_document_24.png"
+               label="链接PDM图文档..."
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
             id="deliverable.linkpdm"
+            name="链接PDM图文档">
+      </command>
+      <command
+            id="workflow.deliverable.linkpdm"
             name="链接PDM图文档">
       </command>
    </extension>
@@ -55,6 +69,10 @@
       <handler
             class="com.tmt.pdm.dcpdm.handler.LinkPDMDocAndDraw"
             commandId="deliverable.linkpdm">
+      </handler>
+      <handler
+            class="com.tmt.pdm.dcpdm.handler.LinkPDMDocAndDraw2"
+            commandId="workflow.deliverable.linkpdm">
       </handler>
    </extension>
    <extension

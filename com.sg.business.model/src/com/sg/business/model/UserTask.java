@@ -24,7 +24,7 @@ import com.sg.bpm.workflow.taskform.TaskFormConfig;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
 
-public class UserTask extends PrimaryObject {
+public class UserTask extends PrimaryObject implements IWorkRelative{
 
 	public static final String F_FORM_CHOICE = "form_choice";
 	
