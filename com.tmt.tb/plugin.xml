@@ -774,7 +774,7 @@
       <taskForm
             editorId="tbProjectApprove.audit"
             name="审批"
-            persistentFields="comment,choice,reviewer_list,reviewer_admin"
+            persistentFields="choice,reviewer_list,reviewer_admin"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -887,7 +887,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -903,18 +903,6 @@
                         persistable="true"
                         required="false">
                   </list>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
                   <radio
                         editable="true"
                         id="choice"
