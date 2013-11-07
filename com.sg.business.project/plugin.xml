@@ -515,16 +515,22 @@
          <column
                columnDefinitionId="chargerid">
          </column>
+         <column
+               columnDefinitionId="planstart">
+         </column>
+         <column
+               columnDefinitionId="planfinish">
+         </column>
+         <column
+               columnDefinitionId="actualstart">
+         </column>
+         <column
+               columnDefinitionId="actualfinish">
+         </column>
          <columnGroup
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
                name="计划进度">
-            <column
-                  columnDefinitionId="planstart">
-            </column>
-            <column
-                  columnDefinitionId="planfinish">
-            </column>
             <column
                   columnDefinitionId="planduration">
             </column>
@@ -536,12 +542,6 @@
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
                name="实际进度">
-            <column
-                  columnDefinitionId="actualstart">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish">
-            </column>
             <column
                   columnDefinitionId="actualduration">
             </column>

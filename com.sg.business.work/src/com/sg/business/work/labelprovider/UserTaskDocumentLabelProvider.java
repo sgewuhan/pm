@@ -64,13 +64,23 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />");
 		}
 
-		sb.append("<a href='");
-		String downloadURL = serverFile.getDownloadURL();
-		sb.append(downloadURL + "@download");
+		if (serverFile instanceof OSServerFile) {
+			sb.append("<a href='");
+			String downloadURL = ((OSServerFile) serverFile).getDownloadURL();
+			sb.append(downloadURL);
+			sb.append("'>");
+			sb.append(fileName);
+			sb.append("</a>");
+		}else{
+			sb.append("<a href='");
+			String downloadURL = serverFile.getInternalDownloadURL();
+			sb.append(downloadURL + "@download");
+			sb.append("' target=\"_rwt\">");
+			sb.append(fileName);
+			sb.append("</a>");
+			
+		}
 
-		sb.append("' target=\"_rwt\">");
-		sb.append(fileName);
-		sb.append("</a>");
 
 		sb.append("<br/>");
 		// œ‘ æ¥Û–°

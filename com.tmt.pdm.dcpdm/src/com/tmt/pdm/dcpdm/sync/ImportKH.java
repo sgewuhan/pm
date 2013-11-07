@@ -14,7 +14,7 @@ public class ImportKH extends ImportData {
 
 	@Override
 	protected String getNamespace() {
-		return "vault";
+		return "vault_file";
 	}
 
 	@Override

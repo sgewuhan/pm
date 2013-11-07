@@ -42,7 +42,7 @@ public class LinkPDMDocAndDraw extends AbstractNavigatorHandler {
 			
 			@Override
 			protected String getNamespace() {
-				return Document.F_VAULT;
+				return "vault_file";
 			}
 			
 			@Override

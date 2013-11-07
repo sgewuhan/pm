@@ -21,7 +21,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 import com.mobnut.commons.util.Office2PDFJob;
-import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
 import com.mobnut.commons.util.file.OSServerFile;
@@ -78,25 +77,25 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 	}
 
 	private void createPreview(final OSServerFile osfile) {
+		File serverFile = osfile.getServerFile();
+		String serverFilePath = serverFile.getPath();
+		String previewFilePath = serverFilePath+".pdf";
+		final File previewFile = new File(previewFilePath);
+		if(previewFile.isFile()){
+			previewOSFile(previewFile);
+			return;
+		}
+
+		
 		final Display display = getSite().getShell().getDisplay();
 
-		String pathname = System.getProperty("user.dir") + "/temp/"
-				+ Utils.getRandomString(8, true);
-		File folder = new File(pathname);
-		if (!folder.isDirectory()) {
-			folder.mkdirs();
-		}
-		String fileName = osfile.getFileName();
-		String previewPath = pathname + "/" + fileName.substring(0,
-				fileName.lastIndexOf(".")) + ".pdf";
 
-		int fileType = FileUtil.getFileType(fileName);
+		int fileType = FileUtil.getFileType(osfile.getFileName());
 
 		if (fileType == FileUtil.FILETYPE_OFFICE_FILE) {
+			
 			Office2PDFJob job = new Office2PDFJob();
-			final File serverFile = osfile.getServerFile();
 			job.setSourceFile(serverFile);
-			final File previewFile = new File(previewPath);
 			job.setTargetFile(previewFile);
 			job.setUser(true);
 
