@@ -2108,18 +2108,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 			if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
 				// 如果是，启动工作流
-				Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
-				DBObject actors = pc.getProcessActorsData(F_WF_EXECUTE);
-				Map<String, String> actorParameter = null;
-				if (actors != null) {
-					actorParameter = actors.toMap();
+				String lc = getLifecycleStatus();
+				if(!STATUS_PAUSED_VALUE.equals(lc)){
+					
+					Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+					DBObject actors = pc.getProcessActorsData(F_WF_EXECUTE);
+					Map<String, String> actorParameter = null;
+					if (actors != null) {
+						actorParameter = actors.toMap();
+					}
+					ProcessInstance processInstance = wf.startHumanProcess(
+							actorParameter, params);
+					Assert.isNotNull(processInstance, "流程启动失败");
+					
+					update.put(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID,
+							processInstance.getId());
 				}
-				ProcessInstance processInstance = wf.startHumanProcess(
-						actorParameter, params);
-				Assert.isNotNull(processInstance, "流程启动失败");
-
-				update.put(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID,
-						processInstance.getId());
 			}
 		}
 
@@ -2201,7 +2205,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Assert.isTrue(canCancel(), "工作的当前状态不能执行取消操作");
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
-
+		
+		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+			Workflow workflow = pc.getWorkflow(F_WF_EXECUTE);
+//			workflow.cancelProcess();
+		}
+        
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {

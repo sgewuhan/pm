@@ -46,7 +46,12 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());
 		project = (Project) input.getData();
-		this.editable = input.isEditable();
+		if(project.isPersistent()){
+			this.editable = false;
+		}
+		else{
+			editable=input.isEditable();
+		}
 		project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
 		createOptionContent();
 		return content;
