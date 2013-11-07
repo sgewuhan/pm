@@ -945,7 +945,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		
 		String lc = getLifecycleStatus();
-		if(!STATUS_ONREADY_VALUE.equals(lc)){
+		if(!STATUS_NONE_VALUE.equals(lc)){
 			throw new Exception("您只能在项目准备状态进行按角色指派工作");
 		}
 		
