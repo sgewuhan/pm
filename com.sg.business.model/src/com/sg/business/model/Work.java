@@ -957,6 +957,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				throw new Exception("本工作不能取消，" + this);
 			}
 		}
+
 		return null;
 	}
 
@@ -993,6 +994,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (parentWork != null) {
 				if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
 					throw new Exception("上级工作不在进行中，" + this);
+				}
+			}
+		}
+
+		// 检查流程是否完成
+		if (!Boolean.TRUE
+				.equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
+			ProcessInstance pi = getExecuteProcess();
+			if (pi != null) {
+				if (pi.getState() != ProcessInstance.STATE_COMPLETED
+						|| pi.getState() != ProcessInstance.STATE_ABORTED) {
+					throw new Exception("工作在流程完成前不能完成，" + this);
 				}
 			}
 		}
@@ -2210,8 +2223,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
 			Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
-			Long instanceId = getLongValue(F_WF_EXECUTE
-					+ IProcessControl.POSTFIX_INSTANCEID);
+			Long instanceId = getExecuteProcessId();
 			wf.abortProcess(instanceId.longValue());
 		}
 
@@ -2247,6 +2259,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
+	public Long getExecuteProcessId() {
+		return getLongValue(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID)
+				.longValue();
+	}
+
+	public ProcessInstance getExecuteProcess() {
+		IProcessControl pc = getAdapter(IProcessControl.class);
+		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+			Long pid = getExecuteProcessId();
+			if (pid != null) {
+				Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+				return wf.getProcess(pid);
+			}
+		}
+
+		return null;
+	}
+
 	public Object doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -2272,6 +2302,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 * 
 		 * }
 		 */
+
+		// 检查流程是否完成
+		if (Boolean.TRUE
+				.equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
+			ProcessInstance pi = getExecuteProcess();
+			if (pi != null) {
+				if (pi.getState() != ProcessInstance.STATE_COMPLETED
+						|| pi.getState() != ProcessInstance.STATE_ABORTED) {
+					IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+					if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+						Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+						Long instanceId = getExecuteProcessId();
+						wf.abortProcess(instanceId.longValue());
+					}
+				}
+			}
+		}
 
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();

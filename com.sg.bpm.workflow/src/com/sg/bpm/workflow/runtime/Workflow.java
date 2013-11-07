@@ -167,6 +167,11 @@ public class Workflow {
 		StatefulKnowledgeSession session = processDefintion.getKnowledgeSession();
 		session.abortProcessInstance(processId);
 	}
+	
+	public ProcessInstance getProcess(long processId){
+		StatefulKnowledgeSession session = processDefintion.getKnowledgeSession();
+		return session.getProcessInstance(processId);
+	}
 
 
 }
