@@ -214,6 +214,9 @@
                   name="用户ID"
                   type="String">
             </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
          </filterAction>
          <searchAction>
             <column
