@@ -32,7 +32,7 @@ public class Workflow {
 
 	private static final String PROCESS_VAR_CONTENT = "content";
 	private final PrimaryObject host;
-	private final DroolsProcessDefinition processDefintion;
+	private final DroolsProcessDefinition processDefinition;
 	private final String key;
 
 	/**
@@ -45,7 +45,7 @@ public class Workflow {
 	public Workflow(DroolsProcessDefinition processDefintion,
 			PrimaryObject host, String key) {
 		this.host = host;
-		this.processDefintion = processDefintion;
+		this.processDefinition = processDefintion;
 		this.key = key;
 	}
 
@@ -57,9 +57,9 @@ public class Workflow {
 	 * @throws Exception
 	 */
 	public Workflow(String processId, long processInstanceId) throws Exception {
-		processDefintion = new DroolsProcessDefinition(processId);
-		Assert.isNotNull(processDefintion, "无法确定流程ID对应的流程定义");
-		StatefulKnowledgeSession session = processDefintion
+		processDefinition = new DroolsProcessDefinition(processId);
+		Assert.isNotNull(processDefinition, "无法确定流程ID对应的流程定义");
+		StatefulKnowledgeSession session = processDefinition
 				.getKnowledgeSession();
 		Assert.isNotNull(session, "无法获得流程定义的知识库进程");
 		WorkflowProcessInstance pi = (WorkflowProcessInstance) session
@@ -119,7 +119,7 @@ public class Workflow {
 		params.put(PROCESS_VAR_CONTENT, var);
 
 		// 设置执行人规则
-		List<NodeAssignment> naslist = processDefintion.getNodesAssignment();
+		List<NodeAssignment> naslist = processDefinition.getNodesAssignment();
 		for (int i = 0; i < naslist.size(); i++) {
 			NodeAssignment na = naslist.get(i);
 			if (na.isRuleAssignment()) {
@@ -134,7 +134,7 @@ public class Workflow {
 		}
 
 		ProcessInstance pi = WorkflowService.getDefault().startHumanProcess(
-				processDefintion, params);
+				processDefinition, params);
 
 		for (String userId : relativeUserId) {
 			UserSessionContext.noticeAccountChanged(userId,
@@ -164,17 +164,17 @@ public class Workflow {
 	}
 
 	public void abortProcess(long processId) {
-		StatefulKnowledgeSession session = processDefintion.getKnowledgeSession();
+		StatefulKnowledgeSession session = processDefinition.getKnowledgeSession();
 		session.abortProcessInstance(processId);
 	}
 	
 	public ProcessInstance getProcess(long processId){
-		StatefulKnowledgeSession session = processDefintion.getKnowledgeSession();
+		StatefulKnowledgeSession session = processDefinition.getKnowledgeSession();
 		return session.getProcessInstance(processId);
 	}
 
 	public void abortWorkItem(long workItemId) {
-		StatefulKnowledgeSession session = processDefintion.getKnowledgeSession();
+		StatefulKnowledgeSession session = processDefinition.getKnowledgeSession();
 		session.getWorkItemManager().abortWorkItem(workItemId);
 	}
 
