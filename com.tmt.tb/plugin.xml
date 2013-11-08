@@ -71,8 +71,7 @@
             editorId="tb.tbProjectReview.expertgroupcountersign"
             name="专家评审"
             persistentFields="choice,comment,commentfile"
-            processDefinitionId="tb.tbProjectReview"
-            saveHandler="com.tmt.tb.handler.ProjectReviewExpertCommentfileOfTB">
+            processDefinitionId="tb.tbProjectReview">
       </taskForm>
       <taskForm
             editorId="tb.tbProjectReview.meetingreview"
@@ -1981,11 +1980,11 @@
                         id="develop"
                         label="请确定更改方开发中心审核人员"
                         labelVisible="true"
-                        labelprovider="userid"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="develop"
                         navigatorId="organization.user.selector"
-                        navigatorSelectorControl="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        navigatorReturnField="userid"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
