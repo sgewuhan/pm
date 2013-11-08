@@ -101,7 +101,7 @@ public class LinkPDMDocAndDraw extends AbstractNavigatorHandler {
 		List<?> docContainer = getDocumentAndDrawingContainerCode();
 		List<?> partContainer = getPartContainerCode();
 
-		if (partContainer == null) {
+		if (docContainer == null) {
 			MessageUtil.showToast("您所在的组织尚未确定PDM系统中可使用图文档容器。", SWT.ICON_ERROR);
 			return;
 		}
