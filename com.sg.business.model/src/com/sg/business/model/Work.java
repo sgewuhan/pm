@@ -2273,12 +2273,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				userTask.setValue(UserTask.F_STATUS, Status.Exited.name());
-				userTask.doSave(context);
+				// userTask.setValue(UserTask.F_STATUS, Status.Exited.name());
+				// userTask.doSave(context);
 			}
-
-			Long instanceId = getExecuteProcessId();
-			wf.abortProcess(instanceId.longValue());
+			try {
+				Long instanceId = getExecuteProcessId();
+				wf.abortProcess(instanceId.longValue());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
