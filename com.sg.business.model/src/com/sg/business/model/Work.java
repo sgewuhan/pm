@@ -2181,6 +2181,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Map<String, Object> params = new HashMap<String, Object>();
 		doPauseBefore(context, params);
 
+		// 暂停流程
+
 		DBObject update = new BasicDBObject();
 
 		List<PrimaryObject> children = getChildrenWork();
@@ -2220,30 +2222,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
 
-		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
-		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
-			
-			Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
-			List<UserTask> reservedTasks = getAllUserTasks(Status.Reserved.name());
-			for (int i = 0; i < reservedTasks.size(); i++) {
-				UserTask userTask = reservedTasks.get(i);
-				TaskData taskData = userTask.getTask().getTaskData();
-				long workItemId = taskData.getWorkItemId();
-				try{
-					wf.abortWorkItem(workItemId);
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-				userTask.setValue(UserTask.F_STATUS, Status.Exited.name());
-				userTask.doSave(context);
-			}
-
-			Long instanceId = getExecuteProcessId();
-			try{
-				wf.abortProcess(instanceId.longValue());
-			}catch(Exception e){}
-			
-		}
+		cancelExecuteProcessInstance(context);
 
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
@@ -2275,6 +2254,32 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		return null;
 
+	}
+
+	private void cancelExecuteProcessInstance(IContext context)
+			throws Exception {
+		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+
+			Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+			List<UserTask> reservedTasks = getAllUserTasks(Status.Reserved
+					.name());
+			for (int i = 0; i < reservedTasks.size(); i++) {
+				UserTask userTask = reservedTasks.get(i);
+				TaskData taskData = userTask.getTask().getTaskData();
+				long workItemId = taskData.getWorkItemId();
+				try {
+					wf.abortWorkItem(workItemId);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				userTask.setValue(UserTask.F_STATUS, Status.Exited.name());
+				userTask.doSave(context);
+			}
+
+			Long instanceId = getExecuteProcessId();
+			wf.abortProcess(instanceId.longValue());
+		}
 	}
 
 	public Long getExecuteProcessId() {
@@ -2322,21 +2327,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 */
 
 		// 检查流程是否完成
-//		if (Boolean.TRUE
-//				.equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
-//			ProcessInstance pi = getExecuteProcess();
-//			if (pi != null) {
-//				if (pi.getState() != ProcessInstance.STATE_COMPLETED
-//						|| pi.getState() != ProcessInstance.STATE_ABORTED) {
-//					IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
-//					if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
-//						Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
-//						Long instanceId = getExecuteProcessId();
-//						wf.abortProcess(instanceId.longValue());
-//					}
-//				}
-//			}
-//		}
+		// if (Boolean.TRUE
+		// .equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
+		// ProcessInstance pi = getExecuteProcess();
+		// if (pi != null) {
+		// if (pi.getState() != ProcessInstance.STATE_COMPLETED
+		// || pi.getState() != ProcessInstance.STATE_ABORTED) {
+		// IProcessControl pc = (IProcessControl)
+		// getAdapter(IProcessControl.class);
+		// if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+		// Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+		// Long instanceId = getExecuteProcessId();
+		// wf.abortProcess(instanceId.longValue());
+		// }
+		// }
+		// }
+		// }
 
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
@@ -3202,8 +3208,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		return result;
 	}
-	
-	
+
 	public List<UserTask> getUserTasks(String userId, String status) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();
