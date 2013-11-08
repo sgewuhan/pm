@@ -43,7 +43,9 @@ public class PDMObjectSelector extends Dialog {
 			List<?> partContainer) {
 		super(parentShell);
 		this.docContainers = docContainer.toArray(new String[0]);
-		this.partContainer = partContainer.toArray(new String[0]);
+		if(partContainer!=null){
+			this.partContainer = partContainer.toArray(new String[0]);
+		}
 
 	}
 
