@@ -1,6 +1,5 @@
 package com.sg.business.work.launch;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -204,15 +203,14 @@ public class ConfirmPage extends WizardPage {
 			workDefinition.setText("");
 		}
 
-		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE_COMPACT_SASH);
 		Date date = work.getPlanStart();
 		if (date != null) {
-			planStart.setText(sdf.format(date));
+			planStart.setText(String.format(Utils.FORMATE_DATE_COMPACT_SASH, date));
 		}
 
 		date = work.getPlanFinish();
 		if (date != null) {
-			planFinish.setText(sdf.format(date));
+			planFinish.setText(String.format(Utils.FORMATE_DATE_COMPACT_SASH, date));
 		}
 
 		if (work.isExecuteWorkflowActivateAndAvailable()) {

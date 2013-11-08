@@ -1,4 +1,4 @@
-package com.tmt.tb.bpmservice;
+package com.sg.business.model.bpmservice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,8 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
-import com.sg.business.model.bpmservice.MessageService;
 
-public class ProjcetApproveMessageOfTB extends MessageService {
+public class ReviewerMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
@@ -18,22 +17,22 @@ public class ProjcetApproveMessageOfTB extends MessageService {
 
 	@Override
 	public String getMessageContent() {
-		Object choice = getInputValue("choice");
-		if ("通过".equals((String) choice)) {
-			return "项目" + getTarget().getLabel() + "：审批通过";
-		} else {
-			return "项目" + getTarget().getLabel() + "：审批不通过";
-		}
+		Object messageConten = getInputValue("messagecontent");
+		return (String)messageConten;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
-		Object obj = getInputValue("reviewer_list");
-		if (obj instanceof ArrayList) {
-			return (List<String>)obj;
-		} else
-			return null;
+		
+		List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list");
+		String reviewer_admin=(String)getInputValue("reviewer_admin");
+		if(!reviewerList.contains(reviewer_admin)){
+			
+			reviewerList.add(reviewer_admin);
+		}
+		 return reviewerList;
+		
 	}
 
 	@Override

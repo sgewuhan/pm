@@ -515,16 +515,22 @@
          <column
                columnDefinitionId="chargerid">
          </column>
+         <column
+               columnDefinitionId="planstart">
+         </column>
+         <column
+               columnDefinitionId="planfinish">
+         </column>
+         <column
+               columnDefinitionId="actualstart">
+         </column>
+         <column
+               columnDefinitionId="actualfinish">
+         </column>
          <columnGroup
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
                name="计划进度">
-            <column
-                  columnDefinitionId="planstart">
-            </column>
-            <column
-                  columnDefinitionId="planfinish">
-            </column>
             <column
                   columnDefinitionId="planduration">
             </column>
@@ -536,12 +542,6 @@
                defaultGroup="false"
                id="com.sg.business.project.columnGroup1"
                name="实际进度">
-            <column
-                  columnDefinitionId="actualstart">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish">
-            </column>
             <column
                   columnDefinitionId="actualduration">
             </column>
@@ -1193,7 +1193,7 @@
          </structure>
       </tree>
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="true"
@@ -1212,9 +1212,6 @@
          </column>
          <column
                columnDefinitionId="milestone">
-         </column>
-         <column
-               columnDefinitionId="work.seq">
          </column>
          <column
                columnDefinitionId="planstart_e">
@@ -3153,6 +3150,9 @@
                navigatorId="project.team"
                pageBodyPartCreater="com.sg.business.project.wizards.ProjectTeamPage"
                title="项目组">
+            <navigatoraction
+                  action="com.sg.business.project.action.FilterUnAssignment">
+            </navigatoraction>
          </navigatorpage>
          <navigatorpage
                id="project.wbs"

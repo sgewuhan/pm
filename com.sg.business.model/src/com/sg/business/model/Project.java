@@ -5,9 +5,11 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
@@ -551,6 +553,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 复制系统日历
 		doCopySystemCanlendar();
+		
+//		//自动设置任务执行人
+//		doAssignmentByRole(context);
 
 	}
 
@@ -634,7 +639,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		// 复制角色定义
-		Map<ObjectId, DBObject> roleMap = doSetupRolesWithTemplate(id, context);
+		Map<ObjectId, DBObject> roleMap = doMakeRolesWithTemplate(id, context);
 
 		// 复制工作定义
 		Map<ObjectId, DBObject> workMap = doSetupWBSWithTemplate(id, wbsRootId,
@@ -645,6 +650,44 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 设置项目的流程和角色
 		doSetupWorkflowWithTemplate(id, roleMap, context);
+		
+		
+		//排除没有应用的角色
+		if (!roleMap.isEmpty()) {
+			Collection<DBObject> values = roleMap.values();
+			Iterator<DBObject> iter = values.iterator();
+
+			Set<DBObject> toBeInsert = new HashSet<DBObject>();
+			while(iter.hasNext()){
+				DBObject prole = iter.next();
+				if(!Boolean.TRUE.equals(prole.get("used"))){
+					continue;
+				}
+				Object roleId = prole
+						.get(ProjectRole.F_ORGANIZATION_ROLE_ID);
+				if (roleId != null) {
+					// 将组织角色中的成员加入到项目的参与者
+					Role role = ModelService.createModelObject(Role.class,
+							(ObjectId) roleId);
+					List<PrimaryObject> ass = role.getAssignment();
+					doAddParticipateFromAssignment(ass);
+					
+				}
+				
+				
+				prole.removeField("used");
+				toBeInsert.add(prole);
+			}
+			
+			
+			
+			DBObject[] insertData = toBeInsert.toArray(new DBObject[0]);
+			// 插入到数据库
+			DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
+
+			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
+			checkWriteResult(ws);
+		}
 
 	}
 
@@ -752,7 +795,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		checkWriteResult(ws);
 	}
 
-	private Map<ObjectId, DBObject> doSetupRolesWithTemplate(
+	private Map<ObjectId, DBObject> doMakeRolesWithTemplate(
 			ObjectId projectTemplateId, IContext context) throws Exception {
 		DBCollection col_roled = getCollection(IModelConstants.C_ROLE_DEFINITION);
 		DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
@@ -781,11 +824,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			if (roleId != null) {
 				// 设置为组织角色
 				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
-				// 将组织角色中的成员加入到项目的参与者
-				Role role = ModelService.createModelObject(Role.class,
-						(ObjectId) roleId);
-				List<PrimaryObject> ass = role.getAssignment();
-				doAddParticipateFromAssignment(ass);
+//				// 将组织角色中的成员加入到项目的参与者
+//				Role role = ModelService.createModelObject(Role.class,
+//						(ObjectId) roleId);
+//				List<PrimaryObject> ass = role.getAssignment();
+//				doAddParticipateFromAssignment(ass);
 
 			} else {
 				// 设置为项目角色
@@ -802,13 +845,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					prole.get_data());
 		}
 
-		if (!result.isEmpty()) {
-			DBObject[] insertData = result.values().toArray(new DBObject[0]);
-
-			// 插入到数据库
-			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
-			checkWriteResult(ws);
-		}
 
 		return result;
 	}
@@ -861,6 +897,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		collection = documentsToBeInsert.values();
 		if (!collection.isEmpty()) {
+			//保存文档时需要文档的保存前的预处理
 			ws = docCol.insert(collection.toArray(new DBObject[0]),
 					WriteConcern.NORMAL);
 			checkWriteResult(ws);
@@ -909,6 +946,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (map.size() == 0) {
 			throw new Exception("尚未对角色指定人员，无法执行按角色指派工作");
 		}
+		
+		String lc = getLifecycleStatus();
+		if(!STATUS_NONE_VALUE.equals(lc)){
+			throw new Exception("您只能在项目准备状态进行按角色指派工作");
+		}
+		
 		List<PrimaryObject> childrenWorks = getChildrenWork();
 		for (int i = 0; i < childrenWorks.size(); i++) {
 			Work childWork = (Work) childrenWorks.get(i);

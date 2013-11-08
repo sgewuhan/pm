@@ -43,6 +43,7 @@ public class ProcessHistoryTable extends TableViewer {
 	private void createTable() {
 		getTable().setLinesVisible(true);
 		getTable().setHeaderVisible(true);
+		
 
 		// 创建任务名称列
 		TableViewerColumn col = new TableViewerColumn(this, SWT.LEFT);
@@ -53,7 +54,7 @@ public class ProcessHistoryTable extends TableViewer {
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
-					return "" + dbObject.get(IProcessControl.F_WF_TASK_NAME);
+					return "" + dbObject.get("taskname");
 				}
 				return super.getText(element);
 			}

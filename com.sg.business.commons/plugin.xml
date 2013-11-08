@@ -591,7 +591,7 @@
             name="编号"
             style="SWT.LEFT"
             type="String"
-            width="120">
+            width="160">
       </column>
       <column
             column="description"
@@ -625,7 +625,7 @@
             name="用户编号"
             style="SWT.LEFT"
             type="String"
-            width="80">
+            width="100">
       </column>
       <column
             column="username"
@@ -633,21 +633,21 @@
             name="姓名"
             style="SWT.LEFT"
             type="String"
-            width="80">
+            width="70">
       </column>
       <column
             column="email"
             id="account.email"
             name="电子邮箱"
             type="String"
-            width="80">
+            width="160">
       </column>
       <column
             column="activated"
             id="account.activated"
             name="激活"
             type="Boolean"
-            width="80">
+            width="60">
       </column>
       <column
             column="organization_id"
@@ -775,7 +775,7 @@
             id="work.desc"
             name="名称"
             type="String"
-            width="180">
+            width="240">
       </column>
       <column
             column="desc"

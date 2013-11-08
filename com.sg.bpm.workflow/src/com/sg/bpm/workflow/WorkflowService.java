@@ -357,4 +357,5 @@ public class WorkflowService extends AbstractUIPlugin {
 
 	private void taskEventNotice(Task task) {
 	}
+
 }

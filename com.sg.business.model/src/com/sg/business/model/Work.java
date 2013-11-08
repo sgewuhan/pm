@@ -957,6 +957,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				throw new Exception("本工作不能取消，" + this);
 			}
 		}
+
 		return null;
 	}
 
@@ -993,6 +994,30 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			if (parentWork != null) {
 				if (!STATUS_WIP_VALUE.equals(parentWork.getLifecycleStatus())) {
 					throw new Exception("上级工作不在进行中，" + this);
+				}
+			}
+		}
+
+		// 检查流程是否完成
+		if (!Boolean.TRUE
+				.equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
+			ProcessInstance pi = getExecuteProcess();
+			if (pi != null) {
+				if (pi.getState() != ProcessInstance.STATE_COMPLETED
+						|| pi.getState() != ProcessInstance.STATE_ABORTED) {
+					throw new Exception("工作在流程完成前不能完成，" + this);
+				}
+			}
+		}
+
+		// 检查下级必须的交付物是否上传了附件
+		List<PrimaryObject> delis = getDeliverable();
+		if (delis != null) {
+			for (int i = 0; i < delis.size(); i++) {
+				Deliverable deli = (Deliverable) delis.get(i);
+				if (deli.isMandatory()) {
+					Document doc = deli.getDocument();
+					doc.checkMandatory();
 				}
 			}
 		}
@@ -2096,18 +2121,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 			if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
 				// 如果是，启动工作流
-				Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
-				DBObject actors = pc.getProcessActorsData(F_WF_EXECUTE);
-				Map<String, String> actorParameter = null;
-				if (actors != null) {
-					actorParameter = actors.toMap();
-				}
-				ProcessInstance processInstance = wf.startHumanProcess(
-						actorParameter, params);
-				Assert.isNotNull(processInstance, "流程启动失败");
+				String lc = getLifecycleStatus();
+				if (!STATUS_PAUSED_VALUE.equals(lc)) {
 
-				update.put(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID,
-						processInstance.getId());
+					Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+					DBObject actors = pc.getProcessActorsData(F_WF_EXECUTE);
+					Map<String, String> actorParameter = null;
+					if (actors != null) {
+						actorParameter = actors.toMap();
+					}
+					ProcessInstance processInstance = wf.startHumanProcess(
+							actorParameter, params);
+					Assert.isNotNull(processInstance, "流程启动失败");
+
+					update.put(F_WF_EXECUTE
+							+ IProcessControl.POSTFIX_INSTANCEID,
+							processInstance.getId());
+				}
 			}
 		}
 
@@ -2190,6 +2220,31 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
 
+		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+			
+			Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+			List<UserTask> reservedTasks = getAllUserTasks(Status.Reserved.name());
+			for (int i = 0; i < reservedTasks.size(); i++) {
+				UserTask userTask = reservedTasks.get(i);
+				TaskData taskData = userTask.getTask().getTaskData();
+				long workItemId = taskData.getWorkItemId();
+				try{
+					wf.abortWorkItem(workItemId);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				userTask.setValue(UserTask.F_STATUS, Status.Exited.name());
+				userTask.doSave(context);
+			}
+
+			Long instanceId = getExecuteProcessId();
+			try{
+				wf.abortProcess(instanceId.longValue());
+			}catch(Exception e){}
+			
+		}
+
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
@@ -2222,6 +2277,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
+	public Long getExecuteProcessId() {
+		return getLongValue(F_WF_EXECUTE + IProcessControl.POSTFIX_INSTANCEID)
+				.longValue();
+	}
+
+	public ProcessInstance getExecuteProcess() {
+		IProcessControl pc = getAdapter(IProcessControl.class);
+		if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+			Long pid = getExecuteProcessId();
+			if (pid != null) {
+				Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+				return wf.getProcess(pid);
+			}
+		}
+
+		return null;
+	}
+
 	public Object doFinish(IContext context) throws Exception {
 		Assert.isTrue(canFinish(), "工作的当前状态不能执行完成操作");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -2247,6 +2320,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		 * 
 		 * }
 		 */
+
+		// 检查流程是否完成
+//		if (Boolean.TRUE
+//				.equals(getValue(F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH))) {
+//			ProcessInstance pi = getExecuteProcess();
+//			if (pi != null) {
+//				if (pi.getState() != ProcessInstance.STATE_COMPLETED
+//						|| pi.getState() != ProcessInstance.STATE_ABORTED) {
+//					IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+//					if (pc.isWorkflowActivate(F_WF_EXECUTE)) {
+//						Workflow wf = pc.getWorkflow(F_WF_EXECUTE);
+//						Long instanceId = getExecuteProcessId();
+//						wf.abortProcess(instanceId.longValue());
+//					}
+//				}
+//			}
+//		}
 
 		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
@@ -3097,6 +3187,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return col.count(query);
 	}
 
+	public List<UserTask> getAllUserTasks(String status) {
+		DBCollection col = getCollection(IModelConstants.C_USERTASK);
+		DBObject query = new BasicDBObject();
+		query.put(UserTask.F_WORK_ID, get_id());
+		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
+		query.put(UserTask.F_STATUS, status);
+		DBCursor cur = col.find(query);
+		List<UserTask> result = new ArrayList<UserTask>();
+		while (cur.hasNext()) {
+			DBObject data = cur.next();
+			result.add(ModelService.createModelObject(data, UserTask.class));
+		}
+
+		return result;
+	}
+	
+	
 	public List<UserTask> getUserTasks(String userId, String status) {
 		DBCollection col = getCollection(IModelConstants.C_USERTASK);
 		DBObject query = new BasicDBObject();

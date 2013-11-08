@@ -1,4 +1,4 @@
-package com.tmt.pdm.dcppdm.sync;
+package com.tmt.pdm.dcpdm.sync;
 
 import org.bson.types.ObjectId;
 
@@ -14,7 +14,7 @@ public class ImportKH extends ImportData {
 
 	@Override
 	protected String getNamespace() {
-		return "vault";
+		return "vault_file";
 	}
 
 	@Override

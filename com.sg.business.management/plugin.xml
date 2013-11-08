@@ -397,7 +397,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefOfProjectTemplate"
             dropTargetListener="com.sg.business.management.dnd.DropWBSTemplate"
             id="management.wbstemplate"
@@ -405,6 +405,9 @@
             popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                columnDefinitionId="work.desc">
+         </column>
+         <column
+               columnDefinitionId="milestone">
          </column>
          <column
                columnDefinitionId="work.seq">
@@ -428,6 +431,7 @@
          </structure>
       </tree>
       <tree
+            autoExpandLevel="2"
             dataSet="com.sg.business.model.dataset.organization.OrgRoot"
             id="management.roleselector"
             multiSelection="true">
@@ -442,7 +446,7 @@
          </structure>
       </tree>
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             dataSet="com.sg.business.model.dataset.projecttemplate.WorkDefOfProjectTemplate"
             dropTargetListener="com.sg.business.management.dnd.DropDeliverable"
             fix="1"
@@ -772,6 +776,18 @@
                         required="false"
                         spinnerSetting="0,9999,1,10">
                   </spinner>
+                  <fieldgroup
+                        columnCount="1">
+                     <spinner
+                           editable="true"
+                           id="remindbefore"
+                           label="设置在计划完成前提醒(时)"
+                           labelVisible="true"
+                           name="remindbefore"
+                           persistable="true"
+                           required="false">
+                     </spinner>
+                  </fieldgroup>
                </section>
             </pagecolumn>
             <pagecolumn

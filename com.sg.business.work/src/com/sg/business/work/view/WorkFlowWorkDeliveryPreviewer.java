@@ -20,13 +20,18 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
+import com.mobnut.commons.util.Office2PDFJob;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
+import com.mobnut.commons.util.file.OSServerFile;
+import com.mobnut.db.file.GridServerFile;
+import com.mobnut.db.file.IServerFile;
 import com.mobnut.db.file.RemoteFile;
 
 public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 		ISelectionListener {
 
-	private RemoteFile selected;
+	private IServerFile selected;
 	private Browser previewer;
 	private GridFSFilePrevieweUtil previewUtil;
 	private IWorkbenchPage page;
@@ -35,8 +40,7 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 	public void createPartControl(Composite parent) {
 		previewer = new Browser(parent, SWT.NONE);
 		previewUtil = new GridFSFilePrevieweUtil();
-		page = getViewSite().getWorkbenchWindow().getActivePage()
-				;
+		page = getViewSite().getWorkbenchWindow().getActivePage();
 		page.addPostSelectionListener(this);
 	}
 
@@ -51,42 +55,50 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 			selected = null;
 		}
 		Object element = ((IStructuredSelection) selection).getFirstElement();
-		if (!(element instanceof RemoteFile)) {
+		if (!(element instanceof IServerFile)) {
 			return;
 		}
 
 		if (Util.equals(selected, element)) {
 			return;
 		}
-
-		previewUtil.setRemoteFile((RemoteFile) element);
-		setPreview((RemoteFile) element);
+		setPreview((IServerFile) element);
 
 	}
 
-	
-	private void setPreview(RemoteFile element) {
+	private void setPreview(IServerFile element) {
 		selected = element;
-		if (!previewUtil.isPreviewAvailable()) {
-			final Display display = getSite().getShell().getDisplay();
+		if (selected instanceof GridServerFile) {
+			createPreview(((GridServerFile) selected).getRemoteFile());
+		} else if (selected instanceof OSServerFile) {
+			createPreview((OSServerFile) selected);
+		}
+
+	}
+
+	private void createPreview(final OSServerFile osfile) {
+		File serverFile = osfile.getServerFile();
+		String serverFilePath = serverFile.getPath();
+		String previewFilePath = serverFilePath+".pdf";
+		final File previewFile = new File(previewFilePath);
+		if(previewFile.isFile()){
+			previewOSFile(previewFile);
+			return;
+		}
+
+		
+		final Display display = getSite().getShell().getDisplay();
+
+
+		int fileType = FileUtil.getFileType(osfile.getFileName());
+
+		if (fileType == FileUtil.FILETYPE_OFFICE_FILE) {
 			
-			
-			String pathname = System.getProperty("user.dir") + "/temp";
-			File file;
-			try {
-				file = selected.createServerFile(pathname);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-				return;
-			}
-			
-			final ObjectId pvOid = new ObjectId();
-			String masterfileName = file.getName();
-			String previewPath = file.getParent() + "/" //$NON-NLS-1$
-					+ masterfileName.substring(0, masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$
-			final File previewFile = new File(previewPath);
-			Job job = previewUtil. createGeneratePDFJob(file,previewPath);
-			
+			Office2PDFJob job = new Office2PDFJob();
+			job.setSourceFile(serverFile);
+			job.setTargetFile(previewFile);
+			job.setUser(true);
+
 			job.addJobChangeListener(new JobChangeAdapter() {
 
 				@Override
@@ -95,13 +107,7 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 
 						@Override
 						public void run() {
-							selected.setPreviewUploaded(previewFile, pvOid);
-							try {
-								selected.addPreview();
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							}
-							preview();
+							previewOSFile(previewFile);
 						}
 
 					});
@@ -109,20 +115,79 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 				}
 			});
 			job.schedule();
-		}else{
-			preview();
+
 		}
 
 	}
-	private void preview() {
+
+	private void createPreview(final RemoteFile remoteFile) {
+		previewUtil.setRemoteFile(remoteFile);
+		if (!previewUtil.isPreviewAvailable()) {
+			final Display display = getSite().getShell().getDisplay();
+
+			String pathname = System.getProperty("user.dir") + "/temp";
+			File file;
+			try {
+				file = remoteFile.createServerFile(pathname);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				return;
+			}
+
+			final ObjectId pvOid = new ObjectId();
+			String masterfileName = file.getName();
+			String previewPath = file.getParent()
+					+ "/" //$NON-NLS-1$
+					+ masterfileName.substring(0,
+							masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$
+			final File previewFile = new File(previewPath);
+			Job job = previewUtil.createGeneratePDFJob(file, previewPath);
+
+			job.addJobChangeListener(new JobChangeAdapter() {
+
+				@Override
+				public void done(IJobChangeEvent event) {
+					display.asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							remoteFile.setPreviewUploaded(previewFile, pvOid);
+							try {
+								remoteFile.addPreview();
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							}
+							previewRemoteFile();
+						}
+
+					});
+					super.done(event);
+				}
+			});
+			job.schedule();
+		} else {
+			previewRemoteFile();
+		}
+	}
+
+	private void previewOSFile(File previewFile) {
+		StringBuffer url = new StringBuffer();
+		url.append("/pdf/open?"); //$NON-NLS-1$
+		String filePath = previewFile.getPath();
+		url.append("path="); //$NON-NLS-1$
+		url.append(filePath);
+		previewer.setUrl(url.toString());
+	}
+
+	private void previewRemoteFile() {
 		if (previewUtil.isHTML()) {
 			previewer.setText(previewUtil.getHTML());
 		} else {
 			previewer.setUrl(previewUtil.getURL());
 		}
-		
+
 	}
-	
+
 	@Override
 	public void dispose() {
 		page.removePostSelectionListener(this);

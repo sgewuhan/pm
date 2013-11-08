@@ -323,7 +323,7 @@
                <section
                      label="请填写评审组成员">
                   <list
-                        addTableItemHandler="com.tmt.tb.field.action.AddRiewerListOfTB"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
                         editable="true"
                         id="reviewer_list"
                         inputValidator="com.tmt.tb.field.CheckReviewerOfTBProjectApplication"
@@ -774,9 +774,8 @@
       <taskForm
             editorId="tbProjectApprove.audit"
             name="审批"
-            persistentFields="comment,choice,reviewer_list,reviewer_admin"
-            processDefinitionId="tb.tbProjectApprove"
-            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
+            persistentFields="choice,reviewer_list,reviewer_admin"
+            processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -789,6 +788,10 @@
          <processParameter
                processParameterName="reviewer_admin"
                taskFormFieldName="reviewer_admin">
+         </processParameter>
+         <processParameter
+               processParameterName="messagecontent"
+               taskFormFieldName="messagecontent">
          </processParameter>
       </taskForm>
       <taskForm
@@ -868,26 +871,14 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        id="comment"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="资料预审"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否资料预审"
+                        id="messagecontent"
+                        label="评审会议通知"
+                        labelVisible="true"
+                        name="messagecontent"
                         persistable="true"
                         required="false"
                         type="String">
-                  </radio>
+                  </text>
                   <navigatorSelector
                         editable="true"
                         id="reviewer_admin"
@@ -896,13 +887,13 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="project.participte.selector"
+                        navigatorId="organization.user"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
                         editable="true"
                         id="reviewer_list"
                         label="评审组"
@@ -910,8 +901,19 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </list>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="资料预审"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否资料预审"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
@@ -953,7 +955,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -996,7 +998,7 @@
                         name="choice"
                         option="评审实施计划"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1040,7 +1042,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1084,7 +1086,7 @@
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1127,7 +1129,7 @@
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1171,7 +1173,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1316,7 +1318,7 @@
                         name="developable"
                         option="是\否"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1360,7 +1362,7 @@
                         name="choice_check"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1749,16 +1751,6 @@
             name="立项审批通过消息"
             operation="applicationfinishmessage"
             serviceProvider="com.tmt.tb.bpmservice.ApplicationMessageOfTB">
-      </service>
-      <service
-            interface="projectapprove.reviewer.reservice.action"
-            name="评审会议通知"
-            operation="message"
-            serviceProvider="com.tmt.tb.bpmservice.ProjcetApproveMessageOfTB">
-      </service>
-      <service
-            interface="com.tmt.tb.service1"
-            name="文件归档">
       </service>
    </extension>
    <extension
@@ -2869,11 +2861,11 @@
       <taskForm
             editorId="tb.tbSubconcessions.application"
             name="转批申请"
-            persistentFields="number,product,prj_manager,dept"
+            persistentFields="workorder,product,prj_manager,dept"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
-               processParameterName="number"
-               taskFormFieldName="number">
+               processParameterName="workorder"
+               taskFormFieldName="workorder">
          </processParameter>
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
@@ -3047,10 +3039,10 @@
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
-                        id="number"
+                        id="workorder"
                         label="工作令号"
                         labelVisible="true"
-                        name="number"
+                        name="workorder"
                         persistable="true"
                         required="false"
                         type="String">
@@ -3241,7 +3233,7 @@
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.tmt.tb.field.action.AddRiewerListOfTB"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
                         editable="true"
                         id="reviewer_list"
                         label="专家组成员"

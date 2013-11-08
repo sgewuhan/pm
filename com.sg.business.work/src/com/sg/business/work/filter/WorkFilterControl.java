@@ -113,6 +113,16 @@ public class WorkFilterControl {
 					WorkFilterAction.SHOW_MARKED_WORK,
 					WorkFilterAction.SHOW_DELAYED_WORK });
 		}
+		
+		//准备中，进行中互斥
+		if (code == WorkFilterAction.SHOW_WORK_ON_PROGRESS) {
+			return uncheckReverseFilters(new int[] {
+					WorkFilterAction.SHOW_WORK_ON_READY});
+
+		} else if (code == WorkFilterAction.SHOW_WORK_ON_READY) {
+			return uncheckReverseFilters(new int[] {
+					WorkFilterAction.SHOW_WORK_ON_PROGRESS });
+		}
 
 		return new ViewerFilter[0];
 	}

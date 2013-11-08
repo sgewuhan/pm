@@ -349,7 +349,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_STOP_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.Exited.name().equals(taskstatus)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_STOP_10,
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_CANCEL_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.InProgress.name().equals(taskstatus)) {
 			return FileUtil.getImageURL(

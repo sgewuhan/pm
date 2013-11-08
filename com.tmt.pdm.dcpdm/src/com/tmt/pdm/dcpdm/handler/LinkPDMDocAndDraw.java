@@ -24,7 +24,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 import com.tmt.pdm.client.Starter;
-import com.tmt.pdm.dcppdm.sync.ImportData;
+import com.tmt.pdm.dcpdm.sync.ImportData;
 
 import dyna.framework.service.dos.DOSChangeable;
 
@@ -42,7 +42,7 @@ public class LinkPDMDocAndDraw extends AbstractNavigatorHandler {
 			
 			@Override
 			protected String getNamespace() {
-				return Document.F_VAULT;
+				return "vault_file";
 			}
 			
 			@Override

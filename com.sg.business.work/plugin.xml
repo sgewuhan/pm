@@ -341,7 +341,7 @@
          </column>
       </tree>
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -410,7 +410,7 @@
          </columnGroup>
       </tree>
       <tree
-            autoExpandLevel="-1"
+            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -2156,6 +2156,22 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:workflow.workdelivery?after=additions">
+         <command
+               commandId="workflow.createdeliverable"
+               icon="image/deliverablecreate_24.png"
+               label="创建交付物"
+               style="push">
+         </command>
+         <command
+               commandId="workflow.linkdeliverable"
+               icon="image/documentlink_24.png"
+               label="链接交付文档"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2266,6 +2282,16 @@
             id="document.showpreview"
             name="显示预览">
       </command>
+      <command
+            categoryId="work"
+            id="workflow.createdeliverable"
+            name="创建交付物">
+      </command>
+      <command
+            categoryId="work"
+            id="workflow.linkdeliverable"
+            name="链接交付文档">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2320,6 +2346,14 @@
       <handler
             class="com.sg.business.work.handler.ShowPreview"
             commandId="document.showpreview">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.CreateDeliverable"
+            commandId="workflow.createdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.LinkDeliverable"
+            commandId="workflow.linkdeliverable">
       </handler>
    </extension>
    <extension

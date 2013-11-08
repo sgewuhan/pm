@@ -61,7 +61,12 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 							String namespace = (String) dbo.get("n");
 							String oid = (String) dbo.get("o");
 							String fileName = (String) dbo.get("a");
-							FileUtil.download(getViewSite().getShell(),db, namespace, oid, fileName);
+							String filepath = (String)dbo.get("f");
+							if(filepath==null){
+								FileUtil.download(getViewSite().getShell(),db, namespace, oid, fileName);
+							}else{
+								FileUtil.download(getViewSite().getShell(),filepath, fileName);
+							}
 						}
 						doRefresh();
 					} catch (Exception e) {
@@ -191,7 +196,8 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 	
 	@Override
 	public void doCreate() {
-		// TODO Auto-generated method stub
+		
+		
 		super.doCreate();
 	}
 

@@ -219,4 +219,8 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 
 		return super.canEdit(context);
 	}
+
+	public boolean isMandatory() {
+		return Boolean.TRUE.equals(getValue(F_MANDATORY));
+	}
 }
