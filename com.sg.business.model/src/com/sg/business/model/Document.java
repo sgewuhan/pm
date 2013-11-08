@@ -45,17 +45,28 @@ import com.sg.business.resource.BusinessResource;
  * 
  */
 public class Document extends PrimaryObject implements IProjectRelative {
-
+	/**
+	 * 缺省主版本号
+	 */
 	public static final String[] DEFAULT_MAJOR_VID_SEQ = new String[] { "A",
 			"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
 			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
+	/**
+	 * 已发布
+	 */
 	public static final String STATUS_RELEASED_ID = "released";
 	public static final String STATUS_RELEASED_TEXT = "已发布";
 
+	/**
+	 * 工作中
+	 */
 	public static final String STATUS_WORKING_ID = "working";
 	public static final String STATUS_WORKING_TEXT = "工作中";
 
+	/**
+	 * 已废弃
+	 */
 	public static final String STATUS_DEPOSED_ID = "deposed";
 	public static final String STATUS_DEPOSED_TEXT = "已废弃";
 
@@ -111,16 +122,34 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	public static final String F_WORK_ID = "work_id";
 
+	/**
+	 * 主版本号
+	 */
 	public static final String F_MAJOR_VID = "major_vid";
 
+	/**
+	 * 文档状态
+	 */
 	public static final String F_LIFECYCLE = "status";
 
+	/**
+	 * 是否锁定
+	 */
 	public static final String F_LOCK = "islocked";
 
+	/**
+	 * 锁定者
+	 */
 	public static final String F_LOCKED_BY = "lockedby";
 
+	/**
+	 * 锁定时间
+	 */
 	public static final String F_LOCKED_ON = "lockdate";
 
+	/**
+	 * 链接到PDM的ID
+	 */
 	public static final String F_PDM_OUID = "pdm_ouid";
 
 	@Override
@@ -205,7 +234,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		};
 		job.schedule();
 	}
-	
 
 	public void initVerStatus() {
 		String lc = getLifecycle();
@@ -222,7 +250,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 	}
 
-	public  String[] getMajorVersionSeq() {
+	public String[] getMajorVersionSeq() {
 		String value = (String) Setting
 				.getSystemSetting(IModelConstants.S_MAJOR_VID_SEQ);
 		String[] seq = null;
@@ -461,13 +489,13 @@ public class Document extends PrimaryObject implements IProjectRelative {
 					.getFileServerDelegator(name);
 			Assert.isNotNull(fsd, "没有定义文件服务器");
 			return fsd.getFiles(this);
-		}else{
+		} else {
 			List<RemoteFile> remoteFiles = getGridFSFileValue(F_VAULT);
 			List<IServerFile> result = new ArrayList<IServerFile>();
 			for (int i = 0; i < remoteFiles.size(); i++) {
 				result.add(new GridServerFile(remoteFiles.get(i)));
 			}
-			
+
 			return result;
 		}
 	}
@@ -477,18 +505,17 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	public void checkMandatory() throws Exception {
-		//检查文档编号
-		if(getDocumentNumber()==null){
-			throw new Exception("文档缺少编号："+this);
+		// 检查文档编号
+		if (getDocumentNumber() == null) {
+			throw new Exception("文档缺少编号：" + this);
 		}
-		
-		//检查文件
+
+		// 检查文件
 		List<IServerFile> sf = getServerFileValue();
-		if(sf.isEmpty()){
+		if (sf.isEmpty()) {
 			throw new Exception("必须交付的文档缺少附件");
 		}
-		
-	}
 
+	}
 
 }
