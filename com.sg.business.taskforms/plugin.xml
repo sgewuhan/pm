@@ -307,6 +307,30 @@
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="projectchange.service.action"
+            name="项目变更消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ProjectChangeMessageService">
+      </service>
+      <service
+            interface="projectclose.service.action"
+            name="项目结题消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ProjectCloseMessageService">
+      </service>
+      <service
+            interface="projectapprove.service.action"
+            name="项目审批消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ProjectApproveMessageService">
+      </service>
+      <service
+            interface="meetingmessage.service.action"
+            name="评审会议通知"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
