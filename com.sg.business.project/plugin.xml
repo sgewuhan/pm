@@ -993,6 +993,18 @@
                         required="false"
                         type="String">
                   </combo>
+                  <combo
+                        editPart="Combo"
+                        editable="true"
+                        id="type"
+                        label="类型"
+                        labelVisible="true"
+                        name="type"
+                        option="deliverable.type"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
                   <checkbox
                         editable="true"
                         id="mandatory"
@@ -1059,7 +1071,7 @@
                         option="deliverable.type"
                         persistable="true"
                         required="false"
-                        type="DBObject">
+                        type="String">
                   </combo>
                   <checkbox
                         editable="true"

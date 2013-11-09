@@ -1035,6 +1035,18 @@
                         type="String"
                         widthHint="240">
                   </text>
+                  <combo
+                        editPart="Combo"
+                        editable="true"
+                        id="type"
+                        label="类型"
+                        labelVisible="true"
+                        name="type"
+                        option="deliverable.type"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -1046,18 +1058,6 @@
                         required="false"
                         type="String">
                   </text>
-                  <combo
-                        editPart="Combo"
-                        editable="true"
-                        id="type"
-                        label="类型"
-                        labelVisible="true"
-                        name="type"
-                        option="deliverable.type"
-                        persistable="true"
-                        required="false"
-                        type="DBObject">
-                  </combo>
                </section>
             </pagecolumn>
          </basicpage>
