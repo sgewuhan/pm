@@ -22,6 +22,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.commons.page.ProjectBudgetTreeContentProvider;
+import com.sg.business.model.BudgetItem;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectTemplate;
@@ -140,13 +141,11 @@ public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
 			return;
 		}
 		
-//		DBObject tgtData = new BasicDBObject();
-//		tgtData.put(ProjectBudget.F_DESC, getDesc());
-//		tgtData.put(ProjectBudget.F_DESC_EN, getDesc_e());
-//		tgtData.put(ProjectBudget.F_CHILDREN,
-//				srcdata.get(BudgetItem.F_CHILDREN));
+		DBObject tgtData = new BasicDBObject();
+		tgtData.put(ProjectBudget.F_CHILDREN,
+				budgetItem.getValue(BudgetItem.F_CHILDREN));
 
-//		ModelService.createModelObject(tgtData, ProjectBudget.class);
+		ModelService.createModelObject(tgtData, ProjectBudget.class);
 		
 		viewer.setInput(root.getChildren());
 		viewer.expandAll();
@@ -215,7 +214,6 @@ public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
 
 	@Override
 	public void valueChanged(String key, Object oldValue, Object newValue) {
-		// TODO Auto-generated method stub
 		
 	}
 	
