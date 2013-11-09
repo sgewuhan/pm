@@ -468,6 +468,24 @@
             operation="message"
             serviceProvider="com.sg.business.model.bpmservice.ReviewerMessageService">
       </service>
+      <service
+            interface="document.service.action"
+            name="文档状态操作服务"
+            operation="lock"
+            serviceProvider="com.sg.business.model.bpmservice.DocumentService">
+      </service>
+      <service
+            interface="document.service.action"
+            name="文档状态操作服务"
+            operation="unlock"
+            serviceProvider="com.sg.business.model.bpmservice.DocumentService">
+      </service>
+      <service
+            interface="deliverable.service.action"
+            name="交付物状态操作服务"
+            operation="released"
+            serviceProvider="com.sg.business.model.bpmservice.DeliverableService">
+      </service>
    </extension>
 
 </plugin>

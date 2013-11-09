@@ -258,7 +258,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * 
 	 * @return PrimaryObject
 	 */
-	public abstract PrimaryObject makeDeliverableDefinition();
+	public abstract PrimaryObject makeDeliverableDefinition(String type);
 
 	/**
 	 * 工作定义下移

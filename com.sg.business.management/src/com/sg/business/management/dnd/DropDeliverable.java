@@ -7,6 +7,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.DocumentDefinition;
+import com.sg.business.model.IDeliverable;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.commons.dnd.DropPrimaryObjectTarget;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -39,7 +40,7 @@ public class DropDeliverable extends DropPrimaryObjectTarget {
 			if (po instanceof DocumentDefinition) {
 				DocumentDefinition documentDefinition = (DocumentDefinition) po;
 				DeliverableDefinition deliverableDefinition = workDefinition
-						.makeDeliverableDefinition(documentDefinition);
+						.makeDeliverableDefinition(documentDefinition,IDeliverable.TYPE_OUTPUT);
 				deliverableDefinition.setParentPrimaryObject(workDefinition);
 				deliverableDefinition.addEventListener(targetViewerControl);
 				try {

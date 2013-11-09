@@ -32,17 +32,20 @@ public class UserOrganizationPathLabelprovider extends ColumnLabelProvider {
 	}
 
 	private String getPath(ObjectId id) {
-		DBObject org = orgCol.findOne(new BasicDBObject().append(Organization.F__ID,id));
-		if(org == null){
-			return "";
-		}
-		ObjectId parentId = (ObjectId) org.get(Organization.F_PARENT_ID);
-		String orgName = (String) org.get(Organization.F_DESC);
-		if(parentId!=null){
-			return getPath(parentId)+">"+orgName;
-		}else{
-			return orgName;
-		}
+		DBObject org=orgCol.findOne(new BasicDBObject().append(Organization.F__ID,id));
+		String fullDesc = (String) org.get(Organization.F_FULLDESC);
+		return fullDesc==null?"":fullDesc;
+//		DBObject org = orgCol.findOne(new BasicDBObject().append(Organization.F__ID,id));
+//		if(org == null){
+//			return "";
+//		}
+//		ObjectId parentId = (ObjectId) org.get(Organization.F_PARENT_ID);
+//		String orgName = (String) org.get(Organization.F_DESC);
+//		if(parentId!=null){
+//			return getPath(parentId)+">"+orgName;
+//		}else{
+//			return orgName;
+//		}
 	}
 
 

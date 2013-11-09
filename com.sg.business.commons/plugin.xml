@@ -513,6 +513,19 @@
                value="严重滞后">
          </option>
       </option>
+      <option
+            id="deliverable.type">
+         <option
+               id="output"
+               label="输出"
+               value="output">
+         </option>
+         <option
+               id="reference"
+               label="参考"
+               value="reference">
+         </option>
+      </option>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -656,7 +669,7 @@
             lazyDisplay="true"
             name="组织"
             type="String"
-            width="80">
+            width="160">
       </column>
       <column
             column="organization_id"

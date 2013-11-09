@@ -511,8 +511,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Deliverable
 	 */
 	@Override
-	public Deliverable makeDeliverableDefinition() {
-		return makeDeliverableDefinition(null);
+	public Deliverable makeDeliverableDefinition(String type) {
+		return makeDeliverableDefinition(null,type);
 	}
 
 	/**
@@ -522,12 +522,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 *            ,文档模板定义
 	 * @return Deliverable
 	 */
-	public Deliverable makeDeliverableDefinition(DocumentDefinition docd) {
+	public Deliverable makeDeliverableDefinition(DocumentDefinition docd,String type) {
 		DBObject data = new BasicDBObject();
 		data.put(Deliverable.F_WORK_ID, get_id());
 
 		data.put(Deliverable.F_PROJECT_ID, getValue(F_PROJECT_ID));
-
+		data.put(Deliverable.F_TYPE, type);
+		
 		if (docd != null) {
 			data.put(Deliverable.F_DOCUMENT_DEFINITION_ID, docd.get_id());
 			data.put(Deliverable.F_DESC, docd.getDesc());
@@ -2093,9 +2094,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Deliverable
 	 * @throws Exception
 	 */
-	public Deliverable doAddDeliverable(Document doc, IContext context)
+	public Deliverable doAddDeliverable(Document doc,String type, IContext context)
 			throws Exception {
-		Deliverable deli = makeDeliverableDefinition();
+		Deliverable deli = makeDeliverableDefinition(type);
 		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		deli.doInsert(context);
 		return deli;
@@ -4094,5 +4095,59 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				new BasicDBObject().append("$set",
 						new BasicDBObject().append(F_PARTICIPATE, allUser)));
 		checkWriteResult(ws);
+	}
+
+	public void doChangeDeliverableLifeCycleStatus(IContext context,
+			String operation) {
+		try {
+			List<PrimaryObject> documents = getOutputDeliverableDocuments();
+			for (PrimaryObject po : documents) {
+				Document document = (Document) po;
+				document.doSetLifeCycleStatus(context, operation);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<PrimaryObject> getOutputDeliverableDocuments() {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		List<PrimaryObject> d = getOutputDeliverable();
+		for (int i = 0; i < d.size(); i++) {
+			Deliverable ditem = (Deliverable) d.get(i);
+			Document doc = ditem.getDocument();
+			if (doc != null) {
+				result.add(doc);
+			}
+		}
+		return result;
+	}
+
+	public List<PrimaryObject> getOutputDeliverable() {
+		BasicDBObject condition = new BasicDBObject();
+		condition.put(Deliverable.F_WORK_ID, get_id());
+		condition.put(
+				"$or",
+				new BasicDBObject().append(Deliverable.F_TYPE,
+						Deliverable.TYPE_OUTPUT).append(Deliverable.F_TYPE,
+						null));
+		return getRelationByCondition(Deliverable.class, condition);
+	}
+
+	public void doSetDocumentLock(IContext context, boolean locked) {
+		try {
+			List<PrimaryObject> documents = getOutputDeliverableDocuments();
+			for (PrimaryObject po : documents) {
+				Document document = (Document) po;
+				if (locked) {
+					document.doLock(context);
+				} else {
+					document.doUnLock(context);
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

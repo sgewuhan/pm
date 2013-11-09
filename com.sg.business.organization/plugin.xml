@@ -206,7 +206,7 @@
             tree="organization.inserthr">
       </navigator>
       <navigator
-            id="organization.user.selector"
+            id="organization.user.selector1"
             tree="organization.user.selector">
          <filterAction>
             <column
@@ -224,7 +224,44 @@
                   name="用户ID"
                   type="String">
             </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
          </searchAction>
+      </navigator>
+      <navigator
+            id="organization.user.selector"
+            table="organization.user.navi">
+         <filterAction>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+         <queryAction>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </queryAction>
       </navigator>
    </extension>
    <extension
@@ -391,6 +428,31 @@
          </column>
          <column
                columnDefinitionId="account.activated">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            collectionName="account"
+            dataSet="com.sg.business.model.dataset.organization.ActivatiedUserDataSetFactory"
+            dbName="pm2"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
+            editorId="editor.organization.user"
+            id="organization.user.navi"
+            limit="15"
+            multiSelection="true"
+            popupMenu="popup:organization.user"
+            queryMode="true"
+            virtual="true">
+         <column
+               columnDefinitionId="account.userid">
+         </column>
+         <column
+               columnDefinitionId="account.username">
+         </column>
+         <column
+               columnDefinitionId="account.organizationpath">
          </column>
       </table>
    </extension>

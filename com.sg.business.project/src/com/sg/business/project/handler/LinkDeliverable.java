@@ -47,7 +47,7 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 							Deliverable deliverable = (Deliverable) o;
 							Document document = deliverable.getDocument();
 							if (document != null) {
-								work.doAddDeliverable(document,
+								work.doAddDeliverable(document,Deliverable.TYPE_REFERENCE,
 										new CurrentAccountContext());
 								vc.getViewer().refresh(work, true);
 							} else {
