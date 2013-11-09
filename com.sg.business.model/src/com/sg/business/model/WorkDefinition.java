@@ -131,8 +131,8 @@ public class WorkDefinition extends AbstractWork implements
 	 * @return DeliverableDefinition
 	 */
 	@Override
-	public DeliverableDefinition makeDeliverableDefinition() {
-		return makeDeliverableDefinition(null);
+	public DeliverableDefinition makeDeliverableDefinition(String type) {
+		return makeDeliverableDefinition(null,type);
 	}
 
 	/**
@@ -143,10 +143,10 @@ public class WorkDefinition extends AbstractWork implements
 	 * @return 交付物定义
 	 */
 	public DeliverableDefinition makeDeliverableDefinition(
-			DocumentDefinition docd) {
+			DocumentDefinition docd,String deliverableType) {
 		DBObject data = new BasicDBObject();
 		data.put(DeliverableDefinition.F_WORK_DEFINITION_ID, get_id());
-
+		data.put(DeliverableDefinition.F_TYPE, deliverableType);
 		// 针对不同类型的工作定义的预处理
 		int type = getWorkDefinitionType();
 		switch (type) {
@@ -344,7 +344,7 @@ public class WorkDefinition extends AbstractWork implements
 		for (PrimaryObject po : srcDeliverableDefinitions) {
 			DeliverableDefinition srcDeliverableDefinition = (DeliverableDefinition) po;
 			DeliverableDefinition childDeliverable = child
-					.makeDeliverableDefinition();
+					.makeDeliverableDefinition(srcDeliverableDefinition.getType());
 			// 复制文档模板的Id
 			childDeliverable
 					.setValue(

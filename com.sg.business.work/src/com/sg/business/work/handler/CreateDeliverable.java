@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
+import com.sg.business.model.IDeliverable;
 import com.sg.business.model.IWorkRelative;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -50,7 +51,7 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 			return;
 		}
 
-		PrimaryObject po = work.makeDeliverableDefinition();
+		PrimaryObject po = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
 		Assert.isNotNull(currentViewerControl);
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(

@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.DocumentDefinition;
+import com.sg.business.model.IDeliverable;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
@@ -41,7 +42,7 @@ public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 							DocumentDefinition next = (DocumentDefinition) iter
 									.next();
 							Deliverable po = work
-									.makeDeliverableDefinition(next);
+									.makeDeliverableDefinition(next,IDeliverable.TYPE_OUTPUT);
 							po.setParentPrimaryObject(work);
 							po.addEventListener(vc);
 							po.doSave(new CurrentAccountContext());

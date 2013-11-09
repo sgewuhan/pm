@@ -14,6 +14,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DB;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
+import com.sg.business.model.IDeliverable;
 import com.sg.business.model.Organization;
 import com.sg.business.model.OrganizationDistributeFileBase;
 import com.sg.business.model.User;
@@ -33,7 +34,7 @@ public class LinkPDMDocAndDraw extends AbstractNavigatorHandler {
 	private void createDocument(Work work, String ouid) throws Exception {
 		DOSChangeable pdmObject = Starter.dos.get(ouid);
 		
-		Deliverable deli = work.makeDeliverableDefinition();
+		Deliverable deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
 		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description"));
 		
 		deli.doSave(new CurrentAccountContext());

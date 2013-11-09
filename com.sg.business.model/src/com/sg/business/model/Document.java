@@ -518,4 +518,59 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	}
 
+	public void doLock(IContext context) throws Exception {
+		if (isLocked()) {
+			return;
+		}
+		setValue(F_LOCK, Boolean.TRUE);
+		setValue(F_LOCKED_BY, context.getAccountInfo().getConsignerId());
+		Date newValue = new Date();
+		setValue(F_LOCKED_ON, newValue);
+		DBCollection col = getCollection();
+		col.update(new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject()
+								.append(F_LOCK, Boolean.TRUE)
+								.append(F_LOCKED_BY,
+										context.getAccountInfo()
+												.getConsignerId())
+								.append(F_LOCKED_ON, newValue)));
+	}
+
+	public void doUnLock(IContext context) throws Exception {
+		if (!isLocked()) {
+			return;
+		}
+		setValue(F_LOCK, Boolean.FALSE);
+		setValue(F_LOCKED_BY, null);
+		setValue(F_LOCKED_ON, null);
+		DBCollection col = getCollection();
+		col.update(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject().append(F_LOCK, Boolean.FALSE)
+								.append(F_LOCKED_BY, null)
+								.append(F_LOCKED_ON, null)));
+	}
+
+	public void doSetLifeCycleStatus(IContext context, String status)
+			throws Exception {
+		String lc = getLifecycle();
+		if (status.equals(lc)) {
+			return;
+		}
+		setValue(F_LIFECYCLE, status);
+		Date newValue = new Date();
+		setValue(status + "_date", newValue);
+		DBCollection col = getCollection();
+		col.update(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject().append(F_LIFECYCLE, status).append(
+								status + "_date", newValue)));
+	}
+
 }

@@ -22,7 +22,7 @@ import com.sg.business.resource.BusinessResource;
  * @author jinxitao
  *
  */
-public class DeliverableDefinition extends AbstractOptionFilterable {
+public class DeliverableDefinition extends AbstractOptionFilterable implements IDeliverable {
 
 	
 	public static final String F_DOCUMENTNUMBER = "documentnumber";
@@ -163,6 +163,10 @@ public class DeliverableDefinition extends AbstractOptionFilterable {
 	public DocumentDefinition getDocumentDefinition() {
 		ObjectId documentDefinitionid = (ObjectId) getValue(F_DOCUMENT_DEFINITION_ID);
 		return ModelService.createModelObject(DocumentDefinition.class, documentDefinitionid);
+	}
+
+	public String getType() {
+		return (String) getValue(F_TYPE);
 	}
 
 }

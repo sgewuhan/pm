@@ -1,4 +1,4 @@
-package com.sg.business.model.bpmservice;
+package com.sg.business.taskforms.bpmservice;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
+import com.sg.business.model.bpmservice.AbstractMessageService;
 
 public class ProjectCloseMessageService extends AbstractMessageService {
 

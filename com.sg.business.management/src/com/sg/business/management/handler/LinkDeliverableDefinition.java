@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.DocumentDefinition;
+import com.sg.business.model.IDeliverable;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
@@ -39,7 +40,7 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 							DocumentDefinition next = (DocumentDefinition) iter
 									.next();
 							DeliverableDefinition po = workd
-									.makeDeliverableDefinition(next);
+									.makeDeliverableDefinition(next,IDeliverable.TYPE_REFERENCE);
 							po.setParentPrimaryObject(workd);
 							po.addEventListener(currentViewerControl);
 							po.doSave(new CurrentAccountContext());

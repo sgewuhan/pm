@@ -1,4 +1,4 @@
-package com.sg.business.model.bpmservice;
+package com.sg.business.taskforms.bpmservice;
 
 import java.util.List;
 
@@ -6,21 +6,22 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
+import com.sg.business.model.bpmservice.MessageService;
 
-public class ProjectApproveMessageService extends MessageService {
+public class ProjectChangeMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "项目审批通知";
+		return "项目变更通知";
 	}
 
 	@Override
 	public String getMessageContent() {
 		Object choice = getInputValue("choice");
 		if ("通过".equals((String) choice)) {
-			return "项目" + getTarget().getLabel() + "：审批通过";
+			return "项目" + getTarget().getLabel() + "：允许变更";
 		} else {
-			return "项目" + getTarget().getLabel() + "：审批不通过";
+			return "项目" + getTarget().getLabel() + "：不允许变更";
 		}
 	}
 
@@ -36,7 +37,7 @@ public class ProjectApproveMessageService extends MessageService {
 
 	@Override
 	public String getEditorId() {
-     	return Project.EDITOR_CREATE_PLAN;
+     	return null;
 	}
 
 	@Override
@@ -54,4 +55,6 @@ public class ProjectApproveMessageService extends MessageService {
 		return null;
 	}
 }
+
+
 

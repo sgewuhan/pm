@@ -13,6 +13,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
+import com.sg.business.model.Deliverable;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -38,7 +39,7 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 		Shell shell = part.getSite().getShell();
 
 		PrimaryObject po = ((AbstractWork) selected)
-				.makeDeliverableDefinition();
+				.makeDeliverableDefinition(Deliverable.TYPE_OUTPUT);
 		Assert.isNotNull(currentViewerControl);
 
 		// 以下两句很重要，使树currentViewerControl够侦听到保存事件， 更新树上的节点

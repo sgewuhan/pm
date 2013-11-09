@@ -272,7 +272,7 @@ public class ProjectToolkit {
 		if (WorkDefinition.VALUE_MANDATORY.equals(optionValue)) {
 			work.put(Work.F_MANDATORY, Boolean.TRUE);
 		}
-		
+
 		// 设置工作的描述字段
 		Object value = workdef.get(WorkDefinition.F_DESC);
 		if (value != null) {
@@ -282,7 +282,7 @@ public class ProjectToolkit {
 		if (value != null) {
 			work.put(Work.F_DESC_EN, value);
 		}
-		//设置里程碑任务
+		// 设置里程碑任务
 		value = workdef.get(WorkDefinition.F_MILESTONE);
 		if (value != null) {
 			work.put(Work.F_MILESTONE, value);
@@ -339,8 +339,8 @@ public class ProjectToolkit {
 		if (value != null) {
 			work.put(IWorkCloneFields.F_STANDARD_WORKS, value);
 		}
-		
-		//设置提醒时间
+
+		// 设置提醒时间
 		value = workdef.get(IWorkCloneFields.F_REMIND_BEFORE);
 		if (value != null) {
 			work.put(IWorkCloneFields.F_REMIND_BEFORE, value);
@@ -403,6 +403,11 @@ public class ProjectToolkit {
 				deliverableData
 						.put(Deliverable.F_WORK_ID, work.get(Work.F__ID));
 
+				// 设置类型
+				String deliverableType = (String) delidata
+						.get(DeliverableDefinition.F_TYPE);
+				deliverableData.put(Deliverable.F_TYPE, deliverableType);
+
 				// 设置是否必须
 				if (DeliverableDefinition.VALUE_MANDATORY
 						.equals(documentOptionValue)) {
@@ -419,7 +424,7 @@ public class ProjectToolkit {
 					// 如果没有创建，需要创建该文档
 					documentData = copyDocumentFromTemplate(documentsToInsert,
 							fileToCopy, documentTemplateId, projectId,
-							folderRootId,context);
+							folderRootId, context);
 				}
 				documentsToInsert.put(documentTemplateId, documentData);
 				ObjectId documentId = (ObjectId) documentData
@@ -531,7 +536,7 @@ public class ProjectToolkit {
 						"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
 				ObjectId tgtRoleId = (ObjectId) tgtRole.get(ProjectRole.F__ID);
 				actors.put(key, tgtRoleId);
-				//标记该角色已使用
+				// 标记该角色已使用
 				tgtRole.put("used", Boolean.TRUE);
 			}
 			work.put(fieldName, actors);
@@ -555,7 +560,7 @@ public class ProjectToolkit {
 					if (tgtRoleId != null) {
 						participates.add(new BasicDBObject().append("_id",
 								tgtRoleId));
-						//标记该角色已使用
+						// 标记该角色已使用
 						tgtRole.put("used", Boolean.TRUE);
 					}
 				}
@@ -575,7 +580,7 @@ public class ProjectToolkit {
 				Object value = tgtRole.get(ProjectRole.F__ID);
 				if (value != null) {
 					work.put(roleFieldName, value);
-					//标记该角色已使用
+					// 标记该角色已使用
 					tgtRole.put("used", Boolean.TRUE);
 				}
 			}
@@ -589,10 +594,9 @@ public class ProjectToolkit {
 		DBCollection docdCol = getCollection(IModelConstants.C_DOCUMENT_DEFINITION);
 		DBObject documentTemplate = docdCol.findOne(new BasicDBObject().append(
 				Document.F__ID, documentTemplateId));
-		
+
 		Document document = ModelService.createModelObject(Document.class);
-		
-		
+
 		document.setValue(Document.F__ID, new ObjectId());
 
 		document.setValue(Document.F_PROJECT_ID, projectId);
@@ -647,14 +651,14 @@ public class ProjectToolkit {
 			}
 			document.setValue(Document.F_VAULT, documentFiles);
 		}
-		
-		//处理文档的默认值
+
+		// 处理文档的默认值
 		document.initVerStatus();
 		document.initVersionNumber();
-		
-		//处理文档的默认值
+
+		// 处理文档的默认值
 		document.initInsertDefault(document.get_data(), context);
-		
+
 		// 完成文档创建
 		documentsToInsert.put(documentTemplateId, document.get_data());
 
@@ -706,7 +710,7 @@ public class ProjectToolkit {
 			Object standardset, Object producttype, IContext context)
 			throws Exception {
 
-		//校验是否可以依据传入的参数创建项目
+		// 校验是否可以依据传入的参数创建项目
 		if (workOrder == null) {
 			throw new Exception("未录入工作令号无法新建项目");
 		}
@@ -729,22 +733,20 @@ public class ProjectToolkit {
 			throw new Exception("未录入项目计划开始时间无法新建项目");
 		}
 
-		//依据工作创建项目
+		// 依据工作创建项目
 		BasicDBObject projectObject = new BasicDBObject();
 		projectObject.put(Project.F_DESC, desc);
 		projectObject.put(Project.F_DESCRIPTION, description);
 		projectObject.put(Project.F_LAUNCH_ORGANIZATION, launchorg_id);
 		projectObject.put(Project.F_FUNCTION_ORGANIZATION, org_id);
 		projectObject.put(Project.F_CHARGER, prj_manager);
-		
+
 		/**
-		 * BUG: ZHONGHUA
-		 * 工作令号字段是 数组类型
+		 * BUG: ZHONGHUA 工作令号字段是 数组类型
 		 */
-//		projectObject.put(Project.F_WORK_ORDER, workOrder);
-		projectObject.put(Project.F_WORK_ORDER, new String[]{workOrder});
-		
-		
+		// projectObject.put(Project.F_WORK_ORDER, workOrder);
+		projectObject.put(Project.F_WORK_ORDER, new String[] { workOrder });
+
 		projectObject.put(Project.F_PROJECT_TEMPLATE_ID, projecttemplate_id);
 		projectObject.put(Project.F_PLAN_FINISH, planfinish);
 		projectObject.put(Project.F_PLAN_START, planstart);
@@ -768,7 +770,7 @@ public class ProjectToolkit {
 				Project.class);
 		project.doSave(context);
 
-		//将工作添加到创建的项目中
+		// 将工作添加到创建的项目中
 		ProjectToolkit.doProjectAddStandloneWork(work, project, context);
 
 		return project;
@@ -776,28 +778,31 @@ public class ProjectToolkit {
 
 	/**
 	 * 将工作添加到项目的根工作中
-	 * @param work :要添加的工作（该工作已被持久化）
-	 * @param project :加如工作的项目（该项目已被持久化）
-	 * @param context 
+	 * 
+	 * @param work
+	 *            :要添加的工作（该工作已被持久化）
+	 * @param project
+	 *            :加如工作的项目（该项目已被持久化）
+	 * @param context
 	 * @throws Exception
 	 */
 	public static void doProjectAddStandloneWork(Work work, Project project,
 			IContext context) throws Exception {
-		if(project == null){
+		if (project == null) {
 			throw new Exception("请该项目未创建");
 		}
-		
+
 		ObjectId projectId = project.get_id();
 		Work wbsRoot = project.getWBSRoot();
 
-		//将工作添加到项目根工作中
+		// 将工作添加到项目根工作中
 		work.setValue(Work.F_ROOT_ID, wbsRoot);
 		work.setValue(Work.F_PROJECT_ID, projectId);
 		int seq = wbsRoot.getMaxChildSeq();
 		work.setValue(Work.F_SEQ, new Integer(seq + 1));
 		work.doSave(context);
-		
-		//添加工作的交付物
+
+		// 添加工作的交付物
 		DBCollection col;
 		List<PrimaryObject> deliverableList = work.getDeliverable();
 		if (deliverableList != null && deliverableList.size() > 0) {
@@ -810,8 +815,12 @@ public class ProjectToolkit {
 			WriteResult ws = col.update(new BasicDBObject().append(
 					Deliverable.F__ID,
 					new BasicDBObject().append("$in", deliverableIdList)),
-					new BasicDBObject().append("$set", new BasicDBObject()
-							.append(Deliverable.F_PROJECT_ID, projectId)),
+					new BasicDBObject().append(
+							"$set",
+							new BasicDBObject().append(
+									Deliverable.F_PROJECT_ID, projectId)
+									.append(Deliverable.F_TYPE,
+											Deliverable.TYPE_REFERENCE)),
 					false, true);
 			String error = ws.getError();
 			if (error != null) {
@@ -819,7 +828,7 @@ public class ProjectToolkit {
 			}
 		}
 
-		//添加工作的文档
+		// 添加工作的文档
 		List<PrimaryObject> documentList = work.getDeliverableDocuments();
 		if (documentList != null && documentList.size() > 0) {
 			col = getCollection(IModelConstants.C_DOCUMENT);

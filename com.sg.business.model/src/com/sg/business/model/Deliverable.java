@@ -16,13 +16,13 @@ import com.sg.business.resource.BusinessResource;
  * @author jinxitao
  * 
  */
-public class Deliverable extends PrimaryObject implements IProjectRelative {
+public class Deliverable extends PrimaryObject implements IProjectRelative,IDeliverable {
 
 	/**
 	 * 工作_id字段，用于保存工作_id的值
 	 */
 	public static final String F_WORK_ID = "work_id";
-
+	
 	/**
 	 * 
 	 */
@@ -185,6 +185,10 @@ public class Deliverable extends PrimaryObject implements IProjectRelative {
 		 * 如果工作在完成时终止时暂停不可以删除
 		 */
 
+		if(isMandatory()){
+			return false;
+		}
+		
 		Work work = getWork();
 		String lc = work.getLifecycleStatus();
 

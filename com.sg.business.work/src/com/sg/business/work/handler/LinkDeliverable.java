@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
+import com.sg.business.model.IDeliverable;
 import com.sg.business.model.IWorkRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
@@ -74,7 +75,7 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 									return;
 								}
 
-								work.doAddDeliverable(document,
+								work.doAddDeliverable(document,IDeliverable.TYPE_REFERENCE,
 										new CurrentAccountContext());
 								vc.doReloadData();
 							} else {

@@ -1,38 +1,38 @@
-package com.sg.business.model.bpmservice;
+package com.sg.business.taskforms.bpmservice;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
+import com.sg.business.model.bpmservice.MessageService;
 
-public class ReviewerMessageService extends MessageService {
+public class ProjectApproveMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "评审会议通知";
+		return "项目审批通知";
 	}
 
 	@Override
 	public String getMessageContent() {
-		Object messageConten = getInputValue("messagecontent");
-		return (String)messageConten;
+		Object choice = getInputValue("choice");
+		if ("通过".equals((String) choice)) {
+			return "项目" + getTarget().getLabel() + "：审批通过";
+		} else {
+			return "项目" + getTarget().getLabel() + "：审批不通过";
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
-		
-		List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list");
-		String reviewer_admin=(String)getInputValue("reviewer_admin");
-		if(!reviewerList.contains(reviewer_admin)){
-			
-			reviewerList.add(reviewer_admin);
-		}
-		 return reviewerList;
-		
+		Project pro = (Project) getTarget();
+		if (pro != null) {
+			return (List<String>) (pro.getParticipatesIdList());
+		} else
+			return null;
 	}
 
 	@Override
@@ -55,3 +55,4 @@ public class ReviewerMessageService extends MessageService {
 		return null;
 	}
 }
+

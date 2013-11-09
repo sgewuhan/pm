@@ -439,34 +439,28 @@
             serviceProvider="com.sg.business.model.bpmservice.ProjectService">
       </service>
       <service
-            interface="projectchange.service.action"
-            name="项目变更消息服务"
-            operation="message"
-            serviceProvider="com.sg.business.model.bpmservice.ProjectChangeMessageService">
-      </service>
-      <service
-            interface="projectclose.service.action"
-            name="项目结题消息服务"
-            operation="message"
-            serviceProvider="com.sg.business.model.bpmservice.ProjectCloseMessageService">
-      </service>
-      <service
-            interface="projectapprove.service.action"
-            name="项目审批消息服务"
-            operation="message"
-            serviceProvider="com.sg.business.model.bpmservice.ProjectApproveMessageService">
-      </service>
-      <service
             interface="worktoproject.service.action"
             name="附加工作至项目服务"
             operation="toproject"
             serviceProvider="com.sg.business.model.bpmservice.WorkToProjectService">
       </service>
       <service
-            interface="meetingmessage.service.action"
-            name="评审会议通知"
-            operation="message"
-            serviceProvider="com.sg.business.model.bpmservice.ReviewerMessageService">
+            interface="document.service.action"
+            name="文档状态操作服务"
+            operation="lock"
+            serviceProvider="com.sg.business.model.bpmservice.DocumentService">
+      </service>
+      <service
+            interface="document.service.action"
+            name="文档状态操作服务"
+            operation="unlock"
+            serviceProvider="com.sg.business.model.bpmservice.DocumentService">
+      </service>
+      <service
+            interface="deliverable.service.action"
+            name="交付物状态操作服务"
+            operation="released"
+            serviceProvider="com.sg.business.model.bpmservice.DeliverableService">
       </service>
    </extension>
 
