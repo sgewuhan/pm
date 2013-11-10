@@ -1188,19 +1188,23 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="tb.tbprojectchange.application"
-            name="设计更改申请"
-            persistentFields="developable"
+            editorId="tbprojectchange.application"
+            name="变更申请"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
-               processParameterName="developable"
-               taskFormFieldName="developable">
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="project"
+               taskFormFieldName="project">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ProjectManager"
+               processParameterName="project_manager"
+               taskFormFieldName="project">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="tb.tbprojectchange.check"
-            name="更改方案校核"
-            persistentFields="choice_check,comment_check"
+            editorId="tbprojectchange.confirmProgram"
+            name="确认变更方案"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_check"
@@ -1301,25 +1305,26 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tb.tbprojectchange.application"
-            name="设计更改申请">
+            id="tbprojectchange.application"
+            name="变更申请">
          <basicpage
                id="page1"
                title="设计更开申请">
             <pagecolumn>
                <section
-                     label="请确定是否需开发中心审核">
-                  <radio
+                     label="确认变更项目">
+                  <navigatorSelector
                         editable="true"
-                        id="developable"
-                        label="确定是否需开发中心审批"
-                        labelVisible="false"
-                        name="developable"
-                        option="是\否"
+                        id="project"
+                        label="请确定变更项目"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.Project"
+                        name="project"
+                        navigatorId="project.navigator.allproject"
+                        navigatorReturnField="_id"
                         persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
+                        required="true">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1332,38 +1337,24 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tb.tbprojectchange.check"
-            name="设计更改校核">
+            id="tbprojectchange.confirmProgram"
+            name="确认变更方案">
          <basicpage
                id="page1"
                title="校核">
             <pagecolumn>
                <section
-                     label="请填写校核意见及结论">
-                  <text
-                        editPart="Text(Multi Line)"
+                     label="确认变更方案">
+                  <list
+                        addTableItemHandler="com.tmt.tb.field.action.AddStandloneworkList"
                         editable="true"
-                        id="comment_check"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment_check"
+                        id="standlonework_list"
+                        label="添加独立工作"
+                        labelVisible="true"
+                        name="standlonework_list"
                         persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice_check"
-                        label="校核"
-                        labelVisible="false"
-                        name="choice_check"
-                        option="是否通过"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
+                        required="true">
+                  </list>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1371,6 +1362,11 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
+         </basicpage>
+         <basicpage
+               id="变更方案"
+               pageDelegator="com.tmt.tb.editor.page.TaskFormStandlonework"
+               title="变更方案">
          </basicpage>
       </editor>
       <editor
@@ -1700,6 +1696,53 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="company.navigator.allproject"
+            provideSelection="true"
+            table="company.navigator.allproject">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="organization.navigaor.internalusestandlonework"
+            tree="organization.navigaor.internalusestandlonework">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="generic.activated">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="generic.activated">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1730,6 +1773,36 @@
                modelRelation="organization_user">
          </structure>
       </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.tb.dataset.InternalUseStandLoneWork"
+            id="organization.navigaor.internalusestandlonework">
+         <column
+               columnDefinitionId="work.desc.1">
+         </column>
+         <column
+               columnDefinitionId="generic.activated">
+         </column>
+         <structure
+               modelRelation="organization_standlonework">
+         </structure>
+      </tree>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            dataSet="com.tmt.tb.dataset.AllProject"
+            id="company.navigator.allproject">
+         <column
+               columnDefinitionId="project.projectnumber">
+         </column>
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+         <column
+               columnDefinitionId="project.workorder">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">
