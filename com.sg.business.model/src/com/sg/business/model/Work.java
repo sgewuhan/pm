@@ -3650,15 +3650,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 处理角色定义
 		DBObject radata = ipc.getProcessRoleAssignmentData(key);
-		Iterator<String> iterator = radata.keySet().iterator();
-		while (iterator.hasNext()) {
-			String parameter = iterator.next();
-			ObjectId value = (ObjectId) radata.get(parameter);
-			DBObject newRoleDef = rolemap.get(value);
-			if (newRoleDef != null) {
-				RoleDefinition rd = ModelService.createModelObject(newRoleDef,
-						RoleDefinition.class);
-				ipc.setProcessActionAssignment(key, parameter, rd);
+		Iterator<String> iterator;
+		if(radata!=null){
+			iterator = radata.keySet().iterator();
+			while (iterator.hasNext()) {
+				String parameter = iterator.next();
+				ObjectId value = (ObjectId) radata.get(parameter);
+				DBObject newRoleDef = rolemap.get(value);
+				if (newRoleDef != null) {
+					RoleDefinition rd = ModelService.createModelObject(newRoleDef,
+							RoleDefinition.class);
+					ipc.setProcessActionAssignment(key, parameter, rd);
+				}
 			}
 		}
 
@@ -3666,19 +3669,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject acdata = ipc.getProcessActorsData(key);
 		if (acdata == null) {
 			radata = ipc.getProcessRoleAssignmentData(key);
-			iterator = radata.keySet().iterator();
-			while (iterator.hasNext()) {
-				String parameter = iterator.next();
-				ObjectId value = (ObjectId) radata.get(parameter);
-				RoleDefinition rd = ModelService.createModelObject(
-						RoleDefinition.class, value);
-				Role orole = rd.getOrganizationRole();
-				List<PrimaryObject> roleAss = orole.getAssignment();
-				if (!roleAss.isEmpty()) {
-					ipc.setProcessActionActor(key, parameter,
-							((AbstractRoleAssignment) roleAss.get(0))
-									.getUserid());
-				}
+			if(radata!=null){
+				
+				iterator = radata.keySet().iterator();
+				while (iterator.hasNext()) {
+					String parameter = iterator.next();
+					ObjectId value = (ObjectId) radata.get(parameter);
+					RoleDefinition rd = ModelService.createModelObject(
+							RoleDefinition.class, value);
+					Role orole = rd.getOrganizationRole();
+					List<PrimaryObject> roleAss = orole.getAssignment();
+					if (!roleAss.isEmpty()) {
+						ipc.setProcessActionActor(key, parameter,
+								((AbstractRoleAssignment) roleAss.get(0))
+								.getUserid());
+					}
+			}
 			}
 		}
 
