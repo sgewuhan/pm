@@ -393,4 +393,19 @@ public class User extends PrimaryObject {
 		}
 		return super.getAdapter(adapter);
 	}
+
+	/**
+	 * 依据状态获取当前用户所负责的项目，
+	 * @param status:项目状态，NULL时为获取所有的项目
+	 */
+	public List<PrimaryObject> getChargeProject(String status) {
+		if(status != null){
+			BasicDBObject condition = new BasicDBObject();
+			condition.append(Project.F_CHARGER, get_id());
+			condition.append(Project.F_LIFECYCLE, status);
+			return getRelationByCondition(Project.class, condition);
+		} else {
+			return getRelationById(F__ID, Project.F_CHARGER, Project.class);
+		}
+	}
 }
