@@ -231,6 +231,15 @@
             id="organization_standlonework"
             name="组织下的独立工作">
       </relation>
+      <relation
+            end1Class="com.sg.business.model.Organization"
+            end1Key="_id"
+            end2Class="com.sg.business.model.WorkDefinition"
+            end2Condition="com.sg.business.model.condition.InternalByStandloneWork"
+            end2Key="organization_id"
+            id="organization_internalbystandlonework"
+            name="组织下的内部使用独立工作">
+      </relation>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
@@ -445,6 +454,12 @@
             serviceProvider="com.sg.business.model.bpmservice.WorkToProjectService">
       </service>
       <service
+            interface="deliverable.service.action"
+            name="交付物状态操作服务"
+            operation="released"
+            serviceProvider="com.sg.business.model.bpmservice.DeliverableService">
+      </service>
+      <service
             interface="document.service.action"
             name="文档状态操作服务"
             operation="lock"
@@ -457,10 +472,10 @@
             serviceProvider="com.sg.business.model.bpmservice.DocumentService">
       </service>
       <service
-            interface="deliverable.service.action"
-            name="交付物状态操作服务"
-            operation="released"
-            serviceProvider="com.sg.business.model.bpmservice.DeliverableService">
+            interface="standlonework.service.action"
+            name="项目变更独立工作服务"
+            operation="create"
+            serviceProvider="com.sg.business.model.bpmservice.bpmserviceCreateStandloneworService">
       </service>
    </extension>
 

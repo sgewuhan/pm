@@ -278,6 +278,18 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FILE_24 = "file_24.png";
 
 	public static final String IMAGE_DOWNLOAD_15X10 = "download_15x10.png";
+	
+	
+	public static final String IMAGE_CREATEWORK_24 = "creatework_24.png";
+	
+	public static final String IMAGE_DELIVERABLECREATE_24 = "deliverablecreate_24.png";
+	
+	public static final String IMAGE_EDITWORK_24 = "editwork_24.png";
+
+	public static final String IMAGE_REMOVE_24 = "remove_24.png";
+
+	public static final String IMAGE_REFRESH_24 = "refresh_24.png";
+	
 
 
 	/**
