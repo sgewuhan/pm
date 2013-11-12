@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.bson.BSONObject;
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.drools.runtime.process.ProcessInstance;
@@ -515,7 +517,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	@Override
 	public Deliverable makeDeliverableDefinition(String type) {
-		return makeDeliverableDefinition(null,type);
+		return makeDeliverableDefinition(null, type);
 	}
 
 	/**
@@ -525,13 +527,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 *            ,文档模板定义
 	 * @return Deliverable
 	 */
-	public Deliverable makeDeliverableDefinition(DocumentDefinition docd,String type) {
+	public Deliverable makeDeliverableDefinition(DocumentDefinition docd,
+			String type) {
 		DBObject data = new BasicDBObject();
 		data.put(Deliverable.F_WORK_ID, get_id());
 
 		data.put(Deliverable.F_PROJECT_ID, getValue(F_PROJECT_ID));
 		data.put(Deliverable.F_TYPE, type);
-		
+
 		if (docd != null) {
 			data.put(Deliverable.F_DOCUMENT_DEFINITION_ID, docd.get_id());
 			data.put(Deliverable.F_DESC, docd.getDesc());
@@ -2097,8 +2100,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Deliverable
 	 * @throws Exception
 	 */
-	public Deliverable doAddDeliverable(Document doc,String type, IContext context)
-			throws Exception {
+	public Deliverable doAddDeliverable(Document doc, String type,
+			IContext context) throws Exception {
 		Deliverable deli = makeDeliverableDefinition(type);
 		deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		deli.doInsert(context);
@@ -2252,6 +2255,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				new BasicDBObject().append("$set", update), true, false);
 		set_data(newData);
 
+		// 将工作的流程记录存储到交付物文档中
+		if (isExecuteWorkflowActivateAndAvailable()) {
+			IProcessControl ip = getAdapter(IProcessControl.class);
+			BasicBSONList historys = ip.getWorkflowHistroyData(
+					IWorkCloneFields.F_WF_EXECUTE, true);
+			if (historys != null && historys.size() > 0) {
+				DBObject wfHistory = new BasicDBObject();
+				wfHistory.put(IDocumentProcess.F_WORKNAME, getDesc());
+				wfHistory.put(IDocumentProcess.F_HISTORY, historys);
+				wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
+				wfHistory.put(IDocumentProcess.F_WORK_LIFECYCLE,
+						STATUS_CANCELED_VALUE);
+				wfHistory.put(IDocumentProcess.F_FINISHDATE, new Date());
+				doWFHistoryToDocument(context, wfHistory);
+			}
+		}
+
 		// 提示工作已取消
 		doNoticeWorkAction(context, "已取消");
 		doCancelAfter(context, params);
@@ -2374,13 +2394,31 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 标记工作已完成
 		update.put(F_LIFECYCLE, STATUS_FINIHED_VALUE);
 		// 设置工作的实际完成时间
-		update.put(F_ACTUAL_FINISH, new Date());
+		Date finishdata = new Date();
+		update.put(F_ACTUAL_FINISH, finishdata);
 
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
 				new BasicDBObject().append(F__ID, get_id()), null, null, false,
 				new BasicDBObject().append("$set", update), true, false);
 		set_data(newData);
+
+		// 将工作的流程记录存储到交付物文档中
+		if (isExecuteWorkflowActivateAndAvailable()) {
+			IProcessControl ip = getAdapter(IProcessControl.class);
+			BasicBSONList historys = ip.getWorkflowHistroyData(
+					IWorkCloneFields.F_WF_EXECUTE, true);
+			if (historys != null && historys.size() > 0) {
+				DBObject wfHistory = new BasicDBObject();
+				wfHistory.put(IDocumentProcess.F_WORKNAME, getDesc());
+				wfHistory.put(IDocumentProcess.F_HISTORY, historys);
+				wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
+				wfHistory.put(IDocumentProcess.F_WORK_LIFECYCLE,
+						STATUS_FINIHED_VALUE);
+				wfHistory.put(IDocumentProcess.F_FINISHDATE, finishdata);
+				doWFHistoryToDocument(context, wfHistory);
+			}
+		}
 
 		// 提示工作已完成
 		doNoticeWorkAction(context, "已完成");
@@ -2389,6 +2427,39 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doCalculatePerformence(context);
 		return null;
 
+	}
+
+	/**
+	 * 将工作的流程记录存储到本工作及其子工作的交付物文档中
+	 * 
+	 * @param context
+	 * @param wfHistory
+	 * @throws Exception
+	 */
+	public void doWFHistoryToDocument(IContext context, DBObject wfHistory)
+			throws Exception {
+		List<PrimaryObject> documentList = getOutputDeliverableDocuments();
+		DBCollection col = getCollection(IModelConstants.C_DOCUMENT);
+		for (PrimaryObject po : documentList) {
+			Document document = (Document) po;
+			BasicBSONList history = document.getWorkflowHistory();
+			if (history == null) {
+				history = new BasicBSONList();
+			}
+			history.add(wfHistory);
+			WriteResult ws = col.update(new BasicDBObject().append(
+					Document.F__ID, document.get_id()), new BasicDBObject()
+					.append("$set", new BasicDBObject().append(
+							Document.F_WF_HISTORY, history)));
+			checkWriteResult(ws);
+		}
+		List<PrimaryObject> childrenWorkList = getChildrenWork();
+		for (PrimaryObject po : childrenWorkList) {
+			Work childrenWork = (Work) po;
+			if (childrenWork.isExecuteWorkflowActivateAndAvailable()) {
+				childrenWork.doWFHistoryToDocument(context, wfHistory);
+			}
+		}
 	}
 
 	/**
@@ -3654,15 +3725,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 处理角色定义
 		DBObject radata = ipc.getProcessRoleAssignmentData(key);
 		Iterator<String> iterator;
-		if(radata!=null){
+		if (radata != null) {
 			iterator = radata.keySet().iterator();
 			while (iterator.hasNext()) {
 				String parameter = iterator.next();
 				ObjectId value = (ObjectId) radata.get(parameter);
 				DBObject newRoleDef = rolemap.get(value);
 				if (newRoleDef != null) {
-					RoleDefinition rd = ModelService.createModelObject(newRoleDef,
-							RoleDefinition.class);
+					RoleDefinition rd = ModelService.createModelObject(
+							newRoleDef, RoleDefinition.class);
 					ipc.setProcessActionAssignment(key, parameter, rd);
 				}
 			}
@@ -3672,8 +3743,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject acdata = ipc.getProcessActorsData(key);
 		if (acdata == null) {
 			radata = ipc.getProcessRoleAssignmentData(key);
-			if(radata!=null){
-				
+			if (radata != null) {
+
 				iterator = radata.keySet().iterator();
 				while (iterator.hasNext()) {
 					String parameter = iterator.next();
@@ -3685,9 +3756,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					if (!roleAss.isEmpty()) {
 						ipc.setProcessActionActor(key, parameter,
 								((AbstractRoleAssignment) roleAss.get(0))
-								.getUserid());
+										.getUserid());
 					}
-			}
+				}
 			}
 		}
 
