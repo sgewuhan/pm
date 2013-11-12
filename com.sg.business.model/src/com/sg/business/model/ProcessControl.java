@@ -104,24 +104,24 @@ public abstract class ProcessControl implements IProcessControl {
 		return (DBObject) primaryObject.getValue(key + POSTFIX_ACTORS);
 	}
 
-//	@Override
-//	public UserTask getUserTask(String userid,Long taskId) {
-//		Object hostId = primaryObject.getValue(PrimaryObject.F__ID);
-//		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
-//				IModelConstants.C_USERTASK);
-//		BasicDBObject query = new BasicDBObject();
-//		query.put(UserTask.F_HOST_ID, hostId);
-//		query.put(UserTask.F_HOST_COLLECTION, primaryObject.getCollectionName());
-//		query.put(UserTask.F_USERID, userid);
-//		query.put(UserTask.F_TASKID, taskId);
-//		DBObject data  = col.findOne(query);
-//
-//		if(data!=null){
-//			return ModelService.createModelObject(data, UserTask.class);
-//		}
-//
-//		return null;
-//	}
+	// @Override
+	// public UserTask getUserTask(String userid,Long taskId) {
+	// Object hostId = primaryObject.getValue(PrimaryObject.F__ID);
+	// DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+	// IModelConstants.C_USERTASK);
+	// BasicDBObject query = new BasicDBObject();
+	// query.put(UserTask.F_HOST_ID, hostId);
+	// query.put(UserTask.F_HOST_COLLECTION, primaryObject.getCollectionName());
+	// query.put(UserTask.F_USERID, userid);
+	// query.put(UserTask.F_TASKID, taskId);
+	// DBObject data = col.findOne(query);
+	//
+	// if(data!=null){
+	// return ModelService.createModelObject(data, UserTask.class);
+	// }
+	//
+	// return null;
+	// }
 
 	@Deprecated
 	public DBObject getWorkflowTaskData(String key) {
@@ -136,16 +136,29 @@ public abstract class ProcessControl implements IProcessControl {
 
 	/**
 	 * 
-	 * @param key
-	 * @param userid
-	 * @param query
 	 * @return
 	 */
-	@Override @Deprecated
-	public BasicBSONList getWorkflowHistroyData(String key, boolean query) {
-		String field = key + POSTFIX_HISTORY;
-		Object value = primaryObject.getValue(field, query);
-		return (BasicBSONList) value;
+	@Override
+	public BasicBSONList getWorkflowHistroyData() {
+		List<PrimaryObject> userTaskList = primaryObject.getRelationById(PrimaryObject.F__ID, UserTask.F_WORK_ID,
+				UserTask.class);
+		BasicBSONList result = new BasicBSONList();
+		for (PrimaryObject userTask : userTaskList) {
+			result.add(userTask.get_data());
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	@Override
+	public List<PrimaryObject> getWorkflowHistroy() {
+		return primaryObject.getRelationById(PrimaryObject.F__ID, UserTask.F_WORK_ID,
+				UserTask.class);
+		
+		
 	}
 
 	public void setProcessRoleAssignmentData(String key,

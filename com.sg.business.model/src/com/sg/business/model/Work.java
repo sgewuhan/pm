@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.bson.BSONObject;
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.drools.runtime.process.ProcessInstance;
@@ -74,9 +72,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 带流程叶子工作编辑器
 	 */
 	public static final String EDIT_WORK_PLAN_1 = "edit.work.plan.1";
-	
-	public static final String TEMPLATE_DELIVERABLE = "template_deliverable";
 
+	public static final String TEMPLATE_DELIVERABLE = "template_deliverable";
 
 	/**
 	 * 不带流程叶子工作编辑器
@@ -2258,8 +2255,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 将工作的流程记录存储到交付物文档中
 		if (isExecuteWorkflowActivateAndAvailable()) {
 			IProcessControl ip = getAdapter(IProcessControl.class);
-			BasicBSONList historys = ip.getWorkflowHistroyData(
-					IWorkCloneFields.F_WF_EXECUTE, true);
+			BasicBSONList historys = ip.getWorkflowHistroyData();
 			if (historys != null && historys.size() > 0) {
 				DBObject wfHistory = new BasicDBObject();
 				wfHistory.put(IDocumentProcess.F_WORKNAME, getDesc());
@@ -2406,8 +2402,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 将工作的流程记录存储到交付物文档中
 		if (isExecuteWorkflowActivateAndAvailable()) {
 			IProcessControl ip = getAdapter(IProcessControl.class);
-			BasicBSONList historys = ip.getWorkflowHistroyData(
-					IWorkCloneFields.F_WF_EXECUTE, true);
+			BasicBSONList historys = ip.getWorkflowHistroyData();
 			if (historys != null && historys.size() > 0) {
 				DBObject wfHistory = new BasicDBObject();
 				wfHistory.put(IDocumentProcess.F_WORKNAME, getDesc());
