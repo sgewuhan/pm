@@ -45,10 +45,13 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	public EngineeringChangePlan() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
+		
 		context = new CurrentAccountContext();
 		setFormInput(input);
 		parent.setLayout(new FormLayout());
@@ -223,6 +226,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			} else if (element instanceof Work) {
 				workListCreater.remove((Work) element);
 			}
+			setDirty(true);
 		} else {
 			MessageUtil.showToast("请选择删除的对象", SWT.ICON_WARNING);
 			return;
@@ -241,6 +245,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				try {
 					DataObjectDialog.openDialog(work, "edit.work.plan.4", true, null);
 					workListCreater.refresh();
+					setDirty(true);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 				}
@@ -273,6 +278,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 						Document doc = (Document) is.getFirstElement();
 						try {
 							workListCreater.createDeliverable(work, doc);
+							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -320,6 +326,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 					Work work = workd.makeStandloneWork(null, context);
 					work.setValue(Work.F_DESC, workd.getDesc());
 					workListCreater.createWork(work);
+					setDirty(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -341,7 +348,13 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 	@Override
 	public void commit(boolean onSave) {
-		workListCreater.commit();
+		
+//		PrimaryObjectEditorInput editorInput = getInput();
+		TaskForm taskform = (TaskForm) getInputData();
+		taskform.setValue("ecn",workListCreater.getInput() );
+//		workListCreater.commit();
+		setDirty(false);
+
 	}
 
 	@Override
