@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -85,17 +84,16 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			AccountInfo account = getContext().getAccountInfo();
-			String userid = account.getConsignerId();
+			String userId = getContext().getAccountInfo().getConsignerId();
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition
 					.put("$or",
 							new BasicDBObject[] {
 									new BasicDBObject().append(
-											Work.F_PARTICIPATE, userid),
+											Work.F_PARTICIPATE, userId),
 									new BasicDBObject().append(Work.F_ASSIGNER,
-											userid) });
+											userId) });
 			// 生命周期状态为准备、进行中
 			queryCondition
 					.put(Work.F_LIFECYCLE,

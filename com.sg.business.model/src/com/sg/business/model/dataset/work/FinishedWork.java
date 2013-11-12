@@ -1,8 +1,6 @@
 package com.sg.business.model.dataset.work;
 
-import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
@@ -50,11 +48,11 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userid = account.getConsignerId();
+			String userId = getContext().getAccountInfo().getConsignerId();
+
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
-			queryCondition.put(Work.F_PARTICIPATE, userid);
+			queryCondition.put(Work.F_PARTICIPATE, userId);
 			// 生命周期状态为准备、进行中
 			queryCondition
 					.put(Work.F_LIFECYCLE,

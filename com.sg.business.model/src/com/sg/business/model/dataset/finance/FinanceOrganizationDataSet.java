@@ -13,7 +13,6 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class FinanceOrganizationDataSet extends
 		SingleDBCollectionDataSetFactory {
@@ -25,8 +24,8 @@ public class FinanceOrganizationDataSet extends
 	@Override
 	public DataSet getDataSet() {
 		// 查询当前用户在哪些组织（事业部或者法人）担任了财务经理
-		String userid = new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
+		String userid = getContext().getAccountInfo().getConsignerId();
+
 		User user = UserToolkit.getUserById(userid);
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_FINANCIAL_MANAGER_ID);

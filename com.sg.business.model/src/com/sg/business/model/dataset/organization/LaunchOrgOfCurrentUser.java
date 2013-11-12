@@ -10,7 +10,6 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -32,7 +31,7 @@ public class LaunchOrgOfCurrentUser extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DataSet getDataSet() {
 		List<PrimaryObject> list = new ArrayList<PrimaryObject>();
-		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		String userId = getContext().getAccountInfo().getConsignerId();
 		User user = UserToolkit.getUserById(userId);
 		
 		Organization org = user.getOrganization();

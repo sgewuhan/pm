@@ -12,7 +12,6 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.TaskForm;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class TaskFormWorker extends MasterDetailDataSetFactory {
 
@@ -31,7 +30,7 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 			if (master instanceof TaskForm) {
 				TaskForm taskForm = (TaskForm) master;
 				try {
-					Object dept = taskForm.getProcessInstanceVarible("dept",new CurrentAccountContext());
+					Object dept = taskForm.getProcessInstanceVarible("dept",getContext());
 					ObjectId orgid=new ObjectId((String)dept);
 					Organization org = ModelService.createModelObject(
 							Organization.class, orgid);

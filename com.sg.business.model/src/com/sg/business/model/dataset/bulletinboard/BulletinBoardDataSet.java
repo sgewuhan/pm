@@ -7,7 +7,6 @@ import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.BulletinBoard;
@@ -45,13 +44,11 @@ public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
 		try {
 			// 获取当前用户所在的组织
 			List<ObjectId> orgIds = new ArrayList<ObjectId>();
-			String userid = UserSessionContext.getAccountInfo()
-					.getConsignerId();
+			String userid = getContext().getAccountInfo().getConsignerId();
 			User user = UserToolkit.getUserById(userid);
 			Organization org = user.getOrganization();
 			/**
-			 * zhonghua
-			 * 用户的组织可能为空
+			 * zhonghua 用户的组织可能为空
 			 */
 			if (org != null) {
 				// 获取当前用户所在组织的下级组织

@@ -74,13 +74,4 @@ public class TaskHistoryDataSet extends MasterDetailDataSetFactory {
 		return date1.after(date2);
 	}
 	
-	public static void main(String[] args) {
-		Map<String,String> a = new HashMap<String,String>();
-		a.put("1", "a");
-		a.put("2", "b");
-		a.put("3", "c");
-		a.put("4", "d");
-		System.out.println(a.values());
-	}
-
 }

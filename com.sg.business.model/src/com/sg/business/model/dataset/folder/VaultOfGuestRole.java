@@ -10,7 +10,6 @@ import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.DataSetFactory;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -20,6 +19,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 
 /**
  * <p>
@@ -51,8 +51,8 @@ public class VaultOfGuestRole extends DataSetFactory {
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 		
 		// 从当前的进程中获得登录用户的信息
-		ObjectId useroid = UserSessionContext.getSession().getUserOId();
-		User currentUser = ModelService.createModelObject(User.class, useroid);
+		String userId = getContext().getAccountInfo().getConsignerId();
+		User currentUser = UserToolkit.getUserById(userId);
 		
 		// 在当前用户所在的组织以及下级组织中获取"是容器"的组织
 		List<PrimaryObject> containers = new ArrayList<PrimaryObject>();

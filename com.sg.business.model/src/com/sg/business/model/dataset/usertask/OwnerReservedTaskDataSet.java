@@ -12,7 +12,6 @@ import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class OwnerReservedTaskDataSet extends SingleDBCollectionDataSetFactory {
 
@@ -23,7 +22,7 @@ public class OwnerReservedTaskDataSet extends SingleDBCollectionDataSetFactory {
 		workCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_WORK);
 
-		String userId = new CurrentAccountContext().getConsignerId();
+		String userId = getContext().getAccountInfo().getConsignerId();
 
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_USERID, userId);
