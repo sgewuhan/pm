@@ -472,10 +472,10 @@
             serviceProvider="com.sg.business.model.bpmservice.DocumentService">
       </service>
       <service
-            interface="standlonework.service.action"
-            name="项目变更独立工作服务"
-            operation="create"
-            serviceProvider="com.sg.business.model.bpmservice.bpmserviceCreateStandloneworService">
+            interface="changeplan.service.action"
+            name="变更计划服务"
+            operation="change"
+            serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
       </service>
    </extension>
 
