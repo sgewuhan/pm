@@ -108,7 +108,7 @@ public class WorkFilterAction extends Action {
 						false, ViewerFilter.class);
 			}
 			viewer.resetFilters();
-			((CTreeViewer) viewer).expandAll();
+			//((CTreeViewer) viewer).expandAll();
 			viewer.setFilters(newFilters);
 		}
 	}

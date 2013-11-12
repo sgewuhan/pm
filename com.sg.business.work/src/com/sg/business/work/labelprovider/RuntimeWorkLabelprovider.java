@@ -152,8 +152,6 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		String userId = context.getAccountInfo().getConsignerId();
 
 		StringBuffer sb = new StringBuffer();
-		SimpleDateFormat sdf = new SimpleDateFormat(
-				Utils.SDF_MONTH_DATE_COMPACT_SASH);
 
 		User charger = work.getCharger();
 
@@ -247,7 +245,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String planStart = "";
 		if (_planStart != null) {
-			planStart = sdf.format(_planStart);
+			planStart = String.format(Utils.FORMATE_DATE_COMPACT_SASH, _planStart);
 		}
 
 		sb.append("");
@@ -257,14 +255,14 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String planFinish = "";
 		if (_planFinish != null) {
-			planFinish = sdf.format(_planFinish);
+			planFinish =  String.format(Utils.FORMATE_DATE_COMPACT_SASH,_planFinish);
 		}
 		sb.append(planFinish);
 		sb.append("  ");
 
 		String actualStart = "";
 		if (_actualStart != null) {
-			actualStart = sdf.format(_actualStart);
+			actualStart =  String.format(Utils.FORMATE_DATE_COMPACT_SASH,_actualStart);
 		}
 		sb.append("<b>A</b>:");
 		sb.append(actualStart);
@@ -272,25 +270,25 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String actualFinish = "";
 		if (_actualFinish != null) {
-			actualFinish = sdf.format(_actualFinish);
+			actualFinish =  String.format(Utils.FORMATE_DATE_COMPACT_SASH,_actualFinish);
 		}
 		sb.append(actualFinish);
 		sb.append("  ");
 
-		sb.append("<b>D</b>:");
-
-		Integer actualDuration = work.getActualDuration();
-		if (actualDuration == null) {
-			actualDuration = 0;
-		}
-		sb.append(actualDuration);
-		sb.append("/");
-
-		Integer planDuration = work.getPlanDuration();
-		if (planDuration == null) {
-			planDuration = 0;
-		}
-		sb.append(planDuration);
+//		sb.append("<b>D</b>:");
+//
+//		Integer actualDuration = work.getActualDuration();
+//		if (actualDuration == null) {
+//			actualDuration = 0;
+//		}
+//		sb.append(actualDuration);
+//		sb.append("/");
+//
+//		Integer planDuration = work.getPlanDuration();
+//		if (planDuration == null) {
+//			planDuration = 0;
+//		}
+//		sb.append(planDuration);
 
 		sb.append("</small>");
 
