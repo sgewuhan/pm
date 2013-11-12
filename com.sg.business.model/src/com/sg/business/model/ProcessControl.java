@@ -204,7 +204,7 @@ public abstract class ProcessControl implements IProcessControl {
 		return result;
 	}
 
-	public List<String[]> checkProcessRunable(String key) {
+	public List<String[]> checkProcessRunnable(String key) {
 		List<String[]> result = new ArrayList<String[]>();
 		// 检查流程是否已经激活
 		if (!isWorkflowActivateAndAvailable(key)) {
@@ -217,7 +217,7 @@ public abstract class ProcessControl implements IProcessControl {
 		for (int i = 0; i < nodes.size(); i++) {
 			NodeAssignment na = nodes.get(i);
 
-			if (na.isNeedAssignment()) {
+			if (na.isNeedAssignment()&& na.forceAssignment()) {
 				String actorId = getProcessActionActor(key,
 						na.getNodeActorParameter());
 				String nodeName = na.getNodeName();

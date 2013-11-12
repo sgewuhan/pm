@@ -212,6 +212,6 @@ public interface IProcessControl {
 	 * @param fWfExecute
 	 * @return
 	 */
-	List<String[]> checkProcessRunable(String fWfExecute);
+	List<String[]> checkProcessRunnable(String fWfExecute);
 
 }

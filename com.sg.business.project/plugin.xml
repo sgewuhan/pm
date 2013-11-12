@@ -3274,6 +3274,7 @@
                         required="true">
                   </navigatorSelector>
                   <navigatorSelector
+                        defaultValueProvider="com.sg.business.commons.value.OrganizationDefault"
                         id="launchorg_id"
                         label="项目发起部门"
                         labelVisible="true"

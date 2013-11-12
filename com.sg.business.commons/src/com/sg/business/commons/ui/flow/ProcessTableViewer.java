@@ -135,7 +135,7 @@ public class ProcessTableViewer extends TableViewer {
 			ArrayList<NodeAssignment> input = new ArrayList<NodeAssignment>();
 			for (int i = 0; i < nodesAssignment.size(); i++) {
 				NodeAssignment na = nodesAssignment.get(i);
-				if (na.isNeedAssignment()) {
+				if (na.isNeedAssignment()&&na.forceAssignment()) {
 					input.add(na);
 				}
 			}
