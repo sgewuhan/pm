@@ -275,20 +275,20 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		sb.append(actualFinish);
 		sb.append("  ");
 
-//		sb.append("<b>D</b>:");
-//
-//		Integer actualDuration = work.getActualDuration();
-//		if (actualDuration == null) {
-//			actualDuration = 0;
-//		}
-//		sb.append(actualDuration);
-//		sb.append("/");
-//
-//		Integer planDuration = work.getPlanDuration();
-//		if (planDuration == null) {
-//			planDuration = 0;
-//		}
-//		sb.append(planDuration);
+		sb.append("<b>D</b>:");
+
+		Integer actualDuration = work.getActualDuration();
+		if (actualDuration == null) {
+			actualDuration = 0;
+		}
+		sb.append(actualDuration);
+		sb.append("/");
+
+		Integer planDuration = work.getPlanDuration();
+		if (planDuration == null) {
+			planDuration = 0;
+		}
+		sb.append(planDuration);
 
 		sb.append("</small>");
 
