@@ -28,7 +28,7 @@ public class AddParticipateFromAllUser implements IAddTableItemHandler {
 			protected void doOK(IStructuredSelection is) {
 				if(is==null||is.isEmpty()){
 					//TODO
-					MessageUtil.showToast("请选择", SWT.ICON_WARNING);
+					MessageUtil.showToast("请选择成员", SWT.ICON_WARNING);
 				}else{
 					Iterator<?> iter = is.iterator();
 					while(iter.hasNext()){

@@ -1074,12 +1074,12 @@
             name="确认变更方案"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
-               processParameterName="choice_check"
-               taskFormFieldName="choice_check">
+               processParameterName="ecn"
+               taskFormFieldName="ecn">
          </processParameter>
          <processParameter
-               processParameterName="comment_check"
-               taskFormFieldName="comment_check">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1187,7 +1187,7 @@
                         labelVisible="true"
                         modelClass="com.sg.business.model.Project"
                         name="project"
-                        navigatorId="project.navigator.allproject"
+                        navigatorId="company.navigator.allproject"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="true">
@@ -1208,32 +1208,46 @@
             name="确认变更方案">
          <basicpage
                id="page1"
-               title="校核">
+               title="审核变更申请">
             <pagecolumn>
                <section
-                     label="确认变更方案">
-                  <list
-                        addTableItemHandler="com.tmt.tb.field.action.AddStandloneworkList"
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
                         editable="true"
-                        id="standlonework_list"
-                        label="添加独立工作"
-                        labelVisible="true"
-                        name="standlonework_list"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
                         persistable="true"
-                        required="true">
-                  </list>
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-         <basicpage
-               id="变更方案"
                pageDelegator="com.tmt.tb.editor.page.EngineeringChangePlan"
                title="变更方案">
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
          </basicpage>
       </editor>
       <editor

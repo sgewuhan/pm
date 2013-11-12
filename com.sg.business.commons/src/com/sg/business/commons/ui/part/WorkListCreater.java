@@ -27,6 +27,9 @@ import com.sg.business.model.Work;
 public class WorkListCreater extends Composite {
 
 	private List<Work> input;
+
+
+
 	private TreeViewer viewer;
 	private IContext context;
 	
@@ -36,8 +39,7 @@ public class WorkListCreater extends Composite {
 		this.setLayout(new FillLayout());
 		createContent(this);
 	}
-
-
+	
 	private void createContent(Composite parent) {
 		viewer=new TreeViewer(parent,SWT.FULL_SELECTION);
 		
@@ -112,6 +114,7 @@ public class WorkListCreater extends Composite {
 
 
 	public void commit() {
+		//TODO
 		
 	}
 
@@ -179,7 +182,6 @@ public class WorkListCreater extends Composite {
 				((List) value).add(data);
 			}
 			
-			
 		}else if(value instanceof Object[]){
 			if(!inArray(data,((Object[]) value))){
 		    value=Utils.addElementToArray((Object[])value, data, false, Object.class);
@@ -218,6 +220,10 @@ public class WorkListCreater extends Composite {
 
 	public void setContext(IContext context) {
 		this.context=context;
+	}
+	
+	public List<Work> getInput() {
+		return input;
 	}
 	
 
