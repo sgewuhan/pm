@@ -222,7 +222,7 @@ public class ConfirmPage extends WizardPage {
 			sb.append("Á÷³Ì: ");
 			sb.append(pd);
 			sb.append("<br/>");
-			List<String[]> result = ipc.checkProcessRunable(Work.F_WF_EXECUTE);
+			List<String[]> result = ipc.checkProcessRunnable(Work.F_WF_EXECUTE);
 			hasError = false;
 			hasWarning = false;
 			for(int i=0;i<result.size();i++){

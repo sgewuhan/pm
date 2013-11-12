@@ -5,12 +5,10 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -20,11 +18,16 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 
+	private String userId;
+
 	public ProcessingWork() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
+		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+
 	}
 
 	public boolean isStandloneWork(DBObject dbo) {
@@ -86,17 +89,15 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userid = account.getConsignerId();
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition
 					.put("$or",
 							new BasicDBObject[] {
 									new BasicDBObject().append(
-											Work.F_PARTICIPATE, userid),
+											Work.F_PARTICIPATE, userId),
 									new BasicDBObject().append(Work.F_ASSIGNER,
-											userid) });
+											userId) });
 			// 生命周期状态为准备、进行中
 			queryCondition
 					.put(Work.F_LIFECYCLE,

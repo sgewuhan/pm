@@ -49,8 +49,9 @@ public class DBInit implements Runnable {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_SETTING);
 
+		
 		BasicDBObject setting = new BasicDBObject();
-		setting.put("varid", "SYSTEM.PROCESS_BASE_URL");
+		setting.put("varid", IModelConstants.S_PROCESS_BASE_URL);
 		setting.put("desc", "项目流程库地址");
 		setting.put("value",
 				"http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/Guvnor.jsp?");
@@ -60,7 +61,7 @@ public class DBInit implements Runnable {
 		}
 
 		setting = new BasicDBObject();
-		setting.put("varid", "PROJECT.COMMIT.DURATION");
+		setting.put("varid", IModelConstants.S_DEFAULT_PROJECT_COMMIT_DURATION);
 		setting.put("desc", "项目提交工作默认天数");
 		setting.put("value", "5");
 		try {
@@ -69,7 +70,7 @@ public class DBInit implements Runnable {
 		}
 
 		setting = new BasicDBObject();
-		setting.put("varid", "TASK.DELAYMARK");
+		setting.put("varid", IModelConstants.S_S_TASK_DELAY);
 		setting.put("desc", "流程任务延迟标记时间（分钟）");
 		setting.put("value", "1");
 		try {
@@ -78,7 +79,7 @@ public class DBInit implements Runnable {
 		}
 		
 		setting = new BasicDBObject();
-		setting.put("varid", "WORK.RESERVED.REFRESH.INTERVAL");
+		setting.put("varid", IModelConstants.S_S_WORK_RESERVED_REFRESH_INTERVAL);
 		setting.put("desc", "待办工作刷新周期(分钟)");
 		setting.put("value", "5");
 		try {
@@ -87,15 +88,7 @@ public class DBInit implements Runnable {
 		}
 		
 		setting = new BasicDBObject();
-		setting.put("varid", "WORK.RESERVED.REFRESH.SYSTEM");
-		setting.put("desc", "待办工作刷新周期(分钟)");
-		setting.put("value", "5");
-		try {
-			col.insert(setting);
-		} catch (Exception e) {
-		}
-		setting = new BasicDBObject();
-		setting.put("varid", "MESSAGEINBOX.REFRESH.INTERVAL");
+		setting.put("varid", IModelConstants.S_U_MESSAGE_RESERVED_REFRESH_INTERVAL);
 		setting.put("desc", "消息刷新周期(分钟)");
 		setting.put("value", "30");
 		try {
@@ -103,7 +96,7 @@ public class DBInit implements Runnable {
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", "EAI.SAP.MAXCONN");
+		setting.put("varid", IModelConstants.S_EAI_SAP_MAXCONN);
 		setting.put("desc", "SAP最大连接数");
 		setting.put("value", "20");
 		try {
@@ -111,7 +104,7 @@ public class DBInit implements Runnable {
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", "EAI.SAP.CLIENT");
+		setting.put("varid", IModelConstants.S_EAI_SAP_CLIENT);
 		setting.put("desc", "SAP 客户端");
 		setting.put("value", "700");
 		try {
@@ -119,7 +112,7 @@ public class DBInit implements Runnable {
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", "EAI.SAP.USERID");
+		setting.put("varid", IModelConstants.S_EAI_SAP_USERID);
 		setting.put("desc", "SAP User Id");
 		setting.put("value", "ITFSAP");
 		try {
@@ -127,7 +120,7 @@ public class DBInit implements Runnable {
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", "EAI.SAP.PASSWORD");
+		setting.put("varid", IModelConstants.S_EAI_SAP_PASSWORD);
 		setting.put("desc", "SAP User password");
 		setting.put("value", "12392008");
 		try {
@@ -135,7 +128,7 @@ public class DBInit implements Runnable {
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", "EAI.SAP.LANG");
+		setting.put("varid", IModelConstants.S_EAI_SAP_LANGUAGE);
 		setting.put("desc", "SAP 语言");
 		setting.put("value", "ZH");
 		try {
@@ -143,7 +136,7 @@ public class DBInit implements Runnable {
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", "EAI.SAP.HOST");
+		setting.put("varid", IModelConstants.S_EAI_SAP_HOST);
 		setting.put("desc", "SAP 主机");
 		setting.put("value", "172.16.9.74");
 		try {
@@ -151,13 +144,23 @@ public class DBInit implements Runnable {
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", "EAI.SAP.INSTANCENUMBER");
+		setting.put("varid", IModelConstants.S_EAI_SAP_INSTANCENUMBER);
 		setting.put("desc", "SAP 实例编号");
 		setting.put("value", "00");
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
+
+		setting = new BasicDBObject();
+		setting.put("varid", IModelConstants.S_MAJOR_VID_SEQ);
+		setting.put("desc", "主版本号序列");
+		setting.put("value", "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z");
+		try {
+			col.insert(setting);
+		} catch (Exception e) {
+		}
+
 	}
 
 	private void syncUser() {

@@ -31,11 +31,12 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 			if (master instanceof TaskForm) {
 				TaskForm taskForm = (TaskForm) master;
 				try {
-					Object dept = taskForm.getProcessInstanceVarible("dept",new CurrentAccountContext());
-					ObjectId orgid=new ObjectId((String)dept);
+					Object dept = taskForm.getProcessInstanceVarible("dept",
+							new CurrentAccountContext());
+					ObjectId orgid = new ObjectId((String) dept);
 					Organization org = ModelService.createModelObject(
 							Organization.class, orgid);
-				
+
 					List<PrimaryObject> orgList = new ArrayList<PrimaryObject>();
 					orgList.add(org);
 					return new DataSet(orgList);
@@ -47,16 +48,12 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 		return super.getDataSet();
 	}
 
-/*	private List<PrimaryObject> searchUser(List<PrimaryObject> list,
-			Organization org) {
-		list.addAll(org.getUser());
-		List<PrimaryObject> childrenOrgs = org.getChildrenOrganization();
-		if (childrenOrgs != null && childrenOrgs.size() > 0) {
-			for (int i = 0; i < childrenOrgs.size(); i++) {
-				Organization childrenOrg = (Organization) childrenOrgs.get(i);
-				searchUser(list, childrenOrg);
-			}
-		}
-		return list;
-	}*/
+	/*
+	 * private List<PrimaryObject> searchUser(List<PrimaryObject> list,
+	 * Organization org) { list.addAll(org.getUser()); List<PrimaryObject>
+	 * childrenOrgs = org.getChildrenOrganization(); if (childrenOrgs != null &&
+	 * childrenOrgs.size() > 0) { for (int i = 0; i < childrenOrgs.size(); i++)
+	 * { Organization childrenOrg = (Organization) childrenOrgs.get(i);
+	 * searchUser(list, childrenOrg); } } return list; }
+	 */
 }

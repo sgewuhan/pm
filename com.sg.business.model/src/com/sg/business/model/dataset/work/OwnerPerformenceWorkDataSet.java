@@ -15,8 +15,8 @@ public class OwnerPerformenceWorkDataSet extends
 
 		BasicDBObject condition = new BasicDBObject();
 		// 当前用户的
-		String userId = new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+
 		condition.put(Work.F_CHARGER, userId);
 		// 只需要进行中的
 		condition.put(Work.F_LIFECYCLE, Work.STATUS_WIP_VALUE);

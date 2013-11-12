@@ -1,13 +1,12 @@
 package com.sg.business.model.dataset.message;
 
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Message;
 import com.sg.business.model.bson.SendDateSorter;
-import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 
@@ -20,14 +19,12 @@ public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DBObject getQueryCondition() {
 		try {
-			String userid = UserSessionContext.getAccountInfo()
-					.getConsignerId();
+			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			
 			BasicDBObject condition = new BasicDBObject();
-			condition.put(Message.F_WASTE+"."+userid,true);
+			condition.put(Message.F_WASTE+"."+userId,true);
 			return condition;
 		} catch (Exception e) {
-			MessageUtil.showToast(e);
 			return new BasicDBObject().append("_id", null);
 		}
 		

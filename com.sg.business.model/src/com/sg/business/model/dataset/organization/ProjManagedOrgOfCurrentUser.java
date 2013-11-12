@@ -19,8 +19,8 @@ public class ProjManagedOrgOfCurrentUser extends SingleDBCollectionDataSetFactor
 
 	@Override
 	public DataSet getDataSet() {
-		String userId = new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+
 		User user = UserToolkit.getUserById(userId);
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_PROJECT_ADMIN_ID);

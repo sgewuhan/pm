@@ -13,8 +13,8 @@ public class OwnerWorkDataSet extends SingleDBCollectionDataSetFactory {
 
 		BasicDBObject condition = new BasicDBObject();
 		// 当前用户的
-		String userId = new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+
 		condition.put(Work.F_CHARGER, userId);
 		// 只需要进行中和已完成的
 		BasicDBObject wip = new BasicDBObject().append(Work.F_LIFECYCLE, Work.STATUS_WIP_VALUE);

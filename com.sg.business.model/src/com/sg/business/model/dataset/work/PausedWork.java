@@ -1,13 +1,11 @@
 package com.sg.business.model.dataset.work;
 
-import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Work;
-import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class PausedWork extends SingleDBCollectionDataSetFactory {
 
@@ -24,17 +22,15 @@ public class PausedWork extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userid = account.getConsignerId();
+			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
-			queryCondition.put(Work.F_PARTICIPATE, userid);
+			queryCondition.put(Work.F_PARTICIPATE, userId);
 			// 生命周期状态为已经暂停
 			queryCondition.put(Work.F_LIFECYCLE, Work.STATUS_PAUSED_VALUE);
 			return queryCondition;
 
 		} catch (Exception e) {
-			MessageUtil.showToast(e);
 			return new BasicDBObject().append(Work.F__ID, null);
 		}
 	}

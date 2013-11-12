@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
@@ -16,6 +14,7 @@ import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -52,8 +51,7 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 		// 获得当前帐号可管理的项目职能组织
 		try {
 			//获取当前用户信息
-			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userId = account.getConsignerId();
+			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			User user = UserToolkit.getUserById(userId);
 			//获取当前用户具有项目管理员角色的组织
 			List<PrimaryObject> orglist = user

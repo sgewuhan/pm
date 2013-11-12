@@ -23,7 +23,7 @@ public class OwnerReservedTaskDataSet extends SingleDBCollectionDataSetFactory {
 		workCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_WORK);
 
-		String userId = new CurrentAccountContext().getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 
 		DBObject query = new BasicDBObject();
 		query.put(UserTask.F_USERID, userId);

@@ -21,8 +21,8 @@ public class OrgUserCascade extends MasterDetailDataSetFactory {
 	@Override
 	protected Object getMasterValue() {
 		
-		String userid = new CurrentAccountContext().getAccountInfo().getConsignerId();
-		User user = UserToolkit.getUserById(userid);
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		User user = UserToolkit.getUserById(userId);
 		return user.getOrganization_id();
 	}
 

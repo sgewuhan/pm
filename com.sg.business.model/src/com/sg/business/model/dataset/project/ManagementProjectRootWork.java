@@ -6,12 +6,10 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -23,6 +21,7 @@ import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -51,8 +50,7 @@ public class ManagementProjectRootWork extends SingleDBCollectionDataSetFactory 
 		try {
 			// 获得当前帐号可管理的项目职能组织
 			// 获取当前用户信息
-			AccountInfo account = UserSessionContext.getAccountInfo();
-			String userId = account.getConsignerId();
+			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			User user = UserToolkit.getUserById(userId);
 			// 获取当前用户具有业务管理员角色的组织
 			List<PrimaryObject> orglist = user

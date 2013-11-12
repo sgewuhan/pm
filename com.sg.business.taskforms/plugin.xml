@@ -354,6 +354,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="pm.pmGenericApprovalProcess"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -376,6 +381,11 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="pm.pmGenericApprovalProcess1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -400,6 +410,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="pm.pmGenericApprovalProcess2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -422,6 +437,11 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="pm.pmGenericApprovalProcess3"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
