@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bson.types.BasicBSONList;
 
+import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.runtime.Workflow;
@@ -173,8 +174,7 @@ public interface IProcessControl {
 	 * @param query
 	 * @return
 	 */
-	@Deprecated
-	BasicBSONList getWorkflowHistroyData(String key, boolean query);
+	BasicBSONList getWorkflowHistroyData();
 
 	void setProcessDefinition(String key, DroolsProcessDefinition definition);
 
@@ -213,5 +213,7 @@ public interface IProcessControl {
 	 * @return
 	 */
 	List<String[]> checkProcessRunnable(String fWfExecute);
+
+	List<PrimaryObject> getWorkflowHistroy();
 
 }
