@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -152,6 +153,11 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 */
 	public static final String F_PDM_OUID = "pdm_ouid";
 
+	/**
+	 * 审批历史
+	 */
+	public static final String F_WF_HISTORY = "wf_history";
+
 	@Override
 	protected String[] getVersionFields() {
 		return new String[] { "$all" };
@@ -282,6 +288,15 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 */
 	public String getDocumentType() {
 		return (String) getValue(F_DOCUMENT_TYPE);
+	}
+
+	/**
+	 * 返回文档类型
+	 * 
+	 * @return BasicBSONList
+	 */
+	public BasicBSONList getWorkflowHistory() {
+		return  (BasicBSONList) getValue(F_WF_HISTORY);
 	}
 
 	/**

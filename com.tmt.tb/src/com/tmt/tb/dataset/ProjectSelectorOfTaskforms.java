@@ -34,7 +34,7 @@ public class ProjectSelectorOfTaskforms extends MasterDetailDataSetFactory {
 					if (obj != null) {
 						User user = UserToolkit.getUserById(obj);
 						List<PrimaryObject> projectList = user
-								.getChargeProject(ILifecycle.STATUS_NONE_TEXT);
+								.getChargeProject(ILifecycle.STATUS_NONE_VALUE);
 						if (projectList != null && projectList.size() > 0) {
 							return new DataSet(projectList);
 						}

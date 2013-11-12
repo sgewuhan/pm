@@ -6,7 +6,7 @@
       <taskForm
             editorId="tbprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number,dept_leader,prj_admin,dept"
+            persistentFields="prj_number,dept_leader,prj_admin,dept,prj_financial"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB">
          <processParameter
@@ -1690,9 +1690,9 @@
          point="com.sg.bpm.service.serviceTask">
       <service
             interface="createproject.service.action"
-            name="自动生成项目"
+            name="添加新创建项目的工作令号"
             operation="tbprojectapplication"
-            serviceProvider="com.tmt.tb.bpmservice.CreateProjectOfTB">
+            serviceProvider="com.tmt.tb.bpmservice.CreateProjectWorkOrderOfTB">
       </service>
       <service
             interface="tbmessage.service.action"
