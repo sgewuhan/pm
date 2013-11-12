@@ -40,6 +40,11 @@ public class WorkDefinition extends AbstractWork implements
 	 * 工作定义是否激活，可使用，只用于{@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE}
 	 */
 	public static final String F_ACTIVATED = "activated";
+	
+	/**
+	 * 是否内部使用
+	 */
+	public static final String F_INTERNALBY = "internalby";
 
 	/**
 	 * 通用工作定义的编辑器Id

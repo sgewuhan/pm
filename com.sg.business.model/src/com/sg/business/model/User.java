@@ -248,7 +248,7 @@ public class User extends PrimaryObject {
 			setValue(F_SCENARIO, scenarioList);
 		}
 
-		//将用户添加到流程数据库
+		// 将用户添加到流程数据库
 		HTService ts = BPM.getHumanTaskService();
 		ts.addParticipateUser(getUserid());
 		super.doInsert(context);
@@ -392,5 +392,37 @@ public class User extends PrimaryObject {
 			return (T) summary;
 		}
 		return super.getAdapter(adapter);
+	}
+
+	/**
+	 * 依据状态获取当前用户所负责的项目，
+	 * 
+	 * @param status
+	 *            :项目状态，NULL时为获取所有的项目
+	 */
+	public List<PrimaryObject> getChargeProject(String status) {
+		if (status != null) {
+			BasicDBObject condition = new BasicDBObject();
+			condition.append(Project.F_CHARGER, getUserid());
+			condition.append(Project.F_LIFECYCLE, status);
+			List<PrimaryObject> projectList = getRelationByCondition(
+					Project.class, condition);
+			if (ILifecycle.STATUS_NONE_VALUE.equals(status)) {
+				condition = new BasicDBObject();
+				condition.append(Project.F_CHARGER, getUserid());
+				condition.append(Project.F_LIFECYCLE, null);
+				if (projectList == null) {
+					projectList = getRelationByCondition(Project.class,
+							condition);
+				} else {
+					projectList.addAll(getRelationByCondition(Project.class,
+							condition));
+				}
+			}
+
+			return projectList;
+		} else {
+			return getRelationById(F__ID, Project.F_CHARGER, Project.class);
+		}
 	}
 }
