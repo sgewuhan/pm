@@ -6,6 +6,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -37,7 +38,7 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			String userId = getContext().getAccountInfo().getConsignerId();
+			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			// 查询条件为本人负责的项目和本人参与的项目
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition.put(

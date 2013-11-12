@@ -21,6 +21,7 @@ import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -49,7 +50,7 @@ public class ManagementProjectRootWork extends SingleDBCollectionDataSetFactory 
 		try {
 			// 获得当前帐号可管理的项目职能组织
 			// 获取当前用户信息
-			String userId = getContext().getAccountInfo().getConsignerId();
+			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			User user = UserToolkit.getUserById(userId);
 			// 获取当前用户具有业务管理员角色的组织
 			List<PrimaryObject> orglist = user

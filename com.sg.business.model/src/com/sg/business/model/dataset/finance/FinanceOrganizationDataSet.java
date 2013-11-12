@@ -6,16 +6,15 @@ import java.util.List;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
-import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
+import com.sg.business.model.dataset.ContextSingleDataSetFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 
-public class FinanceOrganizationDataSet extends
-		SingleDBCollectionDataSetFactory {
+public class FinanceOrganizationDataSet extends ContextSingleDataSetFactory {
 
 	public FinanceOrganizationDataSet() {
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);

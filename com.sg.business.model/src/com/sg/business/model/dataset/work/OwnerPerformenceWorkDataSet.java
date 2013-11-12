@@ -5,6 +5,7 @@ import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
 import com.mongodb.BasicDBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Work;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class OwnerPerformenceWorkDataSet extends
 		SingleDBCollectionDataSetFactory {
@@ -14,7 +15,7 @@ public class OwnerPerformenceWorkDataSet extends
 
 		BasicDBObject condition = new BasicDBObject();
 		// 当前用户的
-		String userId = getContext().getAccountInfo().getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 
 		condition.put(Work.F_CHARGER, userId);
 		// 只需要进行中的

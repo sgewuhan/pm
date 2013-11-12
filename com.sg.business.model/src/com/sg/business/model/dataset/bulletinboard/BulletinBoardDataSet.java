@@ -13,6 +13,7 @@ import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
+import com.sg.business.model.dataset.ContextSingleDataSetFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
 
@@ -26,7 +27,7 @@ import com.sg.widgets.MessageUtil;
  * @author gdiyang
  * 
  */
-public class BulletinBoardDataSet extends SingleDBCollectionDataSetFactory {
+public class BulletinBoardDataSet extends ContextSingleDataSetFactory {
 
 	/**
 	 * 公告板构造函数

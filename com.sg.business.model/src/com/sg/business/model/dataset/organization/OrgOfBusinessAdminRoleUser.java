@@ -8,6 +8,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -38,7 +39,7 @@ public class OrgOfBusinessAdminRoleUser extends DataSetFactory {
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 		
 		// 从当前的进程中获得登录用户的信息
-		String userId = getContext().getAccountInfo().getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 		
 		User currentUser = UserToolkit.getUserById(userId);
 		

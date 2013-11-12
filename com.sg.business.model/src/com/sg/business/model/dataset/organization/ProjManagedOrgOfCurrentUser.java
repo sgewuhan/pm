@@ -9,6 +9,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjManagedOrgOfCurrentUser extends SingleDBCollectionDataSetFactory {
 
@@ -18,7 +19,7 @@ public class ProjManagedOrgOfCurrentUser extends SingleDBCollectionDataSetFactor
 
 	@Override
 	public DataSet getDataSet() {
-		String userId = getContext().getAccountInfo().getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 
 		User user = UserToolkit.getUserById(userId);
 		List<PrimaryObject> orglist = user

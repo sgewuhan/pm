@@ -6,6 +6,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class FinishedWork extends SingleDBCollectionDataSetFactory{
 
@@ -48,7 +49,7 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			String userId = getContext().getAccountInfo().getConsignerId();
+			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();

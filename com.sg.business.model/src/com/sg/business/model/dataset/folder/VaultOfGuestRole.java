@@ -20,6 +20,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.part.CurrentAccountContext;
 
 /**
  * <p>
@@ -51,7 +52,7 @@ public class VaultOfGuestRole extends DataSetFactory {
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 		
 		// 从当前的进程中获得登录用户的信息
-		String userId = getContext().getAccountInfo().getConsignerId();
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 		User currentUser = UserToolkit.getUserById(userId);
 		
 		// 在当前用户所在的组织以及下级组织中获取"是容器"的组织
