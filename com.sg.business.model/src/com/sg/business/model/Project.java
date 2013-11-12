@@ -13,6 +13,10 @@ import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
@@ -84,8 +88,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public static final String F_WORK_ID = "work_id";
 
-	public static final String F_DESCRIPTION ="description";
-	
+	public static final String F_DESCRIPTION = "description";
+
 	/**
 	 * 预算ID
 	 */
@@ -480,8 +484,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// 确保项目经理角色的人员与项目负责人一致
 			ensureProjectManagerRole(context);
 
+			// 同步更改根工作定义的名称
+			syncRootWorkNameInternal();
+
 		}
 		return saved;
+	}
+
+	private void syncRootWorkNameInternal() {
+		Job job = new Job("处理根工作定义名称同步") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				Object rootId = getValue(F_WORK_ID);
+				DBCollection col = getCollection(IModelConstants.C_WORK);
+				col.update(new BasicDBObject().append(Work.F__ID, rootId),
+						new BasicDBObject().append("$set", new BasicDBObject()
+								.append(Work.F_DESC, getDesc())));
+				return Status.OK_STATUS;
+			}
+
+		};
+
+		job.schedule();
 	}
 
 	private void ensureWorkOrderRelativeToCompany(IContext context)
@@ -503,26 +528,35 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @param context
 	 * @throws Exception
 	 */
-	private void ensureProjectManagerRole(IContext context) throws Exception {
-		User charger = getCharger();
-		if (charger == null) {
-			return;
-		}
+	private void ensureProjectManagerRole(final IContext context) {
+		Job job = new Job("确保项目经理角色与项目负责人一致") {
 
-		List<User> users = new ArrayList<User>();
-		users.add(charger);
-
-		List<PrimaryObject> roles = getProjectRole();
-		for (int i = 0; i < roles.size(); i++) {
-			ProjectRole projectRole = (ProjectRole) roles.get(i);
-			String rn = projectRole.getRoleNumber();
-			if (ProjectRole.ROLE_PROJECT_MANAGER_ID.equals(rn)) {
-				try {
-					projectRole.doAssignUsers(users, context);
-				} catch (Exception e) {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				User charger = getCharger();
+				if (charger == null) {
+					return Status.OK_STATUS;
 				}
+
+				List<User> users = new ArrayList<User>();
+				users.add(charger);
+
+				List<PrimaryObject> roles = getProjectRole();
+				for (int i = 0; i < roles.size(); i++) {
+					ProjectRole projectRole = (ProjectRole) roles.get(i);
+					String rn = projectRole.getRoleNumber();
+					if (ProjectRole.ROLE_PROJECT_MANAGER_ID.equals(rn)) {
+						try {
+							projectRole.doAssignUsers(users, context);
+						} catch (Exception e) {
+						}
+					}
+				}
+				return Status.OK_STATUS;
 			}
-		}
+
+		};
+		job.schedule();
 	}
 
 	@Override
@@ -548,14 +582,39 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		super.doInsert(context);
 
-		// 复制模板
-		doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
+		doInsertAfter(root, folderRoot, context);
 
-		// 复制系统日历
-		doCopySystemCanlendar();
-		
-//		//自动设置任务执行人
-//		doAssignmentByRole(context);
+	}
+
+	private void doInsertAfter(final Work root, final Folder folderRoot,
+			final IContext context) {
+
+		Job job = new Job("从模板复制项目信息") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				// 复制模板
+				try {
+					doSetupWithTemplate(root.get_id(), context,
+							folderRoot.get_id());
+				} catch (Exception e) {
+					return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
+							Status.ERROR, "复制模板出错", e);				}
+				// 复制系统日历
+				try {
+					doCopySystemCanlendar();
+				} catch (Exception e) {
+					return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
+							Status.ERROR, "复制系统日历出错", e);
+				}
+
+				// //自动设置任务执行人
+				// doAssignmentByRole(context);
+				return Status.OK_STATUS;
+			}
+
+		};
+		job.schedule();
 
 	}
 
@@ -650,37 +709,32 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 设置项目的流程和角色
 		doSetupWorkflowWithTemplate(id, roleMap, context);
-		
-		
-		//排除没有应用的角色
+
+		// 排除没有应用的角色
 		if (!roleMap.isEmpty()) {
 			Collection<DBObject> values = roleMap.values();
 			Iterator<DBObject> iter = values.iterator();
 
 			Set<DBObject> toBeInsert = new HashSet<DBObject>();
-			while(iter.hasNext()){
+			while (iter.hasNext()) {
 				DBObject prole = iter.next();
-				if(!Boolean.TRUE.equals(prole.get("used"))){
+				if (!Boolean.TRUE.equals(prole.get("used"))) {
 					continue;
 				}
-				Object roleId = prole
-						.get(ProjectRole.F_ORGANIZATION_ROLE_ID);
+				Object roleId = prole.get(ProjectRole.F_ORGANIZATION_ROLE_ID);
 				if (roleId != null) {
 					// 将组织角色中的成员加入到项目的参与者
 					Role role = ModelService.createModelObject(Role.class,
 							(ObjectId) roleId);
 					List<PrimaryObject> ass = role.getAssignment();
 					doAddParticipateFromAssignment(ass);
-					
+
 				}
-				
-				
+
 				prole.removeField("used");
 				toBeInsert.add(prole);
 			}
-			
-			
-			
+
 			DBObject[] insertData = toBeInsert.toArray(new DBObject[0]);
 			// 插入到数据库
 			DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
@@ -824,11 +878,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			if (roleId != null) {
 				// 设置为组织角色
 				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
-//				// 将组织角色中的成员加入到项目的参与者
-//				Role role = ModelService.createModelObject(Role.class,
-//						(ObjectId) roleId);
-//				List<PrimaryObject> ass = role.getAssignment();
-//				doAddParticipateFromAssignment(ass);
+				// // 将组织角色中的成员加入到项目的参与者
+				// Role role = ModelService.createModelObject(Role.class,
+				// (ObjectId) roleId);
+				// List<PrimaryObject> ass = role.getAssignment();
+				// doAddParticipateFromAssignment(ass);
 
 			} else {
 				// 设置为项目角色
@@ -844,7 +898,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			result.put((ObjectId) roleddata.get(RoleDefinition.F__ID),
 					prole.get_data());
 		}
-
 
 		return result;
 	}
@@ -897,7 +950,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		collection = documentsToBeInsert.values();
 		if (!collection.isEmpty()) {
-			//保存文档时需要文档的保存前的预处理
+			// 保存文档时需要文档的保存前的预处理
 			ws = docCol.insert(collection.toArray(new DBObject[0]),
 					WriteConcern.NORMAL);
 			checkWriteResult(ws);
@@ -946,12 +999,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (map.size() == 0) {
 			throw new Exception("尚未对角色指定人员，无法执行按角色指派工作");
 		}
-		
+
 		String lc = getLifecycleStatus();
-		if(!STATUS_NONE_VALUE.equals(lc)){
+		if (!STATUS_NONE_VALUE.equals(lc)) {
 			throw new Exception("您只能在项目准备状态进行按角色指派工作");
 		}
-		
+
 		List<PrimaryObject> childrenWorks = getChildrenWork();
 		for (int i = 0; i < childrenWorks.size(); i++) {
 			Work childWork = (Work) childrenWorks.get(i);

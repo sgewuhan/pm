@@ -5,6 +5,7 @@ import org.osgi.framework.BundleContext;
 
 public class ProjectActivator implements BundleActivator {
 
+	public static final String PLUGIN_ID = "com.sg.business.project";
 	private static BundleContext context;
 
 	static BundleContext getContext() {

@@ -10,7 +10,6 @@ import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
-import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -86,7 +85,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			AccountInfo account = UserSessionContext.getAccountInfo();
+			AccountInfo account = getContext().getAccountInfo();
 			String userid = account.getConsignerId();
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();

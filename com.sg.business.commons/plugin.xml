@@ -1204,6 +1204,7 @@
             column="chargerid"
             id="chargerid"
             labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            lazyDisplay="true"
             name="负责人"
             type="String"
             width="120">
@@ -1212,6 +1213,7 @@
             column="org_id"
             id="project.org_id"
             labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+            lazyDisplay="true"
             name="职能组织"
             type="String"
             width="160">
@@ -1220,6 +1222,7 @@
             column="launchorg_id"
             id="project.launchorg_id"
             labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+            lazyDisplay="true"
             name="发起组织"
             type="String"
             width="160">
@@ -1235,6 +1238,7 @@
             column="participate"
             id="participate"
             labelProvider="com.sg.business.commons.labelprovider.UserIdListLabelProvider"
+            lazyDisplay="false"
             name="参与者"
             type="String"
             width="120">
