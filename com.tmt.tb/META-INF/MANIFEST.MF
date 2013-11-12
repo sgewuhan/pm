@@ -15,6 +15,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.widgets,
  com.mobnut.commons,
  org.eclipse.rap.ui.forms,
- com.sg.business.taskforms
+ com.sg.business.taskforms,
+ com.mobnut.portal,
+ com.sg.business.resource
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

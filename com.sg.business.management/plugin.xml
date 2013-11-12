@@ -1428,15 +1428,27 @@
                         required="false"
                         type="String">
                   </text>
-                  <checkbox
-                        editable="true"
-                        id="activated"
-                        label="启用"
-                        labelVisible="true"
-                        name="activated"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
+                  <fieldgroup
+                        columnCount="2">
+                     <checkbox
+                           editable="true"
+                           id="activated"
+                           label="启用"
+                           labelVisible="true"
+                           name="activated"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="internalby"
+                           label="内部使用"
+                           labelVisible="true"
+                           name="internalby"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                  </fieldgroup>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1502,15 +1514,27 @@
                         required="false"
                         type="String">
                   </text>
-                  <checkbox
-                        editable="true"
-                        id="activated"
-                        label="启用"
-                        labelVisible="true"
-                        name="activated"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
+                  <fieldgroup
+                        columnCount="2">
+                     <checkbox
+                           editable="true"
+                           id="activated"
+                           label="启用"
+                           labelVisible="true"
+                           name="activated"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="internalby"
+                           label="内部使用"
+                           labelVisible="true"
+                           name="internalby"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                  </fieldgroup>
                </section>
             </pagecolumn>
          </basicpage>

@@ -1232,7 +1232,7 @@
          </basicpage>
          <basicpage
                id="变更方案"
-               pageDelegator="com.tmt.tb.editor.page.TaskFormStandlonework"
+               pageDelegator="com.tmt.tb.editor.page.EngineeringChangePlan"
                title="变更方案">
          </basicpage>
       </editor>
@@ -1595,24 +1595,22 @@
          </searchAction>
       </navigator>
       <navigator
-            id="organization.navigaor.internalusestandlonework"
-            tree="organization.navigaor.internalusestandlonework">
+            id="organization.navigaor.projectfunctionorg"
+            tree="organization.navigaor.projectfunctionorg">
          <filterAction>
             <column
                   columnDefinitionId="work.desc">
-            </column>
-            <column
-                  columnDefinitionId="generic.activated">
             </column>
          </filterAction>
          <searchAction>
             <column
                   columnDefinitionId="work.desc">
             </column>
-            <column
-                  columnDefinitionId="generic.activated">
-            </column>
          </searchAction>
+      </navigator>
+      <navigator
+            id="project.navigator.changedoc"
+            tree="project.navigator.changedoc">
       </navigator>
    </extension>
    <extension
@@ -1646,16 +1644,32 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.tb.dataset.InternalUseStandLoneWork"
-            id="organization.navigaor.internalusestandlonework">
+            dataSet="com.tmt.tb.dataset.ProjectFunctionOrg"
+            id="organization.navigaor.projectfunctionorg">
          <column
                columnDefinitionId="work.desc.1">
          </column>
+         <structure
+               modelRelation="organization_internalbystandlonework">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.tmt.tb.dataset.ProjectChangeDocument"
+            headerVisiable="false"
+            id="project.navigator.changedoc">
          <column
-               columnDefinitionId="generic.activated">
+               columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
          <structure
-               modelRelation="organization_standlonework">
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
          </structure>
       </tree>
    </extension>
