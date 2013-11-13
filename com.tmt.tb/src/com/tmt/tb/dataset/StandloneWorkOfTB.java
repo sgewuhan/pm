@@ -2,6 +2,7 @@ package com.tmt.tb.dataset;
 
 import org.bson.types.ObjectId;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -14,8 +15,11 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class StandloneWorkOfTB extends OptionDataSetFactory {
 
+	private IContext context;
+
 	public StandloneWorkOfTB() {
 		super(IModelConstants.DB, IModelConstants.C_PROJECT_TEMPLATE);
+		context = new CurrentAccountContext();
 	}
 
 	@Override
@@ -25,7 +29,7 @@ public class StandloneWorkOfTB extends OptionDataSetFactory {
 		ObjectId org_id = null;
 		try {
 			String obj = (String) taskForm.getProcessInstanceVarible("dept",
-					new CurrentAccountContext());
+					context);
 			if (obj != null) {
 				ObjectId deptid = new ObjectId(obj);
 				Organization org = ModelService.createModelObject(

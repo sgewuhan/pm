@@ -10,8 +10,12 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class FinishedWork extends SingleDBCollectionDataSetFactory{
 
+	private String userId;
+
+
 	public FinishedWork() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
+		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 	}
 
 //	/**
@@ -49,7 +53,7 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+			
 
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();

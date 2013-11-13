@@ -26,6 +26,12 @@ import com.sg.widgets.part.CurrentAccountContext;
  */
 public class VaultOfOrganization extends DataSetFactory {
 
+	private User currentUser;
+
+	public VaultOfOrganization() {
+		String userId = new CurrentAccountContext().getAccountInfo()
+				.getConsignerId();
+		currentUser = UserToolkit.getUserById(userId);	}
 	/**
 	 * 当前用户所属组织及其下级组织的文件夹数
 	 */
@@ -42,8 +48,6 @@ public class VaultOfOrganization extends DataSetFactory {
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 
 		// 从当前的进程中获得登录用户的信息
-		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
-		User currentUser = UserToolkit.getUserById(userId);
 
 		// 在当前用户所在的组织以及下级组织中获取"是容器"的组织
 		Organization org = currentUser.getOrganization();

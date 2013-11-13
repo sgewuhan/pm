@@ -20,12 +20,16 @@ import com.sg.widgets.part.CurrentAccountContext;
  */
 public class MyProject extends SingleDBCollectionDataSetFactory {
 
+	private String userId;
+
 	/**
 	 * 项目导航构造函数，用于设置项目导航的存放数据库及数据存储表
 	 */
 	public MyProject() {
 		//设置项目导航的存放数据库及数据存储表
 		super(IModelConstants.DB, IModelConstants.C_PROJECT);
+		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+
 	}
 
 	/**
@@ -38,7 +42,6 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
-			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			// 查询条件为本人负责的项目和本人参与的项目
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition.put(

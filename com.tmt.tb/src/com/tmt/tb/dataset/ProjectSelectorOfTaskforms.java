@@ -3,6 +3,7 @@ package com.tmt.tb.dataset;
 import java.util.List;
 
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
@@ -14,8 +15,11 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectSelectorOfTaskforms extends MasterDetailDataSetFactory {
 
+	private IContext context;
+
 	public ProjectSelectorOfTaskforms() {
 		super(IModelConstants.DB, IModelConstants.C_PROJECT);
+		context = new CurrentAccountContext();
 	}
 
 	@Override
@@ -30,7 +34,7 @@ public class ProjectSelectorOfTaskforms extends MasterDetailDataSetFactory {
 				TaskForm taskForm = (TaskForm) master;
 				try {
 					String obj = (String) taskForm.getProcessInstanceVarible(
-							"prj_manager", new CurrentAccountContext());
+							"prj_manager", context);
 					if (obj != null) {
 						User user = UserToolkit.getUserById(obj);
 						List<PrimaryObject> projectList = user

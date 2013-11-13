@@ -10,14 +10,17 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class MySendMessage extends SingleDBCollectionDataSetFactory {
 
+	private String userId;
+
+
 	public MySendMessage() {
 		super(IModelConstants.DB, IModelConstants.C_MESSAGE);
+		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 	}
 
 	@Override
 	public DBObject getQueryCondition() {
 		try {
-			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
 			
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Message.F_SENDER,userId);
