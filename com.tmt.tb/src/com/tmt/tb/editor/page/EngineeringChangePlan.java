@@ -316,7 +316,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				work = null;
 			}
 			if (work != null) {
-				// 彈出選擇
+				// 彈出选择
 
 				NavigatorSelector ns = new NavigatorSelector(
 						"project.documents", "选择变更对象") {
@@ -396,10 +396,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	@Override
 	public void commit(boolean onSave) {
 		
-//		PrimaryObjectEditorInput editorInput = getInput();
 		TaskForm taskform = (TaskForm) getInputData();
 		taskform.setValue("ecn",workListCreater.getInput() );
-//		workListCreater.commit();
 		setDirty(false);
 
 	}

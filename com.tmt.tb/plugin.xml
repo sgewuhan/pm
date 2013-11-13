@@ -1085,7 +1085,7 @@
       </taskForm>
       <taskForm
             editorId="tbprojectchange.approvalProgram"
-            name="方案审批"
+            name="方案批准"
             persistentFields="choice,comment"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
@@ -1172,7 +1172,7 @@
                title="变更方案">
          </basicpage>
          <basicpage
-               id="page2"
+               id="page3"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
          </basicpage>
@@ -1181,7 +1181,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="tbprojectchange.approvalProgram"
-            name="方案审批">
+            name="方案批准">
          <basicpage
                id="page1"
                title="审核变更申请">
@@ -1207,13 +1207,23 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否通过"
+                        option="是否整改"
                         persistable="true"
                         required="true"
                         type="String">
                   </radio>
                </section>
             </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.tmt.tb.editor.page.EngineeringChangePlan"
+               title="变更方案">
+         </basicpage>
+         <basicpage
+               id="page3"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程">
          </basicpage>
       </editor>
    </extension>

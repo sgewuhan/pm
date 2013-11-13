@@ -27,9 +27,6 @@ import com.sg.business.model.Work;
 public class WorkListCreater extends Composite {
 
 	private List<Work> input;
-
-
-
 	private TreeViewer viewer;
 	private IContext context;
 	
@@ -190,6 +187,7 @@ public class WorkListCreater extends Composite {
 			((List<DBObject>)value).add(data);
 		}
 		work.setValue(Work.TEMPLATE_DELIVERABLE, value);
+     	work.setValue(Work.F_CHARGER, doc.get_caccount().getUserId());
 		viewer.refresh();
 		viewer.expandAll();
 	}
