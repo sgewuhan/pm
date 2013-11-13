@@ -31,7 +31,6 @@ import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.commons.model.IEditorSaveHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.DataObjectDialog;
