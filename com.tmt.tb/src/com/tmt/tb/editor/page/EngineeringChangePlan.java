@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
@@ -33,6 +34,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.DataObjectDialog;
+import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
@@ -243,7 +245,36 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				Work work = (Work) element;
 			   
 				try {
-					DataObjectDialog.openDialog(work, "edit.work.plan.4", true, null);
+					IDataObjectDialogCallback handler=new IDataObjectDialogCallback() {
+						
+						@Override
+						public boolean doSaveBefore(PrimaryObjectEditorInput input,
+								IProgressMonitor monitor, String operation) throws Exception {
+							return true;
+						}
+						
+						@Override
+						public boolean doSaveAfter(PrimaryObjectEditorInput input,
+								IProgressMonitor monitor, String operation) throws Exception {
+							return false;
+						}
+
+						@Override
+						public boolean okPressed() {
+							return false;
+						}
+
+						@Override
+						public void cancelPressed() {
+							
+						}
+
+						@Override
+						public boolean needSave() {
+							return false;
+						}
+					};
+					DataObjectDialog.openDialog(work, "edit.work.plan.4", true, handler);
 					workListCreater.refresh();
 					setDirty(true);
 				} catch (Exception e) {

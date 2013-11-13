@@ -1074,6 +1074,7 @@
             name="确认变更方案"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecn"
                taskFormFieldName="ecn">
          </processParameter>
@@ -1083,87 +1084,13 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="tb.tbprojectchange.craft"
-            name="更改方案工艺审核"
-            persistentFields="choice_craft,comment_craft"
+            editorId="tbprojectchange.approvalProgram"
+            name="方案审批"
+            persistentFields="choice,comment"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
-               processParameterName="choice_craft"
-               taskFormFieldName="choice_craft">
-         </processParameter>
-         <processParameter
-               processParameterName="comment_craft"
-               taskFormFieldName="comment_craft">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="tb.tbprojectchange.auditor"
-            name="更改方案审核"
-            persistentFields="choice_auditor,comment_auditor"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterName="choice_auditor"
-               taskFormFieldName="choice_auditor">
-         </processParameter>
-         <processParameter
-               processParameterName="comment_auditor"
-               taskFormFieldName="comment_auditor">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="tb.tbprojectchange.purchase"
-            name="更改方案采购审批"
-            persistentFields="choice_purchase,comment_purchase"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterName="choice_purchase"
-               taskFormFieldName="choice_purchase">
-         </processParameter>
-         <processParameter
-               processParameterName="comment_purchase"
-               taskFormFieldName="comment_purchase">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="tb.tbprojectchange.plan"
-            name="更改方案计划审批"
-            persistentFields="choice_plan,comment_plan"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterName="choice_plan"
-               taskFormFieldName="choice_plan">
-         </processParameter>
-         <processParameter
-               processParameterName="comment_plan"
-               taskFormFieldName="comment_plan">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="tb.tbprojectchange.develop"
-            name="更改方案开发中心审批"
-            persistentFields="choice_develop,comment_develop"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterName="choice_develop"
-               taskFormFieldName="choice_develop">
-         </processParameter>
-         <processParameter
-               processParameterName="comment_develop"
-               taskFormFieldName="comment_develop">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="tb.tbprojectchange.approve"
-            name="更改方案批准"
-            persistentFields="choice_approve,comment_approve"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterName="choice_approve"
-               taskFormFieldName="choice_approve">
-         </processParameter>
-         <processParameter
-               processParameterName="comment_approve"
-               taskFormFieldName="comment_approve">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
    </extension>
@@ -1253,65 +1180,22 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tb.tbprojectchange.craft"
-            name="设计更改工艺审核">
+            id="tbprojectchange.approvalProgram"
+            name="方案审批">
          <basicpage
                id="page1"
-               title="工艺审核">
+               title="审核变更申请">
             <pagecolumn>
                <section
-                     label="请填写审核意见和结论">
+                     label="请填写意见和结论">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        id="comment_craft"
+                        id="comment"
                         inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="意见"
                         labelVisible="false"
-                        name="comment_craft"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice_craft"
-                        label="工艺审核"
-                        labelVisible="false"
-                        name="choice_craft"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tb.tbprojectchange.auditor"
-            name="设计更改审核">
-         <basicpage
-               id="page1"
-               title="审核">
-            <pagecolumn>
-               <section
-                     label="请填写审核意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment_auditor"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="true"
-                        name="comment_auditor"
+                        name="comment"
                         persistable="true"
                         required="false"
                         type="String"
@@ -1319,195 +1203,17 @@
                   </text>
                   <radio
                         editable="true"
-                        id="choice_auditor"
-                        label="审核"
+                        id="choice"
+                        label="结论"
                         labelVisible="false"
-                        name="choice_auditor"
+                        name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
             </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tb.tbprojectchange.purchase"
-            name="设计更改采购审核">
-         <basicpage
-               id="page1"
-               title="采购审核">
-            <pagecolumn>
-               <section
-                     label="请填写审核意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment_purchase"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment_purchase"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice_purchase"
-                        label="审核"
-                        labelVisible="false"
-                        name="choice_purchase"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tb.tbprojectchange.plan"
-            name="设计更改计划审核">
-         <basicpage
-               id="page1"
-               title="计划审核">
-            <pagecolumn>
-               <section
-                     label="请填写审核意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="com.sg.business.taskforms.text5"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="com.sg.business.taskforms.text5"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice_plan"
-                        label="审核"
-                        labelVisible="false"
-                        name="choice_plan"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tb.tbprojectchange.develop"
-            name="设计更改开发中心审批">
-         <basicpage
-               id="page1"
-               title="开发中心审核">
-            <pagecolumn>
-               <section
-                     label="请填写审核意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment_develop"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment_develop"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice_develop"
-                        label="审核"
-                        labelVisible="false"
-                        name="choice_develop"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tb.tbprojectchange.approve"
-            name="设计更改批准">
-         <basicpage
-               id="page1"
-               title="方案批准">
-            <pagecolumn>
-               <section
-                     label="请填写审批意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment_approve"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment_approve"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice_approve"
-                        label="批准"
-                        labelVisible="false"
-                        name="choice_approve"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
          </basicpage>
       </editor>
    </extension>
