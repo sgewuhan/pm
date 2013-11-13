@@ -1158,7 +1158,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			finish = Utils.getDayEnd(finish).getTime();
 		}
 
-		if (start == null || finish == null) {
+		if (start == null && finish == null) {
 			return;
 		}
 
@@ -1166,7 +1166,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (projstart != null) {
 			projstart = Utils.getDayBegin(projstart).getTime();
 			
-			if (start.before(projstart)) {
+			if (start!=null&&start.before(projstart)) {
 				throw new Exception("工作的开始时间不能早于项目的开始时间");
 			}
 			
@@ -1178,7 +1178,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (projfinish != null) {
 			projfinish = Utils.getDayEnd(projfinish).getTime();
 			
-			if (finish.after(projfinish)) {
+			if (finish!=null&&finish.after(projfinish)) {
 				throw new Exception("工作的结束时间不能晚于项目的结束时间");
 			}
 		} else {
