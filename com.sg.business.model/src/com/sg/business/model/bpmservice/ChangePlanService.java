@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -12,6 +14,7 @@ import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Deliverable;
+import com.sg.business.model.Document;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 
@@ -80,6 +83,8 @@ public class ChangePlanService extends ServiceProvider {
 						}
 						try {
 							work.setValue(Work.TEMPLATE_DELIVERABLE, null);
+							ObjectId hostid = host.get_id();
+							work.setValue(Work.F_PARENT_ID, hostid);
 							work.doSave(context);
 						} catch (Exception e) {
 							MessageUtil.showToast(e);
@@ -87,8 +92,12 @@ public class ChangePlanService extends ServiceProvider {
 
 						for (Deliverable deliverable : deliverableList) {
 							try {
-								
-								deliverable.setValue(Deliverable.F_WORK_ID, work.get_id());
+								deliverable.setValue(Deliverable.F_WORK_ID,
+										work.get_id());
+								Document document = deliverable.getDocument();
+								document.setValue(Document.F_MAJOR_VID, (Integer)document.getValue(Document.F_MAJOR_VID)+1);
+								document.setValue(Document.F_LIFECYCLE,Document.STATUS_WORKING_ID);
+								document.doSave(context);
 								deliverable.doSave(context);
 
 							} catch (Exception e) {
