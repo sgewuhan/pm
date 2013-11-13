@@ -153,7 +153,6 @@ public class WorkListCreater extends Composite {
         		    value=Utils.removeElementInArray((Object[])value, data, false, Object.class);
         		}
         		work.setValue(Work.TEMPLATE_DELIVERABLE, value);
-        		
         	}
     		viewer.refresh();
 	}
