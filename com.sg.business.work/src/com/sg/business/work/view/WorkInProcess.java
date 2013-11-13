@@ -110,8 +110,12 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 				display.asyncExec(new Runnable() {
 					@Override
 					public void run() {
+//						ViewerFilter[] filters = getNavigator().getViewer().getFilters();
 						WorkInProcess.super.doRefresh();
 						processSync = false;
+						getNavigator().getViewer().resetFilters();
+//						getNavigator().getViewer().setFilters(filters);
+						
 						// System.out.println("refresh by: User");
 					}
 				});
@@ -135,6 +139,8 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 					public void run() {
 						WorkInProcess.super.doRefresh();
 						processSync = false;
+						getNavigator().getViewer().resetFilters();
+
 						// System.out.println("refresh by: Background");
 					}
 				});

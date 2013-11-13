@@ -12,7 +12,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import com.mobnut.commons.util.Utils;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.selector.DateFromToSelector;
-import com.sg.widgets.viewer.CTreeViewer;
 
 public class WorkFilterAction extends Action {
 

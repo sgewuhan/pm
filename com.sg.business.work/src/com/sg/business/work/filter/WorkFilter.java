@@ -1,11 +1,14 @@
 package com.sg.business.work.filter;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Widget;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.ILifecycle;
@@ -23,7 +26,21 @@ public class WorkFilter extends ViewerFilter {
 			} else {
 				Object[] items;
 				if (holder instanceof CTreeViewer) {
+					
 					items = ((CTreeViewer) holder).testFindItems(work);
+					if(items == null||items.length==0){
+						ArrayList<Work> list = new ArrayList<Work>();
+						list.add(work);
+						Widget[] trees = ((CTreeViewer) holder).testFindItems(list);
+						if(trees.length>0){
+							Widget t = trees[0];
+							if(t instanceof Tree){
+								items = ((Tree) t).getItems();
+							}
+						}
+					}
+					
+					
 				} else if (holder instanceof TreeItem) {
 					items = ((TreeItem) holder).getItems();
 				} else {
