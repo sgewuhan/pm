@@ -587,9 +587,6 @@
          <perspective
                id="perspective.message">
          </perspective>
-         <perspective
-               id="perspective.system">
-         </perspective>
       </scenario>
       <scenario
             id="manager"
@@ -600,10 +597,6 @@
          </perspective>
          <perspective
                id="perspective.workflow">
-         </perspective>
-         <perspective
-               default="true"
-               id="perspective.organization">
          </perspective>
          <perspective
                id="perspective.management">
@@ -621,6 +614,10 @@
          </perspective>
          <perspective
                id="perspective.workflow">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.organization">
          </perspective>
          <perspective
                id="perspective.management">
