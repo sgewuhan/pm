@@ -465,7 +465,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Double
 	 */
 	public Double getPlanWorks() {
-		return (Double) getValue(F_PLAN_WORKS);
+		return (Double) (getValue(F_PLAN_WORKS));
 
 		// List<PrimaryObject> children = getChildrenWork();
 		// if (children.size() == 0) {
@@ -1869,10 +1869,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				"$sum", col);
 		Object planWorks = result == null ? null : result.get("result"
 				+ F_PLAN_WORKS);
+		if(planWorks instanceof Number){
+			planWorks = new Double(((Number)planWorks).doubleValue());
+		}
 		setValue(F_PLAN_WORKS, planWorks);
 
 		Object actualWorks = result == null ? null : result.get("result"
 				+ F_ACTUAL_WORKS);
+		if(actualWorks instanceof Number){
+			actualWorks = new Double(((Number)actualWorks).doubleValue());
+		}
 		setValue(F_ACTUAL_WORKS, actualWorks);
 
 		// 计算计划工期和实际工期

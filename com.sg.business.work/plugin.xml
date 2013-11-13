@@ -699,10 +699,10 @@
             canDelete="false"
             canEdit="false"
             canRead="true"
-            dataSet="com.sg.business.model.dataset.work.TeamWorkDataSet"
             fix="3"
             id="performence.works.org"
             limit="200"
+            memo="已废弃"
             virtual="true">
          <column
                columnDefinitionId="project.status">
