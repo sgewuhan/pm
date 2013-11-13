@@ -1165,11 +1165,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Date projstart = project.getPlanStart();
 		if (projstart != null) {
 			projstart = Utils.getDayBegin(projstart).getTime();
-			
-			if (start!=null&&start.before(projstart)) {
+
+			if (start != null && start.before(projstart)) {
 				throw new Exception("工作的开始时间不能早于项目的开始时间");
 			}
-			
+
 		} else {
 			return;
 		}
@@ -1177,15 +1177,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Date projfinish = project.getPlanFinish();
 		if (projfinish != null) {
 			projfinish = Utils.getDayEnd(projfinish).getTime();
-			
-			if (finish!=null&&finish.after(projfinish)) {
+
+			if (finish != null && finish.after(projfinish)) {
 				throw new Exception("工作的结束时间不能晚于项目的结束时间");
 			}
 		} else {
 			return;
 		}
-
-
 
 	}
 
@@ -1840,7 +1838,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			};
 
 			job.schedule();
-		}else{
+		} else {
 			Work parentWork = (Work) getParent();
 			if (parentWork != null) {
 				parentWork.caculate();
@@ -1869,15 +1867,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				"$sum", col);
 		Object planWorks = result == null ? null : result.get("result"
 				+ F_PLAN_WORKS);
-		if(planWorks instanceof Number){
-			planWorks = new Double(((Number)planWorks).doubleValue());
+		if (planWorks instanceof Number) {
+			planWorks = new Double(((Number) planWorks).doubleValue());
 		}
 		setValue(F_PLAN_WORKS, planWorks);
 
 		Object actualWorks = result == null ? null : result.get("result"
 				+ F_ACTUAL_WORKS);
-		if(actualWorks instanceof Number){
-			actualWorks = new Double(((Number)actualWorks).doubleValue());
+		if (actualWorks instanceof Number) {
+			actualWorks = new Double(((Number) actualWorks).doubleValue());
 		}
 		setValue(F_ACTUAL_WORKS, actualWorks);
 
@@ -4367,9 +4365,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		condition.put(Deliverable.F_WORK_ID, get_id());
 		condition.put(
 				"$or",
-				new BasicDBObject().append(Deliverable.F_TYPE,
-						Deliverable.TYPE_OUTPUT).append(Deliverable.F_TYPE,
-						null));
+				new BasicDBObject[] {
+						new BasicDBObject().append(Deliverable.F_TYPE,
+								Deliverable.TYPE_OUTPUT),
+						new BasicDBObject().append(Deliverable.F_TYPE, null) });
 		return getRelationByCondition(Deliverable.class, condition);
 	}
 
