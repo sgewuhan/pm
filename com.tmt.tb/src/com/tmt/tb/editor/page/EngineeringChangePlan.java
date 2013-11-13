@@ -67,17 +67,35 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 			Object value = taskform.getProcessInstanceVarible("ecn",
 					new CurrentAccountContext());
-			if (value instanceof String) {
-				Object jsonValue = JSON.parse((String) value);
-				if (jsonValue instanceof List<?>) {
-					List<?> list = (List<?>) jsonValue;
-					for (Object dbo : list) {
-						Work work = ModelService.createModelObject(
-								(DBObject) dbo, Work.class);
-						workList.add(work);
-					}
+//			if (value instanceof String) {
+//				Object jsonValue = JSON.parse((String) value);
+//				if (jsonValue instanceof List<?>) {
+//					List<?> list = (List<?>) jsonValue;
+//					for (Object dbo : list) {
+//						Work work = ModelService.createModelObject(
+//								(DBObject) dbo, Work.class);
+//						workList.add(work);
+//					}
+//				}
+//			}
+			
+			if (value instanceof List<?>) {
+				List<?> list = (List<?>) value;
+				for (Object dbo : list) {
+					Work work = ModelService.createModelObject(
+							(DBObject) dbo, Work.class);
+					workList.add(work);
 				}
+			} else if (value instanceof Object[]) {
+				Object[] array = (Object[]) value;
+				for (Object dbo : array) {
+					Work work = ModelService.createModelObject(
+							(DBObject) dbo, Work.class);
+					workList.add(work);
+				}
+
 			}
+			
 		} catch (Exception e) {
 			if (Portal.getDefault().isDevelopMode()) {
 				e.printStackTrace();
