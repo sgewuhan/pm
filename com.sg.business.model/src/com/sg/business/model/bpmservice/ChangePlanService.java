@@ -95,8 +95,20 @@ public class ChangePlanService extends ServiceProvider {
 								deliverable.setValue(Deliverable.F_WORK_ID,
 										work.get_id());
 								Document document = deliverable.getDocument();
-								document.setValue(Document.F_MAJOR_VID, (Integer)document.getValue(Document.F_MAJOR_VID)+1);
-								document.setValue(Document.F_LIFECYCLE,Document.STATUS_WORKING_ID);
+								
+								String major = (String) document
+										.getValue(Document.F_MAJOR_VID);
+								String[] majorVersionSeq = document
+										.getMajorVersionSeq();
+								for (int i = 0; i < majorVersionSeq.length; i++) {
+									if (majorVersionSeq[i].equals(major)) {
+										major = majorVersionSeq[i + 1];
+										break;
+									}
+								}
+								document.setValue(Document.F_MAJOR_VID, major);
+								document.setValue(Document.F_LIFECYCLE,
+										Document.STATUS_WORKING_ID);
 								document.doSave(context);
 								deliverable.doSave(context);
 
