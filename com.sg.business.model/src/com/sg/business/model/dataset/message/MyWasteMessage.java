@@ -10,8 +10,13 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 
+	private String userId;
+
+
 	public MyWasteMessage() {
 			super(IModelConstants.DB, IModelConstants.C_MESSAGE);
+			userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+
 		}
 
 	
@@ -19,8 +24,6 @@ public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DBObject getQueryCondition() {
 		try {
-			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
-			
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Message.F_WASTE+"."+userId,true);
 			return condition;

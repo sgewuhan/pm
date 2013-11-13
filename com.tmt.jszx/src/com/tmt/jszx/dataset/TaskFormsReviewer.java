@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.TaskForm;
@@ -14,8 +15,11 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class TaskFormsReviewer extends MasterDetailDataSetFactory {
 
+	private IContext context;
+
 	public TaskFormsReviewer() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
+		context = new CurrentAccountContext();
 	}
 
 	@Override
@@ -32,7 +36,7 @@ public class TaskFormsReviewer extends MasterDetailDataSetFactory {
 				Object obj;
 				try {
 					obj = taskForm.getProcessInstanceVarible("reviewer_list",
-							new CurrentAccountContext());
+							context);
 					List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 					if (obj instanceof ArrayList) {
 						List<String> reviewer_list = (ArrayList<String>) obj;

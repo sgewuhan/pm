@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.IModelConstants;
@@ -16,8 +17,11 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class TaskFormWorker extends MasterDetailDataSetFactory {
 
+	private IContext context;
+
 	public TaskFormWorker() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
+		context = new CurrentAccountContext();
 	}
 
 	@Override
@@ -32,7 +36,7 @@ public class TaskFormWorker extends MasterDetailDataSetFactory {
 				TaskForm taskForm = (TaskForm) master;
 				try {
 					Object dept = taskForm.getProcessInstanceVarible("dept",
-							new CurrentAccountContext());
+							context);
 					ObjectId orgid = new ObjectId((String) dept);
 					Organization org = ModelService.createModelObject(
 							Organization.class, orgid);

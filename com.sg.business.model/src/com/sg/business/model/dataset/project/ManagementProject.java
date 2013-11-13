@@ -32,12 +32,16 @@ import com.sg.widgets.part.CurrentAccountContext;
  */
 public class ManagementProject extends SingleDBCollectionDataSetFactory {
 
+	private User user;
+
 	/**
 	 * 项目管理集合构造函数，用于设置项目管理集合的存放数据库及数据存储表
 	 */
 	public ManagementProject() {
 		//设置项目管理集合的存在数据库及数据存储表
 		super(IModelConstants.DB, IModelConstants.C_PROJECT);
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		user = UserToolkit.getUserById(userId);
 	}
 
 	/**
@@ -50,9 +54,6 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		// 获得当前帐号可管理的项目职能组织
 		try {
-			//获取当前用户信息
-			String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
-			User user = UserToolkit.getUserById(userId);
 			//获取当前用户具有项目管理员角色的组织
 			List<PrimaryObject> orglist = user
 					.getRoleGrantedInFunctionDepartmentOrganization(Role.ROLE_PROJECT_ADMIN_ID);

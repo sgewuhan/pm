@@ -9,8 +9,12 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class OrgUserCascade extends MasterDetailDataSetFactory {
 
+	private User user;
+
 	public OrgUserCascade() {
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		user = UserToolkit.getUserById(userId);
 	}
 
 	@Override
@@ -20,9 +24,6 @@ public class OrgUserCascade extends MasterDetailDataSetFactory {
 
 	@Override
 	protected Object getMasterValue() {
-		
-		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
-		User user = UserToolkit.getUserById(userId);
 		return user.getOrganization_id();
 	}
 

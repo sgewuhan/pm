@@ -13,15 +13,17 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjManagedOrgOfCurrentUser extends SingleDBCollectionDataSetFactory {
 
+	private User user;
+
 	public ProjManagedOrgOfCurrentUser() {
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		user = UserToolkit.getUserById(userId);
 	}
 
 	@Override
 	public DataSet getDataSet() {
-		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
-
-		User user = UserToolkit.getUserById(userId);
+		
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_PROJECT_ADMIN_ID);
 		

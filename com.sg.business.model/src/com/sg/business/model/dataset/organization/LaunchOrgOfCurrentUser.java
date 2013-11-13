@@ -20,8 +20,12 @@ import com.sg.widgets.part.CurrentAccountContext;
  */
 public class LaunchOrgOfCurrentUser extends SingleDBCollectionDataSetFactory {
 
+	private User user;
+
 	public LaunchOrgOfCurrentUser() {
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);
+		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		user = UserToolkit.getUserById(userId);
 	}
 
 	/**
@@ -32,8 +36,6 @@ public class LaunchOrgOfCurrentUser extends SingleDBCollectionDataSetFactory {
 	@Override
 	public DataSet getDataSet() {
 		List<PrimaryObject> list = new ArrayList<PrimaryObject>();
-		String userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
-		User user = UserToolkit.getUserById(userId);
 		
 		Organization org = user.getOrganization();
 		searchUp(org, list);

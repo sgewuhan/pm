@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.IModelConstants;
@@ -16,8 +17,11 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class UserSelectorOfTaskforms extends MasterDetailDataSetFactory {
 
+	private IContext context;
+
 	public UserSelectorOfTaskforms() {
 		super(IModelConstants.DB, IModelConstants.C_USER);
+		context = new CurrentAccountContext();
 	}
 
 	@Override
@@ -33,7 +37,7 @@ public class UserSelectorOfTaskforms extends MasterDetailDataSetFactory {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				try {
 					String obj = (String) taskForm.getProcessInstanceVarible(
-							"dept", new CurrentAccountContext());
+							"dept", context);
 					if (obj != null) {
 						ObjectId _id = new ObjectId(obj);
 						Organization org = ModelService.createModelObject(
