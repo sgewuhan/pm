@@ -465,7 +465,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Double
 	 */
 	public Double getPlanWorks() {
-		return (Double) getValue(F_PLAN_WORKS);
+		return (Double) (getValue(F_PLAN_WORKS));
 
 		// List<PrimaryObject> children = getChildrenWork();
 		// if (children.size() == 0) {
@@ -1158,7 +1158,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			finish = Utils.getDayEnd(finish).getTime();
 		}
 
-		if (start == null || finish == null) {
+		if (start == null && finish == null) {
 			return;
 		}
 
@@ -1166,7 +1166,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (projstart != null) {
 			projstart = Utils.getDayBegin(projstart).getTime();
 			
-			if (start.before(projstart)) {
+			if (start!=null&&start.before(projstart)) {
 				throw new Exception("工作的开始时间不能早于项目的开始时间");
 			}
 			
@@ -1178,7 +1178,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (projfinish != null) {
 			projfinish = Utils.getDayEnd(projfinish).getTime();
 			
-			if (finish.after(projfinish)) {
+			if (finish!=null&&finish.after(projfinish)) {
 				throw new Exception("工作的结束时间不能晚于项目的结束时间");
 			}
 		} else {
@@ -1869,10 +1869,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				"$sum", col);
 		Object planWorks = result == null ? null : result.get("result"
 				+ F_PLAN_WORKS);
+		if(planWorks instanceof Number){
+			planWorks = new Double(((Number)planWorks).doubleValue());
+		}
 		setValue(F_PLAN_WORKS, planWorks);
 
 		Object actualWorks = result == null ? null : result.get("result"
 				+ F_ACTUAL_WORKS);
+		if(actualWorks instanceof Number){
+			actualWorks = new Double(((Number)actualWorks).doubleValue());
+		}
 		setValue(F_ACTUAL_WORKS, actualWorks);
 
 		// 计算计划工期和实际工期

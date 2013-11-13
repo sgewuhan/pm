@@ -578,9 +578,8 @@
          </columnGroup>
       </table>
       <table
-            canCreate="true"
+            canCreate="false"
             canDelete="true"
-            canEdit="true"
             collectionName="project"
             dataSet="com.sg.business.model.dataset.project.ManagementProject"
             dbName="pm2"
