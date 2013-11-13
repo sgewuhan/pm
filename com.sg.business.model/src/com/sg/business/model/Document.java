@@ -158,6 +158,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 */
 	public static final String F_WF_HISTORY = "wf_history";
 
+	private static final String F_SECOND_VID = "svid";
+
 	@Override
 	protected String[] getVersionFields() {
 		return new String[] { "$all" };
@@ -254,6 +256,32 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			String[] seq = getMajorVersionSeq();
 			setValue(F_MAJOR_VID, seq[0]);
 		}
+		Object svid = getValue(F_SECOND_VID);
+		if (svid instanceof Integer) {
+			setValue(F_SECOND_VID, new Integer(((Integer) svid).intValue() + 1));
+		} else {
+			setValue(F_SECOND_VID, new Integer(0));
+		}
+	}
+
+	public void doUpdateVersion() {
+		String major = (String) getValue(F_MAJOR_VID);
+		String[] majorVersionSeq = getMajorVersionSeq();
+		for (int i = 0; i < majorVersionSeq.length; i++) {
+			if (majorVersionSeq[i].equals(major)) {
+				major = majorVersionSeq[i + 1];
+				break;
+			}
+		}
+		setValue(F_MAJOR_VID, major);
+		setValue(F_SECOND_VID, 0xf);
+		DBCollection collection = getCollection();
+		collection.update(
+				new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject().append(F_MAJOR_VID, major).append(
+								F_SECOND_VID, 0xf)));
 	}
 
 	public String[] getMajorVersionSeq() {
@@ -296,7 +324,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 * @return BasicBSONList
 	 */
 	public BasicBSONList getWorkflowHistory() {
-		return  (BasicBSONList) getValue(F_WF_HISTORY);
+		return (BasicBSONList) getValue(F_WF_HISTORY);
 	}
 
 	/**

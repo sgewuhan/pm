@@ -1094,10 +1094,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="tbprojectchange.complatechange"
-            name="完成变更"
-            persistentFields="choice,comment"
-            processDefinitionId="tb.tbProjectChange">
+            name="变更完成确认"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.ChangeActivityValidator">
       </taskForm>
    </extension>
    <extension
@@ -1228,51 +1227,6 @@
          </basicpage>
          <basicpage
                id="page3"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tbprojectchange.complatechange"
-            name="完成变更">
-         <basicpage
-               id="page1"
-               title="完成变更">
-            <pagecolumn>
-               <section
-                     label="是否完成变更">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        inputValidator="com.tmt.tb.field.ChangeActivityValidator"
-                        label="结论"
-                        labelVisible="false"
-                        name="choice"
-                        option="是\否"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
          </basicpage>

@@ -33,12 +33,13 @@ public class ChangePlanService extends ServiceProvider {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
 			if (host instanceof Work) {
+				Work changeplan = (Work) host;
 				DBObject processData = WorkflowUtils
 						.getProcessInfoFromJSON(jsonContent);
 				String processId = (String) processData.get("processId");
 				String processName = (String) processData.get("processName");
 				IContext context = new BPMServiceContext(processName, processId);
-
+                
 				List<Work> workList = new ArrayList<Work>();
 				Object value = getInputValue("ecn");
 				if (value instanceof List<?>) {
@@ -57,10 +58,11 @@ public class ChangePlanService extends ServiceProvider {
 					}
 
 				}
-
+        
 				for (Work work : workList) {
 					if (!work.isPersistent()) {
 						List<Deliverable> deliverableList = new ArrayList<Deliverable>();
+						//获取变更活动的交付物
 						Object object = work
 								.getValue(Work.TEMPLATE_DELIVERABLE);
 						if (object instanceof List<?>) {
@@ -83,8 +85,8 @@ public class ChangePlanService extends ServiceProvider {
 						}
 						try {
 							work.setValue(Work.TEMPLATE_DELIVERABLE, null);
-							ObjectId hostid = host.get_id();
-							work.setValue(Work.F_PARENT_ID, hostid);
+							ObjectId palnid = changeplan.get_id();
+							work.setValue(Work.F_PARENT_ID, palnid);
 							work.doSave(context);
 						} catch (Exception e) {
 							MessageUtil.showToast(e);
@@ -95,21 +97,7 @@ public class ChangePlanService extends ServiceProvider {
 								deliverable.setValue(Deliverable.F_WORK_ID,
 										work.get_id());
 								Document document = deliverable.getDocument();
-								
-								String major = (String) document
-										.getValue(Document.F_MAJOR_VID);
-								String[] majorVersionSeq = document
-										.getMajorVersionSeq();
-								for (int i = 0; i < majorVersionSeq.length; i++) {
-									if (majorVersionSeq[i].equals(major)) {
-										major = majorVersionSeq[i + 1];
-										break;
-									}
-								}
-								document.setValue(Document.F_MAJOR_VID, major);
-								document.setValue(Document.F_LIFECYCLE,
-										Document.STATUS_WORKING_ID);
-								document.doSave(context);
+								document.doUpdateVersion();
 								deliverable.doSave(context);
 
 							} catch (Exception e) {
@@ -119,7 +107,13 @@ public class ChangePlanService extends ServiceProvider {
 
 					}
 				}
-
+				changeplan.setValue(Work.F_INTERNAL_TYPE, Work.INTERNAL_TYPE_CHANGE);
+				try {
+					changeplan.doSave(context);
+				} catch (Exception e) {
+					MessageUtil.showToast(e);
+				}
+				
 			}
 		}
 		return result;
