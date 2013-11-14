@@ -2355,7 +2355,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Iterator<NodeAssignment> iter = procd.getNodesAssignment().iterator();
 		while (iter.hasNext()) {
 			NodeAssignment nas = iter.next();
-			if (nas.forceAssignment()) {
+			
+			if (!nas.isRuleAssignment()&&nas.forceAssignment()) {
+				
 				String ass = actorParameter.get(nas.getNodeActorParameter());
 				if (Utils.isNullOrEmpty(ass)) {
 					throw new Exception("流程缺少必要的人员指派" + this + ":"
@@ -2776,7 +2778,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	protected boolean hasManualRecordAllocate() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
