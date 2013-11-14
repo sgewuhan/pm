@@ -2442,21 +2442,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				new BasicDBObject().append("$set", update), true, false);
 		set_data(newData);
 
-		// 将工作的流程记录存储到交付物文档中
-		if (isExecuteWorkflowActivateAndAvailable()) {
-			IProcessControl ip = getAdapter(IProcessControl.class);
-			BasicBSONList historys = ip.getWorkflowHistroyData();
-			if (historys != null && historys.size() > 0) {
-				DBObject wfHistory = new BasicDBObject();
-				wfHistory.put(IDocumentProcess.F_WORKNAME, getDesc());
-				wfHistory.put(IDocumentProcess.F_HISTORY, historys);
-				wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
-				wfHistory.put(IDocumentProcess.F_WORK_LIFECYCLE,
-						STATUS_CANCELED_VALUE);
-				wfHistory.put(IDocumentProcess.F_FINISHDATE, new Date());
-				doWFHistoryToDocument(context, wfHistory);
-			}
-		}
+		doSaveProcessHistoryToDocument(context);
 
 		// 提示工作已取消
 		doNoticeWorkAction(context, "已取消");
@@ -2464,6 +2450,45 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		return null;
 
+	}
+
+	private void doSaveProcessHistoryToDocument(final IContext context) {
+		// 将工作的流程记录存储到交付物文档中
+		Job job = new Job("保存流程历史") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				if (isExecuteWorkflowActivateAndAvailable()) {
+					IProcessControl ip = Work.this
+							.getAdapter(IProcessControl.class);
+					BasicBSONList historys = ip.getWorkflowHistroyData();
+					if (historys != null && historys.size() > 0) {
+						DBObject wfHistory = new BasicDBObject();
+						wfHistory.put(F_DESC, getDesc());
+						wfHistory.put(F__CDATE, new Date());
+						wfHistory.put(IDocumentProcess.F_HISTORY, historys);
+						wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
+						wfHistory.put(IDocumentProcess.F_PROCESS_INSTANCEID,
+								getExecuteProcessId());
+						ProcessInstance proc = getExecuteProcess();
+						wfHistory.put(IDocumentProcess.F_PROCESSID,
+								proc.getProcessId());
+						wfHistory.put(IDocumentProcess.F_PROCESSNAME,
+								proc.getProcessName());
+
+						try {
+							doWFHistoryToDocument(wfHistory, context);
+						} catch (Exception e) {
+							new org.eclipse.core.runtime.Status(IStatus.ERROR,
+									ModelActivator.PLUGIN_ID, "保存历史出错", e);
+						}
+					}
+				}
+				return org.eclipse.core.runtime.Status.OK_STATUS;
+			}
+
+		};
+		job.schedule();
 	}
 
 	private void cancelExecuteProcessInstance(IContext context)
@@ -2580,8 +2605,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 标记工作已完成
 		update.put(F_LIFECYCLE, STATUS_FINIHED_VALUE);
 		// 设置工作的实际完成时间
-		Date finishdata = new Date();
-		update.put(F_ACTUAL_FINISH, finishdata);
+		update.put(F_ACTUAL_FINISH, new Date());
 
 		DBCollection col = getCollection();
 		DBObject newData = col.findAndModify(
@@ -2590,20 +2614,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		set_data(newData);
 
 		// 将工作的流程记录存储到交付物文档中
-		if (isExecuteWorkflowActivateAndAvailable()) {
-			IProcessControl ip = getAdapter(IProcessControl.class);
-			BasicBSONList historys = ip.getWorkflowHistroyData();
-			if (historys != null && historys.size() > 0) {
-				DBObject wfHistory = new BasicDBObject();
-				wfHistory.put(IDocumentProcess.F_WORKNAME, getDesc());
-				wfHistory.put(IDocumentProcess.F_HISTORY, historys);
-				wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
-				wfHistory.put(IDocumentProcess.F_WORK_LIFECYCLE,
-						STATUS_FINIHED_VALUE);
-				wfHistory.put(IDocumentProcess.F_FINISHDATE, finishdata);
-				doWFHistoryToDocument(context, wfHistory);
-			}
-		}
+		doSaveProcessHistoryToDocument(context);
 
 		// 提示工作已完成
 		doNoticeWorkAction(context, "已完成");
@@ -2621,28 +2632,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param wfHistory
 	 * @throws Exception
 	 */
-	public void doWFHistoryToDocument(IContext context, DBObject wfHistory)
+	private void doWFHistoryToDocument(DBObject wfHistory, IContext context)
 			throws Exception {
 		List<PrimaryObject> documentList = getOutputDeliverableDocuments();
 		DBCollection col = getCollection(IModelConstants.C_DOCUMENT);
 		for (PrimaryObject po : documentList) {
 			Document document = (Document) po;
-			BasicBSONList history = document.getWorkflowHistory();
-			if (history == null) {
-				history = new BasicBSONList();
-			}
-			history.add(wfHistory);
 			WriteResult ws = col.update(new BasicDBObject().append(
 					Document.F__ID, document.get_id()), new BasicDBObject()
-					.append("$set", new BasicDBObject().append(
-							Document.F_WF_HISTORY, history)));
+					.append("$push", new BasicDBObject().append(
+							Document.F_WF_HISTORY, wfHistory)));
 			checkWriteResult(ws);
 		}
 		List<PrimaryObject> childrenWorkList = getChildrenWork();
 		for (PrimaryObject po : childrenWorkList) {
 			Work childrenWork = (Work) po;
 			if (childrenWork.isExecuteWorkflowActivateAndAvailable()) {
-				childrenWork.doWFHistoryToDocument(context, wfHistory);
+				childrenWork.doWFHistoryToDocument(wfHistory, context);
 			}
 		}
 	}
