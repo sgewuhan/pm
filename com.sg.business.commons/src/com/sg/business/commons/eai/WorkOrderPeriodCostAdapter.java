@@ -195,7 +195,7 @@ public class WorkOrderPeriodCostAdapter {
 
 			Iterator<String> iter2 = rndpc.get_data().keySet().iterator();
 			while (iter2.hasNext()) {
-				String key = iter.next();
+				String key = iter2.next();
 				if (!Utils.isNumbers(key)) {// 不是数字类型的字段忽略
 					continue;
 				}
@@ -257,6 +257,7 @@ public class WorkOrderPeriodCostAdapter {
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 		Date start = cal.getTime();
+		cal.add(Calendar.MONTH, 1);
 		cal.add(Calendar.MILLISECOND, -1);
 		Date end = cal.getTime();
 		return new Date[] { start, end };
