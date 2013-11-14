@@ -21,7 +21,6 @@ import com.sg.widgets.MessageUtil;
 public class ChangePlanService extends ServiceProvider {
 
 	public ChangePlanService() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
