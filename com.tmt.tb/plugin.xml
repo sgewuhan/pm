@@ -6,32 +6,12 @@
       <taskForm
             editorId="tbprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number,dept_leader,prj_admin,dept,prj_financial"
+            persistentFields="prj_number"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB">
          <processParameter
                processParameterName="prj_number"
                taskFormFieldName="prj_number">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.GetDeptLeaderByDepartmentOfTB"
-               processParameterName="dept_leader"
-               taskFormFieldName="dept_leader">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
-               processParameterName="dept"
-               taskFormFieldName="dept">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.GetProjectAdminByDepartmentOfTB"
-               processParameterName="prj_admin"
-               taskFormFieldName="prj_admin">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.GetProjectFinancialByDepartmentOfTB"
-               processParameterName="prj_financial"
-               taskFormFieldName="prj_financial">
          </processParameter>
       </taskForm>
       <taskForm
@@ -128,6 +108,7 @@
       </taskForm>
       <taskForm
             editorId="tbprojectapplication.financial"
+            inputHandler="com.tmt.tb.handler.ProjectApplicationWorkOrderOfTB"
             name="财务审核"
             persistentFields="choice,changeworkorder,changebudget"
             processDefinitionId="tb.tbProjectApplication">
@@ -181,21 +162,6 @@
                         type="String"
                         widthHint="320">
                   </text>
-               </section>
-               <section
-                     label="请选择承担部门">
-                  <navigatorSelector
-                        editable="true"
-                        id="dept"
-                        label="承担部门"
-                        labelVisible="true"
-                        modelClass="com.sg.business.model.Organization"
-                        name="dept"
-                        navigatorId="tb.taskforms.organization.selector"
-                        navigatorReturnField="_id"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -598,7 +564,7 @@
                         label="审核结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否整改"
+                        option="是否通过"
                         persistable="true"
                         required="true"
                         type="String">
@@ -607,7 +573,7 @@
                         editable="true"
                         id="changeworkorder"
                         label="工作令号是否有误"
-                        labelVisible="false"
+                        labelVisible="true"
                         name="changeworkorder"
                         option="是\否"
                         persistable="true"
@@ -618,7 +584,7 @@
                         editable="true"
                         id="changebudget"
                         label="预算是否有误"
-                        labelVisible="false"
+                        labelVisible="true"
                         name="changebudget"
                         option="是\否"
                         persistable="true"

@@ -38,4 +38,10 @@ public interface IRoleConstance {
 	 */
 	public static final String ROLE_DEVELOPMENTDIRECTOR_ID = "Development Director";
 	public static final String ROLE_DEVELOPMENTDIRECTOR_TEXT = "开发中心主任";
+	
+	/**
+	 * 项目指派者
+	 */
+	public static final String ROLE_A_PROJECR_ID= "A Project";
+	public static final String ROLE_A_PROJECR_TEXT = "项目指派者";
 }
