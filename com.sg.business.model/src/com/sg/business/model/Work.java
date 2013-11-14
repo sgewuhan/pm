@@ -41,6 +41,7 @@ import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.runtime.Workflow;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
@@ -1381,7 +1382,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * 
 	 * @return
 	 */
-	public List<Object[]> checkCascadeStart(boolean warningCheck) {
+	protected List<Object[]> checkCascadeStart(boolean warningCheck) {
 		List<Object[]> message = new ArrayList<Object[]>();
 		// 检查下级工作，非摘要工作不处理
 		List<PrimaryObject> childrenWork = getChildrenWork();
@@ -1466,7 +1467,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param id
 	 * @return
 	 */
-	public List<Object[]> checkCascadeFinish(ObjectId id) {
+	protected List<Object[]> checkCascadeFinish(ObjectId id) {
 		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.判断非级联完成的工作是否已经在已完成状态、已取消、准备中、无状态的状态
 		DBObject condition = new BasicDBObject();
@@ -1591,7 +1592,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			ObjectId actorRoleId = (ObjectId) wfRoleAss.get(actionName);
 			if (actorRoleId != null) {
 				assignments = roleAssign.get(actorRoleId);
-				if (assignments != null && !assignments.isEmpty()) {
+				/**
+				 * 
+				 * 只处理该角色只有一个成员的情况
+				 * 
+				 */
+				if (assignments != null && assignments.size() == 1) {
 					// String[] actorList = new String[assignments.size()];
 					// for (int j = 0; j < assignments.size(); j++) {
 					// assItem = (AbstractRoleAssignment) assignments.get(j);
@@ -2296,9 +2302,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					if (actors != null) {
 						actorParameter = actors.toMap();
 					}
+
+					// 检查流程角色是否都已经指派到人
+					checkProcessActorParameter(pc, actorParameter);
+
 					ProcessInstance processInstance = wf.startHumanProcess(
 							actorParameter, params);
-					Assert.isNotNull(processInstance, "流程启动失败");
+					Assert.isNotNull(processInstance, "流程启动失败:" + this);
 
 					update.put(F_WF_EXECUTE
 							+ IProcessControl.POSTFIX_INSTANCEID,
@@ -2337,6 +2347,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doStartAfter(context, params);
 
 		return null;
+	}
+
+	private void checkProcessActorParameter(IProcessControl pc,
+			Map<String, String> actorParameter) throws Exception {
+		DroolsProcessDefinition procd = pc.getProcessDefinition(F_WF_EXECUTE);
+		Iterator<NodeAssignment> iter = procd.getNodesAssignment().iterator();
+		while (iter.hasNext()) {
+			NodeAssignment nas = iter.next();
+			
+			if (!nas.isRuleAssignment()&&nas.forceAssignment()) {
+				
+				String ass = actorParameter.get(nas.getNodeActorParameter());
+				if (Utils.isNullOrEmpty(ass)) {
+					throw new Exception("流程缺少必要的人员指派" + this + ":"
+							+ procd.getProcessName());
+				}
+			}
+		}
 	}
 
 	/**
@@ -2756,7 +2784,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	protected boolean hasManualRecordAllocate() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

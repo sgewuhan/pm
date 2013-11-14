@@ -54,6 +54,16 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public static final String F_WORK_TYPE = "worktype";
 	
 	/**
+	 * 内部类型
+	 */
+	public static final String F_INTERNAL_TYPE = "internaltype";
+	
+	/**
+	 * 变更工作
+	 */
+	public static final int INTERNAL_TYPE_CHANGE = 1;
+	
+	/**
 	 * 工作定义的上级工作定义
 	 */
 	public static final String F_PARENT_ID = "parent_id";

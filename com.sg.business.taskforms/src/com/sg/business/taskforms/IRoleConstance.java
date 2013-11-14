@@ -20,6 +20,10 @@ public interface IRoleConstance {
 	public static final String ROLE_DEPUTY_DIRECTOR_ID = "Deputy Director";
 	public static final String ROLE_DEPUTY_DIRECTOR_TEXT = "常务副主任";
 	
+	
+	public static final String ROLE_CHANGE_APPROVER_ID = "Change Approver";
+	public static final String ROLE_CHANGE_APPROVER_TEXT = "变更方案审批者";
+	
 	/**
 	 * 研究室主任
 	 */
