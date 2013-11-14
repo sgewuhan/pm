@@ -85,6 +85,8 @@ public class ChangePlanService extends ServiceProvider {
 						}
 						try {
 							work.setValue(Work.TEMPLATE_DELIVERABLE, null);
+							work.setValue(Work.F_MANDATORY, Boolean.TRUE);
+							work.setValue(Work.F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH, Boolean.FALSE);
 							ObjectId palnid = changeplan.get_id();
 							work.setValue(Work.F_PARENT_ID, palnid);
 							work.doSave(context);
