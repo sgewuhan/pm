@@ -331,6 +331,12 @@
             operation="message"
             serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
       </service>
+      <service
+            interface="documentapproval.service.action"
+            name="文件审批消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.DocumentApprovalMessageService">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
