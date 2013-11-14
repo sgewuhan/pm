@@ -15,4 +15,10 @@ public interface IDeliverable {
 	 * 参考类型
 	 */
 	public static final String TYPE_REFERENCE = "reference";
+	
+	
+	/**
+	 * 链接类型
+	 */
+	public static final String TYPE_LINK = "link";
 }
