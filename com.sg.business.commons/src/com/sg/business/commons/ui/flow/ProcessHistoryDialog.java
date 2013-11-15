@@ -56,6 +56,7 @@ public class ProcessHistoryDialog implements ISelectionChangedListener {
 	private void createContent(Shell parent) {
 		Configurator configurator = Widgets.getTableRegistry().getConfigurator("workflow.taskhistory");
 		CTableViewer tv = new CTableViewer(parent, (TableConfigurator) configurator);
+		ProcessHistoryUIToolkit.handleProcessHistoryTable(tv.getTable());
 		ViewerControl vc = tv.getViewerControl();
 		vc.masterChanged(po, null, null);
 	}
