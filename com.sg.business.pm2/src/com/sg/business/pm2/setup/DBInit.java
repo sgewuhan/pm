@@ -178,6 +178,10 @@ public class DBInit implements Runnable {
 
 	private void ensureIndex() {
 		DB db = DBActivator.getDB(IModelConstants.DB);
+		
+		//文档编号不能相同
+		ensureUniqureIndex(db, IModelConstants.C_DOCUMENT, new BasicDBObject()
+		.append("documentnumber", 1));
 
 		// 此处添加程序用于创建唯一索引
 
