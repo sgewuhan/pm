@@ -16,7 +16,7 @@ import com.sg.widgets.registry.config.TableConfigurator;
 import com.sg.widgets.viewer.CTableViewer;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProcessViewerDialog implements ISelectionChangedListener {
+public class ProcessHistoryDialog implements ISelectionChangedListener {
 
 	//private DroolsProcessDefinition procDefinition;
 	//private BasicBSONList procHistory;
@@ -25,7 +25,7 @@ public class ProcessViewerDialog implements ISelectionChangedListener {
 	private Shell parentShell;
 	private Shell shell;
 
-	public ProcessViewerDialog(Shell parentShell, PrimaryObject po,
+	public ProcessHistoryDialog(Shell parentShell, PrimaryObject po,
 			String processKey, String title) {
 		//procDefinition = ipc.getProcessDefinition(processKey);
 		//procHistory = ipc.getWorkflowHistroyData(processKey, true);
@@ -56,6 +56,7 @@ public class ProcessViewerDialog implements ISelectionChangedListener {
 	private void createContent(Shell parent) {
 		Configurator configurator = Widgets.getTableRegistry().getConfigurator("workflow.taskhistory");
 		CTableViewer tv = new CTableViewer(parent, (TableConfigurator) configurator);
+		ProcessHistoryUIToolkit.handleProcessHistoryTable(tv.getTable());
 		ViewerControl vc = tv.getViewerControl();
 		vc.masterChanged(po, null, null);
 	}

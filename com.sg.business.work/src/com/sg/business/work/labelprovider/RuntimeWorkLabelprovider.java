@@ -224,6 +224,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 					+ "' style='float:right' width='16' height='16' />";
 			sb.append(imageUrl);
 		}
+		
 
 		IProcessControl pc = (IProcessControl) work
 				.getAdapter(IProcessControl.class);
@@ -231,6 +232,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		String imageUrl = "<img src='" + getHeaderImageURL(work, pc)
 				+ "' style='float:left;padding:6px' width='16' height='16' />";
 		sb.append(imageUrl);
+
 
 		// 工作desc
 		String workDesc = work.getDesc();
@@ -241,11 +243,12 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		sb.append("<br/>");
 		sb.append("<small>");
 
-		sb.append(getWorkflowSummaryInformation(work,userId));
+		sb.append(getWorkflowSummaryInformation(work, userId));
 
 		String planStart = "";
 		if (_planStart != null) {
-			planStart = String.format(Utils.FORMATE_DATE_COMPACT_SASH, _planStart);
+			planStart = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+					_planStart);
 		}
 
 		sb.append("");
@@ -255,14 +258,16 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String planFinish = "";
 		if (_planFinish != null) {
-			planFinish =  String.format(Utils.FORMATE_DATE_COMPACT_SASH,_planFinish);
+			planFinish = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+					_planFinish);
 		}
 		sb.append(planFinish);
 		sb.append("  ");
 
 		String actualStart = "";
 		if (_actualStart != null) {
-			actualStart =  String.format(Utils.FORMATE_DATE_COMPACT_SASH,_actualStart);
+			actualStart = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+					_actualStart);
 		}
 		sb.append("<b>A</b>:");
 		sb.append(actualStart);
@@ -270,7 +275,8 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String actualFinish = "";
 		if (_actualFinish != null) {
-			actualFinish =  String.format(Utils.FORMATE_DATE_COMPACT_SASH,_actualFinish);
+			actualFinish = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+					_actualFinish);
 		}
 		sb.append(actualFinish);
 		sb.append("  ");
@@ -296,13 +302,24 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private String getWorkflowSummaryInformation(Work work,String userId) {
+	private String getWorkflowSummaryInformation(Work work, String userId) {
+		StringBuffer sb = new StringBuffer();
+		
+		
 		UserTask userTask = work.getLastDisplayTask(userId);
-		if(userTask == null){
-			return "";
+		if (userTask == null) {
+			// 如果带有流程的，显示流程图标
+			if (work.isExecuteWorkflowActivateAndAvailable()) {
+				sb.append("<img src='");
+				sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_FLOW_16X9,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+				sb.append("' style='float:right;padding-right:4px' width='16' height='9' />");
+				return sb.toString();
+			}else{
+				return "";
+			}
 		}
 
-		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='float:right;padding-right:4px'>");
 		// 根据状态取流程图标
 		Object taskstatus = userTask.getValue(UserTask.F_STATUS);
@@ -347,7 +364,8 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_STOP_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.Exited.name().equals(taskstatus)) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_WF_WORK_CANCEL_10,
+			return FileUtil.getImageURL(
+					BusinessResource.IMAGE_WF_WORK_CANCEL_10,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		} else if (Status.InProgress.name().equals(taskstatus)) {
 			return FileUtil.getImageURL(
