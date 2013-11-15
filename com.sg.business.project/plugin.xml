@@ -1174,6 +1174,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="vault.document.selector"
+            tree="vault.document.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1512,6 +1526,26 @@
             id="project.folder"
             popupMenu="popup:project.folder"
             popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="3"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            contentProvider="com.sg.business.project.contentproviders.ProjectFolderContentProvider"
+            dataSet="com.sg.business.model.dataset.project.FolderOfVault"
+            headerVisiable="false"
+            id="vault.document.selector">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -1972,21 +2006,6 @@
                   label="项目中止"
                   style="push">
             </command>
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <iterate
-                        ifEmpty="false"
-                        operator="and">
-                     <test
-                           args="edit"
-                           property="project.operation"
-                           value="true">
-                     </test>
-                  </iterate>
-               </with>
-            </visibleWhen>
          </menu>
          <command
                commandId="project.changeuser"
@@ -2426,6 +2445,30 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="project.createdeliverablewithvault"
+               icon="image/24_blank.png"
+               label="使用文档库链接其他交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
          <separator
                name="project.deliverable.separator1"
                visible="true">
@@ -2768,6 +2811,16 @@
             id="project.changeuser"
             name="移交">
       </command>
+      <command
+            categoryId="project"
+            id="project.createdeliverablewithvault"
+            name="链接文档库文档">
+         <commandParameter
+               id="deliverabledocument.editable"
+               name="editable"
+               optional="true">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2915,6 +2968,10 @@
       <handler
             class="com.sg.business.project.handler.ChangeUser"
             commandId="project.changeuser">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.CreateDeliverableWithVault"
+            commandId="project.createdeliverablewithvault">
       </handler>
    </extension>
    <extension

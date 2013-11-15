@@ -32,6 +32,11 @@ public class VaultOfOrganization extends DataSetFactory {
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
 		currentUser = UserToolkit.getUserById(userId);	}
+	
+	
+	public VaultOfOrganization(String userId) {
+		currentUser = UserToolkit.getUserById(userId);	}
+	
 	/**
 	 * 当前用户所属组织及其下级组织的文件夹数
 	 */
