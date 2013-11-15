@@ -290,6 +290,7 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_REFRESH_24 = "refresh_24.png";
 	
+	public static final String IMAGE_FLOW_16X9 = "flow_16x9.png";
 
 
 	/**
