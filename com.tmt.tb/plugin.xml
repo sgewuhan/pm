@@ -1410,9 +1410,21 @@
          point="com.sg.bpm.service.serviceTask">
       <service
             interface="createproject.service.action"
+            name="工作于项目进行关联"
+            operation="linkproject"
+            serviceProvider="com.tmt.tb.bpmservice.LinkWorkToProjectOfTB">
+      </service>
+      <service
+            interface="createproject.service.action"
             name="添加新创建项目的工作令号"
             operation="tbprojectapplication"
-            serviceProvider="com.tmt.tb.bpmservice.CreateProjectWorkOrderOfTB">
+            serviceProvider="com.tmt.tb.bpmservice.CreateWorkOrderToProjectOfTB">
+      </service>
+      <service
+            interface="createproject.service.action"
+            name="锁定预算"
+            operation="lockbudget"
+            serviceProvider="com.tmt.tb.bpmservice.LockBudgetToProjectOfTB">
       </service>
       <service
             interface="tbmessage.service.action"

@@ -1,10 +1,15 @@
 package com.sg.business.model;
 
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 /**
@@ -28,6 +33,21 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 	 * 上级预算
 	 */
 	private ProjectBudget parent;
+
+	/**
+	 * 是否锁定
+	 */
+	public static final String F_LOCK = "islocked";
+
+	/**
+	 * 锁定者
+	 */
+	public static final String F_LOCKED_BY = "lockedby";
+
+	/**
+	 * 锁定时间
+	 */
+	public static final String F_LOCKED_ON = "lockdate";
 
 	/**
 	 * 返回下级预算
@@ -135,5 +155,29 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 		} else {
 			return null;
 		}
+	}
+
+	public void doLock(IContext context) {
+		if (isLocked()) {
+			return;
+		}
+		setValue(F_LOCK , Boolean.TRUE);
+		setValue(F_LOCKED_BY, context.getAccountInfo().getConsignerId());
+		Date newValue = new Date();
+		setValue(F_LOCKED_ON, newValue);
+		DBCollection col = getCollection();
+		col.update(new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append(
+						"$set",
+						new BasicDBObject()
+								.append(F_LOCK, Boolean.TRUE)
+								.append(F_LOCKED_BY,
+										context.getAccountInfo()
+												.getConsignerId())
+								.append(F_LOCKED_ON, newValue)));		
+	}
+
+	public boolean isLocked() {
+		return Boolean.TRUE.equals(getValue(F_LOCK));
 	}
 }
