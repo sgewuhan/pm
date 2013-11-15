@@ -245,5 +245,48 @@
          </processParameter>
       </taskForm>
    </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="jygenericapprovalprocess.approve"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.audit"
+            name="审核"
+            persistentFields="choice,comment"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.check"
+            name="校核"
+            persistentFields="choice,comment"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.standardization"
+            name="标准化审核"
+            persistentFields="choice,comment"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
 
 </plugin>
