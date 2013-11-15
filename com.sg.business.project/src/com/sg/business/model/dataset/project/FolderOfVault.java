@@ -47,7 +47,6 @@ public class FolderOfVault extends MasterDetailDataSetFactory {
 				Folder folder = ModelService.createModelObject(folderdb,Folder.class);
 				dataItems.add(folder);
 			}
-			
 		}
 		return new DataSet(dataItems);
 	}
