@@ -37,6 +37,9 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
+		setFormInput(input);
+		setDirty(true);
+
 		context = new CurrentAccountContext();
 		createTable(input,parent);
 		TaskForm taskform = (TaskForm) input.getData();
@@ -107,6 +110,9 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 
 	@Override
 	public void commit(boolean onSave) {
+		TaskForm taskform = (TaskForm) getInputData();
+		taskform.setValue("ecn",viewer.getInput() );
+		setDirty(false);
 		
 	}
 

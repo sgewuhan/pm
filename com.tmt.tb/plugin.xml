@@ -1120,7 +1120,8 @@
             collectionName="taskform"
             dbName="pm2"
             id="tbprojectchange.confirmProgram"
-            name="确认变更方案">
+            name="确认变更方案"
+            saveHandler="com.tmt.tb.editor.ProjectChangeConfirmProgramSaveHandler">
          <basicpage
                id="page1"
                title="审核变更申请">
@@ -1186,11 +1187,11 @@
                         id="other"
                         label="请选择"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
                         name="other"
                         navigatorId="organization.navigator"
-                        navigatorReturnField="userid"
+                        navigatorReturnField="_id"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -1466,13 +1467,13 @@
                column="template_mandatory"
                editingSupport="com.sg.widgets.commons.editingsupport.CheckBoxEditingSupport"
                type="Boolean"
-               width="60">
+               width="40">
          </column>
          <column
                column="desc"
                name="变更内容"
                type="String"
-               width="240">
+               width="260">
          </column>
          <column
                column="planstart"
