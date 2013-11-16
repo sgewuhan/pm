@@ -2,6 +2,7 @@ package com.sg.bpm.workflow.taskform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -110,11 +111,27 @@ public class TaskFormConfig {
 
 	public Map<String, Object> getInputParameter(PrimaryObject taskFormData)
 			throws Exception {
+		Object inputValue = taskFormData.getValue("processinput");
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(inputValue instanceof Map<?, ?>){
+			Iterator<?> iter = ((Map<?,?>) inputValue).keySet().iterator();
+			while(iter.hasNext()){
+				Object field = iter.next();
+				String key = field.toString();
+				Object v = ((Map<?,?>) inputValue).get(field);
+				result.put(key, v);
+			}
+			if(!result.isEmpty()){
+				return result;
+			}else{
+				return null;
+			}
+		}
+		
 		List<ProcessParameter> ps = getProcessParameters();
 		if (ps.size() == 0) {
 			return null;
 		}
-		Map<String, Object> result = new HashMap<String, Object>();
 		for (int i = 0; i < ps.size(); i++) {
 			ProcessParameter pi = ps.get(i);
 			String processParameter = pi.getprocessParameterName();
