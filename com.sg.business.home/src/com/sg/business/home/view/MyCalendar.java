@@ -99,7 +99,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		} else {
 			event.setTitle(work.getLabel());
 		}
-		Object workDesc = work.getValue(Work.F_DESCRIPTION);
+		Object workDesc = work.getValue(Work.F_DESC);
 		String description = workDesc == null ? "" : workDesc.toString();
 		event.setDescription(description);
 		event.setNoticeMessage(0);
