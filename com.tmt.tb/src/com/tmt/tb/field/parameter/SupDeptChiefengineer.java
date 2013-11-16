@@ -26,10 +26,8 @@ public class SupDeptChiefengineer implements IProcessParameterDelegator {
 			Project pro = ModelService.createModelObject(Project.class,
 					(ObjectId) value);
 			Organization functionOrg = pro.getFunctionOrganization();
-			Organization parentOrg = (Organization) functionOrg
-					.getParentOrganization();
-			if(parentOrg!=null){
-				List<String> users = parentOrg.getRoleAssignmentUserIds(
+			if(functionOrg!=null){
+				List<String> users = functionOrg.getRoleAssignmentUserIds(
 						IRoleConstance.ROLE_CHANGE_APPROVER_ID, 1);
 				if (!users.isEmpty()) {
 					return users.get(0);

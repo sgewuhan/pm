@@ -1429,7 +1429,7 @@
                         type="String">
                   </text>
                   <fieldgroup
-                        columnCount="2">
+                        columnCount="3">
                      <checkbox
                            editable="true"
                            id="activated"
@@ -1445,6 +1445,15 @@
                            label="内部使用"
                            labelVisible="true"
                            name="internalby"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="changeitem"
+                           label="变更项"
+                           labelVisible="true"
+                           name="changeitem"
                            persistable="true"
                            required="false">
                      </checkbox>
@@ -1531,6 +1540,15 @@
                            label="内部使用"
                            labelVisible="true"
                            name="internalby"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="changeitem"
+                           label="变更项"
+                           labelVisible="true"
+                           name="changeitem"
                            persistable="true"
                            required="false">
                      </checkbox>

@@ -76,6 +76,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String EDIT_WORK_PLAN_1 = "edit.work.plan.1";
 
 	public static final String TEMPLATE_DELIVERABLE = "template_deliverable";
+	
+	public static final String TEMPLATE_MANDATORY = "template_mandatory";
 
 	/**
 	 * 不带流程叶子工作编辑器
