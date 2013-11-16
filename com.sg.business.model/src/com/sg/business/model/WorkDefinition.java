@@ -80,6 +80,8 @@ public class WorkDefinition extends AbstractWork implements
 
 	private static final String POSTFIX_ASSIGNMENT = "_assignment";
 
+	
+
 	/**
 	 * 返回工作定义的类型。 see {@link #F_WORK_TYPE}
 	 * 
@@ -559,6 +561,11 @@ public class WorkDefinition extends AbstractWork implements
 		work.setValue(Work.F_WORK_CATAGORY, getValue(F_WORK_CATAGORY));
 		work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 		work.setValue(Work.F_WORK_DEFINITION_ID, get_id());
+		//传递内部参数
+		work.setValue(Work.F_INTERNAL_PARA_CHARGERID, getValue(F_INTERNAL_PARA_CHARGERID));
+		work.setValue(Work.F_INTERNAL_PARA_NOSKIP, getValue(F_INTERNAL_PARA_NOSKIP));
+		work.setValue(Work.F_INTERNAL_DEFAULTSELECTED, getValue(F_INTERNAL_DEFAULTSELECTED));
+
 
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 		DBObject wfdef = pc.getWorkflowDefinition(F_WF_EXECUTE);
