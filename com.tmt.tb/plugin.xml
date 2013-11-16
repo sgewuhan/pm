@@ -1126,49 +1126,6 @@
                title="审核变更申请">
             <pagecolumn>
                <section
-                     label="是否需要相关部门审核">
-                  <radio
-                        editable="true"
-                        id="hasother"
-                        label="是否需要相关部门审核"
-                        labelVisible="true"
-                        name="hasother"
-                        option="是\否"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-                  <navigatorSelector
-                        editable="true"
-                        id="other"
-                        label="请选择相关部门审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.Organization"
-                        name="other"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="在制品审核者">
-                  <navigatorSelector
-                        editable="true"
-                        id="plan"
-                        label="请选择在制品审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.Organization"
-                        name="plan"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-               </section>
-               <section
                      label="请填写意见和结论">
                   <text
                         editPart="Text(Multi Line)"
@@ -1194,6 +1151,49 @@
                         required="true"
                         type="String">
                   </radio>
+               </section>
+               <section
+                     label="在制品审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="plan"
+                        label="请选择在制品审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="plan"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="变更是否关联到其他部门">
+                  <radio
+                        editable="true"
+                        id="hasother"
+                        label="变更是否关联到其他部门"
+                        labelVisible="false"
+                        name="hasother"
+                        option="是\否"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+                  <navigatorSelector
+                        editable="true"
+                        id="other"
+                        label="请选择"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="other"
+                        navigatorId="organization.navigator"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1458,6 +1458,42 @@
             id="tb.taskforms.project.selector">
          <column
                columnDefinitionId="project.desc">
+         </column>
+      </table>
+      <table
+            id="ec.standlonework">
+         <column
+               column="template_mandatory"
+               editingSupport="com.sg.widgets.commons.editingsupport.CheckBoxEditingSupport"
+               type="Boolean"
+               width="60">
+         </column>
+         <column
+               column="desc"
+               name="变更内容"
+               type="String"
+               width="240">
+         </column>
+         <column
+               column="planstart"
+               editingSupport="com.sg.business.commons.editingsupport.DateEditing"
+               name="计划开始"
+               type="Date">
+         </column>
+         <column
+               column="planfinish"
+               editingSupport="com.sg.business.commons.editingsupport.DateEditing"
+               name="计划完成"
+               type="Date">
+         </column>
+         <column
+              column="chargerid"
+            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            lazyDisplay="true"
+             editingSupport="com.sg.business.commons.editingsupport.UserNavigatorSelectorEditing"
+            name="负责人"
+            type="String"
+            width="120">
          </column>
       </table>
    </extension>
