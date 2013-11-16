@@ -45,6 +45,11 @@ public class WorkDefinition extends AbstractWork implements
 	 * 是否内部使用
 	 */
 	public static final String F_INTERNALBY = "internalby";
+	
+	/**
+	 * 是否内部使用
+	 */
+	public static final String F_CHANGEITEM = "changeitem";
 
 	/**
 	 * 通用工作定义的编辑器Id

@@ -1034,11 +1034,6 @@
                processParameterName="project_manager"
                taskFormFieldName="project">
          </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.SupDeptChiefengineer"
-               processParameterName="change_approver"
-               taskFormFieldName="project">
-         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbprojectchange.confirmProgram"
@@ -1052,6 +1047,23 @@
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.SupDeptChiefengineer"
+               processParameterName="project_supervisor"
+               taskFormFieldName="project_supervisor">
+         </processParameter>
+         <processParameter
+               processParameterName="hasother"
+               taskFormFieldName="hasother">
+         </processParameter>
+         <processParameter
+               processParameterName="other"
+               taskFormFieldName="other">
+         </processParameter>
+         <processParameter
+               processParameterName="plan"
+               taskFormFieldName="plan">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1108,7 +1120,8 @@
             collectionName="taskform"
             dbName="pm2"
             id="tbprojectchange.confirmProgram"
-            name="确认变更方案">
+            name="确认变更方案"
+            saveHandler="com.tmt.tb.editor.ProjectChangeConfirmProgramSaveHandler">
          <basicpage
                id="page1"
                title="审核变更申请">
@@ -1131,7 +1144,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="变更申请是否通过"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -1140,11 +1153,54 @@
                         type="String">
                   </radio>
                </section>
+               <section
+                     label="在制品审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="plan"
+                        label="请选择在制品审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="plan"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="变更是否关联到其他部门">
+                  <radio
+                        editable="true"
+                        id="hasother"
+                        label="变更是否关联到其他部门"
+                        labelVisible="false"
+                        name="hasother"
+                        option="是\否"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+                  <navigatorSelector
+                        editable="true"
+                        id="other"
+                        label="请选择"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        modelClass="com.sg.business.model.Organization"
+                        name="other"
+                        navigatorId="organization.navigator"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
             </pagecolumn>
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.tb.editor.page.EngineeringChangePlan"
+               pageDelegator="com.tmt.tb.editor.page.EngineeringChangeItem"
                title="变更方案">
          </basicpage>
          <basicpage
@@ -1403,6 +1459,42 @@
             id="tb.taskforms.project.selector">
          <column
                columnDefinitionId="project.desc">
+         </column>
+      </table>
+      <table
+            id="ec.standlonework">
+         <column
+               column="template_mandatory"
+               editingSupport="com.sg.widgets.commons.editingsupport.CheckBoxEditingSupport"
+               type="Boolean"
+               width="40">
+         </column>
+         <column
+               column="desc"
+               name="变更内容"
+               type="String"
+               width="260">
+         </column>
+         <column
+               column="planstart"
+               editingSupport="com.sg.business.commons.editingsupport.DateEditing"
+               name="计划开始"
+               type="Date">
+         </column>
+         <column
+               column="planfinish"
+               editingSupport="com.sg.business.commons.editingsupport.DateEditing"
+               name="计划完成"
+               type="Date">
+         </column>
+         <column
+              column="chargerid"
+            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            lazyDisplay="true"
+             editingSupport="com.sg.business.commons.editingsupport.UserNavigatorSelectorEditing"
+            name="负责人"
+            type="String"
+            width="120">
          </column>
       </table>
    </extension>
@@ -2998,186 +3090,6 @@
             </pagecolumn>
          </basicpage>
       </editor>
-   </extension>
-   <extension
-         point="com.sg.widgets.dataEditor">
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tbprojectchange.application"
-            name="变更申请">
-         <basicpage
-               id="page1"
-               title="设计更开申请">
-            <pagecolumn>
-               <section
-                     label="确认变更项目">
-                  <navigatorSelector
-                        editable="true"
-                        id="project"
-                        label="请确定变更项目"
-                        labelVisible="true"
-                        modelClass="com.sg.business.model.Project"
-                        name="project"
-                        navigatorId="company.navigator.allproject"
-                        navigatorReturnField="_id"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tbprojectchange.confirmProgram"
-            name="确认变更方案">
-         <basicpage
-               id="page1"
-               title="审核变更申请">
-            <pagecolumn>
-               <section
-                     label="请填写意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="结论"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.tmt.tb.editor.page.XTEngineeringChangePlan"
-               title="变更方案">
-         </basicpage>
-         <basicpage
-               id="page3"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="tbprojectchange.approvalProgram"
-            name="方案批准">
-         <basicpage
-               id="page1"
-               title="审核变更申请">
-            <pagecolumn>
-               <section
-                     label="请填写意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="结论"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否整改"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.tmt.tb.editor.page.EngineeringChangePlan"
-               title="变更方案">
-         </basicpage>
-         <basicpage
-               id="page3"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
-         </basicpage>
-      </editor>
-   </extension>
-   <extension
-         point="com.sg.bpm.workflow.taskForm">
-      <taskForm
-            editorId="tbprojectchange.application"
-            name="变更申请"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
-               processParameterName="project"
-               taskFormFieldName="project">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ProjectManager"
-               processParameterName="project_manager"
-               taskFormFieldName="project">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="tbprojectchange.confirmProgram"
-            name="确认变更方案"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
-               processParameterName="ecn"
-               taskFormFieldName="ecn">
-         </processParameter>
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="tbprojectchange.approvalProgram"
-            name="方案批准"
-            persistentFields="choice,comment"
-            processDefinitionId="tb.tbProjectChange">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            name="变更完成确认"
-            processDefinitionId="tb.tbProjectChange"
-            validation="com.tmt.tb.validation.ChangeActivityValidator">
-      </taskForm>
    </extension>
 
 </plugin>
