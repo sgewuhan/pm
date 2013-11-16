@@ -12,6 +12,7 @@ import com.sg.business.model.BudgetItem;
 import com.sg.business.model.CompanyWorkOrder;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.DeliverableDefinition;
+import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
@@ -179,11 +180,11 @@ public class DBInit implements Runnable {
 	private void ensureIndex() {
 		DB db = DBActivator.getDB(IModelConstants.DB);
 		
+		// 此处添加程序用于创建唯一索引
+		
 		//文档编号不能相同
 		ensureUniqureIndex(db, IModelConstants.C_DOCUMENT, new BasicDBObject()
-		.append("documentnumber", 1));
-
-		// 此处添加程序用于创建唯一索引
+		.append(Document.F_DOCUMENT_NUMBER, 1));
 
 		// 全局设置和用户设置ID和用户ID需要保持唯一
 		ensureUniqureIndex(db, IModelConstants.C_SETTING, new BasicDBObject()
