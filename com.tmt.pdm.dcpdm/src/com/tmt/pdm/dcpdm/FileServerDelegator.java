@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bson.types.BasicBSONList;
 
 import com.mobnut.commons.util.file.OSServerFile;
 import com.mobnut.db.file.IServerFile;
@@ -35,7 +34,7 @@ public class FileServerDelegator implements IFileServerDelegator {
 			return result;
 		}
 
-		BasicBSONList fileList = new BasicBSONList();
+//		BasicBSONList fileList = new BasicBSONList();
 		for (int j = 0; j < files.size(); j++) {
 			tempMap = (HashMap) files.get(j); // a row of search result
 			if (tempMap == null)

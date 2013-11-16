@@ -35,7 +35,7 @@ import dyna.framework.iip.IIPRequestException;
 public class PDMObjectSelector extends Dialog {
 
 	private String[] docContainers;
-	private String[] partContainer;
+//	private String[] partContainer;
 	private TableViewer viewer;
 	private IStructuredSelection selection;
 
@@ -43,9 +43,9 @@ public class PDMObjectSelector extends Dialog {
 			List<?> partContainer) {
 		super(parentShell);
 		this.docContainers = docContainer.toArray(new String[0]);
-		if(partContainer!=null){
-			this.partContainer = partContainer.toArray(new String[0]);
-		}
+//		if(partContainer!=null){
+//			this.partContainer = partContainer.toArray(new String[0]);
+//		}
 
 	}
 
@@ -85,6 +85,7 @@ public class PDMObjectSelector extends Dialog {
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
+				@SuppressWarnings("rawtypes")
 				ArrayList ar = ((ArrayList) element);
 				return getElementLable(ar);
 			}
@@ -104,8 +105,8 @@ public class PDMObjectSelector extends Dialog {
 		return composite;
 	}
 
-	protected String getElementLable(ArrayList ar) {
-		String ouid = (String) ar.get(0);
+	protected String getElementLable(@SuppressWarnings("rawtypes") ArrayList ar) {
+//		String ouid = (String) ar.get(0);
 //		fieldlist.add("80001a79");// ±àºÅ
 		String number = (String) ar.get(1);
 //		fieldlist.add("80001a7a");// Ãû³Æ
@@ -195,6 +196,7 @@ public class PDMObjectSelector extends Dialog {
 		super.okPressed();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public String[] getSelection() {
 		if(selection==null){
 			return new String[0];
