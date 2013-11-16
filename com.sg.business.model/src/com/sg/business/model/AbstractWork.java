@@ -63,6 +63,13 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 */
 	public static final int INTERNAL_TYPE_CHANGE = 1;
 	
+	public static final String F_INTERNAL_PARA_CHARGERID = "chargerpara";
+
+	public static final String F_INTERNAL_PARA_NOSKIP = "noskippara";
+
+	public static final String F_INTERNAL_DEFAULTSELECTED = "defaultselected";
+	
+	
 	/**
 	 * 工作定义的上级工作定义
 	 */

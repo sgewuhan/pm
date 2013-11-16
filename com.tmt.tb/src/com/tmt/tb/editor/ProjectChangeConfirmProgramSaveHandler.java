@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.TaskForm;
+import com.sg.business.model.Work;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
@@ -18,14 +18,47 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 	@Override
 	public boolean doSaveBefore(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
+		
 		TaskForm taskform = (TaskForm) input.getData();
+		String choice = (String) taskform.getValue("choice");
+		taskform.setProcessInputValue("choice", choice);
+		if("不通过".equals(choice)){
+			return true;
+		}
 		Object ecn = taskform.getValue("ecn");
 		if(ecn instanceof List<?>){
-			throw new Exception("请设置变更内容");
+			List<?> ecnlist = (List<?>) ecn;
+			String var;
+			for(Object obj:ecnlist){
+				Work work=(Work)obj;
+				Boolean mandatory = (Boolean) work.getValue(Work.TEMPLATE_MANDATORY);
+				if(Boolean.TRUE.equals(mandatory)){
+					Object value = work.getValue(Work.F_PLAN_START);
+					if(value==null){
+						throw new Exception("请设置计划开始时间。\n"+work);
+					}
+					value = work.getValue(Work.F_PLAN_FINISH);
+					if(value==null){
+						throw new Exception("请设置计划完成时间。\n"+work);
+					}
+					value = work.getValue(Work.F_CHARGER);
+					if(value==null){
+						throw new Exception("请设置负责人。\n"+work);
+					}
+					var = (String) work.getValue("chargerpara");
+					taskform.setProcessInputValue(var, value);
+					var=(String) work.getValue("noskippara");
+					taskform.setProcessInputValue(var, Boolean.TRUE);
+
+				}else{
+					var=(String) work.getValue("noskippara");
+					taskform.setProcessInputValue(var, Boolean.TRUE);
+				}
+				
+			}
 			
-		}else{
-			throw new Exception("请设置变更内容");
 		}
+		return false;
 	}
 
 	@Override

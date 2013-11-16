@@ -1038,7 +1038,8 @@
       <taskForm
             editorId="tbprojectchange.confirmProgram"
             name="确认变更方案"
-            processDefinitionId="tb.tbProjectChange">
+            processDefinitionId="tb.tbProjectChange"
+            saveHandler="com.tmt.tb.editor.ProjectChangeConfirmProgramSaveHandler">
          <processParameter
                processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecn"
@@ -1158,6 +1159,7 @@
                   <navigatorSelector
                         editable="true"
                         id="plan"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="请选择在制品审核者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
@@ -1166,7 +1168,7 @@
                         navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="true">
+                        required="false">
                   </navigatorSelector>
                </section>
                <section
@@ -1179,12 +1181,13 @@
                         name="hasother"
                         option="是\否"
                         persistable="true"
-                        required="true"
+                        required="false"
                         type="String">
                   </radio>
                   <navigatorSelector
                         editable="true"
                         id="other"
+                        inputValidator="com.tmt.tb.validation.RelatedDeptValidation"
                         label="请选择"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
@@ -1193,7 +1196,7 @@
                         navigatorId="organization.navigator"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="true">
+                        required="false">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -1462,9 +1465,10 @@
          </column>
       </table>
       <table
-            id="ec.standlonework">
+            id="ec.standlonework"
+            useHashlookup="false">
          <column
-               column="template_mandatory"
+               column="defaultselected"
                editingSupport="com.sg.widgets.commons.editingsupport.CheckBoxEditingSupport"
                type="Boolean"
                width="40">
