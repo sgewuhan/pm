@@ -274,14 +274,14 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			}
 		}
 		setValue(F_MAJOR_VID, major);
-		setValue(F_SECOND_VID, 0xf);
+		setValue(F_SECOND_VID, 0x0);
 		DBCollection collection = getCollection();
 		collection.update(
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
 						"$set",
 						new BasicDBObject().append(F_MAJOR_VID, major).append(
-								F_SECOND_VID, 0xf)));
+								F_SECOND_VID, 0x0)));
 	}
 
 	public String[] getMajorVersionSeq() {
@@ -549,14 +549,15 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	public void checkMandatory() throws Exception {
 		// 检查文档编号
-		if (getDocumentNumber() == null) {
+		String documentNumber = getDocumentNumber();
+		if (Utils.isNullOrEmpty(documentNumber)) {
 			throw new Exception("文档缺少编号：" + this);
 		}
 
 		// 检查文件
 		List<IServerFile> sf = getServerFileValue();
 		if (sf.isEmpty()) {
-			throw new Exception("必须交付的文档缺少附件");
+			throw new Exception("必须交付的文档缺少附件："+ this);
 		}
 
 	}
@@ -614,6 +615,18 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						"$set",
 						new BasicDBObject().append(F_LIFECYCLE, status).append(
 								status + "_date", newValue)));
+	}
+
+	@Override
+	public String getLabel() {
+		String desc = getDesc();
+		desc = desc == null ? "" : desc;
+		String num = getDocumentNumber();
+		if (Utils.isNullOrEmpty(num)) {
+			num = " * ";
+		}
+		String rev = getRevId();
+		return desc + "|" + num + " [" + rev + "]";
 	}
 
 }

@@ -3919,7 +3919,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.work.labelprovider.UserTaskHistoryLabelProvider"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
                lazyDisplay="true"
                name="desc"
                width="-1">
@@ -3931,8 +3931,8 @@
        <tree
              canCreate="false"
              canDelete="false"
-             canEdit="false"
-             canRead="false"
+             canEdit="true"
+             canRead="true"
              contentProvider="com.sg.business.work.view.DocumentFileContentProvider"
              customItemHeight="40"
              dataSet="com.sg.business.model.dataset.usertask.RelatitedWorkDeliveryDataSet"
