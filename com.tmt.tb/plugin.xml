@@ -1034,11 +1034,6 @@
                processParameterName="project_manager"
                taskFormFieldName="project">
          </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.SupDeptChiefengineer"
-               processParameterName="change_approver"
-               taskFormFieldName="project">
-         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbprojectchange.confirmProgram"
@@ -1052,6 +1047,23 @@
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.SupDeptChiefengineer"
+               processParameterName="project_supervisor"
+               taskFormFieldName="project_supervisor">
+         </processParameter>
+         <processParameter
+               processParameterName="hasother"
+               taskFormFieldName="hasother">
+         </processParameter>
+         <processParameter
+               processParameterName="other"
+               taskFormFieldName="other">
+         </processParameter>
+         <processParameter
+               processParameterName="plan"
+               taskFormFieldName="plan">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1114,6 +1126,49 @@
                title="审核变更申请">
             <pagecolumn>
                <section
+                     label="是否需要相关部门审核">
+                  <radio
+                        editable="true"
+                        id="hasother"
+                        label="是否需要相关部门审核"
+                        labelVisible="true"
+                        name="hasother"
+                        option="是\否"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+                  <navigatorSelector
+                        editable="true"
+                        id="other"
+                        label="请选择相关部门审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="other"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="在制品审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="plan"
+                        label="请选择在制品审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.Organization"
+                        name="plan"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
                      label="请填写意见和结论">
                   <text
                         editPart="Text(Multi Line)"
@@ -1131,7 +1186,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="变更申请是否通过"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -1144,7 +1199,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.tb.editor.page.EngineeringChangePlan"
+               pageDelegator="com.tmt.tb.editor.page.EngineeringChangeItem"
                title="变更方案">
          </basicpage>
          <basicpage

@@ -455,5 +455,11 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_16,
 		// BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
+	
+	@Override
+	public String getToolTipText(Object element) {
+		
+		return element.toString();
+	}
 
 }

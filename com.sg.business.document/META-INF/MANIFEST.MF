@@ -10,6 +10,10 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.widgets,
  com.sg.business.commons,
  com.mobnut.db,
- com.sg.business.model
+ com.sg.business.model,
+ org.eclipse.rap.ui.forms;bundle-version="2.2.0",
+ com.sg.thirdparty,
+ com.mobnut.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Export-Package: com.sg.business.document.editor
