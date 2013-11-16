@@ -1240,7 +1240,8 @@
             fix="1"
             id="project.wbs"
             popupMenu="popup:project.wbs"
-            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider"
+            virtual="true">
          <structure
                modelRelation="work_work">
          </structure>
@@ -1328,7 +1329,8 @@
             fix="1"
             id="project.deliverable"
             popupMenu="popup:project.deliverable"
-            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
+            popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider"
+            virtual="true">
          <structure
                modelRelation="work_work">
          </structure>
