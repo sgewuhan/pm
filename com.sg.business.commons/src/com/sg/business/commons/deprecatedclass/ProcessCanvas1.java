@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.flow;
+package com.sg.business.commons.deprecatedclass;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +43,7 @@ import org.jbpm.workflow.core.node.StartNode;
 
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.commons.ui.flow.INodeSelectListener;
 import com.sg.business.commons.ui.flow.part.SimpleNodeLabel;
 import com.sg.widgets.Widgets;
 

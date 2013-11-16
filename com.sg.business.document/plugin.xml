@@ -565,34 +565,11 @@
          </pagecolumn>
       </basicpage>
       <basicpage
-            description="文档的评审流程信息"
+            description="流程历史"
             id="document.wfhistory"
             image="image/flow_24.png"
+            pageDelegator="com.sg.business.document.editor.DocumentWorkflowHistory"
             title="流程">
-         <pagecolumn>
-            <section
-                  label="流程历史">
-               <table
-                     editable="true"
-                     id="workflow.history"
-                     labelVisible="true"
-                     name="流程历史记录"
-                     persistable="true"
-                     required="false">
-               </table>
-            </section>
-            <section
-                  label="详细信息">
-               <table
-                     editable="true"
-                     id="workflow.historyinfo"
-                     labelVisible="true"
-                     name="流程历史详细信息"
-                     persistable="true"
-                     required="false">
-               </table>
-            </section>
-         </pagecolumn>
       </basicpage>
    </extension>
    <extension
@@ -694,9 +671,6 @@
                name="TO"
                type="String">
          </column>
-      </table>
-      <table
-            id="document.workflow.history">
       </table>
    </extension>
 

@@ -2470,11 +2470,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
 						wfHistory.put(IDocumentProcess.F_PROCESS_INSTANCEID,
 								getExecuteProcessId());
-						ProcessInstance proc = getExecuteProcess();
+						DroolsProcessDefinition pd = ip.getProcessDefinition(F_WF_EXECUTE);
 						wfHistory.put(IDocumentProcess.F_PROCESSID,
-								proc.getProcessId());
+								pd.getProcessId());
 						wfHistory.put(IDocumentProcess.F_PROCESSNAME,
-								proc.getProcessName());
+								pd.getProcessName());
 
 						try {
 							doWFHistoryToDocument(wfHistory, context);

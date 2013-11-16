@@ -3919,7 +3919,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.work.labelprovider.UserTaskHistoryLabelProvider"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
                lazyDisplay="true"
                name="desc"
                width="-1">
