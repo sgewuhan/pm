@@ -54,8 +54,7 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 						IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 				DBCursor cur = collection.find(new BasicDBObject()
 						.append(WorkDefinition.F_ACTIVATED, Boolean.TRUE)
-						.append(WorkDefinition.F_INTERNALBY, Boolean.TRUE)
-						.append(WorkDefinition.F_CHANGEITEM, Boolean.TRUE));
+						.append(WorkDefinition.F_INTERNAL_TYPE,WorkDefinition.INTERNAL_TYPE_CHANGEITEM));
 				while (cur.hasNext()) {
 					DBObject dbo = cur.next();
 					WorkDefinition workd = ModelService.createModelObject(dbo,

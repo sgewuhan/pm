@@ -12,6 +12,6 @@ public class InternalByStandloneWork extends StandloneWork {
 	}
 @Override
 public DBObject getCondition(PrimaryObject primaryObject) {
-	return ((BasicDBObject)super.getCondition(primaryObject)).append(WorkDefinition.F_INTERNALBY, Boolean.TRUE);
+	return ((BasicDBObject)super.getCondition(primaryObject)).append(WorkDefinition.F_INTERNAL_TYPE,WorkDefinition.INTERNAL_TYPE_CHANGERANGE);
 }
 }

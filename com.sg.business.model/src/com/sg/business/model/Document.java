@@ -275,6 +275,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		setValue(F_MAJOR_VID, major);
 		setValue(F_SECOND_VID, 0x0);
+		setValue(F_LIFECYCLE,STATUS_WORKING_ID);
 		DBCollection collection = getCollection();
 		collection.update(
 				new BasicDBObject().append(F__ID, get_id()),

@@ -1442,56 +1442,61 @@
                      label="系统属性">
                   <fieldgroup
                         columnCount="2">
-                     <checkbox
+                     <combo
+                           editPart="Combo(Read Only)"
                            editable="true"
-                           id="internalby"
-                           label="内部使用"
+                           id="internaltype"
+                           label="内部类型"
                            labelVisible="true"
-                           name="internalby"
+                           name="internaltype"
+                           option="change.type"
                            persistable="true"
-                           required="false">
-                     </checkbox>
+                           required="false"
+                           type="String">
+                     </combo>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="chargerpara"
+                           label="负责人流程参数"
+                           labelVisible="true"
+                           name="chargerpara"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="noskippara"
+                           label="流程跳过参数"
+                           labelVisible="true"
+                           name="noskippara"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="ecapara"
+                           label="变更活动流程参数"
+                           labelVisible="true"
+                           name="ecapara"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
                      <checkbox
                            editable="true"
-                           id="changeitem"
-                           label="变更项"
+                           id="defaultselected"
+                           label="默认值参数"
                            labelVisible="true"
-                           name="changeitem"
+                           name="defaultselected"
                            persistable="true"
                            required="false">
                      </checkbox>
                   </fieldgroup>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="chargerpara"
-                        label="负责人流程参数"
-                        labelVisible="true"
-                        name="chargerpara"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="noskippara"
-                        label="流程跳过参数"
-                        labelVisible="true"
-                        name="noskippara"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <checkbox
-                        editable="true"
-                        id="defaultselected"
-                        label="默认值参数"
-                        labelVisible="true"
-                        name="defaultselected"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1571,56 +1576,61 @@
                      label="系统属性">
                   <fieldgroup
                         columnCount="2">
-                     <checkbox
+                     <combo
+                           editPart="Combo(Read Only)"
                            editable="true"
-                           id="internalby"
-                           label="内部使用"
+                           id="internaltype"
+                           label="内部类型"
                            labelVisible="true"
-                           name="internalby"
+                           name="internaltype"
+                           option="change.type"
                            persistable="true"
-                           required="false">
-                     </checkbox>
+                           required="false"
+                           type="String">
+                     </combo>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="chargerpara"
+                           label="负责人流程参数"
+                           labelVisible="true"
+                           name="chargerpara"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="noskippara"
+                           label="流程跳过参数"
+                           labelVisible="true"
+                           name="noskippara"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="ecapara"
+                           label="变更活动流程参数"
+                           labelVisible="true"
+                           name="ecapara"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
                      <checkbox
                            editable="true"
-                           id="changeitem"
-                           label="变更项"
+                           id="defaultselected"
+                           label="默认值参数"
                            labelVisible="true"
-                           name="changeitem"
+                           name="defaultselected"
                            persistable="true"
                            required="false">
                      </checkbox>
                   </fieldgroup>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="chargerpara"
-                        label="负责人流程参数"
-                        labelVisible="true"
-                        name="chargerpara"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="noskippara"
-                        label="流程跳过参数"
-                        labelVisible="true"
-                        name="noskippara"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <checkbox
-                        editable="true"
-                        id="defaultselected"
-                        label="默认值参数"
-                        labelVisible="true"
-                        name="defaultselected"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
                </section>
             </pagecolumn>
          </basicpage>

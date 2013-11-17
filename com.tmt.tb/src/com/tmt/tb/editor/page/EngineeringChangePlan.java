@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.jbpm.task.Task;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
@@ -42,16 +43,15 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 	private WorkListCreater workListCreater;
 	private IContext context;
+	private String eca;
 
 	public EngineeringChangePlan() {
 	}
-	
-	
 
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		
+
 		context = new CurrentAccountContext();
 		setFormInput(input);
 		parent.setLayout(new FormLayout());
@@ -60,40 +60,52 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		workListCreater.setContext(context);
 
 		TaskForm taskform = (TaskForm) input.getData();
-		List<Work> workList = new ArrayList<Work>();
+		List<Work> ecaList = new ArrayList<Work>();
+		Object value;
 		try {
+			Task task = taskform.getExecuteTask(context);
+			String taskName = task.getNames().get(0).getText();
+			List<Work> ecnList = new ArrayList<Work>();
+			value = taskform.getProcessInstanceVarible("ecn", context);
 
-			Object value = taskform.getProcessInstanceVarible("ecn",
-					new CurrentAccountContext());
-//			if (value instanceof String) {
-//				Object jsonValue = JSON.parse((String) value);
-//				if (jsonValue instanceof List<?>) {
-//					List<?> list = (List<?>) jsonValue;
-//					for (Object dbo : list) {
-//						Work work = ModelService.createModelObject(
-//								(DBObject) dbo, Work.class);
-//						workList.add(work);
-//					}
-//				}
-//			}
-			
 			if (value instanceof List<?>) {
 				List<?> list = (List<?>) value;
 				for (Object dbo : list) {
-					Work work = ModelService.createModelObject(
-							(DBObject) dbo, Work.class);
-					workList.add(work);
+					Work work = ModelService.createModelObject((DBObject) dbo,
+							Work.class);
+					ecnList.add(work);
 				}
 			} else if (value instanceof Object[]) {
 				Object[] array = (Object[]) value;
 				for (Object dbo : array) {
-					Work work = ModelService.createModelObject(
-							(DBObject) dbo, Work.class);
-					workList.add(work);
+					Work work = ModelService.createModelObject((DBObject) dbo,
+							Work.class);
+					ecnList.add(work);
 				}
 
 			}
-			
+			for (Work ecn : ecnList) {
+				if (taskName != null && taskName.equals(ecn.getDesc())) {
+					eca = (String) ecn.getValue(Work.F_INTERNAL_ECAPARA);
+					value = taskform.getProcessInstanceVarible(eca, context);
+					if (value instanceof List<?>) {
+						List<?> list = (List<?>) value;
+						for (Object dbo : list) {
+							Work work = ModelService.createModelObject(
+									(DBObject) dbo, Work.class);
+							ecnList.add(work);
+						}
+					} else if (value instanceof Object[]) {
+						Object[] array = (Object[]) value;
+						for (Object dbo : array) {
+							Work work = ModelService.createModelObject(
+									(DBObject) dbo, Work.class);
+							ecnList.add(work);
+						}
+					}
+				}
+			}
+
 		} catch (Exception e) {
 			if (Portal.getDefault().isDevelopMode()) {
 				e.printStackTrace();
@@ -108,7 +120,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		fd.bottom = new FormAttachment(100, -2);
 		fd.height = 400;
 
-		workListCreater.setInput(workList);
+		workListCreater.setInput(ecaList);
 		return workListCreater;
 	}
 
@@ -257,21 +269,25 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		if (sel != null && !sel.isEmpty()) {
 			Object element = sel.getFirstElement();
 			if (element instanceof Work) {
-				
+
 				Work work = (Work) element;
-			   
+
 				try {
-					IDataObjectDialogCallback handler=new IDataObjectDialogCallback() {
-						
+					IDataObjectDialogCallback handler = new IDataObjectDialogCallback() {
+
 						@Override
-						public boolean doSaveBefore(PrimaryObjectEditorInput input,
-								IProgressMonitor monitor, String operation) throws Exception {
+						public boolean doSaveBefore(
+								PrimaryObjectEditorInput input,
+								IProgressMonitor monitor, String operation)
+								throws Exception {
 							return true;
 						}
-						
+
 						@Override
-						public boolean doSaveAfter(PrimaryObjectEditorInput input,
-								IProgressMonitor monitor, String operation) throws Exception {
+						public boolean doSaveAfter(
+								PrimaryObjectEditorInput input,
+								IProgressMonitor monitor, String operation)
+								throws Exception {
 							return false;
 						}
 
@@ -282,7 +298,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 						@Override
 						public void cancelPressed() {
-							
+
 						}
 
 						@Override
@@ -290,7 +306,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 							return false;
 						}
 					};
-					DataObjectDialog.openDialog(work, "edit.work.plan.4", true, handler);
+					DataObjectDialog.openDialog(work, "edit.work.plan.4", false,
+							handler);
 					workListCreater.refresh();
 					setDirty(true);
 				} catch (Exception e) {
@@ -319,7 +336,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				// 彈出选择
 
 				NavigatorSelector ns = new NavigatorSelector(
-						"project.documents", "选择变更对象") {
+						"project.documents.released", "选择变更对象") {
 					@Override
 					protected void doOK(IStructuredSelection is) {
 						Document doc = (Document) is.getFirstElement();
@@ -395,9 +412,11 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 	@Override
 	public void commit(boolean onSave) {
-		
+
 		TaskForm taskform = (TaskForm) getInputData();
-		taskform.setValue("ecn",workListCreater.getInput() );
+		if(eca!=null){
+			taskform.setValue(eca, workListCreater.getInput());
+		}
 		setDirty(false);
 
 	}

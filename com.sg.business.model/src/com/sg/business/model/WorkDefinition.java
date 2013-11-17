@@ -40,16 +40,6 @@ public class WorkDefinition extends AbstractWork implements
 	 * 工作定义是否激活，可使用，只用于{@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE}
 	 */
 	public static final String F_ACTIVATED = "activated";
-	
-	/**
-	 * 是否内部使用
-	 */
-	public static final String F_INTERNALBY = "internalby";
-	
-	/**
-	 * 是否内部使用
-	 */
-	public static final String F_CHANGEITEM = "changeitem";
 
 	/**
 	 * 通用工作定义的编辑器Id
@@ -565,6 +555,7 @@ public class WorkDefinition extends AbstractWork implements
 		work.setValue(Work.F_INTERNAL_PARA_CHARGERID, getValue(F_INTERNAL_PARA_CHARGERID));
 		work.setValue(Work.F_INTERNAL_PARA_NOSKIP, getValue(F_INTERNAL_PARA_NOSKIP));
 		work.setValue(Work.F_INTERNAL_DEFAULTSELECTED, getValue(F_INTERNAL_DEFAULTSELECTED));
+		work.setValue(Work.F_INTERNAL_ECAPARA, getValue(F_INTERNAL_ECAPARA));
 
 
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);

@@ -368,6 +368,16 @@
             name="文件夹下的子文件夹"
             sort="com.sg.business.model.bson.DescSorter">
       </relation>
+      <relation
+            end1Class="com.sg.business.model.Folder"
+            end1Key="_id"
+            end2Class="com.sg.business.model.Document"
+            end2Condition="com.sg.business.model.condition.ReleasedDoc"
+            end2Key="folder_id"
+            id="folder_document_released"
+            name="文件夹下已发布的文件"
+            sort="com.sg.business.model.bson.DescSorter">
+      </relation>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
@@ -471,10 +481,49 @@
             operation="unlock"
             serviceProvider="com.sg.business.model.bpmservice.DocumentService">
       </service>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
       <service
             interface="changeplan.service.action"
-            name="变更计划服务"
-            operation="change"
+            name="设计变更服务"
+            operation="ecnitem_design"
+            serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
+      </service>
+      <service
+            interface="changeplan.service.action"
+            name="工艺变更服务"
+            operation="ecnitem_process"
+            serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
+      </service>
+      <service
+            interface="changeplan.service.action"
+            name="采购变更服务"
+            operation="ecnitem_purchase"
+            serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
+      </service>
+      <service
+            interface="changeplan.service.action"
+            name="在制品处理服务"
+            operation="ecnitem_mfg"
+            serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
+      </service>
+      <service
+            interface="changeplan.service.action"
+            name="检验变更服务"
+            operation="ecnitem_inspect"
+            serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
+      </service>
+      <service
+            interface="changeplan.service.action"
+            name="包装变更服务"
+            operation="ecnitem_package"
+            serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
+      </service>
+      <service
+            interface="changeplan.service.action"
+            name="相关部门变更服务"
+            operation="ecnitem_relevant"
             serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
       </service>
    </extension>

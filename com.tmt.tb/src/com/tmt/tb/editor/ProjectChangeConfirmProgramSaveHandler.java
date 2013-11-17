@@ -48,11 +48,11 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 					var = (String) work.getValue("chargerpara");
 					taskform.setProcessInputValue(var, value);
 					var=(String) work.getValue("noskippara");
-					taskform.setProcessInputValue(var, Boolean.TRUE);
+					taskform.setProcessInputValue(var, "ÊÇ");
 
 				}else{
 					var=(String) work.getValue("noskippara");
-					taskform.setProcessInputValue(var, Boolean.TRUE);
+					taskform.setProcessInputValue(var, "·ñ");
 				}
 				
 			}

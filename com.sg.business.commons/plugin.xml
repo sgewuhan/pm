@@ -526,6 +526,24 @@
                value="reference">
          </option>
       </option>
+      <option
+            id="change.type">
+         <option
+               id="变更工作"
+               label="变更工作"
+               value="变更工作">
+         </option>
+         <option
+               id="变更范围"
+               label="变更范围"
+               value="变更范围">
+         </option>
+         <option
+               id="变更项"
+               label="变更项"
+               value="变更项">
+         </option>
+      </option>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

@@ -1104,14 +1104,143 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_design"
                taskFormFieldName="ecnitem_design">
          </processParameter>
       </taskForm>
       <taskForm
-            name="变更完成确认"
+            name="完成设计变更"
             processDefinitionId="tb.tbProjectChange"
-            validation="com.tmt.tb.validation.ChangeActivityValidator">
+            validation="com.tmt.tb.validation.DesignChangeActivityValidator">
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="工艺变更"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_process"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
+               processParameterName="ecnitem_process"
+               taskFormFieldName="ecnitem_process">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="完成工艺变更"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.ProcessChangeActivityValidator">
+ tor">
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="采购变更"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_purchase"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
+               processParameterName="ecnitem_purchase"
+               taskFormFieldName="ecnitem_purchase">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="完成采购变更"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.PurchaseChangeActivityValidator">
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="在制品处理"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_mfg"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
+               processParameterName="ecnitem_mfg"
+               taskFormFieldName="ecnitem_mfg">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="完成在制品处理"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.MfgChangeActivityValidator">
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="检验变更"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_inspect"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
+               processParameterName="ecnitem_inspect"
+               taskFormFieldName="ecnitem_inspect">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="完成检验变更"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.InspectChangeActivityValidator">
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="包装变更"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_package"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
+               processParameterName="ecnitem_package"
+               taskFormFieldName="ecnitem_package">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="完成包装变更"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.PackageChangeActivityValidator">
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="相关部门变更"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_relevant"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
+               processParameterName="ecnitem_relevant"
+               taskFormFieldName="ecnitem_relevant">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="完成相关部门变更"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.RelevantChangeActivityValidator">
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="变更完成确认"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.tmt.tb.validation.ComplateChangeActivityValidator">
       </taskForm>
    </extension>
    <extension
@@ -1233,11 +1362,6 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               id="page2"
-               pageDelegator="com.tmt.tb.editor.page.EngineeringChangeItem"
-               title="变更方案">
-         </basicpage>
-         <basicpage
                id="page3"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
@@ -1272,7 +1396,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否通过"
+                        option="是否整改"
                         persistable="true"
                         type="String">
                   </radio>
@@ -1289,7 +1413,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="tbprojectchange.activity"
-            name="选更活动">
+            name="变更活动">
          <basicpage
                id="page1"
                title="审核变更申请">
@@ -1315,7 +1439,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否整改"
+                        option="是否通过"
                         persistable="true"
                         required="true"
                         type="String">
@@ -1450,6 +1574,24 @@
             id="project.navigator.changedoc"
             tree="project.navigator.changedoc">
       </navigator>
+      <navigator
+            id="project.documents.released"
+            tree="project.documents.released">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+         <createEditor
+               createHandler="com.sg.business.project.editor.CreateFolderOfProject"
+               editorId="editor.folder">
+         </createEditor>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1508,6 +1650,25 @@
          </structure>
          <structure
                modelRelation="folder_document">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="3"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.FolderOfProject"
+            headerVisiable="false"
+            id="project.documents.released">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document_released">
          </structure>
       </tree>
    </extension>
