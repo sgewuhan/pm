@@ -12,7 +12,6 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandler {
 
 	public ProjectChangeConfirmProgramSaveHandler() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -31,8 +30,9 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 			String var;
 			for(Object obj:ecnlist){
 				Work work=(Work)obj;
-				Boolean mandatory = (Boolean) work.getValue(Work.TEMPLATE_MANDATORY);
-				if(Boolean.TRUE.equals(mandatory)){
+				
+				Boolean noskip = (Boolean) work.getValue(Work.F_INTERNAL_DEFAULTSELECTED);
+				if(Boolean.TRUE.equals(noskip)){
 					Object value = work.getValue(Work.F_PLAN_START);
 					if(value==null){
 						throw new Exception("请设置计划开始时间。\n"+work);
@@ -58,7 +58,7 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 			}
 			
 		}
-		return false;
+		return true;
 	}
 
 	@Override

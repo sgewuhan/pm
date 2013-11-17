@@ -10,7 +10,6 @@ import com.sg.bpm.workflow.taskform.IProcessParameterDelegator;
 public class ECN implements IProcessParameterDelegator {
 
 	public ECN() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

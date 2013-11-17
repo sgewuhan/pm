@@ -1034,6 +1034,11 @@
                processParameterName="project_manager"
                taskFormFieldName="project">
          </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.DeptChangeReviewer"
+               processParameterName="project_supervisor"
+               taskFormFieldName="project">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbprojectchange.confirmProgram"
@@ -1046,35 +1051,61 @@
                taskFormFieldName="ecn">
          </processParameter>
          <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.SupDeptChiefengineer"
-               processParameterName="project_supervisor"
-               taskFormFieldName="project_supervisor">
+               processParameterName="plan"
+               taskFormFieldName="plan">
          </processParameter>
          <processParameter
                processParameterName="hasother"
                taskFormFieldName="hasother">
          </processParameter>
          <processParameter
+               processParameterDelegator="com.tmt.tb.field.parameter.RelativeDeptChangeReviewer"
                processParameterName="other"
                taskFormFieldName="other">
          </processParameter>
-         <processParameter
-               processParameterName="plan"
-               taskFormFieldName="plan">
-         </processParameter>
       </taskForm>
       <taskForm
-            editorId="tbprojectchange.approvalProgram"
+            editorId="tbProjectChange.audit"
             name="方案批准"
             persistentFields="choice,comment"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
-               processParameterName="choice"
+               processParameterName="choice_supervisor"
                taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChange.audit"
+            name="在制品审核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_plan"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbProjectChange.audit"
+            name="相关部门审核"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_other"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbprojectchange.activity"
+            name="设计变更"
+            persistentFields="choice,comment"
+            processDefinitionId="tb.tbProjectChange">
+         <processParameter
+               processParameterName="choice_design"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="ecnitem_design"
+               taskFormFieldName="ecnitem_design">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1215,8 +1246,50 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tbprojectchange.approvalProgram"
-            name="方案批准">
+            id="tbProjectChange.audit"
+            name="审核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbprojectchange.activity"
+            name="选更活动">
          <basicpage
                id="page1"
                title="审核变更申请">
