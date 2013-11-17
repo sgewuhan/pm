@@ -22,6 +22,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.service.HTService;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -132,6 +133,15 @@ public class User extends PrimaryObject {
 		} else {
 			return null;
 		}
+	}
+	
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		boolean saved = super.doSave(context);
+		//¸üÐÂ»º´æ
+		UserToolkit.updateUser(this);
+		
+		return saved;
 	}
 
 	/**

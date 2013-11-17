@@ -1,8 +1,8 @@
 package com.sg.business.model.toolkit;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
@@ -15,7 +15,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.User;
 
 public class UserToolkit {
-	private static HashMap<String, User> USERMAP = new HashMap<String, User>();
+	private static ConcurrentHashMap<String, User> USERMAP = new ConcurrentHashMap<String, User>();
 
 	/**
 	 * 获取系统管理员
@@ -53,5 +53,10 @@ public class UserToolkit {
 			USERMAP.put(userId, user);
 		}
 		return user;
+	}
+
+	public static void updateUser(User user) {
+		String userId = user.getUserid();
+		USERMAP.put(userId, user);
 	}
 }
