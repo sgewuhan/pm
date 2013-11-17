@@ -348,6 +348,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		sb.append("<small>");
 
 		String senderId = (String) getValue(F_SENDER);
+		
 		User sender = UserToolkit.getUserById(senderId);
 		/**
 		 * BUG:10003 zhonghua 消息中显示发件人null, 这些发件人是系统发件或者是后台发件

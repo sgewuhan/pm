@@ -1,9 +1,10 @@
 package com.sg.business.model.toolkit;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -15,7 +16,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.User;
 
 public class UserToolkit {
-	private static HashMap<String, User> USERMAP = new HashMap<String, User>();
+	private static ConcurrentHashMap<String, User> USERMAP = new ConcurrentHashMap<String, User>();
 
 	/**
 	 * 获取系统管理员
@@ -43,6 +44,9 @@ public class UserToolkit {
 	 * @return
 	 */
 	public static User getUserById(String userId) {
+		if(Utils.isNullOrEmpty(userId)){
+			return null;
+		}
 		User user = USERMAP.get(userId);
 		if (user == null) {
 			DBCollection userCol = DBActivator.getCollection(
@@ -50,8 +54,21 @@ public class UserToolkit {
 			DBObject userData = userCol.findOne(new BasicDBObject().append(
 					User.F_USER_ID, userId));
 			user = ModelService.createModelObject(userData, User.class);
-			USERMAP.put(userId, user);
+			if(user!=null){
+				USERMAP.put(userId, user);
+			}
 		}
 		return user;
+	}
+
+	public static void updateUser(User user) {
+		if(user == null){
+			return;
+		}
+		String userId = user.getUserid();
+		if(Utils.isNullOrEmpty(userId)){
+			return;
+		}
+		USERMAP.put(userId, user);
 	}
 }

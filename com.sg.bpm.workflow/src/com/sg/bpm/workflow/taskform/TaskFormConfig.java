@@ -121,16 +121,20 @@ public class TaskFormConfig {
 				Object v = ((Map<?,?>) inputValue).get(field);
 				result.put(key, v);
 			}
-			if(!result.isEmpty()){
-				return result;
-			}else{
-				return null;
-			}
+			/**
+			 * 继续执行代理方法
+			 */
+//			if(!result.isEmpty()){
+//				return result;
+//			}else{
+//				return null;
+//			}
 		}
+		
 		
 		List<ProcessParameter> ps = getProcessParameters();
 		if (ps.size() == 0) {
-			return null;
+			return result;
 		}
 		for (int i = 0; i < ps.size(); i++) {
 			ProcessParameter pi = ps.get(i);

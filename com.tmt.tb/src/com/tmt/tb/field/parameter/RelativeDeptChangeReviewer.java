@@ -8,14 +8,14 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.taskform.IProcessParameterDelegator;
 import com.sg.business.model.Organization;
-import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.taskforms.IRoleConstance;
 
-public class SupDeptChiefengineer implements IProcessParameterDelegator {
+public class RelativeDeptChangeReviewer implements IProcessParameterDelegator {
 
-	public SupDeptChiefengineer() {
+	public RelativeDeptChangeReviewer() {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -23,11 +23,10 @@ public class SupDeptChiefengineer implements IProcessParameterDelegator {
 			PrimaryObject taskFormData) {
 		Object value = taskFormData.getValue(taskDatakey);
 		if (value instanceof ObjectId) {
-			Project pro = ModelService.createModelObject(Project.class,
+			Organization org = ModelService.createModelObject(Organization.class,
 					(ObjectId) value);
-			Organization functionOrg = pro.getFunctionOrganization();
-			if(functionOrg!=null){
-				List<String> users = functionOrg.getRoleAssignmentUserIds(
+			if(org!=null){
+				List<String> users = org.getRoleAssignmentUserIds(
 						IRoleConstance.ROLE_CHANGE_APPROVER_ID, 1);
 				if (!users.isEmpty()) {
 					return users.get(0);
@@ -36,5 +35,4 @@ public class SupDeptChiefengineer implements IProcessParameterDelegator {
 		}
 		return ((User) UserToolkit.getAdmin().get(0)).getUserid();
 	}
-
 }
