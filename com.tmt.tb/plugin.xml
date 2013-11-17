@@ -1362,6 +1362,11 @@
             </pagecolumn>
          </basicpage>
          <basicpage
+               id="page2"
+               pageDelegator="com.tmt.tb.editor.page.EngineeringChangeItem"
+               title="变更方案">
+         </basicpage>
+         <basicpage
                id="page3"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
