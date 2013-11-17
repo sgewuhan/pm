@@ -131,6 +131,7 @@ public class TaskFormConfig {
 //			}
 		}
 		
+		
 		List<ProcessParameter> ps = getProcessParameters();
 		if (ps.size() == 0) {
 			return result;
