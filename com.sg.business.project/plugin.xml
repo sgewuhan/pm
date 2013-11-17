@@ -255,6 +255,10 @@
          </searchAction>
          <importAction>
             <column
+                  column="projectnumber"
+                  name="项目编号"
+                  type="String"></column>
+            <column
                   column="desc"
                   importRequired="true"
                   isKey="true"

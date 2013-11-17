@@ -237,6 +237,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public String getChargerId() {
 		return (String) getValue(F_CHARGER);
 	}
+	/**
+	 * 返回项目的发起组织
+	 * 
+	 * @return Organization
+	 */
+	public Organization getLaunchOrganization() {
+		ObjectId orgId = getLaunchOrganizationId();
+		if (orgId != null) {
+			return ModelService.createModelObject(Organization.class,
+					(ObjectId) orgId);
+		}
+		return null;
+	}
 
 	/**
 	 * 返回项目的管理组织
@@ -251,7 +264,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return null;
 	}
-
+	
+	/**
+	 * 返回项目发起组织_id
+	 * 
+	 * @return ObjectId
+	 */
+	public ObjectId getLaunchOrganizationId() {
+		return (ObjectId) getValue(F_LAUNCH_ORGANIZATION);
+	}
 	/**
 	 * 返回项目管理组织_id
 	 * 
@@ -599,7 +620,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 							folderRoot.get_id());
 				} catch (Exception e) {
 					return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-							Status.ERROR, "复制模板出错", e);				}
+							Status.ERROR, "复制模板出错", e);
+				}
 				// 复制系统日历
 				try {
 					doCopySystemCanlendar();

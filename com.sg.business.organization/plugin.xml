@@ -207,7 +207,7 @@
       </navigator>
       <navigator
             id="organization.user.selector1"
-            tree="organization.user.selector">
+            tree="organization.user.selector1">
          <filterAction>
             <column
                   column="userid"
@@ -351,6 +351,34 @@
             editorId="editor.organization.team"
             headerVisiable="false"
             id="organization.user.selector"
+            idfield="_id"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="名称"
+               type="String"
+               width="-1">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            collectionName="organization"
+            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
+            dbName="pm2"
+            editorId="editor.organization.team"
+            headerVisiable="false"
+            id="organization.user.selector1"
             idfield="_id"
             multiSelection="false"
             virtual="true">
