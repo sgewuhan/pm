@@ -1587,10 +1587,6 @@
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </searchAction>
-         <createEditor
-               createHandler="com.sg.business.project.editor.CreateFolderOfProject"
-               editorId="editor.folder">
-         </createEditor>
       </navigator>
    </extension>
    <extension
