@@ -599,7 +599,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 							folderRoot.get_id());
 				} catch (Exception e) {
 					return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-							Status.ERROR, "复制模板出错", e);				}
+							Status.ERROR, "复制模板出错", e);
+				}
 				// 复制系统日历
 				try {
 					doCopySystemCanlendar();
