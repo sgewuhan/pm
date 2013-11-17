@@ -1676,22 +1676,6 @@
    <extension
          point="com.sg.widgets.table">
       <table
-            dataSet="com.tmt.tb.dataset.AllProject"
-            id="company.navigator.allproject">
-         <column
-               columnDefinitionId="project.projectnumber">
-         </column>
-         <column
-               columnDefinitionId="project.desc">
-         </column>
-         <column
-               columnDefinitionId="project.workorder">
-         </column>
-      </table>
-   </extension>
-   <extension
-         point="com.sg.widgets.table">
-      <table
             dataSet="com.tmt.tb.dataset.ProjectSelectorOfTaskforms"
             headerVisiable="false"
             id="tb.taskforms.project.selector">
@@ -1734,6 +1718,19 @@
             name="负责人"
             type="String"
             width="120">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.tb.dataset.AllProject"
+            id="company.navigator.allproject">
+         <column
+               columnDefinitionId="project.projectnumber">
+         </column>
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+         <column
+               columnDefinitionId="project.workorder">
          </column>
       </table>
    </extension>
