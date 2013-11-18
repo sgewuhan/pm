@@ -1,5 +1,6 @@
 package com.sg.business.commons.handler;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,18 +33,33 @@ public class RemoveWork extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
 			ViewerControl currentViewerControl, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
 		Shell shell = part.getSite().getShell();
-		if(selected.getParentPrimaryObjectCache()==null){
-			MessageUtil.showToast(shell, "删除"+selected.getTypeName(), "顶级"+selected.getTypeName()+"不可删除", SWT.ICON_WARNING);
-			return;
-		}
-		int yes = MessageUtil.showMessage(shell, "删除"+selected.getTypeName(),
-				"您确定要删除这个"+selected.getTypeName()+"吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
+		
+		int size = selection.size();
+		int yes = MessageUtil.showMessage(shell, "删除"+selected.getTypeName()+(size>1?" 等工作。":""),
+				"您确定要删除 "+selected.getTypeName()+(size>1?" 等工作":" 工作")+"吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
 						| SWT.ICON_QUESTION);
 		if(yes!=SWT.YES){
 			return;
 		}
 		
+		Iterator<?> iter = selection.iterator();
+		while(iter.hasNext()){
+			Work work = (Work) iter.next();
+			boolean b = deleteSingleWork(work, part, currentViewerControl, shell);
+			if(!b){
+				break;
+			}
+		}
+	}
+
+	private boolean deleteSingleWork(PrimaryObject selected, IWorkbenchPart part,
+			ViewerControl currentViewerControl, Shell shell) {
 		Assert.isNotNull(currentViewerControl);
+
+		if(selected.getParentPrimaryObjectCache()==null){
+			MessageUtil.showToast(shell, "删除"+selected.getTypeName(), "顶级"+selected.getTypeName()+"不可删除", SWT.ICON_WARNING);
+			return false;
+		}
 
 		//如果是工作，需要刷新开始和完成时间
 		List<Work> toUpdate = null;
@@ -63,12 +79,15 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		} catch (Exception e) {
 			MessageUtil.showMessage(shell, "删除"+selected.getTypeName(), e.getMessage(),
 					SWT.ICON_WARNING);
+			return false;
 		}
 		selected.removeEventListener(currentViewerControl);
 		
 		if(toUpdate!=null){
 			currentViewerControl.getViewer().update(toUpdate.toArray(), null);
 		}
+		
+		return true;
 	}
 
 }
