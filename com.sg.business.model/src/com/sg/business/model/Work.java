@@ -1822,7 +1822,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doCaculateWorksAllocated(context);
 
 		// 重新计算上级工作的工时
-		doReCaculateParentWork(false);
+		Work parent = (Work) getParent();
+		if(parent!=null){
+			parent.doReCaculateParentWork(false);
+		}
 
 		return true;
 
@@ -1830,14 +1833,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	private void doReCaculateParentWork(boolean useJob) {
 		if (useJob) {
-			Job job = new Job("重新计算上级工作") {
+			Job job = new Job("重新计算工作") {
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					Work parentWork = (Work) getParent();
-					if (parentWork != null) {
-						parentWork.caculate();
-					}
+					Work.this.caculate();
 					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
@@ -1845,10 +1845,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			job.schedule();
 		} else {
-			Work parentWork = (Work) getParent();
-			if (parentWork != null) {
-				parentWork.caculate();
-			}
+			this.caculate();
 		}
 
 	}
