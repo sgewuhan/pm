@@ -74,7 +74,7 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 		return true;
 	}
 	
-	public void checkDuration(Work work) throws Exception {
+	private void checkDuration(Work work) throws Exception {
 		Date start = work.getPlanStart();
 		if (start != null) {
 			start = Utils.getDayBegin(start).getTime();
