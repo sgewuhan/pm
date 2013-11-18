@@ -35,8 +35,8 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		Shell shell = part.getSite().getShell();
 		
 		int size = selection.size();
-		int yes = MessageUtil.showMessage(shell, "删除"+selected.getTypeName()+(size>1?" 等工作。":""),
-				"您确定要删除 "+selected.getTypeName()+(size>1?" 等工作":" 工作")+"吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
+		int yes = MessageUtil.showMessage(shell, "删除"+selected.getDesc()+(size>1?" 等工作。":""),
+				"您确定要删除 "+selected.getDesc()+(size>1?" 等工作":" 工作")+"吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
 						| SWT.ICON_QUESTION);
 		if(yes!=SWT.YES){
 			return;
@@ -70,6 +70,7 @@ public class RemoveWork extends AbstractNavigatorHandler {
 
 		selected.addEventListener(currentViewerControl);
 		try {
+			//
 			selected.doRemove(new CurrentAccountContext());
 			
 			// 4. 将更改消息传递到编辑器
