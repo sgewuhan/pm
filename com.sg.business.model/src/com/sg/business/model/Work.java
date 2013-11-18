@@ -1823,12 +1823,23 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 重新计算上级工作的工时
 		Work parent = (Work) getParent();
-		if(parent!=null){
+		if (parent != null) {
 			parent.doReCaculateParentWork(false);
 		}
 
 		return true;
 
+	}
+
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		Work parent = (Work) getParent();
+		super.doRemove(context);
+		// 计算计划工时分配
+		doCaculateWorksAllocated(context);
+		if (parent != null) {
+			parent.doReCaculateParentWork(false);
+		}
 	}
 
 	private void doReCaculateParentWork(boolean useJob) {
