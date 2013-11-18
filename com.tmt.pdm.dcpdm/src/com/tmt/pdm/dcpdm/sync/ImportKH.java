@@ -3,28 +3,35 @@ package com.tmt.pdm.dcpdm.sync;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
-import com.mongodb.DB;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Project;
 
-public class ImportKH extends ImportData {
-
-	@Override
-	protected String getClassOuid() {
-		return "863f5d12";//asDocument
-	}
-
-	@Override
-	protected String getNamespace() {
-		return "vault_file";
-	}
+public class ImportKH implements Runnable {
 
 	@Override
-	protected DB getDB() {
-		return DBActivator.getDB("kh");
+	public void run() {
+		updateProjectLaunchOrg();
 	}
 
-	@Override
-	protected ObjectId getFolderId() {
-		return new ObjectId("526f302029f260085cc7491d");
+	private void updateProjectLaunchOrg() {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
+		DBCursor cur = col.find();
+		while (cur.hasNext()) {
+			DBObject next = cur.next();
+			Object org = next.get(Project.F_LAUNCH_ORGANIZATION);
+			if (org instanceof ObjectId) {
+				col.update(new BasicDBObject().append(Project.F__ID,
+						next.get(Project.F__ID)), new BasicDBObject().append(
+						"$set", new BasicDBObject().append(
+								Project.F_LAUNCH_ORGANIZATION,
+								new Object[] { org })));
+			}
+		}
 	}
-	
+
 }

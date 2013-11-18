@@ -206,8 +206,8 @@
             tree="organization.inserthr">
       </navigator>
       <navigator
-            id="organization.user.selector1"
-            tree="organization.user.selector1">
+            id="project.launchorg.member"
+            tree="project.launchorg.member">
          <filterAction>
             <column
                   column="userid"
@@ -262,6 +262,51 @@
                   columnDefinitionId="account.username">
             </column>
          </queryAction>
+      </navigator>
+      <navigator
+            id="organization.selector"
+            provideSelection="true"
+            tree="organization.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </searchAction>
       </navigator>
    </extension>
    <extension
@@ -374,11 +419,11 @@
             canDelete="true"
             canEdit="true"
             collectionName="organization"
-            dataSet="com.sg.business.model.dataset.organization.OrgMaster"
+            dataSet="com.sg.business.model.dataset.project.OrgLaunch"
             dbName="pm2"
             editorId="editor.organization.team"
             headerVisiable="false"
-            id="organization.user.selector1"
+            id="project.launchorg.member"
             idfield="_id"
             multiSelection="false"
             virtual="true">
@@ -394,6 +439,22 @@
          </structure>
          <structure
                modelRelation="organization_user">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            collectionName="organization"
+            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
+            dbName="pm2"
+            headerVisiable="false"
+            id="organization.selector"
+            idfield="_id"
+            multiSelection="true">
+         <column
+               columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <structure
+               modelRelation="organization_organization">
          </structure>
       </tree>
    </extension>

@@ -6,7 +6,7 @@
       <schedualJob
             day="99999"
             id="dcppdm.importkh"
-            name="同步空簧DCPDM文档"
+            name="临时维护"
             rule="month"
             run="com.tmt.pdm.dcpdm.sync.ImportKH"
             time="0:0:0">

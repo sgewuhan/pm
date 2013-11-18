@@ -242,13 +242,16 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @return Organization
 	 */
-	public Organization getLaunchOrganization() {
-		ObjectId orgId = getLaunchOrganizationId();
-		if (orgId != null) {
-			return ModelService.createModelObject(Organization.class,
-					(ObjectId) orgId);
+	public List<PrimaryObject> getLaunchOrganization() {
+		List<?> orgIds = getLaunchOrganizationId();
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		if (orgIds != null) {
+			for (int i = 0; i < orgIds.size(); i++) {
+				result.add(ModelService.createModelObject(Organization.class,
+						(ObjectId) orgIds.get(i)));
+			}
 		}
-		return null;
+		return result;
 	}
 
 	/**
@@ -270,8 +273,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @return ObjectId
 	 */
-	public ObjectId getLaunchOrganizationId() {
-		return (ObjectId) getValue(F_LAUNCH_ORGANIZATION);
+	public List<?> getLaunchOrganizationId() {
+		return (List<?>) getValue(F_LAUNCH_ORGANIZATION);
 	}
 	/**
 	 * 返回项目管理组织_id
