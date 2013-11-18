@@ -76,7 +76,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String EDIT_WORK_PLAN_1 = "edit.work.plan.1";
 
 	public static final String TEMPLATE_DELIVERABLE = "template_deliverable";
-	
 
 	/**
 	 * 不带流程叶子工作编辑器
@@ -1823,7 +1822,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doCaculateWorksAllocated(context);
 
 		// 重新计算上级工作的工时
-		doReCaculateParentWork(false);
+		Work parent = (Work) getParent();
+		if(parent!=null){
+			parent.doReCaculateParentWork(false);
+		}
 
 		return true;
 
@@ -1831,14 +1833,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	private void doReCaculateParentWork(boolean useJob) {
 		if (useJob) {
-			Job job = new Job("重新计算上级工作") {
+			Job job = new Job("重新计算工作") {
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					Work parentWork = (Work) getParent();
-					if (parentWork != null) {
-						parentWork.caculate();
-					}
+					Work.this.caculate();
 					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
@@ -1846,10 +1845,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			job.schedule();
 		} else {
-			Work parentWork = (Work) getParent();
-			if (parentWork != null) {
-				parentWork.caculate();
-			}
+			this.caculate();
 		}
 
 	}
@@ -2356,9 +2352,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Iterator<NodeAssignment> iter = procd.getNodesAssignment().iterator();
 		while (iter.hasNext()) {
 			NodeAssignment nas = iter.next();
-			
-			if (!nas.isRuleAssignment()&&nas.forceAssignment()) {
-				
+
+			if (!nas.isRuleAssignment() && nas.forceAssignment()) {
+
 				String ass = actorParameter.get(nas.getNodeActorParameter());
 				if (Utils.isNullOrEmpty(ass)) {
 					throw new Exception("流程缺少必要的人员指派" + this + ":"
@@ -2471,7 +2467,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
 						wfHistory.put(IDocumentProcess.F_PROCESS_INSTANCEID,
 								getExecuteProcessId());
-						DroolsProcessDefinition pd = ip.getProcessDefinition(F_WF_EXECUTE);
+						DroolsProcessDefinition pd = ip
+								.getProcessDefinition(F_WF_EXECUTE);
 						wfHistory.put(IDocumentProcess.F_PROCESSID,
 								pd.getProcessId());
 						wfHistory.put(IDocumentProcess.F_PROCESSNAME,
