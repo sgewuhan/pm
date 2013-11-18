@@ -47,7 +47,6 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 					if(value==null){
 						throw new Exception("请设置负责人。\n"+work);
 					}
-					System.out.println();
 					checkDuration(work);
 					
 					var = (String) work.getValue("chargerpara");
