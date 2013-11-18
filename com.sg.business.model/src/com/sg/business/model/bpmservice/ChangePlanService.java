@@ -1,6 +1,7 @@
 package com.sg.business.model.bpmservice;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +137,12 @@ public class ChangePlanService extends ServiceProvider {
 					// Boolean.TRUE);
 					// eca.setValue(Work.F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
 					// Boolean.FALSE);
+					Date start = (Date) eca.getPlanStart();
+					Date finish = (Date) eca.getPlanFinish();
+					if (start == null ||finish == null) {
+						eca.setValue(Work.F_PLAN_START, ecn.getPlanStart());
+						eca.setValue(Work.F_PLAN_FINISH, ecn.getPlanFinish());
+					}
 					eca.setValue(Work.F_PARENT_ID, ecn.get_id());
 					eca.doSave(context);
 				} catch (Exception e) {
