@@ -704,7 +704,7 @@ public class ProjectToolkit {
 	 * @throws Exception
 	 */
 	public static Project doCreateNewProject(Work work, String desc,
-			String description, ObjectId launchorg_id, ObjectId org_id,
+			String description, List<ObjectId> launchorg_id, ObjectId org_id,
 			String prj_manager, String workOrder, ObjectId projecttemplate_id,
 			Object planfinish, Object planstart, Object projecttype,
 			Object standardset, Object producttype, IContext context)
@@ -720,7 +720,7 @@ public class ProjectToolkit {
 		if (desc == null) {
 			throw new Exception("未录入项目名称无法新建项目");
 		}
-		if (launchorg_id == null) {
+		if (launchorg_id == null||launchorg_id.size()==0) {
 			throw new Exception("未录入项目发起部门无法新建项目");
 		}
 		if (org_id == null) {

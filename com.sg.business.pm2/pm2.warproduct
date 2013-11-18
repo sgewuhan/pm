@@ -34,7 +34,15 @@
       <plugin id="com.sg.widgets.ckeditor"/>
       <plugin id="com.sg.widgets.fullcalendar"/>
       <plugin id="com.sg.widgets.nl1" fragment="true"/>
+      <plugin id="com.tmt.commons"/>
       <plugin id="com.tmt.jszx"/>
+      <plugin id="com.tmt.jy"/>
+      <plugin id="com.tmt.kfzx"/>
+      <plugin id="com.tmt.kh"/>
+      <plugin id="com.tmt.pdm.client"/>
+      <plugin id="com.tmt.pdm.dcpdm"/>
+      <plugin id="com.tmt.tb"/>
+      <plugin id="com.tmt.xt"/>
       <plugin id="javax.xml"/>
       <plugin id="org.apache.commons.fileupload"/>
       <plugin id="org.apache.commons.io"/>
@@ -112,7 +120,15 @@
       <plugin id="com.sg.widgets" autoStart="true" startLevel="0" />
       <plugin id="com.sg.widgets.ckeditor" autoStart="true" startLevel="0" />
       <plugin id="com.sg.widgets.fullcalendar" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.commons" autoStart="true" startLevel="0" />
       <plugin id="com.tmt.jszx" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.jy" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.kfzx" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.kh" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.pdm.client" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.pdm.dcpdm" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.tb" autoStart="true" startLevel="0" />
+      <plugin id="com.tmt.xt" autoStart="true" startLevel="0" />
       <plugin id="javax.xml" autoStart="true" startLevel="0" />
       <plugin id="org.apache.commons.fileupload" autoStart="true" startLevel="0" />
       <plugin id="org.apache.commons.io" autoStart="true" startLevel="0" />
