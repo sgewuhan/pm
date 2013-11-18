@@ -1,9 +1,11 @@
 package com.tmt.tb.editor;
 
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com.mobnut.commons.util.Utils;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.Work;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
@@ -45,10 +47,15 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 					if(value==null){
 						throw new Exception("请设置负责人。\n"+work);
 					}
+					System.out.println();
+					checkDuration(work);
+					
 					var = (String) work.getValue("chargerpara");
 					taskform.setProcessInputValue(var, value);
 					var=(String) work.getValue("noskippara");
 					taskform.setProcessInputValue(var, "是");
+					
+					
 
 				}else{
 					var=(String) work.getValue("noskippara");
@@ -66,5 +73,24 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 			IProgressMonitor monitor, String operation) throws Exception {
 		return true;
 	}
+	
+	public void checkDuration(Work work) throws Exception {
+		Date start = work.getPlanStart();
+		if (start != null) {
+			start = Utils.getDayBegin(start).getTime();
+		}
 
+		Date finish =  work.getPlanFinish();
+		if (finish != null) {
+			finish = Utils.getDayEnd(finish).getTime();
+		}
+
+		if (start != null && finish != null) {
+			// 检查是否合法
+			if (start.after(finish)) {
+				throw new Exception("开始日期必须早于完成日期");
+			}
+
+		}
+	}
 }

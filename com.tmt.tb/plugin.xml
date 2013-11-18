@@ -1236,9 +1236,7 @@
             validation="com.tmt.tb.validation.RelevantChangeActivityValidator">
       </taskForm>
       <taskForm
-            editorId="tbprojectchange.activity"
             name="变更完成确认"
-            persistentFields="choice,comment"
             processDefinitionId="tb.tbProjectChange"
             validation="com.tmt.tb.validation.ComplateChangeActivityValidator">
       </taskForm>
