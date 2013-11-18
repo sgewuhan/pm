@@ -7,15 +7,16 @@ import com.sg.bpm.workflow.taskform.IValidationHandler;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Work;
 
-public abstract class AbstractChangeActivityValidator implements IValidationHandler {
+public abstract class AbstractChangeActivityValidator implements
+		IValidationHandler {
 
 	public AbstractChangeActivityValidator() {
 	}
 
 	@Override
 	public boolean validate(PrimaryObject work) {
-		String ecnName=getECNName();
-		if(ecnName==null){
+		String ecnName = getECNName();
+		if (ecnName == null) {
 			return true;
 		}
 		if (work instanceof Work) {
@@ -23,15 +24,11 @@ public abstract class AbstractChangeActivityValidator implements IValidationHand
 			List<PrimaryObject> ecnList = workchange.getChildrenWork();
 			for (PrimaryObject ecn : ecnList) {
 				if (ecnName.equals(ecn.getDesc())) {
-					List<PrimaryObject> ecaList = ((Work) ecn)
-							.getChildrenWork();
-					for (PrimaryObject eca : ecaList) {
-						ILifecycle iLifecycle = (ILifecycle) eca;
-						if (!(ILifecycle.STATUS_FINIHED_VALUE.equals(iLifecycle
-								.getLifecycleStatus()) || ILifecycle.STATUS_CANCELED_VALUE
-								.equals(iLifecycle.getLifecycleStatus()))) {
-							return false;
-						}
+					ILifecycle iLifecycle = (ILifecycle) ecn;
+					if (!(ILifecycle.STATUS_FINIHED_VALUE.equals(iLifecycle
+							.getLifecycleStatus()) || ILifecycle.STATUS_CANCELED_VALUE
+							.equals(iLifecycle.getLifecycleStatus()))) {
+						return false;
 					}
 
 				}
@@ -39,7 +36,7 @@ public abstract class AbstractChangeActivityValidator implements IValidationHand
 		}
 		return true;
 	}
-	
+
 	public abstract String getECNName();
 
 	@Override

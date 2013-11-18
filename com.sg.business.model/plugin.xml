@@ -516,14 +516,14 @@
       </service>
       <service
             interface="changeplan.service.action"
-            name="包装变更服务"
-            operation="ecnitem_package"
+            name="相关部门变更服务"
+            operation="ecnitem_relevant"
             serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
       </service>
       <service
             interface="changeplan.service.action"
-            name="相关部门变更服务"
-            operation="ecnitem_relevant"
+            name="包装变更服务"
+            operation="ecnitem_package"
             serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
       </service>
    </extension>
