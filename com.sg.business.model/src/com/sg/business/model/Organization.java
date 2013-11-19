@@ -1564,9 +1564,10 @@ public class Organization extends PrimaryObject {
 			return (T) summary;
 		}else if(adapter==ProjectProvider.class){
 			if(projectProvider==null){
-				projectProvider=new OrganizationProjectProvider();
+				projectProvider=ModelService.createModelObject(OrganizationProjectProvider.class);
 				projectProvider.setOrganization(this);
 			}
+			return (T)projectProvider;
 		}
 		return super.getAdapter(adapter);
 	}

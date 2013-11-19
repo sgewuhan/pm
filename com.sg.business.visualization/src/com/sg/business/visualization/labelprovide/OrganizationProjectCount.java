@@ -51,7 +51,7 @@ public class OrganizationProjectCount extends ColumnLabelProvider {
 			sb.append("<img src='");
 				sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
 						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-			sb.append("' style='border-style:none;float:right;padding:0px;margin:0px' width='16' height='16' />");
+			sb.append("' style='border-style:none;float:right;padding:0px;margin:0px' width='24' height='24' />");
 			sb.append("</a>");
 
 			

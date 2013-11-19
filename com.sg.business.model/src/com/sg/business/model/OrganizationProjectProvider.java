@@ -16,6 +16,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 
 	public void setOrganization(Organization org) {
 		this.organization = org;
+		setValue(F__ID, org.get_id());
+		setValue(F_DESC,org.getDesc());
 	}
 
 	@Override

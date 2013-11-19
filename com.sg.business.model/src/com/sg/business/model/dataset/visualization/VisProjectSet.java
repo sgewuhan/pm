@@ -1,5 +1,6 @@
 package com.sg.business.model.dataset.visualization;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mobnut.db.model.DataSet;
@@ -21,6 +22,9 @@ public class VisProjectSet extends MasterDetailDataSetFactory {
 
     @Override
     public DataSet getDataSet() {
+    	if(master==null){
+    		return new DataSet(new ArrayList<PrimaryObject>());
+    	}
     	ProjectProvider pp = (ProjectProvider)master;
     	List<PrimaryObject> list=pp.getProjectSet();
     	return new DataSet(list);
