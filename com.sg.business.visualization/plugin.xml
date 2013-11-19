@@ -30,7 +30,7 @@
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.ViewPart1"
+            class="com.sg.widgets.part.view.TableNavigator"
             id="vis.project"
             name="项目"
             restorable="true">
@@ -83,6 +83,135 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="vis.project"
+            provideSelection="true"
+            table="vis.project">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+            <column
+                  columnDefinitionId="project.status">
+            </column>
+            <column
+                  columnDefinitionId="project.status"
+                  name="状态">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
+            <column
+                  column="producttype"
+                  name="产品类型"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+            <column
+                  columnDefinitionId="project.status"
+                  name="状态">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
+            <column
+                  column="producttype"
+                  name="产品类型"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准"
+                  type="String">
+            </column>
+         </searchAction>
+         <masterProvider
+               id="vis.project.org">
+         </masterProvider>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -96,6 +225,7 @@
             dataSet="com.sg.business.model.dataset.organization.OrgRoot"
             dbName="pm2"
             id="vis.project.org"
+            idfield="_id"
             multiSelection="false">
          <column
                columnDefinitionId="com.sg.widgets.column.desc">
@@ -110,6 +240,94 @@
                modelRelation="organization_organization">
          </structure>
       </tree>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="project"
+            dataSet="com.sg.business.model.dataset.visualization.VisProject"
+            dbName="pm2"
+            id="vis.project">
+         <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
+               columnDefinitionId="project.projectnumber">
+         </column>
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="planstart">
+         </column>
+         <column
+               columnDefinitionId="planfinish">
+         </column>
+         <column
+               columnDefinitionId="actualstart">
+         </column>
+         <column
+               columnDefinitionId="actualfinish">
+         </column>
+         <columnGroup
+               defaultGroup="false"
+               id="com.sg.business.project.columnGroup1"
+               name="计划进度">
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               id="com.sg.business.project.columnGroup1"
+               name="实际进度">
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="组织和参与者">
+            <column
+                  columnDefinitionId="participate">
+            </column>
+            <column
+                  columnDefinitionId="project.org_id">
+            </column>
+            <column
+                  columnDefinitionId="project.launchorg_id">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="选项属性">
+            <column
+                  column="producttype"
+                  name="产品类型">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准">
+            </column>
+         </columnGroup>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
