@@ -1,7 +1,6 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -9,16 +8,13 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.IContext;
-import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
-import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
@@ -435,34 +431,6 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 			child.doArrangeWBSCode();
 		}
-	}
-
-	@Override
-	public void doRemove(IContext context) throws Exception {
-		if (!canDelete(context)) {
-			return;
-		}
-		doDelectIterator(context);
-	}
-
-	private void doDelectIterator(IContext context) throws Exception {
-		if (hasChildrenWork()) {
-			List<PrimaryObject> childrenWork = getChildrenWork();
-			for (PrimaryObject po : childrenWork) {
-				AbstractWork abstractWork = (AbstractWork) po;
-				abstractWork.doDelectIterator(context);
-			}
-		}
-		DBCollection col = getCollection();
-		WriteResult ws = col.remove(
-				new BasicDBObject().append(F__ID, get_id()),
-				WriteConcern.NORMAL);
-		checkWriteResult(ws);
-		fireEvent(IPrimaryObjectEventListener.REMOVE);
-
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "É¾³ý",
-				new Date(), getLabel() + "\n" + getDbName() + "\\"
-						+ getCollectionName() + "\\" + get_id(), getDbName());
 	}
 
 	public boolean isGenericWork() {

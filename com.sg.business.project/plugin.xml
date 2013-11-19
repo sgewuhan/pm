@@ -291,7 +291,8 @@
             </column>
             <column
                   column="org_id"
-                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2ObjectIdArray"
+                  importRequired="true"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2ObjectId"
                   name="管理部门"
                   type="String">
             </column>

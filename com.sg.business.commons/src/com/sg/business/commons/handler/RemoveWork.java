@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.AbstractWork;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -44,21 +45,22 @@ public class RemoveWork extends AbstractNavigatorHandler {
 			return;
 		}
 
-		List<Work> delectWorks = new ArrayList<Work>();
+		List<AbstractWork> delectWorks = new ArrayList<AbstractWork>();
 		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
-			Work work = (Work) iter.next();
-			if (hasContains(delectWorks, work)) {
-				continue;
+			AbstractWork work = (AbstractWork) iter.next();
+			if (delectWorks.size() > 0) {
+				if (hasContains(delectWorks, work)) {
+					continue;
+				}
+				if (hasChildrenContains(delectWorks, work)) {
+					continue;
+				}
 			}
-			if (hasChildrenContains(delectWorks, work)) {
-				continue;
-			}
-
 			delectWorks.add(work);
 		}
 		if (delectWorks.size() > 0) {
-			for (Work work : delectWorks) {
+			for (AbstractWork work : delectWorks) {
 				boolean b = deleteSingleWork(work, part, currentViewerControl,
 						shell);
 				if (!b) {
@@ -68,7 +70,8 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		}
 	}
 
-	private boolean hasChildrenContains(List<Work> delectWorks, Work work) {
+	private boolean hasChildrenContains(List<AbstractWork> delectWorks,
+			AbstractWork work) {
 		List<PrimaryObject> childrenWorks = work
 				.getChildrenPrimaryObjectCache();
 		if (childrenWorks != null && childrenWorks.size() > 0) {
@@ -86,9 +89,11 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		return false;
 	}
 
-	private boolean hasContains(List<Work> delectWorks, Work work) {
+	private boolean hasContains(List<AbstractWork> delectWorks,
+			AbstractWork work) {
 		if (delectWorks != null && delectWorks.size() > 0) {
-			Work parentWork = (Work) work.getParentPrimaryObjectCache();
+			AbstractWork parentWork = (AbstractWork) work
+					.getParentPrimaryObjectCache();
 			if (parentWork != null) {
 				if (delectWorks.contains(parentWork)) {
 					return true;
