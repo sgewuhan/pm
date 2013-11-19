@@ -291,7 +291,7 @@
             </column>
             <column
                   column="org_id"
-                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2ObjectIdArray"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2ObjectId"
                   name="管理部门"
                   type="String">
             </column>
@@ -1243,6 +1243,7 @@
             editorId="view.work"
             fix="1"
             id="project.wbs"
+            multiSelection="true"
             popupMenu="popup:project.wbs"
             popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider"
             virtual="true">

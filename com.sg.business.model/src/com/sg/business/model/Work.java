@@ -28,6 +28,7 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
@@ -1542,7 +1543,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return true;
 		} else {
 			Work parent = (Work) getParent();
-			if (parent != null) {
+			if (parent != null && !parent.isEmpty()) {
 				return parent.hasPermission(context);
 			} else {
 				// 是Root工作，判断是否是项目经理
@@ -1565,7 +1566,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		List<Work> result = new ArrayList<Work>();
 		result.add(this);
 		Work parent = (Work) getParent();
-		while (parent != null) {
+		while (parent != null && !parent.isEmpty()) {
 			result.add(parent);
 			parent = (Work) parent.getParent();
 		}
@@ -1823,13 +1824,49 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		// 重新计算上级工作的工时
 		Work parent = (Work) getParent();
-		if(parent!=null){
+		if (parent != null) {
 			parent.doReCaculateParentWork(false);
 		}
 
 		return true;
 
 	}
+
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		if (!canDelete(context)) {
+			return;
+		}
+		Work parent = (Work) getParent();
+		doDelectIterator(context);
+		// 计算计划工时分配
+				doCaculateWorksAllocated(context);
+				if (parent != null) {
+					parent.doReCaculateParentWork(false);
+				}
+	}
+
+	private void doDelectIterator(IContext context) throws Exception {
+		if (hasChildrenWork()) {
+			List<PrimaryObject> childrenWorks = getChildrenWork();
+			for (PrimaryObject po : childrenWorks) {
+				Work childrenWork = (Work) po;
+				childrenWork.doDelectIterator(context);
+			}
+		}
+		DBCollection col = getCollection();
+		WriteResult ws = col.remove(
+				new BasicDBObject().append(F__ID, get_id()),
+				WriteConcern.NORMAL);
+		checkWriteResult(ws);
+		fireEvent(IPrimaryObjectEventListener.REMOVE);
+
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "删除",
+				new Date(), getLabel() + "\n" + getDbName() + "\\"
+						+ getCollectionName() + "\\" + get_id(), getDbName());
+	}
+	
+	
 
 	private void doReCaculateParentWork(boolean useJob) {
 		if (useJob) {

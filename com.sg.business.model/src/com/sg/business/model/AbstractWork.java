@@ -52,31 +52,29 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * {@link #WORK_TYPE_PROJECT}
 	 */
 	public static final String F_WORK_TYPE = "worktype";
-	
+
 	/**
 	 * 内部类型
 	 */
 	public static final String F_INTERNAL_TYPE = "internaltype";
-	
+
 	/**
 	 * 变更工作
 	 */
 	public static final String INTERNAL_TYPE_CHANGE = "变更工作";
-	
+
 	public static final String INTERNAL_TYPE_CHANGERANGE = "变更范围";
-	
+
 	public static final String INTERNAL_TYPE_CHANGEITEM = "变更项";
-	
+
 	public static final String F_INTERNAL_PARA_CHARGERID = "chargerpara";
 
 	public static final String F_INTERNAL_PARA_NOSKIP = "noskippara";
 
 	public static final String F_INTERNAL_DEFAULTSELECTED = "defaultselected";
-	
+
 	public static final String F_INTERNAL_ECAPARA = "ecapara";
-	
-	
-	
+
 	/**
 	 * 工作定义的上级工作定义
 	 */
@@ -117,8 +115,6 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public boolean isSummaryWork() {
 		return hasChildrenWork();
 	}
-	
-	
 
 	/**
 	 * 返回工作定义在WBS中的编号<br/>
@@ -350,7 +346,8 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 			throw new Exception("您不能移动顶层的工作");
 		}
 
-		AbstractWork grandpa = (AbstractWork) parent.getParentPrimaryObjectCache();
+		AbstractWork grandpa = (AbstractWork) parent
+				.getParentPrimaryObjectCache();
 
 		List<PrimaryObject> thisChildren = getChildrenWork();
 
@@ -435,31 +432,31 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 			child.doArrangeWBSCode();
 		}
 	}
-	
-	public boolean isGenericWork(){
+
+	public boolean isGenericWork() {
 		Object type = getValue(F_WORK_TYPE);
-		if(type instanceof Integer){
+		if (type instanceof Integer) {
 			return ((Integer) type).intValue() == WORK_TYPE_GENERIC;
 		}
-		
+
 		return false;
 	}
-	
-	public boolean isStandloneWork(){
+
+	public boolean isStandloneWork() {
 		Object type = getValue(F_WORK_TYPE);
-		if(type instanceof Integer){
+		if (type instanceof Integer) {
 			return ((Integer) type).intValue() == WORK_TYPE_STANDLONE;
 		}
-		
+
 		return false;
 	}
-	
-	public boolean isProjectWork(){
+
+	public boolean isProjectWork() {
 		Object type = getValue(F_WORK_TYPE);
-		if(type instanceof Integer){
+		if (type instanceof Integer) {
 			return ((Integer) type).intValue() == WORK_TYPE_PROJECT;
 		}
-		
+
 		return false;
 	}
 }
