@@ -245,6 +245,8 @@ public class Organization extends PrimaryObject {
 	public String getFullName() {
 		return getStringValue(F_FULLDESC);
 	}
+	
+
 
 	/**
 	 * 返回组织在系统中的显示图标地址
@@ -1550,6 +1552,7 @@ public class Organization extends PrimaryObject {
 	}
 
 	private SummaryOrganizationWorks summary;
+	private OrganizationProjectProvider projectProvider;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1559,6 +1562,11 @@ public class Organization extends PrimaryObject {
 				summary = new SummaryOrganizationWorks(this);
 			}
 			return (T) summary;
+		}else if(adapter==ProjectProvider.class){
+			if(projectProvider==null){
+				projectProvider=new OrganizationProjectProvider();
+				projectProvider.setOrganization(this);
+			}
 		}
 		return super.getAdapter(adapter);
 	}
@@ -1673,4 +1681,5 @@ public class Organization extends PrimaryObject {
 	public List<?> getPartContainerCode() {
 		return getListValue(F_PDM_PART_COMTAINER);
 	}
+
 }

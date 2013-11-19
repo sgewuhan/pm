@@ -48,10 +48,6 @@ public class ProductType extends ViewPart {
 			}
 			
 		}
-		
-		
-		
-
 		viewer.setInput(typeList);
 		
 	}

@@ -84,9 +84,9 @@
          </searchAction>
       </navigator>
       <navigator
-            id="vis.project"
+            id="vis.projectset"
             provideSelection="true"
-            table="vis.project">
+            table="vis.projectset">
          <filterAction>
             <column
                   columnDefinitionId="project.projectnumber">
@@ -216,25 +216,30 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="2"
+            autoExpandLevel="3"
             canCreate="false"
             canDelete="false"
             canEdit="false"
             canRead="false"
             collectionName="organization"
-            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.organization.OrgOfOwnerManager"
             dbName="pm2"
+            headerVisiable="false"
             id="vis.project.org"
             idfield="_id"
-            multiSelection="false">
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
          <column
-               columnDefinitionId="com.sg.widgets.column.desc">
+               columnDefinitionId="organization.desc.html">
          </column>
          <column
-               columnDefinitionId="organization.organizationType">
-         </column>
-         <column
-               columnDefinitionId="organization.isFunctionDepartment">
+               labelProvider="com.sg.business.visualization.labelprovide.OrganizationProjectCount"
+               name="项目数"
+               style="SWT.CENTER"
+               type="String"
+               width="80">
          </column>
          <structure
                modelRelation="organization_organization">
@@ -249,9 +254,9 @@
             canEdit="false"
             canRead="false"
             collectionName="project"
-            dataSet="com.sg.business.model.dataset.visualization.VisProject"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
-            id="vis.project">
+            id="vis.projectset">
          <column
                columnDefinitionId="project.status">
          </column>
@@ -331,6 +336,17 @@
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="editor.visualization.projectset"
+            name="项目集">
+         <navigatorpage
+               id="projectset.schedule"
+               navigatorId="vis.projectset"
+               title="进度">
+         </navigatorpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
