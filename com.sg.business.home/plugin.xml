@@ -28,12 +28,6 @@
             name="日历"
             restorable="true">
       </view>
-      <view
-            class="com.sg.business.home.ViewPart1"
-            id="chartdemo"
-            name="ChartDemo"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
