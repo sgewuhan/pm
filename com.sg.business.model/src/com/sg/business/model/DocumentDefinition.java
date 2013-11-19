@@ -183,7 +183,6 @@ public class DocumentDefinition extends PrimaryObject {
 	public Document doCreateDocument(ObjectId projectId, ObjectId folderId,ObjectId workId,IContext context)
 			throws Exception {
 		BasicDBObject documentData = new BasicDBObject();
-		documentData.put(Document.F__ID, new ObjectId());
 		documentData.put(Document.F_PROJECT_ID, projectId);
 		documentData.put(Document.F_WORK_ID, workId);
 		documentData.put(Document.F_FOLDER_ID, folderId);
@@ -239,7 +238,7 @@ public class DocumentDefinition extends PrimaryObject {
 
 		Document doc = ModelService.createModelObject(documentData,
 				Document.class);
-		doc.doInsert(context);
+		doc.doSave(context);
 		return doc;
 	}
 	

@@ -20,7 +20,7 @@ public class FolderOfProject extends MasterDetailDataSetFactory {
 
 
 	/**
-	 * 改变获取项目的引用值：{@link com.sg.business.model.Project.F_FOLDER_ID }
+	 * 改变获取项目的引用值：{@link com.sg.business.model.VisProject.F_FOLDER_ID }
 	 */
 	@Override
 	protected Object getMasterValue() {
