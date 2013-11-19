@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -14,6 +15,7 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
+import com.sg.business.resource.BusinessResource;
 
 public class OrganizationProjectCount extends ColumnLabelProvider {
 
@@ -42,6 +44,17 @@ public class OrganizationProjectCount extends ColumnLabelProvider {
 			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;font-weight:bold'>");
 			sb.append("/" + cnt);
 			sb.append("</span>");
+			
+			sb.append("<a href=\""
+					+ organization.get_id().toString()
+					+ "\" target=\"_rwt\">");
+			sb.append("<img src='");
+				sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append("' style='border-style:none;float:right;padding:0px;margin:0px' width='16' height='16' />");
+			sb.append("</a>");
+
+			
 			return sb.toString();
 		}
 		return "";
