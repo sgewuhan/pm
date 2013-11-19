@@ -332,5 +332,32 @@
    <extension
          point="com.sg.widgets.dataEditor">
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:main?before=create">
+         <command
+               commandId="visualization.command.demo1"
+               icon="image/preview_24.png"
+               label="演示"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="visualization.command.demo1"
+            name="demo">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.visualization.Demo1"
+            commandId="visualization.command.demo1">
+      </handler>
+   </extension>
 
 </plugin>
