@@ -49,13 +49,14 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			AbstractWork work = (AbstractWork) iter.next();
-			if (hasContains(delectWorks, work)) {
-				continue;
+			if (delectWorks.size() > 0) {
+				if (hasContains(delectWorks, work)) {
+					continue;
+				}
+				if (hasChildrenContains(delectWorks, work)) {
+					continue;
+				}
 			}
-			if (hasChildrenContains(delectWorks, work)) {
-				continue;
-			}
-
 			delectWorks.add(work);
 		}
 		if (delectWorks.size() > 0) {
@@ -69,7 +70,8 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		}
 	}
 
-	private boolean hasChildrenContains(List<AbstractWork> delectWorks, AbstractWork work) {
+	private boolean hasChildrenContains(List<AbstractWork> delectWorks,
+			AbstractWork work) {
 		List<PrimaryObject> childrenWorks = work
 				.getChildrenPrimaryObjectCache();
 		if (childrenWorks != null && childrenWorks.size() > 0) {
@@ -87,9 +89,11 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		return false;
 	}
 
-	private boolean hasContains(List<AbstractWork> delectWorks, AbstractWork work) {
+	private boolean hasContains(List<AbstractWork> delectWorks,
+			AbstractWork work) {
 		if (delectWorks != null && delectWorks.size() > 0) {
-			AbstractWork parentWork = (AbstractWork) work.getParentPrimaryObjectCache();
+			AbstractWork parentWork = (AbstractWork) work
+					.getParentPrimaryObjectCache();
 			if (parentWork != null) {
 				if (delectWorks.contains(parentWork)) {
 					return true;

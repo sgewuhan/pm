@@ -7,20 +7,93 @@ import com.sg.business.model.CalendarSetting;
 import com.sg.business.model.IModelConstants;
 
 public class DBClear implements Runnable {
-//	private static final ObjectId[] NOTDELETE = new ObjectId[] { null,
-//			new ObjectId("5281cb76e0cc49249f3c6715"),
-//			new ObjectId("5284340fe0cc7c1c547d44fa"),
-//			new ObjectId("5281d483e0cc49249f3c68e7"),
-//			new ObjectId("528476a0e0cc7c1c547d58d5"),
-//			new ObjectId("52844a07e0cc7c1c547d4a82"),
-//			new ObjectId("5282dac9e0ccf8afc27a1a3e") };
+	// private static final ObjectId[] NOTDELETE = new ObjectId[] { null,
+	// new ObjectId("5281cb76e0cc49249f3c6715"),
+	// new ObjectId("5284340fe0cc7c1c547d44fa"),
+	// new ObjectId("5281d483e0cc49249f3c68e7"),
+	// new ObjectId("528476a0e0cc7c1c547d58d5"),
+	// new ObjectId("52844a07e0cc7c1c547d4a82"),
+	// new ObjectId("5282dac9e0ccf8afc27a1a3e") };
 
 	@Override
 	public void run() {
-		 clearData();
+		clearData();
+
+		// DBCollection col = getCol(IModelConstants.C_PROJECT);
+		// DBCursor cursor = col.find(new BasicDBObject().append(
+		// Project.F_LIFECYCLE, "wips"));
+		// IContext context = new CurrentAccountContext();
+		// while (cursor.hasNext()) {
+		// DBObject object = cursor.next();
+		// Project project = ModelService.createModelObject(object,
+		// Project.class);
+		// BasicDBObject wbsRootData = new BasicDBObject();
+		// wbsRootData.put(Work.F_DESC, project.getDesc());
+		// wbsRootData.put(Work.F_LIFECYCLE, Work.STATUS_ONREADY_VALUE);
+		// wbsRootData.put(Work.F_PROJECT_ID, project.get_id());
+		// ObjectId wbsRootId = new ObjectId();
+		// wbsRootData.put(Work.F__ID, wbsRootId);
+		// wbsRootData.put(Work.F_ROOT_ID, wbsRootId);
+		// wbsRootData.put(Work.F_IS_PROJECT_WBSROOT, Boolean.TRUE);
+		// wbsRootData.put(Work.F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
+		// Work root = ModelService.createModelObject(wbsRootData, Work.class);
+		// try {
+		// root.doInsert(context);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		//
+		// BasicDBObject folderRootData = new BasicDBObject();
+		// folderRootData.put(Folder.F_DESC, project.getDesc());
+		// folderRootData.put(Folder.F_PROJECT_ID, project.get_id());
+		// ObjectId folderRootId = new ObjectId();
+		// folderRootData.put(Folder.F__ID, folderRootId);
+		// folderRootData.put(Folder.F_ROOT_ID, folderRootId);
+		// folderRootData.put(Folder.F_IS_PROJECT_FOLDERROOT, Boolean.TRUE);
+		// String containerCollection, containerDB;
+		// containerCollection = IModelConstants.C_ORGANIZATION;
+		// Container container = Container.adapter(project,
+		// Container.TYPE_ADMIN_GRANTED);
+		// containerDB = (String) container.getValue(Container.F_SOURCE_DB);
+		// folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
+		// folderRootData.put(Folder.F_CONTAINER_COLLECTION,
+		// containerCollection);
+		// Folder folderRoot = ModelService.createModelObject(folderRootData,
+		// Folder.class);
+		//
+		// try {
+		// folderRoot.doInsert(context);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		//
+		// DBCollection tgtcol = getCol(IModelConstants.C_BUDGET_ITEM);
+		// DBObject srcdata = tgtcol.findOne(new BasicDBObject().append(
+		// WorkDefinitionConnection.F_PROJECT_TEMPLATE_ID, null));
+		// DBObject tgtData = new BasicDBObject();
+		// tgtData.put(ProjectBudget.F_PROJECT_ID, project.get_id());
+		// tgtData.put(ProjectBudget.F_DESC, project.getDesc());
+		// tgtData.put(ProjectBudget.F_DESC_EN, project.getDesc_e());
+		// tgtData.put(ProjectBudget.F_CHILDREN,
+		// srcdata.get(BudgetItem.F_CHILDREN));
+		//
+		// ProjectBudget budget = ModelService.createModelObject(tgtData,
+		// ProjectBudget.class);
+		// try {
+		// budget.doInsert(context);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// DBCollection updatecol = getCol(IModelConstants.C_PROJECT);
+		// updatecol
+		// .update(new BasicDBObject().append(Project.F__ID,
+		// project.get_id()),new BasicDBObject().append("$set",
+		// new BasicDBObject().append(Project.F_WORK_ID,
+		// root.get_id()).append(Project.F_FOLDER_ID,
+		// folderRoot.get_id())));
+		// }
 
 	}
-
 
 	// private void clearData() {
 	// // Çå³ý¹«¸æÅÆ
