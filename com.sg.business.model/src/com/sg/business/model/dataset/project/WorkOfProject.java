@@ -42,7 +42,7 @@ public class WorkOfProject extends MasterDetailDataSetFactory {
 
 
 	/**
-	 * 改变获取项目的引用值：{@link com.sg.business.model.VisProject.F_WORK_ID }
+	 * 改变获取项目的引用值：{@link com.sg.business.model.VisProjectSet.F_WORK_ID }
 	 */
 	@Override
 	protected Object getMasterValue() {

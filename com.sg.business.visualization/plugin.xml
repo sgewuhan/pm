@@ -84,9 +84,9 @@
          </searchAction>
       </navigator>
       <navigator
-            id="vis.project"
+            id="vis.projectset"
             provideSelection="true"
-            table="vis.project">
+            table="vis.projectset">
          <filterAction>
             <column
                   columnDefinitionId="project.projectnumber">
@@ -216,7 +216,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="2"
+            autoExpandLevel="3"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -235,10 +235,11 @@
                columnDefinitionId="organization.desc.html">
          </column>
          <column
-               labelProvider="com.sg.business.visualization.labelprovide.ProjectNumber"
+               labelProvider="com.sg.business.visualization.labelprovide.OrganizationProjectCount"
                name="项目数"
                style="SWT.CENTER"
-               type="Integer">
+               type="String"
+               width="80">
          </column>
          <structure
                modelRelation="organization_organization">
@@ -253,9 +254,9 @@
             canEdit="false"
             canRead="false"
             collectionName="project"
-            dataSet="com.sg.business.model.dataset.visualization.VisProject"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
-            id="vis.project">
+            id="vis.projectset">
          <column
                columnDefinitionId="project.status">
          </column>
@@ -335,6 +336,17 @@
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="editor.visualization.projectset"
+            name="项目集">
+         <navigatorpage
+               id="projectset.schedule"
+               navigatorId="vis.projectset"
+               title="进度">
+         </navigatorpage>
+      </editor>
    </extension>
 
 </plugin>

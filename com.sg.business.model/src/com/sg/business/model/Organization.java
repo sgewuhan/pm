@@ -1552,6 +1552,7 @@ public class Organization extends PrimaryObject {
 	}
 
 	private SummaryOrganizationWorks summary;
+	private OrganizationProjectProvider projectProvider;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1561,6 +1562,11 @@ public class Organization extends PrimaryObject {
 				summary = new SummaryOrganizationWorks(this);
 			}
 			return (T) summary;
+		}else if(adapter==ProjectProvider.class){
+			if(projectProvider==null){
+				projectProvider=new OrganizationProjectProvider();
+				projectProvider.setOrganization(this);
+			}
 		}
 		return super.getAdapter(adapter);
 	}
