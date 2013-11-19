@@ -32,8 +32,11 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		List<PrimaryObject> result=new ArrayList<PrimaryObject>();
 		while(cur.hasNext()){
 			DBObject dbo = cur.next();
-			result.add(ModelService.createModelObject(dbo, Project.class));
+			Project project = ModelService.createModelObject(dbo, Project.class);
+			//¸½¼Ó×Ö¶Î _internal_org_id,_internal_org_desc
+			result.add(project);
 		}
+		//TODO ÏÂ¼¶
 		return result;
 	}
 
