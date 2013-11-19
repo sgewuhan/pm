@@ -76,7 +76,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String EDIT_WORK_PLAN_1 = "edit.work.plan.1";
 
 	public static final String TEMPLATE_DELIVERABLE = "template_deliverable";
-	
 
 	/**
 	 * 不带流程叶子工作编辑器
@@ -1543,7 +1542,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return true;
 		} else {
 			Work parent = (Work) getParent();
-			if (parent != null) {
+			if (parent != null && !parent.isEmpty()) {
 				return parent.hasPermission(context);
 			} else {
 				// 是Root工作，判断是否是项目经理
@@ -1566,7 +1565,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		List<Work> result = new ArrayList<Work>();
 		result.add(this);
 		Work parent = (Work) getParent();
-		while (parent != null) {
+		while (parent != null && !parent.isEmpty()) {
 			result.add(parent);
 			parent = (Work) parent.getParent();
 		}
@@ -1823,22 +1822,33 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		doCaculateWorksAllocated(context);
 
 		// 重新计算上级工作的工时
-		doReCaculateParentWork(false);
+		Work parent = (Work) getParent();
+		if (parent != null) {
+			parent.doReCaculateParentWork(false);
+		}
 
 		return true;
 
 	}
 
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		Work parent = (Work) getParent();
+		super.doRemove(context);
+		// 计算计划工时分配
+		doCaculateWorksAllocated(context);
+		if (parent != null) {
+			parent.doReCaculateParentWork(false);
+		}
+	}
+
 	private void doReCaculateParentWork(boolean useJob) {
 		if (useJob) {
-			Job job = new Job("重新计算上级工作") {
+			Job job = new Job("重新计算工作") {
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					Work parentWork = (Work) getParent();
-					if (parentWork != null) {
-						parentWork.caculate();
-					}
+					Work.this.caculate();
 					return org.eclipse.core.runtime.Status.OK_STATUS;
 				}
 
@@ -1846,10 +1856,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			job.schedule();
 		} else {
-			Work parentWork = (Work) getParent();
-			if (parentWork != null) {
-				parentWork.caculate();
-			}
+			this.caculate();
 		}
 
 	}
@@ -2356,9 +2363,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Iterator<NodeAssignment> iter = procd.getNodesAssignment().iterator();
 		while (iter.hasNext()) {
 			NodeAssignment nas = iter.next();
-			
-			if (!nas.isRuleAssignment()&&nas.forceAssignment()) {
-				
+
+			if (!nas.isRuleAssignment() && nas.forceAssignment()) {
+
 				String ass = actorParameter.get(nas.getNodeActorParameter());
 				if (Utils.isNullOrEmpty(ass)) {
 					throw new Exception("流程缺少必要的人员指派" + this + ":"
@@ -2471,7 +2478,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
 						wfHistory.put(IDocumentProcess.F_PROCESS_INSTANCEID,
 								getExecuteProcessId());
-						DroolsProcessDefinition pd = ip.getProcessDefinition(F_WF_EXECUTE);
+						DroolsProcessDefinition pd = ip
+								.getProcessDefinition(F_WF_EXECUTE);
 						wfHistory.put(IDocumentProcess.F_PROCESSID,
 								pd.getProcessId());
 						wfHistory.put(IDocumentProcess.F_PROCESSNAME,

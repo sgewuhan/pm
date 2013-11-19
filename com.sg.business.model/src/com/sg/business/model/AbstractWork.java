@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -8,13 +9,16 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.StructuredDBCollectionDataSetFactory;
+import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.resource.BusinessResource;
@@ -52,31 +56,29 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * {@link #WORK_TYPE_PROJECT}
 	 */
 	public static final String F_WORK_TYPE = "worktype";
-	
+
 	/**
 	 * 内部类型
 	 */
 	public static final String F_INTERNAL_TYPE = "internaltype";
-	
+
 	/**
 	 * 变更工作
 	 */
 	public static final String INTERNAL_TYPE_CHANGE = "变更工作";
-	
+
 	public static final String INTERNAL_TYPE_CHANGERANGE = "变更范围";
-	
+
 	public static final String INTERNAL_TYPE_CHANGEITEM = "变更项";
-	
+
 	public static final String F_INTERNAL_PARA_CHARGERID = "chargerpara";
 
 	public static final String F_INTERNAL_PARA_NOSKIP = "noskippara";
 
 	public static final String F_INTERNAL_DEFAULTSELECTED = "defaultselected";
-	
+
 	public static final String F_INTERNAL_ECAPARA = "ecapara";
-	
-	
-	
+
 	/**
 	 * 工作定义的上级工作定义
 	 */
@@ -117,8 +119,6 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public boolean isSummaryWork() {
 		return hasChildrenWork();
 	}
-	
-	
 
 	/**
 	 * 返回工作定义在WBS中的编号<br/>
@@ -350,7 +350,8 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 			throw new Exception("您不能移动顶层的工作");
 		}
 
-		AbstractWork grandpa = (AbstractWork) parent.getParentPrimaryObjectCache();
+		AbstractWork grandpa = (AbstractWork) parent
+				.getParentPrimaryObjectCache();
 
 		List<PrimaryObject> thisChildren = getChildrenWork();
 
@@ -435,31 +436,59 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 			child.doArrangeWBSCode();
 		}
 	}
-	
-	public boolean isGenericWork(){
+
+	@Override
+	public void doRemove(IContext context) throws Exception {
+		if (!canDelete(context)) {
+			return;
+		}
+		doDelectIterator(context);
+	}
+
+	private void doDelectIterator(IContext context) throws Exception {
+		if (hasChildrenWork()) {
+			List<PrimaryObject> childrenWork = getChildrenWork();
+			for (PrimaryObject po : childrenWork) {
+				AbstractWork abstractWork = (AbstractWork) po;
+				abstractWork.doDelectIterator(context);
+			}
+		}
+		DBCollection col = getCollection();
+		WriteResult ws = col.remove(
+				new BasicDBObject().append(F__ID, get_id()),
+				WriteConcern.NORMAL);
+		checkWriteResult(ws);
+		fireEvent(IPrimaryObjectEventListener.REMOVE);
+
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "删除",
+				new Date(), getLabel() + "\n" + getDbName() + "\\"
+						+ getCollectionName() + "\\" + get_id(), getDbName());
+	}
+
+	public boolean isGenericWork() {
 		Object type = getValue(F_WORK_TYPE);
-		if(type instanceof Integer){
+		if (type instanceof Integer) {
 			return ((Integer) type).intValue() == WORK_TYPE_GENERIC;
 		}
-		
+
 		return false;
 	}
-	
-	public boolean isStandloneWork(){
+
+	public boolean isStandloneWork() {
 		Object type = getValue(F_WORK_TYPE);
-		if(type instanceof Integer){
+		if (type instanceof Integer) {
 			return ((Integer) type).intValue() == WORK_TYPE_STANDLONE;
 		}
-		
+
 		return false;
 	}
-	
-	public boolean isProjectWork(){
+
+	public boolean isProjectWork() {
 		Object type = getValue(F_WORK_TYPE);
-		if(type instanceof Integer){
+		if (type instanceof Integer) {
 			return ((Integer) type).intValue() == WORK_TYPE_PROJECT;
 		}
-		
+
 		return false;
 	}
 }
