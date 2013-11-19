@@ -222,19 +222,23 @@
             canEdit="false"
             canRead="false"
             collectionName="organization"
-            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.organization.OrgOfOwnerManager"
             dbName="pm2"
+            headerVisiable="false"
             id="vis.project.org"
             idfield="_id"
-            multiSelection="false">
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
          <column
-               columnDefinitionId="com.sg.widgets.column.desc">
+               columnDefinitionId="organization.desc.html">
          </column>
          <column
-               columnDefinitionId="organization.organizationType">
-         </column>
-         <column
-               columnDefinitionId="organization.isFunctionDepartment">
+               labelProvider="com.sg.business.visualization.labelprovide.ProjectNumber"
+               name="项目数"
+               style="SWT.CENTER"
+               type="Integer">
          </column>
          <structure
                modelRelation="organization_organization">

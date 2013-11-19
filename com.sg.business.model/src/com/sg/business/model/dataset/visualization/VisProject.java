@@ -12,7 +12,7 @@ public class VisProject extends MasterDetailDataSetFactory {
 
 	@Override
 	protected String getDetailCollectionKey() {
-		return Project.F_FUNCTION_ORGANIZATION;
+		return Project.F_LAUNCH_ORGANIZATION;
 	}
 
 }

@@ -241,6 +241,8 @@ public class Organization extends PrimaryObject {
 		sb.append("</small>");
 		return sb.toString();
 	}
+	
+
 
 	/**
 	 * 返回组织在系统中的显示图标地址
@@ -1660,4 +1662,5 @@ public class Organization extends PrimaryObject {
 	public List<?> getPartContainerCode() {
 		return getListValue(F_PDM_PART_COMTAINER);
 	}
+
 }
