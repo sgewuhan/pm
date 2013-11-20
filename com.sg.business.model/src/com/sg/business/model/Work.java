@@ -760,6 +760,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return Boolean.TRUE.equals(getValue(F_MANDATORY));
 	}
 
+	public boolean isMilestone() {
+		return Boolean.TRUE.equals(getValue(F_MILESTONE));
+	}
+	
 	public boolean isArchive() {
 		return Boolean.TRUE.equals(getValue(F_ARCHIVE));
 	}
@@ -1222,7 +1226,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				Work childWork = (Work) childrenWork.get(i);
 				result.addAll(childWork.checkPlan(project, roleMap));
 			}
-		} else {
+		}
+		if(isMilestone()){
 			// ****************************************************************************************
 			// 1 检查工作的计划开始和计划完成
 			Object value = getPlanStart();
@@ -1368,7 +1373,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				checkItem.setSelection(this);
 				result.add(checkItem);
 			}
-
 		}
 
 		return result;
@@ -1385,16 +1389,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	protected List<Object[]> checkCascadeStart(boolean warningCheck) {
 		List<Object[]> message = new ArrayList<Object[]>();
-		// 检查下级工作，非摘要工作不处理
-		List<PrimaryObject> childrenWork = getChildrenWork();
-		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
-			for (int i = 0; i < childrenWork.size(); i++) {
-				Work childWork = (Work) childrenWork.get(i);
-				// 通过warningCheck，降低下级的检查标准
-				message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
-						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
+		// 非级联启动工作不检查
+		if (warningCheck) {
+			List<PrimaryObject> childrenWork = getChildrenWork();
+			if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
+				for (int i = 0; i < childrenWork.size(); i++) {
+					Work childWork = (Work) childrenWork.get(i);
+					// 通过warningCheck，降低下级的检查标准
+					message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
+							.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
+				}
 			}
-		} else {
+
 			// 1.检查工作的计划开始和计划完成
 			Object value = getPlanStart();
 			if (value == null) {
@@ -1840,10 +1846,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Work parent = (Work) getParent();
 		doDelectIterator(context);
 		// 计算计划工时分配
-				doCaculateWorksAllocated(context);
-				if (parent != null) {
-					parent.doReCaculateParentWork(false);
-				}
+		doCaculateWorksAllocated(context);
+		if (parent != null) {
+			parent.doReCaculateParentWork(false);
+		}
 	}
 
 	private void doDelectIterator(IContext context) throws Exception {
@@ -1861,12 +1867,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		checkWriteResult(ws);
 		fireEvent(IPrimaryObjectEventListener.REMOVE);
 
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "删除",
-				new Date(), getLabel() + "\n" + getDbName() + "\\"
-						+ getCollectionName() + "\\" + get_id(), getDbName());
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "删除", new Date(),
+				getLabel() + "\n" + getDbName() + "\\" + getCollectionName()
+						+ "\\" + get_id(), getDbName());
 	}
-	
-	
 
 	private void doReCaculateParentWork(boolean useJob) {
 		if (useJob) {

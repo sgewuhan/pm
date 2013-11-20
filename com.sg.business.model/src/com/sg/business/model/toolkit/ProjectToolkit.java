@@ -438,75 +438,58 @@ public class ProjectToolkit {
 
 	private static String checkOptionValueFromTemplate(DBObject optionHost,
 			Project project) {
+		String setOption = WorkDefinition.VALUE_OPTION;
 		Object filters = optionHost.get(WorkDefinition.F_OPTION_FILTERS);
 		if (filters instanceof BasicBSONList) {
-
 			BasicBSONList filtersValue = (BasicBSONList) filters;
 			// 检查标准集
 			List<String> optionValueSet = project.getStandardSetOptions();
-			if (optionValueSet != null) {
-				for (int i = 0; i < optionValueSet.size(); i++) {
-					String optionValueItem = optionValueSet.get(i);
-					BasicDBObject item = new BasicDBObject();
-					item.put(WorkDefinition.SF_OPTIONSET,
-							WorkDefinition.OPTIONSET_NAME_STANDARD);
-					item.put(WorkDefinition.SF_OPTION, optionValueItem);
-					item.put(WorkDefinition.SF_VALUE,
-							WorkDefinition.VALUE_EXCLUDE);
-					if (filtersValue.contains(item)) {
-						return WorkDefinition.VALUE_EXCLUDE;
-					} else {
-						item.put(WorkDefinition.SF_VALUE,
-								WorkDefinition.VALUE_MANDATORY);
-						if (filtersValue.contains(item)) {
-							return WorkDefinition.VALUE_MANDATORY;
-						}
-					}
-				}
+			String set = checkOptionValueFromSet(filtersValue, optionValueSet,WorkDefinition.OPTIONSET_NAME_STANDARD);
+			if(WorkDefinition.VALUE_EXCLUDE.equals(set)){
+				return WorkDefinition.VALUE_EXCLUDE;
+			} else if(WorkDefinition.VALUE_MANDATORY.equals(set)){
+				setOption = WorkDefinition.VALUE_MANDATORY;
 			}
 
 			// 检查产品选项集
 			optionValueSet = project.getProductTypeOptions();
-			if (optionValueSet != null) {
-				for (int i = 0; i < optionValueSet.size(); i++) {
-					String optionValueItem = optionValueSet.get(i);
-					BasicDBObject item = new BasicDBObject();
-					item.put(WorkDefinition.SF_OPTIONSET,
-							WorkDefinition.OPTIONSET_NAME_PRODUCTTYPE);
-					item.put(WorkDefinition.SF_OPTION, optionValueItem);
-					item.put(WorkDefinition.SF_VALUE,
-							WorkDefinition.VALUE_EXCLUDE);
-					if (filtersValue.contains(item)) {
-						return WorkDefinition.VALUE_EXCLUDE;
-					} else {
-						item.put(WorkDefinition.SF_VALUE,
-								WorkDefinition.VALUE_MANDATORY);
-						if (filtersValue.contains(item)) {
-							return WorkDefinition.VALUE_MANDATORY;
-						}
-					}
-				}
+			set = checkOptionValueFromSet(filtersValue, optionValueSet,WorkDefinition.OPTIONSET_NAME_PRODUCTTYPE);
+			if(WorkDefinition.VALUE_EXCLUDE.equals(set)){
+				return WorkDefinition.VALUE_EXCLUDE;
+			} else if(WorkDefinition.VALUE_MANDATORY.equals(set)){
+				setOption = WorkDefinition.VALUE_MANDATORY;
 			}
 
 			// 检查项目选项集
 			optionValueSet = project.getProjectTypeOptions();
-			if (optionValueSet != null) {
-				for (int i = 0; i < optionValueSet.size(); i++) {
-					String optionValueItem = optionValueSet.get(i);
-					BasicDBObject item = new BasicDBObject();
-					item.put(WorkDefinition.SF_OPTIONSET,
-							WorkDefinition.OPTIONSET_NAME_PROJECTTYPE);
-					item.put(WorkDefinition.SF_OPTION, optionValueItem);
+			set = checkOptionValueFromSet(filtersValue, optionValueSet,WorkDefinition.OPTIONSET_NAME_PROJECTTYPE);
+			if(WorkDefinition.VALUE_EXCLUDE.equals(set)){
+				return WorkDefinition.VALUE_EXCLUDE;
+			} else if(WorkDefinition.VALUE_MANDATORY.equals(set)){
+				setOption = WorkDefinition.VALUE_MANDATORY;
+			}
+		}
+		return setOption;
+	}
+
+	private static String checkOptionValueFromSet(BasicBSONList filtersValue,
+			List<String> optionValueSet, String optionsetSetName) {
+		if (optionValueSet != null) {
+			for (int i = 0; i < optionValueSet.size(); i++) {
+				String optionValueItem = optionValueSet.get(i);
+				BasicDBObject item = new BasicDBObject();
+				item.put(WorkDefinition.SF_OPTIONSET,
+						optionsetSetName);
+				item.put(WorkDefinition.SF_OPTION, optionValueItem);
+				item.put(WorkDefinition.SF_VALUE,
+						WorkDefinition.VALUE_EXCLUDE);
+				if (filtersValue.contains(item)) {
+					return WorkDefinition.VALUE_EXCLUDE;
+				} else {
 					item.put(WorkDefinition.SF_VALUE,
-							WorkDefinition.VALUE_EXCLUDE);
+							WorkDefinition.VALUE_MANDATORY);
 					if (filtersValue.contains(item)) {
-						return WorkDefinition.VALUE_EXCLUDE;
-					} else {
-						item.put(WorkDefinition.SF_VALUE,
-								WorkDefinition.VALUE_MANDATORY);
-						if (filtersValue.contains(item)) {
-							return WorkDefinition.VALUE_MANDATORY;
-						}
+						return WorkDefinition.VALUE_MANDATORY;
 					}
 				}
 			}

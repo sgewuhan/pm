@@ -611,20 +611,22 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	private void doInsertAfter(final Work root, final Folder folderRoot,
-			final IContext context) {
+			final IContext context) throws Exception {
 
+		// 复制模板
+		try {
+			doSetupWithTemplate(root.get_id(), context,
+					folderRoot.get_id());
+		} catch (Exception e) {
+//			return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
+//					Status.ERROR, "复制模板出错", e);
+			
+			throw new Exception("复制模板出错");
+		}
 		Job job = new Job("从模板复制项目信息") {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				// 复制模板
-				try {
-					doSetupWithTemplate(root.get_id(), context,
-							folderRoot.get_id());
-				} catch (Exception e) {
-					return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-							Status.ERROR, "复制模板出错", e);
-				}
 				// 复制系统日历
 				try {
 					doCopySystemCanlendar();

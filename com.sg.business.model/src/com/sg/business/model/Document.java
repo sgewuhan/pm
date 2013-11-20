@@ -275,7 +275,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		setValue(F_MAJOR_VID, major);
 		setValue(F_SECOND_VID, 0x0);
-		setValue(F_LIFECYCLE,STATUS_WORKING_ID);
+		setValue(F_LIFECYCLE, STATUS_WORKING_ID);
 		DBCollection collection = getCollection();
 		collection.update(
 				new BasicDBObject().append(F__ID, get_id()),
@@ -558,7 +558,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		// 检查文件
 		List<IServerFile> sf = getServerFileValue();
 		if (sf.isEmpty()) {
-			throw new Exception("必须交付的文档缺少附件："+ this);
+			throw new Exception("必须交付的文档缺少附件：" + this);
 		}
 
 	}
@@ -609,13 +609,19 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		setValue(F_LIFECYCLE, status);
 		Date newValue = new Date();
 		setValue(status + "_date", newValue);
+		BasicDBObject object = new BasicDBObject().append(F_LIFECYCLE, status)
+				.append(status + "_date", newValue);
+		if (!STATUS_WORKING_ID.equals(lc)) {
+			setValue(F_LOCK, Boolean.FALSE);
+			setValue(F_LOCKED_BY, null);
+			setValue(F_LOCKED_ON, null);
+			object.put(F_LOCK, Boolean.FALSE);
+			object.put(F_LOCKED_BY, null);
+			object.put(F_LOCKED_ON, null);
+		}
 		DBCollection col = getCollection();
-		col.update(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append(
-						"$set",
-						new BasicDBObject().append(F_LIFECYCLE, status).append(
-								status + "_date", newValue)));
+		col.update(new BasicDBObject().append(F__ID, get_id()),
+				new BasicDBObject().append("$set", object));
 	}
 
 	@Override
@@ -628,6 +634,21 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		String rev = getRevId();
 		return desc + "|" + num + " [" + rev + "]";
+	}
+
+	public boolean canLock(IContext context) {
+		boolean locked = isLocked();
+		return !locked;
+	}
+
+	public boolean canUnLock(IContext context) {
+		boolean locked = isLocked();
+		String userId = context.getAccountInfo().getConsignerId();
+		User user = getLockedBy();
+		if (user != null && !userId.equals(user.getUserid())) {
+			locked = false;
+		}
+		return locked;
 	}
 
 }
