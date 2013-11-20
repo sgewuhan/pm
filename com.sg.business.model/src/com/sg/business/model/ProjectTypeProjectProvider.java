@@ -190,5 +190,11 @@ public class ProjectTypeProjectProvider extends ProjectProvider {
 		this.userId = userId;
 	}
 
+	@Override
+	public String getProjectSetName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

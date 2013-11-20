@@ -226,18 +226,17 @@
             headerVisiable="false"
             id="vis.project.org"
             idfield="_id"
+            lineVisiable="false"
             markupEnabled="true"
             multiSelection="false"
             virtual="true">
          <column
-               columnDefinitionId="organization.desc.html">
-         </column>
-         <column
-               labelProvider="com.sg.business.visualization.labelprovide.OrganizationProjectCount"
-               name="项目数"
-               style="SWT.CENTER"
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovide.OrganizationProjectLabelProvider"
+               name="组织名称"
+               style="SWT.LEFT"
                type="String"
-               width="80">
+               width="-1">
          </column>
          <structure
                modelRelation="organization_organization">
@@ -254,7 +253,11 @@
             collectionName="project"
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
-            id="vis.projectset">
+            headerVisiable="false"
+            id="vis.projectset"
+            lineVisiable="false"
+            useHashlookup="true"
+            virtual="true">
          <column
                columnDefinitionId="project.status">
          </column>
@@ -373,9 +376,10 @@
             id="editor.visualization.projectset"
             name="项目集">
          <navigatorpage
-               id="projectset.schedule"
+               id="projectset.info"
                navigatorId="vis.projectset"
-               title="进度">
+               pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetContent"
+               title="基本信息">
          </navigatorpage>
       </editor>
    </extension>
