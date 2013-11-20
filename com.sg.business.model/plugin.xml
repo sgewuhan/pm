@@ -175,6 +175,16 @@
             collection="projectprovider"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.ProjectTypeProjectProvider"
+            collection="projecttype"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.ProductTypeProjectProvider"
+            collection="producttype"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

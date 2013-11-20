@@ -22,7 +22,6 @@ public class OrgOfOwnerManager extends SingleDBCollectionDataSetFactory {
 				.getConsignerId();
 		 user= UserToolkit.getUserById(userId);
 	}
-
 	@Override
 	public DataSet getDataSet() {
 		return new DataSet(getInput());

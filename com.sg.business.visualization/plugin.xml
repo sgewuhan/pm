@@ -16,16 +16,16 @@
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.table.ProductType"
-            id="vis.project.product"
-            name="产品类型"
+            class="com.sg.business.visualization.view.ProjectTypeNavigator"
+            id="vis.project.projecttype"
+            name="项目类型"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.table.ProjectType"
-            id="vis.project.type"
-            name="项目类型"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="vis.project.producttype"
+            name="产品类型"
             restorable="true">
       </view>
 
@@ -202,6 +202,14 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="vis.project.projecttype"
+            table="vis.project.projecttype">
+      </navigator>
+      <navigator
+            id="vis.project.producttype"
+            table="vis.project.producttype">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -325,6 +333,39 @@
                   name="标准">
             </column>
          </columnGroup>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            collectionName="projecttype"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.visualization.ProjectType"
+            dbName="pm2"
+            headerVisiable="false"
+            id="vis.project.projecttype"
+            idfield="_id"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="项目类型"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               labelProvider="com.sg.business.visualization.labelprovide.ProjectTypeProjectCount"
+               name="项目数"
+               style="SWT.CENTER"
+               type="String"
+               width="80"></column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.visualization.ProductType"
+            id="vis.project.producttype">
       </table>
    </extension>
    <extension
