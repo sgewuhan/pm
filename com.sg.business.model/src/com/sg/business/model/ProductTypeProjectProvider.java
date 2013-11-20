@@ -16,4 +16,22 @@ public class ProductTypeProjectProvider extends ProjectProvider {
 		return null;
 	}
 
+	@Override
+	public String getProjectSetName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getProjectSetCoverImage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getSummaryValue(String key, Object... objects) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
