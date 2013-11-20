@@ -9,30 +9,23 @@
       </category>
       <view
             category="visualization"
-            class="com.sg.widgets.part.view.TreeNavigator"
+            class="com.sg.business.visualization.view.OrganizationNavigator"
             id="vis.project.org"
             name="组织"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.table.ProductType"
-            id="vis.project.product"
-            name="产品类型"
-            restorable="true">
-      </view>
-      <view
-            category="visualization"
-            class="com.sg.business.visualization.table.ProjectType"
-            id="vis.project.type"
+            class="com.sg.business.visualization.view.ProjectTypeNavigator"
+            id="vis.project.projecttype"
             name="项目类型"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.ViewPart1"
-            id="vis.project"
-            name="项目"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="vis.project.producttype"
+            name="产品类型"
             restorable="true">
       </view>
 
@@ -83,28 +76,167 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="vis.projectset"
+            provideSelection="true"
+            table="vis.projectset">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+            <column
+                  columnDefinitionId="project.status">
+            </column>
+            <column
+                  columnDefinitionId="project.status"
+                  name="状态">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
+            <column
+                  column="producttype"
+                  name="产品类型"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+            <column
+                  columnDefinitionId="project.status"
+                  name="状态">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="参与者"
+                  type="String">
+            </column>
+            <column
+                  column="producttype"
+                  name="产品类型"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="vis.project.projecttype"
+            table="vis.project.projecttype">
+      </navigator>
+      <navigator
+            id="vis.project.producttype"
+            table="vis.project.producttype">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="2"
+            autoExpandLevel="3"
             canCreate="false"
             canDelete="false"
             canEdit="false"
             canRead="false"
             collectionName="organization"
-            dataSet="com.sg.business.model.dataset.organization.OrgRoot"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.organization.OrgOfOwnerManager"
             dbName="pm2"
+            headerVisiable="false"
             id="vis.project.org"
-            multiSelection="false">
+            idfield="_id"
+            lineVisiable="false"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
          <column
-               columnDefinitionId="com.sg.widgets.column.desc">
-         </column>
-         <column
-               columnDefinitionId="organization.organizationType">
-         </column>
-         <column
-               columnDefinitionId="organization.isFunctionDepartment">
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovide.OrganizationProjectLabelProvider"
+               name="组织名称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
          </column>
          <structure
                modelRelation="organization_organization">
@@ -112,7 +244,171 @@
       </tree>
    </extension>
    <extension
+         point="com.sg.widgets.table">
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="project"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
+            dbName="pm2"
+            headerVisiable="false"
+            id="vis.projectset"
+            lineVisiable="false"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
+               columnDefinitionId="project.projectnumber">
+         </column>
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="planstart">
+         </column>
+         <column
+               columnDefinitionId="planfinish">
+         </column>
+         <column
+               columnDefinitionId="actualstart">
+         </column>
+         <column
+               columnDefinitionId="actualfinish">
+         </column>
+         <columnGroup
+               defaultGroup="false"
+               id="com.sg.business.project.columnGroup1"
+               name="计划进度">
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               id="com.sg.business.project.columnGroup1"
+               name="实际进度">
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="组织和参与者">
+            <column
+                  columnDefinitionId="participate">
+            </column>
+            <column
+                  columnDefinitionId="project.org_id">
+            </column>
+            <column
+                  columnDefinitionId="project.launchorg_id">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="选项属性">
+            <column
+                  column="producttype"
+                  name="产品类型">
+            </column>
+            <column
+                  column="projecttype"
+                  name="项目类型">
+            </column>
+            <column
+                  column="standardset"
+                  name="标准">
+            </column>
+         </columnGroup>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            collectionName="projecttype"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.visualization.ProjectType"
+            dbName="pm2"
+            headerVisiable="false"
+            id="vis.project.projecttype"
+            idfield="_id"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               name="项目类型"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               labelProvider="com.sg.business.visualization.labelprovide.ProjectTypeProjectCount"
+               name="项目数"
+               style="SWT.CENTER"
+               type="String"
+               width="80"></column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.visualization.ProductType"
+            id="vis.project.producttype">
+      </table>
+   </extension>
+   <extension
          point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="projectprovider"
+            dbName="pm2"
+            id="editor.visualization.projectset"
+            name="项目集">
+         <navigatorpage
+               id="projectset.info"
+               navigatorId="vis.projectset"
+               pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetContent"
+               title="基本信息">
+         </navigatorpage>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:main?before=create">
+         <command
+               commandId="visualization.command.demo1"
+               icon="image/preview_24.png"
+               label="演示"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="visualization.command.demo1"
+            name="demo">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.sg.business.visualization.Demo1"
+            commandId="visualization.command.demo1">
+      </handler>
    </extension>
 
 </plugin>

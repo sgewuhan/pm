@@ -104,8 +104,11 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 			
 		}
 		
-		
-		viewer.setInput(root.getChildren());
+		if(root == null){
+			viewer.setInput(new ProjectBudget[0]);
+		}else{
+			viewer.setInput(root.getChildren());
+		}
 		viewer.expandAll();
 		return (Composite) viewer.getControl();
 	}

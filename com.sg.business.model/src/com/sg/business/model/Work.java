@@ -3911,6 +3911,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean isDelayed() {
 		Date _planFinish = getPlanFinish();
 		Date _actualFinish = getActualFinish();
+
+		if( _planFinish==null){
+			return false;
+		}
 		if (_actualFinish != null) {
 			return _actualFinish.after(_planFinish);
 		} else {

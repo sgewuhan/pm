@@ -105,17 +105,16 @@ public class Organization extends PrimaryObject {
 	 * 公司代码，与SAP对应的公司代码
 	 */
 	public static final String F_COMPANY_CODE = "companycode";
-	
+
 	/**
 	 * PDM 图文档容器代码
 	 */
 	public static final String F_PDM_DOC_DRAWING_COMTAINER = "pdmcontainer";
-	
+
 	/**
 	 * PDM 零部件容器代码
 	 */
 	private static final String F_PDM_PART_COMTAINER = "pdmpartcontainer";
-
 
 	/**
 	 * 组织类型
@@ -129,7 +128,6 @@ public class Organization extends PrimaryObject {
 	public static final String ORG_TYPE_TEAM = "团队";
 
 	public static final String F_FILEBASE = "filebase";
-
 
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
@@ -226,10 +224,12 @@ public class Organization extends PrimaryObject {
 	@Override
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+
 		String imageUrl = "<img src='" + getImageURL()
 				+ "' style='float:left;padding:2px' width='24' height='24' />";
 		String label = getLabel();
-		String path = getPath();
+		String path = getFullName();
 
 		sb.append(imageUrl);
 		sb.append("<b>");
@@ -238,9 +238,15 @@ public class Organization extends PrimaryObject {
 		sb.append("<br/>");
 		sb.append("<small>");
 		sb.append(path);
-		sb.append("</small>");
+		sb.append("</small></span>");
 		return sb.toString();
 	}
+
+	public String getFullName() {
+		return getStringValue(F_FULLDESC);
+	}
+	
+
 
 	/**
 	 * 返回组织在系统中的显示图标地址
@@ -248,13 +254,21 @@ public class Organization extends PrimaryObject {
 	 * @return String
 	 */
 	public String getImageURL() {
-		if (getValue(F_PARENT_ID) == null) {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_ORG_24,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-		} else {
-			return FileUtil.getImageURL(BusinessResource.IMAGE_TEAM_24,
+		String orgType = getOrganizationType();
+		if (ORG_TYPE_COMPANY.equals(orgType)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_COMPANY_24,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 		}
+		if (ORG_TYPE_BUSINESS_UNIT.equals(orgType)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_BUSINESSUNIT_24,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		}
+		if (ORG_TYPE_DEPARTMENT.equals(orgType)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_DEPT_24,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		}
+		return FileUtil.getImageURL(BusinessResource.IMAGE_TEAM_24,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
 	/**
@@ -396,27 +410,27 @@ public class Organization extends PrimaryObject {
 		// 检查如果是事业部类型的组织，组织代码必须填写
 		String type = getOrganizationType();
 		if (Utils.isNullOrEmpty(type)) {
-			throw new Exception("公司类型不可为空"+this);
+			throw new Exception("公司类型不可为空" + this);
 		}
 		if (ORG_TYPE_COMPANY.equals(type)
 				|| ORG_TYPE_BUSINESS_UNIT.equals(type)) {
 			String companyCode = getCompanyCode();
 			if (Utils.isNullOrEmpty(companyCode)) {
-				throw new Exception("事业部或公司类型的组织需要具有\"公司代码\""+this);
+				throw new Exception("事业部或公司类型的组织需要具有\"公司代码\"" + this);
 			}
 		}
 
 		if (isFunctionDepartment()) {
 			String code = getCode();
 			if (Utils.isNullOrEmpty(code)) {
-				throw new Exception("具有项目管理职能的组织需要具有\"代码\""+this);
+				throw new Exception("具有项目管理职能的组织需要具有\"代码\"" + this);
 			}
 		}
-		
-		if(isContainer()){
+
+		if (isContainer()) {
 			String code = getFileBase();
 			if (Utils.isNullOrEmpty(code)) {
-				throw new Exception("具有文档容器的组织需要具有\"容器代码\""+this);
+				throw new Exception("具有文档容器的组织需要具有\"容器代码\"" + this);
 			}
 		}
 
@@ -1522,7 +1536,7 @@ public class Organization extends PrimaryObject {
 					.getContainerOrganizationId();
 		}
 	}
-	
+
 	/**
 	 * 获取当期组织最近的具有文档容器的组织
 	 * 
@@ -1538,6 +1552,7 @@ public class Organization extends PrimaryObject {
 	}
 
 	private SummaryOrganizationWorks summary;
+	private OrganizationProjectProvider projectProvider;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1547,6 +1562,12 @@ public class Organization extends PrimaryObject {
 				summary = new SummaryOrganizationWorks(this);
 			}
 			return (T) summary;
+		}else if(adapter==ProjectProvider.class){
+			if(projectProvider==null){
+				projectProvider=ModelService.createModelObject(OrganizationProjectProvider.class);
+				projectProvider.setOrganization(this);
+			}
+			return (T)projectProvider;
 		}
 		return super.getAdapter(adapter);
 	}
@@ -1622,6 +1643,7 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 搜索角色的用户
+	 * 
 	 * @param roleNumber
 	 * @param selectType
 	 * @return
@@ -1642,11 +1664,11 @@ public class Organization extends PrimaryObject {
 	}
 
 	public PrimaryObject getFunctionOrganization() {
-		if(isFunctionDepartment()){
+		if (isFunctionDepartment()) {
 			return this;
-		}else{
+		} else {
 			Organization parent = (Organization) getParentOrganization();
-			if(parent!=null){
+			if (parent != null) {
 				return parent.getFunctionOrganization();
 			}
 		}
@@ -1656,8 +1678,9 @@ public class Organization extends PrimaryObject {
 	public List<?> getDocumentAndDrawingContainerCode() {
 		return getListValue(F_PDM_DOC_DRAWING_COMTAINER);
 	}
-	
+
 	public List<?> getPartContainerCode() {
 		return getListValue(F_PDM_PART_COMTAINER);
 	}
+
 }

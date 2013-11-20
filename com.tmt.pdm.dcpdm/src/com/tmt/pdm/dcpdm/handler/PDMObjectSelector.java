@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Text;
 
 import com.tmt.pdm.client.Starter;
 
-import dyna.framework.iip.IIPRequestException;
-
 public class PDMObjectSelector extends Dialog {
 
 	private String[] docContainers;
@@ -163,7 +161,7 @@ public class PDMObjectSelector extends Dialog {
 						if (r != null) {
 							result.addAll(r);
 						}
-					} catch (IIPRequestException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
