@@ -28,7 +28,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	}
 
 	@Override
-	public String getProjectSetCoverImageURL() {
+	public String getProjectSetCoverImage() {
 		return FileUtil.getImageURL("project_72.png",
 				"com.sg.business.project", BusinessResource.IMAGE_FOLDER);
 	}
@@ -56,6 +56,13 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	@Override
 	public String getProjectSetName() {
 		return getDesc()+"ÏîÄ¿¼¯";
+	}
+
+
+	@Override
+	public Object getSummaryValue(String key, Object... arg) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

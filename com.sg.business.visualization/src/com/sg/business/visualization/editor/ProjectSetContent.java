@@ -1,19 +1,30 @@
 package com.sg.business.visualization.editor;
 
+import java.util.Calendar;
+
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 
-import com.mobnut.commons.util.file.FileUtil;
-import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectProvider;
-import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.NavigatorControl;
 import com.sg.widgets.part.editor.IEditorActionListener;
@@ -21,12 +32,20 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.INavigatorPageBodyPartCreater;
 import com.sg.widgets.part.editor.page.NavigatorPage;
 
+@SuppressWarnings("restriction")
 public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 
 	private static final int INFOBANNER_HEIGHT = 68;
 	private static final int MARGIN = 4;
+	private Label projectStatusSummary;
+	private Label schedualSummary;
+	private Label costSummary;
+	private Object[] parameter = new Object[10];
+	private Label filterLabel;
+	private Composite header;
 
 	public ProjectSetContent() {
+
 	}
 
 	@Override
@@ -37,9 +56,14 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 	@Override
 	public void createNavigatorBody(Composite body, NavigatorControl navi,
 			PrimaryObjectEditorInput input, NavigatorPage navigatorPage) {
+		// 设置缺省的参数
+		parameter[0] = Calendar.getInstance();
+		parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
+
+		//
 		body.setLayout(new FormLayout());
 		// 创建页头
-		Composite header = createHeader(body, input);
+		header = createHeader(body, input);
 		FormData fd = new FormData();
 		header.setLayoutData(fd);
 		fd.top = new FormAttachment(0, 1);
@@ -65,6 +89,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		fd.left = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.bottom = new FormAttachment(100, -1);
+
 	}
 
 	private Composite createNavigator(Composite body, NavigatorControl navi) {
@@ -75,49 +100,292 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 
 	private Composite createHeader(Composite body,
 			PrimaryObjectEditorInput input) {
-		ProjectProvider data = (ProjectProvider) input.getData();
+		final ProjectProvider data = (ProjectProvider) input.getData();
 		String projectSetName = data.getProjectSetName();
-		String projectSetCover = data.getProjectSetCoverImageURL();
+		String projectSetCover = data.getProjectSetCoverImage();
 
 		Composite header = new Composite(body, SWT.NONE);
-		header.setLayout(new FillLayout());
+		header.setLayout(new FormLayout());
 		setBackgroundGradient(header);
 
-		Label label = new Label(header, SWT.NONE);
-		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		Label cover = new Label(header, SWT.NONE);
+		cover.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 
 		StringBuffer sb = new StringBuffer();
 		// 添加项目集合封面图片
 		if (projectSetCover != null) {
 			sb.append("<img src='");
 			sb.append(projectSetCover);
-			sb.append("' style='border-style:none;float:left; display:block;' width='"
-					+ (INFOBANNER_HEIGHT - MARGIN)
-					+ "' height='"
+			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='"
+					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='"
 					+ (INFOBANNER_HEIGHT - MARGIN) + "' />");
+			cover.setText(sb.toString());
 		}
-		
-		//添加名称
-		sb.append("<span style='FONT-FAMILY:微软雅黑;float:left;font-size:14pt'>");
+
+		FormData fd = new FormData();
+		cover.setLayoutData(fd);
+		fd.left = new FormAttachment();
+		fd.top = new FormAttachment();
+		fd.height = INFOBANNER_HEIGHT;
+		fd.width = INFOBANNER_HEIGHT;
+
+		// 显示项目集合名称
+		Label projectSetLabel = new Label(header, SWT.NONE);
+		projectSetLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
 		sb.append(projectSetName);
 		sb.append("</span>");
+		projectSetLabel.setText(sb.toString());
 
-		label.setText(sb.toString());
+		fd = new FormData();
+		projectSetLabel.setLayoutData(fd);
+		fd.left = new FormAttachment(30, -INFOBANNER_HEIGHT);
+		fd.bottom = new FormAttachment(100, -4);
+
+		// 显示右侧的第一摘要字段，数量
+		projectStatusSummary = new Label(header, SWT.NONE);
+		fd = new FormData();
+		projectStatusSummary.setLayoutData(fd);
+		fd.right = new FormAttachment(100, -4);
+		fd.top = new FormAttachment(0, 4);
+
+		// 右侧第二摘要字段，进度
+		schedualSummary = new Label(header, SWT.NONE);
+		fd = new FormData();
+		schedualSummary.setLayoutData(fd);
+		fd.right = new FormAttachment(100, -4);
+		fd.top = new FormAttachment(projectStatusSummary, 2);
+
+		// 右侧第三摘要字段，成本
+		costSummary = new Label(header, SWT.NONE);
+		fd = new FormData();
+		costSummary.setLayoutData(fd);
+		fd.right = new FormAttachment(100, -4);
+		fd.top = new FormAttachment(schedualSummary, 2);
+
+		// 显示菜单图标
+		final CLabel menuButton = new CLabel(header, SWT.NONE);
+		menuButton.setImage(Widgets.getImage(ImageResource.DOWN_16));
+		fd = new FormData();
+		menuButton.setLayoutData(fd);
+		fd.right = new FormAttachment(projectStatusSummary, -16);
+		fd.top = new FormAttachment(40);
+		menuButton.setCursor(Display.getCurrent().getSystemCursor(
+				SWT.CURSOR_HAND));
+		menuButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				showFilterMenu(menuButton,data);
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+			}
+		});
+
+		// 显示数据过滤
+		filterLabel = new Label(header, SWT.NONE);
+		filterLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		fd = new FormData();
+		filterLabel.setLayoutData(fd);
+		fd.right = new FormAttachment(menuButton, -4);
+		fd.top = new FormAttachment(32);
+
+		setSummaryText(data);
+
 		return header;
 	}
 
+	private void setSummaryText(ProjectProvider data) {
+		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL,
+				parameter[0], parameter[1]);
+		value1 = value1 == null ? 0 : value1;
+		Object value2 = data.getSummaryValue(
+				ProjectProvider.F_SUMMARY_FINISHED, parameter[0], parameter[1]);
+		value2 = value2 == null ? 0 : value2;
+		Object value3 = data.getSummaryValue(
+				ProjectProvider.F_SUMMARY_PROCESSING, parameter[0],
+				parameter[1]);
+		value3 = value3 == null ? 0 : value3;
+		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
+				+ value3);
+		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_PROCESS,
+				parameter[0], parameter[1]);
+		value1 = value1 == null ? 0 : value1;
+		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_DELAY,
+				parameter[0], parameter[1]);
+		value2 = value2 == null ? 0 : value2;
+		value3 = data.getSummaryValue(ProjectProvider.F_SUMMARY_ADVANCE,
+				parameter[0], parameter[1]);
+		value3 = value3 == null ? 0 : value3;
+		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
+				+ value3);
+		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_COST,
+				parameter[0], parameter[1]);
+		value1 = value1 == null ? 0 : value1;
+		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_OVER_COST,
+				parameter[0], parameter[1]);
+		value2 = value2 == null ? 0 : value2;
+		costSummary.setText("正常/超支：" + value1 + "/" + value2);
+
+		
+		filterLabel.setText(getParameterText());
+		
+	}
+
+	protected void showFilterMenu(Control menuButton,final ProjectProvider data) {
+		final Shell shell = new Shell(menuButton.getShell(), SWT.BORDER);
+		shell.setLayout(new FormLayout());
+		final Combo yearCombo = new Combo(shell, SWT.READ_ONLY);
+		FormData fd = new FormData();
+		yearCombo.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 4);
+		fd.top = new FormAttachment(0, 4);
+		fd.width = 100;
+
+		final int startYear = Calendar.getInstance().get(Calendar.YEAR) - 5;
+		for (int i = startYear; i < (startYear + 6); i++) {
+			yearCombo.add("" + i);
+		}
+		yearCombo.select(5);
+
+		final Combo quarterCombo = new Combo(shell, SWT.READ_ONLY);
+		fd = new FormData();
+		quarterCombo.setLayoutData(fd);
+		fd.left = new FormAttachment(yearCombo, 4);
+		fd.top = new FormAttachment(0, 4);
+		fd.width = 80;
+		quarterCombo.add("忽略");
+		for (int i = 1; i < 5; i++) {
+			quarterCombo.add("" + i + "季度");
+		}
+
+		final Combo monthCombo = new Combo(shell, SWT.READ_ONLY);
+		fd = new FormData();
+		monthCombo.setLayoutData(fd);
+		fd.left = new FormAttachment(quarterCombo, 4);
+		fd.top = new FormAttachment(0, 4);
+		fd.right = new FormAttachment(100, -4);
+
+		fd.width = 80;
+		monthCombo.add("忽略");
+		for (int i = 1; i < 13; i++) {
+			monthCombo.add("" + i + "月");
+		}
+
+		Button ok = new Button(shell, SWT.PUSH);
+		ok.setText("Ok");
+		fd = new FormData();
+		ok.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 4);
+		fd.top = new FormAttachment(monthCombo, 16);
+		fd.bottom = new FormAttachment(100, -4);
+		ok.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int yearIndex = yearCombo.getSelectionIndex();
+				setFilter(data, startYear + yearIndex,
+						quarterCombo.getSelectionIndex(),
+						monthCombo.getSelectionIndex());
+				shell.dispose();
+			}
+		});
+
+		Button cancel = new Button(shell, SWT.PUSH);
+		cancel.setText("Cancel");
+		cancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				shell.dispose();
+			}
+		});
+
+		fd = new FormData();
+		cancel.setLayoutData(fd);
+		fd.left = new FormAttachment(ok, 4);
+		fd.top = new FormAttachment(monthCombo, 16);
+		fd.bottom = new FormAttachment(100, -4);
+
+		shell.pack();
+		Point location = menuButton.toDisplay(0, 16);
+		Display display = shell.getDisplay();
+		if (display.getBounds().width < shell.getBounds().width + location.x) {
+			location.x = display.getBounds().width - shell.getBounds().width
+					- 10;
+		}
+
+		shell.setLocation(location);
+		shell.open();
+	}
+
+	protected void setFilter(ProjectProvider pp,int yearIndex, int quarterIndex, int monthIndex) {
+		if (yearIndex < 0) {
+			return;
+		}
+		if (monthIndex > 0) {
+			parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_MONTH;
+			((Calendar)parameter[0]).set(Calendar.MONTH, monthIndex-1);
+			
+		} else if (quarterIndex > 0) {
+			parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER;
+			((Calendar)parameter[0]).set(Calendar.MONTH, 3*(quarterIndex)-1);
+
+			
+		} else {
+			parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
+		}
+
+		reQuery(pp);
+		
+	}
+
+	private void reQuery(ProjectProvider data) {
+		//doquery
+		
+		
+		setSummaryText(data);
+		header.layout();
+	}
+
+	private String getParameterText() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<i style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
+		if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR.equals(parameter[1])) {
+			sb.append(((Calendar) parameter[0]).get(Calendar.YEAR) + "年");
+		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
+				.equals(parameter[1])) {
+			Calendar calendar = (Calendar) parameter[0];
+			int month = calendar.get(Calendar.MONTH);
+			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + (1+month) / 4)
+					+ "季度");
+		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
+				.equals(parameter[1])) {
+			Calendar calendar = (Calendar) parameter[0];
+			int month = calendar.get(Calendar.MONTH);
+			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
+		}
+
+		sb.append("</i>");
+		return sb.toString();
+	}
+
 	private void setBackgroundGradient(Composite header) {
-		// Object adapter = header.getAdapter(IWidgetGraphicsAdapter.class);
-		// IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
-		// int[] percents = new int[] { 0, 50, 100 };
-		// Display display = header.getDisplay();
-		// Color[] gradientColors = new Color[] {
-		// Widgets.getColor(header.getDisplay(), 220, 220, 240),
-		// Widgets.getColor(header.getDisplay(), 245, 245, 250),
-		// Widgets.getColor(display, 255, 255, 255)
-		// };
-		//
-		// gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
+		Object adapter = header.getAdapter(IWidgetGraphicsAdapter.class);
+		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
+		int[] percents = new int[] { 0, 50, 100 };
+		Display display = header.getDisplay();
+		Color[] gradientColors = new Color[] {
+				Widgets.getColor(header.getDisplay(), 220, 220, 240),
+				Widgets.getColor(header.getDisplay(), 245, 245, 250),
+				Widgets.getColor(display, 255, 255, 255) };
+
+		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
 	}
 
 }
