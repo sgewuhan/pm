@@ -28,10 +28,5 @@ public class ProductTypeProjectProvider extends ProjectProvider {
 		return null;
 	}
 
-	@Override
-	public Object getSummaryValue(String key, Object... objects) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

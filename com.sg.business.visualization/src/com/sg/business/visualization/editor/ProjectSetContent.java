@@ -40,9 +40,11 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 	private Label projectStatusSummary;
 	private Label schedualSummary;
 	private Label costSummary;
-	private Object[] parameter = new Object[10];
+	private Object[] parameters = new Object[10];
 	private Label filterLabel;
 	private Composite header;
+	private NavigatorControl navi;
+	private ProjectProvider data;
 
 	public ProjectSetContent() {
 
@@ -57,13 +59,15 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 	public void createNavigatorBody(Composite body, NavigatorControl navi,
 			PrimaryObjectEditorInput input, NavigatorPage navigatorPage) {
 		// 设置缺省的参数
-		parameter[0] = Calendar.getInstance();
-		parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
-
-		//
+		parameters[0] = Calendar.getInstance();
+		parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
+		data = (ProjectProvider) input.getData();
+		data.setParameters(parameters);
+		this.navi = navi;
+		
 		body.setLayout(new FormLayout());
 		// 创建页头
-		header = createHeader(body, input);
+		header = createHeader(body);
 		FormData fd = new FormData();
 		header.setLayoutData(fd);
 		fd.top = new FormAttachment(0, 1);
@@ -98,9 +102,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		return navigator;
 	}
 
-	private Composite createHeader(Composite body,
-			PrimaryObjectEditorInput input) {
-		final ProjectProvider data = (ProjectProvider) input.getData();
+	private Composite createHeader(Composite body) {
 		String projectSetName = data.getProjectSetName();
 		String projectSetCover = data.getProjectSetCoverImage();
 
@@ -141,7 +143,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		fd = new FormData();
 		projectSetLabel.setLayoutData(fd);
 		fd.left = new FormAttachment(30, -INFOBANNER_HEIGHT);
-		fd.bottom = new FormAttachment(100, -4);
+		fd.top = new FormAttachment(32);
 
 		// 显示右侧的第一摘要字段，数量
 		projectStatusSummary = new Label(header, SWT.NONE);
@@ -181,7 +183,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				showFilterMenu(menuButton,data);
+				showFilterMenu(menuButton);
 			}
 
 			@Override
@@ -203,34 +205,27 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 	}
 
 	private void setSummaryText(ProjectProvider data) {
-		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL,
-				parameter[0], parameter[1]);
+		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
 		value1 = value1 == null ? 0 : value1;
 		Object value2 = data.getSummaryValue(
-				ProjectProvider.F_SUMMARY_FINISHED, parameter[0], parameter[1]);
+				ProjectProvider.F_SUMMARY_FINISHED);
 		value2 = value2 == null ? 0 : value2;
 		Object value3 = data.getSummaryValue(
-				ProjectProvider.F_SUMMARY_PROCESSING, parameter[0],
-				parameter[1]);
+				ProjectProvider.F_SUMMARY_PROCESSING);
 		value3 = value3 == null ? 0 : value3;
 		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_PROCESS,
-				parameter[0], parameter[1]);
+		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_PROCESS);
 		value1 = value1 == null ? 0 : value1;
-		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_DELAY,
-				parameter[0], parameter[1]);
+		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_DELAY);
 		value2 = value2 == null ? 0 : value2;
-		value3 = data.getSummaryValue(ProjectProvider.F_SUMMARY_ADVANCE,
-				parameter[0], parameter[1]);
+		value3 = data.getSummaryValue(ProjectProvider.F_SUMMARY_ADVANCE);
 		value3 = value3 == null ? 0 : value3;
 		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_COST,
-				parameter[0], parameter[1]);
+		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_COST);
 		value1 = value1 == null ? 0 : value1;
-		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_OVER_COST,
-				parameter[0], parameter[1]);
+		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_OVER_COST);
 		value2 = value2 == null ? 0 : value2;
 		costSummary.setText("正常/超支：" + value1 + "/" + value2);
 
@@ -239,7 +234,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		
 	}
 
-	protected void showFilterMenu(Control menuButton,final ProjectProvider data) {
+	protected void showFilterMenu(Control menuButton) {
 		final Shell shell = new Shell(menuButton.getShell(), SWT.BORDER);
 		shell.setLayout(new FormLayout());
 		final Combo yearCombo = new Combo(shell, SWT.READ_ONLY);
@@ -290,7 +285,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int yearIndex = yearCombo.getSelectionIndex();
-				setFilter(data, startYear + yearIndex,
+				setFilter( startYear + yearIndex,
 						quarterCombo.getSelectionIndex(),
 						monthCombo.getSelectionIndex());
 				shell.dispose();
@@ -324,49 +319,56 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		shell.open();
 	}
 
-	protected void setFilter(ProjectProvider pp,int yearIndex, int quarterIndex, int monthIndex) {
+	protected void setFilter(int yearIndex, int quarterIndex, int monthIndex) {
 		if (yearIndex < 0) {
 			return;
 		}
 		if (monthIndex > 0) {
-			parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_MONTH;
-			((Calendar)parameter[0]).set(Calendar.MONTH, monthIndex-1);
+			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_MONTH;
+			((Calendar)parameters[0]).set(Calendar.MONTH, monthIndex-1);
 			
 		} else if (quarterIndex > 0) {
-			parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER;
-			((Calendar)parameter[0]).set(Calendar.MONTH, 3*(quarterIndex)-1);
+			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER;
+			((Calendar)parameters[0]).set(Calendar.MONTH, 3*(quarterIndex)-1);
 
 			
 		} else {
-			parameter[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
+			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
 		}
-
-		reQuery(pp);
+		
+		reQuery();
 		
 	}
 
-	private void reQuery(ProjectProvider data) {
+	private void reQuery() {
 		//doquery
+		data.setParameters(parameters);
+		navi.getViewerControl().doReloadData(true, new Runnable(){
+
+			@Override
+			public void run() {
+				setSummaryText(data);
+				header.layout();
+			}
+			
+		});
 		
-		
-		setSummaryText(data);
-		header.layout();
 	}
 
 	private String getParameterText() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<i style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR.equals(parameter[1])) {
-			sb.append(((Calendar) parameter[0]).get(Calendar.YEAR) + "年");
+		if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR.equals(parameters[1])) {
+			sb.append(((Calendar) parameters[0]).get(Calendar.YEAR) + "年");
 		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
-				.equals(parameter[1])) {
-			Calendar calendar = (Calendar) parameter[0];
+				.equals(parameters[1])) {
+			Calendar calendar = (Calendar) parameters[0];
 			int month = calendar.get(Calendar.MONTH);
 			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + (1+month) / 4)
 					+ "季度");
 		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
-				.equals(parameter[1])) {
-			Calendar calendar = (Calendar) parameter[0];
+				.equals(parameters[1])) {
+			Calendar calendar = (Calendar) parameters[0];
 			int month = calendar.get(Calendar.MONTH);
 			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
 		}

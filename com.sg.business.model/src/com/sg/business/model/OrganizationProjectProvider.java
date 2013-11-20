@@ -39,13 +39,20 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		List<PrimaryObject> projectSet = getProjectSet(organization, result);
-		// TODO
-		// 附加字段 _internal_org_id,_internal_org_desc
+
+		//TODO 完成查询后，需要写入合计值
+		//参考ProjectProvider的F开头的字段的注释，将值写入
+		//使用ProjectProvider.setSummaryDate(data)方法
+		//data是合计值的Map<String,Object> Map的key 为ProjectProvider的F开头的字段
 		return projectSet;
 	}
 
 	private List<PrimaryObject> getProjectSet(PrimaryObject po,
 			List<PrimaryObject> result) {
+		//TODO 获取传入的条件，修改现有代码使之能根据条件进行查询
+		//使用getStartDate()获得开始时间，使用getFinishDate()获得完成时间
+		//错误抛出方法外
+		
 
 		DBCursor cur = col.find(new BasicDBObject().append(
 				Project.F_LAUNCH_ORGANIZATION, po.get_id()).append(
@@ -74,13 +81,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	@Override
 	public String getProjectSetName() {
 		return getDesc()+"项目集";
-	}
-
-
-	@Override
-	public Object getSummaryValue(String key, Object... arg) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
