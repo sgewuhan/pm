@@ -1918,6 +1918,20 @@
                      value="project.documents">
                </parameter>
             </command>
+            <command
+                  commandId="com.sg.widgets.command.edit"
+                  icon="image/document_24.png"
+                  label="物资编码"
+                  style="push">
+               <parameter
+                     name="com.sg.widgets.edit.editorid"
+                     value="project.editor">
+               </parameter>
+               <parameter
+                     name="com.sg.widgets.edit.pageid"
+                     value="project.documents">
+               </parameter>
+            </command>
             <separator
                   name="project.separator4"
                   visible="true">
@@ -2549,6 +2563,54 @@
                   value="false">
             </parameter>
          </command>
+         <command
+               commandId="project.documentlock"
+               icon="image/lock_24.png"
+               label="锁定"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Deliverable">
+                        </instanceof>
+                        <test
+                              args="lock"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.documentunlock"
+               icon="image/unlock_24.png"
+               label="解锁"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Deliverable">
+                        </instanceof>
+                        <test
+                              args="unlock"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
          <separator
                name="project.deliverable.separator2"
                visible="true">
@@ -2829,6 +2891,16 @@
                optional="true">
          </commandParameter>
       </command>
+      <command
+            categoryId="project"
+            id="project.documentlock"
+            name="锁定">
+      </command>
+      <command
+            categoryId="project"
+            id="project.documentunlock"
+            name="解锁">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2980,6 +3052,14 @@
       <handler
             class="com.sg.business.project.handler.CreateDeliverableWithVault"
             commandId="project.createdeliverablewithvault">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.LockDocument"
+            commandId="project.documentlock">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.UnLockDocument"
+            commandId="project.documentunlock">
       </handler>
    </extension>
    <extension

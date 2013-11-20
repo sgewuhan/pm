@@ -3,6 +3,7 @@ package com.sg.business.commons.test;
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.sg.business.model.Deliverable;
+import com.sg.business.model.Document;
 import com.sg.business.model.Work;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -47,6 +48,12 @@ public class RuntimeWorkTest extends PropertyTester {
 				return deliverable.canEdit(new CurrentAccountContext());
 			}else if("deleteDeliverable".equals(args[0])){
 				return deliverable.canDelete(new CurrentAccountContext());
+			} else if ("lock".equals(args[0])) {
+				Document document = deliverable.getDocument();
+				return document.canLock(new CurrentAccountContext());
+			}else if ("unlock".equals(args[0])) {
+				Document document = deliverable.getDocument();
+				return document.canUnLock(new CurrentAccountContext());
 			}
 		}
 		return true;
