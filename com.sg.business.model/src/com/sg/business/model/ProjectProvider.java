@@ -21,6 +21,12 @@ public abstract class ProjectProvider extends PrimaryObject {
 	@Override
 	public void doInsert(IContext context) throws Exception {
 	}
+
+	public abstract String getProjectSetName() ;
+
+	public String getProjectSetCoverImageURL() {
+		return null;
+	}
 	
 	
 

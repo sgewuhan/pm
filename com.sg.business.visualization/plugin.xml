@@ -245,7 +245,11 @@
             collectionName="project"
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
-            id="vis.projectset">
+            headerVisiable="false"
+            id="vis.projectset"
+            lineVisiable="false"
+            useHashlookup="true"
+            virtual="true">
          <column
                columnDefinitionId="project.status">
          </column>
@@ -331,9 +335,10 @@
             id="editor.visualization.projectset"
             name="项目集">
          <navigatorpage
-               id="projectset.schedule"
+               id="projectset.info"
                navigatorId="vis.projectset"
-               title="进度">
+               pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetContent"
+               title="基本信息">
          </navigatorpage>
       </editor>
    </extension>

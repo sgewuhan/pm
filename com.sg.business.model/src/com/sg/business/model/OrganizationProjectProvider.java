@@ -3,12 +3,14 @@ package com.sg.business.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.resource.BusinessResource;
 
 public class OrganizationProjectProvider extends ProjectProvider {
 
@@ -25,6 +27,12 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return "组织项目集";
 	}
 
+	@Override
+	public String getProjectSetCoverImageURL() {
+		return FileUtil.getImageURL("project_72.png",
+				"com.sg.business.project", BusinessResource.IMAGE_FOLDER);
+	}
+	
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		DBCollection col = getCollection(IModelConstants.C_PROJECT);
@@ -43,6 +51,11 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		}
 		//TODO 下级
 		return result;
+	}
+
+	@Override
+	public String getProjectSetName() {
+		return getDesc()+"项目集";
 	}
 
 }
