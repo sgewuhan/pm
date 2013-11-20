@@ -1,9 +1,11 @@
 package com.sg.business.visualization.labelprovide;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.mobnut.commons.util.file.FileUtil;
@@ -16,29 +18,34 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
+import com.sg.business.model.ProjectTypeProjectProvider;
+import com.sg.business.model.Role;
+import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.part.CurrentAccountContext;
 
-public class OrganizationProjectCount extends ColumnLabelProvider {
+public class ProjectTypeProjectCount extends ColumnLabelProvider {
 
 	private DBCollection projectCol;
-	long wipCnt;
-	long cnt;
+	private User user;
 
-	public OrganizationProjectCount() {
+	public ProjectTypeProjectCount() {
 		super();
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
+		String userId = new CurrentAccountContext().getAccountInfo()
+				.getConsignerId();
+		user = UserToolkit.getUserById(userId);
 	}
 
 	@Override
 	public String getText(Object element) {
 		PrimaryObject dbo = ((PrimaryObject) element);
-		if (dbo instanceof Organization) {
-			Organization organization = (Organization) dbo;
-			wipCnt=0;
-			setWipCount(organization);
-			cnt=0;
-			setCountOfYear(organization);
+		if (dbo instanceof ProjectTypeProjectProvider) {
+			ProjectTypeProjectProvider projectTypeProjectProvider = (ProjectTypeProjectProvider) dbo;
+			long cnt = getCountOfYear(projectTypeProjectProvider);
+			long wipCnt = getWipCount(projectTypeProjectProvider);
 			StringBuffer sb = new StringBuffer();
 			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt;font-weight:bold;color:#99cc00'>");
 			sb.append(wipCnt);
@@ -46,47 +53,42 @@ public class OrganizationProjectCount extends ColumnLabelProvider {
 			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt;font-weight:bold'>");
 			sb.append("/" + cnt);
 			sb.append("</span>");
-			
+
 			sb.append("<a href=\""
-					+ organization.get_id().toString()
+					+ projectTypeProjectProvider.getDesc()+","+projectTypeProjectProvider.getUserId()
 					+ "\" target=\"_rwt\">");
 			sb.append("<img src='");
-				sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
 			sb.append("' style='border-style:none;float:right;padding:0px;margin:0px' width='24' height='24' />");
 			sb.append("</a>");
-
-			
 			return sb.toString();
 		}
 		return "";
 	}
 
-	private void setCountOfYear(Organization organization) {
-		long count = projectCol.count(getQueryCondtion(organization));
-		cnt+=count;
-		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
-		for (PrimaryObject orgpo : childrenOrganization) {
-			setCountOfYear((Organization)orgpo);
-		}
+	private long getCountOfYear(
+			ProjectTypeProjectProvider projectTypeProjectProvider) {
+		long count = projectCol
+				.count(getQueryCondtion(projectTypeProjectProvider));
+		return count;
 	}
 
-	
-	private void setWipCount(Organization organization) {
-		
-		long count = projectCol.count(new BasicDBObject().append(
-				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
-				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
-		wipCnt+=count;
-		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
-		for (PrimaryObject orgpo : childrenOrganization) {
-			setWipCount((Organization)orgpo);
-		}
+	private long getWipCount(
+			ProjectTypeProjectProvider projectTypeProjectProvider) {
+
+		long count = projectCol.count(new BasicDBObject()
+				.append(Project.F_PROJECT_TYPE_OPTION,
+						projectTypeProjectProvider.getDesc())
+				.append(ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE)
+				.append(Project.F_LAUNCH_ORGANIZATION,
+						new BasicDBObject().append("$in", getUerOrgId())));
+		return count;
 
 	}
-	
 
-	private DBObject getQueryCondtion(Organization organization) {
+	private DBObject getQueryCondtion(
+			ProjectTypeProjectProvider projectTypeProjectProvider) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.MONTH, 0);
 		calendar.set(Calendar.DATE, 1);
@@ -100,7 +102,10 @@ public class OrganizationProjectCount extends ColumnLabelProvider {
 		Date stop = calendar.getTime();
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_LAUNCH_ORGANIZATION, organization.get_id());
+		dbo.put(Project.F_PROJECT_TYPE_OPTION,
+				projectTypeProjectProvider.getDesc());
+		dbo.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", getUerOrgId()));
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
@@ -134,6 +139,56 @@ public class OrganizationProjectCount extends ColumnLabelProvider {
 												.append("$gte", stop)) });
 
 		return dbo;
+	}
+
+	protected List<ObjectId> getUerOrgId() {
+		List<ObjectId> list = new ArrayList<ObjectId>();
+		List<PrimaryObject> userOrg = getUserOrg(
+				new ArrayList<PrimaryObject>(), getInput());
+		for (PrimaryObject po : userOrg) {
+			list.add(po.get_id());
+		}
+		return list;
+
+	}
+
+	protected List<PrimaryObject> getUserOrg(List<PrimaryObject> list,
+			List<PrimaryObject> childrenList) {
+		list.addAll(childrenList);
+		for (PrimaryObject po : childrenList) {
+			List<PrimaryObject> childrenOrg = ((Organization) po)
+					.getChildrenOrganization();
+			getUserOrg(list, childrenOrg);
+		}
+		return list;
+	}
+
+	protected List<PrimaryObject> getInput() {
+		// 获取当前用户担任管理者角色的部门
+		List<PrimaryObject> orglist = user
+				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
+		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
+
+		for (int i = 0; i < orglist.size(); i++) {
+			Organization org = (Organization) orglist.get(i);
+			boolean hasParent = false;
+			for (int j = 0; j < input.size(); j++) {
+				Organization inputOrg = (Organization) input.get(j);
+				if (inputOrg.isSuperOf(org)) {
+					hasParent = true;
+					break;
+				}
+				if (org.isSuperOf(inputOrg)) {
+					input.remove(j);
+					break;
+				}
+			}
+			if (!hasParent) {
+				input.add(org);
+			}
+		}
+
+		return input;
 	}
 
 }
