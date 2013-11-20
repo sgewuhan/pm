@@ -19,6 +19,11 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		setValue(F__ID, org.get_id());
 		setValue(F_DESC,org.getDesc());
 	}
+	
+	@Override
+	public String getTypeName() {
+		return "组织项目集";
+	}
 
 	@Override
 	public List<PrimaryObject> getProjectSet() {
