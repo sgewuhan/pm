@@ -1,117 +1,96 @@
-package com.sg.business.visualization.labelprovide;
+package com.sg.business.model;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.model.ILifecycle;
-import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Organization;
-import com.sg.business.model.Project;
-import com.sg.business.model.ProjectTypeProvider;
-import com.sg.business.model.Role;
-import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.resource.BusinessResource;
-import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.MessageUtil;
 
-public class ProjectTypeLabelProvider extends ColumnLabelProvider {
+public class ProductTypeProvider extends ProjectProvider {
 
 	private DBCollection projectCol;
-	private User user;
+	private String userId;
+	private String desc;
+	
 
-	public ProjectTypeLabelProvider() {
+	public ProductTypeProvider(String desc,String userId) {
 		super();
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
-		String userId = new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
-		user = UserToolkit.getUserById(userId);
+		set_data(new BasicDBObject());
+		this.desc=desc;
+		this.userId=userId;
+		
 	}
 
 	@Override
-	public String getText(Object element) {
-		PrimaryObject dbo = ((PrimaryObject) element);
-		if (dbo instanceof ProjectTypeProvider) {
-			ProjectTypeProvider projectTypeProvider = (ProjectTypeProvider) dbo;
-			long cnt = getCountOfYear(projectTypeProvider);
-			long wipCnt = getWipCount(projectTypeProvider);
-			StringBuffer sb = new StringBuffer();
-			
-			sb.append("<a href=\""
-					+ projectTypeProvider.getDesc()+","+projectTypeProvider.getUserId()
-					+ "\" target=\"_rwt\">");
-			sb.append("<img src='");
-			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
-			sb.append("</a>");
-			
-			sb.append("<b>");
-			sb.append(projectTypeProvider.getDesc());
-			if (cnt != 0 || wipCnt != 0) {
-				sb.append("<span style='font-weight:bold'>");
-				sb.append("<span style='color:#99cc00'>");
-				sb.append(" ");
-				sb.append(wipCnt);
-				sb.append("</span>");
-				sb.append(" ");
-				sb.append("/" + cnt);
-				sb.append("</span>");
-			}
-			sb.append("</b>");
-			return sb.toString();
+	public List<PrimaryObject> getProjectSet() {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		List<PrimaryObject> projectSet=null;
+		try {
+			projectSet = getProjectSet(result);
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
 		}
-		return "";
+		
+		Map<String,Object> map=new HashMap<String,Object>();
+		int proTotalCoun=projectSet.size();
+		int proFinishCount=0;
+		int proProcessCount=0;
+		
+		for(PrimaryObject po:projectSet){
+			if(ILifecycle.STATUS_FINIHED_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+				proFinishCount++;
+			}else if(ILifecycle.STATUS_WIP_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+				proProcessCount++;
+			}
+		}
+		
+		map.put(F_SUMMARY_TOTAL,proTotalCoun);
+		map.put(F_SUMMARY_FINISHED,proFinishCount);
+		map.put(F_SUMMARY_PROCESSING,proProcessCount);
+		
+		setSummaryDate(map);
+		
+		return projectSet;
 	}
 
-	private long getCountOfYear(
-			ProjectTypeProvider projectTypeProjectProvider) {
-		long count = projectCol
-				.count(getQueryCondtion(projectTypeProjectProvider));
-		return count;
+	private List<PrimaryObject> getProjectSet(List<PrimaryObject> result) throws Exception {
+
+		Date startDate = getStartDate();
+		Date endDate = getEndDate();
+		DBCursor cur = projectCol
+				.find(getQueryCondtion(startDate,
+						endDate));
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			Project project = ModelService
+					.createModelObject(dbo, Project.class);
+
+			result.add(project);
+		}
+
+
+		return result;
 	}
-
-	private long getWipCount(
-			ProjectTypeProvider projectTypeProjectProvider) {
-
-		long count = projectCol.count(new BasicDBObject()
-				.append(Project.F_PROJECT_TYPE_OPTION,
-						projectTypeProjectProvider.getDesc())
-				.append(ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE)
-				.append(Project.F_LAUNCH_ORGANIZATION,
-						new BasicDBObject().append("$in", getUerOrgId())));
-		return count;
-
-	}
-
-	private DBObject getQueryCondtion(
-			ProjectTypeProvider projectTypeProjectProvider) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, 0);
-		calendar.set(Calendar.DATE, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date start = calendar.getTime();
-		calendar.add(Calendar.YEAR, 1);
-		calendar.add(Calendar.MILLISECOND, -1);
-		Date stop = calendar.getTime();
+	
+	
+	private DBObject getQueryCondtion(Date start,Date stop) {
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_PROJECT_TYPE_OPTION,
-				projectTypeProjectProvider.getDesc());
+		dbo.put(Project.F_PRODUCT_TYPE_OPTION,getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", getUerOrgId()));
 		dbo.put(ILifecycle.F_LIFECYCLE,
@@ -148,7 +127,8 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 
 		return dbo;
 	}
-
+	
+	
 	protected List<ObjectId> getUerOrgId() {
 		List<ObjectId> list = new ArrayList<ObjectId>();
 		List<PrimaryObject> userOrg = getUserOrg(
@@ -173,6 +153,7 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 
 	protected List<PrimaryObject> getInput() {
 		// 获取当前用户担任管理者角色的部门
+		User user=UserToolkit.getUserById(getUserId());		
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
@@ -198,5 +179,28 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 
 		return input;
 	}
+	
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public String getProjectSetName() {
+		return getDesc() + "项目集";
+	}
+
+	@Override
+	public String getProjectSetCoverImage() {
+		return null;
+	}
+    
+	@Override
+	public String getDesc() {
+		return desc;
+	}
 }

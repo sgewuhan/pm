@@ -18,19 +18,18 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
-import com.sg.business.model.ProjectTypeProvider;
+import com.sg.business.model.ProductTypeProvider;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class ProjectTypeLabelProvider extends ColumnLabelProvider {
-
+public class ProductTypeLabelProvider extends ColumnLabelProvider {
 	private DBCollection projectCol;
 	private User user;
 
-	public ProjectTypeLabelProvider() {
+	public ProductTypeLabelProvider() {
 		super();
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
@@ -42,14 +41,14 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 	@Override
 	public String getText(Object element) {
 		PrimaryObject dbo = ((PrimaryObject) element);
-		if (dbo instanceof ProjectTypeProvider) {
-			ProjectTypeProvider projectTypeProvider = (ProjectTypeProvider) dbo;
-			long cnt = getCountOfYear(projectTypeProvider);
-			long wipCnt = getWipCount(projectTypeProvider);
+		if (dbo instanceof ProductTypeProvider) {
+			ProductTypeProvider producttTypeProvider = (ProductTypeProvider) dbo;
+			long cnt = getCountOfYear(producttTypeProvider);
+			long wipCnt = getWipCount(producttTypeProvider);
 			StringBuffer sb = new StringBuffer();
 			
 			sb.append("<a href=\""
-					+ projectTypeProvider.getDesc()+","+projectTypeProvider.getUserId()
+					+ producttTypeProvider.getDesc()+","+producttTypeProvider.getUserId()
 					+ "\" target=\"_rwt\">");
 			sb.append("<img src='");
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
@@ -58,7 +57,7 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 			sb.append("</a>");
 			
 			sb.append("<b>");
-			sb.append(projectTypeProvider.getDesc());
+			sb.append(producttTypeProvider.getDesc());
 			if (cnt != 0 || wipCnt != 0) {
 				sb.append("<span style='font-weight:bold'>");
 				sb.append("<span style='color:#99cc00'>");
@@ -76,18 +75,18 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 	}
 
 	private long getCountOfYear(
-			ProjectTypeProvider projectTypeProjectProvider) {
+			ProductTypeProvider productTypeProvider) {
 		long count = projectCol
-				.count(getQueryCondtion(projectTypeProjectProvider));
+				.count(getQueryCondtion(productTypeProvider));
 		return count;
 	}
 
 	private long getWipCount(
-			ProjectTypeProvider projectTypeProjectProvider) {
+			ProductTypeProvider productTypeProvider) {
 
 		long count = projectCol.count(new BasicDBObject()
-				.append(Project.F_PROJECT_TYPE_OPTION,
-						projectTypeProjectProvider.getDesc())
+				.append(Project.F_PRODUCT_TYPE_OPTION,
+						productTypeProvider.getDesc())
 				.append(ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE)
 				.append(Project.F_LAUNCH_ORGANIZATION,
 						new BasicDBObject().append("$in", getUerOrgId())));
@@ -96,7 +95,7 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 	}
 
 	private DBObject getQueryCondtion(
-			ProjectTypeProvider projectTypeProjectProvider) {
+			ProductTypeProvider productTypeProvider) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.MONTH, 0);
 		calendar.set(Calendar.DATE, 1);
@@ -110,8 +109,8 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 		Date stop = calendar.getTime();
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_PROJECT_TYPE_OPTION,
-				projectTypeProjectProvider.getDesc());
+		dbo.put(Project.F_PRODUCT_TYPE_OPTION,
+				productTypeProvider.getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", getUerOrgId()));
 		dbo.put(ILifecycle.F_LIFECYCLE,

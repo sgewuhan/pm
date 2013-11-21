@@ -1,9 +1,10 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
 
@@ -15,6 +16,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.MessageUtil;
 
 public class ProjectTypeProvider extends ProjectProvider {
 	private DBCollection projectCol;
@@ -29,7 +31,6 @@ public class ProjectTypeProvider extends ProjectProvider {
 				IModelConstants.C_PROJECT);
 		set_data(new BasicDBObject());
 		this.desc=desc;
-//     	setValue(F_DESC, desc);
 		this.userId=userId;
 		
 	}
@@ -37,15 +38,42 @@ public class ProjectTypeProvider extends ProjectProvider {
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		List<PrimaryObject> projectSet = getProjectSet(result);
+		List<PrimaryObject> projectSet=null;
+		try {
+			projectSet = getProjectSet(result);
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+		}
+		
+		Map<String,Object> map=new HashMap<String,Object>();
+		int proTotalCoun=projectSet.size();
+		int proFinishCount=0;
+		int proProcessCount=0;
+		
+		for(PrimaryObject po:projectSet){
+			if(ILifecycle.STATUS_FINIHED_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+				proFinishCount++;
+			}else if(ILifecycle.STATUS_WIP_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+				proProcessCount++;
+			}
+		}
+		
+		map.put(F_SUMMARY_TOTAL,proTotalCoun);
+		map.put(F_SUMMARY_FINISHED,proFinishCount);
+		map.put(F_SUMMARY_PROCESSING,proProcessCount);
+		
+		setSummaryDate(map);
+		
 		return projectSet;
 	}
 
-	private List<PrimaryObject> getProjectSet(List<PrimaryObject> result) {
+	private List<PrimaryObject> getProjectSet(List<PrimaryObject> result) throws Exception {
 
+		Date startDate = getStartDate();
+		Date endDate = getEndDate();
 		DBCursor cur = projectCol
-				.find(getQueryCondtion());
-
+				.find(getQueryCondtion(startDate,
+						endDate));
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
 			Project project = ModelService
@@ -59,18 +87,7 @@ public class ProjectTypeProvider extends ProjectProvider {
 	}
 	
 	
-	private DBObject getQueryCondtion() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, 0);
-		calendar.set(Calendar.DATE, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date start = calendar.getTime();
-		calendar.add(Calendar.YEAR, 1);
-		calendar.add(Calendar.MILLISECOND, -1);
-		Date stop = calendar.getTime();
+	private DBObject getQueryCondtion(Date start,Date stop) {
 
 		DBObject dbo = new BasicDBObject();
 		dbo.put(Project.F_PROJECT_TYPE_OPTION,getDesc());

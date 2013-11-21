@@ -9,15 +9,16 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.model.ProjectTypeProvider;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.view.TableNavigator;
 
-public class ProjectTypeNavigator extends TableNavigator {
+public class ProductTypeNavigator extends TableNavigator {
 
-	public ProjectTypeNavigator() {
+	public ProductTypeNavigator() {
 	}
 
 	@Override
