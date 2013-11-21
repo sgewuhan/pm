@@ -1,0 +1,13 @@
+1. 完成ProjectProvider的开发，使之将参数转换为开始时间和完成时间的条件参考131行，使用main方法进行测试
+2. 修改OrganizationProjectProvider 52行的查询，使之能够接受条件进行查询
+3. 修改OrganizationProjectProvider 43行，写入查询结果的合计值
+4. 其他的参考1~3点进行类似的修改
+5. 组织展开到2级
+6. 项目集编辑器Navigator的过滤器，项目名称，项目状态,工作令号，计划开始，计划完成，承担组织，项目负责人
+7. 项目集编辑器Navigator的查询列，项目名称,工作令号，承担组织，项目负责人
+
+8. 在Toolbar上增加一个按钮，添加到"项目集"
+9. 选择某一项目后（在command 的visiable中判断是项目时才显示）
+10.command运行该handler可以创建一个对象（userprojectperf extends PrimaryObject）
+11. 对应的字段userid(用户id),project_id(项目id),desc(自定义项目集的名称)
+12. 在绩效透视图中，增加一个视图，“我的项目集”。根据当前用户的自定义项目集查询项目集下的项目

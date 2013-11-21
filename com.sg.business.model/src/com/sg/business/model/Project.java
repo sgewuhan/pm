@@ -2077,4 +2077,75 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
+	/**
+	 * 取出项目所有的里程碑工作,按照计划开始时间，从小到大排序
+	 * 
+	 * @return
+	 */
+	public List<Work> getMileStoneWorks() {
+		List<Work> result = new ArrayList<Work>();
+		DBCollection col = getCollection(IModelConstants.C_WORK);
+		DBCursor cur = col.find(
+				new BasicDBObject().append(Work.F_PROJECT_ID, get_id()).append(
+						Work.F_MILESTONE, Boolean.TRUE)).sort(
+				new BasicDBObject().append(Work.F_PLAN_START, -1));
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			result.add(ModelService.createModelObject(dbo, Work.class));
+		}
+		return result;
+	}
+
+	/**
+	 * 项目已经延期，当前的时间已经超过了项目的计划完成时间
+	 * 
+	 * @return
+	 */
+	public boolean isDelay() {
+		Date pf = getPlanFinish();
+		if (pf != null) {
+			return new Date().after(pf);
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isAdvanced() {
+		String lc = getLifecycleStatus();
+		if (STATUS_FINIHED_VALUE.equals(lc)) {
+			Date pf = getPlanFinish();
+			if (pf != null) {
+				return new Date().before(pf);
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	public boolean maybeDelay() {
+		if (!isDelay()) {
+			List<Work> milestones = getMileStoneWorks();
+			for (int i = 0; i < milestones.size(); i++) {
+				if (milestones.get(i).isDelayNow()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean maybeAdvanced() {
+		if (!isAdvanced()) {
+			List<Work> milestones = getMileStoneWorks();
+			for (int i = 0; i < milestones.size(); i++) {
+				if (!milestones.get(i).isAdvanceNow()) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 }

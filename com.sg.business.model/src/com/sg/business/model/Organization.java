@@ -245,8 +245,6 @@ public class Organization extends PrimaryObject {
 	public String getFullName() {
 		return getStringValue(F_FULLDESC);
 	}
-	
-
 
 	/**
 	 * 返回组织在系统中的显示图标地址
@@ -665,6 +663,24 @@ public class Organization extends PrimaryObject {
 		PrimaryObject parent = getParentOrganization();
 		if (parent instanceof Organization) {
 			return ((Organization) parent).getPath() + "/" + getDesc();
+		} else {
+			return getDesc();
+		}
+	}
+
+	/**
+	 * 获得当前组织的路径
+	 * @param level 限制级别
+	 * @return
+	 */
+	public String getPath(int level) {
+		PrimaryObject parent = getParentOrganization();
+		if (parent instanceof Organization ) {
+			if(level>1){
+				return ((Organization) parent).getPath(level-1) + "/" + getDesc();
+			}else{
+				return "../"+getDesc();
+			}
 		} else {
 			return getDesc();
 		}
@@ -1562,12 +1578,13 @@ public class Organization extends PrimaryObject {
 				summary = new SummaryOrganizationWorks(this);
 			}
 			return (T) summary;
-		}else if(adapter==ProjectProvider.class){
-			if(projectProvider==null){
-				projectProvider=ModelService.createModelObject(OrganizationProjectProvider.class);
+		} else if (adapter == ProjectProvider.class) {
+			if (projectProvider == null) {
+				projectProvider = ModelService
+						.createModelObject(OrganizationProjectProvider.class);
 				projectProvider.setOrganization(this);
 			}
-			return (T)projectProvider;
+			return (T) projectProvider;
 		}
 		return super.getAdapter(adapter);
 	}

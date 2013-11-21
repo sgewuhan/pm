@@ -1,7 +1,10 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
@@ -11,6 +14,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.MessageUtil;
 
 public class OrganizationProjectProvider extends ProjectProvider {
 
@@ -23,7 +27,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		setValue(F_DESC, org.getDesc());
 		col = getCollection(IModelConstants.C_PROJECT);
 	}
-	
+
 	@Override
 	public String getTypeName() {
 		return "组织项目集";
@@ -34,53 +38,134 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return FileUtil.getImageURL("project_72.png",
 				"com.sg.business.project", BusinessResource.IMAGE_FOLDER);
 	}
-	
+
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		List<PrimaryObject> projectSet = getProjectSet(organization, result);
-		// TODO
-		// 附加字段 _internal_org_id,_internal_org_desc
-		return projectSet;
-	}
-
-	private List<PrimaryObject> getProjectSet(PrimaryObject po,
-			List<PrimaryObject> result) {
-
-		DBCursor cur = col.find(new BasicDBObject().append(
-				Project.F_LAUNCH_ORGANIZATION, po.get_id()).append(
-				Project.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
-						ILifecycle.STATUS_FINIHED_VALUE,
-						ILifecycle.STATUS_WIP_VALUE })));
-
-		while (cur.hasNext()) {
-			DBObject dbo = cur.next();
-			Project project = ModelService
-					.createModelObject(dbo, Project.class);
-
-			result.add(project);
+		try {
+			Date startDate = getStartDate();
+			Date endDate = getEndDate();
+			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
+			while (cur.hasNext()) {
+				DBObject dbo = cur.next();
+				Project project = ModelService.createModelObject(dbo,Project.class);
+				result.add(project);
+			}
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
 		}
 
-		List<PrimaryObject> childrenOrganization = ((Organization) po)
-				.getChildrenOrganization();
-		for (PrimaryObject orgpo : childrenOrganization) {
-			getProjectSet(orgpo, result);
+		Map<String, Object> map = new HashMap<String, Object>();
+		int proTotalCoun = result.size();
+		int proFinishCount = 0;
+		int proProcessCount = 0;
+
+		for (PrimaryObject po : result) {
+			String lifecycleStatus = ((ILifecycle) po).getLifecycleStatus();
+			if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
+				proFinishCount++;
+			} else if (ILifecycle.STATUS_WIP_VALUE.equals(lifecycleStatus)) {
+				proProcessCount++;
+			}
 		}
+
+		map.put(F_SUMMARY_TOTAL, proTotalCoun);
+		map.put(F_SUMMARY_FINISHED, proFinishCount);
+		map.put(F_SUMMARY_PROCESSING, proProcessCount);
+
+		setSummaryDate(map);
 
 		return result;
 	}
 
 	@Override
 	public String getProjectSetName() {
-		return getDesc()+"项目集";
+		return getDesc() + "项目集";
 	}
 
+	private DBObject getQueryCondtion(Date start, Date stop) {
 
-	@Override
-	public Object getSummaryValue(String key, Object... arg) {
-		// TODO Auto-generated method stub
-		return null;
+		DBObject dbo = new BasicDBObject();
+		dbo.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", getOrganizations(organization)));
+		dbo.put(ILifecycle.F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						ILifecycle.STATUS_FINIHED_VALUE,
+						ILifecycle.STATUS_WIP_VALUE }));
+		dbo.put("$or",
+			new BasicDBObject[] {
+				new BasicDBObject().append(Project.F_PLAN_START,
+						new BasicDBObject().append("$gte", start).append("$lte", stop))
+						,
+
+				new BasicDBObject().append(Project.F_ACTUAL_START,
+						new BasicDBObject().append("$gte", start).append("$lte", stop))
+						,
+
+				new BasicDBObject().append(Project.F_PLAN_FINISH,
+						new BasicDBObject().append("$gte", start).append("$lte", stop))
+						,
+
+				new BasicDBObject().append(Project.F_ACTUAL_FINISH,
+						new BasicDBObject().append("$gte", start).append("$lte", stop))
+						,
+
+				new BasicDBObject().append("$and",
+						new BasicDBObject[] {
+								new BasicDBObject().append(
+										Project.F_ACTUAL_START,new BasicDBObject().append("$lte", start)),
+								new BasicDBObject().append(
+										Project.F_ACTUAL_FINISH,new BasicDBObject().append("$gte", stop)) }) 
+								});
+		
+		return dbo;
 	}
+
+	private List<?> getOrganizations(Organization org) {
+		List<Object> result = new ArrayList<Object>();
+		result.add(org.get_id());
+		List<PrimaryObject> children = org.getChildrenOrganization();
+		if(children!=null){
+			for (int i = 0; i < children.size(); i++) {
+				result.addAll(getOrganizations((Organization) children.get(i)));
+			}
+		}
+		return result;
+	}
+
+	// public void setF_SUMMARY_NORMAL_PROCESS(int count) {
+	// setValue(F_SUMMARY_NORMAL_PROCESS,count);
+	// }
+	//
+	// public void setF_SUMMARY_DELAY(int count) {
+	// setValue(F_SUMMARY_DELAY,count);
+	// }
+	//
+	// public void setF_SUMMARY_ADVANCE(int count) {
+	// setValue(F_SUMMARY_ADVANCE,count);
+	// }
+	//
+	// public void setF_SUMMARY_NORMAL_COST(int count) {
+	// setValue(F_SUMMARY_NORMAL_COST,count);
+	// }
+	//
+	// public void setF_SUMMARY_OVER_COST(int count) {
+	// setValue(F_SUMMARY_OVER_COST,count);
+	// }
+	//
+	// @Override
+	// public void setF_SUMMARY_TOTAL(int count) {
+	// setValue(F_SUMMARY_TOTAL,count);
+	// }
+	//
+	// @Override
+	// public void setF_SUMMARY_FINISHED(int count) {
+	// setValue(F_SUMMARY_FINISHED,count);
+	// }
+	//
+	// @Override
+	// public void setF_SUMMARY_PROCESSING(int count) {
+	// setValue(F_SUMMARY_PROCESSING,count);
+	// }
 
 }
