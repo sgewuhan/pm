@@ -138,7 +138,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		projectSetLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:13pt'>");
-		sb.append(projectSetName);
+		sb.append(projectSetName+" ÕªÒª");
 		sb.append("</span>");
 		projectSetLabel.setText(sb.toString());
 
@@ -336,6 +336,8 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 			
 		} else {
 			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
+			((Calendar)parameters[0]).set(Calendar.YEAR, yearIndex);
+
 		}
 		
 		reQuery();
