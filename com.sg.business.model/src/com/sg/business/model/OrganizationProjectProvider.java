@@ -113,9 +113,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				new BasicDBObject().append("$and",
 						new BasicDBObject[] {
 								new BasicDBObject().append(
-										Project.F_ACTUAL_START,new BasicDBObject().append("$gte", start)),
+										Project.F_ACTUAL_START,new BasicDBObject().append("$lte", start)),
 								new BasicDBObject().append(
-										Project.F_ACTUAL_FINISH,new BasicDBObject().append("$lte", stop)) }) 
+										Project.F_ACTUAL_FINISH,new BasicDBObject().append("$gte", stop)) }) 
 								});
 		
 		return dbo;
