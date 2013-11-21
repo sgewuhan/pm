@@ -40,19 +40,7 @@
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
             <column
-                  columnDefinitionId="organization.organizationType">
-            </column>
-            <column
-                  columnDefinitionId="organization.isFunctionDepartment">
-            </column>
-            <column
-                  columnDefinitionId="organization.isContainer">
-            </column>
-            <column
                   columnDefinitionId="organization.description">
-            </column>
-            <column
-                  columnDefinitionId="organization.costCenterCode">
             </column>
          </filterAction>
          <searchAction>
@@ -60,19 +48,7 @@
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
             <column
-                  columnDefinitionId="organization.organizationType">
-            </column>
-            <column
-                  columnDefinitionId="organization.isFunctionDepartment">
-            </column>
-            <column
-                  columnDefinitionId="organization.isContainer">
-            </column>
-            <column
                   columnDefinitionId="organization.description">
-            </column>
-            <column
-                  columnDefinitionId="organization.costCenterCode">
             </column>
          </searchAction>
       </navigator>
@@ -82,20 +58,10 @@
             table="vis.projectset">
          <filterAction>
             <column
-                  columnDefinitionId="project.projectnumber">
-            </column>
-            <column
-                  columnDefinitionId="project.workorder">
-            </column>
-            <column
                   columnDefinitionId="project.desc">
             </column>
             <column
-                  columnDefinitionId="project.status">
-            </column>
-            <column
-                  columnDefinitionId="project.status"
-                  name="状态">
+                  columnDefinitionId="project.workorder">
             </column>
             <column
                   columnDefinitionId="planstart">
@@ -104,101 +70,33 @@
                   columnDefinitionId="planfinish">
             </column>
             <column
-                  columnDefinitionId="planduration">
+                  columnDefinitionId="project.launchorg_id">
             </column>
             <column
-                  columnDefinitionId="planworks">
+                  columnDefinitionId="chargerid">
             </column>
             <column
-                  columnDefinitionId="actualstart">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish">
-            </column>
-            <column
-                  columnDefinitionId="actualduration">
-            </column>
-            <column
-                  columnDefinitionId="actualworks">
-            </column>
-            <column
-                  column="participate"
-                  name="参与者"
-                  type="String">
-            </column>
-            <column
-                  column="producttype"
-                  name="产品类型"
-                  type="String">
-            </column>
-            <column
-                  column="projecttype"
-                  name="项目类型"
-                  type="String">
-            </column>
-            <column
-                  column="standardset"
-                  name="标准"
-                  type="String">
+                  column="status"
+                  id="project.status"
+                  labelProvider="com.sg.business.commons.labelprovider.StatusLabelProvider"
+                  name=" 状态"
+                  toolTipText="状态"
+                  type="String"
+                  width="24">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  columnDefinitionId="project.projectnumber">
+                  columnDefinitionId="project.desc">
             </column>
             <column
                   columnDefinitionId="project.workorder">
             </column>
             <column
-                  columnDefinitionId="project.desc">
+                  columnDefinitionId="project.launchorg_id">
             </column>
             <column
-                  columnDefinitionId="project.status"
-                  name="状态">
-            </column>
-            <column
-                  columnDefinitionId="planstart">
-            </column>
-            <column
-                  columnDefinitionId="planfinish">
-            </column>
-            <column
-                  columnDefinitionId="planduration">
-            </column>
-            <column
-                  columnDefinitionId="planworks">
-            </column>
-            <column
-                  columnDefinitionId="actualstart">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish">
-            </column>
-            <column
-                  columnDefinitionId="actualduration">
-            </column>
-            <column
-                  columnDefinitionId="actualworks">
-            </column>
-            <column
-                  column="participate"
-                  name="参与者"
-                  type="String">
-            </column>
-            <column
-                  column="producttype"
-                  name="产品类型"
-                  type="String">
-            </column>
-            <column
-                  column="projecttype"
-                  name="项目类型"
-                  type="String">
-            </column>
-            <column
-                  column="standardset"
-                  name="标准"
-                  type="String">
+                  columnDefinitionId="chargerid">
             </column>
          </searchAction>
       </navigator>
