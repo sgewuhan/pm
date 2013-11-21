@@ -2073,7 +2073,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		DBCursor cur = col.find(
 				new BasicDBObject().append(Work.F_PROJECT_ID, get_id()).append(
 						Work.F_MILESTONE, Boolean.TRUE)).sort(
-				new BasicDBObject().append(Work.F_PLAN_START,-1));
+				new BasicDBObject().append(Work.F_PLAN_START, -1));
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
 			result.add(ModelService.createModelObject(dbo, Work.class));
@@ -2083,16 +2083,33 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 项目已经延期，当前的时间已经超过了项目的计划完成时间
+	 * 
 	 * @return
 	 */
 	public boolean isDelay() {
 		Date pf = getPlanFinish();
-		return new Date().after(pf);
+		if (pf != null) {
+			return new Date().after(pf);
+		} else {
+			return false;
+		}
 	}
 
-	public boolean maybeDelay(){
-		boolean isDelayed = isDelay();
-		if (!isDelayed) {
+	public boolean isAdvanced() {
+		String lc = getLifecycleStatus();
+		if (STATUS_FINIHED_VALUE.equals(lc)) {
+			Date pf = getPlanFinish();
+			if (pf != null) {
+				return new Date().before(pf);
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	public boolean maybeDelay() {
+		if (!isDelay()) {
 			List<Work> milestones = getMileStoneWorks();
 			for (int i = 0; i < milestones.size(); i++) {
 				if (milestones.get(i).isDelayNow()) {
@@ -2100,7 +2117,19 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				}
 			}
 		}
-		
+		return false;
+	}
+
+	public boolean maybeAdvanced() {
+		if (!isAdvanced()) {
+			List<Work> milestones = getMileStoneWorks();
+			for (int i = 0; i < milestones.size(); i++) {
+				if (!milestones.get(i).isAdvanceNow()) {
+					return false;
+				}
+			}
+			return true;
+		}
 		return false;
 	}
 

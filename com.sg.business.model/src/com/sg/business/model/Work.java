@@ -3915,6 +3915,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return _planStart != null && now.after(_planStart);
 		}
 	}
+	
+
+	public boolean isAdvanceNow() {
+		String lc = getLifecycleStatus();
+		Date now = new Date();
+		// 如果是进行中的工作检查完成时间
+		if (STATUS_FINIHED_VALUE.equals(lc)) {
+			Date _planFinish = getPlanFinish();
+			return _planFinish != null && now.before(_planFinish);
+		}
+		return false;
+	}
 
 	public boolean isDelayed() {
 		Date _planFinish = getPlanFinish();
@@ -4472,4 +4484,5 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			e.printStackTrace();
 		}
 	}
+
 }

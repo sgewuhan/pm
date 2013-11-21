@@ -42,39 +42,48 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 				pf)) : String.format("%tF%n", af);
 
 		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;margin-left:0;margin-top:2px;word-break : break-all; white-space:normal; display:block; width=1000px'>");
+
 		sb.append(start);
 		sb.append("~");
 		sb.append(finish);
 
 		// 如果项目已经完成，显示完成旗标
 		String projectLc = project.getLifecycleStatus();
-//		String state = null;
+		// String state = null;
 		if (!ILifecycle.STATUS_FINIHED_VALUE.equals(projectLc)) {
-			boolean isDelayed = project.isDelay();
-			if (isDelayed) {
-				sb.append("<span style='color="+Utils.COLOR_RED[8]+"'>");
-				sb.append("超期");
+			if (project.isAdvanced()) {
+				sb.append("<span style='color=" + Utils.COLOR_GREEN[10] + "'>");
+				sb.append("提前");
 				sb.append("</span>");
-//				state = FileUtil.getImageURL(
-//						BusinessResource.IMAGE_BALL_RED_1_16,
-//						BusinessResource.PLUGIN_ID);
 			} else {
-				boolean maybeDelay = project.maybeDelay();
-				if (maybeDelay) {
-					sb.append("<span style='color="+Utils.COLOR_YELLOW[8]+"'>");
-					sb.append("可能超期");
+				if (project.isDelay()) {
+					sb.append("<span style='color=" + Utils.COLOR_RED[10] + "'>");
+					sb.append("超期");
 					sb.append("</span>");
-//					state = FileUtil.getImageURL(
-//							BusinessResource.IMAGE_BALL_YELLOW_1_16,
-//							BusinessResource.PLUGIN_ID);
+					// state = FileUtil.getImageURL(
+					// BusinessResource.IMAGE_BALL_RED_1_16,
+					// BusinessResource.PLUGIN_ID);
+				} else {
+					boolean maybeDelay = project.maybeDelay();
+					if (maybeDelay) {
+						sb.append("<span style='color=" + Utils.COLOR_YELLOW[10]
+								+ "'>");
+						sb.append("可能超期");
+						sb.append("</span>");
+						// state = FileUtil.getImageURL(
+						// BusinessResource.IMAGE_BALL_YELLOW_1_16,
+						// BusinessResource.PLUGIN_ID);
+					}
 				}
 			}
 		}
-//		if (state != null) {
-//			sb.append("<img src='"
-//					+ state
-//					+ "' style='margin-top:0;margin-left:2' width='12' height='12' />");
-//		}
+		// if (state != null) {
+		// sb.append("<img src='"
+		// + state
+		// + "' style='margin-top:0;margin-left:2' width='12' height='12' />");
+		// }
+		sb.append("</span>");
 
 		return sb.toString();
 	}
