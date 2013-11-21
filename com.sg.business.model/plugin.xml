@@ -185,6 +185,11 @@
             collection="producttype"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.ProductItem"
+            collection="productitem"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">

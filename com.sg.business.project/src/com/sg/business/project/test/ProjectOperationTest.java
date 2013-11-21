@@ -2,6 +2,7 @@ package com.sg.business.project.test;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.sg.business.model.ProductItem;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -50,6 +51,17 @@ public class ProjectOperationTest extends PropertyTester {
 					}
 				}
 			}
+		} else if(receiver instanceof ProductItem){
+			ProductItem productItem = (ProductItem) receiver;
+			if(productItem != null){
+				if ("operation".equals(property) && args != null
+						&& args.length > 0) {
+				if("canFinal".equals(args[0])){
+					return productItem.canFinal();
+				}
+				}
+			}
+			
 		}
 		return false;
 	}

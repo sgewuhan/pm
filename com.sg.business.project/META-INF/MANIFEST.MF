@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.resource,
  com.sg.widgets,
  com.sg.widgets,
- com.sg.thirdparty
+ com.sg.thirdparty,
+ com.mobnut.admin;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.project.editor.page
