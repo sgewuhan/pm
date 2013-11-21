@@ -763,7 +763,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean isMilestone() {
 		return Boolean.TRUE.equals(getValue(F_MILESTONE));
 	}
-	
+
 	public boolean isArchive() {
 		return Boolean.TRUE.equals(getValue(F_ARCHIVE));
 	}
@@ -1227,7 +1227,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				result.addAll(childWork.checkPlan(project, roleMap));
 			}
 		}
-		if(isMilestone()){
+		if (isMilestone()) {
 			// ****************************************************************************************
 			// 1 检查工作的计划开始和计划完成
 			Object value = getPlanStart();
@@ -3903,16 +3903,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public boolean isDelayNow() {
+		String lc = getLifecycleStatus();
 		Date now = new Date();
-		Date _planFinish = getPlanFinish();
-		return _planFinish != null && now.after(_planFinish);
+		// 如果是进行中的工作检查完成时间
+		if (STATUS_WIP_VALUE.equals(lc)) {
+			Date _planFinish = getPlanFinish();
+			return _planFinish != null && now.after(_planFinish);
+		}else{
+			// 检查开始时间
+			Date _planStart = getPlanStart();
+			return _planStart != null && now.after(_planStart);
+		}
 	}
 
 	public boolean isDelayed() {
 		Date _planFinish = getPlanFinish();
 		Date _actualFinish = getActualFinish();
 
-		if( _planFinish==null){
+		if (_planFinish == null) {
 			return false;
 		}
 		if (_actualFinish != null) {
