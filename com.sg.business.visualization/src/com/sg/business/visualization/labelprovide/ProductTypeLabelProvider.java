@@ -1,9 +1,11 @@
 package com.sg.business.visualization.labelprovide;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.mobnut.commons.util.file.FileUtil;
@@ -16,48 +18,46 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
+import com.sg.business.model.ProductTypeProvider;
+import com.sg.business.model.Role;
+import com.sg.business.model.User;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.part.CurrentAccountContext;
 
-public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
-
+public class ProductTypeLabelProvider extends ColumnLabelProvider {
 	private DBCollection projectCol;
-	long wipCnt;
-	long cnt;
+	private User user;
 
-	public OrganizationProjectLabelProvider() {
+	public ProductTypeLabelProvider() {
 		super();
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
+		String userId = new CurrentAccountContext().getAccountInfo()
+				.getConsignerId();
+		user = UserToolkit.getUserById(userId);
 	}
 
 	@Override
 	public String getText(Object element) {
 		PrimaryObject dbo = ((PrimaryObject) element);
-		if (dbo instanceof Organization) {
-			Organization organization = (Organization) dbo;
-			String label = organization.getLabel();
-			String path = organization.getFullName();
-			wipCnt=0;
-			setWipCount(organization);
-			cnt=0;
-			setCountOfYear(organization);
-			
+		if (dbo instanceof ProductTypeProvider) {
+			ProductTypeProvider producttTypeProvider = (ProductTypeProvider) dbo;
+			long cnt = getCountOfYear(producttTypeProvider);
+			long wipCnt = getWipCount(producttTypeProvider);
 			StringBuffer sb = new StringBuffer();
-			sb.append("<a href=\""+ organization.get_id().toString()+ "\" target=\"_rwt\">");
+			
+			sb.append("<a href=\""
+					+ producttTypeProvider.getDesc()+","+producttTypeProvider.getUserId()
+					+ "\" target=\"_rwt\">");
 			sb.append("<img src='");
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
 						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
 			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
 			sb.append("</a>");
-
-			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt;display:block; width=1000px;'>");
-
-			String imageUrl = "<img src='" + organization.getImageURL()
-					+ "' style='float:left;padding:2px' width='24' height='24' />";
-
-			sb.append(imageUrl);
+			
 			sb.append("<b>");
-			sb.append(label);
+			sb.append(producttTypeProvider.getDesc());
 			if (cnt != 0 || wipCnt != 0) {
 				sb.append("<span style='font-weight:bold'>");
 				sb.append("<span style='color:#99cc00'>");
@@ -69,56 +69,33 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 				sb.append("</span>");
 			}
 			sb.append("</b>");
-			sb.append("<br/>");
-			sb.append("<small>");
-			sb.append(path);
-			sb.append("</small></span>");
-			
-			
 			return sb.toString();
 		}
 		return "";
 	}
 
-//	private long getCountOfYear(Organization organization) {
-//		long cnt = projectCol.count(getQueryCondtion(organization));
-//		return cnt;
-//	}
-//
-//	private long getWipCount(Organization organization) {
-//
-//		long wipCnt = projectCol.count(new BasicDBObject().append(
-//				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
-//				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
-//		return wipCnt;
-//
-//	}
-	
-	
-	private void setCountOfYear(Organization organization) {
-		long count = projectCol.count(getQueryCondtion(organization));
-		cnt+=count;
-		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
-		for (PrimaryObject orgpo : childrenOrganization) {
-			setCountOfYear((Organization)orgpo);
-		}
+	private long getCountOfYear(
+			ProductTypeProvider productTypeProvider) {
+		long count = projectCol
+				.count(getQueryCondtion(productTypeProvider));
+		return count;
 	}
 
-	
-	private void setWipCount(Organization organization) {
-		
-		long count = projectCol.count(new BasicDBObject().append(
-				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
-				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
-		wipCnt+=count;
-		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
-		for (PrimaryObject orgpo : childrenOrganization) {
-			setWipCount((Organization)orgpo);
-		}
+	private long getWipCount(
+			ProductTypeProvider productTypeProvider) {
+
+		long count = projectCol.count(new BasicDBObject()
+				.append(Project.F_PRODUCT_TYPE_OPTION,
+						productTypeProvider.getDesc())
+				.append(ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE)
+				.append(Project.F_LAUNCH_ORGANIZATION,
+						new BasicDBObject().append("$in", getUerOrgId())));
+		return count;
 
 	}
 
-	private DBObject getQueryCondtion(Organization organization) {
+	private DBObject getQueryCondtion(
+			ProductTypeProvider productTypeProvider) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.MONTH, 0);
 		calendar.set(Calendar.DATE, 1);
@@ -132,7 +109,10 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 		Date stop = calendar.getTime();
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_LAUNCH_ORGANIZATION, organization.get_id());
+		dbo.put(Project.F_PRODUCT_TYPE_OPTION,
+				productTypeProvider.getDesc());
+		dbo.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", getUerOrgId()));
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
@@ -166,6 +146,56 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 												.append("$gte", stop)) });
 
 		return dbo;
+	}
+
+	protected List<ObjectId> getUerOrgId() {
+		List<ObjectId> list = new ArrayList<ObjectId>();
+		List<PrimaryObject> userOrg = getUserOrg(
+				new ArrayList<PrimaryObject>(), getInput());
+		for (PrimaryObject po : userOrg) {
+			list.add(po.get_id());
+		}
+		return list;
+
+	}
+
+	protected List<PrimaryObject> getUserOrg(List<PrimaryObject> list,
+			List<PrimaryObject> childrenList) {
+		list.addAll(childrenList);
+		for (PrimaryObject po : childrenList) {
+			List<PrimaryObject> childrenOrg = ((Organization) po)
+					.getChildrenOrganization();
+			getUserOrg(list, childrenOrg);
+		}
+		return list;
+	}
+
+	protected List<PrimaryObject> getInput() {
+		// 获取当前用户担任管理者角色的部门
+		List<PrimaryObject> orglist = user
+				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
+		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
+
+		for (int i = 0; i < orglist.size(); i++) {
+			Organization org = (Organization) orglist.get(i);
+			boolean hasParent = false;
+			for (int j = 0; j < input.size(); j++) {
+				Organization inputOrg = (Organization) input.get(j);
+				if (inputOrg.isSuperOf(org)) {
+					hasParent = true;
+					break;
+				}
+				if (org.isSuperOf(inputOrg)) {
+					input.remove(j);
+					break;
+				}
+			}
+			if (!hasParent) {
+				input.add(org);
+			}
+		}
+
+		return input;
 	}
 
 }

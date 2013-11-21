@@ -23,7 +23,7 @@
       </view>
       <view
             category="visualization"
-            class="com.sg.widgets.part.view.TableNavigator"
+            class="com.sg.business.visualization.view.ProductTypeNavigator"
             id="vis.project.producttype"
             name="产品类型"
             restorable="true">
@@ -214,7 +214,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="3"
+            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -351,21 +351,34 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               labelProvider="com.sg.business.visualization.labelprovide.ProjectTypeLabelProvider"
                name="项目类型"
                type="String"
                width="-1">
          </column>
-         <column
-               labelProvider="com.sg.business.visualization.labelprovide.ProjectTypeProjectCount"
-               name="项目数"
-               style="SWT.CENTER"
-               type="String"
-               width="80"></column>
       </table>
       <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            collectionName="producttype"
+            customItemHeight="40"
             dataSet="com.sg.business.model.dataset.visualization.ProductType"
-            id="vis.project.producttype">
+            dbName="pm2"
+            headerVisiable="false"
+            id="vis.project.producttype"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovide.ProductTypeLabelProvider"
+               name="项目类型"
+               type="String"
+               width="-1">
+         </column>
+      
       </table>
       <table
             canCreate="false"

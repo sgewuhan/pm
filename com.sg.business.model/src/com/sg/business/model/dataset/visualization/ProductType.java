@@ -3,8 +3,6 @@ package com.sg.business.model.dataset.visualization;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
-
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -13,24 +11,27 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.ProductTypeProvider;
 import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.ProductTypeProjectProvider;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProductType extends SingleDBCollectionDataSetFactory {
 
+	private String userId;
 	public ProductType() {
 		super(IModelConstants.DB, IModelConstants.C_PROJECT_TEMPLATE);
+		 userId= new CurrentAccountContext().getAccountInfo()
+				.getConsignerId();
+		
 	}
-	
+
 	@Override
 	public DataSet getDataSet() {
 		List<PrimaryObject> dataItems=new ArrayList<PrimaryObject>();
 		List<String> options=getTypeOptions();
 		for(String option:options){
-			ProductTypeProjectProvider productType = ModelService.createModelObject(ProductTypeProjectProvider.class);
-			productType.setValue("_id", new ObjectId());
-			productType.setValue("desc", option);
-			dataItems.add(productType);
+			ProductTypeProvider projectType = new ProductTypeProvider(option,userId);
+			dataItems.add(projectType);
 		}
 		return new DataSet(dataItems);
 	}

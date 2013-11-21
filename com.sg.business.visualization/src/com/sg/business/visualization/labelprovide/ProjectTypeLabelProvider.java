@@ -18,19 +18,19 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
-import com.sg.business.model.ProjectTypeProjectProvider;
+import com.sg.business.model.ProjectTypeProvider;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class ProjectTypeProjectCount extends ColumnLabelProvider {
+public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 
 	private DBCollection projectCol;
 	private User user;
 
-	public ProjectTypeProjectCount() {
+	public ProjectTypeLabelProvider() {
 		super();
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
@@ -42,40 +42,48 @@ public class ProjectTypeProjectCount extends ColumnLabelProvider {
 	@Override
 	public String getText(Object element) {
 		PrimaryObject dbo = ((PrimaryObject) element);
-		if (dbo instanceof ProjectTypeProjectProvider) {
-			ProjectTypeProjectProvider projectTypeProjectProvider = (ProjectTypeProjectProvider) dbo;
-			long cnt = getCountOfYear(projectTypeProjectProvider);
-			long wipCnt = getWipCount(projectTypeProjectProvider);
+		if (dbo instanceof ProjectTypeProvider) {
+			ProjectTypeProvider projectTypeProvider = (ProjectTypeProvider) dbo;
+			long cnt = getCountOfYear(projectTypeProvider);
+			long wipCnt = getWipCount(projectTypeProvider);
 			StringBuffer sb = new StringBuffer();
-			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;font-weight:bold;color:#99cc00'>");
-			sb.append(wipCnt);
-			sb.append("</span>");
-			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;font-weight:bold'>");
-			sb.append("/" + cnt);
-			sb.append("</span>");
-
+			
 			sb.append("<a href=\""
-					+ projectTypeProjectProvider.getDesc()+","+projectTypeProjectProvider.getUserId()
+					+ projectTypeProvider.getDesc()+","+projectTypeProvider.getUserId()
 					+ "\" target=\"_rwt\">");
 			sb.append("<img src='");
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-			sb.append("' style='border-style:none;float:right;padding:0px;margin:0px' width='24' height='24' />");
+						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
 			sb.append("</a>");
+			
+			sb.append("<b>");
+			sb.append(projectTypeProvider.getDesc());
+			if (cnt != 0 || wipCnt != 0) {
+				sb.append("<span style='font-weight:bold'>");
+				sb.append("<span style='color:#99cc00'>");
+				sb.append(" ");
+				sb.append(wipCnt);
+				sb.append("</span>");
+				sb.append(" ");
+				sb.append("/" + cnt);
+				sb.append("</span>");
+			}
+			sb.append("</b>");
 			return sb.toString();
 		}
 		return "";
 	}
 
 	private long getCountOfYear(
-			ProjectTypeProjectProvider projectTypeProjectProvider) {
+			ProjectTypeProvider projectTypeProjectProvider) {
 		long count = projectCol
 				.count(getQueryCondtion(projectTypeProjectProvider));
 		return count;
 	}
 
 	private long getWipCount(
-			ProjectTypeProjectProvider projectTypeProjectProvider) {
+			ProjectTypeProvider projectTypeProjectProvider) {
 
 		long count = projectCol.count(new BasicDBObject()
 				.append(Project.F_PROJECT_TYPE_OPTION,
@@ -88,7 +96,7 @@ public class ProjectTypeProjectCount extends ColumnLabelProvider {
 	}
 
 	private DBObject getQueryCondtion(
-			ProjectTypeProjectProvider projectTypeProjectProvider) {
+			ProjectTypeProvider projectTypeProjectProvider) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.MONTH, 0);
 		calendar.set(Calendar.DATE, 1);

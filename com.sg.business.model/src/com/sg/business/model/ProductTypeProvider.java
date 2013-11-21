@@ -6,53 +6,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mobnut.commons.util.file.FileUtil;
+import org.bson.types.ObjectId;
+
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.resource.BusinessResource;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
 
-public class OrganizationProjectProvider extends ProjectProvider {
+public class ProductTypeProvider extends ProjectProvider {
 
-	private Organization organization;
-	private DBCollection col;
+	private DBCollection projectCol;
+	private String userId;
+	private String desc;
+	
 
-	public void setOrganization(Organization org) {
-		this.organization = org;
-		setValue(F__ID, org.get_id());
-		setValue(F_DESC, org.getDesc());
-		col = getCollection(IModelConstants.C_PROJECT);
-	}
-
-	@Override
-	public String getTypeName() {
-		return "组织项目集";
-	}
-
-	@Override
-	public String getProjectSetCoverImage() {
-		return FileUtil.getImageURL("project_72.png",
-				"com.sg.business.project", BusinessResource.IMAGE_FOLDER);
+	public ProductTypeProvider(String desc,String userId) {
+		super();
+		projectCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
+		set_data(new BasicDBObject());
+		this.desc=desc;
+		this.userId=userId;
+		
 	}
 
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		List<PrimaryObject> projectSet = null;
+		List<PrimaryObject> projectSet=null;
 		try {
-			projectSet = getProjectSet(organization, result);
+			projectSet = getProjectSet(result);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-
-		// TODO 完成查询后，需要写入合计值
-		// 参考ProjectProvider的F开头的字段的注释，将值写入
-		// 使用ProjectProvider.setSummaryDate(data)方法
-		// data是合计值的Map<String,Object> Map的key 为ProjectProvider的F开头的字段
 		
 		Map<String,Object> map=new HashMap<String,Object>();
 		int proTotalCoun=projectSet.size();
@@ -76,40 +67,32 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return projectSet;
 	}
 
-	private List<PrimaryObject> getProjectSet(Organization organization,
-			List<PrimaryObject> result) throws Exception {
-		// TODO 获取传入的条件，修改现有代码使之能根据条件进行查询
-		// 使用getStartDate()获得开始时间，使用getFinishDate()获得完成时间
-		// 错误抛出方法外
+	private List<PrimaryObject> getProjectSet(List<PrimaryObject> result) throws Exception {
 
 		Date startDate = getStartDate();
 		Date endDate = getEndDate();
-		DBCursor cur = col.find(getQueryCondtion(organization, startDate,
-				endDate));
+		DBCursor cur = projectCol
+				.find(getQueryCondtion(startDate,
+						endDate));
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
 			Project project = ModelService
 					.createModelObject(dbo, Project.class);
+
 			result.add(project);
 		}
-		List<PrimaryObject> childrenOrganization = (organization)
-				.getChildrenOrganization();
-		for (PrimaryObject orgpo : childrenOrganization) {
-			getProjectSet((Organization) orgpo, result);
-		}
+
+
 		return result;
 	}
-
-	@Override
-	public String getProjectSetName() {
-		return getDesc() + "项目集";
-	}
-
-	private DBObject getQueryCondtion(Organization organization, Date start,
-			Date stop) {
+	
+	
+	private DBObject getQueryCondtion(Date start,Date stop) {
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_LAUNCH_ORGANIZATION, organization.get_id());
+		dbo.put(Project.F_PRODUCT_TYPE_OPTION,getDesc());
+		dbo.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", getUerOrgId()));
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
@@ -144,42 +127,80 @@ public class OrganizationProjectProvider extends ProjectProvider {
 
 		return dbo;
 	}
+	
+	
+	protected List<ObjectId> getUerOrgId() {
+		List<ObjectId> list = new ArrayList<ObjectId>();
+		List<PrimaryObject> userOrg = getUserOrg(
+				new ArrayList<PrimaryObject>(), getInput());
+		for (PrimaryObject po : userOrg) {
+			list.add(po.get_id());
+		}
+		return list;
 
+	}
 
+	protected List<PrimaryObject> getUserOrg(List<PrimaryObject> list,
+			List<PrimaryObject> childrenList) {
+		list.addAll(childrenList);
+		for (PrimaryObject po : childrenList) {
+			List<PrimaryObject> childrenOrg = ((Organization) po)
+					.getChildrenOrganization();
+			getUserOrg(list, childrenOrg);
+		}
+		return list;
+	}
 
-//	public  void setF_SUMMARY_NORMAL_PROCESS(int count) {
-//		setValue(F_SUMMARY_NORMAL_PROCESS,count);
-//	}
-//
-//	public  void setF_SUMMARY_DELAY(int count) {
-//		setValue(F_SUMMARY_DELAY,count);
-//	}
-//
-//	public  void setF_SUMMARY_ADVANCE(int count) {
-//		setValue(F_SUMMARY_ADVANCE,count);
-//	}
-//
-//	public  void setF_SUMMARY_NORMAL_COST(int count) {
-//		setValue(F_SUMMARY_NORMAL_COST,count);
-//	}
-//
-//	public  void setF_SUMMARY_OVER_COST(int count) {
-//		setValue(F_SUMMARY_OVER_COST,count);
-//	}
-//
-//	@Override
-//	public void setF_SUMMARY_TOTAL(int count) {
-//		setValue(F_SUMMARY_TOTAL,count);
-//	}
-//
-//	@Override
-//	public void setF_SUMMARY_FINISHED(int count) {
-//		setValue(F_SUMMARY_FINISHED,count);
-//	}
-//
-//	@Override
-//	public void setF_SUMMARY_PROCESSING(int count) {
-//		setValue(F_SUMMARY_PROCESSING,count);
-//	}
+	protected List<PrimaryObject> getInput() {
+		// 获取当前用户担任管理者角色的部门
+		User user=UserToolkit.getUserById(getUserId());		
+		List<PrimaryObject> orglist = user
+				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
+		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
 
+		for (int i = 0; i < orglist.size(); i++) {
+			Organization org = (Organization) orglist.get(i);
+			boolean hasParent = false;
+			for (int j = 0; j < input.size(); j++) {
+				Organization inputOrg = (Organization) input.get(j);
+				if (inputOrg.isSuperOf(org)) {
+					hasParent = true;
+					break;
+				}
+				if (org.isSuperOf(inputOrg)) {
+					input.remove(j);
+					break;
+				}
+			}
+			if (!hasParent) {
+				input.add(org);
+			}
+		}
+
+		return input;
+	}
+	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public String getProjectSetName() {
+		return getDesc() + "项目集";
+	}
+
+	@Override
+	public String getProjectSetCoverImage() {
+		return null;
+	}
+    
+	@Override
+	public String getDesc() {
+		return desc;
+	}
 }

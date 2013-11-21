@@ -1,13 +1,13 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bson.types.ObjectId;
 
-import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -16,18 +16,21 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.MessageUtil;
 
-public class ProjectTypeProjectProvider extends ProjectProvider {
+public class ProjectTypeProvider extends ProjectProvider {
 	private DBCollection projectCol;
 	private String userId;
-	public ProjectTypeProjectProvider(String desc,String userId) {
+	private String desc;
+	
+
+	public ProjectTypeProvider(String desc,String userId) {
 		super();
 		
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
 		set_data(new BasicDBObject());
-		setValue(F_DESC, desc);
+		this.desc=desc;
 		this.userId=userId;
 		
 	}
@@ -35,15 +38,42 @@ public class ProjectTypeProjectProvider extends ProjectProvider {
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		List<PrimaryObject> projectSet = getProjectSet(result);
+		List<PrimaryObject> projectSet=null;
+		try {
+			projectSet = getProjectSet(result);
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+		}
+		
+		Map<String,Object> map=new HashMap<String,Object>();
+		int proTotalCoun=projectSet.size();
+		int proFinishCount=0;
+		int proProcessCount=0;
+		
+		for(PrimaryObject po:projectSet){
+			if(ILifecycle.STATUS_FINIHED_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+				proFinishCount++;
+			}else if(ILifecycle.STATUS_WIP_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+				proProcessCount++;
+			}
+		}
+		
+		map.put(F_SUMMARY_TOTAL,proTotalCoun);
+		map.put(F_SUMMARY_FINISHED,proFinishCount);
+		map.put(F_SUMMARY_PROCESSING,proProcessCount);
+		
+		setSummaryDate(map);
+		
 		return projectSet;
 	}
 
-	private List<PrimaryObject> getProjectSet(List<PrimaryObject> result) {
+	private List<PrimaryObject> getProjectSet(List<PrimaryObject> result) throws Exception {
 
+		Date startDate = getStartDate();
+		Date endDate = getEndDate();
 		DBCursor cur = projectCol
-				.find(getQueryCondtion());
-
+				.find(getQueryCondtion(startDate,
+						endDate));
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
 			Project project = ModelService
@@ -57,18 +87,7 @@ public class ProjectTypeProjectProvider extends ProjectProvider {
 	}
 	
 	
-	private DBObject getQueryCondtion() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, 0);
-		calendar.set(Calendar.DATE, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date start = calendar.getTime();
-		calendar.add(Calendar.YEAR, 1);
-		calendar.add(Calendar.MILLISECOND, -1);
-		Date stop = calendar.getTime();
+	private DBObject getQueryCondtion(Date start,Date stop) {
 
 		DBObject dbo = new BasicDBObject();
 		dbo.put(Project.F_PROJECT_TYPE_OPTION,getDesc());
@@ -161,26 +180,6 @@ public class ProjectTypeProjectProvider extends ProjectProvider {
 		return input;
 	}
 	
-	
-	
-
-	@Override
-	public String getHTMLLabel() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
-
-		String imageUrl = "<img src='" + FileUtil.getImageURL(BusinessResource.IMAGE_BUSINESSUNIT_24,
-				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER)
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
-		String label = getDesc();
-		sb.append(imageUrl);
-		sb.append("<b>");
-		sb.append(label);
-		sb.append("</b>");
-		sb.append("<br/>");
-		sb.append("</span>");
-		return sb.toString();
-	}
 
 	public String getUserId() {
 		return userId;
@@ -192,15 +191,16 @@ public class ProjectTypeProjectProvider extends ProjectProvider {
 
 	@Override
 	public String getProjectSetName() {
-		// TODO Auto-generated method stub
-		return null;
+		return getDesc() + "ÏîÄ¿¼¯";
 	}
 
 	@Override
 	public String getProjectSetCoverImage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
-
+    
+	@Override
+	public String getDesc() {
+		return desc;
+	}
 }
