@@ -38,7 +38,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 	/**
 	 * 提前
 	 */
-	public static final String F_SUMMARY_ADVANCE = null;
+	public static final String F_SUMMARY_ADVANCE = "s8";
 
 	/**
 	 * 成本正常
