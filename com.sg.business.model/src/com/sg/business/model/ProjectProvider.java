@@ -29,17 +29,17 @@ public abstract class ProjectProvider extends PrimaryObject {
 	/**
 	 * 正常进行中
 	 */
-	public static String F_SUMMARY_NORMAL_PROCESS = "s4";
+	public static final String F_SUMMARY_NORMAL_PROCESS = "s4";
 
 	/**
 	 * 延期
 	 */
-	public static String F_SUMMARY_DELAY = "s5";
+	public static final String F_SUMMARY_DELAY = "s5";
 
 	/**
 	 * 提前
 	 */
-	public static String F_SUMMARY_ADVANCE = "s8";
+	public static final String F_SUMMARY_ADVANCE = "s8";
 
 	/**
 	 * 成本正常

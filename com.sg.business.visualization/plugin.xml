@@ -151,8 +151,8 @@
             collectionName="project"
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
-            headerVisiable="false"
-            id="vis.projectset"
+            headerVisiable="true"
+            id="vis.projectset_2"
             lineVisiable="false"
             useHashlookup="true"
             virtual="true">
@@ -277,6 +277,40 @@
                width="-1">
          </column>
       
+      </table>
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="project"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
+            dbName="pm2"
+            fix="1"
+            headerVisiable="true"
+            id="vis.projectset"
+            lineVisiable="false"
+            markupEnabled="true"
+            preload="20"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               lazyDisplay="true"
+               name="项目名称描述"
+               type="String"
+               width="320">
+         </column>
+         <column
+               column="planfinish"
+               labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
+               lazyDisplay="true"
+               name="进度摘要"
+               type="Date"
+               width="200">
+         </column>
       </table>
    </extension>
    <extension

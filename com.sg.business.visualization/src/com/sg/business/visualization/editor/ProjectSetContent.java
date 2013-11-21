@@ -12,6 +12,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
+import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -99,6 +100,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 	private Composite createNavigator(Composite body, NavigatorControl navi) {
 		Composite navigator = new Composite(body, SWT.NONE);
 		navi.createPartContent(navigator);
+		navi.getViewer().getControl().setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
 		return navigator;
 	}
 

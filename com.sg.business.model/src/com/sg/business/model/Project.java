@@ -237,6 +237,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public String getChargerId() {
 		return (String) getValue(F_CHARGER);
 	}
+
 	/**
 	 * 返回项目的发起组织
 	 * 
@@ -267,7 +268,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 返回项目发起组织_id
 	 * 
@@ -276,6 +277,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public List<?> getLaunchOrganizationId() {
 		return (List<?>) getValue(F_LAUNCH_ORGANIZATION);
 	}
+
 	/**
 	 * 返回项目管理组织_id
 	 * 
@@ -615,12 +617,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 复制模板
 		try {
-			doSetupWithTemplate(root.get_id(), context,
-					folderRoot.get_id());
+			doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
 		} catch (Exception e) {
-//			return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-//					Status.ERROR, "复制模板出错", e);
-			
+			// return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
+			// Status.ERROR, "复制模板出错", e);
+
 			throw new Exception("复制模板出错");
 		}
 		Job job = new Job("从模板复制项目信息") {
@@ -2059,6 +2060,48 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		return null;
+	}
+
+	/**
+	 * 取出项目所有的里程碑工作,按照计划开始时间，从小到大排序
+	 * 
+	 * @return
+	 */
+	public List<Work> getMileStoneWorks() {
+		List<Work> result = new ArrayList<Work>();
+		DBCollection col = getCollection(IModelConstants.C_WORK);
+		DBCursor cur = col.find(
+				new BasicDBObject().append(Work.F_PROJECT_ID, get_id()).append(
+						Work.F_MILESTONE, Boolean.TRUE)).sort(
+				new BasicDBObject().append(Work.F_PLAN_START,-1));
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			result.add(ModelService.createModelObject(dbo, Work.class));
+		}
+		return result;
+	}
+
+	/**
+	 * 项目已经延期，当前的时间已经超过了项目的计划完成时间
+	 * @return
+	 */
+	public boolean isDelay() {
+		Date pf = getPlanFinish();
+		return new Date().after(pf);
+	}
+
+	public boolean maybeDelay(){
+		boolean isDelayed = isDelay();
+		if (!isDelayed) {
+			List<Work> milestones = getMileStoneWorks();
+			for (int i = 0; i < milestones.size(); i++) {
+				if (milestones.get(i).isDelayNow()) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 }

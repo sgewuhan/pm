@@ -50,7 +50,7 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
 			sb.append("</a>");
 
-			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
+			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
 
 			String imageUrl = "<img src='" + organization.getImageURL()
 					+ "' style='float:left;padding:2px' width='24' height='24' />";
