@@ -259,6 +259,8 @@ public interface IModelConstants {
 	 */
 	public static final String S_MAJOR_VID_SEQ = "MAJOR_VID_SEQ";
 
+	public static final String C_PRODUCT = "productitem";
+
 
 
 }

@@ -416,9 +416,9 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.option"
             name="评审意见录入"
-            persistentFields="comment,commentfile"
+            persistentFields="comment,accessory"
             processDefinitionId="kfzx.kfzxMeetingReview"
-            saveHandler="com.tmt.kfzx.handler.MeetingReviewCommentfile">
+            saveHandler="com.tmt.kfzx.handler.MeetingReviewAccessory">
       </taskForm>
       <taskForm
             editorId="kfzx.kfzxMeetingReview.audit"
@@ -552,9 +552,9 @@
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
-                        id="commentfile"
+                        id="accessory"
                         labelVisible="true"
-                        name="commentfile"
+                        name="accessory"
                         persistable="true"
                         required="false">
                   </file>
@@ -644,9 +644,9 @@
       <taskForm
             editorId="kfzx.kfzxProjrctStart.meetingminutes"
             name="上传会议纪要"
-            persistentFields="commentfile"
+            persistentFields="accessory"
             processDefinitionId="kfzx.kfzxProjrctStart"
-            saveHandler="com.tmt.kfzx.handler.MeetingReviewCommentfile">
+            saveHandler="com.tmt.kfzx.handler.MeetingReviewAccessory">
       </taskForm>
    </extension>
    <extension
@@ -764,9 +764,9 @@
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
-                        id="commentfile"
+                        id="accessory"
                         labelVisible="true"
-                        name="commentfile"
+                        name="accessory"
                         persistable="true"
                         required="false">
                   </file>

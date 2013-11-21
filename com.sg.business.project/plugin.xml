@@ -1066,7 +1066,7 @@
                         widthHint="240">
                   </text>
                   <combo
-                        editPart="Combo"
+                        editPart="Combo(Read Only)"
                         editable="true"
                         id="type"
                         label="类型"
@@ -1919,18 +1919,16 @@
                </parameter>
             </command>
             <command
-                  commandId="com.sg.widgets.command.edit"
-                  icon="image/document_24.png"
+                  commandId="project.product.edit"
+                  icon="image/product_24.png"
                   label="物资编码"
                   style="push">
-               <parameter
-                     name="com.sg.widgets.edit.editorid"
-                     value="project.editor">
-               </parameter>
-               <parameter
-                     name="com.sg.widgets.edit.pageid"
-                     value="project.documents">
-               </parameter>
+            </command>
+            <command
+                  commandId="project.workorder.edit"
+                  icon="image/document_24.png"
+                  label="工作令号"
+                  style="push">
             </command>
             <separator
                   name="project.separator4"
@@ -2780,6 +2778,58 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.product">
+         <command
+               commandId="com.sg.widgets.command.create"
+               icon="image/create2_24.png"
+               label="创建"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="编辑"
+               style="push">
+         </command>
+         <command
+               commandId="product.final"
+               label="标记转批"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <test
+                           args="canFinal"
+                           property="project.operation"
+                           value="true">
+                     </test>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <separator
+               name="product.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -2900,6 +2950,21 @@
             categoryId="project"
             id="project.documentunlock"
             name="解锁">
+      </command>
+      <command
+            categoryId="project"
+            id="project.product.edit"
+            name="编辑物资编码">
+      </command>
+      <command
+            categoryId="project"
+            id="product.final"
+            name="标记转批">
+      </command>
+      <command
+            categoryId="project"
+            id="project.workorder.edit"
+            name="工作令号">
       </command>
    </extension>
    <extension
@@ -3060,6 +3125,18 @@
       <handler
             class="com.sg.business.project.handler.UnLockDocument"
             commandId="project.documentunlock">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.EditProduct"
+            commandId="project.product.edit">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.FinalProduct"
+            commandId="product.final">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.EditWorkOrder"
+            commandId="project.workorder.edit">
       </handler>
    </extension>
    <extension
@@ -3599,21 +3676,6 @@
                   </text>
                </section>
                <section
-                     label="工作令号">
-                  <list
-                        editable="false"
-                        id="workorder"
-                        label="工作令号"
-                        labelVisible="false"
-                        name="workorder"
-                        persistable="true"
-                        required="false"
-                        tooltips="项目关联的工作令号,可以添加多个">
-                  </list>
-               </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
                      label="项目经理, 部门">
                   <text
                         editPart="Text(Single Line)"
@@ -3639,19 +3701,20 @@
                         required="false"
                         type="String">
                   </text>
-                  <text
-                        editPart="Text(Single Line)"
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddOrganization"
                         editable="false"
+                        heightHint="108"
                         id="launchorg_id"
-                        label="项目发起部门"
+                        label="项目承担组织"
                         labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
-                        persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
-                        required="false"
-                        type="String">
-                  </text>
+                        persistable="true">
+                  </list>
                </section>
+            </pagecolumn>
+            <pagecolumn>
                <section
                      label="计划">
                   <dateTime
@@ -3744,6 +3807,19 @@
                         type="Double">
                   </text>
                </section>
+               <section
+                     label="工作令号">
+                  <list
+                        editable="false"
+                        id="workorder"
+                        label="工作令号"
+                        labelVisible="false"
+                        name="workorder"
+                        persistable="true"
+                        required="false"
+                        tooltips="项目关联的工作令号,可以添加多个">
+                  </list>
+               </section>
             </pagecolumn>
          </basicpage>
          <basicpage
@@ -3835,6 +3911,121 @@
             id="project.wizard.changeuser"
             name="更改用户">
       </wizard>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="productitem"
+            dbName="pm2"
+            id="project.product.editor"
+            image="image/product_24.png"
+            name="物资编码">
+         <navigatorpage
+               id="project.product"
+               image="image/product_24.png"
+               navigatorId="project.product"
+               title="物资编码">
+         </navigatorpage>
+      </editor>
+      <editor
+            collectionName="productitem"
+            dbName="pm2"
+            id="editor.productitem"
+            image="image/product_24.png"
+            name="物资编码">
+         <basicpage
+               description="物资的基本信息"
+               id="productitem.basicpage"
+               image="image/product_24.png"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="物资摘要">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="物资编码"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="project.workorder.editor"
+            name="工作令号">
+         <basicpage
+               description="基本信息"
+               id="project.basicpage"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="工作令号">
+                  <list
+                        editable="true"
+                        heightHint="108"
+                        id="workorder"
+                        label="工作令号"
+                        labelVisible="false"
+                        name="workorder"
+                        persistable="true"
+                        required="false"
+                        tooltips="项目关联的工作令号,可以添加多个">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="project.product"
+            table="project.product">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+         <createEditor
+               createHandler="com.sg.business.project.editor.CreateProductItemOfProject"
+               editorId="editor.productitem"></createEditor>
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            canCreate="true"
+            dataSet="com.sg.business.model.dataset.project.ProductOfProject"
+            editorId="editor.productitem"
+            id="project.product"
+            popupMenu="popup:project.product">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel"></column>
+      </table>
+   </extension>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            day="999999"
+            id="project.produtinit"
+            name="物资编码转存"
+            rule="month"
+            run="com.sg.business.project.setup.ProdutInit"
+            time="0:0:0">
+      </schedualJob>
    </extension>
 
 </plugin>

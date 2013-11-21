@@ -482,6 +482,15 @@
                   type="String">
             </column>
             <column
+                  column="username"
+                  name="姓名"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="组织"
+                  type="String"></column>
+            <column
                   column="projectdesc"
                   name="项目"
                   type="String">
@@ -495,6 +504,16 @@
             <column
                   column="userid"
                   name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  column="username"
+                  name="姓名"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="组织"
                   type="String">
             </column>
             <column
@@ -522,12 +541,18 @@
                   name="用户ID"
                   type="String">
             </column>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
          </searchAction>
          <filterAction>
             <column
                   column="userid"
                   name="用户ID"
                   type="String">
+            </column>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </filterAction>
       </navigator>

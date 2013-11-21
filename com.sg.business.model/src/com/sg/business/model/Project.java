@@ -237,6 +237,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public String getChargerId() {
 		return (String) getValue(F_CHARGER);
 	}
+
 	/**
 	 * 返回项目的发起组织
 	 * 
@@ -267,7 +268,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 返回项目发起组织_id
 	 * 
@@ -276,6 +277,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public List<?> getLaunchOrganizationId() {
 		return (List<?>) getValue(F_LAUNCH_ORGANIZATION);
 	}
+
 	/**
 	 * 返回项目管理组织_id
 	 * 
@@ -615,12 +617,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		// 复制模板
 		try {
-			doSetupWithTemplate(root.get_id(), context,
-					folderRoot.get_id());
+			doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
 		} catch (Exception e) {
-//			return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-//					Status.ERROR, "复制模板出错", e);
-			
+			// return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
+			// Status.ERROR, "复制模板出错", e);
+
 			throw new Exception("复制模板出错");
 		}
 		Job job = new Job("从模板复制项目信息") {
@@ -1371,9 +1372,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return false;
 		}
 
+		String userId = context.getAccountInfo().getConsignerId();
+		Organization org = getFunctionOrganization();
+		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+		if (role != null) {
+			List<PrimaryObject> assignmentList = role.getAssignment();
+			if (assignmentList != null && assignmentList.size() > 0) {
+				for (PrimaryObject po : assignmentList) {
+					RoleAssignment roleAssignment = (RoleAssignment) po;
+					String assignmentuserId = roleAssignment.getUserid();
+					if (userId.equals(assignmentuserId)) {
+						return true;
+					}
+				}
+			}
+		}
+
 		// 如果是项目负责人，可以编辑
 		String chargerId = getChargerId();
-		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(chargerId)) {
 			return false;
 		}
