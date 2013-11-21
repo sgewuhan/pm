@@ -118,7 +118,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 										Project.F_ACTUAL_FINISH,new BasicDBObject().append("$lte", stop)) }) 
 								});
 		
-		System.out.println(dbo);
 		return dbo;
 	}
 
