@@ -43,37 +43,36 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
+
+			Map<String, Object> map = new HashMap<String, Object>();
+
+			int proFinishCount = 0;
+			int proProcessCount = 0;
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
-				Project project = ModelService.createModelObject(dbo,Project.class);
+				Project project = ModelService.createModelObject(dbo,
+						Project.class);
+				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
+						.getLifecycleStatus())) {
+					proFinishCount++;
+				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
+						.getLifecycleStatus())) {
+					proProcessCount++;
+				}
+
 				result.add(project);
 			}
+			map.put(F_SUMMARY_TOTAL, result.size());
+			map.put(F_SUMMARY_FINISHED, proFinishCount);
+			map.put(F_SUMMARY_PROCESSING, proProcessCount);
+
+			setSummaryDate(map);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		int proTotalCoun = result.size();
-		int proFinishCount = 0;
-		int proProcessCount = 0;
-
-		for (PrimaryObject po : result) {
-			String lifecycleStatus = ((ILifecycle) po).getLifecycleStatus();
-			if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
-				proFinishCount++;
-			} else if (ILifecycle.STATUS_WIP_VALUE.equals(lifecycleStatus)) {
-				proProcessCount++;
-			}
-		}
-
-		map.put(F_SUMMARY_TOTAL, proTotalCoun);
-		map.put(F_SUMMARY_FINISHED, proFinishCount);
-		map.put(F_SUMMARY_PROCESSING, proProcessCount);
-
-		setSummaryDate(map);
 
 		return result;
 	}
@@ -86,38 +85,43 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in", getOrganizations(organization)));
+		dbo.put(Project.F_LAUNCH_ORGANIZATION, new BasicDBObject().append(
+				"$in", getOrganizations(organization)));
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
 						ILifecycle.STATUS_WIP_VALUE }));
 		dbo.put("$or",
-			new BasicDBObject[] {
-				new BasicDBObject().append(Project.F_PLAN_START,
-						new BasicDBObject().append("$gte", start).append("$lte", stop))
-						,
+				new BasicDBObject[] {
+						// new BasicDBObject().append(Project.F_PLAN_START,
+						// new BasicDBObject().append("$gte",
+						// start).append("$lte", stop))
+						// ,
 
-				new BasicDBObject().append(Project.F_ACTUAL_START,
-						new BasicDBObject().append("$gte", start).append("$lte", stop))
-						,
+						new BasicDBObject().append(Project.F_ACTUAL_START,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
 
-				new BasicDBObject().append(Project.F_PLAN_FINISH,
-						new BasicDBObject().append("$gte", start).append("$lte", stop))
-						,
+						new BasicDBObject().append(Project.F_PLAN_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
 
-				new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-						new BasicDBObject().append("$gte", start).append("$lte", stop))
-						,
+						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
 
-				new BasicDBObject().append("$and",
-						new BasicDBObject[] {
-								new BasicDBObject().append(
-										Project.F_ACTUAL_START,new BasicDBObject().append("$lte", start)),
-								new BasicDBObject().append(
-										Project.F_ACTUAL_FINISH,new BasicDBObject().append("$gte", stop)) }) 
-								});
-		
+						new BasicDBObject().append(
+								"$and",
+								new BasicDBObject[] {
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$lte", start)),
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH,
+												new BasicDBObject().append(
+														"$gte", stop)) }) });
+
 		return dbo;
 	}
 
@@ -125,7 +129,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		List<Object> result = new ArrayList<Object>();
 		result.add(org.get_id());
 		List<PrimaryObject> children = org.getChildrenOrganization();
-		if(children!=null){
+		if (children != null) {
 			for (int i = 0; i < children.size(); i++) {
 				result.addAll(getOrganizations((Organization) children.get(i)));
 			}
