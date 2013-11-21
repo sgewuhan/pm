@@ -120,7 +120,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 								new BasicDBObject().append("$gte", start))
 								.append(Project.F_PLAN_START,
 										new BasicDBObject()
-												.append("&lte", stop)),
+												.append("$lte", stop)),
 						new BasicDBObject().append(Project.F_ACTUAL_START,
 								new BasicDBObject().append("$gte", start))
 								.append(Project.F_ACTUAL_START,
