@@ -351,17 +351,11 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               labelProvider="com.sg.business.visualization.labelprovide.ProjectTypeLabelProvider"
                name="项目类型"
                type="String"
                width="-1">
          </column>
-         <column
-               labelProvider="com.sg.business.visualization.labelprovide.ProjectTypeProjectCount"
-               name="项目数"
-               style="SWT.CENTER"
-               type="String"
-               width="80"></column>
       </table>
       <table
             dataSet="com.sg.business.model.dataset.visualization.ProductType"

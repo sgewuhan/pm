@@ -12,7 +12,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.ProjectTypeProjectProvider;
+import com.sg.business.model.ProjectTypeProvider;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectType extends SingleDBCollectionDataSetFactory {
@@ -30,7 +30,7 @@ public class ProjectType extends SingleDBCollectionDataSetFactory {
 		List<PrimaryObject> dataItems=new ArrayList<PrimaryObject>();
 		List<String> options=getTypeOptions();
 		for(String option:options){
-			ProjectTypeProjectProvider projectType = new ProjectTypeProjectProvider(option,userId);
+			ProjectTypeProvider projectType = new ProjectTypeProvider(option,userId);
 			dataItems.add(projectType);
 		}
 		return new DataSet(dataItems);

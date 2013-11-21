@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
 import com.sg.business.model.ProjectProvider;
-import com.sg.business.model.ProjectTypeProjectProvider;
+import com.sg.business.model.ProjectTypeProvider;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.view.TableNavigator;
@@ -27,7 +27,7 @@ public class ProjectTypeNavigator extends TableNavigator {
 					try{
 						String info = event.text.substring(event.text.lastIndexOf("/")+1);
 						String[] split = info.split(",");
-						ProjectProvider pp = new ProjectTypeProjectProvider(split[0],split[1]);
+						ProjectProvider pp = new ProjectTypeProvider(split[0],split[1]);
 						DataObjectEditor.open(pp, "editor.visualization.projectset", true, null);
 					}catch(Exception e){
 						MessageUtil.showToast(e);

@@ -2,6 +2,7 @@ package com.sg.business.visualization.labelprovide;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
@@ -20,6 +21,8 @@ import com.sg.business.resource.BusinessResource;
 public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 
 	private DBCollection projectCol;
+	long wipCnt;
+	long cnt;
 
 	public OrganizationProjectLabelProvider() {
 		super();
@@ -34,9 +37,10 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			Organization organization = (Organization) dbo;
 			String label = organization.getLabel();
 			String path = organization.getFullName();
-			long wipCnt = getWipCount(organization);
-			long cnt = getCountOfYear(organization);
-
+			wipCnt=0;
+			setWipCount(organization);
+			cnt=0;
+			setCountOfYear(organization);
 			
 			StringBuffer sb = new StringBuffer();
 			sb.append("<a href=\""+ organization.get_id().toString()+ "\" target=\"_rwt\">");
@@ -76,17 +80,41 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 		return "";
 	}
 
-	private long getCountOfYear(Organization organization) {
-		long cnt = projectCol.count(getQueryCondtion(organization));
-		return cnt;
+//	private long getCountOfYear(Organization organization) {
+//		long cnt = projectCol.count(getQueryCondtion(organization));
+//		return cnt;
+//	}
+//
+//	private long getWipCount(Organization organization) {
+//
+//		long wipCnt = projectCol.count(new BasicDBObject().append(
+//				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
+//				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
+//		return wipCnt;
+//
+//	}
+	
+	
+	private void setCountOfYear(Organization organization) {
+		long count = projectCol.count(getQueryCondtion(organization));
+		cnt+=count;
+		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
+		for (PrimaryObject orgpo : childrenOrganization) {
+			setCountOfYear((Organization)orgpo);
+		}
 	}
 
-	private long getWipCount(Organization organization) {
-
-		long wipCnt = projectCol.count(new BasicDBObject().append(
+	
+	private void setWipCount(Organization organization) {
+		
+		long count = projectCol.count(new BasicDBObject().append(
 				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
 				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
-		return wipCnt;
+		wipCnt+=count;
+		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
+		for (PrimaryObject orgpo : childrenOrganization) {
+			setWipCount((Organization)orgpo);
+		}
 
 	}
 
