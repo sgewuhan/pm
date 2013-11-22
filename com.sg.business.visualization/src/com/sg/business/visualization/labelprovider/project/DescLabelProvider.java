@@ -76,8 +76,11 @@ public class DescLabelProvider extends AbstractProjectLabelProvider {
 		sb.append("</small>");
 		
 		sb.append("</span>");
-		// TODO Auto-generated method stub
+		
+		toolsForOpenProject(project,sb,"desc");
+		
 		return sb.toString();
 	}
+	
 	
 }

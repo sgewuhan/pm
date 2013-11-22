@@ -74,12 +74,8 @@
             </column>
             <column
                   column="status"
-                  id="project.status"
-                  labelProvider="com.sg.business.commons.labelprovider.StatusLabelProvider"
                   name=" 状态"
-                  toolTipText="状态"
-                  type="String"
-                  width="24">
+                  type="String">
             </column>
          </filterAction>
          <searchAction>
@@ -304,8 +300,16 @@
                column="planfinish"
                labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
                lazyDisplay="true"
-               name="进度摘要"
+               name="进度"
                type="Date"
+               width="200">
+         </column>
+         <column
+               column="rndcost"
+               labelProvider="com.sg.business.visualization.labelprovider.project.RNDCostLabelProvider"
+               lazyDisplay="true"
+               name="投入"
+               type="String"
                width="200">
          </column>
       </table>

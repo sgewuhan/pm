@@ -302,6 +302,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_GO_32 = "go_32.png";
 
+	public static final String IMAGE_GO_48 = "go_48.png";
+
 
 	/**
 	 * Returns the shared instance

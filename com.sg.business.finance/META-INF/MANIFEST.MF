@@ -18,3 +18,5 @@ Require-Bundle: javax.servlet,
  com.sg.business.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: libs/sapjco.jar,
+ .

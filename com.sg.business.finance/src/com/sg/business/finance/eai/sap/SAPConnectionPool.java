@@ -1,4 +1,4 @@
-package com.sg.business.commons.eai.sap;
+package com.sg.business.finance.eai.sap;
 
 import com.mobnut.admin.dataset.Setting;
 import com.mobnut.commons.util.Utils;

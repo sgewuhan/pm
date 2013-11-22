@@ -1,4 +1,4 @@
-package com.sg.business.commons.eai;
+package com.sg.business.finance.eai;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -3,25 +3,68 @@ package com.sg.business.visualization.labelprovider.project;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.util.file.FileUtil;
 import com.sg.business.model.Project;
+import com.sg.business.resource.BusinessResource;
 
 abstract class AbstractProjectLabelProvider extends ColumnLabelProvider {
 
-	
 	@Override
 	public Image getImage(Object element) {
 		return null;
 	}
-	
+
 	@Override
 	public String getText(Object element) {
-		if(element instanceof Project){
-			String text = getProjectText((Project)element);
-			return text == null?"":text;
-		}else{
+		if (element instanceof Project) {
+			String text = getProjectText((Project) element);
+			return text == null ? "" : text;
+		} else {
 			return "unsupport type, required: com.sg.business.model.Project";
 		}
 	}
 
-	protected abstract String getProjectText(Project project) ;
+	@Override
+	public int getToolTipDisplayDelayTime(Object object) {
+		return 1000;
+	}
+
+	@Override
+	public String getToolTipText(Object element) {
+		if (element instanceof Project) {
+			return getProjectToolTipText((Project) element);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Image getToolTipImage(Object element) {
+		if (element instanceof Project) {
+			return getProjectToolTipImage((Project) element);
+		} else {
+			return null;
+		}
+	}
+
+	protected Image getProjectToolTipImage(Project element){
+		return null;
+	}
+
+	protected String getProjectToolTipText(Project element){
+		return null;
+	}
+
+	protected abstract String getProjectText(Project project);
+	
+
+	protected void toolsForOpenProject(Project project,StringBuffer sb,String eventCode) {
+		sb.append("<a href=\"" + project.get_id().toString()
+				+ "/"+eventCode+"\" target=\"_rwt\">");
+		sb.append("<img src='"+FileUtil.getImageURL(BusinessResource.IMAGE_GO_32, BusinessResource.PLUGIN_ID)
+		+"' style='border-style:none;position:absolute; right:0; bottom:2; display:block;' width='14' height='14'/>");
+		sb.append("<a>");
+	}
+	
+	
 }

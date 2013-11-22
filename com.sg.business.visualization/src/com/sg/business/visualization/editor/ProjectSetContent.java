@@ -1,5 +1,6 @@
 package com.sg.business.visualization.editor;
 
+import java.net.URL;
 import java.util.Calendar;
 
 import org.eclipse.rap.rwt.RWT;
@@ -9,6 +10,8 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
@@ -23,9 +26,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 
 import com.sg.business.model.ProjectProvider;
 import com.sg.widgets.ImageResource;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.NavigatorControl;
 import com.sg.widgets.part.editor.IEditorActionListener;
@@ -65,7 +70,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		data = (ProjectProvider) input.getData();
 		data.setParameters(parameters);
 		this.navi = navi;
-		
+
 		body.setLayout(new FormLayout());
 		// 创建页头
 		header = createHeader(body);
@@ -100,8 +105,32 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 	private Composite createNavigator(Composite body, NavigatorControl navi) {
 		Composite navigator = new Composite(body, SWT.NONE);
 		navi.createPartContent(navigator);
-		navi.getViewer().getControl().setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		Table control = (Table) navi.getViewer().getControl();
+		control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
+				Boolean.TRUE);
+		control.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				if (event.detail == RWT.HYPERLINK) {
+					try {
+						URL url = new URL(event.text);
+						String path = url.getPath();
+						String orj = path.substring(1,path
+								.indexOf("/",1) );
+						String eventCode = path.substring(path
+								.lastIndexOf("/") + 1);
+						call(orj,eventCode);
+					} catch (Exception e) {
+						MessageUtil.showToast(e);
+					}
+				}
+			}
+		});
 		return navigator;
+	}
+
+	private void call(String orj, String eventCode) {
+		
 	}
 
 	private Composite createHeader(Composite body) {
@@ -133,18 +162,51 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		fd.height = INFOBANNER_HEIGHT;
 		fd.width = INFOBANNER_HEIGHT;
 
+		// 显示数据过滤
+		filterLabel = new Label(header, SWT.NONE);
+		filterLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		fd = new FormData();
+		filterLabel.setLayoutData(fd);
+		fd.left = new FormAttachment(30, -INFOBANNER_HEIGHT);
+		fd.top = new FormAttachment(32);
+
+		// 显示菜单图标
+		final CLabel menuButton = new CLabel(header, SWT.NONE);
+		menuButton.setImage(Widgets.getImage(ImageResource.DOWN_16));
+		fd = new FormData();
+		menuButton.setLayoutData(fd);
+		fd.left = new FormAttachment(filterLabel, 4);
+		fd.top = new FormAttachment(40);
+		menuButton.setCursor(Display.getCurrent().getSystemCursor(
+				SWT.CURSOR_HAND));
+		menuButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				showFilterMenu(menuButton);
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+			}
+		});
+
 		// 显示项目集合名称
 		Label projectSetLabel = new Label(header, SWT.NONE);
 		projectSetLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(projectSetName+" 摘要");
+		sb.append(projectSetName + " 摘要");
 		sb.append("</span>");
 		projectSetLabel.setText(sb.toString());
 
 		fd = new FormData();
 		projectSetLabel.setLayoutData(fd);
-		fd.left = new FormAttachment(30, -INFOBANNER_HEIGHT);
+		fd.left = new FormAttachment(menuButton, 4);
 		fd.top = new FormAttachment(32);
 
 		// 显示右侧的第一摘要字段，数量
@@ -168,39 +230,6 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		fd.right = new FormAttachment(100, -4);
 		fd.top = new FormAttachment(schedualSummary, 2);
 
-		// 显示菜单图标
-		final CLabel menuButton = new CLabel(header, SWT.NONE);
-		menuButton.setImage(Widgets.getImage(ImageResource.DOWN_16));
-		fd = new FormData();
-		menuButton.setLayoutData(fd);
-		fd.right = new FormAttachment(projectStatusSummary, -16);
-		fd.top = new FormAttachment(40);
-		menuButton.setCursor(Display.getCurrent().getSystemCursor(
-				SWT.CURSOR_HAND));
-		menuButton.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseDown(MouseEvent e) {
-				showFilterMenu(menuButton);
-			}
-
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-			}
-		});
-
-		// 显示数据过滤
-		filterLabel = new Label(header, SWT.NONE);
-		filterLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		fd = new FormData();
-		filterLabel.setLayoutData(fd);
-		fd.right = new FormAttachment(menuButton, -4);
-		fd.top = new FormAttachment(32);
-
 		setSummaryText(data);
 
 		return header;
@@ -209,11 +238,11 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 	private void setSummaryText(ProjectProvider data) {
 		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
 		value1 = value1 == null ? 0 : value1;
-		Object value2 = data.getSummaryValue(
-				ProjectProvider.F_SUMMARY_FINISHED);
+		Object value2 = data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED);
 		value2 = value2 == null ? 0 : value2;
-		Object value3 = data.getSummaryValue(
-				ProjectProvider.F_SUMMARY_PROCESSING);
+		Object value3 = data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING);
 		value3 = value3 == null ? 0 : value3;
 		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
 				+ value3);
@@ -231,9 +260,8 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		value2 = value2 == null ? 0 : value2;
 		costSummary.setText("正常/超支：" + value1 + "/" + value2);
 
-		
 		filterLabel.setText(getParameterText());
-		
+
 	}
 
 	protected void showFilterMenu(Control menuButton) {
@@ -287,7 +315,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int yearIndex = yearCombo.getSelectionIndex();
-				setFilter( startYear + yearIndex,
+				setFilter(startYear + yearIndex,
 						quarterCombo.getSelectionIndex(),
 						monthCombo.getSelectionIndex());
 				shell.dispose();
@@ -319,6 +347,21 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 
 		shell.setLocation(location);
 		shell.open();
+		shell.addShellListener(new ShellListener() {
+
+			@Override
+			public void shellDeactivated(ShellEvent e) {
+				shell.close();
+			}
+
+			@Override
+			public void shellClosed(ShellEvent e) {
+			}
+
+			@Override
+			public void shellActivated(ShellEvent e) {
+			}
+		});
 	}
 
 	protected void setFilter(int yearIndex, int quarterIndex, int monthIndex) {
@@ -327,48 +370,48 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 		}
 		if (monthIndex > 0) {
 			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_MONTH;
-			((Calendar)parameters[0]).set(Calendar.MONTH, monthIndex-1);
-			
+			((Calendar) parameters[0]).set(Calendar.MONTH, monthIndex - 1);
+
 		} else if (quarterIndex > 0) {
 			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER;
-			((Calendar)parameters[0]).set(Calendar.MONTH, 3*(quarterIndex)-1);
+			((Calendar) parameters[0]).set(Calendar.MONTH,
+					3 * (quarterIndex) - 1);
 
-			
 		} else {
 			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
-			((Calendar)parameters[0]).set(Calendar.YEAR, yearIndex);
+			((Calendar) parameters[0]).set(Calendar.YEAR, yearIndex);
 
 		}
-		
+
 		reQuery();
-		
+
 	}
 
 	private void reQuery() {
-		//doquery
+		// doquery
 		data.setParameters(parameters);
-		navi.getViewerControl().doReloadData(true, new Runnable(){
+		navi.getViewerControl().doReloadData(true, new Runnable() {
 
 			@Override
 			public void run() {
 				setSummaryText(data);
 				header.layout();
 			}
-			
+
 		});
-		
+
 	}
 
 	private String getParameterText() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<i style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
 		if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR.equals(parameters[1])) {
 			sb.append(((Calendar) parameters[0]).get(Calendar.YEAR) + "年");
 		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
 				.equals(parameters[1])) {
 			Calendar calendar = (Calendar) parameters[0];
 			int month = calendar.get(Calendar.MONTH);
-			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + (1+month) / 4)
+			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + (1 + month) / 4)
 					+ "季度");
 		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
 				.equals(parameters[1])) {
@@ -377,7 +420,7 @@ public class ProjectSetContent implements INavigatorPageBodyPartCreater {
 			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
 		}
 
-		sb.append("</i>");
+		sb.append("</span>");
 		return sb.toString();
 	}
 

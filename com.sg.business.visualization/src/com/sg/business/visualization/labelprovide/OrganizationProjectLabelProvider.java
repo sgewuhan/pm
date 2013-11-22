@@ -46,9 +46,9 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			sb.append("<a href=\"" + organization.get_id().toString()
 					+ "\" target=\"_rwt\">");
 			sb.append("<img src='");
-			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
+			sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
 			sb.append("</a>");
 
 			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
