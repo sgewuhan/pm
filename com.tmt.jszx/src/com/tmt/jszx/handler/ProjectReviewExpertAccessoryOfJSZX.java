@@ -1,4 +1,4 @@
-package com.tmt.kfzx.handler;
+package com.tmt.jszx.handler;
 
 import java.util.List;
 
@@ -23,13 +23,12 @@ import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public class MeetingReviewCommentfile implements
-IDataObjectDialogCallback {
+public class ProjectReviewExpertAccessoryOfJSZX implements
+		IDataObjectDialogCallback {
 
-	public MeetingReviewCommentfile() {
-		// TODO Auto-generated constructor stub
+	public ProjectReviewExpertAccessoryOfJSZX() {
 	}
-	
+
 	@Override
 	public boolean doSaveBefore(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
@@ -113,17 +112,17 @@ IDataObjectDialogCallback {
 							condition, Deliverable.class);
 					deliverable.doInsert(context);
 				}
-				Object commentfile = taskform.getValue("commentfile");
-				if(commentfile != null && commentfile instanceof BasicDBList){
-					BasicDBList commentfileList = (BasicDBList) commentfile;
+				Object accessory = taskform.getValue("accessory");
+				if(accessory != null && accessory instanceof BasicDBList){
+					BasicDBList accessoryList = (BasicDBList) accessory;
 					Object inputValue = document.getValue(Document.F_VAULT, true);
 					if (inputValue != null && inputValue instanceof BasicDBList) {
 						BasicDBList vault = (BasicDBList) inputValue;
-						vault.addAll(commentfileList);
+						vault.addAll(accessoryList);
 						document.setValue(Document.F_VAULT, vault);
 						document.doUpdate(context);
 					} else{
-						document.setValue(Document.F_VAULT, commentfileList);
+						document.setValue(Document.F_VAULT, accessoryList);
 						document.doUpdate(context);
 					}
 				}
@@ -149,4 +148,3 @@ IDataObjectDialogCallback {
 	}
 
 }
-

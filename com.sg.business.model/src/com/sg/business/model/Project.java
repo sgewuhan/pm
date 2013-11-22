@@ -1372,9 +1372,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return false;
 		}
 
+		String userId = context.getAccountInfo().getConsignerId();
+		Organization org = getFunctionOrganization();
+		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+		if (role != null) {
+			List<PrimaryObject> assignmentList = role.getAssignment();
+			if (assignmentList != null && assignmentList.size() > 0) {
+				for (PrimaryObject po : assignmentList) {
+					RoleAssignment roleAssignment = (RoleAssignment) po;
+					String assignmentuserId = roleAssignment.getUserid();
+					if (userId.equals(assignmentuserId)) {
+						return true;
+					}
+				}
+			}
+		}
+
 		// 如果是项目负责人，可以编辑
 		String chargerId = getChargerId();
-		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(chargerId)) {
 			return false;
 		}

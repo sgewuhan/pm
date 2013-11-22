@@ -8,7 +8,8 @@
             name="立项申请"
             persistentFields="prj_number"
             processDefinitionId="tb.tbProjectApplication"
-            saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB">
+            saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="prj_number"
                taskFormFieldName="prj_number">
@@ -28,7 +29,8 @@
             editorId="tbprojectapplication.reviewer"
             name="确认评审组"
             persistentFields="reviewer_list,choice,confirmtime,confirmaddress"
-            processDefinitionId="tb.tbProjectApplication">
+            processDefinitionId="tb.tbProjectApplication"
+            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -50,7 +52,7 @@
       <taskForm
             editorId="tb.tbProjectReview.expertgroupcountersign"
             name="专家评审"
-            persistentFields="choice,comment,commentfile"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectReview">
       </taskForm>
       <taskForm
@@ -331,9 +333,9 @@
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
-                        id="commentfile"
+                        id="accessory"
                         labelVisible="true"
-                        name="commentfile"
+                        name="accessory"
                         persistable="true"
                         required="false">
                   </file>
@@ -2970,7 +2972,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.reviewform"
             name="上传转批评审表"
-            persistentFields="commentfile,choice,comment"
+            persistentFields="accessory,choice,comment"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -3314,9 +3316,9 @@
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
-                        id="commentfile"
+                        id="accessory"
                         labelVisible="true"
-                        name="commentfile"
+                        name="accessory"
                         persistable="true"
                         required="false">
                   </file>

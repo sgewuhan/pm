@@ -11,6 +11,12 @@ public interface IRoleConstance {
 	/**
 	 * 立项批准者
 	 */
+	public static final String ROLE_PROJECR_AUDIT_ID = "Project Audit";
+	public static final String ROLE_PROJECR_AUDIT_TEXT = "立项审核者";
+	
+	/**
+	 * 立项批准者
+	 */
 	public static final String ROLE_PROJECR_APPROVER_ID = "Project Approver";
 	public static final String ROLE_PROJECR_APPROVER_TEXT = "立项批准者";
 	
