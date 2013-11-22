@@ -23,6 +23,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDocumentApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -45,6 +50,11 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDocumentApprove2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -88,6 +98,49 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDrawingApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="xtDocumentApprove.auditor"
+            name="校核"
+            persistentFields="choice,comment"
+            processDefinitionId="xt.xtDrawingApprove2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtDocumentApprove.auditor"
+            name="审核"
+            persistentFields="choice,comment"
+            processDefinitionId="xt.xtDrawingApprove2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtDocumentApprove.approve"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="xt.xtDrawingApprove2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDrawingApprove2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -603,7 +656,8 @@
             name="立项申请"
             persistentFields="prj_number"
             processDefinitionId="xt.xtProjectApplication"
-            saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT">
+            saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="prj_number"
                taskFormFieldName="prj_number">
@@ -623,7 +677,8 @@
             editorId="tbprojectapplication.reviewer"
             name="确认评审组"
             persistentFields="reviewer_list,choice,confirmtime,confirmaddress"
-            processDefinitionId="xt.xtProjectApplication">
+            processDefinitionId="xt.xtProjectApplication"
+            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">

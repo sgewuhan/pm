@@ -1,4 +1,4 @@
-package com.tmt.jszx.handler;
+package com.tmt.tb.handler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,10 +11,7 @@ import com.sg.business.model.Work;
 import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public class ProjectReviewAuditSaveOfJSZX implements IDataObjectDialogCallback {
-
-	public ProjectReviewAuditSaveOfJSZX() {
-	}
+public class ProjectApproveAuditSaveOfTB implements IDataObjectDialogCallback {
 
 	@Override
 	public boolean okPressed() {
@@ -47,11 +44,11 @@ public class ProjectReviewAuditSaveOfJSZX implements IDataObjectDialogCallback {
 		if (listValue instanceof List) {
 			userList.addAll((Collection<? extends String>) listValue);
 		}
-		Object value = taskform.getValue("act_rule_prj_admin");
+
+		Object value = taskform.getValue("reviewer_admin");
 		if (value instanceof String) {
 			userList.add((String) value);
 		}
-
 		if (userList.size() > 0) {
 			Work work = taskform.getWork();
 			work.doAddParticipateList(userList);

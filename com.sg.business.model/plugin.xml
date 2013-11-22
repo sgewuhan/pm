@@ -502,6 +502,12 @@
             serviceProvider="com.sg.business.model.bpmservice.WorkToProjectService">
       </service>
       <service
+            interface="worktoproject.service.action"
+            name="商品转批"
+            operation="productfinal"
+            serviceProvider="com.sg.business.model.bpmservice.ProductFinalService">
+      </service>
+      <service
             interface="deliverable.service.action"
             name="交付物状态操作服务"
             operation="released"

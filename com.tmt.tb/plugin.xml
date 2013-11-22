@@ -609,7 +609,8 @@
             editorId="tbProjectApprove.audit"
             name="审批"
             persistentFields="choice,reviewer_list,reviewer_admin"
-            processDefinitionId="tb.tbProjectApprove">
+            processDefinitionId="tb.tbProjectApprove"
+            saveHandler="com.tmt.tb.handler.ProjectApproveAuditSaveOfTB">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -622,10 +623,6 @@
          <processParameter
                processParameterName="reviewer_admin"
                taskFormFieldName="reviewer_admin">
-         </processParameter>
-         <processParameter
-               processParameterName="messagecontent"
-               taskFormFieldName="messagecontent">
          </processParameter>
       </taskForm>
       <taskForm
@@ -646,6 +643,10 @@
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="messagecontent"
+               taskFormFieldName="messagecontent">
          </processParameter>
       </taskForm>
       <taskForm
@@ -688,6 +689,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="评审申请"
+            processDefinitionId="tb.tbProjectApprove"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -702,17 +708,6 @@
             <pagecolumn>
                <section
                      label="请填写批准意见、结论和评审专家组成员">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="messagecontent"
-                        label="评审会议通知"
-                        labelVisible="true"
-                        name="messagecontent"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
                   <navigatorSelector
                         editable="true"
                         id="reviewer_admin"
@@ -812,6 +807,17 @@
             <pagecolumn>
                <section
                      label="请填评审实施意见和计划">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="messagecontent"
+                        label="评审会议通知"
+                        labelVisible="true"
+                        name="messagecontent"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -1025,7 +1031,8 @@
       <taskForm
             editorId="tbprojectchange.application"
             name="变更申请"
-            processDefinitionId="tb.tbProjectChange">
+            processDefinitionId="tb.tbProjectChange"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
                processParameterName="project"
@@ -1755,6 +1762,12 @@
             serviceProvider="com.tmt.tb.bpmservice.LockBudgetToProjectOfTB">
       </service>
       <service
+            interface="createproject.service.action"
+            name="将财务添加到项目参与者中"
+            operation="addparticipate"
+            serviceProvider="com.tmt.tb.bpmservice.AddParticipateOfTB">
+      </service>
+      <service
             interface="tbmessage.service.action"
             name="立项审批拒绝消息"
             operation="applicationcancelmessage"
@@ -1764,6 +1777,12 @@
             interface="tbmessage.service.action"
             name="立项审批通过消息"
             operation="applicationfinishmessage"
+            serviceProvider="com.tmt.tb.bpmservice.ApplicationMessageOfTB">
+      </service>
+      <service
+            interface="tbmessage.service.action"
+            name="通知财务审批"
+            operation="financialmessage"
             serviceProvider="com.tmt.tb.bpmservice.ApplicationMessageOfTB">
       </service>
    </extension>
@@ -2876,7 +2895,9 @@
             editorId="tb.tbSubconcessions.application"
             name="转批申请"
             persistentFields="workorder,product,prj_manager,dept"
-            processDefinitionId="tb.tbSubconcessions">
+            processDefinitionId="tb.tbSubconcessions"
+            saveHandler="com.tmt.tb.handler.SubConcessionsAuditSaveOfAudit"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="workorder"
                taskFormFieldName="workorder">
@@ -2893,11 +2914,6 @@
          <processParameter
                processParameterDelegator="com.tmt.tb.field.parameter.DataAudit"
                processParameterName="data_audit"
-               taskFormFieldName="dept">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.DevelopmentDirector"
-               processParameterName="development_director"
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
@@ -2920,7 +2936,8 @@
             editorId="tb.tbSubconcessions.dataaudit"
             name="资料初审"
             persistentFields="qm,craft"
-            processDefinitionId="tb.tbSubconcessions">
+            processDefinitionId="tb.tbSubconcessions"
+            saveHandler="com.tmt.tb.handler.SubConcessionsAuditSave">
          <processParameter
                processParameterName="qm"
                taskFormFieldName="qm">
@@ -2954,7 +2971,8 @@
             editorId="tb.tbSubconcessions.meetingconfirmed"
             name="会议确认"
             persistentFields="review_admin,reviewer_list,choice"
-            processDefinitionId="tb.tbSubconcessions">
+            processDefinitionId="tb.tbSubconcessions"
+            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="review_admin"
                taskFormFieldName="review_admin">
