@@ -37,22 +37,24 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			Organization organization = (Organization) dbo;
 			String label = organization.getLabel();
 			String path = organization.getFullName();
-			wipCnt=0;
+			wipCnt = 0;
 			setWipCount(organization);
-			cnt=0;
+			cnt = 0;
 			setCountOfYear(organization);
-			
+
 			StringBuffer sb = new StringBuffer();
-			sb.append("<a href=\""+ organization.get_id().toString()+ "\" target=\"_rwt\">");
+			sb.append("<a href=\"" + organization.get_id().toString()
+					+ "\" target=\"_rwt\">");
 			sb.append("<img src='");
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
 			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
 			sb.append("</a>");
 
 			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
 
-			String imageUrl = "<img src='" + organization.getImageURL()
+			String imageUrl = "<img src='"
+					+ organization.getImageURL()
 					+ "' style='float:left;padding:2px' width='24' height='24' />";
 
 			sb.append(imageUrl);
@@ -73,47 +75,46 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			sb.append("<small>");
 			sb.append(path);
 			sb.append("</small></span>");
-			
-			
+
 			return sb.toString();
 		}
 		return "";
 	}
 
-//	private long getCountOfYear(Organization organization) {
-//		long cnt = projectCol.count(getQueryCondtion(organization));
-//		return cnt;
-//	}
-//
-//	private long getWipCount(Organization organization) {
-//
-//		long wipCnt = projectCol.count(new BasicDBObject().append(
-//				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
-//				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
-//		return wipCnt;
-//
-//	}
-	
-	
+	// private long getCountOfYear(Organization organization) {
+	// long cnt = projectCol.count(getQueryCondtion(organization));
+	// return cnt;
+	// }
+	//
+	// private long getWipCount(Organization organization) {
+	//
+	// long wipCnt = projectCol.count(new BasicDBObject().append(
+	// Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
+	// ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
+	// return wipCnt;
+	//
+	// }
+
 	private void setCountOfYear(Organization organization) {
 		long count = projectCol.count(getQueryCondtion(organization));
-		cnt+=count;
-		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
+		cnt += count;
+		List<PrimaryObject> childrenOrganization = organization
+				.getChildrenOrganization();
 		for (PrimaryObject orgpo : childrenOrganization) {
-			setCountOfYear((Organization)orgpo);
+			setCountOfYear((Organization) orgpo);
 		}
 	}
 
-	
 	private void setWipCount(Organization organization) {
-		
+
 		long count = projectCol.count(new BasicDBObject().append(
 				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
 				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
-		wipCnt+=count;
-		List<PrimaryObject> childrenOrganization = organization.getChildrenOrganization();
+		wipCnt += count;
+		List<PrimaryObject> childrenOrganization = organization
+				.getChildrenOrganization();
 		for (PrimaryObject orgpo : childrenOrganization) {
-			setWipCount((Organization)orgpo);
+			setWipCount((Organization) orgpo);
 		}
 
 	}
@@ -139,32 +140,30 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 						ILifecycle.STATUS_WIP_VALUE }));
 		dbo.put("$or",
 				new BasicDBObject[] {
-						new BasicDBObject().append(Project.F_PLAN_START,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_PLAN_START,
-										new BasicDBObject()
-												.append("&lte", stop)),
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_ACTUAL_START,
-										new BasicDBObject()
-												.append("$lte", stop)),
-						new BasicDBObject().append(Project.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_PLAN_FINISH,
-										new BasicDBObject()
-												.append("$lte", stop)),
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_ACTUAL_FINISH,
-										new BasicDBObject()
-												.append("$lte", stop)),
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$lte", start))
-								.append(Project.F_ACTUAL_START,
-										new BasicDBObject()
-												.append("$gte", stop)) });
 
+						new BasicDBObject().append(Project.F_ACTUAL_START,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(Project.F_PLAN_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(
+								"$and",
+								new BasicDBObject[] {
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$lte", start)),
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH,
+												new BasicDBObject().append(
+														"$gte", stop)) }) });
 		return dbo;
 	}
 

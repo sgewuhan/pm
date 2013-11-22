@@ -47,16 +47,15 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 			long cnt = getCountOfYear(projectTypeProvider);
 			long wipCnt = getWipCount(projectTypeProvider);
 			StringBuffer sb = new StringBuffer();
-			
-			sb.append("<a href=\""
-					+ projectTypeProvider.getDesc()+","+projectTypeProvider.getUserId()
-					+ "\" target=\"_rwt\">");
+
+			sb.append("<a href=\"" + projectTypeProvider.getDesc() + ","
+					+ projectTypeProvider.getUserId() + "\" target=\"_rwt\">");
 			sb.append("<img src='");
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
 			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
 			sb.append("</a>");
-			
+
 			sb.append("<b>");
 			sb.append(projectTypeProvider.getDesc());
 			if (cnt != 0 || wipCnt != 0) {
@@ -75,15 +74,13 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 		return "";
 	}
 
-	private long getCountOfYear(
-			ProjectTypeProvider projectTypeProjectProvider) {
+	private long getCountOfYear(ProjectTypeProvider projectTypeProjectProvider) {
 		long count = projectCol
 				.count(getQueryCondtion(projectTypeProjectProvider));
 		return count;
 	}
 
-	private long getWipCount(
-			ProjectTypeProvider projectTypeProjectProvider) {
+	private long getWipCount(ProjectTypeProvider projectTypeProjectProvider) {
 
 		long count = projectCol.count(new BasicDBObject()
 				.append(Project.F_PROJECT_TYPE_OPTION,
@@ -120,32 +117,30 @@ public class ProjectTypeLabelProvider extends ColumnLabelProvider {
 						ILifecycle.STATUS_WIP_VALUE }));
 		dbo.put("$or",
 				new BasicDBObject[] {
-						new BasicDBObject().append(Project.F_PLAN_START,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_PLAN_START,
-										new BasicDBObject()
-												.append("&lte", stop)),
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_ACTUAL_START,
-										new BasicDBObject()
-												.append("$lte", stop)),
-						new BasicDBObject().append(Project.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_PLAN_FINISH,
-										new BasicDBObject()
-												.append("$lte", stop)),
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_ACTUAL_FINISH,
-										new BasicDBObject()
-												.append("$lte", stop)),
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$lte", start))
-								.append(Project.F_ACTUAL_START,
-										new BasicDBObject()
-												.append("$gte", stop)) });
 
+						new BasicDBObject().append(Project.F_ACTUAL_START,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(Project.F_PLAN_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(
+								"$and",
+								new BasicDBObject[] {
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$lte", start)),
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH,
+												new BasicDBObject().append(
+														"$gte", stop)) }) });
 		return dbo;
 	}
 
