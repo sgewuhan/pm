@@ -425,7 +425,6 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 		return sb.toString();
 	}
 	
-	@Override
 	protected boolean savelog(int logtype, IContext context) {
 		return false;
 	}

@@ -190,6 +190,11 @@
             collection="productitem"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.UserProjectPerf"
+            collection="userprojectperf"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
