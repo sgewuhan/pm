@@ -8,7 +8,7 @@
             name="申请技术支持"
             persistentFields="dept"
             processDefinitionId="jszx.jszxProjectApply"
-            saveHandler="com.tmt.jszx.handler.ApplySave">
+            saveHandler="com.tmt.jszx.savehandler.ApplySave">
          <processParameter
                processParameterDelegator="com.tmt.jszx.field.parameter.DeptDirector"
                processParameterName="dept_director"
@@ -68,8 +68,7 @@
             editorId="jszx.jszxProjectApply.directorAudit"
             name="受托研究室主任审核"
             persistentFields="comment,choice"
-            processDefinitionId="jszx.jszxProjectApply"
-            saveHandler="com.tmt.jszx.handler.ProjectApplyAuditSaveOfJSZX">
+            processDefinitionId="jszx.jszxProjectApply">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -383,11 +382,6 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
-      <taskForm
-            name="提交变更申请"
-            processDefinitionId="jszx.jszxProjectChange"
-            validation="com.sg.business.taskforms.validation.DocumentMondartory">
-      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -420,11 +414,6 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
-      </taskForm>
-      <taskForm
-            name="编制项目结题申请"
-            processDefinitionId="jszx.jszxProjectClose"
-            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -1115,11 +1104,6 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
-      </taskForm>
-      <taskForm
-            name="编制"
-            processDefinitionId="jszx.jszxDevelopmentTaskBookApproval"
-            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension

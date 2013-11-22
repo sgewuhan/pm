@@ -22,75 +22,113 @@ public class ProjectTypeProvider extends ProjectProvider {
 	private DBCollection projectCol;
 	private String userId;
 	private String desc;
-	
 
-	public ProjectTypeProvider(String desc,String userId) {
+	public ProjectTypeProvider(String desc, String userId) {
 		super();
-		
+
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
 		set_data(new BasicDBObject());
-		this.desc=desc;
-		this.userId=userId;
-		
+		this.desc = desc;
+		this.userId = userId;
+
 	}
 
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		List<PrimaryObject> projectSet=null;
 		try {
-			projectSet = getProjectSet(result);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+
+			int proFinishCount = 0;
+			int proProcessCount = 0;
+			Date startDate = getStartDate();
+			Date endDate = getEndDate();
+			DBCursor cur = projectCol
+					.find(getQueryCondtion(startDate, endDate));
+			while (cur.hasNext()) {
+				DBObject dbo = cur.next();
+				Project project = ModelService.createModelObject(dbo,
+						Project.class);
+				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
+						.getLifecycleStatus())) {
+					proFinishCount++;
+				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
+						.getLifecycleStatus())) {
+					proProcessCount++;
+				}
+
+				result.add(project);
+			}
+			map.put(F_SUMMARY_TOTAL, result.size());
+			map.put(F_SUMMARY_FINISHED, proFinishCount);
+			map.put(F_SUMMARY_PROCESSING, proProcessCount);
+
+			setSummaryDate(map);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-		
-		Map<String,Object> map=new HashMap<String,Object>();
-		int proTotalCoun=projectSet.size();
-		int proFinishCount=0;
-		int proProcessCount=0;
-		
-		for(PrimaryObject po:projectSet){
-			if(ILifecycle.STATUS_FINIHED_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
-				proFinishCount++;
-			}else if(ILifecycle.STATUS_WIP_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
-				proProcessCount++;
-			}
-		}
-		
-		map.put(F_SUMMARY_TOTAL,proTotalCoun);
-		map.put(F_SUMMARY_FINISHED,proFinishCount);
-		map.put(F_SUMMARY_PROCESSING,proProcessCount);
-		
-		setSummaryDate(map);
-		
-		return projectSet;
-	}
-
-	private List<PrimaryObject> getProjectSet(List<PrimaryObject> result) throws Exception {
-
-		Date startDate = getStartDate();
-		Date endDate = getEndDate();
-		DBCursor cur = projectCol
-				.find(getQueryCondtion(startDate,
-						endDate));
-		while (cur.hasNext()) {
-			DBObject dbo = cur.next();
-			Project project = ModelService
-					.createModelObject(dbo, Project.class);
-
-			result.add(project);
-		}
-
-
 		return result;
 	}
-	
-	
-	private DBObject getQueryCondtion(Date start,Date stop) {
+
+	// @Override
+	// public List<PrimaryObject> getProjectSet() {
+	// List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+	// List<PrimaryObject> projectSet=null;
+	// try {
+	// projectSet = getProjectSet(result);
+	// } catch (Exception e) {
+	// MessageUtil.showToast(e);
+	// }
+	//
+	// Map<String,Object> map=new HashMap<String,Object>();
+	// int proTotalCoun=projectSet.size();
+	// int proFinishCount=0;
+	// int proProcessCount=0;
+	//
+	// for(PrimaryObject po:projectSet){
+	// if(ILifecycle.STATUS_FINIHED_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+	// proFinishCount++;
+	// }else
+	// if(ILifecycle.STATUS_WIP_VALUE.equals(((ILifecycle)po).getLifecycleStatus())){
+	// proProcessCount++;
+	// }
+	// }
+	//
+	// map.put(F_SUMMARY_TOTAL,proTotalCoun);
+	// map.put(F_SUMMARY_FINISHED,proFinishCount);
+	// map.put(F_SUMMARY_PROCESSING,proProcessCount);
+	//
+	// setSummaryDate(map);
+	//
+	// return projectSet;
+	// }
+	//
+	// private List<PrimaryObject> getProjectSet(List<PrimaryObject> result)
+	// throws Exception {
+	//
+	// Date startDate = getStartDate();
+	// Date endDate = getEndDate();
+	// DBCursor cur = projectCol
+	// .find(getQueryCondtion(startDate,
+	// endDate));
+	// while (cur.hasNext()) {
+	// DBObject dbo = cur.next();
+	// Project project = ModelService
+	// .createModelObject(dbo, Project.class);
+	//
+	// result.add(project);
+	// }
+	//
+	//
+	// return result;
+	// }
+
+	private DBObject getQueryCondtion(Date start, Date stop) {
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_PROJECT_TYPE_OPTION,getDesc());
+		dbo.put(Project.F_PROJECT_TYPE_OPTION, getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", getUerOrgId()));
 		dbo.put(ILifecycle.F_LIFECYCLE,
@@ -99,36 +137,34 @@ public class ProjectTypeProvider extends ProjectProvider {
 						ILifecycle.STATUS_WIP_VALUE }));
 		dbo.put("$or",
 				new BasicDBObject[] {
-						new BasicDBObject().append(Project.F_PLAN_START,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_PLAN_START,
-										new BasicDBObject()
-												.append("&lte", stop)),
+
 						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_ACTUAL_START,
-										new BasicDBObject()
-												.append("$lte", stop)),
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
 						new BasicDBObject().append(Project.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_PLAN_FINISH,
-										new BasicDBObject()
-												.append("$lte", stop)),
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
 						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start))
-								.append(Project.F_ACTUAL_FINISH,
-										new BasicDBObject()
-												.append("$lte", stop)),
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$lte", start))
-								.append(Project.F_ACTUAL_START,
-										new BasicDBObject()
-												.append("$gte", stop)) });
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(
+								"$and",
+								new BasicDBObject[] {
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$lte", start)),
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH,
+												new BasicDBObject().append(
+														"$gte", stop)) }) });
 
 		return dbo;
 	}
-	
-	
+
 	protected List<ObjectId> getUerOrgId() {
 		List<ObjectId> list = new ArrayList<ObjectId>();
 		List<PrimaryObject> userOrg = getUserOrg(
@@ -153,7 +189,7 @@ public class ProjectTypeProvider extends ProjectProvider {
 
 	protected List<PrimaryObject> getInput() {
 		// 获取当前用户担任管理者角色的部门
-		User user=UserToolkit.getUserById(getUserId());		
+		User user = UserToolkit.getUserById(getUserId());
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
@@ -179,7 +215,6 @@ public class ProjectTypeProvider extends ProjectProvider {
 
 		return input;
 	}
-	
 
 	public String getUserId() {
 		return userId;
@@ -198,7 +233,7 @@ public class ProjectTypeProvider extends ProjectProvider {
 	public String getProjectSetCoverImage() {
 		return null;
 	}
-    
+
 	@Override
 	public String getDesc() {
 		return desc;

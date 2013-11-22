@@ -424,4 +424,8 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 		sb.append("</span>");
 		return sb.toString();
 	}
+	
+	protected boolean savelog(int logtype, IContext context) {
+		return false;
+	}
 }

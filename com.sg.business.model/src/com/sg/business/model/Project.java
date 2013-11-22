@@ -2167,5 +2167,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			productItem.doFinal(context);
 		}
 	}
-
+	public UserProjectPerf makeUserProjectPerf() {
+		UserProjectPerf pperf = ModelService
+				.createModelObject(UserProjectPerf.class);
+		pperf.setValue(UserProjectPerf.F_PROJECT_ID, get_id());
+		return pperf;
+	}
 }
