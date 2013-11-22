@@ -261,6 +261,8 @@ public interface IModelConstants {
 
 	public static final String C_PRODUCT = "productitem";
 
+	public static final String C_USERPROJECTPERF = "userprojectperf";
+
 
 
 }
