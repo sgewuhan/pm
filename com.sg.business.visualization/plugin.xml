@@ -28,6 +28,13 @@
             name="产品"
             restorable="true">
       </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.MyProjectNavigator"
+            id="vis.project.myprojectset"
+            name="我的项目集"
+            restorable="true">
+      </view>
 
    </extension>
    <extension
@@ -241,7 +248,6 @@
             dbName="pm2"
             headerVisiable="false"
             id="vis.project.projecttype"
-            idfield="_id"
             markupEnabled="true"
             multiSelection="false"
             virtual="true">
@@ -275,6 +281,30 @@
                width="-1">
          </column>
       
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            collectionName="userprojectperf"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.visualization.MyProjectSet"
+            dbName="pm2"
+            headerVisiable="false"
+            id="vis.project.myprojectset"
+            idfield="_id"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovide.MyProjectSetLabelProvider"
+               name="项目集名称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
       </table>
       <table
             canCreate="false"
@@ -373,6 +403,34 @@
                title="进度">
          </navigatorpage>
       </editor>
+      <editor
+            collectionName="userprojectperf"
+            dbName="pm2"
+            id="editor.visualization.addprojectset"
+            name="添加至项目集">
+         <basicpage
+               id="项目集"
+               title="项目集">
+            <pagecolumn>
+               <section
+                     label="设定项目集">
+                  <combo
+                        editPart="Combo"
+                        editable="true"
+                        id="desc"
+                        inputValidator="com.sg.business.visualization.validator.ProjectSetValidator"
+                        label="项目集"
+                        labelVisible="true"
+                        name="desc"
+                        optionProvider="com.sg.business.visualization.option.ProjectSetOption"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -386,12 +444,46 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:main?after=common.separator">
+         <command
+               commandId="visualization.command.projectset"
+               icon="image/preview_24.png"
+               label="添加至项目集"
+               style="toggle"
+               tooltip="显示预览视图">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.visualization">
+                  </equals>
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="add"
+                              property="vis.projectaction.add">
+                        </test>
+                     </iterate>
+                  </with>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
             id="visualization.command.demo1"
             name="demo">
+      </command>
+      <command
+            id="visualization.command.projectset"
+            name="添加至项目集">
       </command>
    </extension>
    <extension
@@ -400,6 +492,20 @@
             class="com.sg.business.visualization.Demo1"
             commandId="visualization.command.demo1">
       </handler>
+      <handler
+            class="com.sg.business.visualization.view.handler.ProjectSetAdd"
+            commandId="visualization.command.projectset">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.visualization.view.propertytest.VisProjectActionTest"
+            id="vis.projectaction"
+            namespace="vis.projectaction"
+            properties="add"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
 
 </plugin>

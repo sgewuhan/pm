@@ -1,7 +1,6 @@
-package com.tmt.jszx.handler;
+package com.tmt.tb.handler;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -11,10 +10,8 @@ import com.sg.business.model.Work;
 import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public class ProjectReviewAuditSaveOfJSZX implements IDataObjectDialogCallback {
-
-	public ProjectReviewAuditSaveOfJSZX() {
-	}
+public class SubConcessionsAuditSaveOfAudit implements
+		IDataObjectDialogCallback {
 
 	@Override
 	public boolean okPressed() {
@@ -37,26 +34,23 @@ public class ProjectReviewAuditSaveOfJSZX implements IDataObjectDialogCallback {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
 		List<String> userList = new ArrayList<String>();
-		Object listValue = taskform.getValue("reviewer_list");
-		if (listValue instanceof List) {
-			userList.addAll((Collection<? extends String>) listValue);
-		}
-		Object value = taskform.getValue("act_rule_prj_admin");
-		if (value instanceof String) {
+		Object value = taskform.getValue("data_audit");
+		if (value instanceof List) {
 			userList.add((String) value);
 		}
-
+		value = taskform.getValue("prj_manager");
+		if (value instanceof List) {
+			userList.add((String) value);
+		}
 		if (userList.size() > 0) {
 			Work work = taskform.getWork();
 			work.doAddParticipateList(userList);
 		}
 		return true;
 	}
-
 }
