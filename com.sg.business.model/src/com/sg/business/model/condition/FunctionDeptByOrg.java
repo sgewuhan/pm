@@ -17,7 +17,6 @@ public class FunctionDeptByOrg implements IRelationConditionProvider {
 		.append(
 				Organization.F_IS_FUNCTION_DEPARTMENT, Boolean.TRUE);
 		
-		
 	}
 
 }

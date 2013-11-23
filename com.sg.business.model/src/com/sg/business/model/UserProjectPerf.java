@@ -35,6 +35,9 @@ public class UserProjectPerf extends ProjectProvider {
 
 			int proFinishCount = 0;
 			int proProcessCount = 0;
+			int delayCount=0;
+			int advanceCount=0;
+			int normalProcessCount=0;
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCollection col = getCollection(IModelConstants.C_PROJECT);
@@ -49,6 +52,12 @@ public class UserProjectPerf extends ProjectProvider {
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
 					proProcessCount++;
+				}if(project.isDelay()||project.maybeDelay()){
+					delayCount++;
+				}else if(project.isAdvanced()||project.maybeAdvanced()){
+					advanceCount++;
+				}else{
+					normalProcessCount++;
 				}
 
 				result.add(project);
@@ -56,6 +65,10 @@ public class UserProjectPerf extends ProjectProvider {
 			map.put(F_SUMMARY_TOTAL, result.size());
 			map.put(F_SUMMARY_FINISHED, proFinishCount);
 			map.put(F_SUMMARY_PROCESSING, proProcessCount);
+			map.put(F_SUMMARY_DELAY, delayCount);
+			map.put(F_SUMMARY_ADVANCE, advanceCount);
+			map.put(F_SUMMARY_NORMAL_PROCESS, normalProcessCount);
+
 
 			setSummaryDate(map);
 		} catch (Exception e) {
