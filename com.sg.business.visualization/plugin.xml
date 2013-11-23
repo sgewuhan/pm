@@ -101,6 +101,11 @@
             id="vis.project.producttype"
             table="vis.project.producttype">
       </navigator>
+      <navigator
+            id="vis.projectset.schedual"
+            provideSelection="true"
+            table="vis.projectset.schedual">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -313,6 +318,40 @@
                width="200">
          </column>
       </table>
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="project"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
+            dbName="pm2"
+            fix="1"
+            headerVisiable="true"
+            id="vis.projectset.schedual"
+            lineVisiable="false"
+            markupEnabled="true"
+            preload="20"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               lazyDisplay="true"
+               name="项目名称描述"
+               type="String"
+               width="320">
+         </column>
+         <column
+               column="planfinish"
+               labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
+               lazyDisplay="true"
+               name="进度"
+               type="Date"
+               width="200">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -325,7 +364,13 @@
                id="projectset.info"
                navigatorId="vis.projectset"
                pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetContent"
-               title="基本信息">
+               title="总揽">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.schedual"
+               navigatorId="vis.projectset.schedual"
+               pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardSchedual"
+               title="进度">
          </navigatorpage>
       </editor>
    </extension>

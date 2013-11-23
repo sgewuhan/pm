@@ -27,7 +27,7 @@ public class RunRNDCostAllocation implements Runnable {
 		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, -1);
+		cal.add(Calendar.MONTH, -4);
 
 		// 获得所有的成本中心代码
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,

@@ -69,7 +69,7 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 					if (maybeDelay) {
 						sb.append("<span style='color=" + Utils.COLOR_YELLOW[10]
 								+ "'>");
-						sb.append("可能超期");
+						sb.append("超期风险");
 						sb.append("</span>");
 						// state = FileUtil.getImageURL(
 						// BusinessResource.IMAGE_BALL_YELLOW_1_16,
