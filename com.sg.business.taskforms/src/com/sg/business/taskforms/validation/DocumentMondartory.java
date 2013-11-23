@@ -17,10 +17,10 @@ public class DocumentMondartory implements IValidationHandler {
 
 	@Override
 	public boolean validate(PrimaryObject work) {
-		if(work instanceof Work){
+		if (work instanceof Work) {
 			Work work2 = (Work) work;
 			List<PrimaryObject> delis = work2.getDeliverable();
-			if (delis != null) {
+			if (delis != null && delis.size() > 0) {
 				for (int i = 0; i < delis.size(); i++) {
 					Deliverable deli = (Deliverable) delis.get(i);
 					if (deli.isMandatory()) {
