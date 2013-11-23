@@ -63,7 +63,7 @@
             id="vis.projectset"
             provideSelection="true"
             table="vis.projectset">
-         <filterAction>
+         <!--filterAction>
             <column
                   columnDefinitionId="project.desc">
             </column>
@@ -98,7 +98,7 @@
             <column
                   columnDefinitionId="chargerid">
             </column>
-         </searchAction>
+         </searchAction-->
       </navigator>
       <navigator
             id="vis.project.projecttype"
