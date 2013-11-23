@@ -28,6 +28,13 @@
             name="产品"
             restorable="true">
       </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.MyProjectNavigator"
+            id="vis.project.myprojectset"
+            name="我的项目集"
+            restorable="true">
+      </view>
 
    </extension>
    <extension
@@ -104,6 +111,10 @@
       <navigator
             id="vis.project.producttype"
             table="vis.project.producttype">
+      </navigator>
+      <navigator
+            id="vis.project.myprojectset"
+            table="vis.project.myprojectset">
       </navigator>
    </extension>
    <extension
@@ -240,7 +251,6 @@
             dbName="pm2"
             headerVisiable="false"
             id="vis.project.projecttype"
-            idfield="_id"
             markupEnabled="true"
             multiSelection="false"
             virtual="true">
@@ -274,6 +284,30 @@
                width="-1">
          </column>
       
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            collectionName="userprojectperf"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.visualization.MyProjectSet"
+            dbName="pm2"
+            headerVisiable="false"
+            id="vis.project.myprojectset"
+            idfield="_id"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovide.MyProjectSetLabelProvider"
+               name="项目集名称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
       </table>
       <table
             canCreate="false"
