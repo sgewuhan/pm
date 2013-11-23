@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -26,7 +27,7 @@ public class OrganizationNavigator extends TreeNavigator {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		StructuredViewer viewer = getNavigator().getViewer();
+		final StructuredViewer viewer = getNavigator().getViewer();
 		Tree tree = (Tree) viewer.getControl();
 		tree.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -35,6 +36,7 @@ public class OrganizationNavigator extends TreeNavigator {
 						String _id = event.text.substring(event.text.lastIndexOf("/")+1);
 						Organization org = ModelService.createModelObject(Organization.class,new ObjectId(_id));
 						open(org);
+						viewer.setSelection(new StructuredSelection(org));
 					}catch(Exception e){
 						MessageUtil.showToast(e);
 					}

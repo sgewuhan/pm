@@ -88,12 +88,8 @@
             </column>
             <column
                   column="status"
-                  id="project.status"
-                  labelProvider="com.sg.business.commons.labelprovider.StatusLabelProvider"
                   name=" 状态"
-                  toolTipText="状态"
-                  type="String"
-                  width="24">
+                  type="String">
             </column>
          </filterAction>
          <searchAction>
@@ -120,8 +116,9 @@
             table="vis.project.producttype">
       </navigator>
       <navigator
-            id="vis.project.myprojectset"
-            table="vis.project.myprojectset">
+            id="vis.projectset.schedual"
+            provideSelection="true"
+            table="vis.projectset.schedual">
       </navigator>
       <navigator
             id="vis.project.projectmanager"
@@ -393,7 +390,49 @@
                column="planfinish"
                labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
                lazyDisplay="true"
-               name="进度摘要"
+               name="进度"
+               type="Date"
+               width="200">
+         </column>
+         <column
+               column="rndcost"
+               labelProvider="com.sg.business.visualization.labelprovider.project.RNDCostLabelProvider"
+               lazyDisplay="true"
+               name="投入"
+               type="String"
+               width="200">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="project"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
+            dbName="pm2"
+            fix="1"
+            headerVisiable="true"
+            id="vis.projectset.schedual"
+            lineVisiable="false"
+            markupEnabled="true"
+            preload="20"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               lazyDisplay="true"
+               name="项目名称描述"
+               type="String"
+               width="320">
+         </column>
+         <column
+               column="planfinish"
+               labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
+               lazyDisplay="true"
+               name="进度"
                type="Date"
                width="200">
          </column>
@@ -410,7 +449,13 @@
                id="projectset.info"
                navigatorId="vis.projectset"
                pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetContent"
-               title="基本信息">
+               title="总揽">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.schedual"
+               navigatorId="vis.projectset.schedual"
+               pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardSchedual"
+               title="进度">
          </navigatorpage>
       </editor>
       <editor

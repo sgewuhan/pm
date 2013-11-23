@@ -9,7 +9,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.commons.eai.RNDPeriodCostAdapter;
+import com.sg.business.finance.eai.RNDPeriodCostAdapter;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
@@ -27,7 +27,7 @@ public class RunRNDCostAllocation implements Runnable {
 		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, -1);
+		cal.add(Calendar.MONTH, -4);
 
 		// 获得所有的成本中心代码
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
