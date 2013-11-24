@@ -43,6 +43,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kfzx.kfzxDocumentApproveOfA1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -76,6 +81,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kfzx.kfzxDocumentApproveOfA2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -109,6 +119,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kfzx.kfzxDocumentApproveOfBC1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -131,6 +146,11 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kfzx.kfzxDocumentApproveOfBC2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -175,6 +195,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kfzx.kfzxDrawingApproveOfA"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -207,6 +232,11 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kfzx.kfzxDrawingApproveOfBC"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -390,7 +420,8 @@
             editorId="kfzx.kfzxMeetingReview.confirm"
             name="确认评审组成员"
             persistentFields="reviewer_admin,reviewer_list,confirmtime,confirmaddress"
-            processDefinitionId="kfzx.kfzxMeetingReview">
+            processDefinitionId="kfzx.kfzxMeetingReview"
+            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="reviewer_admin"
                taskFormFieldName="reviewer_admin">
@@ -418,7 +449,8 @@
             name="评审意见录入"
             persistentFields="comment,accessory"
             processDefinitionId="kfzx.kfzxMeetingReview"
-            saveHandler="com.tmt.kfzx.handler.MeetingReviewAccessory">
+            saveHandler="com.tmt.kfzx.handler.MeetingReviewAccessory"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
       <taskForm
             editorId="kfzx.kfzxMeetingReview.audit"
@@ -612,7 +644,9 @@
             editorId="kfzx.kfzxProjrctStart.submit"
             name="提交会议申请"
             persistentFields="reviewer_admin,reviewer_list"
-            processDefinitionId="kfzx.kfzxProjrctStart">
+            processDefinitionId="kfzx.kfzxProjrctStart"
+            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="reviewer_admin"
                taskFormFieldName="reviewer_admin">
