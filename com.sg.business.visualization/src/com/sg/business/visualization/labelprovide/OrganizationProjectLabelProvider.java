@@ -78,9 +78,35 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			sb.append("</small></span>");
 
 			return sb.toString();
-		}else if(dbo instanceof User){
+		} else if (dbo instanceof User) {
 			User user = (User) dbo;
-			return user.getHTMLLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("<a href=\"" + user.get_id().toString()
+					+ "\" target=\"_rwt\">");
+			sb.append("<img src='");
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
+			sb.append("</a>");
+
+			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+
+			String imageUrl = "<img src='"
+					+ FileUtil.getImageURL(BusinessResource.IMAGE_USER_16,
+							BusinessResource.PLUGIN_ID,
+							BusinessResource.IMAGE_FOLDER)
+					+ "' style='float:left;padding:2px' width='24' height='24' />";
+
+			sb.append(imageUrl);
+			sb.append("<b>");
+			sb.append(user.getLabel());
+			sb.append("</b>");
+			sb.append("<br/>");
+			sb.append("<small>");
+			sb.append(user.getOrganization().getPath());
+			sb.append("</small></span>");
+
+			return sb.toString();
 		}
 		return "";
 	}

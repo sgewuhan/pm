@@ -11,6 +11,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
@@ -22,22 +23,29 @@ public class OrgOfProjectManagerCondition implements IRelationConditionProvider 
 
 	@Override
 	public DBObject getCondition(PrimaryObject primaryObject) {
-		List<String> list=getProjectIdList(primaryObject);
-		return new BasicDBObject().append(User.F_USER_ID,new BasicDBObject().append("$in", list));
+		List<String> list = getProjectIdList(primaryObject);
+		return new BasicDBObject().append(User.F_USER_ID,
+				new BasicDBObject().append("$in", list));
 	}
 
 	private List<String> getProjectIdList(PrimaryObject primaryObject) {
-		List<String> list=new ArrayList<String>();
-		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_PROJECT);
-		DBCursor cur = col.find(new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION, primaryObject.get_id()));
-		while(cur.hasNext()){
+		List<String> list = new ArrayList<String>();
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
+		DBCursor cur = col.find(new BasicDBObject().append(
+				Project.F_LAUNCH_ORGANIZATION, primaryObject.get_id()).append(
+				ILifecycle.F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						ILifecycle.STATUS_FINIHED_VALUE,
+						ILifecycle.STATUS_WIP_VALUE })));
+
+		while (cur.hasNext()) {
 			DBObject next = cur.next();
-			Project project = ModelService.createModelObject(next, Project.class);
+			Project project = ModelService.createModelObject(next,
+					Project.class);
 			list.add(project.getChargerId());
 		}
 		return list;
 	}
-	
-	
 
 }

@@ -113,6 +113,10 @@
             provideSelection="true"
             table="vis.projectset.schedual">
       </navigator>
+      <navigator
+            id="vis.project.myprojectset"
+            table="vis.project.myprojectset">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -123,6 +127,7 @@
             canEdit="false"
             canRead="false"
             collectionName="organization"
+            contentProvider="com.sg.business.visualization.contentprovider.OrgProjectSetContentProvider"
             customItemHeight="40"
             dataSet="com.sg.business.model.dataset.organization.OrgOfOwnerManager"
             dbName="pm2"

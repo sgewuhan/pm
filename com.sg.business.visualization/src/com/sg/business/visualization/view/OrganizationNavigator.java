@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Tree;
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.model.User;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.view.TreeNavigator;
@@ -23,7 +24,7 @@ public class OrganizationNavigator extends TreeNavigator {
 
 	public OrganizationNavigator() {
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
@@ -32,26 +33,44 @@ public class OrganizationNavigator extends TreeNavigator {
 		tree.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == RWT.HYPERLINK) {
-					try{
-						String _id = event.text.substring(event.text.lastIndexOf("/")+1);
-						Organization org = ModelService.createModelObject(Organization.class,new ObjectId(_id));
+
+					String _id = event.text.substring(event.text
+							.lastIndexOf("/") + 1);
+					try {
+						Organization org = ModelService.createModelObject(
+								Organization.class, new ObjectId(_id));
 						open(org);
 						viewer.setSelection(new StructuredSelection(org));
-					}catch(Exception e){
-						MessageUtil.showToast(e);
+					} catch (Exception e) {
+						try {
+							User user = ModelService.createModelObject(
+									User.class, new ObjectId(_id));
+							open(user);
+							viewer.setSelection(new StructuredSelection(user));
+						} catch (Exception e1) {
+							MessageUtil.showToast(e);
+						}
+
 					}
 				}
 			}
 		});
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			
+
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				IStructuredSelection isel = (IStructuredSelection) event.getSelection();
+				IStructuredSelection isel = (IStructuredSelection) event
+						.getSelection();
 				Object element = isel.getFirstElement();
-				if(element instanceof Organization){
+				if (element instanceof Organization) {
 					try {
 						open((Organization) element);
+					} catch (Exception e) {
+						MessageUtil.showToast(e);
+					}
+				} else if (element instanceof User) {
+					try {
+						open((User) element);
 					} catch (Exception e) {
 						MessageUtil.showToast(e);
 					}
@@ -62,7 +81,14 @@ public class OrganizationNavigator extends TreeNavigator {
 
 	private void open(Organization org) throws Exception {
 		ProjectProvider pp = org.getAdapter(ProjectProvider.class);
-		DataObjectEditor.open(pp, "editor.visualization.projectset", true, null);
+		DataObjectEditor
+				.open(pp, "editor.visualization.projectset", true, null);
+	}
+
+	private void open(User user) throws Exception {
+		ProjectProvider pp = user.getAdapter(ProjectProvider.class);
+		DataObjectEditor
+				.open(pp, "editor.visualization.projectset", true, null);
 	}
 
 }
