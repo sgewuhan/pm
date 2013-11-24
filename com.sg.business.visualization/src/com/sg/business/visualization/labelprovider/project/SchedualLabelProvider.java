@@ -23,9 +23,10 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 		sb.append("</span>");
 
 		// 显示计划和实际的进度日期
-		sb.append("<br>");
 		sb.append("<small>");
+		sb.append("<p>");
 		sb.append(getSchedualText(works, project));
+		sb.append("</p>");
 		sb.append("</small>");
 		return sb.toString();
 	}
@@ -42,7 +43,7 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 				pf)) : String.format("%tF%n", af);
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;margin-left:0;margin-top:2px;word-break : break-all; white-space:normal; display:block; width=1000px'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;margin-left:0;margin-top:2px; white-space:normal; display:block; width=1000px'>");
 
 		sb.append(start);
 		sb.append("~");

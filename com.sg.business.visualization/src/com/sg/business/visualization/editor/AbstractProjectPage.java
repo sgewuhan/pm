@@ -39,7 +39,8 @@ import com.sg.widgets.part.editor.page.INavigatorPageBodyPartCreater;
 import com.sg.widgets.part.editor.page.NavigatorPage;
 
 @SuppressWarnings("restriction")
-public abstract class AbstractProjectPage implements INavigatorPageBodyPartCreater {
+public abstract class AbstractProjectPage implements
+		INavigatorPageBodyPartCreater {
 
 	private static final int INFOBANNER_HEIGHT = 68;
 	private static final int MARGIN = 4;
@@ -50,7 +51,7 @@ public abstract class AbstractProjectPage implements INavigatorPageBodyPartCreat
 	private Label filterLabel;
 	private Composite header;
 	protected NavigatorControl navi;
-	private ProjectProvider data;
+	protected ProjectProvider data;
 
 	public AbstractProjectPage() {
 
@@ -67,9 +68,9 @@ public abstract class AbstractProjectPage implements INavigatorPageBodyPartCreat
 		// 设置缺省的参数
 		data = (ProjectProvider) input.getData();
 		Object[] paras = data.getParameters();
-		if(paras!=null){
+		if (paras != null) {
 			parameters = paras;
-		}else{
+		} else {
 			parameters[0] = Calendar.getInstance();
 			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
 			data.setParameters(parameters);
@@ -85,28 +86,27 @@ public abstract class AbstractProjectPage implements INavigatorPageBodyPartCreat
 		fd.left = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.height = INFOBANNER_HEIGHT;
-		// 创建分割线
-		Label line = new Label(body, SWT.NONE);
-		fd = new FormData();
-		line.setLayoutData(fd);
-		Color sepColor = Widgets.getColor(body.getDisplay(), 192, 192, 192);
-		line.setBackground(sepColor);
-		fd.top = new FormAttachment(header, 0);
-		fd.left = new FormAttachment(0, 1);
-		fd.right = new FormAttachment(100, -1);
-		fd.height = 1;
+//		// 创建分割线
+//		Label line = new Label(body, SWT.NONE);
+//		fd = new FormData();
+//		line.setLayoutData(fd);
+//		Color sepColor = Widgets.getColor(body.getDisplay(), 192, 192, 192);
+//		line.setBackground(sepColor);
+//		fd.top = new FormAttachment(header, 0);
+//		fd.left = new FormAttachment(0, 1);
+//		fd.right = new FormAttachment(100, -1);
+//		fd.height = 1;
 
 		// 创建内容区
 		Composite navigator = createContent(body);
 		fd = new FormData();
 		navigator.setLayoutData(fd);
-		fd.top = new FormAttachment(line, 0);
+		fd.top = new FormAttachment(header, 0);
 		fd.left = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.bottom = new FormAttachment(100, -1);
-		
-		
-		//管理navigator表格事件
+
+		// 管理navigator表格事件
 		handleNavigatorTableEvent();
 
 	}
@@ -122,24 +122,21 @@ public abstract class AbstractProjectPage implements INavigatorPageBodyPartCreat
 					try {
 						URL url = new URL(event.text);
 						String path = url.getPath();
-						String orj = path.substring(1,path
-								.indexOf("/",1) );
-						String eventCode = path.substring(path
-								.lastIndexOf("/") + 1);
-						call(orj,eventCode);
+						String orj = path.substring(1, path.indexOf("/", 1));
+						String eventCode = path.substring(path.lastIndexOf("/") + 1);
+						call(orj, eventCode);
 					} catch (Exception e) {
 						MessageUtil.showToast(e);
 					}
 				}
 			}
-		});		
+		});
 	}
 
 	protected abstract Composite createContent(Composite body);
 
-
 	protected void call(String orj, String eventCode) {
-		
+
 	}
 
 	private Composite createHeader(Composite body) {
@@ -411,9 +408,8 @@ public abstract class AbstractProjectPage implements INavigatorPageBodyPartCreat
 
 	}
 
-	private String getParameterText() {
+	protected String getHeadParameterText() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
 		if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR.equals(parameters[1])) {
 			sb.append(((Calendar) parameters[0]).get(Calendar.YEAR) + "年");
 		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
@@ -429,6 +425,13 @@ public abstract class AbstractProjectPage implements INavigatorPageBodyPartCreat
 			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
 		}
 
+		return sb.toString();
+	}
+
+	private String getParameterText() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
+		sb.append(getHeadParameterText());
 		sb.append("</span>");
 		return sb.toString();
 	}
