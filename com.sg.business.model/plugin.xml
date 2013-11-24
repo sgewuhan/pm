@@ -274,6 +274,14 @@
             id="organization_functionorganization"
             name="组织下的项目管理部门">
       </relation>
+      <relation
+            end1Class="com.sg.business.model.Organization"
+            end1Key="_id"
+            end2Class="com.sg.business.model.User"
+            end2Key="organization_id"
+            id="organization_user"
+            name="组织下的项目负责人">
+      </relation>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
