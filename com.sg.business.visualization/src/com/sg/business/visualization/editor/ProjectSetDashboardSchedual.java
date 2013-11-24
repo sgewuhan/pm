@@ -75,7 +75,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		graphicContent.setLayout(new FillLayout());
 		createGraphic(graphicContent);
 
-		content.setWeights(new int[] { 3, 1 });
+		content.setWeights(new int[] { 3, 2 });
 		return content;
 	}
 

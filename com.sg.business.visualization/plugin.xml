@@ -389,6 +389,14 @@
                type="Date"
                width="200">
          </column>
+         <column
+               column="status"
+               labelProvider="com.sg.business.visualization.labelprovider.project.SchedualDetailLabelProvider"
+               lazyDisplay="true"
+               name="里程碑"
+               type="String"
+               width="160">
+         </column>
       </table>
    </extension>
    <extension
@@ -402,7 +410,7 @@
                id="projectset.info"
                navigatorId="vis.projectset"
                pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetContent"
-               title="总揽">
+               title="总览">
          </navigatorpage>
          <navigatorpage
                id="projectset.schedual"
@@ -448,8 +456,17 @@
          <command
                commandId="visualization.command.demo1"
                icon="image/preview_24.png"
-               label="演示"
+               label="检查客户端Flash"
                style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.system">
+                  </equals>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
