@@ -242,17 +242,17 @@ public abstract class AbstractProjectPage implements
 	}
 
 	private void setSummaryText(ProjectProvider data) {
-		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
+		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING);
 		value1 = value1 == null ? 0 : value1;
 		Object value2 = data
 				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED);
 		value2 = value2 == null ? 0 : value2;
 		Object value3 = data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING);
+				.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
 		value3 = value3 == null ? 0 : value3;
 		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_PROCESS);
+		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL);
 		value1 = value1 == null ? 0 : value1;
 		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_DELAY);
 		value2 = value2 == null ? 0 : value2;

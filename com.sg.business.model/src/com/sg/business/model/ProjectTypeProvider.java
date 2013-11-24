@@ -19,14 +19,14 @@ import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
 
 public class ProjectTypeProvider extends ProjectProvider {
-	private DBCollection projectCol;
+	private DBCollection col;
 	private String userId;
 	private String desc;
 
 	public ProjectTypeProvider(String desc, String userId) {
 		super();
 
-		projectCol = DBActivator.getCollection(IModelConstants.DB,
+		col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
 		set_data(new BasicDBObject());
 		this.desc = desc;
@@ -42,11 +42,19 @@ public class ProjectTypeProvider extends ProjectProvider {
 			Map<String, Object> map = new HashMap<String, Object>();
 
 			int proFinishCount = 0;
+			int finishDelayCount = 0;
+			int finishNormalCount = 0;
+
 			int proProcessCount = 0;
+			int processDelayCount = 0;
+			int processNormalCount = 0;
+			
+			
+			int advanceCount=0;
+
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
-			DBCursor cur = projectCol
-					.find(getQueryCondtion(startDate, endDate));
+			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
@@ -54,16 +62,41 @@ public class ProjectTypeProvider extends ProjectProvider {
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
 					proFinishCount++;
+					if (project.isDelay()) {
+						finishDelayCount++;
+					} else {
+						finishNormalCount++;
+					}
+					if(project.isAdvanced()){
+						advanceCount++;
+					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
 					proProcessCount++;
+					if (project.maybeDelay()) {
+						processDelayCount++;
+					} else {
+						processNormalCount++;
+					}
+					if(project.maybeAdvanced()){
+						advanceCount++;
+					}
 				}
-
 				result.add(project);
 			}
 			map.put(F_SUMMARY_TOTAL, result.size());
+			
 			map.put(F_SUMMARY_FINISHED, proFinishCount);
+			map.put(F_SUMMARY_FINISHED_DELAY, finishDelayCount);
+			map.put(F_SUMMARY_FINISHED_NORMAL, finishNormalCount);
+			
 			map.put(F_SUMMARY_PROCESSING, proProcessCount);
+			map.put(F_SUMMARY_PROCESSING_DELAY, processDelayCount);
+			map.put(F_SUMMARY_PROCESSING_NORMAL, processNormalCount);
+			
+			map.put(F_SUMMARY_ADVANCE, advanceCount);
+			map.put(F_SUMMARY_DELAY, finishDelayCount+processDelayCount);
+			map.put(F_SUMMARY_NORMAL, finishNormalCount+processNormalCount);
 
 			setSummaryDate(map);
 		} catch (Exception e) {
