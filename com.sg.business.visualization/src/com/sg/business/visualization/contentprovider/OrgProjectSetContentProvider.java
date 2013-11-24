@@ -123,14 +123,22 @@ public class OrgProjectSetContentProvider extends RelationContentProvider {
 	public long getRelationCountByModel(ModelRelation mr,PrimaryObject po) {
 		Class<? extends PrimaryObject> end2Class = mr.getEnd2Class();
 		IRelationConditionProvider irc = mr.getRelationConditionProvider();
-		DBObject condition;
-		if (irc != null) {
-			condition = irc.getCondition(po);
-		} else {
-			condition = new BasicDBObject();
-			condition.put(mr.getEnd2Key(), po.getValue(mr.getEnd1Key()));
-			condition.put(Organization.F__ID, new BasicDBObject().append(
-					"$in", getAviableOrganization()));
+		DBObject condition = null;
+		if ("organization_organization".equals(mr.getId())) {
+			
+			if (irc != null) {
+				condition = irc.getCondition(po);
+			} else {
+				condition = new BasicDBObject();
+				condition.put(mr.getEnd2Key(), po.getValue(mr.getEnd1Key()));
+				condition.put(Organization.F__ID, new BasicDBObject().append(
+						"$in", getAviableOrganization()));
+			}
+
+		} else if ("organization_projectmanager".equals(mr.getId())) {
+				condition = new BasicDBObject();
+				condition.put(User.F_USER_ID,
+						new BasicDBObject().append("$in", getAviableUser(po)));
 		}
 		StructuredDBCollectionDataSetFactory sdf = po.getRelationDataSetFactory(
 				end2Class, condition);
