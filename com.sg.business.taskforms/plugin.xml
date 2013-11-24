@@ -640,7 +640,7 @@
       <taskForm
             editorId="pmProjectApprove.reviewteamleader"
             name="评审组组长审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="pm.pmProjectApprove">
          <processParameter
                processParameterName="choice"

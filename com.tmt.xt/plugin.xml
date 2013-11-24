@@ -623,7 +623,8 @@
             editorId="tbprojectapplication.reviewer"
             name="确认评审组"
             persistentFields="reviewer_list,choice,confirmtime,confirmaddress"
-            processDefinitionId="xt.xtProjectApplication">
+            processDefinitionId="xt.xtProjectApplication"
+            saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
