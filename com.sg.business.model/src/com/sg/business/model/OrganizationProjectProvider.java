@@ -107,7 +107,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-
 		return result;
 	}
 
