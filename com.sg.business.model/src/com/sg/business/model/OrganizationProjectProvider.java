@@ -166,39 +166,5 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return result;
 	}
 
-	// public void setF_SUMMARY_NORMAL_PROCESS(int count) {
-	// setValue(F_SUMMARY_NORMAL_PROCESS,count);
-	// }
-	//
-	// public void setF_SUMMARY_DELAY(int count) {
-	// setValue(F_SUMMARY_DELAY,count);
-	// }
-	//
-	// public void setF_SUMMARY_ADVANCE(int count) {
-	// setValue(F_SUMMARY_ADVANCE,count);
-	// }
-	//
-	// public void setF_SUMMARY_NORMAL_COST(int count) {
-	// setValue(F_SUMMARY_NORMAL_COST,count);
-	// }
-	//
-	// public void setF_SUMMARY_OVER_COST(int count) {
-	// setValue(F_SUMMARY_OVER_COST,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_TOTAL(int count) {
-	// setValue(F_SUMMARY_TOTAL,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_FINISHED(int count) {
-	// setValue(F_SUMMARY_FINISHED,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_PROCESSING(int count) {
-	// setValue(F_SUMMARY_PROCESSING,count);
-	// }
 
 }
