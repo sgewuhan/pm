@@ -6,38 +6,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
 
-public class OrganizationProjectProvider extends ProjectProvider {
-
-	private Organization organization;
+public class ProjectManagerProvider extends ProjectProvider {
+	
+	private User user;
 	private DBCollection col;
 
-	public void setOrganization(Organization org) {
-		this.organization = org;
-		setValue(F__ID, org.get_id());
-		setValue(F_DESC, org.getDesc());
+	public void setUser(User user) {
+		this.user = user;
+		setValue(F__ID, user.get_id());
+		setValue(F_DESC, user.getDesc());
 		col = getCollection(IModelConstants.C_PROJECT);
 	}
 
-	@Override
-	public String getTypeName() {
-		return "组织项目集";
-	}
-
-	@Override
-	public String getProjectSetCoverImage() {
-		return FileUtil.getImageURL("project_72.png",
-				"com.sg.business.project", BusinessResource.IMAGE_FOLDER);
-	}
 
 	@Override
 	public List<PrimaryObject> getProjectSet() {
@@ -90,17 +78,11 @@ public class OrganizationProjectProvider extends ProjectProvider {
 
 		return result;
 	}
-
-	@Override
-	public String getProjectSetName() {
-		return getDesc() + "项目集";
-	}
-
+	
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_LAUNCH_ORGANIZATION, new BasicDBObject().append(
-				"$in", getOrganizations(organization)));
+		dbo.put(Project.F_CHARGER, user.getUserid());
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
@@ -131,55 +113,19 @@ public class OrganizationProjectProvider extends ProjectProvider {
 												Project.F_ACTUAL_FINISH,
 												new BasicDBObject().append(
 														"$gte", stop)) }) });
-
+		
 		return dbo;
 	}
-
-	private List<?> getOrganizations(Organization org) {
-		List<Object> result = new ArrayList<Object>();
-		result.add(org.get_id());
-		List<PrimaryObject> children = org.getChildrenOrganization();
-		if (children != null) {
-			for (int i = 0; i < children.size(); i++) {
-				result.addAll(getOrganizations((Organization) children.get(i)));
-			}
-		}
-		return result;
+	
+	@Override
+	public String getProjectSetName() {
+		return "负责人项目集";
 	}
 
-	// public void setF_SUMMARY_NORMAL_PROCESS(int count) {
-	// setValue(F_SUMMARY_NORMAL_PROCESS,count);
-	// }
-	//
-	// public void setF_SUMMARY_DELAY(int count) {
-	// setValue(F_SUMMARY_DELAY,count);
-	// }
-	//
-	// public void setF_SUMMARY_ADVANCE(int count) {
-	// setValue(F_SUMMARY_ADVANCE,count);
-	// }
-	//
-	// public void setF_SUMMARY_NORMAL_COST(int count) {
-	// setValue(F_SUMMARY_NORMAL_COST,count);
-	// }
-	//
-	// public void setF_SUMMARY_OVER_COST(int count) {
-	// setValue(F_SUMMARY_OVER_COST,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_TOTAL(int count) {
-	// setValue(F_SUMMARY_TOTAL,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_FINISHED(int count) {
-	// setValue(F_SUMMARY_FINISHED,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_PROCESSING(int count) {
-	// setValue(F_SUMMARY_PROCESSING,count);
-	// }
+	@Override
+	public String getProjectSetCoverImage() {
+		return null;
+	}
 
+	
 }
