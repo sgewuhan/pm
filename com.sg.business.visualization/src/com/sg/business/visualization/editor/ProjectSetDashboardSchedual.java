@@ -78,35 +78,47 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		content.setWeights(new int[] { 3, 2 });
 		return content;
 	}
+	
+	@Override
+	protected String getProjectSetPageLabel() {
+		String projectSetName = data.getProjectSetName();
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
+		sb.append(projectSetName + " 进度状况");
+		sb.append("</span>");
+		return sb.toString();
+	}
 
 	private void createGraphic(Composite parent) {
 
 		TabFolder tabFolder = new TabFolder(parent, SWT.TOP);
 
 		TabItem pieTabItem = new TabItem(tabFolder, SWT.NONE);
-		pieTabItem.setText("项目状态摘要");
-
-		SashForm content = new SashForm(tabFolder, SWT.VERTICAL);
-		ChartCanvas pieChart = new ChartCanvas(content, SWT.NONE);
+		pieTabItem.setText("状态");
+		ChartCanvas pieChart = new ChartCanvas(tabFolder, SWT.NONE);
 		pieChart.setChart(createPieChart());
+		pieTabItem.setControl(pieChart);
 
-		ChartCanvas dialChart = new ChartCanvas(content, SWT.NONE);
-		dialChart.setChart(createMeterChart());
-
-		content.setWeights(new int[] { 1, 1 });
-		pieTabItem.setControl(content);
-
+		TabItem barTabItem = new TabItem(tabFolder, SWT.NONE);
+		barTabItem.setText("部门");
 		ChartCanvas barChart = new ChartCanvas(tabFolder, SWT.NONE);
 		barChart.setChart(createStackedBarChart());
-		TabItem barTabItem = new TabItem(tabFolder, SWT.NONE);
-		barTabItem.setText("部门摘要");
 		barTabItem.setControl(barChart);
+
+		TabItem meterTabItem = new TabItem(tabFolder, SWT.NONE);
+		meterTabItem.setText("指示器");
+		ChartCanvas meterChart = new ChartCanvas(tabFolder, SWT.NONE);
+		meterChart.setChart(createMeterChart());
+		meterTabItem.setControl(meterChart);
+
 	}
 
 	private Chart createMeterChart() {
 		String[] oValues = new String[] { "进度延迟" };
 
 		DialChart chart = (DialChart) DialChartImpl.create();
+		chart.setDialSuperimposition( false );
+
 		// 使用标准的仪表盘
 		chart.setType("Standard Meter"); //$NON-NLS-1$  
 		//		dChart.setSubType("Superimposed Meter Chart"); //$NON-NLS-1$
@@ -116,20 +128,24 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		// chart.setGridColumnCount(1);
 
 		// Title/Plot
-		chart.getBlock().setBackground(ColorDefinitionImpl.WHITE());
+		chart.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
 		chart.getPlot().getClientArea().setVisible(false);
+		chart.setSeriesThickness( 2 );
 
 		TitleBlock title = chart.getTitle();
 		title.getOutline().setVisible(false);
-		Text caption = title.getLabel().getCaption();
-		caption.setValue("运营状态");//$NON-NLS-1$
-		adjustFont(caption.getFont(), STRONG_SIZE);
+		title.getLabel().setVisible(false);
+//		Text caption = title.getLabel().getCaption();
+//		caption.setValue("运营状态");//$NON-NLS-1$
+//		adjustFont(caption.getFont(), STRONG_SIZE);
+
 
 		// Legend
-		Legend legend = chart.getLegend();
-		legend.setItemType(LegendItemType.CATEGORIES_LITERAL);
-		legend.setVisible(true);
-		adjustFont(legend.getText().getFont(), NORMAL_SIZE);
+//		Legend legend = chart.getLegend();
+//		legend.setItemType(LegendItemType.CATEGORIES_LITERAL);
+//		legend.setVisible(false);
+//		adjustFont(legend.getText().getFont(), NORMAL_SIZE);
+		chart.getLegend().setVisible(false);
 
 		TextDataSet categoryValues = TextDataSetImpl.create(oValues);//$NON-NLS-1$
 
@@ -144,17 +160,17 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		sdOrthogonal1.setSeriesDefinitionIndex(0);
 		sd.getOrthogonalSampleData().add(sdOrthogonal1);
 
-		OrthogonalSampleData sdOrthogonal2 = DataFactory.eINSTANCE
-				.createOrthogonalSampleData();
-		sdOrthogonal2.setDataSetRepresentation("");//$NON-NLS-1$
-		sdOrthogonal2.setSeriesDefinitionIndex(1);
-		sd.getOrthogonalSampleData().add(sdOrthogonal2);
-
-		OrthogonalSampleData sdOrthogonal3 = DataFactory.eINSTANCE
-				.createOrthogonalSampleData();
-		sdOrthogonal3.setDataSetRepresentation("");//$NON-NLS-1$
-		sdOrthogonal3.setSeriesDefinitionIndex(2);
-		sd.getOrthogonalSampleData().add(sdOrthogonal3);
+//		OrthogonalSampleData sdOrthogonal2 = DataFactory.eINSTANCE
+//				.createOrthogonalSampleData();
+//		sdOrthogonal2.setDataSetRepresentation("");//$NON-NLS-1$
+//		sdOrthogonal2.setSeriesDefinitionIndex(1);
+//		sd.getOrthogonalSampleData().add(sdOrthogonal2);
+//
+//		OrthogonalSampleData sdOrthogonal3 = DataFactory.eINSTANCE
+//				.createOrthogonalSampleData();
+//		sdOrthogonal3.setDataSetRepresentation("");//$NON-NLS-1$
+//		sdOrthogonal3.setSeriesDefinitionIndex(2);
+//		sd.getOrthogonalSampleData().add(sdOrthogonal3);
 
 		chart.setSampleData(sd);
 

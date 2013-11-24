@@ -44,12 +44,9 @@ public abstract class AbstractProjectPage implements
 
 	private static final int INFOBANNER_HEIGHT = 68;
 	private static final int MARGIN = 4;
-	private Label projectStatusSummary;
-	private Label schedualSummary;
-	private Label costSummary;
 	private Object[] parameters = new Object[10];
-	private Label filterLabel;
-	private Composite header;
+	Label filterLabel;
+	Composite header;
 	protected NavigatorControl navi;
 	protected ProjectProvider data;
 
@@ -109,15 +106,6 @@ public abstract class AbstractProjectPage implements
 		// 管理navigator表格事件
 		handleNavigatorTableEvent();
 		
-		//设置加载事件
-		navi.handleReloadHandle(new Runnable() {
-
-			@Override
-			public void run() {
-				setSummaryText(header, data);
-			}
-
-		});
 	}
 
 	private void handleNavigatorTableEvent() {
@@ -148,8 +136,7 @@ public abstract class AbstractProjectPage implements
 
 	}
 
-	private Composite createHeader(Composite body) {
-		String projectSetName = data.getProjectSetName();
+	protected Composite createHeader(Composite body) {
 		String projectSetCover = data.getProjectSetCoverImage();
 
 		Composite header = new Composite(body, SWT.NONE);
@@ -213,70 +200,17 @@ public abstract class AbstractProjectPage implements
 		// 显示项目集合名称
 		Label projectSetLabel = new Label(header, SWT.NONE);
 		projectSetLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(projectSetName + " 摘要");
-		sb.append("</span>");
-		projectSetLabel.setText(sb.toString());
+		projectSetLabel.setText(getProjectSetPageLabel());
 
 		fd = new FormData();
 		projectSetLabel.setLayoutData(fd);
 		fd.left = new FormAttachment(menuButton, 4);
 		fd.top = new FormAttachment(32);
 
-		// 显示右侧的第一摘要字段，数量
-		projectStatusSummary = new Label(header, SWT.NONE);
-		fd = new FormData();
-		projectStatusSummary.setLayoutData(fd);
-		fd.right = new FormAttachment(100, -4);
-		fd.top = new FormAttachment(0, 4);
-
-		// 右侧第二摘要字段，进度
-		schedualSummary = new Label(header, SWT.NONE);
-		fd = new FormData();
-		schedualSummary.setLayoutData(fd);
-		fd.right = new FormAttachment(100, -4);
-		fd.top = new FormAttachment(projectStatusSummary, 2);
-
-		// 右侧第三摘要字段，成本
-		costSummary = new Label(header, SWT.NONE);
-		fd = new FormData();
-		costSummary.setLayoutData(fd);
-		fd.right = new FormAttachment(100, -4);
-		fd.top = new FormAttachment(schedualSummary, 2);
-		setSummaryText(header, data);
-
 		return header;
 	}
 
-	private void setSummaryText(Composite header, ProjectProvider data) {
-		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
-		value1 = value1 == null ? 0 : value1;
-		Object value2 = data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED);
-		value2 = value2 == null ? 0 : value2;
-		Object value3 = data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
-		value3 = value3 == null ? 0 : value3;
-		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
-				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL);
-		value1 = value1 == null ? 0 : value1;
-		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_DELAY);
-		value2 = value2 == null ? 0 : value2;
-		value3 = data.getSummaryValue(ProjectProvider.F_SUMMARY_ADVANCE);
-		value3 = value3 == null ? 0 : value3;
-		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
-				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_COST);
-		value1 = value1 == null ? 0 : value1;
-		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_OVER_COST);
-		value2 = value2 == null ? 0 : value2;
-		costSummary.setText("正常/超支：" + value1 + "/" + value2);
-
-		filterLabel.setText(getParameterText());
-		header.layout();
-	}
+	protected abstract String getProjectSetPageLabel() ;
 
 	protected void showFilterMenu(Control menuButton) {
 		final Shell shell = new Shell(menuButton.getShell(), SWT.BORDER);
@@ -424,14 +358,6 @@ public abstract class AbstractProjectPage implements
 			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
 		}
 
-		return sb.toString();
-	}
-
-	private String getParameterText() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(getHeadParameterText());
-		sb.append("</span>");
 		return sb.toString();
 	}
 
