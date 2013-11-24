@@ -6,7 +6,7 @@
       <taskForm
             editorId="xtDocumentApprove.auditor"
             name="审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDocumentApprove1">
          <processParameter
                processParameterName="choice"
@@ -16,12 +16,17 @@
       <taskForm
             editorId="xtDocumentApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDocumentApprove1">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDocumentApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -29,7 +34,7 @@
       <taskForm
             editorId="xtDocumentApprove.auditor"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDocumentApprove2">
          <processParameter
                processParameterName="choice"
@@ -39,12 +44,17 @@
       <taskForm
             editorId="xtDocumentApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDocumentApprove2">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDocumentApprove2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -52,7 +62,7 @@
       <taskForm
             editorId="xtDocumentApprove.auditor"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -62,7 +72,7 @@
       <taskForm
             editorId="xtDocumentApprove.auditor"
             name="工艺"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -72,7 +82,7 @@
       <taskForm
             editorId="xtDocumentApprove.auditor"
             name="审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -82,12 +92,17 @@
       <taskForm
             editorId="xtDocumentApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtDrawingApprove1">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDrawingApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -134,6 +149,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -177,6 +210,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
@@ -184,7 +235,7 @@
       <taskForm
             editorId="xtProjectApprove.audit"
             name="审批"
-            persistentFields="choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -207,7 +258,7 @@
       <taskForm
             editorId="xtProjectApprove.expertgroupreview"
             name="专家组预审"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -217,7 +268,7 @@
       <taskForm
             editorId="xtProjectApprove.reviewplan"
             name="评审实施计划"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -227,7 +278,7 @@
       <taskForm
             editorId="xtProjectApprove.expertgroupcountersign"
             name="专家组会签"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -237,7 +288,7 @@
       <taskForm
             editorId="xtProjectApprove.reviewteamleader"
             name="评审组组长审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -247,7 +298,7 @@
       <taskForm
             editorId="xtProjectApprove.meetingreview"
             name="会议评审"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -257,7 +308,7 @@
       <taskForm
             editorId="xtProjectApprove.resultaudit"
             name="处理结果审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -332,6 +383,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -376,6 +445,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -418,6 +505,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -463,6 +568,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -505,6 +628,24 @@
          <basicpage
                id="page2"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -550,6 +691,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -594,6 +753,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
@@ -601,9 +778,10 @@
       <taskForm
             editorId="tbprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number"
+            persistentFields="prj_number,accessory"
             processDefinitionId="xt.xtProjectApplication"
-            saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT">
+            saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="prj_number"
                taskFormFieldName="prj_number">
@@ -612,7 +790,7 @@
       <taskForm
             editorId="tbprojectapplication.applicationdept"
             name="申请部门负责人审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterName="choice"
@@ -622,7 +800,7 @@
       <taskForm
             editorId="tbprojectapplication.reviewer"
             name="确认评审组"
-            persistentFields="reviewer_list,choice,confirmtime,confirmaddress"
+            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory"
             processDefinitionId="xt.xtProjectApplication"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
@@ -652,7 +830,7 @@
       <taskForm
             editorId="tb.tbProjectReview.meetingreview"
             name="会议评审"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectReview">
          <processParameter
                processParameterName="choice"
@@ -662,7 +840,7 @@
       <taskForm
             editorId="tbprojectapplication.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterName="choice"
@@ -672,7 +850,7 @@
       <taskForm
             editorId="tbprojectapplication.assign"
             name="指派项目负责人"
-            persistentFields="prj_manager"
+            persistentFields="prj_manager,accessory"
             processDefinitionId="xt.xtProjectApplication"
             saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT">
          <processParameter
@@ -684,7 +862,7 @@
             editorId="tbprojectapplication.workorder"
             inputHandler="com.tmt.xt.handler.ProjectApplicationWorkOrderOfXT"
             name="审批工作令号"
-            persistentFields="prj_number"
+            persistentFields="prj_number,accessory"
             processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterName="prj_number"
@@ -694,7 +872,7 @@
       <taskForm
             editorId="tbprojectapplication.createproject"
             name="创建项目"
-            persistentFields="project_id"
+            persistentFields="project_id,accessory"
             processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
@@ -706,7 +884,7 @@
             editorId="tbprojectapplication.financial"
             inputHandler="com.tmt.xt.handler.ProjectApplicationWorkOrderOfXT"
             name="财务审核"
-            persistentFields="choice,changeworkorder,changebudget"
+            persistentFields="choice,changeworkorder,changebudget,accessory"
             processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterName="choice"
@@ -725,7 +903,7 @@
             editorId="tbprojectapplication.workorder"
             inputHandler="com.tmt.xt.handler.ProjectApplicationWorkOrderOfXT"
             name="修改工作令号"
-            persistentFields="prj_number"
+            persistentFields="prj_number,accessory"
             processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterName="prj_number"

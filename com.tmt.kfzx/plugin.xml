@@ -6,7 +6,7 @@
       <taskForm
             editorId="kfzxApprove.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfA1">
          <processParameter
                processParameterName="choice"
@@ -16,7 +16,7 @@
       <taskForm
             editorId="kfzxApprove.craft"
             name="工艺审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfA1">
          <processParameter
                processParameterName="choice"
@@ -26,7 +26,7 @@
       <taskForm
             editorId="kfzxApprove.auditor"
             name="审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfA1">
          <processParameter
                processParameterName="choice"
@@ -36,7 +36,7 @@
       <taskForm
             editorId="kfzxApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfA1">
          <processParameter
                processParameterName="choice"
@@ -54,7 +54,7 @@
       <taskForm
             editorId="kfzxApprove.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfA2">
          <processParameter
                processParameterName="choice"
@@ -64,7 +64,7 @@
       <taskForm
             editorId="kfzxApprove.auditor"
             name="审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfA2">
          <processParameter
                processParameterName="choice"
@@ -74,7 +74,7 @@
       <taskForm
             editorId="kfzxApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfA2">
          <processParameter
                processParameterName="choice"
@@ -92,7 +92,7 @@
       <taskForm
             editorId="kfzxApprove.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfBC1">
          <processParameter
                processParameterName="choice"
@@ -102,7 +102,7 @@
       <taskForm
             editorId="kfzxApprove.craft"
             name="工艺审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfBC1">
          <processParameter
                processParameterName="choice"
@@ -112,7 +112,7 @@
       <taskForm
             editorId="kfzxApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfBC1">
          <processParameter
                processParameterName="choice"
@@ -130,7 +130,7 @@
       <taskForm
             editorId="kfzxApprove.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfBC2">
          <processParameter
                processParameterName="choice"
@@ -140,7 +140,7 @@
       <taskForm
             editorId="kfzxApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDocumentApproveOfBC2">
          <processParameter
                processParameterName="choice"
@@ -158,7 +158,7 @@
       <taskForm
             editorId="kfzxApprove.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDrawingApproveOfA">
          <processParameter
                processParameterName="choice"
@@ -168,7 +168,7 @@
       <taskForm
             editorId="kfzxApprove.craft"
             name="工艺审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDrawingApproveOfA">
          <processParameter
                processParameterName="choice"
@@ -178,7 +178,7 @@
       <taskForm
             editorId="kfzxApprove.auditor"
             name="审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDrawingApproveOfA">
          <processParameter
                processParameterName="choice"
@@ -188,7 +188,7 @@
       <taskForm
             editorId="kfzxApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDrawingApproveOfA">
          <processParameter
                processParameterName="choice"
@@ -206,7 +206,7 @@
       <taskForm
             editorId="kfzxApprove.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDrawingApproveOfBC">
          <processParameter
                processParameterName="choice"
@@ -216,7 +216,7 @@
       <taskForm
             editorId="kfzxApprove.craft"
             name="工艺审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDrawingApproveOfBC">
          <processParameter
                processParameterName="choice"
@@ -226,7 +226,7 @@
       <taskForm
             editorId="kfzxApprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxDrawingApproveOfBC">
          <processParameter
                processParameterName="choice"
@@ -283,6 +283,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -325,6 +344,25 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -369,6 +407,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -412,6 +469,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
@@ -419,7 +495,7 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.confirm"
             name="确认评审组成员"
-            persistentFields="reviewer_admin,reviewer_list,confirmtime,confirmaddress"
+            persistentFields="reviewer_admin,reviewer_list,confirmtime,confirmaddress,accessory"
             processDefinitionId="kfzx.kfzxMeetingReview"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
@@ -447,7 +523,7 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.option"
             name="评审意见录入"
-            persistentFields="comment,accessory"
+            persistentFields="comment,accessory,accessory"
             processDefinitionId="kfzx.kfzxMeetingReview"
             saveHandler="com.tmt.kfzx.handler.MeetingReviewAccessory"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
@@ -455,7 +531,7 @@
       <taskForm
             editorId="kfzx.kfzxMeetingReview.audit"
             name="评审组组长审批"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="kfzx.kfzxMeetingReview">
          <processParameter
                processParameterName="choice"
@@ -542,6 +618,25 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -636,6 +731,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
@@ -643,7 +757,7 @@
       <taskForm
             editorId="kfzx.kfzxProjrctStart.submit"
             name="提交会议申请"
-            persistentFields="reviewer_admin,reviewer_list"
+            persistentFields="reviewer_admin,reviewer_list,accessory"
             processDefinitionId="kfzx.kfzxProjrctStart"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
@@ -660,7 +774,7 @@
       <taskForm
             editorId="kfzx.kfzxProjrctStart.meetingnotice"
             name="下发会议通知"
-            persistentFields="confirmtime,confirmaddress"
+            persistentFields="confirmtime,confirmaddress,accessory"
             processDefinitionId="kfzx.kfzxProjrctStart">
          <processParameter
                processParameterName="confirmtime"
@@ -728,6 +842,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -782,6 +915,25 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor

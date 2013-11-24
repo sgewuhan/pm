@@ -6,7 +6,7 @@
       <taskForm
             editorId="tbprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number"
+            persistentFields="prj_number,accessory"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
@@ -18,7 +18,7 @@
       <taskForm
             editorId="tbprojectapplication.applicationdept"
             name="申请部门负责人审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="choice"
@@ -28,7 +28,7 @@
       <taskForm
             editorId="tbprojectapplication.reviewer"
             name="确认评审组"
-            persistentFields="reviewer_list,choice,confirmtime,confirmaddress"
+            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
@@ -58,7 +58,7 @@
       <taskForm
             editorId="tb.tbProjectReview.meetingreview"
             name="会议评审"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectReview">
          <processParameter
                processParameterName="choice"
@@ -68,7 +68,7 @@
       <taskForm
             editorId="tbprojectapplication.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="choice"
@@ -78,7 +78,7 @@
       <taskForm
             editorId="tbprojectapplication.assign"
             name="指派项目负责人"
-            persistentFields="prj_manager"
+            persistentFields="prj_manager,accessory"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB">
          <processParameter
@@ -90,7 +90,7 @@
             editorId="tbprojectapplication.workorder"
             inputHandler="com.tmt.tb.handler.ProjectApplicationWorkOrderOfTB"
             name="审批工作令号"
-            persistentFields="prj_number"
+            persistentFields="prj_number,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="prj_number"
@@ -100,7 +100,7 @@
       <taskForm
             editorId="tbprojectapplication.createproject"
             name="创建项目"
-            persistentFields="project_id"
+            persistentFields="project_id,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
@@ -112,7 +112,7 @@
             editorId="tbprojectapplication.financial"
             inputHandler="com.tmt.tb.handler.ProjectApplicationWorkOrderOfTB"
             name="财务审核"
-            persistentFields="choice,changeworkorder,changebudget"
+            persistentFields="choice,changeworkorder,changebudget,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="choice"
@@ -131,7 +131,7 @@
             editorId="tbprojectapplication.workorder"
             inputHandler="com.tmt.tb.handler.ProjectApplicationWorkOrderOfTB"
             name="修改工作令号"
-            persistentFields="prj_number"
+            persistentFields="prj_number,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="prj_number"
@@ -171,6 +171,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -215,6 +233,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -286,6 +322,24 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -325,6 +379,11 @@
             </pagecolumn>
          </basicpage>
          <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
                id="page3"
                title="附件">
             <pagecolumn>
@@ -341,11 +400,6 @@
                   </file>
                </section>
             </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
          </basicpage>
       </editor>
       <editor
@@ -391,6 +445,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -435,6 +507,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -468,6 +558,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="task"
@@ -499,6 +607,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -532,6 +658,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -601,6 +745,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
@@ -608,7 +770,7 @@
       <taskForm
             editorId="tbProjectApprove.audit"
             name="审批"
-            persistentFields="choice,reviewer_list,reviewer_admin"
+            persistentFields="choice,reviewer_list,reviewer_admin,accessory"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -631,7 +793,7 @@
       <taskForm
             editorId="tbProjectApprove.expertgroupreview"
             name="专家组预审"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -641,7 +803,7 @@
       <taskForm
             editorId="tbProjectApprove.reviewplan"
             name="评审实施计划"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -651,7 +813,7 @@
       <taskForm
             editorId="tbProjectApprove.expertgroupcountersign"
             name="专家组会签"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -661,7 +823,7 @@
       <taskForm
             editorId="tbProjectApprove.reviewteamleader"
             name="评审组组长审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -671,7 +833,7 @@
       <taskForm
             editorId="tbProjectApprove.meetingreview"
             name="会议评审"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -681,7 +843,7 @@
       <taskForm
             editorId="tbProjectApprove.resultaudit"
             name="处理结果审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -756,6 +918,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -800,6 +980,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -842,6 +1040,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -887,6 +1103,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -929,6 +1163,24 @@
          <basicpage
                id="page2"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -974,6 +1226,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -1017,6 +1287,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
    </extension>
@@ -1069,7 +1357,7 @@
       <taskForm
             editorId="tbProjectChange.audit"
             name="方案批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_supervisor"
@@ -1079,7 +1367,7 @@
       <taskForm
             editorId="tbProjectChange.audit"
             name="在制品审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_plan"
@@ -1089,7 +1377,7 @@
       <taskForm
             editorId="tbProjectChange.audit"
             name="相关部门审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_other"
@@ -1099,7 +1387,7 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="设计变更"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_design"
@@ -1119,7 +1407,7 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="工艺变更"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_process"
@@ -1140,7 +1428,7 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="采购变更"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_purchase"
@@ -1160,7 +1448,7 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="在制品处理"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_mfg"
@@ -1180,7 +1468,7 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="检验变更"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_inspect"
@@ -1200,7 +1488,7 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="包装变更"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_package"
@@ -1220,7 +1508,7 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="相关部门变更"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_relevant"
@@ -1275,6 +1563,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -1371,6 +1677,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -1412,6 +1736,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -1459,8 +1801,21 @@
          </basicpage>
          <basicpage
                id="page3"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程">
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
    </extension>
@@ -1772,7 +2127,7 @@
       <taskForm
             editorId="tbProjectChangeForDesign.designapplication"
             name="设计更改"
-            persistentFields="choice"
+            persistentFields="choice,accessory"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="developable"
@@ -1818,7 +2173,7 @@
       <taskForm
             editorId="tbProjectChangeForDesign.audit"
             name="更改方案校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="choice"
@@ -1828,7 +2183,7 @@
       <taskForm
             editorId="tbProjectChangeForDesign.craft"
             name="更改方案工艺审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="craft_new"
@@ -1842,7 +2197,7 @@
       <taskForm
             editorId="tbProjectChangeForDesign.audit"
             name="更改方案审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="choice"
@@ -1852,7 +2207,7 @@
       <taskForm
             editorId="tbProjectChangeForDesign.audit"
             name="更改方案批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="choice"
@@ -1862,7 +2217,7 @@
       <taskForm
             editorId="tbProjectChangeForDesign.purchase"
             name="更改方案采购审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="choice"
@@ -1876,7 +2231,7 @@
       <taskForm
             editorId="tbProjectChangeForDesign.develop"
             name="更改方案开发中心审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForDesign">
          <processParameter
                processParameterName="choice"
@@ -2033,6 +2388,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -2074,6 +2447,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -2132,6 +2523,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -2188,6 +2597,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -2246,6 +2673,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       </extension>
 
@@ -2253,7 +2698,7 @@
          point="com.sg.bpm.workflow.taskForm">
       <taskForm            editorId="tbProjectChangeForCustomers.checkdep_leader"
             name="客户设计更改输入"
-            persistentFields="dept,dept_leader"
+            persistentFields="dept,dept_leader,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterDelegator="com.tmt.tb.field.parameter.DeptLeader"
@@ -2269,7 +2714,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.checkworker"
             name="需求确认和工作指派"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="worker"
@@ -2283,7 +2728,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.check"
             name="设计更改"
-            persistentFields="choice"
+            persistentFields="choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="developable"
@@ -2329,7 +2774,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.audit"
             name="更改方案校核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="choice"
@@ -2339,7 +2784,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.craft"
             name="更改方案工艺审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="craft_new"
@@ -2353,7 +2798,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.audit"
             name="更改方案审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="choice"
@@ -2363,7 +2808,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.audit"
             name="更改方案批准"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="choice"
@@ -2373,7 +2818,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.purchase"
             name="更改方案采购审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="choice"
@@ -2387,7 +2832,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.develop"
             name="更改方案开发中心审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="choice"
@@ -2401,7 +2846,7 @@
       <taskForm
             editorId="tbProjectChangeForCustomers.audit"
             name="更改方案客户审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="tb.tbProjectChangeForCustomers">
          <processParameter
                processParameterName="choice"
@@ -2442,6 +2887,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -2499,6 +2962,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -2654,6 +3135,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -2696,6 +3195,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -2754,6 +3271,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -2810,6 +3345,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -2868,6 +3421,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
@@ -2875,7 +3446,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.application"
             name="转批申请"
-            persistentFields="workorder,product,prj_manager,dept"
+            persistentFields="workorder,product,prj_manager,dept,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="workorder"
@@ -2909,7 +3480,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.audit"
             name="项目负责人审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -2919,7 +3490,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.dataaudit"
             name="资料初审"
-            persistentFields="qm,craft"
+            persistentFields="qm,craft,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="qm"
@@ -2933,7 +3504,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.review"
             name="制造中心工艺资料复审"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -2943,7 +3514,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.review"
             name="品管部资料复审"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -2953,7 +3524,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.meetingconfirmed"
             name="会议确认"
-            persistentFields="review_admin,reviewer_list,choice"
+            persistentFields="review_admin,reviewer_list,choice,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="review_admin"
@@ -2982,7 +3553,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.audit"
             name="专家组评审"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -2992,7 +3563,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.audit"
             name="评审组组长审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -3002,7 +3573,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.audit"
             name="开发中心主任批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -3078,6 +3649,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -3121,6 +3710,24 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -3163,6 +3770,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -3209,6 +3834,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -3263,6 +3906,24 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="评审意见表">
+            <pagecolumn>
+               <section
+                     label="转批评审表">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
