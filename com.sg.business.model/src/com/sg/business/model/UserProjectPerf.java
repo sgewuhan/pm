@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.ModelService;
@@ -25,8 +26,8 @@ public class UserProjectPerf extends ProjectProvider {
 	public static final String F_USERID = "userid";
 	
 	public static final String EDITOR_SETTING = "editor.visualization.addprojectset";
-	
-	
+
+
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
@@ -34,13 +35,19 @@ public class UserProjectPerf extends ProjectProvider {
 			Map<String, Object> map = new HashMap<String, Object>();
 
 			int proFinishCount = 0;
+			int finishDelayCount = 0;
+			int finishNormalCount = 0;
+
 			int proProcessCount = 0;
-			int delayCount=0;
+			int processDelayCount = 0;
+			int processNormalCount = 0;
+			
+			
 			int advanceCount=0;
-			int normalProcessCount=0;
+
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
-			DBCollection col = getCollection(IModelConstants.C_PROJECT);
+			DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_PROJECT);
 			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
@@ -49,33 +56,47 @@ public class UserProjectPerf extends ProjectProvider {
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
 					proFinishCount++;
+					if (project.isDelay()) {
+						finishDelayCount++;
+					} else {
+						finishNormalCount++;
+					}
+					if(project.isAdvanced()){
+						advanceCount++;
+					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
 					proProcessCount++;
-				}if(project.isDelay()||project.maybeDelay()){
-					delayCount++;
-				}else if(project.isAdvanced()||project.maybeAdvanced()){
-					advanceCount++;
-				}else{
-					normalProcessCount++;
+					if (project.maybeDelay()) {
+						processDelayCount++;
+					} else {
+						processNormalCount++;
+					}
+					if(project.maybeAdvanced()){
+						advanceCount++;
+					}
 				}
-
 				result.add(project);
 			}
 			map.put(F_SUMMARY_TOTAL, result.size());
+			
 			map.put(F_SUMMARY_FINISHED, proFinishCount);
+			map.put(F_SUMMARY_FINISHED_DELAY, finishDelayCount);
+			map.put(F_SUMMARY_FINISHED_NORMAL, finishNormalCount);
+			
 			map.put(F_SUMMARY_PROCESSING, proProcessCount);
-			map.put(F_SUMMARY_DELAY, delayCount);
+			map.put(F_SUMMARY_PROCESSING_DELAY, processDelayCount);
+			map.put(F_SUMMARY_PROCESSING_NORMAL, processNormalCount);
+			
 			map.put(F_SUMMARY_ADVANCE, advanceCount);
-			map.put(F_SUMMARY_NORMAL_PROCESS, normalProcessCount);
-
+			map.put(F_SUMMARY_DELAY, finishDelayCount+processDelayCount);
+			map.put(F_SUMMARY_NORMAL, finishNormalCount+processNormalCount);
 
 			setSummaryDate(map);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-		
-		
+
 		return result;
 	}
 

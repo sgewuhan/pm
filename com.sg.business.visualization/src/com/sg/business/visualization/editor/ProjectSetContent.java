@@ -16,6 +16,8 @@ public class ProjectSetContent extends AbstractProjectPage {
 		return content;
 	}
 
-
+	protected boolean displaySummary() {
+		return false;
+	}
 
 }

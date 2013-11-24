@@ -86,16 +86,16 @@ public abstract class AbstractProjectPage implements
 		fd.left = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.height = INFOBANNER_HEIGHT;
-//		// 创建分割线
-//		Label line = new Label(body, SWT.NONE);
-//		fd = new FormData();
-//		line.setLayoutData(fd);
-//		Color sepColor = Widgets.getColor(body.getDisplay(), 192, 192, 192);
-//		line.setBackground(sepColor);
-//		fd.top = new FormAttachment(header, 0);
-//		fd.left = new FormAttachment(0, 1);
-//		fd.right = new FormAttachment(100, -1);
-//		fd.height = 1;
+		// // 创建分割线
+		// Label line = new Label(body, SWT.NONE);
+		// fd = new FormData();
+		// line.setLayoutData(fd);
+		// Color sepColor = Widgets.getColor(body.getDisplay(), 192, 192, 192);
+		// line.setBackground(sepColor);
+		// fd.top = new FormAttachment(header, 0);
+		// fd.left = new FormAttachment(0, 1);
+		// fd.right = new FormAttachment(100, -1);
+		// fd.height = 1;
 
 		// 创建内容区
 		Composite navigator = createContent(body);
@@ -108,7 +108,16 @@ public abstract class AbstractProjectPage implements
 
 		// 管理navigator表格事件
 		handleNavigatorTableEvent();
+		
+		//设置加载事件
+		navi.handleReloadHandle(new Runnable() {
 
+			@Override
+			public void run() {
+				setSummaryText(header, data);
+			}
+
+		});
 	}
 
 	private void handleNavigatorTableEvent() {
@@ -235,24 +244,23 @@ public abstract class AbstractProjectPage implements
 		costSummary.setLayoutData(fd);
 		fd.right = new FormAttachment(100, -4);
 		fd.top = new FormAttachment(schedualSummary, 2);
-
-		setSummaryText(data);
+		setSummaryText(header, data);
 
 		return header;
 	}
 
-	private void setSummaryText(ProjectProvider data) {
+	private void setSummaryText(Composite header, ProjectProvider data) {
 		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
 		value1 = value1 == null ? 0 : value1;
 		Object value2 = data
 				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED);
 		value2 = value2 == null ? 0 : value2;
 		Object value3 = data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING);
+				.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
 		value3 = value3 == null ? 0 : value3;
 		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_PROCESS);
+		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL);
 		value1 = value1 == null ? 0 : value1;
 		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_DELAY);
 		value2 = value2 == null ? 0 : value2;
@@ -267,7 +275,7 @@ public abstract class AbstractProjectPage implements
 		costSummary.setText("正常/超支：" + value1 + "/" + value2);
 
 		filterLabel.setText(getParameterText());
-
+		header.layout();
 	}
 
 	protected void showFilterMenu(Control menuButton) {
@@ -396,16 +404,7 @@ public abstract class AbstractProjectPage implements
 	private void reQuery() {
 		// doquery
 		data.setParameters(parameters);
-		navi.getViewerControl().doReloadData(true, new Runnable() {
-
-			@Override
-			public void run() {
-				setSummaryText(data);
-				header.layout();
-			}
-
-		});
-
+		navi.getViewerControl().doReloadData(true);
 	}
 
 	protected String getHeadParameterText() {

@@ -47,11 +47,16 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			Map<String, Object> map = new HashMap<String, Object>();
 
 			int proFinishCount = 0;
+			int finishDelayCount = 0;
+			int finishNormalCount = 0;
+
 			int proProcessCount = 0;
-			int delayCount=0;
-			int advanceCount=0;
-			int normalProcessCount=0;
+			int processDelayCount = 0;
+			int processNormalCount = 0;
 			
+			
+			int advanceCount=0;
+
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
@@ -62,32 +67,46 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
 					proFinishCount++;
+					if (project.isDelay()) {
+						finishDelayCount++;
+					} else {
+						finishNormalCount++;
+					}
+					if(project.isAdvanced()){
+						advanceCount++;
+					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
 					proProcessCount++;
+					if (project.maybeDelay()) {
+						processDelayCount++;
+					} else {
+						processNormalCount++;
+					}
+					if(project.maybeAdvanced()){
+						advanceCount++;
+					}
 				}
-				if(project.isDelay()||project.maybeDelay()){
-					delayCount++;
-				}else if(project.isAdvanced()||project.maybeAdvanced()){
-					advanceCount++;
-				}else{
-					normalProcessCount++;
-				}
-
 				result.add(project);
 			}
 			map.put(F_SUMMARY_TOTAL, result.size());
+			
 			map.put(F_SUMMARY_FINISHED, proFinishCount);
+			map.put(F_SUMMARY_FINISHED_DELAY, finishDelayCount);
+			map.put(F_SUMMARY_FINISHED_NORMAL, finishNormalCount);
+			
 			map.put(F_SUMMARY_PROCESSING, proProcessCount);
-			map.put(F_SUMMARY_DELAY, delayCount);
+			map.put(F_SUMMARY_PROCESSING_DELAY, processDelayCount);
+			map.put(F_SUMMARY_PROCESSING_NORMAL, processNormalCount);
+			
 			map.put(F_SUMMARY_ADVANCE, advanceCount);
-			map.put(F_SUMMARY_NORMAL_PROCESS, normalProcessCount);
+			map.put(F_SUMMARY_DELAY, finishDelayCount+processDelayCount);
+			map.put(F_SUMMARY_NORMAL, finishNormalCount+processNormalCount);
 
 			setSummaryDate(map);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-
 		return result;
 	}
 
