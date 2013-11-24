@@ -86,22 +86,22 @@ public abstract class AbstractProjectPage implements
 		fd.left = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.height = INFOBANNER_HEIGHT;
-		// 创建分割线
-		Label line = new Label(body, SWT.NONE);
-		fd = new FormData();
-		line.setLayoutData(fd);
-		Color sepColor = Widgets.getColor(body.getDisplay(), 192, 192, 192);
-		line.setBackground(sepColor);
-		fd.top = new FormAttachment(header, 0);
-		fd.left = new FormAttachment(0, 1);
-		fd.right = new FormAttachment(100, -1);
-		fd.height = 1;
+//		// 创建分割线
+//		Label line = new Label(body, SWT.NONE);
+//		fd = new FormData();
+//		line.setLayoutData(fd);
+//		Color sepColor = Widgets.getColor(body.getDisplay(), 192, 192, 192);
+//		line.setBackground(sepColor);
+//		fd.top = new FormAttachment(header, 0);
+//		fd.left = new FormAttachment(0, 1);
+//		fd.right = new FormAttachment(100, -1);
+//		fd.height = 1;
 
 		// 创建内容区
 		Composite navigator = createContent(body);
 		fd = new FormData();
 		navigator.setLayoutData(fd);
-		fd.top = new FormAttachment(line, 0);
+		fd.top = new FormAttachment(header, 0);
 		fd.left = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.bottom = new FormAttachment(100, -1);
