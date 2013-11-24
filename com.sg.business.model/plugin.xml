@@ -278,8 +278,9 @@
             end1Class="com.sg.business.model.Organization"
             end1Key="_id"
             end2Class="com.sg.business.model.User"
+            end2Condition="com.sg.business.model.condition.OrgOfProjectManagerCondition"
             end2Key="organization_id"
-            id="organization_user"
+            id="organization_projectmanager"
             name="组织下的项目负责人">
       </relation>
    </extension>

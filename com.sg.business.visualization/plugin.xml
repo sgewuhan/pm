@@ -35,13 +35,6 @@
             name="我的项目集"
             restorable="true">
       </view>
-      <view
-            category="visualization"
-            class="com.sg.widgets.part.view.TreeNavigator"
-            id="vis.project.projectmanager"
-            name="负责人"
-            restorable="true">
-      </view>
 
    </extension>
    <extension
@@ -120,26 +113,6 @@
             provideSelection="true"
             table="vis.projectset.schedual">
       </navigator>
-      <navigator
-            id="vis.project.projectmanager"
-            tree="vis.project.projectmanager">
-         <filterAction>
-            <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
-            </column>
-            <column
-                  columnDefinitionId="organization.description">
-            </column>
-         </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
-            </column>
-            <column
-                  columnDefinitionId="organization.description">
-            </column>
-         </searchAction>
-      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -171,33 +144,8 @@
          <structure
                modelRelation="organization_organization">
          </structure>
-      </tree>
-      <tree
-            autoExpandLevel="2"
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            collectionName="organization"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.organization.OrgOfOwnerManager"
-            dbName="pm2"
-            headerVisiable="false"
-            id="vis.project.projectmanager"
-            idfield="_id"
-            lineVisiable="false"
-            markupEnabled="true"
-            multiSelection="false"
-            virtual="true">
-         <column
-               column="desc"
-               name="组织名称"
-               style="SWT.LEFT"
-               type="String"
-               width="-1">
-         </column>
          <structure
-               modelRelation="organization_organization">
+               modelRelation="organization_projectmanager">
          </structure>
       </tree>
    </extension>

@@ -16,6 +16,7 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
+import com.sg.business.model.User;
 import com.sg.business.resource.BusinessResource;
 
 public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
@@ -77,6 +78,9 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			sb.append("</small></span>");
 
 			return sb.toString();
+		}else if(dbo instanceof User){
+			User user = (User) dbo;
+			return user.getHTMLLabel();
 		}
 		return "";
 	}
