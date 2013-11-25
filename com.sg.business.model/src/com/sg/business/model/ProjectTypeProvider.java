@@ -91,7 +91,6 @@ public class ProjectTypeProvider extends ProjectProvider {
 					summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
 					summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
 					summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
-//					summaryData.subOrganizationProjectProvider=getDeptInfo();
 
 					setSummaryDate(summaryData);
 				} catch (Exception e) {
