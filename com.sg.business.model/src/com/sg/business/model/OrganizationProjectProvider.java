@@ -52,9 +52,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-     
-			ProjectSetSummaryData summaryData=new ProjectSetSummaryData();
-
 			int iF_SUMMARY_FINISHED = 0;
 			int iF_SUMMARY_FINISHED_DELAY = 0;
 			int iF_SUMMARY_FINISHED_NORMAL = 0;
@@ -108,8 +105,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
 			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
 			
-			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
-			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
+//			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
+//			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
+			
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}

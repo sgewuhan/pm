@@ -18,13 +18,13 @@ import com.sg.widgets.MessageUtil;
 
 public class ProductTypeProvider extends ProjectProvider {
 
-	private DBCollection col;
+	private DBCollection projectCol;
 	private String userId;
 	private String desc;
 
 	public ProductTypeProvider(String desc, String userId) {
 		super();
-		col = DBActivator.getCollection(IModelConstants.DB,
+		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
 		set_data(new BasicDBObject());
 		this.desc = desc;
@@ -36,9 +36,6 @@ public class ProductTypeProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-
-			ProjectSetSummaryData summaryData = new ProjectSetSummaryData();
-
 			int iF_SUMMARY_FINISHED = 0;
 			int iF_SUMMARY_FINISHED_DELAY = 0;
 			int iF_SUMMARY_FINISHED_NORMAL = 0;
@@ -51,7 +48,8 @@ public class ProductTypeProvider extends ProjectProvider {
 
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
-			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
+			DBCursor cur = projectCol
+					.find(getQueryCondtion(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
@@ -80,15 +78,20 @@ public class ProductTypeProvider extends ProjectProvider {
 				result.add(project);
 			}
 			summaryData.total = result.size();
+			
+			summaryData.finished=iF_SUMMARY_FINISHED;
+			summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
 
-			summaryData.finished = iF_SUMMARY_FINISHED;
-			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
-			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
-			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
-			summaryData.processing = iF_SUMMARY_PROCESSING;
-			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
-			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
-			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
+			summaryData.processing=iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
+			
+//			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
+//			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
+			
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}

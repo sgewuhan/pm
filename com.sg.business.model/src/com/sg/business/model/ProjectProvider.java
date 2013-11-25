@@ -46,6 +46,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 
 	public ProjectProvider() {
 		super();
+		summaryData=new ProjectSetSummaryData();
 //		summaryInfor = new HashMap<String, Object>();
 	}
 
