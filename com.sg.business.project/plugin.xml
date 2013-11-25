@@ -30,6 +30,20 @@
             name="项目检查"
             restorable="true">
       </view>
+      <view
+            category="project"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="project.navigator.delaywork"
+            name="延期的工作"
+            restorable="true">
+      </view>
+      <view
+            category="project"
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="project.navigator.delayprocess"
+            name="延期的流程"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -496,6 +510,60 @@
             id="project.changeuser.wbs"
             tree="project.changeuser.wbs">
       </navigator>
+      <navigator
+            id="project.navigator.delaywork"
+            table="project.navigator.delaywork">
+         <filterAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="actualstart_e">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="actualstart_e">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="project.navigator.delayprocess"
+            table="project.navigator.delayprocess">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -751,6 +819,39 @@
             id="project.documents">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            id="project.navigator.delayprocess">
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.business.model.dataset.project.DelayWork"
+            editorId="view.work"
+            id="project.navigator.delaywork">
+         <column
+               columnDefinitionId="work.desc">
+         </column>
+         <column
+               columnDefinitionId="planstart_e">
+         </column>
+         <column
+               columnDefinitionId="planfinish_e">
+         </column>
+         <column
+               columnDefinitionId="actualstart_e">
+         </column>
+         <column
+               columnDefinitionId="actualfinish_e">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="participate">
          </column>
       </table>
    </extension>
@@ -1571,10 +1672,7 @@
             allPopups="false"
             locationURI="popup:project.navigator">
          <command
-               commandId="com.sg.widgets.command.create"
-               icon="image/project_24.png"
-               id="create"
-               label="项目创建向导..."
+               commandId="com.sg.widgets.command.create" label="项目创建向导..."
                style="push">
          </command>
          <separator
