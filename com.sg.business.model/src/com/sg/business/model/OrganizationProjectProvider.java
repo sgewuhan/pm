@@ -3,8 +3,12 @@ package com.sg.business.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.bson.types.ObjectId;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
@@ -19,13 +23,15 @@ import com.sg.widgets.MessageUtil;
 public class OrganizationProjectProvider extends ProjectProvider {
 
 	private Organization organization;
-	private DBCollection col;
+	private DBCollection projectCol;
+	private DBCollection orgCol;
 
 	public void setOrganization(Organization org) {
 		this.organization = org;
 		setValue(F__ID, org.get_id());
 		setValue(F_DESC, org.getDesc());
-		col = getCollection(IModelConstants.C_PROJECT);
+		projectCol = getCollection(IModelConstants.C_PROJECT);
+		orgCol = getCollection(IModelConstants.C_ORGANIZATION);
 	}
 
 	@Override
@@ -58,7 +64,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
-			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
+			DBCursor cur = projectCol
+					.find(getQueryCondtion(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
@@ -86,7 +93,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				}
 				result.add(project);
 			}
-			map.put(F_SUMMARY_TOTAL, result.size());
+			summaryData.total = result.size();
 
 			map.put(F_SUMMARY_FINISHED, iF_SUMMARY_FINISHED);
 			map.put(F_SUMMARY_FINISHED_DELAY, iF_SUMMARY_FINISHED_DELAY);
@@ -97,19 +104,76 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			map.put(F_SUMMARY_PROCESSING_DELAY, iF_SUMMARY_PROCESSING_DELAY);
 			map.put(F_SUMMARY_PROCESSING_NORMAL, iF_SUMMARY_PROCESSING_NORMAL);
 			map.put(F_SUMMARY_PROCESSING_ADVANCE, iF_SUMMARY_PROCESSING_ADVANCE);
-
+			map.put(F_SUMMARY_DEPT, getDeptInfo());
 			setSummaryDate(map);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
+
 		return result;
 	}
 
+	/**
+	 * 返回下级部门SummaryDate
+	 * 
+	 * @param projectList
+	 * @return
+	 */
+	public List<?> getDeptInfo() {
+		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
+
+		DBCursor cur = orgCol.find( new BasicDBObject().append(
+				Organization.F_PARENT_ID, organization.get_id()).append(
+				Organization.F__ID,
+				new BasicDBObject().append("$in", getAviableOrganizationId())));
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			Organization org = ModelService.createModelObject(dbo,
+					Organization.class);
+			ProjectProvider pp = org.getAdapter(ProjectProvider.class);
+			list.add(pp);
+		}
+		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Object[] getAviableOrganizationId() {
+		Set<ObjectId> set = new HashSet<ObjectId>();
+
+		List prjOrgList = projectCol.distinct(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append(
+						ILifecycle.F_LIFECYCLE,
+						new BasicDBObject().append("$in", new String[] {
+								ILifecycle.STATUS_FINIHED_VALUE,
+								ILifecycle.STATUS_WIP_VALUE })));
+		set.addAll(prjOrgList);
+		
+		List parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
+				new BasicDBObject().append(Organization.F__ID,
+						new BasicDBObject().append("$in", prjOrgList)));
+		while (parentOrgList != null && !parentOrgList.isEmpty()
+				|| (parentOrgList.size() == 1 && parentOrgList.get(0) != null)) {
+			set.addAll(parentOrgList);
+			parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
+					new BasicDBObject().append(Organization.F__ID,
+							new BasicDBObject().append("$in", parentOrgList)));
+		}
+		return set.toArray(new Object[0]);
+	}
+	
+	
 	@Override
 	public String getProjectSetName() {
 		return getDesc() + "项目集";
 	}
 
+	/**
+	 * 项目集的查询条件
+	 * 
+	 * @param start
+	 * @param stop
+	 * @return
+	 */
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
 		DBObject dbo = new BasicDBObject();

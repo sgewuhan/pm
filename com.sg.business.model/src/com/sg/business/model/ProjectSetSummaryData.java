@@ -1,76 +1,34 @@
 package com.sg.business.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProjectSetSummaryData {
 
-	private int total;
+	public int total;
 
-	private int finished;
+	public int finished;
 
-	private int processing;
+	public int processing;
 
-	private int processing_normal;
+	public int processing_normal;
 
-	private int processing_delay;
+	public int processing_delay;
 
-	private int processing_advance;
+	public int processing_advance;
 
-	private int finished_normal;
+	public int finished_normal;
 
-	private int finished_delay;
+	public int finished_delay;
 
-	private int finished_advance;
-
-	public ProjectSetSummaryData(int processing_normal, int processing_delay,
-			int processing_advance, int finished_normal, int finished_delay,
-			int finished_advance) {
-		this.processing_advance = processing_advance;
-		this.processing_delay = processing_delay;
-		this.processing_normal = processing_normal;
-		this.processing = processing_advance + processing_delay
-				+ processing_normal;
-
-		this.finished_advance = finished_advance;
-		this.finished_delay = finished_delay;
-		this.finished_normal = finished_normal;
-		this.finished = finished_advance + finished_delay + finished_normal;
-	}
-
-	public int getTotal() {
-		return total;
-	}
-
-	public int getFinished() {
-		return finished;
-	}
-
-	public int getProcessing() {
-		return processing;
-	}
-
-	public int getProcessing_normal() {
-		return processing_normal;
-	}
-
-	public int getProcessing_delay() {
-		return processing_delay;
-	}
-
-	public int getProcessing_advance() {
-		return processing_advance;
-	}
-
-	public int getFinished_normal() {
-		return finished_normal;
-	}
-
-	public int getFinished_delay() {
-		return finished_delay;
-	}
-
-	public int getFinished_advance() {
-		return finished_advance;
-	}
-
+	public int finished_advance;
 	
+	public int cost_normal;
+	
+	public int cost_over;
+	
+	public List<ProjectProvider> subOrganizationProjectProvider = new ArrayList<ProjectProvider>();
+	
+	public List<ProjectProvider> subChargerProjectProvider = new ArrayList<ProjectProvider>();
 	
 }
