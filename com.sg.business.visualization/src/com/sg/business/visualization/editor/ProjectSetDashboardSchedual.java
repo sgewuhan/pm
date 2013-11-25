@@ -49,9 +49,13 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 	private void createGraphic(Composite parent) {
 
 		TabFolder tabFolder = new TabFolder(parent, SWT.TOP);
-
+		TabItem pieTabItem = new TabItem(tabFolder, SWT.NONE);
+		pieTabItem.setText("进度摘要");
+		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE);
+		pieTabItem.setControl(statusPieChart);
+		
 		TabItem meterTabItem = new TabItem(tabFolder, SWT.NONE);
-		meterTabItem.setText("指示器");
+		meterTabItem.setText("仪表盘");
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setLayout(new GridLayout());
 		finishedProjectMeter = new ChartCanvas(composite, SWT.NONE);
@@ -67,10 +71,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 				true, 1, 1));
 		meterTabItem.setControl(composite);
 
-		TabItem pieTabItem = new TabItem(tabFolder, SWT.NONE);
-		pieTabItem.setText("状态");
-		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE);
-		pieTabItem.setControl(statusPieChart);
+
 
 		TabItem barTabItem = new TabItem(tabFolder, SWT.NONE);
 		barTabItem.setText("部门");
