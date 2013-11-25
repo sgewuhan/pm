@@ -81,28 +81,18 @@ public class ProjectSetContent extends AbstractProjectPage {
 	}
 	
 	private void setSummaryText(Composite header, ProjectProvider data) {
-		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING);
-		value1 = value1 == null ? 0 : value1;
-		Object value2 = data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED);
-		value2 = value2 == null ? 0 : value2;
-		Object value3 = data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
-		value3 = value3 == null ? 0 : value3;
+		int value1 = data.summaryData.processing;
+		int value2 = data.summaryData.finished;
+		int value3 = data.summaryData.total;
 		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
-		value1 = value1 == null ? 0 : value1;
-		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
-		value2 = value2 == null ? 0 : value2;
-		value3 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
-		value3 = value3 == null ? 0 : value3;
+		value1 = data.summaryData.processing_normal;
+		value2 = data.summaryData.processing_delay;
+		value3 = data.summaryData.processing_advance;
 		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL_COST);
-		value1 = value1 == null ? 0 : value1;
-		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_OVER_COST);
-		value2 = value2 == null ? 0 : value2;
+		value1 = data.summaryData.cost_normal;
+		value2 = data.summaryData.cost_over;
 		costSummary.setText("正常/超支：" + value1 + "/" + value2);
 
 		filterLabel.setText(getParameterText());

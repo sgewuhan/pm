@@ -95,17 +95,16 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			}
 			summaryData.total = result.size();
 
-			map.put(F_SUMMARY_FINISHED, iF_SUMMARY_FINISHED);
-			map.put(F_SUMMARY_FINISHED_DELAY, iF_SUMMARY_FINISHED_DELAY);
-			map.put(F_SUMMARY_FINISHED_NORMAL, iF_SUMMARY_FINISHED_NORMAL);
-			map.put(F_SUMMARY_FINISHED_ADVANCE, iF_SUMMARY_FINISHED_ADVANCED);
+			summaryData.finished =  iF_SUMMARY_FINISHED;
+			summaryData.finished_delay =  iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal =  iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance =  iF_SUMMARY_FINISHED_ADVANCED;
 
-			map.put(F_SUMMARY_PROCESSING, iF_SUMMARY_PROCESSING);
-			map.put(F_SUMMARY_PROCESSING_DELAY, iF_SUMMARY_PROCESSING_DELAY);
-			map.put(F_SUMMARY_PROCESSING_NORMAL, iF_SUMMARY_PROCESSING_NORMAL);
-			map.put(F_SUMMARY_PROCESSING_ADVANCE, iF_SUMMARY_PROCESSING_ADVANCE);
-			map.put(F_SUMMARY_DEPT, getDeptInfo());
-			setSummaryDate(map);
+			summaryData.processing =  iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay =  iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal =  iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance =  iF_SUMMARY_PROCESSING_ADVANCE;
+			summaryData.subOrganizationProjectProvider = (List<ProjectProvider>) getDeptInfo();
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}

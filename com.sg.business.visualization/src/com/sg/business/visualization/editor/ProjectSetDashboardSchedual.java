@@ -61,7 +61,6 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.mobnut.commons.util.Utils;
-import com.sg.business.model.ProjectProvider;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
 public class ProjectSetDashboardSchedual extends AbstractProjectPage {
@@ -118,19 +117,20 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		ChartCanvas meterChart = new ChartCanvas(composite, SWT.NONE);
 		meterChart.setChart(createMeterChart("已完成项目超期 ",
 				getFinishProjectOverTimeRate()));
-		meterChart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		meterChart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
+				1, 1));
 
 		ChartCanvas meterChart2 = new ChartCanvas(composite, SWT.NONE);
 		meterChart2.setChart(createMeterChart("进行中项目超期 ",
 				getProcessProjectOverTimeRate()));
-		meterChart2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
+		meterChart2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
+				1, 1));
 
 		ChartCanvas meterChart3 = new ChartCanvas(composite, SWT.NONE);
 		meterChart3.setChart(createMeterChart("整体项目超期 ",
 				getAllProjectOverTimeRate()));
-		meterChart3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
+		meterChart3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
+				1, 1));
 
 		meterTabItem.setControl(composite);
 
@@ -154,15 +154,15 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		chart.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
 		chart.getPlot().getClientArea().setVisible(false);
 		chart.setCoverage(1.8);
-//		chart.setSeriesThickness(2);
+		// chart.setSeriesThickness(2);
 
 		TitleBlock title = chart.getTitle();
 		title.getOutline().setVisible(false);
 		// title.getLabel().setVisible(false);
 		Text caption = title.getLabel().getCaption();
 		NumberFormat nf = NumberFormat.getNumberInstance();
-        nf.setMaximumFractionDigits(2);
-		caption.setValue(chartCaptionText + (nf.format(value))+"%");//$NON-NLS-1$
+		nf.setMaximumFractionDigits(2);
+		caption.setValue(chartCaptionText + (nf.format(value)) + "%");//$NON-NLS-1$
 		adjustFont(caption.getFont(), NORMAL_SIZE);
 
 		// Legend
@@ -228,15 +228,15 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		dial.setStopAngle(180);
 		// dial.getMajorGrid().getTickAttributes().setVisible(false);
 		dial.getMinorGrid().getTickAttributes().setVisible(false);
-		 dial.getLabel().setVisible(false);
+		dial.getLabel().setVisible(false);
 		seDial1.getDial().getMajorGrid().getTickAttributes()
 				.setColor(ColorDefinitionImpl.BLACK());
 		seDial1.getDial().getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
 		dial.getScale().setMin(NumberDataElementImpl.create(0));
 		dial.getScale().setMax(NumberDataElementImpl.create(100));
 		dial.getScale().setStep(10);
-//		FontDefinition font = dial.getLabel().getCaption().getFont();
-//		adjustFont(font, SMALL_SIZE);
+		// FontDefinition font = dial.getLabel().getCaption().getFont();
+		// adjustFont(font, SMALL_SIZE);
 
 		DialRegion dregion1 = DialRegionImpl.create();
 		dregion1.setFill(GradientImpl.create(
@@ -401,77 +401,56 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 	private double getFinishProjectOverTimeRate() {
 		// "正常完成"
-		Integer value1 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
+		int value1 = data.summaryData.finished_normal;
 		// "超期完成",
-		Integer value2 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		int value2 = data.summaryData.finished_delay;
 		// "提前完成",
-		Integer value3 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_ADVANCE);
-		return 100*value2.doubleValue()
-				/ (value1.doubleValue() + value2.doubleValue() + value3
-						.doubleValue());
+		int value3 = data.summaryData.finished_advance;
+		return 100 * value2 / (value1 + value2 + value3);
 	}
 
 	private double getAllProjectOverTimeRate() {
 		// "正常完成"
-		Integer value1 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
+		int value1 = data.summaryData.finished_normal;
 		// "超期完成",
-		Integer value2 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		int value2 = data.summaryData.finished_delay;
 		// "提前完成",
-		Integer value3 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_ADVANCE);
+		int value3 = data.summaryData.finished_advance;
 		// "进度延迟",
-		Integer value4 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
+		int value4 = data.summaryData.processing_delay;
 		// "正常进行"
-		Integer value5 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
+		int value5 = data.summaryData.processing_normal;
 		// 进度提前
-		Integer value6 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
-		return 100*(value2.doubleValue() + value4.doubleValue())
+		int value6 = data.summaryData.processing_advance;
+		return 100d * (value2 + value4)
 				/ (value1 + value2 + value3 + value4 + value5 + value6);
 	}
 
 	private double getProcessProjectOverTimeRate() {
 
 		// "进度延迟",
-		Integer value4 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
+		// "进度延迟",
+		int value4 = data.summaryData.processing_delay;
 		// "正常进行"
-		Integer value5 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
+		int value5 = data.summaryData.processing_normal;
 		// 进度提前
-		Integer value6 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
-		return 100*value4.doubleValue()
-				/ (value4.doubleValue() + value5.doubleValue() + value6
-						.doubleValue());
+		int value6 = data.summaryData.processing_advance;
+		return 100d * value4 / (value4 + value5 + value6);
 	}
 
 	private double[] getSchedualParameterValues() {
 		// "正常完成"
-		Integer value1 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
+		int value1 = data.summaryData.finished_normal;
 		// "超期完成",
-		Integer value2 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		int value2 = data.summaryData.finished_delay;
 		// "提前完成",
-		Integer value3 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_ADVANCE);
+		int value3 = data.summaryData.finished_advance;
 		// "进度延迟",
-		Integer value4 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
+		int value4 = data.summaryData.processing_delay;
 		// "正常进行"
-		Integer value5 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
+		int value5 = data.summaryData.processing_normal;
 		// 进度提前
-		Integer value6 = (Integer) data
-				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
+		int value6 = data.summaryData.processing_advance;
 		return new double[] { (value1 + value3), value2, value4, value5, value6 };
 	}
 
