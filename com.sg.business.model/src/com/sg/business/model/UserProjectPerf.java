@@ -2,9 +2,7 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.types.ObjectId;
 
@@ -30,64 +28,66 @@ public class UserProjectPerf extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
+		     
+					summaryData=new ProjectSetSummaryData();
 
-			Map<String, Object> map = new HashMap<String, Object>();
+					int iF_SUMMARY_FINISHED = 0;
+					int iF_SUMMARY_FINISHED_DELAY = 0;
+					int iF_SUMMARY_FINISHED_NORMAL = 0;
+					int iF_SUMMARY_FINISHED_ADVANCED = 0;
 
-			int iF_SUMMARY_FINISHED = 0;
-			int iF_SUMMARY_FINISHED_DELAY = 0;
-			int iF_SUMMARY_FINISHED_NORMAL = 0;
-			int iF_SUMMARY_FINISHED_ADVANCED = 0;
+					int iF_SUMMARY_PROCESSING = 0;
+					int iF_SUMMARY_PROCESSING_DELAY = 0;
+					int iF_SUMMARY_PROCESSING_NORMAL = 0;
+					int iF_SUMMARY_PROCESSING_ADVANCE = 0;
 
-			int iF_SUMMARY_PROCESSING = 0;
-			int iF_SUMMARY_PROCESSING_DELAY = 0;
-			int iF_SUMMARY_PROCESSING_NORMAL = 0;
-			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
-
-			Date startDate = getStartDate();
-			Date endDate = getEndDate();
-			DBCollection col = getCollection(IModelConstants.C_PROJECT);
-			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
-			while (cur.hasNext()) {
-				DBObject dbo = cur.next();
-				Project project = ModelService.createModelObject(dbo,
-						Project.class);
-				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
-						.getLifecycleStatus())) {
-					iF_SUMMARY_FINISHED++;
-					if (project.isDelay()) {
-						iF_SUMMARY_FINISHED_DELAY++;
-					} else if (project.isAdvanced()) {
-						iF_SUMMARY_FINISHED_ADVANCED++;
-					} else {
-						iF_SUMMARY_FINISHED_NORMAL++;
+					Date startDate = getStartDate();
+					Date endDate = getEndDate();
+					DBCollection col = getCollection(IModelConstants.C_PROJECT);
+					DBCursor cur = col
+							.find(getQueryCondtion(startDate, endDate));
+					while (cur.hasNext()) {
+						DBObject dbo = cur.next();
+						Project project = ModelService.createModelObject(dbo,
+								Project.class);
+						if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
+								.getLifecycleStatus())) {
+							iF_SUMMARY_FINISHED++;
+							if (project.isDelay()) {
+								iF_SUMMARY_FINISHED_DELAY++;
+							} else if (project.isAdvanced()) {
+								iF_SUMMARY_FINISHED_ADVANCED++;
+							} else {
+								iF_SUMMARY_FINISHED_NORMAL++;
+							}
+						} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
+								.getLifecycleStatus())) {
+							iF_SUMMARY_PROCESSING++;
+							if (project.maybeDelay()) {
+								iF_SUMMARY_PROCESSING_DELAY++;
+							} else if (project.maybeAdvanced()) {
+								iF_SUMMARY_PROCESSING_ADVANCE++;
+							} else {
+								iF_SUMMARY_PROCESSING_NORMAL++;
+							}
+						}
+						result.add(project);
 					}
-				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
-						.getLifecycleStatus())) {
-					iF_SUMMARY_PROCESSING++;
-					if (project.maybeDelay()) {
-						iF_SUMMARY_PROCESSING_DELAY++;
-					} else if (project.maybeAdvanced()) {
-						iF_SUMMARY_PROCESSING_ADVANCE++;
-					} else {
-						iF_SUMMARY_PROCESSING_NORMAL++;
-					}
-				}
-				result.add(project);
-			}
-			map.put(F_SUMMARY_TOTAL, result.size());
+					summaryData.total = result.size();
+					
+					summaryData.finished=iF_SUMMARY_FINISHED;
+					summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
+					summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
+					summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
 
-			map.put(F_SUMMARY_FINISHED, iF_SUMMARY_FINISHED);
-			map.put(F_SUMMARY_FINISHED_DELAY, iF_SUMMARY_FINISHED_DELAY);
-			map.put(F_SUMMARY_FINISHED_NORMAL, iF_SUMMARY_FINISHED_NORMAL);
-			map.put(F_SUMMARY_FINISHED_ADVANCE, iF_SUMMARY_FINISHED_ADVANCED);
+					summaryData.processing=iF_SUMMARY_PROCESSING;
+					summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
+					summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
+					summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
+//					summaryData.subOrganizationProjectProvider=getDeptInfo();
 
-			map.put(F_SUMMARY_PROCESSING, iF_SUMMARY_PROCESSING);
-			map.put(F_SUMMARY_PROCESSING_DELAY, iF_SUMMARY_PROCESSING_DELAY);
-			map.put(F_SUMMARY_PROCESSING_NORMAL, iF_SUMMARY_PROCESSING_NORMAL);
-			map.put(F_SUMMARY_PROCESSING_ADVANCE, iF_SUMMARY_PROCESSING_ADVANCE);
-
-			setSummaryDate(map);
-		} catch (Exception e) {
+					setSummaryDate(summaryData);
+				} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
 
