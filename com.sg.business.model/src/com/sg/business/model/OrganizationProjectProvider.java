@@ -43,7 +43,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				"com.sg.business.project", BusinessResource.IMAGE_FOLDER);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
@@ -103,7 +102,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
 			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
 			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
-			summaryData.subOrganizationProjectProvider=(List<ProjectProvider>) getSubOrganizationProvider();
+			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
 
 			setSummaryDate(summaryData);
 		} catch (Exception e) {
@@ -113,13 +112,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return result;
 	}
 
-	/**
-	 * 返回下级部门SummaryDate
-	 * 
-	 * @param projectList
-	 * @return
-	 */
-	public List<?> getSubOrganizationProvider() {
+	public List<ProjectProvider> getSubOrganizationProvider() {
 		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
 
 		DBCursor cur = orgCol.find( new BasicDBObject().append(
