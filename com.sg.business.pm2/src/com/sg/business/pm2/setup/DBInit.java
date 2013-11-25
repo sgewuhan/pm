@@ -12,10 +12,8 @@ import com.sg.business.model.BudgetItem;
 import com.sg.business.model.CompanyWorkOrder;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.DeliverableDefinition;
-import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectRoleAssignment;
@@ -50,7 +48,6 @@ public class DBInit implements Runnable {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_SETTING);
 
-		
 		BasicDBObject setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_PROCESS_BASE_URL);
 		setting.put("desc", "项目流程库地址");
@@ -78,7 +75,7 @@ public class DBInit implements Runnable {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
-		
+
 		setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_S_WORK_RESERVED_REFRESH_INTERVAL);
 		setting.put("desc", "待办工作刷新周期(分钟)");
@@ -87,9 +84,10 @@ public class DBInit implements Runnable {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
-		
+
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_U_MESSAGE_RESERVED_REFRESH_INTERVAL);
+		setting.put("varid",
+				IModelConstants.S_U_MESSAGE_RESERVED_REFRESH_INTERVAL);
 		setting.put("desc", "消息刷新周期(分钟)");
 		setting.put("value", "30");
 		try {
@@ -139,7 +137,7 @@ public class DBInit implements Runnable {
 		setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_EAI_SAP_HOST);
 		setting.put("desc", "SAP 主机");
-		setting.put("value", "172.16.9.74");//90
+		setting.put("value", "172.16.9.74");// 90
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
@@ -147,7 +145,7 @@ public class DBInit implements Runnable {
 		setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_EAI_SAP_INSTANCENUMBER);
 		setting.put("desc", "SAP 实例编号");
-		setting.put("value", "00");//01
+		setting.put("value", "00");// 01
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
@@ -156,7 +154,8 @@ public class DBInit implements Runnable {
 		setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_MAJOR_VID_SEQ);
 		setting.put("desc", "主版本号序列");
-		setting.put("value", "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z");
+		setting.put("value",
+				"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z");
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
@@ -179,12 +178,13 @@ public class DBInit implements Runnable {
 
 	private void ensureIndex() {
 		DB db = DBActivator.getDB(IModelConstants.DB);
-		
+
 		// 此处添加程序用于创建唯一索引
-		
-		//文档编号不能相同
-		ensureUniqureIndex(db, IModelConstants.C_DOCUMENT, new BasicDBObject()
-		.append(Document.F_DOCUMENT_NUMBER, 1));
+
+		// 文档编号不能相同,改为文档保存时校验编号是否重复
+		// ensureUniqureIndex(db, IModelConstants.C_DOCUMENT, new
+		// BasicDBObject()
+		// .append(Document.F_DOCUMENT_NUMBER, 1));
 
 		// 全局设置和用户设置ID和用户ID需要保持唯一
 		ensureUniqureIndex(db, IModelConstants.C_SETTING, new BasicDBObject()
@@ -285,8 +285,8 @@ public class DBInit implements Runnable {
 		// new BasicDBObject().append(Organization.F_CODE, 1));
 
 		// 成本中心代码唯一
-		ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
-				new BasicDBObject().append(Organization.F_COST_CENTER_CODE, 1));
+		// ensureUniqureIndex(db, IModelConstants.C_ORGANIZATION,
+		// new BasicDBObject().append(Organization.F_COST_CENTER_CODE, 1));
 
 		// 设置公司和工作令号对应表的唯一索引
 		ensureUniqureIndex(
