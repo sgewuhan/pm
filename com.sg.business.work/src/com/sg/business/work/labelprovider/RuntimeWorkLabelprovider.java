@@ -100,7 +100,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String desc = project.getDesc();
 		desc = Utils.getPlainText(desc);
-		sb.append("<b>项目: " + desc + "</b>");
+		sb.append(" <span style='font-style:bold;width:180px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap'>项目: " + desc + "</span>");
 
 		String projectNumber = project.getProjectNumber();
 		sb.append(" [" + projectNumber + "]");

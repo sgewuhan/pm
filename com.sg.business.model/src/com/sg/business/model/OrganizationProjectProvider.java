@@ -2,11 +2,14 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+
+import org.bson.types.ObjectId;
 
 import com.mobnut.commons.util.file.FileUtil;
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -19,13 +22,19 @@ import com.sg.widgets.MessageUtil;
 public class OrganizationProjectProvider extends ProjectProvider {
 
 	private Organization organization;
-	private DBCollection col;
+	private DBCollection projectCol;
+	private DBCollection orgCol;
+	DBCollection usercol;
+	
 
 	public void setOrganization(Organization org) {
 		this.organization = org;
 		setValue(F__ID, org.get_id());
 		setValue(F_DESC, org.getDesc());
-		col = getCollection(IModelConstants.C_PROJECT);
+		projectCol = getCollection(IModelConstants.C_PROJECT);
+		orgCol = getCollection(IModelConstants.C_ORGANIZATION);
+		usercol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_USER);
 	}
 
 	@Override
@@ -43,8 +52,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-
-			Map<String, Object> map = new HashMap<String, Object>();
+     
+			ProjectSetSummaryData summaryData=new ProjectSetSummaryData();
 
 			int iF_SUMMARY_FINISHED = 0;
 			int iF_SUMMARY_FINISHED_DELAY = 0;
@@ -58,7 +67,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
-			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
+			DBCursor cur = projectCol
+					.find(getQueryCondtion(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
@@ -86,30 +96,111 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				}
 				result.add(project);
 			}
-			map.put(F_SUMMARY_TOTAL, result.size());
+			summaryData.total = result.size();
+			
+			summaryData.finished=iF_SUMMARY_FINISHED;
+			summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
 
-			map.put(F_SUMMARY_FINISHED, iF_SUMMARY_FINISHED);
-			map.put(F_SUMMARY_FINISHED_DELAY, iF_SUMMARY_FINISHED_DELAY);
-			map.put(F_SUMMARY_FINISHED_NORMAL, iF_SUMMARY_FINISHED_NORMAL);
-			map.put(F_SUMMARY_FINISHED_ADVANCE, iF_SUMMARY_FINISHED_ADVANCED);
-
-			map.put(F_SUMMARY_PROCESSING, iF_SUMMARY_PROCESSING);
-			map.put(F_SUMMARY_PROCESSING_DELAY, iF_SUMMARY_PROCESSING_DELAY);
-			map.put(F_SUMMARY_PROCESSING_NORMAL, iF_SUMMARY_PROCESSING_NORMAL);
-			map.put(F_SUMMARY_PROCESSING_ADVANCE, iF_SUMMARY_PROCESSING_ADVANCE);
-
-			setSummaryDate(map);
+			summaryData.processing=iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
+			
+			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
+			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
+
 		return result;
 	}
 
+	public List<ProjectProvider> getSubOrganizationProvider() {
+		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
+
+		DBCursor cur = orgCol.find( new BasicDBObject().append(
+				Organization.F_PARENT_ID, organization.get_id()).append(
+				Organization.F__ID,
+				new BasicDBObject().append("$in", getAviableOrganizationId())));
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			Organization org = ModelService.createModelObject(dbo,
+					Organization.class);
+			ProjectProvider pp = org.getAdapter(ProjectProvider.class);
+			list.add(pp);
+		}
+		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private Object[] getAviableOrganizationId() {
+		Set<ObjectId> set = new HashSet<ObjectId>();
+
+		List prjOrgList = projectCol.distinct(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append(
+						ILifecycle.F_LIFECYCLE,
+						new BasicDBObject().append("$in", new String[] {
+								ILifecycle.STATUS_FINIHED_VALUE,
+								ILifecycle.STATUS_WIP_VALUE })));
+		set.addAll(prjOrgList);
+		
+		List parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
+				new BasicDBObject().append(Organization.F__ID,
+						new BasicDBObject().append("$in", prjOrgList)));
+		while (parentOrgList != null && !parentOrgList.isEmpty()
+				|| (parentOrgList.size() == 1 && parentOrgList.get(0) != null)) {
+			set.addAll(parentOrgList);
+			parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
+					new BasicDBObject().append(Organization.F__ID,
+							new BasicDBObject().append("$in", parentOrgList)));
+		}
+		return set.toArray(new Object[0]);
+	}
+	
+	public List<ProjectProvider> getSubUserProvider(PrimaryObject po) {
+		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
+		DBCursor cur = usercol.find(new BasicDBObject().append(User.F_USER_ID,
+				new BasicDBObject().append("$in", getAviableUser(po))));
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			Organization org = ModelService.createModelObject(dbo,
+					Organization.class);
+			ProjectProvider pp = org.getAdapter(ProjectProvider.class);
+			list.add(pp);
+		}
+		return list;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Object getAviableUser(PrimaryObject po) {
+			Set<ObjectId> set = new HashSet<ObjectId>();
+			List prjManagerList = projectCol.distinct(
+					Project.F_CHARGER,
+					new BasicDBObject().append(
+							ILifecycle.F_LIFECYCLE,
+							new BasicDBObject().append("$in", new String[] {
+									ILifecycle.STATUS_FINIHED_VALUE,
+									ILifecycle.STATUS_WIP_VALUE })).append(
+							Project.F_LAUNCH_ORGANIZATION, po.get_id()));
+			set.addAll(prjManagerList);
+		return set.toArray(new Object[0]);
+	}
+	
+	
 	@Override
 	public String getProjectSetName() {
 		return getDesc() + "项目集";
 	}
 
+	/**
+	 * 项目集的查询条件
+	 * 
+	 * @param start
+	 * @param stop
+	 * @return
+	 */
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
 		DBObject dbo = new BasicDBObject();

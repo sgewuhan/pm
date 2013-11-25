@@ -103,7 +103,8 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			sb.append("</b>");
 			sb.append("<br/>");
 			sb.append("<small>");
-			sb.append(user.getOrganization().getPath());
+			Organization org = user.getOrganization();
+			sb.append(org==null?"":org.getPath());
 			sb.append("</small></span>");
 
 			return sb.toString();

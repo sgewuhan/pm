@@ -2,9 +2,7 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.types.ObjectId;
 
@@ -39,18 +37,17 @@ public class ProductTypeProvider extends ProjectProvider {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
 
-			Map<String, Object> map = new HashMap<String, Object>();
+			ProjectSetSummaryData summaryData = new ProjectSetSummaryData();
 
-			int proFinishCount = 0;
-			int finishDelayCount = 0;
-			int finishNormalCount = 0;
+			int iF_SUMMARY_FINISHED = 0;
+			int iF_SUMMARY_FINISHED_DELAY = 0;
+			int iF_SUMMARY_FINISHED_NORMAL = 0;
+			int iF_SUMMARY_FINISHED_ADVANCED = 0;
 
-			int proProcessCount = 0;
-			int processDelayCount = 0;
-			int processNormalCount = 0;
-			
-			
-			int advanceCount=0;
+			int iF_SUMMARY_PROCESSING = 0;
+			int iF_SUMMARY_PROCESSING_DELAY = 0;
+			int iF_SUMMARY_PROCESSING_NORMAL = 0;
+			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
 
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
@@ -61,51 +58,43 @@ public class ProductTypeProvider extends ProjectProvider {
 						Project.class);
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
-					proFinishCount++;
+					iF_SUMMARY_FINISHED++;
 					if (project.isDelay()) {
-						finishDelayCount++;
+						iF_SUMMARY_FINISHED_DELAY++;
+					} else if (project.isAdvanced()) {
+						iF_SUMMARY_FINISHED_ADVANCED++;
 					} else {
-						finishNormalCount++;
-					}
-					if(project.isAdvanced()){
-						advanceCount++;
+						iF_SUMMARY_FINISHED_NORMAL++;
 					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
-					proProcessCount++;
+					iF_SUMMARY_PROCESSING++;
 					if (project.maybeDelay()) {
-						processDelayCount++;
+						iF_SUMMARY_PROCESSING_DELAY++;
+					} else if (project.maybeAdvanced()) {
+						iF_SUMMARY_PROCESSING_ADVANCE++;
 					} else {
-						processNormalCount++;
-					}
-					if(project.maybeAdvanced()){
-						advanceCount++;
+						iF_SUMMARY_PROCESSING_NORMAL++;
 					}
 				}
 				result.add(project);
 			}
-			map.put(F_SUMMARY_TOTAL, result.size());
-			
-			map.put(F_SUMMARY_FINISHED, proFinishCount);
-			map.put(F_SUMMARY_FINISHED_DELAY, finishDelayCount);
-			map.put(F_SUMMARY_FINISHED_NORMAL, finishNormalCount);
-			
-			map.put(F_SUMMARY_PROCESSING, proProcessCount);
-			map.put(F_SUMMARY_PROCESSING_DELAY, processDelayCount);
-			map.put(F_SUMMARY_PROCESSING_NORMAL, processNormalCount);
-			
-//			map.put(F_SUMMARY_ADVANCE, advanceCount);
-//			map.put(F_SUMMARY_DELAY, finishDelayCount+processDelayCount);
-//			map.put(F_SUMMARY_NORMAL, finishNormalCount+processNormalCount);
+			summaryData.total = result.size();
 
-			setSummaryDate(map);
+			summaryData.finished = iF_SUMMARY_FINISHED;
+			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
+			summaryData.processing = iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
 
 		return result;
 	}
-
 
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
