@@ -52,9 +52,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-     
-			ProjectSetSummaryData summaryData=new ProjectSetSummaryData();
-
 			int iF_SUMMARY_FINISHED = 0;
 			int iF_SUMMARY_FINISHED_DELAY = 0;
 			int iF_SUMMARY_FINISHED_NORMAL = 0;
@@ -108,8 +105,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
 			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
 			
-			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
+     		summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
 			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
+			
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
@@ -165,9 +163,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				new BasicDBObject().append("$in", getAviableUser(po))));
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
-			Organization org = ModelService.createModelObject(dbo,
-					Organization.class);
-			ProjectProvider pp = org.getAdapter(ProjectProvider.class);
+			User user = ModelService.createModelObject(dbo,
+					User.class);
+			ProjectProvider pp = user.getAdapter(ProjectProvider.class);
 			list.add(pp);
 		}
 		return list;
@@ -191,7 +189,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	
 	@Override
 	public String getProjectSetName() {
-		return getDesc() + "ÏîÄ¿¼¯";
+		return getDesc();
 	}
 
 	/**
