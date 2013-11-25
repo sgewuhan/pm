@@ -89,8 +89,6 @@ public class ProductTypeProvider extends ProjectProvider {
 			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
 			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
 			
-//			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
-//			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
 			
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
