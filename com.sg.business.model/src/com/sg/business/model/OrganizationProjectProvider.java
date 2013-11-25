@@ -2,10 +2,8 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -49,8 +47,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-
-			Map<String, Object> map = new HashMap<String, Object>();
+     
+			summaryData=new ProjectSetSummaryData();
 
 			int iF_SUMMARY_FINISHED = 0;
 			int iF_SUMMARY_FINISHED_DELAY = 0;
@@ -94,18 +92,19 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				result.add(project);
 			}
 			summaryData.total = result.size();
+			
+			summaryData.finished=iF_SUMMARY_FINISHED;
+			summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
 
-			map.put(F_SUMMARY_FINISHED, iF_SUMMARY_FINISHED);
-			map.put(F_SUMMARY_FINISHED_DELAY, iF_SUMMARY_FINISHED_DELAY);
-			map.put(F_SUMMARY_FINISHED_NORMAL, iF_SUMMARY_FINISHED_NORMAL);
-			map.put(F_SUMMARY_FINISHED_ADVANCE, iF_SUMMARY_FINISHED_ADVANCED);
+			summaryData.processing=iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
+//			summaryData.subOrganizationProjectProvider=getDeptInfo();
 
-			map.put(F_SUMMARY_PROCESSING, iF_SUMMARY_PROCESSING);
-			map.put(F_SUMMARY_PROCESSING_DELAY, iF_SUMMARY_PROCESSING_DELAY);
-			map.put(F_SUMMARY_PROCESSING_NORMAL, iF_SUMMARY_PROCESSING_NORMAL);
-			map.put(F_SUMMARY_PROCESSING_ADVANCE, iF_SUMMARY_PROCESSING_ADVANCE);
-			map.put(F_SUMMARY_DEPT, getDeptInfo());
-			setSummaryDate(map);
+			setSummaryDate(summaryData);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
