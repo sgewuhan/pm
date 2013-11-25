@@ -2110,6 +2110,18 @@
             serviceProvider="com.tmt.tb.bpmservice.LockBudgetToProjectOfTB">
       </service>
       <service
+            interface="createproject.service.action"
+            name="添加财务到项目中"
+            operation="addparticipate"
+            serviceProvider="com.tmt.tb.bpmservice.AddParticipateOfTB">
+      </service>
+      <service
+            interface="com.tmt.tb.service2"
+            name="通知财务"
+            operation="financialmessage"
+            serviceProvider="com.tmt.tb.bpmservice.ApplicationMessageOfTB">
+      </service>
+      <service
             interface="tbmessage.service.action"
             name="立项审批拒绝消息"
             operation="applicationcancelmessage"

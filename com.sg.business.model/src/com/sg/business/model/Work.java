@@ -4126,7 +4126,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				.getWorkFromWorkDefinition(tgtParentId, tgtRootId, project,
 						roleMap, folderRootId, documentsToInsert,
 						deliverableToInsert, fileToCopy, context,
-						project.get_id(), seq, workdef.get_data(), null);
+						project.get_id(), new Integer(seq + 1), workdef.get_data(), null);
 		worksToBeInsert.put(srcParent, targetParentWorkData);
 		tgtParentId = (ObjectId) targetParentWorkData.get(F__ID);
 
