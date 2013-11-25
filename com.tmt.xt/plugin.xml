@@ -825,13 +825,13 @@
             editorId="tb.tbProjectReview.expertgroupcountersign"
             name="专家评审"
             persistentFields="choice,comment,accessory"
-            processDefinitionId="xt.xtProjectReview">
+            processDefinitionId="xt.xtProjectApplication">
       </taskForm>
       <taskForm
             editorId="tb.tbProjectReview.meetingreview"
             name="会议评审"
             persistentFields="comment,choice,accessory"
-            processDefinitionId="xt.xtProjectReview">
+            processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
