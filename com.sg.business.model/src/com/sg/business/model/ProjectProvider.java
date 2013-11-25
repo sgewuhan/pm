@@ -37,7 +37,12 @@ public abstract class ProjectProvider extends PrimaryObject {
 	 */
 	public static final String F_SUMMARY_PROCESSING_DELAY = "s5";
 
-	
+	/**
+	 * 进展提前
+	 */
+	public static final String F_SUMMARY_PROCESSING_ADVANCE = "s13";
+
+
 	/**
 	 * 已完成，正常完成
 	 */
@@ -50,20 +55,20 @@ public abstract class ProjectProvider extends PrimaryObject {
 	public static final String F_SUMMARY_FINISHED_DELAY  = "s7";
 
 
-	/**
-	 * 正常
-	 */
-	public static final String F_SUMMARY_NORMAL= "s8";
+//	/**
+//	 * 正常
+//	 */
+//	public static final String F_SUMMARY_NORMAL= "s8";
 
-	/**
-	 * 延期
-	 */
-	public static final String F_SUMMARY_DELAY = "s9";
+//	/**
+//	 * 延期
+//	 */
+//	public static final String F_SUMMARY_DELAY = "s9";
 
-	/**
-	 * 提前
-	 */
-	public static final String F_SUMMARY_ADVANCE = "s10";
+//	/**
+//	 * 提前
+//	 */
+//	public static final String F_SUMMARY_ADVANCE = "s10";
 
 	/**
 	 * 成本正常
@@ -74,6 +79,12 @@ public abstract class ProjectProvider extends PrimaryObject {
 	 * 成本超支
 	 */
 	public static String F_SUMMARY_OVER_COST = "s12";
+	
+	/**
+	 * 提前完成的
+	 */
+	public static final String F_SUMMARY_FINISHED_ADVANCE = "s14";
+
 
 	/**
 	 * 参数名称：按年计算

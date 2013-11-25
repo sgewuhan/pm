@@ -32,7 +32,6 @@
 
    <plugins>
       <plugin id="com.ibm.icu"/>
-      <plugin id="com.ibm.icu.base"/>
       <plugin id="com.mobnut.admin"/>
       <plugin id="com.mobnut.commons"/>
       <plugin id="com.mobnut.db"/>
@@ -65,7 +64,15 @@
       <plugin id="com.sg.widgets.fullcalendar"/>
       <plugin id="com.sg.widgets.jofc"/>
       <plugin id="com.sg.widgets.nl1" fragment="true"/>
+      <plugin id="com.tmt.commons"/>
       <plugin id="com.tmt.jszx"/>
+      <plugin id="com.tmt.jy"/>
+      <plugin id="com.tmt.kfzx"/>
+      <plugin id="com.tmt.kh"/>
+      <plugin id="com.tmt.pdm.client"/>
+      <plugin id="com.tmt.pdm.dcpdm"/>
+      <plugin id="com.tmt.tb"/>
+      <plugin id="com.tmt.xt"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
       <plugin id="org.apache.commons.codec"/>

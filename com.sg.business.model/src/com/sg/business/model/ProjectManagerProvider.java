@@ -87,9 +87,9 @@ public class ProjectManagerProvider extends ProjectProvider {
 			map.put(F_SUMMARY_PROCESSING_DELAY, processDelayCount);
 			map.put(F_SUMMARY_PROCESSING_NORMAL, processNormalCount);
 			
-			map.put(F_SUMMARY_ADVANCE, advanceCount);
-			map.put(F_SUMMARY_DELAY, finishDelayCount+processDelayCount);
-			map.put(F_SUMMARY_NORMAL, finishNormalCount+processNormalCount);
+//			map.put(F_SUMMARY_ADVANCE, advanceCount);
+//			map.put(F_SUMMARY_DELAY, finishDelayCount+processDelayCount);
+//			map.put(F_SUMMARY_NORMAL, finishNormalCount+processNormalCount);
 
 			setSummaryDate(map);
 		} catch (Exception e) {

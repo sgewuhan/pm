@@ -2141,7 +2141,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (!isAdvanced()) {
 			List<Work> milestones = getMileStoneWorks();
 			for (int i = 0; i < milestones.size(); i++) {
-				if (!milestones.get(i).isAdvanceNow()) {
+				if (!milestones.get(i).isAdvanced()) {
 					return false;
 				}
 			}
