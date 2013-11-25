@@ -13,6 +13,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProductTypeProvider;
@@ -26,66 +27,71 @@ public class ProductType extends SingleDBCollectionDataSetFactory {
 
 	private String userId;
 	private User user;
+
 	public ProductType() {
 		super(IModelConstants.DB, IModelConstants.C_PROJECT);
-		 userId= new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
-		 user = UserToolkit.getUserById(userId);
-		
+		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		user = UserToolkit.getUserById(userId);
+
 	}
 
 	@Override
 	public DataSet getDataSet() {
-		List<PrimaryObject> dataItems=new ArrayList<PrimaryObject>();
-		List<String> options=getTypeOptions();
-		for(String option:options){
-			ProductTypeProvider projectType = new ProductTypeProvider(option,userId);
+		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
+		List<String> options = getTypeOptions();
+		for (String option : options) {
+			ProductTypeProvider projectType = new ProductTypeProvider(option,
+					userId);
 			dataItems.add(projectType);
 		}
 		return new DataSet(dataItems);
 	}
 
-//	private List<String> getTypeOptions() {
-//		List<String> typeList = new ArrayList<String>();
-//		DBCollection collection = getCollection();
-//		DBCursor cur = collection.find();
-//		while (cur.hasNext()) {
-//			DBObject dbo = cur.next();
-//			ProjectTemplate template = ModelService.createModelObject(dbo,
-//					ProjectTemplate.class);
-//			Object value = template
-//					.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
-//			if (value instanceof List) {
-//				@SuppressWarnings("unchecked")
-//				List<Object> list = (List<Object>) value;
-//				for (Object obj : list) {
-//					if (!typeList.contains(obj)) {
-//						typeList.add((String) obj);
-//					}
-//				}
-//
-//			}
-//
-//		}
-//		return typeList;
-//	}
+	// private List<String> getTypeOptions() {
+	// List<String> typeList = new ArrayList<String>();
+	// DBCollection collection = getCollection();
+	// DBCursor cur = collection.find();
+	// while (cur.hasNext()) {
+	// DBObject dbo = cur.next();
+	// ProjectTemplate template = ModelService.createModelObject(dbo,
+	// ProjectTemplate.class);
+	// Object value = template
+	// .getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
+	// if (value instanceof List) {
+	// @SuppressWarnings("unchecked")
+	// List<Object> list = (List<Object>) value;
+	// for (Object obj : list) {
+	// if (!typeList.contains(obj)) {
+	// typeList.add((String) obj);
+	// }
+	// }
+	//
+	// }
+	//
+	// }
+	// return typeList;
+	// }
 
-	
-	
 	private List<String> getTypeOptions() {
 		List<String> typeList = new ArrayList<String>();
 		DBCollection col = getCollection();
-		DBCursor cur = col.find(new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in", getUerOrgId())));
-		while(cur.hasNext()){
+		DBCursor cur = col.find(new BasicDBObject().append(
+				Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", getUerOrgId())).append(
+				ILifecycle.F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						ILifecycle.STATUS_FINIHED_VALUE,
+						ILifecycle.STATUS_WIP_VALUE })));
+		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
-			Project project=ModelService.createModelObject(dbo, Project.class);
+			Project project = ModelService
+					.createModelObject(dbo, Project.class);
 			List<String> productTypeOptions = project.getProductTypeOptions();
-			if(productTypeOptions==null){
+			if (productTypeOptions == null) {
 				continue;
 			}
-			for(String option:productTypeOptions){
-				if(!typeList.contains(option)){
+			for (String option : productTypeOptions) {
+				if (!typeList.contains(option)) {
 					typeList.add(option);
 				}
 			}
@@ -114,9 +120,7 @@ public class ProductType extends SingleDBCollectionDataSetFactory {
 		}
 		return list;
 	}
-	
-	
-	
+
 	protected List<PrimaryObject> getInput() {
 		// 获取当前用户担任管理者角色的部门
 		List<PrimaryObject> orglist = user
