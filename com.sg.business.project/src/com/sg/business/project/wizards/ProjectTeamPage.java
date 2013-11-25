@@ -114,7 +114,9 @@ public class ProjectTeamPage implements INavigatorPageBodyPartCreater {
 				if (inputElement instanceof Project) {
 					List<?> participatesIdList = ((Project) inputElement)
 							.getParticipatesIdList();
-					return participatesIdList.toArray();
+					if (participatesIdList != null) {
+						return participatesIdList.toArray();
+					}
 				}
 				return new Object[0];
 			}

@@ -19,9 +19,9 @@ import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public class ApplySave implements IDataObjectDialogCallback {
+public class ApplySaveOfJSZX implements IDataObjectDialogCallback {
 
-	public ApplySave() {
+	public ApplySaveOfJSZX() {
 	}
 
 	@Override

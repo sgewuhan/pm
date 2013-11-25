@@ -8,7 +8,7 @@
             name="申请技术支持"
             persistentFields="dept,accessory"
             processDefinitionId="jszx.jszxProjectApply"
-            saveHandler="com.tmt.jszx.savehandler.ApplySave">
+            saveHandler="com.tmt.jszx.handler.ApplySaveOfJSZX">
          <processParameter
                processParameterDelegator="com.tmt.jszx.field.parameter.DeptDirector"
                processParameterName="dept_director"
