@@ -9,6 +9,7 @@ import java.util.Set;
 import org.bson.types.ObjectId;
 
 import com.mobnut.commons.util.file.FileUtil;
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -23,6 +24,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	private Organization organization;
 	private DBCollection projectCol;
 	private DBCollection orgCol;
+	DBCollection usercol;
+	
 
 	public void setOrganization(Organization org) {
 		this.organization = org;
@@ -30,6 +33,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		setValue(F_DESC, org.getDesc());
 		projectCol = getCollection(IModelConstants.C_PROJECT);
 		orgCol = getCollection(IModelConstants.C_ORGANIZATION);
+		usercol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_USER);
 	}
 
 	@Override
@@ -102,7 +107,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
 			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
 			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
+			
 			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
+			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
 
 			setSummaryDate(summaryData);
 		} catch (Exception e) {
@@ -151,6 +158,35 @@ public class OrganizationProjectProvider extends ProjectProvider {
 					new BasicDBObject().append(Organization.F__ID,
 							new BasicDBObject().append("$in", parentOrgList)));
 		}
+		return set.toArray(new Object[0]);
+	}
+	
+	public List<ProjectProvider> getSubUserProvider(PrimaryObject po) {
+		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
+		DBCursor cur = usercol.find(new BasicDBObject().append(User.F_USER_ID,
+				new BasicDBObject().append("$in", getAviableUser(po))));
+		while (cur.hasNext()) {
+			DBObject dbo = cur.next();
+			Organization org = ModelService.createModelObject(dbo,
+					Organization.class);
+			ProjectProvider pp = org.getAdapter(ProjectProvider.class);
+			list.add(pp);
+		}
+		return list;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Object getAviableUser(PrimaryObject po) {
+			Set<ObjectId> set = new HashSet<ObjectId>();
+			List prjManagerList = projectCol.distinct(
+					Project.F_CHARGER,
+					new BasicDBObject().append(
+							ILifecycle.F_LIFECYCLE,
+							new BasicDBObject().append("$in", new String[] {
+									ILifecycle.STATUS_FINIHED_VALUE,
+									ILifecycle.STATUS_WIP_VALUE })).append(
+							Project.F_LAUNCH_ORGANIZATION, po.get_id()));
+			set.addAll(prjManagerList);
 		return set.toArray(new Object[0]);
 	}
 	
