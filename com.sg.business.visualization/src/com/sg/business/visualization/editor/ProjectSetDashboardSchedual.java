@@ -1,5 +1,7 @@
 package com.sg.business.visualization.editor;
 
+import java.text.NumberFormat;
+
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.ChartWithoutAxes;
@@ -52,6 +54,8 @@ import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -108,13 +112,31 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 		TabItem meterTabItem = new TabItem(tabFolder, SWT.NONE);
 		meterTabItem.setText("指示器");
-		ChartCanvas meterChart = new ChartCanvas(tabFolder, SWT.NONE);
-		meterChart.setChart(createMeterChart());
-		meterTabItem.setControl(meterChart);
+		Composite composite = new Composite(tabFolder, SWT.NONE);
+		composite.setLayout(new GridLayout());
+
+		ChartCanvas meterChart = new ChartCanvas(composite, SWT.NONE);
+		meterChart.setChart(createMeterChart("已完成项目超期 ",
+				getFinishProjectOverTimeRate()));
+		meterChart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		ChartCanvas meterChart2 = new ChartCanvas(composite, SWT.NONE);
+		meterChart2.setChart(createMeterChart("进行中项目超期 ",
+				getProcessProjectOverTimeRate()));
+		meterChart2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+
+		ChartCanvas meterChart3 = new ChartCanvas(composite, SWT.NONE);
+		meterChart3.setChart(createMeterChart("整体项目超期 ",
+				getAllProjectOverTimeRate()));
+		meterChart3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+
+		meterTabItem.setControl(composite);
 
 	}
 
-	private Chart createMeterChart() {
+	private Chart createMeterChart(String chartCaptionText, double value) {
 		String[] oValues = new String[] { "进度延迟" };
 
 		DialChart chart = (DialChart) DialChartImpl.create();
@@ -131,14 +153,17 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		// Title/Plot
 		chart.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
 		chart.getPlot().getClientArea().setVisible(false);
-		chart.setSeriesThickness(2);
+		chart.setCoverage(1.8);
+//		chart.setSeriesThickness(2);
 
 		TitleBlock title = chart.getTitle();
 		title.getOutline().setVisible(false);
 		// title.getLabel().setVisible(false);
 		Text caption = title.getLabel().getCaption();
-		caption.setValue("超期比率");//$NON-NLS-1$
-		adjustFont(caption.getFont(), STRONG_SIZE);
+		NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(2);
+		caption.setValue(chartCaptionText + (nf.format(value))+"%");//$NON-NLS-1$
+		adjustFont(caption.getFont(), NORMAL_SIZE);
 
 		// Legend
 		Legend legend = chart.getLegend();
@@ -191,7 +216,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 		// Dial 1
 		DialSeries seDial1 = (DialSeries) DialSeriesImpl.create();
-		seDial1.setDataSet(NumberDataSetImpl.create(new double[] { 20 }));
+		seDial1.setDataSet(NumberDataSetImpl.create(new double[] { value }));
 		seDial1.setSeriesIdentifier("超期率");//$NON-NLS-1$
 		seDial1.getNeedle().setDecorator(LineDecorator.ARROW_LITERAL);
 
@@ -203,15 +228,15 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		dial.setStopAngle(180);
 		// dial.getMajorGrid().getTickAttributes().setVisible(false);
 		dial.getMinorGrid().getTickAttributes().setVisible(false);
-		// dial.getLabel().setVisible(false);
+		 dial.getLabel().setVisible(false);
 		seDial1.getDial().getMajorGrid().getTickAttributes()
 				.setColor(ColorDefinitionImpl.BLACK());
 		seDial1.getDial().getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
 		dial.getScale().setMin(NumberDataElementImpl.create(0));
 		dial.getScale().setMax(NumberDataElementImpl.create(100));
 		dial.getScale().setStep(10);
-		FontDefinition font = dial.getLabel().getCaption().getFont();
-		adjustFont(font, SMALL_SIZE);
+//		FontDefinition font = dial.getLabel().getCaption().getFont();
+//		adjustFont(font, SMALL_SIZE);
 
 		DialRegion dregion1 = DialRegionImpl.create();
 		dregion1.setFill(GradientImpl.create(
@@ -279,21 +304,39 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		String pieChartCaption = "进度摘要";
 		String[] texts = getSchedualParameterNames();
 		double[] values = getSchedualParameterValues();
+		double maxValue = Utils.max(values);
 
 		// 正常完成
 		ColorDefinition color1 = getRGBColorDefinition(Utils.COLOR_GREEN[10]);
+		// ColorDefinition color1_1 =
+		// getRGBColorDefinition(Utils.COLOR_GREEN[2]);
 
 		// "超期完成"
-		ColorDefinition color2 = getRGBColorDefinition(Utils.COLOR_GREEN[2]);
+		ColorDefinition color2 = getRGBColorDefinition("#00a99d");
+		// ColorDefinition color2_1 =
+		// getRGBColorDefinition(Utils.COLOR_GREEN[2]);
 
 		// "进度延迟"
 		ColorDefinition color3 = getRGBColorDefinition(Utils.COLOR_RED[5]);
+		// ColorDefinition color3_1 = getRGBColorDefinition(Utils.COLOR_RED[2]);
 
 		// "预期延迟"
 		ColorDefinition color4 = getRGBColorDefinition(Utils.COLOR_YELLOW[5]);
+		// ColorDefinition color4_1 =
+		// getRGBColorDefinition(Utils.COLOR_YELLOW[2]);
 
 		// 正常进行
 		ColorDefinition color5 = getRGBColorDefinition(Utils.COLOR_BLUE[5]);
+		// ColorDefinition color5_1 =
+		// getRGBColorDefinition(Utils.COLOR_BLUE[2]);
+
+		// final Fill[] fiaBase = {
+		// GradientImpl.create(color1, color1_1, -90, true),
+		// GradientImpl.create(color2, color2_1, -90, true),
+		// GradientImpl.create(color3, color3_1, -90, true),
+		// GradientImpl.create(color4, color4_1, -90, true),
+		// GradientImpl.create(color5, color5_1, -90, true),
+		// };
 
 		final Fill[] fiaBase = { color1, color2, color3, color4, color5 };
 
@@ -301,6 +344,9 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		// chart.setScript(FilterActionHandler.class.getName());
 		chart.setDimension(ChartDimension.TWO_DIMENSIONAL_LITERAL);
 		// chart.setSeriesThickness(2);//设置厚度
+		chart.setMinSlice(maxValue / 20);// 最大的十分之一
+		chart.setMinSliceLabel("其他");
+		chart.setMinSlicePercent(true);
 		Text caption = chart.getTitle().getLabel().getCaption();
 		caption.setValue(pieChartCaption);
 		adjustFont(caption.getFont(), STRONG_SIZE);
@@ -322,10 +368,11 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		for (int i = 0; i < fiaBase.length; i++) {
 			sd.getSeriesPalette().getEntries().add(fiaBase[i]);
 		}
+
 		// Orthogonal Series
 		PieSeries sePie = (PieSeries) PieSeriesImpl.create();
 		sePie.setDataSet(seriesOneValues);
-		sePie.setExplosion(1);
+		sePie.setExplosion(2);
 		sePie.setRotation(40);
 
 		/**
@@ -338,7 +385,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 		// sePie.setTranslucent(true);//设置半透明
 		sePie.setLabelPosition(Position.INSIDE_LITERAL);// 设置在内部显示数字
-		adjustFont(sePie.getLabel().getCaption().getFont(), SMALL_SIZE);// 设置字体
+		adjustFont(sePie.getLabel().getCaption().getFont(), NORMAL_SIZE);// 设置字体
 
 		SeriesDefinition sdef = SeriesDefinitionImpl.create();
 		sd.getSeriesDefinitions().add(sdef);
@@ -352,20 +399,84 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		return ColorDefinitionImpl.create(rgb[0], rgb[1], rgb[2]);
 	}
 
+	private double getFinishProjectOverTimeRate() {
+		// "正常完成"
+		Integer value1 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
+		// "超期完成",
+		Integer value2 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		// "提前完成",
+		Integer value3 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_ADVANCE);
+		return 100*value2.doubleValue()
+				/ (value1.doubleValue() + value2.doubleValue() + value3
+						.doubleValue());
+	}
+
+	private double getAllProjectOverTimeRate() {
+		// "正常完成"
+		Integer value1 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
+		// "超期完成",
+		Integer value2 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		// "提前完成",
+		Integer value3 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_ADVANCE);
+		// "进度延迟",
+		Integer value4 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
+		// "正常进行"
+		Integer value5 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
+		// 进度提前
+		Integer value6 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
+		return 100*(value2.doubleValue() + value4.doubleValue())
+				/ (value1 + value2 + value3 + value4 + value5 + value6);
+	}
+
+	private double getProcessProjectOverTimeRate() {
+
+		// "进度延迟",
+		Integer value4 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
+		// "正常进行"
+		Integer value5 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
+		// 进度提前
+		Integer value6 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
+		return 100*value4.doubleValue()
+				/ (value4.doubleValue() + value5.doubleValue() + value6
+						.doubleValue());
+	}
+
 	private double[] getSchedualParameterValues() {
 		// "正常完成"
-		data.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
+		Integer value1 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
 		// "超期完成",
-		data.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		Integer value2 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		// "提前完成",
+		Integer value3 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_ADVANCE);
 		// "进度延迟",
-		data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
+		Integer value4 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
 		// "正常进行"
-		data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
-		return new double[] { 10, 20, 15, 29, 30 };
+		Integer value5 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
+		// 进度提前
+		Integer value6 = (Integer) data
+				.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
+		return new double[] { (value1 + value3), value2, value4, value5, value6 };
 	}
 
 	private String[] getSchedualParameterNames() {
-		return new String[] { "正常完成", "超期完成", "进度延迟", "正常进行" };
+		return new String[] { "正常完成", "超期完成", "进度延迟", "正常进行", "进度提前" };
 	}
 
 	public static Chart createStackedBar() {

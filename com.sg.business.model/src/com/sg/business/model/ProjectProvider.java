@@ -11,48 +11,52 @@ import com.mobnut.db.model.PrimaryObject;
 
 public abstract class ProjectProvider extends PrimaryObject {
 
-	/**
-	 * 项目总数
-	 */
-	public static final String F_SUMMARY_TOTAL = "s1";
-
-	/**
-	 * 完成项目数
-	 */
-	public static final String F_SUMMARY_FINISHED = "s2";
-
-	/**
-	 * 进展中项目数
-	 */
-	public static final String F_SUMMARY_PROCESSING = "s3";
+	
+	public ProjectSetSummaryData summaryData;
 	
 	
-	/**
-	 * 进行中，正常进行
-	 */
-	public static final String F_SUMMARY_PROCESSING_NORMAL = "s4";
-	
-	/**
-	 * 进行中，预期超期
-	 */
-	public static final String F_SUMMARY_PROCESSING_DELAY = "s5";
-
-	/**
-	 * 进展提前
-	 */
-	public static final String F_SUMMARY_PROCESSING_ADVANCE = "s13";
-
-
-	/**
-	 * 已完成，正常完成
-	 */
-	public static final String F_SUMMARY_FINISHED_NORMAL = "s6";
-
-	
-	/**
-	 * 已完成，超期完成
-	 */
-	public static final String F_SUMMARY_FINISHED_DELAY  = "s7";
+//	/**
+//	 * 项目总数
+//	 */
+//	public static final String F_SUMMARY_TOTAL = "s1";
+//
+//	/**
+//	 * 完成项目数
+//	 */
+//	public static final String F_SUMMARY_FINISHED = "s2";
+//
+//	/**
+//	 * 进展中项目数
+//	 */
+//	public static final String F_SUMMARY_PROCESSING = "s3";
+//	
+//	
+//	/**
+//	 * 进行中，正常进行
+//	 */
+//	public static final String F_SUMMARY_PROCESSING_NORMAL = "s4";
+//	
+//	/**
+//	 * 进行中，预期超期
+//	 */
+//	public static final String F_SUMMARY_PROCESSING_DELAY = "s5";
+//
+//	/**
+//	 * 进展提前
+//	 */
+//	public static final String F_SUMMARY_PROCESSING_ADVANCE = "s13";
+//
+//
+//	/**
+//	 * 已完成，正常完成
+//	 */
+//	public static final String F_SUMMARY_FINISHED_NORMAL = "s6";
+//
+//	
+//	/**
+//	 * 已完成，超期完成
+//	 */
+//	public static final String F_SUMMARY_FINISHED_DELAY  = "s7";
 
 
 //	/**
