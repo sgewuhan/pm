@@ -20,7 +20,7 @@ public class ProjectManagerProvider extends ProjectProvider {
 	public void setUser(User user) {
 		this.user = user;
 		setValue(F__ID, user.get_id());
-		setValue(F_DESC, user.getDesc());
+		setValue(F_DESC, user.getUserid()+"/"+user.getUsername());
 		projectCol = getCollection(IModelConstants.C_PROJECT);
 	}
 

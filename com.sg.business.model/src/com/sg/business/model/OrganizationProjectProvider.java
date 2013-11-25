@@ -105,8 +105,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
 			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
 			
-//			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
-//			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
+     		summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
+			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
 			
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
@@ -163,9 +163,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				new BasicDBObject().append("$in", getAviableUser(po))));
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
-			Organization org = ModelService.createModelObject(dbo,
-					Organization.class);
-			ProjectProvider pp = org.getAdapter(ProjectProvider.class);
+			User user = ModelService.createModelObject(dbo,
+					User.class);
+			ProjectProvider pp = user.getAdapter(ProjectProvider.class);
 			list.add(pp);
 		}
 		return list;
