@@ -30,5 +30,6 @@ public class ProjectSetSummaryData {
 	public List<ProjectProvider> subOrganizationProjectProvider = new ArrayList<ProjectProvider>();
 	
 	public List<ProjectProvider> subChargerProjectProvider = new ArrayList<ProjectProvider>();
+
 	
 }

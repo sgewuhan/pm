@@ -2,9 +2,7 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -15,7 +13,7 @@ import com.mongodb.DBObject;
 import com.sg.widgets.MessageUtil;
 
 public class ProjectManagerProvider extends ProjectProvider {
-	
+
 	private User user;
 	private DBCollection col;
 
@@ -26,13 +24,12 @@ public class ProjectManagerProvider extends ProjectProvider {
 		col = getCollection(IModelConstants.C_PROJECT);
 	}
 
-
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
 
-			Map<String, Object> map = new HashMap<String, Object>();
+			ProjectSetSummaryData summaryData = new ProjectSetSummaryData();
 
 			int iF_SUMMARY_FINISHED = 0;
 			int iF_SUMMARY_FINISHED_DELAY = 0;
@@ -76,16 +73,14 @@ public class ProjectManagerProvider extends ProjectProvider {
 			}
 			summaryData.total = result.size();
 
-			summaryData.finished =  iF_SUMMARY_FINISHED;
-			summaryData.finished_delay =  iF_SUMMARY_FINISHED_DELAY;
-			summaryData.finished_normal =  iF_SUMMARY_FINISHED_NORMAL;
-			summaryData.finished_advance =  iF_SUMMARY_FINISHED_ADVANCED;
-
-			summaryData.processing =  iF_SUMMARY_PROCESSING;
-			summaryData.processing_delay =  iF_SUMMARY_PROCESSING_DELAY;
-			summaryData.processing_normal =  iF_SUMMARY_PROCESSING_NORMAL;
-			summaryData.processing_advance =  iF_SUMMARY_PROCESSING_ADVANCE;
-
+			summaryData.finished = iF_SUMMARY_FINISHED;
+			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
+			summaryData.processing = iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
@@ -93,7 +88,6 @@ public class ProjectManagerProvider extends ProjectProvider {
 		return result;
 	}
 
-	
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
 		DBObject dbo = new BasicDBObject();
@@ -128,10 +122,10 @@ public class ProjectManagerProvider extends ProjectProvider {
 												Project.F_ACTUAL_FINISH,
 												new BasicDBObject().append(
 														"$gte", stop)) }) });
-		
+
 		return dbo;
 	}
-	
+
 	@Override
 	public String getProjectSetName() {
 		return "负责人项目集";
@@ -142,5 +136,4 @@ public class ProjectManagerProvider extends ProjectProvider {
 		return null;
 	}
 
-	
 }

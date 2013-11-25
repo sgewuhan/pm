@@ -2,9 +2,7 @@ package com.sg.business.model;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
@@ -44,11 +42,11 @@ public abstract class ProjectProvider extends PrimaryObject {
 
 	private Object[] parametes;
 
-	private HashMap<String, Object> summaryInfor;
+//	private HashMap<String, Object> summaryInfor;
 
 	public ProjectProvider() {
 		super();
-		summaryInfor = new HashMap<String, Object>();
+//		summaryInfor = new HashMap<String, Object>();
 	}
 
 	public abstract List<PrimaryObject> getProjectSet();
@@ -79,28 +77,6 @@ public abstract class ProjectProvider extends PrimaryObject {
 	 * @return
 	 */
 	public abstract String getProjectSetCoverImage();
-
-//	/**
-//	 * 获得项目集 摘要数据
-//	 * 
-//	 * @param key
-//	 *            摘要数据的字段名
-//	 * @param year
-//	 * @return
-//	 */
-//	public final Object getSummaryValue(String key) {
-//		return summaryInfor.get(key);
-//	}
-
-//	/**
-//	 * 设置合计值
-//	 * 
-//	 * @param data
-//	 */
-//	public final void setSummaryDate(Map<String, Object> data) {
-//		summaryInfor.clear();
-//		summaryInfor.putAll(data);
-//	}
 
 	/**
 	 * 设置查询参数
