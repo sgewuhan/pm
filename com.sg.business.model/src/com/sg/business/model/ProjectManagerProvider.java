@@ -13,7 +13,7 @@ import com.mongodb.DBObject;
 import com.sg.widgets.MessageUtil;
 
 public class ProjectManagerProvider extends ProjectProvider {
-	
+
 	private User user;
 	private DBCollection col;
 
@@ -24,76 +24,73 @@ public class ProjectManagerProvider extends ProjectProvider {
 		col = getCollection(IModelConstants.C_PROJECT);
 	}
 
-
 	@Override
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-		     
-					summaryData=new ProjectSetSummaryData();
 
-					int iF_SUMMARY_FINISHED = 0;
-					int iF_SUMMARY_FINISHED_DELAY = 0;
-					int iF_SUMMARY_FINISHED_NORMAL = 0;
-					int iF_SUMMARY_FINISHED_ADVANCED = 0;
+			ProjectSetSummaryData summaryData = new ProjectSetSummaryData();
 
-					int iF_SUMMARY_PROCESSING = 0;
-					int iF_SUMMARY_PROCESSING_DELAY = 0;
-					int iF_SUMMARY_PROCESSING_NORMAL = 0;
-					int iF_SUMMARY_PROCESSING_ADVANCE = 0;
+			int iF_SUMMARY_FINISHED = 0;
+			int iF_SUMMARY_FINISHED_DELAY = 0;
+			int iF_SUMMARY_FINISHED_NORMAL = 0;
+			int iF_SUMMARY_FINISHED_ADVANCED = 0;
 
-					Date startDate = getStartDate();
-					Date endDate = getEndDate();
-					DBCursor cur = col
-							.find(getQueryCondtion(startDate, endDate));
-					while (cur.hasNext()) {
-						DBObject dbo = cur.next();
-						Project project = ModelService.createModelObject(dbo,
-								Project.class);
-						if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
-								.getLifecycleStatus())) {
-							iF_SUMMARY_FINISHED++;
-							if (project.isDelay()) {
-								iF_SUMMARY_FINISHED_DELAY++;
-							} else if (project.isAdvanced()) {
-								iF_SUMMARY_FINISHED_ADVANCED++;
-							} else {
-								iF_SUMMARY_FINISHED_NORMAL++;
-							}
-						} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
-								.getLifecycleStatus())) {
-							iF_SUMMARY_PROCESSING++;
-							if (project.maybeDelay()) {
-								iF_SUMMARY_PROCESSING_DELAY++;
-							} else if (project.maybeAdvanced()) {
-								iF_SUMMARY_PROCESSING_ADVANCE++;
-							} else {
-								iF_SUMMARY_PROCESSING_NORMAL++;
-							}
-						}
-						result.add(project);
+			int iF_SUMMARY_PROCESSING = 0;
+			int iF_SUMMARY_PROCESSING_DELAY = 0;
+			int iF_SUMMARY_PROCESSING_NORMAL = 0;
+			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
+
+			Date startDate = getStartDate();
+			Date endDate = getEndDate();
+			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
+			while (cur.hasNext()) {
+				DBObject dbo = cur.next();
+				Project project = ModelService.createModelObject(dbo,
+						Project.class);
+				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
+						.getLifecycleStatus())) {
+					iF_SUMMARY_FINISHED++;
+					if (project.isDelay()) {
+						iF_SUMMARY_FINISHED_DELAY++;
+					} else if (project.isAdvanced()) {
+						iF_SUMMARY_FINISHED_ADVANCED++;
+					} else {
+						iF_SUMMARY_FINISHED_NORMAL++;
 					}
-					summaryData.total = result.size();
-					
-					summaryData.finished=iF_SUMMARY_FINISHED;
-					summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
-					summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
-					summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
+				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
+						.getLifecycleStatus())) {
+					iF_SUMMARY_PROCESSING++;
+					if (project.maybeDelay()) {
+						iF_SUMMARY_PROCESSING_DELAY++;
+					} else if (project.maybeAdvanced()) {
+						iF_SUMMARY_PROCESSING_ADVANCE++;
+					} else {
+						iF_SUMMARY_PROCESSING_NORMAL++;
+					}
+				}
+				result.add(project);
+			}
+			summaryData.total = result.size();
 
-					summaryData.processing=iF_SUMMARY_PROCESSING;
-					summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
-					summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
-					summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
+			summaryData.finished = iF_SUMMARY_FINISHED;
+			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
 
-					setSummaryDate(summaryData);
-				} catch (Exception e) {
+			summaryData.processing = iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
+
+			setSummaryDate(summaryData);
+		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
 
 		return result;
 	}
 
-	
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
 		DBObject dbo = new BasicDBObject();
@@ -128,10 +125,10 @@ public class ProjectManagerProvider extends ProjectProvider {
 												Project.F_ACTUAL_FINISH,
 												new BasicDBObject().append(
 														"$gte", stop)) }) });
-		
+
 		return dbo;
 	}
-	
+
 	@Override
 	public String getProjectSetName() {
 		return "负责人项目集";
@@ -142,5 +139,4 @@ public class ProjectManagerProvider extends ProjectProvider {
 		return null;
 	}
 
-	
 }

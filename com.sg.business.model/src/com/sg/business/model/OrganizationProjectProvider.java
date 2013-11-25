@@ -48,7 +48,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
      
-			summaryData=new ProjectSetSummaryData();
+			ProjectSetSummaryData summaryData=new ProjectSetSummaryData();
 
 			int iF_SUMMARY_FINISHED = 0;
 			int iF_SUMMARY_FINISHED_DELAY = 0;
