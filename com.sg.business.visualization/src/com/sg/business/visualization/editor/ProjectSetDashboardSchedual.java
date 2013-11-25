@@ -57,6 +57,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.mobnut.commons.util.Utils;
+import com.sg.business.model.ProjectProvider;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
 public class ProjectSetDashboardSchedual extends AbstractProjectPage {
@@ -78,7 +79,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		content.setWeights(new int[] { 3, 2 });
 		return content;
 	}
-	
+
 	@Override
 	protected String getProjectSetPageLabel() {
 		String projectSetName = data.getProjectSetName();
@@ -117,7 +118,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		String[] oValues = new String[] { "进度延迟" };
 
 		DialChart chart = (DialChart) DialChartImpl.create();
-		chart.setDialSuperimposition( false );
+		chart.setDialSuperimposition(false);
 
 		// 使用标准的仪表盘
 		chart.setType("Standard Meter"); //$NON-NLS-1$  
@@ -130,22 +131,20 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		// Title/Plot
 		chart.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
 		chart.getPlot().getClientArea().setVisible(false);
-		chart.setSeriesThickness( 2 );
+		chart.setSeriesThickness(2);
 
 		TitleBlock title = chart.getTitle();
 		title.getOutline().setVisible(false);
-		title.getLabel().setVisible(false);
-//		Text caption = title.getLabel().getCaption();
-//		caption.setValue("运营状态");//$NON-NLS-1$
-//		adjustFont(caption.getFont(), STRONG_SIZE);
-
+		// title.getLabel().setVisible(false);
+		Text caption = title.getLabel().getCaption();
+		caption.setValue("超期比率");//$NON-NLS-1$
+		adjustFont(caption.getFont(), STRONG_SIZE);
 
 		// Legend
-//		Legend legend = chart.getLegend();
-//		legend.setItemType(LegendItemType.CATEGORIES_LITERAL);
-//		legend.setVisible(false);
-//		adjustFont(legend.getText().getFont(), NORMAL_SIZE);
-		chart.getLegend().setVisible(false);
+		Legend legend = chart.getLegend();
+		// legend.setItemType(LegendItemType.SERIES_LITERAL);
+		legend.setVisible(false);
+		// adjustFont(legend.getText().getFont(), NORMAL_SIZE);
 
 		TextDataSet categoryValues = TextDataSetImpl.create(oValues);//$NON-NLS-1$
 
@@ -160,17 +159,17 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		sdOrthogonal1.setSeriesDefinitionIndex(0);
 		sd.getOrthogonalSampleData().add(sdOrthogonal1);
 
-//		OrthogonalSampleData sdOrthogonal2 = DataFactory.eINSTANCE
-//				.createOrthogonalSampleData();
-//		sdOrthogonal2.setDataSetRepresentation("");//$NON-NLS-1$
-//		sdOrthogonal2.setSeriesDefinitionIndex(1);
-//		sd.getOrthogonalSampleData().add(sdOrthogonal2);
-//
-//		OrthogonalSampleData sdOrthogonal3 = DataFactory.eINSTANCE
-//				.createOrthogonalSampleData();
-//		sdOrthogonal3.setDataSetRepresentation("");//$NON-NLS-1$
-//		sdOrthogonal3.setSeriesDefinitionIndex(2);
-//		sd.getOrthogonalSampleData().add(sdOrthogonal3);
+		// OrthogonalSampleData sdOrthogonal2 = DataFactory.eINSTANCE
+		// .createOrthogonalSampleData();
+		//		sdOrthogonal2.setDataSetRepresentation("");//$NON-NLS-1$
+		// sdOrthogonal2.setSeriesDefinitionIndex(1);
+		// sd.getOrthogonalSampleData().add(sdOrthogonal2);
+		//
+		// OrthogonalSampleData sdOrthogonal3 = DataFactory.eINSTANCE
+		// .createOrthogonalSampleData();
+		//		sdOrthogonal3.setDataSetRepresentation("");//$NON-NLS-1$
+		// sdOrthogonal3.setSeriesDefinitionIndex(2);
+		// sd.getOrthogonalSampleData().add(sdOrthogonal3);
 
 		chart.setSampleData(sd);
 
@@ -193,7 +192,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		// Dial 1
 		DialSeries seDial1 = (DialSeries) DialSeriesImpl.create();
 		seDial1.setDataSet(NumberDataSetImpl.create(new double[] { 20 }));
-		seDial1.setSeriesIdentifier("Temperature");//$NON-NLS-1$
+		seDial1.setSeriesIdentifier("超期率");//$NON-NLS-1$
 		seDial1.getNeedle().setDecorator(LineDecorator.ARROW_LITERAL);
 
 		Dial dial = seDial1.getDial();
@@ -202,27 +201,26 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 		dial.setStartAngle(0);
 		dial.setStopAngle(180);
-		dial.getMajorGrid().getTickAttributes().setVisible(false);
+		// dial.getMajorGrid().getTickAttributes().setVisible(false);
 		dial.getMinorGrid().getTickAttributes().setVisible(false);
-		dial.getLabel().setVisible(false);
-		// seDial1.getDial().getMinorGrid().getTickAttributes()
-		// .setColor(ColorDefinitionImpl.BLACK());
-		// seDial1.getDial().getMinorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
+		// dial.getLabel().setVisible(false);
+		seDial1.getDial().getMajorGrid().getTickAttributes()
+				.setColor(ColorDefinitionImpl.BLACK());
+		seDial1.getDial().getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
 		dial.getScale().setMin(NumberDataElementImpl.create(0));
 		dial.getScale().setMax(NumberDataElementImpl.create(100));
 		dial.getScale().setStep(10);
+		FontDefinition font = dial.getLabel().getCaption().getFont();
+		adjustFont(font, SMALL_SIZE);
 
 		DialRegion dregion1 = DialRegionImpl.create();
 		dregion1.setFill(GradientImpl.create(
 				getRGBColorDefinition(Utils.COLOR_RED[0]),
-				getRGBColorDefinition(Utils.COLOR_RED[10]), 45, true));
+				getRGBColorDefinition(Utils.COLOR_RED[10]), 45, false));
 		dregion1.setOutline(LineAttributesImpl.create(ColorDefinitionImpl
 				.BLACK().darker(), LineStyle.SOLID_LITERAL, 1));
 		dregion1.setStartValue(NumberDataElementImpl.create(70));
 		dregion1.setEndValue(NumberDataElementImpl.create(100));
-		// 设置内部半径，和外部半径，通过以下两句，使色彩区域变成yigezh
-		// dregion1.setInnerRadius(40);
-		// dregion1.setOuterRadius(-1);
 		dial.getDialRegions().add(dregion1);
 
 		DialRegion dregion2 = DialRegionImpl.create();
@@ -355,11 +353,19 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 	}
 
 	private double[] getSchedualParameterValues() {
+		// "正常完成"
+		data.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_NORMAL);
+		// "超期完成",
+		data.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED_DELAY);
+		// "进度延迟",
+		data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
+		// "正常进行"
+		data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
 		return new double[] { 10, 20, 15, 29, 30 };
 	}
 
 	private String[] getSchedualParameterNames() {
-		return new String[] { "正常完成", "超期完成", "进度延迟", "预期延迟", "正常进行" };
+		return new String[] { "正常完成", "超期完成", "进度延迟", "正常进行" };
 	}
 
 	public static Chart createStackedBar() {
@@ -492,8 +498,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		font = yAxisPrimary.getLabel().getCaption().getFont();
 		adjustFont(font, NORMAL_SIZE);
 
-		
-		//取数
+		// 取数
 		TextDataSet categoryValues = TextDataSetImpl.create(deptParameter); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		NumberDataSet orthoValues1 = NumberDataSetImpl.create(deptValue1);
 		NumberDataSet orthoValues2 = NumberDataSetImpl.create(deptValue2);
@@ -515,7 +520,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		sdOrthogonal2.setSeriesDefinitionIndex(1);
 		sd.getOrthogonalSampleData().add(sdOrthogonal2);
 
-		//绑定
+		// 绑定
 		cwaBar.setSampleData(sd);
 
 		// X-Series
@@ -551,7 +556,6 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 		return cwaBar;
 	}
-
 
 	private void adjustFont(FontDefinition font, int size) {
 		font.setSize(size);

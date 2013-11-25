@@ -81,7 +81,7 @@ public class ProjectSetContent extends AbstractProjectPage {
 	}
 	
 	private void setSummaryText(Composite header, ProjectProvider data) {
-		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_TOTAL);
+		Object value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING);
 		value1 = value1 == null ? 0 : value1;
 		Object value2 = data
 				.getSummaryValue(ProjectProvider.F_SUMMARY_FINISHED);
@@ -91,11 +91,11 @@ public class ProjectSetContent extends AbstractProjectPage {
 		value3 = value3 == null ? 0 : value3;
 		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_NORMAL);
+		value1 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_NORMAL);
 		value1 = value1 == null ? 0 : value1;
-		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_DELAY);
+		value2 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_DELAY);
 		value2 = value2 == null ? 0 : value2;
-		value3 = data.getSummaryValue(ProjectProvider.F_SUMMARY_ADVANCE);
+		value3 = data.getSummaryValue(ProjectProvider.F_SUMMARY_PROCESSING_ADVANCE);
 		value3 = value3 == null ? 0 : value3;
 		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
 				+ value3);
