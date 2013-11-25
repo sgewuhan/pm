@@ -139,7 +139,7 @@ public class DBInit implements Runnable {
 		setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_EAI_SAP_HOST);
 		setting.put("desc", "SAP Ö÷»ú");
-		setting.put("value", "172.16.9.74");
+		setting.put("value", "172.16.9.74");//90
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
@@ -147,7 +147,7 @@ public class DBInit implements Runnable {
 		setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_EAI_SAP_INSTANCENUMBER);
 		setting.put("desc", "SAP ÊµÀý±àºÅ");
-		setting.put("value", "00");
+		setting.put("value", "00");//01
 		try {
 			col.insert(setting);
 		} catch (Exception e) {

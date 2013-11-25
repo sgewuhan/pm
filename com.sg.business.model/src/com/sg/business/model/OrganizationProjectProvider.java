@@ -46,8 +46,16 @@ public class OrganizationProjectProvider extends ProjectProvider {
 
 			Map<String, Object> map = new HashMap<String, Object>();
 
-			int proFinishCount = 0;
-			int proProcessCount = 0;
+			int iF_SUMMARY_FINISHED = 0;
+			int iF_SUMMARY_FINISHED_DELAY = 0;
+			int iF_SUMMARY_FINISHED_NORMAL = 0;
+			int iF_SUMMARY_FINISHED_ADVANCED = 0;
+
+			int iF_SUMMARY_PROCESSING = 0;
+			int iF_SUMMARY_PROCESSING_DELAY = 0;
+			int iF_SUMMARY_PROCESSING_NORMAL = 0;
+			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
+
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
@@ -57,23 +65,43 @@ public class OrganizationProjectProvider extends ProjectProvider {
 						Project.class);
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
-					proFinishCount++;
+					iF_SUMMARY_FINISHED++;
+					if (project.isDelay()) {
+						iF_SUMMARY_FINISHED_DELAY++;
+					} else if (project.isAdvanced()) {
+						iF_SUMMARY_FINISHED_ADVANCED++;
+					} else {
+						iF_SUMMARY_FINISHED_NORMAL++;
+					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
-					proProcessCount++;
+					iF_SUMMARY_PROCESSING++;
+					if (project.maybeDelay()) {
+						iF_SUMMARY_PROCESSING_DELAY++;
+					} else if (project.maybeAdvanced()) {
+						iF_SUMMARY_PROCESSING_ADVANCE++;
+					} else {
+						iF_SUMMARY_PROCESSING_NORMAL++;
+					}
 				}
-
 				result.add(project);
 			}
 			map.put(F_SUMMARY_TOTAL, result.size());
-			map.put(F_SUMMARY_FINISHED, proFinishCount);
-			map.put(F_SUMMARY_PROCESSING, proProcessCount);
+
+			map.put(F_SUMMARY_FINISHED, iF_SUMMARY_FINISHED);
+			map.put(F_SUMMARY_FINISHED_DELAY, iF_SUMMARY_FINISHED_DELAY);
+			map.put(F_SUMMARY_FINISHED_NORMAL, iF_SUMMARY_FINISHED_NORMAL);
+			map.put(F_SUMMARY_FINISHED_ADVANCE, iF_SUMMARY_FINISHED_ADVANCED);
+
+			map.put(F_SUMMARY_PROCESSING, iF_SUMMARY_PROCESSING);
+			map.put(F_SUMMARY_PROCESSING_DELAY, iF_SUMMARY_PROCESSING_DELAY);
+			map.put(F_SUMMARY_PROCESSING_NORMAL, iF_SUMMARY_PROCESSING_NORMAL);
+			map.put(F_SUMMARY_PROCESSING_ADVANCE, iF_SUMMARY_PROCESSING_ADVANCE);
 
 			setSummaryDate(map);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-
 		return result;
 	}
 
@@ -93,10 +121,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 						ILifecycle.STATUS_WIP_VALUE }));
 		dbo.put("$or",
 				new BasicDBObject[] {
-						// new BasicDBObject().append(Project.F_PLAN_START,
-						// new BasicDBObject().append("$gte",
-						// start).append("$lte", stop))
-						// ,
 
 						new BasicDBObject().append(Project.F_ACTUAL_START,
 								new BasicDBObject().append("$gte", start)
@@ -136,40 +160,5 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		}
 		return result;
 	}
-
-	// public void setF_SUMMARY_NORMAL_PROCESS(int count) {
-	// setValue(F_SUMMARY_NORMAL_PROCESS,count);
-	// }
-	//
-	// public void setF_SUMMARY_DELAY(int count) {
-	// setValue(F_SUMMARY_DELAY,count);
-	// }
-	//
-	// public void setF_SUMMARY_ADVANCE(int count) {
-	// setValue(F_SUMMARY_ADVANCE,count);
-	// }
-	//
-	// public void setF_SUMMARY_NORMAL_COST(int count) {
-	// setValue(F_SUMMARY_NORMAL_COST,count);
-	// }
-	//
-	// public void setF_SUMMARY_OVER_COST(int count) {
-	// setValue(F_SUMMARY_OVER_COST,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_TOTAL(int count) {
-	// setValue(F_SUMMARY_TOTAL,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_FINISHED(int count) {
-	// setValue(F_SUMMARY_FINISHED,count);
-	// }
-	//
-	// @Override
-	// public void setF_SUMMARY_PROCESSING(int count) {
-	// setValue(F_SUMMARY_PROCESSING,count);
-	// }
 
 }

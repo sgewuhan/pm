@@ -391,6 +391,7 @@ public class User extends PrimaryObject {
 	}
 
 	private SummaryUserWorks summary;
+	private ProjectManagerProvider projectProvider;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -400,6 +401,13 @@ public class User extends PrimaryObject {
 				summary = new SummaryUserWorks(this);
 			}
 			return (T) summary;
+		}else if (adapter == ProjectProvider.class) {
+			if (projectProvider == null) {
+				projectProvider = ModelService
+						.createModelObject(ProjectManagerProvider.class);
+				projectProvider.setUser(this);
+			}
+			return (T) projectProvider;
 		}
 		return super.getAdapter(adapter);
 	}

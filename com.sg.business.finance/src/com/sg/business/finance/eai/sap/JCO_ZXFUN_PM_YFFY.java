@@ -1,4 +1,4 @@
-package com.sg.business.commons.eai.sap;
+package com.sg.business.finance.eai.sap;
 
 import java.util.HashMap;
 import java.util.Map;

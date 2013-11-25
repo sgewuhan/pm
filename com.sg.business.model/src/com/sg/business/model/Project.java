@@ -1374,15 +1374,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 		String userId = context.getAccountInfo().getConsignerId();
 		Organization org = getFunctionOrganization();
-		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
-		if (role != null) {
-			List<PrimaryObject> assignmentList = role.getAssignment();
-			if (assignmentList != null && assignmentList.size() > 0) {
-				for (PrimaryObject po : assignmentList) {
-					RoleAssignment roleAssignment = (RoleAssignment) po;
-					String assignmentuserId = roleAssignment.getUserid();
-					if (userId.equals(assignmentuserId)) {
-						return true;
+		if (org != null) {
+			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+			if (role != null) {
+				List<PrimaryObject> assignmentList = role.getAssignment();
+				if (assignmentList != null && assignmentList.size() > 0) {
+					for (PrimaryObject po : assignmentList) {
+						RoleAssignment roleAssignment = (RoleAssignment) po;
+						String assignmentuserId = roleAssignment.getUserid();
+						if (userId.equals(assignmentuserId)) {
+							return true;
+						}
 					}
 				}
 			}
@@ -2139,7 +2141,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (!isAdvanced()) {
 			List<Work> milestones = getMileStoneWorks();
 			for (int i = 0; i < milestones.size(); i++) {
-				if (!milestones.get(i).isAdvanceNow()) {
+				if (!milestones.get(i).isAdvanced()) {
 					return false;
 				}
 			}
@@ -2148,11 +2150,27 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return false;
 	}
 
+	public List<PrimaryObject> getProduct() {
+		return getRelationById(F__ID, ProductItem.F_PROJECT_ID,
+				ProductItem.class);
+	}
+
+	public void doProductFinal(IContext context, List<?> productList)
+			throws Exception {
+		ObjectId _id = get_id();
+		for (Object object : productList) {
+			BasicDBObject q = new BasicDBObject();
+			q.put(ProductItem.F_PROJECT_ID, _id);
+			q.put(ProductItem.F_DESC, object);
+			ProductItem productItem = ModelService.createModelObject(q,
+					ProductItem.class);
+			productItem.doFinal(context);
+		}
+	}
 	public UserProjectPerf makeUserProjectPerf() {
 		UserProjectPerf pperf = ModelService
 				.createModelObject(UserProjectPerf.class);
 		pperf.setValue(UserProjectPerf.F_PROJECT_ID, get_id());
 		return pperf;
 	}
-
 }

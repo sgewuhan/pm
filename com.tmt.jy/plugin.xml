@@ -6,12 +6,131 @@
       <taskForm
             editorId="jygenericapprovalprocess.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.audit"
+            name="审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.check"
+            name="校核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="jy.jyGenericApprovalProcess"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="jygenericapprovalprocess.approve"
+            name="批准"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.audit"
+            name="审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.check"
+            name="校核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.standardization"
+            name="标准化审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="jy.jyGenericApprovalProcess1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="jygenericapprovalprocess.approve"
+            name="批准"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jygenericapprovalprocess.audit"
+            name="审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jy.jyGenericApprovalProcess2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="jy.jyGenericApprovalProcess2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="jygenericapprovalprocess.approve"
+            name="批准"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="jy.jyGenericApprovalProcess3">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="jy.jyGenericApprovalProcess3"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -59,6 +178,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -102,6 +240,25 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -147,6 +304,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -191,106 +367,26 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
-   </extension>
-   <extension
-         point="com.sg.bpm.workflow.taskForm">
-      <taskForm
-            editorId="jygenericapprovalprocess.approve"
-            name="批准"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess2">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="jygenericapprovalprocess.audit"
-            name="审核"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess2">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-   </extension>
-   <extension
-         point="com.sg.bpm.workflow.taskForm">
-      <taskForm
-            editorId="jygenericapprovalprocess.approve"
-            name="批准"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="jygenericapprovalprocess.audit"
-            name="审核"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="jygenericapprovalprocess.check"
-            name="校核"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-   </extension>
-   <extension
-         point="com.sg.bpm.workflow.taskForm">
-      <taskForm
-            editorId="jygenericapprovalprocess.approve"
-            name="批准"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess1">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="jygenericapprovalprocess.audit"
-            name="审核"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess1">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="jygenericapprovalprocess.check"
-            name="校核"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess1">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
-            editorId="jygenericapprovalprocess.standardization"
-            name="标准化审核"
-            persistentFields="choice,comment"
-            processDefinitionId="jy.jyGenericApprovalProcess1">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
    </extension>
 
 </plugin>

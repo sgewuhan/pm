@@ -413,7 +413,7 @@
                id="vis.project.org"
                minimized="false"
                moveable="false"
-               ratio="0.3"
+               ratio="0.25"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
@@ -434,6 +434,17 @@
          <view
                closeable="false"
                id="vis.project.producttype"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="vis.project.org"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.project.myprojectset"
                minimized="false"
                moveable="false"
                relationship="stack"

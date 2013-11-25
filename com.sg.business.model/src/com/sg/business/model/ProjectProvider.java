@@ -25,31 +25,66 @@ public abstract class ProjectProvider extends PrimaryObject {
 	 * 进展中项目数
 	 */
 	public static final String F_SUMMARY_PROCESSING = "s3";
+	
+	
+	/**
+	 * 进行中，正常进行
+	 */
+	public static final String F_SUMMARY_PROCESSING_NORMAL = "s4";
+	
+	/**
+	 * 进行中，预期超期
+	 */
+	public static final String F_SUMMARY_PROCESSING_DELAY = "s5";
 
 	/**
-	 * 正常进行中
+	 * 进展提前
 	 */
-	public static final String F_SUMMARY_NORMAL_PROCESS = "s4";
+	public static final String F_SUMMARY_PROCESSING_ADVANCE = "s13";
+
 
 	/**
-	 * 延期
+	 * 已完成，正常完成
 	 */
-	public static final String F_SUMMARY_DELAY = "s5";
+	public static final String F_SUMMARY_FINISHED_NORMAL = "s6";
 
+	
 	/**
-	 * 提前
+	 * 已完成，超期完成
 	 */
-	public static final String F_SUMMARY_ADVANCE = "s8";
+	public static final String F_SUMMARY_FINISHED_DELAY  = "s7";
+
+
+//	/**
+//	 * 正常
+//	 */
+//	public static final String F_SUMMARY_NORMAL= "s8";
+
+//	/**
+//	 * 延期
+//	 */
+//	public static final String F_SUMMARY_DELAY = "s9";
+
+//	/**
+//	 * 提前
+//	 */
+//	public static final String F_SUMMARY_ADVANCE = "s10";
 
 	/**
 	 * 成本正常
 	 */
-	public static String F_SUMMARY_NORMAL_COST = "s6";
+	public static String F_SUMMARY_NORMAL_COST = "s11";
 
 	/**
 	 * 成本超支
 	 */
-	public static String F_SUMMARY_OVER_COST = "s7";
+	public static String F_SUMMARY_OVER_COST = "s12";
+	
+	/**
+	 * 提前完成的
+	 */
+	public static final String F_SUMMARY_FINISHED_ADVANCE = "s14";
+
 
 	/**
 	 * 参数名称：按年计算

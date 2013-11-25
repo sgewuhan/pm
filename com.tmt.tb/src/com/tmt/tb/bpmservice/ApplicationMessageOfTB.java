@@ -1,9 +1,14 @@
 package com.tmt.tb.bpmservice;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
+import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
 
@@ -38,6 +43,22 @@ public class ApplicationMessageOfTB extends MessageService {
 			} catch (Exception e) {
 				return null;
 			}
+		} else if ("financialmessage".equals(messageOperation)) {
+			try {
+				if (host instanceof Work) {
+					Work work = (Work) host;
+					Object projectid = getInputValue("project_id");
+					if (projectid instanceof String) {
+						ObjectId _id = new ObjectId((String) projectid);
+						Project project = ModelService.createModelObject(Project.class, _id);
+						String content = "项目立项工作:" + work.getLabel() + " ";
+						content = content+"发来项目: "+project.getDesc()+" 需要审核项目工作令号和预算信息";
+						return content;
+					}
+				}
+			} catch (Exception e) {
+				return null;
+			}
 		}
 		return super.getMessageContent();
 	}
@@ -58,6 +79,13 @@ public class ApplicationMessageOfTB extends MessageService {
 				Work work = (Work) host;
 				List<?> participatesIdList = work.getParticipatesIdList();
 				return (List<String>) participatesIdList;
+			}
+		} else if ("financialmessage".equals(messageOperation)) {
+			Object financial = getInputValue("act_prj_financial");
+			if (financial instanceof String) {
+				List<String> financialList = new ArrayList<String>();
+				financialList.add((String) financial);
+				return financialList;
 			}
 		}
 		return super.getReceiverList();
@@ -84,6 +112,15 @@ public class ApplicationMessageOfTB extends MessageService {
 					return (Work) host;
 				}
 			}
+		} else if ("financialmessage".equals(messageOperation)) {
+			Object content = getInputValue("content");
+			if (content instanceof String) {
+				String jsonContent = (String) content;
+				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
+				if (host instanceof Work) {
+					return (Work) host;
+				}
+			}
 		}
 		return super.getTarget();
 	}
@@ -95,6 +132,8 @@ public class ApplicationMessageOfTB extends MessageService {
 			return "项目立项审批通知";
 		} else if ("applicationfinishmessage".equals(messageOperation)) {
 			return "项目立项审批通知";
+		} else if ("financialmessage".equals(messageOperation)) {
+			return "项目立项审核通知";
 		}
 		return super.getMessageTitle();
 	}

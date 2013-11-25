@@ -6,7 +6,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.audit"
             name="审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDocumentApprove1">
          <processParameter
                processParameterName="choice"
@@ -16,12 +16,17 @@
       <taskForm
             editorId="kh.khDocumentApprove.approval"
             name="批准"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDocumentApprove1">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kh.khDocumentApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -29,7 +34,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.audit"
             name="校核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDocumentApprove2">
          <processParameter
                processParameterName="choice"
@@ -39,12 +44,17 @@
       <taskForm
             editorId="kh.khDocumentApprove.approval"
             name="批准"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDocumentApprove2">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kh.khDocumentApprove2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -52,7 +62,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.audit"
             name="审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDocumentApprove3">
          <processParameter
                processParameterName="choice"
@@ -62,7 +72,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.check"
             name="校核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDocumentApprove3">
          <processParameter
                processParameterName="choice"
@@ -72,12 +82,17 @@
       <taskForm
             editorId="kh.khDocumentApprove.approval"
             name="批准"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDocumentApprove3">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kh.khDocumentApprove3"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -85,7 +100,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.check"
             name="校核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDrawingApprove">
          <processParameter
                processParameterName="choice"
@@ -95,7 +110,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.audit"
             name="审核"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDrawingApprove">
          <processParameter
                processParameterName="choice"
@@ -105,7 +120,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.craft"
             name="工艺"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDrawingApprove">
          <processParameter
                processParameterName="choice"
@@ -115,7 +130,7 @@
       <taskForm
             editorId="kh.khDocumentApprove.audit"
             name="标准化"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="kh.khDrawingApprove">
          <processParameter
                processParameterName="choice"
@@ -125,12 +140,17 @@
       <taskForm
             editorId="kh.khDocumentApprove.standardize"
             name="批准"
-            persistentFields="comment,choice"
+            persistentFields=",accessorycomment,choice"
             processDefinitionId="kh.khDrawingApprove">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="kh.khDrawingApprove"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -177,6 +197,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -219,6 +258,25 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
       <editor
@@ -263,6 +321,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -306,6 +383,25 @@
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
@@ -348,6 +444,25 @@
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
                title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="false"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
          </basicpage>
       </editor>
    </extension>
