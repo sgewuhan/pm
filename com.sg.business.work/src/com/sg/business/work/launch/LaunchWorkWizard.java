@@ -23,7 +23,7 @@ import com.sg.widgets.part.editor.page.BasicWizardPage;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
+public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard {
 
 	private static final String PAGE_LAUNCH_WORK_BASICPAGE = "launch.work.basicpage";
 	private SelectWorkDefinitionPage selectWorkDefinitionPage;
@@ -93,7 +93,7 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 		IContext context = new CurrentAccountContext();
 		try {
 			work.doSave(context);
-			if(startWorkWhenFinish){
+			if (startWorkWhenFinish) {
 				work.doStart(context);
 			}
 			return true;
@@ -101,14 +101,16 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 			MessageUtil.showToast(e);
 			return false;
 		}
-		
+
 	}
 
 	public void setWorkDefinition(WorkDefinition workd) {
 		// …Ë÷√¡˜≥Ã
 		Work work = (Work) editorInput.getData();
 		try {
-			workd.makeStandloneWork(work, editorInput.getContext());
+			if (workd != null) {
+				workd.makeStandloneWork(work, editorInput.getContext());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -127,11 +129,11 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 			}
 		} else if (page == flowSettingPage) {
 			return getConfirmPage();
-		} else if(page == comfirmPage){
+		} else if (page == comfirmPage) {
 			return null;
-		}else if(page == selectWorkDefinitionPage ){
+		} else if (page == selectWorkDefinitionPage) {
 			return basicPage;
-		}else {
+		} else {
 			return null;
 		}
 	}
@@ -141,18 +143,18 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 			flowSettingPage = new WorkFlowSettingPage();
 			flowSettingPage.setInput(editorInput);
 			flowSettingPage.setWizard(this);
-		}else{
+		} else {
 			flowSettingPage.refresh();
 		}
 		return flowSettingPage;
 	}
 
 	private IWizardPage getConfirmPage() {
-		if(comfirmPage==null){
+		if (comfirmPage == null) {
 			comfirmPage = new ConfirmPage();
 			comfirmPage.setInput((Work) editorInput.getData());
 			comfirmPage.setWizard(this);
-		}else{
+		} else {
 			comfirmPage.refresh();
 		}
 		return comfirmPage;
@@ -163,10 +165,10 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 		this.startWorkWhenFinish = selection;
 	}
 
-	public PrimaryObjectEditorInput getInput(){
+	public PrimaryObjectEditorInput getInput() {
 		return editorInput;
 	}
-	
+
 	@Override
 	public boolean canFinish() {
 		return super.canFinish();
@@ -174,6 +176,6 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard{
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		
+
 	}
 }

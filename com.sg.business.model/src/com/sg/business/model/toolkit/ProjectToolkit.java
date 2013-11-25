@@ -779,7 +779,7 @@ public class ProjectToolkit {
 		Work wbsRoot = project.getWBSRoot();
 
 		// 将工作添加到项目根工作中
-		work.setValue(Work.F_ROOT_ID, wbsRoot);
+		work.setValue(Work.F_ROOT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PROJECT_ID, projectId);
 		int seq = wbsRoot.getMaxChildSeq();
 		work.setValue(Work.F_SEQ, new Integer(seq + 1));
