@@ -189,7 +189,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	
 	@Override
 	public String getProjectSetName() {
-		return getDesc() + "ÏîÄ¿¼¯";
+		return getDesc();
 	}
 
 	/**

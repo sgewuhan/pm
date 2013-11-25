@@ -100,7 +100,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String desc = project.getDesc();
 		desc = Utils.getPlainText(desc);
-		sb.append(" <span style='width:"+(cell.getBounds().width - 120)+"px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap'><b>");
+		sb.append(" <span style='width:"+(cell.getBounds().width - 160)+"px;text-overflow:ellipsis;overflow:hidden;'><b>");
 		sb.append(desc);
 		sb.append("</b>");
 		sb.append("</span>");

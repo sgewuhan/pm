@@ -75,7 +75,7 @@ public class ProjectSetContent extends AbstractProjectPage {
 		String projectSetName = data.getProjectSetName();
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(projectSetName + " 摘要");
+		sb.append(projectSetName + " 项目摘要");
 		sb.append("</span>");
 		return sb.toString();
 	}
@@ -95,15 +95,7 @@ public class ProjectSetContent extends AbstractProjectPage {
 		value2 = data.summaryData.cost_over;
 		costSummary.setText("正常/超支：" + value1 + "/" + value2);
 
-		filterLabel.setText(getParameterText());
 		header.layout();
 	}
 
-	private String getParameterText() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(getHeadParameterText());
-		sb.append("</span>");
-		return sb.toString();
-	}
 }

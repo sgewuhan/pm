@@ -26,7 +26,7 @@ public class VisProjectSet extends MasterDetailDataSetFactory {
     		return new DataSet(new ArrayList<PrimaryObject>());
     	}
     	ProjectProvider pp = (ProjectProvider)master;
-    	List<PrimaryObject> list=pp.getProjectSet();
+    	List<PrimaryObject> list=pp.getData();
     	return new DataSet(list);
     }
 }
