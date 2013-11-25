@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 
+import com.sg.business.model.IParameterListener;
 import com.sg.business.model.ProjectProvider;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
@@ -37,14 +38,14 @@ import com.sg.widgets.part.editor.IEditorActionListener;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.INavigatorPageBodyPartCreater;
 import com.sg.widgets.part.editor.page.NavigatorPage;
+import com.sg.widgets.viewer.ViewerControl;
 
 @SuppressWarnings("restriction")
 public abstract class AbstractProjectPage implements
-		INavigatorPageBodyPartCreater {
+		INavigatorPageBodyPartCreater, IParameterListener {
 
 	private static final int INFOBANNER_HEIGHT = 68;
 	private static final int MARGIN = 4;
-	private Object[] parameters = new Object[10];
 	Label filterLabel;
 	Composite header;
 	protected NavigatorControl navi;
@@ -52,6 +53,21 @@ public abstract class AbstractProjectPage implements
 
 	public AbstractProjectPage() {
 
+	}
+
+	@Override
+	public void parameterChanged(Object[] oldParameters, Object[] newParameters) {
+		// doquery
+		if (navi != null) {
+			ViewerControl viewerControl = navi.getViewerControl();
+			if (!viewerControl.getControl().isDisposed()) {
+				viewerControl.doReloadData(true);
+			}
+		}
+		if (filterLabel != null && !filterLabel.isDisposed()) {
+			filterLabel.setText(getParameterText());
+			header.layout();
+		}
 	}
 
 	@Override
@@ -64,14 +80,7 @@ public abstract class AbstractProjectPage implements
 			PrimaryObjectEditorInput input, NavigatorPage navigatorPage) {
 		// 设置缺省的参数
 		data = (ProjectProvider) input.getData();
-		Object[] paras = data.getParameters();
-		if (paras != null) {
-			parameters = paras;
-		} else {
-			parameters[0] = Calendar.getInstance();
-			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
-			data.setParameters(parameters);
-		}
+		data.addParameterChangedListener(this);
 		this.navi = navi;
 
 		body.setLayout(new FormLayout());
@@ -105,7 +114,7 @@ public abstract class AbstractProjectPage implements
 
 		// 管理navigator表格事件
 		handleNavigatorTableEvent();
-		
+
 	}
 
 	private void handleNavigatorTableEvent() {
@@ -207,10 +216,12 @@ public abstract class AbstractProjectPage implements
 		fd.left = new FormAttachment(menuButton, 4);
 		fd.top = new FormAttachment(32);
 
+		filterLabel.setText(getParameterText());
+
 		return header;
 	}
 
-	protected abstract String getProjectSetPageLabel() ;
+	protected abstract String getProjectSetPageLabel();
 
 	protected void showFilterMenu(Control menuButton) {
 		final Shell shell = new Shell(menuButton.getShell(), SWT.BORDER);
@@ -316,6 +327,8 @@ public abstract class AbstractProjectPage implements
 		if (yearIndex < 0) {
 			return;
 		}
+		Object[] parameters = new Object[2];
+		parameters[0] = Calendar.getInstance();
 		if (monthIndex > 0) {
 			parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_MONTH;
 			((Calendar) parameters[0]).set(Calendar.MONTH, monthIndex - 1);
@@ -330,30 +343,23 @@ public abstract class AbstractProjectPage implements
 			((Calendar) parameters[0]).set(Calendar.YEAR, yearIndex);
 
 		}
-
-		reQuery();
-
-	}
-
-	private void reQuery() {
-		// doquery
 		data.setParameters(parameters);
-		navi.getViewerControl().doReloadData(true);
 	}
 
 	protected String getHeadParameterText() {
 		StringBuffer sb = new StringBuffer();
-		if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR.equals(parameters[1])) {
-			sb.append(((Calendar) parameters[0]).get(Calendar.YEAR) + "年");
+		if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR
+				.equals(data.parameters[1])) {
+			sb.append(((Calendar) data.parameters[0]).get(Calendar.YEAR) + "年");
 		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
-				.equals(parameters[1])) {
-			Calendar calendar = (Calendar) parameters[0];
+				.equals(data.parameters[1])) {
+			Calendar calendar = (Calendar) data.parameters[0];
 			int month = calendar.get(Calendar.MONTH);
 			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + (1 + month) / 4)
 					+ "季度");
 		} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
-				.equals(parameters[1])) {
-			Calendar calendar = (Calendar) parameters[0];
+				.equals(data.parameters[1])) {
+			Calendar calendar = (Calendar) data.parameters[0];
 			int month = calendar.get(Calendar.MONTH);
 			sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
 		}
@@ -374,4 +380,11 @@ public abstract class AbstractProjectPage implements
 		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
 	}
 
+	protected String getParameterText() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
+		sb.append(getHeadParameterText());
+		sb.append("</span>");
+		return sb.toString();
+	}
 }
