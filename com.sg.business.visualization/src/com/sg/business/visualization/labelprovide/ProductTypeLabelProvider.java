@@ -51,9 +51,9 @@ public class ProductTypeLabelProvider extends ColumnLabelProvider {
 					+ producttTypeProvider.getDesc()+","+producttTypeProvider.getUserId()
 					+ "\" target=\"_rwt\">");
 			sb.append("<img src='");
-			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_24,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-			sb.append("' style='border-style:none;position:absolute; right:20; bottom:8; display:block;' width='24' height='24' />");
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
 			sb.append("</a>");
 			
 			sb.append("<b>");
