@@ -55,7 +55,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 						ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 						List<PrimaryObject> changeWork = wiz.getChangeWork();
 						changeWork.clear();
-						Tree control2 =(Tree) getControl();
+						Tree control2 = (Tree) getControl();
 						TreeItem[] treeItems = control2.getItems();
 						setChangeWork(changeWork, treeItems);
 						ChangeUserOfWBSPage.this.getContainer().updateButtons();
@@ -64,16 +64,16 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 					public void setChangeWork(List<PrimaryObject> changeWork,
 							TreeItem[] treeItems) {
 						for (TreeItem treeItem : treeItems) {
-							if(treeItem.getChecked()){
-								changeWork.add((PrimaryObject) treeItem.getData());
+							if (treeItem.getChecked()) {
+								changeWork.add((PrimaryObject) treeItem
+										.getData());
 							}
-							if(treeItem.getItemCount()>0){
+							if (treeItem.getItemCount() > 0) {
 								setChangeWork(changeWork, treeItem.getItems());
 							}
 						}
 					}
-					
-					
+
 				});
 
 		StructuredViewer viewer = navi.getViewer();
@@ -161,9 +161,14 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 				IProcessControl pc = (IProcessControl) work
 						.getAdapter(IProcessControl.class);
-				if (ProjectToolkit.checkProcessInternal(pc, IWorkCloneFields.F_WF_EXECUTE,
-						(String) wiz.getChangedUserId())) {
-					return Widgets.getImage(ImageResource.CHECKED_2_16);
+				String changedUserId = (String) wiz.getChangedUserId();
+				if (changedUserId != null) {
+					if (ProjectToolkit.checkProcessInternal(pc,
+							IWorkCloneFields.F_WF_EXECUTE, changedUserId)) {
+						return Widgets.getImage(ImageResource.CHECKED_2_16);
+					} else {
+						return null;
+					}
 				} else {
 					return null;
 				}
@@ -185,7 +190,8 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 				IProcessControl pc = (IProcessControl) work
 						.getAdapter(IProcessControl.class);
-				if (ProjectToolkit.checkProcessInternal(pc, IWorkCloneFields.F_WF_CHANGE,
+				if (ProjectToolkit.checkProcessInternal(pc,
+						IWorkCloneFields.F_WF_CHANGE,
 						(String) wiz.getChangedUserId())) {
 					return Widgets.getImage(ImageResource.CHECKED_2_16);
 				} else {
@@ -320,7 +326,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 	@Override
 	public void activate() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

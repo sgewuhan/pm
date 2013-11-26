@@ -179,12 +179,15 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	private void checkDocumentNumber() throws Exception {
 		String documentNumber = getDocumentNumber();
-		BasicDBObject condition = new BasicDBObject();
-		condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
-		condition.put(Document.F__ID, new BasicDBObject().append("$ne", get_id()));
-		long l = getRelationCountByCondition(Document.class, condition );
-		if(l>0){
-			throw new Exception("该文档编号已存在，请重新录入文档编号");
+		if (documentNumber != null) {
+			BasicDBObject condition = new BasicDBObject();
+			condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
+			condition.put(Document.F__ID,
+					new BasicDBObject().append("$ne", get_id()));
+			long l = getRelationCountByCondition(Document.class, condition);
+			if (l > 0) {
+				throw new Exception("该文档编号已存在，请重新录入文档编号");
+			}
 		}
 	}
 
