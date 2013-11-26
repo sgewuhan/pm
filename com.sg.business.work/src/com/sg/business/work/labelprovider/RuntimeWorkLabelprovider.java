@@ -100,11 +100,14 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String desc = project.getDesc();
 		desc = Utils.getPlainText(desc);
-		sb.append("<b>项目: " + desc + "</b>");
-
+		sb.append(" <span style='width:"+(cell.getBounds().width - 160)+"px;text-overflow:ellipsis;overflow:hidden;'><b>");
+		sb.append(desc);
+		sb.append("</b>");
+		sb.append("</span>");
+		sb.append("<br/>");
+		sb.append("<small>");
 		String projectNumber = project.getProjectNumber();
-		sb.append(" [" + projectNumber + "]");
-
+		sb.append(projectNumber+" ");
 		Date _planStart = project.getPlanStart();
 		String planStart = "";
 		SimpleDateFormat sdf = new SimpleDateFormat(
@@ -132,7 +135,6 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		sb.append(planFinish);
 		sb.append("  ");
 
-		sb.append("<br/><small>");
 		String[] workOrders = project.getWorkOrders();
 		for (int i = 0; i < workOrders.length; i++) {
 			if (i == 0) {
@@ -224,7 +226,6 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 					+ "' style='float:right' width='16' height='16' />";
 			sb.append(imageUrl);
 		}
-		
 
 		IProcessControl pc = (IProcessControl) work
 				.getAdapter(IProcessControl.class);
@@ -232,7 +233,6 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		String imageUrl = "<img src='" + getHeaderImageURL(work, pc)
 				+ "' style='float:left;padding:6px' width='16' height='16' />";
 		sb.append(imageUrl);
-
 
 		// 工作desc
 		String workDesc = work.getDesc();
@@ -304,18 +304,19 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 	private String getWorkflowSummaryInformation(Work work, String userId) {
 		StringBuffer sb = new StringBuffer();
-		
-		
+
 		UserTask userTask = work.getLastDisplayTask(userId);
 		if (userTask == null) {
 			// 如果带有流程的，显示流程图标
 			if (work.isExecuteWorkflowActivateAndAvailable()) {
 				sb.append("<img src='");
-				sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_FLOW_16X9,
-						BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+				sb.append(FileUtil.getImageURL(
+						BusinessResource.IMAGE_FLOW_16X9,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER));
 				sb.append("' style='float:right;padding-right:4px' width='16' height='9' />");
 				return sb.toString();
-			}else{
+			} else {
 				return "";
 			}
 		}
@@ -455,10 +456,10 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_16,
 		// BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
-	
+
 	@Override
 	public String getToolTipText(Object element) {
-		
+
 		return element.toString();
 	}
 

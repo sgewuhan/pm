@@ -539,7 +539,10 @@
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
                name="名称"
                type="String"
-               width="240">
+               width="-1">
+         </column>
+         <column
+               columnDefinitionId="generic.activated">
          </column>
          <structure
                modelRelation="organization_organization">

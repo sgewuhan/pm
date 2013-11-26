@@ -219,6 +219,28 @@
                standalone="false"
                visible="true">
          </view>
+         <view
+               closeable="false"
+               id="project.navigator.delaywork"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.myproject"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delayprocess"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.myproject"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.vault">
@@ -1010,6 +1032,12 @@
             run="com.sg.business.pm2.set.MntRole"
             time="0:0:0">
       </schedualJob-->
+   </extension>
+   <extension
+         point="com.mobnut.portal.portalNotice">
+      <notice
+            noticeCreator="com.mobnut.portal.notice.ImageNoticeCreator">
+      </notice>
    </extension>
 
 </plugin>

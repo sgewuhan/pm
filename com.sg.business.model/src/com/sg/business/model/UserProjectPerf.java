@@ -2,13 +2,10 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.types.ObjectId;
 
-import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.ModelService;
@@ -20,79 +17,73 @@ import com.mongodb.DBObject;
 import com.sg.widgets.MessageUtil;
 
 public class UserProjectPerf extends ProjectProvider {
-	
-	public static final String F_PROJECT_ID = "project_id";
-	
-	public static final String F_USERID = "userid";
-	
-	public static final String EDITOR_SETTING = "editor.visualization.addprojectset";
 
+	public static final String F_PROJECT_ID = "project_id";
+
+	public static final String F_USERID = "userid";
+
+	public static final String EDITOR_SETTING = "editor.visualization.addprojectset";
 
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
+			int iF_SUMMARY_FINISHED = 0;
+			int iF_SUMMARY_FINISHED_DELAY = 0;
+			int iF_SUMMARY_FINISHED_NORMAL = 0;
+			int iF_SUMMARY_FINISHED_ADVANCED = 0;
 
-			Map<String, Object> map = new HashMap<String, Object>();
-
-			int proFinishCount = 0;
-			int finishDelayCount = 0;
-			int finishNormalCount = 0;
-
-			int proProcessCount = 0;
-			int processDelayCount = 0;
-			int processNormalCount = 0;
-			
-			
-			int advanceCount=0;
+			int iF_SUMMARY_PROCESSING = 0;
+			int iF_SUMMARY_PROCESSING_DELAY = 0;
+			int iF_SUMMARY_PROCESSING_NORMAL = 0;
+			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
 
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
-			DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_PROJECT);
-			DBCursor cur = col.find(getQueryCondtion(startDate, endDate));
+			DBCollection projectCol = getCollection(IModelConstants.C_PROJECT);
+			DBCursor cur = projectCol
+					.find(getQueryCondtion(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
 						Project.class);
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
-					proFinishCount++;
+					iF_SUMMARY_FINISHED++;
 					if (project.isDelay()) {
-						finishDelayCount++;
+						iF_SUMMARY_FINISHED_DELAY++;
+					} else if (project.isAdvanced()) {
+						iF_SUMMARY_FINISHED_ADVANCED++;
 					} else {
-						finishNormalCount++;
-					}
-					if(project.isAdvanced()){
-						advanceCount++;
+						iF_SUMMARY_FINISHED_NORMAL++;
 					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
-					proProcessCount++;
+					iF_SUMMARY_PROCESSING++;
 					if (project.maybeDelay()) {
-						processDelayCount++;
+						iF_SUMMARY_PROCESSING_DELAY++;
+					} else if (project.maybeAdvanced()) {
+						iF_SUMMARY_PROCESSING_ADVANCE++;
 					} else {
-						processNormalCount++;
-					}
-					if(project.maybeAdvanced()){
-						advanceCount++;
+						iF_SUMMARY_PROCESSING_NORMAL++;
 					}
 				}
 				result.add(project);
 			}
-			map.put(F_SUMMARY_TOTAL, result.size());
+			summaryData.total = result.size();
 			
-			map.put(F_SUMMARY_FINISHED, proFinishCount);
-			map.put(F_SUMMARY_FINISHED_DELAY, finishDelayCount);
-			map.put(F_SUMMARY_FINISHED_NORMAL, finishNormalCount);
-			
-			map.put(F_SUMMARY_PROCESSING, proProcessCount);
-			map.put(F_SUMMARY_PROCESSING_DELAY, processDelayCount);
-			map.put(F_SUMMARY_PROCESSING_NORMAL, processNormalCount);
-			
-//			map.put(F_SUMMARY_ADVANCE, advanceCount);
-//			map.put(F_SUMMARY_DELAY, finishDelayCount+processDelayCount);
-//			map.put(F_SUMMARY_NORMAL, finishNormalCount+processNormalCount);
+			summaryData.finished=iF_SUMMARY_FINISHED;
+			summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
 
-			setSummaryDate(map);
+			summaryData.processing=iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
+			
+//			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
+//			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
+			
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
@@ -100,21 +91,22 @@ public class UserProjectPerf extends ProjectProvider {
 		return result;
 	}
 
-
 	private DBObject getQueryCondtion(Date start, Date stop) {
-		
-		
+
 		DBCollection col = getCollection();
 		Object desc = getValue(UserProjectPerf.F_DESC);
 		Object userid = getValue(UserProjectPerf.F_USERID);
-		DBCursor cur = col.find(new BasicDBObject().append(UserProjectPerf.F_DESC, desc).append(UserProjectPerf.F_USERID, userid));
-		List<ObjectId> projectidlist=new ArrayList<ObjectId>();
-		while(cur.hasNext()){
+		DBCursor cur = col.find(new BasicDBObject().append(
+				UserProjectPerf.F_DESC, desc).append(UserProjectPerf.F_USERID,
+				userid));
+		List<ObjectId> projectidlist = new ArrayList<ObjectId>();
+		while (cur.hasNext()) {
 			DBObject next = cur.next();
-			ObjectId projectid = (ObjectId) next.get(UserProjectPerf.F_PROJECT_ID);
+			ObjectId projectid = (ObjectId) next
+					.get(UserProjectPerf.F_PROJECT_ID);
 			projectidlist.add(projectid);
 		}
-		
+
 		DBObject dbo = new BasicDBObject();
 		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist));
 		dbo.put("$or",
@@ -148,23 +140,19 @@ public class UserProjectPerf extends ProjectProvider {
 												new BasicDBObject().append(
 														"$gte", stop)) }) });
 
-		
-		
 		return dbo;
 	}
-
 
 	@Override
 	public String getProjectSetName() {
 		return "我的项目集";
 	}
 
-
 	@Override
 	public String getProjectSetCoverImage() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean doSave(IContext context) throws Exception {
 		if (!isPersistent()) {
@@ -176,7 +164,7 @@ public class UserProjectPerf extends ProjectProvider {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		DBObject data = get_data();
@@ -189,4 +177,3 @@ public class UserProjectPerf extends ProjectProvider {
 		col.insert(data);
 	}
 }
-	

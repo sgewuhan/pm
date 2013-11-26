@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mobnut.commons.Commons;
 import com.mobnut.db.DBActivator;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -27,9 +28,32 @@ public class RunRNDCostAllocation implements Runnable {
 		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, -4);
 
-		// 获得所有的成本中心代码
+//		for (int i = -1; i > -25; i--) {
+			cal.add(Calendar.MONTH, -1);
+
+			long start = System.currentTimeMillis();
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH) + 1;
+
+			// 获得所有的成本中心代码
+			String[] costCodes = getCostCodeArray(year, month);
+
+			try {
+				Commons.LOGGER.info("准备获取SAP成本中心数据:" + year + "-" + month);
+				adapter.runGetData(null, costCodes, year, month, null);
+			} catch (Exception e) {
+				Commons.LOGGER.error("获得SAP成本中心数据失败:" + year + "-" + month, e);
+			}
+			long end = System.currentTimeMillis();
+			Commons.LOGGER.info("获得SAP成本中心数据完成:" + year + "-" + month + " "
+					+ (end - start) / 1000);
+//		}
+
+	}
+
+	private String[] getCostCodeArray(int year, int month) {
+		Set<String> costCodeArray = new HashSet<String>();
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
 		DBCursor cur = col.find(new BasicDBObject().append(
@@ -43,9 +67,6 @@ public class RunRNDCostAllocation implements Runnable {
 								new BasicDBObject().append("$ne", "")) }),
 				new BasicDBObject().append(Organization.F_COST_CENTER_CODE, 1));
 
-		Set<String> costCodeArray = new HashSet<String>();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH) + 1;
 		DBCollection rndcostCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_RND_PEROIDCOST_COSTCENTER);
 		while (cur.hasNext()) {
@@ -62,14 +83,7 @@ public class RunRNDCostAllocation implements Runnable {
 			}
 
 		}
-
-		try {
-
-			adapter.runGetData(null, costCodeArray.toArray(new String[0]),
-					year, month, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		return costCodeArray.toArray(new String[0]);
 
 	}
 }

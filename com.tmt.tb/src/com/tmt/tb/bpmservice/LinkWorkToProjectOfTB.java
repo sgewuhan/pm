@@ -39,9 +39,11 @@ public class LinkWorkToProjectOfTB extends ServiceProvider {
 					PrimaryObject host = WorkflowUtils
 							.getHostFromJSON(jsonContent);
 					if (host instanceof Work) {
-						Work work = (Work) host;
+						ObjectId workid = host.get_id();
 						Project project = ModelService.createModelObject(
 								Project.class, project_id);
+						Work work = ModelService.createModelObject(Work.class,
+								workid);
 						ProjectToolkit.doProjectAddStandloneWork(work, project,
 								new BPMServiceContext(processName, processId));
 
@@ -55,6 +57,7 @@ public class LinkWorkToProjectOfTB extends ServiceProvider {
 				}
 			}
 		}
+
 		return result;
 	}
 

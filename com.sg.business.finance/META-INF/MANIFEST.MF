@@ -15,7 +15,8 @@ Require-Bundle: javax.servlet,
  com.sg.widgets,
  com.sg.thirdparty,
  com.sg.business.model,
- com.sg.business.commons
+ com.sg.business.commons,
+ org.apache.log4j;bundle-version="1.2.13"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: libs/sapjco.jar,

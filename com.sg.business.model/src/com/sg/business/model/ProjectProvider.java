@@ -2,88 +2,17 @@ package com.sg.business.model;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.jface.util.Util;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 
 public abstract class ProjectProvider extends PrimaryObject {
 
-	/**
-	 * 项目总数
-	 */
-	public static final String F_SUMMARY_TOTAL = "s1";
-
-	/**
-	 * 完成项目数
-	 */
-	public static final String F_SUMMARY_FINISHED = "s2";
-
-	/**
-	 * 进展中项目数
-	 */
-	public static final String F_SUMMARY_PROCESSING = "s3";
-	
-	
-	/**
-	 * 进行中，正常进行
-	 */
-	public static final String F_SUMMARY_PROCESSING_NORMAL = "s4";
-	
-	/**
-	 * 进行中，预期超期
-	 */
-	public static final String F_SUMMARY_PROCESSING_DELAY = "s5";
-
-	/**
-	 * 进展提前
-	 */
-	public static final String F_SUMMARY_PROCESSING_ADVANCE = "s13";
-
-
-	/**
-	 * 已完成，正常完成
-	 */
-	public static final String F_SUMMARY_FINISHED_NORMAL = "s6";
-
-	
-	/**
-	 * 已完成，超期完成
-	 */
-	public static final String F_SUMMARY_FINISHED_DELAY  = "s7";
-
-
-//	/**
-//	 * 正常
-//	 */
-//	public static final String F_SUMMARY_NORMAL= "s8";
-
-//	/**
-//	 * 延期
-//	 */
-//	public static final String F_SUMMARY_DELAY = "s9";
-
-//	/**
-//	 * 提前
-//	 */
-//	public static final String F_SUMMARY_ADVANCE = "s10";
-
-	/**
-	 * 成本正常
-	 */
-	public static String F_SUMMARY_NORMAL_COST = "s11";
-
-	/**
-	 * 成本超支
-	 */
-	public static String F_SUMMARY_OVER_COST = "s12";
-	
-	/**
-	 * 提前完成的
-	 */
-	public static final String F_SUMMARY_FINISHED_ADVANCE = "s14";
+	public ProjectSetSummaryData summaryData;
 
 
 	/**
@@ -101,13 +30,20 @@ public abstract class ProjectProvider extends PrimaryObject {
 	 */
 	public static final String PARAMETER_SUMMARY_BY_MONTH = "m";
 
-	private Object[] parametes;
+	public Object[] parameters;
 
-	private HashMap<String, Object> summaryInfor;
+	private ListenerList listeners;
+
+	private boolean isDirty = true;
+
+	private List<PrimaryObject> projectSetData;
 
 	public ProjectProvider() {
 		super();
-		summaryInfor = new HashMap<String, Object>();
+		summaryData = new ProjectSetSummaryData();
+		parameters = new Object[2];
+		parameters[0] = Calendar.getInstance();
+		parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
 	}
 
 	public abstract List<PrimaryObject> getProjectSet();
@@ -140,34 +76,20 @@ public abstract class ProjectProvider extends PrimaryObject {
 	public abstract String getProjectSetCoverImage();
 
 	/**
-	 * 获得项目集 摘要数据
-	 * 
-	 * @param key
-	 *            摘要数据的字段名
-	 * @param year
-	 * @return
-	 */
-	public final Object getSummaryValue(String key) {
-		return summaryInfor.get(key);
-	}
-
-	/**
-	 * 设置合计值
-	 * 
-	 * @param data
-	 */
-	public final void setSummaryDate(Map<String, Object> data) {
-		summaryInfor.clear();
-		summaryInfor.putAll(data);
-	}
-
-	/**
 	 * 设置查询参数
 	 * 
 	 * @param parameters
 	 */
 	public void setParameters(Object[] parameters) {
-		this.parametes = parameters;
+		if (!Util.equals(this.parameters, parameters)) {
+			Object[] oldParameters = this.parameters;
+			this.parameters = new Object[parameters.length];
+			for (int i = 0; i < parameters.length; i++) {
+				this.parameters[i] = parameters[i];
+			}
+			parameterChanged(oldParameters, parameters);
+			isDirty = true;
+		}
 	}
 
 	/**
@@ -176,19 +98,13 @@ public abstract class ProjectProvider extends PrimaryObject {
 	 * @return
 	 */
 	public Object[] getParameters() {
-		return this.parametes;
+		return this.parameters;
 	}
 
-	public Date getStartDate() throws Exception {
-		// TODO 根据条件获得起始时间
-		// parametes[0] 为传入时间
-		// parameters[1]为条件，参考PARA开头的常量，
-		// 如果parameters[1] 为PARAMETER_SUMMARY_BY_YEAR,
-		// 应该将parameters[0]强转为Calender并返回该年的第一天
-		// 如果参数空或错误，抛出异常
+	final protected Date getStartDate() throws Exception {
 		Date start;
-		Calendar calendar = (Calendar) parametes[0];
-		switch ((String) parametes[1]) {
+		Calendar calendar = (Calendar) parameters[0];
+		switch ((String) parameters[1]) {
 		case PARAMETER_SUMMARY_BY_YEAR:
 			calendar.set(Calendar.MONTH, 0);
 			calendar.set(Calendar.DATE, 1);
@@ -221,12 +137,12 @@ public abstract class ProjectProvider extends PrimaryObject {
 		}
 	}
 
-	public Date getEndDate() throws Exception {
+	final protected Date getEndDate() throws Exception {
 		Date end;
 		Calendar calendar = Calendar.getInstance();
 		Date start = getStartDate();
 		calendar.setTime(start);
-		switch ((String) parametes[1]) {
+		switch ((String) parameters[1]) {
 		case PARAMETER_SUMMARY_BY_YEAR:
 			calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1);
 			calendar.set(Calendar.MILLISECOND,
@@ -250,20 +166,31 @@ public abstract class ProjectProvider extends PrimaryObject {
 		}
 	}
 
-//	public abstract void setF_SUMMARY_TOTAL(int count);
-//	public abstract void setF_SUMMARY_FINISHED(int count);
-//	public abstract void setF_SUMMARY_PROCESSING(int count);
-//	
-//	public abstract void setF_SUMMARY_NORMAL_PROCESS(int count);
-//
-//	public abstract void setF_SUMMARY_DELAY(int count);
-//
-//	public abstract void setF_SUMMARY_ADVANCE(int count);
-//
-//	public abstract void setF_SUMMARY_NORMAL_COST(int count);
-//
-//	public abstract void setF_SUMMARY_OVER_COST(int count);
-	
-	
+	public void addParameterChangedListener(IParameterListener listener) {
+		if (listeners == null) {
+			listeners = new ListenerList();
+		}
+		listeners.add(listener);
+	}
+
+	private void parameterChanged(Object[] oldParameters,
+			Object[] newParameters) {
+		if (listeners != null && listeners.size() > 0) {
+			Object[] lis = listeners.getListeners();
+			for (int i = 0; i < lis.length; i++) {
+				((IParameterListener) lis[i]).parameterChanged(oldParameters,
+						newParameters);
+			}
+		}
+	}
+
+	public List<PrimaryObject> getData() {
+		if (isDirty) {
+			projectSetData = getProjectSet();
+			isDirty = false;
+		}
+		return projectSetData;
+	}
+
 
 }

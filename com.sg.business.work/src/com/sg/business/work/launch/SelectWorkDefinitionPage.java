@@ -66,14 +66,20 @@ public class SelectWorkDefinitionPage extends WizardPage {
 						boolean complete = is != null
 								&& !is.isEmpty()
 								&& is.getFirstElement() instanceof WorkDefinition;
-
-						setPageComplete(complete);
-
+						
 						if (complete) {
-							workd = (WorkDefinition) is.getFirstElement();
+							WorkDefinition workDefinition = (WorkDefinition) is
+									.getFirstElement();
+							if (workDefinition.isActivated()) {
+								workd = workDefinition;
+							} else {
+								workd = null;
+								complete = false;
+							}
 						} else {
 							workd = null;
 						}
+						setPageComplete(complete);
 						getWizard().setWorkDefinition(workd);
 					}
 				});
@@ -82,7 +88,6 @@ public class SelectWorkDefinitionPage extends WizardPage {
 
 	}
 
-	
 	private NavigatablePartAdapter createNavigatorPart() {
 		return new NavigatablePartAdapter() {
 		};
@@ -92,7 +97,5 @@ public class SelectWorkDefinitionPage extends WizardPage {
 	public LaunchWorkWizard getWizard() {
 		return (LaunchWorkWizard) super.getWizard();
 	}
-	
-	
-	
+
 }
