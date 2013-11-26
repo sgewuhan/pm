@@ -16,20 +16,19 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
-import com.sg.business.model.Work;
+import com.sg.business.model.UserTask;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class DelayWork extends SingleDBCollectionDataSetFactory {
+public class DelayProcess extends SingleDBCollectionDataSetFactory {
 	private User user;
 
-	public DelayWork() {
-		super(IModelConstants.DB, IModelConstants.C_WORK);
+	public DelayProcess() {
+		super(IModelConstants.DB, IModelConstants.C_USERTASK);
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
 		user = UserToolkit.getUserById(userId);
@@ -42,27 +41,38 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		DBCursor cur = collection.find(getCondition(null, null));
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
-			Work work = ModelService.createModelObject(next, Work.class);
-			if (isDelayWork(work)) {
-				dataItems.add(work);
+			UserTask usertask = ModelService.createModelObject(next,
+					UserTask.class);
+			if (isDelayTask(usertask)) {
+				dataItems.add(usertask);
 			}
 		}
+
 		return new DataSet(dataItems);
 	}
 
-	private boolean isDelayWork(Work work) {
-		List<PrimaryObject> childrenWork = work.getChildrenWork();
-		if (childrenWork != null && !childrenWork.isEmpty()) {
-			return false;
+	private boolean isDelayTask(UserTask usertask) {
+		Object value = usertask.getValue(UserTask.F_WORKITEMID);
+		DBCollection collection = getCollection();
+
+		DBObject inProgress = collection.findOne(new BasicDBObject().append(
+				UserTask.F_WORKITEMID, value).append(UserTask.F_STATUS,
+				"InProgress"));
+
+		if (inProgress != null) {
+			UserTask taskInProgress = ModelService.createModelObject(
+					inProgress, UserTask.class);
+			if ((taskInProgress.get_cdate().getTime() - usertask.get_cdate()
+					.getTime()) / (1000 * 60 * 60) > 3) {
+				return true;
+			}
 		} else {
-			if (ILifecycle.STATUS_FINIHED_VALUE.equals(work
-					.getLifecycleStatus())) {
-				return work.isDelayed();
-			} else {
-				return work.isDelayNow();
+			if (new Date().getTime() - usertask.get_cdate().getTime()
+					/ (1000 * 60 * 60) > 4) {
+				return true;
 			}
 		}
-
+		return false;
 	}
 
 	private DBObject getCondition(Date start, Date stop) {
@@ -82,38 +92,12 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		}
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Work.F_CHARGER,
+		dbo.put(UserTask.F_ACTUALOWNER,
 				new BasicDBObject().append("$in", getUserIdSet()));
-		dbo.put(ILifecycle.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
-						ILifecycle.STATUS_FINIHED_VALUE,
-						ILifecycle.STATUS_WIP_VALUE }));
-		dbo.put("$or",
-				new BasicDBObject[] {
+		dbo.put(UserTask.F_STATUS, "Reserved");
 
-						new BasicDBObject().append(Work.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(Work.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(Work.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(
-								"$and",
-								new BasicDBObject[] {
-										new BasicDBObject().append(
-												Work.F_ACTUAL_START,
-												new BasicDBObject().append(
-														"$lte", start)),
-										new BasicDBObject().append(
-												Work.F_ACTUAL_FINISH,
-												new BasicDBObject().append(
-														"$gte", stop)) }) });
+		dbo.put(UserTask.F__CDATE, new BasicDBObject().append("$gte", start)
+				.append("$lte", stop));
 		return dbo;
 	}
 

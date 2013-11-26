@@ -277,21 +277,6 @@
                   </radio>
                </section>
                <section
-                     label="请填写评审组成员">
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
-                        editable="true"
-                        id="reviewer_list"
-                        inputValidator="com.tmt.tb.field.CheckReviewerOfTBProjectApplication"
-                        label="评审组"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
-                        name="reviewer_list"
-                        persistable="true"
-                        required="false">
-                  </list>
-               </section>
-               <section
                      label="确定评审会时间及地点">
                   <dateTime
                         defaultValueProvider="com.sg.business.commons.value.TodayDefault"
@@ -319,6 +304,21 @@
                         type="String"
                         widthHint="320">
                   </text>
+               </section>
+               <section
+                     label="请填写评审组成员">
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
+                        editable="true"
+                        id="reviewer_list"
+                        inputValidator="com.tmt.tb.field.CheckReviewerOfTBProjectApplication"
+                        label="评审组"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="reviewer_list"
+                        persistable="true"
+                        required="false">
+                  </list>
                </section>
             </pagecolumn>
          </basicpage>

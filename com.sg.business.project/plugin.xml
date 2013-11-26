@@ -423,6 +423,32 @@
             <column
                   columnDefinitionId="participate">
             </column></searchAction>
+         <exportAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="milestone">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+            <column
+                  columnDefinitionId="planduration_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </exportAction>
       </navigator>
       <navigator
             id="project.deliverable"
@@ -563,6 +589,52 @@
       <navigator
             id="project.navigator.delayprocess"
             table="project.navigator.delayprocess">
+         <filterAction>
+            <column
+                  column="processname"
+                  name="流程名称">
+            </column>
+            <column
+                  column="desc"
+                  name="任务名称"
+                  type="String">
+            </column>
+            <column
+                  column="work_desc"
+                  name="工作名称">
+            </column>
+            <column
+                  column="actualowner"
+                  name="实际活动执行者">
+            </column>
+            <column
+                  column="_cdate"
+                  name="Reserved"
+                  type="DateTime">
+            </column></filterAction>
+         <searchAction>
+            <column
+                  column="processname"
+                  name="流程名称">
+            </column>
+            <column
+                  column="desc"
+                  name="任务名称"
+                  type="String">
+            </column>
+            <column
+                  column="work_desc"
+                  name="工作名称">
+            </column>
+            <column
+                  column="actualowner"
+                  name="实际活动执行者">
+            </column>
+            <column
+                  column="_cdate"
+                  name="Reserved"
+                  type="DateTime">
+            </column></searchAction>
       </navigator>
    </extension>
    <extension
@@ -822,7 +894,49 @@
          </column>
       </table>
       <table
+            dataSet="com.sg.business.model.dataset.project.DelayProcess"
             id="project.navigator.delayprocess">
+         <column
+               column="processname"
+               name="流程名称"
+               width="240">
+         </column>
+         <column
+               column="desc"
+               name="任务名称"
+               type="String"
+               width="120">
+         </column>
+         <column
+               column="work_desc"
+               name="工作名称"
+               width="160"></column>
+         <column
+               column="actualowner"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="实际活动执行者"
+               width="140">
+         </column>
+         <column
+               column="_cdate"
+               name="Reserved"
+               type="DateTime"
+               width="140"></column>
+         <column
+               labelProvider="com.sg.business.project.labelprovider.InProgressDate"
+               name="InProgress"
+               width="140">
+         </column>
+         <column
+               labelProvider="com.sg.business.project.labelprovider.CompleteDate"
+               name="Completed"
+               width="140">
+         </column>
+         <column
+               labelProvider="com.sg.business.project.labelprovider.MinusTime"
+               name="Minus"
+               width="140">
+         </column>
       </table>
       <table
             canCreate="false"
@@ -836,10 +950,16 @@
                columnDefinitionId="work.desc">
          </column>
          <column
-               columnDefinitionId="planstart_e">
+               column="planstart"
+               name="计划开始"
+               type="Date"
+               width="72">
          </column>
          <column
-               columnDefinitionId="planfinish_e">
+               column="planfinish"
+               name="计划完成"
+               type="Date"
+               width="72">
          </column>
          <column
                columnDefinitionId="actualstart_e">
