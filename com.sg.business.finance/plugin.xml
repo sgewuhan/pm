@@ -203,6 +203,14 @@
             run="com.sg.business.finance.schedual.RunRNDCostAllocation"
             time="0:05:00">
       </schedualJob>
+      <schedualJob
+            day="1"
+            id="finance.schedual.salesincomeallocation"
+            name="上月销售收入获取和计算"
+            rule="month"
+            run="com.sg.business.finance.schedual.RunIncomeAllocation"
+            time="1:00:00">
+      </schedualJob>
    </extension>
 
 </plugin>

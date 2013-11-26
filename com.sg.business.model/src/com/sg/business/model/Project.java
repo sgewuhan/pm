@@ -2173,4 +2173,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		pperf.setValue(UserProjectPerf.F_PROJECT_ID, get_id());
 		return pperf;
 	}
+
+	/**
+	 * 获得项目截至当前的投资总额（研发成本）
+	 * @return
+	 */
+	public Double getInvestment() {
+		// TODO Auto-generated method stub
+		return 100000d;
+	}
 }

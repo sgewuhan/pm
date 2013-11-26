@@ -54,7 +54,7 @@ public class CostCenterViewer extends TableViewer {
 
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
-			String accountNumber = (String) next.get(CostAccount.accountnumber);
+			String accountNumber = (String) next.get(CostAccount.F_COST_ACCOUNTNUMBER);
 			String accountName = (String) next.get(CostAccount.F_DESC);
 			createColumn(viewer, accountNumber, accountName);
 			suggestArray[i][0] = accountNumber;

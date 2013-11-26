@@ -34,10 +34,11 @@ public class RNDPeriodCostAdapter {
 	 *            , 期间结束时间
 	 * @param account
 	 *            , 研发成本科目, 为空时取全部科目
+	 * @param costElementArray 
 	 * @throws Exception
 	 */
 	public void runGetData(String[] orgCodeArray,
-			String[] costCodeArray, int year, int month, String[] account)
+			String[] costCodeArray, String[] costElementArray, int year, int month, String[] account)
 			throws Exception {
 //		if (account == null) {
 //			account = getDefaultAccounts();
@@ -47,7 +48,7 @@ public class RNDPeriodCostAdapter {
 
 		JCO_ZXFUN_PM_YFFY func = new JCO_ZXFUN_PM_YFFY();
 		Map<String, Map<String, Double>> ret = func.getJSDZB(orgCodeArray,
-				costCodeArray, year, month, account);
+				costCodeArray,costElementArray, year, month, account);
 //		for (int i = 0; i < costCodeArray.length; i++) {
 //			System.out.println(costCodeArray[i]);
 //		}
