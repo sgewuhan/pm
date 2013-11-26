@@ -38,7 +38,8 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 	public DataSet getDataSet() {
 		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
 		DBCollection collection = getCollection();
-		DBCursor cur = collection.find(getCondition(null, null));
+		
+		DBCursor cur = collection.find(getCondition());
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
 			UserTask usertask = ModelService.createModelObject(next,
@@ -75,8 +76,15 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		return false;
 	}
 
-	private DBObject getCondition(Date start, Date stop) {
-
+	@SuppressWarnings("unused")
+	private DBObject getCondition() {
+		DBObject date = getQueryCondition();
+		if(date!=null){
+			Object year = date.get("year");
+			Object month = date.get("month");
+		}
+        Date start=null;
+        Date stop=null;
 		if (start == null || stop == null) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
