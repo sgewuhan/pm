@@ -1,4 +1,4 @@
-package com.sg.business.finance.eai.sap;
+package com.sg.business.finance;
 
 import com.mobnut.admin.dataset.Setting;
 import com.mobnut.commons.util.Utils;
@@ -11,7 +11,7 @@ public class SAPConnectionPool {
 
 	public static String POOL_NAME = "SAPJCO";
 
-	Client connSAP() {
+	public Client connSAP() {
 
 		Object value = Setting
 				.getSystemSetting(IModelConstants.S_EAI_SAP_MAXCONN);

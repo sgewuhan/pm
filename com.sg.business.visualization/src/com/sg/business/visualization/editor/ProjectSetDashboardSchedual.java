@@ -21,6 +21,10 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 	private ChartCanvas processProjectMeter;
 	private ChartCanvas allProjectMeter;
 	private ChartCanvas deptProjectBar;
+	private ChartCanvas pmProjectBar;
+	private TabItem deptBarTabItem;
+	private TabItem pmBarTabItem;
+	private TabFolder tabFolder;
 
 	@Override
 	protected Composite createContent(Composite body) {
@@ -48,12 +52,12 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 	private void createGraphic(Composite parent) {
 
-		TabFolder tabFolder = new TabFolder(parent, SWT.TOP);
+		tabFolder = new TabFolder(parent, SWT.TOP);
 		TabItem pieTabItem = new TabItem(tabFolder, SWT.NONE);
 		pieTabItem.setText("进度摘要");
 		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE);
 		pieTabItem.setControl(statusPieChart);
-		
+
 		TabItem meterTabItem = new TabItem(tabFolder, SWT.NONE);
 		meterTabItem.setText("仪表盘");
 		Composite composite = new Composite(tabFolder, SWT.NONE);
@@ -71,13 +75,6 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 				true, 1, 1));
 		meterTabItem.setControl(composite);
 
-
-
-		TabItem barTabItem = new TabItem(tabFolder, SWT.NONE);
-		barTabItem.setText("部门");
-		deptProjectBar = new ChartCanvas(tabFolder, SWT.NONE);
-		barTabItem.setControl(deptProjectBar);
-
 		loadChartData();
 	}
 
@@ -87,8 +84,8 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		if (navi != null) {
 			ViewerControl viewerControl = navi.getViewerControl();
 			if (!viewerControl.getControl().isDisposed()) {
-				viewerControl.doReloadData(true,new Runnable() {
-					
+				viewerControl.doReloadData(true, new Runnable() {
+
 					@Override
 					public void run() {
 						loadChartData();
@@ -101,7 +98,6 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 			filterLabel.setText(getParameterText());
 			header.layout();
 		}
-		
 
 	}
 
@@ -119,14 +115,16 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		// 进度提前
 		int value6 = data.summaryData.processing_advance;
 		int sum = value1 + value2 + value3 + value4 + value5 + value6;
-		double allProjectOverTimeRate = sum==0?0:(100d * (value2 + value4) /sum);
-		
+		double allProjectOverTimeRate = sum == 0 ? 0
+				: (100d * (value2 + value4) / sum);
+
 		sum = value4 + value5 + value6;
-		double processProjectOverTimeRate = sum==0?0:(100d *  value4 /sum);
+		double processProjectOverTimeRate = sum == 0 ? 0
+				: (100d * value4 / sum);
 
 		sum = value1 + value2 + value3;
-		double finishProjectOverTimeRate  = sum==0?0:(100d *  value2 /sum);
-		
+		double finishProjectOverTimeRate = sum == 0 ? 0 : (100d * value2 / sum);
+
 		finishedProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
 				"已完成项目超期 ", "进度延迟", finishProjectOverTimeRate));
 		processProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
@@ -134,33 +132,73 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		allProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
 				"整体项目超期 ", "进度延迟", allProjectOverTimeRate));
 
-		
+		// *****************************************************************************************
 		String pieChartCaption = "进度摘要";
 		String[] texts = new String[] { "正常完成", "超期完成", "进度延迟", "正常进行", "进度提前" };
-		double[] values = new double[] { (value1 + value3), value2, value4, value5, value6 };
+		double[] values = new double[] { (value1 + value3), value2, value4,
+				value5, value6 };
 		statusPieChart.setChart(ProjectChartFoctory.createPieChart(
 				pieChartCaption, texts, values));
 
+		// *****************************************************************************************
 		String[] deptParameter = new String[data.summaryData.subOrganizationProjectProvider
 				.size()];
-		double[] deptValue1 = new double[data.summaryData.subOrganizationProjectProvider
-				.size()];
-		double[] deptValue2 = new double[data.summaryData.subOrganizationProjectProvider
-				.size()];
-		for (int i = 0; i < deptParameter.length; i++) {
-			ProjectProvider projectProvider = data.summaryData.subOrganizationProjectProvider
-					.get(i);
-			projectProvider.setParameters(data.parameters);
-			projectProvider.getData();
-			deptParameter[i] = projectProvider.getDesc();
-			deptValue1[i] = projectProvider.summaryData.processing_normal
-					+ projectProvider.summaryData.processing_advance;
-			deptValue2[i] = projectProvider.summaryData.processing_delay;
-		}
-		deptProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
-				deptParameter, deptValue1, deptValue2));
-	}
+		if (deptParameter.length != 0) {
+			double[] deptValue1 = new double[data.summaryData.subOrganizationProjectProvider
+					.size()];
+			double[] deptValue2 = new double[data.summaryData.subOrganizationProjectProvider
+					.size()];
+			for (int i = 0; i < deptParameter.length; i++) {
+				ProjectProvider projectProvider = data.summaryData.subOrganizationProjectProvider
+						.get(i);
+				projectProvider.setParameters(data.parameters);
+				projectProvider.getData();
+				deptParameter[i] = projectProvider.getDesc();
+				deptValue1[i] = projectProvider.summaryData.processing_normal
+						+ projectProvider.summaryData.processing_advance;
+				deptValue2[i] = projectProvider.summaryData.processing_delay;
+			}
 
+			if (deptBarTabItem == null) {
+				deptBarTabItem = new TabItem(tabFolder, SWT.NONE);
+				deptBarTabItem.setText("项目承担部门");
+				deptProjectBar = new ChartCanvas(tabFolder, SWT.NONE);
+				deptBarTabItem.setControl(deptProjectBar);
+			}
+
+			deptProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
+					"部门项目执行状况", deptParameter, deptValue1, deptValue2));
+		}
+		// *****************************************************************************************
+		String[] chargerName = new String[data.summaryData.subChargerProjectProvider
+				.size()];
+		if (chargerName.length != 0) {
+			double[] userValue1 = new double[data.summaryData.subChargerProjectProvider
+					.size()];
+			double[] userValue2 = new double[data.summaryData.subChargerProjectProvider
+					.size()];
+			for (int i = 0; i < chargerName.length; i++) {
+				ProjectProvider projectProvider = data.summaryData.subChargerProjectProvider
+						.get(i);
+				projectProvider.setParameters(data.parameters);
+				projectProvider.getData();
+				chargerName[i] = projectProvider.getDesc();
+				userValue1[i] = projectProvider.summaryData.processing_normal
+						+ projectProvider.summaryData.processing_advance;
+				userValue2[i] = projectProvider.summaryData.processing_delay;
+			}
+
+			if(pmBarTabItem==null){
+				pmBarTabItem = new TabItem(tabFolder, SWT.NONE);
+				pmBarTabItem.setText("项目经理");
+				pmProjectBar = new ChartCanvas(tabFolder, SWT.NONE);
+				pmBarTabItem.setControl(pmProjectBar);
+			}
+
+			pmProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
+					"项目经理项目执行状况", chargerName, userValue1, userValue2));
+		}
+	}
 
 	private void redrawChart() {
 		allProjectMeter.redrawChart();
