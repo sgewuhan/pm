@@ -1,6 +1,8 @@
 package com.sg.business.model.dataset.project;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -14,14 +16,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
-import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
-import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -39,44 +38,77 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 	public DataSet getDataSet() {
 		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
 		DBCollection collection = getCollection();
-		DBCursor cur = collection.find(new BasicDBObject().append(
-				UserTask.F_WORK_ID,
-				new BasicDBObject().append("$in", getWorkSet())).append(
-				UserTask.F_STATUS, "Reserved"));
+		DBCursor cur = collection.find(getCondition(null, null));
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
 			UserTask usertask = ModelService.createModelObject(next,
 					UserTask.class);
-			dataItems.add(usertask);
+			if (isDelayTask(usertask)) {
+				dataItems.add(usertask);
+			}
 		}
 
 		return new DataSet(dataItems);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected List<ObjectId> getWorkSet() {
-		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_WORK);
-		List distinct = projectCol.distinct(
-				Work.F__ID,
-				new BasicDBObject().append(Work.F_PROJECT_ID,
-						new BasicDBObject().append("$in", getProjectSet()))
-						.append(ILifecycle.F_LIFECYCLE,
-								new BasicDBObject().append("$in", new String[] {
-										ILifecycle.STATUS_FINIHED_VALUE,
-										ILifecycle.STATUS_WIP_VALUE })));
-		return distinct;
+	private boolean isDelayTask(UserTask usertask) {
+		Object value = usertask.getValue(UserTask.F_WORKITEMID);
+		DBCollection collection = getCollection();
+
+		DBObject inProgress = collection.findOne(new BasicDBObject().append(
+				UserTask.F_WORKITEMID, value).append(UserTask.F_STATUS,
+				"InProgress"));
+
+		if (inProgress != null) {
+			UserTask taskInProgress = ModelService.createModelObject(
+					inProgress, UserTask.class);
+			if ((taskInProgress.get_cdate().getTime() - usertask.get_cdate()
+					.getTime()) / (1000 * 60 * 60) > 3) {
+				return true;
+			}
+		} else {
+			if (new Date().getTime() - usertask.get_cdate().getTime()
+					/ (1000 * 60 * 60) > 4) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private DBObject getCondition(Date start, Date stop) {
+
+		if (start == null || stop == null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+			calendar.set(Calendar.DATE, 1);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			start = calendar.getTime();
+			calendar.add(Calendar.MONTH, 1);
+			calendar.add(Calendar.MILLISECOND, -1);
+			stop = calendar.getTime();
+		}
+
+		DBObject dbo = new BasicDBObject();
+		dbo.put(UserTask.F_ACTUALOWNER,
+				new BasicDBObject().append("$in", getUserIdSet()));
+		dbo.put(UserTask.F_STATUS, "Reserved");
+
+		dbo.put(UserTask.F__CDATE, new BasicDBObject().append("$gte", start)
+				.append("$lte", stop));
+		return dbo;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected List<ObjectId> getProjectSet() {
+	protected List<ObjectId> getUserIdSet() {
 		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT);
-		List distinct = projectCol.distinct(Project.F__ID,
+				IModelConstants.C_USER);
+		List distinct = projectCol.distinct(User.F_USER_ID,
 				new BasicDBObject()
-						.append(Project.F_LAUNCH_ORGANIZATION,
-								new BasicDBObject().append("$in",
-										getOrganizationsId())));
+						.append(User.F_ORGANIZATION_ID, new BasicDBObject()
+								.append("$in", getOrganizationsId())));
 		return distinct;
 	}
 

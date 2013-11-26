@@ -1,6 +1,8 @@
 package com.sg.business.model.dataset.project;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -17,7 +19,6 @@ import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
-import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
@@ -38,13 +39,7 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 	public DataSet getDataSet() {
 		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
 		DBCollection collection = getCollection();
-		DBCursor cur = collection.find(new BasicDBObject().append(
-				Work.F_PROJECT_ID,
-				new BasicDBObject().append("$in", getProjectSet())).append(
-				ILifecycle.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
-						ILifecycle.STATUS_FINIHED_VALUE,
-						ILifecycle.STATUS_WIP_VALUE })));
+		DBCursor cur = collection.find(getCondition(null, null));
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
 			Work work = ModelService.createModelObject(next, Work.class);
@@ -70,15 +65,66 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 	}
 
+	private DBObject getCondition(Date start, Date stop) {
+
+		if (start == null || stop == null) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
+			calendar.set(Calendar.DATE, 1);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			start = calendar.getTime();
+			calendar.add(Calendar.MONTH, 1);
+			calendar.add(Calendar.MILLISECOND, -1);
+			stop = calendar.getTime();
+		}
+
+		DBObject dbo = new BasicDBObject();
+		dbo.put(Work.F_CHARGER,
+				new BasicDBObject().append("$in", getUserIdSet()));
+		dbo.put(ILifecycle.F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						ILifecycle.STATUS_FINIHED_VALUE,
+						ILifecycle.STATUS_WIP_VALUE }));
+		dbo.put("$or",
+				new BasicDBObject[] {
+
+						new BasicDBObject().append(Work.F_ACTUAL_START,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(Work.F_PLAN_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(Work.F_ACTUAL_FINISH,
+								new BasicDBObject().append("$gte", start)
+										.append("$lte", stop)),
+
+						new BasicDBObject().append(
+								"$and",
+								new BasicDBObject[] {
+										new BasicDBObject().append(
+												Work.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$lte", start)),
+										new BasicDBObject().append(
+												Work.F_ACTUAL_FINISH,
+												new BasicDBObject().append(
+														"$gte", stop)) }) });
+		return dbo;
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected List<ObjectId> getProjectSet() {
+	protected List<ObjectId> getUserIdSet() {
 		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT);
-		List distinct = projectCol.distinct(Project.F__ID,
+				IModelConstants.C_USER);
+		List distinct = projectCol.distinct(User.F_USER_ID,
 				new BasicDBObject()
-						.append(Project.F_LAUNCH_ORGANIZATION,
-								new BasicDBObject().append("$in",
-										getOrganizationsId())));
+						.append(User.F_ORGANIZATION_ID, new BasicDBObject()
+								.append("$in", getOrganizationsId())));
 		return distinct;
 	}
 
