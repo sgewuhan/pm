@@ -23,6 +23,12 @@ public class ProjectManagerProvider extends ProjectProvider {
 		setValue(F_DESC, user.getUserid()+"/"+user.getUsername());
 		projectCol = getCollection(IModelConstants.C_PROJECT);
 	}
+	
+	
+	@Override
+	public String getDesc() {
+		return user.getUsername();
+	}
 
 	@Override
 	public List<PrimaryObject> getProjectSet() {
