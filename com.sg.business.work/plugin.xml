@@ -5,34 +5,34 @@
          point="org.eclipse.ui.views">
       <category
             id="work"
-            name="宸ヤ綔">
+            name="工作">
       </category>
       <view
             category="work"
             class="com.sg.business.work.view.WorkInProcess"
             id="work.processing"
-            name="寰呭鐞�
+            name="待处理"
             restorable="true">
       </view>
       <view
             category="work"
             class="com.sg.business.work.view.WorkHoldon"
             id="work.finished"
-            name="宸插叧闂�
+            name="已关闭"
             restorable="true">
       </view>
       <view
             category="work"
             class="com.sg.business.work.view.WorkHoldon"
             id="work.paused"
-            name="宸叉殏鍋�
+            name="已暂停"
             restorable="true">
       </view>
       <view
             category="work"
             class="com.sg.widgets.part.view.TableNavigator"
             id="work.ownerworklist"
-            name="鎴戠殑宸ヤ綔">
+            name="我的工作">
       </view>
    </extension>
    <extension
@@ -55,7 +55,7 @@
             </column>
             <column
                   column="status"
-                  name="鐘舵�"
+                  name="状态"
                   option="status"
                   type="String">
             </column>
@@ -235,7 +235,7 @@
             </column>
             <column
                   column="project"
-                  name="椤圭洰">
+                  name="项目">
             </column>
             <column
                   columnDefinitionId="planstart">
@@ -335,7 +335,7 @@
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
                lazyDisplay="true"
-               name="宸ヤ綔"
+               name="工作"
                style="SWT.LEFT"
                type="String"
                width="-1">
@@ -360,7 +360,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
-               name="鍚嶇О"
+               name="名称"
                style="SWT.LEFT"
                type="String"
                width="180">
@@ -379,13 +379,13 @@
          </column>
          <column
                column="mandatory"
-               name="蹇呴』"
+               name="必须"
                type="Boolean"
                width="48">
          </column>
          <columnGroup
                defaultGroup="false"
-               name="璐熻矗浜哄拰鍙備笌鑰�>
+               name="负责人和参与者">
             <column
                   columnDefinitionId="chargerid">
             </column>
@@ -395,7 +395,7 @@
          </columnGroup>
          <columnGroup
                defaultGroup="false"
-               name="瀹為檯杩涘害">
+               name="实际进度">
             <column
                   columnDefinitionId="actualstart_c">
             </column>
@@ -446,7 +446,7 @@
          </column>
          <columnGroup
                defaultGroup="false"
-               name="璐熻矗浜哄拰鍙備笌鑰�>
+               name="负责人和参与者">
             <column
                   columnDefinitionId="chargerid">
             </column>
@@ -456,7 +456,7 @@
          </columnGroup>
          <columnGroup
                defaultGroup="false"
-               name="瀹為檯杩涘害">
+               name="实际进度">
             <column
                   columnDefinitionId="actualstart_c">
             </column>
@@ -472,10 +472,10 @@
          </columnGroup>
          <columnGroup
                defaultGroup="false"
-               name="鏉′欢鍜岃缃�>
+               name="条件和设置">
             <column
                   column="standardworks"
-                  name="鏍囧噯宸ユ椂"
+                  name="标准工时"
                   type="Double">
             </column>
             <column
@@ -487,7 +487,7 @@
             <column
                   column="wf_execute"
                   labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
-                  name="娴佺▼"
+                  name="流程"
                   width="100">
             </column>
          </columnGroup>
@@ -541,7 +541,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
-               name="宸ヤ綔"
+               name="工作"
                type="String"
                width="-1">
          </column>
@@ -561,7 +561,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider"
-               name="宸ヤ綔"
+               name="工作"
                type="String"
                width="-1">
          </column>
@@ -588,48 +588,48 @@
             id="work.project.calendar">
          <column
                column="desc"
-               name="鍚嶇О"
+               name="名称"
                type="String"
                width="160">
          </column>
          <column
                column="startdate"
-               name="寮�鏃ユ湡"
+               name="开始日期"
                type="Date">
          </column>
          <column
                column="enddate"
-               name="缁撴潫鏃ユ湡"
+               name="结束日期"
                type="Date">
          </column>
          <column
                column="workingday"
-               name="宸ヤ綔鏃�
+               name="工作日"
                type="Boolean">
          </column>
          <column
                column="condition"
-               name="鏉′欢"
+               name="条件"
                type="String">
          </column>
          <column
                column="operator"
-               name="璁＄畻"
+               name="计算"
                type="String">
          </column>
          <column
                column="value"
-               name="鍊�
+               name="值"
                type="String">
          </column>
          <column
                column="seq"
-               name="浼樺厛绾�
+               name="优先级"
                type="Integer">
          </column>
          <column
                column="worktime"
-               name="姣忓ぉ宸ユ椂锛堝皬鏃讹級"
+               name="每天工时（小时）"
                type="Double">
          </column>
       </table>
@@ -660,7 +660,7 @@
                column="project"
                columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
                labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
-               name="椤圭洰"
+               name="项目"
                width="180">
          </column>
          <column
@@ -702,7 +702,7 @@
             fix="3"
             id="performence.works.org"
             limit="200"
-            memo="宸插簾寮�
+            memo="已废弃"
             virtual="true">
          <column
                columnDefinitionId="project.status">
@@ -721,7 +721,7 @@
                column="project"
                columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
                labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
-               name="椤圭洰"
+               name="项目"
                width="180">
          </column>
          <column
@@ -767,29 +767,29 @@
             markupEnabled="false">
          <column
                column="desc"
-               name="杩涘睍鐘舵�"
+               name="进展状态"
                type="String">
          </column>
          <column
                column="works"
-               name="瀹屾垚宸ユ椂"
+               name="完成工时"
                type="Double">
          </column>
          <column
                column="commitdate"
-               name="鎻愪氦鏃ユ湡"
+               name="提交日期"
                style="SWT.LEFT"
                type="Date">
          </column>
          <column
                column="userid"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="鎻愪氦浜�
+               name="提交人"
                type="String">
          </column>
          <column
                column="content"
-               name="璇存槑"
+               name="说明"
                type="String">
          </column>
       </table>
@@ -801,22 +801,22 @@
             dbName="pm2"
             id="editor.runtimework"
             image="image/work_24.png"
-            name="宸ヤ綔"
-            titleToolTips="宸ヤ綔">
+            name="工作"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鐨勫熀鏈俊鎭�
+               description="工作的基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -827,7 +827,7 @@
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -841,7 +841,7 @@
                         editPart="Combo(Read Only)"
                         editable="false"
                         id="status"
-                        label="鐘舵�"
+                        label="状态"
                         labelVisible="true"
                         name="status"
                         option="status"
@@ -852,7 +852,7 @@
                   <checkbox
                         editable="false"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -863,7 +863,7 @@
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -875,12 +875,12 @@
             <pagecolumn
                   id="2">
                <section
-                     label="璁″垝">
+                     label="计划">
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -891,7 +891,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -901,7 +901,7 @@
                   <spinner
                         editable="true"
                         id="planduration"
-                        label="璁″垝宸ユ湡(澶�"
+                        label="计划工期(天)"
                         labelVisible="true"
                         name="planduration"
                         persistable="true"
@@ -911,7 +911,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="standardworks"
-                        label="鏍囧噯宸ユ椂(鏃�"
+                        label="标准工时(时)"
                         labelVisible="true"
                         name="standardworks"
                         persistable="true"
@@ -922,7 +922,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="planworks"
-                        label="璁″垝宸ユ椂(鏃�"
+                        label="计划工时(时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="true"
@@ -931,12 +931,12 @@
                   </text>
                </section>
                <section
-                     label="瀹為檯">
+                     label="实际">
                   <dateTime
                         editPart="DateDialog"
                         editable="false"
                         id="actualstart"
-                        label="瀹為檯寮�"
+                        label="实际开始"
                         labelVisible="true"
                         name="actualstart"
                         persistable="true"
@@ -947,7 +947,7 @@
                         editPart="DateDialog"
                         editable="false"
                         id="actualfinish"
-                        label="瀹為檯瀹屾垚"
+                        label="实际完成"
                         labelVisible="true"
                         name="actualfinish"
                         persistable="true"
@@ -957,7 +957,7 @@
                   <spinner
                         editable="false"
                         id="actualduration"
-                        label="瀹為檯宸ユ湡(澶�"
+                        label="实际工期(天)"
                         labelVisible="true"
                         name="actualduration"
                         persistable="true"
@@ -967,7 +967,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="actualworks"
-                        label="瀹為檯宸ユ椂(鏃�"
+                        label="实际工时(时)"
                         labelVisible="true"
                         name="actualworks"
                         persistable="true"
@@ -978,16 +978,16 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="宸ヤ綔鍩烘湰璁剧疆"
+               description="工作基本设置"
                id="setpage"
-               title="宸ヤ綔鍩烘湰璁剧疆">
+               title="工作基本设置">
             <pagecolumn>
                <section
-                     label="宸ヤ綔鍜屼氦浠樼墿">
+                     label="工作和交付物">
                   <checkbox
                         editable="false"
                         id="s_canbreakdown"
-                        label="鏄惁鍏佽鍒嗚В宸ヤ綔"
+                        label="是否允许分解工作"
                         labelVisible="true"
                         name="s_canbreakdown"
                         persistable="false"
@@ -996,7 +996,7 @@
                   <checkbox
                         editable="false"
                         id="s_canadddeliverables"
-                        label="鏄惁鍏佽娣诲姞浜や粯鐗�
+                        label="是否允许添加交付物"
                         labelVisible="true"
                         name="s_canadddeliverables"
                         persistable="false"
@@ -1005,7 +1005,7 @@
                   <checkbox
                         editable="false"
                         id="s_canmodifyplanworks"
-                        label="鏄惁鍏佽淇敼璁″垝宸ユ椂"
+                        label="是否允许修改计划工时"
                         labelVisible="true"
                         name="s_canmodifyplanworks"
                         persistable="false"
@@ -1013,11 +1013,11 @@
                   </checkbox>
                </section>
                <section
-                     label="寮�鍜屽畬鎴愯瀹�>
+                     label="开始和完成设定">
                   <checkbox
                         editable="false"
                         id="s_autostartwithparent"
-                        label="涓婄骇宸ヤ綔寮�鏃讹紝鏈伐浣滆嚜鍔ㄥ紑濮�
+                        label="上级工作开始时，本工作自动开始"
                         labelVisible="true"
                         name="s_autostartwithparent"
                         persistable="false"
@@ -1026,7 +1026,7 @@
                   <checkbox
                         editable="false"
                         id="s_autofinishwithparent"
-                        label="涓婄骇宸ヤ綔瀹屾垚鏃讹紝鏈伐浣滆嚜鍔ㄥ畬鎴�
+                        label="上级工作完成时，本工作自动完成"
                         labelVisible="true"
                         name="s_autofinishwithparent"
                         persistable="false"
@@ -1035,7 +1035,7 @@
                   <checkbox
                         editable="false"
                         id="s_canskiptofinish"
-                        label="鏄惁鍙互璺宠繃杩涜涓殑娴佺▼瀹屾垚宸ヤ綔"
+                        label="是否可以跳过进行中的流程完成工作"
                         labelVisible="true"
                         name="s_canskiptofinish"
                         persistable="false"
@@ -1043,11 +1043,11 @@
                   </checkbox>
                </section>
                <section
-                     label="鍙樻洿璁惧畾">
+                     label="变更设定">
                   <checkbox
                         editable="false"
                         id="s_workchangeflowmandory"
-                        label="闇�惎鍔ㄥ彉鏇存祦绋嬪疄鏂藉伐浣滅殑鏇存敼"
+                        label="需启动变更流程实施工作的更改"
                         labelVisible="true"
                         name="s_workchangeflowmandory"
                         persistable="false"
@@ -1056,7 +1056,7 @@
                   <checkbox
                         editable="false"
                         id="s_projectchangeflowmandory"
-                        label="闇�惎鍔ㄩ」鐩彉鏇存祦绋嬪疄鏂藉伐浣滅殑鏇存敼"
+                        label="需启动项目变更流程实施工作的更改"
                         labelVisible="true"
                         name="s_projectchangeflowmandory"
                         persistable="false"
@@ -1066,19 +1066,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="瑙掕壊"
+               description="角色"
                id="rolepage"
-               title="瑙掕壊">
+               title="角色">
             <pagecolumn
                   id="2">
                <section
-                     label="鎸囨淳瑙掕壊">
+                     label="指派角色">
                   <combo
                         dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
-                        label="璐熻矗浜鸿鑹�
+                        label="负责人角色"
                         labelVisible="true"
                         name="charger_roled_id"
                         persistable="true"
@@ -1090,7 +1090,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
-                        label="鎸囨淳浜鸿鑹�
+                        label="指派人角色"
                         labelVisible="true"
                         name="assignmentcharger_roled_id"
                         persistable="true"
@@ -1099,13 +1099,13 @@
                   </combo>
                </section>
                <section
-                     label="鍙備笌鑰呰鑹�>
+                     label="参与者角色">
                   <table
                         ctableId="project.field.participate_roled_set"
                         dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
                         editable="true"
                         id="participate_roled_set"
-                        label="鍙備笌鑰呰鑹�
+                        label="参与者角色"
                         labelVisible="false"
                         name="participate_roled_set"
                         persistable="true"
@@ -1115,18 +1115,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="宸ヤ綔鎵ц娴佺▼"
+               description="工作执行流程"
                id="processpage1"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-               title="宸ヤ綔鎵ц娴佺▼">
+               title="工作执行流程">
          </basicpage>
          <basicpage
-               description="宸ヤ綔鍙樻洿娴佺▼"
+               description="工作变更流程"
                id="processpage2"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
-               title="宸ヤ綔鍙樻洿娴佺▼">
+               title="工作变更流程">
          </basicpage>
       </editor>
       <editor
@@ -1134,22 +1134,22 @@
             dbName="pm2"
             id="editor.create.runtimework"
             image="image/work_24.png"
-            name="宸ヤ綔"
-            titleToolTips="宸ヤ綔">
+            name="工作"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鍩烘湰淇℃伅"
+               description="工作基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1160,7 +1160,7 @@
                   <checkbox
                         editable="true"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -1168,12 +1168,12 @@
                   </checkbox>
                </section>
                <section
-                     label="璁″垝">
+                     label="计划">
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -1184,7 +1184,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -1195,7 +1195,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="planworks"
-                        label="璁″垝宸ユ椂(鏃�"
+                        label="计划工时(时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="true"
@@ -1207,11 +1207,11 @@
             <pagecolumn
                   id="2">
                <section
-                     label="鍥㈤槦">
+                     label="团队">
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -1225,7 +1225,7 @@
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="participate"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
@@ -1236,19 +1236,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇存槑"
+               description="说明"
                id="memopage"
                image="image/work_24.png"
-               title="璇存槑">
+               title="说明">
             <pagecolumn>
                <section
-                     label="璇存槑">
+                     label="说明">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -1259,52 +1259,52 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="宸ヤ綔鍩烘湰璁剧疆"
+               description="工作基本设置"
                id="setpage"
-               title="璁剧疆">
+               title="设置">
             <pagecolumn>
                <section
-                     label="宸ヤ綔鍜屼氦浠樼墿">
+                     label="工作和交付物">
                   <checkbox
                         defaultValue="true"
                         id="s_canbreakdown"
-                        label="鏄惁鍏佽鍒嗚В宸ヤ綔"
+                        label="是否允许分解工作"
                         labelVisible="true"
                         name="s_canbreakdown">
                   </checkbox>
                   <checkbox
                         defaultValue="true"
                         id="s_canadddeliverables"
-                        label="鏄惁鍏佽娣诲姞浜や粯鐗�
+                        label="是否允许添加交付物"
                         labelVisible="true"
                         name="s_canadddeliverables">
                   </checkbox>
                   <checkbox
                         defaultValue="false"
                         id="s_canmodifyplanworks"
-                        label="鏄惁鍏佽淇敼璁″垝宸ユ椂"
+                        label="是否允许修改计划工时"
                         labelVisible="true"
                         name="s_canmodifyplanworks">
                   </checkbox>
                </section>
                <section
-                     label="寮�鍜屽畬鎴愯瀹�>
+                     label="开始和完成设定">
                   <checkbox
                         defaultValue="true"
                         id="s_autostartwithparent"
-                        label="涓婄骇宸ヤ綔寮�鏃讹紝鏈伐浣滆嚜鍔ㄥ紑濮�
+                        label="上级工作开始时，本工作自动开始"
                         labelVisible="true"
                         name="s_autostartwithparent">
                   </checkbox>
                   <checkbox
                         id="s_autofinishwithparent"
-                        label="涓婄骇宸ヤ綔瀹屾垚鏃讹紝鏈伐浣滆嚜鍔ㄥ畬鎴�
+                        label="上级工作完成时，本工作自动完成"
                         labelVisible="true"
                         name="s_autofinishwithparent">
                   </checkbox>
                   <checkbox
                         id="s_canskiptofinish"
-                        label="鏄惁鍙互璺宠繃杩涜涓殑娴佺▼瀹屾垚宸ヤ綔"
+                        label="是否可以跳过进行中的流程完成工作"
                         labelVisible="true"
                         name="s_canskiptofinish">
                   </checkbox>
@@ -1312,18 +1312,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="宸ヤ綔鎵ц娴佺▼"
+               description="工作执行流程"
                id="processpage1"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-               title="宸ヤ綔鎵ц娴佺▼">
+               title="工作执行流程">
          </basicpage>
          <basicpage
-               description="宸ヤ綔鍙樻洿娴佺▼"
+               description="工作变更流程"
                id="processpage2"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
-               title="宸ヤ綔鍙樻洿娴佺▼">
+               title="工作变更流程">
          </basicpage>
       </editor>
    </extension>
@@ -1335,7 +1335,7 @@
          <command
                commandId="runtimework.wfstart"
                icon="image/start_24.png"
-               label="寮�娴佺▼浠诲姟"
+               label="开始流程任务"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1366,7 +1366,7 @@
          <menu
                icon="image/start_24.png"
                id="runtimework.wfstart.menu"
-               label="寮�娴佺▼浠诲姟">
+               label="开始流程任务">
             <dynamic
                   class="com.sg.business.work.menu.UserStartTaskSelectMenu"
                   id="runtimework.wfstart.menu.dynamic">
@@ -1400,7 +1400,7 @@
          <command
                commandId="runtimework.wffinish"
                icon="image/complete_24.png"
-               label="瀹屾垚娴佺▼浠诲姟"
+               label="完成流程任务"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1431,7 +1431,7 @@
          <menu
                icon="image/complete_24.png"
                id="runtimework.wffinish.menu"
-               label="瀹屾垚娴佺▼浠诲姟">
+               label="完成流程任务">
             <dynamic
                   class="com.sg.business.work.menu.UserFinishTaskSelectMenu"
                   id="runtimework.wffinish.menu.dynamic">
@@ -1465,7 +1465,7 @@
          <command
                commandId="runtimework.wfview"
                icon="image/flow_24.png"
-               label="鏌ョ湅娴佺▼璁板綍..."
+               label="查看流程记录..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1497,7 +1497,7 @@
          <command
                commandId="runtimework.start"
                icon="image/work_start_24.png"
-               label="寮�宸ヤ綔"
+               label="开始工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1531,7 +1531,7 @@
          <command
                commandId="runtimework.finish"
                icon="image/work_finish_24.png"
-               label="瀹屾垚宸ヤ綔"
+               label="完成工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1565,7 +1565,7 @@
          <command
                commandId="runtimework.pause"
                icon="image/work_pause_24.png"
-               label="鏆傚仠宸ヤ綔"
+               label="暂停工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1599,7 +1599,7 @@
          <command
                commandId="runtimework.cancel"
                icon="image/work_cancel_24.png"
-               label="鍙栨秷宸ヤ綔"
+               label="取消工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1637,7 +1637,7 @@
          <command
                commandId="work.create"
                icon="image/creatework_24.png"
-               label="鍒涘缓鏂板伐浣�.."
+               label="创建新工作..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1656,7 +1656,7 @@
          <command
                commandId="work.edit"
                icon="image/editwork_24.png"
-               label="缂栬緫宸ヤ綔..."
+               label="编辑工作..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1680,7 +1680,7 @@
          <command
                commandId="runtimework.view.work"
                icon="image/work_24.png"
-               label="鏌ョ湅宸ヤ綔"
+               label="查看工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1707,7 +1707,7 @@
          <command
                commandId="work.remove"
                icon="image/removework_24.png"
-               label="鍒犻櫎宸ヤ綔"
+               label="删除工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1730,13 +1730,13 @@
          <command
                commandId="work.opendeliverable"
                icon="image/deliverable_24.png"
-               label="宸ヤ綔浜や粯鐗�
+               label="工作交付物"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/work_assignment_24.png"
-               label="鎸囨淳璐熻矗浜哄拰鍙備笌鑰�
+               label="指派负责人和参与者"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1781,7 +1781,7 @@
          <command
                commandId="runtimework.mark"
                icon="image/mark_24.png"
-               label="鏍囪"
+               label="标记"
                style="push">
          </command>
          <separator
@@ -1790,11 +1790,11 @@
          </separator>
          <menu
                icon="image/24_blank.png"
-               label="鏌ョ湅椤圭洰">
+               label="查看项目">
             <command
                   commandId="runtimework.view.project"
                   icon="image/project_24.png"
-                  label="鏌ョ湅椤圭洰"
+                  label="查看项目"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -1818,7 +1818,7 @@
             <command
                   commandId="runtimework.view.project"
                   icon="image/document_24.png"
-                  label="椤圭洰鏂囨。"
+                  label="项目文档"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -1851,7 +1851,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="鏇存柊"
+               label="更新"
                style="push">
          </command>
       </menuContribution>
@@ -1861,7 +1861,7 @@
          <command
                commandId="runtimework.start"
                icon="image/work_start_24.png"
-               label="寮�宸ヤ綔"
+               label="开始工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1895,7 +1895,7 @@
          <command
                commandId="runtimework.finish"
                icon="image/work_finish_24.png"
-               label="瀹屾垚宸ヤ綔"
+               label="完成工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1929,7 +1929,7 @@
          <command
                commandId="runtimework.cancel"
                icon="image/work_cancel_24.png"
-               label="鍙栨秷宸ヤ綔"
+               label="取消工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1963,7 +1963,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/work_24.png"
-               label="鏌ョ湅宸ヤ綔"
+               label="查看工作"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1978,7 +1978,7 @@
          <command
                commandId="runtimework.wfview"
                icon="image/flow_24.png"
-               label="鏌ョ湅娴佺▼璁板綍..."
+               label="查看流程记录..."
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2005,11 +2005,11 @@
          </command>
          <menu
                icon="image/24_blank.png"
-               label="鏌ョ湅椤圭洰">
+               label="查看项目">
             <command
                   commandId="runtimework.view.project"
                   icon="image/project_24.png"
-                  label="鏌ョ湅椤圭洰"
+                  label="查看项目"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -2033,7 +2033,7 @@
             <command
                   commandId="runtimework.view.project"
                   icon="image/document_24.png"
-                  label="椤圭洰鏂囨。"
+                  label="项目文档"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -2061,7 +2061,7 @@
             <command
                   commandId="runtimework.view.project"
                   icon="image/deliverable_24.png"
-                  label="椤圭洰浜や粯鐗�
+                  label="项目交付物"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -2090,13 +2090,13 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="鏇存柊"
+               label="更新"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/deliverable_24.png"
-               label="宸ヤ綔浜や粯鐗�
+               label="工作交付物"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2123,9 +2123,29 @@
          <command
                commandId="work.launch"
                icon="image/work_launch_24.png"
-               label="鍙戣捣宸ヤ綔"
+               label="发起工作"
                style="push"
-               tooltip="鍒涘缓鐙珛浜庨」鐩殑鏂板伐浣�>
+               tooltip="创建独立于项目的新工作">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:main?after=common.separator">
+         <command
+               commandId="document.showpreview"
+               icon="image/preview_24.png"
+               label="显示预览"
+               style="toggle"
+               tooltip="显示预览视图">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.workflow">
+                  </equals>
+               </with>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
@@ -2134,13 +2154,13 @@
          <command
                commandId="workflow.createdeliverable"
                icon="image/deliverablecreate_24.png"
-               label="鍒涘缓浜や粯鐗�
+               label="创建交付物"
                style="push">
          </command>
          <command
                commandId="workflow.linkdeliverable"
                icon="image/documentlink_24.png"
-               label="閾炬帴浜や粯鏂囨。"
+               label="链接交付文档"
                style="push">
          </command>
       </menuContribution>
@@ -2149,12 +2169,12 @@
          point="org.eclipse.ui.commands">
       <category
             id="work"
-            name="宸ヤ綔">
+            name="工作">
       </category>
       <command
             categoryId="work"
             id="runtimework.view.project"
-            name="鏌ョ湅椤圭洰">
+            name="查看项目">
          <commandParameter
                id="work.project.view"
                name="pageid"
@@ -2164,105 +2184,105 @@
       <command
             categoryId="work"
             id="runtimework.view.work"
-            name="鏌ョ湅宸ヤ綔">
+            name="查看工作">
       </command>
       <command
             categoryId="work"
             id="runtimework.start"
-            name="鍚姩">
+            name="启动">
       </command>
       <command
             categoryId="work"
             id="runtimework.finish"
-            name="瀹屾垚">
+            name="完成">
       </command>
       <command
             categoryId="work"
             id="runtimework.pause"
-            name="鏆傚仠">
+            name="暂停">
       </command>
       <command
             categoryId="work"
             id="runtimework.cancel"
-            name="鍙栨秷">
+            name="取消">
       </command>
       <command
             categoryId="work"
             id="runtimework.wfstart"
-            name="寮�浠诲姟">
+            name="开始任务">
          <commandParameter
                id="runtimework.usertask"
-               name="娴佺▼浠诲姟"
+               name="流程任务"
                optional="true">
          </commandParameter>
          <commandParameter
                id="runtimework.usertask_id"
-               name="娴佺▼浠诲姟ID"
+               name="流程任务ID"
                optional="true">
          </commandParameter>
       </command>
       <command
             categoryId="work"
             id="runtimework.wffinish"
-            name="瀹屾垚浠诲姟">
+            name="完成任务">
          <commandParameter
                id="runtimework.usertask"
-               name="娴佺▼浠诲姟"
+               name="流程任务"
                optional="true">
          </commandParameter>
          <commandParameter
                id="runtimework.usertask_id"
-               name="娴佺▼浠诲姟ID"
+               name="流程任务ID"
                optional="true">
          </commandParameter>
       </command>
       <command
             categoryId="work"
             id="runtimework.wfcancel"
-            name="涓">
+            name="中止">
       </command>
       <command
             categoryId="work"
             id="runtimework.wfview"
-            name="鏌ョ湅娴佺▼">
+            name="查看流程">
          <commandParameter
                id="process.key"
-               name="娴佺▼鍏抽敭瀛�
+               name="流程关键字"
                optional="false">
          </commandParameter>
       </command>
       <command
             categoryId="work"
             id="runtimework.mark"
-            name="鏍囪宸ヤ綔">
+            name="标记工作">
       </command>
       <command
             id="runtimework.record"
-            name="宸ヤ綔璁板綍">
+            name="工作记录">
       </command>
       <command
             categoryId="work"
             id="work.launch"
-            name="鍙戣捣宸ヤ綔">
+            name="发起工作">
       </command>
       <command
             categoryId="work"
             id="work.opendeliverable"
-            name="宸ヤ綔浜や粯鐗�>
+            name="工作交付物">
       </command>
       <command
             id="document.showpreview"
-            name="鏄剧ず棰勮">
+            name="显示预览">
       </command>
       <command
             categoryId="work"
             id="workflow.createdeliverable"
-            name="鍒涘缓浜や粯鐗�>
+            name="创建交付物">
       </command>
       <command
             categoryId="work"
             id="workflow.linkdeliverable"
-            name="閾炬帴浜や粯鏂囨。">
+            name="链接交付文档">
       </command>
    </extension>
    <extension
@@ -2329,7 +2349,7 @@
       </handler>
    </extension>
    <extension
-         name="鎵�湁涓庡伐浣滄湁鍏崇殑缂栬緫鍣�
+         name="所有与工作有关的编辑器"
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="work"
@@ -2337,23 +2357,23 @@
             id="edit.work.plan.0"
             image="image/work_24.png"
             isDefault="false"
-            memo="涓嶅甫鏈夋祦绋嬬敤浜庡彾瀛愬伐浣滅殑璁″垝鍒跺畾"
-            name="宸ヤ綔"
-            titleToolTips="宸ヤ綔">
+            memo="不带有流程用于叶子工作的计划制定"
+            name="工作"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鐨勫熀鏈俊鎭�
+               description="工作的基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -2364,7 +2384,7 @@
                   <checkbox
                         editable="true"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -2372,12 +2392,12 @@
                   </checkbox>
                </section>
                <section
-                     label="璁″垝">
+                     label="计划">
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -2388,7 +2408,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -2400,7 +2420,7 @@
                         editable="true"
                         id="planduration"
                         isComputeField="true"
-                        label="璁″垝宸ユ湡(澶�"
+                        label="计划工期(天)"
                         labelVisible="true"
                         name="planduration"
                         persistable="true"
@@ -2412,7 +2432,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="standardworks"
-                        label="鏍囧噯宸ユ椂(鏃�"
+                        label="标准工时(时)"
                         labelVisible="true"
                         name="standardworks"
                         persistable="true"
@@ -2423,7 +2443,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="planworks"
-                        label="璁″垝宸ユ椂(鏃�"
+                        label="计划工时(时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="true"
@@ -2435,12 +2455,12 @@
             <pagecolumn
                   id="2">
                <section
-                     description="璐熻矗浜哄皢鑷姩鍔犲叆鍒板弬涓庤�"
-                     label="鍥㈤槦">
+                     description="负责人将自动加入到参与者"
+                     label="团队">
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -2454,7 +2474,7 @@
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="participate"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
@@ -2464,7 +2484,7 @@
                   <navigatorSelector
                         editable="true"
                         id="assignerid"
-                        label="鎸囨淳浜�
+                        label="指派人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -2478,19 +2498,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇存槑"
+               description="说明"
                id="memopage"
                image="image/work_24.png"
-               title="璇存槑">
+               title="说明">
             <pagecolumn>
                <section
-                     label="璇存槑">
+                     label="说明">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -2507,23 +2527,23 @@
             id="edit.work.plan.1"
             image="image/work_24.png"
             isDefault="false"
-            memo="甯︽湁娴佺▼鐢ㄤ簬鍙跺瓙宸ヤ綔鐨勮鍒掑埗瀹�
-            name="宸ヤ綔"
-            titleToolTips="宸ヤ綔">
+            memo="带有流程用于叶子工作的计划制定"
+            name="工作"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鐨勫熀鏈俊鎭�
+               description="工作的基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -2534,7 +2554,7 @@
                   <checkbox
                         editable="true"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -2542,12 +2562,12 @@
                   </checkbox>
                </section>
                <section
-                     label="璁″垝">
+                     label="计划">
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -2558,7 +2578,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -2570,7 +2590,7 @@
                         editable="false"
                         id="planduration"
                         isComputeField="true"
-                        label="璁″垝宸ユ湡(澶�"
+                        label="计划工期(天)"
                         labelVisible="true"
                         name="planduration"
                         persistable="true"
@@ -2582,7 +2602,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="standardworks"
-                        label="鏍囧噯宸ユ椂(鏃�"
+                        label="标准工时(时)"
                         labelVisible="true"
                         name="standardworks"
                         persistable="true"
@@ -2593,7 +2613,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="planworks"
-                        label="璁″垝宸ユ椂(鏃�"
+                        label="计划工时(时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="true"
@@ -2605,12 +2625,12 @@
             <pagecolumn
                   id="2">
                <section
-                     description="璐熻矗浜哄皢鑷姩鍔犲叆鍒板弬涓庤�"
-                     label="鍥㈤槦">
+                     description="负责人将自动加入到参与者"
+                     label="团队">
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -2624,7 +2644,7 @@
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="participate"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
@@ -2635,19 +2655,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇存槑"
+               description="说明"
                id="memopage"
                image="image/work_24.png"
-               title="璇存槑">
+               title="说明">
             <pagecolumn>
                <section
-                     label="璇存槑">
+                     label="说明">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -2658,11 +2678,11 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="宸ヤ綔鎵ц娴佺▼鐨勬墽琛屼汉"
+               description="工作执行流程的执行人"
                id="processpage1"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-               title="鎵ц娴佺▼">
+               title="执行流程">
          </basicpage>
       </editor>
       <editor
@@ -2671,23 +2691,23 @@
             id="edit.work.plan.3"
             image="image/work_24.png"
             isDefault="false"
-            memo="涓嶅甫鏈夋祦绋嬬敤浜庡彾瀛愮嫭绔嬪伐浣滅殑璁″垝鍒跺畾"
-            name="鐙珛宸ヤ綔"
-            titleToolTips="鐙珛宸ヤ綔">
+            memo="不带有流程用于叶子独立工作的计划制定"
+            name="独立工作"
+            titleToolTips="独立工作">
          <basicpage
-               description="宸ヤ綔鐨勫熀鏈俊鎭�
+               description="工作的基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -2698,7 +2718,7 @@
                   <checkbox
                         editable="true"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -2706,12 +2726,12 @@
                   </checkbox>
                </section>
                <section
-                     label="璁″垝">
+                     label="计划">
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -2722,7 +2742,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -2734,7 +2754,7 @@
                         editable="true"
                         id="planduration"
                         isComputeField="true"
-                        label="璁″垝宸ユ湡(澶�"
+                        label="计划工期(天)"
                         labelVisible="true"
                         name="planduration"
                         persistable="true"
@@ -2747,12 +2767,12 @@
             <pagecolumn
                   id="2">
                <section
-                     description="璐熻矗浜哄皢鑷姩鍔犲叆鍒板弬涓庤�"
-                     label="鍥㈤槦">
+                     description="负责人将自动加入到参与者"
+                     label="团队">
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -2766,7 +2786,7 @@
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="participate"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
@@ -2776,7 +2796,7 @@
                   <navigatorSelector
                         editable="true"
                         id="assignerid"
-                        label="鎸囨淳浜�
+                        label="指派人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -2790,19 +2810,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇存槑"
+               description="说明"
                id="memopage"
                image="image/work_24.png"
-               title="璇存槑">
+               title="说明">
             <pagecolumn>
                <section
-                     label="璇存槑">
+                     label="说明">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -2819,23 +2839,23 @@
             id="edit.work.plan.4"
             image="image/work_24.png"
             isDefault="false"
-            memo="甯︽湁娴佺▼鐢ㄤ簬鍙跺瓙鐙珛宸ヤ綔鐨勮鍒掑埗瀹�
-            name="鐙珛宸ヤ綔"
-            titleToolTips="宸ヤ綔">
+            memo="带有流程用于叶子独立工作的计划制定"
+            name="独立工作"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鐨勫熀鏈俊鎭�
+               description="工作的基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -2846,7 +2866,7 @@
                   <checkbox
                         editable="true"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -2854,12 +2874,12 @@
                   </checkbox>
                </section>
                <section
-                     label="璁″垝">
+                     label="计划">
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -2870,7 +2890,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -2882,7 +2902,7 @@
                         editable="false"
                         id="planduration"
                         isComputeField="true"
-                        label="璁″垝宸ユ湡(澶�"
+                        label="计划工期(天)"
                         labelVisible="true"
                         name="planduration"
                         persistable="true"
@@ -2895,12 +2915,12 @@
             <pagecolumn
                   id="2">
                <section
-                     description="璐熻矗浜哄皢鑷姩鍔犲叆鍒板弬涓庤�"
-                     label="鍥㈤槦">
+                     description="负责人将自动加入到参与者"
+                     label="团队">
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -2914,7 +2934,7 @@
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
                         editable="true"
                         id="participate"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
@@ -2925,19 +2945,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇存槑"
+               description="说明"
                id="memopage"
                image="image/work_24.png"
-               title="璇存槑">
+               title="说明">
             <pagecolumn>
                <section
-                     label="璇存槑">
+                     label="说明">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -2948,11 +2968,11 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="宸ヤ綔鎵ц娴佺▼鐨勬墽琛屼汉"
+               description="工作执行流程的执行人"
                id="processpage1"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-               title="鎵ц娴佺▼">
+               title="执行流程">
          </basicpage>
       </editor>
       <editor
@@ -2961,23 +2981,23 @@
             id="edit.work.plan.2"
             image="image/work_24.png"
             isDefault="false"
-            memo="鎽樿浠诲姟鐨勭紪杈戯紙璁″垝鍒跺畾锛�
-            name="鎽樿宸ヤ綔"
-            titleToolTips="宸ヤ綔">
+            memo="摘要任务的编辑（计划制定）"
+            name="摘要工作"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鐨勫熀鏈俊鎭�
+               description="工作的基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -2988,7 +3008,7 @@
                   <checkbox
                         editable="true"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -2996,12 +3016,12 @@
                   </checkbox>
                </section>
                <section
-                     label="璁″垝">
+                     label="计划">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="false"
@@ -3014,7 +3034,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="false"
@@ -3027,7 +3047,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="planduration"
-                        label="璁″垝宸ユ湡(澶�"
+                        label="计划工期(天)"
                         labelVisible="true"
                         name="planduration"
                         persistable="false"
@@ -3040,7 +3060,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="planworks"
-                        label="璁″垝宸ユ椂(鏃�"
+                        label="计划工时(时)"
                         labelVisible="true"
                         name="planworks"
                         persistable="false"
@@ -3054,12 +3074,12 @@
             <pagecolumn
                   id="2">
                <section
-                     description="璐熻矗浜哄皢鑷姩鍔犲叆鍒板弬涓庤�"
-                     label="鍥㈤槦">
+                     description="负责人将自动加入到参与者"
+                     label="团队">
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -3073,7 +3093,7 @@
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="participate"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
@@ -3084,19 +3104,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇存槑"
+               description="说明"
                id="memopage"
                image="image/work_24.png"
-               title="璇存槑">
+               title="说明">
             <pagecolumn>
                <section
-                     label="璇存槑">
+                     label="说明">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -3113,23 +3133,23 @@
             id="editor.work.setting"
             image="image/worksetting_24.png"
             isDefault="false"
-            memo="鐢ㄤ簬璁惧畾宸ヤ綔"
-            name="宸ヤ綔璁剧疆"
-            titleToolTips="宸ヤ綔">
+            memo="用于设定工作"
+            name="工作设置"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鍩烘湰璁剧疆"
+               description="工作基本设置"
                id="basicpage"
                image="image/worksetting_24.png"
-               title="宸ヤ綔鍩烘湰璁剧疆">
+               title="工作基本设置">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -3140,7 +3160,7 @@
                   <checkbox
                         editable="false"
                         id="milestone"
-                        label="閲岀▼纰�
+                        label="里程碑"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -3150,7 +3170,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="standardworks"
-                        label="鏍囧噯宸ユ椂(鏃�"
+                        label="标准工时(时)"
                         labelVisible="true"
                         name="standardworks"
                         persistable="true"
@@ -3162,7 +3182,7 @@
                      <spinner
                            editable="true"
                            id="remindbefore"
-                           label="璁剧疆鍦ㄨ鍒掑畬鎴愬墠鎻愰啋(鏃�"
+                           label="设置在计划完成前提醒(时)"
                            labelVisible="true"
                            name="remindbefore"
                            persistable="true"
@@ -3171,11 +3191,11 @@
                   </fieldgroup>
                </section>
                <section
-                     label="宸ヤ綔鍜屼氦浠樼墿">
+                     label="工作和交付物">
                   <checkbox
                         editable="false"
                         id="s_canbreakdown"
-                        label="鏄惁鍏佽鍒嗚В宸ヤ綔"
+                        label="是否允许分解工作"
                         labelVisible="true"
                         name="s_canbreakdown"
                         persistable="false"
@@ -3184,7 +3204,7 @@
                   <checkbox
                         editable="false"
                         id="s_canadddeliverables"
-                        label="鏄惁鍏佽娣诲姞浜や粯鐗�
+                        label="是否允许添加交付物"
                         labelVisible="true"
                         name="s_canadddeliverables"
                         persistable="false"
@@ -3193,7 +3213,7 @@
                   <checkbox
                         editable="false"
                         id="s_canmodifyplanworks"
-                        label="鏄惁鍏佽淇敼璁″垝宸ユ椂"
+                        label="是否允许修改计划工时"
                         labelVisible="true"
                         name="s_canmodifyplanworks"
                         persistable="false"
@@ -3203,11 +3223,11 @@
             </pagecolumn>
             <pagecolumn>
                <section
-                     label="寮�鍜屽畬鎴愯瀹�>
+                     label="开始和完成设定">
                   <checkbox
                         editable="false"
                         id="s_autostartwithparent"
-                        label="涓婄骇宸ヤ綔寮�鏃讹紝鏈伐浣滆嚜鍔ㄥ紑濮�
+                        label="上级工作开始时，本工作自动开始"
                         labelVisible="true"
                         name="s_autostartwithparent"
                         persistable="false"
@@ -3216,7 +3236,7 @@
                   <checkbox
                         editable="false"
                         id="s_autofinishwithparent"
-                        label="涓婄骇宸ヤ綔瀹屾垚鏃讹紝鏈伐浣滆嚜鍔ㄥ畬鎴�
+                        label="上级工作完成时，本工作自动完成"
                         labelVisible="true"
                         name="s_autofinishwithparent"
                         persistable="false"
@@ -3225,7 +3245,7 @@
                   <checkbox
                         editable="false"
                         id="s_canskiptofinish"
-                        label="鏄惁鍙互璺宠繃杩涜涓殑娴佺▼瀹屾垚宸ヤ綔"
+                        label="是否可以跳过进行中的流程完成工作"
                         labelVisible="true"
                         name="s_canskiptofinish"
                         persistable="false"
@@ -3233,11 +3253,11 @@
                   </checkbox>
                </section>
                <section
-                     label="鍙樻洿璁惧畾">
+                     label="变更设定">
                   <checkbox
                         editable="false"
                         id="s_workchangeflowmandory"
-                        label="闇�惎鍔ㄥ彉鏇存祦绋嬪疄鏂藉伐浣滅殑鏇存敼"
+                        label="需启动变更流程实施工作的更改"
                         labelVisible="true"
                         name="s_workchangeflowmandory"
                         persistable="false"
@@ -3246,7 +3266,7 @@
                   <checkbox
                         editable="false"
                         id="s_projectchangeflowmandory"
-                        label="闇�惎鍔ㄩ」鐩彉鏇存祦绋嬪疄鏂藉伐浣滅殑鏇存敼"
+                        label="需启动项目变更流程实施工作的更改"
                         labelVisible="true"
                         name="s_projectchangeflowmandory"
                         persistable="false"
@@ -3256,20 +3276,20 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="瑙掕壊璁剧疆锛岀敤浜庢寜瑙掕壊杩涜宸ヤ綔鍒嗘淳"
+               description="角色设置，用于按角色进行工作分派"
                id="settingpage"
                image="image/worksetting_24.png"
-               title="瑙掕壊璁剧疆">
+               title="角色设置">
             <pagecolumn
                   id="2">
                <section
-                     label="鎸囨淳瑙掕壊">
+                     label="指派角色">
                   <combo
                         dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
-                        label="璐熻矗浜鸿鑹�
+                        label="负责人角色"
                         labelVisible="true"
                         name="charger_roled_id"
                         persistable="true"
@@ -3281,7 +3301,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
-                        label="鎸囨淳浜鸿鑹�
+                        label="指派人角色"
                         labelVisible="true"
                         name="assignmentcharger_roled_id"
                         persistable="true"
@@ -3290,13 +3310,13 @@
                   </combo>
                </section>
                <section
-                     label="鍙備笌鑰呰鑹�>
+                     label="参与者角色">
                   <table
                         ctableId="project.field.participate_roled_set"
                         dataSetFactory="com.sg.business.model.dataset.project.RoleDefOfProjectOption"
                         editable="true"
                         id="participate_roled_set"
-                        label="鍙備笌鑰呰鑹�
+                        label="参与者角色"
                         labelVisible="false"
                         name="participate_roled_set"
                         persistable="true"
@@ -3306,18 +3326,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="宸ヤ綔鎵ц娴佺▼璁剧疆"
+               description="工作执行流程设置"
                id="processpage1"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-               title="宸ヤ綔鎵ц娴佺▼璁剧疆">
+               title="工作执行流程设置">
          </basicpage>
          <basicpage
-               description="宸ヤ綔鍙樻洿娴佺▼璁剧疆"
+               description="工作变更流程设置"
                id="processpage2"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
-               title="宸ヤ綔鍙樻洿娴佺▼璁剧疆">
+               title="工作变更流程设置">
          </basicpage>
       </editor>
       <editor
@@ -3326,14 +3346,14 @@
             id="edit.work.deliverable"
             image="image/work_24.png"
             isDefault="false"
-            memo="宸ヤ綔浜や粯鐗�
-            name="宸ヤ綔浜や粯鐗�
-            titleToolTips="宸ヤ綔浜や粯鐗�>
+            memo="工作交付物"
+            name="工作交付物"
+            titleToolTips="工作交付物">
          <navigatorpage
                id="deliverable"
                image="image/deliverable_24.png"
                navigatorId="work.deliverable"
-               title="浜や粯鐗�>
+               title="交付物">
          </navigatorpage>
       </editor>
       <editor
@@ -3342,23 +3362,23 @@
             id="view.work"
             image="image/work_24.png"
             isDefault="false"
-            memo="宸ヤ綔鐨勬煡鐪�
-            name="宸ヤ綔"
-            titleToolTips="宸ヤ綔">
+            memo="工作的查看"
+            name="工作"
+            titleToolTips="工作">
          <basicpage
-               description="宸ヤ綔鐨勫熀鏈俊鎭�
+               description="工作的基本信息"
                id="basicpage"
                image="image/work_24.png"
-               title="鍩烘湰淇℃伅">
+               title="基本信息">
             <pagecolumn
                   id="1">
                <section
-                     label="鍩烘湰淇℃伅">
+                     label="基本信息">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
                         id="desc"
-                        label="宸ヤ綔鍚嶇О"
+                        label="工作名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -3371,7 +3391,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="project_id"
-                        label="椤圭洰鍚嶇О"
+                        label="项目名称"
                         labelVisible="true"
                         name="project_id"
                         persistable="true"
@@ -3385,7 +3405,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         name="chargerid"
                         persistable="true"
@@ -3399,7 +3419,7 @@
                         editable="false"
                         id="status"
                         isHTML="true"
-                        label="鐘舵�"
+                        label="状态"
                         labelVisible="true"
                         name="status"
                         persistable="true"
@@ -3410,13 +3430,13 @@
                   </text>
                </section>
                <section
-                     label="鍙備笌鑰�>
+                     label="参与者">
                   <text
                         editPart="Text(Multi Line)"
                         editable="false"
                         id="participate"
                         isHTML="true"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="false"
                         name="participate"
                         persistable="true"
@@ -3426,14 +3446,14 @@
                   </text>
                </section>
                <section
-                     label="璁″垝杩涘害">
+                     label="计划进度">
                   <fieldgroup
                         columnCount="2">
                      <text
                            editPart="Text(Single Line)"
                            editable="false"
                            id="planstart"
-                           label="璁″垝寮�"
+                           label="计划开始"
                            labelVisible="true"
                            name="planstart"
                            persistable="false"
@@ -3447,7 +3467,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="planfinish"
-                           label="瀹屾垚"
+                           label="完成"
                            labelVisible="true"
                            name="planfinish"
                            persistable="false"
@@ -3462,7 +3482,7 @@
                            editable="true"
                            id="planduration"
                            isComputeField="true"
-                           label="宸ユ湡(澶�"
+                           label="工期(天)"
                            labelVisible="true"
                            name="planduration"
                            persistable="true"
@@ -3475,7 +3495,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="planworks"
-                           label="宸ユ椂(鏃�"
+                           label="工时(时)"
                            labelVisible="true"
                            name="planworks"
                            persistable="true"
@@ -3486,14 +3506,14 @@
                   </fieldgroup>
                </section>
                <section
-                     label="瀹為檯杩涘害">
+                     label="实际进度">
                   <fieldgroup
                         columnCount="2">
                      <text
                            editPart="Text(Single Line)"
                            editable="false"
                            id="actualstart"
-                           label="瀹為檯寮�"
+                           label="实际开始"
                            labelVisible="true"
                            name="actualstart"
                            persistable="false"
@@ -3507,7 +3527,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="actualfinish"
-                           label="瀹屾垚"
+                           label="完成"
                            labelVisible="true"
                            name="actualfinish"
                            persistable="false"
@@ -3522,7 +3542,7 @@
                            editable="true"
                            id="actualduration"
                            isComputeField="true"
-                           label="宸ユ湡(澶�"
+                           label="工期(天)"
                            labelVisible="true"
                            name="actualduration"
                            persistable="true"
@@ -3535,7 +3555,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="actualworks"
-                           label="宸ユ椂(鏃�"
+                           label="工时(时)"
                            labelVisible="true"
                            name="actualworks"
                            persistable="true"
@@ -3549,13 +3569,13 @@
             <pagecolumn
                   id="2">
                <section
-                     label="宸ヤ綔璇存槑">
+                     label="工作说明">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="240"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -3569,7 +3589,7 @@
                id="workrecord"
                image="image/log_24.png"
                navigatorId="work.workperformenceofwork"
-               title="宸ヤ綔璁板綍">
+               title="工作记录">
          </navigatorpage>
       </editor>
       <editor
@@ -3577,20 +3597,20 @@
             dbName="pm2"
             id="editor.runtimereassignment"
             image="image/user_24.png"
-            name="鎸囨淳"
-            titleToolTips="宸ヤ綔鎸囨淳">
+            name="指派"
+            titleToolTips="工作指派">
          <basicpage
-               description="宸ヤ綔鎸囨淳"
+               description="工作指派"
                id="assignmentpage"
-               title="宸ヤ綔鎸囨淳">
+               title="工作指派">
             <pagecolumn
                   id="1">
                <section
-                     label="鎸囨淳宸ヤ綔璐熻矗浜哄拰鍙備笌鑰�>
+                     label="指派工作负责人和参与者">
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -3605,7 +3625,7 @@
                         addTableItemHandler="com.sg.business.work.editor.field.AddParticipateFromOrg"
                         editable="true"
                         id="participate"
-                        label="鍙備笌鑰�
+                        label="参与者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="participate"
@@ -3622,20 +3642,20 @@
             id="editor.work.launch"
             image="image/work_24.png"
             isDefault="false"
-            name="鍙戣捣宸ヤ綔">
+            name="发起工作">
          <basicpage
-               description="璇峰～鍐欏伐浣滅殑鍚嶇О鍜屾弿杩�
+               description="请填写工作的名称和描述"
                id="basicpage1"
                image="image/work_72.png"
-               title="宸ヤ綔鍩烘湰鎻忚堪">
+               title="工作基本描述">
             <pagecolumn>
                <section
-                     label="宸ヤ綔鎻忚堪">
+                     label="工作描述">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="鍚嶇О"
+                        label="名称"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -3648,7 +3668,7 @@
                         editable="true"
                         heightHint="120"
                         id="description"
-                        label="璇存槑"
+                        label="说明"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -3659,18 +3679,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇峰～鍐欐湰宸ヤ綔鐨勮鍒掑紑濮嬨�瀹屾垚鏃堕棿"
+               description="请填写本工作的计划开始、完成时间"
                id="basicpage2"
                image="image/schedule_72.png"
-               title="璁″垝">
+               title="计划">
             <pagecolumn>
                <section
-                     label="璁″垝">
+                     label="计划">
                   <dateTime
                         editPart="DateDialog"
                         editable="true"
                         id="planstart"
-                        label="璁″垝寮�"
+                        label="计划开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -3681,7 +3701,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="planfinish"
-                        label="璁″垝瀹屾垚"
+                        label="计划完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -3691,7 +3711,7 @@
                   <navigatorSelector
                         editable="true"
                         id="chargerid"
-                        label="璐熻矗浜�
+                        label="负责人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -3705,26 +3725,26 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="璇疯缃伐浣滄墽琛屾祦绋嬬殑鎵ц浜�
+               description="请设置工作执行流程的执行人"
                id="processpage1"
                image="image/workflow_72.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-               title="娴佺▼">
+               title="流程">
          </basicpage>
       </editor>
       <basicpage
-            description="璇峰～鍐欏伐浣滅殑鍩烘湰淇℃伅"
+            description="请填写工作的基本信息"
             id="launch.work.basicpage"
             image="image/schedule_72.png"
-            title="宸ヤ綔鍩烘湰鎻忚堪">
+            title="工作基本描述">
          <pagecolumn>
             <section
-                  label="宸ヤ綔鎻忚堪">
+                  label="工作描述">
                <text
                      editPart="Text(Single Line)"
                      editable="true"
                      id="desc"
-                     label="鍚嶇О"
+                     label="名称"
                      labelVisible="true"
                      name="desc"
                      persistable="true"
@@ -3737,7 +3757,7 @@
                      editable="true"
                      heightHint="120"
                      id="description"
-                     label="璇存槑"
+                     label="说明"
                      labelVisible="true"
                      name="description"
                      persistable="true"
@@ -3746,7 +3766,7 @@
                </text>
             </section>
             <section
-                  label="璁″垝">
+                  label="计划">
                <fieldgroup
                      columnCount="2"
                      makeColumnWidthEqual="false">
@@ -3755,7 +3775,7 @@
                         editable="true"
                         id="planstart"
                         inputValidator="com.sg.business.commons.field.validator.PlanStartFinishDateValidator"
-                        label="寮�"
+                        label="开始"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -3767,7 +3787,7 @@
                         editable="true"
                         id="planfinish"
                         inputValidator="com.sg.business.commons.field.validator.PlanStartFinishDateValidator"
-                        label="瀹屾垚"
+                        label="完成"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -3779,11 +3799,11 @@
          </pagecolumn>
       </basicpage>
       <basicpage
-            description="璇疯缃伐浣滄墽琛屾祦绋嬬殑鎵ц浜�
+            description="请设置工作执行流程的执行人"
             id="launch.work.processpage"
             image="image/workflow_72.png"
                pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-            title="娴佺▼">
+            title="流程">
       </basicpage>
    </extension>
    <extension
@@ -3791,7 +3811,7 @@
       <wizard
             class="com.sg.business.work.launch.LaunchWorkWizard"
             id="work.wizard.launch"
-            name="鍙戣捣宸ヤ綔">
+            name="发起工作">
       </wizard>
    </extension>
    <extension
@@ -3810,28 +3830,28 @@
             category="work"
             class="com.sg.business.work.view.WorkFlowReservedTask"
             id="workflow.taskreserved"
-            name="娴佺▼浠诲姟"
+            name="流程任务"
             restorable="true">
       </view>
       <view
             category="work"
             class="com.sg.business.work.view.WorkFlowHistory"
             id="workflow.taskhistory"
-            name="娴佺▼鍘嗗彶"
+            name="流程历史"
             restorable="true">
       </view>
       <view
             category="work"
             class="com.sg.business.work.view.WorkFlowWorkDelivery"
             id="workflow.workdelivery"
-            name="浜や粯鐗�
+            name="交付物"
             restorable="true">
       </view>
       <view
             category="work"
             class="com.sg.business.work.view.WorkFlowWorkDeliveryPreviewer"
             id="workflow.document.previewer"
-            name="鏂囦欢棰勮"
+            name="文件预览"
             restorable="true">
       </view>
    </extension>
