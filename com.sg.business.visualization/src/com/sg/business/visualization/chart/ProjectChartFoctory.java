@@ -125,7 +125,7 @@ public class ProjectChartFoctory {
 		return chart;
 	}
 
-	public static Chart createStackedBarChart(String[] deptParameter,
+	public static Chart createStackedBarChart(String title,String[] deptParameter,
 			double[] deptValue1, double[] deptValue2) {
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType("Bar Chart"); //$NON-NLS-1$
@@ -136,7 +136,7 @@ public class ProjectChartFoctory {
 		p.getClientArea().setBackground(ColorDefinitionImpl.TRANSPARENT());
 
 		// Title
-		cwaBar.getTitle().getLabel().getCaption().setValue("部门项目执行状况"); //$NON-NLS-1$
+		cwaBar.getTitle().getLabel().getCaption().setValue(title); //$NON-NLS-1$
 		adjustFont(cwaBar.getTitle().getLabel().getCaption().getFont(),
 				STRONG_SIZE);
 		Legend lg = cwaBar.getLegend();
