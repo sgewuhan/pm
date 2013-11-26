@@ -21,65 +21,6 @@ public class RNDPeriodCostAdapter {
 	public static final String YEAR = "year";
 	public static final String MONTH = "month";
 
-//	public RNDPeriodCost getData(Map<String, Object> parameter)
-//			throws Exception {
-//		Object year = parameter.get(YEAR);
-//		Object month = parameter.get(MONTH);
-//		if (!(year instanceof Integer) || !(month instanceof Integer)) {
-//			throw new IllegalArgumentException("期间 year, month参数错误");
-//		}
-//
-//		Object org = parameter.get(ORGCODE);
-//		if (!(org instanceof String)) {
-//			throw new IllegalArgumentException("组织代码 org 参数错误");
-//		}
-//
-//		Object cost = parameter.get(COSECENTERCODE);
-//		if (!(cost instanceof String)) {
-//			throw new IllegalArgumentException("成本中心代码 costcode 参数错误");
-//		}
-//
-//		Object account = parameter.get(ACCOUNTNUMERS);
-//		if (account != null && !(account instanceof String[])) {
-//			throw new IllegalArgumentException("科目表  account 参数错误");
-//		}
-//
-//		RNDPeriodCost[] result = runGetData(new String[] { (String) org },
-//				new String[] { (String) cost }, (int) year, (int) month,
-//				(String[]) account);
-//
-//		return result[0];
-//	}
-
-	// public Date[] getStartAndEnd(Integer year, Integer month) {
-	// Calendar cal = Calendar.getInstance();
-	// cal.set(Calendar.YEAR, year);
-	// cal.set(Calendar.MONTH, month - 1);
-	// cal.set(Calendar.DATE, 1);
-	// cal.set(Calendar.HOUR_OF_DAY, 0);
-	// cal.set(Calendar.MINUTE, 0);
-	// cal.set(Calendar.SECOND, 0);
-	// cal.set(Calendar.MILLISECOND, 0);
-	// Date start = cal.getTime();
-	// cal.add(Calendar.MILLISECOND, -1);
-	// Date end = cal.getTime();
-	// return new Date[] { start, end };
-	// }
-
-//	public String[] getDefaultAccounts() {
-//		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
-//				IModelConstants.C_COSTACCOUNT_ITEM);
-//		DBCursor cur = col.find();
-//		int i = 0;
-//		String[] ret = new String[cur.size()];
-//
-//		while (cur.hasNext()) {
-//			DBObject next = cur.next();
-//			ret[i++] = (String) next.get(CostAccount.accountnumber);
-//		}
-//		return ret;
-//	}
-
 	/**
 	 * 获得SAP成本中心期间研发成本的数据
 	 * 

@@ -3,6 +3,9 @@ package com.sg.business.finance;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.sap.mw.jco.JCO;
+import com.sap.mw.jco.JCO.Client;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -13,6 +16,10 @@ public class FinanceActivator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static FinanceActivator plugin;
+
+	private static Client sapClient;
+
+	private static SAPConnectionPool connPool;
 	
 	
 	/**
@@ -28,6 +35,14 @@ public class FinanceActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		connPool = new SAPConnectionPool();
+	}
+	
+	public static Client getSAPClient(){
+		if(sapClient==null||!sapClient.isValid()){
+			sapClient = connPool.connSAP();
+		}
+		return sapClient;
 	}
 
 	/*
@@ -36,6 +51,10 @@ public class FinanceActivator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		if(sapClient!=null&&sapClient.isValid()){
+			sapClient.disconnect();
+			JCO.releaseClient(sapClient);
+		}
 		super.stop(context);
 	}
 
