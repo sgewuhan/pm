@@ -6,7 +6,7 @@ public class RunIncomeAllocation implements Runnable {
 
 	@Override
 	public void run() {
-		String sql;
+//		String sql;
 		try {
 			SQLUtil.SQL_QUERY("SAP", "");
 		} catch (Exception e) {
