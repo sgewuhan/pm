@@ -423,6 +423,32 @@
             <column
                   columnDefinitionId="participate">
             </column></searchAction>
+         <exportAction>
+            <column
+                  columnDefinitionId="work.desc">
+            </column>
+            <column
+                  columnDefinitionId="milestone">
+            </column>
+            <column
+                  columnDefinitionId="planstart_e">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_e">
+            </column>
+            <column
+                  columnDefinitionId="planworks_e">
+            </column>
+            <column
+                  columnDefinitionId="planduration_e">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+         </exportAction>
       </navigator>
       <navigator
             id="project.deliverable"
