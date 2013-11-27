@@ -1820,7 +1820,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		// 2.检查项目的工作是否满足启动条件
 		Work work = getWBSRoot();
-		message.addAll(work.checkCascadeStart(false));
+		message.addAll(work.checkCascadeStart(true));
 		return message;
 	}
 

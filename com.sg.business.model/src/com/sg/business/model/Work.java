@@ -1414,17 +1414,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	protected List<Object[]> checkCascadeStart(boolean warningCheck) {
 		List<Object[]> message = new ArrayList<Object[]>();
-		// 非级联启动工作不检查
-		if (warningCheck) {
-			List<PrimaryObject> childrenWork = getChildrenWork();
-			if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
-				for (int i = 0; i < childrenWork.size(); i++) {
-					Work childWork = (Work) childrenWork.get(i);
-					// 通过warningCheck，降低下级的检查标准
-					message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
-							.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
-				}
+		List<PrimaryObject> childrenWork = getChildrenWork();
+		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				// 通过warningCheck，降低下级的检查标准
+				message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
+						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
 			}
+		}
+		
+		// 非级联启动工作并且非里程碑工作不检查
+		if (warningCheck && isMilestone()) {
 
 			// 1.检查工作的计划开始和计划完成
 			Object value = getPlanStart();
