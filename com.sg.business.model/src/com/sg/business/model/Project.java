@@ -2167,6 +2167,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			productItem.doFinal(context);
 		}
 	}
+
 	public UserProjectPerf makeUserProjectPerf() {
 		UserProjectPerf pperf = ModelService
 				.createModelObject(UserProjectPerf.class);
@@ -2176,10 +2177,49 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 获得项目截至当前的投资总额（研发成本）
+	 * 
 	 * @return
 	 */
-	public Double getInvestment() {
-		// TODO Auto-generated method stub
+	public double getInvestmentValue() {
 		return 100000d;
 	}
+
+	public Double getBudgetValue() {
+		ProjectBudget budget = getBudget();
+		if (budget == null) {
+			return null;
+		} else {
+			return budget.getBudgetValue();
+		}
+	}
+
+	public boolean maybeOverCostNow() {
+		// 支出比例 超过 工期比例 30% 且没有完成的项目
+		String lc = getLifecycleStatus();
+		if (!ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+			return false;
+		}
+
+		// TODO 应作为设置
+		double ratio = 0.3;
+		// 取计划工期
+		Date pf = getPlanFinish();
+		Date ps = getPlanStart();
+		Date as = getActualStart();
+		Date now = new Date();
+		Double bv = getBudgetValue();
+		Double av = getInvestmentValue();
+		
+		if (pf == null || ps == null || as == null || bv == null || av == null
+				|| bv == 0) {
+			return false;
+		}
+		
+		long pd = (pf.getTime() - ps.getTime());
+		long ad = now.getTime() - as.getTime();
+		double dr = 1d * ad / pd;
+		double cr = 1d * av / bv;
+		return cr - dr > ratio;
+	}
+
 }
