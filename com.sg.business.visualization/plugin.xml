@@ -113,6 +113,10 @@
          </searchAction-->
       </navigator>
       <navigator
+            id="vis.project.myprojectset"
+            table="vis.project.myprojectset">
+      </navigator>
+      <navigator
             id="vis.project.projecttype"
             table="vis.project.projecttype">
       </navigator>
@@ -126,8 +130,9 @@
             table="vis.projectset.schedual">
       </navigator>
       <navigator
-            id="vis.project.myprojectset"
-            table="vis.project.myprojectset">
+            id="vis.projectset.budgetandinvestment"
+            provideSelection="true"
+            table="vis.projectset.budgetandinvestment">
       </navigator>
    </extension>
    <extension
@@ -266,15 +271,15 @@
                column="planfinish"
                labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
                lazyDisplay="true"
-               name="进度"
+               name="进度概况"
                type="Date"
                width="200">
          </column>
          <column
                column="rndcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.RNDCostLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
-               name="研发成本"
+               name="研发投入概况"
                type="String"
                width="200">
          </column>
@@ -308,7 +313,7 @@
                column="planfinish"
                labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
                lazyDisplay="true"
-               name="进度"
+               name="进度概况"
                type="Date"
                width="200">
          </column>
@@ -319,6 +324,64 @@
                name="里程碑"
                type="String"
                width="160">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="project"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
+            dbName="pm2"
+            fix="1"
+            headerVisiable="true"
+            id="vis.projectset.budgetandinvestment"
+            lineVisiable="false"
+            markupEnabled="true"
+            preload="20"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               lazyDisplay="true"
+               name="项目名称描述"
+               type="String"
+               width="320">
+         </column>
+         <column
+               column="rndcost"
+               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
+               lazyDisplay="true"
+               name="研发投入概况"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="budget"
+               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetLabelProvider"
+               lazyDisplay="true"
+               name="预算"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="budget"
+               labelProvider="com.sg.business.visualization.labelprovider.project.ActualCostLabelProvider"
+               lazyDisplay="true"
+               name="实际"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="overcost"
+               labelProvider="com.sg.business.visualization.labelprovider.project.OvercostCostLabelProvider"
+               lazyDisplay="true"
+               name="超支"
+               type="String"
+               width="60">
          </column>
       </table>
    </extension>
@@ -340,6 +403,12 @@
                navigatorId="vis.projectset.schedual"
                pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardSchedual"
                title="进度">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.budgetandinvestment"
+               navigatorId="vis.projectset.budgetandinvestment"
+               pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardBudInv"
+               title="投入">
          </navigatorpage>
       </editor>
       <editor

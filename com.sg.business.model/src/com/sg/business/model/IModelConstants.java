@@ -263,6 +263,8 @@ public interface IModelConstants {
 
 	public static final String C_USERPROJECTPERF = "userprojectperf";
 
+	public static final String DB_BI = "bi";
+
 
 
 }
