@@ -790,8 +790,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			Project project = getProject();
 			if (project != null) {
 				String projectLifecycle = project.getLifecycleStatus();
-				if(STATUS_WIP_VALUE.equals(projectLifecycle)){
-					if(isMilestone()){
+				if (STATUS_WIP_VALUE.equals(projectLifecycle)) {
+					if (isMilestone()) {
 						return false;
 					}
 				}
@@ -823,14 +823,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (isProjectWBSRoot()) {
 			return false;
 		}
-		
+
 		// 项目启动后,里程碑工作不允许删除
 		if (!isStandloneWork()) {
 			Project project = getProject();
 			if (project != null) {
 				String projectLifecycle = project.getLifecycleStatus();
-				if(STATUS_WIP_VALUE.equals(projectLifecycle)){
-					if(isMilestone()){
+				if (STATUS_WIP_VALUE.equals(projectLifecycle)) {
+					if (isMilestone()) {
 						return false;
 					}
 				}
@@ -1419,77 +1419,82 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			for (int i = 0; i < childrenWork.size(); i++) {
 				Work childWork = (Work) childrenWork.get(i);
 				// 通过warningCheck，降低下级的检查标准
-				message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
-						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
-			}
-		}
-		
-		// 非级联启动工作并且非里程碑工作不检查
-		if (warningCheck && isMilestone()) {
-
-			// 1.检查工作的计划开始和计划完成
-			Object value = getPlanStart();
-			if (value == null) {
-				message.add(new Object[] { "工作的计划开始时间没有确定", this,
-						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
-						EDIT_WORK_PLAN_0 });
-			}
-			value = getPlanFinish();
-			if (value == null) {
-				message.add(new Object[] { "工作的计划完成时间没有确定", this,
-						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
-						EDIT_WORK_PLAN_0 });
-			}
-			// 2.检查工作的计划工时
-			// 如果是独立工作可以跳过本步骤
-			if (!isStandloneWork()) {
-				value = getPlanWorks();
-				if (value == null) {
-					message.add(new Object[] { "工作的计划工时没有确定", this,
-							SWT.ICON_WARNING, EDIT_WORK_PLAN_0 });
+				if (Boolean.TRUE.equals(childWork
+						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))) {
+					message.addAll(childWork.checkCascadeStart(warningCheck));
 				}
 			}
-			// 3.检查工作名称
-			value = getDesc();
-			if (Utils.isNullOrEmptyString(value)) {
-				message.add(new Object[] { "工作名称为空", this, SWT.ICON_ERROR,
-						EDIT_WORK_PLAN_0 });
-			}
-			// 4.检查负责人
-			value = getCharger();
+		}
+
+		// 非级联启动工作不检查
+		message.addAll(checkWorkStart(warningCheck));
+		return message;
+	}
+
+	protected List<Object[]> checkWorkStart(boolean warningCheck) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		// 1.检查工作的计划开始和计划完成
+		Object value = getPlanStart();
+		if (value == null) {
+			message.add(new Object[] { "工作的计划开始时间没有确定", this,
+					warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
+					EDIT_WORK_PLAN_0 });
+		}
+		value = getPlanFinish();
+		if (value == null) {
+			message.add(new Object[] { "工作的计划完成时间没有确定", this,
+					warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
+					EDIT_WORK_PLAN_0 });
+		}
+		// 2.检查工作的计划工时
+		// 如果是独立工作可以跳过本步骤
+		if (!isStandloneWork()) {
+			value = getPlanWorks();
 			if (value == null) {
-				message.add(new Object[] { "工作负责人为空", this,
-						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
-						EDIT_WORK_PLAN_0 });
+				message.add(new Object[] { "工作的计划工时没有确定", this,
+						SWT.ICON_WARNING, EDIT_WORK_PLAN_0 });
 			}
-			// 5.检查参与者
-			value = getParticipatesIdList();
-			if (!(value instanceof List) || ((List<?>) value).isEmpty()) {
-				message.add(new Object[] { "没有添加工作参与者", this, SWT.ICON_WARNING,
-						EDIT_WORK_PLAN_0 });
-			}
+		}
+		// 3.检查工作名称
+		value = getDesc();
+		if (Utils.isNullOrEmptyString(value)) {
+			message.add(new Object[] { "工作名称为空", this, SWT.ICON_ERROR,
+					EDIT_WORK_PLAN_0 });
+		}
+		// 4.检查负责人
+		value = getCharger();
+		if (value == null) {
+			message.add(new Object[] { "工作负责人为空", this,
+					warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
+					EDIT_WORK_PLAN_0 });
+		}
+		// 5.检查参与者
+		value = getParticipatesIdList();
+		if (!(value instanceof List) || ((List<?>) value).isEmpty()) {
+			message.add(new Object[] { "没有添加工作参与者", this, SWT.ICON_WARNING,
+					EDIT_WORK_PLAN_0 });
+		}
 
-			// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
-			// String process = F_WF_CHANGE;
-			// if (!ProjectToolkit.checkProcessInternal(this, process)) {
-			// throw new Exception("该工作变更流程没有指明流程负责人，" + this);
-			// }
+		// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
+		// String process = F_WF_CHANGE;
+		// if (!ProjectToolkit.checkProcessInternal(this, process)) {
+		// throw new Exception("该工作变更流程没有指明流程负责人，" + this);
+		// }
 
-			IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
+		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 
-			// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
-			if (!ProjectToolkit.checkProcessInternal(pc, F_WF_EXECUTE)) {
-				message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
-						warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
-						EDIT_WORK_PLAN_1 });
-			}
+		// 6.2.检查工作执行的流程 ：错误，没有指明流程负责人
+		if (!ProjectToolkit.checkProcessInternal(pc, F_WF_EXECUTE)) {
+			message.add(new Object[] { "该工作执行流程没有没有指明流程负责人", this,
+					warningCheck ? SWT.ICON_WARNING : SWT.ICON_ERROR,
+					EDIT_WORK_PLAN_1 });
+		}
 
-			// 7.检查工作交付物,警告
-			List<PrimaryObject> docs = getDeliverableDocuments();
-			if (docs.isEmpty()) {
-				message.add(new Object[] { "该工作没有设定交付物", this,
-						SWT.ICON_WARNING, EDITOR });
-			}
+		// 7.检查工作交付物,警告
+		List<PrimaryObject> docs = getDeliverableDocuments();
+		if (docs.isEmpty()) {
+			message.add(new Object[] { "该工作没有设定交付物", this, SWT.ICON_WARNING,
+					EDITOR });
 		}
 		return message;
 	}
@@ -1926,11 +1931,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Object planFinish = getChildrenValue(F_PLAN_FINISH, -1, col);
 		setValue(F_PLAN_FINISH, planFinish);
 
-//		Object actualStart = getChildrenValue(F_ACTUAL_START, 1, col);
-//		setValue(F_ACTUAL_START, actualStart);
-//
-//		Object actualFinish = getChildrenValue(F_ACTUAL_FINISH, -1, col);
-//		setValue(F_ACTUAL_FINISH, actualFinish);
+		// Object actualStart = getChildrenValue(F_ACTUAL_START, 1, col);
+		// setValue(F_ACTUAL_START, actualStart);
+		//
+		// Object actualFinish = getChildrenValue(F_ACTUAL_FINISH, -1, col);
+		// setValue(F_ACTUAL_FINISH, actualFinish);
 
 		// 计算计划工时和实际工时
 		DBObject result = getChildrenGroupValue(F_PLAN_WORKS, F_ACTUAL_WORKS,
@@ -1963,8 +1968,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject val = new BasicDBObject();
 		val.put(F_PLAN_START, planStart);
 		val.put(F_PLAN_FINISH, planFinish);
-//		val.put(F_ACTUAL_START, actualStart);
-//		val.put(F_ACTUAL_FINISH, actualFinish);
+		// val.put(F_ACTUAL_START, actualStart);
+		// val.put(F_ACTUAL_FINISH, actualFinish);
 		val.put(F_PLAN_WORKS, planWorks);
 		val.put(F_ACTUAL_WORKS, actualWorks);
 		val.put(F_PLAN_DURATION, planDuration);
