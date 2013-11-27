@@ -126,7 +126,7 @@ public class ProjectChartFoctory {
 	}
 
 	public static Chart createStackedBarChart(String title,String[] deptParameter,
-			double[] deptValue1, double[] deptValue2) {
+			double[] deptValue1, double[] deptValue2,String[] seriesTitle) {
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType("Bar Chart"); //$NON-NLS-1$
 		cwaBar.setSubType("Stacked"); //$NON-NLS-1$
@@ -195,7 +195,7 @@ public class ProjectChartFoctory {
 		// Y-Series
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
 		bs1.setDataSet(orthoValues1);
-		bs1.setSeriesIdentifier("Õý³£");
+		bs1.setSeriesIdentifier(seriesTitle[0]);
 		bs1.setStacked(true);
 		bs1.getLabel().setVisible(true);
 		font = bs1.getLabel().getCaption().getFont();
@@ -204,7 +204,7 @@ public class ProjectChartFoctory {
 
 		BarSeries bs2 = (BarSeries) BarSeriesImpl.create();
 		bs2.setDataSet(orthoValues2);
-		bs2.setSeriesIdentifier("³¬ÆÚ");
+		bs2.setSeriesIdentifier(seriesTitle[1]);
 		bs2.setStacked(true);
 		bs2.getLabel().setVisible(true);
 		font = bs2.getLabel().getCaption().getFont();
