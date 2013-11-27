@@ -3616,6 +3616,9 @@
             <navigatoraction
                   action="com.sg.business.project.action.AutoAssignment">
             </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.ExportWBS">
+            </navigatoraction>
          </navigatorpage>
          <navigatorpage
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
