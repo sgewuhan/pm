@@ -288,6 +288,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				break;
 			}
 		}
+		
 		setValue(F_MAJOR_VID, major);
 		setValue(F_SECOND_VID, 0x0);
 		setValue(F_LIFECYCLE, STATUS_WORKING_ID);
@@ -296,8 +297,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
 						"$set",
-						new BasicDBObject().append(F_MAJOR_VID, major).append(
-								F_SECOND_VID, 0x0)));
+						new BasicDBObject().append(F_MAJOR_VID, major).
+											append(F_SECOND_VID, 0x0).
+											append(F_LIFECYCLE, STATUS_WORKING_ID)));
 	}
 
 	public String[] getMajorVersionSeq() {

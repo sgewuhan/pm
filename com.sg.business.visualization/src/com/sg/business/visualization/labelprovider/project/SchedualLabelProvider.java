@@ -96,8 +96,8 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 		String processIcon = getProcessIcon(projectLc);
 
 		if (ILifecycle.STATUS_FINIHED_VALUE.equals(projectLc)) {
-			String bar = getColorBar(8, null, "96%", "#ececec", processIcon,
-					"right");
+			String bar = TinyVisualizationUtil.getColorBar(8, null, "96%", "#ececec", processIcon,
+					"right",null);
 			sb.append(bar);
 
 		} else {
@@ -174,9 +174,9 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 				if (i == barCount - 1) {
 					percent = 1 - percent * (i) - 0.04;
 				}
-				String bar = getColorBar(colorIndex + 3, colorCode,
+				String bar = TinyVisualizationUtil.getColorBar(colorIndex + 3, colorCode,
 						new DecimalFormat("#.00").format(100 * percent) + "%",
-						null, icon, location);
+						null, icon, location,null);
 				sb.append(bar);
 			}
 		}
@@ -184,51 +184,7 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 		return sb.toString();
 	}
 
-	private String getColorBar(int i, String style, String percent,
-			String color, String currentStageIcon, String location) {
-		if (color == null) {
-			if (style.equals("red")) {
-				if (i < Utils.COLOR_RED.length) {
-					color = Utils.COLOR_RED[i];
-				} else {
-					color = Utils.COLOR_RED[i - 1];
-				}
-			} else if (style.equals("yellow")) {
-				if (i < Utils.COLOR_YELLOW.length) {
-					color = Utils.COLOR_YELLOW[i];
-				} else {
-					color = Utils.COLOR_YELLOW[i - 1];
-				}
-			} else if (style.equals("green")) {
-				if (i < Utils.COLOR_GREEN.length) {
-					color = Utils.COLOR_GREEN[i];
-				} else {
-					color = Utils.COLOR_GREEN[i - 1];
-				}
-			} else {
-				if (i < Utils.COLOR_BLUE.length) {
-					color = Utils.COLOR_BLUE[i];
-				} else {
-					color = Utils.COLOR_BLUE[i - 1];
-				}
-			}
-		}
-		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='display:block;width:" + percent
-				+ "; height:20px;  float:left;background:" + color + ";'>");
 
-		if (currentStageIcon != null) {
-			// ÏÔÊ¾×´Ì¬Í¼±ê<div align="center"><span>abc</span></div>
-			String imageUrl = "<div align='"
-					+ location
-					+ "'><img src='"
-					+ currentStageIcon
-					+ "' style='margin-top:2;margin-right:2' width='16' height='16' /></div>";
-			sb.append(imageUrl);
-		}
-		sb.append("</span>");
-		return sb.toString();
-	}
 
 	private String getProcessIcon(String lc) {
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lc)) {

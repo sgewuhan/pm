@@ -75,7 +75,7 @@ public class ProjectSetContent extends AbstractProjectPage {
 		String projectSetName = data.getProjectSetName();
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(projectSetName + " 项目摘要");
+		sb.append(projectSetName + " 项目综合运营状态");
 		sb.append("</span>");
 		return sb.toString();
 	}
@@ -91,8 +91,8 @@ public class ProjectSetContent extends AbstractProjectPage {
 		value3 = data.summaryData.processing_advance;
 		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.summaryData.cost_normal;
-		value2 = data.summaryData.cost_over;
+		value1 = data.summaryData.finished_cost_normal;
+		value2 = data.summaryData.finished_cost_over;
 		costSummary.setText("正常/超支：" + value1 + "/" + value2);
 
 		header.layout();
