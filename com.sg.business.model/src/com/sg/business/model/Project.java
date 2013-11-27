@@ -1820,7 +1820,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		// 2.检查项目的工作是否满足启动条件
 		Work work = getWBSRoot();
-		message.addAll(work.checkCascadeStart(false));
+		message.addAll(work.checkCascadeStart(true));
 		return message;
 	}
 
@@ -2172,5 +2172,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				.createModelObject(UserProjectPerf.class);
 		pperf.setValue(UserProjectPerf.F_PROJECT_ID, get_id());
 		return pperf;
+	}
+
+	/**
+	 * 获得项目截至当前的投资总额（研发成本）
+	 * @return
+	 */
+	public Double getInvestment() {
+		// TODO Auto-generated method stub
+		return 100000d;
 	}
 }

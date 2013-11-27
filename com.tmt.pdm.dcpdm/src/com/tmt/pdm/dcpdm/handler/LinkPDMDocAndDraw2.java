@@ -11,7 +11,9 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
+import com.mongodb.DBObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDeliverable;
@@ -32,40 +34,61 @@ import dyna.framework.service.dos.DOSChangeable;
 
 public class LinkPDMDocAndDraw2 extends AbstractNavigatorHandler {
 
+	private Deliverable deli;
+
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
 		return true;
 	}
-	
+
 	private void createDocument(Work work, String ouid) throws Exception {
 		DOSChangeable pdmObject = Starter.dos.get(ouid);
-		
-		Deliverable deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
+		deli = null;
+		boolean buildDocument = true;
+		String documentNumber = (String) pdmObject.get("md$number");
+		if (documentNumber != null) {
+			BasicDBObject condition = new BasicDBObject();
+			condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
+			List<PrimaryObject> list = deli.getRelationByCondition(Document.class,
+					condition);
+			if (list != null && list.size() > 0) {
+				deli = work
+						.makeDeliverableDefinition(IDeliverable.TYPE_REFERENCE);
+				Document document = (Document) list.get(0);
+				deli.setValue(Deliverable.F_DOCUMENT_ID ,document.get_id());
+				buildDocument = false;
+			}
+		}
+		if (buildDocument) {
+			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
+		}
 		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description"));
-		
+
 		deli.doSave(new CurrentAccountContext());
-		Document document = deli.getDocument();
-		ImportData ip = new ImportData() {
-			
-			@Override
-			protected String getNamespace() {
-				return "vault_file";
-			}
-			
-			@Override
-			protected DB getDB() {
-				OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
-				return DBActivator.getDB(filebase.getDB());
-			}
-			
-			@Override
-			protected String getClassOuid() {
-				return null;
-			}
-		};
-		
-		ip.syncItem(ouid, document);
+		if (buildDocument) {
+			Document document = deli.getDocument();
+			ImportData ip = new ImportData() {
+
+				@Override
+				protected String getNamespace() {
+					return "vault_file";
+				}
+
+				@Override
+				protected DB getDB() {
+					OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
+					return DBActivator.getDB(filebase.getDB());
+				}
+
+				@Override
+				protected String getClassOuid() {
+					return null;
+				}
+			};
+
+			ip.syncItem(ouid, document);
+		}
 	}
 
 	private List<?> getDocumentAndDrawingContainerCode() {
@@ -110,11 +133,11 @@ public class LinkPDMDocAndDraw2 extends AbstractNavigatorHandler {
 
 		final PrimaryObject master = vc.getMaster();
 		Work work = getWork(master);
-		if(work == null){
+		if (work == null) {
 			MessageUtil.showToast(shell, "创建PDM交付物", "请选择流程", SWT.ICON_ERROR);
 			return;
 		}
-		
+
 		List<?> docContainer = getDocumentAndDrawingContainerCode();
 		List<?> partContainer = getPartContainerCode();
 
@@ -133,7 +156,7 @@ public class LinkPDMDocAndDraw2 extends AbstractNavigatorHandler {
 
 			for (int i = 0; i < sel.length; i++) {
 				try {
-					createDocument(work,sel[i]);
+					createDocument(work, sel[i]);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -142,7 +165,7 @@ public class LinkPDMDocAndDraw2 extends AbstractNavigatorHandler {
 		}
 
 	}
-	
+
 	protected Work getWork(PrimaryObject master) {
 		if (master instanceof Work) {
 			return (Work) master;

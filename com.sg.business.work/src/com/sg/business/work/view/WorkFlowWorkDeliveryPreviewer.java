@@ -185,7 +185,6 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 		} else {
 			previewer.setUrl(previewUtil.getURL());
 		}
-
 	}
 
 	@Override

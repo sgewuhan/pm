@@ -39,10 +39,11 @@ public class JCO_ZXFUN_PM_YFFY {
 	 *            ,ÔÂ
 	 * @param account
 	 *            , ¿ÆÄ¿
+	 * @param costElementArray 
 	 * @throws Exception
 	 */
 	public Map<String, Map<String, Double>> getJSDZB(String[] orgCodeArray,
-			String[] costCodeArray, int year, int month, String[] account)
+			String[] costCodeArray, String[] costElementArray, int year, int month, String[] account)
 			throws Exception {
 
 		Client client = FinanceActivator.getSAPClient();
@@ -70,6 +71,12 @@ public class JCO_ZXFUN_PM_YFFY {
 			tableIn.appendRow();
 			tableIn.setValue(costCodeArray[i], "KOSTL");
 		}
+		
+		for (int i = 0; i < costElementArray.length; i++) {
+			tableIn.appendRow();
+			tableIn.setValue(costElementArray[i], "KSTAR");
+		}
+
 		function.setTableParameterList(input_table);
 
 		client.execute(function);
@@ -113,13 +120,20 @@ public class JCO_ZXFUN_PM_YFFY {
 					} catch (Exception e) {
 					}
 				}
-				Double _summay = rowData.get(_accountNumber);
-				if (_summay == null) {
-					_summay = cost;
+				Double _accountSummay = rowData.get(_accountNumber);
+				if (_accountSummay == null) {
+					_accountSummay = cost;
 				} else {
-					_summay += cost;
+					_accountSummay += cost;
 				}
-				rowData.put(_accountNumber, _summay);
+				rowData.put(_accountNumber, _accountSummay);
+				Double _rowSummay = rowData.get("summ");
+				if (_rowSummay == null) {
+					_rowSummay = cost;
+				} else {
+					_rowSummay += cost;
+				}
+				rowData.put("summ", _rowSummay);
 			}
 		}
 		return ret;

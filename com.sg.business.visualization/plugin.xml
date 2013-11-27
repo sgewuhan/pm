@@ -49,6 +49,12 @@
             <column
                   columnDefinitionId="organization.description">
             </column>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
          </filterAction>
          <searchAction>
             <column
@@ -56,6 +62,12 @@
             </column>
             <column
                   columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </searchAction>
       </navigator>
@@ -156,95 +168,6 @@
    </extension>
    <extension
          point="com.sg.widgets.table">
-      <table
-            canCreate="false"
-            canDelete="true"
-            canEdit="false"
-            canRead="false"
-            collectionName="project"
-            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
-            dbName="pm2"
-            headerVisiable="true"
-            id="vis.projectset_2"
-            lineVisiable="false"
-            useHashlookup="true"
-            virtual="true">
-         <column
-               columnDefinitionId="project.status">
-         </column>
-         <column
-               columnDefinitionId="project.projectnumber">
-         </column>
-         <column
-               columnDefinitionId="project.desc">
-         </column>
-         <column
-               columnDefinitionId="chargerid">
-         </column>
-         <column
-               columnDefinitionId="planstart">
-         </column>
-         <column
-               columnDefinitionId="planfinish">
-         </column>
-         <column
-               columnDefinitionId="actualstart">
-         </column>
-         <column
-               columnDefinitionId="actualfinish">
-         </column>
-         <columnGroup
-               defaultGroup="false"
-               id="com.sg.business.project.columnGroup1"
-               name="计划进度">
-            <column
-                  columnDefinitionId="planduration">
-            </column>
-            <column
-                  columnDefinitionId="planworks">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
-               id="com.sg.business.project.columnGroup1"
-               name="实际进度">
-            <column
-                  columnDefinitionId="actualduration">
-            </column>
-            <column
-                  columnDefinitionId="actualworks">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
-               name="组织和参与者">
-            <column
-                  columnDefinitionId="participate">
-            </column>
-            <column
-                  columnDefinitionId="project.org_id">
-            </column>
-            <column
-                  columnDefinitionId="project.launchorg_id">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
-               name="选项属性">
-            <column
-                  column="producttype"
-                  name="产品类型">
-            </column>
-            <column
-                  column="projecttype"
-                  name="项目类型">
-            </column>
-            <column
-                  column="standardset"
-                  name="标准">
-            </column>
-         </columnGroup>
-      </table>
       <table
             canCreate="false"
             canDelete="false"
@@ -351,7 +274,7 @@
                column="rndcost"
                labelProvider="com.sg.business.visualization.labelprovider.project.RNDCostLabelProvider"
                lazyDisplay="true"
-               name="投入"
+               name="研发成本"
                type="String"
                width="200">
          </column>

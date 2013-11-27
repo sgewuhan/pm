@@ -775,7 +775,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public boolean canEdit(IContext context) {
 		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
 		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
-		String lifeCycle = (String) getValue(F_LIFECYCLE);
+		String lifeCycle = getLifecycleStatus();
 		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
 				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
 				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
@@ -784,6 +784,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		if (isProjectWBSRoot()) {
 			return false;
+		}
+		// 项目启动后,里程碑工作不允许编辑
+		if (!isStandloneWork()) {
+			Project project = getProject();
+			if (project != null) {
+				String projectLifecycle = project.getLifecycleStatus();
+				if(STATUS_WIP_VALUE.equals(projectLifecycle)){
+					if(isMilestone()){
+						return false;
+					}
+				}
+			}
 		}
 
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
@@ -810,6 +822,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 		if (isProjectWBSRoot()) {
 			return false;
+		}
+		
+		// 项目启动后,里程碑工作不允许删除
+		if (!isStandloneWork()) {
+			Project project = getProject();
+			if (project != null) {
+				String projectLifecycle = project.getLifecycleStatus();
+				if(STATUS_WIP_VALUE.equals(projectLifecycle)){
+					if(isMilestone()){
+						return false;
+					}
+				}
+			}
 		}
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
@@ -1389,17 +1414,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 */
 	protected List<Object[]> checkCascadeStart(boolean warningCheck) {
 		List<Object[]> message = new ArrayList<Object[]>();
-		// 非级联启动工作不检查
-		if (warningCheck) {
-			List<PrimaryObject> childrenWork = getChildrenWork();
-			if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
-				for (int i = 0; i < childrenWork.size(); i++) {
-					Work childWork = (Work) childrenWork.get(i);
-					// 通过warningCheck，降低下级的检查标准
-					message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
-							.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
-				}
+		List<PrimaryObject> childrenWork = getChildrenWork();
+		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				// 通过warningCheck，降低下级的检查标准
+				message.addAll(childWork.checkCascadeStart(!Boolean.TRUE.equals(childWork
+						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))));
 			}
+		}
+		
+		// 非级联启动工作并且非里程碑工作不检查
+		if (warningCheck && isMilestone()) {
 
 			// 1.检查工作的计划开始和计划完成
 			Object value = getPlanStart();
@@ -1900,11 +1926,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Object planFinish = getChildrenValue(F_PLAN_FINISH, -1, col);
 		setValue(F_PLAN_FINISH, planFinish);
 
-		Object actualStart = getChildrenValue(F_ACTUAL_START, 1, col);
-		setValue(F_ACTUAL_START, actualStart);
-
-		Object actualFinish = getChildrenValue(F_ACTUAL_FINISH, -1, col);
-		setValue(F_ACTUAL_FINISH, actualFinish);
+//		Object actualStart = getChildrenValue(F_ACTUAL_START, 1, col);
+//		setValue(F_ACTUAL_START, actualStart);
+//
+//		Object actualFinish = getChildrenValue(F_ACTUAL_FINISH, -1, col);
+//		setValue(F_ACTUAL_FINISH, actualFinish);
 
 		// 计算计划工时和实际工时
 		DBObject result = getChildrenGroupValue(F_PLAN_WORKS, F_ACTUAL_WORKS,
@@ -1937,8 +1963,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBObject val = new BasicDBObject();
 		val.put(F_PLAN_START, planStart);
 		val.put(F_PLAN_FINISH, planFinish);
-		val.put(F_ACTUAL_START, actualStart);
-		val.put(F_ACTUAL_FINISH, actualFinish);
+//		val.put(F_ACTUAL_START, actualStart);
+//		val.put(F_ACTUAL_FINISH, actualFinish);
 		val.put(F_PLAN_WORKS, planWorks);
 		val.put(F_ACTUAL_WORKS, actualWorks);
 		val.put(F_PLAN_DURATION, planDuration);
@@ -2015,7 +2041,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			copyWorkDefinition(Work.F_WF_EXECUTE, context);
 
 			// 处理文档的复制
-			copyDeliveryFromWorkDefinition();
+			copyDeliveryFromWorkDefinition(context);
 		}
 
 		// 同步负责人、流程活动执行人到工作的参与者。
@@ -2030,16 +2056,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		super.doInsert(context);
 	}
 
-	private void copyDeliveryFromWorkDefinition() throws Exception {
+	private void copyDeliveryFromWorkDefinition(IContext context)
+			throws Exception {
 		WorkDefinition workdef = getWorkDefinition();
 		if (workdef == null) {
 			return;
 		}
 
 		// 处理文档
-
 		Map<ObjectId, DBObject> documentsToInsert = new HashMap<ObjectId, DBObject>();
-		List<DBObject> dilerverableToInsert = new ArrayList<DBObject>();
+		List<DBObject> deliverableToInsert = new ArrayList<DBObject>();
 		List<DBObject[]> fileToCopy = new ArrayList<DBObject[]>();
 
 		DBCollection deliveryDefCol = getCollection(IModelConstants.C_DELIEVERABLE_DEFINITION);
@@ -2062,7 +2088,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			documentsToInsert.put(documentTemplateId, documentData);
 			ObjectId documentId = (ObjectId) documentData.get(Document.F__ID);
 			deliverableData.put(Deliverable.F_DOCUMENT_ID, documentId);
-			dilerverableToInsert.add(deliverableData);
+			deliverableToInsert.add(deliverableData);
 		}
 
 		// 保存文档
@@ -2070,15 +2096,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Collection<DBObject> collection = documentsToInsert.values();
 		WriteResult ws;
 		if (!collection.isEmpty()) {
-			ws = docCol.insert(collection.toArray(new DBObject[0]),
-					WriteConcern.NORMAL);
+			DBObject[] docList = new DBObject[collection.size()];
+			int i = 0;
+			for (DBObject documentObject : collection) {
+				Document document = ModelService.createModelObject(
+						documentObject, Document.class);
+				document.initVerStatus();
+				document.initVersionNumber();
+				document.initInsertDefault(document.get_data(), context);
+				docList[i++] = document.get_data();
+			}
+			ws = docCol.insert(docList, WriteConcern.NORMAL);
 			checkWriteResult(ws);
 		}
 
 		// 保存交付物
 		DBCollection deliCol = getCollection(IModelConstants.C_DELIEVERABLE);
-		if (!dilerverableToInsert.isEmpty()) {
-			ws = deliCol.insert(dilerverableToInsert, WriteConcern.NORMAL);
+		if (!deliverableToInsert.isEmpty()) {
+			ws = deliCol.insert(deliverableToInsert, WriteConcern.NORMAL);
 			checkWriteResult(ws);
 		}
 
@@ -4126,7 +4161,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				.getWorkFromWorkDefinition(tgtParentId, tgtRootId, project,
 						roleMap, folderRootId, documentsToInsert,
 						deliverableToInsert, fileToCopy, context,
-						project.get_id(), new Integer(seq + 1), workdef.get_data(), null);
+						project.get_id(), new Integer(seq + 1),
+						workdef.get_data(), null);
 		worksToBeInsert.put(srcParent, targetParentWorkData);
 		tgtParentId = (ObjectId) targetParentWorkData.get(F__ID);
 

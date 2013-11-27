@@ -11,6 +11,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.finance.eai.RNDPeriodCostAdapter;
+import com.sg.business.model.CostAccount;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
@@ -28,28 +29,43 @@ public class RunRNDCostAllocation implements Runnable {
 		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
+//		cal.set(Calendar.MONTH, 1);
+		// for (int i = -1; i > -25; i--) {
+		cal.add(Calendar.MONTH, -1);
 
-//		for (int i = -1; i > -25; i--) {
-			cal.add(Calendar.MONTH, -1);
+		long start = System.currentTimeMillis();
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH) + 1;
 
-			long start = System.currentTimeMillis();
-			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH) + 1;
+		// 获得所有的成本中心代码
+		String[] costCodes = getCostCodeArray(year, month);
+		String[] costElementArray = getCostElemenArray();
 
-			// 获得所有的成本中心代码
-			String[] costCodes = getCostCodeArray(year, month);
+		try {
+			Commons.LOGGER.info("准备获取SAP成本中心数据:" + year + "-" + month);
+			adapter.runGetData(null, costCodes, costElementArray, year, month,
+					null);
+		} catch (Exception e) {
+			Commons.LOGGER.error("获得SAP成本中心数据失败:" + year + "-" + month, e);
+		}
+		long end = System.currentTimeMillis();
+		Commons.LOGGER.info("获得SAP成本中心数据完成:" + year + "-" + month + " "
+				+ (end - start) / 1000);
+		// }
 
-			try {
-				Commons.LOGGER.info("准备获取SAP成本中心数据:" + year + "-" + month);
-				adapter.runGetData(null, costCodes, year, month, null);
-			} catch (Exception e) {
-				Commons.LOGGER.error("获得SAP成本中心数据失败:" + year + "-" + month, e);
-			}
-			long end = System.currentTimeMillis();
-			Commons.LOGGER.info("获得SAP成本中心数据完成:" + year + "-" + month + " "
-					+ (end - start) / 1000);
-//		}
+	}
 
+	private String[] getCostElemenArray() {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_COSTACCOUNT_ITEM);
+		DBCursor cur = col.find();
+		String[] result = new String[cur.size()];
+		int i = 0;
+		while (cur.hasNext()) {
+			result[i++] = (String) cur.next().get(
+					CostAccount.F_COST_ACCOUNTNUMBER);
+		}
+		return result;
 	}
 
 	private String[] getCostCodeArray(int year, int month) {

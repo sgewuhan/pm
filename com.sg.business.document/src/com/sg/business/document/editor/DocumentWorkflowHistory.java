@@ -1,5 +1,6 @@
 package com.sg.business.document.editor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.Section;
+import org.jbpm.task.Status;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.ModelService;
@@ -48,29 +50,29 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		Document doc = (Document) input.getData();
 		parent.setLayout(new GridLayout());
 		Composite panel = new Composite(parent, SWT.NONE);
-		panel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true,
-				false, 1, 1));
-		
+		panel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+
 		panel.setLayout(new GridLayout());
-		
+
 		section1 = new SimpleSection(panel, Section.EXPANDED
-				| Section.SHORT_TITLE_BAR |Section.TWISTIE);
+				| Section.SHORT_TITLE_BAR | Section.TWISTIE);
 		section1.setFont(font);
 
 		section1.setText("流程历史");
 		Composite table = createProcessContent(section1, doc);
 		section1.setClient(table);
 
-		section1.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
+		section1.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1,
+				1));
 
-		
 		section2 = new SimpleSection(panel, Section.EXPANDED
-				| Section.SHORT_TITLE_BAR |Section.TWISTIE);
+				| Section.SHORT_TITLE_BAR | Section.TWISTIE);
 		section2.setFont(font);
 		section2.setText("流程过程详情");
 		Composite table2 = createTaskContent(section2, doc);
 		section2.setClient(table2);
-		section2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		section2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
+				1));
 
 		return panel;
 	}
@@ -86,29 +88,29 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 			@Override
 			public String getText(Object element) {
 				if (element instanceof UserTask) {
-					return ((UserTask)element).getHTMLLabel();
+					return ((UserTask) element).getHTMLLabel();
 				}
 				return "";
 			}
 		});
 		taskViewer.setContentProvider(ArrayContentProvider.getInstance());
-		
+
 		ProcessHistoryUIToolkit
 				.handleProcessHistoryTable(taskViewer.getTable());
 
-		autoResize(parent,table);
+		autoResize(parent, table);
 		return table;
 	}
 
 	private void autoResize(final Composite parent, final Table table) {
 		parent.addControlListener(new ControlListener() {
-			
+
 			@Override
 			public void controlResized(ControlEvent e) {
 				int maxWidth = parent.getBounds().width - 40;
 				table.getColumn(0).setWidth(maxWidth);
 			}
-			
+
 			@Override
 			public void controlMoved(ControlEvent e) {
 			}
@@ -136,7 +138,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		BasicBSONList history = doc.getWorkflowHistory();
 		viewer.setInput(history);
 		viewer.addSelectionChangedListener(this);
-		autoResize(parent,table);
+		autoResize(parent, table);
 		return table;
 
 	}
@@ -187,6 +189,13 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 			DBObject processItem = (DBObject) sel
 					.getFirstElement();
 			List<?> history = (List<?>) processItem.get(IDocumentProcess.F_HISTORY);
+			List<Object> removeHistory = new ArrayList<Object>();
+			for (Object object : history) {
+				if(! Status.Completed.name().equals(((DBObject)object).get(UserTask.F_STATUS))){
+					removeHistory.add(object);
+				}
+			}
+			history.removeAll(removeHistory);
 			input = new PrimaryObject[history.size()];
 			for (int i = 0; i < input.length; i++) {
 				input[i] = ModelService.createModelObject((DBObject)history.get(i), UserTask.class);
@@ -199,5 +208,4 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		section2.layout();
 		section2.reflow();
 	}
-
 }
