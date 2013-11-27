@@ -272,7 +272,7 @@
          </column>
          <column
                column="rndcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.RNDCostLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="研发成本"
                type="String"

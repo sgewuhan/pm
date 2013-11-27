@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 
-public class RNDCostLabelProvider extends AbstractProjectLabelProvider {
+public class BudgetAndInvestmentLabelProvider extends AbstractProjectLabelProvider {
 
 	@Override
 	protected String getProjectText(Project project) {
