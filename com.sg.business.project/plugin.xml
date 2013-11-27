@@ -562,29 +562,6 @@
                   columnDefinitionId="participate">
             </column>
          </filterAction>
-         <searchAction>
-            <column
-                  columnDefinitionId="work.desc">
-            </column>
-            <column
-                  columnDefinitionId="planstart_e">
-            </column>
-            <column
-                  columnDefinitionId="planfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="actualstart_e">
-            </column>
-            <column
-                  columnDefinitionId="actualfinish_e">
-            </column>
-            <column
-                  columnDefinitionId="chargerid">
-            </column>
-            <column
-                  columnDefinitionId="participate">
-            </column>
-         </searchAction>
       </navigator>
       <navigator
             id="project.navigator.delayprocess"
@@ -592,7 +569,8 @@
          <filterAction>
             <column
                   column="processname"
-                  name="流程名称">
+                  name="流程名称"
+                  type="Integer">
             </column>
             <column
                   column="desc"
@@ -606,11 +584,6 @@
             <column
                   column="actualowner"
                   name="实际活动执行者">
-            </column>
-            <column
-                  column="_cdate"
-                  name="Reserved"
-                  type="DateTime">
             </column></filterAction>
       </navigator>
    </extension>
@@ -876,6 +849,7 @@
          <column
                column="processname"
                name="流程名称"
+               type="String"
                width="240">
          </column>
          <column
@@ -3030,6 +3004,16 @@
       <menuContribution
             allPopups="false"
             locationURI="toolbar:project.navigator.delayprocess?after=additions">
+         <command
+               commandId="delayprocess.query"
+               icon="image/search_24.png"
+               label="查询"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:project.navigator.delaywork?after=additions">
          <command
                commandId="delayprocess.query"
                icon="image/search_24.png"

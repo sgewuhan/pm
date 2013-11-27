@@ -76,17 +76,31 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		return false;
 	}
 
-	@SuppressWarnings("unused")
 	private DBObject getCondition() {
-		DBObject date = getQueryCondition();
-		if(date!=null){
-			Object year = date.get("year");
-			Object month = date.get("month");
-		}
+		int year=-1;
+		int month=-1;
         Date start=null;
         Date stop=null;
-		if (start == null || stop == null) {
-			Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+		DBObject date = getQueryCondition();
+		if(date!=null){
+			year = (int) date.get("year");
+			month = (int) date.get("month");
+			
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.MONTH, month);
+			calendar.set(Calendar.DATE, 1);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			start = calendar.getTime();
+			calendar.add(Calendar.MONTH, 1);
+			calendar.add(Calendar.MILLISECOND, -1);
+			stop = calendar.getTime();
+			setQueryCondition(null);
+			
+		}else{
 			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
 			calendar.set(Calendar.DATE, 1);
 			calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -98,7 +112,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 			calendar.add(Calendar.MILLISECOND, -1);
 			stop = calendar.getTime();
 		}
-
+		
 		DBObject dbo = new BasicDBObject();
 		dbo.put(UserTask.F_ACTUALOWNER,
 				new BasicDBObject().append("$in", getUserIdSet()));
