@@ -122,6 +122,10 @@ public interface IModelConstants {
 	public static final String C_RND_PEROIDCOST_ALLOCATION = "rndcostallocation";
 
 	/**
+	 * 工作令号的对应研发成本
+	 */
+	public static final String C_WORKORDER_COST = "workordercost";
+	/**
 	 * 组织id对应的工作令号
 	 */
 	public static final String C_COMPANY_WORKORDER = "companyworkorders";

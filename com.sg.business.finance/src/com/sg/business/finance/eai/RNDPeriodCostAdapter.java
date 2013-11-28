@@ -38,6 +38,8 @@ public class RNDPeriodCostAdapter {
 			allocateToWorkOrder(costCenterCode, year, month,
 					costCenterRNDCostData[i]);
 		}
+		//获取工作令号的成本
+		//TODO
 	}
 
 	private void allocateToWorkOrder(String costCenterCode, int year,
