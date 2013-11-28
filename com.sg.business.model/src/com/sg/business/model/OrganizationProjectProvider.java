@@ -25,7 +25,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	private DBCollection projectCol;
 	private DBCollection orgCol;
 	DBCollection usercol;
-	
 
 	public void setOrganization(Organization org) {
 		this.organization = org;
@@ -62,6 +61,14 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			int iF_SUMMARY_PROCESSING_NORMAL = 0;
 			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
 
+			int iF_SUMMARY_FINISHED_COSTNORMAL = 0;
+			int iF_SUMMARY_FINISHED_COSTOVER = 0;
+			int iF_SUMMARY_PROCESSING_COSTNORMA = 0;
+			int iF_SUMMARY_PROCESSING_COSTOVER = 0;
+
+			long iF_SUMMARY_TOTAL_BUDGETAMOUNT = 0;
+			long iF_SUMMARY_TOTAL_INVESTMENTAMOUNT = 0;
+
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = projectCol
@@ -80,6 +87,11 @@ public class OrganizationProjectProvider extends ProjectProvider {
 					} else {
 						iF_SUMMARY_FINISHED_NORMAL++;
 					}
+					if(project.isOverCost()){
+						iF_SUMMARY_FINISHED_COSTOVER++;
+					}else{
+						iF_SUMMARY_FINISHED_COSTNORMAL++;
+					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
 					iF_SUMMARY_PROCESSING++;
@@ -90,24 +102,46 @@ public class OrganizationProjectProvider extends ProjectProvider {
 					} else {
 						iF_SUMMARY_PROCESSING_NORMAL++;
 					}
+					
+					if(project.maybeOverCostNow()){
+						iF_SUMMARY_PROCESSING_COSTOVER++;
+					}else{
+						iF_SUMMARY_PROCESSING_COSTNORMA++;
+					}
 				}
+				
+				
+				Double budgetValue = project.getBudgetValue();
+				iF_SUMMARY_TOTAL_BUDGETAMOUNT += budgetValue == null ? 0
+						: budgetValue;
+				iF_SUMMARY_TOTAL_INVESTMENTAMOUNT += project
+						.getInvestmentValue();
 				result.add(project);
 			}
 			summaryData.total = result.size();
-			
-			summaryData.finished=iF_SUMMARY_FINISHED;
-			summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
-			summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
-			summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
 
-			summaryData.processing=iF_SUMMARY_PROCESSING;
-			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
-			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
-			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
-			
-     		summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
-			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
-			
+			summaryData.finished = iF_SUMMARY_FINISHED;
+			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
+
+			summaryData.processing = iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
+
+			summaryData.finished_cost_normal = iF_SUMMARY_FINISHED_COSTNORMAL;
+			summaryData.finished_cost_over = iF_SUMMARY_FINISHED_COSTOVER;
+
+			summaryData.processing_cost_normal = iF_SUMMARY_PROCESSING_COSTNORMA;
+			summaryData.processing_cost_over = iF_SUMMARY_PROCESSING_COSTOVER;
+
+			summaryData.total_budget_amount = iF_SUMMARY_TOTAL_BUDGETAMOUNT;
+			summaryData.total_investment_amount = iF_SUMMARY_TOTAL_INVESTMENTAMOUNT;
+
+			summaryData.subOrganizationProjectProvider = getSubOrganizationProvider();
+			summaryData.subChargerProjectProvider = getSubUserProvider(organization);
+
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
@@ -118,7 +152,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<ProjectProvider> getSubOrganizationProvider() {
 		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
 
-		DBCursor cur = orgCol.find( new BasicDBObject().append(
+		DBCursor cur = orgCol.find(new BasicDBObject().append(
 				Organization.F_PARENT_ID, organization.get_id()).append(
 				Organization.F__ID,
 				new BasicDBObject().append("$in", getAviableOrganizationId())));
@@ -143,7 +177,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 								ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE })));
 		set.addAll(prjOrgList);
-		
+
 		List parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
 				new BasicDBObject().append(Organization.F__ID,
 						new BasicDBObject().append("$in", prjOrgList)));
@@ -156,37 +190,35 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		}
 		return set.toArray(new Object[0]);
 	}
-	
+
 	public List<ProjectProvider> getSubUserProvider(PrimaryObject po) {
 		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
 		DBCursor cur = usercol.find(new BasicDBObject().append(User.F_USER_ID,
 				new BasicDBObject().append("$in", getAviableUser(po))));
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
-			User user = ModelService.createModelObject(dbo,
-					User.class);
+			User user = ModelService.createModelObject(dbo, User.class);
 			ProjectProvider pp = user.getAdapter(ProjectProvider.class);
 			list.add(pp);
 		}
 		return list;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Object getAviableUser(PrimaryObject po) {
-			Set<ObjectId> set = new HashSet<ObjectId>();
-			List prjManagerList = projectCol.distinct(
-					Project.F_CHARGER,
-					new BasicDBObject().append(
-							ILifecycle.F_LIFECYCLE,
-							new BasicDBObject().append("$in", new String[] {
-									ILifecycle.STATUS_FINIHED_VALUE,
-									ILifecycle.STATUS_WIP_VALUE })).append(
-							Project.F_LAUNCH_ORGANIZATION, po.get_id()));
-			set.addAll(prjManagerList);
+		Set<ObjectId> set = new HashSet<ObjectId>();
+		List prjManagerList = projectCol.distinct(
+				Project.F_CHARGER,
+				new BasicDBObject().append(
+						ILifecycle.F_LIFECYCLE,
+						new BasicDBObject().append("$in", new String[] {
+								ILifecycle.STATUS_FINIHED_VALUE,
+								ILifecycle.STATUS_WIP_VALUE })).append(
+						Project.F_LAUNCH_ORGANIZATION, po.get_id()));
+		set.addAll(prjManagerList);
 		return set.toArray(new Object[0]);
 	}
-	
-	
+
 	@Override
 	public String getProjectSetName() {
 		return getDesc();

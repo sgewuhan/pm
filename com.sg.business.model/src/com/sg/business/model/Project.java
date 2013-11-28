@@ -2229,18 +2229,29 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 //		IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
 		//注意在数据库初始化时设置该默认值为30%
 		
-		double ratio = 0.3;
+		double ratio = Double.valueOf((String) Setting.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE));
 		Double bv = getBudgetValue();
 		Double av = getInvestmentValue();
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
-		
-		
 		double cr = 1d * av / bv;
 		
 		double dr = getDurationFinishedRatio();
 		return cr - dr > ratio;
+	}
+
+	/**
+	 * 项目是否超支
+	 * @return
+	 */
+	public boolean isOverCost() {
+		Double bv = getBudgetValue();
+		Double av = getInvestmentValue();
+		if (bv == null || av == null || bv == 0) {
+			return false;
+		}
+		return av>bv;
 	}
 
 }

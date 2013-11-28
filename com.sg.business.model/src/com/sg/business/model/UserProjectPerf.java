@@ -37,6 +37,14 @@ public class UserProjectPerf extends ProjectProvider {
 			int iF_SUMMARY_PROCESSING_NORMAL = 0;
 			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
 
+			int iF_SUMMARY_FINISHED_COSTNORMAL = 0;
+			int iF_SUMMARY_FINISHED_COSTOVER = 0;
+			int iF_SUMMARY_PROCESSING_COSTNORMA = 0;
+			int iF_SUMMARY_PROCESSING_COSTOVER = 0;
+
+			long iF_SUMMARY_TOTAL_BUDGETAMOUNT = 0;
+			long iF_SUMMARY_TOTAL_INVESTMENTAMOUNT = 0;
+
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCollection projectCol = getCollection(IModelConstants.C_PROJECT);
@@ -56,6 +64,11 @@ public class UserProjectPerf extends ProjectProvider {
 					} else {
 						iF_SUMMARY_FINISHED_NORMAL++;
 					}
+					if(project.isOverCost()){
+						iF_SUMMARY_FINISHED_COSTOVER++;
+					}else{
+						iF_SUMMARY_FINISHED_COSTNORMAL++;
+					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
 					iF_SUMMARY_PROCESSING++;
@@ -66,24 +79,43 @@ public class UserProjectPerf extends ProjectProvider {
 					} else {
 						iF_SUMMARY_PROCESSING_NORMAL++;
 					}
+					
+					if(project.maybeOverCostNow()){
+						iF_SUMMARY_PROCESSING_COSTOVER++;
+					}else{
+						iF_SUMMARY_PROCESSING_COSTNORMA++;
+					}
 				}
+				
+				
+				Double budgetValue = project.getBudgetValue();
+				iF_SUMMARY_TOTAL_BUDGETAMOUNT += budgetValue == null ? 0
+						: budgetValue;
+				iF_SUMMARY_TOTAL_INVESTMENTAMOUNT += project
+						.getInvestmentValue();
 				result.add(project);
 			}
 			summaryData.total = result.size();
-			
-			summaryData.finished=iF_SUMMARY_FINISHED;
-			summaryData.finished_delay=iF_SUMMARY_FINISHED_DELAY;
-			summaryData.finished_normal=iF_SUMMARY_FINISHED_NORMAL;
-			summaryData.finished_advance=iF_SUMMARY_FINISHED_ADVANCED;
 
-			summaryData.processing=iF_SUMMARY_PROCESSING;
-			summaryData.processing_delay=iF_SUMMARY_PROCESSING_DELAY;
-			summaryData.processing_normal=iF_SUMMARY_PROCESSING_NORMAL;
-			summaryData.processing_advance=iF_SUMMARY_PROCESSING_ADVANCE;
-			
-//			summaryData.subOrganizationProjectProvider=getSubOrganizationProvider();
-//			summaryData.subChargerProjectProvider=getSubUserProvider(organization);
-			
+			summaryData.finished = iF_SUMMARY_FINISHED;
+			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
+			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
+			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
+
+			summaryData.processing = iF_SUMMARY_PROCESSING;
+			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
+			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
+			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
+
+			summaryData.finished_cost_normal = iF_SUMMARY_FINISHED_COSTNORMAL;
+			summaryData.finished_cost_over = iF_SUMMARY_FINISHED_COSTOVER;
+
+			summaryData.processing_cost_normal = iF_SUMMARY_PROCESSING_COSTNORMA;
+			summaryData.processing_cost_over = iF_SUMMARY_PROCESSING_COSTOVER;
+
+			summaryData.total_budget_amount = iF_SUMMARY_TOTAL_BUDGETAMOUNT;
+			summaryData.total_investment_amount = iF_SUMMARY_TOTAL_INVESTMENTAMOUNT;
+
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}

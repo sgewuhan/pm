@@ -164,6 +164,15 @@ public class DBInit implements ISchedualJobRunnable {
 		} catch (Exception e) {
 		}
 
+		setting = new BasicDBObject();
+		setting.put("varid", IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
+		setting.put("desc", "超支比例估计系数");
+		setting.put("value", "0.3");
+		try {
+			col.insert(setting);
+		} catch (Exception e) {
+		}
+
 	}
 
 	private void syncUser() {
