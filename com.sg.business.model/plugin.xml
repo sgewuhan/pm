@@ -583,6 +583,12 @@
             operation="ecnitem_package"
             serviceProvider="com.sg.business.model.bpmservice.ChangePlanService">
       </service>
+      <service
+            interface="changecharger.service.action"
+            name="更改工作负责人服务"
+            operation="charger"
+            serviceProvider="com.sg.business.model.bpmservice.ChangeChargerService">
+      </service>
    </extension>
 
 </plugin>
