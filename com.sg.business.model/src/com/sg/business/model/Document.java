@@ -488,7 +488,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	public String getRevId() {
-		Integer vid = getIntegerValue(F__VID);
+//		Integer vid = getIntegerValue(F__VID);
+		Integer vid = getIntegerValue(F_SECOND_VID);
 		String release = getStringValue(F_MAJOR_VID);
 		return release + "." + vid;
 	}
@@ -628,7 +629,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		setValue(status + "_date", newValue);
 		BasicDBObject object = new BasicDBObject().append(F_LIFECYCLE, status)
 				.append(status + "_date", newValue);
-		if (!STATUS_WORKING_ID.equals(lc)) {
+		if (!STATUS_WORKING_ID.equals(getLifecycle())) {
 			setValue(F_LOCK, Boolean.FALSE);
 			setValue(F_LOCKED_BY, null);
 			setValue(F_LOCKED_ON, null);
