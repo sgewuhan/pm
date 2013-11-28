@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.commons.Commons;
 import com.mobnut.db.DBActivator;
 import com.mongodb.BasicDBObject;
@@ -22,10 +23,10 @@ import com.sg.business.model.RNDPeriodCost;
  * @author Administrator
  * 
  */
-public class RunRNDCostAllocation implements Runnable {
+public class RunRNDCostAllocation implements ISchedualJobRunnable {
 
 	@Override
-	public void run() {
+	public boolean run() throws Exception {
 		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
@@ -47,11 +48,14 @@ public class RunRNDCostAllocation implements Runnable {
 						month, null);
 			} catch (Exception e) {
 				Commons.LOGGER.error("获得SAP成本中心数据失败:" + year + "-" + month, e);
+				throw e;
 			}
 			long end = System.currentTimeMillis();
 			Commons.LOGGER.info("获得SAP成本中心数据完成:" + year + "-" + month + " "
 					+ (end - start) / 1000);
 		}
+		
+		return true;
 
 	}
 

@@ -996,14 +996,14 @@
    </extension>
    <extension
          point="com.mobnut.admin.schedualJob">
-      <schedualJob
+      <!--schedualJob
             day="999999"
             id="pm2.dbreset"
             name="数据库重置"
             rule="month"
             run="com.sg.business.pm2.setup.DBClear"
             time="0:0:0">
-      </schedualJob>
+      </schedualJob-->
       <schedualJob
             day="999999"
             id="pm2.dbinit"

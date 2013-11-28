@@ -1,5 +1,6 @@
 package com.sg.business.pm2.setup;
 
+import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -27,13 +28,13 @@ import com.sg.business.model.Work;
 import com.sg.business.model.WorkConnection;
 import com.sg.business.model.WorkDefinitionConnection;
 
-public class DBInit implements Runnable {
+public class DBInit implements ISchedualJobRunnable {
 
 	public DBInit() {
 	}
 
 	@Override
-	public void run() {
+	public boolean run() throws Exception {
 		// 创建索引
 		ensureIndex();
 		// syncUser 同步用户
@@ -41,6 +42,8 @@ public class DBInit implements Runnable {
 
 		// 初始化设置
 		initSetting();
+		
+		return true;
 
 	}
 

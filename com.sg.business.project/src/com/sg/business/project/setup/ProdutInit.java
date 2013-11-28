@@ -3,6 +3,7 @@ package com.sg.business.project.setup;
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 
+import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
@@ -14,10 +15,10 @@ import com.sg.business.model.ProductItem;
 import com.sg.business.model.Project;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class ProdutInit implements Runnable {
+public class ProdutInit implements ISchedualJobRunnable {
 
 	@Override
-	public void run() {
+	public boolean run() throws Exception {
 		DBCollection col = getCol();
 		BasicDBObject append = new BasicDBObject().append("_temp_itemcode",
 				new BasicDBObject().append("$ne", null));
@@ -34,7 +35,7 @@ public class ProdutInit implements Runnable {
 				try {
 					productItem.doSave(new CurrentAccountContext());
 				} catch (Exception e) {
-					e.printStackTrace();
+					throw e;
 				}
 			}
 		}
@@ -43,6 +44,8 @@ public class ProdutInit implements Runnable {
 				new BasicDBObject().append("$unset",
 						new BasicDBObject().append("_temp_itemcode", 1)),
 				false, true);
+		
+		return true;
 	}
 
 	private DBCollection getCol() {
