@@ -778,13 +778,17 @@
       <taskForm
             editorId="tbprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number,accessory"
+            persistentFields="prj_number,accessory,application_leader"
             processDefinitionId="xt.xtProjectApplication"
             saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="prj_number"
                taskFormFieldName="prj_number">
+         </processParameter>
+         <processParameter
+               processParameterName="dept_leader"
+               taskFormFieldName="application_leader">
          </processParameter>
       </taskForm>
       <taskForm
