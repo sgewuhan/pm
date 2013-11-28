@@ -167,7 +167,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 			}
 
 			deptProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
-					"部门项目执行状况", deptParameter, deptValue1, deptValue2));
+					"部门项目执行状况", deptParameter, deptValue1, deptValue2,new String[]{"正常","超期"}));
 		}
 		// *****************************************************************************************
 		String[] chargerName = new String[data.summaryData.subChargerProjectProvider
@@ -196,7 +196,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 			}
 
 			pmProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
-					"项目经理项目执行状况", chargerName, userValue1, userValue2));
+					"项目经理项目执行状况", chargerName, userValue1, userValue2,new String[]{"正常","超期"}));
 		}
 	}
 

@@ -19,7 +19,6 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 	private ChartCanvas statusPieChart;
 	private ChartCanvas finishedProjectMeter;
 	private ChartCanvas processProjectMeter;
-	private ChartCanvas allProjectMeter;
 	private ChartCanvas deptProjectBar;
 	private ChartCanvas pmProjectBar;
 	private TabItem deptBarTabItem;
@@ -54,7 +53,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 
 		tabFolder = new TabFolder(parent, SWT.TOP);
 		TabItem pieTabItem = new TabItem(tabFolder, SWT.NONE);
-		pieTabItem.setText("进度摘要");
+		pieTabItem.setText("预算及超支状况");
 		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE);
 		pieTabItem.setControl(statusPieChart);
 
@@ -70,9 +69,6 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 		processProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, true, 1, 1));
 
-		allProjectMeter = new ChartCanvas(composite, SWT.NONE);
-		allProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				true, 1, 1));
 		meterTabItem.setControl(composite);
 
 		loadChartData();
@@ -102,41 +98,40 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 	}
 
 	private void loadChartData() {
-		// "正常完成"
-		int value1 = data.summaryData.finished_normal;
-		// "超期完成",
-		int value2 = data.summaryData.finished_delay;
-		// "提前完成",
-		int value3 = data.summaryData.finished_advance;
-		// "进度延迟",
-		int value4 = data.summaryData.processing_delay;
-		// "正常进行"
-		int value5 = data.summaryData.processing_normal;
-		// 进度提前
-		int value6 = data.summaryData.processing_advance;
-		int sum = value1 + value2 + value3 + value4 + value5 + value6;
-		double allProjectOverTimeRate = sum == 0 ? 0
-				: (100d * (value2 + value4) / sum);
+		
+		// "预算内完成"
+		int value1 = data.summaryData.finished_cost_normal;
+		// "超预算完成"
+		int value2 = data.summaryData.finished_cost_over;
+		// "超支风险"
+		int value3 = data.summaryData.processing_cost_over;
+		// "正常运行"
+		int value4 = data.summaryData.processing_cost_normal;
+		
+//		// "总预算"
+//		long value5 = data.summaryData.total_budget_amount;
+//		// "总研发成本"
+//		long value6 = data.summaryData.total_investment_amount;
+		
+		int sum = value1 + value2;
+		//已经完成的项目的超支比例
+		double finishedProjectOverCostRate = sum == 0 ? 0
+				: (100d * value2 / sum);
 
-		sum = value4 + value5 + value6;
+		//进行中项目的超支风险
+		sum = value4 + value3;
 		double processProjectOverTimeRate = sum == 0 ? 0
-				: (100d * value4 / sum);
-
-		sum = value1 + value2 + value3;
-		double finishProjectOverTimeRate = sum == 0 ? 0 : (100d * value2 / sum);
+				: (100d * value3 / sum);
 
 		finishedProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
-				"已完成项目超期 ", "进度延迟", finishProjectOverTimeRate));
+				"超支完成项目比例 ", "预算超支", finishedProjectOverCostRate));
 		processProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
-				"进行中项目超期 ", "进度延迟", processProjectOverTimeRate));
-		allProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
-				"整体项目超期 ", "进度延迟", allProjectOverTimeRate));
+				"进行中项目超支风险 ", "超支风险", processProjectOverTimeRate));
 
 		// *****************************************************************************************
-		String pieChartCaption = "进度摘要";
-		String[] texts = new String[] { "正常完成", "超期完成", "进度延迟", "正常进行", "进度提前" };
-		double[] values = new double[] { (value1 + value3), value2, value4,
-				value5, value6 };
+		String pieChartCaption = "预算使用摘要";
+		String[] texts = new String[] { "预算内完成", "超预算完成", "超支风险","正常运行"};
+		double[] values = new double[] {value1,value2,value3,value4 };
 		statusPieChart.setChart(ProjectChartFoctory.createPieChart(
 				pieChartCaption, texts, values));
 
@@ -154,9 +149,8 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 				projectProvider.setParameters(data.parameters);
 				projectProvider.getData();
 				deptParameter[i] = projectProvider.getDesc();
-				deptValue1[i] = projectProvider.summaryData.processing_normal
-						+ projectProvider.summaryData.processing_advance;
-				deptValue2[i] = projectProvider.summaryData.processing_delay;
+				deptValue1[i] = projectProvider.summaryData.total_budget_amount/10000;
+				deptValue2[i] = projectProvider.summaryData.total_investment_amount/10000;
 			}
 
 			if (deptBarTabItem == null) {
@@ -167,7 +161,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 			}
 
 			deptProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
-					"部门项目执行状况", deptParameter, deptValue1, deptValue2));
+					"部门项目预算执行状况", deptParameter, deptValue1, deptValue2,new String[]{"预算","实际"}));
 		}
 		// *****************************************************************************************
 		String[] chargerName = new String[data.summaryData.subChargerProjectProvider
@@ -183,9 +177,8 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 				projectProvider.setParameters(data.parameters);
 				projectProvider.getData();
 				chargerName[i] = projectProvider.getDesc();
-				userValue1[i] = projectProvider.summaryData.processing_normal
-						+ projectProvider.summaryData.processing_advance;
-				userValue2[i] = projectProvider.summaryData.processing_delay;
+				userValue1[i] = projectProvider.summaryData.total_budget_amount/10000;
+				userValue2[i] = projectProvider.summaryData.total_investment_amount/10000;
 			}
 
 			if(pmBarTabItem==null){
@@ -196,12 +189,11 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 			}
 
 			pmProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
-					"项目经理项目执行状况", chargerName, userValue1, userValue2));
+					"项目经理预算执行状况", chargerName, userValue1, userValue2,new String[]{"预算","实际"}));
 		}
 	}
 
 	private void redrawChart() {
-		allProjectMeter.redrawChart();
 		deptProjectBar.redrawChart();
 		finishedProjectMeter.redrawChart();
 		processProjectMeter.redrawChart();

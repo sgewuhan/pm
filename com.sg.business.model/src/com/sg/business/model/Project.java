@@ -1819,8 +1819,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throw new Exception("不是本项目负责人，" + this);
 		}
 		// 2.检查项目的工作是否满足启动条件
-		Work work = getWBSRoot();
-		message.addAll(work.checkCascadeStart(true));
+		Work rootWork = getWBSRoot();
+		message.addAll(rootWork.checkCascadeStart(false));
+		
+		List<Work> mileStoneWorks = getMileStoneWorks();
+		for (Work mileStoneWork : mileStoneWorks) {
+			message.addAll(mileStoneWork.checkWorkStart(false));
+		}
 		return message;
 	}
 

@@ -94,7 +94,10 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 	@Override
 	public List<String> getReceiverList() {
 		if ("meetingmessage".equals(getOperation())) {
-			return super.getReceiverList();
+			 List<String> receiverList = super.getReceiverList();
+			 String launcher = (String) getInputValue("act_rule_launcher");
+			 receiverList.add(launcher);
+			 return receiverList;
 		} else {
 			Object content = getInputValue("content");
 			if (content instanceof String) {
