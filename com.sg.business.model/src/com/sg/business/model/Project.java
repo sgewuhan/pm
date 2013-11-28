@@ -2235,8 +2235,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
-		
-		
 		double cr = 1d * av / bv;
 		
 		double dr = getDurationFinishedRatio();
