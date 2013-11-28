@@ -211,6 +211,14 @@
             run="com.sg.business.finance.schedual.RunIncomeAllocation"
             time="2:00:00">
       </schedualJob>
+      <schedualJob
+            day="100000"
+            id="finance.schedual.loaddemodata"
+            name="构造测试数据"
+            rule="month"
+            run="com.sg.business.finance.schedual.LoadDemoData"
+            time="2:00:00">
+      </schedualJob>
    </extension>
 
 </plugin>
