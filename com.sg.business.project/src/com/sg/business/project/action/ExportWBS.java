@@ -1,7 +1,6 @@
 package com.sg.business.project.action;
 
 
-import com.sg.business.model.Project;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.NavigatorAction;
 import com.sg.widgets.part.NavigatorControl;

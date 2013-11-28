@@ -253,6 +253,12 @@ public interface IModelConstants {
 	 * 流程任务延迟标记时间（分钟）
 	 */
 	public static final String S_S_TASK_DELAY = "TASK.DELAYMARK";
+	
+	
+	
+	
+	
+	public static final String S_S_BI_OVER_COST_ESTIMATE = "BI.OVER.COST.ESTIMATE";
 
 	/**
 	 * 逗号分割的主要版本号序列
