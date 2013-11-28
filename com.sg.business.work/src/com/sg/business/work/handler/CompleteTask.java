@@ -134,7 +134,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 
 				DataObjectDialog dialog = DataObjectDialog.openDialog(
 						taskForm, ec, true, config.getSaveHandler(),
-						"流程表单");
+						taskForm.getUserTask().getTaskName());
 				int code = dialog.getReturnCode();
 				if (code != DataObjectDialog.OK) {
 					return;

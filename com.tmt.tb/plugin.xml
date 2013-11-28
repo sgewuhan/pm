@@ -1344,11 +1344,6 @@
                processParameterName="project_manager"
                taskFormFieldName="project">
          </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.DeptChangeReviewer"
-               processParameterName="project_supervisor"
-               taskFormFieldName="project">
-         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbprojectchange.confirmProgram"
@@ -1365,13 +1360,20 @@
                taskFormFieldName="plan">
          </processParameter>
          <processParameter
+               processParameterName="hasplan"
+               taskFormFieldName="hasplan">
+         </processParameter>
+         <processParameter
+               processParameterName="other"
+               taskFormFieldName="other">
+         </processParameter>
+         <processParameter
                processParameterName="hasother"
                taskFormFieldName="hasother">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.RelativeDeptChangeReviewer"
-               processParameterName="other"
-               taskFormFieldName="other">
+               processParameterName="project_supervisor"
+               taskFormFieldName="project_supervisor">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1642,11 +1644,22 @@
                </section>
                <section
                      label="在制品审核者">
+                  <radio
+                        editable="true"
+                        id="hasplan"
+                        label="变更是否需要进行在制品审核"
+                        labelVisible="false"
+                        name="hasplan"
+                        option="是\否"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
                   <navigatorSelector
                         editable="true"
                         id="plan"
-                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="请选择在制品审核者"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="请选择审核者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -1674,15 +1687,31 @@
                         editable="true"
                         id="other"
                         inputValidator="com.tmt.tb.validation.RelatedDeptValidation"
-                        label="请选择"
+                        label="请选择审核者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
-                        modelClass="com.sg.business.model.Organization"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
                         name="other"
-                        navigatorId="organization.navigator"
-                        navigatorReturnField="_id"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
                         persistable="true"
                         required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="变更方案批准者">
+                  <navigatorSelector
+                        editable="true"
+                        id="project_supervisor"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="project_supervisor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -1806,7 +1835,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否通过"
+                        option="是否变更"
                         persistable="true"
                         required="true"
                         type="String">
@@ -2021,6 +2050,7 @@
       <tree
             autoExpandLevel="2"
             dataSet="com.tmt.tb.dataset.ProjectFunctionOrg"
+            headerVisiable="false"
             id="organization.navigaor.projectfunctionorg">
          <column
                columnDefinitionId="work.desc.1">
