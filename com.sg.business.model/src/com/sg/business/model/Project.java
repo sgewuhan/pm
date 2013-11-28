@@ -2177,7 +2177,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 获得项目截至当前的投资总额（研发成本）
-	 * 
+	 * TODO
 	 * @return
 	 */
 	public double getInvestmentValue() {
@@ -2209,6 +2209,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return 1d * ad / pd;
 	}
 
+	/**
+	 * 截至目前按照某比例估算是否可能超支
+	 * @return
+	 */
 	public boolean maybeOverCostNow() {
 		// 支出比例 超过 工期比例 30% 且没有完成的项目
 		String lc = getLifecycleStatus();
@@ -2216,7 +2220,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return false;
 		}
 
-		// TODO 应作为设置
+		// TODO 应作为系统设置,使用以下变量名
+//		IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
+		//注意在数据库初始化时设置该默认值为30%
+		
 		double ratio = 0.3;
 		Double bv = getBudgetValue();
 		Double av = getInvestmentValue();
