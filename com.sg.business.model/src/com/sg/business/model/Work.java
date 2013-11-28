@@ -1427,7 +1427,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		// 非级联启动工作不检查
-		message.addAll(checkWorkStart(warningCheck));
+		if (!isProjectWBSRoot()) {
+			message.addAll(checkWorkStart(warningCheck));
+		}
 		return message;
 	}
 

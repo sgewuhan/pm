@@ -663,6 +663,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		boolean locked = isLocked();
 		String userId = context.getAccountInfo().getConsignerId();
 		User user = getLockedBy();
+		if(locked && user == null){
+			locked = false;
+		}
 		if (user != null && !userId.equals(user.getUserid())) {
 			locked = false;
 		}

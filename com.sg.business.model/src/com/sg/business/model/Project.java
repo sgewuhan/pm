@@ -1831,17 +1831,28 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public List<Object[]> checkCancelAction(IContext context) throws Exception {
-		// 1.检查是否本项目的负责人
+		// 1.检查是否本项目所在项目管理部门的项目管理员
 		String userId = context.getAccountInfo().getConsignerId();
-		if (!userId.equals(this.getChargerId())) {
-			throw new Exception("不是本项目负责人，" + this);
-		}
-
-		// 2.检查项目是否可以进行归档
 		Organization org = getFunctionOrganization();
 		if (org == null) {
 			throw new Exception("项目无管理部门或管理部门被删除，" + this);
 		}
+		
+		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+		boolean b = true;
+		List<PrimaryObject> assignment = role.getAssignment();
+		for (PrimaryObject po : assignment) {
+			User user = (User) po;
+			if(userId.equals(user.getUserid())){
+				b = true;
+				break;
+			}
+		}
+		if (b) {
+			throw new Exception("不是本项目项目管理员，" + this);
+		}
+
+		// 2.检查项目是否可以进行归档
 		ObjectId containerOrganizationId = org.getContainerOrganizationId();
 		if (containerOrganizationId == null) {
 			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
