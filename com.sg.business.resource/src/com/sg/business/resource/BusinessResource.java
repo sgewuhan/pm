@@ -306,6 +306,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_EXPORT_24 = "export_24.png";
 	
+	public static final String IMAGE_PRINT_W_48 = "print_w_48.png";
+
 	
 
 
