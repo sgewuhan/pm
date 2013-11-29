@@ -12,6 +12,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.sg.business.finance.eai.sap.JCO_ZXFUN_PM_YFFY;
+import com.sg.business.model.CompanyWorkOrder;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
@@ -38,8 +39,17 @@ public class RNDPeriodCostAdapter {
 			allocateToWorkOrder(costCenterCode, year, month,
 					costCenterRNDCostData[i]);
 		}
-		//获取工作令号的成本
-		//TODO
+		// 获取工作令号的成本
+		getWorkOrderDesignatedCost(year, month, costElementArray);
+	}
+
+	private void getWorkOrderDesignatedCost(int year, int month,
+			String[] costElementArray) throws Exception {
+		String[] workorders = CompanyWorkOrder.getWorkOrders();
+
+		syncRNDCost(null, workorders, costElementArray, year, month, null,
+				IModelConstants.C_WORKORDER_COST);
+
 	}
 
 	private void allocateToWorkOrder(String costCenterCode, int year,
