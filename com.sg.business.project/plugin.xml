@@ -4330,6 +4330,22 @@
             run="com.sg.business.project.setup.ProdutInit"
             time="0:0:0">
       </schedualJob>
+      <schedualJob
+            day="999999"
+            id="project.delete"
+            name="删除特定项目"
+            rule="month"
+            run="com.sg.business.project.setup.ProjectDelete"
+            time="0:0:0">
+      </schedualJob>
+      <schedualJob
+            day="999999"
+            id="project.createaffiliated"
+            name="创建项目附属信息"
+            rule="month"
+            run="com.sg.business.project.setup.ProjectCreateAffiliated"
+            time="0:0:0">
+      </schedualJob>
    </extension>
 
 </plugin>
