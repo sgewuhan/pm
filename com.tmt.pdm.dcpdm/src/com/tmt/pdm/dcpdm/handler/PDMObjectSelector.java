@@ -37,7 +37,7 @@ public class PDMObjectSelector extends Dialog {
 	private TableViewer viewer;
 	private IStructuredSelection selection;
 
-	protected PDMObjectSelector(Shell parentShell, List<?> docContainer,
+	public PDMObjectSelector(Shell parentShell, List<?> docContainer,
 			List<?> partContainer) {
 		super(parentShell);
 		this.docContainers = docContainer.toArray(new String[0]);

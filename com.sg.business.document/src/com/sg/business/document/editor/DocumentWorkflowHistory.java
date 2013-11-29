@@ -215,30 +215,18 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		IStructuredSelection sel = (IStructuredSelection) event.getSelection();
-		PrimaryObject[] input;
-		if (sel == null || sel.isEmpty()) {
-			input = new PrimaryObject[0];
-		} else {
-			DBObject processItem = (DBObject) sel.getFirstElement();
-			List<?> history = (List<?>) processItem
-					.get(IDocumentProcess.F_HISTORY);
-			List<Object> removeHistory = new ArrayList<Object>();
+		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
+		if (sel != null && !sel.isEmpty()) {
+			DBObject processItem = (DBObject) sel
+					.getFirstElement();
+			List<?> history = (List<?>) processItem.get(IDocumentProcess.F_HISTORY);
 			for (Object object : history) {
-				if (!Status.Completed.name().equals(
-						((DBObject) object).get(UserTask.F_STATUS))) {
-					removeHistory.add(object);
+				if( Status.Completed.name().equals(((DBObject)object).get(UserTask.F_STATUS))){
+					input.add(ModelService.createModelObject((DBObject)object, UserTask.class));
 				}
 			}
-			history.removeAll(removeHistory);
-			input = new PrimaryObject[history.size()];
-			for (int i = 0; i < input.length; i++) {
-				input[i] = ModelService.createModelObject(
-						(DBObject) history.get(i), UserTask.class);
-			}
-
 		}
 		taskViewer.setInput(input);
-
 		section2.layout();
 		section2.reflow();
 	}

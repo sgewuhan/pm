@@ -1731,10 +1731,33 @@
             contentProvider="com.sg.business.project.contentproviders.ProjectFolderContentProvider"
             dataSet="com.sg.business.model.dataset.project.FolderOfVault"
             headerVisiable="false"
+            id="vault.document.selector2">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="3"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            contentProvider="com.sg.business.project.contentproviders.ProjectFolderContentProvider"
+            dataSet="com.sg.business.model.dataset.project.FolderOfVault"
+            headerVisiable="false"
             id="vault.document.selector">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
+         <structure
+               modelRelation="organization_folder">
+         </structure>
          <structure
                modelRelation="folder_folder">
          </structure>
@@ -4328,6 +4351,22 @@
             name="物资编码转存"
             rule="month"
             run="com.sg.business.project.setup.ProdutInit"
+            time="0:0:0">
+      </schedualJob>
+      <schedualJob
+            day="999999"
+            id="project.delete"
+            name="删除特定项目"
+            rule="month"
+            run="com.sg.business.project.setup.ProjectDelete"
+            time="0:0:0">
+      </schedualJob>
+      <schedualJob
+            day="999999"
+            id="project.createaffiliated"
+            name="创建项目附属信息"
+            rule="month"
+            run="com.sg.business.project.setup.ProjectCreateAffiliated"
             time="0:0:0">
       </schedualJob>
    </extension>
