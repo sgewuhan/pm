@@ -16,6 +16,8 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -24,6 +26,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.jbpm.task.Status;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
@@ -31,6 +34,7 @@ import com.sg.business.commons.ui.flow.ProcessHistoryUIToolkit;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDocumentProcess;
 import com.sg.business.model.UserTask;
+import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
@@ -95,8 +99,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		});
 		taskViewer.setContentProvider(ArrayContentProvider.getInstance());
 
-		ProcessHistoryUIToolkit
-				.handleProcessHistoryTable(taskViewer.getTable());
+		ProcessHistoryUIToolkit.handleProcessHistoryTable(table);
 
 		autoResize(parent, table);
 		return table;
@@ -139,8 +142,33 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		viewer.setInput(history);
 		viewer.addSelectionChangedListener(this);
 		autoResize(parent, table);
+
+		table.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent event) {
+				if (event.detail == RWT.HYPERLINK) {
+					try {
+						String process = event.text.substring(
+								event.text.lastIndexOf("/") + 1,
+								event.text.indexOf("@"));
+						String action = event.text.substring(event.text
+								.indexOf("@") + 1);
+						if ("print".equals(action)) {
+							doPrintProcess(process);
+						}
+					} catch (Exception e) {
+					}
+				}
+			}
+		});
+
 		return table;
 
+	}
+
+	protected void doPrintProcess(String process) {
+		//20102652
+		
+		
 	}
 
 	protected String getProcessInstanceLabel(DBObject dbObject) {
@@ -167,6 +195,14 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		sb.append(processName);
 		sb.append("</small>");
 		sb.append("</span>");
+		sb.append("<a href=\"" + dbObject.get(IDocumentProcess.F_PROCESS_INSTANCEID)
+				+ "@" + "print" + "\" target=\"_rwt\">");
+		sb.append("<img src='");
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_PRINT_W_48,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+		sb.append("' style='border-style:none;position:absolute; right:0; top:0; display:block;' width='32' height='32' />");
+		sb.append("</a>");
+
 		return sb.toString();
 	}
 
@@ -186,25 +222,26 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		if (sel == null || sel.isEmpty()) {
 			input = new PrimaryObject[0];
 		} else {
-			DBObject processItem = (DBObject) sel
-					.getFirstElement();
-			List<?> history = (List<?>) processItem.get(IDocumentProcess.F_HISTORY);
+			DBObject processItem = (DBObject) sel.getFirstElement();
+			List<?> history = (List<?>) processItem
+					.get(IDocumentProcess.F_HISTORY);
 			List<Object> removeHistory = new ArrayList<Object>();
 			for (Object object : history) {
-				if(! Status.Completed.name().equals(((DBObject)object).get(UserTask.F_STATUS))){
+				if (!Status.Completed.name().equals(
+						((DBObject) object).get(UserTask.F_STATUS))) {
 					removeHistory.add(object);
 				}
 			}
 			history.removeAll(removeHistory);
 			input = new PrimaryObject[history.size()];
 			for (int i = 0; i < input.length; i++) {
-				input[i] = ModelService.createModelObject((DBObject)history.get(i), UserTask.class);
+				input[i] = ModelService.createModelObject(
+						(DBObject) history.get(i), UserTask.class);
 			}
-			
-			
+
 		}
 		taskViewer.setInput(input);
-		
+
 		section2.layout();
 		section2.reflow();
 	}

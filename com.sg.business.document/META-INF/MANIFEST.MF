@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.ui.forms;bundle-version="2.2.0",
  com.sg.thirdparty,
  com.mobnut.commons,
- com.sg.bpm.service;bundle-version="1.0.0"
+ com.sg.bpm.service;bundle-version="1.0.0",
+ com.sg.business.resource
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.document.editor

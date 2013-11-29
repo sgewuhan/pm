@@ -26,8 +26,8 @@ public class ProcessHistoryUIToolkit {
 					try{
 						String _id = event.text.substring(event.text.lastIndexOf("/")+1, event.text.indexOf("@"));
 						String action = event.text.substring(event.text.indexOf("@")+1 );
-						UserTask userTask = ModelService.createModelObject(UserTask.class, new ObjectId(_id));
 						if("open".equals(action)){
+							UserTask userTask = ModelService.createModelObject(UserTask.class, new ObjectId(_id));
 							doOpenTaskForm(userTask);
 						}
 					}catch(Exception e){
