@@ -10,11 +10,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.sg.business.finance.eai.sap.JCO_ZXFUN_PM_YFFY;
-import com.sg.business.model.CompanyWorkOrder;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.RNDPeriodCost;
 
-public class WorkorderPeriodCostAdapter {
+public class BasicPeriodCostAdapter {
 
 	public static final String ORGCODE = "org";
 	public static final String COSECENTERCODE = "cost";
@@ -22,14 +21,13 @@ public class WorkorderPeriodCostAdapter {
 	public static final String YEAR = "year";
 	public static final String MONTH = "month";
 
-	public void runGetData(String[] orgCodeArray, String[] costCodeArray,
+	public DBObject[] runGetData(String[] orgCodeArray, String[] costCodeArray,
 			String[] costElementArray, int year, int month, String[] account,
 			String targetCollection) throws Exception {
-		String[] workorders = CompanyWorkOrder.getWorkOrders();
-
-		syncRNDCost(null, workorders, costElementArray, year, month, null,
-				IModelConstants.C_WORKORDER_COST);
-
+		DBObject[] costCenterRNDCostData = syncRNDCost(orgCodeArray,
+				costCodeArray, costElementArray, year, month, account,
+				targetCollection);
+		return costCenterRNDCostData;
 	}
 
 
