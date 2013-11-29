@@ -26,7 +26,7 @@ import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.WorkOrderPeriodCost;
 import com.sg.business.model.WorksPerformence;
 
-public class WorkOrderPeriodCostAdapter {
+public class WorkOrderPeriodCostAllocater {
 
 	public static final String COSECENTERCODE = "cost";
 	public static final String ACCOUNTNUMERS = "account";
@@ -37,7 +37,7 @@ public class WorkOrderPeriodCostAdapter {
 	private DBCollection workPerformenceCol;
 	private DBCollection projectCol;
 
-	public WorkOrderPeriodCostAdapter() {
+	public WorkOrderPeriodCostAllocater() {
 		costAllocateCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
 		workPerformenceCol = DBActivator.getCollection(IModelConstants.DB,

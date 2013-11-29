@@ -2297,8 +2297,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
 		// 注意在数据库初始化时设置该默认值为30%
 
-		double ratio = Double.valueOf((String) Setting
-				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE));
+		Object value = Setting
+				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
+		double ratio = value == null ? .3d : Double.valueOf((String) value);
 		Double bv = getBudgetValue();
 		Double av = getInvestmentValue();
 		if (bv == null || av == null || bv == 0) {

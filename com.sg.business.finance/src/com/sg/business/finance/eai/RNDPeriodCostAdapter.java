@@ -62,17 +62,17 @@ public class RNDPeriodCostAdapter {
 		Organization organization = ModelService.createModelObject(orgData,
 				Organization.class);
 
-		WorkOrderPeriodCostAdapter adapter = new WorkOrderPeriodCostAdapter();
+		WorkOrderPeriodCostAllocater adapter = new WorkOrderPeriodCostAllocater();
 
 		Map<String, Object> parameter = new HashMap<String, Object>();
 
-		parameter.put(WorkOrderPeriodCostAdapter.YEAR, year);
-		parameter.put(WorkOrderPeriodCostAdapter.MONTH, month);
-		parameter.put(WorkOrderPeriodCostAdapter.COSECENTERCODE,
+		parameter.put(WorkOrderPeriodCostAllocater.YEAR, year);
+		parameter.put(WorkOrderPeriodCostAllocater.MONTH, month);
+		parameter.put(WorkOrderPeriodCostAllocater.COSECENTERCODE,
 				organization.getCostCenterCode());
 		RNDPeriodCost rndPeriodCost = ModelService.createModelObject(
 				costCenterRNDCostData, RNDPeriodCost.class);
-		parameter.put(WorkOrderPeriodCostAdapter.RNDCOST, rndPeriodCost);
+		parameter.put(WorkOrderPeriodCostAllocater.RNDCOST, rndPeriodCost);
 
 		adapter.getData(parameter);
 

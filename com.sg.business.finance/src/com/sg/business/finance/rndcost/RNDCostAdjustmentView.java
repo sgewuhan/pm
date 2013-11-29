@@ -31,7 +31,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.finance.eai.WorkOrderPeriodCostAdapter;
+import com.sg.business.finance.eai.WorkOrderPeriodCostAllocater;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
@@ -129,15 +129,15 @@ public class RNDCostAdjustmentView extends ViewPart {
 
 		private Collection<? extends WorkOrderPeriodCost> readWorkOrderPeriodCost(
 				String costCenterCode) {
-			WorkOrderPeriodCostAdapter adapter = new WorkOrderPeriodCostAdapter();
+			WorkOrderPeriodCostAllocater adapter = new WorkOrderPeriodCostAllocater();
 
 			Map<String, Object> parameter = new HashMap<String, Object>();
 
-			parameter.put(WorkOrderPeriodCostAdapter.YEAR, year);
-			parameter.put(WorkOrderPeriodCostAdapter.MONTH, month);
-			parameter.put(WorkOrderPeriodCostAdapter.COSECENTERCODE,
+			parameter.put(WorkOrderPeriodCostAllocater.YEAR, year);
+			parameter.put(WorkOrderPeriodCostAllocater.MONTH, month);
+			parameter.put(WorkOrderPeriodCostAllocater.COSECENTERCODE,
 					organization.getCostCenterCode());
-			parameter.put(WorkOrderPeriodCostAdapter.RNDCOST, rndPeriodCost);
+			parameter.put(WorkOrderPeriodCostAllocater.RNDCOST, rndPeriodCost);
 
 			return adapter.getData(parameter);
 		}
