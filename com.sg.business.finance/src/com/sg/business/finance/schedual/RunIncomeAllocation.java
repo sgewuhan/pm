@@ -42,7 +42,7 @@ public class RunIncomeAllocation implements ISchedualJobRunnable {
 	private void doTest(String year, String month) {
 		try {
 			final DBCollection col = DBActivator.getCollection(
-					IModelConstants.DB_BI, "salesdata");
+					IModelConstants.DB, IModelConstants.C_SALESDATA);
 
 			IRowCallBack callback = new IRowCallBack() {
 
