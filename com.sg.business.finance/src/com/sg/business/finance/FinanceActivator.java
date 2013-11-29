@@ -17,11 +17,6 @@ public class FinanceActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static FinanceActivator plugin;
 
-	private static Client sapClient;
-
-	private static SAPConnectionPool connPool;
-	
-	
 	/**
 	 * The constructor
 	 */
@@ -30,37 +25,41 @@ public class FinanceActivator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		connPool = new SAPConnectionPool();
 	}
-	
-	public static Client getSAPClient(){
-		if(sapClient==null||!sapClient.isValid()){
-			sapClient = connPool.connSAP();
-		}
+
+	public static Client getSAPClient() {
+		SAPConnectionPool connPool = new SAPConnectionPool();
+		Client sapClient = connPool.connSAP();
 		return sapClient;
+	}
+
+	public static void releaseClient(Client sapClient) {
+		JCO.releaseClient(sapClient);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-		if(sapClient!=null&&sapClient.isValid()){
-			sapClient.disconnect();
-			JCO.releaseClient(sapClient);
-		}
 		super.stop(context);
 	}
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static FinanceActivator getDefault() {

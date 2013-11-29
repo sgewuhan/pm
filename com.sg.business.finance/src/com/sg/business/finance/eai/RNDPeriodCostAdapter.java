@@ -12,22 +12,19 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
 
-public class RNDPeriodCostAdapter extends BasicPeriodCostAdapter{
+public class RNDPeriodCostAdapter extends BasicPeriodCostAdapter {
 
-	@Override
-	public DBObject[] runGetData(String[] orgCodeArray, String[] costCodeArray,
-			String[] costElementArray, int year, int month, String[] account,
-			String targetCollection) throws Exception {
-		DBObject[] result = super.runGetData(orgCodeArray,
-				costCodeArray, costElementArray, year, month, account,
-				targetCollection);
+	public DBObject[] runGetData(String[] costCodeArray,
+			String[] costElementArray, int year, int month) throws Exception {
+		DBObject[] result = runGetData(costCodeArray, null, costElementArray,
+				year, month, IModelConstants.C_RND_PEROIDCOST_COSTCENTER);
 
 		// 分摊至每个项目的工作令号
 		for (int i = 0; i < result.length; i++) {
 			String costCenterCode = (String) result[i]
 					.get(RNDPeriodCost.F_COSTCENTERCODE);
-			allocateToWorkOrder(costCenterCode, year, month,
-					result[i]);
+
+			allocateToWorkOrder(costCenterCode, year, month, result[i]);
 		}
 		return result;
 	}
@@ -57,6 +54,5 @@ public class RNDPeriodCostAdapter extends BasicPeriodCostAdapter{
 		adapter.getData(parameter);
 
 	}
-
 
 }
