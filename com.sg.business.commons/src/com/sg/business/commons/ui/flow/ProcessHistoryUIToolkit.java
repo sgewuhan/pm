@@ -152,6 +152,7 @@ public class ProcessHistoryUIToolkit {
 		}
 		String doc_flow = sb.toString();
 
+		//TODO 用户设置 打印机名称
 		String printerName = "Adobe PDF VIM";
 
 		String template = "docflowrec.pdf";
