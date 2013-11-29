@@ -4,14 +4,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.sg.sqldb.utility.SQLResult;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;
 
-public class ImportUser implements Runnable {
+public class ImportUser implements ISchedualJobRunnable {
 
 	@Override
-	public void run() {
+	public boolean run() throws Exception {
 		//检查角色指派中的用户
 		
 		
@@ -64,7 +65,7 @@ public class ImportUser implements Runnable {
 //		// }
 //		//
 //		// col.insert(usearr, WriteConcern.NORMAL);
-		System.out.println("ok");
+		return true;
 	}
 
 	/**

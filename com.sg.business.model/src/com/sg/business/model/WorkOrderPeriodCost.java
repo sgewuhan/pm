@@ -2,6 +2,11 @@ package com.sg.business.model;
 
 import com.mobnut.db.model.PrimaryObject;
 
+/**
+ * 直接记录在工作令号下的研发成本
+ * @author Administrator
+ *
+ */
 public class WorkOrderPeriodCost extends PrimaryObject implements IAccountPeriod {
 
 	public static final String F_YEAR = "year";

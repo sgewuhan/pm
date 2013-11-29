@@ -211,6 +211,22 @@
             run="com.sg.business.finance.schedual.RunIncomeAllocation"
             time="2:00:00">
       </schedualJob>
+      <schedualJob
+            day="1"
+            id="finance.schedual.workordercostgather"
+            name="上月工作令号相关研发成本获取和计算"
+            rule="month"
+            run="com.sg.business.finance.schedual.WorkorderCostGather"
+            time="1:05:00">
+      </schedualJob>
+      <schedualJob
+            day="100000"
+            id="finance.schedual.loaddemodata"
+            name="处理基础数据中的工时分配"
+            rule="month"
+            run="com.sg.business.finance.schedual.LoadDemoData"
+            time="2:00:00">
+      </schedualJob>
    </extension>
 
 </plugin>

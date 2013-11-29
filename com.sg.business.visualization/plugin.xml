@@ -134,6 +134,11 @@
             provideSelection="true"
             table="vis.projectset.budgetandinvestment">
       </navigator>
+      <navigator
+            id="vis.projectset.revenue"
+            provideSelection="true"
+            table="vis.projectset.revenue">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -384,6 +389,64 @@
                width="60">
          </column>
       </table>
+      <table
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="project"
+            customItemHeight="60"
+            dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
+            dbName="pm2"
+            fix="1"
+            headerVisiable="true"
+            id="vis.projectset.revenue"
+            lineVisiable="false"
+            markupEnabled="true"
+            preload="20"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               lazyDisplay="true"
+               name="项目名称描述"
+               type="String"
+               width="320">
+         </column>
+         <column
+               column="rndcost"
+               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
+               lazyDisplay="true"
+               name="研发投入概况"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="budget"
+               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetLabelProvider"
+               lazyDisplay="true"
+               name="预算"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="budget"
+               labelProvider="com.sg.business.visualization.labelprovider.project.ActualCostLabelProvider"
+               lazyDisplay="true"
+               name="实际"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="overcost"
+               labelProvider="com.sg.business.visualization.labelprovider.project.OvercostCostLabelProvider"
+               lazyDisplay="true"
+               name="超支"
+               type="String"
+               width="60">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -408,7 +471,13 @@
                id="projectset.budgetandinvestment"
                navigatorId="vis.projectset.budgetandinvestment"
                pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardBudInv"
-               title="投入">
+               title="预算和投入">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.revenue"
+               navigatorId="vis.projectset.revenue"
+               pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardRevenue"
+               title="销售收入和利润">
          </navigatorpage>
       </editor>
       <editor
@@ -467,7 +536,7 @@
          <command
                commandId="visualization.command.projectset"
                label="添加至项目集"
-               style="toggle"
+               style="push"
                tooltip="显示预览视图">
             <visibleWhen
                   checkEnabled="false">

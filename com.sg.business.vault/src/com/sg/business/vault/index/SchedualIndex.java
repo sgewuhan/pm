@@ -18,6 +18,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.bson.types.ObjectId;
 
+import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
@@ -30,7 +31,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 
-public class SchedualIndex implements Runnable {
+public class SchedualIndex implements ISchedualJobRunnable {
 
 	private DBCollection collection;
 	private String field;
@@ -53,12 +54,14 @@ public class SchedualIndex implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public boolean run() throws Exception {
 		try {
 			build();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw e;
 		}
+
+		return true;
 	}
 
 	public void build() throws IOException {

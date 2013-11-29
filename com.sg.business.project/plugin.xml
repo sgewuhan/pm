@@ -1731,10 +1731,33 @@
             contentProvider="com.sg.business.project.contentproviders.ProjectFolderContentProvider"
             dataSet="com.sg.business.model.dataset.project.FolderOfVault"
             headerVisiable="false"
+            id="vault.document.selector2">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="3"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            contentProvider="com.sg.business.project.contentproviders.ProjectFolderContentProvider"
+            dataSet="com.sg.business.model.dataset.project.FolderOfVault"
+            headerVisiable="false"
             id="vault.document.selector">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
+         <structure
+               modelRelation="organization_folder">
+         </structure>
          <structure
                modelRelation="folder_folder">
          </structure>
