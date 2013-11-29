@@ -13,7 +13,6 @@ import com.sap.mw.jco.JCO.Function;
 import com.sap.mw.jco.JCO.ParameterList;
 import com.sap.mw.jco.JCO.Table;
 import com.sg.business.finance.FinanceActivator;
-import com.sg.business.finance.SAPConnectionPool;
 
 public class JCO_ZXFUN_PM_YFFY {
 
@@ -39,16 +38,16 @@ public class JCO_ZXFUN_PM_YFFY {
 	 *            ,月
 	 * @param account
 	 *            , 科目
-	 * @param costElementArray 
+	 * @param costElementArray
 	 * @throws Exception
 	 */
-	public Map<String, Map<String, Double>> getJSDZB(String[] orgCodeArray,
-			String[] costCodeArray, String[] costElementArray, int year, int month, String[] account)
-			throws Exception {
+	public Map<String, Map<String, Double>> getCost(String[] costCodeArray,
+			String[] workordersArray, String[] costElementArray, int year,
+			int month) throws Exception {
 
 		Client client = FinanceActivator.getSAPClient();
 		IRepository repository = JCO.createRepository(REPOSITORY_NAME,
-				SAPConnectionPool.POOL_NAME);
+				client);
 
 		IFunctionTemplate ftemplate = repository
 				.getFunctionTemplate(FUNCTION_NAME);
@@ -67,27 +66,27 @@ public class JCO_ZXFUN_PM_YFFY {
 
 		ParameterList input_table = function.getTableParameterList();
 		Table tableIn = input_table.getTable(PARAMETER_COST_CENTER);
-		for (int i = 0; i < costCodeArray.length; i++) {
+		for (int i = 0; costCodeArray != null && i < costCodeArray.length; i++) {
 			tableIn.appendRow();
-			tableIn.setValue(costCodeArray[i], "KOSTL");
+			tableIn.setValue(costCodeArray[i], "KOSTL");// 成本中心
 		}
-		
-		for (int i = 0; i < costElementArray.length; i++) {
+
+		for (int i = 0; costElementArray != null && i < costElementArray.length; i++) {
 			tableIn.appendRow();
-			tableIn.setValue(costElementArray[i], "KSTAR");
+			tableIn.setValue(costElementArray[i], "KSTAR");// 成本要素
+		}
+
+		for (int i = 0; workordersArray != null && i < workordersArray.length; i++) {
+			tableIn.appendRow();
+			tableIn.setValue(workordersArray[i], "AUFNR");// 工作令号
 		}
 
 		function.setTableParameterList(input_table);
 
 		client.execute(function);
-
-//		String sRESULT = function.getExportParameterList().getString("RESULT");
-//		String sMESSAGE = function.getExportParameterList()
-//				.getString("MESSAGE"); //
-//		if (sRESULT.equals("E")) {
-//			throw new Exception("ERROR: " + sMESSAGE);
-//		}
-
+		
+		FinanceActivator.releaseClient(client);
+		
 		Table result = function.getTableParameterList().getTable("TABLE_OUT");
 		if (result.getNumRows() > 0) {
 			while (result.nextRow()) {
@@ -104,14 +103,18 @@ public class JCO_ZXFUN_PM_YFFY {
 				/**
 				 * 转置数据
 				 */
-				String _costCenterNumber = (String) row.get("KOSTL");
+				String _key = (String) row.get("KOSTL");
+				if (Utils.isNullOrEmpty(_key)) {
+					_key = (String) row.get("AUFNR");
+				}
+
 				String _cost = (String) row.get("WKGBTR");
 				String _accountNumber = (String) row.get("KSTAR");
 
-				Map<String, Double> rowData = ret.get(_costCenterNumber);
+				Map<String, Double> rowData = ret.get(_key);
 				if (rowData == null) {
 					rowData = new HashMap<String, Double>();
-					ret.put(_costCenterNumber, rowData);
+					ret.put(_key, rowData);
 				}
 				Double cost = 0d;
 				if (!Utils.isNullOrEmpty(_cost)) {

@@ -31,6 +31,7 @@ import com.mobnut.db.model.ModelRelation;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -1821,7 +1822,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 2.检查项目的工作是否满足启动条件
 		Work rootWork = getWBSRoot();
 		message.addAll(rootWork.checkCascadeStart(false));
-		
+
 		List<Work> mileStoneWorks = getMileStoneWorks();
 		for (Work mileStoneWork : mileStoneWorks) {
 			message.addAll(mileStoneWork.checkWorkStart(false));
@@ -1837,13 +1838,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (org == null) {
 			throw new Exception("项目无管理部门或管理部门被删除，" + this);
 		}
-		
+
 		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
 		boolean b = true;
 		List<PrimaryObject> assignment = role.getAssignment();
 		for (PrimaryObject po : assignment) {
 			User user = (User) po;
-			if(userId.equals(user.getUserid())){
+			if (userId.equals(user.getUserid())) {
 				b = true;
 				break;
 			}
@@ -2192,12 +2193,67 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	/**
-	 * 获得项目截至当前的投资总额（研发成本）
-	 * TODO
+	 * 获得项目截至当前的投资总额（研发成本） TODO
+	 * 
 	 * @return
 	 */
 	public double getInvestmentValue() {
-		return 100000d;
+		// 合计分摊到工作令号的研发成本
+		double aValue = getAllocatedInvestment();
+		double dValue = getDesignatedInvestment();
+		return aValue + dValue;
+	}
+
+	public double getAllocatedInvestment() {
+		return getInvestmentInternal(IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
+	}
+
+	/**
+	 * @return 返回指定到工作令号的研发成本
+	 */
+	public double getDesignatedInvestment() {
+		return getInvestmentInternal(IModelConstants.C_WORKORDER_COST);
+	}
+
+	/**
+	 * 获得分摊到工作令号的成本
+	 * 
+	 * @param colname
+	 * @return
+	 */
+	private double getInvestmentInternal(String colname) {
+		// 获得工作令号
+		String[] workOrders = getWorkOrders();
+		double summary = 0d;
+		if (workOrders.length != 0) {
+			DBCollection col = getCollection(colname);
+			DBObject matchCondition = new BasicDBObject();
+			matchCondition.put(F_WORK_ORDER,
+					new BasicDBObject().append("$in", workOrders));
+			DBObject match = new BasicDBObject().append("$match",
+					matchCondition);
+			DBObject groupCondition = new BasicDBObject();
+			groupCondition.put("_id", "$" + F_WORK_ORDER);// 按工作令号分组
+			String[] costElements = CostAccount.getCostElemenArray();
+			for (int i = 0; i < costElements.length; i++) {
+				groupCondition.put(
+						costElements[i],
+						new BasicDBObject().append("$sum", "$"
+								+ costElements[i]));
+			}
+			DBObject group = new BasicDBObject().append("$group",
+					groupCondition);
+			AggregationOutput agg = col.aggregate(match, group);
+			Iterator<DBObject> iter = agg.results().iterator();
+			while (iter.hasNext()) {
+				DBObject data = iter.next();
+				for (int i = 0; i < costElements.length; i++) {
+					Number value = (Number) data.get(costElements[i]);
+					summary += value.doubleValue();
+				}
+			}
+		}
+		return summary;
 	}
 
 	public Double getBudgetValue() {
@@ -2216,7 +2272,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Date as = getActualStart();
 		Date now = new Date();
 
-		if (pf == null || ps == null || as == null ) {
+		if (pf == null || ps == null || as == null) {
 			return 0;
 		}
 
@@ -2227,6 +2283,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	/**
 	 * 截至目前按照某比例估算是否可能超支
+	 * 
 	 * @return
 	 */
 	public boolean maybeOverCostNow() {
@@ -2237,23 +2294,26 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		// TODO 应作为系统设置,使用以下变量名
-//		IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
-		//注意在数据库初始化时设置该默认值为30%
-		
-		double ratio = Double.valueOf((String) Setting.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE));
+		// IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
+		// 注意在数据库初始化时设置该默认值为30%
+
+		Object value = Setting
+				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
+		double ratio = value == null ? .3d : Double.valueOf((String) value);
 		Double bv = getBudgetValue();
 		Double av = getInvestmentValue();
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
 		double cr = 1d * av / bv;
-		
+
 		double dr = getDurationFinishedRatio();
 		return cr - dr > ratio;
 	}
 
 	/**
 	 * 项目是否超支
+	 * 
 	 * @return
 	 */
 	public boolean isOverCost() {
@@ -2262,7 +2322,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
-		return av>bv;
+		return av > bv;
 	}
 
 }

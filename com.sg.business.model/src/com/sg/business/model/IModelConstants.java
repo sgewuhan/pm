@@ -122,6 +122,10 @@ public interface IModelConstants {
 	public static final String C_RND_PEROIDCOST_ALLOCATION = "rndcostallocation";
 
 	/**
+	 * 工作令号的对应研发成本
+	 */
+	public static final String C_WORKORDER_COST = "workordercost";
+	/**
 	 * 组织id对应的工作令号
 	 */
 	public static final String C_COMPANY_WORKORDER = "companyworkorders";
@@ -203,74 +207,80 @@ public interface IModelConstants {
 
 	
 	/**
-	 * 流程库的URL地址
+	 * 设置：流程库的URL地址
 	 * 
 	 */
 	public static final String S_PROCESS_BASE_URL = "SYSTEM.PROCESS_BASE_URL";
 
 	/**
-	 * SAP客户端最大连接数
+	 * 设置：SAP客户端最大连接数
 	 */
 	public static final String S_EAI_SAP_MAXCONN = "EAI.SAP.MAXCONN";
 
 
 	/**
-	 * SAP客户端名称
+	 * 设置：SAP客户端名称
 	 */
 	public static final String S_EAI_SAP_CLIENT = "EAI.SAP.CLIENT";
 
 	/**
-	 * SAP客户端用户ID
+	 * 设置：SAP客户端用户ID
 	 */
 	public static final String S_EAI_SAP_USERID = "EAI.SAP.USERID";
 
 	/**
-	 * SAP用户登录密码
+	 * 设置：SAP用户登录密码
 	 */
 	public static final String S_EAI_SAP_PASSWORD = "EAI.SAP.PASSWORD";
 
 	/**
-	 * SAP语言设置
+	 * 设置：SAP语言设置
 	 */
 	public static final String S_EAI_SAP_LANGUAGE = "EAI.SAP.LANG";
 
 	/**
-	 * SAP主机IP
+	 * 设置：SAP主机IP
 	 */
 	public static final String S_EAI_SAP_HOST = "EAI.SAP.HOST";
 
 	/**
-	 * SAP实例编号
+	 * 设置：SAP实例编号
 	 */
 	public static final String S_EAI_SAP_INSTANCENUMBER = "EAI.SAP.INSTANCENUMBER";
 
 	/**
-	 * 用户的流程任务
+	 * 设置：用户的流程任务
 	 */
 	public static final String C_USERTASK = "usertask";
 
 	/**
-	 * 流程任务延迟标记时间（分钟）
+	 * 设置：流程任务延迟标记时间（分钟）
 	 */
 	public static final String S_S_TASK_DELAY = "TASK.DELAYMARK";
 	
-	
-	
-	
-	
+	/**
+	 * 设置：成本超期预估比例
+	 */
 	public static final String S_S_BI_OVER_COST_ESTIMATE = "BI.OVER.COST.ESTIMATE";
 
 	/**
-	 * 逗号分割的主要版本号序列
+	 * 设置：逗号分割的主要版本号序列
 	 */
 	public static final String S_MAJOR_VID_SEQ = "MAJOR_VID_SEQ";
 
+	/**
+	 * 产品物资编码，项目工作令号
+	 */
 	public static final String C_PRODUCT = "productitem";
 
+	/**
+	 * 用户项目集
+	 */
 	public static final String C_USERPROJECTPERF = "userprojectperf";
 
-	public static final String DB_BI = "bi";
-
-
+	/**
+	 * 销售数据
+	 */
+	public static final String C_SALESDATA = "salesdata";
 
 }

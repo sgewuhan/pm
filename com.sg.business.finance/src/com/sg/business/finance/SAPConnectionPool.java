@@ -51,9 +51,6 @@ public class SAPConnectionPool {
 		try {
 			Pool pool = JCO.getClientPoolManager().getPool(POOL_NAME);
 			if (pool == null) {
-				// OrderedProperties properties1 =
-				// OrderedProperties.load("logon.properties");
-				// JCO.addClientPool(POOL_NAME, 5, properties1);
 				JCO.addClientPool(POOL_NAME, // Alias for this pool
 						maxConn, // Max. number of connections
 						client, // SAP client
@@ -68,9 +65,7 @@ public class SAPConnectionPool {
 			mConnection = JCO.getClient(POOL_NAME);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		} // finally {
-			// JCO.releaseClient(mConnection);
-		// }
+		} 
 		return mConnection;
 	}
 }

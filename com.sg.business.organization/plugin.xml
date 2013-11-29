@@ -1503,7 +1503,7 @@
             commandId="organization.consignUser">
       </handler>
    </extension>
-   <extension
+   <!--extension
          point="com.mobnut.admin.schedualJob">
       <schedualJob
             day="999999"
@@ -1513,5 +1513,5 @@
             run="com.sg.business.organization.command.ImportUser"
             time="0:0:0">
       </schedualJob>
-   </extension>
+   </extension-->
 </plugin>

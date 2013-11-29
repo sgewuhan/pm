@@ -1,12 +1,13 @@
 package com.sg.business.pm2.setup;
 
+import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.sg.business.model.CalendarSetting;
 import com.sg.business.model.IModelConstants;
 
-public class DBClear implements Runnable {
+public class DBClear implements ISchedualJobRunnable {
 	// private static final ObjectId[] NOTDELETE = new ObjectId[] { null,
 	// new ObjectId("5281cb76e0cc49249f3c6715"),
 	// new ObjectId("5284340fe0cc7c1c547d44fa"),
@@ -16,7 +17,7 @@ public class DBClear implements Runnable {
 	// new ObjectId("5282dac9e0ccf8afc27a1a3e") };
 
 	@Override
-	public void run() {
+	public boolean run() throws Exception {
 		clearData();
 
 		// DBCollection col = getCol(IModelConstants.C_PROJECT);
@@ -92,7 +93,7 @@ public class DBClear implements Runnable {
 		// root.get_id()).append(Project.F_FOLDER_ID,
 		// folderRoot.get_id())));
 		// }
-
+		return true;
 	}
 
 	// private void clearData() {
