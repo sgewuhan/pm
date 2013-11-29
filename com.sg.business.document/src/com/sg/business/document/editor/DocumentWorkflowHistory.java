@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.types.BasicBSONList;
+import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -46,12 +47,14 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 	private TableViewer taskViewer;
 	private SimpleSection section2;
 	private SimpleSection section1;
+	private Document doc;
 
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		super.createPageContent(parent, input, conf);
-		Document doc = (Document) input.getData();
+
+		doc = (Document) input.getData();
 		parent.setLayout(new GridLayout());
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
@@ -147,13 +150,12 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == RWT.HYPERLINK) {
 					try {
-						String process = event.text.substring(
-								event.text.lastIndexOf("/") + 1,
-								event.text.indexOf("@"));
-						String action = event.text.substring(event.text
-								.indexOf("@") + 1);
-						if ("print".equals(action)) {
-							doPrintProcess(process);
+						String[] para = event.text.substring(
+								event.text.lastIndexOf("/") + 1).split("@");
+						if ("print".equals(para[2])) {
+							// 20102652
+							ProcessHistoryUIToolkit.doPrint(Integer
+									.parseInt(para[0]), new ObjectId(para[1]));
 						}
 					} catch (Exception e) {
 					}
@@ -163,12 +165,6 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 
 		return table;
 
-	}
-
-	protected void doPrintProcess(String process) {
-		//20102652
-		
-		
 	}
 
 	protected String getProcessInstanceLabel(DBObject dbObject) {
@@ -195,8 +191,9 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		sb.append(processName);
 		sb.append("</small>");
 		sb.append("</span>");
-		sb.append("<a href=\"" + dbObject.get(IDocumentProcess.F_PROCESS_INSTANCEID)
-				+ "@" + "print" + "\" target=\"_rwt\">");
+		sb.append("<a href=\""
+				+ dbObject.get(IDocumentProcess.F_PROCESS_INSTANCEID) + "@"
+				+ doc.get_id() + "@print" + "\" target=\"_rwt\">");
 		sb.append("<img src='");
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_PRINT_W_48,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));

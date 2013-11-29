@@ -35,6 +35,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
@@ -670,6 +671,25 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			locked = false;
 		}
 		return locked;
+	}
+
+	public Date getReleaseOn() {
+		return getDateValue(STATUS_RELEASED_ID+"_date");
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<DBObject> getProcessHistory(int processId) {
+		Object value = getValue(F_WF_HISTORY);
+		if(value instanceof List){
+			for (int i = 0; i < ((List) value).size(); i++) {
+				DBObject dbo = (DBObject) ((List) value).get(i);
+				Object insid = dbo.get(IDocumentProcess.F_PROCESS_INSTANCEID);
+				if(insid!=null && insid.equals(new Integer(processId))){
+					return (List<DBObject>) dbo.get(IDocumentProcess.F_HISTORY);
+				}
+			}
+		}
+		return null;
 	}
 
 }
