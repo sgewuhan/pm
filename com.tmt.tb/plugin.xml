@@ -6,13 +6,17 @@
       <taskForm
             editorId="tbprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number,accessory"
+            persistentFields="prj_number,accessory,application_leader"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="prj_number"
                taskFormFieldName="prj_number">
+         </processParameter>
+         <processParameter
+               processParameterName="application_leader"
+               taskFormFieldName="application_leader">
          </processParameter>
       </taskForm>
       <taskForm
@@ -165,6 +169,22 @@
                         widthHint="320">
                   </text>
                </section>
+               <section
+                     label="请选择项目立项审批者">
+                  <navigatorSelector
+                        editable="true"
+                        id="application_leader"
+                        label="立项审批者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="application_leader"
+                        navigatorId="tb.taskforms.applicationleader.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
             </pagecolumn>
          </basicpage>
          <basicpage
@@ -308,7 +328,7 @@
                <section
                      label="请填写评审组成员">
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
                         editable="true"
                         id="reviewer_list"
                         inputValidator="com.tmt.tb.field.CheckReviewerOfTBProjectApplication"
@@ -1324,11 +1344,6 @@
                processParameterName="project_manager"
                taskFormFieldName="project">
          </processParameter>
-         <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.DeptChangeReviewer"
-               processParameterName="project_supervisor"
-               taskFormFieldName="project">
-         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbprojectchange.confirmProgram"
@@ -1345,13 +1360,20 @@
                taskFormFieldName="plan">
          </processParameter>
          <processParameter
+               processParameterName="hasplan"
+               taskFormFieldName="hasplan">
+         </processParameter>
+         <processParameter
+               processParameterName="other"
+               taskFormFieldName="other">
+         </processParameter>
+         <processParameter
                processParameterName="hasother"
                taskFormFieldName="hasother">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.RelativeDeptChangeReviewer"
-               processParameterName="other"
-               taskFormFieldName="other">
+               processParameterName="project_supervisor"
+               taskFormFieldName="project_supervisor">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1622,11 +1644,22 @@
                </section>
                <section
                      label="在制品审核者">
+                  <radio
+                        editable="true"
+                        id="hasplan"
+                        label="变更是否需要进行在制品审核"
+                        labelVisible="false"
+                        name="hasplan"
+                        option="是\否"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
                   <navigatorSelector
                         editable="true"
                         id="plan"
-                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="请选择在制品审核者"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="请选择审核者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -1654,15 +1687,31 @@
                         editable="true"
                         id="other"
                         inputValidator="com.tmt.tb.validation.RelatedDeptValidation"
-                        label="请选择"
+                        label="请选择审核者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
-                        modelClass="com.sg.business.model.Organization"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
                         name="other"
-                        navigatorId="organization.navigator"
-                        navigatorReturnField="_id"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
                         persistable="true"
                         required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="变更方案批准者">
+                  <navigatorSelector
+                        editable="true"
+                        id="project_supervisor"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="project_supervisor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -1786,7 +1835,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否通过"
+                        option="是否变更"
                         persistable="true"
                         required="true"
                         type="String">
@@ -1948,6 +1997,26 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="tb.taskforms.applicationleader.selector"
+            table="tb.taskforms.applicationleader.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1981,6 +2050,7 @@
       <tree
             autoExpandLevel="2"
             dataSet="com.tmt.tb.dataset.ProjectFunctionOrg"
+            headerVisiable="false"
             id="organization.navigaor.projectfunctionorg">
          <column
                columnDefinitionId="work.desc.1">
@@ -2086,6 +2156,14 @@
          </column>
          <column
                columnDefinitionId="project.workorder">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.tb.dataset.ApplicationLeaderOfTaskforms"
+            headerVisiable="false"
+            id="tb.taskforms.applicationleader.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
    </extension>

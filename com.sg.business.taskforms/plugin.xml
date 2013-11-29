@@ -154,6 +154,20 @@
                value="不评审">
          </option>
       </option>
+      <option
+            id="是否变更"
+            label="是否变更">
+         <option
+               id="需要变更"
+               label="需要变更"
+               value="通过">
+         </option>
+         <option
+               id="不变更"
+               label="不变更"
+               value="不通过">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">

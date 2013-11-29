@@ -139,6 +139,116 @@
          </processParameter>
       </taskForm>
    </extension>
+  
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="jszx.jszxProjectApply.apply"
+            inputHandler="com.tmt.jszx.handler.ApplyInputOfJSZX"
+            name="申请技术支持"
+            persistentFields="dept,accessory"
+            processDefinitionId="jszx.jszxProjectApply1"
+            saveHandler="com.tmt.jszx.handler.ApplySaveOfJSZX">
+         <processParameter
+               processParameterDelegator="com.tmt.jszx.field.parameter.DeptDirector"
+               processParameterName="dept_director"
+               taskFormFieldName="dept">
+         </processParameter>
+         <processParameter
+               processParameterName="chief_master"
+               taskFormFieldName="chief_engineer">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.jszx.field.parameter.DeputyDirector"
+               processParameterName="deputy_director"
+               taskFormFieldName="dept">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.jszx.field.parameter.ProjectAdmin"
+               processParameterName="prj_admin"
+               taskFormFieldName="dept">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterName="dept"
+               taskFormFieldName="dept">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.audit"
+            name="首席师审核"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.directorAudit"
+            name="受托研究室主任审核"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="worker"
+               taskFormFieldName="worker">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.approval"
+            name="常务副主任批准"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.determineProject_number"
+            name="确定工作令号"
+            persistentFields="project_number,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="project_number"
+               taskFormFieldName="project_number">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.audit"
+            name="首席师审核_委托工作"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.audit"
+            name="受托研究室主任审核_委托工作"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.audit"
+            name="受托研究室主任审核_委托工作"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
@@ -771,8 +881,7 @@
             processDefinitionId="jszx.jszxProjectReview"
             saveHandler="com.tmt.jszx.handler.ProjectReviewExpertAccessoryOfJSZX">
       </taskForm>
-   </extension>
-   <extension
+   </extension> <extension
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="taskform"
@@ -786,7 +895,7 @@
                <section
                      label="请填写评审专家组成员">
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
                         editable="true"
                         id="reviewer_list"
                         label="评审组"

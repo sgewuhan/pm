@@ -209,7 +209,15 @@
             name="上月销售收入获取和计算"
             rule="month"
             run="com.sg.business.finance.schedual.RunIncomeAllocation"
-            time="1:00:00">
+            time="2:00:00">
+      </schedualJob>
+      <schedualJob
+            day="100000"
+            id="finance.schedual.loaddemodata"
+            name="构造测试数据"
+            rule="month"
+            run="com.sg.business.finance.schedual.LoadDemoData"
+            time="2:00:00">
       </schedualJob>
    </extension>
 

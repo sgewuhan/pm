@@ -541,6 +541,12 @@
             table="project.navigator.delaywork">
          <filterAction>
             <column
+                  labelProvider="com.sg.business.project.labelprovider.ProjectOfDelayWork"
+                  name="项目"
+                  type="String"
+                  width="240">
+            </column>
+            <column
                   columnDefinitionId="work.desc">
             </column>
             <column
@@ -897,6 +903,12 @@
             dataSet="com.sg.business.model.dataset.project.DelayWork"
             editorId="view.work"
             id="project.navigator.delaywork">
+         <column
+               labelProvider="com.sg.business.project.labelprovider.ProjectOfDelayWork"
+               name="项目"
+               type="String"
+               width="240">
+         </column>
          <column
                columnDefinitionId="work.desc">
          </column>
@@ -3615,6 +3627,9 @@
             </navigatoraction>
             <navigatoraction
                   action="com.sg.business.project.action.AutoAssignment">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.ExportWBS">
             </navigatoraction>
          </navigatorpage>
          <navigatorpage

@@ -122,6 +122,10 @@ public interface IModelConstants {
 	public static final String C_RND_PEROIDCOST_ALLOCATION = "rndcostallocation";
 
 	/**
+	 * 工作令号的对应研发成本
+	 */
+	public static final String C_WORKORDER_COST = "workordercost";
+	/**
 	 * 组织id对应的工作令号
 	 */
 	public static final String C_COMPANY_WORKORDER = "companyworkorders";
@@ -253,6 +257,12 @@ public interface IModelConstants {
 	 * 流程任务延迟标记时间（分钟）
 	 */
 	public static final String S_S_TASK_DELAY = "TASK.DELAYMARK";
+	
+	
+	
+	
+	
+	public static final String S_S_BI_OVER_COST_ESTIMATE = "BI.OVER.COST.ESTIMATE";
 
 	/**
 	 * 逗号分割的主要版本号序列
@@ -262,6 +272,8 @@ public interface IModelConstants {
 	public static final String C_PRODUCT = "productitem";
 
 	public static final String C_USERPROJECTPERF = "userprojectperf";
+
+	public static final String DB_BI = "bi";
 
 
 

@@ -31,6 +31,7 @@ import com.mobnut.db.model.ModelRelation;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -1819,24 +1820,40 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throw new Exception("不是本项目负责人，" + this);
 		}
 		// 2.检查项目的工作是否满足启动条件
-		Work work = getWBSRoot();
-		message.addAll(work.checkCascadeStart(true));
+		Work rootWork = getWBSRoot();
+		message.addAll(rootWork.checkCascadeStart(false));
+
+		List<Work> mileStoneWorks = getMileStoneWorks();
+		for (Work mileStoneWork : mileStoneWorks) {
+			message.addAll(mileStoneWork.checkWorkStart(false));
+		}
 		return message;
 	}
 
 	@Override
 	public List<Object[]> checkCancelAction(IContext context) throws Exception {
-		// 1.检查是否本项目的负责人
+		// 1.检查是否本项目所在项目管理部门的项目管理员
 		String userId = context.getAccountInfo().getConsignerId();
-		if (!userId.equals(this.getChargerId())) {
-			throw new Exception("不是本项目负责人，" + this);
-		}
-
-		// 2.检查项目是否可以进行归档
 		Organization org = getFunctionOrganization();
 		if (org == null) {
 			throw new Exception("项目无管理部门或管理部门被删除，" + this);
 		}
+
+		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+		boolean b = true;
+		List<PrimaryObject> assignment = role.getAssignment();
+		for (PrimaryObject po : assignment) {
+			User user = (User) po;
+			if (userId.equals(user.getUserid())) {
+				b = true;
+				break;
+			}
+		}
+		if (b) {
+			throw new Exception("不是本项目项目管理员，" + this);
+		}
+
+		// 2.检查项目是否可以进行归档
 		ObjectId containerOrganizationId = org.getContainerOrganizationId();
 		if (containerOrganizationId == null) {
 			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
@@ -2167,6 +2184,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			productItem.doFinal(context);
 		}
 	}
+
 	public UserProjectPerf makeUserProjectPerf() {
 		UserProjectPerf pperf = ModelService
 				.createModelObject(UserProjectPerf.class);
@@ -2175,11 +2193,135 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	/**
-	 * 获得项目截至当前的投资总额（研发成本）
+	 * 获得项目截至当前的投资总额（研发成本） TODO
+	 * 
 	 * @return
 	 */
-	public Double getInvestment() {
-		// TODO Auto-generated method stub
-		return 100000d;
+	public double getInvestmentValue() {
+		// 合计分摊到工作令号的研发成本
+		double aValue = getAllocatedInvestment();
+		double dValue = getDesignatedInvestment();
+		return aValue + dValue;
 	}
+
+	public double getAllocatedInvestment() {
+		return getInvestmentInternal(IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
+	}
+
+	/**
+	 * @return 返回指定到工作令号的研发成本
+	 */
+	public double getDesignatedInvestment() {
+		return getInvestmentInternal(IModelConstants.C_WORKORDER_COST);
+	}
+
+	/**
+	 * 获得分摊到工作令号的成本
+	 * 
+	 * @param colname
+	 * @return
+	 */
+	private double getInvestmentInternal(String colname) {
+		// 获得工作令号
+		String[] workOrders = getWorkOrders();
+		double summary = 0d;
+		if (workOrders.length != 0) {
+			DBCollection col = getCollection(colname);
+			DBObject matchCondition = new BasicDBObject();
+			matchCondition.put(F_WORK_ORDER,
+					new BasicDBObject().append("$in", workOrders));
+			DBObject match = new BasicDBObject().append("$match",
+					matchCondition);
+			DBObject groupCondition = new BasicDBObject();
+			groupCondition.put("_id", "$" + F_WORK_ORDER);// 按工作令号分组
+			String[] costElements = CostAccount.getCostElemenArray();
+			for (int i = 0; i < costElements.length; i++) {
+				groupCondition.put(
+						costElements[i],
+						new BasicDBObject().append("$sum", "$"
+								+ costElements[i]));
+			}
+			DBObject group = new BasicDBObject().append("$group",
+					groupCondition);
+			AggregationOutput agg = col.aggregate(match, group);
+			Iterator<DBObject> iter = agg.results().iterator();
+			while (iter.hasNext()) {
+				DBObject data = iter.next();
+				for (int i = 0; i < costElements.length; i++) {
+					Number value = (Number) data.get(costElements[i]);
+					summary += value.doubleValue();
+				}
+			}
+		}
+		return summary;
+	}
+
+	public Double getBudgetValue() {
+		ProjectBudget budget = getBudget();
+		if (budget == null) {
+			return null;
+		} else {
+			return budget.getBudgetValue();
+		}
+	}
+
+	public double getDurationFinishedRatio() {
+		// 取计划工期
+		Date pf = getPlanFinish();
+		Date ps = getPlanStart();
+		Date as = getActualStart();
+		Date now = new Date();
+
+		if (pf == null || ps == null || as == null) {
+			return 0;
+		}
+
+		long pd = (pf.getTime() - ps.getTime());
+		long ad = now.getTime() - as.getTime();
+		return 1d * ad / pd;
+	}
+
+	/**
+	 * 截至目前按照某比例估算是否可能超支
+	 * 
+	 * @return
+	 */
+	public boolean maybeOverCostNow() {
+		// 支出比例 超过 工期比例 30% 且没有完成的项目
+		String lc = getLifecycleStatus();
+		if (!ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+			return false;
+		}
+
+		// TODO 应作为系统设置,使用以下变量名
+		// IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
+		// 注意在数据库初始化时设置该默认值为30%
+
+		double ratio = Double.valueOf((String) Setting
+				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE));
+		Double bv = getBudgetValue();
+		Double av = getInvestmentValue();
+		if (bv == null || av == null || bv == 0) {
+			return false;
+		}
+		double cr = 1d * av / bv;
+
+		double dr = getDurationFinishedRatio();
+		return cr - dr > ratio;
+	}
+
+	/**
+	 * 项目是否超支
+	 * 
+	 * @return
+	 */
+	public boolean isOverCost() {
+		Double bv = getBudgetValue();
+		Double av = getInvestmentValue();
+		if (bv == null || av == null || bv == 0) {
+			return false;
+		}
+		return av > bv;
+	}
+
 }

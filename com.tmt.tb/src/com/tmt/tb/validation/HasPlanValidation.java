@@ -4,9 +4,9 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.widgets.commons.valuevalidator.AbstractValidator;
 
-public class RelatedDeptValidation extends AbstractValidator {
+public class HasPlanValidation extends AbstractValidator {
 
-	public RelatedDeptValidation() {
+	public HasPlanValidation() {
 	}
 
 	@Override
@@ -14,9 +14,9 @@ public class RelatedDeptValidation extends AbstractValidator {
 		if(Utils.isDenied((String) data.getValue("choice"))){
 			return null;
 		}
-		if("是".equals(data.getValue("hasother"))){
-			if(data.getValue("other")==null){
-				return "请选择变更关联的其他部门";
+		if("是".equals(data.getValue("hasplan"))){
+			if(data.getValue("plan")==null){
+				return "请选择在制品审核者";
 			}
 		}
 		return null;

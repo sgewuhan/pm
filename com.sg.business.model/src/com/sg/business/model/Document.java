@@ -288,6 +288,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				break;
 			}
 		}
+		
 		setValue(F_MAJOR_VID, major);
 		setValue(F_SECOND_VID, 0x0);
 		setValue(F_LIFECYCLE, STATUS_WORKING_ID);
@@ -296,8 +297,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
 						"$set",
-						new BasicDBObject().append(F_MAJOR_VID, major).append(
-								F_SECOND_VID, 0x0)));
+						new BasicDBObject().append(F_MAJOR_VID, major).
+											append(F_SECOND_VID, 0x0).
+											append(F_LIFECYCLE, STATUS_WORKING_ID)));
 	}
 
 	public String[] getMajorVersionSeq() {
@@ -486,7 +488,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	public String getRevId() {
-		Integer vid = getIntegerValue(F__VID);
+//		Integer vid = getIntegerValue(F__VID);
+		Integer vid = getIntegerValue(F_SECOND_VID);
 		String release = getStringValue(F_MAJOR_VID);
 		return release + "." + vid;
 	}
@@ -626,7 +629,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		setValue(status + "_date", newValue);
 		BasicDBObject object = new BasicDBObject().append(F_LIFECYCLE, status)
 				.append(status + "_date", newValue);
-		if (!STATUS_WORKING_ID.equals(lc)) {
+		if (!STATUS_WORKING_ID.equals(getLifecycle())) {
 			setValue(F_LOCK, Boolean.FALSE);
 			setValue(F_LOCKED_BY, null);
 			setValue(F_LOCKED_ON, null);
@@ -660,6 +663,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		boolean locked = isLocked();
 		String userId = context.getAccountInfo().getConsignerId();
 		User user = getLockedBy();
+		if(locked && user == null){
+			locked = false;
+		}
 		if (user != null && !userId.equals(user.getUserid())) {
 			locked = false;
 		}
