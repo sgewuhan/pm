@@ -11,7 +11,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.finance.eai.RNDPeriodCostAdapter;
+import com.sg.business.finance.eai.WorkorderPeriodCostAdapter;
 import com.sg.business.model.CostAccount;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
@@ -27,7 +27,7 @@ public class WorkorderCostGather implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {
-		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
+		WorkorderPeriodCostAdapter adapter = new WorkorderPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
 //		cal.set(Calendar.MONTH, 1);
