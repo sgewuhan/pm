@@ -39,6 +39,7 @@ public abstract class NavigatorSelectorEditing implements IEditingSupportor {
 
 			};
 		}
+		
 
 		@Override
 		protected CellEditor getCellEditor(Object element) {
@@ -91,6 +92,7 @@ public abstract class NavigatorSelectorEditing implements IEditingSupportor {
 		return new NavigatorEditingSupport(getNavigatorId(), viewer,
 				configurator);
 	}
+	
 
 	protected abstract String getNavigatorId();
 
