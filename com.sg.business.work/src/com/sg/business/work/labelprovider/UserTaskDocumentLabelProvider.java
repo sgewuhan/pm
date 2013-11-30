@@ -80,14 +80,6 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 			sb.append("</a>");
 			
 		}
-		//预览链接
-		sb.append("<a href='");
-		String downloadURL = serverFile.getInternalDownloadURL();
-		sb.append(downloadURL + "@download");
-		sb.append("' target=\"_rwt\">");
-		sb.append(fileName);
-		sb.append("</a>");
-
 
 		sb.append("<br/>");
 		// 显示大小

@@ -101,26 +101,26 @@ public class ProjectManagerProvider extends ProjectProvider {
 						.getInvestmentValue();
 				result.add(project);
 			}
-			summaryData.total = result.size();
+			sum.total = result.size();
 
-			summaryData.finished = iF_SUMMARY_FINISHED;
-			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
-			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
-			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
+			sum.finished = iF_SUMMARY_FINISHED;
+			sum.finished_delay = iF_SUMMARY_FINISHED_DELAY;
+			sum.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
+			sum.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
 
-			summaryData.processing = iF_SUMMARY_PROCESSING;
-			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
-			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
-			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
+			sum.processing = iF_SUMMARY_PROCESSING;
+			sum.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
+			sum.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
+			sum.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
 
-			summaryData.finished_cost_normal = iF_SUMMARY_FINISHED_COSTNORMAL;
-			summaryData.finished_cost_over = iF_SUMMARY_FINISHED_COSTOVER;
+			sum.finished_cost_normal = iF_SUMMARY_FINISHED_COSTNORMAL;
+			sum.finished_cost_over = iF_SUMMARY_FINISHED_COSTOVER;
 
-			summaryData.processing_cost_normal = iF_SUMMARY_PROCESSING_COSTNORMA;
-			summaryData.processing_cost_over = iF_SUMMARY_PROCESSING_COSTOVER;
+			sum.processing_cost_normal = iF_SUMMARY_PROCESSING_COSTNORMA;
+			sum.processing_cost_over = iF_SUMMARY_PROCESSING_COSTOVER;
 
-			summaryData.total_budget_amount = iF_SUMMARY_TOTAL_BUDGETAMOUNT;
-			summaryData.total_investment_amount = iF_SUMMARY_TOTAL_INVESTMENTAMOUNT;
+			sum.total_budget_amount = iF_SUMMARY_TOTAL_BUDGETAMOUNT;
+			sum.total_investment_amount = iF_SUMMARY_TOTAL_INVESTMENTAMOUNT;
 
 
 		} catch (Exception e) {

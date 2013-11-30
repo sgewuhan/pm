@@ -10,10 +10,11 @@ import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.taskforms.IRoleConstance;
 
-public class SupervisorOfLauncher implements IActorIdProvider {
+public class SupportOfLauncher implements IActorIdProvider {
 
-	public SupervisorOfLauncher() {
+	public SupportOfLauncher() {
 	}
 
 	@Override
@@ -21,7 +22,7 @@ public class SupervisorOfLauncher implements IActorIdProvider {
 		Work work = (Work) input[0];
 		User charger = work.getCharger();
 		Organization org = charger.getOrganization();
-		Role role = org.getRole(Role.ROLE_DEPT_MANAGER_ID, Organization.ROLE_NOT_SEARCH);
+		Role role = org.getRole(IRoleConstance.ROLE_SUPPORT_AUDITOR_ID, Organization.ROLE_SEARCH_UP);
 		if (role != null) {
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null && assignment.size() > 0) {
