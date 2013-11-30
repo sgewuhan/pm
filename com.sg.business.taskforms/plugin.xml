@@ -323,6 +323,11 @@
             id="application_leader"
             name="项目发起人所在部门的立项审核者">
       </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.business.taskforms.actor.SupportOfLauncher"
+            id="support_auditor"
+            name="流程发起人所在技术支持审批者">
+      </actorRule>
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">

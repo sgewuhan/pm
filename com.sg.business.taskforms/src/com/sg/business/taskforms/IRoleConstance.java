@@ -67,4 +67,10 @@ public interface IRoleConstance {
 	public static final String ROLE_SUPPORT_NOTICE_ID = "Support Notice";
 	public static final String ROLE_SUPPORT_NOTICE_TEXT = "技术支持通知人";
 	
+	/**
+	 * 技术支持审核员
+	 */
+	public static final String ROLE_SUPPORT_AUDITOR_ID = "Support Auditor";
+	public static final String ROLE_SUPPORT_AUDITOR_TEXT = "技术支持审核员";
+	
 }

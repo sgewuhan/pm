@@ -1163,7 +1163,7 @@
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             editorId="xtBusinessSupport.auditor"
-            name="申请审批"
+            name="技术支持审批"
             persistentFields="choice,comment,accessory,supportnotice"
             processDefinitionId="xt.xtBusinessSupport"
             saveHandler="com.tmt.xt.handler.SupportNoticeAuditSave">
@@ -1302,7 +1302,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="support"
-                        navigatorId="work.organization.user"
+                        navigatorId="support.organization.user"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
