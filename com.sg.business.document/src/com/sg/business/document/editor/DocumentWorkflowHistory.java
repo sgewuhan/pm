@@ -154,8 +154,8 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 								event.text.lastIndexOf("/") + 1).split("@");
 						if ("print".equals(para[2])) {
 							// 20102652
-							ProcessHistoryUIToolkit.doPrint(Integer
-									.parseInt(para[0]), new ObjectId(para[1]));
+							ProcessHistoryUIToolkit.doPrint(Long
+									.parseLong(para[0]), new ObjectId(para[1]));
 						}
 					} catch (Exception e) {
 					}

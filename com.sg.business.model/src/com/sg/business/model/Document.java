@@ -678,13 +678,13 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<DBObject> getProcessHistory(int processId) {
+	public List<DBObject> getProcessHistory(long processId) {
 		Object value = getValue(F_WF_HISTORY);
 		if(value instanceof List){
 			for (int i = 0; i < ((List) value).size(); i++) {
 				DBObject dbo = (DBObject) ((List) value).get(i);
 				Object insid = dbo.get(IDocumentProcess.F_PROCESS_INSTANCEID);
-				if(insid!=null && insid.equals(new Integer(processId))){
+				if(insid instanceof Long && ((Long)insid).longValue()==processId){
 					return (List<DBObject>) dbo.get(IDocumentProcess.F_HISTORY);
 				}
 			}

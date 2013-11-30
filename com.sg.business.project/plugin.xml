@@ -541,10 +541,8 @@
             table="project.navigator.delaywork">
          <filterAction>
             <column
-                  labelProvider="com.sg.business.project.labelprovider.ProjectOfDelayWork"
                   name="项目"
-                  type="String"
-                  width="240">
+                  type="String">
             </column>
             <column
                   columnDefinitionId="work.desc">
