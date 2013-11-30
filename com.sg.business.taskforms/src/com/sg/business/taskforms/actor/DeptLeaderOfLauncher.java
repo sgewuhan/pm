@@ -22,7 +22,7 @@ public class DeptLeaderOfLauncher implements IActorIdProvider {
 		String chargerId = work.getChargerId();
 		User loginUser = UserToolkit.getUserById(chargerId);
 		Organization org = loginUser.getOrganization();
-		Role role = org.getRole(Role.ROLE_DEPT_MANAGER_ID, 0);
+		Role role = org.getRole(Role.ROLE_DEPT_MANAGER_ID, Organization.ROLE_NOT_SEARCH);
 		if (role != null) {
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null && assignment.size() > 0) {

@@ -345,6 +345,12 @@
             serviceProvider="com.sg.business.taskforms.bpmservice.ProjectApproveMessageService">
       </service>
       <service
+            interface="worksubconcessions.service.action"
+            name="工作审批消息服务"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.WorkSubconcessionsMessageService">
+      </service>
+      <service
             interface="meetingmessage.service.action"
             name="评审会议通知"
             operation="message"

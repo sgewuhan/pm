@@ -28,7 +28,7 @@ public class GetProjectAdminByDepartmentOfTB implements
 			ObjectId objectId = (ObjectId) value;
 			Organization org = ModelService.createModelObject(
 					Organization.class,objectId);
-			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 1);
+			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, Organization.ROLE_SEARCH_UP);
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null) {
 				RoleAssignment roleAssignment = (RoleAssignment) assignment.get(0);

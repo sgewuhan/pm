@@ -269,7 +269,7 @@ public interface IModelConstants {
 	public static final String S_MAJOR_VID_SEQ = "MAJOR_VID_SEQ";
 
 	/**
-	 * 产品物资编码，项目工作令号
+	 * 产品物资编码
 	 */
 	public static final String C_PRODUCT = "productitem";
 

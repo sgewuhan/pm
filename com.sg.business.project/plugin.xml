@@ -3000,7 +3000,7 @@
                style="push">
          </command>
          <command
-               commandId="product.final"
+               commandId="product.subconcessions"
                label="标记转批"
                style="push">
             <visibleWhen
@@ -3011,7 +3011,7 @@
                         ifEmpty="false"
                         operator="and">
                      <test
-                           args="canFinal"
+                           args="canSubconcessions"
                            property="project.operation"
                            value="true">
                      </test>
@@ -3184,7 +3184,7 @@
       </command>
       <command
             categoryId="project"
-            id="product.final"
+            id="product.subconcessions"
             name="标记转批">
       </command>
       <command
@@ -3362,8 +3362,8 @@
             commandId="project.product.edit">
       </handler>
       <handler
-            class="com.sg.business.project.handler.FinalProduct"
-            commandId="product.final">
+            class="com.sg.business.project.handler.SubconcessionsProduct"
+            commandId="product.subconcessions">
       </handler>
       <handler
             class="com.sg.business.project.handler.EditWorkOrder"

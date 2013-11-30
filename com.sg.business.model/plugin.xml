@@ -516,9 +516,27 @@
       </service>
       <service
             interface="worktoproject.service.action"
-            name="附加工作至项目服务"
-            operation="toproject"
-            serviceProvider="com.sg.business.model.bpmservice.WorkToProjectService">
+            name="附加工作至项目服务(工作令号)"
+            operation="toprojectbyworkorder"
+            serviceProvider="com.sg.business.model.bpmservice.WorkToProjectByWorkOrderService">
+      </service>
+      <service
+            interface="worktoproject.service.action"
+            name="项目商品转批服务(工作令号)"
+            operation="productsubconcessionsbyworkorder"
+            serviceProvider="com.sg.business.model.bpmservice.ProductSubconcessionsByWorkOrderService">
+      </service>
+      <service
+            interface="worktoproject.service.action"
+            name="附加工作至项目服务(项目ID)"
+            operation="toprojectbyprojectid"
+            serviceProvider="com.sg.business.model.bpmservice.WorkToProjectByProjectIdService">
+      </service>
+      <service
+            interface="worktoproject.service.action"
+            name="项目商品转批服务(项目ID)"
+            operation="productsubconcessionsbyprojectid"
+            serviceProvider="com.sg.business.model.bpmservice.ProductSubconcessionsByProjectIdService">
       </service>
       <service
             interface="deliverable.service.action"

@@ -54,4 +54,17 @@ public interface IRoleConstance {
 	 */
 	public static final String ROLE_A_PROJECR_ID= "A Project";
 	public static final String ROLE_A_PROJECR_TEXT = "项目指派者";
+	
+	/**
+	 * 技术支持指派者
+	 */
+	public static final String ROLE_A_SUPPORT_ID = "A Support";
+	public static final String ROLE_A_SUPPORT_TEXT = "技术支持指派者";
+	
+	/**
+	 * 技术支持通知人
+	 */
+	public static final String ROLE_SUPPORT_NOTICE_ID = "Support Notice";
+	public static final String ROLE_SUPPORT_NOTICE_TEXT = "技术支持通知人";
+	
 }

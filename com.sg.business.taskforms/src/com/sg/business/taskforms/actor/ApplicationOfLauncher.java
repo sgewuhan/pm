@@ -22,7 +22,7 @@ public class ApplicationOfLauncher implements IActorIdProvider {
 		Work work = (Work) input[0];
 		User charger = work.getCharger();
 		Organization org = charger.getOrganization();
-		Role role = org.getRole(IRoleConstance.ROLE_PROJECR_APPROVER_ID, 1);
+		Role role = org.getRole(IRoleConstance.ROLE_PROJECR_APPROVER_ID, Organization.ROLE_SEARCH_UP);
 		if (role != null) {
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null && assignment.size() > 0) {

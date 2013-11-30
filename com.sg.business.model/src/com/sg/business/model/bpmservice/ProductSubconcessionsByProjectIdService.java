@@ -4,21 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mobnut.db.DBActivator;
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
-import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 
-public class ProductFinalService extends ServiceProvider {
+public class ProductSubconcessionsByProjectIdService extends ServiceProvider {
 
-	public ProductFinalService() {
+	public ProductSubconcessionsByProjectIdService() {
 	}
 
 	@Override
@@ -33,17 +30,14 @@ public class ProductFinalService extends ServiceProvider {
 				String processName = (String) host.getValue("processName");
 				if (host instanceof Work) {
 					Work work = (Work) host;
-					// 根据工作令号获取项目
+					// 根据项目id获取项目
 					Project project = work.getProject();
 					if (project == null) {
-						String workorder = (String) getInputValue("workorder");
-						DBCollection col = DBActivator.getCollection(
-								IModelConstants.DB, IModelConstants.C_PROJECT);
-						DBObject dbo = col.findOne(new BasicDBObject().append(
-								Project.F_WORK_ORDER, workorder));
-						if (dbo != null) {
-							project = ModelService.createModelObject(dbo,
-									Project.class);
+						String projectid = (String) getInputValue("projectid");
+						ObjectId project_id = new ObjectId(projectid);
+						if (project_id != null) {
+							project = ModelService.createModelObject(
+									Project.class, project_id);
 						}
 					}
 					// 商品转批
@@ -51,8 +45,9 @@ public class ProductFinalService extends ServiceProvider {
 						Object product = host.getValue("product");
 						if (product instanceof List<?>) {
 							List<?> productList = (List<?>) product;
-							project.doProductFinal(new BPMServiceContext(
-									processName, processId), productList);
+							project.doProductSubconcessions(
+									new BPMServiceContext(processName,
+											processId), productList);
 						}
 					}
 
