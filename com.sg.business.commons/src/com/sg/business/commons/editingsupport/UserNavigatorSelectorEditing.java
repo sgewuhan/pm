@@ -22,5 +22,6 @@ public class UserNavigatorSelectorEditing extends NavigatorSelectorEditing {
 		User user = (User) is.getFirstElement();
 		return user.getUserid();
 	}
+	
 
 }
