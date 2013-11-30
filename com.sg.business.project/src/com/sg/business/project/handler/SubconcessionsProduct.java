@@ -15,7 +15,7 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class FinalProduct extends AbstractNavigatorHandler {
+public class SubconcessionsProduct extends AbstractNavigatorHandler {
 	private static final String TITLE = "物资转批";
 
 	@Override
@@ -26,7 +26,7 @@ public class FinalProduct extends AbstractNavigatorHandler {
 			Shell shell = part.getSite().getShell();
 			ProductItem productItem = (ProductItem) selected;
 			try {
-				productItem.doFinal(new CurrentAccountContext());
+				productItem.doSubconcessions(new CurrentAccountContext());
 				vc.getViewer().refresh(selected);
 				vc.getViewer().setSelection(null);
 			} catch (Exception e) {

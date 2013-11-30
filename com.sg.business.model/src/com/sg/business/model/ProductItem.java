@@ -11,7 +11,7 @@ import com.mongodb.WriteResult;
 
 public class ProductItem extends PrimaryObject implements IProjectRelative {
 
-	private static final String F_IS_FINAL = "isfinal";
+	public static final String F_IS_SUBCONCESSIONS = "issubconcessions";
 
 	@Override
 	public Project getProject() {
@@ -23,25 +23,25 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 		}
 	}
 
-	public boolean isFinal() {
-		return Boolean.TRUE.equals(getValue(F_IS_FINAL));
+	public boolean isSubconcessions() {
+		return Boolean.TRUE.equals(getValue(F_IS_SUBCONCESSIONS));
 	}
 
-	public boolean canFinal() {
-		boolean b = isFinal();
+	public boolean canSubconcessions() {
+		boolean b = isSubconcessions();
 		return !b;
 	}
 
-	public void doFinal(IContext context) throws Exception {
-		if (isFinal()) {
+	public void doSubconcessions(IContext context) throws Exception {
+		if (isSubconcessions()) {
 			return;
 		}
-		setValue(F_IS_FINAL, Boolean.TRUE);
+		setValue(F_IS_SUBCONCESSIONS, Boolean.TRUE);
 		DBCollection col = getCollection();
 		WriteResult ws = col.update(
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append("$set",
-						new BasicDBObject().append(F_IS_FINAL, Boolean.TRUE)));
+						new BasicDBObject().append(F_IS_SUBCONCESSIONS, Boolean.TRUE)));
 		checkWriteResult(ws);
 	}
 
@@ -51,6 +51,6 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 
 	@Override
 	public boolean canEdit(IContext context) {
-		return canFinal();
+		return canSubconcessions();
 	}
 }

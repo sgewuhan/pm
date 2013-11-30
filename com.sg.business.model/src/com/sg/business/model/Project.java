@@ -1376,7 +1376,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String userId = context.getAccountInfo().getConsignerId();
 		Organization org = getFunctionOrganization();
 		if (org != null) {
-			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, Organization.ROLE_NOT_SEARCH);
 			if (role != null) {
 				List<PrimaryObject> assignmentList = role.getAssignment();
 				if (assignmentList != null && assignmentList.size() > 0) {
@@ -1839,7 +1839,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throw new Exception("项目无管理部门或管理部门被删除，" + this);
 		}
 
-		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, Organization.ROLE_NOT_SEARCH);
 		boolean b = true;
 		List<PrimaryObject> assignment = role.getAssignment();
 		for (PrimaryObject po : assignment) {
@@ -2172,7 +2172,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				ProductItem.class);
 	}
 
-	public void doProductFinal(IContext context, List<?> productList)
+	public void doProductSubconcessions(IContext context, List<?> productList)
 			throws Exception {
 		ObjectId _id = get_id();
 		for (Object object : productList) {
@@ -2181,7 +2181,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			q.put(ProductItem.F_DESC, object);
 			ProductItem productItem = ModelService.createModelObject(q,
 					ProductItem.class);
-			productItem.doFinal(context);
+			productItem.doSubconcessions(context);
 		}
 	}
 
@@ -2323,6 +2323,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return false;
 		}
 		return av > bv;
+	}
+
+	public List<PrimaryObject> getSubconcessionsProduct() {
+		return getRelationByCondition(
+				ProductItem.class,
+				new BasicDBObject()
+						.append(ProductItem.F_PROJECT_ID, get_id())
+						.append(ProductItem.F_IS_SUBCONCESSIONS,
+								new BasicDBObject().append("$ne", Boolean.TRUE)));
 	}
 
 }

@@ -20,9 +20,9 @@ public class DeptSelectControlOfJSZX implements INavigatorSelectorControl {
 		Object element = is.getFirstElement();
 		if(element instanceof Organization){
 			Organization org =  (Organization)element;
-			Role chiefEngineer = org.getRole(IRoleConstance.ROLE_CHIEF_ENGINEER_ID, 1);
-			Role deputyDirector = org.getRole(IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, 1);
-			Role director = org.getRole(Role.ROLE_DEPT_MANAGER_ID, 1);
+			Role chiefEngineer = org.getRole(IRoleConstance.ROLE_CHIEF_ENGINEER_ID, Organization.ROLE_SEARCH_UP);
+			Role deputyDirector = org.getRole(IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, Organization.ROLE_SEARCH_UP);
+			Role director = org.getRole(Role.ROLE_DEPT_MANAGER_ID, Organization.ROLE_SEARCH_UP);
 			if(chiefEngineer==null||deputyDirector==null||director==null){
 				return false;
 			}

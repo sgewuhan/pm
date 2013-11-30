@@ -16,9 +16,9 @@ import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.ProjectToolkit;
 
-public class WorkToProjectService extends ServiceProvider {
+public class WorkToProjectByWorkOrderService extends ServiceProvider {
 
-	public WorkToProjectService() {
+	public WorkToProjectByWorkOrderService() {
 	}
 
 	@Override

@@ -129,6 +129,21 @@ public class Organization extends PrimaryObject {
 
 	public static final String F_FILEBASE = "filebase";
 
+	/*
+	 * 向上级组织查找角色
+	 */
+	public static final int ROLE_SEARCH_UP = 1;
+
+	/*
+	 * 在本机组织查找角色
+	 */
+	public static final int ROLE_NOT_SEARCH = 0;
+
+	/**
+	 * 向下级组织查找角色
+	 */
+	public static final int ROLE_SEARCH_DOWN = -1;
+
 	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
 	 * 
@@ -589,13 +604,16 @@ public class Organization extends PrimaryObject {
 						.append(Role.F_ORGANIZATION_ID, get_id())) > 0;
 	}
 
-	/**
+/**
 	 * 获取组织下包含的某个角色
 	 * 
 	 * @param roleNumber
 	 *            ,角色编号
 	 * @param selectType
-	 *            ,查找方式,int 类型,-1为向下查找,0为不查找,1为向上查找
+	 *            ,查找方式,<br/>  
+	 *            {@link Organization.ROLE_SEARCH_DOWN} 为向下查找, <br/>
+	 *            {@link Organization.ROLE_NOT_SEARCH} 为不查找, <br/>
+	 *            {@link Organization.ROLE_SEARCH_UP} 为向上查找
 	 * @return Role
 	 */
 	public Role getRole(String roleNumber, int selectType) {
@@ -606,7 +624,7 @@ public class Organization extends PrimaryObject {
 			return (Role) roleList.get(0);
 		} else {
 			switch (selectType) {
-			case -1:
+			case ROLE_SEARCH_DOWN:
 				List<PrimaryObject> childrenOrgs = getChildrenOrganization();
 				if (childrenOrgs != null && childrenOrgs.size() > 0) {
 					for (int i = 0; i < childrenOrgs.size(); i++) {
@@ -619,7 +637,7 @@ public class Organization extends PrimaryObject {
 					}
 				}
 				return null;
-			case 1:
+			case ROLE_SEARCH_UP:
 				Organization parentOrg = (Organization) getParentOrganization();
 				if (parentOrg != null) {
 					return parentOrg.getRole(roleNumber, selectType);
@@ -670,16 +688,19 @@ public class Organization extends PrimaryObject {
 
 	/**
 	 * 获得当前组织的路径
-	 * @param level 限制级别
+	 * 
+	 * @param level
+	 *            限制级别
 	 * @return
 	 */
 	public String getPath(int level) {
 		PrimaryObject parent = getParentOrganization();
-		if (parent instanceof Organization ) {
-			if(level>1){
-				return ((Organization) parent).getPath(level-1) + "/" + getDesc();
-			}else{
-				return "../"+getDesc();
+		if (parent instanceof Organization) {
+			if (level > 1) {
+				return ((Organization) parent).getPath(level - 1) + "/"
+						+ getDesc();
+			} else {
+				return "../" + getDesc();
 			}
 		} else {
 			return getDesc();

@@ -24,7 +24,7 @@ public class DeputyDirectorOfLauncher implements IActorIdProvider {
 	String chargerId = work.getChargerId();
 	User loginUser = UserToolkit.getUserById(chargerId);
 	Organization org = loginUser.getOrganization();
-	Role role = org.getRole(IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, 1);
+	Role role = org.getRole(IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, Organization.ROLE_SEARCH_UP);
 	if (role != null) {
 		List<PrimaryObject> assignment = role.getAssignment();
 		if (assignment != null && assignment.size() > 0) {
