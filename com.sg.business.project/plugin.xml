@@ -369,6 +369,17 @@
                   columnDefinitionId="roledefinition.desc">
             </column>
          </searchAction>
+         <exportAction>
+            <column
+                  column="desc"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportShowDesc"
+                  id="roledefinition.desc"
+                  labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider"
+                  name="角色名称"
+                  type="String"
+                  width="-1">
+            </column>
+         </exportAction>
       </navigator>
       <navigator
             id="project.wbs"
@@ -423,30 +434,119 @@
             <column
                   columnDefinitionId="participate">
             </column></searchAction>
+            
          <exportAction>
             <column
-                  columnDefinitionId="work.desc">
+                  column="desc"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportShowLeverDesc"
+                  name="名称"
+                  type="String">
             </column>
             <column
-                  columnDefinitionId="milestone">
+                  column="milestone"
+                  id="milestone"
+                  name="里程碑"
+                  type="Boolean"
+                  width="60">
             </column>
             <column
-                  columnDefinitionId="planstart_e">
+                  column="planstart"
+                  editingSupport="com.sg.business.commons.editingsupport.PlanStartEditing"
+                  id="planstart_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
+                  lazyDisplay="true"
+                  name="计划开始"
+                  type="Date"
+                  width="72">
             </column>
             <column
-                  columnDefinitionId="planfinish_e">
+                  column="planfinish"
+                  editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
+                  id="planfinish_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
+                  lazyDisplay="true"
+                  name="计划完成"
+                  type="Date"
+                  width="72">
             </column>
             <column
-                  columnDefinitionId="planworks_e">
+                  column="planduration"
+                  id="planduration_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
+                  lazyDisplay="true"
+                  name="计划工期"
+                  style="SWT.RIGHT"
+                  type="Integer"
+                  width="72">
             </column>
             <column
-                  columnDefinitionId="planduration_e">
+                  column="planworks"
+                  editingSupport="com.sg.business.commons.editingsupport.PlanWorksEditing"
+                  id="planworks_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
+                  lazyDisplay="true"
+                  name="计划工时"
+                  style="SWT.RIGHT"
+                  type="Double"
+                  width="72">
             </column>
             <column
-                  columnDefinitionId="chargerid">
+                  column="actualstart"
+                  id="actualstart_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
+                  lazyDisplay="true"
+                  name="实际开始"
+                  type="Date"
+                  width="72">
             </column>
             <column
-                  columnDefinitionId="participate">
+                  column="actualfinish"
+                  id="actualfinish_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
+                  lazyDisplay="true"
+                  name="实际完成"
+                  type="Date"
+                  width="72">
+            </column>
+            <column
+                  column="actualduration"
+                  id="actualduration_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
+                  lazyDisplay="true"
+                  name="实际工期"
+                  style="SWT.RIGHT"
+                  type="Integer"
+                  width="72">
+            </column>
+            <column
+                  column="actualworks"
+                  id="actualworks_e"
+                  labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
+                  lazyDisplay="true"
+                  name="实际工时"
+                  style="SWT.RIGHT"
+                  type="Double"
+                  width="72">
+            </column>
+            <column
+                  column="chargerid"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserId2UserFullName"
+                  id="chargerid"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                  lazyDisplay="true"
+                  name="负责人"
+                  type="String"
+                  width="120">
+            </column>
+            <column
+                  column="participate"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserIdArray2UserFullNameArray"
+                  id="participate"
+                  labelProvider="com.sg.business.commons.labelprovider.UserIdListLabelProvider"
+                  lazyDisplay="false"
+                  name="参与者"
+                  type="String"
+                  width="120">
             </column>
          </exportAction>
       </navigator>
@@ -3636,6 +3736,9 @@
                title="项目组">
             <navigatoraction
                   action="com.sg.business.project.action.FilterUnAssignment">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.ExportTeam">
             </navigatoraction>
          </navigatorpage>
          <navigatorpage
