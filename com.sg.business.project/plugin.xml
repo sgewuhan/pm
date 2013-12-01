@@ -612,29 +612,6 @@
                   name="Reserved"
                   type="DateTime">
             </column></filterAction>
-         <searchAction>
-            <column
-                  column="processname"
-                  name="流程名称">
-            </column>
-            <column
-                  column="desc"
-                  name="任务名称"
-                  type="String">
-            </column>
-            <column
-                  column="work_desc"
-                  name="工作名称">
-            </column>
-            <column
-                  column="actualowner"
-                  name="实际活动执行者">
-            </column>
-            <column
-                  column="_cdate"
-                  name="Reserved"
-                  type="DateTime">
-            </column></searchAction>
       </navigator>
    </extension>
    <extension
@@ -3048,6 +3025,16 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:project.navigator.delayprocess?after=additions">
+         <command
+               commandId="delayprocess.query"
+               icon="image/search_24.png"
+               label="查询"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -3183,6 +3170,11 @@
             categoryId="project"
             id="project.workorder.edit"
             name="工作令号">
+      </command>
+      <command
+            categoryId="project"
+            id="delayprocess.query"
+            name="查询">
       </command>
    </extension>
    <extension
@@ -3355,6 +3347,10 @@
       <handler
             class="com.sg.business.project.handler.EditWorkOrder"
             commandId="project.workorder.edit">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.QueryDelayProcess"
+            commandId="delayprocess.query">
       </handler>
    </extension>
    <extension
