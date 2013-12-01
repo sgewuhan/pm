@@ -5,20 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
@@ -49,13 +43,6 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-
-		parent.setLayout(new FormLayout());
-		Button b = createButton(parent);
-		FormData fd = new FormData();
-		b.setLayoutData(fd);
-		fd.top = new FormAttachment(0, 4);
-		fd.right = new FormAttachment(100, -4);
 
 		Project project = (Project) input.getData();
 		root = project.getBudget();
@@ -131,139 +118,117 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 		} else {
 			viewer.setInput(root.getChildren());
 		}
-		fd = new FormData();
-		viewer.getControl().setLayoutData(fd);
-		fd.top = new FormAttachment(b, 4);
-		fd.left = new FormAttachment(0, 4);
-		fd.right = new FormAttachment(100, -4);
-		fd.bottom = new FormAttachment(100, -4);
 
 		viewer.expandAll();
 		return (Composite) viewer.getControl();
 	}
 
-	private Button createButton(final Composite parent) {
-		Button exportButton = new Button(parent, SWT.PUSH);
-		exportButton.setImage(BusinessResource
-				.getImage(BusinessResource.IMAGE_EXPORT_24));
-		exportButton.setToolTipText("导出");
-		exportButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
-		exportButton.addSelectionListener(new SelectionListener() {
+	
+	private void doExport() {
+		ExcelExportJob job = new ExcelExportJob("预算");
+
+		IColumnExportDefinition[] columns = new IColumnExportDefinition[2];
+		columns[0] = new IColumnExportDefinition() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ExcelExportJob job = new ExcelExportJob("预算");
+			public String getName() {
+				return "预算科目";
+			}
 
-				IColumnExportDefinition[] columns = new IColumnExportDefinition[2];
-				columns[0] = new IColumnExportDefinition() {
+			@Override
+			public String getType() {
+				return Utils.TYPE_STRING;
+			}
 
+			@Override
+			public int getWidth() {
+				return 0;
+			}
+
+			@Override
+			public String getColumn() {
+				return "desc";
+			}
+
+			@Override
+			public IExportValueDelegator getExportValueDelegator() {
+				return new IExportValueDelegator() {
 					@Override
-					public String getName() {
-						return "预算科目";
-					}
+					public Object getValue(
+							Map<String, Object> dataRow,
+							IColumnExportDefinition iColumnExportDefinition) {
 
-					@Override
-					public String getType() {
-						return Utils.TYPE_STRING;
-					}
-
-					@Override
-					public int getWidth() {
-						return 0;
-					}
-
-					@Override
-					public String getColumn() {
-						return "desc";
-					}
-
-					@Override
-					public IExportValueDelegator getExportValueDelegator() {
-						return new IExportValueDelegator() {
-							@Override
-							public Object getValue(
-									Map<String, Object> dataRow,
-									IColumnExportDefinition iColumnExportDefinition) {
-
-								String dataRowValue = (String) dataRow
-										.get("desc");
-								Object level = dataRow.get("level");
-								if (level instanceof Integer) {
-									for (int i = 0; i < (Integer) level; i++) {
-										dataRowValue = "   " + dataRowValue;
-									}
-								}
-
-								return dataRowValue;
+						String dataRowValue = (String) dataRow
+								.get("desc");
+						Object level = dataRow.get("level");
+						if (level instanceof Integer) {
+							for (int i = 0; i < (Integer) level; i++) {
+								dataRowValue = "   " + dataRowValue;
 							}
+						}
 
-						};
+						return dataRowValue;
 					}
 
 				};
-
-				columns[1] = new IColumnExportDefinition() {
-
-					@Override
-					public String getName() {
-						return "预算金额（元）";
-					}
-
-					@Override
-					public String getType() {
-						return Utils.TYPE_DOUBLE;
-					}
-
-					@Override
-					public int getWidth() {
-						return 0;
-					}
-
-					@Override
-					public String getColumn() {
-						return "budgetvalue";
-					}
-
-					@Override
-					public IExportValueDelegator getExportValueDelegator() {
-						return null;
-					}
-
-				};
-
-				Object input = viewer.getInput();
-				job.setColumnExportDefinition(columns);
-				job.setInput(getExportData(((Object[]) input)[0], 0));
-				job.setUser(true);
-				job.setFormat(false);
-				job.start(viewer.getControl().getDisplay());
 			}
 
-			private List<PrimaryObject> getExportData(Object obj, int level) {
-				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-				if (obj instanceof ProjectBudget) {
-					ProjectBudget projectBudget = (ProjectBudget) obj;
-					projectBudget.setValue("level", level);
-					result.add(projectBudget);
-					ProjectBudget[] children = projectBudget.getChildren();
-					if (children != null) {
-						for (int i = 0; i < children.length; i++) {
-							ProjectBudget child = children[i];
-							child.setValue("level", level);
-							result.addAll(getExportData(child, level + 1));
-						}
-					}
-				}
-				return result;
+		};
+
+		columns[1] = new IColumnExportDefinition() {
+
+			@Override
+			public String getName() {
+				return "预算金额（元）";
 			}
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-
+			public String getType() {
+				return Utils.TYPE_DOUBLE;
 			}
-		});
 
-		return exportButton;
+			@Override
+			public int getWidth() {
+				return 0;
+			}
+
+			@Override
+			public String getColumn() {
+				return "budgetvalue";
+			}
+
+			@Override
+			public IExportValueDelegator getExportValueDelegator() {
+				return null;
+			}
+
+		};
+
+		Object input = viewer.getInput();
+		job.setColumnExportDefinition(columns);
+		job.setInput(getExportData(((Object[]) input)[0], 0));
+		job.setUser(true);
+		job.setFormat(false);
+		job.start(viewer.getControl().getDisplay());
+	}
+	
+
+	private List<PrimaryObject> getExportData(Object obj, int level) {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		if (obj instanceof ProjectBudget) {
+			ProjectBudget projectBudget = (ProjectBudget) obj;
+			projectBudget.setValue("level", level);
+			result.add(projectBudget);
+			ProjectBudget[] children = projectBudget.getChildren();
+			if (children != null) {
+				for (int i = 0; i < children.length; i++) {
+					ProjectBudget child = children[i];
+					child.setValue("level", level);
+					result.addAll(getExportData(child, level + 1));
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -274,6 +239,18 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 	@Override
 	public void initialize(IManagedForm form) {
 		this.form = form;
+		
+		Action action = new Action("导出"){
+			@Override
+			public void run() {
+				doExport();
+			}
+			
+		};
+		action.setImageDescriptor(BusinessResource
+				.getImageDescriptor(BusinessResource.IMAGE_EXPORT_24));
+		form.getForm().getToolBarManager().add(action);
+		form.getForm().updateToolBar();
 	}
 
 	@Override
