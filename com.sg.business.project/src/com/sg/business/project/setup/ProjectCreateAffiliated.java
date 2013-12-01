@@ -2,6 +2,7 @@ package com.sg.business.project.setup;
 
 import org.bson.types.ObjectId;
 
+import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
@@ -19,13 +20,13 @@ import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinitionConnection;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class ProjectCreateAffiliated implements Runnable {
+public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 
 	public ProjectCreateAffiliated() {
 	}
 
 	@Override
-	public void run() {
+	public boolean run() {
 		DBCollection col = getCol(IModelConstants.C_PROJECT);
 		DBCursor cursor = col.find(new BasicDBObject().append(
 				Project.F_LIFECYCLE, "wip").append(
@@ -102,6 +103,7 @@ public class ProjectCreateAffiliated implements Runnable {
 									root.get_id()).append(Project.F_FOLDER_ID,
 									folderRoot.get_id())));
 		}
+		return true;
 
 	}
 

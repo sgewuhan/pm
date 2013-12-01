@@ -106,6 +106,44 @@
       </taskForm>
    </extension>
    <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="xtDocumentApprove.auditor"
+            name="校核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="xt.xtDrawingApprove2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtDocumentApprove.auditor"
+            name="审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="xt.xtDrawingApprove2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtDocumentApprove.approve"
+            name="批准"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="xt.xtDrawingApprove2">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            name="设计"
+            processDefinitionId="xt.xtDrawingApprove2"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+   </extension>
+   <extension
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="taskform"
