@@ -284,7 +284,15 @@
                column="rndcost"
                labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
-               name="研发投入概况"
+               name="预算和投入"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="revenue"
+               labelProvider="com.sg.business.visualization.labelprovider.project.RevenueLabelProvider"
+               lazyDisplay="true"
+               name="销售收入和利润"
                type="String"
                width="200">
          </column>
@@ -360,7 +368,7 @@
                column="rndcost"
                labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
-               name="研发投入概况"
+               name="预算和投入"
                type="String"
                width="200">
          </column>

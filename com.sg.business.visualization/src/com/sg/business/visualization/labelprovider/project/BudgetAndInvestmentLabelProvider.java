@@ -13,7 +13,7 @@ public class BudgetAndInvestmentLabelProvider extends
 	@Override
 	protected String getProjectText(Project project) {
 		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMaximumFractionDigits(2);
+		nf.setMaximumFractionDigits(1);
 
 		// ÏîÄ¿µÄÔ¤Ëã
 		Double budgetValue = project.getBudgetValue();

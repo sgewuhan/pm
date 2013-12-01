@@ -1,13 +1,13 @@
 package com.sg.business.visualization.labelprovider.project;
 
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.sg.business.model.Project;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
-abstract class AbstractProjectLabelProvider extends ColumnLabelProvider {
+abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
