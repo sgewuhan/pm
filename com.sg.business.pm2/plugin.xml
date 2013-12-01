@@ -63,6 +63,11 @@
             id="perspective.system"
             name="系统">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.vis.home"
+            name="总览">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -582,6 +587,21 @@
                visible="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.vis.home">
+         <view
+               closeable="false"
+               id="vis.main"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -604,9 +624,6 @@
          </perspective>
          <perspective
                id="perspective.resource">
-         </perspective>
-         <perspective
-               id="perspective.visualization">
          </perspective>
          <perspective
                id="perspective.vault">
@@ -671,6 +688,17 @@
          </perspective>
          <perspective
                id="perspective.system">
+         </perspective>
+      </scenario>
+      <scenario
+            id="visualization"
+            isDefault="true"
+            name="可视化">
+         <perspective
+               default="true"
+               id="perspective.vis.home"></perspective>
+         <perspective
+               id="perspective.visualization">
          </perspective>
       </scenario>
    </extension>
@@ -1031,12 +1059,6 @@
       <notice
             noticeCreator="com.mobnut.portal.notice.ImageNoticeCreator">
       </notice>
-   </extension>
-   <extension
-         point="com.mobnut.design.editorAreaPart">
-      <editorAreaPart
-            getEditorAreaPart="com.sg.business.pm2.EditorArea">
-      </editorAreaPart>
    </extension>
 
 </plugin>

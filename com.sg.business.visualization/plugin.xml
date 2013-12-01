@@ -35,6 +35,13 @@
             name="我的项目组合"
             restorable="true">
       </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OperationStatus"
+            id="vis.main"
+            name="项目运营总览"
+            restorable="true">
+      </view>
 
    </extension>
    <extension
@@ -143,7 +150,6 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -257,7 +263,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset"
             lineVisiable="false"
             markupEnabled="true"
@@ -316,7 +322,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset.schedual"
             lineVisiable="false"
             markupEnabled="true"
@@ -359,7 +365,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset.budgetandinvestment"
             lineVisiable="false"
             markupEnabled="true"
@@ -418,7 +424,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset.revenue"
             lineVisiable="false"
             markupEnabled="true"
