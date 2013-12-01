@@ -66,7 +66,7 @@
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis.home"
-            name="总览">
+            name="绩效总览">
       </perspective>
    </extension>
    <extension
@@ -591,20 +591,79 @@
             targetID="perspective.vis.home">
          <view
                closeable="false"
-               id="vis.main"
+               id="vis.dept.main"
                minimized="false"
                moveable="false"
                ratio="0.5"
                relationship="left"
                relative="org.eclipse.ui.editorss"
-               showTitle="false"
-               standalone="true"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.schedual.main"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="right"
+               relative="vis.dept.main"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.eco.main"
+               minimized="false"
+               moveable="false"
+               ratio="0.33"
+               relationship="bottom"
+               relative="vis.schedual.main"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.cost.main"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="vis.eco.main"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.risk.main"
+               minimized="false"
+               moveable="false"
+               ratio="0.67"
+               relationship="bottom"
+               relative="vis.dept.main"
+               showTitle="true"
+               standalone="false"
                visible="true">
          </view>
       </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
+      <scenario
+            id="visualization"
+            isDefault="true"
+            name="可视化">
+         <perspective
+               default="true"
+               id="perspective.vis.home"></perspective>
+         <perspective
+               id="perspective.visualization">
+         </perspective>
+      </scenario>
       <scenario
             id="project"
             isDefault="true"
@@ -691,14 +750,13 @@
          </perspective>
       </scenario>
       <scenario
-            id="visualization"
-            isDefault="true"
-            name="可视化">
+            id="workflowAndMessage"
+            name="流程和消息">
          <perspective
-               default="true"
-               id="perspective.vis.home"></perspective>
+               id="perspective.workflow">
+         </perspective>
          <perspective
-               id="perspective.visualization">
+               id="perspective.message">
          </perspective>
       </scenario>
    </extension>

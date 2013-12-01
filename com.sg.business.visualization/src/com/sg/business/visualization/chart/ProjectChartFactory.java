@@ -82,12 +82,12 @@ public class ProjectChartFactory {
 
 	public static Chart createPieChart(String pieChartCaption, String[] texts,
 			double[] values) {
-		double maxValue = Utils.max(values);
+		// double maxValue = Utils.max(values);
 		ChartWithoutAxes chart = ChartWithoutAxesImpl.create();
 		chart.setDimension(ChartDimension.TWO_DIMENSIONAL_LITERAL);
-		chart.setMinSlice(maxValue / 20);// 最大的十分之一
-		chart.setMinSliceLabel("其他");
-		chart.setMinSlicePercent(true);
+		// chart.setMinSlice(maxValue / 50);// 最大的十分之一
+		// chart.setMinSliceLabel("其他");
+		// chart.setMinSlicePercent(true);
 		Text caption = chart.getTitle().getLabel().getCaption();
 		caption.setValue(pieChartCaption);
 		adjustFont(caption.getFont(), STRONG_SIZE);
@@ -372,8 +372,7 @@ public class ProjectChartFactory {
 		return createPieChart(pieChartCaption, texts, values);
 	}
 
-	public static Chart getFinishedProjectSchedualMeterChart(
-			ProjectProvider data) {
+	public static Chart getFinishedProjectSchedualMeter(ProjectProvider data) {
 		// "正常完成"
 		int value1 = data.sum.finished_normal;
 		// "超期完成",
@@ -547,6 +546,89 @@ public class ProjectChartFactory {
 		}
 		return createStackedBarChart("项目经理预算执行状况", chargerName, userValue1,
 				userValue2, new String[] { "预算", "实际" });
+	}
+
+	public static Chart getCostAndProfitPie(ProjectProvider data) {
+		// "销售收入"
+		long value1 = data.sum.total_sales_revenue;
+		// "销售成本
+		long value2 = data.sum.total_sales_cost;
+		// "利润"
+		long value3 = value1 - value2;
+
+		String pieChartCaption = "销售成本及利润";
+		String[] texts = new String[] { "销售成本", "销售利润" };
+		double[] values = new double[] { value2 / 10000, value3 / 10000 };
+		return createPieChart(pieChartCaption, texts, values);
+	}
+
+	public static Chart getProfitRateMeter(ProjectProvider data) {
+		// "销售收入"
+		long value1 = data.sum.total_sales_revenue;
+		// "销售成本
+		long value2 = data.sum.total_sales_cost;
+		// "利润"
+		long value3 = value1 - value2;
+		// 利润率
+		double profit = value1 == 0 ? 0 : 100d * value3 / value1;
+
+		return createMeterChart("销售利润率", "销售收入", profit);
+	}
+
+	public static Chart getDeptRevenueBar(ProjectProvider data) {
+		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue1 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue2 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		for (int i = 0; i < deptParameter.length; i++) {
+			ProjectProvider projectProvider = data.sum.subOrganizationProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			deptParameter[i] = projectProvider.getDesc();
+			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
+			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
+		}
+		return createStackedBarChart("按部门计算项目收入情况", deptParameter, deptValue1,
+				deptValue2, new String[] { "销售收入", "销售利润" });
+	}
+
+	public static Chart getProjectChargerRevenueBar(ProjectProvider data) {
+		String[] chargerName = new String[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue1 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue2 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		for (int i = 0; i < chargerName.length; i++) {
+			ProjectProvider projectProvider = data.sum.subChargerProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			chargerName[i] = projectProvider.getDesc();
+			userValue1[i] = projectProvider.sum.total_sales_revenue / 10000;
+			userValue2[i] = (projectProvider.sum.total_sales_revenue - projectProvider.sum.total_sales_cost) / 10000;
+		}
+		return createStackedBarChart("按项目经理计算项目收入情况", chargerName, userValue1,
+				userValue2, new String[] { "销售收入", "销售利润" });
+	}
+
+	public static Chart getROIMeter(ProjectProvider data) {
+		// "销售收入"
+		long value1 = data.sum.total_sales_revenue;
+		// "销售成本
+		long value2 = data.sum.total_sales_cost;
+		// "利润"
+		long profit = value1 - value2;
+
+		// 期初资产
+		long inv = data.sum.total_investment_amount;
+
+		double roi = value1 == 0 ? 0 : 100d * profit / inv;
+
+		return createMeterChart("ROI", "ROI", roi);
 	}
 
 }

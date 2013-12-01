@@ -38,8 +38,36 @@
       <view
             category="visualization"
             class="com.sg.business.visualization.view.OperationStatus"
-            id="vis.main"
-            name="项目运营总览"
+            id="vis.schedual.main"
+            name="进度绩效指标"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OperationStatus"
+            id="vis.cost.main"
+            name="预算执行指标"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OperationStatus"
+            id="vis.eco.main"
+            name="经济效益指标"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OperationStatus"
+            id="vis.risk.main"
+            name="风险指标"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OperationStatus"
+            id="vis.dept.main"
+            name="部门项目运营状况"
             restorable="true">
       </view>
 
@@ -303,14 +331,6 @@
                type="String"
                width="200">
          </column>
-         <column
-               column="roi"
-               labelProvider="com.sg.business.visualization.labelprovider.project.ROILabelProvider"
-               lazyDisplay="true"
-               name="指标"
-               type="String"
-               width="120">
-         </column>
       </table>
       <table
             canCreate="false"
@@ -441,32 +461,20 @@
                width="320">
          </column>
          <column
-               column="rndcost"
+               column="revenue"
+               labelProvider="com.sg.business.visualization.labelprovider.project.RevenueLabelProvider"
                lazyDisplay="true"
-               name="研发投入概况"
+               name="销售收入和利润"
                type="String"
                width="200">
          </column>
          <column
-               column="salesrevenue"
+               column="roi"
+               labelProvider="com.sg.business.visualization.labelprovider.project.ROILabelProvider"
                lazyDisplay="true"
-               name="销售收入"
+               name="指标"
                type="String"
-               width="60">
-         </column>
-         <column
-               column="salescost"
-               lazyDisplay="true"
-               name="销售成本"
-               type="String"
-               width="60">
-         </column>
-         <column
-               column="salesprofit"
-               lazyDisplay="true"
-               name="销售利润"
-               type="String"
-               width="60">
+               width="120">
          </column>
       </table>
    </extension>

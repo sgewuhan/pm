@@ -74,7 +74,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 			@Override
 			public Chart getChart() {
 				return ProjectChartFactory
-						.getFinishedProjectSchedualMeterChart(data);
+						.getFinishedProjectSchedualMeter(data);
 			}
 		};
 		finishedProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
