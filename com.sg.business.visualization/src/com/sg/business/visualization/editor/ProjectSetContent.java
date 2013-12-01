@@ -81,18 +81,18 @@ public class ProjectSetContent extends AbstractProjectPage {
 	}
 	
 	private void setSummaryText(Composite header, ProjectProvider data) {
-		int value1 = data.summaryData.processing;
-		int value2 = data.summaryData.finished;
-		int value3 = data.summaryData.total;
+		int value1 = data.sum.processing;
+		int value2 = data.sum.finished;
+		int value3 = data.sum.total;
 		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.summaryData.processing_normal;
-		value2 = data.summaryData.processing_delay;
-		value3 = data.summaryData.processing_advance;
+		value1 = data.sum.processing_normal;
+		value2 = data.sum.processing_delay;
+		value3 = data.sum.processing_advance;
 		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
 				+ value3);
-		value1 = data.summaryData.finished_cost_normal;
-		value2 = data.summaryData.finished_cost_over;
+		value1 = data.sum.finished_cost_normal;
+		value2 = data.sum.finished_cost_over;
 		costSummary.setText("正常/超支：" + value1 + "/" + value2);
 
 		header.layout();

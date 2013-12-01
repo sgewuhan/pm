@@ -32,7 +32,14 @@
             category="visualization"
             class="com.sg.business.visualization.view.MyProjectNavigator"
             id="vis.project.myprojectset"
-            name="我的项目集"
+            name="我的项目组合"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OperationStatus"
+            id="vis.main"
+            name="项目运营总览"
             restorable="true">
       </view>
 
@@ -143,7 +150,6 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
-            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -241,7 +247,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.visualization.labelprovide.MyProjectSetLabelProvider"
-               name="项目集名称"
+               name="项目组合名称"
                style="SWT.LEFT"
                type="String"
                width="-1">
@@ -257,10 +263,11 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -284,9 +291,25 @@
                column="rndcost"
                labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
-               name="研发投入概况"
+               name="预算和投入"
                type="String"
                width="200">
+         </column>
+         <column
+               column="revenue"
+               labelProvider="com.sg.business.visualization.labelprovider.project.RevenueLabelProvider"
+               lazyDisplay="true"
+               name="销售收入和利润"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="roi"
+               labelProvider="com.sg.business.visualization.labelprovider.project.ROILabelProvider"
+               lazyDisplay="true"
+               name="指标"
+               type="String"
+               width="120">
          </column>
       </table>
       <table
@@ -299,10 +322,11 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset.schedual"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -341,10 +365,11 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset.budgetandinvestment"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -360,7 +385,7 @@
                column="rndcost"
                labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
-               name="研发投入概况"
+               name="预算和投入"
                type="String"
                width="200">
          </column>
@@ -399,10 +424,11 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="true"
+            headerVisiable="false"
             id="vis.projectset.revenue"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -416,33 +442,29 @@
          </column>
          <column
                column="rndcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="研发投入概况"
                type="String"
                width="200">
          </column>
          <column
-               column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetLabelProvider"
+               column="salesrevenue"
                lazyDisplay="true"
-               name="预算"
+               name="销售收入"
                type="String"
                width="60">
          </column>
          <column
-               column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.project.ActualCostLabelProvider"
+               column="salescost"
                lazyDisplay="true"
-               name="实际"
+               name="销售成本"
                type="String"
                width="60">
          </column>
          <column
-               column="overcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.OvercostCostLabelProvider"
+               column="salesprofit"
                lazyDisplay="true"
-               name="超支"
+               name="销售利润"
                type="String"
                width="60">
          </column>
@@ -454,7 +476,7 @@
             collectionName="projectprovider"
             dbName="pm2"
             id="editor.visualization.projectset"
-            name="项目集">
+            name="项目组合">
          <navigatorpage
                id="projectset.info"
                navigatorId="vis.projectset"
@@ -484,19 +506,19 @@
             collectionName="userprojectperf"
             dbName="pm2"
             id="editor.visualization.addprojectset"
-            name="添加至项目集">
+            name="添加至项目组合">
          <basicpage
-               id="项目集"
-               title="项目集">
+               id="项目组合"
+               title="项目组合">
             <pagecolumn>
                <section
-                     label="设定项目集">
+                     label="设定项目组合">
                   <combo
                         editPart="Combo"
                         editable="true"
                         id="desc"
                         inputValidator="com.sg.business.visualization.validator.ProjectSetValidator"
-                        label="项目集"
+                        label="项目组合"
                         labelVisible="true"
                         name="desc"
                         optionProvider="com.sg.business.visualization.option.ProjectSetOption"
@@ -535,9 +557,10 @@
             locationURI="toolbar:main?after=common.separator">
          <command
                commandId="visualization.command.projectset"
-               label="添加至项目集"
+               icon="image/folderproject_24.png"
+               label="添加至项目组合"
                style="push"
-               tooltip="显示预览视图">
+               tooltip="添加至项目组合">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -568,7 +591,7 @@
       </command>
       <command
             id="visualization.command.projectset"
-            name="添加至项目集">
+            name="添加至项目组合">
       </command>
    </extension>
    <extension

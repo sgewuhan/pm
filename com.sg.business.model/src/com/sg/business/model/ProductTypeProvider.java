@@ -36,23 +36,6 @@ public class ProductTypeProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-			int iF_SUMMARY_FINISHED = 0;
-			int iF_SUMMARY_FINISHED_DELAY = 0;
-			int iF_SUMMARY_FINISHED_NORMAL = 0;
-			int iF_SUMMARY_FINISHED_ADVANCED = 0;
-
-			int iF_SUMMARY_PROCESSING = 0;
-			int iF_SUMMARY_PROCESSING_DELAY = 0;
-			int iF_SUMMARY_PROCESSING_NORMAL = 0;
-			int iF_SUMMARY_PROCESSING_ADVANCE = 0;
-
-			int iF_SUMMARY_FINISHED_COSTNORMAL = 0;
-			int iF_SUMMARY_FINISHED_COSTOVER = 0;
-			int iF_SUMMARY_PROCESSING_COSTNORMA = 0;
-			int iF_SUMMARY_PROCESSING_COSTOVER = 0;
-
-			long iF_SUMMARY_TOTAL_BUDGETAMOUNT = 0;
-			long iF_SUMMARY_TOTAL_INVESTMENTAMOUNT = 0;
 
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
@@ -64,65 +47,48 @@ public class ProductTypeProvider extends ProjectProvider {
 						Project.class);
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
-					iF_SUMMARY_FINISHED++;
+					sum.finished++;
 					if (project.isDelay()) {
-						iF_SUMMARY_FINISHED_DELAY++;
+						sum.finished_delay++;
 					} else if (project.isAdvanced()) {
-						iF_SUMMARY_FINISHED_ADVANCED++;
+						sum.finished_advance++;
 					} else {
-						iF_SUMMARY_FINISHED_NORMAL++;
+						sum.finished_normal++;
 					}
 					if(project.isOverCost()){
-						iF_SUMMARY_FINISHED_COSTOVER++;
+						sum.finished_cost_over++;
 					}else{
-						iF_SUMMARY_FINISHED_COSTNORMAL++;
+						sum.finished_cost_normal++;
 					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
-					iF_SUMMARY_PROCESSING++;
+					sum.processing++;
 					if (project.maybeDelay()) {
-						iF_SUMMARY_PROCESSING_DELAY++;
+						sum.processing_delay++;
 					} else if (project.maybeAdvanced()) {
-						iF_SUMMARY_PROCESSING_ADVANCE++;
+						sum.processing_advance++;
 					} else {
-						iF_SUMMARY_PROCESSING_NORMAL++;
+						sum.processing_normal++;
 					}
 					
 					if(project.maybeOverCostNow()){
-						iF_SUMMARY_PROCESSING_COSTOVER++;
+						sum.processing_cost_over++;
 					}else{
-						iF_SUMMARY_PROCESSING_COSTNORMA++;
+						sum.processing_cost_normal++;
 					}
 				}
 				
-				
 				Double budgetValue = project.getBudgetValue();
-				iF_SUMMARY_TOTAL_BUDGETAMOUNT += budgetValue == null ? 0
+				sum.total_budget_amount += budgetValue == null ? 0
 						: budgetValue;
-				iF_SUMMARY_TOTAL_INVESTMENTAMOUNT += project
-						.getInvestmentValue();
+				sum.total_investment_amount += project
+						.getInvestment();
+				double[] salesSummaryData = project.getSalesSummaryData();
+				sum.total_sales_revenue+=salesSummaryData[0];
+				sum.total_sales_cost+=salesSummaryData[1];
 				result.add(project);
 			}
-			summaryData.total = result.size();
-
-			summaryData.finished = iF_SUMMARY_FINISHED;
-			summaryData.finished_delay = iF_SUMMARY_FINISHED_DELAY;
-			summaryData.finished_normal = iF_SUMMARY_FINISHED_NORMAL;
-			summaryData.finished_advance = iF_SUMMARY_FINISHED_ADVANCED;
-
-			summaryData.processing = iF_SUMMARY_PROCESSING;
-			summaryData.processing_delay = iF_SUMMARY_PROCESSING_DELAY;
-			summaryData.processing_normal = iF_SUMMARY_PROCESSING_NORMAL;
-			summaryData.processing_advance = iF_SUMMARY_PROCESSING_ADVANCE;
-
-			summaryData.finished_cost_normal = iF_SUMMARY_FINISHED_COSTNORMAL;
-			summaryData.finished_cost_over = iF_SUMMARY_FINISHED_COSTOVER;
-
-			summaryData.processing_cost_normal = iF_SUMMARY_PROCESSING_COSTNORMA;
-			summaryData.processing_cost_over = iF_SUMMARY_PROCESSING_COSTOVER;
-
-			summaryData.total_budget_amount = iF_SUMMARY_TOTAL_BUDGETAMOUNT;
-			summaryData.total_investment_amount = iF_SUMMARY_TOTAL_INVESTMENTAMOUNT;
+			sum.total = result.size();
 
 
 		} catch (Exception e) {

@@ -51,7 +51,7 @@ public class ProductSubconcessionsByWorkOrderService extends ServiceProvider {
 						Object product = host.getValue("product");
 						if (product instanceof List<?>) {
 							List<?> productList = (List<?>) product;
-							project.doProductSubconcessions(new BPMServiceContext(
+							project.doChangeMassProduction(new BPMServiceContext(
 									processName, processId), productList);
 						}
 					}

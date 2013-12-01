@@ -15,7 +15,6 @@ import com.sg.business.model.User;
 @SuppressWarnings("restriction")
 public class DescLabelProvider extends AbstractProjectLabelProvider {
 
-
 	@Override
 	protected String getProjectText(Project project) {
 		String desc = project.getDesc();

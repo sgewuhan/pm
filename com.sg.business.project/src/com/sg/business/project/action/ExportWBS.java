@@ -3,19 +3,17 @@ package com.sg.business.project.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.ModelService;
+import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.swt.widgets.Display;
+
+import com.mobnut.commons.util.file.ExcelExportJob;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.NavigatorAction;
 import com.sg.widgets.part.NavigatorControl;
+import com.sg.widgets.registry.config.NavigatorConfigurator;
 
 public class ExportWBS extends NavigatorAction {
 
@@ -27,25 +25,38 @@ public class ExportWBS extends NavigatorAction {
 
 	@Override
 	protected void execute() throws Exception {
-		List<PrimaryObject> list=new ArrayList<PrimaryObject>();
 		NavigatorControl control = getNavigator();
+		StructuredViewer viewer = control.getViewer();
 		if (control.canExport()) {
 			Project project = (Project) getInput().getData();
-			DBCollection collection = DBActivator.getCollection(
-					IModelConstants.DB, IModelConstants.C_WORK);
-			DBCursor cur = collection.find(new BasicDBObject().append(Work.F_PROJECT_ID,
-					new BasicDBObject().append("$in", project.get_id())));
-			while(cur.hasNext()){
-				DBObject next = cur.next();
-				Work work = ModelService.createModelObject(next,Work.class);
-				list.add(work);
-			}
-			
-//			setInput();
-			control.doExport();
-
+			Work wbsRoot = project.getWBSRoot();
+			doExport(viewer.getControl().getDisplay(),control.getConfigurator(),wbsRoot);
 		}
 
 	}
+	
+	
+	private void doExport(Display display, NavigatorConfigurator configurator, Work wbsRoot) {
+			ExcelExportJob job = new ExcelExportJob("WBS");
+			job.setColumnExportDefinition(configurator.getExportColumns());
+			job.setInput(getExportData(wbsRoot));
+			job.setUser(true);
+			job.setFormat(false);
+			job.start(display);
+	}
+
+	private List<PrimaryObject> getExportData(Work work) {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		result.add(work);
+		List<PrimaryObject> children = work.getChildrenWork();
+		if (children != null) {
+			for (int i = 0; i < children.size(); i++) {
+				result.addAll(getExportData((Work) children.get(i)));
+			}
+		}
+		return result;
+	}
+
+	
 
 }
