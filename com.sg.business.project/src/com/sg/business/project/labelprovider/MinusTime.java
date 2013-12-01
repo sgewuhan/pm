@@ -1,5 +1,7 @@
 package com.sg.business.project.labelprovider;
 
+import java.util.Date;
+
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.mobnut.db.DBActivator;
@@ -19,30 +21,27 @@ public class MinusTime extends ColumnLabelProvider {
 			Object value = userTask.getValue(UserTask.F_WORKITEMID);
 			DBCollection collection = DBActivator.getCollection(
 					IModelConstants.DB, IModelConstants.C_USERTASK);
-			
-			
-			DBObject reserved = collection.findOne(new BasicDBObject().append(
-					UserTask.F_WORKITEMID, value).append(UserTask.F_STATUS,
-					"Reserved"));
-			
+
 			DBObject inProgress = collection.findOne(new BasicDBObject()
 					.append(UserTask.F_WORKITEMID, value).append(
 							UserTask.F_STATUS, "InProgress"));
-			
-			if(reserved!=null&&inProgress!=null){
-				UserTask taskReserved = ModelService.createModelObject(reserved,
-						UserTask.class);
-				
-				UserTask taskInProgress = ModelService.createModelObject(inProgress,
-						UserTask.class);
-				
-			    	long intime = taskInProgress.get_cdate().getTime();
-			    	long retime =taskReserved.get_cdate().getTime();
-			    	long minus=intime-retime;
-			    	long hh =minus/(1000*60*60);
-			    	long mm=(minus-hh*1000*60*60)/(1000*60);
-			    	long ss=(minus-hh*1000*60*60-mm*1000*60)/1000;
-			    	return hh+"小时"+mm+"分钟"+ ss+"秒";
+
+			if (inProgress != null) {
+				UserTask taskInProgress = ModelService.createModelObject(
+						inProgress, UserTask.class);
+				long minus = taskInProgress.get_cdate().getTime()
+						- userTask.get_cdate().getTime();
+				long hh = minus / (1000 * 60 * 60);
+				long mm = (minus - hh * 1000 * 60 * 60) / (1000 * 60);
+				long ss = (minus - hh * 1000 * 60 * 60 - mm * 1000 * 60) / 1000;
+				return hh + "小时" + mm + "分钟" + ss + "秒";
+			} else {
+				long minus = new Date().getTime()
+						- userTask.get_cdate().getTime();
+				long hh = minus / (1000 * 60 * 60);
+				long mm = (minus - hh * 1000 * 60 * 60) / (1000 * 60);
+				long ss = (minus - hh * 1000 * 60 * 60 - mm * 1000 * 60) / 1000;
+				return hh + "小时" + mm + "分钟" + ss + "秒";
 			}
 
 		}
