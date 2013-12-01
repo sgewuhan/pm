@@ -57,10 +57,14 @@ public class EditWork extends AbstractNavigatorHandler {
 					editorId = "edit.work.plan.3";
 				}
 			} else {
-				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
-					editorId = "edit.work.plan.1";
+				if (work.isMilestone()) {
+					editorId = "edit.work.plan.2";
 				} else {
-					editorId = "edit.work.plan.0";
+					if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
+						editorId = "edit.work.plan.1";
+					} else {
+						editorId = "edit.work.plan.0";
+					}
 				}
 			}
 		}

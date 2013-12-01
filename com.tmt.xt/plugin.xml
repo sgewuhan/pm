@@ -250,10 +250,6 @@
                processParameterName="reviewer_admin"
                taskFormFieldName="reviewer_admin">
          </processParameter>
-         <processParameter
-               processParameterName="messagecontent"
-               taskFormFieldName="messagecontent">
-         </processParameter>
       </taskForm>
       <taskForm
             editorId="xtProjectApprove.expertgroupreview"
@@ -273,6 +269,10 @@
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="messagecontent"
+               taskFormFieldName="messagecontent">
          </processParameter>
       </taskForm>
       <taskForm

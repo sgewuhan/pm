@@ -1493,12 +1493,6 @@
             <column
                   columnDefinitionId="actualduration_e">
             </column>
-            <column
-                  columnDefinitionId="work.overload">
-            </column>
-            <column
-                  columnDefinitionId="work.overtime">
-            </column>
          </columnGroup>
          <columnGroup
                defaultGroup="false"
@@ -1769,7 +1763,9 @@
             allPopups="false"
             locationURI="popup:project.navigator">
          <command
-               commandId="com.sg.widgets.command.create" label="项目创建向导..."
+               commandId="com.sg.widgets.command.create"
+               icon="image/project_24.png"
+               label="项目创建向导..."
                style="push">
          </command>
          <separator
@@ -2723,9 +2719,15 @@
                      variable="selection">
                   <iterate
                         ifEmpty="false">
-                     <instanceof
-                           value="com.sg.business.model.Deliverable">
-                     </instanceof>
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Deliverable">
+                        </instanceof>
+                        <test
+                              args="editDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
                   </iterate>
                </with>
             </visibleWhen>
