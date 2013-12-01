@@ -595,20 +595,20 @@
                minimized="false"
                moveable="false"
                ratio="0.5"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
+               relationship="right"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
          </view>
          <view
                closeable="false"
-               id="vis.schedual.main"
+               id="vis.main.indicators"
                minimized="false"
                moveable="false"
                ratio="0.5"
-               relationship="right"
-               relative="vis.dept.main"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -618,21 +618,9 @@
                id="vis.eco.main"
                minimized="false"
                moveable="false"
-               ratio="0.33"
-               relationship="bottom"
-               relative="vis.schedual.main"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis.cost.main"
-               minimized="false"
-               moveable="false"
                ratio="0.5"
                relationship="bottom"
-               relative="vis.eco.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -642,7 +630,7 @@
                id="vis.risk.main"
                minimized="false"
                moveable="false"
-               ratio="0.67"
+               ratio="0.6"
                relationship="bottom"
                relative="vis.dept.main"
                showTitle="true"
@@ -658,9 +646,10 @@
             isDefault="true"
             name="可视化">
          <perspective
-               default="true"
+               default="false"
                id="perspective.vis.home"></perspective>
          <perspective
+               default="true"
                id="perspective.visualization">
          </perspective>
       </scenario>

@@ -245,7 +245,7 @@ public class ProjectChartFactory {
 		// Title/Plot
 		chart.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
 		chart.getPlot().getClientArea().setVisible(false);
-		chart.setCoverage(1.8);
+		chart.setCoverage(1);
 
 		TitleBlock title = chart.getTitle();
 		title.getOutline().setVisible(false);
@@ -253,7 +253,7 @@ public class ProjectChartFactory {
 		NumberFormat nf = NumberFormat.getNumberInstance();
 		nf.setMaximumFractionDigits(2);
 		caption.setValue(chartCaptionText + (nf.format(value)) + "%");//$NON-NLS-1$
-		adjustFont(caption.getFont(), NORMAL_SIZE);
+		adjustFont(caption.getFont(), STRONG_SIZE);
 
 		// Legend
 		Legend legend = chart.getLegend();
@@ -416,7 +416,7 @@ public class ProjectChartFactory {
 		int sum = value1 + value2 + value3 + value4 + value5 + value6;
 		double allProjectOverTimeRate = sum == 0 ? 0
 				: (100d * (value2 + value4) / sum);
-		return createMeterChart("整体项目超期 ", "进度延迟", allProjectOverTimeRate);
+		return createMeterChart("总体项目超期率 ", "进度延迟", allProjectOverTimeRate);
 	}
 
 	public static Chart getDeptSchedualBar(ProjectProvider data) {

@@ -37,35 +37,35 @@
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.OperationStatus"
-            id="vis.schedual.main"
-            name="进度绩效指标"
+            class="com.sg.business.visualization.view.DashMainIndicators"
+            id="vis.main.indicators"
+            name="主要绩效指标"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.OperationStatus"
+            class="com.sg.business.visualization.view.DashBudget"
             id="vis.cost.main"
             name="预算执行指标"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.OperationStatus"
+            class="com.sg.business.visualization.view.DashEco"
             id="vis.eco.main"
             name="经济效益指标"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.OperationStatus"
+            class="com.sg.business.visualization.view.DashRisk"
             id="vis.risk.main"
             name="风险指标"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.OperationStatus"
+            class="com.sg.business.visualization.view.DashDepartment"
             id="vis.dept.main"
             name="部门项目运营状况"
             restorable="true">
@@ -291,7 +291,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="false"
+            headerVisiable="true"
             id="vis.projectset"
             lineVisiable="false"
             markupEnabled="true"
@@ -342,7 +342,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="false"
+            headerVisiable="true"
             id="vis.projectset.schedual"
             lineVisiable="false"
             markupEnabled="true"
@@ -385,7 +385,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="false"
+            headerVisiable="true"
             id="vis.projectset.budgetandinvestment"
             lineVisiable="false"
             markupEnabled="true"
@@ -444,7 +444,7 @@
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
             fix="1"
-            headerVisiable="false"
+            headerVisiable="true"
             id="vis.projectset.revenue"
             lineVisiable="false"
             markupEnabled="true"

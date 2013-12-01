@@ -19,7 +19,7 @@ public class OrgOfOwnerManager extends SingleDBCollectionDataSetFactory {
 	public OrgOfOwnerManager() {
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);
 		String userId = new CurrentAccountContext().getAccountInfo()
-				.getConsignerId();
+				.getUserId();
 		 user= UserToolkit.getUserById(userId);
 	}
 	@Override
