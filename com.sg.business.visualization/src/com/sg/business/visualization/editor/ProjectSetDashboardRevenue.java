@@ -11,7 +11,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.sg.business.model.ProjectProvider;
-import com.sg.business.visualization.chart.ProjectChartFoctory;
+import com.sg.business.visualization.chart.ProjectChartFactory;
+import com.sg.business.visualization.chart.ProjectChartFactory;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
@@ -140,16 +141,16 @@ public class ProjectSetDashboardRevenue extends AbstractProjectPage {
 		double ProfitMargin = value1 == 0 ? 0 : value3 / value1;
 		double costOverRevenueRate = value1 == 0 ? 0 : value2 / value1;
 
-		profitMarginMeter.setChart(ProjectChartFoctory.createMeterChart("利润",
+		profitMarginMeter.setChart(ProjectChartFactory.createMeterChart("利润",
 				"销售收入", ProfitMargin));
-		salesCostMeter.setChart(ProjectChartFoctory.createMeterChart("销售成本",
+		salesCostMeter.setChart(ProjectChartFactory.createMeterChart("销售成本",
 				"销售收入", costOverRevenueRate));
 
 		// *****************************************************************************************
 		String pieChartCaption = "成本利润摘要";
 		String[] texts = new String[] { "成本", "利润" };
 		double[] values = new double[] { value2, value3 };
-		revenuePieChart.setChart(ProjectChartFoctory.createPieChart(
+		revenuePieChart.setChart(ProjectChartFactory.createPieChart(
 				pieChartCaption, texts, values));
 
 		// *****************************************************************************************
@@ -202,7 +203,7 @@ public class ProjectSetDashboardRevenue extends AbstractProjectPage {
 			userValue1[i] = projectProvider.sum.total_sales_revenue / 10000;
 			userValue2[i] = (projectProvider.sum.total_sales_revenue-projectProvider.sum.total_sales_cost )/ 10000;
 		}
-		return ProjectChartFoctory.createStackedBarChart("项目经理项目收入情况",
+		return ProjectChartFactory.createStackedBarChart("项目经理项目收入情况",
 				chargerName, userValue1, userValue2,
 				new String[] { "收入", "利润" });
 	}
@@ -223,7 +224,7 @@ public class ProjectSetDashboardRevenue extends AbstractProjectPage {
 			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
 			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
 		}
-		return ProjectChartFoctory.createStackedBarChart("部门项目收入情况",
+		return ProjectChartFactory.createStackedBarChart("部门项目收入情况",
 				deptParameter, deptValue1, deptValue2, new String[] { "收入",
 						"利润" });
 	}
@@ -241,7 +242,7 @@ public class ProjectSetDashboardRevenue extends AbstractProjectPage {
 
 		double costOverRevenueRate = value1 == 0 ? 0 : value2 / value1;
 
-		return ProjectChartFoctory.createMeterChart("销售成本", "销售收入",
+		return ProjectChartFactory.createMeterChart("销售成本", "销售收入",
 				costOverRevenueRate);
 	}
 
@@ -255,7 +256,7 @@ public class ProjectSetDashboardRevenue extends AbstractProjectPage {
 		// 利润率
 		double ProfitMargin = value1 == 0 ? 0 : value3 / value1;
 
-		return ProjectChartFoctory.createMeterChart("利润", "销售收入", ProfitMargin);
+		return ProjectChartFactory.createMeterChart("利润", "销售收入", ProfitMargin);
 	}
 
 	protected Chart getRevenuePieChartData() {
@@ -269,7 +270,7 @@ public class ProjectSetDashboardRevenue extends AbstractProjectPage {
 		String pieChartCaption = "成本利润摘要";
 		String[] texts = new String[] { "成本", "利润" };
 		double[] values = new double[] { value2, value3 };
-		return ProjectChartFoctory.createPieChart(pieChartCaption, texts,
+		return ProjectChartFactory.createPieChart(pieChartCaption, texts,
 				values);
 	}
 
