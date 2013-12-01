@@ -436,33 +436,29 @@
          </column>
          <column
                column="rndcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="研发投入概况"
                type="String"
                width="200">
          </column>
          <column
-               column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetLabelProvider"
+               column="salesrevenue"
                lazyDisplay="true"
-               name="预算"
+               name="销售收入"
                type="String"
                width="60">
          </column>
          <column
-               column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.project.ActualCostLabelProvider"
+               column="salescost"
                lazyDisplay="true"
-               name="实际"
+               name="销售成本"
                type="String"
                width="60">
          </column>
          <column
-               column="overcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.OvercostCostLabelProvider"
+               column="salesprofit"
                lazyDisplay="true"
-               name="超支"
+               name="销售利润"
                type="String"
                width="60">
          </column>

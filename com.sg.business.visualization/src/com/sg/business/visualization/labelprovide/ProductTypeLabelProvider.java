@@ -56,6 +56,8 @@ public class ProductTypeLabelProvider extends ColumnLabelProvider {
 			sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
 			sb.append("</a>");
 			
+			sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+			
 			sb.append("<b>");
 			sb.append(producttTypeProvider.getDesc());
 			if (cnt != 0 || wipCnt != 0) {
@@ -69,6 +71,7 @@ public class ProductTypeLabelProvider extends ColumnLabelProvider {
 				sb.append("</span>");
 			}
 			sb.append("</b>");
+			sb.append("</span>");
 			return sb.toString();
 		}
 		return "";

@@ -59,6 +59,47 @@ public class ProjectSetSummaryData {
 	 */
 	public long total_investment_amount = 9028374;
 	
+	
+	
+	
+	
+//	/**
+//	 * 完成项目的销售收入
+//	 */
+//	public int finished_sales_revenue = 10;
+//	
+//	/**
+//	 * 完成项目的销售成本
+//	 */
+//	public int finished_sales_cost = 15;
+//	
+//	/**
+//	 * 进行中项目的销售收入
+//	 */
+//	public int processing_sales_revenue = 40;
+//
+//	/**
+//	 * 进行中项目的销售成本
+//	 */
+//	public int processing_sales_cost = 10;
+	
+	
+	
+	/**
+	 * 项目的总销售收入
+	 */
+	public long total_sales_revenue = 12128900;
+	
+	/**
+	 * 项目的总销售成本
+	 */
+	public long total_sales_cost = 9028374;
+	
+	
+	
+	
+	
+	
 
 	public List<ProjectProvider> subOrganizationProjectProvider = new ArrayList<ProjectProvider>();
 	
