@@ -2206,7 +2206,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @return
 	 */
-	public double getInvestmentValue() {
+	public double getInvestment() {
 		// 合计分摊到工作令号的研发成本
 		double aValue = getAllocatedInvestment();
 		double dValue = getDesignatedInvestment();
@@ -2310,7 +2310,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
 		double ratio = value == null ? .3d : Double.valueOf((String) value);
 		Double bv = getBudgetValue();
-		Double av = getInvestmentValue();
+		Double av = getInvestment();
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
@@ -2327,7 +2327,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public boolean isOverCost() {
 		Double bv = getBudgetValue();
-		Double av = getInvestmentValue();
+		Double av = getInvestment();
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
@@ -2360,16 +2360,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @return double[0] 销售收入, double[1] 销售成本
 	 */
-	public double[] getSalesData() {
+	public double[] getSalesSummaryData() {
 		List<PrimaryObject> products = getProduct();
 		double[] result = new double[] { 0d, 0d };
 		if(products!=null){
 			for (int i = 0; i < products.size(); i++) {
 				ProductItem pd = (ProductItem) products.get(i);
-				result[0] += pd.getSalesIncome();
+				result[0] += pd.getSalesRevenue();
 				result[1] += pd.getSalesCost();
 			}
 		}
 		return result;
 	}
+
 }

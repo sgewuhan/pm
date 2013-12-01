@@ -21,7 +21,7 @@ public class BudgetAndInvestmentLabelProvider extends
 				.format(budgetValue / 10000));
 
 		// 项目的研发成本
-		Double investment = project.getInvestmentValue();
+		Double investment = project.getInvestment();
 		String iv = (investment == null) ? "0"
 				: (nf.format(investment / 10000));
 

@@ -126,7 +126,7 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 		System.out.println("更新销售数据:"+getDesc());
 	}
 	
-	public double getSalesIncome(){
+	public double getSalesRevenue(){
 		Double value = getDoubleValue(F_SALES_INCOME);
 		return value == null?0d:value.doubleValue();
 	}

@@ -296,6 +296,14 @@
                type="String"
                width="200">
          </column>
+         <column
+               column="roi"
+               labelProvider="com.sg.business.visualization.labelprovider.project.ROILabelProvider"
+               lazyDisplay="true"
+               name="指标"
+               type="String"
+               width="120">
+         </column>
       </table>
       <table
             canCreate="false"
@@ -462,7 +470,7 @@
             collectionName="projectprovider"
             dbName="pm2"
             id="editor.visualization.projectset"
-            name="项目集">
+            name="项目组合">
          <navigatorpage
                id="projectset.info"
                navigatorId="vis.projectset"
@@ -492,7 +500,7 @@
             collectionName="userprojectperf"
             dbName="pm2"
             id="editor.visualization.addprojectset"
-            name="添加至项目集">
+            name="添加至项目组合">
          <basicpage
                id="项目集"
                title="项目集">

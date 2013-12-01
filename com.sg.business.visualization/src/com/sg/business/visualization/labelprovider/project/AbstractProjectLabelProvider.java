@@ -1,7 +1,10 @@
 package com.sg.business.visualization.labelprovider.project;
 
+import java.math.BigDecimal;
+
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.sg.business.model.Project;
 import com.sg.business.resource.BusinessResource;
@@ -66,5 +69,18 @@ abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLabelProvi
 		sb.append("<a>");
 	}
 	
+	protected String getCurrency(double value) {
+		if (value >= 0) {
+			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:8pt;margin-left:1;'>"
+					+ new BigDecimal(value/10000).setScale(1,
+							BigDecimal.ROUND_HALF_UP).doubleValue()+ "</span>";
+		} else {
+			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:8pt;margin-left:1;color="
+					+ Utils.COLOR_RED[10]
+					+ "'>"
+					+ new BigDecimal(-value/10000).setScale(1,
+							BigDecimal.ROUND_HALF_UP).doubleValue() + "</span>";
+		}
+	}
 	
 }

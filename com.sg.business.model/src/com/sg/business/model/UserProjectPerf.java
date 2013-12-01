@@ -92,7 +92,7 @@ public class UserProjectPerf extends ProjectProvider {
 				iF_SUMMARY_TOTAL_BUDGETAMOUNT += budgetValue == null ? 0
 						: budgetValue;
 				iF_SUMMARY_TOTAL_INVESTMENTAMOUNT += project
-						.getInvestmentValue();
+						.getInvestment();
 				result.add(project);
 			}
 			sum.total = result.size();
