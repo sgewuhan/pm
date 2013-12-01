@@ -32,7 +32,7 @@
             category="visualization"
             class="com.sg.business.visualization.view.MyProjectNavigator"
             id="vis.project.myprojectset"
-            name="我的项目集"
+            name="我的项目组合"
             restorable="true">
       </view>
 
@@ -241,7 +241,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.visualization.labelprovide.MyProjectSetLabelProvider"
-               name="项目集名称"
+               name="项目组合名称"
                style="SWT.LEFT"
                type="String"
                width="-1">
@@ -502,17 +502,17 @@
             id="editor.visualization.addprojectset"
             name="添加至项目组合">
          <basicpage
-               id="项目集"
-               title="项目集">
+               id="项目组合"
+               title="项目组合">
             <pagecolumn>
                <section
-                     label="设定项目集">
+                     label="设定项目组合">
                   <combo
                         editPart="Combo"
                         editable="true"
                         id="desc"
                         inputValidator="com.sg.business.visualization.validator.ProjectSetValidator"
-                        label="项目集"
+                        label="项目组合"
                         labelVisible="true"
                         name="desc"
                         optionProvider="com.sg.business.visualization.option.ProjectSetOption"
@@ -551,7 +551,7 @@
             locationURI="toolbar:main?after=common.separator">
          <command
                commandId="visualization.command.projectset"
-               label="添加至项目集"
+               label="添加至项目组合"
                style="push"
                tooltip="显示预览视图">
             <visibleWhen
@@ -584,7 +584,7 @@
       </command>
       <command
             id="visualization.command.projectset"
-            name="添加至项目集">
+            name="添加至项目组合">
       </command>
    </extension>
    <extension
