@@ -45,7 +45,7 @@ public class ProductSubconcessionsByProjectIdService extends ServiceProvider {
 						Object product = host.getValue("product");
 						if (product instanceof List<?>) {
 							List<?> productList = (List<?>) product;
-							project.doProductSubconcessions(
+							project.doChangeMassProduction(
 									new BPMServiceContext(processName,
 											processId), productList);
 						}

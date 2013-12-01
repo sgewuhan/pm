@@ -57,7 +57,7 @@ public class ProjectOperationTest extends PropertyTester {
 				if ("operation".equals(property) && args != null
 						&& args.length > 0) {
 				if("canSubconcessions".equals(args[0])){
-					return productItem.canSubconcessions();
+					return productItem.canChangeToMassProduction();
 				}
 				}
 			}

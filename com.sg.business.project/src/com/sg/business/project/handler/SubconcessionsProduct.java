@@ -26,7 +26,7 @@ public class SubconcessionsProduct extends AbstractNavigatorHandler {
 			Shell shell = part.getSite().getShell();
 			ProductItem productItem = (ProductItem) selected;
 			try {
-				productItem.doSubconcessions(new CurrentAccountContext());
+				productItem.doChangeToMassProduction(new CurrentAccountContext());
 				vc.getViewer().refresh(selected);
 				vc.getViewer().setSelection(null);
 			} catch (Exception e) {

@@ -13,7 +13,7 @@ public class BudgetAndInvestmentLabelProvider extends
 	@Override
 	protected String getProjectText(Project project) {
 		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMaximumFractionDigits(2);
+		nf.setMaximumFractionDigits(1);
 
 		// 项目的预算
 		Double budgetValue = project.getBudgetValue();
@@ -21,7 +21,7 @@ public class BudgetAndInvestmentLabelProvider extends
 				.format(budgetValue / 10000));
 
 		// 项目的研发成本
-		Double investment = project.getInvestmentValue();
+		Double investment = project.getInvestment();
 		String iv = (investment == null) ? "0"
 				: (nf.format(investment / 10000));
 
