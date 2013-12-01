@@ -261,6 +261,7 @@
             id="vis.projectset"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -319,6 +320,7 @@
             id="vis.projectset.schedual"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -361,6 +363,7 @@
             id="vis.projectset.budgetandinvestment"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -419,6 +422,7 @@
             id="vis.projectset.revenue"
             lineVisiable="false"
             markupEnabled="true"
+            multiSelection="true"
             preload="20"
             useHashlookup="true"
             virtual="true">
@@ -551,9 +555,10 @@
             locationURI="toolbar:main?after=common.separator">
          <command
                commandId="visualization.command.projectset"
+               icon="image/folderproject_24.png"
                label="添加至项目组合"
                style="push"
-               tooltip="显示预览视图">
+               tooltip="添加至项目组合">
             <visibleWhen
                   checkEnabled="false">
                <with

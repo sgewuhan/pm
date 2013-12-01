@@ -39,7 +39,7 @@ public class ProjectSetAdd extends AbstractNavigatorHandler {
 			Map<String, Object> parameters, IStructuredSelection selection) {
 		final Shell shell = part.getSite().getShell();
 		Assert.isNotNull(currentViewerControl);
-
+//TODO 需要支持添加多个
 		if (selected instanceof Project) {
 			Project project = (Project) selected;
 			project.addEventListener(currentViewerControl);

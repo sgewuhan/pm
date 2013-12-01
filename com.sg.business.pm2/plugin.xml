@@ -29,9 +29,9 @@
             name="资源">
       </perspective>
       <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
+            class="com.sg.widgets.perspective.EditorShowPerspective"
             id="perspective.visualization"
-            name="绩效">
+            name="项目看板">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -1031,6 +1031,12 @@
       <notice
             noticeCreator="com.mobnut.portal.notice.ImageNoticeCreator">
       </notice>
+   </extension>
+   <extension
+         point="com.mobnut.design.editorAreaPart">
+      <editorAreaPart
+            getEditorAreaPart="com.sg.business.pm2.EditorArea">
+      </editorAreaPart>
    </extension>
 
 </plugin>
