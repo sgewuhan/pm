@@ -918,7 +918,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		// 4.判断是否为该工作或上级工作的负责人或项目的项目经理
-		return hasPermission(context);
+		if (hasPermission(context)) {
+			return true;
+		} else {
+			String userId = context.getAccountInfo().getConsignerId();
+			BasicBSONList participatesIdList = getParticipatesIdList();
+			for (Object object : participatesIdList) {
+				String participatesId = (String) object;
+				if (userId.equals(participatesId)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 	/**
