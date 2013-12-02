@@ -47,9 +47,9 @@ public class UserProjectPerf extends ProjectProvider {
 					} else {
 						sum.finished_normal++;
 					}
-					if(project.isOverCost()){
+					if (project.isOverCost()) {
 						sum.finished_cost_over++;
-					}else{
+					} else {
 						sum.finished_cost_normal++;
 					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
@@ -62,27 +62,24 @@ public class UserProjectPerf extends ProjectProvider {
 					} else {
 						sum.processing_normal++;
 					}
-					
-					if(project.maybeOverCostNow()){
+
+					if (project.maybeOverCostNow()) {
 						sum.processing_cost_over++;
-					}else{
+					} else {
 						sum.processing_cost_normal++;
 					}
 				}
-				
+
 				Double budgetValue = project.getBudgetValue();
 				sum.total_budget_amount += budgetValue == null ? 0
 						: budgetValue;
-				sum.total_investment_amount += project
-						.getInvestment();
+				sum.total_investment_amount += project.getInvestment();
 				double[] salesSummaryData = project.getSalesSummaryData();
-				sum.total_sales_revenue+=salesSummaryData[0];
-				sum.total_sales_cost+=salesSummaryData[1];
+				sum.total_sales_revenue += salesSummaryData[0];
+				sum.total_sales_cost += salesSummaryData[1];
 				result.add(project);
 			}
 			sum.total = result.size();
-
-
 
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
@@ -93,28 +90,12 @@ public class UserProjectPerf extends ProjectProvider {
 
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
-		DBCollection col = getCollection();
-		Object desc = getValue(UserProjectPerf.F_DESC);
-		Object userid = getValue(UserProjectPerf.F_USERID);
-		DBCursor cur = col.find(new BasicDBObject().append(
-				UserProjectPerf.F_DESC, desc).append(UserProjectPerf.F_USERID,
-				userid));
-		List<ObjectId> projectidlist = new ArrayList<ObjectId>();
-		while (cur.hasNext()) {
-			DBObject next = cur.next();
-			ObjectId projectid = (ObjectId) next
-					.get(UserProjectPerf.F_PROJECT_ID);
-			projectidlist.add(projectid);
-		}
+		List<?> projectidlist = getProjectIdList();
 
 		DBObject dbo = new BasicDBObject();
 		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist));
 		dbo.put("$or",
 				new BasicDBObject[] {
-						// new BasicDBObject().append(Project.F_PLAN_START,
-						// new BasicDBObject().append("$gte",
-						// start).append("$lte", stop))
-						// ,
 
 						new BasicDBObject().append(Project.F_ACTUAL_START,
 								new BasicDBObject().append("$gte", start)
@@ -143,9 +124,23 @@ public class UserProjectPerf extends ProjectProvider {
 		return dbo;
 	}
 
+	/**
+	 * 获取本项目组合的项目
+	 * 
+	 * @return
+	 */
+	private List<?> getProjectIdList() {
+		return (List<?>) getValue(F_PROJECT_ID);
+	}
+
 	@Override
 	public String getProjectSetName() {
-		return "我的项目集";
+		return getDesc();
+	}
+
+	@Override
+	public String getTypeName() {
+		return "自定义项目组合";
 	}
 
 	@Override

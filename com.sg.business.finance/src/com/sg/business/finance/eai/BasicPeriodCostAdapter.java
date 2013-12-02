@@ -54,6 +54,7 @@ public class BasicPeriodCostAdapter {
 			String costCenterCode = iter.next();
 			sr[i] = new BasicDBObject();
 			sr[i].put(WorkOrderPeriodCost.F_WORKORDER, costCenterCode);
+			sr[i].put(WorkOrderPeriodCost.F_COSTCENTERCODE, costCenterCode);
 			sr[i].put(WorkOrderPeriodCost.F_MONTH, new Integer(month));
 			sr[i].put(WorkOrderPeriodCost.F_YEAR, new Integer(year));
 			sr[i].put(WorkOrderPeriodCost.F__CDATE, new Date());

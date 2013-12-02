@@ -9,30 +9,9 @@
       </category>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.OrganizationNavigator"
-            id="vis.project.org"
-            name="组织"
-            restorable="true">
-      </view>
-      <view
-            category="visualization"
-            class="com.sg.business.visualization.view.ProjectTypeNavigator"
-            id="vis.project.projecttype"
-            name="类型"
-            restorable="true">
-      </view>
-      <view
-            category="visualization"
-            class="com.sg.business.visualization.view.ProductTypeNavigator"
-            id="vis.project.producttype"
-            name="产品"
-            restorable="true">
-      </view>
-      <view
-            category="visualization"
-            class="com.sg.business.visualization.view.MyProjectNavigator"
-            id="vis.project.myprojectset"
-            name="我的项目组合"
+            class="com.sg.business.visualization.view.ProjectSetNavigator"
+            id="vis.projectset.navigator"
+            name="项目组合导航"
             restorable="true">
       </view>
       <view
@@ -75,8 +54,8 @@
    <extension
          point="com.sg.widgets.navigator">
       <navigator
-            id="vis.project.org"
-            tree="vis.project.org">
+            id="vis.projectset.navigator"
+            tree="vis.projectset.navigator">
          <filterAction>
             <column
                   columnDefinitionId="com.sg.widgets.column.desc">
@@ -148,18 +127,6 @@
          </searchAction-->
       </navigator>
       <navigator
-            id="vis.project.myprojectset"
-            table="vis.project.myprojectset">
-      </navigator>
-      <navigator
-            id="vis.project.projecttype"
-            table="vis.project.projecttype">
-      </navigator>
-      <navigator
-            id="vis.project.producttype"
-            table="vis.project.producttype">
-      </navigator>
-      <navigator
             id="vis.projectset.schedual"
             provideSelection="true"
             table="vis.projectset.schedual">
@@ -183,12 +150,12 @@
             canEdit="false"
             canRead="false"
             collectionName="organization"
-            contentProvider="com.sg.business.visualization.contentprovider.OrgProjectSetContentProvider"
+            contentProvider="com.sg.business.visualization.dataset.ProjectSetContentProvider"
             customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.organization.OrgOfOwnerManager"
+            dataSet="com.sg.business.visualization.dataset.VisNavigatorDataSet"
             dbName="pm2"
             headerVisiable="false"
-            id="vis.project.org"
+            id="vis.projectset.navigator"
             idfield="_id"
             lineVisiable="false"
             markupEnabled="true"
@@ -196,7 +163,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovide.OrganizationProjectLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.ProjectSetNavigatorLabelProvider"
                name="组织名称"
                style="SWT.LEFT"
                type="String"
@@ -212,75 +179,6 @@
    </extension>
    <extension
          point="com.sg.widgets.table">
-      <table
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            collectionName="projecttype"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.visualization.ProjectType"
-            dbName="pm2"
-            headerVisiable="false"
-            id="vis.project.projecttype"
-            markupEnabled="true"
-            multiSelection="false"
-            virtual="true">
-         <column
-               column="desc"
-               labelProvider="com.sg.business.visualization.labelprovide.ProjectTypeLabelProvider"
-               name="项目类型"
-               type="String"
-               width="-1">
-         </column>
-      </table>
-      <table
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            collectionName="producttype"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.visualization.ProductType"
-            dbName="pm2"
-            headerVisiable="false"
-            id="vis.project.producttype"
-            markupEnabled="true"
-            multiSelection="false"
-            virtual="true">
-         <column
-               column="desc"
-               labelProvider="com.sg.business.visualization.labelprovide.ProductTypeLabelProvider"
-               name="产品类型"
-               type="String"
-               width="-1">
-         </column>
-      
-      </table>
-      <table
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            canRead="false"
-            collectionName="userprojectperf"
-            customItemHeight="40"
-            dataSet="com.sg.business.model.dataset.visualization.MyProjectSet"
-            dbName="pm2"
-            headerVisiable="false"
-            id="vis.project.myprojectset"
-            idfield="_id"
-            markupEnabled="true"
-            multiSelection="false"
-            virtual="true">
-         <column
-               column="desc"
-               labelProvider="com.sg.business.visualization.labelprovide.MyProjectSetLabelProvider"
-               name="项目组合名称"
-               style="SWT.LEFT"
-               type="String"
-               width="-1">
-         </column>
-      </table>
       <table
             canCreate="false"
             canDelete="true"
@@ -301,7 +199,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.DescLabelProvider"
                lazyDisplay="true"
                name="项目名称描述"
                type="String"
@@ -309,7 +207,7 @@
          </column>
          <column
                column="planfinish"
-               labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.SchedualLabelProvider"
                lazyDisplay="true"
                name="进度概况"
                type="Date"
@@ -317,7 +215,7 @@
          </column>
          <column
                column="rndcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="预算和投入"
                type="String"
@@ -325,7 +223,7 @@
          </column>
          <column
                column="revenue"
-               labelProvider="com.sg.business.visualization.labelprovider.project.RevenueLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.RevenueLabelProvider"
                lazyDisplay="true"
                name="销售收入和利润"
                type="String"
@@ -352,7 +250,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.DescLabelProvider"
                lazyDisplay="true"
                name="项目名称描述"
                type="String"
@@ -360,7 +258,7 @@
          </column>
          <column
                column="planfinish"
-               labelProvider="com.sg.business.visualization.labelprovider.project.SchedualLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.SchedualLabelProvider"
                lazyDisplay="true"
                name="进度概况"
                type="Date"
@@ -368,7 +266,7 @@
          </column>
          <column
                column="status"
-               labelProvider="com.sg.business.visualization.labelprovider.project.SchedualDetailLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.SchedualDetailLabelProvider"
                lazyDisplay="true"
                name="里程碑"
                type="String"
@@ -395,7 +293,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.DescLabelProvider"
                lazyDisplay="true"
                name="项目名称描述"
                type="String"
@@ -403,7 +301,7 @@
          </column>
          <column
                column="rndcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetAndInvestmentLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="预算和投入"
                type="String"
@@ -411,7 +309,7 @@
          </column>
          <column
                column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.project.BudgetLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.BudgetLabelProvider"
                lazyDisplay="true"
                name="预算"
                type="String"
@@ -419,7 +317,7 @@
          </column>
          <column
                column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.project.ActualCostLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.ActualCostLabelProvider"
                lazyDisplay="true"
                name="实际"
                type="String"
@@ -427,7 +325,7 @@
          </column>
          <column
                column="overcost"
-               labelProvider="com.sg.business.visualization.labelprovider.project.OvercostCostLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.OvercostCostLabelProvider"
                lazyDisplay="true"
                name="超支"
                type="String"
@@ -454,7 +352,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.project.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.DescLabelProvider"
                lazyDisplay="true"
                name="项目名称描述"
                type="String"
@@ -462,7 +360,7 @@
          </column>
          <column
                column="revenue"
-               labelProvider="com.sg.business.visualization.labelprovider.project.RevenueLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.RevenueLabelProvider"
                lazyDisplay="true"
                name="销售收入和利润"
                type="String"
@@ -470,7 +368,7 @@
          </column>
          <column
                column="roi"
-               labelProvider="com.sg.business.visualization.labelprovider.project.ROILabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.ROILabelProvider"
                lazyDisplay="true"
                name="指标"
                type="String"
@@ -622,6 +520,24 @@
             properties="add"
             type="java.lang.Object">
       </propertyTester>
+   </extension>
+   <extension
+         point="com.mobnut.db.documentModelAdapter">
+      <doc
+            class="com.sg.business.visualization.dataset.OrganizationProjectSetFolder"
+            collection="dummy"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.visualization.dataset.TypeProjectSetFolder"
+            collection="dummy"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.visualization.dataset.OwnerProjectSetFolder"
+            collection="dummy"
+            db="pm2">
+      </doc>
    </extension>
 
 </plugin>

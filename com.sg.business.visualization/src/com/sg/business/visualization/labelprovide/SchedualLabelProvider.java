@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovider.project;
+package com.sg.business.visualization.labelprovide;
 
 import java.text.DecimalFormat;
 import java.util.Date;

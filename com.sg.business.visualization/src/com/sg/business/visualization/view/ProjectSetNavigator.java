@@ -15,14 +15,16 @@ import org.eclipse.swt.widgets.Tree;
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.model.ProjectTypeProvider;
 import com.sg.business.model.User;
+import com.sg.business.model.UserProjectPerf;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.view.TreeNavigator;
 
-public class OrganizationNavigator extends TreeNavigator {
+public class ProjectSetNavigator extends TreeNavigator {
 
-	public OrganizationNavigator() {
+	public ProjectSetNavigator() {
 	}
 
 	@Override
@@ -34,24 +36,36 @@ public class OrganizationNavigator extends TreeNavigator {
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == RWT.HYPERLINK) {
 
-					String _id = event.text.substring(event.text
+					String parameter = event.text.substring(event.text
 							.lastIndexOf("/") + 1);
+
+					String[] paras = parameter.split("@");
 					try {
-						Organization org = ModelService.createModelObject(
-								Organization.class, new ObjectId(_id));
-						open(org);
-						viewer.setSelection(new StructuredSelection(org));
-					} catch (Exception e) {
-						try {
+						if ("Organization".equals(paras[0])) {
+							Organization org = ModelService.createModelObject(
+									Organization.class, new ObjectId(paras[1]));
+							open(org);
+							viewer.setSelection(new StructuredSelection(org));
+						} else if ("User".equals(paras[0])) {
 							User user = ModelService.createModelObject(
-									User.class, new ObjectId(_id));
+									User.class, new ObjectId(paras[1]));
 							open(user);
 							viewer.setSelection(new StructuredSelection(user));
-						} catch (Exception e1) {
-							MessageUtil.showToast(e);
-						}
+						} else if ("ProductTypeProvider".equals(paras[0])) {
+							ProjectProvider pp = new ProjectTypeProvider(
+									paras[1], paras[2]);
+							open(pp);
+						} else if ("UserProjectPerf".equals(paras[0])) {
+							UserProjectPerf pperf = ModelService
+									.createModelObject(UserProjectPerf.class,
+											new ObjectId(paras[1]));
+							open(pperf);
 
+						}
+					} catch (Exception e) {
+						MessageUtil.showToast(e);
 					}
+
 				}
 			}
 		});
@@ -62,31 +76,32 @@ public class OrganizationNavigator extends TreeNavigator {
 				IStructuredSelection isel = (IStructuredSelection) event
 						.getSelection();
 				Object element = isel.getFirstElement();
-				if (element instanceof Organization) {
-					try {
+				try {
+					if (element instanceof Organization) {
 						open((Organization) element);
-					} catch (Exception e) {
-						MessageUtil.showToast(e);
-					}
-				} else if (element instanceof User) {
-					try {
+					} else if (element instanceof User) {
 						open((User) element);
-					} catch (Exception e) {
-						MessageUtil.showToast(e);
+					} else if (element instanceof UserProjectPerf) {
+						open((UserProjectPerf) element);
+					} else if (element instanceof ProjectProvider) {
+						open((ProjectProvider) element);
 					}
+				} catch (Exception e) {
+					MessageUtil.showToast(e);
 				}
 			}
 		});
 	}
 
 	private void open(Organization org) throws Exception {
-		ProjectProvider pp = org.getAdapter(ProjectProvider.class);
-		DataObjectEditor
-				.open(pp, "editor.visualization.projectset", true, null);
+		open(org.getAdapter(ProjectProvider.class));
 	}
 
 	private void open(User user) throws Exception {
-		ProjectProvider pp = user.getAdapter(ProjectProvider.class);
+		open(user.getAdapter(ProjectProvider.class));
+	}
+
+	private void open(ProjectProvider pp) throws Exception {
 		DataObjectEditor
 				.open(pp, "editor.visualization.projectset", true, null);
 	}
