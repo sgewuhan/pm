@@ -39,4 +39,10 @@ public class RoleAssignment extends AbstractRoleAssignment{
 	public String getDefaultEditorId() {
 		return "editor.organization.roleassignment";
 	}
+	
+	@Override
+	public boolean canEdit(IContext context) {
+		return true;
+	}
+	
 }

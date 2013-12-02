@@ -7,11 +7,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
@@ -57,40 +54,9 @@ public abstract class NavigatorEditor extends CellEditor {
 				super.shellDeactivated(e);
 			}
 			
-			
-			
-			
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {
 				return true;
-			}
-			
-			@Override
-			protected Point getLocation(Shell shell, Control control) {
-				Display display = cell.getControl().getDisplay();
-				Rectangle displayBounds = display.getBounds();
-
-				Rectangle cellBounds = cell.getBounds();
-				Point location = cell.getControl()
-						.toDisplay(cellBounds.x, cellBounds.y);
-				
-//				Point size = shell.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-				Point size = new Point(400,400);
-				shell.setSize(size);
-
-				// 能否与控件横向对齐显示
-				if (location.x + size.x > displayBounds.width) {
-					location.x = displayBounds.width - size.x - 1;
-				}
-
-				// 能否在控件下方显示
-				if (location.y + cellBounds.height + size.y > displayBounds.height) {
-					location.y = location.y - size.y;
-				} else {
-					location.y = location.y + cellBounds.height;
-				}
-				
-				return location;
 			}
 			
 			

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
@@ -44,7 +46,7 @@ public class UserToolkit {
 	 * @return
 	 */
 	public static User getUserById(String userId) {
-		if(Utils.isNullOrEmpty(userId)){
+		if (Utils.isNullOrEmpty(userId)) {
 			return null;
 		}
 		User user = USERMAP.get(userId);
@@ -54,7 +56,7 @@ public class UserToolkit {
 			DBObject userData = userCol.findOne(new BasicDBObject().append(
 					User.F_USER_ID, userId));
 			user = ModelService.createModelObject(userData, User.class);
-			if(user!=null){
+			if (user != null) {
 				USERMAP.put(userId, user);
 			}
 		}
@@ -62,13 +64,43 @@ public class UserToolkit {
 	}
 
 	public static void updateUser(User user) {
-		if(user == null){
+		if (user == null) {
 			return;
 		}
 		String userId = user.getUserid();
-		if(Utils.isNullOrEmpty(userId)){
+		if (Utils.isNullOrEmpty(userId)) {
 			return;
 		}
 		USERMAP.put(userId, user);
+	}
+
+	public static void updateUser(String userId) {
+		if (userId == null) {
+			return;
+		}
+		USERMAP.remove(userId);
+		getUserById(userId);
+	}
+
+	public static void updateUser(ObjectId _Id) {
+		if (_Id == null) {
+			return;
+		}
+		DBCollection userCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_USER);
+		DBObject userData = userCol.findOne(new BasicDBObject().append(
+				User.F__ID, _Id));
+		User user = ModelService.createModelObject(userData, User.class);
+		if (user != null) {
+			String userId = user.getUserid();
+			USERMAP.remove(userId);
+			USERMAP.put(userId, user);
+		}
+	}
+
+	public static void updateUser(ObjectId[] userIdList) {
+		for (ObjectId userId : userIdList) {
+			updateUser(userId);
+		}
 	}
 }
