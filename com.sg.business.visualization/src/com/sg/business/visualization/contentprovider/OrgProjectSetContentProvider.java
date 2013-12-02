@@ -102,13 +102,13 @@ public class OrgProjectSetContentProvider extends RelationContentProvider {
 				condition = new BasicDBObject();
 				condition.put(mr.getEnd2Key(), po.getValue(mr.getEnd1Key()));
 				condition.put(Organization.F__ID, new BasicDBObject().append(
-						"$in", getAviableOrganization()));
+						"$in", getAvailableOrganization()));
 			}
 
 		} else if ("organization_projectmanager".equals(mr.getId())) {
 				condition = new BasicDBObject();
 				condition.put(User.F_USER_ID,
-						new BasicDBObject().append("$in", getAviableUser(po)));
+						new BasicDBObject().append("$in", getAvailableUser(po)));
 		}
 		StructuredDBCollectionDataSetFactory sdf = po
 				.getRelationDataSetFactory(end2Class, condition);
@@ -132,13 +132,13 @@ public class OrgProjectSetContentProvider extends RelationContentProvider {
 				condition = new BasicDBObject();
 				condition.put(mr.getEnd2Key(), po.getValue(mr.getEnd1Key()));
 				condition.put(Organization.F__ID, new BasicDBObject().append(
-						"$in", getAviableOrganization()));
+						"$in", getAvailableOrganization()));
 			}
 
 		} else if ("organization_projectmanager".equals(mr.getId())) {
 				condition = new BasicDBObject();
 				condition.put(User.F_USER_ID,
-						new BasicDBObject().append("$in", getAviableUser(po)));
+						new BasicDBObject().append("$in", getAvailableUser(po)));
 		}
 		StructuredDBCollectionDataSetFactory sdf = po.getRelationDataSetFactory(
 				end2Class, condition);
@@ -146,7 +146,7 @@ public class OrgProjectSetContentProvider extends RelationContentProvider {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Object[] getAviableOrganization() {
+	private Object[] getAvailableOrganization() {
 		if (aviOrg == null) {
 			Set<ObjectId> set = new HashSet<ObjectId>();
 			List prjOrgList = projectcol.distinct(
@@ -177,7 +177,7 @@ public class OrgProjectSetContentProvider extends RelationContentProvider {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private Object getAviableUser(PrimaryObject po) {
+	private Object getAvailableUser(PrimaryObject po) {
 			Set<ObjectId> set = new HashSet<ObjectId>();
 			List prjManagerList = projectcol.distinct(
 					Project.F_CHARGER,
