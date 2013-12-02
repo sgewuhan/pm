@@ -31,7 +31,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		} else if (po instanceof User) {
 			return getUserText((User) po);
 		} else if (po instanceof UserProjectPerf) {
-			return getUserProjectSet((UserProjectPerf) po);
+			return getUserProjectSetText((UserProjectPerf) po);
 		} else if (po instanceof ProductTypeProvider) {
 			return getProductTypeText((ProductTypeProvider) po);
 		} else if (po instanceof ProjectSetFolder) {
@@ -85,7 +85,13 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		sb.append("</a>");
 
 		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+		String imageUrl = "<img src='"
+				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER)
+				+ "' style='float:left;padding:2px' width='24' height='24' />";
 
+		sb.append(imageUrl);
 		sb.append("<b>");
 		sb.append(producttTypeProvider.getDesc());
 		// if (cnt != 0 || wipCnt != 0) {
@@ -103,7 +109,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		return sb.toString();
 	}
 
-	private String getUserProjectSet(UserProjectPerf po) {
+	private String getUserProjectSetText(UserProjectPerf po) {
 		UserProjectPerf pperf = (UserProjectPerf) po;
 		// long cnt = getCount(pperf);
 		// long wipCnt = getWipCount(pperf);
@@ -117,6 +123,13 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
 		sb.append("</a>");
 
+		String imageUrl = "<img src='"
+				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER)
+				+ "' style='float:left;padding:2px' width='24' height='24' />";
+
+		sb.append(imageUrl);
 		sb.append("<b>");
 		sb.append(pperf.getDesc());
 		// if (cnt != 0 || wipCnt != 0) {
@@ -147,7 +160,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
 
 		String imageUrl = "<img src='"
-				+ FileUtil.getImageURL(BusinessResource.IMAGE_USER_16,
+				+ FileUtil.getImageURL(BusinessResource.IMAGE_USER_24,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER)
 				+ "' style='float:left;padding:2px' width='24' height='24' />";

@@ -61,9 +61,6 @@
                   columnDefinitionId="com.sg.widgets.column.desc">
             </column>
             <column
-                  columnDefinitionId="organization.description">
-            </column>
-            <column
                   columnDefinitionId="account.userid">
             </column>
             <column
@@ -73,9 +70,6 @@
          <searchAction>
             <column
                   columnDefinitionId="com.sg.widgets.column.desc">
-            </column>
-            <column
-                  columnDefinitionId="organization.description">
             </column>
             <column
                   columnDefinitionId="account.userid">
@@ -145,6 +139,7 @@
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="2"
             canCreate="false"
             canDelete="false"
             canEdit="false"
@@ -154,6 +149,7 @@
             customItemHeight="40"
             dataSet="com.sg.business.visualization.dataset.VisNavigatorDataSet"
             dbName="pm2"
+            dropTargetListener="com.sg.business.visualization.view.DropProjectToOwnerSet"
             headerVisiable="false"
             id="vis.projectset.navigator"
             idfield="_id"
@@ -188,6 +184,7 @@
             customItemHeight="60"
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             fix="1"
             headerVisiable="true"
             id="vis.projectset"
@@ -239,6 +236,7 @@
             customItemHeight="60"
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             fix="1"
             headerVisiable="true"
             id="vis.projectset.schedual"
@@ -282,6 +280,7 @@
             customItemHeight="60"
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             fix="1"
             headerVisiable="true"
             id="vis.projectset.budgetandinvestment"
@@ -341,6 +340,7 @@
             customItemHeight="60"
             dataSet="com.sg.business.model.dataset.visualization.VisProjectSet"
             dbName="pm2"
+            dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             fix="1"
             headerVisiable="true"
             id="vis.projectset.revenue"
