@@ -29,9 +29,10 @@ public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 	public boolean run() {
 		DBCollection col = getCol(IModelConstants.C_PROJECT);
 		DBCursor cursor = col.find(new BasicDBObject().append(
-				Project.F_LIFECYCLE, "wip").append(
-				Project.F_FUNCTION_ORGANIZATION,
-				new ObjectId("525b4d18f0209adcc595131f")));
+				Project.F_LIFECYCLE, "finished").append(Project.F_WORK_ID, null));
+//		.append(
+//				Project.F_FUNCTION_ORGANIZATION,
+//				new ObjectId("525b4d18f0209adcc595131f"))
 		IContext context = new CurrentAccountContext();
 		while (cursor.hasNext()) {
 			DBObject object = cursor.next();

@@ -29,6 +29,7 @@ import com.mongodb.WriteResult;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.model.event.AccountEvent;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -359,6 +360,7 @@ public class Organization extends PrimaryObject {
 						new BasicDBObject().append(User.F_ORGANIZATION_ID,
 								get_id()).append(User.F_ORGANIZATION_NAME,
 								getDesc())), false, true);
+		UserToolkit.updateUser(userIdList);
 	}
 
 	/**
@@ -622,13 +624,13 @@ public class Organization extends PrimaryObject {
 						.append(Role.F_ORGANIZATION_ID, get_id())) > 0;
 	}
 
-/**
+	/**
 	 * 获取组织下包含的某个角色
 	 * 
 	 * @param roleNumber
 	 *            ,角色编号
 	 * @param selectType
-	 *            ,查找方式,<br/>  
+	 *            ,查找方式,<br/>
 	 *            {@link Organization.ROLE_SEARCH_DOWN} 为向下查找, <br/>
 	 *            {@link Organization.ROLE_NOT_SEARCH} 为不查找, <br/>
 	 *            {@link Organization.ROLE_SEARCH_UP} 为向上查找

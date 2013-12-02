@@ -192,15 +192,15 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			}
 		});
 
-		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("Á´½ÓPDM...");
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				createDeliverableWithPDM(parent);
-			}
-
-		});
+//		menuItem = new MenuItem(menu, SWT.NONE);
+//		menuItem.setText("Á´½ÓPDM...");
+//		menuItem.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				createDeliverableWithPDM(parent);
+//			}
+//
+//		});
 
 		final Button createDeliverableButton = new Button(parent, SWT.PUSH);
 		createDeliverableButton.setImage(BusinessResource

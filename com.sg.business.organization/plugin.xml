@@ -494,6 +494,9 @@
          <column
                columnDefinitionId="account.roleassignment">
          </column>
+         <column
+               columnDefinitionId="account.scenario">
+         </column>
       </table>
       <table
             canCreate="false"
@@ -504,6 +507,7 @@
             dbName="pm2"
             dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             dropTargetListener="com.sg.business.organization.view.DropMember"
+            editorId="editor.organization.user"
             id="organization.member"
             multiSelection="true"
             popupMenu="popup:com.sg.widget.navigator">
@@ -1129,6 +1133,11 @@
                   </file>
                </section>
             </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="scenario"
+               pageDelegator="com.sg.business.organization.editor.RoleAssignmentScenrioSetting"
+               title="使用场景">
          </basicpage>
       </editor>
       <editor
