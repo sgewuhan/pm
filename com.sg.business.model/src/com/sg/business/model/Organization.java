@@ -561,6 +561,24 @@ public class Organization extends PrimaryObject {
 	public List<PrimaryObject> getChildrenOrganization() {
 		return getRelationById(F__ID, F_PARENT_ID, Organization.class);
 	}
+	
+	/**
+	 * 获得本级及下级的所有组织,不会为null
+	 * @return
+	 */
+	public List<Organization> getOrganizationStructure(){
+		ArrayList<Organization> result = new ArrayList<Organization>();
+		//添加自己
+		result.add(this);
+		List<PrimaryObject> children = getChildrenOrganization();
+		if(children!=null){
+			for (int i = 0; i < children.size(); i++) {
+				Organization child = (Organization) children.get(i);
+				result.addAll(child.getOrganizationStructure());
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * 获取组织项下的用户

@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovider.project;
+package com.sg.business.visualization.labelprovide;
 
 import com.mobnut.commons.util.Utils;
 
