@@ -211,4 +211,5 @@ public class ProductTypeProvider extends ProjectProvider {
 	public String getDesc() {
 		return desc;
 	}
+	
 }
