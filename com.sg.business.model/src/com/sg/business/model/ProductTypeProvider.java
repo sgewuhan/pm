@@ -29,6 +29,7 @@ public class ProductTypeProvider extends ProjectProvider {
 		set_data(new BasicDBObject());
 		this.desc = desc;
 		this.userId = userId;
+		setValue(F_DESC,desc);
 
 	}
 
