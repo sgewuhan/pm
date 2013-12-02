@@ -104,7 +104,7 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 			sb.append("<br/>");
 			sb.append("<small>");
 			Organization org = user.getOrganization();
-			sb.append(org==null?"":org.getPath());
+			sb.append(org == null ? "" : org.getPath());
 			sb.append("</small></span>");
 
 			return sb.toString();
@@ -138,9 +138,9 @@ public class OrganizationProjectLabelProvider extends ColumnLabelProvider {
 
 	private void setWipCount(Organization organization) {
 
-		long count = projectCol.count(new BasicDBObject().append(
-				Project.F_LAUNCH_ORGANIZATION, organization.get_id()).append(
-				ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
+		long count = projectCol
+				.count(((BasicDBObject) getQueryCondtion(organization)).append(
+						ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE));
 		wipCnt += count;
 		List<PrimaryObject> childrenOrganization = organization
 				.getChildrenOrganization();

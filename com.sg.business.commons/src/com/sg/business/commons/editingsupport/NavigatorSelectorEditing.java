@@ -36,11 +36,11 @@ public abstract class NavigatorSelectorEditing implements IEditingSupportor {
 					return NavigatorSelectorEditing.this
 							.getValueFromSelection(is);
 				}
-
+				
+				
 			};
 		}
 		
-
 		@Override
 		protected CellEditor getCellEditor(Object element) {
 			return editor;
