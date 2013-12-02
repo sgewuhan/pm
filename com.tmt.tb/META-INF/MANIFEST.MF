@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.ui.forms,
  com.sg.business.taskforms,
  com.mobnut.portal,
- com.sg.business.resource
+ com.sg.business.resource,
+ com.tmt.pdm.client;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.tmt.tb.bpmservice

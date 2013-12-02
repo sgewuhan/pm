@@ -9,13 +9,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.jbpm.task.Task;
 
 import com.mobnut.db.model.IContext;
@@ -124,7 +128,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		return workListCreater;
 	}
 
-	private Button createToolBar(Composite parent) {
+	private Button createToolBar(final Composite parent) {
 		Button createWorkButton = new Button(parent, SWT.PUSH);
 		createWorkButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_CREATEWORK_24));
@@ -147,16 +151,69 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		fd.top = new FormAttachment(0, 2);
 		fd.left = new FormAttachment(0, 2);
 
-		Button createDeliverableButton = new Button(parent, SWT.PUSH);
+		// Button createDeliverableButton = new Button(parent, SWT.PUSH);
+		// createDeliverableButton.setImage(BusinessResource
+		// .getImage(BusinessResource.IMAGE_DELIVERABLECREATE_24));
+		// createDeliverableButton.setToolTipText("添加变更对象");
+		// createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		// createDeliverableButton.addSelectionListener(new SelectionListener()
+		// {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// createDeliverable();
+		// }
+		//
+		// @Override
+		// public void widgetDefaultSelected(SelectionEvent e) {
+		//
+		// }
+		// });
+		// fd = new FormData();
+		// createDeliverableButton.setLayoutData(fd);
+		// fd.top = new FormAttachment(0, 2);
+		// fd.left = new FormAttachment(createWorkButton, 2);
+
+		final Menu menu = new Menu(parent.getShell(), SWT.POP_UP);
+		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText("从项目中选择...");
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithProject();
+			}
+		});
+		menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText("从文档库中选择...");
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithVault();
+			}
+		});
+
+		menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText("链接PDM...");
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithPDM(parent);
+			}
+
+		});
+
+		final Button createDeliverableButton = new Button(parent, SWT.PUSH);
 		createDeliverableButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_DELIVERABLECREATE_24));
 		createDeliverableButton.setToolTipText("添加变更对象");
 		createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
 		createDeliverableButton.addSelectionListener(new SelectionListener() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				createDeliverable();
+				Point point = createDeliverableButton.toDisplay(0,
+						createDeliverableButton.getBounds().height);
+				menu.setLocation(point);
+				menu.setVisible(true);
 			}
 
 			@Override
@@ -240,7 +297,6 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		fd.left = new FormAttachment(deleteButton, 2);
 
 		return refreshButton;
-
 	}
 
 	protected void refreshData() {
@@ -306,8 +362,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 							return false;
 						}
 					};
-					DataObjectDialog.openDialog(work, "edit.work.plan.4", false,
-							handler);
+					DataObjectDialog.openDialog(work, "edit.work.plan.4",
+							false, handler);
 					workListCreater.refresh();
 					setDirty(true);
 				} catch (Exception e) {
@@ -319,7 +375,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
 	}
 
-	protected void createDeliverable() {
+	protected void createDeliverableWithProject() {
 		IStructuredSelection sel = workListCreater.getSelection();
 		if (sel != null && !sel.isEmpty()) {
 			Object element = sel.getFirstElement();
@@ -379,6 +435,93 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 	}
 
+	protected void createDeliverableWithVault() {
+		IStructuredSelection sel = workListCreater.getSelection();
+		if (sel != null && !sel.isEmpty()) {
+			Object element = sel.getFirstElement();
+			final Work work;
+			if (element instanceof Work) {
+				work = (Work) element;
+			} else if (element instanceof Deliverable) {
+				Deliverable deliverable = (Deliverable) element;
+				work = (Work) deliverable.getParentPrimaryObjectCache();
+			} else {
+				work = null;
+			}
+			if (work != null) {
+				NavigatorSelector ns = new NavigatorSelector(
+						"vault.document.selector", "选择变更对象") {
+					@Override
+					protected void doOK(IStructuredSelection is) {
+						Document doc = (Document) is.getFirstElement();
+						try {
+							workListCreater.createDeliverable(work, doc);
+							setDirty(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						super.doOK(is);
+					}
+
+					@Override
+					protected boolean isSelectEnabled(IStructuredSelection is) {
+						if (!super.isSelectEnabled(is)) {
+							return false;
+						}
+						Object firstElement = is.getFirstElement();
+						return firstElement instanceof Document;
+					}
+				};
+				ns.show();
+				return;
+			}
+		}
+		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
+
+	}
+
+	protected void createDeliverableWithPDM(Composite parent) {
+//
+//		IStructuredSelection sel = workListCreater.getSelection();
+//		if (sel != null && !sel.isEmpty()) {
+//			Object element = sel.getFirstElement();
+//			final Work work;
+//			if (element instanceof Work) {
+//				work = (Work) element;
+//			} else if (element instanceof Deliverable) {
+//				Deliverable deliverable = (Deliverable) element;
+//				work = (Work) deliverable.getParentPrimaryObjectCache();
+//			} else {
+//				work = null;
+//			}
+//			if (work != null) {
+//				List<?> docContainer = getDocumentAndDrawingContainerCode();
+//				List<?> partContainer = getPartContainerCode();
+//				if (docContainer == null) {
+//					MessageUtil.showToast("您所在的组织尚未确定PDM系统中可使用图文档容器。",
+//							SWT.ICON_ERROR);
+//					return;
+//				}
+//				PDMObjectSelector selector = new PDMObjectSelector(parent.getShell(),
+//						docContainer, partContainer);
+//				int ret = selector.open();
+//				if (ret == PDMObjectSelector.OK) {
+//					String[] select = selector.getSelection();
+//					if (select.length == 0) {
+//						return;
+//					} else {
+//						Document doc = getDocument(select[0]);
+//						workListCreater.createDeliverable(work, doc);
+//						setDirty(true);
+//					}
+//				}
+//
+//			}
+//           return;
+//		}
+//		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
+	}
+
 	protected void createWork() {
 		NavigatorSelector ns = new NavigatorSelector(
 				"organization.navigaor.projectfunctionorg", "选择变更计划") {
@@ -414,7 +557,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	public void commit(boolean onSave) {
 
 		TaskForm taskform = (TaskForm) getInputData();
-		if(eca!=null){
+		if (eca != null) {
 			taskform.setValue(eca, workListCreater.getInput());
 		}
 		setDirty(false);
@@ -425,5 +568,84 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	public void setFocus() {
 		workListCreater.setFocus();
 	}
+//
+//	private List<?> getDocumentAndDrawingContainerCode() {
+//		String userId = new CurrentAccountContext().getConsignerId();
+//		User user = UserToolkit.getUserById(userId);
+//
+//		Organization org = user.getOrganization();
+//
+//		while (org != null) {
+//			List<?> code = org.getDocumentAndDrawingContainerCode();
+//			if (code != null) {
+//				return (List<?>) code;
+//			} else {
+//				org = (Organization) org.getParentOrganization();
+//			}
+//		}
+//		return null;
+//	}
+//
+//	private List<?> getPartContainerCode() {
+//		String userId = new CurrentAccountContext().getConsignerId();
+//		User user = UserToolkit.getUserById(userId);
+//
+//		Organization org = user.getOrganization();
+//
+//		while (org != null) {
+//			List<?> code = org.getPartContainerCode();
+//			if (code != null) {
+//				return (List<?>) code;
+//			} else {
+//				org = (Organization) org.getParentOrganization();
+//			}
+//		}
+//		return null;
+//	}
 
+//	private Document getDocument(String ouid) {
+//		Document document = null;
+//		try {
+//			DOSChangeable pdmObject = Starter.dos.get(ouid);
+//			boolean buildDocument = true;
+//			String documentNumber = (String) pdmObject.get("md$number");
+//			if (documentNumber != null) {
+//				DBCollection col = DBActivator.getCollection(
+//						IModelConstants.DB, IModelConstants.C_DOCUMENT);
+//				DBObject dbo = col.findOne(new BasicDBObject().append(
+//						Document.F_DOCUMENT_NUMBER, documentNumber));
+//				if (dbo != null) {
+//					document = ModelService.createModelObject(dbo,
+//							Document.class);
+//					buildDocument = false;
+//					return document;
+//				}
+//			}
+//			if (buildDocument) {
+//				ImportData ip = new ImportData() {
+//					@Override
+//					protected String getNamespace() {
+//						return "vault_file";
+//					}
+//
+//					@Override
+//					protected DB getDB() {
+//						OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
+//						return DBActivator.getDB(filebase.getDB());
+//					}
+//
+//					@Override
+//					protected String getClassOuid() {
+//						return null;
+//					}
+//				};
+//
+//				ip.syncItem(ouid, document);
+//
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return document;
+//	}
 }

@@ -12,7 +12,7 @@ import com.mobnut.db.model.PrimaryObject;
 
 public abstract class ProjectProvider extends PrimaryObject {
 
-	public ProjectSetSummaryData summaryData;
+	public ProjectSetSummaryData sum;
 
 
 	/**
@@ -40,7 +40,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 
 	public ProjectProvider() {
 		super();
-		summaryData = new ProjectSetSummaryData();
+		sum = new ProjectSetSummaryData();
 		parameters = new Object[2];
 		parameters[0] = Calendar.getInstance();
 		parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;

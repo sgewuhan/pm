@@ -22,7 +22,7 @@ public class ProjectAdminOfProject implements IActorIdProvider {
 		Work work = (Work) input[0];
 		Project project = work.getProject();
 		Organization org = project.getFunctionOrganization();
-		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, Organization.ROLE_NOT_SEARCH);
 		if (role != null) {
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null && assignment.size() > 0) {

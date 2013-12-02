@@ -41,7 +41,7 @@ public class ApplicationLeaderOfTaskforms extends MasterDetailDataSetFactory {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				try {
 					Organization org = user.getOrganization();
-					Role role = org.getRole(IRoleConstance.ROLE_PROJECR_AUDIT_ID, 1);
+					Role role = org.getRole(IRoleConstance.ROLE_PROJECR_AUDIT_ID, Organization.ROLE_SEARCH_UP);
 					List<PrimaryObject> assignment = role.getAssignment();
 					result.addAll(assignment);
 					return new DataSet(result);

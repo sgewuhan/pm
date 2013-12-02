@@ -1,5 +1,6 @@
 package com.sg.business.model;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
@@ -16,13 +17,14 @@ import com.sg.business.resource.BusinessResource;
  * @author jinxitao
  * 
  */
-public class Deliverable extends PrimaryObject implements IProjectRelative,IDeliverable {
+public class Deliverable extends PrimaryObject implements IProjectRelative,
+		IDeliverable {
 
 	/**
 	 * 工作_id字段，用于保存工作_id的值
 	 */
 	public static final String F_WORK_ID = "work_id";
-	
+
 	/**
 	 * 
 	 */
@@ -160,7 +162,8 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,IDeli
 				// 存在文档模板
 				DocumentDefinition docd = ModelService.createModelObject(
 						DocumentDefinition.class, docd_id);
-				doc = docd.doCreateDocument(projectId, folderId,workId, context);
+				doc = docd.doCreateDocument(projectId, folderId, workId,
+						context);
 			}
 
 			setValue(F_DOCUMENT_ID, doc.get_id());
@@ -185,10 +188,10 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,IDeli
 		 * 如果工作在完成时终止时暂停不可以删除
 		 */
 
-		if(isMandatory()){
+		if (isMandatory()) {
 			return false;
 		}
-		
+
 		Work work = getWork();
 		String lc = work.getLifecycleStatus();
 
@@ -218,6 +221,14 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,IDeli
 		}
 
 		if (!work.hasPermission(context)) {
+			String userId = context.getAccountInfo().getConsignerId();
+			BasicBSONList participatesIdList = work.getParticipatesIdList();
+			for (Object object : participatesIdList) {
+				String participatesId = (String) object;
+				if (userId.equals(participatesId)) {
+					return true;
+				}
+			}
 			return false;
 		}
 

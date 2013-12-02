@@ -884,17 +884,6 @@
             <pagecolumn>
                <section
                      label="请填写批准意见、结论和评审专家组成员">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="messagecontent"
-                        label="评审会议通知"
-                        labelVisible="true"
-                        name="messagecontent"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
                   <navigatorSelector
                         editable="true"
                         id="reviewer_admin"
@@ -1028,6 +1017,21 @@
                id="page1"
                title="审核">
             <pagecolumn>
+               <section
+                     label="请输入评审时间及地点">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="messagecontent"
+                        label="评审时间及地点"
+                        labelVisible="false"
+                        name="messagecontent"
+                        persistable="true"
+                        required="true"
+                        type="String"
+                        widthHint="320">
+                  </text>
+               </section>
                <section
                      label="请填评审实施意见和计划">
                   <text
@@ -1937,6 +1941,16 @@
       <navigator
             id="tb.taskforms.project.selector"
             table="tb.taskforms.project.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="company.navigator.allproject"

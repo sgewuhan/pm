@@ -440,7 +440,7 @@ public class User extends PrimaryObject {
 
 			return projectList;
 		} else {
-			return getRelationById(F__ID, Project.F_CHARGER, Project.class);
+			return getRelationById(F_USER_ID, Project.F_CHARGER, Project.class);
 		}
 	}
 }

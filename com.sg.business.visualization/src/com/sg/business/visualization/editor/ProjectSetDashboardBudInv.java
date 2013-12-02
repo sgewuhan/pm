@@ -1,16 +1,17 @@
 package com.sg.business.visualization.editor;
 
+import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 
-import com.sg.business.model.ProjectProvider;
-import com.sg.business.visualization.chart.ProjectChartFoctory;
+import com.sg.business.visualization.chart.ProjectChartFactory;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
 
@@ -21,9 +22,9 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 	private ChartCanvas processProjectMeter;
 	private ChartCanvas deptProjectBar;
 	private ChartCanvas pmProjectBar;
-	private TabItem deptBarTabItem;
-	private TabItem pmBarTabItem;
-	private TabFolder tabFolder;
+	private CTabItem deptBarTabItem;
+	private CTabItem pmBarTabItem;
+	private CTabFolder tabFolder;
 
 	@Override
 	protected Composite createContent(Composite body) {
@@ -51,27 +52,44 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 
 	private void createGraphic(Composite parent) {
 
-		tabFolder = new TabFolder(parent, SWT.TOP);
-		TabItem pieTabItem = new TabItem(tabFolder, SWT.NONE);
+		tabFolder = new CTabFolder(parent, SWT.TOP);
+		CTabItem pieTabItem = new CTabItem(tabFolder, SWT.NONE);
 		pieTabItem.setText("预算及超支状况");
-		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE);
+		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE) {
+			@Override
+			public Chart getChart() {
+				return ProjectChartFactory.getProjectBudgetAndCostPie(data);
+			}
+		};
 		pieTabItem.setControl(statusPieChart);
 
-		TabItem meterTabItem = new TabItem(tabFolder, SWT.NONE);
+		CTabItem meterTabItem = new CTabItem(tabFolder, SWT.NONE);
 		meterTabItem.setText("仪表盘");
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setLayout(new GridLayout());
-		finishedProjectMeter = new ChartCanvas(composite, SWT.NONE);
+		finishedProjectMeter = new ChartCanvas(composite, SWT.NONE) {
+			@Override
+			public Chart getChart() {
+				return ProjectChartFactory.getFinishedProjectBudgetAndCostMeter(data);
+			}
+		};
 		finishedProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, true, 1, 1));
 
-		processProjectMeter = new ChartCanvas(composite, SWT.NONE);
+		processProjectMeter = new ChartCanvas(composite, SWT.NONE) {
+			@Override
+			public Chart getChart() {
+				return ProjectChartFactory.getProcessProjectBudgetAndCostMeter(data);
+			}
+		};
 		processProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, true, 1, 1));
 
 		meterTabItem.setControl(composite);
 
+		
 		loadChartData();
+		tabFolder.setSelection(0);
 	}
 
 	@Override
@@ -98,106 +116,50 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 	}
 
 	private void loadChartData() {
-		
-		// "预算内完成"
-		int value1 = data.summaryData.finished_cost_normal;
-		// "超预算完成"
-		int value2 = data.summaryData.finished_cost_over;
-		// "超支风险"
-		int value3 = data.summaryData.processing_cost_over;
-		// "正常运行"
-		int value4 = data.summaryData.processing_cost_normal;
-		
-//		// "总预算"
-//		long value5 = data.summaryData.total_budget_amount;
-//		// "总研发成本"
-//		long value6 = data.summaryData.total_investment_amount;
-		
-		int sum = value1 + value2;
-		//已经完成的项目的超支比例
-		double finishedProjectOverCostRate = sum == 0 ? 0
-				: (100d * value2 / sum);
-
-		//进行中项目的超支风险
-		sum = value4 + value3;
-		double processProjectOverTimeRate = sum == 0 ? 0
-				: (100d * value3 / sum);
-
-		finishedProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
-				"超支完成项目比例 ", "预算超支", finishedProjectOverCostRate));
-		processProjectMeter.setChart(ProjectChartFoctory.createMeterChart(
-				"进行中项目超支风险 ", "超支风险", processProjectOverTimeRate));
 
 		// *****************************************************************************************
-		String pieChartCaption = "预算使用摘要";
-		String[] texts = new String[] { "预算内完成", "超预算完成", "超支风险","正常运行"};
-		double[] values = new double[] {value1,value2,value3,value4 };
-		statusPieChart.setChart(ProjectChartFoctory.createPieChart(
-				pieChartCaption, texts, values));
-
-		// *****************************************************************************************
-		String[] deptParameter = new String[data.summaryData.subOrganizationProjectProvider
+		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
 				.size()];
 		if (deptParameter.length != 0) {
-			double[] deptValue1 = new double[data.summaryData.subOrganizationProjectProvider
-					.size()];
-			double[] deptValue2 = new double[data.summaryData.subOrganizationProjectProvider
-					.size()];
-			for (int i = 0; i < deptParameter.length; i++) {
-				ProjectProvider projectProvider = data.summaryData.subOrganizationProjectProvider
-						.get(i);
-				projectProvider.setParameters(data.parameters);
-				projectProvider.getData();
-				deptParameter[i] = projectProvider.getDesc();
-				deptValue1[i] = projectProvider.summaryData.total_budget_amount/10000;
-				deptValue2[i] = projectProvider.summaryData.total_investment_amount/10000;
-			}
-
 			if (deptBarTabItem == null) {
-				deptBarTabItem = new TabItem(tabFolder, SWT.NONE);
+				deptBarTabItem = new CTabItem(tabFolder, SWT.NONE);
 				deptBarTabItem.setText("项目承担部门");
-				deptProjectBar = new ChartCanvas(tabFolder, SWT.NONE);
+				deptProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
+					@Override
+					public Chart getChart() {
+						return ProjectChartFactory.getDeptBudgetAndCostBar(data);
+					}
+				};
 				deptBarTabItem.setControl(deptProjectBar);
 			}
-
-			deptProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
-					"部门项目预算执行状况", deptParameter, deptValue1, deptValue2,new String[]{"预算","实际"}));
 		}
 		// *****************************************************************************************
-		String[] chargerName = new String[data.summaryData.subChargerProjectProvider
+		String[] chargerName = new String[data.sum.subChargerProjectProvider
 				.size()];
 		if (chargerName.length != 0) {
-			double[] userValue1 = new double[data.summaryData.subChargerProjectProvider
-					.size()];
-			double[] userValue2 = new double[data.summaryData.subChargerProjectProvider
-					.size()];
-			for (int i = 0; i < chargerName.length; i++) {
-				ProjectProvider projectProvider = data.summaryData.subChargerProjectProvider
-						.get(i);
-				projectProvider.setParameters(data.parameters);
-				projectProvider.getData();
-				chargerName[i] = projectProvider.getDesc();
-				userValue1[i] = projectProvider.summaryData.total_budget_amount/10000;
-				userValue2[i] = projectProvider.summaryData.total_investment_amount/10000;
-			}
-
-			if(pmBarTabItem==null){
-				pmBarTabItem = new TabItem(tabFolder, SWT.NONE);
+			if (pmBarTabItem == null) {
+				pmBarTabItem = new CTabItem(tabFolder, SWT.NONE);
 				pmBarTabItem.setText("项目经理");
-				pmProjectBar = new ChartCanvas(tabFolder, SWT.NONE);
+				pmProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
+					@Override
+					public Chart getChart() {
+						return ProjectChartFactory.getChargerBudgetAndCostBar(data);
+					}
+				};
 				pmBarTabItem.setControl(pmProjectBar);
 			}
-
-			pmProjectBar.setChart(ProjectChartFoctory.createStackedBarChart(
-					"项目经理预算执行状况", chargerName, userValue1, userValue2,new String[]{"预算","实际"}));
 		}
 	}
 
 	private void redrawChart() {
-		deptProjectBar.redrawChart();
-		finishedProjectMeter.redrawChart();
-		processProjectMeter.redrawChart();
-		statusPieChart.redrawChart();
+		try {
+			deptProjectBar.redrawChart();
+			finishedProjectMeter.redrawChart();
+			processProjectMeter.redrawChart();
+			statusPieChart.redrawChart();
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+		}
 	}
 
 }

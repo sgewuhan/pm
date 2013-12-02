@@ -1376,7 +1376,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String userId = context.getAccountInfo().getConsignerId();
 		Organization org = getFunctionOrganization();
 		if (org != null) {
-			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
+					Organization.ROLE_NOT_SEARCH);
 			if (role != null) {
 				List<PrimaryObject> assignmentList = role.getAssignment();
 				if (assignmentList != null && assignmentList.size() > 0) {
@@ -1839,7 +1840,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throw new Exception("项目无管理部门或管理部门被删除，" + this);
 		}
 
-		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
+		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
+				Organization.ROLE_NOT_SEARCH);
 		boolean b = true;
 		List<PrimaryObject> assignment = role.getAssignment();
 		for (PrimaryObject po : assignment) {
@@ -2172,7 +2174,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				ProductItem.class);
 	}
 
-	public void doProductFinal(IContext context, List<?> productList)
+	/**
+	 * 转批
+	 * 
+	 * @param context
+	 * @param productList
+	 * @throws Exception
+	 */
+	public void doChangeMassProduction(IContext context, List<?> productList)
 			throws Exception {
 		ObjectId _id = get_id();
 		for (Object object : productList) {
@@ -2181,7 +2190,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			q.put(ProductItem.F_DESC, object);
 			ProductItem productItem = ModelService.createModelObject(q,
 					ProductItem.class);
-			productItem.doFinal(context);
+			productItem.doChangeToMassProduction(context);
 		}
 	}
 
@@ -2197,7 +2206,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 
 	 * @return
 	 */
-	public double getInvestmentValue() {
+	public double getInvestment() {
 		// 合计分摊到工作令号的研发成本
 		double aValue = getAllocatedInvestment();
 		double dValue = getDesignatedInvestment();
@@ -2297,10 +2306,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
 		// 注意在数据库初始化时设置该默认值为30%
 
-		double ratio = Double.valueOf((String) Setting
-				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE));
+		Object value = Setting
+				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
+		double ratio = value == null ? .3d : Double.valueOf((String) value);
 		Double bv = getBudgetValue();
-		Double av = getInvestmentValue();
+		Double av = getInvestment();
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
@@ -2317,11 +2327,50 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public boolean isOverCost() {
 		Double bv = getBudgetValue();
-		Double av = getInvestmentValue();
+		Double av = getInvestment();
 		if (bv == null || av == null || bv == 0) {
 			return false;
 		}
 		return av > bv;
+	}
+
+	public List<PrimaryObject> getSubconcessionsProduct() {
+		return getRelationByCondition(
+				ProductItem.class,
+				new BasicDBObject()
+						.append(ProductItem.F_PROJECT_ID, get_id())
+						.append(ProductItem.F_IS_MASS_PRODUCTION,
+								new BasicDBObject().append("$ne", Boolean.TRUE)));
+	}
+
+	public String[] getProductCode() {
+		List<PrimaryObject> products = getProduct();
+		if (products == null) {
+			return new String[0];
+		}
+		String[] result = new String[products.size()];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = products.get(i).getDesc();
+		}
+		return result;
+
+	}
+
+	/**
+	 * 
+	 * @return double[0] 销售收入, double[1] 销售成本
+	 */
+	public double[] getSalesSummaryData() {
+		List<PrimaryObject> products = getProduct();
+		double[] result = new double[] { 0d, 0d };
+		if(products!=null){
+			for (int i = 0; i < products.size(); i++) {
+				ProductItem pd = (ProductItem) products.get(i);
+				result[0] += pd.getSalesRevenue();
+				result[1] += pd.getSalesCost();
+			}
+		}
+		return result;
 	}
 
 }

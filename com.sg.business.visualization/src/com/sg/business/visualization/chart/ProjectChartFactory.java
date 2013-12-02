@@ -52,8 +52,9 @@ import org.eclipse.birt.chart.model.type.impl.DialSeriesImpl;
 import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 
 import com.mobnut.commons.util.Utils;
+import com.sg.business.model.ProjectProvider;
 
-public class ProjectChartFoctory {
+public class ProjectChartFactory {
 
 	private static final int STRONG_SIZE = 11;
 
@@ -81,12 +82,12 @@ public class ProjectChartFoctory {
 
 	public static Chart createPieChart(String pieChartCaption, String[] texts,
 			double[] values) {
-		double maxValue = Utils.max(values);
+		// double maxValue = Utils.max(values);
 		ChartWithoutAxes chart = ChartWithoutAxesImpl.create();
 		chart.setDimension(ChartDimension.TWO_DIMENSIONAL_LITERAL);
-		chart.setMinSlice(maxValue / 20);// 最大的十分之一
-		chart.setMinSliceLabel("其他");
-		chart.setMinSlicePercent(true);
+		// chart.setMinSlice(maxValue / 50);// 最大的十分之一
+		// chart.setMinSliceLabel("其他");
+		// chart.setMinSlicePercent(true);
 		Text caption = chart.getTitle().getLabel().getCaption();
 		caption.setValue(pieChartCaption);
 		adjustFont(caption.getFont(), STRONG_SIZE);
@@ -125,8 +126,9 @@ public class ProjectChartFoctory {
 		return chart;
 	}
 
-	public static Chart createStackedBarChart(String title,String[] deptParameter,
-			double[] deptValue1, double[] deptValue2,String[] seriesTitle) {
+	public static Chart createStackedBarChart(String title,
+			String[] deptParameter, double[] deptValue1, double[] deptValue2,
+			String[] seriesTitle) {
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType("Bar Chart"); //$NON-NLS-1$
 		cwaBar.setSubType("Stacked"); //$NON-NLS-1$
@@ -243,7 +245,7 @@ public class ProjectChartFoctory {
 		// Title/Plot
 		chart.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
 		chart.getPlot().getClientArea().setVisible(false);
-		chart.setCoverage(1.8);
+		chart.setCoverage(1);
 
 		TitleBlock title = chart.getTitle();
 		title.getOutline().setVisible(false);
@@ -251,7 +253,7 @@ public class ProjectChartFoctory {
 		NumberFormat nf = NumberFormat.getNumberInstance();
 		nf.setMaximumFractionDigits(2);
 		caption.setValue(chartCaptionText + (nf.format(value)) + "%");//$NON-NLS-1$
-		adjustFont(caption.getFont(), NORMAL_SIZE);
+		adjustFont(caption.getFont(), STRONG_SIZE);
 
 		// Legend
 		Legend legend = chart.getLegend();
@@ -347,6 +349,286 @@ public class ProjectChartFoctory {
 	private static ColorDefinition getRGBColorDefinition(String colorCode) {
 		int[] rgb = Utils.getRGB(colorCode);// "正常完成"
 		return ColorDefinitionImpl.create(rgb[0], rgb[1], rgb[2]);
+	}
+
+	public static Chart getSchedualStatusPieChart(ProjectProvider data) {
+		// "正常完成"
+		int value1 = data.sum.finished_normal;
+		// "超期完成",
+		int value2 = data.sum.finished_delay;
+		// "提前完成",
+		int value3 = data.sum.finished_advance;
+		// "进度延迟",
+		int value4 = data.sum.processing_delay;
+		// "正常进行"
+		int value5 = data.sum.processing_normal;
+		// 进度提前
+		int value6 = data.sum.processing_advance;
+
+		String pieChartCaption = "进度摘要";
+		String[] texts = new String[] { "正常完成", "超期完成", "进度延迟", "正常进行", "进度提前" };
+		double[] values = new double[] { (value1 + value3), value2, value4,
+				value5, value6 };
+		return createPieChart(pieChartCaption, texts, values);
+	}
+
+	public static Chart getFinishedProjectSchedualMeter(ProjectProvider data) {
+		// "正常完成"
+		int value1 = data.sum.finished_normal;
+		// "超期完成",
+		int value2 = data.sum.finished_delay;
+		// "提前完成",
+		int value3 = data.sum.finished_advance;
+		int sum = value1 + value2 + value3;
+		double finishProjectOverTimeRate = sum == 0 ? 0 : (100d * value2 / sum);
+
+		return createMeterChart("已完成项目超期 ", "进度延迟", finishProjectOverTimeRate);
+	}
+
+	public static Chart getProcessProjectSchedualMeterChart(ProjectProvider data) {
+		// "进度延迟",
+		int value4 = data.sum.processing_delay;
+		// "正常进行"
+		int value5 = data.sum.processing_normal;
+		// 进度提前
+		int value6 = data.sum.processing_advance;
+
+		int sum = value4 + value5 + value6;
+		double processProjectOverTimeRate = sum == 0 ? 0
+				: (100d * value4 / sum);
+
+		return createMeterChart("进行中项目超期 ", "进度延迟", processProjectOverTimeRate);
+	}
+
+	public static Chart getProjectSchedualMeter(ProjectProvider data) {
+		// "正常完成"
+		int value1 = data.sum.finished_normal;
+		// "超期完成",
+		int value2 = data.sum.finished_delay;
+		// "提前完成",
+		int value3 = data.sum.finished_advance;
+		// "进度延迟",
+		int value4 = data.sum.processing_delay;
+		// "正常进行"
+		int value5 = data.sum.processing_normal;
+		// 进度提前
+		int value6 = data.sum.processing_advance;
+		int sum = value1 + value2 + value3 + value4 + value5 + value6;
+		double allProjectOverTimeRate = sum == 0 ? 0
+				: (100d * (value2 + value4) / sum);
+		return createMeterChart("总体项目超期率 ", "进度延迟", allProjectOverTimeRate);
+	}
+
+	public static Chart getDeptSchedualBar(ProjectProvider data) {
+		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue1 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue2 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		for (int i = 0; i < deptParameter.length; i++) {
+			ProjectProvider projectProvider = data.sum.subOrganizationProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			deptParameter[i] = projectProvider.getDesc();
+			deptValue1[i] = projectProvider.sum.processing_normal
+					+ projectProvider.sum.processing_advance;
+			deptValue2[i] = projectProvider.sum.processing_delay;
+		}
+
+		return createStackedBarChart("部门项目执行状况", deptParameter, deptValue1,
+				deptValue2, new String[] { "正常", "超期" });
+	}
+
+	public static Chart getChargerSchedualBar(ProjectProvider data) {
+		String[] chargerName = new String[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue1 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue2 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		for (int i = 0; i < chargerName.length; i++) {
+			ProjectProvider projectProvider = data.sum.subChargerProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			chargerName[i] = projectProvider.getDesc();
+			userValue1[i] = projectProvider.sum.processing_normal
+					+ projectProvider.sum.processing_advance;
+			userValue2[i] = projectProvider.sum.processing_delay;
+		}
+
+		return createStackedBarChart("项目经理项目执行状况", chargerName, userValue1,
+				userValue2, new String[] { "正常", "超期" });
+	}
+
+	public static Chart getFinishedProjectBudgetAndCostMeter(
+			ProjectProvider data) {
+		// "预算内完成"
+		int value1 = data.sum.finished_cost_normal;
+		// "超预算完成"
+		int value2 = data.sum.finished_cost_over;
+		int sum = value1 + value2;
+		// 已经完成的项目的超支比例
+		double finishedProjectOverCostRate = sum == 0 ? 0
+				: (100d * value2 / sum);
+
+		return createMeterChart("超支完成项目比例 ", "预算超支",
+				finishedProjectOverCostRate);
+	}
+
+	public static Chart getProjectBudgetAndCostPie(ProjectProvider data) {
+		// "预算内完成"
+		int value1 = data.sum.finished_cost_normal;
+		// "超预算完成"
+		int value2 = data.sum.finished_cost_over;
+		// "超支风险"
+		int value3 = data.sum.processing_cost_over;
+		// "正常运行"
+		int value4 = data.sum.processing_cost_normal;
+
+		String pieChartCaption = "预算使用摘要";
+		String[] texts = new String[] { "预算内完成", "超预算完成", "超支风险", "正常运行" };
+		double[] values = new double[] { value1, value2, value3, value4 };
+		return createPieChart(pieChartCaption, texts, values);
+	}
+
+	public static Chart getProcessProjectBudgetAndCostMeter(ProjectProvider data) {
+		// "超支风险"
+		int value3 = data.sum.processing_cost_over;
+		// "正常运行"
+		int value4 = data.sum.processing_cost_normal;
+		// 进行中项目的超支风险
+		int sum = value4 + value3;
+		double processProjectOverTimeRate = sum == 0 ? 0
+				: (100d * value3 / sum);
+
+		return createMeterChart("进行中项目超支风险 ", "超支风险",
+				processProjectOverTimeRate);
+	}
+
+	public static Chart getDeptBudgetAndCostBar(ProjectProvider data) {
+		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue1 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue2 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		for (int i = 0; i < deptParameter.length; i++) {
+			ProjectProvider projectProvider = data.sum.subOrganizationProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			deptParameter[i] = projectProvider.getDesc();
+			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
+			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
+		}
+		return createStackedBarChart("部门项目预算执行状况", deptParameter, deptValue1,
+				deptValue2, new String[] { "预算", "实际" });
+	}
+
+	public static Chart getChargerBudgetAndCostBar(ProjectProvider data) {
+		String[] chargerName = new String[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue1 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue2 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		for (int i = 0; i < chargerName.length; i++) {
+			ProjectProvider projectProvider = data.sum.subChargerProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			chargerName[i] = projectProvider.getDesc();
+			userValue1[i] = projectProvider.sum.total_budget_amount / 10000;
+			userValue2[i] = projectProvider.sum.total_investment_amount / 10000;
+		}
+		return createStackedBarChart("项目经理预算执行状况", chargerName, userValue1,
+				userValue2, new String[] { "预算", "实际" });
+	}
+
+	public static Chart getCostAndProfitPie(ProjectProvider data) {
+		// "销售收入"
+		long value1 = data.sum.total_sales_revenue;
+		// "销售成本
+		long value2 = data.sum.total_sales_cost;
+		// "利润"
+		long value3 = value1 - value2;
+
+		String pieChartCaption = "销售成本及利润";
+		String[] texts = new String[] { "销售成本", "销售利润" };
+		double[] values = new double[] { value2 / 10000, value3 / 10000 };
+		return createPieChart(pieChartCaption, texts, values);
+	}
+
+	public static Chart getProfitRateMeter(ProjectProvider data) {
+		// "销售收入"
+		long value1 = data.sum.total_sales_revenue;
+		// "销售成本
+		long value2 = data.sum.total_sales_cost;
+		// "利润"
+		long value3 = value1 - value2;
+		// 利润率
+		double profit = value1 == 0 ? 0 : 100d * value3 / value1;
+
+		return createMeterChart("销售利润率", "销售收入", profit);
+	}
+
+	public static Chart getDeptRevenueBar(ProjectProvider data) {
+		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue1 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue2 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		for (int i = 0; i < deptParameter.length; i++) {
+			ProjectProvider projectProvider = data.sum.subOrganizationProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			deptParameter[i] = projectProvider.getDesc();
+			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
+			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
+		}
+		return createStackedBarChart("按部门计算项目收入情况", deptParameter, deptValue1,
+				deptValue2, new String[] { "销售收入", "销售利润" });
+	}
+
+	public static Chart getProjectChargerRevenueBar(ProjectProvider data) {
+		String[] chargerName = new String[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue1 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		double[] userValue2 = new double[data.sum.subChargerProjectProvider
+				.size()];
+		for (int i = 0; i < chargerName.length; i++) {
+			ProjectProvider projectProvider = data.sum.subChargerProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			chargerName[i] = projectProvider.getDesc();
+			userValue1[i] = projectProvider.sum.total_sales_revenue / 10000;
+			userValue2[i] = (projectProvider.sum.total_sales_revenue - projectProvider.sum.total_sales_cost) / 10000;
+		}
+		return createStackedBarChart("按项目经理计算项目收入情况", chargerName, userValue1,
+				userValue2, new String[] { "销售收入", "销售利润" });
+	}
+
+	public static Chart getROIMeter(ProjectProvider data) {
+		// "销售收入"
+		long value1 = data.sum.total_sales_revenue;
+		// "销售成本
+		long value2 = data.sum.total_sales_cost;
+		// "利润"
+		long profit = value1 - value2;
+
+		// 期初资产
+		long inv = data.sum.total_investment_amount;
+
+		double roi = value1 == 0 ? 0 : 100d * profit / inv;
+
+		return createMeterChart("ROI", "ROI", roi);
 	}
 
 }

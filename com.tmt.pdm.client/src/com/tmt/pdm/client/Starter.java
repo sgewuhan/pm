@@ -38,25 +38,37 @@ public class Starter implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		try {
-			dfw = new Client();
-			dos = (DOS) dfw.getServiceInstance("DF30DOS1");
-			nds = (NDS) dfw.getServiceInstance("DF30NDS1");
-			dtm = (DTM) dfw.getServiceInstance("DF30DTM1");
-			aus = (AUS) dfw.getServiceInstance("DF30AUS1");
-			dss = (DSS) dfw.getServiceInstance("DF30DSS1");
-			msr = (MSR) dfw.getServiceInstance("DF30MSR1");
-			wfm = (WFM) dfw.getServiceInstance("DF30WFM1");
-			acl = (ACL) dfw.getServiceInstance("DF30ACL1");
-			wks = (WKS) dfw.getServiceInstance("DF30WKS1");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		lazyLoadService();
+	}
+
+	private void lazyLoadService() {
+		Thread t = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					dfw = new Client();
+					dos = (DOS) dfw.getServiceInstance("DF30DOS1");
+					nds = (NDS) dfw.getServiceInstance("DF30NDS1");
+					dtm = (DTM) dfw.getServiceInstance("DF30DTM1");
+					aus = (AUS) dfw.getServiceInstance("DF30AUS1");
+					dss = (DSS) dfw.getServiceInstance("DF30DSS1");
+					msr = (MSR) dfw.getServiceInstance("DF30MSR1");
+					wfm = (WFM) dfw.getServiceInstance("DF30WFM1");
+					acl = (ACL) dfw.getServiceInstance("DF30ACL1");
+					wks = (WKS) dfw.getServiceInstance("DF30WKS1");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}
+			
+		});
+		t.start();
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-
+		dfw.close();
 	}
 
 }

@@ -21,7 +21,7 @@ public class SupervisorOfLauncher implements IActorIdProvider {
 		Work work = (Work) input[0];
 		User charger = work.getCharger();
 		Organization org = charger.getOrganization();
-		Role role = org.getRole(Role.ROLE_DEPT_MANAGER_ID, 0);
+		Role role = org.getRole(Role.ROLE_DEPT_MANAGER_ID, Organization.ROLE_NOT_SEARCH);
 		if (role != null) {
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null && assignment.size() > 0) {

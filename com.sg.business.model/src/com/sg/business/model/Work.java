@@ -757,7 +757,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	// }
 
 	public boolean isMandatory() {
-		return Boolean.TRUE.equals(getValue(F_MANDATORY));
+		return Boolean.TRUE.equals(getValue(F_MANDATORY)) || isMilestone();
 	}
 
 	public boolean isMilestone() {
@@ -918,7 +918,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 
 		// 4.判断是否为该工作或上级工作的负责人或项目的项目经理
-		return hasPermission(context);
+		if (hasPermission(context)) {
+			return true;
+		} else {
+			String userId = context.getAccountInfo().getConsignerId();
+			BasicBSONList participatesIdList = getParticipatesIdList();
+			for (Object object : participatesIdList) {
+				String participatesId = (String) object;
+				if (userId.equals(participatesId)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 	/**
@@ -1403,36 +1415,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return result;
 	}
 
-	/**
-	 * 项目的工作检查必要信息是否录入
-	 * 
-	 * 2013-10-31 修改 zhonghua
-	 * 
-	 * 级联检查下级工作时，只考虑需同步启动的工作
-	 * 
-	 * @return
-	 */
-	protected List<Object[]> checkCascadeStart(boolean warningCheck) {
-		List<Object[]> message = new ArrayList<Object[]>();
-		List<PrimaryObject> childrenWork = getChildrenWork();
-		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
-			for (int i = 0; i < childrenWork.size(); i++) {
-				Work childWork = (Work) childrenWork.get(i);
-				// 通过warningCheck，降低下级的检查标准
-				if (Boolean.TRUE.equals(childWork
-						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))) {
-					message.addAll(childWork.checkCascadeStart(warningCheck));
-				}
-			}
-		}
-
-		// 非级联启动工作不检查
-		if (!isProjectWBSRoot()) {
-			message.addAll(checkWorkStart(warningCheck));
-		}
-		return message;
-	}
-
 	protected List<Object[]> checkWorkStart(boolean warningCheck) {
 		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.检查工作的计划开始和计划完成
@@ -1520,7 +1502,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				new BasicDBObject().append("$ne", Boolean.TRUE));
 		long count = getRelationCountByCondition(Work.class, condition);
 		if (count > 0) {
-			message.add(new Object[] { "非级联完成的下级工作未完成或取消", this,
+			message.add(new Object[] { "暂停或进行中的非级联完成的下级工作未完成或取消", this,
 					SWT.ICON_ERROR, EDITOR });
 		}
 
@@ -1544,6 +1526,61 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				}
 				message.addAll(checkCascadeFinish(childWork.get_id()));
 			}
+		}
+
+		// 3.判断非级联完成的工作是否存在是必须的，是必须时，必须完成该工作
+		condition = new BasicDBObject();
+		condition.put(F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
+				new BasicDBObject().append("$ne", Boolean.TRUE));
+		condition.put(F_PARENT_ID, id);
+		condition
+				.put("$or",
+						new BasicDBObject[] {
+								new BasicDBObject().append(F_MILESTONE,
+										Boolean.TRUE),
+								new BasicDBObject().append(F_MANDATORY,
+										Boolean.TRUE) });
+		condition.put(
+				F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE,
+						STATUS_NONE_VALUE, null, STATUS_ONREADY_VALUE }));
+
+		count = getRelationCountByCondition(Work.class, condition);
+		if (count > 0) {
+			message.add(new Object[] { "非级联完成且设置了必须(里程碑)的下级工作未完成", this,
+					SWT.ICON_ERROR, EDITOR });
+		}
+
+		return message;
+	}
+
+	/**
+	 * 项目的工作检查必要信息是否录入
+	 * 
+	 * 2013-10-31 修改 zhonghua
+	 * 
+	 * 级联检查下级工作时，只考虑需同步启动的工作
+	 * 
+	 * @return
+	 */
+	protected List<Object[]> checkCascadeStart(boolean warningCheck) {
+		List<Object[]> message = new ArrayList<Object[]>();
+		List<PrimaryObject> childrenWork = getChildrenWork();
+		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
+			for (int i = 0; i < childrenWork.size(); i++) {
+				Work childWork = (Work) childrenWork.get(i);
+				// 通过warningCheck，降低下级的检查标准
+				if (Boolean.TRUE.equals(childWork
+						.getValue(F_SETTING_AUTOSTART_WHEN_PARENT_START))) {
+					message.addAll(childWork.checkCascadeStart(warningCheck));
+				}
+			}
+		}
+
+		// 非级联启动工作不检查
+		if (!isProjectWBSRoot()) {
+			message.addAll(checkWorkStart(warningCheck));
 		}
 		return message;
 	}
@@ -2496,9 +2533,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Map<String, Object> params = new HashMap<String, Object>();
 		doCancelBefore(context, params);
 
-		cancelExecuteProcessInstance(context);
-
-		DBObject update = new BasicDBObject();
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
@@ -2508,11 +2542,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// .getValue(F_LIFECYCLE))) {
 			// }
 			// 取消下级工作
-			if (childWork.canCancel()) {
-				childWork.doCancel(context);
-			}
+			childWork.checkCancelAction(context);
+			childWork.doCancel(context);
 		}
 
+		cancelExecuteProcessInstance(context);
+
+		DBObject update = new BasicDBObject();
 		// 标记工作已取消
 		update.put(F_LIFECYCLE, STATUS_CANCELED_VALUE);
 

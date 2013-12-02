@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.types.BasicBSONList;
+import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -16,6 +17,8 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -24,6 +27,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.jbpm.task.Status;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
@@ -31,6 +35,7 @@ import com.sg.business.commons.ui.flow.ProcessHistoryUIToolkit;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDocumentProcess;
 import com.sg.business.model.UserTask;
+import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
@@ -42,12 +47,14 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 	private TableViewer taskViewer;
 	private SimpleSection section2;
 	private SimpleSection section1;
+	private Document doc;
 
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		super.createPageContent(parent, input, conf);
-		Document doc = (Document) input.getData();
+
+		doc = (Document) input.getData();
 		parent.setLayout(new GridLayout());
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
@@ -95,8 +102,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		});
 		taskViewer.setContentProvider(ArrayContentProvider.getInstance());
 
-		ProcessHistoryUIToolkit
-				.handleProcessHistoryTable(taskViewer.getTable());
+		ProcessHistoryUIToolkit.handleProcessHistoryTable(table);
 
 		autoResize(parent, table);
 		return table;
@@ -139,6 +145,24 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		viewer.setInput(history);
 		viewer.addSelectionChangedListener(this);
 		autoResize(parent, table);
+
+		table.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent event) {
+				if (event.detail == RWT.HYPERLINK) {
+					try {
+						String[] para = event.text.substring(
+								event.text.lastIndexOf("/") + 1).split("@");
+						if ("print".equals(para[2])) {
+							// 20102652
+							ProcessHistoryUIToolkit.doPrint(Long
+									.parseLong(para[0]), new ObjectId(para[1]));
+						}
+					} catch (Exception e) {
+					}
+				}
+			}
+		});
+
 		return table;
 
 	}
@@ -167,6 +191,15 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		sb.append(processName);
 		sb.append("</small>");
 		sb.append("</span>");
+		sb.append("<a href=\""
+				+ dbObject.get(IDocumentProcess.F_PROCESS_INSTANCEID) + "@"
+				+ doc.get_id() + "@print" + "\" target=\"_rwt\">");
+		sb.append("<img src='");
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_PRINT_W_48,
+				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+		sb.append("' style='border-style:none;position:absolute; right:0; top:0; display:block;' width='32' height='32' />");
+		sb.append("</a>");
+
 		return sb.toString();
 	}
 
@@ -182,29 +215,18 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		IStructuredSelection sel = (IStructuredSelection) event.getSelection();
-		PrimaryObject[] input;
-		if (sel == null || sel.isEmpty()) {
-			input = new PrimaryObject[0];
-		} else {
+		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
+		if (sel != null && !sel.isEmpty()) {
 			DBObject processItem = (DBObject) sel
 					.getFirstElement();
 			List<?> history = (List<?>) processItem.get(IDocumentProcess.F_HISTORY);
-			List<Object> removeHistory = new ArrayList<Object>();
 			for (Object object : history) {
-				if(! Status.Completed.name().equals(((DBObject)object).get(UserTask.F_STATUS))){
-					removeHistory.add(object);
+				if( Status.Completed.name().equals(((DBObject)object).get(UserTask.F_STATUS))){
+					input.add(ModelService.createModelObject((DBObject)object, UserTask.class));
 				}
 			}
-			history.removeAll(removeHistory);
-			input = new PrimaryObject[history.size()];
-			for (int i = 0; i < input.length; i++) {
-				input[i] = ModelService.createModelObject((DBObject)history.get(i), UserTask.class);
-			}
-			
-			
 		}
 		taskViewer.setInput(input);
-		
 		section2.layout();
 		section2.reflow();
 	}

@@ -1,5 +1,6 @@
 package com.sg.business.model.toolkit;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +30,7 @@ import com.sg.business.model.DocumentDefinition;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.IWorkCloneFields;
+import com.sg.business.model.ProductItem;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.Work;
@@ -444,28 +446,31 @@ public class ProjectToolkit {
 			BasicBSONList filtersValue = (BasicBSONList) filters;
 			// 检查标准集
 			List<String> optionValueSet = project.getStandardSetOptions();
-			String set = checkOptionValueFromSet(filtersValue, optionValueSet,WorkDefinition.OPTIONSET_NAME_STANDARD);
-			if(WorkDefinition.VALUE_EXCLUDE.equals(set)){
+			String set = checkOptionValueFromSet(filtersValue, optionValueSet,
+					WorkDefinition.OPTIONSET_NAME_STANDARD);
+			if (WorkDefinition.VALUE_EXCLUDE.equals(set)) {
 				return WorkDefinition.VALUE_EXCLUDE;
-			} else if(WorkDefinition.VALUE_MANDATORY.equals(set)){
+			} else if (WorkDefinition.VALUE_MANDATORY.equals(set)) {
 				setOption = WorkDefinition.VALUE_MANDATORY;
 			}
 
 			// 检查产品选项集
 			optionValueSet = project.getProductTypeOptions();
-			set = checkOptionValueFromSet(filtersValue, optionValueSet,WorkDefinition.OPTIONSET_NAME_PRODUCTTYPE);
-			if(WorkDefinition.VALUE_EXCLUDE.equals(set)){
+			set = checkOptionValueFromSet(filtersValue, optionValueSet,
+					WorkDefinition.OPTIONSET_NAME_PRODUCTTYPE);
+			if (WorkDefinition.VALUE_EXCLUDE.equals(set)) {
 				return WorkDefinition.VALUE_EXCLUDE;
-			} else if(WorkDefinition.VALUE_MANDATORY.equals(set)){
+			} else if (WorkDefinition.VALUE_MANDATORY.equals(set)) {
 				setOption = WorkDefinition.VALUE_MANDATORY;
 			}
 
 			// 检查项目选项集
 			optionValueSet = project.getProjectTypeOptions();
-			set = checkOptionValueFromSet(filtersValue, optionValueSet,WorkDefinition.OPTIONSET_NAME_PROJECTTYPE);
-			if(WorkDefinition.VALUE_EXCLUDE.equals(set)){
+			set = checkOptionValueFromSet(filtersValue, optionValueSet,
+					WorkDefinition.OPTIONSET_NAME_PROJECTTYPE);
+			if (WorkDefinition.VALUE_EXCLUDE.equals(set)) {
 				return WorkDefinition.VALUE_EXCLUDE;
-			} else if(WorkDefinition.VALUE_MANDATORY.equals(set)){
+			} else if (WorkDefinition.VALUE_MANDATORY.equals(set)) {
 				setOption = WorkDefinition.VALUE_MANDATORY;
 			}
 		}
@@ -478,11 +483,9 @@ public class ProjectToolkit {
 			for (int i = 0; i < optionValueSet.size(); i++) {
 				String optionValueItem = optionValueSet.get(i);
 				BasicDBObject item = new BasicDBObject();
-				item.put(WorkDefinition.SF_OPTIONSET,
-						optionsetSetName);
+				item.put(WorkDefinition.SF_OPTIONSET, optionsetSetName);
 				item.put(WorkDefinition.SF_OPTION, optionValueItem);
-				item.put(WorkDefinition.SF_VALUE,
-						WorkDefinition.VALUE_EXCLUDE);
+				item.put(WorkDefinition.SF_VALUE, WorkDefinition.VALUE_EXCLUDE);
 				if (filtersValue.contains(item)) {
 					return WorkDefinition.VALUE_EXCLUDE;
 				} else {
@@ -703,7 +706,7 @@ public class ProjectToolkit {
 		if (desc == null) {
 			throw new Exception("未录入项目名称无法新建项目");
 		}
-		if (launchorg_id == null||launchorg_id.size()==0) {
+		if (launchorg_id == null || launchorg_id.size() == 0) {
 			throw new Exception("未录入项目发起部门无法新建项目");
 		}
 		if (org_id == null) {
@@ -780,6 +783,7 @@ public class ProjectToolkit {
 
 		// 将工作添加到项目根工作中
 		work.setValue(Work.F_ROOT_ID, wbsRoot.get_id());
+		work.setValue(Work.F_PARENT_ID, wbsRoot.get_id());
 		work.setValue(Work.F_PROJECT_ID, projectId);
 		int seq = wbsRoot.getMaxChildSeq();
 		work.setValue(Work.F_SEQ, new Integer(seq + 1));
@@ -833,6 +837,22 @@ public class ProjectToolkit {
 				throw new Exception(error);
 			}
 		}
+	}
+
+	public static void updateProjectSalesData() {
+		DBCollection colPd = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PRODUCT);
+		String dateCode = String.format("%1$tY%1$tm", Calendar.getInstance());
+		DBCursor cur = colPd.find(new BasicDBObject().append(
+				ProductItem.F_SALES_DATA_UPDATE,
+				new BasicDBObject().append("$ne", dateCode)));
+		while (cur.hasNext()) {
+			DBObject prodData = cur.next();
+			ProductItem pd = ModelService.createModelObject(prodData,
+					ProductItem.class);
+			pd.doCalculateSalesData();
+		}
+
 	}
 
 }

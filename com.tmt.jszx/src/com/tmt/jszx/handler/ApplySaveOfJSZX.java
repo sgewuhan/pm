@@ -66,7 +66,7 @@ public class ApplySaveOfJSZX implements IDataObjectDialogCallback {
 		if (dept instanceof ObjectId) {
 			Organization org = ModelService.createModelObject(
 					Organization.class, (ObjectId) dept);
-			Role role = org.getRole(roleNumber, 1);
+			Role role = org.getRole(roleNumber, Organization.ROLE_SEARCH_UP);
 			if (role != null) {
 				List<PrimaryObject> assignment = role.getAssignment();
 				if (assignment != null && assignment.size() > 0) {

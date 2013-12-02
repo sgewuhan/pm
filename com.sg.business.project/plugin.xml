@@ -369,6 +369,14 @@
                   columnDefinitionId="roledefinition.desc">
             </column>
          </searchAction>
+         <exportAction>
+            <column
+                  column="desc"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportShowDesc"
+                  name="角色名称"
+                  type="String">
+            </column>
+         </exportAction>
       </navigator>
       <navigator
             id="project.wbs"
@@ -423,30 +431,70 @@
             <column
                   columnDefinitionId="participate">
             </column></searchAction>
+            
          <exportAction>
             <column
-                  columnDefinitionId="work.desc">
+                  column="desc"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportShowLeverDesc"
+                  name="名称"
+                  type="String">
             </column>
             <column
-                  columnDefinitionId="milestone">
+                  column="milestone"
+                  name="里程碑"
+                  type="Boolean">
             </column>
             <column
-                  columnDefinitionId="planstart_e">
+                  column="planstart"
+                  name="计划开始"
+                  type="Date">
             </column>
             <column
-                  columnDefinitionId="planfinish_e">
+                  column="planfinish"
+                  name="计划完成"
+                  type="Date">
             </column>
             <column
-                  columnDefinitionId="planworks_e">
+                  column="planduration"
+                  name="计划工期"
+                  type="Integer">
             </column>
             <column
-                  columnDefinitionId="planduration_e">
+                  column="planworks"
+                  name="计划工时"
+                  type="Double">
             </column>
             <column
-                  columnDefinitionId="chargerid">
+                  column="actualstart"
+                  name="实际开始"
+                  type="Date">
             </column>
             <column
-                  columnDefinitionId="participate">
+                  column="actualfinish"
+                  name="实际完成"
+                  type="Date">
+            </column>
+            <column
+                  column="actualduration"
+                  name="实际工期"
+                  type="Integer">
+            </column>
+            <column
+                  column="actualworks"
+                  name="实际工时"
+                  type="Double">
+            </column>
+            <column
+                  column="chargerid"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserId2UserFullName"
+                  name="负责人"
+                  type="String">
+            </column>
+            <column
+                  column="participate"
+                  exportValueDelegator="com.sg.business.project.exportvaluedelegator.ExportUserIdArray2UserFullNameArray"
+                  name="参与者"
+                  type="String">
             </column>
          </exportAction>
       </navigator>
@@ -541,10 +589,8 @@
             table="project.navigator.delaywork">
          <filterAction>
             <column
-                  labelProvider="com.sg.business.project.labelprovider.ProjectOfDelayWork"
                   name="项目"
-                  type="String"
-                  width="240">
+                  type="String">
             </column>
             <column
                   columnDefinitionId="work.desc">
@@ -1731,10 +1777,33 @@
             contentProvider="com.sg.business.project.contentproviders.ProjectFolderContentProvider"
             dataSet="com.sg.business.model.dataset.project.FolderOfVault"
             headerVisiable="false"
+            id="vault.document.selector2">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="3"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="true"
+            contentProvider="com.sg.business.project.contentproviders.ProjectFolderContentProvider"
+            dataSet="com.sg.business.model.dataset.project.FolderOfVault"
+            headerVisiable="false"
             id="vault.document.selector">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
+         <structure
+               modelRelation="organization_folder">
+         </structure>
          <structure
                modelRelation="folder_folder">
          </structure>
@@ -2977,7 +3046,7 @@
                style="push">
          </command>
          <command
-               commandId="product.final"
+               commandId="product.subconcessions"
                label="标记转批"
                style="push">
             <visibleWhen
@@ -2988,7 +3057,7 @@
                         ifEmpty="false"
                         operator="and">
                      <test
-                           args="canFinal"
+                           args="canSubconcessions"
                            property="project.operation"
                            value="true">
                      </test>
@@ -3161,7 +3230,7 @@
       </command>
       <command
             categoryId="project"
-            id="product.final"
+            id="product.subconcessions"
             name="标记转批">
       </command>
       <command
@@ -3339,8 +3408,8 @@
             commandId="project.product.edit">
       </handler>
       <handler
-            class="com.sg.business.project.handler.FinalProduct"
-            commandId="product.final">
+            class="com.sg.business.project.handler.SubconcessionsProduct"
+            commandId="product.subconcessions">
       </handler>
       <handler
             class="com.sg.business.project.handler.EditWorkOrder"
@@ -3615,6 +3684,9 @@
                title="项目组">
             <navigatoraction
                   action="com.sg.business.project.action.FilterUnAssignment">
+            </navigatoraction>
+            <navigatoraction
+                  action="com.sg.business.project.action.ExportTeam">
             </navigatoraction>
          </navigatorpage>
          <navigatorpage
@@ -4328,6 +4400,22 @@
             name="物资编码转存"
             rule="month"
             run="com.sg.business.project.setup.ProdutInit"
+            time="0:0:0">
+      </schedualJob>
+      <schedualJob
+            day="999999"
+            id="project.delete"
+            name="删除特定项目"
+            rule="month"
+            run="com.sg.business.project.setup.ProjectDelete"
+            time="0:0:0">
+      </schedualJob>
+      <schedualJob
+            day="999999"
+            id="project.createaffiliated"
+            name="创建项目附属信息"
+            rule="month"
+            run="com.sg.business.project.setup.ProjectCreateAffiliated"
             time="0:0:0">
       </schedualJob>
    </extension>
