@@ -698,6 +698,15 @@
             type="String"
             width="80">
       </column>
+      <column
+            column="scenario"
+            id="account.scenario"
+            labelProvider="com.sg.business.commons.labelprovider.UserScenarioLabelprovider"
+            lazyDisplay="true"
+            name="使用场景"
+            type="String"
+            width="80">
+      </column>
    </extension>
    <extension
          id="folder"
