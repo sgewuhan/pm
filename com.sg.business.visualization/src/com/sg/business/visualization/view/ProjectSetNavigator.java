@@ -5,7 +5,6 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -21,6 +20,7 @@ import com.sg.business.model.UserProjectPerf;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.view.TreeNavigator;
+import com.sg.widgets.viewer.CTreeViewer;
 
 public class ProjectSetNavigator extends TreeNavigator {
 
@@ -30,7 +30,7 @@ public class ProjectSetNavigator extends TreeNavigator {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		final StructuredViewer viewer = getNavigator().getViewer();
+		final CTreeViewer viewer = (CTreeViewer) getNavigator().getViewer();
 		Tree tree = (Tree) viewer.getControl();
 		tree.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -44,13 +44,17 @@ public class ProjectSetNavigator extends TreeNavigator {
 						if ("Organization".equals(paras[0])) {
 							Organization org = ModelService.createModelObject(
 									Organization.class, new ObjectId(paras[1]));
-							open(org);
 							viewer.setSelection(new StructuredSelection(org));
+							IStructuredSelection is = (IStructuredSelection) viewer
+									.getSelection();
+							if(!is.isEmpty()){
+								open((Organization) is.getFirstElement());
+							}
 						} else if ("User".equals(paras[0])) {
 							User user = ModelService.createModelObject(
 									User.class, new ObjectId(paras[1]));
-							open(user);
 							viewer.setSelection(new StructuredSelection(user));
+							open(user);
 						} else if ("ProductTypeProvider".equals(paras[0])) {
 							ProjectProvider pp = new ProjectTypeProvider(
 									paras[1], paras[2]);
