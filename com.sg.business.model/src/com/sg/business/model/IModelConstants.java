@@ -139,6 +139,12 @@ public interface IModelConstants {
 	 * 文档模板自动编号
 	 */
 	public static final String SEQ_DOCUMENT_TEMPLATE_NUMBER = "documenttemplatenumber";
+	
+	
+	/**
+	 * 文档自动编号
+	 */
+	public static final String SEQ_DOCUMENT_NUMBER = "documentnumber";
 
 	/**
 	 * 项目角色

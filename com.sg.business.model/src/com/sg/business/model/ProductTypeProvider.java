@@ -1,8 +1,11 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 
@@ -101,10 +104,11 @@ public class ProductTypeProvider extends ProjectProvider {
 
 	private DBObject getQueryCondtion(Date start, Date stop) {
 
+		Object ids = getOrganizationIdCascade(null).toArray();
 		DBObject dbo = new BasicDBObject();
 		dbo.put(Project.F_PRODUCT_TYPE_OPTION, getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in", getUerOrgId()));
+				new BasicDBObject().append("$in",ids));
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
@@ -122,7 +126,6 @@ public class ProductTypeProvider extends ProjectProvider {
 						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
 								new BasicDBObject().append("$gte", start)
 										.append("$lte", stop)),
-
 						new BasicDBObject().append(
 								"$and",
 								new BasicDBObject[] {
@@ -137,31 +140,26 @@ public class ProductTypeProvider extends ProjectProvider {
 
 		return dbo;
 	}
-
-	protected List<ObjectId> getUerOrgId() {
-		List<ObjectId> list = new ArrayList<ObjectId>();
-		List<PrimaryObject> userOrg = getUserOrg(
-				new ArrayList<PrimaryObject>(), getInput());
-		for (PrimaryObject po : userOrg) {
-			list.add(po.get_id());
+	
+	
+	private Collection<? extends ObjectId> getOrganizationIdCascade(
+			Organization org) {
+		Set<ObjectId> result = new HashSet<ObjectId>();
+		List<PrimaryObject> orglist;
+		if (org != null) {
+			result.add(org.get_id());
+			orglist = org.getChildrenOrganization();
+		} else {
+			orglist = getUsersManagedOrganization();
 		}
-		return list;
-
+		for (int i = 0; i < orglist.size(); i++) {
+			result.addAll(getOrganizationIdCascade((Organization) orglist
+					.get(i)));
+		}
+		return result;
 	}
 
-	protected List<PrimaryObject> getUserOrg(List<PrimaryObject> list,
-			List<PrimaryObject> childrenList) {
-		list.addAll(childrenList);
-		for (PrimaryObject po : childrenList) {
-			List<PrimaryObject> childrenOrg = ((Organization) po)
-					.getChildrenOrganization();
-			getUserOrg(list, childrenOrg);
-		}
-		return list;
-	}
-
-	protected List<PrimaryObject> getInput() {
-		// 获取当前用户担任管理者角色的部门
+	private List<PrimaryObject> getUsersManagedOrganization() {
 		User user = UserToolkit.getUserById(getUserId());
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
@@ -188,6 +186,7 @@ public class ProductTypeProvider extends ProjectProvider {
 
 		return input;
 	}
+	
 
 	public String getUserId() {
 		return userId;

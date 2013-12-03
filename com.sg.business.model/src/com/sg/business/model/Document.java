@@ -26,6 +26,7 @@ import com.mobnut.commons.Commons;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.file.GridServerFile;
 import com.mobnut.db.file.IServerFile;
 import com.mobnut.db.file.RemoteFile;
@@ -33,6 +34,7 @@ import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -177,6 +179,36 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 		return saved;
 	}
+	
+	
+	@Override
+	public void doInsert(IContext context) throws Exception {
+		String documentNumber = getDocumentNumber();
+		if(documentNumber==null){
+			generateCode();
+		}
+		super.doInsert(context);
+	}
+	
+	private void generateCode() throws Exception {
+		
+		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C__IDS);
+
+		String prefix="";
+		Project project = getProject();
+		if (project != null) {
+			prefix=project.getProjectNumber();
+		}else{
+			// TODO 独立工作文档的编号，组织代码
+		}
+		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER
+				+ "." + prefix);
+		String seq = String.format("%03d", id).toUpperCase();
+		String codeValue = prefix + seq;
+		setValue(F_DOCUMENT_NUMBER, codeValue);
+	}
+	
 
 	private void checkDocumentNumber() throws Exception {
 		String documentNumber = getDocumentNumber();
