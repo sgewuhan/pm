@@ -19,29 +19,28 @@ public class DashMainIndicators extends DashWidgetView {
 		parent.setLayout(new GridLayout(3, true));
 
 		projectSchedualMeter = new ChartCanvas(parent, SWT.NONE) {
-
 			@Override
 			public Chart getChart() {
 				return ProjectChartFactory
 						.getProjectSchedualMeter(projectProvider);
 			}
-
 		};
 
 		projectBudgetControlMeter = new ChartCanvas(parent, SWT.NONE) {
 			@Override
 			public Chart getChart() {
-				return ProjectChartFactory.getFinishedProjectBudgetAndCostMeter(projectProvider);
+				return ProjectChartFactory
+						.getFinishedProjectBudgetAndCostMeter(projectProvider);
 			}
 		};
-		
+
 		profitRateMeter = new ChartCanvas(parent, SWT.NONE) {
 			@Override
 			public Chart getChart() {
 				return ProjectChartFactory.getProfitRateMeter(projectProvider);
 			}
 		};
-		
+
 		layout(projectSchedualMeter, 1, 1);
 		layout(projectBudgetControlMeter, 1, 1);
 		layout(profitRateMeter, 1, 1);

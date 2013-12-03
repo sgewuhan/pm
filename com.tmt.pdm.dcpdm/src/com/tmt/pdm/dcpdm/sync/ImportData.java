@@ -40,7 +40,7 @@ public abstract class ImportData implements Runnable {
 			e.printStackTrace();
 		}
 		
-		Commons.LOGGER.info("Import Finished.");
+		Commons.loginfo("Import Finished.");
 
 	}
 
@@ -91,7 +91,7 @@ public abstract class ImportData implements Runnable {
 		doc.setValue(Document.F_FOLDER_ID, getFolderId());
 		doc.doSave(new BackgroundContext());
 
-		Commons.LOGGER.info("Import Successs."+doso);
+		Commons.loginfo("Import Successs."+doso);
 	}
 
 	protected ObjectId getFolderId(){

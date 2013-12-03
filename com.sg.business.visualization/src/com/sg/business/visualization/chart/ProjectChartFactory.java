@@ -56,7 +56,7 @@ import com.sg.business.model.ProjectProvider;
 
 public class ProjectChartFactory {
 
-	private static final int STRONG_SIZE = 11;
+	private static final int STRONG_SIZE = 9;
 
 	private static final int NORMAL_SIZE = 9;
 

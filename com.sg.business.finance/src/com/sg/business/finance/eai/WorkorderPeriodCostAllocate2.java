@@ -127,7 +127,7 @@ public class WorkorderPeriodCostAllocate2 {
 
 		// 将研发成本平摊到每个工作令号
 		if (effectiveWorkOrders.isEmpty()) {
-			Commons.LOGGER.error("成本中心" + costCenterCode +company +", 在期间:" + year
+			Commons.logerror("成本中心" + costCenterCode +company +", 在期间:" + year
 					+ month + " 无可分摊研发成本的工作令号,可能是在该期间没有正在进行的项目可供分摊。");
 			return new ArrayList<WorkOrderPeriodCost>();
 		}

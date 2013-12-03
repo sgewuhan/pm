@@ -31,73 +31,45 @@ public class ProjectSetSummaryData {
 	 * 投入（研发成本）有关,预算内完成的项目数量
 	 * TODO
 	 */
-	public int finished_cost_normal = 10;
+	public int finished_cost_normal;
 	
 	/**
 	 * 投入（研发成本）有关,超预算完成的项目数量
 	 * TODO
 	 */
-	public int finished_cost_over = 15;
+	public int finished_cost_over ;
 	
 	/**
 	 * 估计不会超支的进行中项目数量
 	 */
-	public int processing_cost_normal = 40;
+	public int processing_cost_normal;
 
 	/**
 	 * 估计会超过预算的项目数量
 	 */
-	public int processing_cost_over = 10;
+	public int processing_cost_over ;
 	
 	/**
 	 * 项目的总预算金额
 	 */
-	public long total_budget_amount = 12128900;
+	public long total_budget_amount;
 	
 	/**
 	 * 项目的总研发成本金额
 	 */
-	public long total_investment_amount = 9028374;
-	
-	
-	
-	
-	
-//	/**
-//	 * 完成项目的销售收入
-//	 */
-//	public int finished_sales_revenue = 10;
-//	
-//	/**
-//	 * 完成项目的销售成本
-//	 */
-//	public int finished_sales_cost = 15;
-//	
-//	/**
-//	 * 进行中项目的销售收入
-//	 */
-//	public int processing_sales_revenue = 40;
-//
-//	/**
-//	 * 进行中项目的销售成本
-//	 */
-//	public int processing_sales_cost = 10;
+	public long total_investment_amount;
 	
 	
 	
 	/**
 	 * 项目的总销售收入
 	 */
-	public long total_sales_revenue = 12128900;
+	public long total_sales_revenue;
 	
 	/**
 	 * 项目的总销售成本
 	 */
-	public long total_sales_cost = 9028374;
-	
-	
-	
-	
+	public long total_sales_cost;
 	
 	
 

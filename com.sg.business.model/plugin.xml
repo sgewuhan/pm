@@ -613,5 +613,15 @@
             serviceProvider="com.sg.business.model.bpmservice.ChangeChargerService">
       </service>
    </extension>
+   <extension
+         point="com.mobnut.admin.schedualJob">
+      <schedualJob
+            id="visualization.databuilding"
+            name="BI数据缓存"
+            rule="day"
+            run="com.sg.business.model.BIDataBuilder"
+            time="05:00:00">
+      </schedualJob>
+   </extension>
 
 </plugin>
