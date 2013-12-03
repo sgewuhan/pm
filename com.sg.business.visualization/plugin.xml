@@ -14,13 +14,27 @@
             name="项目组合导航"
             restorable="true">
       </view>
+
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.DetailMain"
+            id="vis.main"
+            name="主要绩效指标"
+            restorable="true">
+      </view>
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashMainIndicators"
             id="vis.main.indicators"
-            name="主要绩效指标"
+            name="指示器"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashBudget"
@@ -49,7 +63,6 @@
             name="部门项目运营状况"
             restorable="true">
       </view>
-
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -503,7 +516,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.visualization.Demo1"
+            class="com.sg.business.visualization.CheckFlash"
             commandId="visualization.command.demo1">
       </handler>
       <handler

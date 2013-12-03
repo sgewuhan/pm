@@ -1609,7 +1609,6 @@ public class Organization extends PrimaryObject {
 	}
 
 	private SummaryOrganizationWorks summary;
-	private OrganizationProjectProvider projectProvider;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1620,11 +1619,7 @@ public class Organization extends PrimaryObject {
 			}
 			return (T) summary;
 		} else if (adapter == ProjectProvider.class) {
-			if (projectProvider == null) {
-				projectProvider = ModelService
-						.createModelObject(OrganizationProjectProvider.class);
-				projectProvider.setOrganization(this);
-			}
+			OrganizationProjectProvider projectProvider = BIDataBuilder.getProjectProvider(get_id());
 			return (T) projectProvider;
 		}
 		return super.getAdapter(adapter);
