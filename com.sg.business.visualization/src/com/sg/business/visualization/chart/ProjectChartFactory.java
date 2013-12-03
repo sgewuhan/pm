@@ -126,7 +126,7 @@ public class ProjectChartFactory {
 		return chart;
 	}
 
-	public static Chart createStackedBarChart(String title,
+	public static Chart create2StackedBarChart(String title,
 			String[] deptParameter, double[] deptValue1, double[] deptValue2,
 			String[] seriesTitle) {
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
@@ -231,6 +231,114 @@ public class ProjectChartFactory {
 
 		return cwaBar;
 	}
+	
+	
+	public static Chart createCombinnationStackedBarChart(String title,
+			String[] deptParameter, double[] deptValue1, double[] deptValue2,
+			String[] seriesTitle) {
+		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
+		cwaBar.setType("Bar Chart"); //$NON-NLS-1$
+		cwaBar.setSubType("Stacked"); //$NON-NLS-1$
+		cwaBar.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
+		cwaBar.getBlock().getOutline().setVisible(false);
+		Plot p = cwaBar.getPlot();
+		p.getClientArea().setBackground(ColorDefinitionImpl.TRANSPARENT());
+
+		// Title
+		cwaBar.getTitle().getLabel().getCaption().setValue(title); //$NON-NLS-1$
+		adjustFont(cwaBar.getTitle().getLabel().getCaption().getFont(),
+				STRONG_SIZE);
+		Legend lg = cwaBar.getLegend();
+		lg.setItemType(LegendItemType.SERIES_LITERAL);
+		adjustFont(lg.getText().getFont(), NORMAL_SIZE);
+		// X-Axis
+		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
+
+		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
+		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
+		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
+		FontDefinition font = xAxisPrimary.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+		font.setRotation(-45);
+
+		// Y-Axis
+		Axis yAxisPrimary = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
+		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
+		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
+		font = yAxisPrimary.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+
+		// 取数
+		TextDataSet categoryValues = TextDataSetImpl.create(deptParameter);
+		NumberDataSet orthoValues1 = NumberDataSetImpl.create(deptValue1);
+		NumberDataSet orthoValues2 = NumberDataSetImpl.create(deptValue2);
+
+		SampleData sd = DataFactory.eINSTANCE.createSampleData();
+		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
+		sdBase.setDataSetRepresentation("");//$NON-NLS-1$
+		sd.getBaseSampleData().add(sdBase);
+
+		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE
+				.createOrthogonalSampleData();
+		sdOrthogonal1.setDataSetRepresentation("");//$NON-NLS-1$
+		sdOrthogonal1.setSeriesDefinitionIndex(0);
+		sd.getOrthogonalSampleData().add(sdOrthogonal1);
+
+		OrthogonalSampleData sdOrthogonal2 = DataFactory.eINSTANCE
+				.createOrthogonalSampleData();
+		sdOrthogonal2.setDataSetRepresentation("");//$NON-NLS-1$
+		sdOrthogonal2.setSeriesDefinitionIndex(1);
+		sd.getOrthogonalSampleData().add(sdOrthogonal2);
+
+		// 绑定
+		cwaBar.setSampleData(sd);
+
+		// X-Series
+		Series seCategory = SeriesImpl.create();
+		seCategory.setDataSet(categoryValues);
+
+		SeriesDefinition sdX = SeriesDefinitionImpl.create();
+		xAxisPrimary.getSeriesDefinitions().add(sdX);
+		sdX.getSeries().add(seCategory);
+
+		// Y-Series
+		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
+		bs1.setDataSet(orthoValues1);
+		bs1.setSeriesIdentifier(seriesTitle[0]);
+		bs1.setStacked(true);
+		bs1.getLabel().setVisible(true);
+		font = bs1.getLabel().getCaption().getFont();
+		adjustFont(font, SMALL_SIZE);
+		bs1.setLabelPosition(Position.INSIDE_LITERAL);
+
+		BarSeries bs2 = (BarSeries) BarSeriesImpl.create();
+		bs2.setDataSet(orthoValues2);
+		bs2.setSeriesIdentifier(seriesTitle[1]);
+		bs2.setStacked(true);
+		bs2.getLabel().setVisible(true);
+		font = bs2.getLabel().getCaption().getFont();
+		adjustFont(font, SMALL_SIZE);
+		bs2.setLabelPosition(Position.INSIDE_LITERAL);
+
+		SeriesDefinition sdY = SeriesDefinitionImpl.create();
+		// sdY.getSeriesPalette().getEntries().clear();
+		// // "预期延迟"
+		// ColorDefinition color1 =
+		// getRGBColorDefinition(Utils.COLOR_YELLOW[5]);
+		// // 正常进行
+		// ColorDefinition color2 = getRGBColorDefinition(Utils.COLOR_BLUE[5]);
+		// final Fill[] fiaBase = { color1, color2 };
+		// for (int i = 0; i < fiaBase.length; i++) {
+		// sdY.getSeriesPalette().getEntries().add(fiaBase[i]);
+		// }
+		// sdY.getSeriesPalette().shift(0);
+		yAxisPrimary.getSeriesDefinitions().add(sdY);
+		sdY.getSeries().add(bs1);
+		sdY.getSeries().add(bs2);
+
+		return cwaBar;
+	}
+	
 
 	public static Chart createMeterChart(String chartCaptionText, String label,
 			double value) {
@@ -437,8 +545,14 @@ public class ProjectChartFactory {
 			deptValue2[i] = projectProvider.sum.processing_delay;
 		}
 
-		return createStackedBarChart("部门项目执行状况", deptParameter, deptValue1,
+		return create2StackedBarChart("部门项目执行状况", deptParameter, deptValue1,
 				deptValue2, new String[] { "正常", "超期" });
+	}
+	
+	public static Chart getDeptCombinationSchedualBar(
+			ProjectProvider projectProvider) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public static Chart getChargerSchedualBar(ProjectProvider data) {
@@ -459,7 +573,7 @@ public class ProjectChartFactory {
 			userValue2[i] = projectProvider.sum.processing_delay;
 		}
 
-		return createStackedBarChart("项目经理项目执行状况", chargerName, userValue1,
+		return create2StackedBarChart("项目经理项目执行状况", chargerName, userValue1,
 				userValue2, new String[] { "正常", "超期" });
 	}
 
@@ -524,7 +638,7 @@ public class ProjectChartFactory {
 			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
 			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
 		}
-		return createStackedBarChart("部门项目预算执行状况", deptParameter, deptValue1,
+		return create2StackedBarChart("部门项目预算执行状况", deptParameter, deptValue1,
 				deptValue2, new String[] { "预算", "实际" });
 	}
 
@@ -544,7 +658,7 @@ public class ProjectChartFactory {
 			userValue1[i] = projectProvider.sum.total_budget_amount / 10000;
 			userValue2[i] = projectProvider.sum.total_investment_amount / 10000;
 		}
-		return createStackedBarChart("项目经理预算执行状况", chargerName, userValue1,
+		return create2StackedBarChart("项目经理预算执行状况", chargerName, userValue1,
 				userValue2, new String[] { "预算", "实际" });
 	}
 
@@ -591,7 +705,7 @@ public class ProjectChartFactory {
 			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
 			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
 		}
-		return createStackedBarChart("按部门计算项目收入情况", deptParameter, deptValue1,
+		return create2StackedBarChart("按部门计算项目收入情况", deptParameter, deptValue1,
 				deptValue2, new String[] { "销售收入", "销售利润" });
 	}
 
@@ -611,7 +725,7 @@ public class ProjectChartFactory {
 			userValue1[i] = projectProvider.sum.total_sales_revenue / 10000;
 			userValue2[i] = (projectProvider.sum.total_sales_revenue - projectProvider.sum.total_sales_cost) / 10000;
 		}
-		return createStackedBarChart("按项目经理计算项目收入情况", chargerName, userValue1,
+		return create2StackedBarChart("按项目经理计算项目收入情况", chargerName, userValue1,
 				userValue2, new String[] { "销售收入", "销售利润" });
 	}
 

@@ -184,7 +184,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		String documentNumber = getDocumentNumber();
-		if(documentNumber==null){
+		if(Utils.isNullOrEmpty(documentNumber)){
 			generateCode();
 		}
 		super.doInsert(context);

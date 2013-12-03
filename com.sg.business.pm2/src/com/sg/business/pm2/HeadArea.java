@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -47,9 +48,10 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 
 public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
-	private Label headerPic;
+	private CLabel headerPic;
 	private Label welcomeMessage;
 	private Composite content;
+	private String imageURL;
 
 	public HeadArea() {
 
@@ -57,6 +59,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 	@Override
 	public Composite creatHeadAreaPart(Composite parent) {
+
 		content = parent;
 		AccountInfo account;
 		try {
@@ -65,6 +68,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 			return null;
 		}
 		final User user = UserToolkit.getUserById(account.getUserId());
+		loadHeadPic(user);
 
 		Composite headPicContainer = new Composite(parent, SWT.NONE);
 
@@ -75,10 +79,10 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		fd.top = new FormAttachment(0);
 		fd.left = new FormAttachment(0);
 
-		headerPic = new Label(headPicContainer, SWT.NONE);
+		headerPic = new CLabel(headPicContainer, SWT.NONE);
 		headerPic.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic");
-		setHeadPic(user);
+		resetImageURL();
 
 		fd = new FormData();
 		headerPic.setLayoutData(fd);
@@ -107,7 +111,8 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				item = new MenuItem(dropDownMenu, SWT.PUSH);
 				final String[] cs = consigners.get(i);
 				item.setText("代管 " + cs[0] + "|" + consigners.get(i)[1]);
-				item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_ASSIGNMENT_24));
+				item.setImage(BusinessResource
+						.getImage(BusinessResource.IMAGE_ASSIGNMENT_24));
 				item.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
@@ -133,24 +138,24 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				}
 			});
 		}
-		
-		//添加个人设置
+
+		// 添加个人设置
 		item = new MenuItem(dropDownMenu, SWT.PUSH);
 		item.setText("用户设置");
-		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_VARIABLE_24));
+		item.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_VARIABLE_24));
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				IWorkbenchPage page = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage();
 				try {
-					page.showView("com.mobnut.admin.personalsetting"); 
+					page.showView("com.mobnut.admin.personalsetting");
 				} catch (PartInitException pe) {
 					MessageUtil.showToast(pe);
 				}
 			}
 		});
-		
 
 		headerPic.addMouseListener(new MouseListener() {
 
@@ -192,13 +197,31 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 		UserSessionContext.getSession().addAccountChangeListener(this);
 		content.addDisposeListener(new DisposeListener() {
-			
+
 			@Override
 			public void widgetDisposed(DisposeEvent event) {
-				UserSessionContext.getSession().removeAccountChangeListener(HeadArea.this);
+				UserSessionContext.getSession().removeAccountChangeListener(
+						HeadArea.this);
 			}
 		});
 		return headPicContainer;
+	}
+
+	private void loadHeadPic(User user) {
+		List<RemoteFile> headpics = user.getGridFSFileValue(User.F_HEADPIC);
+		if (headpics != null && headpics.size() > 0) {
+			try {
+				imageURL = FileUtil.getImageURL(headpics.get(0).getNamespace(),
+						new ObjectId(headpics.get(0).getObjectId()), headpics
+								.get(0).getDbName());
+			} catch (Exception e) {
+			}
+		}
+		if (imageURL == null) {
+			imageURL = FileUtil.getImageURL(ImageResource.LOGO_GRAY_48,
+					Widgets.PLUGIN_ID, "image");
+		}
+
 	}
 
 	private void setWelcomeMessage(String welcomeMessageText) {
@@ -234,25 +257,6 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 	//
 	// }
 
-	private void setHeadPic(User user) {
-		List<RemoteFile> headpics = user.getGridFSFileValue(User.F_HEADPIC);
-		String imageURL = null;
-		if (headpics != null && headpics.size() > 0) {
-			try {
-				imageURL = FileUtil.getImageURL(headpics.get(0).getNamespace(),
-						new ObjectId(headpics.get(0).getObjectId()), headpics
-								.get(0).getDbName());
-			} catch (Exception e) {
-			}
-		}
-		if (imageURL == null) {
-			imageURL = FileUtil.getImageURL(ImageResource.LOGO_GRAY_48,
-					Widgets.PLUGIN_ID, "image");
-		}
-
-		headerPic.setText("<img src='" + imageURL
-				+ "' style='float:left' width='46' height='46' />");
-	}
 
 	protected void editUserProfile(User user) {
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
@@ -272,7 +276,8 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 						IProgressMonitor monitor, String operation)
 						throws Exception {
 					User user = (User) input.getData();
-					setHeadPic(user);
+					loadHeadPic(user);
+					resetImageURL();
 					setWelcomeMessage(getWelcomeMessage(user.getUsername()));
 					content.layout();
 					return true;
@@ -321,7 +326,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 			return username + " 晚上好";
 		case 23:
 		case 24:
-			 return username + "zzZ..  ";
+			return username + "zzZ..  ";
 		}
 		return "";
 	}
@@ -347,6 +352,17 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void setImageURL(String url) {
+		headerPic.setText(url);
+	}
+
+	@Override
+	public void resetImageURL() {
+		headerPic.setText("<img src='" + imageURL
+				+ "' style='float:left' width='48' height='48' />");
 	}
 
 }

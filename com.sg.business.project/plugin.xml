@@ -1528,22 +1528,6 @@
          </columnGroup>
          <columnGroup
                defaultGroup="false"
-               name="级联启动和级联完成">
-            <column
-                  column="s_autostartwithparent"
-                  name="级联启动"
-                  type="Boolean"
-                  width="48">
-            </column>
-            <column
-                  column="s_autofinishwithparent"
-                  name="级联完成"
-                  type="Boolean"
-                  width="48">
-            </column>
-         </columnGroup>
-         <columnGroup
-               defaultGroup="false"
                name="条件和设置">
             <column
                   column="standardworks"
@@ -1561,6 +1545,18 @@
                   labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
                   name="流程"
                   width="100">
+            </column>
+            <column
+                  column="s_autostartwithparent"
+                  name="级联启动"
+                  type="Boolean"
+                  width="48">
+            </column>
+            <column
+                  column="s_autofinishwithparent"
+                  name="级联完成"
+                  type="Boolean"
+                  width="48">
             </column>
          </columnGroup>
       </tree>

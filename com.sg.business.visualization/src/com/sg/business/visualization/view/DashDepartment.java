@@ -9,7 +9,7 @@ public class DashDepartment extends DashSingleChart {
 
 	@Override
 	protected Chart getChartData(ProjectProvider projectProvider) {
-		return ProjectChartFactory.getDeptSchedualBar(projectProvider);
+		return ProjectChartFactory.getDeptCombinationSchedualBar(projectProvider);
 	}
 
 }

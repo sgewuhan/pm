@@ -994,6 +994,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	@Override
 	public List<Object[]> checkCancelAction(IContext context) throws Exception {
+		try {
+			reload();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// 先判断是否顶级工作
 		// 1.判断是否是本级的负责人
 		// 2.判断上级工作生命周期状态是否符合：进行中
@@ -1112,6 +1117,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	@Override
 	public List<Object[]> checkPauseAction(IContext context) throws Exception {
+		try {
+			reload();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// 先判断是否顶级工作
 		// 1.判断是否是本级的负责人
 		// 2.判断上级工作生命周期状态是否符合：进行中
@@ -1490,6 +1500,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return
 	 */
 	protected List<Object[]> checkCascadeFinish(ObjectId id) {
+		try {
+			reload();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		List<Object[]> message = new ArrayList<Object[]>();
 		// 1.判断非级联完成的工作是否已经在已完成状态、已取消、准备中、无状态的状态
 		DBObject condition = new BasicDBObject();
@@ -1565,6 +1580,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return
 	 */
 	protected List<Object[]> checkCascadeStart(boolean warningCheck) {
+		try {
+			reload();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		List<Object[]> message = new ArrayList<Object[]>();
 		List<PrimaryObject> childrenWork = getChildrenWork();
 		if (childrenWork.size() > 0) {// 如果有下级，返回下级的检查结果
