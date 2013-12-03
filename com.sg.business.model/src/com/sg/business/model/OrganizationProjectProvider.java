@@ -70,9 +70,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 					} else {
 						sum.finished_normal++;
 					}
-					if(project.isOverCost()){
+					if (project.isOverCost()) {
 						sum.finished_cost_over++;
-					}else{
+					} else {
 						sum.finished_cost_normal++;
 					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
@@ -85,26 +85,24 @@ public class OrganizationProjectProvider extends ProjectProvider {
 					} else {
 						sum.processing_normal++;
 					}
-					
-					if(project.maybeOverCostNow()){
+
+					if (project.maybeOverCostNow()) {
 						sum.processing_cost_over++;
-					}else{
+					} else {
 						sum.processing_cost_normal++;
 					}
 				}
-				
+
 				Double budgetValue = project.getBudgetValue();
 				sum.total_budget_amount += budgetValue == null ? 0
 						: budgetValue;
-				sum.total_investment_amount += project
-						.getInvestment();
+				sum.total_investment_amount += project.getInvestment();
 				double[] salesSummaryData = project.getSalesSummaryData();
-				sum.total_sales_revenue+=salesSummaryData[0];
-				sum.total_sales_cost+=salesSummaryData[1];
+				sum.total_sales_revenue += salesSummaryData[0];
+				sum.total_sales_cost += salesSummaryData[1];
 				result.add(project);
 			}
 			sum.total = result.size();
-
 
 			sum.subOrganizationProjectProvider = getSubOrganizationProvider();
 			sum.subChargerProjectProvider = getSubUserProvider(organization);
@@ -112,7 +110,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
-
 		return result;
 	}
 
@@ -275,5 +272,4 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return true;
 	}
 
-	
 }

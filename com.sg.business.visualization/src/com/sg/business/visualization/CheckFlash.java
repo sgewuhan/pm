@@ -9,7 +9,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.sg.widgets.jofc.JOFCDemo;
 
-public class Demo1 extends AbstractHandler {
+public class CheckFlash extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

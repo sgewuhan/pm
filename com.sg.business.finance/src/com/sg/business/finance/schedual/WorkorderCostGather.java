@@ -31,16 +31,16 @@ public class WorkorderCostGather implements ISchedualJobRunnable {
 			String[] costElementArray = CostAccount.getCostElemenArray();
 			String[] workOrders = CompanyWorkOrder.getWorkOrders();
 			try {
-				Commons.LOGGER.info("[成本数据]准备获取SAP工作令号研发成本数据:" + year + "-"
+				Commons.loginfo("[成本数据]准备获取SAP工作令号研发成本数据:" + year + "-"
 						+ month);
 				adapter.runGetData(workOrders, costElementArray, year, month);
 			} catch (Exception e) {
-				Commons.LOGGER.error("[成本数据]获得SAP工作令号研发成本失败:" + year + "-"
+				Commons.logerror("[成本数据]获得SAP工作令号研发成本失败:" + year + "-"
 						+ month, e);
 				throw e;
 			}
 			long end = System.currentTimeMillis();
-			Commons.LOGGER.info("[成本数据]获得SAP工作令号研发成本完成:" + year + "-" + month
+			Commons.loginfo("[成本数据]获得SAP工作令号研发成本完成:" + year + "-" + month
 					+ " " + (end - start) / 1000+"S");
 		}
 

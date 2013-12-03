@@ -17,6 +17,8 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.ui.forms,
  org.eclipse.core.expressions,
  com.sg.widgets.birtcharts,
- org.eclipse.birt.chart.engine
+ org.eclipse.birt.chart.engine,
+ com.mobnut.portal,
+ com.mobnut.admin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

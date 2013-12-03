@@ -13,15 +13,6 @@ import com.sg.business.visualization.dataset.ProjectSetFolder;
 
 public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 
-	// private DBCollection projectCol;
-	// long wipCnt;
-	// long cnt;
-
-	// public ProjectSetNavigatorLabelProvider() {
-	// super();
-	// projectCol = DBActivator.getCollection(IModelConstants.DB,
-	// IModelConstants.C_PROJECT);
-	// }
 
 	@Override
 	public String getText(Object element) {
@@ -43,7 +34,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 
 	private String getFolderText(ProjectSetFolder po) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
 
 		String imageUrl = "<img src='" + po.getImageURL()
 				+ "' style='float:left;padding:2px' width='24' height='24' />";
@@ -51,28 +42,17 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		sb.append(imageUrl);
 		sb.append("<b>");
 		sb.append(po.getLabel());
-		// if (cnt != 0 || wipCnt != 0) {
-		// sb.append("<span style='font-weight:bold'>");
-		// sb.append("<span style='color:#99cc00'>");
-		// sb.append(" ");
-		// sb.append(wipCnt);
-		// sb.append("</span>");
-		// sb.append(" ");
-		// sb.append("/" + cnt);
-		// sb.append("</span>");
-		// }
+
 		sb.append("</b>");
 		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("<small style='color=#999'>");
 		sb.append(po.getDescription());
 		sb.append("</small></span>");
 		return sb.toString();
 	}
 
 	private String getProductTypeText(ProductTypeProvider producttTypeProvider) {
-		// ProductTypeProvider producttTypeProvider = (ProductTypeProvider) dbo;
-		// long cnt = getCountOfYear(producttTypeProvider);
-		// long wipCnt = getWipCount(producttTypeProvider);
+
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("<a href=\"" + "ProductTypeProvider@"
@@ -84,7 +64,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
 		sb.append("</a>");
 
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
 		String imageUrl = "<img src='"
 				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 						BusinessResource.PLUGIN_ID,
@@ -92,30 +72,16 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 				+ "' style='float:left;padding:2px' width='24' height='24' />";
 
 		sb.append(imageUrl);
-		sb.append("<b>");
 		sb.append(producttTypeProvider.getDesc());
-		// if (cnt != 0 || wipCnt != 0) {
-		// sb.append("<span style='font-weight:bold'>");
-		// sb.append("<span style='color:#99cc00'>");
-		// sb.append(" ");
-		// sb.append(wipCnt);
-		// sb.append("</span>");
-		// sb.append(" ");
-		// sb.append("/" + cnt);
-		// sb.append("</span>");
-		// }
-		sb.append("</b>");
 		sb.append("</span>");
 		return sb.toString();
 	}
 
 	private String getUserProjectSetText(UserProjectPerf po) {
 		UserProjectPerf pperf = (UserProjectPerf) po;
-		// long cnt = getCount(pperf);
-		// long wipCnt = getWipCount(pperf);
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<a href=\"" + "UserProjectPerf@"+pperf.get_id().toString()
+		sb.append("<a href=\"" + "UserProjectPerf@" + pperf.get_id().toString()
 				+ "\" target=\"_rwt\">");
 		sb.append("<img src='");
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
@@ -130,26 +96,14 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 				+ "' style='float:left;padding:2px' width='24' height='24' />";
 
 		sb.append(imageUrl);
-		sb.append("<b>");
 		sb.append(pperf.getDesc());
-		// if (cnt != 0 || wipCnt != 0) {
-		// sb.append("<span style='font-weight:bold'>");
-		// sb.append("<span style='color:#99cc00'>");
-		// sb.append(" ");
-		// sb.append(wipCnt);
-		// sb.append("</span>");
-		// sb.append(" ");
-		// sb.append("/" + cnt);
-		// sb.append("</span>");
-		// }
-		sb.append("</b>");
 		return sb.toString();
 	}
 
 	private String getUserText(User po) {
 		User user = (User) po;
 		StringBuffer sb = new StringBuffer();
-		sb.append("<a href=\"" + "User@"+user.get_id().toString()
+		sb.append("<a href=\"" + "User@" + user.get_id().toString()
 				+ "\" target=\"_rwt\">");
 		sb.append("<img src='");
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
@@ -157,7 +111,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
 		sb.append("</a>");
 
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
 
 		String imageUrl = "<img src='"
 				+ FileUtil.getImageURL(BusinessResource.IMAGE_USER_24,
@@ -166,13 +120,11 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 				+ "' style='float:left;padding:2px' width='24' height='24' />";
 
 		sb.append(imageUrl);
-		sb.append("<b>");
 		sb.append(user.getLabel());
-		sb.append("</b>");
 		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("<small style='color=#999'>");
 		Organization org = user.getOrganization();
-		sb.append(org == null ? "" : org.getPath());
+		sb.append(org == null ? "" : org.getPath(2));
 		sb.append("</small></span>");
 
 		return sb.toString();
@@ -182,43 +134,28 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		Organization organization = (Organization) po;
 		String label = organization.getLabel();
 		String path = organization.getFullName();
-		// wipCnt = 0;
-		// setWipCount(organization);
-		// cnt = 0;
-		// setCountOfYear(organization);
-
 		StringBuffer sb = new StringBuffer();
-		sb.append("<a href=\"" + "Organization@"+organization.get_id().toString()
-				+ "\" target=\"_rwt\">");
+		sb.append("<a href=\"" + "Organization@"
+				+ organization.get_id().toString() + "\" target=\"_rwt\">");
 		sb.append("<img src='");
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
 		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
 		sb.append("</a>");
 
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+		sb.append("<span style='display:block; width=1000px;'>");
 
 		String imageUrl = "<img src='" + organization.getImageURL()
 				+ "' style='float:left;padding:2px' width='24' height='24' />";
-
 		sb.append(imageUrl);
-		sb.append("<b>");
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt'>");
 		sb.append(label);
-		// if (cnt != 0 || wipCnt != 0) {
-		// sb.append("<span style='font-weight:bold'>");
-		// sb.append("<span style='color:#99cc00'>");
-		// sb.append(" ");
-		// sb.append(wipCnt);
-		// sb.append("</span>");
-		// sb.append(" ");
-		// sb.append("/" + cnt);
-		// sb.append("</span>");
-		// }
-		sb.append("</b>");
 		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("<small style='color=#999'>");
 		sb.append(path);
-		sb.append("</small></span>");
+		sb.append("</small>");
+		sb.append("</span>");
+		sb.append("</span>");
 
 		return sb.toString();
 	}
