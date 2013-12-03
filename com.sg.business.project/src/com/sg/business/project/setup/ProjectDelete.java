@@ -1,24 +1,6 @@
 package com.sg.business.project.setup;
 
-//import java.util.Date;
-//import java.util.List;
-//
-//import org.bson.types.ObjectId;
-
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
-//import com.mobnut.db.DBActivator;
-//import com.mobnut.db.model.ModelService;
-//import com.mobnut.db.model.PrimaryObject;
-//import com.mongodb.BasicDBObject;
-//import com.mongodb.DBCollection;
-//import com.mongodb.DBCursor;
-//import com.mongodb.DBObject;
-//import com.sg.business.model.Deliverable;
-//import com.sg.business.model.Document;
-//import com.sg.business.model.IModelConstants;
-//import com.sg.business.model.Work;
-//import com.sg.business.model.WorksPerformence;
-//import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -31,10 +13,10 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	@Override
 	public boolean run() {
 		// DBCollection col = getCol();
-		// for (ObjectId _id : DELETELIST) {
+		// ObjectId _id = new ObjectId("5288ba08636c8fca10a87add");
 
-		// Organization org = ModelService.createModelObject(
-		// Organization.class, _id);
+		// Organization org = ModelService.createModelObject(Organization.class,
+		// _id);
 		// List<PrimaryObject> projectList = org.getRelationById(
 		// Organization.F__ID, Project.F_FUNCTION_ORGANIZATION,
 		// Project.class);
@@ -49,7 +31,6 @@ public class ProjectDelete implements ISchedualJobRunnable {
 		// }
 		// col.remove(new BasicDBObject().append(Project.F__ID,
 		// project.get_id()));
-		// }
 		// }
 
 		// DBCollection col = getCol(IModelConstants.C_WORK);
