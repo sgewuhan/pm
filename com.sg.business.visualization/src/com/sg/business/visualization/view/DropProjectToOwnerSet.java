@@ -32,6 +32,7 @@ public class DropProjectToOwnerSet extends DropPrimaryObjectTarget {
 		if (object instanceof UserProjectPerf) {
 			UserProjectPerf userProjectPerf = (UserProjectPerf) object;
 			addProjectSet(userProjectPerf, dragsItems);
+			targetViewerControl.getViewer().refresh();
 		} else {
 			MessageUtil.showToast("请添加至自定义项目组合下", SWT.ICON_WARNING);
 		}
