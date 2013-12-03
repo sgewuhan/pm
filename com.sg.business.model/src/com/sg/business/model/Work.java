@@ -2598,6 +2598,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					IProcessControl ip = Work.this
 							.getAdapter(IProcessControl.class);
 					BasicBSONList historys = ip.getWorkflowHistroyData();
+
 					if (historys != null && historys.size() > 0) {
 						DBObject wfHistory = new BasicDBObject();
 						wfHistory.put(F_DESC, getDesc());
@@ -2616,8 +2617,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 						try {
 							doWFHistoryToDocument(wfHistory, context);
 						} catch (Exception e) {
-							new org.eclipse.core.runtime.Status(IStatus.ERROR,
-									ModelActivator.PLUGIN_ID, "保存历史出错", e);
+							e.printStackTrace();
 						}
 					}
 				}
@@ -2750,9 +2750,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				new BasicDBObject().append("$set", update), true, false);
 		set_data(newData);
 
-		// 将工作的流程记录存储到交付物文档中
-		doSaveProcessHistoryToDocument(context);
-
 		// 提示工作已完成
 		doNoticeWorkAction(context, "已完成");
 		doFinishAfter(context, params);
@@ -2769,9 +2766,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param wfHistory
 	 * @throws Exception
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void doWFHistoryToDocument(DBObject wfHistory, IContext context)
 			throws Exception {
-		List<PrimaryObject> documentList = getOutputDeliverableDocuments();
+		/**
+		 * 考虑到保存历史的方式更改为每次人工任务完成都进行保存。重写保存的代码。
+		 */
+		
+/*		List<PrimaryObject> documentList = getOutputDeliverableDocuments();
 		DBCollection col = getCollection(IModelConstants.C_DOCUMENT);
 		for (PrimaryObject po : documentList) {
 			Document document = (Document) po;
@@ -2780,14 +2782,51 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					.append("$push", new BasicDBObject().append(
 							Document.F_WF_HISTORY, wfHistory)));
 			checkWriteResult(ws);
+		}*/
+		
+		List<PrimaryObject> documentList = getOutputDeliverableDocuments();
+		DBCollection col = getCollection(IModelConstants.C_DOCUMENT);
+		for (PrimaryObject po : documentList) {
+			Document document = (Document) po;
+			
+			//查找已经保存过的历史
+			Object historyList = document.getValue(Document.F_WF_HISTORY);
+			if(historyList instanceof List<?>){
+				for(int i = 0;i<((List<?>) historyList).size();i++){
+					DBObject historyProcessRec = (DBObject) ((List<?>) historyList).get(i);
+					//取出流程实例的ID
+					Object pid = historyProcessRec.get(IDocumentProcess.F_PROCESS_INSTANCEID);
+					if(pid.equals(wfHistory.get(IDocumentProcess.F_PROCESS_INSTANCEID))){
+						((List<?>) historyList).remove(i);
+						break;
+					}
+				}
+			}else{
+				historyList = new ArrayList<DBObject>();
+			}
+			((List) historyList).add(wfHistory);
+			
+			WriteResult ws = col.update(new BasicDBObject().append(
+					Document.F__ID, document.get_id()), new BasicDBObject()
+					.append("$set", new BasicDBObject().append(
+							Document.F_WF_HISTORY, historyList)));
+			checkWriteResult(ws);
 		}
-		List<PrimaryObject> childrenWorkList = getChildrenWork();
+		
+		
+		/**
+		 * zhonghua:  认为以下的处理欠妥.暂时注释
+		 * 
+		 * isExecuteWorkflowActivateAndAvailable 是指具有流程，且流程激活的工作，
+		 * 与是否保存本级别的流程历史是否有关系？
+		 */
+/*		List<PrimaryObject> childrenWorkList = getChildrenWork();
 		for (PrimaryObject po : childrenWorkList) {
 			Work childrenWork = (Work) po;
 			if (childrenWork.isExecuteWorkflowActivateAndAvailable()) {
 				childrenWork.doWFHistoryToDocument(wfHistory, context);
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -3551,6 +3590,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		UserTask newUserTask = doSaveUserTask(processKey, task, taskMetaData,
 				userId);
+		
+		// 将工作的流程记录存储到交付物文档中
+		doSaveProcessHistoryToDocument(context);
+		
+		
 		doSaveWorkflowHistroy(processKey, newUserTask, taskMetaData, context);
 
 		/**
