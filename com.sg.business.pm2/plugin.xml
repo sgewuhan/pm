@@ -595,7 +595,7 @@
                id="vis.dept.main"
                minimized="false"
                moveable="false"
-               ratio="0.5"
+               ratio="0.4"
                relationship="right"
                relative="vis.main"
                showTitle="true"
@@ -604,12 +604,23 @@
          </view>
          <view
                closeable="false"
-               id="vis.eco.main"
+               id="vis.eco.budgetandcost"
                minimized="false"
                moveable="false"
-               ratio="0.5"
+               ratio="0.4"
                relationship="bottom"
                relative="vis.main"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.eco.revenue"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="vis.eco.budgetandcost"
                showTitle="true"
                standalone="false"
                visible="true">

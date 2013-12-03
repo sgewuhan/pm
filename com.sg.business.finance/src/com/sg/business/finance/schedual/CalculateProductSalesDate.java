@@ -9,9 +9,9 @@ public class CalculateProductSalesDate implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {
-		Commons.LOGGER.info("[销售数据]开始更新产品销售数据");
+		Commons.loginfo("[销售数据]开始更新产品销售数据");
 		ProjectToolkit.updateProjectSalesData();
-		Commons.LOGGER.info("[销售数据]产品销售数据更新完成");
+		Commons.loginfo("[销售数据]产品销售数据更新完成");
 		return true;
 	}
 

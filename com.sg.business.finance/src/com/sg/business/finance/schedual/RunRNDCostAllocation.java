@@ -42,15 +42,14 @@ public class RunRNDCostAllocation implements ISchedualJobRunnable {
 //		System.out.println();
 		String[] costElementArray = CostAccount.getCostElemenArray();
 		try {
-			Commons.LOGGER.info("[成本数据]准备获取SAP成本中心数据:" + year + "-" + month);
+			Commons.loginfo("[成本数据]准备获取SAP成本中心数据:" + year + "-" + month);
 			adapter.runGetData(costCodes, costElementArray, year, month);
 		} catch (Exception e) {
-			Commons.LOGGER
-					.error("[成本数据]获得SAP成本中心数据失败:" + year + "-" + month, e);
+			Commons.logerror("[成本数据]获得SAP成本中心数据失败:" + year + "-" + month, e);
 			throw e;
 		}
 		long end = System.currentTimeMillis();
-		Commons.LOGGER.info("[成本数据]获得SAP成本中心数据完成:" + year + "-" + month + " "
+		Commons.loginfo("[成本数据]获得SAP成本中心数据完成:" + year + "-" + month + " "
 				+ (end - start) / 1000);
 		 }
 

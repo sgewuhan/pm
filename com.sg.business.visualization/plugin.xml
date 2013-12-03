@@ -32,21 +32,18 @@
             name="指示器"
             restorable="true">
       </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.views">
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.DashBudget"
-            id="vis.cost.main"
-            name="预算执行指标"
+            class="com.sg.business.visualization.view.DashBudgetAndCost"
+            id="vis.eco.budgetandcost"
+            name="预算执行"
             restorable="true">
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.DashEco"
-            id="vis.eco.main"
-            name="经济效益指标"
+            class="com.sg.business.visualization.view.DashEcoRevenue"
+            id="vis.eco.revenue"
+            name="销售利润"
             restorable="true">
       </view>
       <view

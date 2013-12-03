@@ -34,15 +34,15 @@ public class RunIncomeAllocation implements ISchedualJobRunnable {
 		clear(year, month);
 
 		try {
-			Commons.LOGGER.info("[销售数据]准备获取SAP销售数据:" + year + "-" + month);
+			Commons.loginfo("[销售数据]准备获取SAP销售数据:" + year + "-" + month);
 			runGetData(year, month);
 
 		} catch (Exception e) {
-			Commons.LOGGER.error("[销售数据]获得SAP销售数据失败:" + year + "-" + month, e);
+			Commons.logerror("[销售数据]获得SAP销售数据失败:" + year + "-" + month, e);
 			throw e;
 		}
 		long end = System.currentTimeMillis();
-		Commons.LOGGER.info("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " "
+		Commons.loginfo("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " "
 				+ (end - start) / 1000);
 		// }
 
