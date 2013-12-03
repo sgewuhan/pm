@@ -16,7 +16,7 @@ import com.mongodb.DBObject;
 public class BIDataBuilder implements ISchedualJobRunnable {
 
 	private DBCollection col;
-	
+
 	private static ConcurrentHashMap<ObjectId, OrganizationProjectProvider> cache = new ConcurrentHashMap<ObjectId, OrganizationProjectProvider>();
 
 	public BIDataBuilder() {
@@ -26,22 +26,21 @@ public class BIDataBuilder implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {
-		// 获取具有项目的组织
-		Commons.loginfo("初始化绩效数据缓存");
-
+		Commons.loginfo("初始化组织项目集绩效分析器...");
 		cache.clear();
-		DBCursor cur = col.find(null, new BasicDBObject().append(Organization.F__ID, 1));
+		DBCursor cur = col.find(null,
+				new BasicDBObject().append(Organization.F__ID, 1));
 		while (cur.hasNext()) {
 			DBObject dbObject = (DBObject) cur.next();
 			ObjectId id = (ObjectId) dbObject.get(Organization.F__ID);
-			loadOrganization(id);
+			loadOrganization(id, true);
 		}
-		
-		Commons.loginfo("绩效数据缓存初始化完成");
+		Commons.loginfo("组织项目集绩效分析器初始化完成");
 		return true;
 	}
 
-	private static OrganizationProjectProvider loadOrganization(ObjectId id) {
+	private static OrganizationProjectProvider loadOrganization(ObjectId id,
+			boolean fullload) {
 		if (id != null) {
 			Organization org = ModelService.createModelObject(
 					Organization.class, id);
@@ -49,8 +48,10 @@ public class BIDataBuilder implements ISchedualJobRunnable {
 			OrganizationProjectProvider projectProvider = ModelService
 					.createModelObject(OrganizationProjectProvider.class);
 			projectProvider.setOrganization(org);
-			projectProvider.getData();
-			cache.put(id, projectProvider);
+			if (fullload) {
+				projectProvider.getData();
+				cache.put(id, projectProvider);
+			}
 			return projectProvider;
 		}
 		return null;
@@ -60,7 +61,7 @@ public class BIDataBuilder implements ISchedualJobRunnable {
 		if (orgId != null) {
 			OrganizationProjectProvider p = cache.get(orgId);
 			if (p == null) {
-				return loadOrganization(orgId);
+				return loadOrganization(orgId, false);
 			} else {
 				return p;
 			}

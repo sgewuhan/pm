@@ -48,9 +48,16 @@
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.DashRisk"
-            id="vis.risk.main"
-            name="风险指标"
+            class="com.sg.business.visualization.view.DashSchedualRisk"
+            id="vis.risk.schedual"
+            name="超期风险"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.DashCostRisk"
+            id="vis.risk.cost"
+            name="超支风险"
             restorable="true">
       </view>
       <view
