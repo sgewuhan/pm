@@ -137,7 +137,7 @@ public class ProjectManagerProvider extends ProjectProvider {
 
 	@Override
 	public String getProjectSetName() {
-		return "负责人项目集";
+		return user.getUsername();
 	}
 
 	@Override
