@@ -10,6 +10,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.mywork"
+            name="工作">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.workflow"
             name="流程">
       </perspective>
@@ -647,6 +652,9 @@
                standalone="false"
                visible="true">
          </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.mywork">
       </perspectiveExtension>
    </extension>
    <extension
