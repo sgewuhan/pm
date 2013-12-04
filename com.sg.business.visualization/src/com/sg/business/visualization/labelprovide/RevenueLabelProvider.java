@@ -37,7 +37,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 		// 绘制销售收入
 		for (int i = 0; i < rateIncome - 1; i++) {
 			String bar = TinyVisualizationUtil.getColorBar(i + 3, "blue",
-					"9%", null, null, null, "10");
+					"9%", null, null, null, "14");
 			sb.append(bar);
 		}
 		sb.append(getCurrency(salesIncome));
@@ -46,7 +46,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 		// 绘制销售成本
 		for (int i = 0; i < rateCost - 1; i++) {
 			String bar = TinyVisualizationUtil.getColorBar(i + 3, "yellow",
-					"9%", null, null, null, "10");
+					"9%", null, null, null, "14");
 			sb.append(bar);
 		}
 		sb.append(getCurrency(salesCostValue));
@@ -56,7 +56,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 		for (int i = 0; i < rateRevenue - 1; i++) {
 			String bar = TinyVisualizationUtil.getColorBar(i + 3,
 					salesIncome > salesCostValue ? "green" : "red", "9%",
-					null, null, null, "10");
+					null, null, null, "14");
 			sb.append(bar);
 		}
 		sb.append(getCurrency(salesRevenue));

@@ -44,7 +44,6 @@ public class WorkFilterControl {
 		menuManager.add(createAction(WorkFilterAction.SHOW_PLANSTART_FILTER));
 		menuManager.add(createAction(WorkFilterAction.SHOW_PLANFINISH_FILTER));
 
-
 		return menuManager;
 	}
 
@@ -80,51 +79,64 @@ public class WorkFilterControl {
 	 * @return
 	 */
 	public ViewerFilter[] uncheckReverseFilters(int code) {
-		//-----------------------------------------------------------------------------------------
-		// 显示我的所有项目中的工作与显示我指派的、我负责的、我参与的工作矛盾
-		if (code == WorkFilterAction.SHOW_MY_PROJECT_WORK) {
+
+		switch (code) {
+		case WorkFilterAction.SHOW_MY_PROJECT_WORK:
+			// -----------------------------------------------------------------------------------------
+			// 显示我的所有项目中的工作与显示我指派的、我负责的、我参与的工作矛盾
 
 			return uncheckReverseFilters(new int[] {
 					WorkFilterAction.SHOW_WORK_ASSIGNMENT,
 					WorkFilterAction.SHOW_WORK_CHARGED,
 					WorkFilterAction.SHOW_WORK_PATICIPATE });
 
-		} else if (code == WorkFilterAction.SHOW_WORK_ASSIGNMENT
-				|| code == WorkFilterAction.SHOW_WORK_CHARGED
-				|| code == WorkFilterAction.SHOW_WORK_PATICIPATE) {
-
-			return uncheckReverseFilters(new int[] { WorkFilterAction.SHOW_MY_PROJECT_WORK });
-		}
-
-		//-----------------------------------------------------------------------------------------
-		// 我标记的，已经超期的，提醒超期的互相矛盾
-		if (code == WorkFilterAction.SHOW_MARKED_WORK) {
+			// -----------------------------------------------------------------------------------------
+			// 我标记的，已经超期的，提醒超期的互相矛盾
+		case WorkFilterAction.SHOW_MARKED_WORK:
 			return uncheckReverseFilters(new int[] {
 					WorkFilterAction.SHOW_DELAYED_WORK,
 					WorkFilterAction.SHOW_REMIND_WORK });
 
-		} else if (code == WorkFilterAction.SHOW_DELAYED_WORK) {
+		case WorkFilterAction.SHOW_DELAYED_WORK:
 			return uncheckReverseFilters(new int[] {
 					WorkFilterAction.SHOW_MARKED_WORK,
 					WorkFilterAction.SHOW_REMIND_WORK });
-			
-		} else if (code == WorkFilterAction.SHOW_REMIND_WORK) {
+
+		case WorkFilterAction.SHOW_REMIND_WORK:
 			return uncheckReverseFilters(new int[] {
 					WorkFilterAction.SHOW_MARKED_WORK,
 					WorkFilterAction.SHOW_DELAYED_WORK });
-		}
-		
-		//准备中，进行中互斥
-		if (code == WorkFilterAction.SHOW_WORK_ON_PROGRESS) {
-			return uncheckReverseFilters(new int[] {
-					WorkFilterAction.SHOW_WORK_ON_READY});
 
-		} else if (code == WorkFilterAction.SHOW_WORK_ON_READY) {
+			// 准备中，进行中互斥
+		case WorkFilterAction.SHOW_WORK_ON_PROGRESS:
+			return uncheckReverseFilters(new int[] { WorkFilterAction.SHOW_WORK_ON_READY });
+
+		case WorkFilterAction.SHOW_WORK_ON_READY:
+			return uncheckReverseFilters(new int[] { WorkFilterAction.SHOW_WORK_ON_PROGRESS });
+
+			// 我负责的，我参与的和我指派的互斥
+		case WorkFilterAction.SHOW_WORK_CHARGED:
 			return uncheckReverseFilters(new int[] {
-					WorkFilterAction.SHOW_WORK_ON_PROGRESS });
+					WorkFilterAction.SHOW_WORK_ASSIGNMENT,
+					WorkFilterAction.SHOW_WORK_PATICIPATE,
+					WorkFilterAction.SHOW_MY_PROJECT_WORK });
+
+		case WorkFilterAction.SHOW_WORK_ASSIGNMENT:
+			return uncheckReverseFilters(new int[] {
+					WorkFilterAction.SHOW_WORK_CHARGED,
+					WorkFilterAction.SHOW_WORK_PATICIPATE,
+					WorkFilterAction.SHOW_MY_PROJECT_WORK });
+
+		case WorkFilterAction.SHOW_WORK_PATICIPATE:
+			return uncheckReverseFilters(new int[] {
+					WorkFilterAction.SHOW_WORK_CHARGED,
+					WorkFilterAction.SHOW_WORK_ASSIGNMENT,
+					WorkFilterAction.SHOW_MY_PROJECT_WORK });
+
+		default:
+			return new ViewerFilter[0];
 		}
 
-		return new ViewerFilter[0];
 	}
 
 	private ViewerFilter[] uncheckReverseFilters(int[] codeList) {
@@ -133,7 +145,7 @@ public class WorkFilterControl {
 		for (int i = 0; i < codeList.length; i++) {
 			action = actionMap.get(codeList[i]);
 			action.setChecked(false);
-			result[0] = action.getFilter();
+			result[i] = action.getFilter();
 		}
 
 		return result;
