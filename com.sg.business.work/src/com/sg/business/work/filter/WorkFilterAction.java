@@ -8,10 +8,12 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.selector.DateFromToSelector;
+import com.sg.widgets.viewer.CTreeViewer;
 
 public class WorkFilterAction extends Action {
 
@@ -107,8 +109,19 @@ public class WorkFilterAction extends Action {
 						false, ViewerFilter.class);
 			}
 			viewer.resetFilters();
-			//((CTreeViewer) viewer).expandAll();
-			viewer.setFilters(newFilters);
+			final ViewerFilter[] filtersTobeSet = newFilters;
+			final Display display = viewer.getControl().getDisplay();
+			display.asyncExec(new Runnable() {
+				
+				@Override
+				public void run() {
+					if(!display.isDisposed()){
+						((CTreeViewer) viewer).expandAll();
+						viewer.setFilters(filtersTobeSet);
+					}
+				}
+			});
+			
 		}
 	}
 
