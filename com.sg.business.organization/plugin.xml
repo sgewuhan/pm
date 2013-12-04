@@ -1056,84 +1056,12 @@
       <editor
             collectionName="account"
             dbName="pm2"
-            id="editor.organization.roleassignment"
+            id="editorscenario.organization.roleassignment"
             isDefault="true"
             labelFieldName="username"
-            memo="角色指派查看用户使用"
-            name="用户"
+            memo="角色指派设置用户场景时使用"
+            name="用户场景"
             titleToolTips="用户">
-         <basicpage
-               description="用户的基本信息"
-               id="basicpage.1"
-               title="基本信息">
-            <pagecolumn
-                  id="1">
-               <section
-                     label="基本信息">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="userid"
-                        label="用户编号"
-                        labelVisible="true"
-                        name="userid"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="username"
-                        label="姓名"
-                        labelVisible="true"
-                        name="username"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="email"
-                        label="EMail"
-                        labelVisible="true"
-                        name="email"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </text>
-                  <checkbox
-                        editable="true"
-                        id="activated"
-                        label="激活"
-                        labelVisible="true"
-                        name="activated"
-                        persistable="true">
-                  </checkbox>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="照片"
-               id="photo"
-               title="照片">
-            <pagecolumn>
-               <section
-                     label="照片">
-                  <file
-                        editPart="ImageUploader(Multi)"
-                        editable="true"
-                        id="headpic"
-                        label="头像"
-                        labelVisible="false"
-                        name="headpic"
-                        persistable="true"
-                        required="false">
-                  </file>
-               </section>
-            </pagecolumn>
-         </basicpage>
          <basicpage
                id="scenario"
                pageDelegator="com.sg.business.organization.editor.RoleAssignmentScenrioSetting"
@@ -1421,8 +1349,12 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="场景设置"
                style="push">
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editorscenario.organization.roleassignment">
+            </parameter>
             <visibleWhen
                   checkEnabled="false">
                <with

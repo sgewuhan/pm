@@ -179,17 +179,16 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 		return saved;
 	}
-	
-	
+
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		String documentNumber = getDocumentNumber();
-		if(Utils.isNullOrEmpty(documentNumber)){
+		if (documentNumber == null) {
 			generateCode();
 		}
 		super.doInsert(context);
 	}
-	
+
 	private void generateCode() throws Exception {
 		
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
@@ -200,7 +199,13 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		if (project != null) {
 			prefix=project.getProjectNumber();
 		}else{
-			// TODO 独立工作文档的编号，组织代码
+			//独立工作文档的编号，组织代码
+			Work work=getWork();
+			if(work!=null&&work.isStandloneWork()){
+				User charger = work.getCharger();
+				Organization org = charger.getOrganization();
+				prefix=org.getCode();
+			}
 		}
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER
 				+ "." + prefix);
@@ -208,7 +213,15 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		String codeValue = prefix + seq;
 		setValue(F_DOCUMENT_NUMBER, codeValue);
 	}
-	
+
+	private Work getWork() {
+		ObjectId work_id = (ObjectId) getValue(F_WORK_ID);
+		if (work_id != null) {
+			return ModelService.createModelObject(Work.class, work_id);
+		} else {
+			return null;
+		}
+	}
 
 	private void checkDocumentNumber() throws Exception {
 		String documentNumber = getDocumentNumber();
@@ -321,7 +334,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				break;
 			}
 		}
-		
+
 		setValue(F_MAJOR_VID, major);
 		setValue(F_SECOND_VID, 0x0);
 		setValue(F_LIFECYCLE, STATUS_WORKING_ID);
@@ -330,9 +343,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
 						"$set",
-						new BasicDBObject().append(F_MAJOR_VID, major).
-											append(F_SECOND_VID, 0x0).
-											append(F_LIFECYCLE, STATUS_WORKING_ID)));
+						new BasicDBObject().append(F_MAJOR_VID, major)
+								.append(F_SECOND_VID, 0x0)
+								.append(F_LIFECYCLE, STATUS_WORKING_ID)));
 	}
 
 	public String[] getMajorVersionSeq() {
@@ -521,7 +534,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	public String getRevId() {
-//		Integer vid = getIntegerValue(F__VID);
+		// Integer vid = getIntegerValue(F__VID);
 		Integer vid = getIntegerValue(F_SECOND_VID);
 		String release = getStringValue(F_MAJOR_VID);
 		return release + "." + vid;
@@ -696,7 +709,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		boolean locked = isLocked();
 		String userId = context.getAccountInfo().getConsignerId();
 		User user = getLockedBy();
-		if(locked && user == null){
+		if (locked && user == null) {
 			locked = false;
 		}
 		if (user != null && !userId.equals(user.getUserid())) {
@@ -706,17 +719,18 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	public Date getReleaseOn() {
-		return getDateValue(STATUS_RELEASED_ID+"_date");
+		return getDateValue(STATUS_RELEASED_ID + "_date");
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<DBObject> getProcessHistory(long processId) {
 		Object value = getValue(F_WF_HISTORY);
-		if(value instanceof List){
+		if (value instanceof List) {
 			for (int i = 0; i < ((List) value).size(); i++) {
 				DBObject dbo = (DBObject) ((List) value).get(i);
 				Object insid = dbo.get(IDocumentProcess.F_PROCESS_INSTANCEID);
-				if(insid instanceof Long && ((Long)insid).longValue()==processId){
+				if (insid instanceof Long
+						&& ((Long) insid).longValue() == processId) {
 					return (List<DBObject>) dbo.get(IDocumentProcess.F_HISTORY);
 				}
 			}

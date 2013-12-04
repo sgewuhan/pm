@@ -215,6 +215,12 @@ public interface IModelConstants {
 	 * 设置：收件箱的刷新间隔时间
 	 */
 	public static final String S_U_MESSAGE_RESERVED_REFRESH_INTERVAL = "MESSAGEINBOX.REFRESH.INTERVAL";
+	
+	
+	/**
+	 * 设置：收件箱的刷新间隔时间
+	 */
+	public static final String S_U_TASK_RESERVED_REFRESH_INTERVAL = "TASKRESERVED.REFRESH.INTERVAL";
 
 	
 	/**

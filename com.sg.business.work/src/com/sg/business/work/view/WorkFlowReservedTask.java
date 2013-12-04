@@ -7,15 +7,18 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
+import com.mobnut.admin.dataset.Setting;
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.sg.business.model.IModelConstants;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.work.handler.CompleteTask;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.part.view.TableNavigator;
+import com.sg.widgets.part.view.AutoRefreshableTableView;
 
-public class WorkFlowReservedTask extends TableNavigator {
+public class WorkFlowReservedTask extends AutoRefreshableTableView {
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -60,6 +63,19 @@ public class WorkFlowReservedTask extends TableNavigator {
 			work.doStartTask(Work.F_WF_EXECUTE, userTask, context);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
+		}
+	}
+
+	@Override
+	protected int getInterval() {
+		IContext context = getContext();
+		Object val = Setting.getUserSetting(context.getAccountInfo().getUserId(),
+				IModelConstants.S_U_TASK_RESERVED_REFRESH_INTERVAL);
+		Integer value = Utils.getIntegerValue(val);
+		if(value!=null){
+			return value.intValue()*60000;//分钟为单位
+		}else{
+			return  600000;//间隔10分钟刷新
 		}
 	}
 }

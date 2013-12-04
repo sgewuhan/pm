@@ -172,6 +172,15 @@ public class DBInit implements ISchedualJobRunnable {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
+		
+		setting = new BasicDBObject();
+		setting.put("varid", IModelConstants.S_U_TASK_RESERVED_REFRESH_INTERVAL);
+		setting.put("desc", "流程任务刷新周期(分钟)");
+		setting.put("value", "30");
+		try {
+			col.insert(setting);
+		} catch (Exception e) {
+		}
 
 	}
 
