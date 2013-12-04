@@ -37,13 +37,13 @@ public class BudgetAndInvestmentLabelProvider extends
 			if (ratio > 1) {// 超支的
 				for (int i = 0; i < scale; i++) {
 					String bar = TinyVisualizationUtil.getColorBar(i + 3,
-							"blue", "16%", null, null, null, "10");
+							"blue", "16%", null, null, null, "14");
 					sb.append(bar);
 				}
 			} else {
 				for (int i = 0; i < num; i++) {
 					String bar = TinyVisualizationUtil.getColorBar(i + 3,
-							"blue", "16%", null, null, null, "10");
+							"blue", "16%", null, null, null, "14");
 					sb.append(bar);
 				}
 			}
@@ -54,7 +54,7 @@ public class BudgetAndInvestmentLabelProvider extends
 			if (ratio > 1) {// 超支的
 				for (int i = 0; i < num; i++) {
 					String bar = TinyVisualizationUtil.getColorBar(i + 3,
-							"red", "16%", null, null, null, "10");
+							"red", "16%", null, null, null, "14");
 					sb.append(bar);
 				}
 			} else {
@@ -86,13 +86,13 @@ public class BudgetAndInvestmentLabelProvider extends
 		if (budgetValue == null) {
 
 		} else if (budgetValue.doubleValue() < investment) {
-			sb.append("<span style='color=" + Utils.COLOR_RED[10] + "'>");
+			sb.append("<span style='color:" + Utils.COLOR_RED[10] + "'>");
 			sb.append("超支");
 			sb.append("</span>");
 		} else {
 			boolean maybeOverCost = project.maybeOverCostNow();
 			if (maybeOverCost) {
-				sb.append("<span style='color=" + Utils.COLOR_YELLOW[10] + "'>");
+				sb.append("<span style='color:" + Utils.COLOR_YELLOW[10] + "'>");
 				sb.append("超支风险");
 				sb.append("</span>");
 			}

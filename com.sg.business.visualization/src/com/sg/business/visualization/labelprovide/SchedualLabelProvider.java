@@ -24,9 +24,8 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 
 		// 显示计划和实际的进度日期
 		sb.append("<small>");
-		sb.append("<p>");
+		sb.append("<br/>");
 		sb.append(getSchedualText(works, project));
-		sb.append("</p>");
 		sb.append("</small>");
 		return sb.toString();
 	}
@@ -54,12 +53,12 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 		// String state = null;
 		if (!ILifecycle.STATUS_FINIHED_VALUE.equals(projectLc)) {
 			if (project.isAdvanced()) {
-				sb.append("<span style='color=" + Utils.COLOR_GREEN[10] + "'>");
+				sb.append("<span style='color:" + Utils.COLOR_GREEN[10] + "'>");
 				sb.append("提前");
 				sb.append("</span>");
 			} else {
 				if (project.isDelay()) {
-					sb.append("<span style='color=" + Utils.COLOR_RED[10] + "'>");
+					sb.append("<span style='color:" + Utils.COLOR_RED[10] + "'>");
 					sb.append("超期");
 					sb.append("</span>");
 					// state = FileUtil.getImageURL(
@@ -68,7 +67,7 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 				} else {
 					boolean maybeDelay = project.maybeDelay();
 					if (maybeDelay) {
-						sb.append("<span style='color=" + Utils.COLOR_YELLOW[10]
+						sb.append("<span style='color:" + Utils.COLOR_YELLOW[10]
 								+ "'>");
 						sb.append("超期风险");
 						sb.append("</span>");
