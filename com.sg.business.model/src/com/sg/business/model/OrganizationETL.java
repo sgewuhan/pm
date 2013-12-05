@@ -12,21 +12,22 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.etl.OrganizationProjectProvider;
 
-public class BIDataBuilder implements ISchedualJobRunnable {
+public class OrganizationETL implements ISchedualJobRunnable {
 
 	private DBCollection col;
 
 	private static ConcurrentHashMap<ObjectId, OrganizationProjectProvider> cache = new ConcurrentHashMap<ObjectId, OrganizationProjectProvider>();
 
-	public BIDataBuilder() {
+	public OrganizationETL() {
 		col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
 	}
 
 	@Override
 	public boolean run() throws Exception {
-		Commons.loginfo("初始化组织项目集绩效分析器...");
+		Commons.loginfo("ETL for organization business data starting...");
 		cache.clear();
 		DBCursor cur = col.find(null,
 				new BasicDBObject().append(Organization.F__ID, 1));
@@ -35,7 +36,7 @@ public class BIDataBuilder implements ISchedualJobRunnable {
 			ObjectId id = (ObjectId) dbObject.get(Organization.F__ID);
 			loadOrganization(id, true);
 		}
-		Commons.loginfo("组织项目集绩效分析器初始化完成");
+		Commons.loginfo("ETL finished.");
 		return true;
 	}
 
@@ -52,6 +53,7 @@ public class BIDataBuilder implements ISchedualJobRunnable {
 				projectProvider.getData();
 				cache.put(id, projectProvider);
 			}
+			Commons.loginfo(""+org+" loaded.");
 			return projectProvider;
 		}
 		return null;

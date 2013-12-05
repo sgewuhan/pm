@@ -28,6 +28,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.etl.OrganizationProjectProvider;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
@@ -1619,7 +1620,7 @@ public class Organization extends PrimaryObject {
 			}
 			return (T) summary;
 		} else if (adapter == ProjectProvider.class) {
-			OrganizationProjectProvider projectProvider = BIDataBuilder.getProjectProvider(get_id());
+			OrganizationProjectProvider projectProvider = OrganizationETL.getProjectProvider(get_id());
 			return (T) projectProvider;
 		}
 		return super.getAdapter(adapter);
