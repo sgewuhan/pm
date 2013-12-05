@@ -1405,7 +1405,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			String process = F_WF_CHANGE;
 			String editorId = Project.EDITOR_CREATE_PLAN;
 			String pageId = Project.EDITOR_PAGE_WBS;
-			passed = ProjectToolkit.checkProcessInternal(project, pc, result,
+			passed = ProjectToolkit.checkProcessInternal(this, pc, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
@@ -1417,7 +1417,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
 			title = "检查工作执行流程";
 			process = F_WF_EXECUTE;
-			passed = ProjectToolkit.checkProcessInternal(project, pc, result,
+			passed = ProjectToolkit.checkProcessInternal(this, pc, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);

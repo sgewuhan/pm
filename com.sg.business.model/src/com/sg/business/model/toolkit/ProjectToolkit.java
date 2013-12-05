@@ -48,16 +48,15 @@ public class ProjectToolkit {
 		boolean passed = true;
 		List<PrimaryObject> ra;
 		if (pc.isWorkflowActivate(process)) {
-			// 如果流程已经激活，需要判断是否所有的actor都指派
-			Object data;// project
-			PrimaryObject selection;// work or project
+			//判断是否为工作的流程检查
+			Object data;
 			if (po instanceof Work) {
 				data = ((Work) po).getProject();
-				selection = po;
 			} else {
 				data = po;
-				selection = po;
 			}
+			
+			// 如果流程已经激活，需要判断是否所有的actor都指派
 			DroolsProcessDefinition pd = pc.getProcessDefinition(process);
 			List<NodeAssignment> nalist = pd.getNodesAssignment();
 			for (int i = 0; i < nalist.size(); i++) {
@@ -78,7 +77,7 @@ public class ProjectToolkit {
 						checkItem.setData(data);
 						checkItem.setEditorId(editorId);
 						checkItem.setEditorPageId(pageId);
-						checkItem.setSelection(selection);
+						checkItem.setSelection(po);
 						result.add(checkItem);
 						passed = false;
 					} else {
@@ -91,7 +90,7 @@ public class ProjectToolkit {
 							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection(selection);
+							checkItem.setSelection(po);
 							result.add(checkItem);
 							passed = false;
 						} else if (ra.size() > 1) {
@@ -105,7 +104,7 @@ public class ProjectToolkit {
 							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection(selection);
+							checkItem.setSelection(po);
 							result.add(checkItem);
 							passed = false;
 						}
