@@ -41,6 +41,7 @@ import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.bug.BugTools;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -156,6 +157,18 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				}
 			}
 		});
+		
+		item = new MenuItem(dropDownMenu,SWT.PUSH);
+		item.setText("报告问题和建议");
+		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_REPORT_ADD_24));
+		item.addSelectionListener(new SelectionAdapter(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				BugTools.bookBug();
+
+			}
+		});
+		
 
 		headerPic.addMouseListener(new MouseListener() {
 

@@ -300,4 +300,8 @@ public interface IModelConstants {
 	 */
 	public static final String C_SALESDATA = "salesdata";
 
+	public static final String SEQ_BUG = "bugid";
+
+	public static final String C_BUG = "buginfo";
+
 }
