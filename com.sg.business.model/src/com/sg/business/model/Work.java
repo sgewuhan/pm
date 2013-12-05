@@ -2720,6 +2720,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// }
 
 		DBObject update = new BasicDBObject();
+		System.out.println("ok");
 		List<PrimaryObject> children = getChildrenWork();
 		for (int i = 0; i < children.size(); i++) {
 			Work childWork = (Work) children.get(i);
