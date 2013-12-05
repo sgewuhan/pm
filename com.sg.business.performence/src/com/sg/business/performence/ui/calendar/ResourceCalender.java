@@ -48,7 +48,7 @@ public abstract class ResourceCalender extends ViewPart implements
 				| SWT.V_SCROLL);
 		viewer.getGrid().setHeaderVisible(true);
 		viewer.setContentProvider(getContentProvider());
-		viewer.setAutoExpandLevel(-1);
+		viewer.setAutoExpandLevel(2);
 
 		createGridViewerEditor();
 
