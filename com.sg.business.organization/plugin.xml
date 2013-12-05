@@ -1349,19 +1349,19 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="场景设置"
+               label="编辑"
                style="push">
-            <parameter
-                  name="com.sg.widgets.edit.editorid"
-                  value="editorscenario.organization.roleassignment">
-            </parameter>
             <visibleWhen
                   checkEnabled="false">
                <with
                      variable="selection">
-                  <count
-                        value="+">
-                  </count>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.sg.business.model.Role">
+                     </instanceof>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
@@ -1392,6 +1392,29 @@
                   <count
                         value="+">
                   </count>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="场景设置"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editorscenario.organization.roleassignment">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="com.sg.business.model.RoleAssignment">
+                     </instanceof>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>

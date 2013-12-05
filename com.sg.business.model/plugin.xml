@@ -508,18 +508,6 @@
             serviceProvider="com.sg.business.model.bpmservice.LifecycleService">
       </service>
       <service
-            interface="projectlifecycle.service.action"
-            name="项目生命周期操作服务"
-            operation="finish"
-            serviceProvider="com.sg.business.model.bpmservice.ProjectLifecycleService">
-      </service>
-      <service
-            interface="projectlifecycle.service.action"
-            name="项目生命周期操作服务"
-            operation="cancel"
-            serviceProvider="com.sg.business.model.bpmservice.ProjectLifecycleService">
-      </service>
-      <service
             interface="project.service.action"
             name="项目状态服务"
             operation="ready"

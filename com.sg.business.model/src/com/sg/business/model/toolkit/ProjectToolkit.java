@@ -38,6 +38,7 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.widgets.MessageUtil;
 
 public class ProjectToolkit {
 	public static boolean checkProcessInternal(PrimaryObject po,
@@ -47,16 +48,15 @@ public class ProjectToolkit {
 		boolean passed = true;
 		List<PrimaryObject> ra;
 		if (pc.isWorkflowActivate(process)) {
-			// 如果流程已经激活，需要判断是否所有的actor都指派
-			Object data;// project
-			PrimaryObject selection;// work or project
+			//判断是否为工作的流程检查
+			Object data;
 			if (po instanceof Work) {
 				data = ((Work) po).getProject();
-				selection = po;
 			} else {
 				data = po;
-				selection = po;
 			}
+			
+			// 如果流程已经激活，需要判断是否所有的actor都指派
 			DroolsProcessDefinition pd = pc.getProcessDefinition(process);
 			List<NodeAssignment> nalist = pd.getNodesAssignment();
 			for (int i = 0; i < nalist.size(); i++) {
@@ -77,7 +77,7 @@ public class ProjectToolkit {
 						checkItem.setData(data);
 						checkItem.setEditorId(editorId);
 						checkItem.setEditorPageId(pageId);
-						checkItem.setSelection(selection);
+						checkItem.setSelection(po);
 						result.add(checkItem);
 						passed = false;
 					} else {
@@ -90,7 +90,7 @@ public class ProjectToolkit {
 							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection(selection);
+							checkItem.setSelection(po);
 							result.add(checkItem);
 							passed = false;
 						} else if (ra.size() > 1) {
@@ -104,7 +104,7 @@ public class ProjectToolkit {
 							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection(selection);
+							checkItem.setSelection(po);
 							result.add(checkItem);
 							passed = false;
 						}
@@ -597,6 +597,12 @@ public class ProjectToolkit {
 		document.setValue(Document.F_PROJECT_ID, projectId);
 
 		document.setValue(Document.F_FOLDER_ID, folderRootId);
+
+		try {
+			document.generateCode();
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+		}
 
 		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
 		if (value != null) {

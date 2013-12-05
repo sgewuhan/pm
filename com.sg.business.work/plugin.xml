@@ -1785,6 +1785,30 @@
                label="标记"
                style="push">
          </command>
+         <command
+               commandId="work.sendmessage"
+               icon="image/message_reply_24.png"
+               label="发送消息..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="sendmessage"
+                              property="runtimework.action">
+                        </test>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
          <separator
                name="runtimework.separator2"
                visible="true">
@@ -2337,6 +2361,11 @@
             id="workflow.linkdeliverable"
             name="链接交付文档">
       </command>
+      <command
+            categoryId="work"
+            id="work.sendmessage"
+            name="发送消息">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2399,6 +2428,10 @@
       <handler
             class="com.sg.business.work.handler.LinkDeliverable"
             commandId="workflow.linkdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.work.handler.SendMessage"
+            commandId="work.sendmessage">
       </handler>
    </extension>
    <extension

@@ -801,6 +801,31 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
 	}
+	
+	/**
+	 * 能够点击发送消息
+	 * @param currentAccountContext
+	 * @return
+	 */
+	public boolean canSendMessage(IContext context) {
+		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
+		String lifeCycle = getLifecycleStatus();
+		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
+			return false;
+		}
+
+		if (isProjectWBSRoot()) {
+			return false;
+		}
+		if(hasPermissionForReassignment(context)){
+			return true;
+		}
+		return hasPermission(context);
+	}
+
 
 	/**
 	 * 能否点击删除
@@ -1380,7 +1405,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			String process = F_WF_CHANGE;
 			String editorId = Project.EDITOR_CREATE_PLAN;
 			String pageId = Project.EDITOR_PAGE_WBS;
-			passed = ProjectToolkit.checkProcessInternal(project, pc, result,
+			passed = ProjectToolkit.checkProcessInternal(this, pc, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
@@ -1392,7 +1417,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
 			title = "检查工作执行流程";
 			process = F_WF_EXECUTE;
-			passed = ProjectToolkit.checkProcessInternal(project, pc, result,
+			passed = ProjectToolkit.checkProcessInternal(this, pc, result,
 					roleMap, title, process, editorId, pageId);
 			if (passed) {
 				CheckListItem checkItem = new CheckListItem(title);
@@ -4640,4 +4665,5 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 	}
 
+	
 }
