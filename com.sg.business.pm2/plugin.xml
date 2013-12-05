@@ -632,10 +632,10 @@
             isDefault="true"
             name="项目绩效可视化">
          <perspective
-               default="false"
+               default="true"
                id="perspective.vis.home"></perspective>
          <perspective
-               default="true"
+               default="false"
                id="perspective.visualization">
          </perspective>
       </scenario>
@@ -736,10 +736,6 @@
          <perspective
                id="perspective.message">
          </perspective>
-      </scenario>
-      <scenario
-            id="workflowAndMessage2"
-            name="工作管理（研发职能）">
       </scenario>
    </extension>
    <extension
