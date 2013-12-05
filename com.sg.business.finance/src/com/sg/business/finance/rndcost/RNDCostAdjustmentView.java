@@ -31,11 +31,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.finance.eai.WorkorderPeriodCostAllocate;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.WorkOrderPeriodCost;
+import com.sg.business.model.etl.eai.WorkorderPeriodCostAllocate;
 import com.sg.widgets.MessageUtil;
 
 @SuppressWarnings("restriction")

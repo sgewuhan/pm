@@ -1,12 +1,12 @@
-package com.sg.business.finance.schedual;
+package com.sg.business.model.etl;
 
 import java.util.Calendar;
 
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.commons.Commons;
-import com.sg.business.finance.eai.WorkorderPeriodCostAdapter;
 import com.sg.business.model.CompanyWorkOrder;
 import com.sg.business.model.CostAccount;
+import com.sg.business.model.etl.eai.WorkorderPeriodCostAdapter;
 
 /**
  * 每月1号对上月的数据进行获取
@@ -14,7 +14,7 @@ import com.sg.business.model.CostAccount;
  * @author Administrator
  * 
  */
-public class WorkorderCostGather implements ISchedualJobRunnable {
+public class WorkorderCostGatherETL implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {

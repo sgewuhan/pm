@@ -1,4 +1,4 @@
-package com.sg.business.finance.schedual;
+package com.sg.business.model.etl;
 
 import java.util.Calendar;
 import java.util.HashSet;
@@ -11,11 +11,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.finance.eai.RNDPeriodCostAdapter;
 import com.sg.business.model.CostAccount;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
+import com.sg.business.model.etl.eai.RNDPeriodCostAdapter;
 
 /**
  * 每月1号对上月的数据进行获取
@@ -23,7 +23,7 @@ import com.sg.business.model.RNDPeriodCost;
  * @author Administrator
  * 
  */
-public class RunRNDCostAllocation implements ISchedualJobRunnable {
+public class RNDCostAllocationETL implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {

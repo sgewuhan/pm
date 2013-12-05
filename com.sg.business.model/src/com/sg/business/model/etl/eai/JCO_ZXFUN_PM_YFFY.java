@@ -1,4 +1,4 @@
-package com.sg.business.finance.eai.sap;
+package com.sg.business.model.etl.eai;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,6 @@ import com.sap.mw.jco.JCO.FieldIterator;
 import com.sap.mw.jco.JCO.Function;
 import com.sap.mw.jco.JCO.ParameterList;
 import com.sap.mw.jco.JCO.Table;
-import com.sg.business.finance.FinanceActivator;
 
 public class JCO_ZXFUN_PM_YFFY {
 
@@ -26,6 +25,17 @@ public class JCO_ZXFUN_PM_YFFY {
 
 	private static final String FUNCTION_NAME = "ZXFUN_PM_YFFY";
 
+	
+	public static Client getSAPClient() {
+		SAPConnectionPool connPool = new SAPConnectionPool();
+		Client sapClient = connPool.connSAP();
+		return sapClient;
+	}
+
+	public static void releaseClient(Client sapClient) {
+		JCO.releaseClient(sapClient);
+	}
+	
 	/**
 	 * 
 	 * @param orgCodeArray
@@ -45,7 +55,7 @@ public class JCO_ZXFUN_PM_YFFY {
 			String[] workordersArray, String[] costElementArray, int year,
 			int month) throws Exception {
 
-		Client client = FinanceActivator.getSAPClient();
+		Client client = getSAPClient();
 		IRepository repository = JCO.createRepository(REPOSITORY_NAME,
 				client);
 
@@ -85,7 +95,7 @@ public class JCO_ZXFUN_PM_YFFY {
 
 		client.execute(function);
 		
-		FinanceActivator.releaseClient(client);
+		releaseClient(client);
 		
 		Table result = function.getTableParameterList().getTable("TABLE_OUT");
 		if (result.getNumRows() > 0) {

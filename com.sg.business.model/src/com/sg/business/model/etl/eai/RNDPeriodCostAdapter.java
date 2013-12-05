@@ -1,4 +1,4 @@
-package com.sg.business.finance.eai;
+package com.sg.business.model.etl.eai;
 
 import java.util.HashMap;
 import java.util.Map;
