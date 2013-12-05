@@ -129,23 +129,13 @@
             id="commons.generic.tableselector"
             table="commons.generic.tableselector">
          <filterAction>
-            <column
-                  column="userid"
-                  name="用户ID"
-                  type="String">
-            </column>
-            <column
-                  columnDefinitionId="account.username">
+         <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  column="userid"
-                  name="用户ID"
-                  type="String">
-            </column>
-            <column
-                  columnDefinitionId="account.username">
+                  columnDefinitionId="com.sg.widgets.column.desc">
             </column>
          </searchAction>
       </navigator>

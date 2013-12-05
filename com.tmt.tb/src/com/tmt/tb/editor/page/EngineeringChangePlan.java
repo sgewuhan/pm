@@ -22,17 +22,26 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.jbpm.task.Task;
 
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.portal.Portal;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.part.WorkListCreater;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
+import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Organization;
+import com.sg.business.model.OrganizationDistributeFileBase;
 import com.sg.business.model.Project;
 import com.sg.business.model.TaskForm;
+import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -42,6 +51,11 @@ import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
+import com.tmt.pdm.client.Starter;
+import com.tmt.pdm.dcpdm.handler.PDMObjectSelector;
+import com.tmt.pdm.dcpdm.sync.ImportData;
+
+import dyna.framework.service.dos.DOSChangeable;
 
 public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
@@ -151,29 +165,6 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		fd.top = new FormAttachment(0, 2);
 		fd.left = new FormAttachment(0, 2);
 
-		// Button createDeliverableButton = new Button(parent, SWT.PUSH);
-		// createDeliverableButton.setImage(BusinessResource
-		// .getImage(BusinessResource.IMAGE_DELIVERABLECREATE_24));
-		// createDeliverableButton.setToolTipText("添加变更对象");
-		// createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
-		// createDeliverableButton.addSelectionListener(new SelectionListener()
-		// {
-		//
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// createDeliverable();
-		// }
-		//
-		// @Override
-		// public void widgetDefaultSelected(SelectionEvent e) {
-		//
-		// }
-		// });
-		// fd = new FormData();
-		// createDeliverableButton.setLayoutData(fd);
-		// fd.top = new FormAttachment(0, 2);
-		// fd.left = new FormAttachment(createWorkButton, 2);
-
 		final Menu menu = new Menu(parent.getShell(), SWT.POP_UP);
 		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
 		menuItem.setText("从项目中选择...");
@@ -192,15 +183,15 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			}
 		});
 
-//		menuItem = new MenuItem(menu, SWT.NONE);
-//		menuItem.setText("链接PDM...");
-//		menuItem.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				createDeliverableWithPDM(parent);
-//			}
-//
-//		});
+		menuItem = new MenuItem(menu, SWT.NONE);
+		menuItem.setText("链接PDM...");
+		menuItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				createDeliverableWithPDM(parent);
+			}
+
+		});
 
 		final Button createDeliverableButton = new Button(parent, SWT.PUSH);
 		createDeliverableButton.setImage(BusinessResource
@@ -481,45 +472,45 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	}
 
 	protected void createDeliverableWithPDM(Composite parent) {
-//
-//		IStructuredSelection sel = workListCreater.getSelection();
-//		if (sel != null && !sel.isEmpty()) {
-//			Object element = sel.getFirstElement();
-//			final Work work;
-//			if (element instanceof Work) {
-//				work = (Work) element;
-//			} else if (element instanceof Deliverable) {
-//				Deliverable deliverable = (Deliverable) element;
-//				work = (Work) deliverable.getParentPrimaryObjectCache();
-//			} else {
-//				work = null;
-//			}
-//			if (work != null) {
-//				List<?> docContainer = getDocumentAndDrawingContainerCode();
-//				List<?> partContainer = getPartContainerCode();
-//				if (docContainer == null) {
-//					MessageUtil.showToast("您所在的组织尚未确定PDM系统中可使用图文档容器。",
-//							SWT.ICON_ERROR);
-//					return;
-//				}
-//				PDMObjectSelector selector = new PDMObjectSelector(parent.getShell(),
-//						docContainer, partContainer);
-//				int ret = selector.open();
-//				if (ret == PDMObjectSelector.OK) {
-//					String[] select = selector.getSelection();
-//					if (select.length == 0) {
-//						return;
-//					} else {
-//						Document doc = getDocument(select[0]);
-//						workListCreater.createDeliverable(work, doc);
-//						setDirty(true);
-//					}
-//				}
-//
-//			}
-//           return;
-//		}
-//		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
+
+		IStructuredSelection sel = workListCreater.getSelection();
+		if (sel != null && !sel.isEmpty()) {
+			Object element = sel.getFirstElement();
+			final Work work;
+			if (element instanceof Work) {
+				work = (Work) element;
+			} else if (element instanceof Deliverable) {
+				Deliverable deliverable = (Deliverable) element;
+				work = (Work) deliverable.getParentPrimaryObjectCache();
+			} else {
+				work = null;
+			}
+			if (work != null) {
+				List<?> docContainer = getDocumentAndDrawingContainerCode();
+				List<?> partContainer = getPartContainerCode();
+				if (docContainer == null) {
+					MessageUtil.showToast("您所在的组织尚未确定PDM系统中可使用图文档容器。",
+							SWT.ICON_ERROR);
+					return;
+				}
+				PDMObjectSelector selector = new PDMObjectSelector(parent.getShell(),
+						docContainer, partContainer);
+				int ret = selector.open();
+				if (ret == PDMObjectSelector.OK) {
+					String[] select = selector.getSelection();
+					if (select.length == 0) {
+						return;
+					} else {
+						Document doc = getDocument(select[0]);
+						workListCreater.createDeliverable(work, doc);
+						setDirty(true);
+					}
+				}
+
+			}
+           return;
+		}
+		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
 	}
 
 	protected void createWork() {
@@ -568,84 +559,84 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	public void setFocus() {
 		workListCreater.setFocus();
 	}
-//
-//	private List<?> getDocumentAndDrawingContainerCode() {
-//		String userId = new CurrentAccountContext().getConsignerId();
-//		User user = UserToolkit.getUserById(userId);
-//
-//		Organization org = user.getOrganization();
-//
-//		while (org != null) {
-//			List<?> code = org.getDocumentAndDrawingContainerCode();
-//			if (code != null) {
-//				return (List<?>) code;
-//			} else {
-//				org = (Organization) org.getParentOrganization();
-//			}
-//		}
-//		return null;
-//	}
-//
-//	private List<?> getPartContainerCode() {
-//		String userId = new CurrentAccountContext().getConsignerId();
-//		User user = UserToolkit.getUserById(userId);
-//
-//		Organization org = user.getOrganization();
-//
-//		while (org != null) {
-//			List<?> code = org.getPartContainerCode();
-//			if (code != null) {
-//				return (List<?>) code;
-//			} else {
-//				org = (Organization) org.getParentOrganization();
-//			}
-//		}
-//		return null;
-//	}
 
-//	private Document getDocument(String ouid) {
-//		Document document = null;
-//		try {
-//			DOSChangeable pdmObject = Starter.dos.get(ouid);
-//			boolean buildDocument = true;
-//			String documentNumber = (String) pdmObject.get("md$number");
-//			if (documentNumber != null) {
-//				DBCollection col = DBActivator.getCollection(
-//						IModelConstants.DB, IModelConstants.C_DOCUMENT);
-//				DBObject dbo = col.findOne(new BasicDBObject().append(
-//						Document.F_DOCUMENT_NUMBER, documentNumber));
-//				if (dbo != null) {
-//					document = ModelService.createModelObject(dbo,
-//							Document.class);
-//					buildDocument = false;
-//					return document;
-//				}
-//			}
-//			if (buildDocument) {
-//				ImportData ip = new ImportData() {
-//					@Override
-//					protected String getNamespace() {
-//						return "vault_file";
-//					}
-//
-//					@Override
-//					protected DB getDB() {
-//						OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
-//						return DBActivator.getDB(filebase.getDB());
-//					}
-//
-//					@Override
-//					protected String getClassOuid() {
-//						return null;
-//					}
-//				};
-//
-//				ip.syncItem(ouid, document);
-//
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return document;
-//	}
+	private List<?> getDocumentAndDrawingContainerCode() {
+		String userId = new CurrentAccountContext().getConsignerId();
+		User user = UserToolkit.getUserById(userId);
+
+		Organization org = user.getOrganization();
+
+		while (org != null) {
+			List<?> code = org.getDocumentAndDrawingContainerCode();
+			if (code != null) {
+				return (List<?>) code;
+			} else {
+				org = (Organization) org.getParentOrganization();
+			}
+		}
+		return null;
+	}
+
+	private List<?> getPartContainerCode() {
+		String userId = new CurrentAccountContext().getConsignerId();
+		User user = UserToolkit.getUserById(userId);
+
+		Organization org = user.getOrganization();
+
+		while (org != null) {
+			List<?> code = org.getPartContainerCode();
+			if (code != null) {
+				return (List<?>) code;
+			} else {
+				org = (Organization) org.getParentOrganization();
+			}
+		}
+		return null;
+	}
+
+	private Document getDocument(String ouid) {
+		Document document = null;
+		try {
+			DOSChangeable pdmObject = Starter.dos.get(ouid);
+			boolean buildDocument = true;
+			String documentNumber = (String) pdmObject.get("md$number");
+			if (documentNumber != null) {
+				DBCollection col = DBActivator.getCollection(
+						IModelConstants.DB, IModelConstants.C_DOCUMENT);
+				DBObject dbo = col.findOne(new BasicDBObject().append(
+						Document.F_DOCUMENT_NUMBER, documentNumber));
+				if (dbo != null) {
+					document = ModelService.createModelObject(dbo,
+							Document.class);
+					buildDocument = false;
+					return document;
+				}
+			}
+			if (buildDocument) {
+				ImportData ip = new ImportData() {
+					@Override
+					protected String getNamespace() {
+						return "vault_file";
+					}
+
+					@Override
+					protected DB getDB() {
+						OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
+						return DBActivator.getDB(filebase.getDB());
+					}
+
+					@Override
+					protected String getClassOuid() {
+						return null;
+					}
+				};
+
+				ip.syncItem(ouid, document);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return document;
+	}
 }
