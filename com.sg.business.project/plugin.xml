@@ -2509,6 +2509,30 @@
             </visibleWhen>
          </command>
          <command
+               commandId="work.sendmessage"
+               icon="image/message_reply_24.png"
+               label="发送消息..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="modify"
+                              property="runtimework.action">
+                        </test>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
                commandId="work.remove"
                icon="image/removework_24.png"
                label="删除"
