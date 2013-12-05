@@ -158,7 +158,7 @@ public class ProjectChartFactory {
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
 		FontDefinition font = xAxisPrimary.getLabel().getCaption().getFont();
 		adjustFont(font, NORMAL_SIZE);
-		font.setRotation(45);
+		font.setRotation(-30);
 
 		// Y-Axis
 		Axis yAxisPrimary = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
@@ -271,7 +271,7 @@ public class ProjectChartFactory {
 		xAxisPrimary.getTitle().getCaption().setValue("Category Text X-Axis");//$NON-NLS-1$
 		xAxisPrimary.setTitlePosition(Position.BELOW_LITERAL);
 		font = xAxisPrimary.getLabel().getCaption().getFont();
-		font.setRotation(45);
+		font.setRotation(-45);
 		adjustFont(font, NORMAL_SIZE);
 		xAxisPrimary.setLabelPosition(Position.BELOW_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);

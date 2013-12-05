@@ -16,11 +16,11 @@ Require-Bundle: org.eclipse.core.runtime,
  com.sg.bpm.workflow,
  com.sg.bpm.service,
  com.sg.business.resource,
- com.mobnut.admin
+ com.mobnut.admin,
+ com.sg.sqldb;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: com.sg.business.etl,
- com.sg.business.model,
+Export-Package: com.sg.business.model,
  com.sg.business.model.bpmservice,
  com.sg.business.model.bson,
  com.sg.business.model.check,
@@ -38,5 +38,9 @@ Export-Package: com.sg.business.etl,
  com.sg.business.model.dataset.usertask,
  com.sg.business.model.dataset.visualization,
  com.sg.business.model.dataset.work,
+ com.sg.business.model.etl,
+ com.sg.business.model.etl.eai,
  com.sg.business.model.event,
  com.sg.business.model.toolkit
+Bundle-ClassPath: libs/sapjco.jar,
+ .

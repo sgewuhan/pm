@@ -1,4 +1,4 @@
-package com.sg.business.finance.schedual;
+package com.sg.business.model.etl.temp;
 
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.commons.Commons;

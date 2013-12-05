@@ -1,4 +1,4 @@
-package com.sg.business.finance.eai;
+package com.sg.business.model.etl.eai;
 
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
