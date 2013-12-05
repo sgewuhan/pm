@@ -10,4 +10,9 @@ public interface IDocumentProcess {
 	public static final String F_PROCESSID="processid";//流程ID
 	
 	public static final String F_PROCESS_INSTANCEID="processinstanceid";
+	
+	public static final String F_MAJOR_VID="major_vid";//主版本号
+	
+	public static final String F_SECOND_VID = "svid";//小版本号
+	
 }
