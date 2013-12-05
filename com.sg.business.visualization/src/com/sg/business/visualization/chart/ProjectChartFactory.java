@@ -13,8 +13,11 @@ import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.FontDefinition;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
+import org.eclipse.birt.chart.model.attribute.LineAttributes;
 import org.eclipse.birt.chart.model.attribute.LineDecorator;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
+import org.eclipse.birt.chart.model.attribute.Marker;
+import org.eclipse.birt.chart.model.attribute.MarkerType;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.Text;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
@@ -25,6 +28,7 @@ import org.eclipse.birt.chart.model.component.Axis;
 import org.eclipse.birt.chart.model.component.Dial;
 import org.eclipse.birt.chart.model.component.DialRegion;
 import org.eclipse.birt.chart.model.component.Series;
+import org.eclipse.birt.chart.model.component.impl.AxisImpl;
 import org.eclipse.birt.chart.model.component.impl.DialRegionImpl;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
 import org.eclipse.birt.chart.model.data.BaseSampleData;
@@ -46,9 +50,11 @@ import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.layout.TitleBlock;
 import org.eclipse.birt.chart.model.type.BarSeries;
 import org.eclipse.birt.chart.model.type.DialSeries;
+import org.eclipse.birt.chart.model.type.LineSeries;
 import org.eclipse.birt.chart.model.type.PieSeries;
 import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 import org.eclipse.birt.chart.model.type.impl.DialSeriesImpl;
+import org.eclipse.birt.chart.model.type.impl.LineSeriesImpl;
 import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 
 import com.mobnut.commons.util.Utils;
@@ -152,7 +158,7 @@ public class ProjectChartFactory {
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
 		FontDefinition font = xAxisPrimary.getLabel().getCaption().getFont();
 		adjustFont(font, NORMAL_SIZE);
-		font.setRotation(-45);
+		font.setRotation(45);
 
 		// Y-Axis
 		Axis yAxisPrimary = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
@@ -231,47 +237,72 @@ public class ProjectChartFactory {
 
 		return cwaBar;
 	}
-	
-	
+
 	public static Chart createCombinnationStackedBarChart(String title,
 			String[] deptParameter, double[] deptValue1, double[] deptValue2,
-			String[] seriesTitle) {
+			double[] deptValue3, String[] seriesTitle) {
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType("Bar Chart"); //$NON-NLS-1$
-		cwaBar.setSubType("Stacked"); //$NON-NLS-1$
+		cwaBar.setSubType("Side-by-side"); //$NON-NLS-1$
+
+		// Plot
 		cwaBar.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
-		cwaBar.getBlock().getOutline().setVisible(false);
 		Plot p = cwaBar.getPlot();
 		p.getClientArea().setBackground(ColorDefinitionImpl.TRANSPARENT());
 
-		// Title
-		cwaBar.getTitle().getLabel().getCaption().setValue(title); //$NON-NLS-1$
-		adjustFont(cwaBar.getTitle().getLabel().getCaption().getFont(),
-				STRONG_SIZE);
+		// Legend
 		Legend lg = cwaBar.getLegend();
-		lg.setItemType(LegendItemType.SERIES_LITERAL);
-		adjustFont(lg.getText().getFont(), NORMAL_SIZE);
+		LineAttributes lia = lg.getOutline();
+		FontDefinition font = lg.getText().getFont();
+		adjustFont(font, SMALL_SIZE);
+		lia.setStyle(LineStyle.SOLID_LITERAL);
+		lg.getInsets().setLeft(10);
+		lg.getInsets().setRight(10);
+
+		// Title
+		cwaBar.getTitle().getLabel().getCaption().setValue(title);//$NON-NLS-1$
+		font = cwaBar.getTitle().getLabel().getCaption().getFont();
+		adjustFont(font, STRONG_SIZE);
+
 		// X-Axis
 		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
-
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
-		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
-		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
-		FontDefinition font = xAxisPrimary.getLabel().getCaption().getFont();
+		xAxisPrimary.getOrigin().setType(IntersectionType.VALUE_LITERAL);
+		xAxisPrimary.getTitle().getCaption().setValue("Category Text X-Axis");//$NON-NLS-1$
+		xAxisPrimary.setTitlePosition(Position.BELOW_LITERAL);
+		font = xAxisPrimary.getLabel().getCaption().getFont();
+		font.setRotation(45);
 		adjustFont(font, NORMAL_SIZE);
-		font.setRotation(-45);
+		xAxisPrimary.setLabelPosition(Position.BELOW_LITERAL);
+		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
 
 		// Y-Axis
-		Axis yAxisPrimary = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
-		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
-		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
-		font = yAxisPrimary.getLabel().getCaption().getFont();
+		Axis yAxisPrimary1 = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
+		yAxisPrimary1.getLabel().getCaption().setValue("Price Axis1");//$NON-NLS-1$
+		font = yAxisPrimary1.getLabel().getCaption().getFont();
 		adjustFont(font, NORMAL_SIZE);
+		yAxisPrimary1.setLabelPosition(Position.LEFT_LITERAL);
+		yAxisPrimary1.setTitlePosition(Position.LEFT_LITERAL);
+		yAxisPrimary1.getTitle().getCaption().setValue("Linear Value Y-Axis1");//$NON-NLS-1$
+		yAxisPrimary1.setType(AxisType.LINEAR_LITERAL);
+		yAxisPrimary1.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
 
-		// 取数
+		Axis yAxisPrimary2 = AxisImpl.create(Axis.ORTHOGONAL);
+		yAxisPrimary2.getLabel().getCaption().setValue("Price Axis2");//$NON-NLS-1$
+		font = yAxisPrimary2.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+		yAxisPrimary2.setLabelPosition(Position.RIGHT_LITERAL);
+		yAxisPrimary2.setTitlePosition(Position.RIGHT_LITERAL);
+		yAxisPrimary2.getTitle().getCaption().setValue("Linear Value Y-Axis1");//$NON-NLS-1$
+		yAxisPrimary2.setType(AxisType.LINEAR_LITERAL);
+		yAxisPrimary2.getMajorGrid().setTickStyle(TickStyle.RIGHT_LITERAL);
+		xAxisPrimary.getAssociatedAxes().add(yAxisPrimary2);
+
+		// Associate with Data Set
 		TextDataSet categoryValues = TextDataSetImpl.create(deptParameter);
-		NumberDataSet orthoValues1 = NumberDataSetImpl.create(deptValue1);
-		NumberDataSet orthoValues2 = NumberDataSetImpl.create(deptValue2);
+		NumberDataSet seriesValues1 = NumberDataSetImpl.create(deptValue1);
+		NumberDataSet seriesValues2 = NumberDataSetImpl.create(deptValue2);
+		NumberDataSet seriesValues3 = NumberDataSetImpl.create(deptValue3);
 
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
@@ -290,7 +321,6 @@ public class ProjectChartFactory {
 		sdOrthogonal2.setSeriesDefinitionIndex(1);
 		sd.getOrthogonalSampleData().add(sdOrthogonal2);
 
-		// 绑定
 		cwaBar.setSampleData(sd);
 
 		// X-Series
@@ -301,10 +331,10 @@ public class ProjectChartFactory {
 		xAxisPrimary.getSeriesDefinitions().add(sdX);
 		sdX.getSeries().add(seCategory);
 
-		// Y-Series
+		// Y-Series (1)
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
-		bs1.setDataSet(orthoValues1);
-		bs1.setSeriesIdentifier(seriesTitle[0]);
+		bs1.setDataSet(seriesValues1);
+		bs1.setSeriesIdentifier(seriesTitle[0]);//$NON-NLS-1$
 		bs1.setStacked(true);
 		bs1.getLabel().setVisible(true);
 		font = bs1.getLabel().getCaption().getFont();
@@ -312,7 +342,7 @@ public class ProjectChartFactory {
 		bs1.setLabelPosition(Position.INSIDE_LITERAL);
 
 		BarSeries bs2 = (BarSeries) BarSeriesImpl.create();
-		bs2.setDataSet(orthoValues2);
+		bs2.setDataSet(seriesValues2);
 		bs2.setSeriesIdentifier(seriesTitle[1]);
 		bs2.setStacked(true);
 		bs2.getLabel().setVisible(true);
@@ -320,35 +350,36 @@ public class ProjectChartFactory {
 		adjustFont(font, SMALL_SIZE);
 		bs2.setLabelPosition(Position.INSIDE_LITERAL);
 
+		// Y-Series (2)
+		LineSeries ls1 = (LineSeries) LineSeriesImpl.create();
+		ls1.setSeriesIdentifier(seriesTitle[2]);//$NON-NLS-1$
+		ls1.setDataSet(seriesValues3);
+		ls1.getLineAttributes().setColor(ColorDefinitionImpl.GREEN());
+		for (int i = 0; i < ls1.getMarkers().size(); i++) {
+			((Marker) ls1.getMarkers().get(i))
+					.setType(MarkerType.TRIANGLE_LITERAL);
+		}
+
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
-		// sdY.getSeriesPalette().getEntries().clear();
-		// // "预期延迟"
-		// ColorDefinition color1 =
-		// getRGBColorDefinition(Utils.COLOR_YELLOW[5]);
-		// // 正常进行
-		// ColorDefinition color2 = getRGBColorDefinition(Utils.COLOR_BLUE[5]);
-		// final Fill[] fiaBase = { color1, color2 };
-		// for (int i = 0; i < fiaBase.length; i++) {
-		// sdY.getSeriesPalette().getEntries().add(fiaBase[i]);
-		// }
-		// sdY.getSeriesPalette().shift(0);
-		yAxisPrimary.getSeriesDefinitions().add(sdY);
+		yAxisPrimary1.getSeriesDefinitions().add(sdY);
 		sdY.getSeries().add(bs1);
 		sdY.getSeries().add(bs2);
+		SeriesDefinition sdY2 = SeriesDefinitionImpl.create();
+		yAxisPrimary2.getSeriesDefinitions().add(sdY2);
+		sdY2.getSeries().add(ls1);
+		sdY2.getSeriesPalette( ).shift( -5 );
 
 		return cwaBar;
 	}
-	
 
 	public static Chart createMeterChart(String chartCaptionText, String label,
 			double value) {
 		String[] oValues = new String[] { label };
 
 		DialChart chart = (DialChart) DialChartImpl.create();
-		chart.setDialSuperimposition(false);
-
-		// 使用标准的仪表盘
 		chart.setType("Standard Meter"); //$NON-NLS-1$  
+
+		chart.setDialSuperimposition(false);
 
 		// Title/Plot
 		chart.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
@@ -548,11 +579,32 @@ public class ProjectChartFactory {
 		return create2StackedBarChart("部门项目执行状况", deptParameter, deptValue1,
 				deptValue2, new String[] { "正常", "超期" });
 	}
-	
-	public static Chart getDeptCombinationSchedualBar(
-			ProjectProvider projectProvider) {
-		// TODO Auto-generated method stub
-		return null;
+
+	public static Chart getDeptCombinationSchedualBar(ProjectProvider data) {
+		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue1 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue2 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		double[] deptValue3 = new double[data.sum.subOrganizationProjectProvider
+				.size()];
+		for (int i = 0; i < deptParameter.length; i++) {
+			ProjectProvider projectProvider = data.sum.subOrganizationProjectProvider
+					.get(i);
+			projectProvider.setParameters(data.parameters);
+			projectProvider.getData();
+			deptParameter[i] = projectProvider.getDesc();
+			deptValue1[i] = projectProvider.sum.processing_normal
+					+ projectProvider.sum.processing_advance;
+			deptValue2[i] = projectProvider.sum.processing_delay;
+			deptValue3[i] = projectProvider.sum.total_sales_revenue/10000
+					- projectProvider.sum.total_sales_cost/10000;
+		}
+
+		return createCombinnationStackedBarChart("各部门项目运行综合状况", deptParameter,
+				deptValue1, deptValue2, deptValue3, new String[] { "正常进行",
+						"超期风险", "销售利润" });
 	}
 
 	public static Chart getChargerSchedualBar(ProjectProvider data) {
