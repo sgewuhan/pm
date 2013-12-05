@@ -29,43 +29,43 @@ public class WorkListCreater extends Composite {
 	private List<Work> input;
 	private TreeViewer viewer;
 	private IContext context;
-	
 
 	public WorkListCreater(Composite parent, int style) {
 		super(parent, style);
 		this.setLayout(new FillLayout());
 		createContent(this);
 	}
-	
+
 	private void createContent(Composite parent) {
-		viewer=new TreeViewer(parent,SWT.FULL_SELECTION);
-		
+		viewer = new TreeViewer(parent, SWT.FULL_SELECTION);
+
 		viewer.getTree().setHeaderVisible(true);
 		viewer.setContentProvider(new TemplateWorkContentProvider());
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(240);
 		viewerColumn.getColumn().setText("名称");
-		viewerColumn.setLabelProvider(new ColumnLabelProvider(){
+		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((PrimaryObject)element).getLabel();
+				return ((PrimaryObject) element).getLabel();
 			}
+
 			@Override
 			public Image getImage(Object element) {
-				return ((PrimaryObject)element).getImage();
+				return ((PrimaryObject) element).getImage();
 			}
 		});
-		
+
 		viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(100);
 		viewerColumn.getColumn().setText("计划开始");
-		viewerColumn.setLabelProvider(new ColumnLabelProvider(){
+		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if(element instanceof Work){
+				if (element instanceof Work) {
 					Work work = (Work) element;
 					Date date = work.getPlanStart();
-					if(date!=null){
+					if (date != null) {
 						return String.format(Utils.FORMATE_DATE_SIMPLE, date);
 					}
 				}
@@ -76,13 +76,13 @@ public class WorkListCreater extends Composite {
 		viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(100);
 		viewerColumn.getColumn().setText("计划完成");
-		viewerColumn.setLabelProvider(new ColumnLabelProvider(){
+		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if(element instanceof Work){
+				if (element instanceof Work) {
 					Work work = (Work) element;
 					Date date = work.getPlanFinish();
-					if(date!=null){
+					if (date != null) {
 						return String.format(Utils.FORMATE_DATE_SIMPLE, date);
 					}
 				}
@@ -93,13 +93,13 @@ public class WorkListCreater extends Composite {
 		viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(100);
 		viewerColumn.getColumn().setText("负责人");
-		viewerColumn.setLabelProvider(new ColumnLabelProvider(){
+		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if(element instanceof Work){
+				if (element instanceof Work) {
 					Work work = (Work) element;
 					User charger = work.getCharger();
-					if(charger!=null){
+					if (charger != null) {
 						return charger.getLabel();
 					}
 				}
@@ -109,104 +109,117 @@ public class WorkListCreater extends Composite {
 
 	}
 
-
 	public void commit() {
-		//TODO
-		
+		// TODO
+
 	}
 
 	public void setInput(List<Work> input) {
-		if(Util.equals(this.input, input)){
+		if (Util.equals(this.input, input)) {
 			return;
 		}
-		
-		this.input=input;
+
+		this.input = input;
 		viewer.setInput(input);
 	}
-
 
 	public void refresh() {
 		viewer.refresh();
 	}
 
-
 	public IStructuredSelection getSelection() {
 		return (IStructuredSelection) viewer.getSelection();
 	}
 
-
 	@SuppressWarnings("rawtypes")
 	public void remove(Deliverable deliverable) throws Exception {
-		Work work = (Work) deliverable.getParentPrimaryObjectCache();	
-        	if(deliverable.isPersistent()){
-        		deliverable.doRemove(context);
-        	}else{
-        		Object value = work.getValue(Work.TEMPLATE_DELIVERABLE);
-        		DBObject data = deliverable.get_data();
-        		if(value instanceof List<?>){
-        				((List) value).remove(data);
-        			
-        		}else if(value instanceof Object[]){
-        		    value=Utils.removeElementInArray((Object[])value, data, false, Object.class);
-        		}
-        		work.setValue(Work.TEMPLATE_DELIVERABLE, value);
-        	}
-    		viewer.refresh();
-	}
+		Work work = (Work) deliverable.getParentPrimaryObjectCache();
+		if (deliverable.isPersistent()) {
+			deliverable.doRemove(context);
+		} else {
+			Object value = work.getValue(Work.TEMPLATE_DELIVERABLE);
+			DBObject data = deliverable.get_data();
+			if (value instanceof List<?>) {
+				((List) value).remove(data);
 
+			} else if (value instanceof Object[]) {
+				value = Utils.removeElementInArray((Object[]) value, data,
+						false, Object.class);
+			}
+			work.setValue(Work.TEMPLATE_DELIVERABLE, value);
+		}
+		viewer.refresh();
+	}
 
 	public void remove(Work work) throws Exception {
 		input.remove(work);
-		if(work.isPersistent()){
+		if (work.isPersistent()) {
 			work.doRemove(context);
 		}
 		viewer.refresh();
 	}
 
+	public void createDeliverable(Work work, List<Document> docList) {
+		if (docList != null) {
+			String docType = null;
+			for (Document doc : docList) {
+				String ouid = (String) doc.getValue(Document.F_PDM_OUID);
+				if (!Utils.isNullOrEmptyString(ouid)) {
+					docType = Deliverable.TYPE_LINK;
+				} else {
+					docType = Deliverable.TYPE_REFERENCE;
+				}
+
+				createDeliverable(work, doc, docType);
+
+			}
+		}
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void createDeliverable(Work work, Document doc) {
-		//TODO  沒有处理持久久化的工作
-		Deliverable deliverable = work.makeDeliverableDefinition(Deliverable.TYPE_OUTPUT);
+	public void createDeliverable(Work work, Document doc, String type) {
+		// TODO 沒有处理持久久化的工作
+		Deliverable deliverable = work.makeDeliverableDefinition(type);
 		deliverable.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		deliverable.setParentPrimaryObject(work);
-		
+
 		Object value = work.getValue(Work.TEMPLATE_DELIVERABLE);
 		DBObject data = deliverable.get_data();
-		if(value instanceof List<?>){
-			if(!inArray(data,((List) value).toArray())){
+		if (value instanceof List<?>) {
+			if (!inArray(data, ((List) value).toArray())) {
 				((List) value).add(data);
 			}
-			
-		}else if(value instanceof Object[]){
-			if(!inArray(data,((Object[]) value))){
-		    value=Utils.addElementToArray((Object[])value, data, false, Object.class);
+
+		} else if (value instanceof Object[]) {
+			if (!inArray(data, ((Object[]) value))) {
+				value = Utils.addElementToArray((Object[]) value, data, false,
+						Object.class);
 			}
-		}else if(value==null){
-			value=new ArrayList<DBObject>();
-			((List<DBObject>)value).add(data);
+		} else if (value == null) {
+			value = new ArrayList<DBObject>();
+			((List<DBObject>) value).add(data);
 		}
 		work.setValue(Work.TEMPLATE_DELIVERABLE, value);
-     	work.setValue(Work.F_CHARGER, doc.get_caccount().getUserId());
+		work.setValue(Work.F_CHARGER, doc.get_caccount().getUserId());
 		viewer.refresh();
 		viewer.expandAll();
 	}
 
 	private boolean inArray(DBObject data, Object[] array) {
 		for (int i = 0; i < array.length; i++) {
-			DBObject obj=(DBObject) array[i];
+			DBObject obj = (DBObject) array[i];
 			Object object = obj.get(Deliverable.F_DOCUMENT_ID);
-			if(object.equals(data.get(Deliverable.F_DOCUMENT_ID))){
+			if (object.equals(data.get(Deliverable.F_DOCUMENT_ID))) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-
 	/**
 	 * 选择变更计划，创建变更工作
-	 * @param work 
+	 * 
+	 * @param work
 	 */
 	public void createWork(Work work) {
 		input.add(work);
@@ -214,14 +227,12 @@ public class WorkListCreater extends Composite {
 		viewer.setSelection(new StructuredSelection(work), true);
 	}
 
-
 	public void setContext(IContext context) {
-		this.context=context;
+		this.context = context;
 	}
-	
+
 	public List<Work> getInput() {
 		return input;
 	}
-	
 
 }

@@ -22,26 +22,17 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.jbpm.task.Task;
 
-import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.portal.Portal;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.part.WorkListCreater;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
-import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Organization;
-import com.sg.business.model.OrganizationDistributeFileBase;
 import com.sg.business.model.Project;
 import com.sg.business.model.TaskForm;
-import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
-import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -51,11 +42,8 @@ import com.sg.widgets.part.editor.IDataObjectDialogCallback;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
-import com.tmt.pdm.client.Starter;
-import com.tmt.pdm.dcpdm.handler.PDMObjectSelector;
-import com.tmt.pdm.dcpdm.sync.ImportData;
+import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
 
-import dyna.framework.service.dos.DOSChangeable;
 
 public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
@@ -366,6 +354,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void createDeliverableWithProject() {
 		IStructuredSelection sel = workListCreater.getSelection();
 		if (sel != null && !sel.isEmpty()) {
@@ -386,9 +375,9 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 						"project.documents.released", "选择变更对象") {
 					@Override
 					protected void doOK(IStructuredSelection is) {
-						Document doc = (Document) is.getFirstElement();
+						List docList =is.toList();
 						try {
-							workListCreater.createDeliverable(work, doc);
+							workListCreater.createDeliverable(work, docList);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -425,7 +414,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
 
 	}
-
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void createDeliverableWithVault() {
 		IStructuredSelection sel = workListCreater.getSelection();
 		if (sel != null && !sel.isEmpty()) {
@@ -444,9 +434,9 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 						"vault.document.selector", "选择变更对象") {
 					@Override
 					protected void doOK(IStructuredSelection is) {
-						Document doc = (Document) is.getFirstElement();
+						List docList =is.toList();
 						try {
-							workListCreater.createDeliverable(work, doc);
+							workListCreater.createDeliverable(work, docList);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -486,29 +476,19 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				work = null;
 			}
 			if (work != null) {
-				List<?> docContainer = getDocumentAndDrawingContainerCode();
-				List<?> partContainer = getPartContainerCode();
-				if (docContainer == null) {
-					MessageUtil.showToast("您所在的组织尚未确定PDM系统中可使用图文档容器。",
-							SWT.ICON_ERROR);
-					return;
+				String userid = new CurrentAccountContext().getAccountInfo()
+						.getConsignerId();
+				try {
+					List<Document> docList = DCPDMUtil.getDocumentFromDCPDM(
+							userid, parent.getShell());
+					workListCreater.createDeliverable(work, docList);
+				} catch (Exception e) {
+					MessageUtil.showToast(e);
 				}
-				PDMObjectSelector selector = new PDMObjectSelector(parent.getShell(),
-						docContainer, partContainer);
-				int ret = selector.open();
-				if (ret == PDMObjectSelector.OK) {
-					String[] select = selector.getSelection();
-					if (select.length == 0) {
-						return;
-					} else {
-						Document doc = getDocument(select[0]);
-						workListCreater.createDeliverable(work, doc);
-						setDirty(true);
-					}
-				}
-
+				
 			}
-           return;
+
+			return;
 		}
 		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
 	}
@@ -560,83 +540,4 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		workListCreater.setFocus();
 	}
 
-	private List<?> getDocumentAndDrawingContainerCode() {
-		String userId = new CurrentAccountContext().getConsignerId();
-		User user = UserToolkit.getUserById(userId);
-
-		Organization org = user.getOrganization();
-
-		while (org != null) {
-			List<?> code = org.getDocumentAndDrawingContainerCode();
-			if (code != null) {
-				return (List<?>) code;
-			} else {
-				org = (Organization) org.getParentOrganization();
-			}
-		}
-		return null;
-	}
-
-	private List<?> getPartContainerCode() {
-		String userId = new CurrentAccountContext().getConsignerId();
-		User user = UserToolkit.getUserById(userId);
-
-		Organization org = user.getOrganization();
-
-		while (org != null) {
-			List<?> code = org.getPartContainerCode();
-			if (code != null) {
-				return (List<?>) code;
-			} else {
-				org = (Organization) org.getParentOrganization();
-			}
-		}
-		return null;
-	}
-
-	private Document getDocument(String ouid) {
-		Document document = null;
-		try {
-			DOSChangeable pdmObject = Starter.dos.get(ouid);
-			boolean buildDocument = true;
-			String documentNumber = (String) pdmObject.get("md$number");
-			if (documentNumber != null) {
-				DBCollection col = DBActivator.getCollection(
-						IModelConstants.DB, IModelConstants.C_DOCUMENT);
-				DBObject dbo = col.findOne(new BasicDBObject().append(
-						Document.F_DOCUMENT_NUMBER, documentNumber));
-				if (dbo != null) {
-					document = ModelService.createModelObject(dbo,
-							Document.class);
-					buildDocument = false;
-					return document;
-				}
-			}
-			if (buildDocument) {
-				ImportData ip = new ImportData() {
-					@Override
-					protected String getNamespace() {
-						return "vault_file";
-					}
-
-					@Override
-					protected DB getDB() {
-						OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
-						return DBActivator.getDB(filebase.getDB());
-					}
-
-					@Override
-					protected String getClassOuid() {
-						return null;
-					}
-				};
-
-				ip.syncItem(ouid, document);
-
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return document;
-	}
 }
