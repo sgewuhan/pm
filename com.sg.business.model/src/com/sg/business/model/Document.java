@@ -186,7 +186,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		super.doInsert(context);
 	}
 
-	public  void generateCode() throws Exception {
+	public void generateCode() throws Exception {
 
 		String documentNumber = getDocumentNumber();
 		if (documentNumber != null) {
@@ -340,6 +340,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		setValue(F_MAJOR_VID, major);
 		setValue(F_SECOND_VID, 0x0);
 		setValue(F_LIFECYCLE, STATUS_WORKING_ID);
+		setValue(F_WF_HISTORY, null);
 		DBCollection collection = getCollection();
 		collection.update(
 				new BasicDBObject().append(F__ID, get_id()),
@@ -347,7 +348,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						"$set",
 						new BasicDBObject().append(F_MAJOR_VID, major)
 								.append(F_SECOND_VID, 0x0)
-								.append(F_LIFECYCLE, STATUS_WORKING_ID)));
+								.append(F_LIFECYCLE, STATUS_WORKING_ID)
+								.append(F_WF_HISTORY, null)));
 	}
 
 	public String[] getMajorVersionSeq() {
