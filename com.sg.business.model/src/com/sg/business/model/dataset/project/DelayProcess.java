@@ -58,25 +58,6 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		Object workitemid = usertask.getValue(UserTask.F_WORKITEMID);
 		Object workid = usertask.getValue(UserTask.F_WORK_ID);
 		DBCollection collection = getCollection();
-		//
-		// DBObject inProgress = collection.findOne(new BasicDBObject().append(
-		// UserTask.F_WORKITEMID, value).append(UserTask.F_STATUS,
-		// "InProgress"));
-		//
-		// if (inProgress != null) {
-		// UserTask taskInProgress = ModelService.createModelObject(
-		// inProgress, UserTask.class);
-		// if ((taskInProgress.get_cdate().getTime() - usertask.get_cdate()
-		// .getTime()) / (1000 * 60 * 60) > 3) {
-		// return true;
-		// }
-		// } else {
-		// if (new Date().getTime() - usertask.get_cdate().getTime()
-		// / (1000 * 60 * 60) > 3) {
-		// return true;
-		// }
-		// }
-
 		boolean isDelay = false;
 		DBCursor cur = collection.find(
 				new BasicDBObject()
@@ -85,10 +66,11 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 						.append(UserTask.F_STATUS,
 								new BasicDBObject().append("$in", new String[] {
 										"InProgress", "Completed" })),
-				new BasicDBObject().append(UserTask.F__CDATE, 1).append(
-						UserTask.F_STATUS, 1));
+				new BasicDBObject().append(UserTask.F__CDATE, 1)
+						.append(UserTask.F_STATUS, 1)
+						.append(UserTask.F_DESC, 1));
 
-		if (cur.count() < 0) {
+		if (cur.count() < 1) {
 			return ((new Date().getTime() - usertask.get_cdate().getTime())
 					/ (1000 * 60 * 60) > 3);
 		}
@@ -96,6 +78,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 			DBObject next = cur.next();
 			String status = (String) next.get(UserTask.F_STATUS);
 			Date date = (Date) next.get(UserTask.F__CDATE);
+
 			if ("InProgress".equals(status)) {
 				usertask.setValue("InProgress", date);
 				if ((date.getTime() - usertask.get_cdate().getTime())
@@ -106,6 +89,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 				usertask.setValue("Completed", date);
 			}
 		}
+
 		return isDelay;
 
 	}
