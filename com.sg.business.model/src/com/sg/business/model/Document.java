@@ -724,8 +724,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		return getDateValue(STATUS_RELEASED_ID + "_date");
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<DBObject> getProcessHistory(long processId) {
+	@SuppressWarnings({ "rawtypes" })
+	public DBObject getProcessHistory(long processId) {
 		Object value = getValue(F_WF_HISTORY);
 		if (value instanceof List) {
 			for (int i = 0; i < ((List) value).size(); i++) {
@@ -733,7 +733,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				Object insid = dbo.get(IDocumentProcess.F_PROCESS_INSTANCEID);
 				if (insid instanceof Long
 						&& ((Long) insid).longValue() == processId) {
-					return (List<DBObject>) dbo.get(IDocumentProcess.F_HISTORY);
+					return  dbo;
 				}
 			}
 		}
