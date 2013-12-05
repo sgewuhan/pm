@@ -40,7 +40,7 @@ import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
 
 public class ProjectToolkit {
-	public static boolean checkProcessInternal(Project project,
+	public static boolean checkProcessInternal(PrimaryObject po,
 			IProcessControl pc, List<ICheckListItem> result,
 			Map<ObjectId, List<PrimaryObject>> raMap, String title,
 			String process, String editorId, String pageId) {
@@ -48,6 +48,15 @@ public class ProjectToolkit {
 		List<PrimaryObject> ra;
 		if (pc.isWorkflowActivate(process)) {
 			// 如果流程已经激活，需要判断是否所有的actor都指派
+			Object data;// project
+			PrimaryObject selection;// work or project
+			if (po instanceof Work) {
+				data = ((Work) po).getProject();
+				selection = po;
+			} else {
+				data = po;
+				selection = po;
+			}
 			DroolsProcessDefinition pd = pc.getProcessDefinition(process);
 			List<NodeAssignment> nalist = pd.getNodesAssignment();
 			for (int i = 0; i < nalist.size(); i++) {
@@ -65,10 +74,10 @@ public class ProjectToolkit {
 						CheckListItem checkItem = new CheckListItem(title,
 								"流程活动无法确定执行人。" + "活动名称：[" + na.getNodeName()
 										+ "]", "请在提交前设定。", ICheckListItem.ERROR);
-						checkItem.setData(project);
+						checkItem.setData(data);
 						checkItem.setEditorId(editorId);
 						checkItem.setEditorPageId(pageId);
-						checkItem.setSelection(project);
+						checkItem.setSelection(selection);
 						result.add(checkItem);
 						passed = false;
 					} else {
@@ -78,10 +87,10 @@ public class ProjectToolkit {
 									"流程活动执行角色没有对应人员。" + "活动名称：["
 											+ na.getNodeName() + "]",
 									"\n请在提交前设定。", ICheckListItem.ERROR);
-							checkItem.setData(project);
+							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection(project);
+							checkItem.setSelection(selection);
 							result.add(checkItem);
 							passed = false;
 						} else if (ra.size() > 1) {
@@ -92,10 +101,10 @@ public class ProjectToolkit {
 
 									+ "\n如果您不希望这样，请在提交前设定",
 									ICheckListItem.WARRING);
-							checkItem.setData(project);
+							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
-							checkItem.setSelection(project);
+							checkItem.setSelection(selection);
 							result.add(checkItem);
 							passed = false;
 						}
