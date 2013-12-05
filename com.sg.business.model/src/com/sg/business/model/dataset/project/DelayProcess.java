@@ -55,50 +55,59 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 	}
 
 	private boolean isDelayTask(UserTask usertask) {
-		Object value = usertask.getValue(UserTask.F_WORKITEMID);
+		Object workitemid = usertask.getValue(UserTask.F_WORKITEMID);
+		Object workid = usertask.getValue(UserTask.F_WORK_ID);
 		DBCollection collection = getCollection();
+		//
+		// DBObject inProgress = collection.findOne(new BasicDBObject().append(
+		// UserTask.F_WORKITEMID, value).append(UserTask.F_STATUS,
+		// "InProgress"));
+		//
+		// if (inProgress != null) {
+		// UserTask taskInProgress = ModelService.createModelObject(
+		// inProgress, UserTask.class);
+		// if ((taskInProgress.get_cdate().getTime() - usertask.get_cdate()
+		// .getTime()) / (1000 * 60 * 60) > 3) {
+		// return true;
+		// }
+		// } else {
+		// if (new Date().getTime() - usertask.get_cdate().getTime()
+		// / (1000 * 60 * 60) > 3) {
+		// return true;
+		// }
+		// }
 
-		DBObject inProgress = collection.findOne(new BasicDBObject().append(
-				UserTask.F_WORKITEMID, value).append(UserTask.F_STATUS,
-				"InProgress"));
+		boolean isDelay = false;
+		DBCursor cur = collection.find(
+				new BasicDBObject()
+						.append(UserTask.F_WORKITEMID, workitemid)
+						.append(UserTask.F_WORK_ID, workid)
+						.append(UserTask.F_STATUS,
+								new BasicDBObject().append("$in", new String[] {
+										"InProgress", "Completed" })),
+				new BasicDBObject().append(UserTask.F__CDATE, 1).append(
+						UserTask.F_STATUS, 1));
 
-		if (inProgress != null) {
-			UserTask taskInProgress = ModelService.createModelObject(
-					inProgress, UserTask.class);
-			if ((taskInProgress.get_cdate().getTime() - usertask.get_cdate()
-					.getTime()) / (1000 * 60 * 60) > 3) {
-				return true;
-			}
-		} else {
-			if (new Date().getTime() - usertask.get_cdate().getTime()
-					/ (1000 * 60 * 60) > 4) {
-				return true;
+		if (cur.count() < 0) {
+			return ((new Date().getTime() - usertask.get_cdate().getTime())
+					/ (1000 * 60 * 60) > 3);
+		}
+		while (cur.hasNext()) {
+			DBObject next = cur.next();
+			String status = (String) next.get(UserTask.F_STATUS);
+			Date date = (Date) next.get(UserTask.F__CDATE);
+			if ("InProgress".equals(status)) {
+				usertask.setValue("InProgress", date);
+				if ((date.getTime() - usertask.get_cdate().getTime())
+						/ (1000 * 60 * 60) > 3) {
+					isDelay = true;
+				}
+			} else if ("Completed".equals(status)) {
+				usertask.setValue("Completed", date);
 			}
 		}
+		return isDelay;
 
-//		 DBCursor cur = collection.find(
-//				new BasicDBObject().append(UserTask.F_WORKITEMID, value)
-//						.append(UserTask.F_STATUS, "InProgress"),
-//				new BasicDBObject().append(UserTask.F__CDATE, 1));
-//		 
-//		 while(cur.hasNext()){
-//			 DBObject next = cur.next();
-//			 
-//		 }
-//		
-//		if (inProgress != null) {
-//			if ((inProgress.getTime() - usertask.get_cdate()
-//					.getTime()) / (1000 * 60 * 60) > 3) {
-//				return true;
-//			}
-//		} else {
-//			if (new Date().getTime() - usertask.get_cdate().getTime()
-//					/ (1000 * 60 * 60) > 4) {
-//				return true;
-//			}
-//		}
-
-		return false;
 	}
 
 	private DBObject getCondition() {
