@@ -2,8 +2,11 @@ package com.sg.business.model.dataset.project;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 
@@ -140,39 +143,35 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected List<ObjectId> getUserIdSet() {
+		Object ids = getOrganizationIdCascade(null).toArray();
 		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
 		List distinct = projectCol.distinct(User.F_USER_ID,
 				new BasicDBObject()
 						.append(User.F_ORGANIZATION_ID, new BasicDBObject()
-								.append("$in", getOrganizationsId())));
+								.append("$in", ids)));
 		return distinct;
 	}
 
-	protected List<ObjectId> getOrganizationsId() {
-		List<ObjectId> list = new ArrayList<ObjectId>();
-		List<PrimaryObject> userOrg = getOrganizations(
-				new ArrayList<PrimaryObject>(), getInput());
-		for (PrimaryObject po : userOrg) {
-			list.add(po.get_id());
-		}
-		return list;
 
+	private Collection<? extends ObjectId> getOrganizationIdCascade(
+			Organization org) {
+		Set<ObjectId> result = new HashSet<ObjectId>();
+		List<PrimaryObject> orglist;
+		if (org != null) {
+			result.add(org.get_id());
+			orglist = org.getChildrenOrganization();
+		} else {
+			orglist = getUsersManagedOrganization();
+		}
+		for (int i = 0; i < orglist.size(); i++) {
+			result.addAll(getOrganizationIdCascade((Organization) orglist
+					.get(i)));
+		}
+		return result;
 	}
 
-	protected List<PrimaryObject> getOrganizations(List<PrimaryObject> list,
-			List<PrimaryObject> childrenList) {
-		list.addAll(childrenList);
-		for (PrimaryObject po : childrenList) {
-			List<PrimaryObject> childrenOrg = ((Organization) po)
-					.getChildrenOrganization();
-			getOrganizations(list, childrenOrg);
-		}
-		return list;
-	}
-
-	protected List<PrimaryObject> getInput() {
-		// 获取当前用户担任管理者角色的部门
+	private List<PrimaryObject> getUsersManagedOrganization() {
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
@@ -198,5 +197,4 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 		return input;
 	}
-
 }

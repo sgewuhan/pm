@@ -2,8 +2,11 @@ package com.sg.business.model.dataset.project;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bson.types.ObjectId;
 
@@ -38,7 +41,6 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 	public DataSet getDataSet() {
 		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
 		DBCollection collection = getCollection();
-		
 		DBCursor cur = collection.find(getCondition());
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
@@ -73,20 +75,43 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 				return true;
 			}
 		}
+
+//		 DBCursor cur = collection.find(
+//				new BasicDBObject().append(UserTask.F_WORKITEMID, value)
+//						.append(UserTask.F_STATUS, "InProgress"),
+//				new BasicDBObject().append(UserTask.F__CDATE, 1));
+//		 
+//		 while(cur.hasNext()){
+//			 DBObject next = cur.next();
+//			 
+//		 }
+//		
+//		if (inProgress != null) {
+//			if ((inProgress.getTime() - usertask.get_cdate()
+//					.getTime()) / (1000 * 60 * 60) > 3) {
+//				return true;
+//			}
+//		} else {
+//			if (new Date().getTime() - usertask.get_cdate().getTime()
+//					/ (1000 * 60 * 60) > 4) {
+//				return true;
+//			}
+//		}
+
 		return false;
 	}
 
 	private DBObject getCondition() {
-		int year=-1;
-		int month=-1;
-        Date start=null;
-        Date stop=null;
-        Calendar calendar = Calendar.getInstance();
+		int year = -1;
+		int month = -1;
+		Date start = null;
+		Date stop = null;
+		Calendar calendar = Calendar.getInstance();
 		DBObject date = getQueryCondition();
-		if(date!=null){
+		if (date != null) {
 			year = (int) date.get("year");
 			month = (int) date.get("month");
-			
+
 			calendar.set(Calendar.YEAR, year);
 			calendar.set(Calendar.MONTH, month);
 			calendar.set(Calendar.DATE, 1);
@@ -99,8 +124,8 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 			calendar.add(Calendar.MILLISECOND, -1);
 			stop = calendar.getTime();
 			setQueryCondition(null);
-			
-		}else{
+
+		} else {
 			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
 			calendar.set(Calendar.DATE, 1);
 			calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -112,7 +137,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 			calendar.add(Calendar.MILLISECOND, -1);
 			stop = calendar.getTime();
 		}
-		
+
 		DBObject dbo = new BasicDBObject();
 		dbo.put(UserTask.F_ACTUALOWNER,
 				new BasicDBObject().append("$in", getUserIdSet()));
@@ -125,39 +150,33 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected List<ObjectId> getUserIdSet() {
+		Object ids = getOrganizationIdCascade(null).toArray();
 		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
-		List distinct = projectCol.distinct(User.F_USER_ID,
-				new BasicDBObject()
-						.append(User.F_ORGANIZATION_ID, new BasicDBObject()
-								.append("$in", getOrganizationsId())));
+		List distinct = projectCol.distinct(User.F_USER_ID, new BasicDBObject()
+				.append(User.F_ORGANIZATION_ID,
+						new BasicDBObject().append("$in", ids)));
 		return distinct;
 	}
 
-	protected List<ObjectId> getOrganizationsId() {
-		List<ObjectId> list = new ArrayList<ObjectId>();
-		List<PrimaryObject> userOrg = getOrganizations(
-				new ArrayList<PrimaryObject>(), getInput());
-		for (PrimaryObject po : userOrg) {
-			list.add(po.get_id());
+	private Collection<? extends ObjectId> getOrganizationIdCascade(
+			Organization org) {
+		Set<ObjectId> result = new HashSet<ObjectId>();
+		List<PrimaryObject> orglist;
+		if (org != null) {
+			result.add(org.get_id());
+			orglist = org.getChildrenOrganization();
+		} else {
+			orglist = getUsersManagedOrganization();
 		}
-		return list;
-
+		for (int i = 0; i < orglist.size(); i++) {
+			result.addAll(getOrganizationIdCascade((Organization) orglist
+					.get(i)));
+		}
+		return result;
 	}
 
-	protected List<PrimaryObject> getOrganizations(List<PrimaryObject> list,
-			List<PrimaryObject> childrenList) {
-		list.addAll(childrenList);
-		for (PrimaryObject po : childrenList) {
-			List<PrimaryObject> childrenOrg = ((Organization) po)
-					.getChildrenOrganization();
-			getOrganizations(list, childrenOrg);
-		}
-		return list;
-	}
-
-	protected List<PrimaryObject> getInput() {
-		// 获取当前用户担任管理者角色的部门
+	private List<PrimaryObject> getUsersManagedOrganization() {
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
