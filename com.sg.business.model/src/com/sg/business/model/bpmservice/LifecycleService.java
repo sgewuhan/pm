@@ -7,8 +7,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
-import com.sg.business.model.IProjectRelative;
-import com.sg.business.model.Project;
+import com.sg.business.model.ILifecycle;
 
 public class LifecycleService extends ServiceProvider {
 
@@ -20,25 +19,20 @@ public class LifecycleService extends ServiceProvider {
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-			if (host instanceof IProjectRelative) {
-				IProjectRelative projectRelative = (IProjectRelative) host;
+			if (host instanceof ILifecycle) {
+				ILifecycle lc = (ILifecycle) host;
 				try {
 					DBObject processData = WorkflowUtils
 							.getProcessInfoFromJSON(jsonContent);
 					String processId = (String) processData.get("processId");
 					String processName = (String) processData
 							.get("processName");
-					Project project = projectRelative.getProject();
-					if (project != null) {
-						if ("finish".equals(getOperation())) {
-							project.doFinish(new BPMServiceContext(
-									processName, processId));
-						} else if ("cancel".equals(getOperation())) {
-							project.doCancel(new BPMServiceContext(
-									processName, processId));
-						}
+					
+					if ("finish".equals(getOperation())) {
+						lc.doFinish(new BPMServiceContext(processName, processId));
+					} else if ("cancel".equals(getOperation())) {
+						lc.doCancel(new BPMServiceContext(processName, processId));
 					}
-
 				} catch (Exception e) {
 					result.put("returnCode", "ERROR");
 					result.put("returnMessage", e.getMessage());
