@@ -110,7 +110,7 @@
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectApply.audit"
-            name="受托研究室主任审核_委托工作"
+            name="支持结果首席师审核"
             persistentFields="comment,choice,accessory"
             processDefinitionId="jszx.jszxProjectApply">
          <processParameter
@@ -120,7 +120,7 @@
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectApply.audit"
-            name="受托研究室主任审核_委托工作"
+            name="支持结果受托研究室主任审核"
             persistentFields="choice,comment,accessory"
             processDefinitionId="jszx.jszxProjectApply">
          <processParameter
@@ -230,7 +230,7 @@
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectApply.audit"
-            name="受托研究室主任审核_委托工作"
+            name="支持结果首席师审核"
             persistentFields="comment,choice,accessory"
             processDefinitionId="jszx.jszxProjectApply1">
          <processParameter
@@ -240,7 +240,17 @@
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectApply.audit"
-            name="受托研究室主任审核_委托工作"
+            name="支持结果受托研究室主任审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="jszx.jszxProjectApply1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectApply.approval"
+            name="委托单位确认"
             persistentFields="choice,comment,accessory"
             processDefinitionId="jszx.jszxProjectApply1">
          <processParameter
