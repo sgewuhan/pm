@@ -25,6 +25,7 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.visualization,
  com.sg.business.work,
  com.sg.business.resource,
- com.sg.bpm.service
+ com.sg.bpm.service,
+ org.eclipse.rap.ui.forms;bundle-version="2.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
