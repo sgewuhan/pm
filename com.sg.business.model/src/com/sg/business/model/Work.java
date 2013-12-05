@@ -801,9 +801,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
 	}
-	
+
 	/**
 	 * 能够点击发送消息
+	 * 
 	 * @param currentAccountContext
 	 * @return
 	 */
@@ -820,12 +821,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		if (isProjectWBSRoot()) {
 			return false;
 		}
-		if(hasPermissionForReassignment(context)){
+		if (hasPermissionForReassignment(context)) {
 			return true;
 		}
 		return hasPermission(context);
 	}
-
 
 	/**
 	 * 能否点击删除
@@ -2798,61 +2798,62 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		/**
 		 * 考虑到保存历史的方式更改为每次人工任务完成都进行保存。重写保存的代码。
 		 */
-		
-/*		List<PrimaryObject> documentList = getOutputDeliverableDocuments();
-		DBCollection col = getCollection(IModelConstants.C_DOCUMENT);
-		for (PrimaryObject po : documentList) {
-			Document document = (Document) po;
-			WriteResult ws = col.update(new BasicDBObject().append(
-					Document.F__ID, document.get_id()), new BasicDBObject()
-					.append("$push", new BasicDBObject().append(
-							Document.F_WF_HISTORY, wfHistory)));
-			checkWriteResult(ws);
-		}*/
-		
+
+		/*
+		 * List<PrimaryObject> documentList = getOutputDeliverableDocuments();
+		 * DBCollection col = getCollection(IModelConstants.C_DOCUMENT); for
+		 * (PrimaryObject po : documentList) { Document document = (Document)
+		 * po; WriteResult ws = col.update(new BasicDBObject().append(
+		 * Document.F__ID, document.get_id()), new BasicDBObject()
+		 * .append("$push", new BasicDBObject().append( Document.F_WF_HISTORY,
+		 * wfHistory))); checkWriteResult(ws); }
+		 */
 		List<PrimaryObject> documentList = getOutputDeliverableDocuments();
 		DBCollection col = getCollection(IModelConstants.C_DOCUMENT);
 		for (PrimaryObject po : documentList) {
 			Document document = (Document) po;
-			
-			//查找已经保存过的历史
+			wfHistory.put(IDocumentProcess.F_MAJOR_VID,
+					document.getValue(Document.F_MAJOR_VID));
+			wfHistory.put(IDocumentProcess.F_SECOND_VID,
+					document.getValue(Document.F_SECOND_VID));
+			// 查找已经保存过的历史
 			Object historyList = document.getValue(Document.F_WF_HISTORY);
-			if(historyList instanceof List<?>){
-				for(int i = 0;i<((List<?>) historyList).size();i++){
-					DBObject historyProcessRec = (DBObject) ((List<?>) historyList).get(i);
-					//取出流程实例的ID
-					Object pid = historyProcessRec.get(IDocumentProcess.F_PROCESS_INSTANCEID);
-					if(pid.equals(wfHistory.get(IDocumentProcess.F_PROCESS_INSTANCEID))){
+			if (historyList instanceof List<?>) {
+				for (int i = 0; i < ((List<?>) historyList).size(); i++) {
+					DBObject historyProcessRec = (DBObject) ((List<?>) historyList)
+							.get(i);
+					// 取出流程实例的ID
+					Object pid = historyProcessRec
+							.get(IDocumentProcess.F_PROCESS_INSTANCEID);
+					if (pid.equals(wfHistory
+							.get(IDocumentProcess.F_PROCESS_INSTANCEID))) {
 						((List<?>) historyList).remove(i);
 						break;
 					}
 				}
-			}else{
+			} else {
 				historyList = new ArrayList<DBObject>();
 			}
 			((List) historyList).add(wfHistory);
-			
+
 			WriteResult ws = col.update(new BasicDBObject().append(
 					Document.F__ID, document.get_id()), new BasicDBObject()
 					.append("$set", new BasicDBObject().append(
 							Document.F_WF_HISTORY, historyList)));
 			checkWriteResult(ws);
 		}
-		
-		
+
 		/**
-		 * zhonghua:  认为以下的处理欠妥.暂时注释
+		 * zhonghua: 认为以下的处理欠妥.暂时注释
 		 * 
 		 * isExecuteWorkflowActivateAndAvailable 是指具有流程，且流程激活的工作，
 		 * 与是否保存本级别的流程历史是否有关系？
 		 */
-/*		List<PrimaryObject> childrenWorkList = getChildrenWork();
+		List<PrimaryObject> childrenWorkList = getChildrenWork();
 		for (PrimaryObject po : childrenWorkList) {
 			Work childrenWork = (Work) po;
-			if (childrenWork.isExecuteWorkflowActivateAndAvailable()) {
-				childrenWork.doWFHistoryToDocument(wfHistory, context);
-			}
-		}*/
+			childrenWork.doWFHistoryToDocument(wfHistory, context);
+		}
 	}
 
 	/**
@@ -3616,11 +3617,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		UserTask newUserTask = doSaveUserTask(processKey, task, taskMetaData,
 				userId);
-		
+
 		// 将工作的流程记录存储到交付物文档中
 		doSaveProcessHistoryToDocument(context);
-		
-		
+
 		doSaveWorkflowHistroy(processKey, newUserTask, taskMetaData, context);
 
 		/**
@@ -4665,5 +4665,4 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 	}
 
-	
 }
