@@ -106,7 +106,8 @@ public class WorkFilter extends ViewerFilter {
 				@Override
 				boolean select(Work work, Object userId) {
 					BasicBSONList ids = work.getParticipatesIdList();
-					return ids != null && ids.contains(userId);
+					boolean result = ids != null && ids.contains(userId);
+					return result;
 				}
 			};
 			break;

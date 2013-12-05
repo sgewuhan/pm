@@ -12,7 +12,7 @@
             class="com.sg.business.project.view.ProjectView"
             icon="image/project_24.png"
             id="project.navigator.myproject"
-            name="项目导航"
+            name="我的项目"
             restorable="true">
       </view>
       <view
@@ -20,7 +20,7 @@
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
             icon="image/project_24.png"
             id="project.navigator.management"
-            name="项目管理"
+            name="项目"
             restorable="true">
       </view>
       <view
@@ -896,52 +896,6 @@
          </column>
       </table>
       <table
-            dataSet="com.sg.business.model.dataset.project.DelayProcess"
-            id="project.navigator.delayprocess">
-         <column
-               column="processname"
-               name="流程名称"
-               type="String"
-               width="240">
-         </column>
-         <column
-               column="desc"
-               name="任务名称"
-               type="String"
-               width="120">
-         </column>
-         <column
-               column="work_desc"
-               name="工作名称"
-               width="160"></column>
-         <column
-               column="actualowner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="实际活动执行者"
-               width="140">
-         </column>
-         <column
-               column="_cdate"
-               name="Reserved"
-               type="DateTime"
-               width="140"></column>
-         <column
-               labelProvider="com.sg.business.project.labelprovider.InProgressDate"
-               name="InProgress"
-               width="140">
-         </column>
-         <column
-               labelProvider="com.sg.business.project.labelprovider.CompleteDate"
-               name="Completed"
-               width="140">
-         </column>
-         <column
-               labelProvider="com.sg.business.project.labelprovider.MinusTime"
-               name="Minus"
-               width="140">
-         </column>
-      </table>
-      <table
             canCreate="false"
             canDelete="false"
             canEdit="true"
@@ -981,6 +935,54 @@
          </column>
          <column
                columnDefinitionId="participate">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.project.DelayProcess"
+            id="project.navigator.delayprocess">
+         <column
+               column="processname"
+               name="流程名称"
+               type="String"
+               width="240">
+         </column>
+         <column
+               column="desc"
+               name="任务名称"
+               type="String"
+               width="120">
+         </column>
+         <column
+               column="work_desc"
+               name="工作名称"
+               width="160"></column>
+         <column
+               column="actualowner"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="实际活动执行者"
+               width="140">
+         </column>
+         <column
+               column="_cdate"
+               name="接收"
+               type="DateTime"
+               width="140"></column>
+         <column
+               column="InProgress"
+               labelProvider="com.sg.business.project.labelprovider.InProgressDate"
+               name="开始"
+               width="140">
+         </column>
+         <column
+               column="Completed"
+               labelProvider="com.sg.business.project.labelprovider.CompleteDate"
+               name="完成"
+               width="140">
+         </column>
+         <column
+               labelProvider="com.sg.business.project.labelprovider.MinusTime"
+               name="间隔"
+               width="140">
          </column>
       </table>
    </extension>

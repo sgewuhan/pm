@@ -10,13 +10,18 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.mywork"
+            name="工作">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.workflow"
             name="流程">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
-            name="项目">
+            name="项目管理">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -37,11 +42,6 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.finance"
             name="财务">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.worksreg"
-            name="工时">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -78,7 +78,41 @@
                id="work.processing"
                minimized="false"
                moveable="false"
-               ratio="0.8"
+               ratio="0.6"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="work.performence.record"
+               minimized="false"
+               ratio="0.4"
+               relationship="right"
+               relative="work.processing">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.myproject"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="work.performence.record"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.mywork">
+         <view
+               closeable="false"
+               id="work.processing"
+               minimized="false"
+               moveable="false"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
@@ -113,50 +147,94 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="work.paused"
+               relative="home.mycalender"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.workflow">
+         <view
+               closeable="false"
+               id="workflow.taskreserved"
+               minimized="false"
+               moveable="false"
+               ratio="0.6"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
                showTitle="true"
                standalone="false"
                visible="true">
          </view>
          <view
                closeable="false"
-               id="message.recieved"
+               id="workflow.workdelivery"
                minimized="false"
                moveable="false"
-               ratio="0.4"
+               ratio="0.3"
                relationship="right"
-               relative="work.processing"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               id="work.performence.record"
-               minimized="false"
-               closeable="false"
-               relationship="stack"
-               relative="message.recieved">
-         </view>
-         <view
-               closeable="false"
-               id="home.bulletinboard"
-               minimized="false"
-               moveable="false"
-               ratio="0.55"
-               relationship="bottom"
-               relative="message.recieved"
+               relative="workflow.taskreserved"
                showTitle="true"
                standalone="false"
                visible="true">
          </view>
          <view
                closeable="false"
-               id="home.lastopen"
+               id="workflow.taskhistory"
                minimized="false"
                moveable="false"
                ratio="0.5"
+               relationship="bottom"
+               relative="workflow.taskreserved"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.project">
+         <view
+               closeable="false"
+               id="project.navigator.management"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delaywork"
+               minimized="false"
+               moveable="false"
                relationship="stack"
-               relative="home.bulletinboard"
+               relative="project.navigator.management"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delayprocess"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.delaywork"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="works.register"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.delayprocess"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -194,54 +272,6 @@
                moveable="false"
                relationship="stack"
                relative="message.recieved"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.project">
-         <view
-               closeable="false"
-               id="project.navigator.myproject"
-               minimized="false"
-               moveable="false"
-               ratio="0.3"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="project.navigator.management"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.myproject"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="project.navigator.delaywork"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.myproject"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="project.navigator.delayprocess"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.myproject"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -512,60 +542,6 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
-            targetID="perspective.worksreg">
-         <view
-               closeable="false"
-               id="works.register"
-               minimized="false"
-               moveable="false"
-               ratio="0.3"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.workflow">
-         <view
-               closeable="false"
-               id="workflow.taskreserved"
-               minimized="false"
-               moveable="false"
-               ratio="0.6"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="workflow.workdelivery"
-               minimized="false"
-               moveable="false"
-               ratio="0.3"
-               relationship="right"
-               relative="workflow.taskreserved"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="workflow.taskhistory"
-               minimized="false"
-               moveable="false"
-               ratio="0.5"
-               relationship="bottom"
-               relative="workflow.taskreserved"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
             targetID="perspective.vis.home">
          <view
                closeable="false"
@@ -654,12 +630,12 @@
       <scenario
             id="visualization"
             isDefault="true"
-            name="可视化">
-         <perspective
-               default="false"
-               id="perspective.vis.home"></perspective>
+            name="项目绩效可视化">
          <perspective
                default="true"
+               id="perspective.vis.home"></perspective>
+         <perspective
+               default="false"
                id="perspective.visualization">
          </perspective>
       </scenario>
@@ -676,9 +652,6 @@
          </perspective>
          <perspective
                id="perspective.project">
-         </perspective>
-         <perspective
-               id="perspective.worksreg">
          </perspective>
          <perspective
                id="perspective.resource">
@@ -750,9 +723,15 @@
       </scenario>
       <scenario
             id="workflowAndMessage"
-            name="流程和消息">
+            isDefault="true"
+            name="工作管理（管理职能）">
          <perspective
+               default="true"
                id="perspective.workflow">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.mywork">
          </perspective>
          <perspective
                id="perspective.message">
@@ -1069,6 +1048,11 @@
                id="BI.OVER.COST.ESTIMATE"
                label="BI.OVER.COST.ESTIMATE"
                value="BI.OVER.COST.ESTIMATE">
+         </option>
+         <option
+               id="TASKRESERVED.REFRESH.INTERVAL"
+               label="TASKRESERVED.REFRESH.INTERVAL"
+               value="TASKRESERVED.REFRESH.INTERVAL">
          </option>
       </option>
    </extension>

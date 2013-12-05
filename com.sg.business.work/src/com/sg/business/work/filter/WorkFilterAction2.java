@@ -15,7 +15,7 @@ import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.selector.DateFromToSelector;
 import com.sg.widgets.viewer.CTreeViewer;
 
-public class WorkFilterAction extends Action {
+public class WorkFilterAction2 extends Action {
 
 	public static final int SHOW_ALL_PROJECT_WORK = 0;// 显示项目所有工作
 	public static final int SHOW_MY_PROJECT_WORK = 1;// 显示项目与我有关的工作
@@ -41,7 +41,7 @@ public class WorkFilterAction extends Action {
 	private StructuredViewer viewer;
 	private WorkFilter filter;
 
-	public WorkFilterAction(WorkFilterControl workFilterControl, int filterCode) {
+	public WorkFilterAction2(WorkFilterControl workFilterControl, int filterCode) {
 		super(getNameByCode(filterCode), IAction.AS_CHECK_BOX);
 		setImageDescriptor(getImageDescriptorByCode(filterCode));
 		this.filterControl = workFilterControl;

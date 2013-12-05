@@ -11,7 +11,7 @@
             category="work"
             class="com.sg.business.work.view.WorkInProcess"
             id="work.processing"
-            name="待处理"
+            name="我的工作"
             restorable="true">
       </view>
       <view
@@ -3662,6 +3662,7 @@
                      label="指派工作负责人和参与者">
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.business.work.handler.AssignmentEditable"
                         id="chargerid"
                         label="负责人"
                         labelVisible="true"
