@@ -114,26 +114,7 @@ public class DCPDMUtil {
 		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description"));
 		deli.doSave(context);
 
-		ImportData ip = new ImportData() {
-
-			@Override
-			protected String getNamespace() {
-				return "vault_file";
-			}
-
-			@Override
-			protected DB getDB() {
-				OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
-				return DBActivator.getDB(filebase.getDB());
-			}
-
-			@Override
-			protected String getClassOuid() {
-				return null;
-			}
-		};
-
-		ip.syncItem(ouid, document);
+		writePDMInfo(ouid, document);
 	}
 
 	public static boolean createDocumentFromDCPDM(String userId, Work work,
@@ -186,26 +167,8 @@ public class DCPDMUtil {
 				if (document == null) {
 					// 创建文档对象
 					document = ModelService.createModelObject(Document.class);
-					ImportData ip = new ImportData() {
-
-						@Override
-						protected String getNamespace() {
-							return "vault_file";
-						}
-
-						@Override
-						protected DB getDB() {
-							OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
-							return DBActivator.getDB(filebase.getDB());
-						}
-
-						@Override
-						protected String getClassOuid() {
-							return null;
-						}
-					};
-
-					ip.syncItem(sel[i], document);
+					writePDMInfo(sel[i], document);
+					
 				}
 				if (document != null) {
 					result.add(document);
@@ -215,5 +178,28 @@ public class DCPDMUtil {
 		}
 		return null;
 
+	}
+
+	private static void writePDMInfo(String ouid, Document document) throws Exception {
+		ImportData ip = new ImportData() {
+
+			@Override
+			protected String getNamespace() {
+				return "vault_file";
+			}
+
+			@Override
+			protected DB getDB() {
+				OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
+				return DBActivator.getDB(filebase.getDB());
+			}
+
+			@Override
+			protected String getClassOuid() {
+				return null;
+			}
+		};
+
+		ip.syncItem(ouid, document);		
 	}
 }
