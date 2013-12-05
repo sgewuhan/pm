@@ -21,7 +21,7 @@
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
-            name="项目管理">
+            name="项目">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -36,7 +36,7 @@
       <perspective
             class="com.sg.widgets.perspective.EditorShowPerspective"
             id="perspective.visualization"
-            name="项目看板">
+            name="项目组合">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -124,7 +124,8 @@
                id="home.mycalender"
                minimized="false"
                moveable="false"
-               relationship="stack"
+               ratio="0.6"
+               relationship="right"
                relative="work.processing"
                showTitle="true"
                standalone="false"
@@ -136,7 +137,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="home.mycalender"
+               relative="work.processing"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -147,7 +148,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="home.mycalender"
+               relative="work.processing"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -740,17 +741,14 @@
       <scenario
             id="workflowAndMessage"
             isDefault="true"
-            name="工作管理（管理职能）">
-         <perspective
-               default="true"
-               id="perspective.workflow">
-         </perspective>
+            name="工作管理">
          <perspective
                default="false"
                id="perspective.mywork">
          </perspective>
          <perspective
-               id="perspective.message">
+               default="true"
+               id="perspective.workflow">
          </perspective>
       </scenario>
    </extension>
