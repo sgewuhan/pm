@@ -1244,8 +1244,8 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterName="support"
-               taskFormFieldName="support">
+               processParameterName="auditor"
+               taskFormFieldName="auditor">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1258,8 +1258,8 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterName="support"
-               taskFormFieldName="support">
+               processParameterName="approve"
+               taskFormFieldName="approve">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1267,6 +1267,16 @@
             name="批准"
             persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtBusinessSupport">
+      </taskForm>
+      <taskForm
+            editorId="xtBusinessSupport.edit"
+            name="技术支持"
+            persistentFields="checker"
+            processDefinitionId="xt.xtBusinessSupport">
+         <processParameter
+               processParameterName="checker"
+               taskFormFieldName="checker">
+         </processParameter>
       </taskForm>
    </extension>
    <extension
@@ -1581,6 +1591,40 @@
                   </file>
                </section>
             </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xtBusinessSupport.edit"
+            name="技术支持">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请确认技术支持负责人">
+                  <navigatorSelector
+                        editable="true"
+                        id="support"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="技术支持负责人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="support"
+                        navigatorId="organization.user"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
          </basicpage>
       </editor>
    </extension>
