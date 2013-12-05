@@ -968,11 +968,13 @@
                type="DateTime"
                width="140"></column>
          <column
+               column="InProgress"
                labelProvider="com.sg.business.project.labelprovider.InProgressDate"
                name="开始"
                width="140">
          </column>
          <column
+               column="Completed"
                labelProvider="com.sg.business.project.labelprovider.CompleteDate"
                name="完成"
                width="140">
