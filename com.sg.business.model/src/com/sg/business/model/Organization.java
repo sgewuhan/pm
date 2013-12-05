@@ -28,7 +28,7 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.etl.OrganizationProjectProvider;
+import com.sg.business.model.etl.OrganizationETL;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;

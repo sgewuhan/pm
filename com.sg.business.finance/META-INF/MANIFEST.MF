@@ -20,5 +20,4 @@ Require-Bundle: javax.servlet,
  com.sg.sqldb;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: libs/sapjco.jar,
- .
+Bundle-ClassPath: .

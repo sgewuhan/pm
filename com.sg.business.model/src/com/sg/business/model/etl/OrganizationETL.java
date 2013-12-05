@@ -1,4 +1,4 @@
-package com.sg.business.model;
+package com.sg.business.model.etl;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,7 +12,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.etl.OrganizationProjectProvider;
+import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Organization;
+import com.sg.business.model.OrganizationProjectProvider;
 
 public class OrganizationETL implements ISchedualJobRunnable {
 

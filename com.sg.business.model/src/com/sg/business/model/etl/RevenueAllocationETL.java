@@ -1,4 +1,4 @@
-package com.sg.business.finance.schedual;
+package com.sg.business.model.etl;
 
 import java.util.Calendar;
 
@@ -14,7 +14,7 @@ import com.sg.sqldb.utility.IRowCallBack;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;
 
-public class RunIncomeAllocation implements ISchedualJobRunnable {
+public class RevenueAllocationETL implements ISchedualJobRunnable {
 	private DBCollection col;
 
 	@Override

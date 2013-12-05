@@ -669,6 +669,19 @@
          </perspective>
       </scenario>
       <scenario
+            id="workflowAndMessage"
+            isDefault="true"
+            name="工作管理">
+         <perspective
+               default="false"
+               id="perspective.mywork">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.workflow">
+         </perspective>
+      </scenario>
+      <scenario
             id="document"
             name="文档管理">
          <perspective
@@ -736,19 +749,6 @@
          </perspective>
          <perspective
                id="perspective.system">
-         </perspective>
-      </scenario>
-      <scenario
-            id="workflowAndMessage"
-            isDefault="true"
-            name="工作管理">
-         <perspective
-               default="false"
-               id="perspective.mywork">
-         </perspective>
-         <perspective
-               default="true"
-               id="perspective.workflow">
          </perspective>
       </scenario>
    </extension>

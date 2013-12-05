@@ -2448,7 +2448,7 @@
                      label="计划">
                   <dateTime
                         editPart="DateDialog"
-                        editable="true"
+                        editableHandler="com.sg.business.commons.field.editable.MileStoneWorkFieldEditableControl"
                         id="planstart"
                         label="计划开始"
                         labelVisible="true"

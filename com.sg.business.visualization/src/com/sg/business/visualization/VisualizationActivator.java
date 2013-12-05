@@ -10,7 +10,7 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
 
 import com.mobnut.portal.Portal;
-import com.sg.business.model.OrganizationETL;
+import com.sg.business.model.etl.OrganizationETL;
 
 /**
  * The activator class controls the plug-in life cycle

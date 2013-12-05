@@ -1,4 +1,4 @@
-package com.sg.business.finance;
+package com.sg.business.model.etl.eai;
 
 import com.mobnut.admin.dataset.Setting;
 import com.mobnut.commons.util.Utils;

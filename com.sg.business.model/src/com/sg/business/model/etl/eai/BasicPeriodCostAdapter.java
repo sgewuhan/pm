@@ -1,4 +1,4 @@
-package com.sg.business.finance.eai;
+package com.sg.business.model.etl.eai;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -9,7 +9,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
-import com.sg.business.finance.eai.sap.JCO_ZXFUN_PM_YFFY;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.WorkOrderPeriodCost;
 
