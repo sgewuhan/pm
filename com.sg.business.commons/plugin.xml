@@ -130,12 +130,22 @@
             table="commons.generic.tableselector">
          <filterAction>
             <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </filterAction>
          <searchAction>
             <column
-                  columnDefinitionId="com.sg.widgets.column.desc">
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </searchAction>
       </navigator>
