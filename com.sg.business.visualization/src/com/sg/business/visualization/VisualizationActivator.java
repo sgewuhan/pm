@@ -10,7 +10,7 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
 
 import com.mobnut.portal.Portal;
-import com.sg.business.model.BIDataBuilder;
+import com.sg.business.model.OrganizationETL;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -44,7 +44,7 @@ public class VisualizationActivator extends AbstractUIPlugin {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					new BIDataBuilder().run();
+					new OrganizationETL().run();
 				} catch (Exception e) {
 				}
 				return Status.OK_STATUS;
