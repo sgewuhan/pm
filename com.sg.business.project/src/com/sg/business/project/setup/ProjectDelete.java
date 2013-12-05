@@ -13,8 +13,8 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	@Override
 	public boolean run() {
 		// DBCollection col = getCol();
-		// ObjectId _id = new ObjectId("5288ba08636c8fca10a87add");
-
+		// ObjectId _id = new ObjectId("525b4d18f0209adcc595131f");
+		//
 		// Organization org = ModelService.createModelObject(Organization.class,
 		// _id);
 		// List<PrimaryObject> projectList = org.getRelationById(
@@ -22,9 +22,21 @@ public class ProjectDelete implements ISchedualJobRunnable {
 		// Project.class);
 		// for (PrimaryObject po : projectList) {
 		// Project project = (Project) po;
-		// Project project = ModelService
-		// .createModelObject(Project.class, _id);
+		// // Project project = ModelService
+		// // .createModelObject(Project.class, _id);
+		// String lc = project.getLifecycleStatus();
+		// Work wbsRoot = project.getWBSRoot();
+		// String worklc = wbsRoot.getLifecycleStatus();
 		//
+		// if(lc != null && !lc.equals(worklc)){
+		// DBCollection updatecol = getCol(IModelConstants.C_WORK);
+		// updatecol
+		// .update(new BasicDBObject().append(Work.F__ID,
+		// wbsRoot.get_id()), new BasicDBObject().append(
+		// "$set",
+		// new BasicDBObject().append(Work.F_LIFECYCLE,lc)));
+		// }
+
 		// try {
 		// project.doRemove(new CurrentAccountContext());
 		// } catch (Exception e) {
@@ -84,6 +96,27 @@ public class ProjectDelete implements ISchedualJobRunnable {
 		// .append(WorksPerformence.F__CDATE, object));
 		//
 		// updatecol.update(q, o);
+		// }
+
+		// DBCollection col = getCol();
+		// ObjectId org_id = new ObjectId("525cede9ede04bec14551263");
+		// Organization org = ModelService.createModelObject(Organization.class,
+		// org_id);
+		// List<PrimaryObject> list = org.getRelationById(Organization.F__ID,
+		// Project.F_FUNCTION_ORGANIZATION, Project.class);
+		// for (PrimaryObject po : list) {
+		// Project project = (Project) po;
+		// User charger = project.getCharger();
+		// if (charger != null) {
+		// ObjectId organization_id = charger.getOrganization_id();// new
+		// // ObjectId("525c9807ede0fb240744a593");
+		// BasicBSONList launchorg_id = new BasicBSONList();
+		// launchorg_id.add(organization_id);
+		// col.update(new BasicDBObject().append(Project.F__ID,
+		// project.get_id()), new BasicDBObject().append("$set",
+		// new BasicDBObject().append(
+		// Project.F_LAUNCH_ORGANIZATION, launchorg_id)));
+		// }
 		// }
 
 		return true;

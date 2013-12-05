@@ -2115,17 +2115,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		ObjectId id = new ObjectId();
-		setValue(F__ID, id);
+		ObjectId id = get_id();
+		if (id == null) {
+			id = new ObjectId();
+			setValue(F__ID, id);
 
-		if (getValue(F_PARENT_ID) == null) {// 根工作
-			setValue(F_ROOT_ID, id);
-		} else {
-			AbstractWork parent = getParent();
-			ObjectId rootId = (ObjectId) parent.getValue(F_ROOT_ID);
-			setValue(F_ROOT_ID, rootId);
+			if (getValue(F_PARENT_ID) == null) {// 根工作
+				setValue(F_ROOT_ID, id);
+			} else {
+				AbstractWork parent = getParent();
+				ObjectId rootId = (ObjectId) parent.getValue(F_ROOT_ID);
+				setValue(F_ROOT_ID, rootId);
+			}
 		}
-
 		if (isStandloneWork()) {
 			copyWorkDefinition(Work.F_WF_EXECUTE, context);
 
