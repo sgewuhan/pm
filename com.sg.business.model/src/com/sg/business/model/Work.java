@@ -786,17 +786,17 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return false;
 		}
 		// 项目启动后,里程碑工作不允许编辑
-		if (!isStandloneWork()) {
-			Project project = getProject();
-			if (project != null) {
-				String projectLifecycle = project.getLifecycleStatus();
-				if (STATUS_WIP_VALUE.equals(projectLifecycle)) {
-					if (isMilestone()) {
-						return false;
-					}
-				}
-			}
-		}
+		// if (!isStandloneWork()) {
+		// Project project = getProject();
+		// if (project != null) {
+		// String projectLifecycle = project.getLifecycleStatus();
+		// if (STATUS_WIP_VALUE.equals(projectLifecycle)) {
+		// if (isMilestone()) {
+		// return false;
+		// }
+		// }
+		// }
+		// }
 
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
