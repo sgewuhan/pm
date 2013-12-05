@@ -38,6 +38,7 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.widgets.MessageUtil;
 
 public class ProjectToolkit {
 	public static boolean checkProcessInternal(PrimaryObject po,
@@ -596,6 +597,12 @@ public class ProjectToolkit {
 		document.setValue(Document.F_PROJECT_ID, projectId);
 
 		document.setValue(Document.F_FOLDER_ID, folderRootId);
+
+		try {
+			document.generateCode();
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+		}
 
 		Object value = documentTemplate.get(DocumentDefinition.F_DESC);
 		if (value != null) {

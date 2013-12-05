@@ -182,29 +182,31 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		String documentNumber = getDocumentNumber();
-		if (documentNumber == null) {
-			generateCode();
-		}
+		generateCode();
 		super.doInsert(context);
 	}
 
-	private void generateCode() throws Exception {
-		
+	public  void generateCode() throws Exception {
+
+		String documentNumber = getDocumentNumber();
+		if (documentNumber != null) {
+			return;
+		}
+
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C__IDS);
 
-		String prefix="";
+		String prefix = "";
 		Project project = getProject();
 		if (project != null) {
-			prefix=project.getProjectNumber();
-		}else{
-			//独立工作文档的编号，组织代码
-			Work work=getWork();
-			if(work!=null&&work.isStandloneWork()){
+			prefix = project.getProjectNumber();
+		} else {
+			// 独立工作文档的编号，组织代码
+			Work work = getWork();
+			if (work != null && work.isStandloneWork()) {
 				User charger = work.getCharger();
 				Organization org = charger.getOrganization();
-				prefix=org.getCode();
+				prefix = org.getCode();
 			}
 		}
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER

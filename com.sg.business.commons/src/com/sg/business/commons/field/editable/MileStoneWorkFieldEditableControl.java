@@ -1,6 +1,5 @@
 package com.sg.business.commons.field.editable;
 
-import com.mobnut.commons.util.Utils;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
@@ -17,9 +16,7 @@ public class MileStoneWorkFieldEditableControl implements IFieldEditableHandler 
 		Project project = work.getProject();
 		if (project != null) {
 			String lc = project.getLifecycleStatus();
-			if (Utils.inArray(lc, new String[] {
-					ILifecycle.STATUS_ONREADY_VALUE,
-					ILifecycle.STATUS_WIP_VALUE })) {
+			if (lc.equals(ILifecycle.STATUS_WIP_VALUE )) {
 				if(work.isMilestone()){
 					return false;
 				}
