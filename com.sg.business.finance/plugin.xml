@@ -198,26 +198,26 @@
       <schedualJob
             day="1"
             id="finance.schedual.rndcostallocation"
-            name="上月研发费用获取和计算"
+            name="ETL 成本中心期间研发成本获取和计算"
             rule="month"
             run="com.sg.business.finance.schedual.RunRNDCostAllocation"
             time="0:05:00">
       </schedualJob>
       <schedualJob
             day="1"
-            id="finance.schedual.salesincomeallocation"
-            name="上月销售收入获取和计算"
-            rule="month"
-            run="com.sg.business.finance.schedual.RunIncomeAllocation"
-            time="2:00:00">
-      </schedualJob>
-      <schedualJob
-            day="1"
             id="finance.schedual.workordercostgather"
-            name="上月工作令号相关研发成本获取和计算"
+            name="ETL 工作令号期间研发成本获取和计算"
             rule="month"
             run="com.sg.business.finance.schedual.WorkorderCostGather"
             time="1:05:00">
+      </schedualJob>
+      <schedualJob
+            day="1"
+            id="finance.schedual.salesincomeallocation"
+            name="ETL 期间销售数据获取和计算"
+            rule="month"
+            run="com.sg.business.finance.schedual.RunIncomeAllocation"
+            time="2:00:00">
       </schedualJob>
       <schedualJob
             day="100000"
