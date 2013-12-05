@@ -21,6 +21,7 @@ import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.Document;
+import com.sg.business.model.IDocumentProcess;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -81,6 +82,7 @@ public class ProcessHistoryUIToolkit {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void doPrint(long processId, ObjectId docId) {
 		// doc_name_number
 		// doc_rev
@@ -92,7 +94,6 @@ public class ProcessHistoryUIToolkit {
 		// doc_flow
 		// doc_printrec
 		Document doc = ModelService.createModelObject(Document.class, docId);
-		String doc_name_number = doc.getDesc() + "|" + doc.getDocumentNumber();
 		String doc_rev = doc.getRevId();
 		Date date = doc.get_mdate();
 		String doc_createon = date == null ? "" : String.format(
@@ -122,29 +123,40 @@ public class ProcessHistoryUIToolkit {
 
 		// 获得流程记录
 		sb = new StringBuffer();
-		List<DBObject> history = doc.getProcessHistory(processId);
+		DBObject processHistory = doc.getProcessHistory(processId);
+		if (processHistory == null) {
+			return;
+		}
+		String doc_name_number = doc.getDesc() + "|"
+				+ processHistory.get(IDocumentProcess.F_MAJOR_VID) + "."
+				+ processHistory.get(IDocumentProcess.F_SECOND_VID);
+
+		List<DBObject> history = (List<DBObject>) processHistory
+				.get(IDocumentProcess.F_HISTORY);
+		if (history == null) {
+			return;
+		}
 		DBUtil.sort(history, UserTask.F_CREATEDON, 1);
-		System.out.println();
 		for (Object object : history) {
 			if (Status.Completed.name().equals(
 					((DBObject) object).get(UserTask.F_STATUS))) {
 				UserTask userTask = ModelService.createModelObject(
 						(DBObject) object, UserTask.class);
-				sb.append(userTask.getLabel()+" ");
+				sb.append(userTask.getLabel() + " ");
 
 				Object userId = userTask.getValue(UserTask.F_CREATEDBY);
 				sb.append(UserToolkit.getUserById((String) userId)
 						.getUsername());
 				sb.append(" ");
 				String choice = userTask.getChoice();
-				if (choice!=null) {
+				if (choice != null) {
 					sb.append(choice);
 				}
 				sb.append(" ");
 				date = (Date) userTask.getValue(UserTask.F_CREATEDON);
 				sb.append(String.format(Utils.FORMATE_DATE_FULL, date));
 				String comment = userTask.getComment();
-				if(comment!=null){
+				if (comment != null) {
 					sb.append(comment);
 				}
 				sb.append("^p^p");
@@ -152,7 +164,7 @@ public class ProcessHistoryUIToolkit {
 		}
 		String doc_flow = sb.toString();
 
-		//TODO 用户设置 打印机名称
+		// TODO 用户设置 打印机名称
 		String printerName = "PM";
 
 		String template = "docflowrec.pdf";
