@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import com.mobnut.db.model.ModelService;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -34,6 +35,11 @@ public class ProjectResContentProvider implements ITreeContentProvider {
 				User[] result = new User[idlist.size()];
 				for (int i = 0; i < result.length; i++) {
 					result[i] = UserToolkit.getUserById((String) idlist.get(i));
+					if(result[i] == null){
+						result[i] = ModelService.createModelObject(User.class);
+						result[i].setValue(User.F_USER_ID, "?");
+						result[i].setValue(User.F_USER_NAME, "?");
+					}
 					result[i].setValue("$projectid", ((Project) parentElement).get_id());
 				}
 				return result;

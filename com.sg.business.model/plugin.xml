@@ -171,7 +171,7 @@
             db="pm2">
       </doc>
       <doc
-            class="com.sg.business.model.OrganizationProjectProvider"
+            class="com.sg.business.etl.OrganizationProjectProvider"
             collection="projectprovider"
             db="pm2">
       </doc>
@@ -629,9 +629,9 @@
          point="com.mobnut.admin.schedualJob">
       <schedualJob
             id="visualization.databuilding"
-            name="BI数据缓存"
+            name="ETL 数据分析（组织）"
             rule="day"
-            run="com.sg.business.model.BIDataBuilder"
+            run="com.sg.business.model.OrganizationETL"
             time="05:00:00">
       </schedualJob>
    </extension>

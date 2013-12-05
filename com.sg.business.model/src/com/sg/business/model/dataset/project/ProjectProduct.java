@@ -1,4 +1,4 @@
-package com.sg.business.model.dataset;
+package com.sg.business.model.dataset.project;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
