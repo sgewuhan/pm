@@ -666,7 +666,7 @@
             name="工作管理">
          <perspective
                default="true"
-               id="perspective.vis.home">
+               id="perspective.home">
          </perspective>
          <perspective
                id="perspective.workflow">
@@ -746,9 +746,9 @@
          </perspective>
       </scenario>
       <scenario
-            id="technology"
+            id="department"
             isDefault="true"
-            name="技术管理">
+            name="部门管理">
          <perspective
                default="false"
                id="perspective.mywork">
@@ -759,6 +759,33 @@
          </perspective>
          <perspective
                id="perspective.vault">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.vis.home">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="technology"
+            isDefault="true"
+            name="技术管理">
+         <perspective
+               default="true"
+               id="perspective.workflow">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.vis.home">
          </perspective>
          <perspective
                default="false"
