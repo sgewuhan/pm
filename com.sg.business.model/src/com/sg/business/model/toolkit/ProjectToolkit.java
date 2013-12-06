@@ -48,20 +48,24 @@ public class ProjectToolkit {
 		boolean passed = true;
 		List<PrimaryObject> ra;
 		if (pc.isWorkflowActivate(process)) {
-			//判断是否为工作的流程检查
+			// 判断是否为工作的流程检查
 			Object data;
 			if (po instanceof Work) {
 				data = ((Work) po).getProject();
 			} else {
 				data = po;
 			}
-			
+
 			// 如果流程已经激活，需要判断是否所有的actor都指派
 			DroolsProcessDefinition pd = pc.getProcessDefinition(process);
 			List<NodeAssignment> nalist = pd.getNodesAssignment();
 			for (int i = 0; i < nalist.size(); i++) {
 				NodeAssignment na = nalist.get(i);
 				if (!na.isNeedAssignment()) {
+					continue;
+				}
+				//判断是否未需指派的角色
+				if (!na.forceAssignment()) {
 					continue;
 				}
 				String nap = na.getNodeActorParameter();
