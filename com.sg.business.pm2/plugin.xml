@@ -629,6 +629,20 @@
    <extension
          point="com.mobnut.portal.scenario">
       <scenario
+            id="resource"
+            name="资源管理">
+         <perspective
+               id="perspective.resource">
+         </perspective>
+      </scenario>
+      <scenario
+            id="resource"
+            name="财务管理">
+         <perspective
+               id="perspective.finance">
+         </perspective>
+      </scenario>
+      <scenario
             id="visualization"
             isDefault="true"
             name="项目绩效可视化">
@@ -638,6 +652,30 @@
          <perspective
                default="false"
                id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="work"
+            isDefault="true"
+            name="工作管理">
+         <perspective
+               default="true"
+               id="perspective.vis.home">
+         </perspective>
+         <perspective
+               id="perspective.workflow">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               id="perspective.message">
          </perspective>
       </scenario>
       <scenario
@@ -649,75 +687,13 @@
                id="perspective.home">
          </perspective>
          <perspective
-               default="false"
-               id="perspective.mywork">
-         </perspective>
-         <perspective
                id="perspective.workflow">
          </perspective>
          <perspective
                id="perspective.project">
          </perspective>
          <perspective
-               id="perspective.resource">
-         </perspective>
-         <perspective
                id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.message">
-         </perspective>
-      </scenario>
-      <scenario
-            id="workflowAndMessage"
-            isDefault="true"
-            name="工作管理">
-         <perspective
-               default="false"
-               id="perspective.mywork">
-         </perspective>
-         <perspective
-               default="true"
-               id="perspective.workflow">
-         </perspective>
-      </scenario>
-      <scenario
-            id="document"
-            name="文档管理">
-         <perspective
-               default="true"
-               id="perspective.home">
-         </perspective>
-         <perspective
-               default="false"
-               id="perspective.mywork">
-         </perspective>
-         <perspective
-               id="perspective.workflow">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.message">
-         </perspective>
-      </scenario>
-      <scenario
-            id="manager"
-            name="业务管理">
-         <perspective
-               default="true"
-               id="perspective.home">
-         </perspective>
-         <perspective
-               default="false"
-               id="perspective.mywork">
-         </perspective>
-         <perspective
-               id="perspective.workflow">
-         </perspective>
-         <perspective
-               id="perspective.management">
          </perspective>
          <perspective
                id="perspective.message">
@@ -731,15 +707,14 @@
                id="perspective.home">
          </perspective>
          <perspective
-               default="false"
-               id="perspective.mywork">
-         </perspective>
-         <perspective
                id="perspective.workflow">
          </perspective>
          <perspective
-               default="true"
+               default="false"
                id="perspective.organization">
+         </perspective>
+         <perspective
+               id="perspective.vault">
          </perspective>
          <perspective
                id="perspective.management">
@@ -749,6 +724,48 @@
          </perspective>
          <perspective
                id="perspective.system">
+         </perspective>
+      </scenario>
+      <scenario
+            id="manager"
+            name="业务管理">
+         <perspective
+               id="perspective.home">
+         </perspective>
+         <perspective
+               id="perspective.workflow">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               id="perspective.management">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="technology"
+            isDefault="true"
+            name="技术管理">
+         <perspective
+               default="false"
+               id="perspective.mywork">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.workflow">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.message">
          </perspective>
       </scenario>
    </extension>

@@ -51,8 +51,8 @@ public class RoleAssignment extends AbstractRoleAssignment {
 		return super.doSave(context);
 	}
 
-	// @Override
-	// public String getDefaultEditorId() {
-	// return "editor.organization.roleassignment";
-	// }
+	@Override
+	public String getDefaultEditorId() {
+		return "editorscenario.organization.roleassignment";
+	}
 }
