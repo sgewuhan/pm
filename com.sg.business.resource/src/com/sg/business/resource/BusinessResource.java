@@ -310,6 +310,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_REPORT_ADD_24 = "report_sug_24.png";
 
+	public static final String IMAGE_CALENDAR_24 = "cal2_24.png";
+
 	
 
 

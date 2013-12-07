@@ -1,4 +1,4 @@
-package com.sg.business.visualization.dataset;
+package com.sg.business.visualization.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.visualization.VisualizationActivator;
+import com.sg.business.visualization.data.ProjectSetFolder;
 
 public class OrganizationProjectSetFolder extends ProjectSetFolder {
 

@@ -1,4 +1,4 @@
-package com.sg.business.visualization.dataset;
+package com.sg.business.visualization.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,9 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.visualization.data.OrganizationProjectSetFolder;
+import com.sg.business.visualization.data.OwnerProjectSetFolder;
+import com.sg.business.visualization.data.TypeProjectSetFolder;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class VisNavigatorDataSet extends DataSetFactory {

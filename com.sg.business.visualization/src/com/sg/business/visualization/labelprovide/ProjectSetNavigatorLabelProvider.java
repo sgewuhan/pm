@@ -9,7 +9,7 @@ import com.sg.business.model.ProductTypeProvider;
 import com.sg.business.model.User;
 import com.sg.business.model.UserProjectPerf;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.visualization.dataset.ProjectSetFolder;
+import com.sg.business.visualization.data.ProjectSetFolder;
 
 public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 
