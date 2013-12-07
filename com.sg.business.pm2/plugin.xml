@@ -546,7 +546,7 @@
             targetID="perspective.vis.home">
          <view
                closeable="false"
-               id="vis.main"
+               id="vis.main.indicators"
                minimized="false"
                moveable="false"
                ratio="0.5"
@@ -558,22 +558,11 @@
          </view>
          <view
                closeable="false"
-               id="vis.main.indicators"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="vis.main"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
                id="vis.risk.schedual"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -584,7 +573,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -596,7 +585,7 @@
                moveable="false"
                ratio="0.4"
                relationship="right"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -608,7 +597,7 @@
                moveable="false"
                ratio="0.4"
                relationship="bottom"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
