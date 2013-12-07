@@ -219,13 +219,13 @@ public class DashDepartment extends DashWidgetView {
 			switch (y1Type) {
 			case Y1_PROCESS_BUDGET:
 				title1 = "正常";
-				title2 = "超支";
+				title2 = "超支风险";
 				deptValue1[i] = sub.sum.processing_cost_normal;
 				deptValue2[i] = sub.sum.processing_cost_over;
 				break;
 			case Y1_PROCESS_SCHEDUAL:
-				title1 = "正常";
-				title2 = "超期";
+				title1 = "正常进行";
+				title2 = "超期风险";
 				deptValue1[i] = sub.sum.processing_normal
 						+ sub.sum.processing_advance;
 				deptValue2[i] = sub.sum.processing_delay;
