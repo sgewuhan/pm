@@ -152,6 +152,51 @@
             provideSelection="true"
             table="vis.projectset.revenue">
       </navigator>
+      <navigator
+            id="vis.org.selector.managerrole"
+            provideSelection="false"
+            tree="vis.org.selector.managerrole">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -162,9 +207,9 @@
             canEdit="false"
             canRead="false"
             collectionName="organization"
-            contentProvider="com.sg.business.visualization.dataset.ProjectSetContentProvider"
+            contentProvider="com.sg.business.visualization.data.ProjectSetContentProvider"
             customItemHeight="40"
-            dataSet="com.sg.business.visualization.dataset.VisNavigatorDataSet"
+            dataSet="com.sg.business.visualization.data.VisNavigatorDataSet"
             dbName="pm2"
             dropTargetListener="com.sg.business.visualization.view.DropProjectToOwnerSet"
             headerVisiable="false"
@@ -187,6 +232,20 @@
          </structure>
          <structure
                modelRelation="organization_projectmanager">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.sg.business.model.dataset.organization.OrgRootOfManagerRole"
+            hasCheck="true"
+            headerVisiable="false"
+            id="vis.org.selector.managerrole"
+            lineVisiable="false">
+         <column
+               columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <structure
+               modelRelation="organization_organization">
          </structure>
       </tree>
    </extension>
@@ -541,17 +600,17 @@
    <extension
          point="com.mobnut.db.documentModelAdapter">
       <doc
-            class="com.sg.business.visualization.dataset.OrganizationProjectSetFolder"
+            class="com.sg.business.visualization.data.OrganizationProjectSetFolder"
             collection="dummy"
             db="pm2">
       </doc>
       <doc
-            class="com.sg.business.visualization.dataset.TypeProjectSetFolder"
+            class="com.sg.business.visualization.data.TypeProjectSetFolder"
             collection="dummy"
             db="pm2">
       </doc>
       <doc
-            class="com.sg.business.visualization.dataset.OwnerProjectSetFolder"
+            class="com.sg.business.visualization.data.OwnerProjectSetFolder"
             collection="dummy"
             db="pm2">
       </doc>

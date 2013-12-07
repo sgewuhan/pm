@@ -15,28 +15,23 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.workflow"
-            name="流程">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.project"
-            name="项目">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.vault"
-            name="文档库">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.resource"
-            name="资源">
+            id="perspective.vis.home"
+            name="绩效总览">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorShowPerspective"
             id="perspective.visualization"
             name="项目组合">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.workflow"
+            name="流程">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.resource"
+            name="资源">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -50,8 +45,18 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.project"
+            name="项目">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.management"
             name="业务管理">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.vault"
+            name="文档库">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -62,11 +67,6 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.system"
             name="系统">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.vis.home"
-            name="绩效总览">
       </perspective>
    </extension>
    <extension
@@ -546,7 +546,7 @@
             targetID="perspective.vis.home">
          <view
                closeable="false"
-               id="vis.main"
+               id="vis.main.indicators"
                minimized="false"
                moveable="false"
                ratio="0.5"
@@ -558,22 +558,11 @@
          </view>
          <view
                closeable="false"
-               id="vis.main.indicators"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="vis.main"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
                id="vis.risk.schedual"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -584,7 +573,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -596,7 +585,7 @@
                moveable="false"
                ratio="0.4"
                relationship="right"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -608,7 +597,7 @@
                moveable="false"
                ratio="0.4"
                relationship="bottom"
-               relative="vis.main"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -628,20 +617,6 @@
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
-      <scenario
-            id="resource"
-            name="资源管理">
-         <perspective
-               id="perspective.resource">
-         </perspective>
-      </scenario>
-      <scenario
-            id="resource"
-            name="财务管理">
-         <perspective
-               id="perspective.finance">
-         </perspective>
-      </scenario>
       <scenario
             id="visualization"
             isDefault="true"
@@ -666,7 +641,7 @@
             name="工作管理">
          <perspective
                default="true"
-               id="perspective.vis.home">
+               id="perspective.home">
          </perspective>
          <perspective
                id="perspective.workflow">
@@ -746,9 +721,55 @@
          </perspective>
       </scenario>
       <scenario
+            id="business"
+            isDefault="true"
+            name="商务管理">
+         <perspective
+               default="true"
+               id="perspective.home">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.workflow">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
             id="technology"
             isDefault="true"
             name="技术管理">
+         <perspective
+               default="true"
+               id="perspective.workflow">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.vis.home">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="department"
+            isDefault="true"
+            name="部门管理">
          <perspective
                default="false"
                id="perspective.mywork">
@@ -766,6 +787,20 @@
          </perspective>
          <perspective
                id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="resource"
+            name="资源管理">
+         <perspective
+               id="perspective.resource">
+         </perspective>
+      </scenario>
+      <scenario
+            id="finance"
+            name="财务管理">
+         <perspective
+               id="perspective.finance">
          </perspective>
       </scenario>
    </extension>

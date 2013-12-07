@@ -6,10 +6,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
-import org.osgi.framework.BundleListener;
 
-import com.mobnut.portal.Portal;
 import com.sg.business.model.etl.OrganizationETL;
 
 /**
@@ -50,18 +47,7 @@ public class VisualizationActivator extends AbstractUIPlugin {
 				return Status.OK_STATUS;
 			}
 		};
-		context.addBundleListener(new BundleListener() {
-
-			@Override
-			public void bundleChanged(BundleEvent event) {
-				if (Portal.PLUGIN_ID
-						.equals(event.getBundle().getSymbolicName())) {
-					// ≥ı ºªØ
-					job.schedule();
-				}
-			}
-		});
-
+		job.schedule(10000);
 	}
 
 

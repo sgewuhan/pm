@@ -1,4 +1,4 @@
-package com.sg.business.visualization.dataset;
+package com.sg.business.visualization.data;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
