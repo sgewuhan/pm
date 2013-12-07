@@ -15,28 +15,23 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.workflow"
-            name="流程">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.project"
-            name="项目">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.vault"
-            name="文档库">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.resource"
-            name="资源">
+            id="perspective.vis.home"
+            name="绩效总览">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorShowPerspective"
             id="perspective.visualization"
             name="项目组合">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.workflow"
+            name="流程">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.resource"
+            name="资源">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -50,8 +45,18 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.project"
+            name="项目">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.management"
             name="业务管理">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.vault"
+            name="文档库">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -62,11 +67,6 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.system"
             name="系统">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.vis.home"
-            name="绩效总览">
       </perspective>
    </extension>
    <extension
@@ -629,20 +629,6 @@
    <extension
          point="com.mobnut.portal.scenario">
       <scenario
-            id="resource"
-            name="资源管理">
-         <perspective
-               id="perspective.resource">
-         </perspective>
-      </scenario>
-      <scenario
-            id="finance"
-            name="财务管理">
-         <perspective
-               id="perspective.finance">
-         </perspective>
-      </scenario>
-      <scenario
             id="visualization"
             isDefault="true"
             name="项目绩效可视化">
@@ -746,27 +732,23 @@
          </perspective>
       </scenario>
       <scenario
-            id="department"
+            id="business"
             isDefault="true"
-            name="部门管理">
+            name="商务管理">
          <perspective
-               default="false"
-               id="perspective.mywork">
+               default="true"
+               id="perspective.home">
          </perspective>
          <perspective
                default="true"
                id="perspective.workflow">
          </perspective>
          <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               default="false"
-               id="perspective.vis.home">
-         </perspective>
-         <perspective
                default="false"
                id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.vault">
          </perspective>
          <perspective
                id="perspective.message">
@@ -793,6 +775,43 @@
          </perspective>
          <perspective
                id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="department"
+            isDefault="true"
+            name="部门管理">
+         <perspective
+               default="false"
+               id="perspective.mywork">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.workflow">
+         </perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.visualization">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+      </scenario>
+      <scenario
+            id="resource"
+            name="资源管理">
+         <perspective
+               id="perspective.resource">
+         </perspective>
+      </scenario>
+      <scenario
+            id="finance"
+            name="财务管理">
+         <perspective
+               id="perspective.finance">
          </perspective>
       </scenario>
    </extension>
