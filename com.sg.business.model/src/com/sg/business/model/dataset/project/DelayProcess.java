@@ -196,4 +196,12 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		return input;
 	}
 
+//	protected List<ObjectId> getUsersFunctionOrganization() {
+//		List<PrimaryObject> orglist = user
+//				.getRoleGrantedInFunctionDepartmentOrganization(Role.ROLE_PROJECT_ADMIN_ID);
+//		ObjectId[] ids = new ObjectId[orglist.size()];
+//		for (int i = 0; i < ids.length; i++) {
+//			ids[i] = orglist.get(i).get_id();
+//		}
+//	}
 }

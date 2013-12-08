@@ -10,10 +10,10 @@ import com.sg.business.model.Role;
 import com.sg.business.model.Work;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class OrgUserCascade extends MasterDetailDataSetFactory {
+public class ProjectAssignmentOrg extends MasterDetailDataSetFactory {
 
 
-	public OrgUserCascade() {
+	public ProjectAssignmentOrg() {
 		super(IModelConstants.DB, IModelConstants.C_ORGANIZATION);
 	}
 

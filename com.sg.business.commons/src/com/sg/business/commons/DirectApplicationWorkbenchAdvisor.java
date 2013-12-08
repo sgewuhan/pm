@@ -15,7 +15,7 @@ import com.mobnut.portal.user.UserSessionContext;
  */
 public class DirectApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-	private static final String PERSPECTIVE_ID = "perspective.home"; //$NON-NLS-1$
+	private static final String PERSPECTIVE_ID = "perspective.work"; //$NON-NLS-1$
 	private IMemento memento;
 
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(

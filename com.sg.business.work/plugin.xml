@@ -311,6 +311,34 @@
             id="work.workperformenceofwork"
             table="work.workperformenceofwork">
       </navigator>
+      <navigator
+            id="organization.user.assignment"
+            table="organization.user.assignment">
+         <filterAction>
+            <column
+                  column="username"
+                  name="姓名"
+                  type="String">
+            </column>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="username"
+                  name="姓名"
+                  type="String">
+            </column>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -512,7 +540,7 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            dataSet="com.sg.business.model.dataset.organization.OrgUserCascade"
+            dataSet="com.sg.business.model.dataset.organization.ProjectAssignmentOrg"
             id="work.organization.user">
          <structure
                modelRelation="organization_organization">
@@ -792,6 +820,14 @@
                column="content"
                name="说明"
                type="String">
+         </column>
+      </table>
+      <table
+            dataSet="com.sg.business.model.dataset.organization.AssignmentUsers"
+            headerVisiable="false"
+            id="organization.user.assignment">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
    </extension>
@@ -1761,19 +1797,10 @@
                      </count>
                      <iterate
                            ifEmpty="false">
-                        <and>
-                           <not>
-                              <test
-                                    args="iswbsroot"
-                                    property="primaryobject.properties"
-                                    value="true">
-                              </test>
-                           </not>
-                           <test
-                                 args="reassignment"
-                                 property="runtimework.action">
-                           </test>
-                        </and>
+                        <test
+                              args="modify"
+                              property="runtimework.action">
+                        </test>
                      </iterate>
                   </and>
                </with>
@@ -1801,7 +1828,7 @@
                      <iterate
                            ifEmpty="false">
                         <test
-                              args="sendmessage"
+                              args="modify"
                               property="runtimework.action">
                         </test>
                      </iterate>
@@ -3695,7 +3722,6 @@
                      label="指派工作负责人和参与者">
                   <navigatorSelector
                         editable="true"
-                        editableHandler="com.sg.business.work.handler.AssignmentEditable"
                         id="chargerid"
                         label="负责人"
                         labelVisible="true"
@@ -3803,7 +3829,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
-                        navigatorId="organization.user"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -3851,6 +3877,19 @@
                      required="false"
                      type="String">
                </text>
+               <navigatorSelector
+                     editable="true"
+                     id="chargerid"
+                     label="负责人"
+                     labelVisible="true"
+                     labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                     modelClass="com.sg.business.model.User"
+                     name="chargerid"
+                     navigatorId="organization.user.assignment"
+                     navigatorReturnField="userid"
+                     persistable="true"
+                     required="true">
+               </navigatorSelector>
             </section>
             <section
                   label="计划">

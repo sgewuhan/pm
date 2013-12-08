@@ -9,7 +9,7 @@ public interface IRoleConstance {
 	public static final String ROLE_CHIEF_ENGINEER_TEXT = "总工";
 	
 	/**
-	 * 立项批准者
+	 * 立项审核者
 	 */
 	public static final String ROLE_PROJECR_AUDIT_ID = "Project Audit";
 	public static final String ROLE_PROJECR_AUDIT_TEXT = "立项审核者";

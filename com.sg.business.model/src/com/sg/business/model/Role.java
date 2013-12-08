@@ -117,6 +117,9 @@ public class Role extends PrimaryObject {
 			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,
 			ROLE_DEPT_MANAGER_TEXT, ROLE_FINANCIAL_MANAGER_TEXT };
 
+	public static final String ROLE_ASSIGNMENT_ID="T007";
+	public static final String ROLE_ASSIGNMENT_TEXT="÷∏≈…’ﬂ";
+
 	
 
 	
