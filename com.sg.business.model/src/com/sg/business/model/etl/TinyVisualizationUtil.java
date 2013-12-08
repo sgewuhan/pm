@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovide;
+package com.sg.business.model.etl;
 
 import com.mobnut.commons.util.Utils;
 

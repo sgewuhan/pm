@@ -5,6 +5,8 @@ import java.text.NumberFormat;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
+import com.sg.business.model.etl.ProjectPresentation;
+import com.sg.business.model.etl.TinyVisualizationUtil;
 
 public class BudgetAndInvestmentLabelProvider extends
 		AbstractProjectLabelProvider {
@@ -12,21 +14,22 @@ public class BudgetAndInvestmentLabelProvider extends
 
 	@Override
 	protected String getProjectText(Project project) {
+		ProjectPresentation pres = project.getPresentation();
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(1);
 
 		// 项目的预算
-		Double budgetValue = project.getBudgetValue();
-		String bv = (budgetValue == null) ? "--" : (nf
+		double budgetValue = pres.getBudgetValue();
+		String bv = (budgetValue == 0d) ? "--" : (nf
 				.format(budgetValue / 10000));
 
 		// 项目的研发成本
-		Double investment = project.getInvestment();
-		String iv = (investment == null) ? "0"
+		double investment = pres.getInvestment();
+		String iv = (investment == 0d) ? "0"
 				: (nf.format(investment / 10000));
 
 		StringBuffer sb = new StringBuffer();
-		if (budgetValue != null && budgetValue.doubleValue() != 0) {
+		if (budgetValue != 0) {
 			// 获得的完成比例
 			double ratio = investment / budgetValue;
 			double _d = ratio > 1 ? 1 / ratio : ratio;
@@ -73,7 +76,7 @@ public class BudgetAndInvestmentLabelProvider extends
 		sb.append("/");
 		sb.append(bv);
 
-		if (budgetValue != null && budgetValue.doubleValue() != 0) {
+		if (budgetValue != 0d) {
 			sb.append(" ");
 			int ratio = new BigDecimal(100 * investment / budgetValue)
 					.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
@@ -83,14 +86,14 @@ public class BudgetAndInvestmentLabelProvider extends
 		sb.append(" ");
 
 		// 绘制状态
-		if (budgetValue == null) {
+		if (budgetValue == 0d) {
 
-		} else if (budgetValue.doubleValue() < investment) {
+		} else if (budgetValue < investment) {
 			sb.append("<span style='color:" + Utils.COLOR_RED[10] + "'>");
 			sb.append("超支");
 			sb.append("</span>");
 		} else {
-			boolean maybeOverCost = project.maybeOverCostNow();
+			boolean maybeOverCost = pres.isOverCostEstimated();
 			if (maybeOverCost) {
 				sb.append("<span style='color:" + Utils.COLOR_YELLOW[10] + "'>");
 				sb.append("超支风险");

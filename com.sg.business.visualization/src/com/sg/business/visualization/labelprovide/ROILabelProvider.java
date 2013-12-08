@@ -4,27 +4,30 @@ import java.math.BigDecimal;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
+import com.sg.business.model.etl.ProjectPresentation;
 
 public class ROILabelProvider extends AbstractProjectLabelProvider {
 
 	@Override
 	protected String getProjectText(Project project) {
+		ProjectPresentation pres = project.getPresentation();
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;'>");
 		// 期末
-		double[] salesdata = project.getSalesSummaryData();
+		double salesRevenue = pres.getSalesRevenue();
+		double salesCost = pres.getSalesCost();
 
 		// 期末利润
-		double profit = salesdata[0] - salesdata[1];
-		double inv = project.getInvestment();
+		double profit = salesRevenue - salesCost;
+		double inv = pres.getInvestment();
 
 		if (profit > 0 && inv > 0) {
 			sb.append("<span style='color="
 					+ Utils.COLOR_BLUE[10]
 							+ ";font-size:9pt;margin-left:0;"
 							+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
-			double value = new BigDecimal(100 * profit / salesdata[0]).setScale(2,
+			double value = new BigDecimal(100 * profit / salesRevenue).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue();
 			sb.append("销售利润率: ");
 			sb.append(value);
@@ -36,7 +39,7 @@ public class ROILabelProvider extends AbstractProjectLabelProvider {
 					+ Utils.COLOR_YELLOW[10]
 							+ ";font-size:9pt;margin-left:0;"
 							+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
-			value = new BigDecimal(100 * profit / salesdata[1]).setScale(2,
+			value = new BigDecimal(100 * profit / salesCost).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue();
 			sb.append("成本利润率: ");
 			sb.append(value);

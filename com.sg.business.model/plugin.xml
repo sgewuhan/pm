@@ -617,9 +617,9 @@
          point="com.mobnut.admin.schedualJob">
       <schedualJob
             id="visualization.databuilding"
-            name="ETL 数据分析（组织）"
+            name="ETL 项目数据分析"
             rule="day"
-            run="com.sg.business.model.etl.OrganizationETL"
+            run="com.sg.business.model.etl.ProjectETLJob"
             time="05:00:00">
       </schedualJob>
       <schedualJob
@@ -627,7 +627,7 @@
             id="finance.schedual.rndcostallocation"
             name="ETL 成本中心期间研发成本获取和计算"
             rule="month"
-            run="com.sg.business.model.etl.RNDCostAllocationETL"
+            run="com.sg.business.model.etl.RNDCostAllocationETLJob"
             time="0:05:00">
       </schedualJob>
       <schedualJob
@@ -635,7 +635,7 @@
             id="finance.schedual.workordercostgather"
             name="ETL 工作令号期间研发成本获取和计算"
             rule="month"
-            run="com.sg.business.model.etl.WorkorderCostGatherETL"
+            run="com.sg.business.model.etl.WorkorderCostGatherETLJob"
             time="1:05:00">
       </schedualJob>
       <schedualJob
@@ -643,7 +643,7 @@
             id="finance.schedual.salesincomeallocation"
             name="ETL 期间销售数据获取和计算"
             rule="month"
-            run="com.sg.business.model.etl.RevenueAllocationETL"
+            run="com.sg.business.model.etl.RevenueAllocationETLJob"
             time="2:00:00">
       </schedualJob>
       <schedualJob

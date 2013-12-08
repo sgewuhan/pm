@@ -14,7 +14,7 @@ import com.sg.business.model.etl.eai.WorkorderPeriodCostAdapter;
  * @author Administrator
  * 
  */
-public class WorkorderCostGatherETL implements ISchedualJobRunnable {
+public class WorkorderCostGatherETLJob implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {

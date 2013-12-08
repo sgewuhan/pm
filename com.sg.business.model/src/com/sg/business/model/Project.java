@@ -31,7 +31,6 @@ import com.mobnut.db.model.ModelRelation;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
-import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -43,6 +42,8 @@ import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
+import com.sg.business.model.etl.ProjectETL;
+import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -2117,57 +2118,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 	}
 
-	/**
-	 * 项目已经延期，当前的时间已经超过了项目的计划完成时间
-	 * 
-	 * @return
-	 */
-	public boolean isDelay() {
-		Date pf = getPlanFinish();
-		if (pf != null) {
-			return new Date().after(pf);
-		} else {
-			return false;
-		}
-	}
 
-	public boolean isAdvanced() {
-		String lc = getLifecycleStatus();
-		if (STATUS_FINIHED_VALUE.equals(lc)) {
-			Date pf = getPlanFinish();
-			if (pf != null) {
-				return new Date().before(pf);
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}
 
-	public boolean maybeDelay() {
-		if (!isDelay()) {
-			List<Work> milestones = getMileStoneWorks();
-			for (int i = 0; i < milestones.size(); i++) {
-				if (milestones.get(i).isDelayNow()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean maybeAdvanced() {
-		if (!isAdvanced()) {
-			List<Work> milestones = getMileStoneWorks();
-			for (int i = 0; i < milestones.size(); i++) {
-				if (!milestones.get(i).isAdvanced()) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
 
 	public List<PrimaryObject> getProduct() {
 		return getRelationById(F__ID, ProductItem.F_PROJECT_ID,
@@ -2201,139 +2153,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return pperf;
 	}
 
-	/**
-	 * 获得项目截至当前的投资总额（研发成本） TODO
-	 * 
-	 * @return
-	 */
-	public double getInvestment() {
-		// 合计分摊到工作令号的研发成本
-		double aValue = getAllocatedInvestment();
-		double dValue = getDesignatedInvestment();
-		return aValue + dValue;
-	}
-
-	public double getAllocatedInvestment() {
-		return getInvestmentInternal(IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
-	}
-
-	/**
-	 * @return 返回指定到工作令号的研发成本
-	 */
-	public double getDesignatedInvestment() {
-		return getInvestmentInternal(IModelConstants.C_WORKORDER_COST);
-	}
-
-	/**
-	 * 获得分摊到工作令号的成本
-	 * 
-	 * @param colname
-	 * @return
-	 */
-	private double getInvestmentInternal(String colname) {
-		// 获得工作令号
-		String[] workOrders = getWorkOrders();
-		double summary = 0d;
-		if (workOrders.length != 0) {
-			DBCollection col = getCollection(colname);
-			DBObject matchCondition = new BasicDBObject();
-			matchCondition.put(F_WORK_ORDER,
-					new BasicDBObject().append("$in", workOrders));
-			DBObject match = new BasicDBObject().append("$match",
-					matchCondition);
-			DBObject groupCondition = new BasicDBObject();
-			groupCondition.put("_id", "$" + F_WORK_ORDER);// 按工作令号分组
-			String[] costElements = CostAccount.getCostElemenArray();
-			for (int i = 0; i < costElements.length; i++) {
-				groupCondition.put(
-						costElements[i],
-						new BasicDBObject().append("$sum", "$"
-								+ costElements[i]));
-			}
-			DBObject group = new BasicDBObject().append("$group",
-					groupCondition);
-			AggregationOutput agg = col.aggregate(match, group);
-			Iterator<DBObject> iter = agg.results().iterator();
-			while (iter.hasNext()) {
-				DBObject data = iter.next();
-				for (int i = 0; i < costElements.length; i++) {
-					Number value = (Number) data.get(costElements[i]);
-					summary += value.doubleValue();
-				}
-			}
-		}
-		return summary;
-	}
-
-	public Double getBudgetValue() {
-		ProjectBudget budget = getBudget();
-		if (budget == null) {
-			return null;
-		} else {
-			return budget.getBudgetValue();
-		}
-	}
-
-	public double getDurationFinishedRatio() {
-		// 取计划工期
-		Date pf = getPlanFinish();
-		Date ps = getPlanStart();
-		Date as = getActualStart();
-		Date now = new Date();
-
-		if (pf == null || ps == null || as == null) {
-			return 0;
-		}
-
-		long pd = (pf.getTime() - ps.getTime());
-		long ad = now.getTime() - as.getTime();
-		return 1d * ad / pd;
-	}
-
-	/**
-	 * 截至目前按照某比例估算是否可能超支
-	 * 
-	 * @return
-	 */
-	public boolean maybeOverCostNow() {
-		// 支出比例 超过 工期比例 30% 且没有完成的项目
-		String lc = getLifecycleStatus();
-		if (!ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
-			return false;
-		}
-
-		// TODO 应作为系统设置,使用以下变量名
-		// IModelConstants.S_S_BI_OVER_COST_ESTIMATE="...";
-		// 注意在数据库初始化时设置该默认值为30%
-
-		Object value = Setting
-				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
-		double ratio = value == null ? .3d : Double.valueOf((String) value);
-		Double bv = getBudgetValue();
-		Double av = getInvestment();
-		if (bv == null || av == null || bv == 0) {
-			return false;
-		}
-		double cr = 1d * av / bv;
-
-		double dr = getDurationFinishedRatio();
-		return cr - dr > ratio;
-	}
-
-	/**
-	 * 项目是否超支
-	 * 
-	 * @return
-	 */
-	public boolean isOverCost() {
-		Double bv = getBudgetValue();
-		Double av = getInvestment();
-		if (bv == null || av == null || bv == 0) {
-			return false;
-		}
-		return av > bv;
-	}
-
 	public List<PrimaryObject> getSubconcessionsProduct() {
 		return getRelationByCondition(
 				ProductItem.class,
@@ -2356,21 +2175,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	}
 
-	/**
-	 * 
-	 * @return double[0] 销售收入, double[1] 销售成本
-	 */
-	public double[] getSalesSummaryData() {
-		List<PrimaryObject> products = getProduct();
-		double[] result = new double[] { 0d, 0d };
-		if(products!=null){
-			for (int i = 0; i < products.size(); i++) {
-				ProductItem pd = (ProductItem) products.get(i);
-				result[0] += pd.getSalesRevenue();
-				result[1] += pd.getSalesCost();
-			}
-		}
-		return result;
+	public ProjectPresentation getPresentation() {
+		return new ProjectPresentation(this);
+	}
+
+	public ProjectETL getETL() {
+		return new ProjectETL(this);
 	}
 
 }

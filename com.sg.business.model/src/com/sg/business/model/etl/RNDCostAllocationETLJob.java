@@ -23,7 +23,7 @@ import com.sg.business.model.etl.eai.RNDPeriodCostAdapter;
  * @author Administrator
  * 
  */
-public class RNDCostAllocationETL implements ISchedualJobRunnable {
+public class RNDCostAllocationETLJob implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {

@@ -10,12 +10,14 @@ import java.util.Set;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
 
@@ -32,8 +34,21 @@ public class ProductTypeProvider extends ProjectProvider {
 		set_data(new BasicDBObject());
 		this.desc = desc;
 		this.userId = userId;
-		setValue(F_DESC,desc);
+		setValue(F_DESC, desc);
 
+	}
+
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		return true;
+	}
+
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+	}
+
+	@Override
+	public void doInsert(IContext context) throws Exception {
 	}
 
 	@Override
@@ -49,51 +64,47 @@ public class ProductTypeProvider extends ProjectProvider {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
 						Project.class);
+				ProjectPresentation pres = project.getPresentation();
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
 					sum.finished++;
-					if (project.isDelay()) {
+					if (pres.isDelayDefinited()) {
 						sum.finished_delay++;
-					} else if (project.isAdvanced()) {
+					} else if (pres.isAdvanceDefinited()) {
 						sum.finished_advance++;
 					} else {
 						sum.finished_normal++;
 					}
-					if(project.isOverCost()){
+					if (pres.isOverCostDefinited()) {
 						sum.finished_cost_over++;
-					}else{
+					} else {
 						sum.finished_cost_normal++;
 					}
 				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
 						.getLifecycleStatus())) {
 					sum.processing++;
-					if (project.maybeDelay()) {
+					if (pres.isDelayEstimated()) {
 						sum.processing_delay++;
-					} else if (project.maybeAdvanced()) {
+					} else if (pres.isAdvanceEstimated()) {
 						sum.processing_advance++;
 					} else {
 						sum.processing_normal++;
 					}
-					
-					if(project.maybeOverCostNow()){
+
+					if (pres.isOverCostEstimated()) {
 						sum.processing_cost_over++;
-					}else{
+					} else {
 						sum.processing_cost_normal++;
 					}
 				}
-				
-				Double budgetValue = project.getBudgetValue();
-				sum.total_budget_amount += budgetValue == null ? 0
-						: budgetValue;
-				sum.total_investment_amount += project
-						.getInvestment();
-				double[] salesSummaryData = project.getSalesSummaryData();
-				sum.total_sales_revenue+=salesSummaryData[0];
-				sum.total_sales_cost+=salesSummaryData[1];
+
+				sum.total_budget_amount += pres.getBudgetValue();
+				sum.total_investment_amount += pres.getInvestment();
+				sum.total_sales_revenue += pres.getSalesRevenue();
+				sum.total_sales_cost += pres.getSalesCost();
 				result.add(project);
 			}
 			sum.total = result.size();
-
 
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
@@ -108,7 +119,7 @@ public class ProductTypeProvider extends ProjectProvider {
 		DBObject dbo = new BasicDBObject();
 		dbo.put(Project.F_PRODUCT_TYPE_OPTION, getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in",ids));
+				new BasicDBObject().append("$in", ids));
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
@@ -140,8 +151,7 @@ public class ProductTypeProvider extends ProjectProvider {
 
 		return dbo;
 	}
-	
-	
+
 	private Collection<? extends ObjectId> getOrganizationIdCascade(
 			Organization org) {
 		Set<ObjectId> result = new HashSet<ObjectId>();
@@ -186,7 +196,6 @@ public class ProductTypeProvider extends ProjectProvider {
 
 		return input;
 	}
-	
 
 	public String getUserId() {
 		return userId;
@@ -210,5 +219,5 @@ public class ProductTypeProvider extends ProjectProvider {
 	public String getDesc() {
 		return desc;
 	}
-	
+
 }

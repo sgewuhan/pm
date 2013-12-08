@@ -483,6 +483,11 @@
                pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardRevenue"
                title="销售收入和利润">
          </navigatorpage>
+         <basicpage
+               id="projectset.vis"
+               pageDelegator="com.sg.business.visualization.editor.ProjectSetDashboard"
+               title="指标">
+         </basicpage>
       </editor>
       <editor
             collectionName="userprojectperf"

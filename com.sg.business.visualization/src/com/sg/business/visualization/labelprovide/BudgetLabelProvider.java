@@ -12,8 +12,8 @@ public class BudgetLabelProvider extends AbstractProjectLabelProvider {
 		DecimalFormat df = new DecimalFormat(Utils.NF_NUMBER_P2);
 		
 		// ÏîÄ¿µÄÔ¤Ëã
-		Double budgetValue = project.getBudgetValue();
-		String bv = (budgetValue == null) ? "--" : (df
+		double budgetValue = project.getPresentation().getBudgetValue();
+		String bv = (budgetValue == 0d) ? "--" : (df
 				.format(budgetValue / 10000));
 		
 		StringBuffer sb = new StringBuffer();

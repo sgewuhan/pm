@@ -3,7 +3,34 @@ package com.sg.business.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
 public class ProjectSetSummaryData {
+
+	private static final String F_FINISHED = "finished";
+
+	private static final String F_FINISHED_ADVANCE = "finished_advance";
+
+	private static final String F_FINISHED_COST_NORMAL = "finished_cost_normal";
+
+	private static final String F_FINISHED_COST_OVER = "finished_cost_over";
+
+	private static final String F_FINISHED_DELAY = "finished_delay";
+
+	private static final String F_FINISHED_NORMAL = "finished_normal";
+
+	private static final String F_PROCESSING = "processing";
+
+	private static final String F_PROCESSING_ADVANCE = "processing_advance";
+
+	private static final String F_PROCESSING_COST_NORMAL = "processing_cost_normal";
+
+	private static final String F_PROCESSING_COST_OVER = "processing_cost_over";
+
+	private static final String F_PROCESSING_DELAY = "processing_delay";
+
+	private static final String F_PROCESSING_NORMAL = "processing_normal";
 
 	public int total;
 
@@ -71,11 +98,29 @@ public class ProjectSetSummaryData {
 	 */
 	public long total_sales_cost;
 	
-	
-
 	public List<ProjectProvider> subOrganizationProjectProvider = new ArrayList<ProjectProvider>();
 	
 	public List<ProjectProvider> subChargerProjectProvider = new ArrayList<ProjectProvider>();
+	
+
+	public DBObject getData() {
+		BasicDBObject data = new BasicDBObject();
+		data.put(F_FINISHED, finished);
+		data.put(F_FINISHED_ADVANCE, finished_advance);
+		data.put(F_FINISHED_COST_NORMAL, finished_cost_normal);
+		data.put(F_FINISHED_COST_OVER, finished_cost_over);
+		data.put(F_FINISHED_DELAY, finished_delay);
+		data.put(F_FINISHED_NORMAL, finished_normal);
+		
+		data.put(F_PROCESSING, processing);
+		data.put(F_PROCESSING_ADVANCE, processing_advance);
+		data.put(F_PROCESSING_COST_NORMAL, processing_cost_normal);
+		data.put(F_PROCESSING_COST_OVER, processing_cost_over);
+		data.put(F_PROCESSING_DELAY, processing_delay);
+		data.put(F_PROCESSING_NORMAL, processing_normal);
+		
+		return data;
+	}
 
 
 

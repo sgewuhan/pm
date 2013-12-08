@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.widgets.MessageUtil;
 
 public class ProjectManagerProvider extends ProjectProvider {
@@ -24,6 +26,18 @@ public class ProjectManagerProvider extends ProjectProvider {
 		projectCol = getCollection(IModelConstants.C_PROJECT);
 	}
 	
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		return true;
+	}
+
+	@Override
+	public void doUpdate(IContext context) throws Exception {
+	}
+
+	@Override
+	public void doInsert(IContext context) throws Exception {
+	}
 	
 	@Override
 	public String getDesc() {
@@ -43,47 +57,8 @@ public class ProjectManagerProvider extends ProjectProvider {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
 						Project.class);
-				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
-						.getLifecycleStatus())) {
-					sum.finished++;
-					if (project.isDelay()) {
-						sum.finished_delay++;
-					} else if (project.isAdvanced()) {
-						sum.finished_advance++;
-					} else {
-						sum.finished_normal++;
-					}
-					if(project.isOverCost()){
-						sum.finished_cost_over++;
-					}else{
-						sum.finished_cost_normal++;
-					}
-				} else if (ILifecycle.STATUS_WIP_VALUE.equals(project
-						.getLifecycleStatus())) {
-					sum.processing++;
-					if (project.maybeDelay()) {
-						sum.processing_delay++;
-					} else if (project.maybeAdvanced()) {
-						sum.processing_advance++;
-					} else {
-						sum.processing_normal++;
-					}
-					
-					if(project.maybeOverCostNow()){
-						sum.processing_cost_over++;
-					}else{
-						sum.processing_cost_normal++;
-					}
-				}
-				
-				Double budgetValue = project.getBudgetValue();
-				sum.total_budget_amount += budgetValue == null ? 0
-						: budgetValue;
-				sum.total_investment_amount += project
-						.getInvestment();
-				double[] salesSummaryData = project.getSalesSummaryData();
-				sum.total_sales_revenue+=salesSummaryData[0];
-				sum.total_sales_cost+=salesSummaryData[1];
+				ProjectPresentation pres = project.getPresentation();
+				pres.loadSummary(sum);
 				result.add(project);
 			}
 			sum.total = result.size();

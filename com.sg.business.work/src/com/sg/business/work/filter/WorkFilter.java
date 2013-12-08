@@ -152,7 +152,7 @@ public class WorkFilter extends ViewerFilter {
 			selector = new WorkSelector() {
 				@Override
 				boolean select(Work work, Object nul) {
-					return work.isDelayNow();
+					return work.isDelayFinish();
 				}
 			};
 			break;

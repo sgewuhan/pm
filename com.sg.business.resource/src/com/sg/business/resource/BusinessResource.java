@@ -17,7 +17,6 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle
  */
 public class BusinessResource extends AbstractUIPlugin {
-	
 
 	// The shared instance
 	private static BusinessResource plugin;
@@ -77,55 +76,60 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_VAULT2_16 = "vault2_16.png";
 
 	public static final String IMAGE_WORK_16 = "work_16.gif";
-	
+
 	public static final String IMAGE_WORK_FINISH_16 = "work_finish_16.png";
-	
+
 	public static final String IMAGE_WORK_CANCEL_16 = "work_cancel_16.gif";
-	
+
 	public static final String IMAGE_WORK_PAUSE_16 = "work_pause_16.gif";
-	
+
 	public static final String IMAGE_WORK_WIP_16 = "work_wip_16.png";
 
 	public static final String IMAGE_DELIVERABLE_16 = "deliverable_16.gif";
 
 	public static final String IMAGE_PROJECT_32 = "project_32.png";
 
-//	public static final String IMAGE_WORK_32x24 = "work_32x24.png";
-//
-//	public static final String IMAGE_WORK_CANCEL_32x24 = "work_cancel_32x24.png";
-//
-//	public static final String IMAGE_WORK_WIP_32x24 = "work_wip_32x24.png";
-//	
-//	public static final String IMAGE_WORK2_WIP_32x24 = "work2_wip_32x24.png";
-//
-//	public static final String IMAGE_WORK_PAUSE_32x24 = "work_pause_32x24.png";
-//
-//	public static final String IMAGE_WORK_FINISH_32x24 = "work_finish_32x24.png";
-//
-//	public static final String IMAGE_WORK_READY_32x24 = "work_ready_32x24.png";
-//	
-//	public static final String IMAGE_WORK2_READY_32x24 = "work2_ready_32x24.png";
-	
+	// public static final String IMAGE_WORK_32x24 = "work_32x24.png";
+	//
+	// public static final String IMAGE_WORK_CANCEL_32x24 =
+	// "work_cancel_32x24.png";
+	//
+	// public static final String IMAGE_WORK_WIP_32x24 = "work_wip_32x24.png";
+	//
+	// public static final String IMAGE_WORK2_WIP_32x24 = "work2_wip_32x24.png";
+	//
+	// public static final String IMAGE_WORK_PAUSE_32x24 =
+	// "work_pause_32x24.png";
+	//
+	// public static final String IMAGE_WORK_FINISH_32x24 =
+	// "work_finish_32x24.png";
+	//
+	// public static final String IMAGE_WORK_READY_32x24 =
+	// "work_ready_32x24.png";
+	//
+	// public static final String IMAGE_WORK2_READY_32x24 =
+	// "work2_ready_32x24.png";
+
 	//
 	public static final String IMAGE_WORK2_CANCEL_16 = "work2_cancel_16.png";
 
 	public static final String IMAGE_WORK2_WIP_16 = "work2_wip_16.png";
-	
+
 	public static final String IMAGE_WORK2_PAUSE_16 = "work2_pause_16.png";
 
 	public static final String IMAGE_WORK2_FINISH_16 = "work2_finish_16.png";
 
 	public static final String IMAGE_WORK2_READY_16 = "work2_ready_16.png";
-	
+
 	//
 	public static final String IMAGE_WF_WORK_CANCEL_10 = "workcancel_10.png";
-	
+
 	public static final String IMAGE_WF_WORK_READY_10 = "workready_10.png";
-	
+
 	public static final String IMAGE_WF_WORK_STOP_10 = "workstop_10.png";
-	
+
 	public static final String IMAGE_WF_WORK_CLOSE_10 = "workclose_10.png";
-	
+
 	public static final String IMAGE_WF_WORK_PROCESS_10 = "workprocess_10.png";
 
 	public static final String IMAGE_ROLE3_16 = "role3_16.png";
@@ -174,7 +178,7 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_MESSAGE_REPLY_24 = "message_reply_24.png";
 
 	public static final String IMAGE_MESSAGE_OPEN_24 = "message_open_24.png";
-	
+
 	public static final String IMAGE_MESSAGE_UNREAD_24 = "message_unread_24.png";
 
 	public static final String IMAGE_FLOW_START_24 = "flow_start_24.png";
@@ -184,41 +188,41 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FLOW_JOIN_24 = "flow_join_24.png";
 
 	public static final String IMAGE_FLOW_SPLIT_24 = "flow_split_24.png";
-	
+
 	public static final String IMAGE_FLOW_ACTIVITIE_24 = "flow_activitie_24.png";
-	
+
 	public static final String IMAGE_FLOW_HUMAN_24 = "flow_human_24.png";
-	
+
 	public static final String IMAGE_MESSAGE_16 = "message_16.png";
 
 	public static final String IMAGE_USER_24 = "user_24.png";
-	
+
 	public static final String IMAGE_VARIABLE_24 = "variable_24.png";
 
 	public static final String IMAGE_24_BLANK = "24_blank.png";
 
 	public static final String IMAGE_READY_24 = "ready_24.png";
-	
+
 	public static final String IMAGE_START_24 = "start_24.png";
 
 	public static final String IMAGE_ALERT_24 = "alert_24.png";
 
 	public static final String IMAGE_MARK_24 = "mark_24.png";
-	
+
 	public static final String IMAGE_WORK_ASSIGNMENT_24 = "work_assignment_24.png";
-	
+
 	public static final String IMAGE_FLAG_RED_24 = "flag_red_24.png";
 
 	public static final String IMAGE_FLAG_YELLOW_24 = "flag_yellow_24.png";
-	
+
 	public static final String IMAGE_WORK_FILTER_24 = "work_filter_24.png";
 
 	public static final String IMAGE_BULLETING_16 = "bulletin_16.png";
 
 	public static final String IMAGE_TEMPLATE_72 = "template_72.png";
-	
+
 	public static final String IMAGE_SCHEDULE_72 = "schedule_72.png";
-	
+
 	public static final String IMAGE_WORKFLOW_72 = "workflow_72.png";
 
 	public static final String IMAGE_REASSIGNMENT_16 = "reassignment_16.png";
@@ -226,7 +230,7 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_REASSIGNMENT_24 = "reassignment_24.png";
 
 	public static final String IMAGE_FLAG_RED_16 = "flag_red_16.png";
-	
+
 	public static final String IMAGE_FLAG_YELLOW_16 = "flag_yellow_16.png";
 
 	public static final String IMAGE_BALL_GRAY_1_16 = "gray_ball_1_16.png";
@@ -240,7 +244,7 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_BALL_RED_1_16 = "red_ball_1_16.png";
 
 	public static final String IMAGE_LOG_24 = "log_24.png";
-	
+
 	public static final String IMAGE_SUMMARY_16 = "summary_16.png";
 
 	public static final String IMAGE_RIGHT_16 = "right_16.png";
@@ -260,36 +264,35 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FLOW_ACTIVITY_FINISH_24 = "human_complete_24.png";
 
 	public static final String IMAGE_FLOW_ACTIVITY_UNFINISH_24 = "human_uncomplete_24.png";
-	
+
 	public static final String IMAGE_LOG_16 = "log_16.png";
 
 	public static final String IMAGE_COMPANY_16 = "company_16.png";
-	
+
 	public static final String IMAGE_BU_16 = "business_unit_16.png";
-	
+
 	public static final String IMAGE_DEPTARTMENT_16 = "dept_16.png";
-	
+
 	public static final String IMAGE_WARNING_24 = "warning_24.png";
 
 	public static final String IMAGE_PASS_32 = "pass_32.png";
 
-//	public static final String IMAGE_DOCUMENT_24 = "document_24.png";
+	// public static final String IMAGE_DOCUMENT_24 = "document_24.png";
 
 	public static final String IMAGE_FILE_24 = "file_24.png";
 
 	public static final String IMAGE_DOWNLOAD_15X10 = "download_15x10.png";
-	
-	
+
 	public static final String IMAGE_CREATEWORK_24 = "creatework_24.png";
-	
+
 	public static final String IMAGE_DELIVERABLECREATE_24 = "deliverablecreate_24.png";
-	
+
 	public static final String IMAGE_EDITWORK_24 = "editwork_24.png";
 
 	public static final String IMAGE_REMOVE_24 = "remove_24.png";
 
 	public static final String IMAGE_REFRESH_24 = "refresh_24.png";
-	
+
 	public static final String IMAGE_FLOW_16X9 = "flow_16x9.png";
 
 	public static final String IMAGE_COMPANY_24 = "company_24.png";
@@ -297,23 +300,20 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_BUSINESSUNIT_24 = "businessunit_24.png";
 
 	public static final String IMAGE_DEPT_24 = "dept_24.png";
-	
+
 	public static final String IMAGE_GO_24 = "go_24.png";
-	
+
 	public static final String IMAGE_GO_32 = "go_32.png";
 
 	public static final String IMAGE_GO_48 = "go_48.png";
-	
+
 	public static final String IMAGE_EXPORT_24 = "export_24.png";
-	
+
 	public static final String IMAGE_PRINT_W_48 = "print_w_48.png";
-	
+
 	public static final String IMAGE_REPORT_ADD_24 = "report_sug_24.png";
 
 	public static final String IMAGE_CALENDAR_24 = "cal2_24.png";
-
-	
-
 
 	/**
 	 * Returns the shared instance
@@ -327,6 +327,10 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static Image getImage(String key) {
 
 		return getDefault().getImageRegistry().get(key);
+	}
+	
+	public static String getImageURL(String key){
+		return "/business/resource/image/"+key;
 	}
 
 	public static ImageDescriptor getImageDescriptor(String key) {

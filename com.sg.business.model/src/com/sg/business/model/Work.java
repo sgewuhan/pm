@@ -4072,44 +4072,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return false;
 	}
 
-	public boolean isDelayNow() {
-		String lc = getLifecycleStatus();
-		Date now = new Date();
-		// 如果是进行中的工作检查完成时间
-		if (STATUS_WIP_VALUE.equals(lc)) {
-			Date _planFinish = getPlanFinish();
-			return _planFinish != null && now.after(_planFinish);
-		} else {
-			// 检查开始时间
-			Date _planStart = getPlanStart();
-			return _planStart != null && now.after(_planStart);
-		}
-	}
-
-	public boolean isAdvanceNow() {
-		String lc = getLifecycleStatus();
-		Date now = new Date();
-		// 如果是进行中的工作检查完成时间
-		if (STATUS_FINIHED_VALUE.equals(lc)) {
-			Date _planFinish = getPlanFinish();
-			return _planFinish != null && now.before(_planFinish);
-		}
-		return false;
-	}
-
-	public boolean isAdvanced() {
-		String lc = getLifecycleStatus();
-		// 如果是进行中的工作检查完成时间
-		if (STATUS_FINIHED_VALUE.equals(lc)) {
-			Date _planFinish = getPlanFinish();
-			Date _actualFinish = getActualFinish();
-			return _planFinish != null && _actualFinish != null
-					&& _actualFinish.before(_planFinish);
-		}
-		return false;
-	}
-
-	public boolean isDelayed() {
+	public boolean isDelayFinish() {
 		Date _planFinish = getPlanFinish();
 		Date _actualFinish = getActualFinish();
 
@@ -4120,6 +4083,50 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return _actualFinish.after(_planFinish);
 		} else {
 			return new Date().after(_planFinish);
+		}
+	}
+	
+	public boolean isDelayStart() {
+		Date _planStart = getPlanStart();
+		Date _actualStart = getActualStart();
+
+		if (_planStart == null) {
+			return false;
+		}
+		if (_actualStart != null) {
+			return _actualStart.after(_planStart);
+		} else {
+			return new Date().after(_planStart);
+		}
+	}
+	
+	public boolean isAdvanceFinish() {
+		Date _planFinish = getPlanFinish();
+		Date _actualFinish = getActualFinish();
+		
+		if (_planFinish == null) {
+			return false;
+		}
+		
+		if (_actualFinish != null) {
+			return _actualFinish.before(_planFinish);
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isAdvanceStart() {
+		Date _planStart = getPlanStart();
+		Date _actualStart = getActualStart();
+		
+		if (_planStart == null) {
+			return false;
+		}
+		
+		if (_actualStart != null) {
+			return _actualStart.before(_planStart);
+		} else {
+			return false;
 		}
 	}
 

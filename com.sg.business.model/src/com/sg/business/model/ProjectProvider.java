@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.Util;
 
-import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 
 public abstract class ProjectProvider extends PrimaryObject {
@@ -48,18 +47,6 @@ public abstract class ProjectProvider extends PrimaryObject {
 
 	public abstract List<PrimaryObject> getProjectSet();
 
-	@Override
-	public boolean doSave(IContext context) throws Exception {
-		return true;
-	}
-
-	@Override
-	public void doUpdate(IContext context) throws Exception {
-	}
-
-	@Override
-	public void doInsert(IContext context) throws Exception {
-	}
 
 	/**
 	 * 获得项目集合的名称

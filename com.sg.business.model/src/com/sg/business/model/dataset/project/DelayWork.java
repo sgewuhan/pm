@@ -60,9 +60,9 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		} else {
 			if (ILifecycle.STATUS_FINIHED_VALUE.equals(work
 					.getLifecycleStatus())) {
-				return work.isDelayed();
+				return work.isDelayFinish();
 			} else {
-				return work.isDelayNow();
+				return work.isDelayFinish();
 			}
 		}
 

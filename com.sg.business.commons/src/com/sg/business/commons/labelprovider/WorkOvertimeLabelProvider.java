@@ -15,7 +15,7 @@ public class WorkOvertimeLabelProvider extends ColumnLabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		Work work = (Work)element;
-		if(work.isDelayed()){
+		if(work.isDelayFinish()){
 			return BusinessResource.getImage(BusinessResource.IMAGE_FLAG_RED_16);
 		}else if(work.isRemindNow()){
 			return BusinessResource.getImage(BusinessResource.IMAGE_FLAG_YELLOW_16);

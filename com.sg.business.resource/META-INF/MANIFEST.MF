@@ -1,12 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Resource
-Bundle-SymbolicName: com.sg.business.resource
+Bundle-SymbolicName: com.sg.business.resource;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.resource.BusinessResource
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ com.mobnut.commons,
+ com.sg.thirdparty;bundle-version="1.0.0",
+ org.eclipse.equinox.http.registry
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.resource

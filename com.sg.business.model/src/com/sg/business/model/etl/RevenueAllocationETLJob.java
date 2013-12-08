@@ -14,7 +14,7 @@ import com.sg.sqldb.utility.IRowCallBack;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;
 
-public class RevenueAllocationETL implements ISchedualJobRunnable {
+public class RevenueAllocationETLJob implements ISchedualJobRunnable {
 	private DBCollection col;
 
 	@Override

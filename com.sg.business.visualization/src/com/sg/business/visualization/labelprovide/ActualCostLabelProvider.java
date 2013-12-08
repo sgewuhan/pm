@@ -11,7 +11,7 @@ public class ActualCostLabelProvider extends AbstractProjectLabelProvider {
 		DecimalFormat df = new DecimalFormat(Utils.NF_NUMBER_P2);
 
 		// ÏîÄ¿µÄÔ¤Ëã
-		double value = project.getInvestment();
+		double value = project.getPresentation().getInvestment();
 		String bv = df.format(value / 10000);
 
 		StringBuffer sb = new StringBuffer();
