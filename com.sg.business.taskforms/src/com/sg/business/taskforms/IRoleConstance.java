@@ -9,7 +9,7 @@ public interface IRoleConstance {
 	public static final String ROLE_CHIEF_ENGINEER_TEXT = "总工";
 	
 	/**
-	 * 立项批准者
+	 * 立项审核者
 	 */
 	public static final String ROLE_PROJECR_AUDIT_ID = "Project Audit";
 	public static final String ROLE_PROJECR_AUDIT_TEXT = "立项审核者";
@@ -68,9 +68,21 @@ public interface IRoleConstance {
 	public static final String ROLE_SUPPORT_NOTICE_TEXT = "技术支持通知人";
 	
 	/**
-	 * 技术支持审核员
+	 * 技术支持校核人
+	 */
+	public static final String ROLE_SUPPORT_CHECKER_ID = "Support Checker";
+	public static final String ROLE_SUPPORT_CHECKER_TEXT = "技术支持校核人";
+	
+	/**
+	 * 技术支持审核人
 	 */
 	public static final String ROLE_SUPPORT_AUDITOR_ID = "Support Auditor";
-	public static final String ROLE_SUPPORT_AUDITOR_TEXT = "技术支持审核员";
+	public static final String ROLE_SUPPORT_AUDITOR_TEXT = "技术支持审核人";
+	
+	/**
+	 * 技术支持批准人
+	 */
+	public static final String ROLE_SUPPORT_APPROVE_ID = "Support Approve";
+	public static final String ROLE_SUPPORT_APPROVE_TEXT = "技术支持批准人";
 	
 }

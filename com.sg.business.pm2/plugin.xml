@@ -5,12 +5,12 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.home"
-            name="首页">
+            id="perspective.work"
+            name="工作">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.mywork"
+            id="perspective.simplework"
             name="工作">
       </perspective>
       <perspective
@@ -46,7 +46,7 @@
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
-            name="项目">
+            name="项目管理">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -68,11 +68,16 @@
             id="perspective.system"
             name="系统">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.delay"
+            name="超期">
+      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="perspective.home">
+            targetID="perspective.work">
          <view
                closeable="false"
                id="work.processing"
@@ -81,6 +86,39 @@
                ratio="0.6"
                relationship="left"
                relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="home.mycalender"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.processing"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="work.paused"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="home.mycalender"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="work.finished"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.paused"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -107,12 +145,13 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
-            targetID="perspective.mywork">
+            targetID="perspective.simplework">
          <view
                closeable="false"
                id="work.processing"
                minimized="false"
                moveable="false"
+               ratio="0.6"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
@@ -124,30 +163,8 @@
                id="home.mycalender"
                minimized="false"
                moveable="false"
-               ratio="0.6"
+               ratio="0.4"
                relationship="right"
-               relative="work.processing"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="work.paused"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="work.processing"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="work.finished"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
                relative="work.processing"
                showTitle="true"
                standalone="false"
@@ -209,33 +226,11 @@
          </view>
          <view
                closeable="false"
-               id="project.navigator.delaywork"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.management"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="project.navigator.delayprocess"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.delaywork"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
                id="works.register"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="project.navigator.delayprocess"
+               relative="project.navigator.management"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -614,191 +609,114 @@
                visible="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.delay">
+         <view
+               closeable="false"
+               id="project.navigator.delaywork"
+               minimized="false"
+               moveable="false"
+               ratio="0.8"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delayprocess"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.delaywork"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
       <scenario
             id="visualization"
             isDefault="true"
-            name="项目绩效可视化">
+            name="绩效可视化（展现组织的绩效数据，需要同时具备管理者角色）">
          <perspective
                default="true"
                id="perspective.visualization">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.message">
          </perspective>
       </scenario>
       <scenario
             id="work"
             isDefault="true"
-            name="工作管理">
+            name="工作与流程（包括所有工作有关的透视图）">
          <perspective
                default="true"
-               id="perspective.home">
+               id="perspective.work">
          </perspective>
          <perspective
                id="perspective.workflow">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.message">
          </perspective>
       </scenario>
       <scenario
-            id="project"
+            id="work.simple"
+            name="个人工作管理">
+         <perspective
+               id="perspective.simplework"></perspective>
+      </scenario>
+      <scenario
+            id="projectmanagement"
             isDefault="true"
-            name="项目管理">
-         <perspective
-               default="true"
-               id="perspective.home">
-         </perspective>
-         <perspective
-               id="perspective.workflow">
-         </perspective>
+            name="项目管理（管理项目以及延期工作，需要同时具备项目管理员角色）">
          <perspective
                id="perspective.project">
          </perspective>
          <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.message">
+               id="perspective.delay">
          </perspective>
       </scenario>
       <scenario
-            id="system"
-            name="系统管理">
+            id="resourcemanagement"
+            isDefault="true"
+            name="资源管理（管理部门资源，需同时具备项目管理员或部门管理者角色）">
          <perspective
-               default="true"
-               id="perspective.home">
+               id="perspective.resource">
          </perspective>
          <perspective
-               id="perspective.workflow">
+               id="perspective.delay">
          </perspective>
-         <perspective
-               default="false"
-               id="perspective.organization">
-         </perspective>
+      </scenario>
+      <scenario
+            id="vault"
+            name="文档库">
          <perspective
                id="perspective.vault">
          </perspective>
+      </scenario>
+      <scenario
+            id="businessmanager"
+            name="业务管理">
          <perspective
                id="perspective.management">
          </perspective>
+      </scenario>
+      <scenario
+            id="systemmanager"
+            name="系统管理">
          <perspective
-               id="perspective.message">
+               default="false"
+               id="perspective.organization">
          </perspective>
          <perspective
                id="perspective.system">
          </perspective>
       </scenario>
       <scenario
-            id="manager"
-            name="业务管理">
+            id="message"
+            name="消息">
          <perspective
-               id="perspective.home">
-         </perspective>
-         <perspective
-               id="perspective.workflow">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.management">
-         </perspective>
-         <perspective
-               id="perspective.message">
-         </perspective>
-      </scenario>
-      <scenario
-            id="business"
-            isDefault="true"
-            name="商务管理">
-         <perspective
-               default="true"
-               id="perspective.home">
-         </perspective>
-         <perspective
-               default="true"
-               id="perspective.workflow">
-         </perspective>
-         <perspective
-               default="false"
-               id="perspective.visualization">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               id="perspective.message">
-         </perspective>
-      </scenario>
-      <scenario
-            id="technology"
-            isDefault="true"
-            name="技术管理">
-         <perspective
-               default="true"
-               id="perspective.workflow">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               default="true"
-               id="perspective.vis.home">
-         </perspective>
-         <perspective
-               default="false"
-               id="perspective.visualization">
-         </perspective>
-         <perspective
-               id="perspective.message">
-         </perspective>
-      </scenario>
-      <scenario
-            id="department"
-            isDefault="true"
-            name="部门管理">
-         <perspective
-               default="false"
-               id="perspective.mywork">
-         </perspective>
-         <perspective
-               default="true"
-               id="perspective.workflow">
-         </perspective>
-         <perspective
-               id="perspective.vault">
-         </perspective>
-         <perspective
-               default="false"
-               id="perspective.visualization">
-         </perspective>
-         <perspective
-               id="perspective.message">
-         </perspective>
-      </scenario>
-      <scenario
-            id="resource"
-            name="资源管理">
-         <perspective
-               id="perspective.resource">
-         </perspective>
-      </scenario>
-      <scenario
-            id="finance"
-            name="财务管理">
-         <perspective
-               id="perspective.finance">
-         </perspective>
+               id="perspective.message"></perspective>
       </scenario>
    </extension>
    <extension

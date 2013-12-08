@@ -1711,7 +1711,7 @@ public class Organization extends PrimaryObject {
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null) {
 				for (int i = 0; i < assignment.size(); i++) {
-					result.add(((RoleAssignment) assignment.get(0)).getUserid());
+					result.add(((RoleAssignment) assignment.get(i)).getUserid());
 				}
 			}
 		}

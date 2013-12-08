@@ -201,12 +201,16 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		if (project != null) {
 			prefix = project.getProjectNumber();
 		} else {
-			// 独立工作文档的编号，组织代码
+			// 独立工作文档的编号，公司代码
 			Work work = getWork();
 			if (work != null && work.isStandloneWork()) {
 				User charger = work.getCharger();
 				Organization org = charger.getOrganization();
-				prefix = org.getCode();
+				prefix = org.getCompanyCode();
+				while(Utils.isNullOrEmptyString(prefix)){
+					org = (Organization)org.getParentOrganization();
+					prefix=org.getCompanyCode();
+				}
 			}
 		}
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER

@@ -799,6 +799,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// }
 
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
+		
+		if (hasPermissionForReassignment(context)) {
+			return true;
+		}
 		return hasPermission(context);
 	}
 
@@ -808,24 +812,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param currentAccountContext
 	 * @return
 	 */
-	public boolean canSendMessage(IContext context) {
-		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
-		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
-		String lifeCycle = getLifecycleStatus();
-		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
-				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
-				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
-			return false;
-		}
-
-		if (isProjectWBSRoot()) {
-			return false;
-		}
-		if (hasPermissionForReassignment(context)) {
-			return true;
-		}
-		return hasPermission(context);
-	}
+//	public boolean canSendMessage(IContext context) {
+//		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+//		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
+//		String lifeCycle = getLifecycleStatus();
+//		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+//				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
+//				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
+//			return false;
+//		}
+//
+//		if (isProjectWBSRoot()) {
+//			return false;
+//		}
+//		if (hasPermissionForReassignment(context)) {
+//			return true;
+//		}
+//		return hasPermission(context);
+//	}
 
 	/**
 	 * 能否点击删除
