@@ -1,24 +1,22 @@
 package com.sg.business.visualization.view;
 
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
-public class DetailMain extends ViewPart {
-
-	public DetailMain() {
-		// TODO Auto-generated constructor stub
-	}
+public class DetailMain extends DashWidgetView {
 
 	@Override
-	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-
+	protected void drawContent(Composite parent) {
+		//期间
+		
+		//项目总数，完成数量，进行数量
+		
+		//总研发预算，总研发投入
+		
+		//总销售收入，总利润
+		
+		
+		
+		
 	}
 
 }

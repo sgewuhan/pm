@@ -1162,6 +1162,48 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="xtbusinesssupport.user.checker"
+            table="xtbusinesssupport.user.checker">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="xtbusinesssupport.user.auditor"
+            table="xtbusinesssupport.user.auditor">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="xtbusinesssupport.user.approve"
+            table="xtbusinesssupport.user.approve">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -1180,10 +1222,32 @@
                columnDefinitionId="project.desc">
          </column>
       </table>
+      <table
+            dataSet="com.tmt.xt.dataset.UserOfSupportChecker"
+            id="xtbusinesssupport.user.checker">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.xt.dataset.UserOfSupportAuditor"
+            id="xtbusinesssupport.user.auditor">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.xt.dataset.UserOfSupportApprove"
+            id="xtbusinesssupport.user.approve">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.tree">
       <tree
+            autoExpandLevel="2"
             dataSet="com.tmt.xt.dataset.OrgUserOfSupport"
             id="support.organization.user">
          <structure
@@ -1200,7 +1264,7 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="xtBusinessSupport.auditor"
+            editorId="xtBusinessSupport.auditor1"
             name="技术支持审批"
             persistentFields="choice,comment,accessory,supportnotice"
             processDefinitionId="xt.xtBusinessSupport"
@@ -1216,7 +1280,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtBusinessSupport.approve"
+            editorId="xtBusinessSupport.approve1"
             name="确认技术支持"
             persistentFields="choice,comment,accessory,support"
             processDefinitionId="xt.xtBusinessSupport"
@@ -1235,9 +1299,23 @@
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="xtBusinessSupport.edit"
+            name="技术支持"
+            persistentFields="checker,amount"
+            processDefinitionId="xt.xtBusinessSupport">
+         <processParameter
+               processParameterName="checker"
+               taskFormFieldName="checker">
+         </processParameter>
+         <processParameter
+               processParameterName="amount"
+               taskFormFieldName="amount">
+         </processParameter>
+      </taskForm>
+      <taskForm
             editorId="xtBusinessSupport.check"
             name="校核"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,auditor"
             processDefinitionId="xt.xtBusinessSupport">
          <processParameter
                processParameterName="choice"
@@ -1251,7 +1329,7 @@
       <taskForm
             editorId="xtBusinessSupport.verify"
             name="审核"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,approve,profitrate,isapprove"
             processDefinitionId="xt.xtBusinessSupport">
          <processParameter
                processParameterName="choice"
@@ -1261,21 +1339,24 @@
                processParameterName="approve"
                taskFormFieldName="approve">
          </processParameter>
+         <processParameter
+               processParameterName="profitrate"
+               taskFormFieldName="profitrate">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.tmt.xt.field.parameter.ProfitRateOfHasApprove"
+               processParameterName="isapprove"
+               taskFormFieldName="profitrate">
+         </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtBusinessSupport.auditor"
+            editorId="xtBusinessSupport.approve"
             name="批准"
             persistentFields="choice,comment,accessory"
             processDefinitionId="xt.xtBusinessSupport">
-      </taskForm>
-      <taskForm
-            editorId="xtBusinessSupport.edit"
-            name="技术支持"
-            persistentFields="checker"
-            processDefinitionId="xt.xtBusinessSupport">
          <processParameter
-               processParameterName="checker"
-               taskFormFieldName="checker">
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
    </extension>
@@ -1284,7 +1365,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtBusinessSupport.approve"
+            id="xtBusinessSupport.approve1"
             name="确认技术支持">
          <basicpage
                id="page1"
@@ -1362,8 +1443,8 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtBusinessSupport.auditor"
-            name="审批">
+            id="xtBusinessSupport.auditor1"
+            name="技术支持审批">
          <basicpage
                id="page1"
                title="审核">
@@ -1394,21 +1475,130 @@
                         type="String">
                   </radio>
                </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
                <section
-                     label="请确认技术支持负责人">
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xtBusinessSupport.edit"
+            name="技术支持">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请确认技术支持校核人">
                   <navigatorSelector
                         editable="true"
-                        id="support"
+                        id="checker"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="技术支持负责人"
+                        label="校核人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="support"
-                        navigatorId="support.organization.user"
+                        name="checker"
+                        navigatorId="xtbusinesssupport.user.checker"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="请确认订单金额">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="amount"
+                        label="订单金额"
+                        labelVisible="true"
+                        name="amount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xtBusinessSupport.check"
+            name="校核">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写意见和结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+               <section
+                     label="请确认技术支持审核人">
+                  <navigatorSelector
+                        editable="true"
+                        id="auditor"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="审核人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="auditor"
+                        navigatorId="xtbusinesssupport.user.auditor"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
@@ -1466,24 +1656,38 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="批准"
+                        option="是否通过"
                         persistable="true"
                         required="true"
                         type="String">
                   </radio>
                </section>
                <section
-                     label="请确认技术支持负责人">
+                     label="请确认预计毛利">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="profitrate"
+                        label="预计毛利(%)"
+                        labelVisible="true"
+                        name="profitrate"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+               <section
+                     label="请确认技术支持批准人">
                   <navigatorSelector
                         editable="true"
-                        id="support"
+                        id="approve"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="技术支持负责人"
+                        label="批准人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="support"
-                        navigatorId="organization.user"
+                        name="approve"
+                        navigatorId="xtbusinesssupport.user.approve"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -1518,8 +1722,8 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xtBusinessSupport.check"
-            name="校核">
+            id="xtBusinessSupport.approve"
+            name="批准">
          <basicpage
                id="page1"
                title="审核">
@@ -1544,28 +1748,11 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="批准"
+                        option="是否通过"
                         persistable="true"
                         required="true"
                         type="String">
                   </radio>
-               </section>
-               <section
-                     label="请确认技术支持负责人">
-                  <navigatorSelector
-                        editable="true"
-                        id="support"
-                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="技术支持负责人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="support"
-                        navigatorId="organization.user"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -1591,40 +1778,6 @@
                   </file>
                </section>
             </pagecolumn>
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="xtBusinessSupport.edit"
-            name="技术支持">
-         <basicpage
-               id="page1"
-               title="审核">
-            <pagecolumn>
-               <section
-                     label="请确认技术支持负责人">
-                  <navigatorSelector
-                        editable="true"
-                        id="support"
-                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
-                        label="技术支持负责人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="support"
-                        navigatorId="organization.user"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
          </basicpage>
       </editor>
    </extension>

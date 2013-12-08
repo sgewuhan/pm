@@ -1,4 +1,4 @@
-package com.sg.business.visualization.dataset;
+package com.sg.business.visualization.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,6 +20,7 @@ import com.sg.business.model.ProductTypeProvider;
 import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.visualization.VisualizationActivator;
+import com.sg.business.visualization.data.ProjectSetFolder;
 
 public class TypeProjectSetFolder extends ProjectSetFolder {
 

@@ -1,4 +1,4 @@
-package com.sg.business.visualization.dataset;
+package com.sg.business.visualization.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +21,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
+import com.sg.business.visualization.data.ProjectSetFolder;
 import com.sg.widgets.registry.config.TreeConfigurator;
 import com.sg.widgets.viewer.RelationContentProvider;
 

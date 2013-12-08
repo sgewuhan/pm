@@ -1,4 +1,4 @@
-package com.sg.business.visualization.dataset;
+package com.sg.business.visualization.data;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
@@ -9,6 +9,7 @@ import com.mongodb.DBCursor;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.UserProjectPerf;
 import com.sg.business.visualization.VisualizationActivator;
+import com.sg.business.visualization.data.ProjectSetFolder;
 
 public class OwnerProjectSetFolder extends ProjectSetFolder {
 
