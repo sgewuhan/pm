@@ -18,7 +18,7 @@ public class OvercostCostLabelProvider extends AbstractProjectLabelProvider {
 
 		double investment = pres.getInvestment();
 		if (budgetValue == 0) {
-			sb.append("--");
+			sb.append("");
 		} else {
 			sb.append("Ô¤Ëã:");
 			int ratio = new BigDecimal(100 * investment / budgetValue)

@@ -6,7 +6,7 @@ import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
 import com.sg.business.model.etl.ProjectPresentation;
 
-public class ROILabelProvider extends AbstractProjectLabelProvider {
+public class RevenueDetailLabelProvider extends AbstractProjectLabelProvider {
 
 	@Override
 	protected String getProjectText(Project project) {
@@ -16,56 +16,58 @@ public class ROILabelProvider extends AbstractProjectLabelProvider {
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;'>");
 		// 期末
 		double salesRevenue = pres.getSalesRevenue();
-		double salesCost = pres.getSalesCost();
-
-		// 期末利润
-		double profit = salesRevenue - salesCost;
+		double totalCost = pres.getSalesCost() + pres.getInvestment();
 		double inv = pres.getInvestment();
 
-		if (profit > 0 && inv > 0) {
+		// 期末利润
+		double profit = salesRevenue - totalCost;
+		double value;
+		if (profit > 0 && salesRevenue > 0) {
 			sb.append("<span style='color="
 					+ Utils.COLOR_BLUE[10]
-							+ ";font-size:9pt;margin-left:0;"
-							+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
-			double value = new BigDecimal(100 * profit / salesRevenue).setScale(2,
+					+ ";font-size:9pt;margin-left:0;"
+					+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
+			value = new BigDecimal(100 * profit / salesRevenue).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue();
 			sb.append("销售利润率: ");
 			sb.append(value);
 			sb.append("%");
 			sb.append("</span>");
+		}
 
+		if (profit > 0 && totalCost > 0) {
 
 			sb.append("<span style='color="
 					+ Utils.COLOR_YELLOW[10]
-							+ ";font-size:9pt;margin-left:0;"
-							+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
-			value = new BigDecimal(100 * profit / salesCost).setScale(2,
+					+ ";font-size:9pt;margin-left:0;"
+					+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
+			value = new BigDecimal(100 * profit / totalCost).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue();
 			sb.append("成本利润率: ");
 			sb.append(value);
 			sb.append("%");
 			sb.append("</span>");
+		}
 
+		if (profit > 0 && inv > 0) {
 			value = new BigDecimal(100 * profit / inv).setScale(2,
 					BigDecimal.ROUND_HALF_UP).doubleValue();
 			sb.append("<span style='color="
 					+ Utils.COLOR_GREEN[10]
-							+ ";font-size:9pt;margin-left:0;"
-							+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
+					+ ";font-size:9pt;margin-left:0;"
+					+ "word-break : break-all; white-space:normal; display:block; text-align:left;'>");
 			sb.append("ROI: ");
 			sb.append(value);
 			sb.append("%");
 			sb.append("</span>");
-			
 		}
-		
-		
-//		sb.append("销售利润:");
-//		sb.append(getCurrency(profit));
-//		sb.append("<br/>");
-//		sb.append("研发投入:");
-//		sb.append(getCurrency(inv));
-//		sb.append("<br/>");
+
+		// sb.append("销售利润:");
+		// sb.append(getCurrency(profit));
+		// sb.append("<br/>");
+		// sb.append("研发投入:");
+		// sb.append(getCurrency(inv));
+		// sb.append("<br/>");
 
 		sb.append("</span>");
 		return sb.toString();

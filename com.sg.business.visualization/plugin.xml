@@ -444,7 +444,7 @@
          </column>
          <column
                column="roi"
-               labelProvider="com.sg.business.visualization.labelprovide.ROILabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.RevenueDetailLabelProvider"
                lazyDisplay="true"
                name="指标"
                type="String"

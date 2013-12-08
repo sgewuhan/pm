@@ -13,7 +13,7 @@ public class BudgetLabelProvider extends AbstractProjectLabelProvider {
 		
 		// ÏîÄ¿µÄÔ¤Ëã
 		double budgetValue = project.getPresentation().getBudgetValue();
-		String bv = (budgetValue == 0d) ? "--" : (df
+		String bv = (budgetValue == 0d) ? "" : (df
 				.format(budgetValue / 10000));
 		
 		StringBuffer sb = new StringBuffer();

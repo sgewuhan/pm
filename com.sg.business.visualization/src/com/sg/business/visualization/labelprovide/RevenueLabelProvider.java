@@ -15,14 +15,14 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 		// 项目的销售收入
 		double salesRevenue = pres.getSalesRevenue();
 
-		// 项目的销售成本
-		double salesCostValue = pres.getSalesCost();
+		// 项目的成本
+		double totalCost = pres.getSalesCost()+pres.getInvestment();
 
 		// 项目的销售利润
-		double salesProfit = salesRevenue - salesCostValue;
+		double salesProfit = salesRevenue - totalCost;
 
 		double max = Math.max(Math.abs(salesRevenue),
-				Math.max(Math.abs(salesCostValue), Math.abs(salesProfit)));
+				Math.max(Math.abs(totalCost), Math.abs(salesProfit)));
 
 		if (max == 0) {
 			return "";
@@ -30,7 +30,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 
 		int rateIncome = new BigDecimal(Math.abs(10 * salesRevenue / max))
 				.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-		int rateCost = new BigDecimal(Math.abs(10 * salesCostValue / max))
+		int rateCost = new BigDecimal(Math.abs(10 * totalCost / max))
 				.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
 		int rateRevenue = new BigDecimal(Math.abs(10 * salesProfit / max))
 				.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
@@ -51,13 +51,13 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 					"9%", null, null, null, "14");
 			sb.append(bar);
 		}
-		sb.append(getCurrency(salesCostValue));
+		sb.append(getCurrency(totalCost));
 		sb.append("<br/>");
 
 		// 绘制利润
 		for (int i = 0; i < rateRevenue - 1; i++) {
 			String bar = TinyVisualizationUtil.getColorBar(i + 3,
-					salesRevenue > salesCostValue ? "green" : "red", "9%",
+					salesRevenue > totalCost ? "green" : "red", "9%",
 					null, null, null, "14");
 			sb.append(bar);
 		}

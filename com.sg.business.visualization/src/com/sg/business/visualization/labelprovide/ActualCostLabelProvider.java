@@ -12,7 +12,8 @@ public class ActualCostLabelProvider extends AbstractProjectLabelProvider {
 
 		// ÏîÄ¿µÄÔ¤Ëã
 		double value = project.getPresentation().getInvestment();
-		String bv = df.format(value / 10000);
+		
+		String bv = value==0d?"":df.format(value / 10000);
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-weight:bold;font-size:10pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:right;'>");
