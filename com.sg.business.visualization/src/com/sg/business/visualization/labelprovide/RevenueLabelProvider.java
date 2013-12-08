@@ -42,7 +42,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 					null, null, null, "14");
 			sb.append(bar);
 		}
-		sb.append(getCurrency(salesRevenue));
+		sb.append(getCurrency(salesRevenue,7));
 		sb.append("<br/>");
 
 		// 绘制销售成本
@@ -51,7 +51,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 					"9%", null, null, null, "14");
 			sb.append(bar);
 		}
-		sb.append(getCurrency(totalCost));
+		sb.append(getCurrency(totalCost,7));
 		sb.append("<br/>");
 
 		// 绘制利润
@@ -61,7 +61,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 					null, null, null, "14");
 			sb.append(bar);
 		}
-		sb.append(getCurrency(salesProfit));
+		sb.append(getCurrency(salesProfit,7));
 
 		return sb.toString();
 	}

@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
 
-public class ActualCostLabelProvider extends AbstractProjectLabelProvider {
+public class InvestmentLabelProvider extends AbstractProjectLabelProvider {
 	@Override
 	protected String getProjectText(Project project) {
 		DecimalFormat df = new DecimalFormat(Utils.NF_NUMBER_P2);

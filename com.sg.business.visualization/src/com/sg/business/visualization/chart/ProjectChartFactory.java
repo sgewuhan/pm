@@ -599,7 +599,7 @@ public class ProjectChartFactory {
 					+ projectProvider.sum.processing_advance;
 			deptValue2[i] = projectProvider.sum.processing_delay;
 			deptValue3[i] = projectProvider.sum.total_sales_revenue/10000
-					- projectProvider.sum.total_sales_cost/10000;
+					- (projectProvider.sum.total_sales_cost+projectProvider.sum.total_investment_amount)/10000;
 		}
 
 		return createCombinnationStackedBarChart("各部门项目运行综合状况", deptParameter,
@@ -718,7 +718,8 @@ public class ProjectChartFactory {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost;
+		long value2 = data.sum.total_sales_cost+data.sum.total_investment_amount;
+		
 		// "利润"
 		long value3 = value1 - value2;
 
@@ -732,7 +733,7 @@ public class ProjectChartFactory {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost;
+		long value2 = data.sum.total_sales_cost+data.sum.total_investment_amount;
 		// "利润"
 		long value3 = value1 - value2;
 		// 利润率
@@ -775,7 +776,7 @@ public class ProjectChartFactory {
 			projectProvider.getData();
 			chargerName[i] = projectProvider.getDesc();
 			userValue1[i] = projectProvider.sum.total_sales_revenue / 10000;
-			userValue2[i] = (projectProvider.sum.total_sales_revenue - projectProvider.sum.total_sales_cost) / 10000;
+			userValue2[i] = (projectProvider.sum.total_sales_revenue - projectProvider.sum.total_sales_cost-projectProvider.sum.total_investment_amount) / 10000;
 		}
 		return create2StackedBarChart("按项目经理计算项目收入情况", chargerName, userValue1,
 				userValue2, new String[] { "销售收入", "销售利润" });
@@ -785,7 +786,7 @@ public class ProjectChartFactory {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost;
+		long value2 = data.sum.total_sales_cost+data.sum.total_investment_amount;
 		// "利润"
 		long profit = value1 - value2;
 

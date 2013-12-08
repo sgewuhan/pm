@@ -392,7 +392,7 @@
          </column>
          <column
                column="budget"
-               labelProvider="com.sg.business.visualization.labelprovide.ActualCostLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovide.InvestmentLabelProvider"
                lazyDisplay="true"
                name="实际"
                type="String"
@@ -443,12 +443,36 @@
                width="200">
          </column>
          <column
-               column="roi"
+               column="d1"
                labelProvider="com.sg.business.visualization.labelprovide.RevenueDetailLabelProvider"
                lazyDisplay="true"
-               name="指标"
+               name="销售收入"
                type="String"
-               width="120">
+               width="60">
+         </column>
+         <column
+               column="budget"
+               labelProvider="com.sg.business.visualization.labelprovide.InvestmentLabelProvider"
+               lazyDisplay="true"
+               name="研发成本"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="d2"
+               labelProvider="com.sg.business.visualization.labelprovide.SalesCostDetailLabelProvider"
+               lazyDisplay="true"
+               name="销售成本"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="d3"
+               labelProvider="com.sg.business.visualization.labelprovide.ProfitDetailLabelProvider"
+               lazyDisplay="true"
+               name="利润"
+               type="String"
+               width="60">
          </column>
       </table>
    </extension>
@@ -483,11 +507,6 @@
                pageBodyPartCreater="com.sg.business.visualization.editor.ProjectSetDashboardRevenue"
                title="销售收入和利润">
          </navigatorpage>
-         <basicpage
-               id="projectset.vis"
-               pageDelegator="com.sg.business.visualization.editor.ProjectSetDashboard"
-               title="指标">
-         </basicpage>
       </editor>
       <editor
             collectionName="userprojectperf"

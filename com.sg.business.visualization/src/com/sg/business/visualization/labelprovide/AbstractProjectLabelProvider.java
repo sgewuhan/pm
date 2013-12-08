@@ -69,18 +69,20 @@ abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLabelProvi
 		sb.append("<a>");
 	}
 	
-	protected String getCurrency(double value) {
+	protected String getCurrency(double value,int size) {
 		if (value >= 0) {
-			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:7pt;margin-left:1;'>"
+			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:"+size+"pt;margin-left:1;'>"
 					+ new BigDecimal(value/10000).setScale(1,
 							BigDecimal.ROUND_HALF_UP).doubleValue()+ "</span>";
 		} else {
-			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:7pt;margin-left:1;color="
+			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:"+size+"pt;margin-left:1;color="
 					+ Utils.COLOR_RED[10]
 					+ "'>"
 					+ new BigDecimal(-value/10000).setScale(1,
 							BigDecimal.ROUND_HALF_UP).doubleValue() + "</span>";
 		}
 	}
+	
+	
 	
 }
