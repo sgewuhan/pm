@@ -162,6 +162,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String F_WF_HISTORY = "wf_history";
 
 	public static final String F_SECOND_VID = "svid";
+	
+	public static final String F_FILEBASE = "filebase";
 
 	@Override
 	protected String[] getVersionFields() {
