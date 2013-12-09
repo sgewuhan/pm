@@ -2202,6 +2202,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				document.initVerStatus();
 				document.initVersionNumber();
 				document.initInsertDefault(document.get_data(), context);
+				document.generateCode(this);
 				docList[i++] = document.get_data();
 			}
 			ws = docCol.insert(docList, WriteConcern.NORMAL);
