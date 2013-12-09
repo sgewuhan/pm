@@ -15,6 +15,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.workflow"
+            name="流程">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis.home"
             name="绩效总览">
       </perspective>
@@ -25,23 +30,13 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.workflow"
-            name="流程">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.resource"
             name="资源">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.finance"
-            name="财务">
-      </perspective>
-      <perspective
-            class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.organization"
-            name="组织">
+            id="perspective.delay"
+            name="超期">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -55,13 +50,18 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.organization"
+            name="组织">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vault"
             name="文档库">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.message"
-            name="消息">
+            id="perspective.bulletinboard"
+            name="公告">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -70,8 +70,13 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.delay"
-            name="超期">
+            id="perspective.message"
+            name="消息">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.finance"
+            name="财务">
       </perspective>
    </extension>
    <extension
@@ -233,36 +238,10 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
-            targetID="perspective.project">
+            targetID="perspective.vis.home">
          <view
                closeable="false"
-               id="project.navigator.management"
-               minimized="false"
-               moveable="false"
-               ratio="0.3"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="works.register"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.management"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.message">
-         <view
-               closeable="false"
-               id="message.recieved"
+               id="vis.main.indicators"
                minimized="false"
                moveable="false"
                ratio="0.5"
@@ -274,22 +253,156 @@
          </view>
          <view
                closeable="false"
-               id="message.send"
+               id="vis.risk.schedual"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="message.recieved"
+               relative="vis.main.indicators"
                showTitle="true"
                standalone="false"
                visible="true">
          </view>
          <view
                closeable="false"
-               id="message.waste"
+               id="vis.risk.cost"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="message.recieved"
+               relative="vis.main.indicators"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.dept.main"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="right"
+               relative="vis.main.indicators"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.eco.budgetandcost"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="bottom"
+               relative="vis.main.indicators"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis.eco.revenue"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="vis.eco.budgetandcost"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.visualization">
+         <view
+               closeable="false"
+               id="vis.projectset.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <!--view
+               closeable="false"
+               id="vis.project.projecttype"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="vis.projectset.navigator"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view-->
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.resource">
+         <view
+               closeable="false"
+               id="performence.works.org"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="performence.works.project"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="performence.works.org"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="performence.works.project.org"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="performence.works.org"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.bulletinboard">
+         <view
+               id="home.bulletinboard"
+               minimized="false"
+               ratio="0.8"
+               relationship="left"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.delay">
+         <view
+               closeable="false"
+               id="project.navigator.delaywork"
+               minimized="false"
+               moveable="false"
+               ratio="0.8"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delayprocess"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.delaywork"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -367,13 +480,13 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
-            targetID="perspective.organization">
+            targetID="perspective.project">
          <view
                closeable="false"
-               id="organization.navigator"
+               id="project.navigator.management"
                minimized="false"
                moveable="false"
-               ratio="0.6"
+               ratio="0.3"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
@@ -382,35 +495,11 @@
          </view>
          <view
                closeable="false"
-               id="organization.role"
-               minimized="false"
-               moveable="false"
-               ratio="0.5"
-               relationship="right"
-               relative="organization.navigator"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="organization.member"
-               minimized="false"
-               moveable="false"
-               ratio="0.5"
-               relationship="bottom"
-               relative="organization.role"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="organization.user"
+               id="works.register"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="organization.navigator"
+               relative="project.navigator.management"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -478,6 +567,56 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
+            targetID="perspective.organization">
+         <view
+               closeable="false"
+               id="organization.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.6"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="organization.role"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="right"
+               relative="organization.navigator"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="organization.member"
+               minimized="false"
+               moveable="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="organization.role"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="organization.user"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="organization.navigator"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
             targetID="perspective.system">
          <view
                closeable="false"
@@ -493,39 +632,13 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
-            targetID="perspective.visualization">
+            targetID="perspective.message">
          <view
                closeable="false"
-               id="vis.projectset.navigator"
+               id="message.recieved"
                minimized="false"
                moveable="false"
-               ratio="0.25"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <!--view
-               closeable="false"
-               id="vis.project.projecttype"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="vis.projectset.navigator"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view-->
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.resource">
-         <view
-               closeable="false"
-               id="performence.works.org"
-               minimized="false"
-               moveable="false"
-               ratio="0.3"
+               ratio="0.5"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="true"
@@ -534,22 +647,22 @@
          </view>
          <view
                closeable="false"
-               id="performence.works.project"
+               id="message.send"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="performence.works.org"
+               relative="message.recieved"
                showTitle="true"
                standalone="false"
                visible="true">
          </view>
          <view
                closeable="false"
-               id="performence.works.project.org"
+               id="message.waste"
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="performence.works.org"
+               relative="message.recieved"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -570,104 +683,6 @@
                visible="true">
          </view>
       </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.vis.home">
-         <view
-               closeable="false"
-               id="vis.main.indicators"
-               minimized="false"
-               moveable="false"
-               ratio="0.5"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis.risk.schedual"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="vis.main.indicators"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis.risk.cost"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="vis.main.indicators"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis.dept.main"
-               minimized="false"
-               moveable="false"
-               ratio="0.4"
-               relationship="right"
-               relative="vis.main.indicators"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis.eco.budgetandcost"
-               minimized="false"
-               moveable="false"
-               ratio="0.4"
-               relationship="bottom"
-               relative="vis.main.indicators"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis.eco.revenue"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="vis.eco.budgetandcost"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.delay">
-         <view
-               closeable="false"
-               id="project.navigator.delaywork"
-               minimized="false"
-               moveable="false"
-               ratio="0.8"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="project.navigator.delayprocess"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.delaywork"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -676,11 +691,11 @@
             isDefault="true"
             name="绩效可视化（展现组织的绩效数据，需要同时具备管理者角色）">
          <perspective
-               default="true"
-               id="perspective.visualization">
+               id="perspective.vis.home">
          </perspective>
          <perspective
-               id="perspective.vis.home">
+               default="true"
+               id="perspective.visualization">
          </perspective>
       </scenario>
       <scenario
@@ -747,6 +762,13 @@
             name="消息">
          <perspective
                id="perspective.message"></perspective>
+      </scenario>
+      <scenario
+            id="bulletinboard"
+            name="公告">
+         <perspective
+               id="perspective.bulletinboard">
+         </perspective>
       </scenario>
    </extension>
    <extension
