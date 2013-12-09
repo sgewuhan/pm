@@ -142,7 +142,7 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 						// 工作负责人或参与者为当前用户
 						new BasicDBObject().append(Work.F_PARTICIPATE,
-								user.getUserid()),
+								user.getUserid())
 
 				});
 
