@@ -139,6 +139,26 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="commons.workflow.tableselector"
+            table="commons.workflow.tableselector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -194,6 +214,13 @@
       </table>
       <table
             id="commons.generic.tableselector"
+            virtual="true">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            id="commons.workflow.tableselector"
             virtual="true">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
