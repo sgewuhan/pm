@@ -4605,9 +4605,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return po;
 	}
 
-	@SuppressWarnings("null")
 	public void doAddParticipateList(List<?> userList) throws Exception {
-		if(userList != null){
+		if(userList == null){
 			throw new Exception("请确认需添加的参与者");
 		}
 		DBCollection workCol = getCollection();

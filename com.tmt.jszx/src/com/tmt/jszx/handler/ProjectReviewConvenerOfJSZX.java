@@ -6,6 +6,7 @@ import java.util.List;
 import org.jbpm.task.Task;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.sg.bpm.workflow.taskform.ITaskFormInputHandler;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
 import com.sg.business.model.TaskForm;
@@ -23,16 +24,18 @@ public class ProjectReviewConvenerOfJSZX implements ITaskFormInputHandler {
 		if (taskFormData instanceof TaskForm) {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			try {
-				List<String> reviewerList = (ArrayList<String>) taskForm
+				List<String> reviewer_List = (ArrayList<String>) taskForm
 						.getProcessInstanceVarible("reviewer_list",
 								new CurrentAccountContext());
-				if (reviewerList != null && reviewerList.size() > 0) {
-					taskForm.setValue("reviewer_list", (Object) reviewerList);
+				if (reviewer_List != null && reviewer_List.size() > 0) {
+					BasicDBList reviewerList = new BasicDBList();
+					reviewerList.addAll(reviewer_List);
+					taskForm.setValue("reviewer_list", reviewerList);
 				}
 				String reviewConvener = (String) taskForm
 						.getProcessInstanceVarible("review_convener",
 								new CurrentAccountContext());
-				if (reviewerList != null && reviewerList.size() > 0) {
+				if (reviewConvener != null) {
 					taskForm.setValue("review_convener",
 							(Object) reviewConvener);
 				}
