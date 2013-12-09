@@ -157,43 +157,11 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	 * @param stop
 	 * @return
 	 */
-	private DBObject getQueryCondtion(Date start, Date stop) {
-
-		DBObject dbo = new BasicDBObject();
-		dbo.put(Project.F_LAUNCH_ORGANIZATION, new BasicDBObject().append(
-				"$in", getOrganizations(organization)));
-		dbo.put(ILifecycle.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
-						ILifecycle.STATUS_FINIHED_VALUE,
-						ILifecycle.STATUS_WIP_VALUE }));
-		dbo.put("$or",
-				new BasicDBObject[] {
-
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(Project.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(
-								"$and",
-								new BasicDBObject[] {
-										new BasicDBObject().append(
-												Project.F_ACTUAL_START,
-												new BasicDBObject().append(
-														"$lte", start)),
-										new BasicDBObject().append(
-												Project.F_ACTUAL_FINISH,
-												new BasicDBObject().append(
-														"$gte", stop)) }) });
-
-		return dbo;
+	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
+		return super.getQueryCondtion(start, stop).append(
+				Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in",
+						getOrganizations(organization)));
 	}
 
 	private List<?> getOrganizations(Organization org) {

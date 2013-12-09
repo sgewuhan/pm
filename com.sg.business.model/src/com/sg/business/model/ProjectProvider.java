@@ -8,11 +8,11 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.Util;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
 
 public abstract class ProjectProvider extends PrimaryObject {
 
 	public ProjectSetSummaryData sum;
-
 
 	/**
 	 * 参数名称：按年计算
@@ -47,7 +47,6 @@ public abstract class ProjectProvider extends PrimaryObject {
 
 	public abstract List<PrimaryObject> getProjectSet();
 
-
 	/**
 	 * 获得项目集合的名称
 	 * 
@@ -70,10 +69,16 @@ public abstract class ProjectProvider extends PrimaryObject {
 	public void setParameters(Object[] parameters) {
 		if (!Util.equals(this.parameters, parameters)) {
 			Object[] oldParameters = this.parameters;
-			this.parameters = new Object[parameters.length];
-			for (int i = 0; i < parameters.length; i++) {
-				this.parameters[i] = parameters[i];
+
+			if (parameters != null) {
+				this.parameters = new Object[parameters.length];
+				for (int i = 0; i < parameters.length; i++) {
+					this.parameters[i] = parameters[i];
+				}
+			} else {
+				this.parameters = parameters;
 			}
+
 			parameterChanged(oldParameters, parameters);
 			isDirty = true;
 		}
@@ -89,67 +94,82 @@ public abstract class ProjectProvider extends PrimaryObject {
 	}
 
 	final protected Date getStartDate() throws Exception {
-		Date start;
-		Calendar calendar = (Calendar) parameters[0];
-		switch ((String) parameters[1]) {
-		case PARAMETER_SUMMARY_BY_YEAR:
-			calendar.set(Calendar.MONTH, 0);
-			calendar.set(Calendar.DATE, 1);
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			calendar.set(Calendar.MILLISECOND, 0);
-			start = calendar.getTime();
-			return start;
-		case PARAMETER_SUMMARY_BY_QUARTER:
-			int i = calendar.get(Calendar.MONTH);
-			calendar.set(Calendar.MONTH, i / 3 * 3);
-			calendar.set(Calendar.DATE, 1);
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			calendar.set(Calendar.MILLISECOND, 0);
-			start = calendar.getTime();
-			return start;
-		case PARAMETER_SUMMARY_BY_MONTH:
-			calendar.set(Calendar.DATE, 1);
-			calendar.set(Calendar.HOUR_OF_DAY, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			calendar.set(Calendar.MILLISECOND, 0);
-			start = calendar.getTime();
-			return start;
-		default:
-			throw new Exception("时间参数异常");
+		if (parameters == null) {
+			return null;
+		} else {
+			Date start;
+			Calendar calendar = (Calendar) parameters[0];
+			switch ((String) parameters[1]) {
+			case PARAMETER_SUMMARY_BY_YEAR:
+				calendar.set(Calendar.MONTH, 0);
+				calendar.set(Calendar.DATE, 1);
+				calendar.set(Calendar.HOUR_OF_DAY, 0);
+				calendar.set(Calendar.MINUTE, 0);
+				calendar.set(Calendar.SECOND, 0);
+				calendar.set(Calendar.MILLISECOND, 0);
+				start = calendar.getTime();
+				return start;
+			case PARAMETER_SUMMARY_BY_QUARTER:
+				int i = calendar.get(Calendar.MONTH);
+				calendar.set(Calendar.MONTH, i / 3 * 3);
+				calendar.set(Calendar.DATE, 1);
+				calendar.set(Calendar.HOUR_OF_DAY, 0);
+				calendar.set(Calendar.MINUTE, 0);
+				calendar.set(Calendar.SECOND, 0);
+				calendar.set(Calendar.MILLISECOND, 0);
+				start = calendar.getTime();
+				return start;
+			case PARAMETER_SUMMARY_BY_MONTH:
+				calendar.set(Calendar.DATE, 1);
+				calendar.set(Calendar.HOUR_OF_DAY, 0);
+				calendar.set(Calendar.MINUTE, 0);
+				calendar.set(Calendar.SECOND, 0);
+				calendar.set(Calendar.MILLISECOND, 0);
+				start = calendar.getTime();
+				return start;
+			default:
+				throw new Exception("时间参数异常");
+			}
 		}
+
 	}
 
 	final protected Date getEndDate() throws Exception {
-		Date end;
-		Calendar calendar = Calendar.getInstance();
-		Date start = getStartDate();
-		calendar.setTime(start);
-		switch ((String) parameters[1]) {
-		case PARAMETER_SUMMARY_BY_YEAR:
-			calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1);
-			calendar.set(Calendar.MILLISECOND,
-					calendar.get(Calendar.MILLISECOND) - 1);
-			end = calendar.getTime();
-			return end;
-		case PARAMETER_SUMMARY_BY_QUARTER:
-			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 3);
-			calendar.set(Calendar.MILLISECOND,
-					calendar.get(Calendar.MILLISECOND) - 1);
-			end = calendar.getTime();
-			return end;
-		case PARAMETER_SUMMARY_BY_MONTH:
-			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
-			calendar.set(Calendar.MILLISECOND,
-					calendar.get(Calendar.MILLISECOND) - 1);
-			end = calendar.getTime();
-			return end;
-		default:
-			throw new Exception("时间参数异常");
+		if (parameters == null) {
+			return null;
+		} else {
+			Date end;
+			Calendar calendar = Calendar.getInstance();
+			Date start = getStartDate();
+			if (start == null) {
+				return null;
+			} else {
+				calendar.setTime(start);
+				switch ((String) parameters[1]) {
+				case PARAMETER_SUMMARY_BY_YEAR:
+					calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + 1);
+					calendar.set(Calendar.MILLISECOND,
+							calendar.get(Calendar.MILLISECOND) - 1);
+					end = calendar.getTime();
+					return end;
+				case PARAMETER_SUMMARY_BY_QUARTER:
+					calendar.set(Calendar.MONTH,
+							calendar.get(Calendar.MONTH) + 3);
+					calendar.set(Calendar.MILLISECOND,
+							calendar.get(Calendar.MILLISECOND) - 1);
+					end = calendar.getTime();
+					return end;
+				case PARAMETER_SUMMARY_BY_MONTH:
+					calendar.set(Calendar.MONTH,
+							calendar.get(Calendar.MONTH) + 1);
+					calendar.set(Calendar.MILLISECOND,
+							calendar.get(Calendar.MILLISECOND) - 1);
+					end = calendar.getTime();
+					return end;
+				default:
+					throw new Exception("时间参数异常");
+				}
+			}
 		}
 	}
 
@@ -160,8 +180,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 		listeners.add(listener);
 	}
 
-	private void parameterChanged(Object[] oldParameters,
-			Object[] newParameters) {
+	private void parameterChanged(Object[] oldParameters, Object[] newParameters) {
 		if (listeners != null && listeners.size() > 0) {
 			Object[] lis = listeners.getListeners();
 			for (int i = 0; i < lis.length; i++) {
@@ -179,5 +198,42 @@ public abstract class ProjectProvider extends PrimaryObject {
 		return projectSetData;
 	}
 
+	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
+		BasicDBObject dbo = new BasicDBObject();
+		dbo.put(ILifecycle.F_LIFECYCLE,
+				new BasicDBObject().append("$in", new String[] {
+						ILifecycle.STATUS_FINIHED_VALUE,
+						ILifecycle.STATUS_WIP_VALUE }));
+		if (start != null && stop != null) {
+			dbo.put("$or",
+					new BasicDBObject[] {
+
+							new BasicDBObject().append(Project.F_ACTUAL_START,
+									new BasicDBObject().append("$gte", start)
+											.append("$lte", stop)),
+
+							new BasicDBObject().append(Project.F_PLAN_FINISH,
+									new BasicDBObject().append("$gte", start)
+											.append("$lte", stop)),
+
+							new BasicDBObject().append(Project.F_ACTUAL_FINISH,
+									new BasicDBObject().append("$gte", start)
+											.append("$lte", stop)),
+
+							new BasicDBObject().append(
+									"$and",
+									new BasicDBObject[] {
+											new BasicDBObject().append(
+													Project.F_ACTUAL_START,
+													new BasicDBObject().append(
+															"$lte", start)),
+											new BasicDBObject().append(
+													Project.F_ACTUAL_FINISH,
+													new BasicDBObject().append(
+															"$gte", stop)) }) });
+		}
+
+		return dbo;
+	}
 
 }
