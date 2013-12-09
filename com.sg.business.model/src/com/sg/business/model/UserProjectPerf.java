@@ -25,7 +25,6 @@ public class UserProjectPerf extends ProjectProvider {
 
 	public static final String EDITOR_SETTING = "editor.visualization.addprojectset";
 
-	
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
@@ -52,39 +51,39 @@ public class UserProjectPerf extends ProjectProvider {
 		return result;
 	}
 
-	private DBObject getQueryCondtion(Date start, Date stop) {
-
+	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
 		List<?> projectidlist = getProjectIdList();
-
-		DBObject dbo = new BasicDBObject();
+		BasicDBObject dbo = new BasicDBObject();
 		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist));
-		dbo.put("$or",
-				new BasicDBObject[] {
+		if (start != null && stop != null) {
+			dbo.put("$or",
+					new BasicDBObject[] {
 
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
+							new BasicDBObject().append(Project.F_ACTUAL_START,
+									new BasicDBObject().append("$gte", start)
+											.append("$lte", stop)),
 
-						new BasicDBObject().append(Project.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
+							new BasicDBObject().append(Project.F_PLAN_FINISH,
+									new BasicDBObject().append("$gte", start)
+											.append("$lte", stop)),
 
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
+							new BasicDBObject().append(Project.F_ACTUAL_FINISH,
+									new BasicDBObject().append("$gte", start)
+											.append("$lte", stop)),
 
-						new BasicDBObject().append(
-								"$and",
-								new BasicDBObject[] {
-										new BasicDBObject().append(
-												Project.F_ACTUAL_START,
-												new BasicDBObject().append(
-														"$lte", start)),
-										new BasicDBObject().append(
-												Project.F_ACTUAL_FINISH,
-												new BasicDBObject().append(
-														"$gte", stop)) }) });
+							new BasicDBObject().append(
+									"$and",
+									new BasicDBObject[] {
+											new BasicDBObject().append(
+													Project.F_ACTUAL_START,
+													new BasicDBObject().append(
+															"$lte", start)),
+											new BasicDBObject().append(
+													Project.F_ACTUAL_FINISH,
+													new BasicDBObject().append(
+															"$gte", stop)) }) });
 
+		}
 		return dbo;
 	}
 

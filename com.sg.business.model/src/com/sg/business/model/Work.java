@@ -5,9 +5,11 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
@@ -439,7 +441,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Double
 	 */
 	public Double getActualWorks() {
-		return (Double) getValue(F_ACTUAL_WORKS);
+		return getDoubleValue(F_ACTUAL_WORKS);
 
 		// List<PrimaryObject> children = getChildrenWork();
 		// if (children.size() == 0) {
@@ -467,7 +469,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Double
 	 */
 	public Double getPlanWorks() {
-		return (Double) (getValue(F_PLAN_WORKS));
+		return getDoubleValue(F_PLAN_WORKS);
 
 		// List<PrimaryObject> children = getChildrenWork();
 		// if (children.size() == 0) {
@@ -495,7 +497,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Integer
 	 */
 	public Integer getActualDuration() {
-		return (Integer) getValue(F_ACTUAL_DURATION);
+		return getIntegerValue(F_ACTUAL_DURATION);
 
 		// List<PrimaryObject> children = getChildrenWork();
 		// if (children.size() == 0) {
@@ -523,7 +525,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return Integer
 	 */
 	public Integer getPlanDuration() {
-		return (Integer) getValue(F_PLAN_DURATION);
+		return getIntegerValue(F_PLAN_DURATION);
+
 		// List<PrimaryObject> children = getChildrenWork();
 		// if (children.size() == 0) {
 		// return (Integer) getValue(F_PLAN_DURATION);
@@ -799,7 +802,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// }
 
 		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
-		
+
 		if (hasPermissionForReassignment(context)) {
 			return true;
 		}
@@ -812,24 +815,24 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @param currentAccountContext
 	 * @return
 	 */
-//	public boolean canSendMessage(IContext context) {
-//		// 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
-//		// 如果不是这些状态(已完成、已取消、已暂停)，返回false
-//		String lifeCycle = getLifecycleStatus();
-//		if (STATUS_CANCELED_VALUE.equals(lifeCycle)
-//				|| STATUS_FINIHED_VALUE.equals(lifeCycle)
-//				|| STATUS_PAUSED_VALUE.equals(lifeCycle)) {
-//			return false;
-//		}
-//
-//		if (isProjectWBSRoot()) {
-//			return false;
-//		}
-//		if (hasPermissionForReassignment(context)) {
-//			return true;
-//		}
-//		return hasPermission(context);
-//	}
+	// public boolean canSendMessage(IContext context) {
+	// // 1.首先检查本工作生命周期状态是否符合:准备中，进行中，无状态，
+	// // 如果不是这些状态(已完成、已取消、已暂停)，返回false
+	// String lifeCycle = getLifecycleStatus();
+	// if (STATUS_CANCELED_VALUE.equals(lifeCycle)
+	// || STATUS_FINIHED_VALUE.equals(lifeCycle)
+	// || STATUS_PAUSED_VALUE.equals(lifeCycle)) {
+	// return false;
+	// }
+	//
+	// if (isProjectWBSRoot()) {
+	// return false;
+	// }
+	// if (hasPermissionForReassignment(context)) {
+	// return true;
+	// }
+	// return hasPermission(context);
+	// }
 
 	/**
 	 * 能否点击删除
@@ -952,10 +955,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		} else {
 			String userId = context.getAccountInfo().getConsignerId();
 			BasicBSONList participatesIdList = getParticipatesIdList();
-			for (Object object : participatesIdList) {
-				String participatesId = (String) object;
-				if (userId.equals(participatesId)) {
-					return true;
+			if (participatesIdList != null) {
+				for (Object object : participatesIdList) {
+					String participatesId = (String) object;
+					if (userId.equals(participatesId)) {
+						return true;
+					}
 				}
 			}
 			return false;
@@ -4089,7 +4094,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return new Date().after(_planFinish);
 		}
 	}
-	
+
 	public boolean isDelayStart() {
 		Date _planStart = getPlanStart();
 		Date _actualStart = getActualStart();
@@ -4103,30 +4108,30 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return new Date().after(_planStart);
 		}
 	}
-	
+
 	public boolean isAdvanceFinish() {
 		Date _planFinish = getPlanFinish();
 		Date _actualFinish = getActualFinish();
-		
+
 		if (_planFinish == null) {
 			return false;
 		}
-		
+
 		if (_actualFinish != null) {
 			return _actualFinish.before(_planFinish);
 		} else {
 			return false;
 		}
 	}
-	
+
 	public boolean isAdvanceStart() {
 		Date _planStart = getPlanStart();
 		Date _actualStart = getActualStart();
-		
+
 		if (_planStart == null) {
 			return false;
 		}
-		
+
 		if (_actualStart != null) {
 			return _actualStart.before(_planStart);
 		} else {
@@ -4603,7 +4608,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public void doAddParticipateList(List<?> userList) throws Exception {
-		List<String> allUser = new ArrayList<String>();
+		//TODO
+		Set<String> allUser = new HashSet<String>();
 		BasicBSONList participates = getParticipatesIdList();
 		for (Object obj : userList) {
 			if (!allUser.contains(obj)) {
