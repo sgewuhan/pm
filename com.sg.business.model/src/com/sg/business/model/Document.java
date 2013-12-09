@@ -184,11 +184,11 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		generateCode();
+		generateCode(null);
 		super.doInsert(context);
 	}
 
-	public void generateCode() throws Exception {
+	public void generateCode(Work work) throws Exception {
 
 		String documentNumber = getDocumentNumber();
 		if (documentNumber != null) {
@@ -204,7 +204,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			prefix = project.getProjectNumber();
 		} else {
 			// 独立工作文档的编号，公司代码
-			Work work = getWork();
 			if (work != null && work.isStandloneWork()) {
 				User charger = work.getCharger();
 				Organization org = charger.getOrganization();
@@ -222,14 +221,14 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		setValue(F_DOCUMENT_NUMBER, codeValue);
 	}
 
-	private Work getWork() {
-		ObjectId work_id = (ObjectId) getValue(F_WORK_ID);
-		if (work_id != null) {
-			return ModelService.createModelObject(Work.class, work_id);
-		} else {
-			return null;
-		}
-	}
+//	private Work getWork() {
+//		ObjectId work_id = (ObjectId) getValue(F_WORK_ID);
+//		if (work_id != null) {
+//			return ModelService.createModelObject(Work.class, work_id);
+//		} else {
+//			return null;
+//		}
+//	}
 
 	private void checkDocumentNumber() throws Exception {
 		String documentNumber = getDocumentNumber();

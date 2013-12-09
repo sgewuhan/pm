@@ -603,7 +603,7 @@ public class ProjectToolkit {
 		document.setValue(Document.F_FOLDER_ID, folderRootId);
 
 		try {
-			document.generateCode();
+			document.generateCode(null);
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
