@@ -21,6 +21,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
+import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
@@ -29,12 +30,18 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class DelayProcess extends SingleDBCollectionDataSetFactory {
 	private User user;
+	private DBCollection projectCol;
+	private DBCollection userCol;
 
 	public DelayProcess() {
 		super(IModelConstants.DB, IModelConstants.C_USERTASK);
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
 		user = UserToolkit.getUserById(userId);
+		projectCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
+		userCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_USER);
 	}
 
 	@Override
@@ -132,10 +139,14 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		}
 
 		DBObject dbo = new BasicDBObject();
+		dbo.put(UserTask.F_STATUS, "Reserved");
+		
+		
 		dbo.put(UserTask.F_ACTUALOWNER,
 				new BasicDBObject().append("$in", getUserIdSet()));
-		dbo.put(UserTask.F_STATUS, "Reserved");
-
+		
+		
+		
 		dbo.put(UserTask.F__CDATE, new BasicDBObject().append("$gte", start)
 				.append("$lte", stop));
 		return dbo;
@@ -144,9 +155,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected List<ObjectId> getUserIdSet() {
 		Object ids = getOrganizationIdCascade(null).toArray();
-		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_USER);
-		List distinct = projectCol.distinct(User.F_USER_ID, new BasicDBObject()
+		List distinct = userCol.distinct(User.F_USER_ID, new BasicDBObject()
 				.append(User.F_ORGANIZATION_ID,
 						new BasicDBObject().append("$in", ids)));
 		return distinct;
@@ -195,13 +204,27 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 
 		return input;
 	}
+	
+	// 返回项目管理员管理的项目ID
+		private List<ObjectId> getUsersFunctionProjectIds() {
+			List<PrimaryObject> orglist = user
+					.getRoleGrantedInFunctionDepartmentOrganization(Role.ROLE_PROJECT_ADMIN_ID);
+			ObjectId[] ids = new ObjectId[orglist.size()];
+			for (int i = 0; i < ids.length; i++) {
+				ids[i] = orglist.get(i).get_id();
+			}
+			List<ObjectId> list = new ArrayList<ObjectId>();
+			DBCursor pids = projectCol.find(new BasicDBObject().append(
+					Project.F_FUNCTION_ORGANIZATION,
+					new BasicDBObject().append("$in", ids)), new BasicDBObject()
+					.append(Project.F__ID, 1));
+			while (pids.hasNext()) {
+				DBObject next = pids.next();
+				list.add((ObjectId) next.get(Project.F__ID));
+			}
+			return list;
+		}
 
-//	protected List<ObjectId> getUsersFunctionOrganization() {
-//		List<PrimaryObject> orglist = user
-//				.getRoleGrantedInFunctionDepartmentOrganization(Role.ROLE_PROJECT_ADMIN_ID);
-//		ObjectId[] ids = new ObjectId[orglist.size()];
-//		for (int i = 0; i < ids.length; i++) {
-//			ids[i] = orglist.get(i).get_id();
-//		}
-//	}
+
+
 }

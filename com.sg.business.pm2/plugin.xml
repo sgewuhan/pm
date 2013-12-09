@@ -125,23 +125,45 @@
          </view>
          <view
                closeable="false"
-               id="work.performence.record"
-               minimized="false"
-               ratio="0.4"
-               relationship="right"
-               relative="work.processing">
-         </view>
-         <view
-               closeable="false"
                id="project.navigator.myproject"
                minimized="false"
                moveable="false"
-               ratio="0.5"
-               relationship="bottom"
-               relative="work.performence.record"
+               ratio="0.4"
+               relationship="right"
+               relative="work.processing"
                showTitle="true"
                standalone="false"
                visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delaywork"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.myproject"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delayprocess"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.delaywork"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="work.performence.record"
+               minimized="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="project.navigator.myproject">
          </view>
       </perspectiveExtension>
       <perspectiveExtension
@@ -675,9 +697,6 @@
          <perspective
                id="perspective.project">
          </perspective>
-         <perspective
-               id="perspective.delay">
-         </perspective>
       </scenario>
       <scenario
             id="resourcemanagement"
@@ -685,9 +704,6 @@
             name="资源管理（管理部门资源，需同时具备项目管理员或部门管理者角色）">
          <perspective
                id="perspective.resource">
-         </perspective>
-         <perspective
-               id="perspective.delay">
          </perspective>
       </scenario>
       <scenario

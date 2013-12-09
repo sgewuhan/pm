@@ -34,13 +34,14 @@ public abstract class AbstractMessageService extends ServiceProvider {
 				String messageTitle = getMessageTitle();
 				String messageContent = getMessageContent();
 
-				
 				List<String> receivers = getReceiverList();
 				BasicDBList receiverList = new BasicDBList();
-				for (String receiver : receivers) {
-					receiverList.add(receiver);
-				}
+				if (receivers != null) {
+					for (String receiver : receivers) {
+						receiverList.add(receiver);
+					}
 
+				}
 				String editId = getEditorId();
 				PrimaryObject target = getTarget();
 				if (editId != null) {
