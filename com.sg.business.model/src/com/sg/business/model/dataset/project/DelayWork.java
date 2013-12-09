@@ -22,6 +22,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
+import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
@@ -30,19 +31,26 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class DelayWork extends SingleDBCollectionDataSetFactory {
 	private User user;
+	private DBCollection userCol;
+	private DBCollection projectCol;
 
 	public DelayWork() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
 		String userId = new CurrentAccountContext().getAccountInfo()
 				.getConsignerId();
 		user = UserToolkit.getUserById(userId);
+		userCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_USER);
+		projectCol = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
 	}
 
 	@Override
 	public DataSet getDataSet() {
 		List<PrimaryObject> dataItems = new ArrayList<PrimaryObject>();
 		DBCollection collection = getCollection();
-		DBCursor cur = collection.find(getCondition());
+		DBObject condition = getCondition();
+		DBCursor cur = collection.find(condition);
 		while (cur.hasNext()) {
 			DBObject next = cur.next();
 			Work work = ModelService.createModelObject(next, Work.class);
@@ -53,6 +61,7 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		return new DataSet(dataItems);
 	}
 
+	// 判断工作是否延期
 	private boolean isDelayWork(Work work) {
 		List<PrimaryObject> childrenWork = work.getChildrenWork();
 		if (childrenWork != null && !childrenWork.isEmpty()) {
@@ -68,18 +77,19 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 	}
 
+	// 返回查询条件
 	private DBObject getCondition() {
 
-		int year=-1;
-		int month=-1;
-        Date start=null;
-        Date stop=null;
-        Calendar calendar = Calendar.getInstance();
+		int year = -1;
+		int month = -1;
+		Date start = null;
+		Date stop = null;
+		Calendar calendar = Calendar.getInstance();
 		DBObject date = getQueryCondition();
-		if(date!=null){
+		if (date != null) {
 			year = (int) date.get("year");
 			month = (int) date.get("month");
-			
+
 			calendar.set(Calendar.YEAR, year);
 			calendar.set(Calendar.MONTH, month);
 			calendar.set(Calendar.DATE, 1);
@@ -92,8 +102,8 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 			calendar.add(Calendar.MILLISECOND, -1);
 			stop = calendar.getTime();
 			setQueryCondition(null);
-			
-		}else{
+
+		} else {
 			calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) - 1);
 			calendar.set(Calendar.DATE, 1);
 			calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -106,13 +116,39 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 			stop = calendar.getTime();
 		}
 		DBObject dbo = new BasicDBObject();
-		dbo.put(Work.F_CHARGER,
-				new BasicDBObject().append("$in", getUserIdSet()));
+
+		// 状态为已完成或者进行中
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_FINIHED_VALUE,
 						ILifecycle.STATUS_WIP_VALUE }));
-		dbo.put("$or",
+
+		BasicDBObject ucondition = new BasicDBObject();
+		ucondition.put(
+				"$or",
+				new BasicDBObject[] {
+						// 工作负责人为当前用户所管理部门下的职员
+						new BasicDBObject().append(Work.F_CHARGER,
+								new BasicDBObject().append("$in",
+										getUserIdSet())),
+						// 项目id为当前用户所管理的项目id
+						new BasicDBObject().append(Work.F_PROJECT_ID,
+								new BasicDBObject().append("$in",
+										getUsersFunctionProjectIds())),
+						// 项目id为当前用户所负责的项目id
+						new BasicDBObject().append(Work.F_PROJECT_ID,
+								new BasicDBObject().append("$in",
+										getUsersChargerProjectIds())),
+
+						// 工作负责人或参与者为当前用户
+						new BasicDBObject().append(Work.F_PARTICIPATE,
+								user.getUserid()),
+
+				});
+
+		BasicDBObject dcondition = new BasicDBObject();
+		dcondition.put(
+				"$or",
 				new BasicDBObject[] {
 
 						new BasicDBObject().append(Work.F_ACTUAL_START,
@@ -138,22 +174,22 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 												Work.F_ACTUAL_FINISH,
 												new BasicDBObject().append(
 														"$gte", stop)) }) });
+
+		dbo.put("$and", new BasicDBObject[] { ucondition, dcondition });
 		return dbo;
 	}
 
+	// 返回
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected List<ObjectId> getUserIdSet() {
 		Object ids = getOrganizationIdCascade(null).toArray();
-		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_USER);
-		List distinct = projectCol.distinct(User.F_USER_ID,
-				new BasicDBObject()
-						.append(User.F_ORGANIZATION_ID, new BasicDBObject()
-								.append("$in", ids)));
+		List distinct = userCol.distinct(User.F_USER_ID, new BasicDBObject()
+				.append(User.F_ORGANIZATION_ID,
+						new BasicDBObject().append("$in", ids)));
 		return distinct;
 	}
 
-
+	// 返回用户具有管理者角色的部门及下级部门的ID
 	private Collection<? extends ObjectId> getOrganizationIdCascade(
 			Organization org) {
 		Set<ObjectId> result = new HashSet<ObjectId>();
@@ -171,11 +207,11 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		return result;
 	}
 
+	// 返回获取用户具有管理者角色的部门及下级部门
 	private List<PrimaryObject> getUsersManagedOrganization() {
 		List<PrimaryObject> orglist = user
 				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
-
 		for (int i = 0; i < orglist.size(); i++) {
 			Organization org = (Organization) orglist.get(i);
 			boolean hasParent = false;
@@ -197,4 +233,39 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 		return input;
 	}
+
+	// 返回项目管理员管理的项目ID
+	private List<ObjectId> getUsersFunctionProjectIds() {
+		List<PrimaryObject> orglist = user
+				.getRoleGrantedInFunctionDepartmentOrganization(Role.ROLE_PROJECT_ADMIN_ID);
+		ObjectId[] ids = new ObjectId[orglist.size()];
+		for (int i = 0; i < ids.length; i++) {
+			ids[i] = orglist.get(i).get_id();
+		}
+		List<ObjectId> list = new ArrayList<ObjectId>();
+		DBCursor pids = projectCol.find(new BasicDBObject().append(
+				Project.F_FUNCTION_ORGANIZATION,
+				new BasicDBObject().append("$in", ids)), new BasicDBObject()
+				.append(Project.F__ID, 1));
+		while (pids.hasNext()) {
+			DBObject next = pids.next();
+			list.add((ObjectId) next.get(Project.F__ID));
+		}
+		return list;
+	}
+
+	// 项目负责人
+	List<ObjectId> getUsersChargerProjectIds() {
+		List<ObjectId> list = new ArrayList<ObjectId>();
+		DBCursor pids = projectCol
+				.find(new BasicDBObject().append(Project.F_CHARGER,
+						user.getUserid()),
+						new BasicDBObject().append(Project.F__ID, 1));
+		while (pids.hasNext()) {
+			DBObject next = pids.next();
+			list.add((ObjectId) next.get(Project.F__ID));
+		}
+		return list;
+	}
+
 }
