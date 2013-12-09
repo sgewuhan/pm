@@ -842,7 +842,7 @@
       <taskForm
             editorId="tbprojectapplication.reviewer"
             name="确认评审组"
-            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory"
+            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory,confirmdate"
             processDefinitionId="xt.xtProjectApplication"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
@@ -861,6 +861,10 @@
          <processParameter
                processParameterName="confirmaddress"
                taskFormFieldName="confirmaddress">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmdate"
+               taskFormFieldName="confirmdate">
          </processParameter>
       </taskForm>
       <taskForm

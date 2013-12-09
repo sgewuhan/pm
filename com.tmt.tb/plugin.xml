@@ -32,7 +32,7 @@
       <taskForm
             editorId="tbprojectapplication.reviewer"
             name="确认评审组"
-            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory"
+            persistentFields="reviewer_list,choice,confirmtime,confirmaddress,accessory,confirmdate"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.sg.business.taskforms.systemprojectapprove.AuditSave">
          <processParameter
@@ -51,6 +51,10 @@
          <processParameter
                processParameterName="confirmaddress"
                taskFormFieldName="confirmaddress">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmdate"
+               taskFormFieldName="confirmdate">
          </processParameter>
       </taskForm>
       <taskForm
@@ -302,15 +306,26 @@
                         defaultValueProvider="com.sg.business.commons.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
-                        id="confirmtime"
+                        id="confirmdate"
                         inputValidator="com.tmt.tb.field.CheckConfirmOfTBProjectApplication"
+                        label="评审会日期"
+                        labelVisible="true"
+                        name="confirmdate"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtime"
                         label="评审会时间"
                         labelVisible="true"
                         name="confirmtime"
                         persistable="true"
                         required="false"
-                        type="Time">
-                  </dateTime>
+                        type="String">
+                  </text>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
