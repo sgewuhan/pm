@@ -564,7 +564,7 @@
          <command
                commandId="visualization.command.projectset"
                icon="image/folderproject_24.png"
-               label="添加至项目组合"
+               label="项目组合"
                style="push"
                tooltip="添加至项目组合">
             <visibleWhen
@@ -587,6 +587,22 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="visualization.command.setfilter"
+               icon="image/cal2_24.png"
+               label="数据期间"
+               style="push"
+               tooltip="设置展现的数据期间">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.vis.home">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -599,6 +615,10 @@
             id="visualization.command.projectset"
             name="添加至项目组合">
       </command>
+      <command
+            id="visualization.command.setfilter"
+            name="数据期间">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -609,6 +629,10 @@
       <handler
             class="com.sg.business.visualization.view.handler.ProjectSetAdd"
             commandId="visualization.command.projectset">
+      </handler>
+      <handler
+            class="com.sg.business.visualization.view.handler.SetFilter"
+            commandId="visualization.command.setfilter">
       </handler>
    </extension>
    <extension

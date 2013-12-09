@@ -20,6 +20,13 @@
       <view
             category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
+            id="vault.folder.open"
+            name="开放文档库"
+            restorable="true">
+      </view>
+      <view
+            category="vault"
+            class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.admin"
             name="管理"
             restorable="true">
@@ -100,6 +107,24 @@
          </createEditor>
       </navigator>
       <navigator
+            id="vault.folder.open"
+            tree="vault.folder.open">
+         <filterAction>
+            <column
+                  columnDefinitionId="folder.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="folder.desc">
+            </column>
+         </searchAction>
+         <createEditor
+               createHandler="com.sg.business.vault.editor.FolderCreater"
+               editorId="editor.folder">
+         </createEditor>
+      </navigator>
+      <navigator
             id="vault.documents"
             provideSelection="true"
             table="vault.documents">
@@ -133,6 +158,9 @@
          </masterProvider>
          <masterProvider
                id="vault.folder.granted">
+         </masterProvider>
+         <masterProvider
+               id="vault.folder.open">
          </masterProvider>
       </navigator>
       <navigator
@@ -196,7 +224,7 @@
             editorId="editor.folder"
             id="vault.folder.admin"
             idfield="_id"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:vault.folder.admin">
          <column
                columnDefinitionId="folder.desc">
          </column>
@@ -223,6 +251,27 @@
          </column>
          <structure
                modelRelation="organization_folder">
+         </structure>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+      </tree>
+      <tree
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.folder.VaultOfOpened"
+            dbName="pm2"
+            editorId="editor.folder"
+            id="vault.folder.open"
+            idfield="_id"
+            popupMenu="popup:com.sg.widget.navigator">
+         <column
+               columnDefinitionId="folder.desc">
+         </column>
+         <structure
+               modelRelation="organization_openedfolder">
          </structure>
          <structure
                modelRelation="folder_folder">
@@ -268,6 +317,15 @@
                         required="false"
                         type="String">
                   </text>
+                  <checkbox
+                        editable="true"
+                        id="opened"
+                        label="开放"
+                        labelVisible="true"
+                        name="opened"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                </section>
             </pagecolumn>
          </basicpage>
@@ -362,6 +420,52 @@
                style="toggle">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:vault.folder.admin">
+         <command
+               commandId="com.sg.widgets.command.create"
+               icon="image/create2_24.png"
+               id="create"
+               label="新建文件夹"
+               style="push">
+         </command>
+         <command
+               commandId="vault.folder.createdocument"
+               icon="image/create2_24.png"
+               id="create"
+               label="新建文档"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="编辑"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="更新"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="删除"
+               style="push">
+         </command>
+         <separator
+               name="common.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="加入对比"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -369,12 +473,20 @@
             id="com.sg.business.vault.switchPreview"
             name="显示预览">
       </command>
+      <command
+            id="vault.folder.createdocument"
+            name="新建文档">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="com.sg.business.vault.command.SwitchPreview"
             commandId="com.sg.business.vault.switchPreview">
+      </handler>
+      <handler
+            class="com.sg.business.vault.handler.CreateVaultDocument"
+            commandId="vault.folder.createdocument">
       </handler>
    </extension>
    <extension

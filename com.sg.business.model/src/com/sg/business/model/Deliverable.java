@@ -223,10 +223,12 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,
 		if (!work.hasPermission(context)) {
 			String userId = context.getAccountInfo().getConsignerId();
 			BasicBSONList participatesIdList = work.getParticipatesIdList();
-			for (Object object : participatesIdList) {
-				String participatesId = (String) object;
-				if (userId.equals(participatesId)) {
-					return true;
+			if (participatesIdList != null) {
+				for (Object object : participatesIdList) {
+					String participatesId = (String) object;
+					if (userId.equals(participatesId)) {
+						return true;
+					}
 				}
 			}
 			return false;

@@ -334,6 +334,17 @@
          </view>
          <view
                closeable="false"
+               id="vault.folder.open"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="vault.folder.org"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
                id="vault.folder.admin"
                minimized="false"
                moveable="false"

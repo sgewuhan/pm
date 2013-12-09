@@ -130,43 +130,12 @@ public class ProjectTypeProvider extends ProjectProvider {
 	// return result;
 	// }
 
-	private DBObject getQueryCondtion(Date start, Date stop) {
+	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
+		BasicDBObject dbo = super.getQueryCondtion(start, stop);
 		Object ids = getOrganizationIdCascade(null).toArray();
-		DBObject dbo = new BasicDBObject();
 		dbo.put(Project.F_PROJECT_TYPE_OPTION, getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", ids));
-		dbo.put(ILifecycle.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
-						ILifecycle.STATUS_FINIHED_VALUE,
-						ILifecycle.STATUS_WIP_VALUE }));
-		dbo.put("$or",
-				new BasicDBObject[] {
-
-						new BasicDBObject().append(Project.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(Project.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
-
-						new BasicDBObject().append(
-								"$and",
-								new BasicDBObject[] {
-										new BasicDBObject().append(
-												Project.F_ACTUAL_START,
-												new BasicDBObject().append(
-														"$lte", start)),
-										new BasicDBObject().append(
-												Project.F_ACTUAL_FINISH,
-												new BasicDBObject().append(
-														"$gte", stop)) }) });
-
 		return dbo;
 	}
 
