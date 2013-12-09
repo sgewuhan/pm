@@ -88,11 +88,11 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 		// 显示当前选中流程的信息
 		psp2.setProcessDefinition(processDef);
 
-//		// 设置角色的选择器，项目模板中的角色定义
-//		psp2.setRoleNavigatorId("commons.generic.tableselector");
-//
-//		// 设置用户的选择器
-//		psp2.setActorNavigatorId("commons.generic.tableselector");
+		// // 设置角色的选择器，项目模板中的角色定义
+		// psp2.setRoleNavigatorId("commons.generic.tableselector");
+		//
+		// // 设置用户的选择器
+		// psp2.setActorNavigatorId("commons.generic.tableselector");
 
 		// 设置角色的数据集
 		Project project = work.getProject();
@@ -135,11 +135,13 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 		} else {
 			Project project = work.getProject();
 			List<?> useridList = project.getParticipatesIdList();
-			for (int i = 0; i < useridList.size(); i++) {
-				String userid = (String) useridList.get(i);
-				User user = UserToolkit.getUserById(userid);
-				if (!result.contains(user)) {
-					result.add(user);
+			if (useridList != null) {
+				for (int i = 0; i < useridList.size(); i++) {
+					String userid = (String) useridList.get(i);
+					User user = UserToolkit.getUserById(userid);
+					if (!result.contains(user)) {
+						result.add(user);
+					}
 				}
 			}
 		}
@@ -156,7 +158,7 @@ public class WorkExecuteProcessAssignmentPage extends AbstractFormPageDelegator 
 	@Override
 	public void setFocus() {
 	}
-	
+
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub

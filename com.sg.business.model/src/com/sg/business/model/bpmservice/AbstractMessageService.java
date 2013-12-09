@@ -33,25 +33,28 @@ public abstract class AbstractMessageService extends ServiceProvider {
 
 				String messageTitle = getMessageTitle();
 				String messageContent = getMessageContent();
+				String editId = getEditorId();
+				PrimaryObject target = getTarget();
 
 				List<String> receivers = getReceiverList();
-				BasicDBList receiverList = new BasicDBList();
 				if (receivers != null) {
+					BasicDBList receiverList = new BasicDBList();
 					for (String receiver : receivers) {
 						receiverList.add(receiver);
 					}
 
-				}
-				String editId = getEditorId();
-				PrimaryObject target = getTarget();
-				if (editId != null) {
-					sendMessage(messageTitle, messageContent,
-							(List) receiverList, target, editId,
-							new BPMServiceContext(processName, processId));
+					if (editId != null) {
+						sendMessage(messageTitle, messageContent,
+								(List) receiverList, target, editId,
+								new BPMServiceContext(processName, processId));
+					} else {
+						sendMessage((List) receiverList, messageTitle,
+								messageContent, new BPMServiceContext(
+										processName, processId));
+					}
 				} else {
-					sendMessage((List) receiverList, messageTitle,
-							messageContent, new BPMServiceContext(processName,
-									processId));
+					result.put("returnCode", "ERROR");
+					result.put("returnMessage", "请确认消息发送人");
 				}
 
 			} catch (Exception e) {

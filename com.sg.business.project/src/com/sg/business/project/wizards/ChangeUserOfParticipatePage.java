@@ -36,26 +36,23 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 		this.master = master;
 	}
 
-	
-	
 	@Override
 	public void createControl(Composite parent) {
-		
+
 		Project project = (Project) master;
 		parent.setLayout(new FillLayout());
 		table = createParticipateList(parent, project);
 
-
 		setControl(table.getControl());
-		
+
 		parent.layout();
 		setPageComplete(true);
 	}
-	
+
 	private TableViewer createParticipateList(Composite parent, Project project) {
 
 		TableViewer viewer = new TableViewer(parent, SWT.FULL_SELECTION);
-//		viewer.getTable().setHeaderVisible(false);
+		// viewer.getTable().setHeaderVisible(false);
 		viewer.getTable().setLinesVisible(false);
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
 
@@ -98,7 +95,9 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 				if (inputElement instanceof Project) {
 					List<?> participatesIdList = ((Project) inputElement)
 							.getParticipatesIdList();
-					return participatesIdList.toArray();
+					if (participatesIdList != null) {
+						return participatesIdList.toArray();
+					}
 				}
 				return new Object[0];
 			}
@@ -116,14 +115,15 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 					setMessage("将 \""
 							+ UserToolkit.getUserById((String) element)
 							+ "\" 的工作移交给其他人");
-					
+
 					ChangeUserOfOrgUserPage changeUserOfOrgUserPage = (ChangeUserOfOrgUserPage) getNextPage();
 					if (wiz.getChangeUserId() != null) {
 						changeUserOfOrgUserPage.setErrorMessage(null);
 						changeUserOfOrgUserPage.setMessage("将 \""
 								+ UserToolkit.getUserById((String) element)
 								+ "\" 的工作移交给 \""
-								+ UserToolkit.getUserById(wiz.getChangeUserId())+"\" ");
+								+ UserToolkit.getUserById(wiz.getChangeUserId())
+								+ "\" ");
 					} else {
 						changeUserOfOrgUserPage.setErrorMessage(null);
 						changeUserOfOrgUserPage.setMessage("将 \""

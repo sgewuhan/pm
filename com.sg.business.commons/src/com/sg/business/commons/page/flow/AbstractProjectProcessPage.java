@@ -24,8 +24,7 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
  * @author zhonghua
  * 
  */
-public abstract class AbstractProjectProcessPage extends
-		AbstractProcessPage {
+public abstract class AbstractProjectProcessPage extends AbstractProcessPage {
 
 	@Override
 	protected IProcessControl getIProcessControl() {
@@ -77,11 +76,13 @@ public abstract class AbstractProjectProcessPage extends
 			PrimaryObjectEditorInput input = getInput();
 			Project project = (Project) input.getData();
 			List<?> useridList = project.getParticipatesIdList();
-			for (int i = 0; i < useridList.size(); i++) {
-				String userid = (String) useridList.get(i);
-				User user = UserToolkit.getUserById(userid);
-				if (!result.contains(user)) {
-					result.add(user);
+			if (useridList != null) {
+				for (int i = 0; i < useridList.size(); i++) {
+					String userid = (String) useridList.get(i);
+					User user = UserToolkit.getUserById(userid);
+					if (!result.contains(user)) {
+						result.add(user);
+					}
 				}
 			}
 		}
