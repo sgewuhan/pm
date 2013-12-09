@@ -861,6 +861,7 @@ public class ProjectToolkit {
 	public static void updateProjectSalesData() {
 		DBCollection colPd = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PRODUCT);
+		//TODO 修改当天数据不取
 		String dateCode = String.format("%1$tY%1$tm", Calendar.getInstance());
 		DBCursor cur = colPd.find(new BasicDBObject().append(
 				ProductItem.F_SALES_DATA_UPDATE,

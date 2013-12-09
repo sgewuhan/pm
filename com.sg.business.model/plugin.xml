@@ -306,6 +306,15 @@
             name="组织容器下的目录">
       </relation>
       <relation
+            end1Class="com.sg.business.model.Container"
+            end1Key="_id"
+            end2Class="com.sg.business.model.Folder"
+            end2Condition="com.sg.business.model.condition.ContainerOpenedFolder"
+            end2Key="root_id"
+            id="organization_openedfolder"
+            name="组织容器下的开放目录">
+      </relation>
+      <relation
             end1Class="com.sg.business.model.Folder"
             end1Key="_id"
             end2Class="com.sg.business.model.Folder"

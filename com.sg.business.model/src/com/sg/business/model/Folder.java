@@ -60,6 +60,11 @@ public class Folder extends PrimaryObject {
 	public static final String F_IS_WORKFLOW_FOLDER = "iswfflder";
 
 	/**
+	 * 是否开放文件夹
+	 */
+	public static final String F_OPENED = "opened";
+
+	/**
 	 * 是否项目根文件夹
 	 * @return
 	 */
