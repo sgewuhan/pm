@@ -2,7 +2,7 @@ package com.sg.business.visualization.view;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class DetailMain extends DashWidgetView {
+public class DetailMain extends AbstractDashWidgetView {
 
 	@Override
 	protected void drawContent(Composite parent) {

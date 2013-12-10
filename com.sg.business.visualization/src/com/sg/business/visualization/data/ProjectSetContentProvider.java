@@ -30,7 +30,6 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 	private Object[] aviOrg;
 	DBCollection projectcol;
 	DBCollection orgcol;
-	DBCollection usercol;
 
 	public ProjectSetContentProvider() {
 		super();
@@ -38,8 +37,6 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 				IModelConstants.C_PROJECT);
 		orgcol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
-		usercol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_USER);
 	}
 
 	public ProjectSetContentProvider(TreeConfigurator configurator) {

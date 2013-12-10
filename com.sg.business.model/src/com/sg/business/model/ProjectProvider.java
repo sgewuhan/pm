@@ -180,6 +180,12 @@ public abstract class ProjectProvider extends PrimaryObject {
 		listeners.add(listener);
 	}
 
+	public void removeParameterChangedListener(IParameterListener listener) {
+		if (listeners != null && listener != null) {
+			listeners.remove(listener);
+		}
+	}
+
 	private void parameterChanged(Object[] oldParameters, Object[] newParameters) {
 		if (listeners != null && listeners.size() > 0) {
 			Object[] lis = listeners.getListeners();

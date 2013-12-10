@@ -162,7 +162,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public static final String F_WF_HISTORY = "wf_history";
 
 	public static final String F_SECOND_VID = "svid";
-	
+
 	public static final String F_FILEBASE = "filebase";
 
 	@Override
@@ -184,11 +184,11 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		generateCode();
+		generateCode(getWork());
 		super.doInsert(context);
 	}
 
-	public void generateCode() throws Exception {
+	public void generateCode(Work work) throws Exception {
 
 		String documentNumber = getDocumentNumber();
 		if (documentNumber != null) {
@@ -204,14 +204,15 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			prefix = project.getProjectNumber();
 		} else {
 			// 独立工作文档的编号，公司代码
-			Work work = getWork();
 			if (work != null && work.isStandloneWork()) {
 				User charger = work.getCharger();
-				Organization org = charger.getOrganization();
-				prefix = org.getCompanyCode();
-				while(Utils.isNullOrEmptyString(prefix)){
-					org = (Organization)org.getParentOrganization();
-					prefix=org.getCompanyCode();
+				if (charger != null) {
+					Organization org = charger.getOrganization();
+					prefix = org.getCompanyCode();
+					while (Utils.isNullOrEmptyString(prefix)) {
+						org = (Organization) org.getParentOrganization();
+						prefix = org.getCompanyCode();
+					}
 				}
 			}
 		}
@@ -739,7 +740,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 				Object insid = dbo.get(IDocumentProcess.F_PROCESS_INSTANCEID);
 				if (insid instanceof Long
 						&& ((Long) insid).longValue() == processId) {
-					return  dbo;
+					return dbo;
 				}
 			}
 		}

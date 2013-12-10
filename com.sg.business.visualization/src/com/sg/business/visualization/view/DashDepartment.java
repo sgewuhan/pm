@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.sg.business.model.Organization;
+import com.sg.business.model.OrganizationProjectProvider;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.visualization.chart.ProjectChartFactory;
 import com.sg.widgets.MessageUtil;
@@ -25,8 +26,9 @@ import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.part.NavigatablePartAdapter;
 import com.sg.widgets.part.NavigatorControl;
 
-public class DashDepartment extends DashWidgetView {
+public class DashDepartment extends AbstractDashWidgetView {
 
+	
 	private static final int unit = 10000;
 
 	private static final int Y1_PROCESS_SCHEDUAL = 0;
@@ -149,57 +151,45 @@ public class DashDepartment extends DashWidgetView {
 	}
 
 	private void createLineDataSelector(Composite parent) {
-		Button button = new Button(parent, SWT.RADIO);
-		button.setText("销售收入");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y2Type = Y2_SALES_REVENUE;
-				redrawChart();
-			}
-		});
-
-		button = new Button(parent, SWT.RADIO);
-		button.setText("销售利润");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y2Type = Y2_SALES_PROFIT;
-				redrawChart();
-			}
-		});
+		createY2Button(parent,"销售收入",Y2_SALES_REVENUE);
+		Button button = createY2Button(parent,"销售利润",Y2_SALES_PROFIT);
 		button.setSelection(true);
 
-		button = new Button(parent, SWT.RADIO);
-		button.setText("研发投入");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y2Type = Y2_RND_INVESTMENT;
-				redrawChart();
-			}
-		});
-
-		button = new Button(parent, SWT.RADIO);
-		button.setText("超期进行项目数");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y2Type = Y2_OVER_SCHEDUAL;
-				redrawChart();
-			}
-		});
-
-		button = new Button(parent, SWT.RADIO);
-		button.setText("超支进行项目数");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y2Type = Y2_OVER_BUDGET;
-				redrawChart();
-			}
-		});
+		createY2Button(parent,"研发投入",Y2_RND_INVESTMENT);
+		createY2Button(parent,"超期进行项目数",Y2_OVER_SCHEDUAL);
+		createY2Button(parent,"超支进行项目数",Y2_OVER_BUDGET);
 	}
+
+	private Button createY2Button(Composite parent, String text,final int key) {
+		Button button = new Button(parent, SWT.RADIO);
+		button.setText(text);
+		button.addSelectionListener(new SelectionAdapter(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(((Button)e.getSource()).getSelection()){
+					y2Type = key;
+					redrawChart();
+				}
+			}
+		});
+		return button;
+	}
+	
+	private Button createY1Button(Composite parent, String text,final int key) {
+		Button button = new Button(parent, SWT.RADIO);
+		button.setText(text);
+		button.addSelectionListener(new SelectionAdapter(){
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(((Button)e.getSource()).getSelection()){
+					y1Type = key;
+					redrawChart();
+				}
+			}
+		});
+		return button;
+	}
+
 
 	protected void redrawChart() {
 		List<Organization> orgList = getCheckOrganization(tree.getItems());
@@ -271,9 +261,9 @@ public class DashDepartment extends DashWidgetView {
 				break;
 			}
 		}
-		
-		Chart data = getChartData(null);
-		
+
+		Chart data = getChartData(projectProvider);
+
 		chart.setChart(data);
 		try {
 			chart.redrawChart();
@@ -297,39 +287,16 @@ public class DashDepartment extends DashWidgetView {
 	}
 
 	private void createBarDataSelector(Composite parent) {
-		Button button = new Button(parent, SWT.RADIO);
-		button.setText("正常/超期");
+		Button button = createY1Button(parent, "正常/超期", Y1_PROCESS_SCHEDUAL);
 		button.setToolTipText("在Y轴条图显示正常和超期项目的数量");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y1Type = Y1_PROCESS_SCHEDUAL;
-				redrawChart();
-			}
-		});
 		button.setSelection(true);
 
-		button = new Button(parent, SWT.RADIO);
-		button.setText("正常/超支");
+		button = createY1Button(parent, "正常/超支", Y1_PROCESS_BUDGET);
 		button.setToolTipText("在Y轴条图显示预算正常和有超支风险的项目数量");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y1Type = Y1_PROCESS_BUDGET;
-				redrawChart();
-			}
-		});
 
-		button = new Button(parent, SWT.RADIO);
+		button = createY1Button(parent, "进行/完成", Y1_PROJECT_COUNT);
 		button.setText("进行/完成");
 		button.setToolTipText("在Y轴条图显示正在进行和已经完成的项目数量");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				y1Type = Y1_PROJECT_COUNT;
-				redrawChart();
-			}
-		});
 	}
 
 	private void createDeptSelector(Composite parent) {
@@ -365,8 +332,21 @@ public class DashDepartment extends DashWidgetView {
 
 	protected Chart getChartData(ProjectProvider data) {
 		return ProjectChartFactory.createCombinnationStackedBarChart(
-				"各部门项目运行综合状况", deptParameter, deptValue1, deptValue2,
-				deptValue3, new String[] { title1, title2, title3 });
+				data.getProjectSetName() + "各部门项目运行综合状况", deptParameter,
+				deptValue1, deptValue2, deptValue3, new String[] { title1,
+						title2, title3 });
+	}
+
+	@Override
+	public void projectProviderChanged(ProjectProvider newProjectProvider,
+			ProjectProvider oldProjectProvider) {
+		super.projectProviderChanged(newProjectProvider, oldProjectProvider);
+		if (newProjectProvider instanceof OrganizationProjectProvider) {
+			navi.masterChanged(
+					((OrganizationProjectProvider) newProjectProvider)
+							.getOrganization(), null, null);
+		}
+
 	}
 
 }

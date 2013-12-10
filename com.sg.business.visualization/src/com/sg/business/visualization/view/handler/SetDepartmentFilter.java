@@ -5,8 +5,8 @@ import java.util.Map;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -15,12 +15,13 @@ import org.eclipse.ui.commands.IElementUpdater;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.menus.UIElement;
 
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectProvider;
-import com.sg.business.visualization.ui.DurationSetting;
 import com.sg.business.visualization.ui.ProjectProviderHolder;
-import com.sg.widgets.MessageUtil;
+import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 
-public class SetFilter extends AbstractHandler implements IElementUpdater {
+public class SetDepartmentFilter extends AbstractHandler implements
+		IElementUpdater {
 
 	private ProjectProviderHolder holder;
 
@@ -28,25 +29,29 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell parent = HandlerUtil.getActiveShell(event);
 		holder = ProjectProviderHolder.getInstance();
-		ProjectProvider projectProvider = holder.getProjectProvider();
-		if (projectProvider == null) {
-			MessageUtil.showToast("您没有获取组织的绩效数据权限", SWT.ICON_WARNING);
-			return null;
-		}
-
-		DurationSetting shell = new DurationSetting(parent, projectProvider) {
+		DropdownNavigatorSelector nv = new DropdownNavigatorSelector(
+				"vis.projectset.navigator.org"){
 			@Override
-			protected void setFilter(int yearIndex, int quarterIndex,
-					int monthIndex, boolean clearFilter) {
-				super.setFilter(yearIndex, quarterIndex, monthIndex,
-						clearFilter);
-				refreshCommand();
+			protected void doOK(IStructuredSelection is) {
+				if(is!=null&&!is.isEmpty()){
+					PrimaryObject sel = (PrimaryObject) is.getFirstElement();
+					ProjectProvider pp;
+					if(sel instanceof ProjectProvider){
+						pp = (ProjectProvider) sel;
+					}else{
+						pp = sel.getAdapter(ProjectProvider.class);
+					}
+					if(pp!=null){
+						holder.setCurrentProjectProvider(pp);
+						refreshCommand();
+					}
+				}
+				super.doOK(is);
 			}
 		};
+		Rectangle bounds = new Rectangle(200, 100, 300, 400);
+		nv.show(parent, bounds);
 
-		shell.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		Point location = new Point(0, 100);
-		shell.open(location);
 		return null;
 	}
 
@@ -56,7 +61,7 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 		ICommandService commandService = (ICommandService) window
 				.getService(ICommandService.class);
 		if (commandService != null) {
-			commandService.refreshElements("visualization.command.setfilter",
+			commandService.refreshElements("visualization.command.setdepartment",
 					null);
 		}
 	}
@@ -64,16 +69,15 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void updateElement(UIElement element, Map parameters) {
-		if (holder == null) {
-			element.setText("期间  [本年度]");
-		} else {
-			ProjectProvider projectProvider = holder.getProjectProvider();
-			String text = DurationSetting.getHeadParameterText(projectProvider);
-			if (text.isEmpty()) {
-				element.setText("期间 [请选择] ");
-			} else {
-				element.setText("期间 [ " + text+"]");
+		if(holder!=null){
+			ProjectProvider pp = holder.getProjectProvider();
+			if(pp !=null){
+				element.setText(pp.getProjectSetName());
+			}else{
+				element.setText("组织 [请选择]");
 			}
+		}else{
+			element.setText("组织 [本组织]");
 		}
 	}
 

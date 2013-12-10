@@ -1,4 +1,4 @@
-package com.sg.business.visualization;
+package com.sg.business.visualization.ui;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

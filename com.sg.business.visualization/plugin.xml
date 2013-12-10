@@ -197,6 +197,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="vis.projectset.navigator.org"
+            tree="vis.projectset.navigator.org">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -243,6 +257,34 @@
             lineVisiable="false">
          <column
                columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            collectionName="organization"
+            contentProvider="com.sg.business.visualization.data.ProjectSetContentProvider"
+            dataSet="com.sg.business.model.dataset.organization.OrgOfOwnerManager"
+            dbName="pm2"
+            headerVisiable="false"
+            id="vis.projectset.navigator.org"
+            idfield="_id"
+            lineVisiable="false"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="组织名称"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
          </column>
          <structure
                modelRelation="organization_organization">
@@ -578,10 +620,9 @@
                         variable="selection">
                      <iterate
                            ifEmpty="false">
-                        <test
-                              args="add"
-                              property="vis.projectaction.add">
-                        </test>
+                        <instanceof
+                              value="com.sg.business.model.Project">
+                        </instanceof>
                      </iterate>
                   </with>
                </with>
@@ -590,9 +631,25 @@
          <command
                commandId="visualization.command.setfilter"
                icon="image/cal2_24.png"
-               label="数据期间"
+               label="期间 [本年度]"
                style="push"
                tooltip="设置展现的数据期间">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.vis.home">
+                  </equals>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="visualization.command.setdepartment"
+               icon="image/org_24.png"
+               label="组织 [本组织]"
+               style="push"
+               tooltip="设置展现的项目集">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -617,13 +674,17 @@
       </command>
       <command
             id="visualization.command.setfilter"
-            name="数据期间">
+            name="期间 [本年度]">
+      </command>
+      <command
+            id="visualization.command.setdepartment"
+            name="组织 [本部门]">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.visualization.CheckFlash"
+            class="com.sg.business.visualization.ui.CheckFlash"
             commandId="visualization.command.demo1">
       </handler>
       <handler
@@ -634,16 +695,10 @@
             class="com.sg.business.visualization.view.handler.SetFilter"
             commandId="visualization.command.setfilter">
       </handler>
-   </extension>
-   <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="com.sg.business.visualization.view.propertytest.VisProjectActionTest"
-            id="vis.projectaction"
-            namespace="vis.projectaction"
-            properties="add"
-            type="java.lang.Object">
-      </propertyTester>
+      <handler
+            class="com.sg.business.visualization.view.handler.SetDepartmentFilter"
+            commandId="visualization.command.setdepartment">
+      </handler>
    </extension>
    <extension
          point="com.mobnut.db.documentModelAdapter">

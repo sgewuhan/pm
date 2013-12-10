@@ -1,4 +1,4 @@
-package com.sg.business.visualization.editor;
+package com.sg.business.visualization.ui;
 
 import java.util.Calendar;
 
@@ -24,7 +24,6 @@ public class DurationSetting extends Shell {
 	public DurationSetting(Shell parent, ProjectProvider data) {
 		super(parent, SWT.BORDER);
 		this.projectProvider = data;
-
 		createContent();
 	}
 
@@ -142,7 +141,10 @@ public class DurationSetting extends Shell {
 				return;
 			}
 			Object[] parameters = new Object[2];
+
 			parameters[0] = Calendar.getInstance();
+			((Calendar) parameters[0]).set(Calendar.YEAR, yearIndex);
+			
 			if (monthIndex > 0) {
 				parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_MONTH;
 				((Calendar) parameters[0]).set(Calendar.MONTH, monthIndex - 1);
@@ -151,14 +153,39 @@ public class DurationSetting extends Shell {
 				parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER;
 				((Calendar) parameters[0]).set(Calendar.MONTH,
 						3 * (quarterIndex) - 1);
-
-			} else {
+			} else{
 				parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
-				((Calendar) parameters[0]).set(Calendar.YEAR, yearIndex);
-
 			}
+
 			projectProvider.setParameters(parameters);
 		}
 
+	}
+	
+	public static String getHeadParameterText(ProjectProvider data) {
+		StringBuffer sb = new StringBuffer();
+		if(data == null){
+		}else if (data.parameters != null) {
+			if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR
+					.equals(data.parameters[1])) {
+				sb.append(((Calendar) data.parameters[0]).get(Calendar.YEAR)
+						+ "年");
+			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
+					.equals(data.parameters[1])) {
+				Calendar calendar = (Calendar) data.parameters[0];
+				int month = calendar.get(Calendar.MONTH);
+				sb.append(calendar.get(Calendar.YEAR) + "年"
+						+ (1 + (1 + month) / 4) + "季度");
+			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
+					.equals(data.parameters[1])) {
+				Calendar calendar = (Calendar) data.parameters[0];
+				int month = calendar.get(Calendar.MONTH);
+				sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
+			}
+		}else{
+			sb.append("截至今日");
+		}
+
+		return sb.toString();
 	}
 }

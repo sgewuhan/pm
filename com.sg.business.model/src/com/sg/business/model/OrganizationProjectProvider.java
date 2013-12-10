@@ -52,7 +52,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		try {
-
+			sum.clean();
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = projectCol
@@ -200,6 +200,10 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		} else if (!organization.equals(other.organization))
 			return false;
 		return true;
+	}
+	
+	public Organization getOrganization(){
+		return organization;
 	}
 
 }

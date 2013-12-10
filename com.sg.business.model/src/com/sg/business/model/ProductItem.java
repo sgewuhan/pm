@@ -112,7 +112,7 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 			result[1] += value.doubleValue();
 		}
 
-		String dateCode = String.format("%1$tY%1$tm",Calendar.getInstance());
+		String dateCode = String.format("%1$tY/%1$tm/%1$td",Calendar.getInstance());
 		getCollection().update(
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
