@@ -861,7 +861,7 @@ public class ProjectToolkit {
 	public static void updateProjectSalesData() {
 		DBCollection colPd = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PRODUCT);
-		String dateCode = String.format("%1$tY%1$tm", Calendar.getInstance());
+		String dateCode = String.format("%1$tY/%1$tm/%1$td", Calendar.getInstance());
 		DBCursor cur = colPd.find(new BasicDBObject().append(
 				ProductItem.F_SALES_DATA_UPDATE,
 				new BasicDBObject().append("$ne", dateCode)));

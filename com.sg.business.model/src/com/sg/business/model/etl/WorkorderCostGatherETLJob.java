@@ -21,6 +21,8 @@ public class WorkorderCostGatherETLJob implements ISchedualJobRunnable {
 		WorkorderPeriodCostAdapter adapter = new WorkorderPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, 1);
+
 		for (int i = 0; i > -23; i--) {
 			cal.add(Calendar.MONTH, -1);
 

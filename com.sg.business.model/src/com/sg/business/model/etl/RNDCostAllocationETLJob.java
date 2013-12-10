@@ -30,6 +30,7 @@ public class RNDCostAllocationETLJob implements ISchedualJobRunnable {
 		RNDPeriodCostAdapter adapter = new RNDPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
+
 		 for (int i = 0; i > -23; i--) {
 		cal.add(Calendar.MONTH, -1);
 

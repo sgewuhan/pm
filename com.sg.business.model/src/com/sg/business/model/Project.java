@@ -250,8 +250,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		if (orgIds != null) {
 			for (int i = 0; i < orgIds.size(); i++) {
-				result.add(ModelService.createModelObject(Organization.class,
-						(ObjectId) orgIds.get(i)));
+				ObjectId _id = (ObjectId) orgIds.get(i);
+				if(_id!=null){
+					result.add(ModelService.createModelObject(Organization.class,
+							_id));
+				}
 			}
 		}
 		return result;

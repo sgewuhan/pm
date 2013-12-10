@@ -14,7 +14,8 @@ import com.sg.business.model.dataset.organization.OrgOfOwnerManager;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.part.StandaloneViewPart;
 
-public abstract class DashWidgetView extends StandaloneViewPart implements IParameterListener {
+public abstract class DashWidgetView extends StandaloneViewPart implements
+		IParameterListener {
 
 	protected ProjectProvider projectProvider;
 	private Composite panel;
@@ -27,8 +28,7 @@ public abstract class DashWidgetView extends StandaloneViewPart implements IPara
 
 	private void loadData(final Composite parent) {
 
-		Object value = RWT.getApplicationContext().getAttribute(
-				"projectProvider");
+		Object value = RWT.getUISession().getAttribute("projectProvider");
 		if (value instanceof ProjectProvider) {
 			projectProvider = (ProjectProvider) value;
 		} else {
@@ -37,7 +37,7 @@ public abstract class DashWidgetView extends StandaloneViewPart implements IPara
 			if (!ds.isEmpty()) {
 				Organization org = (Organization) ds.getDataItems().get(0);
 				projectProvider = org.getAdapter(ProjectProvider.class);
-				RWT.getApplicationContext().setAttribute("projectProvider",
+				RWT.getUISession().setAttribute("projectProvider",
 						projectProvider);
 			}
 		}
@@ -48,20 +48,19 @@ public abstract class DashWidgetView extends StandaloneViewPart implements IPara
 		}
 	}
 
-
 	protected abstract void drawContent(Composite parent);
 
 	protected void layout(ChartCanvas chart, int i, int j) {
 		chart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, i, j));
 	}
-	
+
 	@Override
 	public void parameterChanged(Object[] oldParameters, Object[] newParameters) {
 		projectProvider.getData();
 		Control[] children = panel.getChildren();
-		if(children!=null){
+		if (children != null) {
 			for (int i = 0; i < children.length; i++) {
-				if(!children[i].isDisposed()){
+				if (!children[i].isDisposed()) {
 					children[i].dispose();
 				}
 			}
