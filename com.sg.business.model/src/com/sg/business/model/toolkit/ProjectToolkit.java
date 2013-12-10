@@ -871,7 +871,6 @@ public class ProjectToolkit {
 					ProductItem.class);
 			pd.doCalculateSalesData();
 		}
-
 	}
 
 }
