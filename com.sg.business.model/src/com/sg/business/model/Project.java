@@ -160,6 +160,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 项目编辑器
 	 */
 	public static final String EDITOR_CREATE_PLAN = "project.editor";
+	
+	/**
+	 * 项目编辑器
+	 */
+	public static final String EDITOR_PROJECT_FINANCIAL = "editor.project.financial";
 
 	/**
 	 * 项目流程设置
@@ -1057,7 +1062,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 *             抛出写入错误时
 	 */
 	public void doAddParticipate(String[] userIds) throws Exception {
-		if(userIds == null){
+		if (userIds == null) {
 			throw new Exception("请确认需添加的参与者");
 		}
 		DBCollection pjCol = getCollection();
@@ -1658,6 +1663,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				true);
 		checkWriteResult(ws);
 
+		// 归档项目公告
+		col = getCollection(IModelConstants.C_BULLETINBOARD);
+		ws = col.remove(q);
+		checkWriteResult(ws);
+
 		// 归档项目文件
 		Organization org = getFunctionOrganization();
 		if (org == null) {
@@ -1674,10 +1684,24 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						containerOrganizationId)), false, true);
 		checkWriteResult(ws);
 
-		// 归档项目公告
-		col = getCollection(IModelConstants.C_BULLETINBOARD);
-		ws = col.remove(q);
-		checkWriteResult(ws);
+		BasicDBObject condition = new BasicDBObject();
+		condition.put(Deliverable.F_PROJECT_ID, get_id());
+		condition.put(Deliverable.F_TYPE, IDeliverable.TYPE_OUTPUT);
+		List<PrimaryObject> deliverableList = getRelationByCondition(
+				Deliverable.class, condition);
+		if (deliverableList != null) {
+			for (PrimaryObject po : deliverableList) {
+				Deliverable deliverable = (Deliverable) po;
+				Document document = deliverable.getDocument();
+				if (document != null) {
+					String lc = document.getLifecycle();
+					if (Document.STATUS_WORKING_ID.equals(lc)) {
+						document.doSetLifeCycleStatus(context,
+								Document.STATUS_RELEASED_ID);
+					}
+				}
+			}
+		}
 
 		// 写日志
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "项目归档",
@@ -2120,9 +2144,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return result;
 	}
-
-
-
 
 	public List<PrimaryObject> getProduct() {
 		return getRelationById(F__ID, ProductItem.F_PROJECT_ID,
