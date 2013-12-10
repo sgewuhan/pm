@@ -561,17 +561,18 @@ public class Organization extends PrimaryObject {
 	public List<PrimaryObject> getChildrenOrganization() {
 		return getRelationById(F__ID, F_PARENT_ID, Organization.class);
 	}
-	
+
 	/**
 	 * 获得本级及下级的所有组织,不会为null
+	 * 
 	 * @return
 	 */
-	public List<Organization> getOrganizationStructure(){
+	public List<Organization> getOrganizationStructure() {
 		ArrayList<Organization> result = new ArrayList<Organization>();
-		//添加自己
+		// 添加自己
 		result.add(this);
 		List<PrimaryObject> children = getChildrenOrganization();
-		if(children!=null){
+		if (children != null) {
 			for (int i = 0; i < children.size(); i++) {
 				Organization child = (Organization) children.get(i);
 				result.addAll(child.getOrganizationStructure());
@@ -1619,9 +1620,9 @@ public class Organization extends PrimaryObject {
 			}
 			return (T) summary;
 		} else if (adapter == ProjectProvider.class) {
-				OrganizationProjectProvider projectProvider = ModelService
-						.createModelObject(OrganizationProjectProvider.class);
-				projectProvider.setOrganization(this);
+			OrganizationProjectProvider projectProvider = ModelService
+					.createModelObject(OrganizationProjectProvider.class);
+			projectProvider.setOrganization(this);
 			return (T) projectProvider;
 		}
 		return super.getAdapter(adapter);
@@ -1736,6 +1737,20 @@ public class Organization extends PrimaryObject {
 
 	public List<?> getPartContainerCode() {
 		return getListValue(F_PDM_PART_COMTAINER);
+	}
+
+	public List<PrimaryObject> getOpenedFolder() {
+		BasicDBObject query = new BasicDBObject();
+		query.append(Folder.F_ROOT_ID, get_id());
+		query.append(Folder.F_OPENED, Boolean.TRUE);
+		return getRelationByCondition(Folder.class, query);
+	}
+
+	public long getOpenedFolderCount() {
+		BasicDBObject query = new BasicDBObject();
+		query.append(Folder.F_ROOT_ID, get_id());
+		query.append(Folder.F_OPENED, Boolean.TRUE);
+		return getRelationCountByCondition(Folder.class, query);
 	}
 
 }

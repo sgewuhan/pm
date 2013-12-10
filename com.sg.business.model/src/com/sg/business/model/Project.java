@@ -1060,6 +1060,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 *             抛出写入错误时
 	 */
 	public void doAddParticipate(String[] userIds) throws Exception {
+		if(userIds == null){
+			throw new Exception("请确认需添加的参与者");
+		}
 		DBCollection pjCol = getCollection();
 
 		DBObject update = new BasicDBObject().append("$addToSet",

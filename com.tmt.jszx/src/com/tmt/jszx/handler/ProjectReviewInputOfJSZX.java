@@ -12,9 +12,10 @@ import com.sg.bpm.workflow.taskform.TaskFormConfig;
 import com.sg.business.model.TaskForm;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class ProjectReviewReviewOfJSZX implements ITaskFormInputHandler {
+public class ProjectReviewInputOfJSZX implements ITaskFormInputHandler {
 
-	public ProjectReviewReviewOfJSZX() {
+	public ProjectReviewInputOfJSZX() {
+		// TODO Auto-generated constructor stub
 	}
 
 	@SuppressWarnings("unchecked")
@@ -24,15 +25,14 @@ public class ProjectReviewReviewOfJSZX implements ITaskFormInputHandler {
 		if (taskFormData instanceof TaskForm) {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			try {
-				List<String> reviewer_List = (ArrayList<String>) taskForm
+				List<String> reviewer_list = (ArrayList<String>) taskForm
 						.getProcessInstanceVarible("reviewer_list",
 								new CurrentAccountContext());
-				if (reviewer_List != null && reviewer_List.size() > 0) {
-					BasicDBList reviewerList = new BasicDBList();
-					reviewerList.addAll(reviewer_List);
-					taskForm.setValue("reviewer_list", reviewerList);
+				if (reviewer_list != null && reviewer_list.size() > 0) {
+					BasicDBList reviewerlist = new BasicDBList();
+					reviewerlist.addAll(reviewer_list);
+					taskForm.setValue("reviewer_list", reviewerlist);
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -773,6 +773,19 @@
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="jszx.jszxProjectReview.application"
+            inputHandler="com.tmt.jszx.handler.ProjectReviewInputOfJSZX"
+            name="重新提交评审"
+            persistentFields="reviewer_list,accessory"
+            processDefinitionId="jszx.jszxProjectReview"
+            saveHandler="com.tmt.jszx.handler.ProjectReviewAuditSaveOfJSZX">
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="reviewer_list"
+               taskFormFieldName="reviewer_list">
+         </processParameter>
+      </taskForm>
+      <taskForm
             editorId="jszx.jszxProjectReview.deptdirector"
             name="研究室审核"
             persistentFields="choice,comment,accessory"

@@ -30,24 +30,23 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 		Work work = (Work) input.getData();
 		return work;
 	}
-	
+
 	@Override
 	protected String getActorNavigatorId(AbstractRoleDefinition roled) {
-		//如果是非项目工作
+		// 如果是非项目工作
 		Work work = getWork();
 		Project project = work.getProject();
-		if(project==null){
-			//没有关联项目的独立工作
+		if (project == null) {
+			// 没有关联项目的独立工作
 			ProcessSettingPanel2 psp = getProcessSettingPanel();
 			AbstractRoleDefinition role = psp.getSelectedRole();
-			if(role == null){
+			if (role == null) {
 				return "organization.user.selector";
 			}
 		}
-		
+
 		return super.getActorNavigatorId(roled);
 	}
-	
 
 	@Override
 	public ProcessSettingPanel2 createPageContent(Composite parent,
@@ -124,16 +123,18 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 		Project project = work.getProject();
 		if (project != null) {
 			List<?> useridList = project.getParticipatesIdList();
-			for (int i = 0; i < useridList.size(); i++) {
-				String userid = (String) useridList.get(i);
-				User user = UserToolkit.getUserById(userid);
-				if (!result.contains(user)) {
-					result.add(user);
+			if (useridList != null) {
+				for (int i = 0; i < useridList.size(); i++) {
+					String userid = (String) useridList.get(i);
+					User user = UserToolkit.getUserById(userid);
+					if (!result.contains(user)) {
+						result.add(user);
+					}
 				}
 			}
 			return new DataSet(result);
-		}else{
-			//没有定义项目的工作（独立工作）
+		} else {
+			// 没有定义项目的工作（独立工作）
 			return null;
 		}
 	}

@@ -5,11 +5,9 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
@@ -2204,6 +2202,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				document.initVerStatus();
 				document.initVersionNumber();
 				document.initInsertDefault(document.get_data(), context);
+				document.generateCode(this);
 				docList[i++] = document.get_data();
 			}
 			ws = docCol.insert(docList, WriteConcern.NORMAL);
@@ -4608,24 +4607,18 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public void doAddParticipateList(List<?> userList) throws Exception {
-		//TODO
-		Set<String> allUser = new HashSet<String>();
-		BasicBSONList participates = getParticipatesIdList();
-		for (Object obj : userList) {
-			if (!allUser.contains(obj)) {
-				allUser.add((String) obj);
-			}
+		if(userList == null){
+			throw new Exception("请确认需添加的参与者");
 		}
-		for (Object obj : participates) {
-			if (!allUser.contains(obj)) {
-				allUser.add((String) obj);
-			}
-		}
-		DBCollection col = getCollection();
-		WriteResult ws = col.update(
-				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set",
-						new BasicDBObject().append(F_PARTICIPATE, allUser)));
+		DBCollection workCol = getCollection();
+
+		DBObject update = new BasicDBObject().append("$addToSet",
+				new BasicDBObject().append(Work.F_PARTICIPATE,
+						new BasicDBObject().append("$each", userList.toArray(new String[0]))));
+
+		WriteResult ws = workCol.update(
+				new BasicDBObject().append(Work.F__ID, get_id()), update,
+				false, false);
 		checkWriteResult(ws);
 	}
 

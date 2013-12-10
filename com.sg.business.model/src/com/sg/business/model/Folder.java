@@ -9,6 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -60,7 +61,13 @@ public class Folder extends PrimaryObject {
 	public static final String F_IS_WORKFLOW_FOLDER = "iswfflder";
 
 	/**
+	 * 是否开放文件夹
+	 */
+	public static final String F_OPENED = "opened";
+
+	/**
 	 * 是否项目根文件夹
+	 * 
 	 * @return
 	 */
 	public boolean isFolderRoot() {
@@ -69,6 +76,7 @@ public class Folder extends PrimaryObject {
 
 	/**
 	 * 是否流程生成文件夹
+	 * 
 	 * @return
 	 */
 	public boolean isWFFolder() {
@@ -259,5 +267,36 @@ public class Folder extends PrimaryObject {
 	@Override
 	public String getDefaultEditorId() {
 		return "editor.folder";
+	}
+
+	public Document makeCreateDocument(IContext context) {
+		Document doc;
+		ObjectId projectId = (ObjectId) getValue(F_PROJECT_ID);
+		ObjectId folderId = get_id();
+		ObjectId root_id = getRoot_id();
+		String filebase = null;
+		Organization org = null;
+		if (root_id != null) {
+			if (!root_id.equals(folderId)) {
+				org = ModelService.createModelObject(Organization.class,
+						root_id);
+			}
+		}
+		if (org == null) {
+			String userId = context.getAccountInfo().getConsignerId();
+			User user = UserToolkit.getUserById(userId);
+			org = user.getOrganization();
+		}
+		Organization container = org.getContainerOrganization();
+		filebase = container.getFileBase();
+
+		doc = ModelService.createModelObject(Document.class);
+		doc.setValue(Document.F_PROJECT_ID, projectId);
+		doc.setValue(Document.F_FOLDER_ID, folderId);
+		doc.setValue(Document.F_FILEBASE, filebase);
+		doc.setValue(Document.F_LIFECYCLE, Document.STATUS_WORKING_ID);
+		doc.setValue(Document.F_LOCK, Boolean.FALSE);
+
+		return doc;
 	}
 }

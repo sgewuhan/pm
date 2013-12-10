@@ -381,6 +381,12 @@
             serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
       </service>
       <service
+            interface="meetingmessage.service.action"
+            name="立项评审会议通知"
+            operation="projectapplication"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
+      </service>
+      <service
             interface="documentapproval.service.action"
             name="文件审批消息服务"
             operation="message"
