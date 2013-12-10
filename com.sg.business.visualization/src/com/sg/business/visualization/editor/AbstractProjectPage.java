@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Table;
 
 import com.sg.business.model.IParameterListener;
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.visualization.ui.DurationSetting;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;

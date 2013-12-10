@@ -1,24 +1,22 @@
 package com.sg.business.visualization.view;
 
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.mobnut.db.model.DataSet;
-import com.sg.business.model.IParameterListener;
-import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectProvider;
-import com.sg.business.model.dataset.organization.OrgOfOwnerManager;
+import com.sg.business.visualization.ui.IProjectProviderHolderListener;
+import com.sg.business.visualization.ui.ProjectProviderHolder;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.part.StandaloneViewPart;
 
-public abstract class DashWidgetView extends StandaloneViewPart implements
-		IParameterListener {
+public abstract class AbstractDashWidgetView extends StandaloneViewPart
+		implements IProjectProviderHolderListener {
 
 	protected ProjectProvider projectProvider;
 	private Composite panel;
+	private ProjectProviderHolder holder;
 
 	@Override
 	final protected void createContent(Composite parent) {
@@ -27,25 +25,16 @@ public abstract class DashWidgetView extends StandaloneViewPart implements
 	}
 
 	private void loadData(final Composite parent) {
+		holder = ProjectProviderHolder.getInstance();
+		holder.addListener(this);
+		projectProvider = holder.getProjectProvider();
+		loadProjectProvider();
+	}
 
-		Object value = RWT.getUISession().getAttribute("projectProvider");
-		if (value instanceof ProjectProvider) {
-			projectProvider = (ProjectProvider) value;
-		} else {
-			final OrgOfOwnerManager oom = new OrgOfOwnerManager();
-			DataSet ds = oom.getDataSet();
-			if (!ds.isEmpty()) {
-				Organization org = (Organization) ds.getDataItems().get(0);
-				projectProvider = org.getAdapter(ProjectProvider.class);
-				RWT.getUISession().setAttribute("projectProvider",
-						projectProvider);
-			}
-		}
-		if (projectProvider != null) {
-			projectProvider.addParameterChangedListener(this);
-			projectProvider.getData();
-			drawContent(parent);
-		}
+	@Override
+	public void dispose() {
+		holder.removeListener(this);
+		super.dispose();
 	}
 
 	protected abstract void drawContent(Composite parent);
@@ -56,7 +45,18 @@ public abstract class DashWidgetView extends StandaloneViewPart implements
 
 	@Override
 	public void parameterChanged(Object[] oldParameters, Object[] newParameters) {
-		projectProvider.getData();
+		clean();
+		loadProjectProvider();
+	}
+
+	private void loadProjectProvider() {
+		if(projectProvider!=null){
+			projectProvider.getData();
+			drawContent(panel);
+		}
+	}
+
+	private void clean() {
 		Control[] children = panel.getChildren();
 		if (children != null) {
 			for (int i = 0; i < children.length; i++) {
@@ -65,6 +65,14 @@ public abstract class DashWidgetView extends StandaloneViewPart implements
 				}
 			}
 		}
-		drawContent(panel);
+	}
+
+	@Override
+	public void projectProviderChanged(ProjectProvider newProjectProvider,
+			ProjectProvider oldProjectProvider) {
+		projectProvider = newProjectProvider;
+		projectProvider.addParameterChangedListener(this);
+		clean();
+		loadProjectProvider();
 	}
 }

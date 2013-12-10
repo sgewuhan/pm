@@ -201,5 +201,9 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			return false;
 		return true;
 	}
+	
+	public Organization getOrganization(){
+		return organization;
+	}
 
 }

@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.sg.business.model.ProjectProvider;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
-public abstract class DashSingleChart extends DashWidgetView {
+public abstract class DashSingleChart extends AbstractDashWidgetView {
 
 	private ChartCanvas chart;
 

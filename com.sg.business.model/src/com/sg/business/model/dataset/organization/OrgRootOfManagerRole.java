@@ -5,15 +5,15 @@ import java.util.List;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
-import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class OrgRootOfManagerRole extends SingleDBCollectionDataSetFactory {
+public class OrgRootOfManagerRole extends MasterDetailDataSetFactory {
 
 	private User user;
 
@@ -25,8 +25,13 @@ public class OrgRootOfManagerRole extends SingleDBCollectionDataSetFactory {
 
 	@Override
 	public DataSet getDataSet() {
-		List<PrimaryObject> orglist = user
-				.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
+		List<PrimaryObject> orglist = new ArrayList<PrimaryObject>();
+		if (master == null) {
+			orglist = user
+					.getRoleGrantedInAllOrganization(Role.ROLE_DEPT_MANAGER_ID);
+		} else if (master instanceof Organization) {
+			orglist.add(master);
+		}
 		List<PrimaryObject> input = new ArrayList<PrimaryObject>();
 
 		for (int i = 0; i < orglist.size(); i++) {
@@ -48,6 +53,11 @@ public class OrgRootOfManagerRole extends SingleDBCollectionDataSetFactory {
 			}
 		}
 		return new DataSet(orglist);
+	}
+
+	@Override
+	protected String getDetailCollectionKey() {
+		return null;
 	}
 
 }

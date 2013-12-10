@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.sg.business.visualization.chart.ProjectChartFactory;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
-public class DashMainIndicators extends DashWidgetView {
+public class DashMainIndicators extends AbstractDashWidgetView {
 
 	private ChartCanvas projectSchedualMeter;
 	private ChartCanvas projectBudgetControlMeter;

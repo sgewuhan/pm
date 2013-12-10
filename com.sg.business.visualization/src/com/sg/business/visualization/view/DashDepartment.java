@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.sg.business.model.Organization;
+import com.sg.business.model.OrganizationProjectProvider;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.visualization.chart.ProjectChartFactory;
 import com.sg.widgets.MessageUtil;
@@ -25,7 +26,7 @@ import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.part.NavigatablePartAdapter;
 import com.sg.widgets.part.NavigatorControl;
 
-public class DashDepartment extends DashWidgetView {
+public class DashDepartment extends AbstractDashWidgetView {
 
 	private static final int unit = 10000;
 
@@ -271,9 +272,9 @@ public class DashDepartment extends DashWidgetView {
 				break;
 			}
 		}
-		
-		Chart data = getChartData(null);
-		
+
+		Chart data = getChartData(projectProvider);
+
 		chart.setChart(data);
 		try {
 			chart.redrawChart();
@@ -365,8 +366,22 @@ public class DashDepartment extends DashWidgetView {
 
 	protected Chart getChartData(ProjectProvider data) {
 		return ProjectChartFactory.createCombinnationStackedBarChart(
-				"各部门项目运行综合状况", deptParameter, deptValue1, deptValue2,
-				deptValue3, new String[] { title1, title2, title3 });
+				data.getProjectSetName() + "各部门项目运行综合状况", deptParameter,
+				deptValue1, deptValue2, deptValue3, new String[] { title1,
+						title2, title3 });
+	}
+
+	@Override
+	public void projectProviderChanged(ProjectProvider newProjectProvider,
+			ProjectProvider oldProjectProvider) {
+		super.projectProviderChanged(newProjectProvider, oldProjectProvider);
+		if (newProjectProvider instanceof OrganizationProjectProvider) {
+			navi.masterChanged(
+					((OrganizationProjectProvider) newProjectProvider)
+							.getOrganization(), null, null);
+			;
+		}
+
 	}
 
 }
