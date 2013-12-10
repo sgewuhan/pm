@@ -123,6 +123,29 @@ public class ProjectSetSummaryData {
 	}
 
 
+	public void clean() {
+		total = 0;
+		finished = 0;
+		processing = 0;
+		processing_normal = 0;
+		processing_delay = 0;
+		processing_advance = 0;
+		finished_normal = 0;
+		finished_delay = 0;
+		finished_advance = 0;
+		finished_cost_normal = 0;
+		finished_cost_over  = 0;
+		processing_cost_normal = 0;
+		processing_cost_over  = 0;
+		total_budget_amount = 0;
+		total_investment_amount = 0;
+		total_sales_revenue = 0;
+		total_sales_cost = 0;
+		subOrganizationProjectProvider.clear();
+		subChargerProjectProvider.clear();
+	}
+
+
 
 	
 }

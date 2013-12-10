@@ -1,7 +1,6 @@
 package com.sg.business.visualization.editor;
 
 import java.net.URL;
-import java.util.Calendar;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
@@ -229,29 +228,6 @@ public abstract class AbstractProjectPage implements
 		shell.open(location);
 	}
 
-	protected String getHeadParameterText() {
-		StringBuffer sb = new StringBuffer();
-		if (data.parameters != null) {
-			if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR
-					.equals(data.parameters[1])) {
-				sb.append(((Calendar) data.parameters[0]).get(Calendar.YEAR)
-						+ "年");
-			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
-					.equals(data.parameters[1])) {
-				Calendar calendar = (Calendar) data.parameters[0];
-				int month = calendar.get(Calendar.MONTH);
-				sb.append(calendar.get(Calendar.YEAR) + "年"
-						+ (1 + (1 + month) / 4) + "季度");
-			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
-					.equals(data.parameters[1])) {
-				Calendar calendar = (Calendar) data.parameters[0];
-				int month = calendar.get(Calendar.MONTH);
-				sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
-			}
-		}
-
-		return sb.toString();
-	}
 
 	private void setBackgroundGradient(Composite header) {
 		Object adapter = header.getAdapter(IWidgetGraphicsAdapter.class);
@@ -269,7 +245,7 @@ public abstract class AbstractProjectPage implements
 	protected String getParameterText() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(getHeadParameterText());
+		sb.append(DurationSetting.getHeadParameterText(data));
 		sb.append("</span>");
 		return sb.toString();
 	}

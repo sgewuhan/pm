@@ -8,8 +8,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -27,13 +25,13 @@ import com.sg.widgets.MessageUtil;
 
 public class SetFilter extends AbstractHandler implements IElementUpdater {
 
+	private ProjectProvider projectProvider;
+
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell parent = HandlerUtil.getActiveShell(event);
 
-		Object value = RWT.getApplicationContext().getAttribute(
-				"projectProvider");
-		ProjectProvider projectProvider;
+		Object value = RWT.getUISession().getAttribute("projectProvider");
 		if (value instanceof ProjectProvider) {
 			projectProvider = (ProjectProvider) value;
 		} else {
@@ -58,27 +56,36 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 					int monthIndex, boolean clearFilter) {
 				super.setFilter(yearIndex, quarterIndex, monthIndex,
 						clearFilter);
-				IWorkbenchWindow window = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow();
-				ICommandService commandService = (ICommandService) window
-						.getService(ICommandService.class);
-				if (commandService != null) {
-					commandService.refreshElements(
-							"visualization.command.setfilter", null);
-				}
+				refreshCommand();
 			}
 		};
+
 		shell.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-		Rectangle b = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getBounds();
-		Point location = new Point(b.width / 2
-				- shell.getSize().x / 2, 0);
+		Point location = new Point(0, 100);
 		shell.open(location);
 		return null;
 	}
 
+	private void refreshCommand() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		ICommandService commandService = (ICommandService) window
+				.getService(ICommandService.class);
+		if (commandService != null) {
+			commandService.refreshElements("visualization.command.setfilter",
+					null);
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void updateElement(UIElement element, Map parameters) {
-		System.out.println();
+		String text = DurationSetting.getHeadParameterText(projectProvider);
+		if(text.isEmpty()){
+			element.setText("期间 ");
+		}else{
+			element.setText("期间 "+text);
+		}
 	}
 
 }
