@@ -16,11 +16,15 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
+import com.sg.business.model.IModelConstants;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 
@@ -159,26 +163,28 @@ public class WorkListCreater extends Composite {
 		viewer.refresh();
 	}
 
-	public void createDeliverable(Work work, List<Document> docList) {
+	public void createDeliverable(Work work, List<Document> docList, String type) {
 		if (docList != null) {
-			String docType = null;
 			for (Document doc : docList) {
-				String ouid = (String) doc.getValue(Document.F_PDM_OUID);
-				if (!Utils.isNullOrEmptyString(ouid)) {
-					docType = Deliverable.TYPE_LINK;
-				} else {
-					docType = Deliverable.TYPE_REFERENCE;
+				if (type == null) {
+					DBCollection delCol = DBActivator.getCollection(
+							IModelConstants.DB, IModelConstants.C_DELIEVERABLE);
+					long count = delCol.count(new BasicDBObject().append(
+							Deliverable.F_DOCUMENT_ID, doc.get_id()));
+					if (count > 0) {
+						type = Deliverable.TYPE_LINK;
+					} else {
+						type = Deliverable.TYPE_OUTPUT;
+					}
 				}
-
-				createDeliverable(work, doc, docType);
-
+				createDeliverable(work, doc, type);
 			}
 		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createDeliverable(Work work, Document doc, String type) {
-		// TODO 沒有处理持久久化的工作
+		
 		Deliverable deliverable = work.makeDeliverableDefinition(type);
 		deliverable.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
 		deliverable.setParentPrimaryObject(work);

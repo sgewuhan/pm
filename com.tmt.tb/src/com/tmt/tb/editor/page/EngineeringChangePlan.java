@@ -29,6 +29,7 @@ import com.mongodb.DBObject;
 import com.sg.business.commons.ui.part.WorkListCreater;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
+import com.sg.business.model.IDeliverable;
 import com.sg.business.model.Project;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.Work;
@@ -377,7 +378,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 					protected void doOK(IStructuredSelection is) {
 						List docList =is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList);
+							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_REFERENCE);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -436,7 +437,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 					protected void doOK(IStructuredSelection is) {
 						List docList =is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList);
+							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_LINK);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -481,7 +482,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				try {
 					List<Document> docList = DCPDMUtil.getDocumentFromDCPDM(
 							userid, parent.getShell());
-					workListCreater.createDeliverable(work, docList);
+					workListCreater.createDeliverable(work, docList,null);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 				}
