@@ -4319,6 +4319,22 @@
                title="日历">
          </navigatorpage>
       </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="editor.project.financial"
+            image="image/financial_24.png"
+            isDefault="true"
+            memo="用于查看项目预算使用"
+            name="查看预算">
+         <basicpage
+               description="项目预算科目和金额"
+               id="project.financial"
+               image="image/financial_24.png"
+               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               title="预算">
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">

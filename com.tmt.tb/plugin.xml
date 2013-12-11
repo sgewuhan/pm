@@ -735,6 +735,11 @@
                         persistable="true"
                         type="String"
                         widthHint="320">
+                     <fieldaction
+                           handler="com.tmt.tb.handler.OpenBudget"
+                           image="image/financial_24.png"
+                           name="参看预算">
+                     </fieldaction>
                   </text>
                </section>
                <section
@@ -751,9 +756,9 @@
                         type="String">
                   </radio>
                   <radio
-                        editable="true"
                         id="changeworkorder"
-                        label="工作令号是否有误"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="是否通过工作令号"
                         labelVisible="true"
                         name="changeworkorder"
                         option="是\否"
@@ -764,7 +769,8 @@
                   <radio
                         editable="true"
                         id="changebudget"
-                        label="预算是否有误"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="是否通过预算"
                         labelVisible="true"
                         name="changebudget"
                         option="是\否"
