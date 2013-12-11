@@ -211,6 +211,10 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="vis.projectset.costdetail"
+            table="vis.projectset.costdetail">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -515,6 +519,23 @@
                name="利润"
                type="String"
                width="60">
+         </column>
+      </table>
+      <table
+            headerVisiable="true"
+            id="vis.projectset.costdetail"
+            lineVisiable="true"
+            multiSelection="true"
+            preload="20"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               name="项目名称">
+         </column>
+         <column
+               column="desc"
+               name="项目名称">
          </column>
       </table>
    </extension>
