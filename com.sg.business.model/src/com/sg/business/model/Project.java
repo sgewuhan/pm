@@ -31,6 +31,7 @@ import com.mobnut.db.model.ModelRelation;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -160,7 +161,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * 项目编辑器
 	 */
 	public static final String EDITOR_CREATE_PLAN = "project.editor";
-	
+
 	/**
 	 * 项目编辑器
 	 */
@@ -256,9 +257,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (orgIds != null) {
 			for (int i = 0; i < orgIds.size(); i++) {
 				ObjectId _id = (ObjectId) orgIds.get(i);
-				if(_id!=null){
-					result.add(ModelService.createModelObject(Organization.class,
-							_id));
+				if (_id != null) {
+					result.add(ModelService.createModelObject(
+							Organization.class, _id));
 				}
 			}
 		}
@@ -655,7 +656,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		job.schedule();
 
 	}
-
+	
 	private void generateCode() throws Exception {
 		Organization org = getFunctionOrganization();
 		if (org == null) {
@@ -2208,6 +2209,89 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public ProjectETL getETL() {
 		return new ProjectETL(this);
+	}
+
+	/**
+	 * 按月计算工作令号的成本
+	 * 
+	 * @param collection
+	 * 
+	 * @return
+	 */
+	public List<DBObject> getAggregationCost(String collection) {
+		DBCollection col = getCollection(collection);
+		String[] workorders = getWorkOrders();
+		DBObject matchCondition = new BasicDBObject();
+		matchCondition.put(Project.F_WORK_ORDER,
+				new BasicDBObject().append("$in", workorders));
+		DBObject match = new BasicDBObject().append("$match", matchCondition);
+		DBObject groupCondition = new BasicDBObject();
+		groupCondition.put(
+				"_id",
+				new BasicDBObject().append(WorkOrderPeriodCost.F_YEAR,
+						"$" + WorkOrderPeriodCost.F_YEAR).append(
+						WorkOrderPeriodCost.F_MONTH,
+						"$" + WorkOrderPeriodCost.F_MONTH));//
+		String[] costElements = CostAccount.getCostElemenArray();
+		for (int i = 0; i < costElements.length; i++) {
+			groupCondition.put(costElements[i],
+					new BasicDBObject().append("$sum", "$" + costElements[i]));
+		}
+		DBObject group = new BasicDBObject().append("$group", groupCondition);
+		AggregationOutput agg = col.aggregate(match, group);
+		Iterable<DBObject> results = agg.results();
+		Iterator<DBObject> iter = results.iterator();
+
+		double summary = 0d;
+		ArrayList<DBObject> result = new ArrayList<DBObject>();
+		while (iter.hasNext()) {
+			DBObject data = iter.next();
+			for (int i = 0; i < costElements.length; i++) {
+				Number value = (Number) data.get(costElements[i]);
+				summary += value.doubleValue();
+			}
+			data.put("summ", summary);
+			result.add(data);
+		}
+
+		return result;
+	}
+
+	public List<DBObject> getAggregationRevenue() {
+		DBCollection col = getCollection(IModelConstants.C_SALESDATA);
+		String[] productCode = getProductCode();
+		DBObject matchCondition = new BasicDBObject();
+		matchCondition.put(SalesData.F_MATERIAL_NUMBER,
+				new BasicDBObject().append("$in", productCode));
+		DBObject match = new BasicDBObject().append("$match", matchCondition);
+		DBObject groupCondition = new BasicDBObject();
+		groupCondition.put(
+				"_id",
+				new BasicDBObject().append(SalesData.F_ACCOUNT_YEAR,
+						"$" + SalesData.F_ACCOUNT_YEAR).append(
+						SalesData.F_ACCOUNT_MONTH,
+						"$" + SalesData.F_ACCOUNT_MONTH));//
+		groupCondition.put(
+				SalesData.F_SALES_INCOME,
+				new BasicDBObject().append("$sum", "$"
+						+ SalesData.F_SALES_INCOME));
+		groupCondition.put(
+				SalesData.F_SALES_COST,
+				new BasicDBObject().append("$sum", "$"
+						+ SalesData.F_SALES_COST));
+
+		DBObject group = new BasicDBObject().append("$group", groupCondition);
+		AggregationOutput agg = col.aggregate(match, group);
+		Iterable<DBObject> results = agg.results();
+		Iterator<DBObject> iter = results.iterator();
+
+		ArrayList<DBObject> result = new ArrayList<DBObject>();
+		while (iter.hasNext()) {
+			DBObject data = iter.next();
+			result.add(data);
+		}
+
+		return result;
 	}
 
 }
