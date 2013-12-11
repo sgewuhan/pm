@@ -207,8 +207,8 @@ public class ProjectChartFactory {
 		bs1.setDataSet(orthoValues1);
 		bs1.setStacked(true);
 		bs1.getLabel().setVisible(true);
-		if(seriesTitle ==null){
-		}else{
+		if (seriesTitle == null) {
+		} else {
 			bs1.setSeriesIdentifier(seriesTitle);
 		}
 		font = bs1.getLabel().getCaption().getFont();
@@ -326,6 +326,129 @@ public class ProjectChartFactory {
 		sdY.getSeries().add(bs2);
 
 		return cwaBar;
+	}
+
+	private static Chart createLineChart(String title, String[] deptParameter,
+			double[] deptValue1, double[] deptValue2, String[] seriesTitle) {
+		ChartWithAxes cwaLine = ChartWithAxesImpl.create();
+		cwaLine.setType("Line Chart"); //$NON-NLS-1$
+		cwaLine.setSubType("Overlay"); //$NON-NLS-1$
+
+		// Plot
+		cwaLine.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
+		Plot p = cwaLine.getPlot();
+		p.getClientArea().setBackground(ColorDefinitionImpl.TRANSPARENT());
+
+		// Title
+		cwaLine.getTitle().getLabel().getCaption().setValue(title);//$NON-NLS-1$
+		FontDefinition font = cwaLine.getTitle().getLabel().getCaption()
+				.getFont();
+		adjustFont(font, STRONG_SIZE);
+		// Legend
+		Legend lg = cwaLine.getLegend();
+		LineAttributes lia = lg.getOutline();
+		font = lg.getText().getFont();
+		adjustFont(font, SMALL_SIZE);
+		lia.setStyle(LineStyle.SOLID_LITERAL);
+		lg.getInsets().setLeft(10);
+		lg.getInsets().setRight(10);
+
+		// X-Axis
+		Axis xAxisPrimary = cwaLine.getPrimaryBaseAxes()[0];
+		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
+		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
+		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
+		font = xAxisPrimary.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+		// Y-Axis
+		Axis yAxisPrimary = cwaLine.getPrimaryOrthogonalAxis(xAxisPrimary);
+		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
+		font = yAxisPrimary.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+		// Data Set
+		TextDataSet categoryValues = TextDataSetImpl.create(deptParameter);
+		NumberDataSet orthoValues1 = NumberDataSetImpl.create(deptValue1);
+		NumberDataSet orthoValues2 = NumberDataSetImpl.create(deptValue2);
+		// NumberDataSet orthoValues3 = NumberDataSetImpl.create( deptValue3);
+
+		SampleData sd = DataFactory.eINSTANCE.createSampleData();
+		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
+		sdBase.setDataSetRepresentation("");//$NON-NLS-1$
+		sd.getBaseSampleData().add(sdBase);
+
+		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE
+				.createOrthogonalSampleData();
+		sdOrthogonal1.setDataSetRepresentation("");//$NON-NLS-1$
+		sdOrthogonal1.setSeriesDefinitionIndex(0);
+		sd.getOrthogonalSampleData().add(sdOrthogonal1);
+
+		OrthogonalSampleData sdOrthogonal2 = DataFactory.eINSTANCE
+				.createOrthogonalSampleData();
+		sdOrthogonal2.setDataSetRepresentation("");//$NON-NLS-1$
+		sdOrthogonal2.setSeriesDefinitionIndex(1);
+		sd.getOrthogonalSampleData().add(sdOrthogonal2);
+
+		// OrthogonalSampleData sdOrthogonal3 =
+		// DataFactory.eINSTANCE.createOrthogonalSampleData( );
+		//		sdOrthogonal3.setDataSetRepresentation( "" );//$NON-NLS-1$
+		// sdOrthogonal3.setSeriesDefinitionIndex( 2 );
+		// sd.getOrthogonalSampleData( ).add( sdOrthogonal3 );
+
+		cwaLine.setSampleData(sd);
+
+		// X-Series
+		Series seCategory = SeriesImpl.create();
+		seCategory.setDataSet(categoryValues);
+		SeriesDefinition sdX = SeriesDefinitionImpl.create();
+
+		xAxisPrimary.getSeriesDefinitions().add(sdX);
+		sdX.getSeries().add(seCategory);
+
+		// Y-Sereis
+		LineSeries ls1 = (LineSeries) LineSeriesImpl.create();
+		ls1.setDataSet(orthoValues1);
+		ls1.getLineAttributes().setColor(ColorDefinitionImpl.CREAM());
+		for (int i = 0; i < ls1.getMarkers().size(); i++) {
+			((Marker) ls1.getMarkers().get(i))
+					.setType(MarkerType.CIRCLE_LITERAL);
+		}
+		ls1.getLabel().setVisible(true);
+		ls1.setSeriesIdentifier(seriesTitle[0]);
+		font = ls1.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+
+		LineSeries ls2 = (LineSeries) LineSeriesImpl.create();
+		ls2.setDataSet(orthoValues2);
+		ls2.getLineAttributes().setColor(ColorDefinitionImpl.CREAM());
+		for (int i = 0; i < ls2.getMarkers().size(); i++) {
+			((Marker) ls2.getMarkers().get(i))
+					.setType(MarkerType.TRIANGLE_LITERAL);
+		}
+		ls2.getLabel().setVisible(true);
+		ls2.setSeriesIdentifier(seriesTitle[1]);
+		font = ls2.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+
+		// LineSeries ls3 = (LineSeries) LineSeriesImpl.create( );
+		// ls3.setDataSet( orthoValues3 );
+		// ls3.getLineAttributes( ).setColor( ColorDefinitionImpl.CREAM( ) );
+		// for ( int i = 0; i < ls3.getMarkers( ).size( ); i++ )
+		// {
+		// ( (Marker) ls3.getMarkers( ).get( i ) ).setType(
+		// MarkerType.TRIANGLE_LITERAL );
+		// }
+		// ls3.getLabel( ).setVisible( true );
+		// font = ls3.getLabel().getCaption().getFont();
+		// adjustFont(font, NORMAL_SIZE);
+
+		SeriesDefinition sdY = SeriesDefinitionImpl.create();
+		sdY.getSeriesPalette().shift(-2);
+		yAxisPrimary.getSeriesDefinitions().add(sdY);
+		sdY.getSeries().add(ls1);
+		sdY.getSeries().add(ls2);
+		// sdY.getSeries( ).add( ls3 );
+
+		return cwaLine;
 	}
 
 	public static Chart createCombinnationStackedBarChart(String title,
@@ -926,7 +1049,8 @@ public class ProjectChartFactory {
 
 			value = dbo.get("summ");
 			if (value instanceof Number) {
-				deptValue1[i] = getDoubleValueTenThousand(((Number) value).doubleValue());
+				deptValue1[i] = getDoubleValueTenThousand(((Number) value)
+						.doubleValue());
 			} else {
 				deptValue1[i] = 0d;
 			}
@@ -975,7 +1099,7 @@ public class ProjectChartFactory {
 		l.addAll(p);
 		Collections.sort(l);
 
-		String[] seriesTitle = new String[] { "收入", "成本", "利润" };
+		String[] seriesTitle = new String[] { "收入", "利润" };
 		String title = project.getLabel() + " 销售收入及利润";
 
 		String[] deptParameter = l.toArray(new String[0]);
@@ -985,15 +1109,15 @@ public class ProjectChartFactory {
 
 		for (int i = 0; i < deptParameter.length; i++) {
 			double[] v = getRevenueData(deptParameter[i], result);
-			deptValue1[i] = getDoubleValueTenThousand(v[1] );
+			deptValue1[i] = getDoubleValueTenThousand(v[1]);
 			double v1 = getCostData(deptParameter[i], costResult1);
 			double v2 = getCostData(deptParameter[i], costResult2);
 			deptValue2[i] = getDoubleValueTenThousand(v[0] + v1 + v2);
 			deptValue3[i] = deptValue1[i] - deptValue2[i];
 		}
 
-		return createCombinnationStackedBarChart(title, deptParameter,
-				deptValue1, deptValue2, deptValue3, seriesTitle);
+		return createLineChart(title, deptParameter, deptValue1, deptValue3,
+				seriesTitle);
 	}
 
 	private static String getCode2(Object value) {
@@ -1048,7 +1172,7 @@ public class ProjectChartFactory {
 					} else {
 						ret[1] = 0d;
 					}
-
+					return ret;
 				}
 			}
 		}
