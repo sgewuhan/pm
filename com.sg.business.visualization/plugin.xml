@@ -221,7 +221,7 @@
       <tree
             autoExpandLevel="2"
             canCreate="false"
-            canDelete="false"
+            canDelete="true"
             canEdit="false"
             canRead="false"
             collectionName="organization"
@@ -229,6 +229,7 @@
             customItemHeight="40"
             dataSet="com.sg.business.visualization.data.VisNavigatorDataSet"
             dbName="pm2"
+            deleteDelegator="com.sg.business.visualization.delegator.UserProjectPerfDel"
             dropTargetListener="com.sg.business.visualization.view.DropProjectToOwnerSet"
             headerVisiable="false"
             id="vis.projectset.navigator"
@@ -900,9 +901,34 @@
          <command
                commandId="visualization.command.projectset"
                icon="image/folderproject_24.png"
-               label="项目组合"
+               label="添加"
                style="push"
                tooltip="添加至项目组合">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <equals
+                        value="perspective.visualization">
+                  </equals>
+                  <with
+                        variable="selection">
+                     <iterate
+                           ifEmpty="false">
+                        <instanceof
+                              value="com.sg.business.model.Project">
+                        </instanceof>
+                     </iterate>
+                  </with>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="visualization.command.projectset.remove"
+               icon="image/folderproject_24.png"
+               label="移除"
+               style="push"
+               tooltip="从项目组合移除">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -967,6 +993,10 @@
             name="添加至项目组合">
       </command>
       <command
+            id="visualization.command.projectset.remove"
+            name="从项目组合移除">
+      </command>
+      <command
             id="visualization.command.setfilter"
             name="期间 [本年度]">
       </command>
@@ -992,6 +1022,10 @@
       <handler
             class="com.sg.business.visualization.view.handler.SetDepartmentFilter"
             commandId="visualization.command.setdepartment">
+      </handler>
+      <handler
+            class="com.sg.business.visualization.view.handler.ProjectSetRemove"
+            commandId="visualization.command.projectset.remove">
       </handler>
    </extension>
    <extension
