@@ -28,54 +28,52 @@ public class WorkFlowReservedTask extends AutoRefreshableTableView {
 		table.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == RWT.HYPERLINK) {
-					try{
-						String _id = event.text.substring(event.text.lastIndexOf("/")+1, event.text.indexOf("@"));
-						String action = event.text.substring(event.text.indexOf("@")+1 );
-						UserTask userTask = ModelService.createModelObject(UserTask.class, new ObjectId(_id));
-						if("start".equals(action)){
+					try {
+						String _id = event.text.substring(
+								event.text.lastIndexOf("/") + 1,
+								event.text.indexOf("@"));
+						String action = event.text.substring(event.text
+								.indexOf("@") + 1);
+						UserTask userTask = ModelService.createModelObject(
+								UserTask.class, new ObjectId(_id));
+						if ("start".equals(action)) {
 							doStart(userTask);
-						}else{
+						} else {
 							doComplete(userTask);
 						}
 						doRefresh();
-					}catch(Exception e){
+					} catch (Exception e) {
+						MessageUtil.showToast(e);
 					}
 				}
 			}
 		});
 	}
 
-	protected void doComplete(UserTask userTask) {
+	protected void doComplete(UserTask userTask) throws Exception {
 		IContext context = getContext();
 		Work work = userTask.getWork();
 		CompleteTask handler = new CompleteTask();
-		try {
-			handler.doComplete(userTask, work, context);
-		} catch (Exception e) {
-			MessageUtil.showToast(e);
-		}
+		handler.doComplete(userTask, work, context);
 	}
 
-	protected void doStart(UserTask userTask) {
+	protected void doStart(UserTask userTask) throws Exception {
 		IContext context = getContext();
 		Work work = userTask.getWork();
-		try {
-			work.doStartTask(Work.F_WF_EXECUTE, userTask, context);
-		} catch (Exception e) {
-			MessageUtil.showToast(e);
-		}
+		work.doStartTask(Work.F_WF_EXECUTE, userTask, context);
 	}
 
 	@Override
 	protected int getInterval() {
 		IContext context = getContext();
-		Object val = Setting.getUserSetting(context.getAccountInfo().getUserId(),
+		Object val = Setting.getUserSetting(context.getAccountInfo()
+				.getUserId(),
 				IModelConstants.S_U_TASK_RESERVED_REFRESH_INTERVAL);
 		Integer value = Utils.getIntegerValue(val);
-		if(value!=null){
-			return value.intValue()*60000;//分钟为单位
-		}else{
-			return  600000;//间隔10分钟刷新
+		if (value != null) {
+			return value.intValue() * 60000;// 分钟为单位
+		} else {
+			return 600000;// 间隔10分钟刷新
 		}
 	}
 }
