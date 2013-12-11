@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovide;
+package com.sg.business.visualization.labelprovider;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovide;
+package com.sg.business.visualization.labelprovider;
 
 import com.sg.business.model.Project;
 

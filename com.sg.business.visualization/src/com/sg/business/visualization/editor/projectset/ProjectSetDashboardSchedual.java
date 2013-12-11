@@ -1,4 +1,4 @@
-package com.sg.business.visualization.editor;
+package com.sg.business.visualization.editor.projectset;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.swt.SWT;
@@ -15,11 +15,12 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectSetDashboardBudInv extends AbstractProjectPage {
+public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 
 	private ChartCanvas statusPieChart;
 	private ChartCanvas finishedProjectMeter;
 	private ChartCanvas processProjectMeter;
+	private ChartCanvas allProjectMeter;
 	private ChartCanvas deptProjectBar;
 	private ChartCanvas pmProjectBar;
 	private CTabItem deptBarTabItem;
@@ -28,6 +29,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 
 	@Override
 	protected Composite createContent(Composite body) {
+		//
 		SashForm content = new SashForm(body, SWT.HORIZONTAL);
 		Composite tableContent = new Composite(content, SWT.NONE);
 		navi.createPartContent(tableContent);
@@ -37,6 +39,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 		createGraphic(graphicContent);
 
 		content.setWeights(new int[] { 3, 2 });
+
 		return content;
 	}
 
@@ -52,13 +55,13 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 
 	private void createGraphic(Composite parent) {
 
-		tabFolder = new CTabFolder(parent, SWT.TOP);
+		tabFolder = new CTabFolder(parent, SWT.TOP | SWT.FLAT);
 		CTabItem pieTabItem = new CTabItem(tabFolder, SWT.NONE);
-		pieTabItem.setText("预算及超支状况");
+		pieTabItem.setText("进度摘要");
 		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE) {
 			@Override
 			public Chart getChart() {
-				return ProjectChartFactory.getProjectBudgetAndCostPie(data);
+				return ProjectChartFactory.getSchedualStatusPieChart(data);
 			}
 		};
 		pieTabItem.setControl(statusPieChart);
@@ -70,7 +73,8 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 		finishedProjectMeter = new ChartCanvas(composite, SWT.NONE) {
 			@Override
 			public Chart getChart() {
-				return ProjectChartFactory.getFinishedProjectBudgetAndCostMeter(data);
+				return ProjectChartFactory
+						.getFinishedProjectSchedualMeter(data);
 			}
 		};
 		finishedProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
@@ -79,15 +83,25 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 		processProjectMeter = new ChartCanvas(composite, SWT.NONE) {
 			@Override
 			public Chart getChart() {
-				return ProjectChartFactory.getProcessProjectBudgetAndCostMeter(data);
+				return ProjectChartFactory
+						.getProcessProjectSchedualMeterChart(data);
 			}
 		};
 		processProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, true, 1, 1));
 
-		meterTabItem.setControl(composite);
+		allProjectMeter = new ChartCanvas(composite, SWT.NONE) {
 
-		
+			@Override
+			public Chart getChart() {
+				return ProjectChartFactory
+						.getProjectSchedualMeter(data);
+			}
+
+		};
+		allProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true, 1, 1));
+		meterTabItem.setControl(composite);
 		loadChartData();
 		tabFolder.setSelection(0);
 	}
@@ -116,7 +130,6 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 	}
 
 	private void loadChartData() {
-
 		// *****************************************************************************************
 		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
 				.size()];
@@ -127,7 +140,8 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 				deptProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
 					@Override
 					public Chart getChart() {
-						return ProjectChartFactory.getDeptBudgetAndCostBar(data);
+						return ProjectChartFactory
+								.getDeptSchedualBar(data);
 					}
 				};
 				deptBarTabItem.setControl(deptProjectBar);
@@ -143,16 +157,20 @@ public class ProjectSetDashboardBudInv extends AbstractProjectPage {
 				pmProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
 					@Override
 					public Chart getChart() {
-						return ProjectChartFactory.getChargerBudgetAndCostBar(data);
+						return ProjectChartFactory
+								.getChargerSchedualBar(data);
 					}
 				};
+
 				pmBarTabItem.setControl(pmProjectBar);
 			}
 		}
+
 	}
 
 	private void redrawChart() {
 		try {
+			allProjectMeter.redrawChart();
 			deptProjectBar.redrawChart();
 			finishedProjectMeter.redrawChart();
 			processProjectMeter.redrawChart();

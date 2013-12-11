@@ -1,7 +1,8 @@
-package com.sg.business.visualization.editor;
+package com.sg.business.visualization.editor.projectset;
 
 import java.net.URL;
 
+import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -22,13 +23,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 
+import com.mobnut.db.model.ModelService;
 import com.sg.business.model.IParameterListener;
+import com.sg.business.model.Project;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.visualization.ui.DurationSetting;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.NavigatorControl;
+import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.editor.IEditorActionListener;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.INavigatorPageBodyPartCreater;
@@ -137,7 +141,17 @@ public abstract class AbstractProjectPage implements
 	protected abstract Composite createContent(Composite body);
 
 	protected void call(String orj, String eventCode) {
-
+		if (eventCode.equals("desc")) {
+			ObjectId projectId = new ObjectId(orj);
+			Project project = ModelService.createModelObject(Project.class,
+					projectId);
+			
+			try {
+				DataObjectEditor.open(project, "editor.visualization.project", false, null);
+			} catch (Exception e) {
+				MessageUtil.showToast(e);
+			}
+		}
 	}
 
 	protected Composite createHeader(Composite body) {
@@ -219,7 +233,7 @@ public abstract class AbstractProjectPage implements
 	protected abstract String getProjectSetPageLabel();
 
 	protected void showFilterMenu(Control menuButton) {
-		DurationSetting shell = new DurationSetting(menuButton.getShell(),data);
+		DurationSetting shell = new DurationSetting(menuButton.getShell(), data);
 		Point location = menuButton.toDisplay(0, 16);
 		Display display = shell.getDisplay();
 		if (display.getBounds().width < shell.getBounds().width + location.x) {
@@ -228,7 +242,6 @@ public abstract class AbstractProjectPage implements
 		}
 		shell.open(location);
 	}
-
 
 	private void setBackgroundGradient(Composite header) {
 		Object adapter = header.getAdapter(IWidgetGraphicsAdapter.class);
