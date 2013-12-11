@@ -70,6 +70,7 @@ public abstract class AbstractMessageService extends ServiceProvider {
 			IContext context) {
 
 		Map<String, Message> msgList = new HashMap<String, Message>();
+		
 		for (String userId : receiverList) {
 			msgList.put(userId, null);
 			MessageToolkit.appendNoCommitMessage(msgList, userId, messageTitle,
