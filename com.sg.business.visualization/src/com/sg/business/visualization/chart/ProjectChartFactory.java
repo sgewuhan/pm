@@ -205,9 +205,12 @@ public class ProjectChartFactory {
 		// Y-Series
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
 		bs1.setDataSet(orthoValues1);
-		bs1.setSeriesIdentifier(seriesTitle);
 		bs1.setStacked(true);
 		bs1.getLabel().setVisible(true);
+		if(seriesTitle ==null){
+		}else{
+			bs1.setSeriesIdentifier(seriesTitle);
+		}
 		font = bs1.getLabel().getCaption().getFont();
 		adjustFont(font, SMALL_SIZE);
 		bs1.setLabelPosition(Position.INSIDE_LITERAL);
@@ -803,7 +806,7 @@ public class ProjectChartFactory {
 				userValue2, new String[] { "预算", "实际" });
 	}
 
-	public static Chart getCostAndProfitPie(ProjectProvider data) {
+	public static Chart getCostAndProfitBar(ProjectProvider data) {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
@@ -816,7 +819,7 @@ public class ProjectChartFactory {
 		String pieChartCaption = "销售成本及利润";
 		String[] texts = new String[] { "销售成本", "销售利润" };
 		double[] values = new double[] { value2 / 10000, value3 / 10000 };
-		return createPieChart(pieChartCaption, texts, values);
+		return createStackedBarChart(pieChartCaption, texts, values, null);
 	}
 
 	public static Chart getProfitRateMeter(ProjectProvider data) {

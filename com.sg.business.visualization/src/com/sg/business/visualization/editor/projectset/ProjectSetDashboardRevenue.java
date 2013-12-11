@@ -64,7 +64,7 @@ public class ProjectSetDashboardRevenue extends AbstractProjectSetPage {
 		revenuePieChart = new ChartCanvas(tabFolder, SWT.NONE) {
 			@Override
 			public Chart getChart() {
-				return ProjectChartFactory.getCostAndProfitPie(data);
+				return ProjectChartFactory.getCostAndProfitBar(data);
 			}
 		};
 		pieTabItem.setControl(revenuePieChart);

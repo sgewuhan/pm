@@ -63,9 +63,9 @@ public class DashDepartment extends AbstractDashWidgetView {
 
 	private double[] deptValue3;
 
-	protected int y1Type;
+	protected int y1Type = 0;
 
-	protected int y2Type;
+	protected int y2Type = 4;
 
 	private ChartCanvas chart;
 
@@ -108,8 +108,8 @@ public class DashDepartment extends AbstractDashWidgetView {
 			deptValue1[i] = subProjectProvider.sum.processing_normal
 					+ subProjectProvider.sum.processing_advance;
 			deptValue2[i] = subProjectProvider.sum.processing_delay;
-			deptValue3[i] = subProjectProvider.sum.total_sales_revenue / 10000
-					- subProjectProvider.sum.total_sales_cost / 10000;
+			deptValue3[i] = (subProjectProvider.sum.total_sales_revenue 
+					- subProjectProvider.sum.total_sales_cost-subProjectProvider.sum.total_investment_amount)/unit;
 		}
 
 		title1 = "正常进行";
@@ -249,8 +249,8 @@ public class DashDepartment extends AbstractDashWidgetView {
 				break;
 			case Y2_SALES_PROFIT:
 				title3 = "销售利润";
-				deptValue3[i] = sub.sum.total_sales_revenue / unit
-						- sub.sum.total_sales_cost / unit;
+				deptValue3[i] = (sub.sum.total_sales_revenue 
+						- sub.sum.total_sales_cost-sub.sum.total_investment_amount)/unit;
 				break;
 			case Y2_SALES_REVENUE:
 				title3 = "销售收入";

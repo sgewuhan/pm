@@ -9,7 +9,7 @@ public class DashEcoRevenue extends DashSingleChart {
 
 	@Override
 	protected Chart getChartData(ProjectProvider projectProvider) {
-		return ProjectChartFactory.getCostAndProfitPie(projectProvider);
+		return ProjectChartFactory.getCostAndProfitBar(projectProvider);
 	}
 
 
