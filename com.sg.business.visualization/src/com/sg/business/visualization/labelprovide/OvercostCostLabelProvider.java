@@ -16,7 +16,7 @@ public class OvercostCostLabelProvider extends AbstractProjectLabelProvider {
 		double budgetValue = pres.getBudgetValue();
 //		double dr = pres.getFinishedDurationRatio();
 
-		double investment = pres.getInvestment();
+		double investment = pres.getDesignatedInvestment();
 		if (budgetValue == 0) {
 			sb.append("");
 		} else {

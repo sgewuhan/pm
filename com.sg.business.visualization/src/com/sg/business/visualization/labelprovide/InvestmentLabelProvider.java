@@ -10,7 +10,6 @@ public class InvestmentLabelProvider extends AbstractProjectLabelProvider {
 	protected String getProjectText(Project project) {
 		DecimalFormat df = new DecimalFormat(Utils.NF_NUMBER_P2);
 
-		// ÏîÄ¿µÄÔ¤Ëã
 		double value = project.getPresentation().getInvestment();
 		
 		String bv = value==0d?"":df.format(value / 10000);
