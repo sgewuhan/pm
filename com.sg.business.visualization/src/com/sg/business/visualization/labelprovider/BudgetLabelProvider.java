@@ -1,24 +1,22 @@
-package com.sg.business.visualization.labelprovide;
+package com.sg.business.visualization.labelprovider;
 
-import java.text.DecimalFormat;
-
-import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
 
-public class InvestmentLabelProvider extends AbstractProjectLabelProvider {
+public class BudgetLabelProvider extends AbstractProjectLabelProvider {
+
 	@Override
 	protected String getProjectText(Project project) {
-		DecimalFormat df = new DecimalFormat(Utils.NF_NUMBER_P2);
-
-		// 项目的预算
-		double value = project.getPresentation().getInvestment();
 		
-		String bv = value==0d?"":df.format(value / 10000);
-
+		// 项目的预算
+		double value = project.getPresentation().getBudgetValue();
+		String bv = (value == 0d) ? "" : String.format("%.2f",value / 10000);
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-weight:bold;font-size:10pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:right;'>");
 		sb.append(bv);
 		sb.append("</span>");
 		return sb.toString();
 	}
+
+
 }

@@ -21,9 +21,9 @@ public class WorkorderCostGatherETLJob implements ISchedualJobRunnable {
 		WorkorderPeriodCostAdapter adapter = new WorkorderPeriodCostAdapter();
 
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, 1);
+//		cal.add(Calendar.MONTH, 1);
 
-		for (int i = 0; i > -23; i--) {
+//		for (int i = 0; i > -23; i--) {
 			cal.add(Calendar.MONTH, -1);
 
 			long start = System.currentTimeMillis();
@@ -44,7 +44,7 @@ public class WorkorderCostGatherETLJob implements ISchedualJobRunnable {
 			long end = System.currentTimeMillis();
 			Commons.loginfo("[成本数据]获得SAP工作令号研发成本完成:" + year + "-" + month
 					+ " " + (end - start) / 1000+"S");
-		}
+//		}
 
 		return true;
 

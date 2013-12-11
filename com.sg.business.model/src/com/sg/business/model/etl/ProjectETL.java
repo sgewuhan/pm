@@ -364,6 +364,9 @@ public class ProjectETL implements IProjectETL{
 	}
 
 	public void doETL() throws Exception {
+		if(project.getDesc().contains("SBB")){
+			System.out.println();
+		}
 		now = new Date();
 		planFinish = project.getPlanFinish();
 		actualFinish = project.getActualFinish();
@@ -468,12 +471,12 @@ public class ProjectETL implements IProjectETL{
 			if (budget == 0) {
 				isOverCostEstimated = false;
 			} else {
-				double cr = 1d * investment / budget;
+				double cr = 1d * designatedInvestment / budget;
 				double dr = finishedDurationRatio;
 				isOverCostEstimated = cr - dr >= overCostRatio;
 			}
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
-			isOverCostEstimated = investment > budget;
+			isOverCostEstimated = designatedInvestment > budget;
 		} else {
 			isOverCostEstimated = false;
 		}
@@ -485,7 +488,7 @@ public class ProjectETL implements IProjectETL{
 		if (budget == 0) {
 			isOverCostDefinited = false;
 		} else {
-			isOverCostDefinited = investment > budget;
+			isOverCostDefinited = designatedInvestment > budget;
 		}
 		transfered.put(F_IS_OVERCOST_DEFINITED, isOverCostDefinited);
 

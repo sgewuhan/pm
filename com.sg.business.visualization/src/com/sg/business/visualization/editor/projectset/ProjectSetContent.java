@@ -1,4 +1,4 @@
-package com.sg.business.visualization.editor;
+package com.sg.business.visualization.editor.projectset;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
