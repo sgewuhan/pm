@@ -1706,6 +1706,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				}
 			}
 		}
+		
 
 		// 写日志
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "项目归档",
