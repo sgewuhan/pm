@@ -898,7 +898,7 @@
          <command
                commandId="visualization.command.projectset"
                icon="image/folderproject_24.png"
-               label="项目组合"
+               label="添加"
                style="push"
                tooltip="添加至项目组合">
             <visibleWhen
@@ -925,7 +925,7 @@
                icon="image/folderproject_24.png"
                label="移除"
                style="push"
-               tooltip="添加至项目组合">
+               tooltip="从项目组合移除">
             <visibleWhen
                   checkEnabled="false">
                <with

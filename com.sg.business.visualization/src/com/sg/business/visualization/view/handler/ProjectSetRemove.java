@@ -27,7 +27,7 @@ import com.sg.widgets.viewer.ViewerControl;
 public class ProjectSetRemove extends AbstractNavigatorHandler {
 	
 	
-	private static final String TITLE = "移除项目";
+	private static final String TITLE = "从项目组合移除";
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
