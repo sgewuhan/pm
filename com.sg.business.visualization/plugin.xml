@@ -900,7 +900,7 @@
             locationURI="toolbar:main?after=common.separator">
          <command
                commandId="visualization.command.projectset"
-               icon="image/folderproject_24.png"
+               icon="image/project_add_set_24.png"
                label="添加"
                style="push"
                tooltip="添加至项目组合">
@@ -925,7 +925,7 @@
          </command>
          <command
                commandId="visualization.command.projectset.remove"
-               icon="image/folderproject_24.png"
+               icon="image/project_remove_set_24.png"
                label="移除"
                style="push"
                tooltip="从项目组合移除">
