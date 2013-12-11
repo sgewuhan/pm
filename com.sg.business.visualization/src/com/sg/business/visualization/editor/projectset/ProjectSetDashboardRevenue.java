@@ -1,4 +1,4 @@
-package com.sg.business.visualization.editor;
+package com.sg.business.visualization.editor.projectset;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.swt.SWT;
@@ -15,21 +15,25 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectSetDashboardSchedual extends AbstractProjectPage {
+public class ProjectSetDashboardRevenue extends AbstractProjectSetPage {
 
-	private ChartCanvas statusPieChart;
-	private ChartCanvas finishedProjectMeter;
-	private ChartCanvas processProjectMeter;
-	private ChartCanvas allProjectMeter;
+	private ChartCanvas revenuePieChart;
+
+	// 利润率
+	private ChartCanvas profitRateMeter;
+	
+	// ROI
+	private ChartCanvas ROIMeter;
+
 	private ChartCanvas deptProjectBar;
 	private ChartCanvas pmProjectBar;
+
 	private CTabItem deptBarTabItem;
 	private CTabItem pmBarTabItem;
 	private CTabFolder tabFolder;
 
 	@Override
 	protected Composite createContent(Composite body) {
-		//
 		SashForm content = new SashForm(body, SWT.HORIZONTAL);
 		Composite tableContent = new Composite(content, SWT.NONE);
 		navi.createPartContent(tableContent);
@@ -39,7 +43,6 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		createGraphic(graphicContent);
 
 		content.setWeights(new int[] { 3, 2 });
-
 		return content;
 	}
 
@@ -48,67 +51,56 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 		String projectSetName = data.getProjectSetName();
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(projectSetName + " 项目进度状况");
+		sb.append(projectSetName + " 项目销售收入和利润状况");
 		sb.append("</span>");
 		return sb.toString();
 	}
 
 	private void createGraphic(Composite parent) {
 
-		tabFolder = new CTabFolder(parent, SWT.TOP | SWT.FLAT);
+		tabFolder = new CTabFolder(parent, SWT.TOP);
 		CTabItem pieTabItem = new CTabItem(tabFolder, SWT.NONE);
-		pieTabItem.setText("进度摘要");
-		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE) {
+		pieTabItem.setText("销售成本及利润");
+		revenuePieChart = new ChartCanvas(tabFolder, SWT.NONE) {
 			@Override
 			public Chart getChart() {
-				return ProjectChartFactory.getSchedualStatusPieChart(data);
+				return ProjectChartFactory.getCostAndProfitPie(data);
 			}
 		};
-		pieTabItem.setControl(statusPieChart);
+		pieTabItem.setControl(revenuePieChart);
 
 		CTabItem meterTabItem = new CTabItem(tabFolder, SWT.NONE);
 		meterTabItem.setText("仪表盘");
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setLayout(new GridLayout());
-		finishedProjectMeter = new ChartCanvas(composite, SWT.NONE) {
+		profitRateMeter = new ChartCanvas(composite, SWT.NONE) {
 			@Override
 			public Chart getChart() {
-				return ProjectChartFactory
-						.getFinishedProjectSchedualMeter(data);
+				return ProjectChartFactory.getProfitRateMeter(data);
 			}
 		};
-		finishedProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
-				true, true, 1, 1));
-
-		processProjectMeter = new ChartCanvas(composite, SWT.NONE) {
-			@Override
-			public Chart getChart() {
-				return ProjectChartFactory
-						.getProcessProjectSchedualMeterChart(data);
-			}
-		};
-		processProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
-				true, true, 1, 1));
-
-		allProjectMeter = new ChartCanvas(composite, SWT.NONE) {
-
-			@Override
-			public Chart getChart() {
-				return ProjectChartFactory
-						.getProjectSchedualMeter(data);
-			}
-
-		};
-		allProjectMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+		profitRateMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 1, 1));
+
+
+		ROIMeter = new ChartCanvas(composite, SWT.NONE) {
+			@Override
+			public Chart getChart() {
+				return ProjectChartFactory.getROIMeter(data);
+			}
+		};
+		ROIMeter.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
+				1));
+
 		meterTabItem.setControl(composite);
+
 		loadChartData();
+		
 		tabFolder.setSelection(0);
 	}
 
 	@Override
 	public void parameterChanged(Object[] oldParameters, Object[] newParameters) {
-		// doquery
 		if (navi != null) {
 			ViewerControl viewerControl = navi.getViewerControl();
 			if (!viewerControl.getControl().isDisposed()) {
@@ -130,6 +122,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 	}
 
 	private void loadChartData() {
+
 		// *****************************************************************************************
 		String[] deptParameter = new String[data.sum.subOrganizationProjectProvider
 				.size()];
@@ -140,8 +133,7 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 				deptProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
 					@Override
 					public Chart getChart() {
-						return ProjectChartFactory
-								.getDeptSchedualBar(data);
+						return ProjectChartFactory.getDeptRevenueBar(data);
 					}
 				};
 				deptBarTabItem.setControl(deptProjectBar);
@@ -157,24 +149,20 @@ public class ProjectSetDashboardSchedual extends AbstractProjectPage {
 				pmProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
 					@Override
 					public Chart getChart() {
-						return ProjectChartFactory
-								.getChargerSchedualBar(data);
+						return ProjectChartFactory.getProjectChargerRevenueBar(data);
 					}
 				};
-
 				pmBarTabItem.setControl(pmProjectBar);
 			}
 		}
-
 	}
 
 	private void redrawChart() {
 		try {
-			allProjectMeter.redrawChart();
+			ROIMeter.redrawChart();
 			deptProjectBar.redrawChart();
-			finishedProjectMeter.redrawChart();
-			processProjectMeter.redrawChart();
-			statusPieChart.redrawChart();
+			profitRateMeter.redrawChart();
+			revenuePieChart.redrawChart();
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}

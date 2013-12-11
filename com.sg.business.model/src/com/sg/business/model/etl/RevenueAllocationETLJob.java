@@ -21,35 +21,30 @@ public class RevenueAllocationETLJob implements ISchedualJobRunnable {
 	public boolean run() throws Exception {
 		col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_SALESDATA);
-/**
- * 部署后去掉
- */
+
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, 1);
-		for (int i = 0; i > -48; i--) {
-			cal.add(Calendar.MONTH, -1);
-/**
- * 部署后去掉
- */
-			long start = System.currentTimeMillis();
-			String year = "" + cal.get(Calendar.YEAR);
-			String month = String.format("%03d", cal.get(Calendar.MONTH) + 1);
+		// cal.add(Calendar.MONTH, 1);
+		// for (int i = 0; i > -48; i--) {
+		cal.add(Calendar.MONTH, -1);
+		long start = System.currentTimeMillis();
+		String year = "" + cal.get(Calendar.YEAR);
+		String month = String.format("%03d", cal.get(Calendar.MONTH) + 1);
 
-			// 清除该月数据
-			clear(year, month);
+		// 清除该月数据
+		clear(year, month);
 
-			try {
-				Commons.loginfo("[销售数据]准备获取SAP销售数据:" + year + "-" + month);
-				runGetData(year, month);
+		try {
+			Commons.loginfo("[销售数据]准备获取SAP销售数据:" + year + "-" + month);
+			runGetData(year, month);
 
-			} catch (Exception e) {
-				Commons.logerror("[销售数据]获得SAP销售数据失败:" + year + "-" + month, e);
-				throw e;
-			}
-			long end = System.currentTimeMillis();
-			Commons.loginfo("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " "
-					+ (end - start) / 1000);
+		} catch (Exception e) {
+			Commons.logerror("[销售数据]获得SAP销售数据失败:" + year + "-" + month, e);
+			throw e;
 		}
+		long end = System.currentTimeMillis();
+		Commons.loginfo("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " "
+				+ (end - start) / 1000);
+		// }
 
 		ProjectToolkit.updateProjectSalesData();
 		return true;

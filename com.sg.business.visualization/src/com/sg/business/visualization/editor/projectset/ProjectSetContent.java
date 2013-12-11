@@ -1,4 +1,4 @@
-package com.sg.business.visualization.editor;
+package com.sg.business.visualization.editor.projectset;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Label;
 
 import com.sg.business.model.ProjectProvider;
 
-public class ProjectSetContent extends AbstractProjectPage {
+public class ProjectSetContent extends AbstractProjectSetPage {
 
 	
 	private Label projectStatusSummary;

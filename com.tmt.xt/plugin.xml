@@ -960,7 +960,7 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="xt.xtSubconcessions.application"
+            editorId="xtSubconcessions.application"
             name="转批评审申请"
             persistentFields="project_id,product,accessory"
             processDefinitionId="xt.xtSubconcessions">
@@ -976,9 +976,28 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.audit"
+            editorId="xtDocumentApprove.approve"
             name="审批"
-            persistentFields="comment,choice,accessory"
+            persistentFields="comment,choice"
+            processDefinitionId="xt.xtSubconcessions">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="reviewer_list"
+               taskFormFieldName="reviewer_list">
+         </processParameter>
+         <processParameter
+               processParameterName="reviewer_admin"
+               taskFormFieldName="reviewer_admin">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtSubconcessions.dataaudit"
+            name="转批预审"
+            persistentFields="comment,choice"
             processDefinitionId="xt.xtSubconcessions">
          <processParameter
                processParameterName="choice"
@@ -1005,7 +1024,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="xtProjectApprove.reviewplan"
+            editorId="xtSubconcessions.reviewplan"
             name="评审实施计划"
             persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtSubconcessions">
@@ -1064,7 +1083,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="xt.xtSubconcessions.application"
+            id="xtSubconcessions.application"
             name="转批评审申请">
          <basicpage
                id="basicpage1"
@@ -1094,6 +1113,139 @@
                         persistable="true"
                         required="true">
                   </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xtSubconcessions.dataaudit"
+            name="转批预审">
+         <basicpage
+               id="basicpage1"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写批准意见、结论和评审专家组成员">
+                  <navigatorSelector
+                        editable="true"
+                        id="reviewer_admin"
+                        label="评审组组长"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="reviewer_admin"
+                        navigatorId="organization.user"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
+                        editable="true"
+                        id="reviewer_list"
+                        label="评审组"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="reviewer_list"
+                        persistable="true"
+                        required="true">
+                  </list>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="资料预审"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否资料预审2"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xtSubconcessions.reviewplan"
+            name="评审实施计划">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填评审实施意见和计划">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="messagecontent"
+                        label="评审会议通知"
+                        labelVisible="true"
+                        name="messagecontent"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审实施计划"
+                        labelVisible="false"
+                        name="choice"
+                        option="评审实施计划"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>

@@ -69,7 +69,10 @@ public class ReviewerMessageService extends MessageService {
 	public String getEditorId() {
 		String value = getOperation();
 		if ("message".equals(value)) {
-			return Project.EDITOR_CREATE_PLAN;
+			PrimaryObject target = getTarget();
+			if(target instanceof Project){
+				return Project.EDITOR_CREATE_PLAN;
+			}
 		} else if ("projectapplication".equals(value)) {
 			return null;
 		}

@@ -31,7 +31,7 @@ public class RNDCostAllocationETLJob implements ISchedualJobRunnable {
 
 		Calendar cal = Calendar.getInstance();
 
-		 for (int i = 0; i > -23; i--) {
+		// for (int i = 0; i > -23; i--) {
 		cal.add(Calendar.MONTH, -1);
 
 		long start = System.currentTimeMillis();
@@ -40,7 +40,6 @@ public class RNDCostAllocationETLJob implements ISchedualJobRunnable {
 
 		// 获得所有的成本中心代码
 		String[] costCodes = getCostCodeArray(year, month);
-//		System.out.println();
 		String[] costElementArray = CostAccount.getCostElemenArray();
 		try {
 			Commons.loginfo("[成本数据]准备获取SAP成本中心数据:" + year + "-" + month);
@@ -52,7 +51,7 @@ public class RNDCostAllocationETLJob implements ISchedualJobRunnable {
 		long end = System.currentTimeMillis();
 		Commons.loginfo("[成本数据]获得SAP成本中心数据完成:" + year + "-" + month + " "
 				+ (end - start) / 1000);
-		 }
+		// }
 
 		return true;
 

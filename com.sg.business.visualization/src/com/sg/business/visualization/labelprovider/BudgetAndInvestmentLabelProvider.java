@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovide;
+package com.sg.business.visualization.labelprovider;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -24,7 +24,7 @@ public class BudgetAndInvestmentLabelProvider extends
 				.format(budgetValue / 10000));
 
 		// 项目的研发成本
-		double investment = pres.getInvestment();
+		double investment = pres.getDesignatedInvestment();
 		String iv = (investment == 0d) ? "0"
 				: (nf.format(investment / 10000));
 

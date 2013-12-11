@@ -1,4 +1,4 @@
-package com.sg.business.visualization.editor;
+package com.sg.business.visualization.editor.projectset;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.swt.SWT;
@@ -15,7 +15,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectSetDashboardBudInv extends AbstractProjectPage {
+public class ProjectSetDashboardBudInv extends AbstractProjectSetPage {
 
 	private ChartCanvas statusPieChart;
 	private ChartCanvas finishedProjectMeter;
