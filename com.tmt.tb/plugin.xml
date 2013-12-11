@@ -1358,7 +1358,8 @@
       <taskForm
             editorId="tbprojectchange.application"
             name="变更申请"
-            processDefinitionId="tb.tbProjectChange">
+            processDefinitionId="tb.tbProjectChange"
+            saveHandler="com.tmt.tb.handler.ProjectChangeAddParticipate">
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
                processParameterName="project"
@@ -1587,7 +1588,7 @@
             name="变更申请">
          <basicpage
                id="page1"
-               title="设计更开申请">
+               title="变更申请">
             <pagecolumn>
                <section
                      label="确认变更项目">
@@ -1613,10 +1614,10 @@
          </basicpage>
          <basicpage
                id="page3"
-               title="评审意见表">
+               title="附件">
             <pagecolumn>
                <section
-                     label="转批评审表">
+                     label="意见附件">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
@@ -1753,10 +1754,10 @@
          </basicpage>
          <basicpage
                id="page3"
-               title="评审意见表">
+               title="附件">
             <pagecolumn>
                <section
-                     label="转批评审表">
+                     label="意见附件">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
@@ -1813,10 +1814,10 @@
          </basicpage>
          <basicpage
                id="page3"
-               title="评审意见表">
+               title="附件">
             <pagecolumn>
                <section
-                     label="转批评审表">
+                     label="意见附件">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
@@ -1875,10 +1876,10 @@
          </basicpage>
          <basicpage
                id="page3"
-               title="评审意见表">
+               title="附件">
             <pagecolumn>
                <section
-                     label="转批评审表">
+                     label="意见附件">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
