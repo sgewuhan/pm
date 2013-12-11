@@ -15,7 +15,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectSetDashboardBudInv extends AbstractProjectPage {
+public class ProjectSetDashboardBudInv extends AbstractProjectSetPage {
 
 	private ChartCanvas statusPieChart;
 	private ChartCanvas finishedProjectMeter;

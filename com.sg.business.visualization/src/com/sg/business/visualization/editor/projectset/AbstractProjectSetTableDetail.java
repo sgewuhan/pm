@@ -3,7 +3,7 @@ package com.sg.business.visualization.editor.projectset;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class AbstractProjectSetTableDetail extends AbstractProjectPage {
+public abstract class AbstractProjectSetTableDetail extends AbstractProjectSetPage {
 
 	
 	public AbstractProjectSetTableDetail() {

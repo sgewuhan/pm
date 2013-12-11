@@ -15,7 +15,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class ProjectSetDashboardRevenue extends AbstractProjectPage {
+public class ProjectSetDashboardRevenue extends AbstractProjectSetPage {
 
 	private ChartCanvas revenuePieChart;
 

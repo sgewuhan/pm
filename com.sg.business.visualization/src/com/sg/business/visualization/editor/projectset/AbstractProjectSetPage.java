@@ -40,7 +40,7 @@ import com.sg.widgets.part.editor.page.NavigatorPage;
 import com.sg.widgets.viewer.ViewerControl;
 
 @SuppressWarnings("restriction")
-public abstract class AbstractProjectPage implements
+public abstract class AbstractProjectSetPage implements
 		INavigatorPageBodyPartCreater, IParameterListener {
 
 	private static final int INFOBANNER_HEIGHT = 68;
@@ -50,7 +50,7 @@ public abstract class AbstractProjectPage implements
 	protected NavigatorControl navi;
 	protected ProjectProvider data;
 
-	public AbstractProjectPage() {
+	public AbstractProjectSetPage() {
 
 	}
 

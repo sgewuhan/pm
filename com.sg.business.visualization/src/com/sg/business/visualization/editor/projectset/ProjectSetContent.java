@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Label;
 
 import com.sg.business.model.ProjectProvider;
 
-public class ProjectSetContent extends AbstractProjectPage {
+public class ProjectSetContent extends AbstractProjectSetPage {
 
 	
 	private Label projectStatusSummary;

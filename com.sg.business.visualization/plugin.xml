@@ -855,18 +855,21 @@
                id="project.designateinvestment"
                image="image/currency_24.png"
                navigatorId="project.designateinvestment"
+               pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardDesInv"
                title="研发成本">
          </navigatorpage>
          <navigatorpage
                id="project.allocatedinvestment"
                image="image/currency_24.png"
                navigatorId="project.allocatedinvestment"
+               pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardAllInv"
                title="成本中心">
          </navigatorpage>
          <navigatorpage
                id="project.revenue"
                image="image/cash_24.png"
                navigatorId="project.revenue"
+               pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardRevenue"
                title="销售收入">
          </navigatorpage>
       </editor>

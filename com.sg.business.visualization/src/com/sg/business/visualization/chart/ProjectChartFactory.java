@@ -1,6 +1,12 @@
 package com.sg.business.visualization.chart;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
@@ -58,7 +64,11 @@ import org.eclipse.birt.chart.model.type.impl.LineSeriesImpl;
 import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 
 import com.mobnut.commons.util.Utils;
+import com.mongodb.DBObject;
+import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Project;
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.model.SalesData;
 
 public class ProjectChartFactory {
 
@@ -130,6 +140,83 @@ public class ProjectChartFactory {
 		sdef.getSeries().add(sePie);
 
 		return chart;
+	}
+
+	public static Chart createStackedBarChart(String title,
+			String[] deptParameter, double[] deptValue1, String seriesTitle) {
+		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
+		cwaBar.setType("Bar Chart"); //$NON-NLS-1$
+		cwaBar.setSubType("Stacked"); //$NON-NLS-1$
+		cwaBar.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
+		cwaBar.getBlock().getOutline().setVisible(false);
+		Plot p = cwaBar.getPlot();
+		p.getClientArea().setBackground(ColorDefinitionImpl.TRANSPARENT());
+
+		// Title
+		cwaBar.getTitle().getLabel().getCaption().setValue(title); //$NON-NLS-1$
+		adjustFont(cwaBar.getTitle().getLabel().getCaption().getFont(),
+				STRONG_SIZE);
+		Legend lg = cwaBar.getLegend();
+		lg.setItemType(LegendItemType.SERIES_LITERAL);
+		adjustFont(lg.getText().getFont(), NORMAL_SIZE);
+		// X-Axis
+		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
+
+		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
+		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
+		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
+		FontDefinition font = xAxisPrimary.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+		font.setRotation(-30);
+
+		// Y-Axis
+		Axis yAxisPrimary = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
+		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
+		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
+		font = yAxisPrimary.getLabel().getCaption().getFont();
+		adjustFont(font, NORMAL_SIZE);
+
+		// 取数
+		TextDataSet categoryValues = TextDataSetImpl.create(deptParameter);
+		NumberDataSet orthoValues1 = NumberDataSetImpl.create(deptValue1);
+
+		SampleData sd = DataFactory.eINSTANCE.createSampleData();
+		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
+		sdBase.setDataSetRepresentation("");//$NON-NLS-1$
+		sd.getBaseSampleData().add(sdBase);
+
+		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE
+				.createOrthogonalSampleData();
+		sdOrthogonal1.setDataSetRepresentation("");//$NON-NLS-1$
+		sdOrthogonal1.setSeriesDefinitionIndex(0);
+		sd.getOrthogonalSampleData().add(sdOrthogonal1);
+
+		// 绑定
+		cwaBar.setSampleData(sd);
+
+		// X-Series
+		Series seCategory = SeriesImpl.create();
+		seCategory.setDataSet(categoryValues);
+
+		SeriesDefinition sdX = SeriesDefinitionImpl.create();
+		xAxisPrimary.getSeriesDefinitions().add(sdX);
+		sdX.getSeries().add(seCategory);
+
+		// Y-Series
+		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
+		bs1.setDataSet(orthoValues1);
+		bs1.setSeriesIdentifier(seriesTitle);
+		bs1.setStacked(true);
+		bs1.getLabel().setVisible(true);
+		font = bs1.getLabel().getCaption().getFont();
+		adjustFont(font, SMALL_SIZE);
+		bs1.setLabelPosition(Position.INSIDE_LITERAL);
+
+		SeriesDefinition sdY = SeriesDefinitionImpl.create();
+		yAxisPrimary.getSeriesDefinitions().add(sdY);
+		sdY.getSeries().add(bs1);
+
+		return cwaBar;
 	}
 
 	public static Chart create2StackedBarChart(String title,
@@ -367,7 +454,7 @@ public class ProjectChartFactory {
 		SeriesDefinition sdY2 = SeriesDefinitionImpl.create();
 		yAxisPrimary2.getSeriesDefinitions().add(sdY2);
 		sdY2.getSeries().add(ls1);
-		sdY2.getSeriesPalette( ).shift( -5 );
+		sdY2.getSeriesPalette().shift(-5);
 
 		return cwaBar;
 	}
@@ -598,8 +685,10 @@ public class ProjectChartFactory {
 			deptValue1[i] = projectProvider.sum.processing_normal
 					+ projectProvider.sum.processing_advance;
 			deptValue2[i] = projectProvider.sum.processing_delay;
-			deptValue3[i] = projectProvider.sum.total_sales_revenue/10000
-					- (projectProvider.sum.total_sales_cost+projectProvider.sum.total_investment_amount)/10000;
+			deptValue3[i] = projectProvider.sum.total_sales_revenue
+					/ 10000
+					- (projectProvider.sum.total_sales_cost + projectProvider.sum.total_investment_amount)
+					/ 10000;
 		}
 
 		return createCombinnationStackedBarChart("各部门项目运行综合状况", deptParameter,
@@ -718,8 +807,9 @@ public class ProjectChartFactory {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost+data.sum.total_investment_amount;
-		
+		long value2 = data.sum.total_sales_cost
+				+ data.sum.total_investment_amount;
+
 		// "利润"
 		long value3 = value1 - value2;
 
@@ -733,7 +823,8 @@ public class ProjectChartFactory {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost+data.sum.total_investment_amount;
+		long value2 = data.sum.total_sales_cost
+				+ data.sum.total_investment_amount;
 		// "利润"
 		long value3 = value1 - value2;
 		// 利润率
@@ -776,7 +867,8 @@ public class ProjectChartFactory {
 			projectProvider.getData();
 			chargerName[i] = projectProvider.getDesc();
 			userValue1[i] = projectProvider.sum.total_sales_revenue / 10000;
-			userValue2[i] = (projectProvider.sum.total_sales_revenue - projectProvider.sum.total_sales_cost-projectProvider.sum.total_investment_amount) / 10000;
+			userValue2[i] = (projectProvider.sum.total_sales_revenue
+					- projectProvider.sum.total_sales_cost - projectProvider.sum.total_investment_amount) / 10000;
 		}
 		return create2StackedBarChart("按项目经理计算项目收入情况", chargerName, userValue1,
 				userValue2, new String[] { "销售收入", "销售利润" });
@@ -786,7 +878,8 @@ public class ProjectChartFactory {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost+data.sum.total_investment_amount;
+		long value2 = data.sum.total_sales_cost
+				+ data.sum.total_investment_amount;
 		// "利润"
 		long profit = value1 - value2;
 
@@ -796,6 +889,168 @@ public class ProjectChartFactory {
 		double roi = value1 == 0 ? 0 : 100d * profit / inv;
 
 		return createMeterChart("ROI", "ROI", roi);
+	}
+
+	public static Chart getProjectDesignatedInvestmentBar(Project project) {
+		return getProjectAggrgationCost(project,
+				IModelConstants.C_WORKORDER_COST);
+	}
+
+	public static Chart getProjectAllocationInvestmentBar(Project project) {
+		return getProjectAggrgationCost(project,
+				IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
+	}
+
+	private static Chart getProjectAggrgationCost(Project project,
+			String collection) {
+		List<DBObject> result = project.getAggregationCost(collection);
+
+		String seriesTitle = "期间";
+		String title = project.getLabel() + " 成本";
+
+		String[] deptParameter = new String[result.size()];
+		double[] deptValue1 = new double[result.size()];
+		for (int i = 0; i < result.size(); i++) {
+			DBObject dbo = result.get(i);
+			Object value = dbo.get("_id");
+			if (value instanceof DBObject) {
+				deptParameter[i] = ((DBObject) value).get("year") + "/"
+						+ ((DBObject) value).get("month");
+
+			} else {
+				deptParameter[i] = "unknown";
+			}
+
+			value = dbo.get("summ");
+			if (value instanceof Number) {
+				deptValue1[i] = getDoubleValueTenThousand(((Number) value).doubleValue());
+			} else {
+				deptValue1[i] = 0d;
+			}
+		}
+
+		return createStackedBarChart(title, deptParameter, deptValue1,
+				seriesTitle);
+	}
+
+	private static double getDoubleValueTenThousand(double value) {
+		BigDecimal b = new BigDecimal(value / 10000);
+		return b.setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+
+	public static Chart getProjectRevenueBar(Project project) {
+		List<DBObject> result = project.getAggregationRevenue();
+		List<DBObject> costResult1 = project
+				.getAggregationCost(IModelConstants.C_WORKORDER_COST);
+		List<DBObject> costResult2 = project
+				.getAggregationCost(IModelConstants.C_RND_PEROIDCOST_ALLOCATION);
+
+		// 构造期间
+		Set<String> p = new HashSet<String>();
+		for (int i = 0; i < costResult1.size(); i++) {
+			Object value = costResult1.get(i).get("_id");
+			if (value instanceof DBObject) {
+				p.add(getCode(value));
+			}
+		}
+
+		for (int i = 0; i < costResult2.size(); i++) {
+			Object value = costResult2.get(i).get("_id");
+			if (value instanceof DBObject) {
+				p.add(getCode(value));
+			}
+		}
+
+		for (int i = 0; i < result.size(); i++) {
+			Object value = result.get(i).get("_id");
+			if (value instanceof DBObject) {
+				p.add(getCode2(value));
+			}
+		}
+
+		ArrayList<String> l = new ArrayList<String>();
+		l.addAll(p);
+		Collections.sort(l);
+
+		String[] seriesTitle = new String[] { "收入", "成本", "利润" };
+		String title = project.getLabel() + " 销售收入及利润";
+
+		String[] deptParameter = l.toArray(new String[0]);
+		double[] deptValue1 = new double[deptParameter.length];// 收入
+		double[] deptValue2 = new double[deptParameter.length];// 成本
+		double[] deptValue3 = new double[deptParameter.length];// 利润
+
+		for (int i = 0; i < deptParameter.length; i++) {
+			double[] v = getRevenueData(deptParameter[i], result);
+			deptValue1[i] = getDoubleValueTenThousand(v[1] );
+			double v1 = getCostData(deptParameter[i], costResult1);
+			double v2 = getCostData(deptParameter[i], costResult2);
+			deptValue2[i] = getDoubleValueTenThousand(v[0] + v1 + v2);
+			deptValue3[i] = deptValue1[i] - deptValue2[i];
+		}
+
+		return createCombinnationStackedBarChart(title, deptParameter,
+				deptValue1, deptValue2, deptValue3, seriesTitle);
+	}
+
+	private static String getCode2(Object value) {
+		return ((DBObject) value).get(SalesData.F_ACCOUNT_YEAR)
+				+ "/"
+				+ ("" + ((DBObject) value).get(SalesData.F_ACCOUNT_MONTH))
+						.substring(1);
+	}
+
+	private static String getCode(Object value) {
+		return ((DBObject) value).get("year") + "/"
+				+ String.format("%02d", ((DBObject) value).get("month"));
+	}
+
+	private static double getCostData(String code, List<DBObject> result) {
+		for (int i = 0; i < result.size(); i++) {
+			DBObject dbObject = result.get(i);
+			Object value = dbObject.get("_id");
+			if (value instanceof DBObject) {
+				String _code = getCode(value);
+				if (_code.equals(code)) {
+					Object v = dbObject.get("summ");
+					if (v instanceof Number) {
+						return ((Number) v).doubleValue();
+					} else {
+						return 0d;
+					}
+				}
+			}
+		}
+		return 0d;
+	}
+
+	private static double[] getRevenueData(String code, List<DBObject> result) {
+		for (int i = 0; i < result.size(); i++) {
+			DBObject dbObject = result.get(i);
+			Object value = dbObject.get("_id");
+			if (value instanceof DBObject) {
+				DBObject dbo = (DBObject) value;
+				String _code = getCode2(dbo);
+				if (_code.equals(code)) {
+					double[] ret = new double[2];
+					Object v = dbObject.get(SalesData.F_SALES_COST);
+					if (v instanceof Number) {
+						ret[0] = ((Number) v).doubleValue();
+					} else {
+						ret[0] = 0d;
+					}
+					v = dbObject.get(SalesData.F_SALES_INCOME);
+					if (v instanceof Number) {
+						ret[1] = ((Number) v).doubleValue();
+					} else {
+						ret[1] = 0d;
+					}
+
+				}
+			}
+		}
+
+		return new double[] { 0d, 0d };
 	}
 
 }
