@@ -429,7 +429,7 @@
                width="200">
          </column>
          <column
-               column="budget"
+               column="col1"
                labelProvider="com.sg.business.visualization.labelprovide.BudgetLabelProvider"
                lazyDisplay="true"
                name="预算"
@@ -437,7 +437,7 @@
                width="60">
          </column>
          <column
-               column="budget"
+               column="col2"
                labelProvider="com.sg.business.visualization.labelprovide.InvestmentLabelProvider"
                lazyDisplay="true"
                name="实际"
@@ -445,7 +445,15 @@
                width="60">
          </column>
          <column
-               column="overcost"
+               column="col3"
+               labelProvider="com.sg.business.visualization.labelprovide.InvestmentLabelProvider2"
+               lazyDisplay="true"
+               name="部门投入"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="col4"
                labelProvider="com.sg.business.visualization.labelprovide.OvercostCostLabelProvider"
                lazyDisplay="true"
                name="超支"

@@ -11,17 +11,17 @@ public class OvercostCostLabelProvider extends AbstractProjectLabelProvider {
 	protected String getProjectText(Project project) {
 		ProjectPresentation pres = project.getPresentation();
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:8pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:left;'>");
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:8pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:right;'>");
 
 		double budgetValue = pres.getBudgetValue();
 //		double dr = pres.getFinishedDurationRatio();
 
 		double investment = pres.getDesignatedInvestment();
-		if (budgetValue == 0) {
+		if (budgetValue == 0 || budgetValue>=investment) {
 			sb.append("");
 		} else {
 //			sb.append("‘§À„:");
-			int ratio = new BigDecimal(100 * investment / budgetValue)
+			int ratio = new BigDecimal(100 * (investment-budgetValue) / budgetValue)
 					.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
 			
 			sb.append(ratio);
