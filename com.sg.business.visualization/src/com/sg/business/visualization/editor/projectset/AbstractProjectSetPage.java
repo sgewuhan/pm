@@ -125,10 +125,19 @@ public abstract class AbstractProjectSetPage implements
 			public void widgetSelected(SelectionEvent event) {
 				if (event.detail == RWT.HYPERLINK) {
 					try {
-						URL url = new URL(event.text);
-						String path = url.getPath();
-						String orj = path.substring(1, path.indexOf("/", 1));
-						String eventCode = path.substring(path.lastIndexOf("/") + 1);
+						String path;
+						String orj;
+						String eventCode;
+						if (event.text.startsWith("http")) {
+							URL url = new URL(event.text);
+							path = url.getPath();
+							orj = path.substring(1, path.indexOf("/", 1));
+							eventCode = path.substring(path.lastIndexOf("/") + 1);
+						} else {
+							path = event.text;
+							orj= path.substring(0, path.indexOf("/"));
+							eventCode = path.substring(path.lastIndexOf("/") + 1);
+						}
 						call(orj, eventCode);
 					} catch (Exception e) {
 						MessageUtil.showToast(e);
@@ -145,9 +154,10 @@ public abstract class AbstractProjectSetPage implements
 			ObjectId projectId = new ObjectId(orj);
 			Project project = ModelService.createModelObject(Project.class,
 					projectId);
-			
+
 			try {
-				DataObjectEditor.open(project, "editor.visualization.project", false, null);
+				DataObjectEditor.open(project, "editor.visualization.project",
+						false, null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}
