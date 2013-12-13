@@ -6,7 +6,10 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -30,6 +33,8 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 	private static TMTCommmonsActivator plugin;
 
 	private DB db;
+
+	private Set<MongoClient> mongos;
 
 	/**
 	 * The constructor
@@ -81,6 +86,20 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 			if(dbname==null){
 				dbname = name.substring(0, name.indexOf("."));
 			}
+			
+
+			ArrayList<ServerAddress> serverList = null;
+			String replicaSet = props.getProperty("db.replicaSet"); //$NON-NLS-1$
+			if (replicaSet!=null&&!replicaSet.isEmpty()) {
+				serverList = new ArrayList<ServerAddress>();
+				String[] arr = replicaSet.split(" ");
+				for (int i = 0; i < arr.length; i++) {
+					String[] ari = arr[i].split(":");
+					ServerAddress address = new ServerAddress(ari[0],
+							Integer.parseInt(ari[1]));
+					serverList.add(address);
+				}
+			}
 			Builder builder = MongoClientOptions.builder();
 			builder.autoConnectRetry("true".equalsIgnoreCase(props //$NON-NLS-1$
 					.getProperty("db.options.autoConnectRetry"))); //$NON-NLS-1$
@@ -95,8 +114,15 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 			builder.threadsAllowedToBlockForConnectionMultiplier(Integer.parseInt(props
 					.getProperty("db.options.threadsAllowedToBlockForConnectionMultiplier"))); //$NON-NLS-1$
 			ServerAddress address = new ServerAddress(host, port);
-			MongoClient mongo = new MongoClient(address, builder.build());
-			db = mongo.getDB(dbname);
+			if (serverList != null) {
+				MongoClient mongo = new MongoClient(serverList);
+				db = mongo.getDB(dbname);
+				mongos.add(mongo);
+			} else {
+				MongoClient mongo = new MongoClient(address, builder.build());
+				db = mongo.getDB(dbname);
+				mongos.add(mongo);
+			}			
 			DBActivator.registerDB(dbname, db);
 
 		} catch (Exception e) {
@@ -124,6 +150,10 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		Iterator<MongoClient> iter = mongos.iterator();
+		while(iter.hasNext()){
+			iter.next().close();
+		}
 		super.stop(context);
 	}
 
