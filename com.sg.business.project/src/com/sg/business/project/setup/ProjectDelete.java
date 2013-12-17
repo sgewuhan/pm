@@ -11,6 +11,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -22,7 +23,7 @@ public class ProjectDelete implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() {
-//		DBCollection col = getCol();
+		DBCollection col = getCol();
 		// ObjectId _id = new ObjectId("525b4d18f0209adcc595131f");
 		//
 		// Organization org = ModelService.createModelObject(Organization.class,
@@ -30,25 +31,23 @@ public class ProjectDelete implements ISchedualJobRunnable {
 		// List<PrimaryObject> projectList = org.getRelationById(
 		// Organization.F__ID, Project.F_FUNCTION_ORGANIZATION,
 		// Project.class);
-//		DBCollection projectCol = getCol();
-//		BasicDBObject ref = new BasicDBObject();
-//		Calendar c = Calendar.getInstance();
-//		c.set(2013, 11, 01);
-//		ref.put(Project.F__CDATE,
-//				new BasicDBObject().append("$gt", c.getTime()));
-//		DBCursor cursor = projectCol.find(ref);
-//		while (cursor.hasNext()) {
-//			DBObject next = cursor.next();
-//			Project project = ModelService.createModelObject(next,
-//					Project.class);
-//			System.out.println(project.get_id());
-			// try {
-			// project.doRemove(new CurrentAccountContext());
-			// } catch (Exception e) {
-			// }
-			// col.remove(new BasicDBObject().append(Project.F__ID,
-			// project.get_id()));
-//		}
+		DBCollection projectCol = getCol();
+		BasicDBObject ref = new BasicDBObject();
+		String projectNumber = "";
+		ref.put(Project.F_PROJECT_NUMBER, projectNumber);
+		DBCursor cursor = projectCol.find(ref);
+		while (cursor.hasNext()) {
+			DBObject next = cursor.next();
+			Project project = ModelService.createModelObject(next,
+					Project.class);
+			System.out.println(project.get_id());
+			try {
+				project.doRemove(new CurrentAccountContext());
+			} catch (Exception e) {
+			}
+			col.remove(new BasicDBObject().append(Project.F__ID,
+					project.get_id()));
+		}
 
 		// List<PrimaryObject> projectList = null;
 		// for (PrimaryObject po : projectList) {
@@ -189,10 +188,10 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	// }
 	// }
 
-//	private DBCollection getCol() {
-//		return DBActivator.getCollection(IModelConstants.DB,
-//				IModelConstants.C_PROJECT);
-//	}
+	private DBCollection getCol() {
+		return DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
+	}
 
 	// private DBCollection getCol(String collectionName) {
 	// return DBActivator.getCollection(IModelConstants.DB, collectionName);
