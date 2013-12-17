@@ -139,7 +139,8 @@ public class BulletinBoard extends PrimaryObject {
 		content = Utils.getLimitLengthString(content, 40);
 
 		Date date = getPublishDate();
-		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH, date);
+		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+				date);
 
 		// 设置发布部门
 		String org = ((Organization) ModelService.createModelObject(
@@ -184,7 +185,8 @@ public class BulletinBoard extends PrimaryObject {
 				.getUsername();
 		// 设置日期
 		Date date = getPublishDate();
-		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH, date);
+		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+				date);
 
 		sb.append("<span style='padding-left:4px'>");
 		sb.append(publisher);
@@ -251,8 +253,11 @@ public class BulletinBoard extends PrimaryObject {
 		String userId = context.getAccountInfo().getUserId();
 		// 获取发布人
 		String bulletinboardUserid = getPublisher();
-
-		return !userId.equals(bulletinboardUserid);
+		if (bulletinboardUserid != null) {
+			return !userId.equals(bulletinboardUserid);
+		} else {
+			return false;
+		}
 	}
 
 	public boolean currentUserSessioncanEdit() {
@@ -289,12 +294,13 @@ public class BulletinBoard extends PrimaryObject {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		if(!canDelete(context)){
+		if (!canDelete(context)) {
 			return;
 		}
-		
+
 		DBCollection col = getCollection();
-		WriteResult ws = col.remove(new BasicDBObject().append(F_SUPER_BULLETIN, get_id()));
+		WriteResult ws = col.remove(new BasicDBObject().append(
+				F_SUPER_BULLETIN, get_id()));
 		checkWriteResult(ws);
 		super.doRemove(context);
 	}
