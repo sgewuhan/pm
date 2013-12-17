@@ -102,6 +102,7 @@ public class WorkorderPeriodCostAllocate2 {
 		BasicDBObject query = new BasicDBObject();
 		query.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", orgids));
+		//TODO 可能需要增加的条件
 		query.put(
 				"$or",
 				new BasicDBObject[] {
@@ -133,7 +134,7 @@ public class WorkorderPeriodCostAllocate2 {
 		}
 
 		List<DBObject> toBeInsert = new ArrayList<DBObject>();
-
+//TODO 没有处理有效的工作令号
 		Iterator<?> iter = workorders.iterator();
 		while (iter.hasNext()) {
 			String workOrderNumber = (String) iter.next();

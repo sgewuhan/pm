@@ -364,9 +364,9 @@ public class ProjectETL implements IProjectETL{
 	}
 
 	public void doETL() throws Exception {
-		if(project.getDesc().contains("SBB")){
-			System.out.println();
-		}
+//		if(project.getDesc().contains("SBB")){
+//			System.out.println();
+//		}
 		now = new Date();
 		planFinish = project.getPlanFinish();
 		actualFinish = project.getActualFinish();
@@ -424,6 +424,7 @@ public class ProjectETL implements IProjectETL{
 		isAdvanceEstimated = false;
 		if (!isAdvanceDefinited) {
 			for (int i = 0; i < milestones.size() && !isAdvanceEstimated; i++) {
+				//TODO:里程碑提前 BUG
 				isAdvanceEstimated = milestones.get(i).isDelayFinish();
 			}
 		} else {
