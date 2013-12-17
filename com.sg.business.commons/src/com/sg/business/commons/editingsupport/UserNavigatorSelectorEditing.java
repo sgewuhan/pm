@@ -11,7 +11,7 @@ public class UserNavigatorSelectorEditing extends NavigatorSelectorEditing {
 
 	@Override
 	protected String getNavigatorId() {
-		return "organization.user.selector";
+		return "organization.user.selector"; //$NON-NLS-1$
 	}
 	
 	@Override

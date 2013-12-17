@@ -15,6 +15,7 @@ import org.eclipse.ui.forms.IFormPart;
 
 import com.mobnut.commons.util.Utils;
 import com.mongodb.DBObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.Work;
@@ -40,7 +41,7 @@ public class WorkFlowRecord implements IPageDelegator {
 		if (obj instanceof TaskForm) {
 			TaskForm taskForm = (TaskForm) obj;
 			Work work = taskForm.getWork();
-			Object history = work.getValue("wf_execute_history");
+			Object history = work.getValue("wf_execute_history"); //$NON-NLS-1$
 			if (history instanceof List) {
 				records = (List<?>) history;
 			}
@@ -55,14 +56,14 @@ public class WorkFlowRecord implements IPageDelegator {
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("任务名称");
+		col.getColumn().setText(Messages.WorkFlowRecord_1);
 		col.getColumn().setWidth(100);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbo = (DBObject) element;
-					return "" + dbo.get("taskname");
+					return "" + dbo.get("taskname"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				return super.getText(element);
 			}
@@ -70,14 +71,14 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("执行人");
+		col.getColumn().setText(Messages.WorkFlowRecord_4);
 		col.getColumn().setWidth(64);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbo = (DBObject) element;
-					return "" +dbo.get("form_" + IProcessControl.F_WF_TASK_ACTOR);
+					return "" +dbo.get("form_" + IProcessControl.F_WF_TASK_ACTOR); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				return super.getText(element);
 			}
@@ -85,14 +86,14 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("操作");
+		col.getColumn().setText(Messages.WorkFlowRecord_7);
 		col.getColumn().setWidth(80);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbo = (DBObject) element;
-					return "" +dbo.get("form_" + IProcessControl.F_WF_TASK_ACTION);
+					return "" +dbo.get("form_" + IProcessControl.F_WF_TASK_ACTION); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				return super.getText(element);
 			}
@@ -100,33 +101,33 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("结论");
+		col.getColumn().setText(Messages.WorkFlowRecord_10);
 		col.getColumn().setWidth(60);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
-					Object choice = dbObject.get("form_choice");
+					Object choice = dbObject.get("form_choice"); //$NON-NLS-1$
 					if(choice!=null){
-						return "" + choice;
+						return "" + choice; //$NON-NLS-1$
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("时间");
+		col.getColumn().setText(Messages.WorkFlowRecord_14);
 		col.getColumn().setWidth(140);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbo = (DBObject) element;
-					Object startDate = dbo.get("form_"
+					Object startDate = dbo.get("form_" //$NON-NLS-1$
 							+ IProcessControl.F_WF_TASK_STARTDATE);
-					Object finishDate = dbo.get("form_"
+					Object finishDate = dbo.get("form_" //$NON-NLS-1$
 							+ IProcessControl.F_WF_TASK_FINISHDATE);
 					SimpleDateFormat sdf = new SimpleDateFormat(
 							Utils.SDF_DATETIME_COMPACT_SASH);
@@ -143,19 +144,19 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("说明");
+		col.getColumn().setText(Messages.WorkFlowRecord_17);
 		col.getColumn().setWidth(140);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
 					DBObject dbObject = (DBObject) element;
-					Object comment = dbObject.get("form_comment");
+					Object comment = dbObject.get("form_comment"); //$NON-NLS-1$
 					if(comment !=null){
-						return "" + comment;
+						return "" + comment; //$NON-NLS-1$
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		
