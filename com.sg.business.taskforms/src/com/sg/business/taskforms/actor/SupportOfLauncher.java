@@ -15,6 +15,7 @@ import com.sg.business.taskforms.IRoleConstance;
 public class SupportOfLauncher implements IActorIdProvider {
 
 	public SupportOfLauncher() {
+		
 	}
 
 	@Override
