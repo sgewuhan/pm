@@ -15,7 +15,7 @@ public class CalendarSetting implements IFunctionExcutable {
 				.getActiveWorkbenchWindow().getActivePage();
 
 		try {
-			page.showView("commons.admin.calendar");
+			page.showView("commons.admin.calendar"); //$NON-NLS-1$
 		} catch (PartInitException e) {
 		}
 	}

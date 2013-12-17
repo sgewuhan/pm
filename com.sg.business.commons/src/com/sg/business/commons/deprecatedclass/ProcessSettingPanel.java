@@ -22,6 +22,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.commons.page.ProcessViewer;
 import com.sg.business.model.IProcessControl;
 import com.sg.widgets.MessageUtil;
@@ -67,7 +68,7 @@ public class ProcessSettingPanel extends Composite {
 		// 是否启用
 		activeButton = new Button(this, SWT.CHECK);
 		activeButton.setEnabled(editable);
-		activeButton.setText("启用");
+		activeButton.setText(Messages.ProcessSettingPanel_0);
 		FormData fd = new FormData();
 		activeButton.setLayoutData(fd);
 		fd.top = new FormAttachment(0, MARGIN);
@@ -77,7 +78,7 @@ public class ProcessSettingPanel extends Composite {
 		final Text text = new Text(this, SWT.BORDER);
 		text.setEnabled(editable);
 
-		text.setMessage("<请输入流程库的名称，查询可用流程>");
+		text.setMessage(Messages.ProcessSettingPanel_1);
 		fd = new FormData();
 		text.setLayoutData(fd);
 		fd.top = new FormAttachment(activeButton, MARGIN);
@@ -86,7 +87,7 @@ public class ProcessSettingPanel extends Composite {
 		Button queryButton = new Button(this, SWT.PUSH);
 		queryButton.setEnabled(editable);
 
-		queryButton.setText("查询");
+		queryButton.setText(Messages.ProcessSettingPanel_2);
 		fd = new FormData();
 		queryButton.setLayoutData(fd);
 		fd.top = new FormAttachment(activeButton, MARGIN);
@@ -149,12 +150,12 @@ public class ProcessSettingPanel extends Composite {
 		activeButton.setSelection(Boolean.TRUE.equals(activated));
 
 		if (processDefinition != null) {
-			processLabel.setText("<big >" + processDefinition.getProcessName()
-					+ "</big>");
+			processLabel.setText("<big >" + processDefinition.getProcessName() //$NON-NLS-1$
+					+ "</big>"); //$NON-NLS-1$
 			processViewer.setInput(processDefinition.getNodesAssignment());
 			packTableViewer(processViewer);
 		} else {
-			processLabel.setText("<big>" + "未定义流程" + "</big>");
+			processLabel.setText("<big>" + Messages.ProcessSettingPanel_6 + "</big>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			processViewer.setInput(null);
 		}
 		layout(true);
@@ -163,7 +164,7 @@ public class ProcessSettingPanel extends Composite {
 
 	private void queryProcess(Label processLabel, String kbase, String key) {
 		if (kbase.isEmpty()) {
-			MessageUtil.showToast("请输入流程库名称", SWT.ERROR);
+			MessageUtil.showToast(Messages.ProcessSettingPanel_8, SWT.ERROR);
 			return;
 		}
 		ProcessSelectorDialog d = new ProcessSelectorDialog(getShell(), kbase);
@@ -172,7 +173,7 @@ public class ProcessSettingPanel extends Composite {
 		if (ok == Window.OK) {
 			process = d.getSelection();
 			if (process == null) {
-				MessageUtil.showToast("无法获得流程库包含的流程", SWT.ERROR);
+				MessageUtil.showToast(Messages.ProcessSettingPanel_9, SWT.ERROR);
 				return;
 			} else {
 				if (processDefinition != null

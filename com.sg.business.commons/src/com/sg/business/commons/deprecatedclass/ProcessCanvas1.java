@@ -158,7 +158,7 @@ public class ProcessCanvas1 extends FigureCanvas {
 	public Figure buildGraph(CompoundDirectedGraph graph) {
 		Figure contents = new Panel();
 		
-		contents.setFont(new Font(null, "Î¢ÈíÑÅºÚ", 12, 0));
+		contents.setFont(new Font(null, "Î¢ÈíÑÅºÚ", 12, 0)); //$NON-NLS-1$
 		contents.setBackgroundColor(ColorConstants.white);
 		XYLayout manager = new XYLayout();
 		contents.setLayoutManager(manager);
@@ -278,8 +278,8 @@ public class ProcessCanvas1 extends FigureCanvas {
 		String nodeName = _node.getName();
 		for (int i = 0; i < history.size(); i++) {
 			DBObject historyItem = (DBObject) history.get(i);
-			if (nodeName.equals(historyItem.get("taskname"))
-					&& "start".equals(historyItem.get("form_action"))) {
+			if (nodeName.equals(historyItem.get("taskname")) //$NON-NLS-1$
+					&& "start".equals(historyItem.get("form_action"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				return true;
 			}
 		}
@@ -294,8 +294,8 @@ public class ProcessCanvas1 extends FigureCanvas {
 		String nodeName = _node.getName();
 		for (int i = 0; i < history.size(); i++) {
 			DBObject historyItem = (DBObject) history.get(i);
-			if (nodeName.equals(historyItem.get("taskname"))
-					&& "complete".equals(historyItem.get("form_action"))) {
+			if (nodeName.equals(historyItem.get("taskname")) //$NON-NLS-1$
+					&& "complete".equals(historyItem.get("form_action"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				return true;
 			}
 		}

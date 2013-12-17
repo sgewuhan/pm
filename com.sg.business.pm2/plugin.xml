@@ -6,77 +6,77 @@
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.work"
-            name="工作">
+            name="%perspective.name">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.simplework"
-            name="工作">
+            name="%perspective.name.0">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.workflow"
-            name="流程">
+            name="%perspective.name.1">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis.home"
-            name="绩效总览">
+            name="%perspective.name.2">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorShowPerspective"
             id="perspective.visualization"
-            name="项目组合">
+            name="%perspective.name.3">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.resource"
-            name="资源">
+            name="%perspective.name.4">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.delay"
-            name="超期">
+            name="%perspective.name.5">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
-            name="项目管理">
+            name="%perspective.name.6">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.management"
-            name="业务管理">
+            name="%perspective.name.7">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.organization"
-            name="组织">
+            name="%perspective.name.8">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vault"
-            name="文档库">
+            name="%perspective.name.9">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.bulletinboard"
-            name="公告">
+            name="%perspective.name.10">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.system"
-            name="系统">
+            name="%perspective.name.11">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.message"
-            name="消息">
+            name="%perspective.name.12">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.finance"
-            name="财务">
+            name="%perspective.name.13">
       </perspective>
    </extension>
    <extension
@@ -1134,7 +1134,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="com.mobnut.portal.main"
-            name="vis">
+            name="%product.name">
          <property
                name="appName"
                value="vis">
