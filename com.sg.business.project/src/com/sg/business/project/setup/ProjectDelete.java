@@ -1,7 +1,5 @@
 package com.sg.business.project.setup;
 
-import java.util.Calendar;
-
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.ModelService;
