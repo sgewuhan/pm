@@ -1734,7 +1734,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="project_supervisor"
-                        navigatorId="organization.user.selector"
+                        navigatorId="changeapprover.navigator"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -2053,6 +2053,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="changeapprover.navigator"
+            table="changeapprover.navigator">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -2198,6 +2212,14 @@
             dataSet="com.tmt.tb.dataset.ApplicationLeaderOfTaskforms"
             headerVisiable="false"
             id="tb.taskforms.applicationleader.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.tb.dataset.UserOfChangeApprover"
+            headerVisiable="false"
+            id="changeapprover.navigator">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>

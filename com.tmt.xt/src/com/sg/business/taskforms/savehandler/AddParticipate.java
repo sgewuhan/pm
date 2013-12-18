@@ -41,17 +41,18 @@ public class AddParticipate implements IDataObjectDialogCallback {
 	@Override
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
-        TaskForm taskform = (TaskForm) input.getData();
-        Object listValue = taskform.getValue("reviewer_list");
-        if(listValue instanceof List){
-        	List<?> userList=(List<?>)listValue;
-        	Object projectid = taskform.getProcessInstanceVarible("projectid", new CurrentAccountContext());
-        	if(projectid instanceof String){
-        		Project project = ModelService.createModelObject(Project.class,new ObjectId((String)projectid));
-        		project.doAddParticipate(userList.toArray(new String[0]));
-        		
-        	}
-        }
+		TaskForm taskform = (TaskForm) input.getData();
+		Object listValue = taskform.getValue("reviewer_list");
+		if (listValue instanceof List) {
+			List<?> userList = (List<?>) listValue;
+			Object projectid = taskform.getProcessInstanceVarible("projectid",
+					new CurrentAccountContext());
+			if (projectid instanceof String) {
+				Project project = ModelService.createModelObject(Project.class,
+						new ObjectId((String) projectid));
+				project.doAddParticipate(userList.toArray(new String[0]));
+			}
+		}
 		return true;
 	}
 
