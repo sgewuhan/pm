@@ -1311,10 +1311,26 @@
             <column
                   columnDefinitionId="com.sg.widgets.commonlabel">
             </column>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
          </filterAction>
          <searchAction>
             <column
                   columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </searchAction>
       </navigator>
