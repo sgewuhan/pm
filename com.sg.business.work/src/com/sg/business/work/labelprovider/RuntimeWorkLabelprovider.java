@@ -54,19 +54,49 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		// 右侧第一行，标记
 		CurrentAccountContext context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getConsignerId();
-		boolean userMarked = work.isMarked(userId);
-		if (userMarked) {
-			String selectbar = "<img src='"
-					+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
-					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
-			sb.append(selectbar);
-		} else {
-			String selectbar = "<img src='"
-					+ getSelectorURL(work, ImageResource.WHITE_BULLETIN)
-					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
-			sb.append(selectbar);
 
+		String selectbar = null;
+		Date _planFinish = project.getPlanFinish();
+		Date now = new Date();
+		if (_planFinish != null) {
+			if (now.after(_planFinish)) {
+				selectbar = "<img src='"
+						+ getSelectorURL(work, ImageResource.RED_BULLETIN)
+						+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+			}
 		}
+
+		if (selectbar == null) {
+			boolean userMarked = work.isMarked(userId);
+			if (userMarked) {
+				selectbar = "<img src='"
+						+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
+						+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+			} else {
+				selectbar = "<img src='"
+						+ getSelectorURL(work, ImageResource.WHITE_BULLETIN)
+						+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+
+			}
+		}
+		sb.append(selectbar);
+
+		//
+		// boolean userMarked = work.isMarked(userId);
+		// if (userMarked) {
+		// String selectbar = "<img src='"
+		// + getSelectorURL(work, ImageResource.BLUE_BULLETIN)
+		// +
+		// "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+		// sb.append(selectbar);
+		// } else {
+		// String selectbar = "<img src='"
+		// + getSelectorURL(work, ImageResource.WHITE_BULLETIN)
+		// +
+		// "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+		// sb.append(selectbar);
+		//
+		// }
 
 		// **********************************************************************************
 		// 右侧第一行，需要指派以及负责人图标
@@ -100,14 +130,15 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 
 		String desc = project.getDesc();
 		desc = Utils.getPlainText(desc);
-		sb.append(" <span style='width:"+(cell.getBounds().width - 160)+"px;text-overflow:ellipsis;overflow:hidden;'><b>");
+		sb.append(" <span style='width:" + (cell.getBounds().width - 160)
+				+ "px;text-overflow:ellipsis;overflow:hidden;'><b>");
 		sb.append(desc);
 		sb.append("</b>");
 		sb.append("</span>");
 		sb.append("<br/>");
 		sb.append("<small>");
 		String projectNumber = project.getProjectNumber();
-		sb.append(projectNumber+" ");
+		sb.append(projectNumber + " ");
 		Date _planStart = project.getPlanStart();
 		String planStart = "";
 		SimpleDateFormat sdf = new SimpleDateFormat(
@@ -127,7 +158,7 @@ public class RuntimeWorkLabelprovider extends ConfiguratorColumnLabelProvider {
 		sb.append(planStart);
 		sb.append("~");
 
-		Date _planFinish = project.getPlanFinish();
+		// Date _planFinish = project.getPlanFinish();
 		String planFinish = "";
 		if (_planFinish != null) {
 			planFinish = sdf.format(_planFinish);

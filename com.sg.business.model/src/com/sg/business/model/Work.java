@@ -4203,9 +4203,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					Role orole = rd.getOrganizationRole();
 					List<PrimaryObject> roleAss = orole.getAssignment();
 					if (!roleAss.isEmpty()) {
-						ipc.setProcessActionActor(key, parameter,
-								((AbstractRoleAssignment) roleAss.get(0))
-										.getUserid());
+						if (roleAss.size() > 1) {
+							break;
+						} else {
+							ipc.setProcessActionActor(key, parameter,
+									((AbstractRoleAssignment) roleAss.get(0))
+											.getUserid());
+						}
 					}
 				}
 			}
@@ -4607,14 +4611,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	}
 
 	public void doAddParticipateList(List<?> userList) throws Exception {
-		if(userList == null){
+		if (userList == null) {
 			throw new Exception("请确认需添加的参与者");
 		}
 		DBCollection workCol = getCollection();
 
 		DBObject update = new BasicDBObject().append("$addToSet",
-				new BasicDBObject().append(Work.F_PARTICIPATE,
-						new BasicDBObject().append("$each", userList.toArray(new String[0]))));
+				new BasicDBObject().append(
+						Work.F_PARTICIPATE,
+						new BasicDBObject().append("$each",
+								userList.toArray(new String[0]))));
 
 		WriteResult ws = workCol.update(
 				new BasicDBObject().append(Work.F__ID, get_id()), update,
