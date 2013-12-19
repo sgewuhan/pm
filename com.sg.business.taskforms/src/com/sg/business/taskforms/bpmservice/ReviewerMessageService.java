@@ -1,8 +1,11 @@
 package com.sg.business.taskforms.bpmservice;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
@@ -34,10 +37,18 @@ public class ReviewerMessageService extends MessageService {
 			if (host instanceof Work) {
 				Work work = (Work) host;
 				Object confirmdate = getInputValue("confirmdate");
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						Utils.SDF_DATE_COMPACT_SASH);
+				if (confirmdate instanceof Date) {
+					confirmdate = sdf.format(confirmdate);
+				}
+
 				Object confirmtime = getInputValue("confirmtime");
 				Object confirmaddress = getInputValue("confirmaddress");
-				String content = "立项工作:" + work.getLabel() + " ";
-				content = content+"请您于: "+confirmdate+" "+confirmtime +" 在 "+confirmaddress+" 参加项目立项评审会!";
+				String content = "立项工作:" + work.getLabel() + "<br/>";
+				content = content + "请您于:<br/> " + confirmdate + " "
+						+ confirmtime + "在 " + confirmaddress
+						+ "<br/> 参加项目立项评审会!";
 				return content;
 			}
 		}
@@ -70,7 +81,7 @@ public class ReviewerMessageService extends MessageService {
 		String value = getOperation();
 		if ("message".equals(value)) {
 			PrimaryObject target = getTarget();
-			if(target instanceof Project){
+			if (target instanceof Project) {
 				return Project.EDITOR_CREATE_PLAN;
 			}
 		} else if ("projectapplication".equals(value)) {

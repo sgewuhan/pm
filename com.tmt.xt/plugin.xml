@@ -998,7 +998,8 @@
             editorId="xtSubconcessions.dataaudit"
             name="转批预审"
             persistentFields="comment,choice"
-            processDefinitionId="xt.xtSubconcessions">
+            processDefinitionId="xt.xtSubconcessions"
+            saveHandler="com.sg.business.taskforms.savehandler.AddParticipate">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -1311,10 +1312,26 @@
             <column
                   columnDefinitionId="com.sg.widgets.commonlabel">
             </column>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
          </filterAction>
          <searchAction>
             <column
                   columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+            <column
+                  column="userid"
+                  name="用户ID"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
             </column>
          </searchAction>
       </navigator>
