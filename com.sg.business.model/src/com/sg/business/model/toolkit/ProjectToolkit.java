@@ -64,7 +64,7 @@ public class ProjectToolkit {
 				if (!na.isNeedAssignment()) {
 					continue;
 				}
-				//判断是否未需指派的角色
+				// 判断是否未需指派的角色
 				if (!na.forceAssignment()) {
 					continue;
 				}
@@ -858,10 +858,18 @@ public class ProjectToolkit {
 		}
 	}
 
-	public static void updateProjectSalesData() {
+	public static void updateProjectSalesData(int year, int month, int day) {
 		DBCollection colPd = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PRODUCT);
-		String dateCode = String.format("%1$tY/%1$tm/%1$td", Calendar.getInstance());
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, month - 1, day);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		cal.add(Calendar.MONTH, 1);
+		cal.add(Calendar.MILLISECOND, -1);
+		String dateCode = String.format("%1$tY/%1$tm/%1$td", cal);
 		DBCursor cur = colPd.find(new BasicDBObject().append(
 				ProductItem.F_SALES_DATA_UPDATE,
 				new BasicDBObject().append("$ne", dateCode)));
@@ -869,7 +877,7 @@ public class ProjectToolkit {
 			DBObject prodData = cur.next();
 			ProductItem pd = ModelService.createModelObject(prodData,
 					ProductItem.class);
-			pd.doCalculateSalesData();
+			pd.doCalculateSalesData(dateCode);
 		}
 	}
 

@@ -43,5 +43,9 @@ public interface IProjectETL {
 
 	public static final String F_SCHEDUAL_DETAIL_HTML = "schedual_detail_html";
 
+	public static final String F_YEAR = "year";
+
+	public static final String F_MONTH = "month";
+
 	static final String F_PROJECTID = "project_id";
 }

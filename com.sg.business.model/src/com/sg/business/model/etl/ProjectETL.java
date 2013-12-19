@@ -31,7 +31,7 @@ import com.sg.business.model.Work;
 import com.sg.business.resource.BusinessResource;
 
 @SuppressWarnings("restriction")
-public class ProjectETL implements IProjectETL{
+public class ProjectETL implements IProjectETL {
 
 	private Project project;
 
@@ -271,21 +271,27 @@ public class ProjectETL implements IProjectETL{
 
 	private String extractProcessIcon() {
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycle)) {
-			return BusinessResource.getImageURL(BusinessResource.IMAGE_WORK2_CANCEL_16);
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_CANCEL_16);
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
-			return BusinessResource.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16);
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16);
 		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lifecycle)) {
-			return BusinessResource.getImageURL(BusinessResource.IMAGE_WORK2_READY_16);
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_READY_16);
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lifecycle)) {
-			return BusinessResource.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16);
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16);
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lifecycle)) {
-			return BusinessResource.getImageURL(BusinessResource.IMAGE_WORK2_PAUSE_16);
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_PAUSE_16);
 		} else if (ILifecycle.STATUS_NONE_VALUE.equals(lifecycle)) {
-			return BusinessResource.getImageURL(BusinessResource.IMAGE_WORK2_READY_16);
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_READY_16);
 		}
 		return null;
 	}
-	
+
 	private String extractSchedualDetailHtml() {
 		if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
 			return "";
@@ -363,11 +369,11 @@ public class ProjectETL implements IProjectETL{
 		return sb.toString();
 	}
 
-	public void doETL() throws Exception {
-//		if(project.getDesc().contains("SBB")){
-//			System.out.println();
-//		}
-		now = new Date();
+	public DBObject doETL(Calendar cal) throws Exception {
+		// if(project.getDesc().contains("SBB")){
+		// System.out.println();
+		// }
+		now = cal.getTime();
 		planFinish = project.getPlanFinish();
 		actualFinish = project.getActualFinish();
 		planStart = project.getPlanStart();
@@ -393,20 +399,18 @@ public class ProjectETL implements IProjectETL{
 		 * 开始进行数据抽取和转换
 		 * 
 		 */
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(now);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
+		transfered.put(F_YEAR, cal.get(Calendar.YEAR));
+		transfered.put(F_MONTH, cal.get(Calendar.MONTH) + 1);
 		transfered.put(F_TRANSFERDATE, cal.getTimeInMillis());
 		transfered.put(F_PROJECTID, project.get_id());
 
+		// 是否延时完成
 		isDelayDefinited = planFinish != null
 				&& ((actualFinish == null && now.after(planFinish)) || (actualFinish != null && actualFinish
 						.after(planFinish)));
 		transfered.put(F_IS_DELAY_DEFINITED, isDelayDefinited);
 
+		// 是否提前完成
 		isAdvanceDefinited = planFinish != null && actualFinish != null
 				&& actualFinish.before(planFinish);
 		transfered.put(F_IS_ADVANCE_DEFINITED, isAdvanceDefinited);
@@ -424,8 +428,7 @@ public class ProjectETL implements IProjectETL{
 		isAdvanceEstimated = false;
 		if (!isAdvanceDefinited) {
 			for (int i = 0; i < milestones.size() && !isAdvanceEstimated; i++) {
-				//TODO:里程碑提前 BUG
-				isAdvanceEstimated = milestones.get(i).isDelayFinish();
+				isAdvanceEstimated = milestones.get(i).isAdvanceFinish();
 			}
 		} else {
 			isAdvanceEstimated = true;
@@ -445,7 +448,7 @@ public class ProjectETL implements IProjectETL{
 			budget = 0d;
 		} else {
 			Double value = projectBudget.getBudgetValue();
-			budget = value==null?0d:value.doubleValue();
+			budget = value == null ? 0d : value.doubleValue();
 		}
 		transfered.put(F_BUDGET, budget);
 
@@ -588,14 +591,15 @@ public class ProjectETL implements IProjectETL{
 		 */
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
-		WriteResult ws = col.update(project.queryThis(),
-				new BasicDBObject().append("$set", new BasicDBObject().append(F_ETL, transfered)));
+		WriteResult ws = col.update(
+				project.queryThis(),
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(F_ETL, transfered)));
 		String error = ws.getError();
 		if (error != null) {
 			throw new Exception(error);
 		}
+		return transfered;
 	}
-
-
 
 }

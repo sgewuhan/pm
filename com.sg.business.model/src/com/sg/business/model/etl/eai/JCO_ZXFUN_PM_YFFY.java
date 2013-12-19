@@ -148,6 +148,8 @@ public class JCO_ZXFUN_PM_YFFY {
 				}
 				rowData.put("summ", _rowSummay);
 			}
+		} else{
+//			System.out.println( costCodeArray);
 		}
 		return ret;
 	}
