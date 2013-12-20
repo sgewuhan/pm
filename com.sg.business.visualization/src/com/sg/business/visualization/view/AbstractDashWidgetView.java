@@ -9,10 +9,11 @@ import com.sg.business.model.ProjectProvider;
 import com.sg.business.visualization.ui.IProjectProviderHolderListener;
 import com.sg.business.visualization.ui.ProjectProviderHolder;
 import com.sg.widgets.birtcharts.ChartCanvas;
+import com.sg.widgets.part.IRefreshablePart;
 import com.sg.widgets.part.StandaloneViewPart;
 
 public abstract class AbstractDashWidgetView extends StandaloneViewPart
-		implements IProjectProviderHolderListener {
+		implements IProjectProviderHolderListener,IRefreshablePart {
 
 	protected ProjectProvider projectProvider;
 	private Composite panel;
@@ -68,6 +69,17 @@ public abstract class AbstractDashWidgetView extends StandaloneViewPart
 	}
 
 	@Override
+	public boolean canRefresh() {
+		return true;
+	}
+
+	@Override
+	public void doRefresh() {
+		clean();
+		loadProjectProvider();
+	}
+
+	@Override
 	public void projectProviderChanged(ProjectProvider newProjectProvider,
 			ProjectProvider oldProjectProvider) {
 		projectProvider = newProjectProvider;
@@ -75,4 +87,5 @@ public abstract class AbstractDashWidgetView extends StandaloneViewPart
 		clean();
 		loadProjectProvider();
 	}
+	
 }
