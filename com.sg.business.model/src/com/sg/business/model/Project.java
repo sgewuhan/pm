@@ -656,7 +656,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		job.schedule();
 
 	}
-	
+
 	private void generateCode() throws Exception {
 		Organization org = getFunctionOrganization();
 		if (org == null) {
@@ -1114,6 +1114,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		col = getCollection(IModelConstants.C_PROJECT_BUDGET);
 		ws = col.remove(new BasicDBObject().append(ProjectBudget.F_PROJECT_ID,
 				get_id()));
+		checkWriteResult(ws);
+
+		//删除物资编码
+		col = getCollection(IModelConstants.C_PRODUCT);
+		ws = col.remove(new BasicDBObject().append(
+				ProductItem.F_PROJECT_ID, get_id()));
 		checkWriteResult(ws);
 
 		// 删除role
@@ -1706,7 +1712,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				}
 			}
 		}
-		
 
 		// 写日志
 		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "项目归档",
@@ -2276,10 +2281,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				SalesData.F_SALES_INCOME,
 				new BasicDBObject().append("$sum", "$"
 						+ SalesData.F_SALES_INCOME));
-		groupCondition.put(
-				SalesData.F_SALES_COST,
-				new BasicDBObject().append("$sum", "$"
-						+ SalesData.F_SALES_COST));
+		groupCondition.put(SalesData.F_SALES_COST, new BasicDBObject().append(
+				"$sum", "$" + SalesData.F_SALES_COST));
 
 		DBObject group = new BasicDBObject().append("$group", groupCondition);
 		AggregationOutput agg = col.aggregate(match, group);

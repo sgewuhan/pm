@@ -1,6 +1,5 @@
 package com.sg.business.model;
 
-import java.util.Calendar;
 import java.util.Iterator;
 
 import org.bson.types.ObjectId;
@@ -78,8 +77,9 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 
 	/**
 	 * 计算销售收入
+	 * @param dateCode 
 	 */
-	public void doCalculateSalesData() {
+	public void doCalculateSalesData(String dateCode) {
 		double[] result = new double[] { 0d, 0d };
 
 		DBCollection col = getCollection(IModelConstants.C_SALESDATA);
@@ -112,7 +112,6 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 			result[1] += value.doubleValue();
 		}
 
-		String dateCode = String.format("%1$tY/%1$tm/%1$td",Calendar.getInstance());
 		getCollection().update(
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
@@ -123,7 +122,7 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 						.append(F_SALES_DATA_UPDATE, dateCode)
 						)
 						);
-		System.out.println("更新销售数据:"+getDesc());
+//		System.out.println("更新销售数据:"+getDesc());
 	}
 	
 	public double getSalesRevenue(){

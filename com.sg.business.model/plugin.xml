@@ -630,51 +630,19 @@
    <extension
          point="com.mobnut.admin.schedualJob">
       <schedualJob
-            id="visualization.databuilding"
-            name="%schedualJob.name"
+            id="finance.schedual.etl"
+            name="ETL"
             rule="day"
-            run="com.sg.business.model.etl.ProjectETLJob"
-            time="05:00:00">
+            run="com.sg.business.model.etl.ETLJob"
+            time="2:05:00">
       </schedualJob>
       <schedualJob
-            day="1"
-            id="finance.schedual.rndcostallocation"
-            name="%schedualJob.name.0"
+            day="9999999999"
+            id="finance.schedual.etlold"
+            name="ETL 历史数据导入"
             rule="month"
-            run="com.sg.business.model.etl.RNDCostAllocationETLJob"
-            time="0:05:00">
-      </schedualJob>
-      <schedualJob
-            day="1"
-            id="finance.schedual.workordercostgather"
-            name="%schedualJob.name.1"
-            rule="month"
-            run="com.sg.business.model.etl.WorkorderCostGatherETLJob"
-            time="1:05:00">
-      </schedualJob>
-      <schedualJob
-            day="1"
-            id="finance.schedual.salesincomeallocation"
-            name="%schedualJob.name.2"
-            rule="month"
-            run="com.sg.business.model.etl.RevenueAllocationETLJob"
-            time="2:00:00">
-      </schedualJob>
-      <schedualJob
-            day="100000"
-            id="finance.schedual.loaddemodata"
-            name="%schedualJob.name.3"
-            rule="month"
-            run="com.sg.business.model.etl.temp.LoadDemoData"
-            time="2:00:00">
-      </schedualJob>
-      <schedualJob
-            day="1000000"
-            id="finance.schedual.calculateProductSalesData"
-            name="%schedualJob.name.4"
-            rule="month"
-            run="com.sg.business.model.etl.temp.CalculateProductSalesDate"
-            time="0:05:00">
+            run="com.sg.business.model.etl.ETLOldJob"
+            time="2:05:00">
       </schedualJob>
    </extension>
 

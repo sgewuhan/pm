@@ -304,4 +304,6 @@ public interface IModelConstants {
 
 	public static final String C_BUG = "buginfo";
 
+	public static final String C_PROJECT_MONTH_DATA = "projectmonthdata";
+
 }

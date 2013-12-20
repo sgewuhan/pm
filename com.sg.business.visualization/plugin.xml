@@ -958,9 +958,14 @@
                   checkEnabled="false">
                <with
                      variable="activeWorkbenchWindow.activePerspective">
-                  <equals
-                        value="perspective.vis.home">
-                  </equals>
+                  <or>
+                     <equals
+                           value="perspective.vis.home">
+                     </equals>
+                     <equals
+                           value="perspective.vis2.home">
+                     </equals>
+                  </or>
                </with>
             </visibleWhen>
          </command>
@@ -974,9 +979,14 @@
                   checkEnabled="false">
                <with
                      variable="activeWorkbenchWindow.activePerspective">
-                  <equals
-                        value="perspective.vis.home">
-                  </equals>
+                  <or>
+                     <equals
+                           value="perspective.vis.home">
+                     </equals>
+                     <equals
+                           value="perspective.vis2.home">
+                     </equals>
+                  </or>
                </with>
             </visibleWhen>
          </command>
@@ -2014,6 +2024,72 @@
                type="String">
          </column>
       </table>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.CombinnatiedRateView"
+            id="vis2.combinnatiedrate"
+            name="期间综合比率"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OverSchedualRateView"
+            id="vis2.overschedualrate"
+            name="期间项目超期比率"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.BudgetAndInvestmentVolumnView"
+            id="vis2.budgetandinvestmentvolumn"
+            name="期间预算支出量"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.ProfitVolumnView"
+            id="vis2.profitvolumn"
+            name="期间销售利润"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OverSchedualVolumnView"
+            id="vis2.overschedualvolumn"
+            name="期间项目超期数"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.ProfitListView"
+            id="vis2.profitlist"
+            name="期间利润率排名"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.RevenueListView"
+            id="vis2.revenuelist"
+            name="期间销售额排名"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.OverCostListView"
+            id="vis2.overcostlist"
+            name="期间超支排名"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.IndicatorsView"
+            id="vis2.indicators"
+            name="指示器"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>

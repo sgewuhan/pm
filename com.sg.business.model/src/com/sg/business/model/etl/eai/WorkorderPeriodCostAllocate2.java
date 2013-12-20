@@ -94,24 +94,46 @@ public class WorkorderPeriodCostAllocate2 {
 
 		// 承担组织在orgids中,在当月处于进行状态的的项目的工作令号
 		Calendar cal = Calendar.getInstance();
-		cal.set(((Integer) year).intValue(), ((Integer) month).intValue()-1, 1,
-				0, 0, 0);
-		cal.add(Calendar.SECOND, -1);
+		cal.set(((Integer) year).intValue(),
+				((Integer) month).intValue() - 1, 1, 0, 0, 0);
 		Date stop = cal.getTime();
+
+		// 增加取后一月份第一天的数据
+		cal.add(Calendar.MONTH, 1);
+		Date start = cal.getTime();
 
 		BasicDBObject query = new BasicDBObject();
 		query.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", orgids));
-		//TODO 可能需要增加的条件
 		query.put(
-				"$or",
+				"$and",
 				new BasicDBObject[] {
-						// 完成时间为空
-						// 或者完成时间大于该月最后一天
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								null),
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", stop)) });
+						new BasicDBObject().append(
+								"$or",
+								new BasicDBObject[] {
+										// 完成时间为空
+										// 或者完成时间大于前一月的最后一天
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH, null),
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH,
+												new BasicDBObject().append(
+														"$gte", stop)) }),
+														
+						new BasicDBObject().append(
+								"$or",
+								new BasicDBObject[] {
+										//开始时间必须不为空
+										//开始时间必须小于当月的最后一天
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$ne", null)),
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$lt", start)) }) });
+
 		@SuppressWarnings("rawtypes")
 		List workorders = projectCol.distinct(Project.F_WORK_ORDER, query);
 
@@ -128,14 +150,13 @@ public class WorkorderPeriodCostAllocate2 {
 
 		// 将研发成本平摊到每个工作令号
 		if (effectiveWorkOrders.isEmpty()) {
-			Commons.logerror("成本中心" + costCenterCode +company +", 在期间:" + year
-					+ month + " 无可分摊研发成本的工作令号,可能是在该期间没有正在进行的项目可供分摊。");
+			Commons.logerror("成本中心" + costCenterCode + company + ", 在期间:"
+					+ year + month + " 无可分摊研发成本的工作令号,可能是在该期间没有正在进行的项目可供分摊。");
 			return new ArrayList<WorkOrderPeriodCost>();
 		}
 
 		List<DBObject> toBeInsert = new ArrayList<DBObject>();
-//TODO 没有处理有效的工作令号
-		Iterator<?> iter = workorders.iterator();
+		Iterator<?> iter = effectiveWorkOrders.iterator();
 		while (iter.hasNext()) {
 			String workOrderNumber = (String) iter.next();
 			DBObject wopc = new BasicDBObject();
@@ -154,7 +175,7 @@ public class WorkorderPeriodCostAllocate2 {
 				if (cost == null) {
 					wopc.put(key, 0d);
 				} else {
-					double value = ((Double) cost) /workorders.size();
+					double value = ((Double) cost) / effectiveWorkOrders.size();
 					wopc.put(key, value);
 				}
 			}
@@ -175,7 +196,6 @@ public class WorkorderPeriodCostAllocate2 {
 
 		return result;
 	}
-
 
 	public Date[] getStartAndEnd(Integer year, Integer month) {
 		Calendar cal = Calendar.getInstance();
