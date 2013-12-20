@@ -6,15 +6,15 @@
       <adminFunction
             id="com.sg.business.finance.admin.budgetitem"
             image="image/budgetitem_48.png"
-            label="预算科目"
+            label="%adminFunction.label"
             run="com.sg.business.finance.admin.BudgetItemFunction">
       </adminFunction>
       <adminFunction
             id="com.sg.business.finance.admin.DevAccountNumberSetting"
             image="image/item_48.png"
-            label="研发费用科目"
+            label="%adminFunction.label.0"
             run="com.sg.business.finance.admin.DevAccountNumberSetting"
-            tooltip="设置SAP">
+            tooltip="%adminFunction.tooltip">
       </adminFunction>
    </extension>
    <extension
@@ -23,7 +23,7 @@
             class="com.sg.business.finance.editor.BudgetItemEditor"
             default="false"
             id="com.sg.business.finance.budgetitemeditor"
-            name="默认预算科目">
+            name="%editor.name">
       </editor>
    </extension>
    <extension
@@ -31,19 +31,19 @@
       <view
             class="com.sg.widgets.part.view.TableNavigator"
             id="financial.accountnumber"
-            name="研发费用科目表"
+            name="%view.name"
             restorable="true">
       </view>
       <view
             class="com.sg.widgets.part.view.TableNavigator"
             id="finance.org.navigator"
-            name="成本中心导航"
+            name="%view.name.0"
             restorable="true">
       </view>
       <view
             class="com.sg.business.finance.rndcost.RNDCostAdjustmentView"
             id="finance.rndcost"
-            name="研发费用"
+            name="%view.name.1"
             restorable="true">
       </view>
    </extension>
@@ -55,36 +55,36 @@
          <filterAction>
             <column
                   column="desc"
-                  name="科目名称"
+                  name="%column.name"
                   type="String">
             </column>
             <column
                   column="accountnumber"
-                  name="代码"
+                  name="%column.name.0"
                   type="String">
             </column>
          </filterAction>
          <searchAction>
             <column
                   column="desc"
-                  name="科目名称"
+                  name="%column.name.1"
                   type="String">
             </column>
             <column
                   column="accountnumber"
-                  name="代码"
+                  name="%column.name.2"
                   type="String">
             </column>
          </searchAction>
          <exportAction>
             <column
                   column="desc"
-                  name="科目名称"
+                  name="%column.name.3"
                   type="String">
             </column>
             <column
                   column="accountnumber"
-                  name="代码"
+                  name="%column.name.4"
                   type="String">
             </column>
          </exportAction>
@@ -92,13 +92,13 @@
             <column
                   column="desc"
                   isKey="true"
-                  name="科目名称"
+                  name="%column.name.5"
                   type="String">
             </column>
             <column
                   column="accountnumber"
                   isKey="true"
-                  name="代码"
+                  name="%column.name.6"
                   type="String">
             </column>
          </importAction>
@@ -118,13 +118,13 @@
             id="financial.accountnumber">
          <column
                column="desc"
-               name="科目名称"
+               name="%column.name.7"
                type="String"
                width="120">
          </column>
          <column
                column="accountnumber"
-               name="代码"
+               name="%column.name.8"
                type="String"
                width="120">
          </column>
@@ -138,7 +138,7 @@
             id="finance.org.navigator">
          <column
                column="fulldesc"
-               name="组织全称"
+               name="%column.name.9"
                style="SWT.LEFT"
                type="String"
                width="-1">
@@ -148,7 +148,7 @@
          </column>
          <column
                column="companycode"
-               name="公司代码"
+               name="%column.name.10"
                type="String">
          </column>
       </table>
@@ -159,18 +159,18 @@
             collectionName="costaccount"
             dbName="pm2"
             id="editor.devaccountnumber"
-            name="科目">
+            name="%editor.name">
          <basicpage
                id="basicpage1"
-               title="基本信息">
+               title="%basicpage.title">
             <pagecolumn>
                <section
-                     label="基本信息">
+                     label="%section.label">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="科目名称"
+                        label="%text.label"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -181,7 +181,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="accountnumber"
-                        label="科目代码"
+                        label="%text.label.0"
                         labelVisible="true"
                         name="accountnumber"
                         persistable="true"

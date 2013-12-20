@@ -631,7 +631,7 @@
          point="com.mobnut.admin.schedualJob">
       <schedualJob
             id="visualization.databuilding"
-            name="ETL 项目数据分析"
+            name="%schedualJob.name"
             rule="day"
             run="com.sg.business.model.etl.ProjectETLJob"
             time="05:00:00">
@@ -639,7 +639,7 @@
       <schedualJob
             day="1"
             id="finance.schedual.rndcostallocation"
-            name="ETL 成本中心期间研发成本获取和计算"
+            name="%schedualJob.name.0"
             rule="month"
             run="com.sg.business.model.etl.RNDCostAllocationETLJob"
             time="0:05:00">
@@ -647,7 +647,7 @@
       <schedualJob
             day="1"
             id="finance.schedual.workordercostgather"
-            name="ETL 工作令号期间研发成本获取和计算"
+            name="%schedualJob.name.1"
             rule="month"
             run="com.sg.business.model.etl.WorkorderCostGatherETLJob"
             time="1:05:00">
@@ -655,7 +655,7 @@
       <schedualJob
             day="1"
             id="finance.schedual.salesincomeallocation"
-            name="ETL 期间销售数据获取和计算"
+            name="%schedualJob.name.2"
             rule="month"
             run="com.sg.business.model.etl.RevenueAllocationETLJob"
             time="2:00:00">
@@ -663,7 +663,7 @@
       <schedualJob
             day="100000"
             id="finance.schedual.loaddemodata"
-            name="处理基础数据中的工时分配"
+            name="%schedualJob.name.3"
             rule="month"
             run="com.sg.business.model.etl.temp.LoadDemoData"
             time="2:00:00">
@@ -671,7 +671,7 @@
       <schedualJob
             day="1000000"
             id="finance.schedual.calculateProductSalesData"
-            name="处理产品的销售数据（一次性）"
+            name="%schedualJob.name.4"
             rule="month"
             run="com.sg.business.model.etl.temp.CalculateProductSalesDate"
             time="0:05:00">

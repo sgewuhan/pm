@@ -20,7 +20,7 @@
          <command
                commandId="deliverable.linkpdm"
                icon="image/rep_document_24.png"
-               label="链接PDM图文档..."
+               label="%command.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -48,7 +48,7 @@
          <command
                commandId="workflow.deliverable.linkpdm"
                icon="image/rep_document_24.png"
-               label="链接PDM图文档..."
+               label="%command.label.0"
                style="push">
          </command>
       </menuContribution>
@@ -57,11 +57,11 @@
          point="org.eclipse.ui.commands">
       <command
             id="deliverable.linkpdm"
-            name="链接PDM图文档">
+            name="%command.name">
       </command>
       <command
             id="workflow.deliverable.linkpdm"
-            name="链接PDM图文档">
+            name="%command.name.0">
       </command>
    </extension>
    <extension

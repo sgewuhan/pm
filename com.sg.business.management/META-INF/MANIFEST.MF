@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: BusinessManagement
 Bundle-SymbolicName: com.sg.business.management;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Activator: com.sg.business.management.ManagementActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,

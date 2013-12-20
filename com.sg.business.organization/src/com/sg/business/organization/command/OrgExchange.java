@@ -19,6 +19,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
+import com.sg.business.organization.nls.Messages;
 import com.sg.sqldb.utility.SQLResult;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;
@@ -71,17 +72,17 @@ public class OrgExchange {
 	/**
 	 * 消息标题
 	 */
-	public static String MESSAGE_DESC = "系统消息：HR系统中存在组织被删除或更改了上级组织！";
+	public static String MESSAGE_DESC = Messages.get().OrgExchange_0;
 
 	/**
 	 * 消息内容（后半部分）
 	 */
-	public static String MESSAGE_CONTENT_AFTER = "”已被删除或更改了上级组织，请在PM系统中更改归属其组织的人员、角色、项目等信息，并删除对应的组织！";
+	public static String MESSAGE_CONTENT_AFTER = Messages.get().OrgExchange_1;
 
 	/**
 	 * 消息内容（后半部分）
 	 */
-	public static String MESSAGE_CONTENT_BEFORE = "HR系统中组织：“";
+	public static String MESSAGE_CONTENT_BEFORE = Messages.get().OrgExchange_2;
 
 	/**
 	 * 构造函数
@@ -148,7 +149,7 @@ public class OrgExchange {
 		DBCollection coll = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_ORGANIZATION);
 		if (coll == null) {
-			throw new Exception("无法连接PM数据库");
+			throw new Exception(Messages.get().OrgExchange_3);
 		}
 		DBObject condition;
 		// 判断是否顶级组织
@@ -214,21 +215,21 @@ public class OrgExchange {
 		// 为null表示为顶级组织，这是通过ldunitid=‘1’来获取HR组织
 		// 不为null表示为非顶级组织，这时通过unitid来获取HR组织
 		if (id == null) {
-			result = SQLUtil.SQL_QUERY("hr",
-					"select * from tb_nczz.pm_unit where ldunitid = '1'");
+			result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
+					"select * from tb_nczz.pm_unit where ldunitid = '1'"); //$NON-NLS-1$
 		} else {
 
 			result = SQLUtil
-					.SQL_QUERY("hr",
-							"select * from tb_nczz.pm_unit where unitid = '"
-									+ id + "'");
+					.SQL_QUERY("hr", //$NON-NLS-1$
+							"select * from tb_nczz.pm_unit where unitid = '" //$NON-NLS-1$
+									+ id + "'"); //$NON-NLS-1$
 		}
 		// 构造HR系统的组织
 		if (!result.isEmpty()) {
 			List<SQLRow> dataSet = result.getData();
 			SQLRow row = dataSet.get(0);
-			orgId = "" + row.getValue("unitid");
-			desc = "" + row.getValue("unitname");
+			orgId = "" + row.getValue("unitid"); //$NON-NLS-1$ //$NON-NLS-2$
+			desc = "" + row.getValue("unitname"); //$NON-NLS-1$ //$NON-NLS-2$
 			children.addAll(initBySqlChildren(this));
 		}
 	}
@@ -246,16 +247,16 @@ public class OrgExchange {
 		SQLRow row;
 		try {
 			// 通过ldunitid来获取子组织
-			result = SQLUtil.SQL_QUERY("hr",
-					"select * from tb_nczz.pm_unit where ldunitid = '"
-							+ parentOrgExchange.orgId + "'");
+			result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
+					"select * from tb_nczz.pm_unit where ldunitid = '" //$NON-NLS-1$
+							+ parentOrgExchange.orgId + "'"); //$NON-NLS-1$
 			if (!result.isEmpty()) {
 				// 循环构造当前组织的子组织
 				Iterator<SQLRow> iter = result.iterator();
 				while (iter.hasNext()) {
 					row = iter.next();
-					String childrenOrgId = "" + row.getValue("unitid");
-					String childrenDesc = "" + row.getValue("unitname");
+					String childrenOrgId = "" + row.getValue("unitid"); //$NON-NLS-1$ //$NON-NLS-2$
+					String childrenDesc = "" + row.getValue("unitname"); //$NON-NLS-1$ //$NON-NLS-2$
 
 					OrgExchange orgExchange = new OrgExchange(childrenOrgId,
 							childrenDesc, parentOrgExchange);
@@ -435,21 +436,21 @@ public class OrgExchange {
 			org.setValue(Organization.F_DESC, otherOrg.desc);
 			org.setValue(PrimaryObject.F__EDITOR, Organization.EDITOR_TEAM);
 			String alphaString = Utils.getAlphaString(otherOrg.desc);
-			alphaString = (alphaString + "000").substring(0, 3);
+			alphaString = (alphaString + "000").substring(0, 3); //$NON-NLS-1$
 			org.setValue(Organization.F_CODE, alphaString);
 		} else {
-			String desc = otherOrg.desc.replaceFirst(otherOrg.parent.desc, "");
+			String desc = otherOrg.desc.replaceFirst(otherOrg.parent.desc, ""); //$NON-NLS-1$
 			org.setValue(Organization.F_DESC, desc);
 			org.setValue(PrimaryObject.F__EDITOR, Organization.EDITOR_SUBTEAM);
 			String alphaString = Utils.getAlphaString(desc);
-			alphaString = (alphaString + "000").substring(0, 3);
+			alphaString = (alphaString + "000").substring(0, 3); //$NON-NLS-1$
 			org.setValue(Organization.F_CODE, alphaString);
 		}
 		// 设置系统信息
 		DBObject accountInfo = new BasicDBObject();
 		AccountInfo account = new BackgroundContext().getAccountInfo();
-		accountInfo.put("userid", account.getUserId());
-		accountInfo.put("username", account.getUserName());
+		accountInfo.put("userid", account.getUserId()); //$NON-NLS-1$
+		accountInfo.put("username", account.getUserName()); //$NON-NLS-1$
 		org.setValue(Organization.F__ID, _id);
 		org.setValue(Organization.F_PARENT_ID, parentId);
 		org.setValue(PrimaryObject.F__CDATE, new Date());

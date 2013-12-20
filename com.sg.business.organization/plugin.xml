@@ -11,28 +11,28 @@
             category="organization"
             class="com.sg.widgets.part.view.TreeNavigator"
             id="organization.navigator"
-            name="组织"
+            name="%view.name"
             restorable="true">
       </view>
       <view
             category="organization"
             class="com.sg.widgets.part.view.TableNavigator"
             id="organization.member"
-            name="成员"
+            name="%view.name.0"
             restorable="true">
       </view>
       <view
             category="organization"
             class="com.sg.widgets.part.view.TreeNavigator"
             id="organization.role"
-            name="角色"
+            name="%view.name.1"
             restorable="true">
       </view>
       <view
             category="organization"
             class="com.sg.widgets.part.view.TableNavigator"
             id="organization.user"
-            name="用户"
+            name="%view.name.2"
             restorable="true">
       </view>
    </extension>
@@ -211,7 +211,7 @@
          <filterAction>
             <column
                   column="userid"
-                  name="用户ID"
+                  name="%column.name"
                   type="String">
             </column>
             <column
@@ -221,7 +221,7 @@
          <searchAction>
             <column
                   column="userid"
-                  name="用户ID"
+                  name="%column.name.0"
                   type="String">
             </column>
             <column
@@ -235,7 +235,7 @@
          <filterAction>
             <column
                   column="userid"
-                  name="用户ID"
+                  name="%column.name.1"
                   type="String">
             </column>
             <column
@@ -245,7 +245,7 @@
          <searchAction>
             <column
                   column="userid"
-                  name="用户ID"
+                  name="%column.name.2"
                   type="String">
             </column>
             <column
@@ -255,7 +255,7 @@
          <queryAction>
             <column
                   column="userid"
-                  name="用户ID"
+                  name="%column.name.3"
                   type="String">
             </column>
             <column
@@ -341,7 +341,7 @@
          </column>
          <column
                column="companycode"
-               name="公司代码"
+               name="%column.name.4"
                type="String">
          </column>
          <structure
@@ -402,7 +402,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
-               name="名称"
+               name="%column.name.5"
                type="String"
                width="-1">
          </column>
@@ -430,7 +430,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
-               name="名称"
+               name="%column.name.6"
                type="String"
                width="-1">
          </column>
@@ -558,21 +558,21 @@
             id="editor.organization.team"
             isDefault="true"
             labelFieldName="desc"
-            name="顶级组织"
-            titleToolTips="顶级组织">
+            name="%editor.name"
+            titleToolTips="%editor.titleToolTips">
          <basicpage
-               description="组织的基本信息"
+               description="%basicpage.description"
                id="basicpage.1"
-               title="基本信息">
+               title="%basicpage.title">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="组织名称"
+                        label="%text.label"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -583,7 +583,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="fulldesc"
-                        label="组织全称"
+                        label="%text.label.0"
                         labelVisible="true"
                         name="fulldesc"
                         persistable="true"
@@ -595,7 +595,7 @@
                         editable="true"
                         type="String"
                         id="organizationtype"
-                        label="类型"
+                        label="%combo.label"
                         labelVisible="true"
                         name="organizationtype"
                         option="com.sg.business.option.organizationType"
@@ -606,7 +606,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="code"
-                        label="代码"
+                        label="%text.label.1"
                         labelVisible="true"
                         name="code"
                         persistable="true"
@@ -617,7 +617,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="companycode"
-                        label="公司代码"
+                        label="%text.label.2"
                         labelVisible="true"
                         name="companycode"
                         persistable="true"
@@ -628,7 +628,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="costcentercode"
-                        label="成本中心代码"
+                        label="%text.label.3"
                         labelVisible="true"
                         name="costcentercode"
                         persistable="true"
@@ -638,7 +638,7 @@
                   <checkbox
                         editable="true"
                         id="isfunctiondepartment"
-                        label="具有项目管理职能"
+                        label="%checkbox.label"
                         labelVisible="true"
                         name="isfunctiondepartment"
                         persistable="true"
@@ -647,7 +647,7 @@
                   <checkbox
                         editable="true"
                         id="iscontainer"
-                        label="文档容器"
+                        label="%checkbox.label.0"
                         labelVisible="true"
                         name="iscontainer"
                         persistable="true"
@@ -657,7 +657,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="filebase"
-                        label="容器代码"
+                        label="%text.label.4"
                         labelVisible="true"
                         name="filebase"
                         persistable="true"
@@ -668,7 +668,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.5"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -679,16 +679,16 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="PDM容器"
+               description="%basicpage.description.0"
                id="pdmpage"
                title="PDM">
             <pagecolumn>
                <section
-                     label="图纸文档容器">
+                     label="%section.label.0">
                   <list
                         editable="true"
                         id="pdmcontainer"
-                        label="PDM容器代码"
+                        label="%list.label"
                         labelVisible="false"
                         name="pdmcontainer"
                         persistable="true"
@@ -696,11 +696,11 @@
                   </list>
                </section>
                <section
-                     label="零部件容器">
+                     label="%section.label.1">
                   <list
                         editable="true"
                         id="pdmpartcontainer"
-                        label="PDM容器代码"
+                        label="%list.label.0"
                         labelVisible="false"
                         name="pdmpartcontainer"
                         persistable="true"
@@ -716,21 +716,21 @@
             id="editor.organization.subteam"
             isDefault="true"
             labelFieldName="desc"
-            name="部门和团队"
-            titleToolTips="部门和团队">
+            name="%editor.name.0"
+            titleToolTips="%editor.titleToolTips.0">
          <basicpage
-               description="组织的基本信息"
+               description="%basicpage.description.1"
                id="basicpage.1"
-               title="基本信息">
+               title="%basicpage.title.1">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.2">
                   <selectionDialog
                         dataSetFactory="com.sg.business.model.dataset.organization.OrgFinder"
                         editable="false"
                         id="parent_id"
-                        label="上级组织"
+                        label="%selectionDialog.label"
                         labelVisible="true"
                         name="parent_id"
                         persistable="true"
@@ -741,7 +741,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="组织名称"
+                        label="%text.label.6"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -752,7 +752,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="fulldesc"
-                        label="组织全称"
+                        label="%text.label.7"
                         labelVisible="true"
                         name="fulldesc"
                         persistable="true"
@@ -764,7 +764,7 @@
                         editable="true"
                         type="String"
                         id="organizationtype"
-                        label="类型"
+                        label="%combo.label.0"
                         labelVisible="true"
                         name="organizationtype"
                         option="com.sg.business.option.organizationType"
@@ -775,7 +775,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="code"
-                        label="代码"
+                        label="%text.label.8"
                         labelVisible="true"
                         name="code"
                         persistable="true"
@@ -786,7 +786,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="companycode"
-                        label="公司代码"
+                        label="%text.label.9"
                         labelVisible="true"
                         name="companycode"
                         persistable="true"
@@ -797,7 +797,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="costcentercode"
-                        label="成本中心代码"
+                        label="%text.label.10"
                         labelVisible="true"
                         name="costcentercode"
                         persistable="true"
@@ -807,7 +807,7 @@
                   <checkbox
                         editable="true"
                         id="isfunctiondepartment"
-                        label="具有项目管理职能"
+                        label="%checkbox.label.1"
                         labelVisible="true"
                         name="isfunctiondepartment"
                         persistable="true"
@@ -816,7 +816,7 @@
                   <checkbox
                         editable="true"
                         id="iscontainer"
-                        label="文档容器"
+                        label="%checkbox.label.2"
                         labelVisible="true"
                         name="iscontainer"
                         persistable="true"
@@ -826,7 +826,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="filebase"
-                        label="容器代码"
+                        label="%text.label.11"
                         labelVisible="true"
                         name="filebase"
                         persistable="true"
@@ -837,7 +837,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.12"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -848,16 +848,16 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="PDM容器"
+               description="%basicpage.description.2"
                id="pdmpage"
                title="PDM">
             <pagecolumn>
                <section
-                     label="图纸文档容器">
+                     label="%section.label.3">
                   <list
                         editable="true"
                         id="pdmcontainer"
-                        label="PDM容器代码"
+                        label="%list.label.1"
                         labelVisible="false"
                         name="pdmcontainer"
                         persistable="true"
@@ -865,11 +865,11 @@
                   </list>
                </section>
                <section
-                     label="零部件容器">
+                     label="%section.label.4">
                   <list
                         editable="true"
                         id="pdmpartcontainer"
-                        label="PDM容器代码"
+                        label="%list.label.2"
                         labelVisible="false"
                         name="pdmpartcontainer"
                         persistable="true"
@@ -885,21 +885,21 @@
             id="editor.organization.role"
             isDefault="true"
             labelFieldName="desc"
-            name="角色"
-            titleToolTips="角色">
+            name="%editor.name.1"
+            titleToolTips="%editor.titleToolTips.1">
          <basicpage
-               description="角色的基本信息"
+               description="%basicpage.description.3"
                id="basicpage.1"
-               title="基本信息">
+               title="%basicpage.title.3">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.5">
                   <selectionDialog
                         dataSetFactory="com.sg.business.model.dataset.organization.OrgFinder"
                         editable="false"
                         id="organization_id"
-                        label="所属组织"
+                        label="%selectionDialog.label.0"
                         labelVisible="true"
                         name="organization_id"
                         persistable="true"
@@ -910,7 +910,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="rolenumber"
-                        label="角色编号"
+                        label="%text.label.13"
                         labelVisible="true"
                         name="rolenumber"
                         persistable="true"
@@ -921,7 +921,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="角色名称"
+                        label="%text.label.14"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -932,7 +932,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.15"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -950,21 +950,21 @@
             isDefault="true"
             labelFieldName="username"
             memo="用户创建编辑使用"
-            name="用户"
-            titleToolTips="用户">
+            name="%editor.name.2"
+            titleToolTips="%editor.titleToolTips.2">
          <basicpage
-               description="用户的基本信息"
+               description="%basicpage.description.4"
                id="basicpage.1"
-               title="基本信息">
+               title="%basicpage.title.4">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.6">
                   <selectionDialog
                         dataSetFactory="com.sg.business.model.dataset.organization.OrgFinder"
                         editable="false"
                         id="organization_id"
-                        label="所属组织"
+                        label="%selectionDialog.label.1"
                         labelVisible="true"
                         name="organization_id"
                         persistable="true"
@@ -975,7 +975,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="userid"
-                        label="用户编号"
+                        label="%text.label.16"
                         labelVisible="true"
                         name="userid"
                         persistable="true"
@@ -986,7 +986,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="username"
-                        label="姓名"
+                        label="%text.label.17"
                         labelVisible="true"
                         name="username"
                         persistable="true"
@@ -1007,7 +1007,7 @@
                   <checkbox
                         editable="true"
                         id="activated"
-                        label="激活"
+                        label="%checkbox.label.3"
                         labelVisible="true"
                         name="activated"
                         persistable="true">
@@ -1017,7 +1017,7 @@
                         editable="false"
                         id="password"
                         isPassword="true"
-                        label="密码"
+                        label="%text.label.19"
                         labelVisible="true"
                         name="password"
                         persistable="true"
@@ -1028,17 +1028,17 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="照片"
+               description="%basicpage.description.5"
                id="photo"
-               title="照片">
+               title="%basicpage.title.5">
             <pagecolumn>
                <section
-                     label="照片">
+                     label="%section.label.7">
                   <file
                         editPart="ImageUploader(Multi)"
                         editable="true"
                         id="headpic"
-                        label="头像"
+                        label="%file.label"
                         labelVisible="false"
                         name="headpic"
                         persistable="true"
@@ -1050,7 +1050,7 @@
          <basicpage
                id="scenario"
                pageDelegator="com.sg.business.organization.editor.UserScenrioSetting"
-               title="使用场景">
+               title="%basicpage.title.6">
          </basicpage>
       </editor>
       <editor
@@ -1060,33 +1060,33 @@
             isDefault="true"
             labelFieldName="username"
             memo="角色指派设置用户场景时使用"
-            name="用户场景"
-            titleToolTips="用户">
+            name="%editor.name.3"
+            titleToolTips="%editor.titleToolTips.3">
          <basicpage
                id="scenario"
                pageDelegator="com.sg.business.organization.editor.RoleAssignmentScenrioSetting"
-               title="使用场景">
+               title="%basicpage.title.7">
          </basicpage>
       </editor>
       <editor
             collectionName="com.sg.business.organization.editor1"
             dbName="com.sg.business.organization.editor1"
             id="editor.organization.synchr"
-            name="导入组织和用户信息">
+            name="%editor.name.4">
          <navigatorpage
                id="organization.inserthr"
                navigatorId="organization.inserthr"
-               title="新增组织">
+               title="%navigatorpage.title">
          </navigatorpage>
          <navigatorpage
                id="organization.removehr"
                navigatorId="organization.removehr"
-               title="删除组织">
+               title="%navigatorpage.title.0">
          </navigatorpage>
          <navigatorpage
                id="organization.renamehr"
                navigatorId="organization.renamehr"
-               title="修改组织">
+               title="%navigatorpage.title.1">
          </navigatorpage>
       </editor>
    </extension>
@@ -1251,7 +1251,7 @@
                commandId="com.sg.widgets.command.create"
                icon="image/create2_24.png"
                id="create"
-               label="创建"
+               label="%command.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1266,7 +1266,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.0"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1281,7 +1281,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.1"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1296,7 +1296,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.2"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1315,7 +1315,7 @@
          <command
                commandId="com.sg.widgets.command.addtocompare"
                icon="image/compare_24.png"
-               label="加入对比"
+               label="%command.label.3"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1330,7 +1330,7 @@
          <command
                commandId="organization.consignUser"
                icon="image/consign_24.png"
-               label="由其他用户托管"
+               label="%command.label.4"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1349,7 +1349,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.5"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1368,7 +1368,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.6"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1383,7 +1383,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.7"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1398,7 +1398,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="场景设置"
+               label="%command.label.8"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1425,7 +1425,7 @@
          <command
                commandId="com.sg.widgets.command.addtocompare"
                icon="image/compare_24.png"
-               label="加入对比"
+               label="%command.label.9"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1448,12 +1448,12 @@
       <command
             categoryId="organization.category"
             id="command.organization.syncHR"
-            name="将HR的组织数据同步到系统">
+            name="%command.name">
       </command>
       <command
             categoryId="organization.category"
             id="organization.consignUser"
-            name="用户托管">
+            name="%command.name.0">
       </command>
    </extension>
    <extension

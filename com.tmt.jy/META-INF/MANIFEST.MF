@@ -2,6 +2,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Jy
 Bundle-SymbolicName: com.tmt.jy;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Activator: com.tmt.jy.JYActivator
 Bundle-Vendor: TMT
 Require-Bundle: org.eclipse.rap.ui,

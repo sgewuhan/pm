@@ -80,7 +80,7 @@ public class ImportUser implements ISchedualJobRunnable {
 		SQLRow row;
 		try {
 			// 获取用户
-			result = SQLUtil.SQL_QUERY("hr", "select * from tb_nczz.pm_emp");
+			result = SQLUtil.SQL_QUERY("hr", "select * from tb_nczz.pm_emp"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			if (!result.isEmpty()) {
 				// 循环构造用户
@@ -88,10 +88,10 @@ public class ImportUser implements ISchedualJobRunnable {
 				while (iter.hasNext()) {
 					row = iter.next();
 					UserExchange userExchange = new UserExchange();
-					userExchange.seteMail("" + row.getValue("email"));
-					userExchange.setUnitId("" + row.getValue("unit"));
-					userExchange.setUserId("" + row.getValue("code"));
-					userExchange.setUserName("" + row.getValue("name"));
+					userExchange.seteMail("" + row.getValue("email")); //$NON-NLS-1$ //$NON-NLS-2$
+					userExchange.setUnitId("" + row.getValue("unit")); //$NON-NLS-1$ //$NON-NLS-2$
+					userExchange.setUserId("" + row.getValue("code")); //$NON-NLS-1$ //$NON-NLS-2$
+					userExchange.setUserName("" + row.getValue("name")); //$NON-NLS-1$ //$NON-NLS-2$
 					childrenSet.add(userExchange);
 				}
 			}

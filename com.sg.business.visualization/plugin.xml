@@ -11,7 +11,7 @@
             category="visualization"
             class="com.sg.business.visualization.view.ProjectSetNavigator"
             id="vis.projectset.navigator"
-            name="项目组合导航"
+            name="%view.name"
             restorable="true">
       </view>
 
@@ -22,49 +22,49 @@
             category="visualization"
             class="com.sg.business.visualization.view.DetailMain"
             id="vis.main"
-            name="主要绩效指标"
+            name="%view.name.0"
             restorable="true">
       </view>
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashMainIndicators"
             id="vis.main.indicators"
-            name="指示器"
+            name="%view.name.1"
             restorable="true">
       </view>
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashBudgetAndCost"
             id="vis.eco.budgetandcost"
-            name="预算执行"
+            name="%view.name.2"
             restorable="true">
       </view>
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashEcoRevenue"
             id="vis.eco.revenue"
-            name="销售利润"
+            name="%view.name.3"
             restorable="true">
       </view>
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashSchedualRisk"
             id="vis.risk.schedual"
-            name="超期风险"
+            name="%view.name.4"
             restorable="true">
       </view>
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashCostRisk"
             id="vis.risk.cost"
-            name="超支风险"
+            name="%view.name.5"
             restorable="true">
       </view>
       <view
             category="visualization"
             class="com.sg.business.visualization.view.DashDepartment"
             id="vis.dept.main"
-            name="部门项目综合运营状况"
+            name="%view.name.6"
             restorable="true">
       </view>
    </extension>
@@ -241,7 +241,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.visualization.labelprovider.ProjectSetNavigatorLabelProvider"
-               name="组织名称"
+               name="%column.name"
                style="SWT.LEFT"
                type="String"
                width="-1">
@@ -286,7 +286,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
-               name="组织名称"
+               name="%column.name.0"
                style="SWT.LEFT"
                type="String"
                width="-1">
@@ -321,7 +321,7 @@
                column="desc"
                labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
                lazyDisplay="true"
-               name="项目名称描述"
+               name="%column.name.1"
                type="String"
                width="320">
          </column>
@@ -329,7 +329,7 @@
                column="planfinish"
                labelProvider="com.sg.business.visualization.labelprovider.SchedualLabelProvider"
                lazyDisplay="true"
-               name="进度概况"
+               name="%column.name.2"
                type="Date"
                width="200">
          </column>
@@ -337,7 +337,7 @@
                column="rndcost"
                labelProvider="com.sg.business.visualization.labelprovider.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
-               name="预算和投入"
+               name="%column.name.3"
                type="String"
                width="200">
          </column>
@@ -345,7 +345,7 @@
                column="revenue"
                labelProvider="com.sg.business.visualization.labelprovider.RevenueLabelProvider"
                lazyDisplay="true"
-               name="销售收入和利润"
+               name="%column.name.4"
                type="String"
                width="200">
          </column>
@@ -373,7 +373,7 @@
                column="desc"
                labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
                lazyDisplay="true"
-               name="项目名称描述"
+               name="%column.name.5"
                type="String"
                width="320">
          </column>
@@ -381,7 +381,7 @@
                column="planfinish"
                labelProvider="com.sg.business.visualization.labelprovider.SchedualLabelProvider"
                lazyDisplay="true"
-               name="进度概况"
+               name="%column.name.6"
                type="Date"
                width="200">
          </column>
@@ -389,7 +389,7 @@
                column="status"
                labelProvider="com.sg.business.visualization.labelprovider.SchedualDetailLabelProvider"
                lazyDisplay="true"
-               name="里程碑"
+               name="%column.name.7"
                type="String"
                width="160">
          </column>
@@ -417,7 +417,7 @@
                column="desc"
                labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
                lazyDisplay="true"
-               name="项目名称描述"
+               name="%column.name.8"
                type="String"
                width="320">
          </column>
@@ -425,7 +425,7 @@
                column="rndcost"
                labelProvider="com.sg.business.visualization.labelprovider.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
-               name="预算和投入"
+               name="%column.name.9"
                type="String"
                width="200">
          </column>
@@ -433,7 +433,7 @@
                column="col1"
                labelProvider="com.sg.business.visualization.labelprovider.BudgetLabelProvider"
                lazyDisplay="true"
-               name="预算"
+               name="%column.name.10"
                type="String"
                width="60">
          </column>
@@ -441,7 +441,7 @@
                column="col2"
                labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider"
                lazyDisplay="true"
-               name="实际"
+               name="%column.name.11"
                type="String"
                width="60">
          </column>
@@ -449,7 +449,7 @@
                column="col3"
                labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider2"
                lazyDisplay="true"
-               name="部门投入"
+               name="%column.name.12"
                type="String"
                width="60">
          </column>
@@ -457,7 +457,7 @@
                column="col4"
                labelProvider="com.sg.business.visualization.labelprovider.OvercostCostLabelProvider"
                lazyDisplay="true"
-               name="超支"
+               name="%column.name.13"
                type="String"
                width="60">
          </column>
@@ -485,7 +485,7 @@
                column="desc"
                labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
                lazyDisplay="true"
-               name="项目名称描述"
+               name="%column.name.14"
                type="String"
                width="320">
          </column>
@@ -493,7 +493,7 @@
                column="revenue"
                labelProvider="com.sg.business.visualization.labelprovider.RevenueLabelProvider"
                lazyDisplay="true"
-               name="销售收入和利润"
+               name="%column.name.15"
                type="String"
                width="200">
          </column>
@@ -501,7 +501,7 @@
                column="d1"
                labelProvider="com.sg.business.visualization.labelprovider.RevenueDetailLabelProvider"
                lazyDisplay="true"
-               name="销售收入"
+               name="%column.name.16"
                type="String"
                width="60">
          </column>
@@ -509,7 +509,7 @@
                column="budget"
                labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider"
                lazyDisplay="true"
-               name="研发成本"
+               name="%column.name.17"
                type="String"
                width="60">
          </column>
@@ -517,7 +517,7 @@
                column="d2"
                labelProvider="com.sg.business.visualization.labelprovider.SalesCostDetailLabelProvider"
                lazyDisplay="true"
-               name="销售成本"
+               name="%column.name.18"
                type="String"
                width="60">
          </column>
@@ -525,7 +525,7 @@
                column="d3"
                labelProvider="com.sg.business.visualization.labelprovider.ProfitDetailLabelProvider"
                lazyDisplay="true"
-               name="利润"
+               name="%column.name.19"
                type="String"
                width="60">
          </column>
@@ -540,11 +540,11 @@
             virtual="true">
          <column
                column="desc"
-               name="项目名称">
+               name="%column.name.20">
          </column>
          <column
                column="desc"
-               name="项目名称">
+               name="%column.name.21">
          </column>
       </table>
    </extension>
@@ -554,49 +554,49 @@
             collectionName="projectprovider"
             dbName="pm2"
             id="editor.visualization.projectset"
-            name="项目组合">
+            name="%editor.name">
          <navigatorpage
                id="projectset.info"
                navigatorId="vis.projectset"
                pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetContent"
-               title="综合">
+               title="%navigatorpage.title">
          </navigatorpage>
          <navigatorpage
                id="projectset.schedual"
                navigatorId="vis.projectset.schedual"
                pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardSchedual"
-               title="进度">
+               title="%navigatorpage.title.0">
          </navigatorpage>
          <navigatorpage
                id="projectset.budgetandinvestment"
                navigatorId="vis.projectset.budgetandinvestment"
                pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardBudInv"
-               title="预算和投入">
+               title="%navigatorpage.title.1">
          </navigatorpage>
          <navigatorpage
                id="projectset.revenue"
                navigatorId="vis.projectset.revenue"
                pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardRevenue"
-               title="销售收入和利润">
+               title="%navigatorpage.title.2">
          </navigatorpage>
       </editor>
       <editor
             collectionName="userprojectperf"
             dbName="pm2"
             id="editor.visualization.addprojectset"
-            name="添加至项目组合">
+            name="%editor.name.0">
          <basicpage
                id="项目组合"
-               title="项目组合">
+               title="%basicpage.title">
             <pagecolumn>
                <section
-                     label="设定项目组合">
+                     label="%section.label">
                   <combo
                         editPart="Combo"
                         editable="true"
                         id="desc"
                         inputValidator="com.sg.business.visualization.validator.ProjectSetValidator"
-                        label="项目组合"
+                        label="%combo.label"
                         labelVisible="true"
                         name="desc"
                         optionProvider="com.sg.business.visualization.option.ProjectSetOption"
@@ -614,15 +614,15 @@
             id="editor.visualization.project"
             isDefault="true"
             memo="查看项目"
-            name="项目">
+            name="%editor.name.1">
          <basicpage
-               description="项目的基本信息"
+               description="%basicpage.description"
                id="project.basicpage"
                image="image/project_24.png"
-               title="基本">
+               title="%basicpage.title.0">
             <pagecolumn>
                <section
-                     label="项目摘要">
+                     label="%section.label.0">
                   <fieldgroup
                         columnCount="2"
                         makeColumnWidthEqual="false">
@@ -630,7 +630,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="projectnumber"
-                           label="项目编号"
+                           label="%text.label"
                            labelVisible="true"
                            name="projectnumber"
                            persistable="false"
@@ -641,7 +641,7 @@
                            editPart="Combo(Read Only)"
                            editable="false"
                            id="status"
-                           label="状态"
+                           label="%combo.label.0"
                            labelVisible="false"
                            name="status"
                            option="status"
@@ -654,7 +654,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="项目名称"
+                        label="%text.label.0"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -665,7 +665,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="描述"
+                        label="%text.label.1"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -674,12 +674,12 @@
                   </text>
                </section>
                <section
-                     label="项目经理, 部门">
+                     label="%section.label.1">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
                         id="chargerid"
-                        label="项目经理"
+                        label="%text.label.2"
                         labelVisible="true"
                         name="chargerid"
                         persistable="false"
@@ -691,7 +691,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="org_id"
-                        label="项目管理部门"
+                        label="%text.label.3"
                         labelVisible="true"
                         name="org_id"
                         persistable="true"
@@ -704,7 +704,7 @@
                         editable="false"
                         heightHint="108"
                         id="launchorg_id"
-                        label="项目承担组织"
+                        label="%list.label"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
@@ -714,12 +714,12 @@
             </pagecolumn>
             <pagecolumn>
                <section
-                     label="计划">
+                     label="%section.label.2">
                   <dateTime
                         editPart="DateDialog"
                         editableHandler="com.sg.business.commons.field.editable.ProjectFieldEditableControl"
                         id="planstart"
-                        label="计划开始"
+                        label="%dateTime.label"
                         labelVisible="true"
                         name="planstart"
                         persistable="true"
@@ -731,7 +731,7 @@
                         editable="true"
                         editableHandler="com.sg.business.commons.field.editable.ProjectFieldEditableControl"
                         id="planfinish"
-                        label="计划完成"
+                        label="%dateTime.label.0"
                         labelVisible="true"
                         name="planfinish"
                         persistable="true"
@@ -743,7 +743,7 @@
                      <spinner
                            editable="false"
                            id="planduration"
-                           label="工期(天)"
+                           label="%spinner.label"
                            labelVisible="true"
                            name="planduration"
                            persistable="true"
@@ -755,7 +755,7 @@
                            editable="true"
                            editableHandler="com.sg.business.commons.field.editable.ProjectFieldEditableControl"
                            id="planworks"
-                           label="工时(时)"
+                           label="%text.label.4"
                            labelVisible="true"
                            name="planworks"
                            persistable="true"
@@ -765,12 +765,12 @@
                   </fieldgroup>
                </section>
                <section
-                     label="实际">
+                     label="%section.label.3">
                   <dateTime
                         editPart="DateDialog"
                         editable="false"
                         id="actualstart"
-                        label="实际开始"
+                        label="%dateTime.label.1"
                         labelVisible="true"
                         name="actualstart"
                         persistable="true"
@@ -781,7 +781,7 @@
                         editPart="DateDialog"
                         editable="false"
                         id="actualfinish"
-                        label="实际完成"
+                        label="%dateTime.label.2"
                         labelVisible="true"
                         name="actualfinish"
                         persistable="true"
@@ -793,7 +793,7 @@
                      <spinner
                            editable="false"
                            id="actualduration"
-                           label="工期(天)"
+                           label="%spinner.label.0"
                            labelVisible="true"
                            name="actualduration"
                            persistable="true"
@@ -804,7 +804,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="actualworks"
-                           label="工时(时)"
+                           label="%text.label.5"
                            labelVisible="true"
                            name="actualworks"
                            persistable="true"
@@ -814,17 +814,17 @@
                   </fieldgroup>
                </section>
                <section
-                     label="工作令号">
+                     label="%section.label.4">
                   <list
                         editable="false"
                         heightHint="108"
                         id="workorder"
-                        label="工作令号"
+                        label="%list.label.0"
                         labelVisible="false"
                         name="workorder"
                         persistable="true"
                         required="false"
-                        tooltips="项目关联的工作令号,可以添加多个">
+                        tooltips="%list.tooltips">
                   </list>
                </section>
             </pagecolumn>
@@ -836,41 +836,41 @@
                image="image/group_24.png"
                navigatorId="project.team"
                pageBodyPartCreater="com.sg.business.project.wizards.ProjectTeamPage"
-               title="项目组">
+               title="%navigatorpage.title.3">
          </navigatorpage>
          <navigatorpage
                id="project.wbs"
                image="image/wbs_24.png"
                navigatorId="project.wbs"
-               title="进度">
+               title="%navigatorpage.title.4">
          </navigatorpage>
          <basicpage
-               description="项目预算科目和金额"
+               description="%basicpage.description.0"
                id="project.financial"
                image="image/financial_24.png"
                pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
-               title="预算">
+               title="%basicpage.title.1">
          </basicpage>
          <navigatorpage
                id="project.designateinvestment"
                image="image/currency_24.png"
                navigatorId="project.designateinvestment"
                pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardDesInv"
-               title="研发成本">
+               title="%navigatorpage.title.5">
          </navigatorpage>
          <navigatorpage
                id="project.allocatedinvestment"
                image="image/currency_24.png"
                navigatorId="project.allocatedinvestment"
                pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardAllInv"
-               title="成本中心">
+               title="%navigatorpage.title.6">
          </navigatorpage>
          <navigatorpage
                id="project.revenue"
                image="image/cash_24.png"
                navigatorId="project.revenue"
                pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardRevenue"
-               title="销售收入">
+               title="%navigatorpage.title.7">
          </navigatorpage>
       </editor>
    </extension>
@@ -882,7 +882,7 @@
          <command
                commandId="visualization.command.demo1"
                icon="image/preview_24.png"
-               label="检查客户端Flash"
+               label="%command.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -901,9 +901,9 @@
          <command
                commandId="visualization.command.projectset"
                icon="image/project_add_set_24.png"
-               label="添加"
+               label="%command.label.0"
                style="push"
-               tooltip="添加至项目组合">
+               tooltip="%command.tooltip">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -926,9 +926,9 @@
          <command
                commandId="visualization.command.projectset.remove"
                icon="image/project_remove_set_24.png"
-               label="移除"
+               label="%command.label.1"
                style="push"
-               tooltip="从项目组合移除">
+               tooltip="%command.tooltip.0">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -951,9 +951,9 @@
          <command
                commandId="visualization.command.setfilter"
                icon="image/cal2_24.png"
-               label="期间 [本年度]"
+               label="%command.label.2"
                style="push"
-               tooltip="设置展现的数据期间">
+               tooltip="%command.tooltip.1">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -967,9 +967,9 @@
          <command
                commandId="visualization.command.setdepartment"
                icon="image/org_24.png"
-               label="组织 [本组织]"
+               label="%command.label.3"
                style="push"
-               tooltip="设置展现的项目集">
+               tooltip="%command.tooltip.2">
             <visibleWhen
                   checkEnabled="false">
                <with
@@ -990,19 +990,19 @@
       </command>
       <command
             id="visualization.command.projectset"
-            name="添加至项目组合">
+            name="%command.name.0">
       </command>
       <command
             id="visualization.command.projectset.remove"
-            name="从项目组合移除">
+            name="%command.name.1">
       </command>
       <command
             id="visualization.command.setfilter"
-            name="期间 [本年度]">
+            name="%command.name.2">
       </command>
       <command
             id="visualization.command.setdepartment"
-            name="组织 [本部门]">
+            name="%command.name.3">
       </command>
    </extension>
    <extension
@@ -1072,448 +1072,448 @@
             virtual="true">
          <column
                column="workorder"
-               name="工作令号"
+               name="%column.name.22"
                type="String">
          </column>
          <column
                column="year"
-               name="年"
+               name="%column.name.23"
                type="Integer"
                width="40">
          </column>
          <column
                column="month"
-               name="月"
+               name="%column.name.24"
                type="Integer"
                width="40">
          </column>
          <column
                column="summ"
-               name="合计"
+               name="%column.name.25"
                type="Double">
          </column>
          <columnGroup
                defaultGroup="false"
                id="明细"
-               name="明细">
+               name="%columnGroup.name">
             <column
                   column="8002030000"
-                  name="福利费-福利物资"
+                  name="%column.name.26"
                   type="Double">
             </column>
             <column
                   column="8002060000"
-                  name="福利费-中餐补贴"
+                  name="%column.name.27"
                   type="Double">
             </column>
             <column
                   column="8002080000"
-                  name="福利费-健康体检费"
+                  name="%column.name.28"
                   type="Double">
             </column>
             <column
                   column="8002100000"
-                  name="福利费-员工安家费"
+                  name="%column.name.29"
                   type="Double">
             </column>
             <column
                   column="8002110000"
-                  name="福利费-探亲费"
+                  name="%column.name.30"
                   type="Double">
             </column>
             <column
                   column="8002120000"
-                  name="福利费-其他"
+                  name="%column.name.31"
                   type="Double">
             </column>
             <column
                   column="8005010000"
-                  name="外部用工劳务费"
+                  name="%column.name.32"
                   type="Double">
             </column>
             <column
                   column="8006010000"
-                  name="经济补偿金"
+                  name="%column.name.33"
                   type="Double">
             </column>
             <column
                   column="8007010000"
-                  name="工会经费"
+                  name="%column.name.34"
                   type="Double">
             </column>
             <column
                   column="8008010000"
-                  name="职工教育经费"
+                  name="%column.name.35"
                   type="Double">
             </column>
             <column
                   column="8009010000"
-                  name="社会保险费-基本养老保险"
+                  name="%column.name.36"
                   type="Double">
             </column>
             <column
                   column="8009030000"
-                  name="社会保险费-基本医疗保险"
+                  name="%column.name.37"
                   type="Double">
             </column>
             <column
                   column="8009040000"
-                  name="社会保险费-失业保险"
+                  name="%column.name.38"
                   type="Double">
             </column>
             <column
                   column="8009050000"
-                  name="社会保险费-工伤保险"
+                  name="%column.name.39"
                   type="Double">
             </column>
             <column
                   column="8009060000"
-                  name="社会保险费-生育保险"
+                  name="%column.name.40"
                   type="Double">
             </column>
             <column
                   column="8009070000"
-                  name="住房公积金"
+                  name="%column.name.41"
                   type="Double">
             </column>
             <column
                   column="8010010000"
-                  name="折旧费-机器及设备"
+                  name="%column.name.42"
                   type="Double">
             </column>
             <column
                   column="8010020000"
-                  name="折旧费-其他"
+                  name="%column.name.43"
                   type="Double">
             </column>
             <column
                   column="8010030000"
-                  name="折旧费-手工记账"
+                  name="%column.name.44"
                   type="Double">
             </column>
             <column
                   column="8011010000"
-                  name="无形资产摊销"
+                  name="%column.name.45"
                   type="Double">
             </column>
             <column
                   column="8012010000"
-                  name="劳动保护费-防寒防暑用品费"
+                  name="%column.name.46"
                   type="Double">
             </column>
             <column
                   column="8012020000"
-                  name="劳动保护费-劳保用品"
+                  name="%column.name.47"
                   type="Double">
             </column>
             <column
                   column="8012050000"
-                  name="劳动保护费-其他"
+                  name="%column.name.48"
                   type="Double">
             </column>
             <column
                   column="8013020000"
-                  name="税金-土地使用税"
+                  name="%column.name.49"
                   type="Double">
             </column>
             <column
                   column="8013030000"
-                  name="税金-房产税"
+                  name="%column.name.50"
                   type="Double">
             </column>
             <column
                   column="8014020000"
-                  name="水电动力费-水"
+                  name="%column.name.51"
                   type="Double">
             </column>
             <column
                   column="8014030000"
-                  name="水电动力费-电"
+                  name="%column.name.52"
                   type="Double">
             </column>
             <column
                   column="8014040000"
-                  name="水电动力费-天然气"
+                  name="%column.name.53"
                   type="Double">
             </column>
             <column
                   column="8015010000"
-                  name="通讯费-移动电话"
+                  name="%column.name.54"
                   type="Double">
             </column>
             <column
                   column="8015020000"
-                  name="通讯费-单位电话"
+                  name="%column.name.55"
                   type="Double">
             </column>
             <column
                   column="8016010000"
-                  name="交通费-公务交通费"
+                  name="%column.name.56"
                   type="Double">
             </column>
             <column
                   column="8016020000"
-                  name="交通费-车辆使用费"
+                  name="%column.name.57"
                   type="Double">
             </column>
             <column
                   column="8016030000"
-                  name="交通费-请车费用"
+                  name="%column.name.58"
                   type="Double">
             </column>
             <column
                   column="8016040000"
-                  name="交通费-市内交通费用"
+                  name="%column.name.59"
                   type="Double">
             </column>
             <column
                   column="8017010000"
-                  name="物料消耗-包装物"
+                  name="%column.name.60"
                   type="Double">
             </column>
             <column
                   column="8017090000"
-                  name="物料消耗-其他"
+                  name="%column.name.61"
                   type="Double">
             </column>
             <column
                   column="8018010000"
-                  name="设备维保费-公共设施维修"
+                  name="%column.name.62"
                   type="Double">
             </column>
             <column
                   column="8018020000"
-                  name="设备维保费-设备维修"
+                  name="%column.name.63"
                   type="Double">
             </column>
             <column
                   column="8018990000"
-                  name="设备维保费-其他"
+                  name="%column.name.64"
                   type="Double">
             </column>
             <column
                   column="8019010000"
-                  name="办公费-打字印刷费"
+                  name="%column.name.65"
                   type="Double">
             </column>
             <column
                   column="8019020000"
-                  name="办公费-饮水咖啡费"
+                  name="%column.name.66"
                   type="Double">
             </column>
             <column
                   column="8019030000"
-                  name="办公费-办公用品"
+                  name="%column.name.67"
                   type="Double">
             </column>
             <column
                   column="8019040000"
-                  name="办公费-其他"
+                  name="%column.name.68"
                   type="Double">
             </column>
             <column
                   column="8020030000"
-                  name="图书资料费-图书资料"
+                  name="%column.name.69"
                   type="Double">
             </column>
             <column
                   column="8021010000"
-                  name="业务招待费"
+                  name="%column.name.70"
                   type="Double">
             </column>
             <column
                   column="8022010000"
-                  name="差旅费-国内"
+                  name="%column.name.71"
                   type="Double">
             </column>
             <column
                   column="8022020000"
-                  name="差旅费-国外"
+                  name="%column.name.72"
                   type="Double">
             </column>
             <column
                   column="8023010000"
-                  name="会议费"
+                  name="%column.name.73"
                   type="Double">
             </column>
             <column
                   column="8024010000"
-                  name="运输费"
+                  name="%column.name.74"
                   type="Double">
             </column>
             <column
                   column="8024020000"
-                  name="装卸费"
+                  name="%column.name.75"
                   type="Double">
             </column>
             <column
                   column="8025010000"
-                  name="邮寄快递费"
+                  name="%column.name.76"
                   type="Double">
             </column>
             <column
                   column="8027010000"
-                  name="租赁费"
+                  name="%column.name.77"
                   type="Double">
             </column>
             <column
                   column="8029010000"
-                  name="外协加工费"
+                  name="%column.name.78"
                   type="Double">
             </column>
             <column
                   column="8030010000"
-                  name="技术服务费"
+                  name="%column.name.79"
                   type="Double">
             </column>
             <column
                   column="8031010000"
-                  name="鉴定评审费"
+                  name="%column.name.80"
                   type="Double">
             </column>
             <column
                   column="8032010000"
-                  name="试验检验费"
+                  name="%column.name.81"
                   type="Double">
             </column>
             <column
                   column="8033010000"
-                  name="低值易耗品摊销"
+                  name="%column.name.82"
                   type="Double">
             </column>
             <column
                   column="8034010000"
-                  name="招投标费"
+                  name="%column.name.83"
                   type="Double">
             </column>
             <column
                   column="8038020000"
-                  name="保险费-资产保费"
+                  name="%column.name.84"
                   type="Double">
             </column>
             <column
                   column="8038030000"
-                  name="保险费-人身保费"
+                  name="%column.name.85"
                   type="Double">
             </column>
             <column
                   column="8038050000"
-                  name="保险费-其他"
+                  name="%column.name.86"
                   type="Double">
             </column>
             <column
                   column="8039010000"
-                  name="物业管理费"
+                  name="%column.name.87"
                   type="Double">
             </column>
             <column
                   column="8040010000"
-                  name="翻译费"
+                  name="%column.name.88"
                   type="Double">
             </column>
             <column
                   column="8044010000"
-                  name="评估费"
+                  name="%column.name.89"
                   type="Double">
             </column>
             <column
                   column="8045010000"
-                  name="诉讼费"
+                  name="%column.name.90"
                   type="Double">
             </column>
             <column
                   column="8046010000"
-                  name="咨询费"
+                  name="%column.name.91"
                   type="Double">
             </column>
             <column
                   column="8047010000"
-                  name="招聘费"
+                  name="%column.name.92"
                   type="Double">
             </column>
             <column
                   column="8048010000"
-                  name="协会会费"
+                  name="%column.name.93"
                   type="Double">
             </column>
             <column
                   column="8049010000"
-                  name="排污费"
+                  name="%column.name.94"
                   type="Double">
             </column>
             <column
                   column="8050010000"
-                  name="绿化费"
+                  name="%column.name.95"
                   type="Double">
             </column>
             <column
                   column="8052010000"
-                  name="质量费-质量预防鉴定费"
+                  name="%column.name.96"
                   type="Double">
             </column>
             <column
                   column="8054010000"
-                  name="党群工作费"
+                  name="%column.name.97"
                   type="Double">
             </column>
             <column
                   column="8055010000"
-                  name="展览费-国内展览"
+                  name="%column.name.98"
                   type="Double">
             </column>
             <column
                   column="8058010000"
-                  name="宣传费"
+                  name="%column.name.99"
                   type="Double">
             </column>
             <column
                   column="8060010000"
-                  name="商检费"
+                  name="%column.name.100"
                   type="Double">
             </column>
             <column
                   column="8061010000"
-                  name="仓储费"
+                  name="%column.name.101"
                   type="Double">
             </column>
             <column
                   column="8070010000"
-                  name="三包服务费"
+                  name="%column.name.102"
                   type="Double">
             </column>
             <column
                   column="8072010000"
-                  name="费用分配分摊转移"
+                  name="%column.name.103"
                   type="Double">
             </column>
             <column
                   column="8082010000"
-                  name="安全措施费"
+                  name="%column.name.104"
                   type="Double">
             </column>
             <column
                   column="8083010000"
-                  name="环保卫生费"
+                  name="%column.name.105"
                   type="Double">
             </column>
             <column
                   column="8099990000"
-                  name="其他"
+                  name="%column.name.106"
                   type="Double">
             </column>
             <column
                   column="8017050000"
-                  name="物料消耗-原材料"
+                  name="%column.name.107"
                   type="Double">
             </column>
             <column
                   column="8017060000"
-                  name="物料消耗-半成品"
+                  name="%column.name.108"
                   type="Double">
             </column>
             <column
                   column="8017070000"
-                  name="物料消耗-成品"
+                  name="%column.name.109"
                   type="Double">
             </column>
          </columnGroup>
@@ -1527,444 +1527,444 @@
             virtual="true">
          <column
                column="year"
-               name="年"
+               name="%column.name.110"
                type="Integer"
                width="40">
          </column>
          <column
                column="month"
-               name="月"
+               name="%column.name.111"
                type="Integer"
                width="40">
          </column>
          <column
                column="summ"
                labelProvider="com.sg.business.visualization.labelprovider.CostSummary"
-               name="合计"
+               name="%column.name.112"
                type="Double">
          </column>
          <columnGroup
                defaultGroup="false"
                id="明细"
-               name="明细">
+               name="%columnGroup.name.0">
             <column
                   column="8002030000"
-                  name="福利费-福利物资"
+                  name="%column.name.113"
                   type="Double">
             </column>
             <column
                   column="8002060000"
-                  name="福利费-中餐补贴"
+                  name="%column.name.114"
                   type="Double">
             </column>
             <column
                   column="8002080000"
-                  name="福利费-健康体检费"
+                  name="%column.name.115"
                   type="Double">
             </column>
             <column
                   column="8002100000"
-                  name="福利费-员工安家费"
+                  name="%column.name.116"
                   type="Double">
             </column>
             <column
                   column="8002110000"
-                  name="福利费-探亲费"
+                  name="%column.name.117"
                   type="Double">
             </column>
             <column
                   column="8002120000"
-                  name="福利费-其他"
+                  name="%column.name.118"
                   type="Double">
             </column>
             <column
                   column="8005010000"
-                  name="外部用工劳务费"
+                  name="%column.name.119"
                   type="Double">
             </column>
             <column
                   column="8006010000"
-                  name="经济补偿金"
+                  name="%column.name.120"
                   type="Double">
             </column>
             <column
                   column="8007010000"
-                  name="工会经费"
+                  name="%column.name.121"
                   type="Double">
             </column>
             <column
                   column="8008010000"
-                  name="职工教育经费"
+                  name="%column.name.122"
                   type="Double">
             </column>
             <column
                   column="8009010000"
-                  name="社会保险费-基本养老保险"
+                  name="%column.name.123"
                   type="Double">
             </column>
             <column
                   column="8009030000"
-                  name="社会保险费-基本医疗保险"
+                  name="%column.name.124"
                   type="Double">
             </column>
             <column
                   column="8009040000"
-                  name="社会保险费-失业保险"
+                  name="%column.name.125"
                   type="Double">
             </column>
             <column
                   column="8009050000"
-                  name="社会保险费-工伤保险"
+                  name="%column.name.126"
                   type="Double">
             </column>
             <column
                   column="8009060000"
-                  name="社会保险费-生育保险"
+                  name="%column.name.127"
                   type="Double">
             </column>
             <column
                   column="8009070000"
-                  name="住房公积金"
+                  name="%column.name.128"
                   type="Double">
             </column>
             <column
                   column="8010010000"
-                  name="折旧费-机器及设备"
+                  name="%column.name.129"
                   type="Double">
             </column>
             <column
                   column="8010020000"
-                  name="折旧费-其他"
+                  name="%column.name.130"
                   type="Double">
             </column>
             <column
                   column="8010030000"
-                  name="折旧费-手工记账"
+                  name="%column.name.131"
                   type="Double">
             </column>
             <column
                   column="8011010000"
-                  name="无形资产摊销"
+                  name="%column.name.132"
                   type="Double">
             </column>
             <column
                   column="8012010000"
-                  name="劳动保护费-防寒防暑用品费"
+                  name="%column.name.133"
                   type="Double">
             </column>
             <column
                   column="8012020000"
-                  name="劳动保护费-劳保用品"
+                  name="%column.name.134"
                   type="Double">
             </column>
             <column
                   column="8012050000"
-                  name="劳动保护费-其他"
+                  name="%column.name.135"
                   type="Double">
             </column>
             <column
                   column="8013020000"
-                  name="税金-土地使用税"
+                  name="%column.name.136"
                   type="Double">
             </column>
             <column
                   column="8013030000"
-                  name="税金-房产税"
+                  name="%column.name.137"
                   type="Double">
             </column>
             <column
                   column="8014020000"
-                  name="水电动力费-水"
+                  name="%column.name.138"
                   type="Double">
             </column>
             <column
                   column="8014030000"
-                  name="水电动力费-电"
+                  name="%column.name.139"
                   type="Double">
             </column>
             <column
                   column="8014040000"
-                  name="水电动力费-天然气"
+                  name="%column.name.140"
                   type="Double">
             </column>
             <column
                   column="8015010000"
-                  name="通讯费-移动电话"
+                  name="%column.name.141"
                   type="Double">
             </column>
             <column
                   column="8015020000"
-                  name="通讯费-单位电话"
+                  name="%column.name.142"
                   type="Double">
             </column>
             <column
                   column="8016010000"
-                  name="交通费-公务交通费"
+                  name="%column.name.143"
                   type="Double">
             </column>
             <column
                   column="8016020000"
-                  name="交通费-车辆使用费"
+                  name="%column.name.144"
                   type="Double">
             </column>
             <column
                   column="8016030000"
-                  name="交通费-请车费用"
+                  name="%column.name.145"
                   type="Double">
             </column>
             <column
                   column="8016040000"
-                  name="交通费-市内交通费用"
+                  name="%column.name.146"
                   type="Double">
             </column>
             <column
                   column="8017010000"
-                  name="物料消耗-包装物"
+                  name="%column.name.147"
                   type="Double">
             </column>
             <column
                   column="8017090000"
-                  name="物料消耗-其他"
+                  name="%column.name.148"
                   type="Double">
             </column>
             <column
                   column="8018010000"
-                  name="设备维保费-公共设施维修"
+                  name="%column.name.149"
                   type="Double">
             </column>
             <column
                   column="8018020000"
-                  name="设备维保费-设备维修"
+                  name="%column.name.150"
                   type="Double">
             </column>
             <column
                   column="8018990000"
-                  name="设备维保费-其他"
+                  name="%column.name.151"
                   type="Double">
             </column>
             <column
                   column="8019010000"
-                  name="办公费-打字印刷费"
+                  name="%column.name.152"
                   type="Double">
             </column>
             <column
                   column="8019020000"
-                  name="办公费-饮水咖啡费"
+                  name="%column.name.153"
                   type="Double">
             </column>
             <column
                   column="8019030000"
-                  name="办公费-办公用品"
+                  name="%column.name.154"
                   type="Double">
             </column>
             <column
                   column="8019040000"
-                  name="办公费-其他"
+                  name="%column.name.155"
                   type="Double">
             </column>
             <column
                   column="8020030000"
-                  name="图书资料费-图书资料"
+                  name="%column.name.156"
                   type="Double">
             </column>
             <column
                   column="8021010000"
-                  name="业务招待费"
+                  name="%column.name.157"
                   type="Double">
             </column>
             <column
                   column="8022010000"
-                  name="差旅费-国内"
+                  name="%column.name.158"
                   type="Double">
             </column>
             <column
                   column="8022020000"
-                  name="差旅费-国外"
+                  name="%column.name.159"
                   type="Double">
             </column>
             <column
                   column="8023010000"
-                  name="会议费"
+                  name="%column.name.160"
                   type="Double">
             </column>
             <column
                   column="8024010000"
-                  name="运输费"
+                  name="%column.name.161"
                   type="Double">
             </column>
             <column
                   column="8024020000"
-                  name="装卸费"
+                  name="%column.name.162"
                   type="Double">
             </column>
             <column
                   column="8025010000"
-                  name="邮寄快递费"
+                  name="%column.name.163"
                   type="Double">
             </column>
             <column
                   column="8027010000"
-                  name="租赁费"
+                  name="%column.name.164"
                   type="Double">
             </column>
             <column
                   column="8029010000"
-                  name="外协加工费"
+                  name="%column.name.165"
                   type="Double">
             </column>
             <column
                   column="8030010000"
-                  name="技术服务费"
+                  name="%column.name.166"
                   type="Double">
             </column>
             <column
                   column="8031010000"
-                  name="鉴定评审费"
+                  name="%column.name.167"
                   type="Double">
             </column>
             <column
                   column="8032010000"
-                  name="试验检验费"
+                  name="%column.name.168"
                   type="Double">
             </column>
             <column
                   column="8033010000"
-                  name="低值易耗品摊销"
+                  name="%column.name.169"
                   type="Double">
             </column>
             <column
                   column="8034010000"
-                  name="招投标费"
+                  name="%column.name.170"
                   type="Double">
             </column>
             <column
                   column="8038020000"
-                  name="保险费-资产保费"
+                  name="%column.name.171"
                   type="Double">
             </column>
             <column
                   column="8038030000"
-                  name="保险费-人身保费"
+                  name="%column.name.172"
                   type="Double">
             </column>
             <column
                   column="8038050000"
-                  name="保险费-其他"
+                  name="%column.name.173"
                   type="Double">
             </column>
             <column
                   column="8039010000"
-                  name="物业管理费"
+                  name="%column.name.174"
                   type="Double">
             </column>
             <column
                   column="8040010000"
-                  name="翻译费"
+                  name="%column.name.175"
                   type="Double">
             </column>
             <column
                   column="8044010000"
-                  name="评估费"
+                  name="%column.name.176"
                   type="Double">
             </column>
             <column
                   column="8045010000"
-                  name="诉讼费"
+                  name="%column.name.177"
                   type="Double">
             </column>
             <column
                   column="8046010000"
-                  name="咨询费"
+                  name="%column.name.178"
                   type="Double">
             </column>
             <column
                   column="8047010000"
-                  name="招聘费"
+                  name="%column.name.179"
                   type="Double">
             </column>
             <column
                   column="8048010000"
-                  name="协会会费"
+                  name="%column.name.180"
                   type="Double">
             </column>
             <column
                   column="8049010000"
-                  name="排污费"
+                  name="%column.name.181"
                   type="Double">
             </column>
             <column
                   column="8050010000"
-                  name="绿化费"
+                  name="%column.name.182"
                   type="Double">
             </column>
             <column
                   column="8052010000"
-                  name="质量费-质量预防鉴定费"
+                  name="%column.name.183"
                   type="Double">
             </column>
             <column
                   column="8054010000"
-                  name="党群工作费"
+                  name="%column.name.184"
                   type="Double">
             </column>
             <column
                   column="8055010000"
-                  name="展览费-国内展览"
+                  name="%column.name.185"
                   type="Double">
             </column>
             <column
                   column="8058010000"
-                  name="宣传费"
+                  name="%column.name.186"
                   type="Double">
             </column>
             <column
                   column="8060010000"
-                  name="商检费"
+                  name="%column.name.187"
                   type="Double">
             </column>
             <column
                   column="8061010000"
-                  name="仓储费"
+                  name="%column.name.188"
                   type="Double">
             </column>
             <column
                   column="8070010000"
-                  name="三包服务费"
+                  name="%column.name.189"
                   type="Double">
             </column>
             <column
                   column="8072010000"
-                  name="费用分配分摊转移"
+                  name="%column.name.190"
                   type="Double">
             </column>
             <column
                   column="8082010000"
-                  name="安全措施费"
+                  name="%column.name.191"
                   type="Double">
             </column>
             <column
                   column="8083010000"
-                  name="环保卫生费"
+                  name="%column.name.192"
                   type="Double">
             </column>
             <column
                   column="8099990000"
-                  name="其他"
+                  name="%column.name.193"
                   type="Double">
             </column>
             <column
                   column="8017050000"
-                  name="物料消耗-原材料"
+                  name="%column.name.194"
                   type="Double">
             </column>
             <column
                   column="8017060000"
-                  name="物料消耗-半成品"
+                  name="%column.name.195"
                   type="Double">
             </column>
             <column
                   column="8017070000"
-                  name="物料消耗-成品"
+                  name="%column.name.196"
                   type="Double">
             </column>
          </columnGroup>
@@ -1978,39 +1978,39 @@
             virtual="true">
          <column
                column="GJAHR"
-               name="年"
+               name="%column.name.197"
                type="String"
                width="40">
          </column>
          <column
                column="PERDE"
-               name="期间"
+               name="%column.name.198"
                type="String"
                width="40">
          </column>
          <column
                column="MATNR"
-               name="产品"
+               name="%column.name.199"
                type="String">
          </column>
          <column
                column="VV010"
-               name="销售收入"
+               name="%column.name.200"
                type="Double">
          </column>
          <column
                column="VV030"
-               name="销售成本"
+               name="%column.name.201"
                type="Double">
          </column>
          <column
                column="VV040"
-               name="差异分摊"
+               name="%column.name.202"
                type="Double">
          </column>
          <column
                column="KNDNR"
-               name="客户号"
+               name="%column.name.203"
                type="String">
          </column>
       </table>

@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.sg.business.organization.OrganizationActivator;
+import com.sg.business.organization.nls.Messages;
 
 /**
  * <P>
@@ -27,7 +28,7 @@ public class SyncHR extends Job {
 	private Set<OrgExchange> renameOrganizationSet;
 
 	public SyncHR() {
-		super("读取HR系统数据");
+		super(Messages.get().SyncHR_0);
 		setUser(true);
 	}
 
@@ -171,13 +172,13 @@ public class SyncHR extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask("正在查询数据", IProgressMonitor.UNKNOWN);
+		monitor.beginTask(Messages.get().SyncHR_1, IProgressMonitor.UNKNOWN);
 		try {
 			doSyscHROrganization();
 			return Status.OK_STATUS;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new MultiStatus(OrganizationActivator.PLUGIN_ID, IStatus.ERROR, "查询数据", e);
+			return new MultiStatus(OrganizationActivator.PLUGIN_ID, IStatus.ERROR, Messages.get().SyncHR_2, e);
 		}
 
 	}

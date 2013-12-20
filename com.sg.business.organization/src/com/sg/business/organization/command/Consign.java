@@ -10,6 +10,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
+import com.sg.business.organization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -24,7 +25,7 @@ public class Consign extends AbstractNavigatorHandler {
 			Map<String, Object> parameters, IStructuredSelection selection) {
 		final User user = (User) selected;
 		// 显示用户选择器
-		NavigatorSelector ns = new NavigatorSelector("organization.user") {
+		NavigatorSelector ns = new NavigatorSelector("organization.user") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (Utils.isNullOrEmpty(is)) {
@@ -33,8 +34,8 @@ public class Consign extends AbstractNavigatorHandler {
 				User consigner = (User) is.getFirstElement();
 				try {
 					user.doConsignTo(consigner, new CurrentAccountContext());
-					MessageUtil.showToast("用户：" + user + "已被托管到：" + consigner
-							+ ", " + user + "再次登录后，托管自动取消",
+					MessageUtil.showToast(Messages.get().Consign_1 + user + Messages.get().Consign_2 + consigner
+							+ ", " + user + Messages.get().Consign_4, //$NON-NLS-1$
 							SWT.ICON_INFORMATION);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);

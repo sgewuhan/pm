@@ -7,28 +7,28 @@
             category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.org"
-            name="组织文档库"
+            name="%view.name"
             restorable="true">
       </view>
       <view
             category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.granted"
-            name="授权文档库"
+            name="%view.name.0"
             restorable="true">
       </view>
       <view
             category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.open"
-            name="开放文档库"
+            name="%view.name.1"
             restorable="true">
       </view>
       <view
             category="vault"
             class="com.sg.widgets.part.view.AccountSensitiveTreeView"
             id="vault.folder.admin"
-            name="管理"
+            name="%view.name.2"
             restorable="true">
       </view>
       <category
@@ -39,14 +39,14 @@
             category="vault"
             class="com.sg.business.vault.view.DocumentsView"
             id="vault.documents"
-            name="文档"
+            name="%view.name.3"
             restorable="true">
       </view>
       <view
             category="vault"
             class="com.sg.business.vault.view.DocumentsView"
             id="vault.documents.contextsearch"
-            name="内容检索"
+            name="%view.name.4"
             restorable="true">
       </view>
    </extension>
@@ -285,21 +285,21 @@
             dbName="pm2"
             id="editor.folder"
             isDefault="true"
-            name="文件夹"
-            titleToolTips="文件夹">
+            name="%editor.name"
+            titleToolTips="%editor.titleToolTips">
          <basicpage
-               description="文件夹基本信息"
+               description="%basicpage.description"
                id="basicpage.1"
-               title="基本信息">
+               title="%basicpage.title">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="文件夹名称"
+                        label="%text.label"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -310,7 +310,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="folderType"
-                        label="类型说明"
+                        label="%text.label.0"
                         labelVisible="true"
                         name="folderType"
                         persistable="true"
@@ -320,7 +320,7 @@
                   <checkbox
                         editable="true"
                         id="opened"
-                        label="开放"
+                        label="%checkbox.label"
                         labelVisible="true"
                         name="opened"
                         persistable="true"
@@ -403,7 +403,7 @@
          <command
                commandId="com.sg.business.vault.switchPreview"
                icon="image/preview_24.png"
-               label="显示预览"
+               label="%command.label"
                style="toggle">
          </command>
       </menuContribution>
@@ -416,7 +416,7 @@
          <command
                commandId="com.sg.business.vault.switchPreview"
                icon="image/preview_24.png"
-               label="显示预览"
+               label="%command.label.0"
                style="toggle">
          </command>
       </menuContribution>
@@ -427,32 +427,32 @@
                commandId="com.sg.widgets.command.create"
                icon="image/create2_24.png"
                id="create"
-               label="新建文件夹"
+               label="%command.label.1"
                style="push">
          </command>
          <command
                commandId="vault.folder.createdocument"
                icon="image/create2_24.png"
                id="create"
-               label="新建文档"
+               label="%command.label.2"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.3"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.4"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.5"
                style="push">
          </command>
          <separator
@@ -462,7 +462,7 @@
          <command
                commandId="com.sg.widgets.command.addtocompare"
                icon="image/compare_24.png"
-               label="加入对比"
+               label="%command.label.6"
                style="push">
          </command>
       </menuContribution>
@@ -471,11 +471,11 @@
          point="org.eclipse.ui.commands">
       <command
             id="com.sg.business.vault.switchPreview"
-            name="显示预览">
+            name="%command.name">
       </command>
       <command
             id="vault.folder.createdocument"
-            name="新建文档">
+            name="%command.name.0">
       </command>
    </extension>
    <extension
@@ -494,7 +494,7 @@
       <adminFunction
             id="com.sg.business.vault.index.index"
             image="image/index_48.png"
-            label="建立索引"
+            label="%adminFunction.label"
             run="com.sg.business.vault.index.Index">
       </adminFunction>
    </extension>
@@ -503,7 +503,7 @@
       <schedualJob
             day="-3"
             id="vault.index"
-            name="建立全文检索索引"
+            name="%schedualJob.name"
             rule="month"
             run="com.sg.business.vault.index.SchedualIndex"
             time="23:00:00">

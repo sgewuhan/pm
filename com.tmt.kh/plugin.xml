@@ -159,18 +159,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khDocumentApprove.audit"
-            name="审核">
+            name="%editor.name">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -181,7 +181,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -195,19 +195,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.0">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.1">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.0">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -221,18 +221,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khDocumentApprove.approval"
-            name="批准">
+            name="%editor.name.0">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.2">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label.1">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.0"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -243,7 +243,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.0"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -257,19 +257,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.3">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.4">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.2">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.0"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -283,18 +283,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khDocumentApprove.check"
-            name="校核">
+            name="%editor.name.1">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.5">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label.3">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.1"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -305,7 +305,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.1"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -319,19 +319,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.6">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.7">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.4">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.1"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -345,18 +345,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khDocumentApprove.craft"
-            name="工艺">
+            name="%editor.name.2">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.8">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label.5">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.2"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -367,7 +367,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.2"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -381,19 +381,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.9">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.10">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.6">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.2"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -407,18 +407,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="kh.khDocumentApprove.standardize"
-            name="标准化">
+            name="%editor.name.3">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.11">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label.7">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.3"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -429,7 +429,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.3"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -443,19 +443,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.12">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.13">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.8">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.3"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"

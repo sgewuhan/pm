@@ -2,6 +2,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Dcppdm
 Bundle-SymbolicName: com.tmt.pdm.dcpdm;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Activator: com.tmt.pdm.dcpdm.DCPDM
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,
