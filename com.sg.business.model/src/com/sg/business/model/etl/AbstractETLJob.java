@@ -114,8 +114,9 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 		if (day == 1) {
 			Commons.loginfo("[项目数据]准备更新项目月ETL数据:" + year + "-" + month);
 			start = System.currentTimeMillis();
-			projectMonthCol.remove(new BasicDBObject().append(IProjectETL.F_YEAR, year).append(IProjectETL.F_MONTH,
-					month));
+			projectMonthCol.remove(new BasicDBObject().append(
+					IProjectETL.F_YEAR, year)
+					.append(IProjectETL.F_MONTH, month));
 			projectMonthCol.insert(projectETLList, WriteConcern.NORMAL);
 			end = System.currentTimeMillis();
 			Commons.loginfo("[项目数据]更新项目月ETL数据完成:" + year + "-" + month + " "
@@ -147,6 +148,9 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 						id);
 				ProjectETL pres = project.getETL();
 				DBObject etl = pres.doETL(cal);
+				if (day == 1) {
+					setMonthData(project, etl);
+				}
 				projectETLList.add(etl);
 				if (Portal.getDefault().isDevelopMode()) {
 					Commons.loginfo(project.getLabel() + " ETL finished.");
@@ -154,6 +158,53 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 			}
 		}
 		return projectETLList;
+	}
+
+	private void setMonthData(Project project, DBObject etl) {
+		// 项目负责人字段
+		etl.put(Project.F_CHARGER, project.getValue(Project.F_CHARGER));
+		// 数组类型字段
+		etl.put(Project.F_PARTICIPATE, project.getValue(Project.F_PARTICIPATE));
+		// 项目所属的项目职能组织
+		etl.put(Project.F_FUNCTION_ORGANIZATION,
+				project.getValue(Project.F_FUNCTION_ORGANIZATION));
+		// 项目发起部门
+		etl.put(Project.F_LAUNCH_ORGANIZATION,
+				project.getValue(Project.F_LAUNCH_ORGANIZATION));
+		// 适用标准集
+		etl.put(Project.F_STANDARD_SET_OPTION,
+				project.getValue(Project.F_STANDARD_SET_OPTION));
+		// 产品类型选项集
+		etl.put(Project.F_PRODUCT_TYPE_OPTION,
+				project.getValue(Project.F_PRODUCT_TYPE_OPTION));
+		// 项目类型选项集
+		etl.put(Project.F_PROJECT_TYPE_OPTION,
+				project.getValue(Project.F_PROJECT_TYPE_OPTION));
+		// 列表类型的字段，工作令号
+		etl.put(Project.F_WORK_ORDER, project.getValue(Project.F_WORK_ORDER));
+		// 生命周期状态
+		etl.put(Project.F_LIFECYCLE, project.getValue(Project.F_LIFECYCLE));
+		// 计划开始时间
+		etl.put(Project.F_PLAN_START, project.getValue(Project.F_PLAN_START));
+		// 计划完成时间
+		etl.put(Project.F_PLAN_FINISH, project.getValue(Project.F_PLAN_FINISH));
+		// 实际开始时间
+		etl.put(Project.F_ACTUAL_START,
+				project.getValue(Project.F_ACTUAL_START));
+		// 实际完成时间
+		etl.put(Project.F_ACTUAL_FINISH,
+				project.getValue(Project.F_ACTUAL_FINISH));
+		// 计划工时
+		etl.put(Project.F_PLAN_WORKS, project.getValue(Project.F_PLAN_WORKS));
+		// 实际工时
+		etl.put(Project.F_ACTUAL_WORKS,
+				project.getValue(Project.F_ACTUAL_WORKS));
+		// 计划工期
+		etl.put(Project.F_PLAN_DURATION,
+				project.getValue(Project.F_PLAN_DURATION));
+		// 实际工期
+		etl.put(Project.F_ACTUAL_DURATION,
+				project.getValue(Project.F_ACTUAL_DURATION));
 	}
 
 	private void clear(int year, int month) {
@@ -183,7 +234,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 
 	protected abstract int getDay();
 
-	protected abstract  BasicDBObject getProjectETLQuery();
+	protected abstract BasicDBObject getProjectETLQuery();
 
 	private String[] getCostCodeArray(int year, int month) {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,

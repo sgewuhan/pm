@@ -47,5 +47,6 @@ public interface IProjectETL {
 
 	public static final String F_MONTH = "month";
 
-	static final String F_PROJECTID = "project_id";
+	public static final String F_PROJECTID = "project_id";
+
 }

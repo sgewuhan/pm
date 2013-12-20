@@ -5,6 +5,11 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.vis2.home"
+            name="%perspective.vis2">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.work"
             name="%perspective.name">
       </perspective>
@@ -681,6 +686,86 @@
                showTitle="true"
                standalone="false"
                visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.vis2.home">
+         <view
+               closeable="false"
+               id="vis2.combinnatiedrate"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.overschedualrate"
+               minimized="false"
+               moveable="false"
+               ratio=".33"
+               relationship="right"
+               relative="vis2.combinnatiedrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitlist"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="right"
+               relative="vis2.overschedualrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.indicators"
+               minimized="false"
+               moveable="false"
+               ratio=".33"
+               relationship="bottom"
+               relative="vis2.combinnatiedrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.budgetandinvestmentvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".33"
+               relationship="bottom"
+               relative="vis2.overschedualrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="bottom"
+               relative="vis2.indicators"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.overschedualvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="bottom"
+               relative="vis2.budgetandinvestmentvolumn"
+               showTitle="false"
+               standalone="true">
          </view>
       </perspectiveExtension>
    </extension>
