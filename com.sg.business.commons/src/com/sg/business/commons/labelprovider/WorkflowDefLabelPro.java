@@ -12,7 +12,7 @@ public class WorkflowDefLabelPro extends ConfiguratorColumnLabelProvider {
 		String key = getFieldName();
 		Object data = workd.getValue(key);
 		if (data instanceof DBObject) {
-			String processName = (String) ((DBObject) data).get("processName");
+			String processName = (String) ((DBObject) data).get("processName"); //$NON-NLS-1$
 			if(processName !=null){
 				return processName;
 			}

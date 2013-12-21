@@ -17,13 +17,13 @@ public class ProfitRateOfHasApprove implements IProcessParameterDelegator {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			try {
 				Double amount = (Double) taskForm
-						.getProcessInstanceVarible("amount",
+						.getProcessInstanceVarible("amount", //$NON-NLS-1$
 								new CurrentAccountContext());
-				Double profitRate =  (Double) taskForm.getValue("profitrate");
+				Double profitRate =  (Double) taskForm.getValue("profitrate"); //$NON-NLS-1$
 				if(profitRate < 30.0d || amount > 5000000.0d){
-					return "ÊÇ";
+					return "ÊÇ"; //$NON-NLS-1$
 				} else {
-					return "·ñ";
+					return "·ñ"; //$NON-NLS-1$
 				}
 				
 			} catch (Exception e) {

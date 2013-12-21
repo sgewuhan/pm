@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
@@ -40,9 +41,9 @@ public class ChargerAssignment extends AbstractNavigatorHandler {
 
 				} else {
 					if(work instanceof WorkDefinition){
-						MessageUtil.showToast("请选择角色定义", SWT.ICON_WARNING);
+						MessageUtil.showToast(Messages.get().ChargerAssignment_0, SWT.ICON_WARNING);
 					}else if(work instanceof Work){
-						MessageUtil.showToast("请选择角色", SWT.ICON_WARNING);
+						MessageUtil.showToast(Messages.get().ChargerAssignment_1, SWT.ICON_WARNING);
 					}
 				}
 			}
@@ -53,7 +54,7 @@ public class ChargerAssignment extends AbstractNavigatorHandler {
 	}
 
 	private String getNavigatorId(AbstractWork work) {
-		return (work instanceof WorkDefinition)?"management.roledefinition":"project.role";
+		return (work instanceof WorkDefinition)?"management.roledefinition":"project.role"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

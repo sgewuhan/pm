@@ -33,7 +33,7 @@ public class SummaryPlanFinish implements IValuePresentation {
 			}
 
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

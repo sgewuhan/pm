@@ -34,20 +34,20 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 
 	private String getFolderText(ProjectSetFolder po) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>"); //$NON-NLS-1$
 
-		String imageUrl = "<img src='" + po.getImageURL()
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
+		String imageUrl = "<img src='" + po.getImageURL() //$NON-NLS-1$
+				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
 
 		sb.append(imageUrl);
-		sb.append("<b>");
+		sb.append("<b>"); //$NON-NLS-1$
 		sb.append(po.getLabel());
 
-		sb.append("</b>");
-		sb.append("<br/>");
-		sb.append("<small style='color=#999'>");
+		sb.append("</b>"); //$NON-NLS-1$
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small style='color=#999'>"); //$NON-NLS-1$
 		sb.append(po.getDescription());
-		sb.append("</small></span>");
+		sb.append("</small></span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -55,25 +55,25 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<a href=\"" + "ProductTypeProvider@"
-				+ producttTypeProvider.getDesc() + "@"
-				+ producttTypeProvider.getUserId() + "\" target=\"_rwt\">");
-		sb.append("<img src='");
+		sb.append("<a href=\"" + "ProductTypeProvider@" //$NON-NLS-1$ //$NON-NLS-2$
+				+ producttTypeProvider.getDesc() + "@" //$NON-NLS-1$
+				+ producttTypeProvider.getUserId() + "\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
-		sb.append("</a>");
+		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />"); //$NON-NLS-1$
+		sb.append("</a>"); //$NON-NLS-1$
 
-		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
-		String imageUrl = "<img src='"
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>"); //$NON-NLS-1$
+		String imageUrl = "<img src='" //$NON-NLS-1$
 				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER)
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
+				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
 
 		sb.append(imageUrl);
 		sb.append(producttTypeProvider.getDesc());
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -81,19 +81,19 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		UserProjectPerf pperf = (UserProjectPerf) po;
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<a href=\"" + "UserProjectPerf@" + pperf.get_id().toString()
-				+ "\" target=\"_rwt\">");
-		sb.append("<img src='");
+		sb.append("<a href=\"" + "UserProjectPerf@" + pperf.get_id().toString() //$NON-NLS-1$ //$NON-NLS-2$
+				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
-		sb.append("</a>");
+		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />"); //$NON-NLS-1$
+		sb.append("</a>"); //$NON-NLS-1$
 
-		String imageUrl = "<img src='"
+		String imageUrl = "<img src='" //$NON-NLS-1$
 				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER)
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
+				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
 
 		sb.append(imageUrl);
 		sb.append(pperf.getDesc());
@@ -103,29 +103,29 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 	private String getUserText(User po) {
 		User user = (User) po;
 		StringBuffer sb = new StringBuffer();
-		sb.append("<a href=\"" + "User@" + user.get_id().toString()
-				+ "\" target=\"_rwt\">");
-		sb.append("<img src='");
+		sb.append("<a href=\"" + "User@" + user.get_id().toString() //$NON-NLS-1$ //$NON-NLS-2$
+				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
-		sb.append("</a>");
+		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />"); //$NON-NLS-1$
+		sb.append("</a>"); //$NON-NLS-1$
 
-		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>");
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;display:block; width=1000px;'>"); //$NON-NLS-1$
 
-		String imageUrl = "<img src='"
+		String imageUrl = "<img src='" //$NON-NLS-1$
 				+ FileUtil.getImageURL(BusinessResource.IMAGE_USER_24,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER)
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
+				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
 
 		sb.append(imageUrl);
 		sb.append(user.getLabel());
-		sb.append("<br/>");
-		sb.append("<small style='color=#999'>");
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small style='color=#999'>"); //$NON-NLS-1$
 		Organization org = user.getOrganization();
-		sb.append(org == null ? "" : org.getPath(2));
-		sb.append("</small></span>");
+		sb.append(org == null ? "" : org.getPath(2)); //$NON-NLS-1$
+		sb.append("</small></span>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -135,27 +135,27 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 		String label = organization.getLabel();
 		String path = organization.getFullName();
 		StringBuffer sb = new StringBuffer();
-		sb.append("<a href=\"" + "Organization@"
-				+ organization.get_id().toString() + "\" target=\"_rwt\">");
-		sb.append("<img src='");
+		sb.append("<a href=\"" + "Organization@" //$NON-NLS-1$ //$NON-NLS-2$
+				+ organization.get_id().toString() + "\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />");
-		sb.append("</a>");
+		sb.append("' style='border-style:none;position:absolute; right:20; bottom:6; display:block;' width='28' height='28' />"); //$NON-NLS-1$
+		sb.append("</a>"); //$NON-NLS-1$
 
-		sb.append("<span style='display:block; width=1000px;'>");
+		sb.append("<span style='display:block; width=1000px;'>"); //$NON-NLS-1$
 
-		String imageUrl = "<img src='" + organization.getImageURL()
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
+		String imageUrl = "<img src='" + organization.getImageURL() //$NON-NLS-1$
+				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
 		sb.append(imageUrl);
-		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt'>");
+		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt'>"); //$NON-NLS-1$
 		sb.append(label);
-		sb.append("<br/>");
-		sb.append("<small style='color=#999'>");
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small style='color=#999'>"); //$NON-NLS-1$
 		sb.append(path);
-		sb.append("</small>");
-		sb.append("</span>");
-		sb.append("</span>");
+		sb.append("</small>"); //$NON-NLS-1$
+		sb.append("</span>"); //$NON-NLS-1$
+		sb.append("</span>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}

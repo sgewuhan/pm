@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.sg.business.model.User;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.NavigatorSelector;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
@@ -19,11 +20,11 @@ public class AddRuntimeWorkParticipate implements IAddTableItemHandler {
 	public boolean addItem(final BasicDBList inputData, final AbstractFieldPart part) {
 		PrimaryObject master = part.getInput().getData();
 		NavigatorSelector ns = new NavigatorSelector(
-				"project.participte.selector", "请从项目组成员中选取") {
+				"project.participte.selector", Messages.get().AddRuntimeWorkParticipate_1) { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if(is==null||is.isEmpty()){
-					MessageUtil.showToast("请选择项目成员", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().AddRuntimeWorkParticipate_2, SWT.ICON_WARNING);
 				}else{
 					Iterator<?> iter = is.iterator();
 					while(iter.hasNext()){

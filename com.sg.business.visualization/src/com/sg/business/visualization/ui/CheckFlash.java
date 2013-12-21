@@ -19,6 +19,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.MultilineInputDialog;
@@ -29,11 +30,11 @@ public class CheckFlash extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		Shell shell = HandlerUtil.getActiveShell(event);
-		String js = "var r = project.getDesc();\n"
-				+ "r+=user.getUserid();\n"
-				+ "result.setValue(r);";
-		MultilineInputDialog ip = new MultilineInputDialog(shell, "JS 解析演示",
-				"请输入JavaScript进行解析\n 已经传入了空的project，和当前User的PO对象,返回result", js, null);
+		String js = "var r = project.getDesc();\n" //$NON-NLS-1$
+				+ "r+=user.getUserid();\n" //$NON-NLS-1$
+				+ "result.setValue(r);"; //$NON-NLS-1$
+		MultilineInputDialog ip = new MultilineInputDialog(shell, Messages.get().CheckFlash_0,
+				Messages.get().CheckFlash_1, js, null);
 		int ok = ip.open();
 		if (ok == MultilineInputDialog.OK) {
 			evaluate(ip.getValue());
@@ -50,13 +51,13 @@ public class CheckFlash extends AbstractHandler {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_PROJECT);
 		DBObject dbo = col.findOne();
 		Project project = ModelService.createModelObject(dbo,Project.class);
-		parameters.put("project", project);
+		parameters.put("project", project); //$NON-NLS-1$
 		String userId = new CurrentAccountContext().getUserId();
 		User user = UserToolkit.getUserById(userId);
-		parameters.put("user", user);
+		parameters.put("user", user); //$NON-NLS-1$
 		try{
 			Object result = JavaScriptEvaluator.evaluate(js, parameters);
-			MessageUtil.showToast("Result:"+result, SWT.ICON_INFORMATION);
+			MessageUtil.showToast("Result:"+result, SWT.ICON_INFORMATION); //$NON-NLS-1$
 		}catch(Exception e){
 			MessageUtil.showToast(e);
 		}

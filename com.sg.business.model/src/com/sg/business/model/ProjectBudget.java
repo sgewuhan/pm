@@ -11,6 +11,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 项目预算<p/>
@@ -22,12 +23,12 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 	/**
 	 * 下级预算
 	 */
-	public static final String F_CHILDREN = "children";
+	public static final String F_CHILDREN = "children"; //$NON-NLS-1$
 	
 	/**
 	 * 预算额度
 	 */
-	public static final String F_BUDGET_VALUE = "budgetvalue";
+	public static final String F_BUDGET_VALUE = "budgetvalue"; //$NON-NLS-1$
 	
 	/**
 	 * 上级预算
@@ -37,17 +38,17 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 	/**
 	 * 是否锁定
 	 */
-	public static final String F_LOCK = "islocked";
+	public static final String F_LOCK = "islocked"; //$NON-NLS-1$
 
 	/**
 	 * 锁定者
 	 */
-	public static final String F_LOCKED_BY = "lockedby";
+	public static final String F_LOCKED_BY = "lockedby"; //$NON-NLS-1$
 
 	/**
 	 * 锁定时间
 	 */
-	public static final String F_LOCKED_ON = "lockdate";
+	public static final String F_LOCKED_ON = "lockdate"; //$NON-NLS-1$
 
 	/**
 	 * 返回下级预算
@@ -83,7 +84,7 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 	 */
 	@Override
 	public String getTypeName() {
-		return "项目预算";
+		return Messages.get().ProjectBudget_0;
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class ProjectBudget extends PrimaryObject implements IProjectRelative {
 		DBCollection col = getCollection();
 		col.update(new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
-						"$set",
+						"$set", //$NON-NLS-1$
 						new BasicDBObject()
 								.append(F_LOCK, Boolean.TRUE)
 								.append(F_LOCKED_BY,

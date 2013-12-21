@@ -14,17 +14,18 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.BPMServiceContext;
+import com.tmt.tb.nls.Messages;
 
 public class LockBudgetToProjectOfTB extends ServiceProvider {
 
 	@Override
 	public Map<String, Object> run(Object parameter) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
-		String _id = (String) getInputValue("project_id");
+		Object content = getInputValue("content"); //$NON-NLS-1$
+		String _id = (String) getInputValue("project_id"); //$NON-NLS-1$
 		if (_id == null) {
-			result.put("returnCode", "ERROR");
-			result.put("returnMessage", "此工作无法关联项目");
+			result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+			result.put("returnMessage", Messages.get().LockBudgetToProjectOfTB_5); //$NON-NLS-1$
 		} else {
 			if (content instanceof String) {
 				String jsonContent = (String) content;
@@ -32,9 +33,9 @@ public class LockBudgetToProjectOfTB extends ServiceProvider {
 					ObjectId project_id = new ObjectId(_id);
 					DBObject processData = WorkflowUtils
 							.getProcessInfoFromJSON(jsonContent);
-					String processId = (String) processData.get("processId");
+					String processId = (String) processData.get("processId"); //$NON-NLS-1$
 					String processName = (String) processData
-							.get("processName");
+							.get("processName"); //$NON-NLS-1$
 
 					PrimaryObject host = WorkflowUtils
 							.getHostFromJSON(jsonContent);
@@ -44,12 +45,12 @@ public class LockBudgetToProjectOfTB extends ServiceProvider {
 						ProjectBudget projectBudget = project.getBudget();
 						projectBudget.doLock(new BPMServiceContext(processName, processId));
 					} else {
-						result.put("returnCode", "ERROR");
-						result.put("returnMessage", "此工作无法发起项目");
+						result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+						result.put("returnMessage", Messages.get().LockBudgetToProjectOfTB_11); //$NON-NLS-1$
 					}
 				} catch (Exception e) {
-					result.put("returnCode", "ERROR");
-					result.put("returnMessage", e.getMessage());
+					result.put("returnCode", Messages.get().LockBudgetToProjectOfTB_13); //$NON-NLS-1$
+					result.put(Messages.get().LockBudgetToProjectOfTB_14, e.getMessage());
 				}
 			}
 		}

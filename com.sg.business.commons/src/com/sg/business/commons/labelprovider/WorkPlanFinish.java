@@ -16,7 +16,7 @@ public class WorkPlanFinish extends ConfiguratorColumnLabelProvider {
 				return String.format(Utils.FORMATE_DATE_COMPACT_SASH, value);
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

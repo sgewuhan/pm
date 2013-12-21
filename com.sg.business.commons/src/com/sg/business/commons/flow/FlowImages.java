@@ -26,7 +26,7 @@ public class FlowImages {
 
 	static {
 		InputStream stream = CommonsActivator.class
-				.getResourceAsStream("images/gear.gif");
+				.getResourceAsStream("images/gear.gif"); //$NON-NLS-1$
 		GEAR = new Image(null, stream);
 		try {
 			stream.close();

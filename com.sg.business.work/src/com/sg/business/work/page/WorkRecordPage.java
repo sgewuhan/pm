@@ -63,7 +63,7 @@ public class WorkRecordPage extends AbstractFormPageDelegator {
 						.getSelection();
 				WorkRecord wr = (WorkRecord) is.getFirstElement();
 				try {
-					DataObjectDialog.openDialog(wr, "editor.create.workrecord",
+					DataObjectDialog.openDialog(wr, "editor.create.workrecord", //$NON-NLS-1$
 							false, null);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);

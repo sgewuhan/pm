@@ -18,15 +18,15 @@ public class SummaryOrganizationWorks extends AbstractWorksSummary{
 	protected Object getMatchCondition(PrimaryObject data) {
 		return new BasicDBObject().append(
 				WorksPerformence.F_USERID,
-				new BasicDBObject().append("$in", users));
+				new BasicDBObject().append("$in", users)); //$NON-NLS-1$
 	}
 
 	@Override
 	protected Object getGroupCondition(PrimaryObject data) {
-		return new BasicDBObject().append("_id",
-				"$" + WorksPerformence.F_DATECODE).append(
+		return new BasicDBObject().append("_id", //$NON-NLS-1$
+				"$" + WorksPerformence.F_DATECODE).append( //$NON-NLS-1$
 				WorksPerformence.F_WORKS,
-				new BasicDBObject().append("$sum", "$"
+				new BasicDBObject().append("$sum", "$" //$NON-NLS-1$ //$NON-NLS-2$
 						+ WorksPerformence.F_WORKS));
 	}
 

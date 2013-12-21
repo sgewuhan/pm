@@ -17,6 +17,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.performence.nls.Messages;
 import com.sg.business.performence.ui.calendar.ResourceCalender;
 import com.sg.business.performence.ui.calendar.WorkListCellEditor;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -27,7 +28,7 @@ public class ProjectResCalender extends ResourceCalender {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		setTitleToolTip("“我”管理部门的员工参与各项目的实际工时");
+		setTitleToolTip(Messages.get().ProjectResCalender_0);
 	}
 	@Override
 	protected IContentProvider getContentProvider() {
@@ -109,7 +110,7 @@ public class ProjectResCalender extends ResourceCalender {
 
 			@Override
 			protected Object getValue(Object element) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override

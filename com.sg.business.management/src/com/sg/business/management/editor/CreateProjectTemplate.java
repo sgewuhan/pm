@@ -1,6 +1,7 @@
 package com.sg.business.management.editor;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.Widgets;
@@ -12,7 +13,7 @@ public class CreateProjectTemplate extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected String getMessageForEmptySelection() {
-		return "您需要选择组织后进行创建";
+		return Messages.get().CreateProjectTemplate_0;
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class CreateProjectTemplate extends ChildPrimaryObjectCreator {
 
 		// 刷新列表
 		IMasterListenerPart part = (IMasterListenerPart) Widgets
-				.getViewPart("management.projecttemplates");
+				.getViewPart("management.projecttemplates"); //$NON-NLS-1$
 		if (part != null) {
 			part.reloadMaster();
 		}

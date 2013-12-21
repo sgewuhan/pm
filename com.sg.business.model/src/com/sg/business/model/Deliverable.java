@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -23,29 +24,29 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,
 	/**
 	 * 工作_id字段，用于保存工作_id的值
 	 */
-	public static final String F_WORK_ID = "work_id";
+	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 
 	/**
 	 * 
 	 */
-	public static final String F_MANDATORY = "mandatory";
+	public static final String F_MANDATORY = "mandatory"; //$NON-NLS-1$
 
 	/**
 	 * 文档_id字段，用于保存文档_id的值
 	 */
-	public static final String F_DOCUMENT_ID = "document_id";
+	public static final String F_DOCUMENT_ID = "document_id"; //$NON-NLS-1$
 
 	/**
 	 * 文档模板id
 	 */
-	public static final String F_DOCUMENT_DEFINITION_ID = "documentd_id";
+	public static final String F_DOCUMENT_DEFINITION_ID = "documentd_id"; //$NON-NLS-1$
 
 	/**
 	 * 交付物的编辑器
 	 */
-	public static final String EDITOR = "work.deliverable.create";
+	public static final String EDITOR = "work.deliverable.create"; //$NON-NLS-1$
 
-	public static final String EDITOR_SETTING = "work.deliverable";
+	public static final String EDITOR_SETTING = "work.deliverable"; //$NON-NLS-1$
 
 	/**
 	 * 返回显示图标
@@ -101,7 +102,7 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,
 	 */
 	@Override
 	public String getTypeName() {
-		return "交付物";
+		return Messages.get().Deliverable_0;
 	}
 
 	/**

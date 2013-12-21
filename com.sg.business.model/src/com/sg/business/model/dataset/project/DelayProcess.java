@@ -75,8 +75,8 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 						.append(UserTask.F_WORKITEMID, workitemid)
 						.append(UserTask.F_WORK_ID, workid)
 						.append(UserTask.F_STATUS,
-								new BasicDBObject().append("$in", new String[] {
-										"InProgress", "Completed" })),
+								new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
+										"InProgress", "Completed" })), //$NON-NLS-1$ //$NON-NLS-2$
 				new BasicDBObject().append(UserTask.F__CDATE, 1)
 						.append(UserTask.F_STATUS, 1)
 						.append(UserTask.F_DESC, 1));
@@ -90,14 +90,14 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 			String status = (String) next.get(UserTask.F_STATUS);
 			Date date = (Date) next.get(UserTask.F__CDATE);
 
-			if ("InProgress".equals(status)) {
-				usertask.setValue("InProgress", date);
+			if ("InProgress".equals(status)) { //$NON-NLS-1$
+				usertask.setValue("InProgress", date); //$NON-NLS-1$
 				if ((date.getTime() - usertask.get_cdate().getTime())
 						/ (1000 * 60 * 60) > 3) {
 					isDelay = true;
 				}
-			} else if ("Completed".equals(status)) {
-				usertask.setValue("Completed", date);
+			} else if ("Completed".equals(status)) { //$NON-NLS-1$
+				usertask.setValue("Completed", date); //$NON-NLS-1$
 			}
 		}
 
@@ -113,8 +113,8 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		Calendar calendar = Calendar.getInstance();
 		DBObject date = getQueryCondition();
 		if (date != null) {
-			year = (int) date.get("year");
-			month = (int) date.get("month");
+			year = (int) date.get("year"); //$NON-NLS-1$
+			month = (int) date.get("month"); //$NON-NLS-1$
 
 			calendar.set(Calendar.YEAR, year);
 			calendar.set(Calendar.MONTH, month);
@@ -143,26 +143,26 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		}
 
 		DBObject dbo = new BasicDBObject();
-		dbo.put(UserTask.F_STATUS, "Reserved");
+		dbo.put(UserTask.F_STATUS, "Reserved"); //$NON-NLS-1$
 
-		dbo.put("$or",
+		dbo.put("$or", //$NON-NLS-1$
 				new BasicDBObject[] {
 						new BasicDBObject().append(UserTask.F_ACTUALOWNER,
-								new BasicDBObject().append("$in",
+								new BasicDBObject().append("$in", //$NON-NLS-1$
 										getUserIdSet())),
 						new BasicDBObject().append(UserTask.F_WORK_ID,
-								new BasicDBObject().append("$in",
+								new BasicDBObject().append("$in", //$NON-NLS-1$
 										getWorkIdsByFunctionProject())),
 						new BasicDBObject().append(UserTask.F_WORK_ID,
-								new BasicDBObject().append("$in",
+								new BasicDBObject().append("$in", //$NON-NLS-1$
 										getWorkIdsByChargerProjectIds())),
 						new BasicDBObject().append(UserTask.F_ACTUALOWNER,
 								user.getUserid()),
 
 				});
 
-		dbo.put(UserTask.F__CDATE, new BasicDBObject().append("$gte", start)
-				.append("$lte", stop));
+		dbo.put(UserTask.F__CDATE, new BasicDBObject().append("$gte", start) //$NON-NLS-1$
+				.append("$lte", stop)); //$NON-NLS-1$
 		return dbo;
 	}
 
@@ -171,7 +171,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		Object ids = getOrganizationIdCascade(null).toArray();
 		List distinct = userCol.distinct(User.F_USER_ID, new BasicDBObject()
 				.append(User.F_ORGANIZATION_ID,
-						new BasicDBObject().append("$in", ids)));
+						new BasicDBObject().append("$in", ids))); //$NON-NLS-1$
 		return distinct;
 	}
 
@@ -230,7 +230,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		List<ObjectId> list = new ArrayList<ObjectId>();
 		DBCursor pids = projectCol.find(new BasicDBObject().append(
 				Project.F_FUNCTION_ORGANIZATION,
-				new BasicDBObject().append("$in", ids)), new BasicDBObject()
+				new BasicDBObject().append("$in", ids)), new BasicDBObject() //$NON-NLS-1$
 				.append(Project.F__ID, 1));
 		while (pids.hasNext()) {
 			DBObject next = pids.next();
@@ -244,7 +244,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		List<ObjectId> list = new ArrayList<ObjectId>();
 		DBCursor wids = workCol.find(
 				new BasicDBObject().append(Work.F_PROJECT_ID,
-						new BasicDBObject().append("$in",
+						new BasicDBObject().append("$in", //$NON-NLS-1$
 								getUsersFunctionProjectIds())),
 				new BasicDBObject().append(Work.F__ID, 1));
 		while (wids.hasNext()) {
@@ -274,7 +274,7 @@ public class DelayProcess extends SingleDBCollectionDataSetFactory {
 		List<ObjectId> list = new ArrayList<ObjectId>();
 		DBCursor wids = workCol.find(
 				new BasicDBObject().append(Work.F_PROJECT_ID,
-						new BasicDBObject().append("$in",
+						new BasicDBObject().append("$in", //$NON-NLS-1$
 								getUsersChargerProjectIds())),
 				new BasicDBObject().append(Work.F__ID, 1));
 		while (wids.hasNext()) {

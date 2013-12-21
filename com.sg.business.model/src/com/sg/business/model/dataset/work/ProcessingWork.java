@@ -92,7 +92,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 			// 查询本人参与的工作
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition
-					.put("$or",
+					.put("$or", //$NON-NLS-1$
 							new BasicDBObject[] {
 									new BasicDBObject().append(
 											Work.F_PARTICIPATE, userId),
@@ -101,7 +101,7 @@ public class ProcessingWork extends SingleDBCollectionDataSetFactory {
 			// 生命周期状态为准备、进行中
 			queryCondition
 					.put(Work.F_LIFECYCLE,
-							new BasicDBObject().append("$in", new String[] {
+							new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 									Work.STATUS_ONREADY_VALUE,
 									Work.STATUS_WIP_VALUE }));
 			return queryCondition;

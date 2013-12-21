@@ -13,6 +13,7 @@ import com.mobnut.db.model.AccountInfo;
 import com.mobnut.portal.Portal;
 import com.sg.business.model.Document;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.work.nls.Messages;
 
 public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 
@@ -31,7 +32,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 			return getRemoteFileText(serverFile);
 		}
 
-		return "";
+		return ""; //$NON-NLS-1$
 
 	}
 
@@ -43,13 +44,13 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		// DBObject meta = gsFile.getMetaData();
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 
 		// 显示文档图标
-		sb.append("<img src='");
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_FILE_24,
 				BusinessResource.PLUGIN_ID));
-		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />");
+		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />"); //$NON-NLS-1$
 
 		// 显示文件名称
 
@@ -58,43 +59,43 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		// url = url.replaceAll("\\&", "&amp;");
 
 		if (serverFile instanceof OSServerFile) {
-			sb.append("<img src='");
+			sb.append("<img src='"); //$NON-NLS-1$
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_OUTREP_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />");
+			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />"); //$NON-NLS-1$
 		}
 
 		if (serverFile instanceof OSServerFile) {
-			sb.append("<a href='");
+			sb.append("<a href='"); //$NON-NLS-1$
 			String downloadURL = ((OSServerFile) serverFile).getDownloadURL();
 			sb.append(downloadURL);
-			sb.append("'>");
+			sb.append("'>"); //$NON-NLS-1$
 			sb.append(fileName);
-			sb.append("</a>");
+			sb.append("</a>"); //$NON-NLS-1$
 		}else{
-			sb.append("<a href='");
+			sb.append("<a href='"); //$NON-NLS-1$
 			String downloadURL = serverFile.getInternalDownloadURL();
-			sb.append(downloadURL + "@download");
-			sb.append("' target=\"_rwt\">");
+			sb.append(downloadURL + "@download"); //$NON-NLS-1$
+			sb.append("' target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append(fileName);
-			sb.append("</a>");
+			sb.append("</a>"); //$NON-NLS-1$
 			
 		}
 
-		sb.append("<br/>");
+		sb.append("<br/>"); //$NON-NLS-1$
 		// 显示大小
-		sb.append("<small>");
-		sb.append(" 大小:");
+		sb.append("<small>"); //$NON-NLS-1$
+		sb.append(Messages.get().UserTaskDocumentLabelProvider_0);
 		sb.append(getLength(length));
-		sb.append(" 上传时间:");
+		sb.append(Messages.get().UserTaskDocumentLabelProvider_1);
 		sb.append(String.format(Utils.FORMATE_DATE_FULL, uploadDate));
 		if (Portal.getDefault().isDevelopMode()) {
-			sb.append(" MD5:");
+			sb.append(" MD5:"); //$NON-NLS-1$
 			sb.append(md5);
 		}
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		String text = sb.toString();
 		return text;
 	}
@@ -102,32 +103,32 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 	private String getLength(long length) {
 		if (length >= 1000 * 1000 * 1000) {// TB
 			double r = length / (1000 * 1000 * 1000d);
-			return String.format("%.2f", r) + "TB";
+			return String.format("%.2f", r) + "TB"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (length >= 1000 * 1000) {
 			double r = length / (1000 * 1000d);
-			return String.format("%.2f", r) + "MB";
+			return String.format("%.2f", r) + "MB"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (length >= 1000) {
 			double r = length / (1000d);
-			return String.format("%.2f", r) + "KB";
+			return String.format("%.2f", r) + "KB"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			return length + "Byte";
+			return length + "Byte"; //$NON-NLS-1$
 		}
 
 	}
 
 	private String getDocumentText(Document doc) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:14px'>");
+		sb.append("<span style='float:right;padding-right:14px'>"); //$NON-NLS-1$
 
 		// 显示状态
 		String status = doc.getLifecycleName();
-		sb.append(" <span style='color:rgb(0,128,0)'>");
+		sb.append(" <span style='color:rgb(0,128,0)'>"); //$NON-NLS-1$
 		sb.append(status);
 
 		if (doc.isLocked()) {
-			sb.append(", 已锁定");
+			sb.append(Messages.get().UserTaskDocumentLabelProvider_2);
 			// sb.append("[");
 			// User lockuser = doc.getLockedBy();
 			// if(lockuser!=null){
@@ -142,29 +143,29 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 			// sb.append(" ");
 		}
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		AccountInfo ca = doc.get_caccount();
 		if (ca != null) {
 
-			sb.append(" ");
+			sb.append(" "); //$NON-NLS-1$
 			sb.append(ca.getUserName());
-			sb.append("|");
+			sb.append("|"); //$NON-NLS-1$
 			sb.append(ca.getUserId());
 		}
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		// 显示文档图标
-		sb.append("<img src='");
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(doc.getTypeIconURL());
-		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />");
+		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />"); //$NON-NLS-1$
 
 		if (doc.isLocked()) {
-			sb.append("<img src='");
+			sb.append("<img src='"); //$NON-NLS-1$
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_LOCK_16,
 					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />");
+			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />"); //$NON-NLS-1$
 		}
 
 		// 显示文件名称
@@ -173,46 +174,46 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append(desc);
 		String docNum = doc.getDocumentNumber();
 		if (!Utils.isNullOrEmpty(docNum)) {
-			sb.append("|");
+			sb.append("|"); //$NON-NLS-1$
 			sb.append(docNum);
 		}
 
 		// 显示版本
 		String rev = doc.getRevId();
-		sb.append(" <b>");
-		sb.append("Rev:");
+		sb.append(" <b>"); //$NON-NLS-1$
+		sb.append("Rev:"); //$NON-NLS-1$
 		sb.append(rev);
-		sb.append("</b>");
+		sb.append("</b>"); //$NON-NLS-1$
 
 		// 下载链接
-		sb.append("<span style='padding-left:4px'>");
-		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall"
-				+ "\" target=\"_rwt\">");
-		sb.append("<img src='");
+		sb.append("<span style='padding-left:4px'>"); //$NON-NLS-1$
+		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWNLOAD_15X10,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='15' height='10' />");
-		sb.append("</a>");
-		sb.append("</span>");
+		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='15' height='10' />"); //$NON-NLS-1$
+		sb.append("</a>"); //$NON-NLS-1$
+		sb.append("</span>"); //$NON-NLS-1$
 
-		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small>"); //$NON-NLS-1$
 		// 显示创建时间，创建人
 		Date date = doc.get_cdate();
-		sb.append("<span style='float:right;padding-right:14px'>");
+		sb.append("<span style='float:right;padding-right:14px'>"); //$NON-NLS-1$
 		sb.append(String.format(Utils.FORMATE_DATE_FULL, date));
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		String summary = doc.getSummary();
 		if (summary != null) {
-			sb.append("摘要: ");
+			sb.append(Messages.get().UserTaskDocumentLabelProvider_3);
 			String plainText = Utils.getPlainText(summary);
 			plainText = Utils.getLimitLengthString(plainText, 40);
 			sb.append(plainText);
 		}
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

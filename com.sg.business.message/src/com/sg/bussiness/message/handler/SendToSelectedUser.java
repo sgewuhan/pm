@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
+import com.sg.business.message.nls.Messages;
 import com.sg.business.model.Message;
 import com.sg.business.model.User;
 import com.sg.widgets.MessageUtil;
@@ -23,7 +24,7 @@ public class SendToSelectedUser extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("请选中用户", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().SendToSelectedUser_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 	

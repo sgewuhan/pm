@@ -101,7 +101,7 @@ public class VaultOfAdminRole extends DataSetFactory {
 				IModelConstants.C_ORGANIZATION);
 		DBObject condition = new BasicDBObject();
 		condition.put(Organization.F__ID,
-				new BasicDBObject().append("$in", orgIds));
+				new BasicDBObject().append("$in", orgIds)); //$NON-NLS-1$
 		condition.put(Organization.F_IS_CONTAINER, Boolean.TRUE);
 
 		// 将查询出的组织适配到组织容器集合中

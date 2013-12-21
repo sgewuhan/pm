@@ -52,17 +52,17 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 			@Override
 			public String getText(Object element) {
 				if (!check(element)) {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 
 				try {
 
 					DBObject dbo = (DBObject) element;
 
-					ObjectId id = (ObjectId) dbo.get("id");
-					String desc = (String) dbo.get("desc");
-					String col = (String) dbo.get("col");
-					String db = (String) dbo.get("db");
+					ObjectId id = (ObjectId) dbo.get("id"); //$NON-NLS-1$
+					String desc = (String) dbo.get("desc"); //$NON-NLS-1$
+					String col = (String) dbo.get("col"); //$NON-NLS-1$
+					String db = (String) dbo.get("db"); //$NON-NLS-1$
 
 					Class<? extends PrimaryObject> modelClass = ModelService
 							.getModelClass(db, col);
@@ -71,28 +71,28 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 							modelClass, id, false);
 
 					StringBuffer sb = new StringBuffer();
-					sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>");
+					sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'>"); //$NON-NLS-1$
 
-					sb.append("<span style='float:right'>");
-					Long date = (Long) dbo.get("date");
+					sb.append("<span style='float:right'>"); //$NON-NLS-1$
+					Long date = (Long) dbo.get("date"); //$NON-NLS-1$
 					Calendar cal = Calendar.getInstance();
 					cal.setTimeInMillis(date.longValue());
-					sb.append("   " + String.format(Utils.FORMATE_DATE_COMPACT_SASH, cal));
-					sb.append("</span>");
+					sb.append("   " + String.format(Utils.FORMATE_DATE_COMPACT_SASH, cal)); //$NON-NLS-1$
+					sb.append("</span>"); //$NON-NLS-1$
 
 					if (po == null) {
-						sb.append("<del>");
+						sb.append("<del>"); //$NON-NLS-1$
 						sb.append(desc);
-						sb.append("</del>");
+						sb.append("</del>"); //$NON-NLS-1$
 					} else {
 						String typeName = po.getTypeName();
-						sb.append(typeName + ": ");
+						sb.append(typeName + ": "); //$NON-NLS-1$
 						String label = po.getLabel();
 						label = Utils.getLimitLengthString(label, 20);
 						sb.append(label);
 					}
 
-					sb.append("</span>");
+					sb.append("</span>"); //$NON-NLS-1$
 					return sb.toString();
 				} catch (Exception e) {
 				}
@@ -105,9 +105,9 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 					return null;
 				}
 				DBObject dbo = (DBObject) element;
-				ObjectId id = (ObjectId) dbo.get("id");
-				String col = (String) dbo.get("col");
-				String db = (String) dbo.get("db");
+				ObjectId id = (ObjectId) dbo.get("id"); //$NON-NLS-1$
+				String col = (String) dbo.get("col"); //$NON-NLS-1$
+				String db = (String) dbo.get("db"); //$NON-NLS-1$
 				Class<? extends PrimaryObject> modelClass = ModelService
 						.getModelClass(db, col);
 
@@ -133,15 +133,15 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		}
 
 		DBObject dbo = (DBObject) element;
-		Object value = dbo.get("id");
+		Object value = dbo.get("id"); //$NON-NLS-1$
 		if (!(value instanceof ObjectId)) {
 			return false;
 		}
-		value = dbo.get("col");
+		value = dbo.get("col"); //$NON-NLS-1$
 		if (!(value instanceof String)) {
 			return false;
 		}
-		value = dbo.get("db");
+		value = dbo.get("db"); //$NON-NLS-1$
 		if (!(value instanceof String)) {
 			return false;
 		}
@@ -216,13 +216,13 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		if (data instanceof DBObject) {
 			DBObject dbo = (DBObject) data;
 
-			ObjectId id = (ObjectId) dbo.get("id");
-			String col = (String) dbo.get("col");
-			String db = (String) dbo.get("db");
-			String editor = (String) dbo.get("editor");
-			boolean editable = Boolean.TRUE.equals(dbo.get("editable"));
+			ObjectId id = (ObjectId) dbo.get("id"); //$NON-NLS-1$
+			String col = (String) dbo.get("col"); //$NON-NLS-1$
+			String db = (String) dbo.get("db"); //$NON-NLS-1$
+			String editor = (String) dbo.get("editor"); //$NON-NLS-1$
+			boolean editable = Boolean.TRUE.equals(dbo.get("editable")); //$NON-NLS-1$
 
-			String type = (String) dbo.get("type");
+			String type = (String) dbo.get("type"); //$NON-NLS-1$
 
 			Class<? extends PrimaryObject> modelClass = ModelService
 					.getModelClass(db, col);

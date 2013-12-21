@@ -15,6 +15,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
+import com.tmt.pdm.dcpdm.nls.Messages;
 
 public class LinkPDMDocAndDraw2 extends AbstractNavigatorHandler {
 
@@ -34,7 +35,7 @@ public class LinkPDMDocAndDraw2 extends AbstractNavigatorHandler {
 		final PrimaryObject master = vc.getMaster();
 		Work work = getWork(master);
 		if (work == null) {
-			MessageUtil.showToast(shell, "创建PDM交付物", "请选择流程", SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, Messages.get().LinkPDMDocAndDraw2_0, Messages.get().LinkPDMDocAndDraw2_1, SWT.ICON_ERROR);
 			return;
 		}
 		String userId = new CurrentAccountContext().getConsignerId();

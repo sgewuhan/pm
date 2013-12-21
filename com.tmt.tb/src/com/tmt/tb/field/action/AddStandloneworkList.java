@@ -12,6 +12,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IAddTableItemHandler;
+import com.tmt.tb.nls.Messages;
 
 public class AddStandloneworkList implements IAddTableItemHandler {
 
@@ -23,11 +24,11 @@ public class AddStandloneworkList implements IAddTableItemHandler {
 	public boolean addItem(final BasicDBList inputData, final AbstractFieldPart part) {
 		PrimaryObject master = part.getInput().getData();
 		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
-				"organization.navigaor.internalusestandlonework") {
+				"organization.navigaor.internalusestandlonework") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if(is==null||is.isEmpty()){
-					MessageUtil.showToast("请选择独立工作", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().AddStandloneworkList_1, SWT.ICON_WARNING);
 				}else{
 					Iterator<?> iter = is.iterator();
 					while(iter.hasNext()){

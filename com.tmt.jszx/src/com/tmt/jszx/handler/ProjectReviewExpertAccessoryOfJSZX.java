@@ -54,7 +54,7 @@ public class ProjectReviewExpertAccessoryOfJSZX implements
 				condition.put(Deliverable.F_WORK_ID, work.get_id());
 				String deliverableName = input.getEditorConfigurator()
 						.getName();
-				deliverableName = deliverableName + " "
+				deliverableName = deliverableName + " " //$NON-NLS-1$
 						+ accountInfo.getUserName();
 				condition.put(Deliverable.F_DESC, deliverableName);
 
@@ -112,7 +112,7 @@ public class ProjectReviewExpertAccessoryOfJSZX implements
 							condition, Deliverable.class);
 					deliverable.doInsert(context);
 				}
-				Object accessory = taskform.getValue("accessory");
+				Object accessory = taskform.getValue("accessory"); //$NON-NLS-1$
 				if(accessory != null && accessory instanceof BasicDBList){
 					BasicDBList accessoryList = (BasicDBList) accessory;
 					Object inputValue = document.getValue(Document.F_VAULT, true);

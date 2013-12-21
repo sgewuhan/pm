@@ -44,20 +44,20 @@ public class SimpleNodeLabel extends Label {
 
 	private void init() {
 		if(_node instanceof StartNode){
-			setText("");
+			setText(""); //$NON-NLS-1$
 			setIconAlignment(Label.CENTER);
 			setIcon(BusinessResource.getImage(BusinessResource.IMAGE_FLOW_START_24));
 		}else if(_node instanceof EndNode){
-			setText("");
+			setText(""); //$NON-NLS-1$
 			setIcon(BusinessResource.getImage(BusinessResource.IMAGE_FLOW_FINISH_24));
 			setIconAlignment(Label.CENTER);
 		}else{
 			if(_node instanceof Join){
-				setText("");
+				setText(""); //$NON-NLS-1$
 				setIcon(BusinessResource.getImage(BusinessResource.IMAGE_FLOW_JOIN_24));
 				setIconAlignment(Label.CENTER);
 			}else if(_node instanceof Split){
-				setText("");
+				setText(""); //$NON-NLS-1$
 				setIcon(BusinessResource.getImage(BusinessResource.IMAGE_FLOW_SPLIT_24));
 				setIconAlignment(Label.CENTER);
 			}else if(_node instanceof HumanTaskNode){

@@ -28,6 +28,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 @SuppressWarnings("restriction")
@@ -98,19 +99,19 @@ public class ProjectETL implements IProjectETL {
 					colname);
 			DBObject matchCondition = new BasicDBObject();
 			matchCondition.put(Project.F_WORK_ORDER,
-					new BasicDBObject().append("$in", workOrders));
-			DBObject match = new BasicDBObject().append("$match",
+					new BasicDBObject().append("$in", workOrders)); //$NON-NLS-1$
+			DBObject match = new BasicDBObject().append("$match", //$NON-NLS-1$
 					matchCondition);
 			DBObject groupCondition = new BasicDBObject();
-			groupCondition.put("_id", "$" + Project.F_WORK_ORDER);// 按工作令号分组
+			groupCondition.put("_id", "$" + Project.F_WORK_ORDER);// 按工作令号分组 //$NON-NLS-1$ //$NON-NLS-2$
 			String[] costElements = CostAccount.getCostElemenArray();
 			for (int i = 0; i < costElements.length; i++) {
 				groupCondition.put(
 						costElements[i],
-						new BasicDBObject().append("$sum", "$"
+						new BasicDBObject().append("$sum", "$" //$NON-NLS-1$ //$NON-NLS-2$
 								+ costElements[i]));
 			}
-			DBObject group = new BasicDBObject().append("$group",
+			DBObject group = new BasicDBObject().append("$group", //$NON-NLS-1$
 					groupCondition);
 			AggregationOutput agg = col.aggregate(match, group);
 			Iterator<DBObject> iter = agg.results().iterator();
@@ -126,42 +127,42 @@ public class ProjectETL implements IProjectETL {
 	}
 
 	private String extractSchedualText() {
-		String start = actualStart == null ? (planStart == null ? "" : String
-				.format("%tF%n", planStart)) : String.format("%tF%n",
+		String start = actualStart == null ? (planStart == null ? "" : String //$NON-NLS-1$
+				.format("%tF%n", planStart)) : String.format("%tF%n", //$NON-NLS-1$ //$NON-NLS-2$
 				actualStart);
-		String finish = actualFinish == null ? (planFinish == null ? ""
-				: String.format("%tF%n", planFinish)) : String.format("%tF%n",
+		String finish = actualFinish == null ? (planFinish == null ? "" //$NON-NLS-1$
+				: String.format("%tF%n", planFinish)) : String.format("%tF%n", //$NON-NLS-1$ //$NON-NLS-2$
 				actualFinish);
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;margin-left:0;margin-top:2px; white-space:normal; display:block; width=1000px'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;margin-left:0;margin-top:2px; white-space:normal; display:block; width=1000px'>"); //$NON-NLS-1$
 
 		sb.append(start);
-		sb.append("~");
+		sb.append("~"); //$NON-NLS-1$
 		sb.append(finish);
 
 		// 如果项目已经完成，显示完成旗标
 		// String state = null;
 		if (!ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
 			if (isAdvanceDefinited) {
-				sb.append("<span style='color:" + Utils.COLOR_GREEN[10] + "'>");
-				sb.append("提前");
-				sb.append("</span>");
+				sb.append("<span style='color:" + Utils.COLOR_GREEN[10] + "'>"); //$NON-NLS-1$ //$NON-NLS-2$
+				sb.append(Messages.get().ProjectETL_0);
+				sb.append("</span>"); //$NON-NLS-1$
 			} else {
 				if (isDelayDefinited) {
-					sb.append("<span style='color:" + Utils.COLOR_RED[10]
-							+ "'>");
-					sb.append("超期");
-					sb.append("</span>");
+					sb.append("<span style='color:" + Utils.COLOR_RED[10] //$NON-NLS-1$
+							+ "'>"); //$NON-NLS-1$
+					sb.append(Messages.get().ProjectETL_1);
+					sb.append("</span>"); //$NON-NLS-1$
 					// state = FileUtil.getImageURL(
 					// BusinessResource.IMAGE_BALL_RED_1_16,
 					// BusinessResource.PLUGIN_ID);
 				} else {
 					if (isDelayEstimated) {
-						sb.append("<span style='color:"
-								+ Utils.COLOR_YELLOW[10] + "'>");
-						sb.append("超期风险");
-						sb.append("</span>");
+						sb.append("<span style='color:" //$NON-NLS-1$
+								+ Utils.COLOR_YELLOW[10] + "'>"); //$NON-NLS-1$
+						sb.append(Messages.get().ProjectETL_2);
+						sb.append("</span>"); //$NON-NLS-1$
 						// state = FileUtil.getImageURL(
 						// BusinessResource.IMAGE_BALL_YELLOW_1_16,
 						// BusinessResource.PLUGIN_ID);
@@ -174,7 +175,7 @@ public class ProjectETL implements IProjectETL {
 		// + state
 		// + "' style='margin-top:0;margin-left:2' width='12' height='12' />");
 		// }
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -184,8 +185,8 @@ public class ProjectETL implements IProjectETL {
 		// 如果项目已经完成
 		String processIcon = extractProcessIcon();
 		if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
-			String bar = TinyVisualizationUtil.getColorBar(8, null, "96%",
-					"#ececec", processIcon, "right", null);
+			String bar = TinyVisualizationUtil.getColorBar(8, null, "96%", //$NON-NLS-1$
+					"#ececec", processIcon, "right", null); //$NON-NLS-1$ //$NON-NLS-2$
 			sb.append(bar);
 
 		} else {
@@ -209,9 +210,9 @@ public class ProjectETL implements IProjectETL {
 			if (latest != null
 					&& ILifecycle.STATUS_WIP_VALUE.equals(latest
 							.getLifecycleStatus())) {
-				location = "right";
+				location = "right"; //$NON-NLS-1$
 			} else {
-				location = "left";
+				location = "left"; //$NON-NLS-1$
 			}
 
 			for (int i = 0; i < barCount; i++) {
@@ -224,17 +225,17 @@ public class ProjectETL implements IProjectETL {
 					// 如果工作完成
 					if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
 						if (isDelayDefinited) {
-							colorCode = "red";
+							colorCode = "red"; //$NON-NLS-1$
 						} else if (isDelayEstimated) {
-							colorCode = "yellow";
+							colorCode = "yellow"; //$NON-NLS-1$
 						} else {
-							colorCode = "green";
+							colorCode = "green"; //$NON-NLS-1$
 						}
 
 						colorIndex = i;
 					} else {
 						// 如果工作没有开始，显示蓝色
-						colorCode = "blue";
+						colorCode = "blue"; //$NON-NLS-1$
 						colorIndex = i;
 					}
 					if (latest == work) {
@@ -245,11 +246,11 @@ public class ProjectETL implements IProjectETL {
 				} else {
 					// 没有里程碑
 					if (isDelayDefinited) {
-						colorCode = "red";
+						colorCode = "red"; //$NON-NLS-1$
 					} else if (isDelayEstimated) {
-						colorCode = "yellow";
+						colorCode = "yellow"; //$NON-NLS-1$
 					} else {
-						colorCode = "green";
+						colorCode = "green"; //$NON-NLS-1$
 					}
 					colorIndex = i;
 					icon = processIcon;
@@ -260,7 +261,7 @@ public class ProjectETL implements IProjectETL {
 				}
 				String bar = TinyVisualizationUtil.getColorBar(colorIndex + 3,
 						colorCode,
-						new DecimalFormat("#.00").format(100 * percent) + "%",
+						new DecimalFormat("#.00").format(100 * percent) + "%", //$NON-NLS-1$ //$NON-NLS-2$
 						null, icon, location, null);
 				sb.append(bar);
 			}
@@ -294,7 +295,7 @@ public class ProjectETL implements IProjectETL {
 
 	private String extractSchedualDetailHtml() {
 		if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		// 取正在进行的为中心，前后各一行
@@ -312,25 +313,25 @@ public class ProjectETL implements IProjectETL {
 		String line3;
 
 		if (index == -1) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else if (index == 0) {
 			line1 = extractWorkLabel(milestones.get(index), true);
 			line2 = milestones.size() > 1 ? extractWorkLabel(milestones.get(1),
-					false) : "";
+					false) : ""; //$NON-NLS-1$
 			line3 = milestones.size() > 2 ? extractWorkLabel(milestones.get(2),
-					false) : "";
+					false) : ""; //$NON-NLS-1$
 		} else {
 			line1 = extractWorkLabel(milestones.get(index - 1), false);
 			line2 = extractWorkLabel(milestones.get(index), true);
 			line3 = milestones.size() > (index + 1) ? extractWorkLabel(
-					milestones.get(index + 1), false) : "";
+					milestones.get(index + 1), false) : ""; //$NON-NLS-1$
 		}
 
 		StringBuffer sb = new StringBuffer();
 		sb.append(line1);
-		sb.append("<br/>");
+		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append(line2);
-		sb.append("<br/>");
+		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append(line3);
 		return sb.toString();
 	}
@@ -343,27 +344,27 @@ public class ProjectETL implements IProjectETL {
 
 		// String start = as == null ? (ps == null ? "" : String.format("%tF%n",
 		// ps)) : String.format("%tF%n", as);
-		String finish = af == null ? (pf == null ? "" : String.format("%tF%n",
-				pf)) : String.format("%tF%n", af);
+		String finish = af == null ? (pf == null ? "" : String.format("%tF%n", //$NON-NLS-1$ //$NON-NLS-2$
+				pf)) : String.format("%tF%n", af); //$NON-NLS-1$
 
 		StringBuffer sb = new StringBuffer();
 		if (em) {
-			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;'>");
+			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;'>"); //$NON-NLS-1$
 			sb.append(work.getLabel());
 			// sb.append(" ");
 			// sb.append(start);
 			// sb.append("~");
 			sb.append(finish);
-			sb.append(" 进行");
-			sb.append("</span>");
+			sb.append(Messages.get().ProjectETL_3);
+			sb.append("</span>"); //$NON-NLS-1$
 		} else {
-			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;color:#a0a0a0'>");
+			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;color:#a0a0a0'>"); //$NON-NLS-1$
 			sb.append(work.getLabel());
 			// sb.append(" ");
 			// sb.append(start);
 			// sb.append("~");
 			sb.append(finish);
-			sb.append("</span>");
+			sb.append("</span>"); //$NON-NLS-1$
 		}
 
 		return sb.toString();
@@ -541,16 +542,16 @@ public class ProjectETL implements IProjectETL {
 		/**
 		 * 项目的发起组织名称
 		 */
-		String launchOrganizationText = "";
+		String launchOrganizationText = ""; //$NON-NLS-1$
 		for (int i = 0; i < launchOrgList.size(); i++) {
 			Organization primaryObject = (Organization) launchOrgList.get(i);
 			String path = primaryObject.getPath(2);
 			if (i == 0) {
 				launchOrganizationText += path;
 			} else if (i <= 2) {
-				launchOrganizationText += ", " + path;
+				launchOrganizationText += ", " + path; //$NON-NLS-1$
 			} else {
-				launchOrganizationText += " ..";
+				launchOrganizationText += " .."; //$NON-NLS-1$
 				break;
 			}
 		}
@@ -559,7 +560,7 @@ public class ProjectETL implements IProjectETL {
 		/**
 		 * 项目负责人
 		 */
-		String chargerText = charger == null ? "?" : charger.getUsername();
+		String chargerText = charger == null ? "?" : charger.getUsername(); //$NON-NLS-1$
 		transfered.put(F_CHARGER_TEXT, chargerText);
 
 		/**
@@ -567,15 +568,15 @@ public class ProjectETL implements IProjectETL {
 		 */
 		// 显示图形化的进度栏
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span>");
+		sb.append("<span>"); //$NON-NLS-1$
 		sb.append(extractSchedualGraphic());
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		// 显示计划和实际的进度日期
-		sb.append("<small>");
-		sb.append("<br/>");
+		sb.append("<small>"); //$NON-NLS-1$
+		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append(extractSchedualText());
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 		transfered.put(F_SCHEDUAL_HTML, sb.toString());
 
 		/**
@@ -593,7 +594,7 @@ public class ProjectETL implements IProjectETL {
 				IModelConstants.C_PROJECT);
 		WriteResult ws = col.update(
 				project.queryThis(),
-				new BasicDBObject().append("$set",
+				new BasicDBObject().append("$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_ETL, transfered)));
 		String error = ws.getError();
 		if (error != null) {

@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.RoleAssignment;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -18,13 +19,13 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "删除项目角色";
+	private static final String TITLE = Messages.get().RemoveProjectRoleOrMember_0;
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
 		final Shell shell = part.getSite().getShell();
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个角色或用户指派", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, Messages.get().RemoveProjectRoleOrMember_1, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -35,7 +36,7 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler {
 		final Shell shell = part.getSite().getShell();
 
 		if (selected instanceof RoleAssignment) {
-			MessageUtil.showToast(shell, TITLE, "组织上的角色指派需在组织管理中移除",
+			MessageUtil.showToast(shell, TITLE, Messages.get().RemoveProjectRoleOrMember_2,
 					SWT.ICON_WARNING);
 			return;
 		} else if (selected instanceof ProjectRole) {
@@ -43,14 +44,14 @@ public class RemoveProjectRoleOrMember extends AbstractNavigatorHandler {
 			// 解决项目经理角色的问题
 			ProjectRole projectRole = (ProjectRole) selected;
 			if (projectRole.isSystemRole()) {
-				MessageUtil.showToast("您不能删除系统角色", SWT.ICON_WARNING);
+				MessageUtil.showToast(Messages.get().RemoveProjectRoleOrMember_3, SWT.ICON_WARNING);
 				return;
 			}
 
 		}
 
 		int yes = MessageUtil.showMessage(shell, TITLE,
-				"您确定要删除吗？\n该操作将不可恢复，选择YES确认删除。", SWT.YES | SWT.NO
+				Messages.get().RemoveProjectRoleOrMember_4, SWT.YES | SWT.NO
 						| SWT.ICON_QUESTION);
 		if (yes != SWT.YES) {
 			return;

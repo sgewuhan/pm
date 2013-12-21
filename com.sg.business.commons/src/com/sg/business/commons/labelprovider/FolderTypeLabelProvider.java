@@ -21,7 +21,7 @@ public class FolderTypeLabelProvider extends ConfiguratorColumnLabelProvider {
 		}else if(element instanceof Folder){
 			return ((Folder) element).getFolderType();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 

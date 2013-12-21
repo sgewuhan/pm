@@ -12,7 +12,7 @@ public class FileServerConfigurator extends Configurator {
 
 	public FileServerConfigurator(IConfigurationElement ce) {
 		super(ce);
-		this.document =getString("document");
+		this.document =getString("document"); //$NON-NLS-1$
 	}
 	
 	public String getDocument() {
@@ -21,7 +21,7 @@ public class FileServerConfigurator extends Configurator {
 
 
 	public IFileServerDelegator getFileServerDelegator(){
-		return (IFileServerDelegator) getExecutable("fileServerDelegator");
+		return (IFileServerDelegator) getExecutable("fileServerDelegator"); //$NON-NLS-1$
 	}
 	
 	

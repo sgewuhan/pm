@@ -21,6 +21,6 @@ public class RoleNumberLabelProvider extends ColumnLabelProvider {
 		} else if (element instanceof RoleAssignment) {
 			return ((RoleAssignment) element).getUserid();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

@@ -29,7 +29,7 @@ public class OwnerReservedTaskDataSet extends SingleDBCollectionDataSetFactory {
 		query.put(UserTask.F_USERID, userId);
 		query.put(UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.FALSE);
 		query.put(
-				"$or",
+				"$or", //$NON-NLS-1$
 				new BasicDBObject[] {
 						new BasicDBObject().append(UserTask.F_STATUS,
 								Status.Reserved.name()),

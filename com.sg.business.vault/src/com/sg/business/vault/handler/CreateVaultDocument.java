@@ -10,6 +10,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
+import com.sg.business.vault.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -26,10 +27,10 @@ public class CreateVaultDocument extends AbstractNavigatorHandler {
 			Folder folder = (Folder) selected;
 			Document doc = folder.makeCreateDocument(new CurrentAccountContext());
 			if (doc == null) {
-				MessageUtil.showToast("选择的交付物不包含文档", SWT.ICON_WARNING);
+				MessageUtil.showToast(Messages.get().CreateVaultDocument_0, SWT.ICON_WARNING);
 			} else {
 				try {
-					DataObjectEditor.open(doc, "editor.forder.document",
+					DataObjectEditor.open(doc, "editor.forder.document", //$NON-NLS-1$
 							true, null);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);

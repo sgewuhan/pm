@@ -20,6 +20,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
 import com.sg.business.commons.flow.model.ActivityDiagram;
+import com.sg.business.commons.nls.Messages;
 
 /**
  * @author Austin.Riddle
@@ -29,7 +30,7 @@ import com.sg.business.commons.flow.model.ActivityDiagram;
 public class DirectEditorInput implements IEditorInput {
 
     ActivityDiagram model = null;
-    String name = "Activity Diagram Model";
+    String name = Messages.get().DirectEditorInput_0;
     
     public Object getAdapter(Class adapter) {
       if (adapter.equals(ActivityDiagram.class)) {
@@ -62,7 +63,7 @@ public class DirectEditorInput implements IEditorInput {
     }
   
     public String getToolTipText() {
-      return "Activity Diagram";
+      return Messages.get().DirectEditorInput_1;
     }
 
     public ImageDescriptor getImageDescriptor() {

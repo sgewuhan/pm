@@ -38,6 +38,7 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.business.model.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 public class ProjectToolkit {
@@ -76,8 +77,8 @@ public class ProjectToolkit {
 							.getProcessActionAssignment(process, nap);
 					if (role == null) {
 						CheckListItem checkItem = new CheckListItem(title,
-								"流程活动无法确定执行人。" + "活动名称：[" + na.getNodeName()
-										+ "]", "请在提交前设定。", ICheckListItem.ERROR);
+								Messages.get().ProjectToolkit_0 + Messages.get().ProjectToolkit_1 + na.getNodeName()
+										+ "]", Messages.get().ProjectToolkit_3, ICheckListItem.ERROR); //$NON-NLS-1$
 						checkItem.setData(data);
 						checkItem.setEditorId(editorId);
 						checkItem.setEditorPageId(pageId);
@@ -88,9 +89,9 @@ public class ProjectToolkit {
 						ra = raMap.get(role.get_id());
 						if (ra == null || ra.isEmpty()) {
 							CheckListItem checkItem = new CheckListItem(title,
-									"流程活动执行角色没有对应人员。" + "活动名称：["
-											+ na.getNodeName() + "]",
-									"\n请在提交前设定。", ICheckListItem.ERROR);
+									Messages.get().ProjectToolkit_4 + Messages.get().ProjectToolkit_5
+											+ na.getNodeName() + "]", //$NON-NLS-1$
+									Messages.get().ProjectToolkit_7, ICheckListItem.ERROR);
 							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
 							checkItem.setEditorPageId(pageId);
@@ -99,11 +100,11 @@ public class ProjectToolkit {
 							passed = false;
 						} else if (ra.size() > 1) {
 							CheckListItem checkItem = new CheckListItem(title,
-									"流程的活动指定了多名人员。" + "活动名称：["
-											+ na.getNodeName() + "]",
-									"流程启动后这些人员中的任一人都将可执行该活动。"
+									Messages.get().ProjectToolkit_8 + Messages.get().ProjectToolkit_9
+											+ na.getNodeName() + "]", //$NON-NLS-1$
+									Messages.get().ProjectToolkit_11
 
-									+ "\n如果您不希望这样，请在提交前设定",
+									+ Messages.get().ProjectToolkit_12,
 									ICheckListItem.WARRING);
 							checkItem.setData(data);
 							checkItem.setEditorId(editorId);
@@ -378,8 +379,8 @@ public class ProjectToolkit {
 			}
 		}
 
-		BasicDBObject accountData = new BasicDBObject().append("userid",
-				context.getAccountInfo().getUserId()).append("username",
+		BasicDBObject accountData = new BasicDBObject().append("userid", //$NON-NLS-1$
+				context.getAccountInfo().getUserId()).append("username", //$NON-NLS-1$
 				context.getAccountInfo().getUserName());
 		work.put(Work.F__CACCOUNT, accountData);
 
@@ -532,11 +533,11 @@ public class ProjectToolkit {
 				ObjectId roleId = (ObjectId) dbo.get(key);
 				DBObject tgtRole = roleMap.get(roleId);
 				Assert.isNotNull(tgtRole,
-						"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
+						Messages.get().ProjectToolkit_15 + work.get(Work.F_DESC));
 				ObjectId tgtRoleId = (ObjectId) tgtRole.get(ProjectRole.F__ID);
 				actors.put(key, tgtRoleId);
 				// 标记该角色已使用
-				tgtRole.put("used", Boolean.TRUE);
+				tgtRole.put("used", Boolean.TRUE); //$NON-NLS-1$
 			}
 			work.put(fieldName, actors);
 		}
@@ -553,14 +554,14 @@ public class ProjectToolkit {
 				ObjectId srcRoleId = (ObjectId) srcRole.get(ProjectRole.F__ID);
 				DBObject tgtRole = roleMap.get(srcRoleId);
 				Assert.isNotNull(tgtRole,
-						"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
+						Messages.get().ProjectToolkit_17 + work.get(Work.F_DESC));
 				if (tgtRole != null) {
 					Object tgtRoleId = tgtRole.get(ProjectRole.F__ID);
 					if (tgtRoleId != null) {
-						participates.add(new BasicDBObject().append("_id",
+						participates.add(new BasicDBObject().append("_id", //$NON-NLS-1$
 								tgtRoleId));
 						// 标记该角色已使用
-						tgtRole.put("used", Boolean.TRUE);
+						tgtRole.put("used", Boolean.TRUE); //$NON-NLS-1$
 					}
 				}
 			}
@@ -574,13 +575,13 @@ public class ProjectToolkit {
 		if (srcRoleId != null) {
 			DBObject tgtRole = roleMap.get(srcRoleId);
 			Assert.isNotNull(tgtRole,
-					"目标角色不存在，请检查项目模板的工作：" + work.get(Work.F_DESC));
+					Messages.get().ProjectToolkit_20 + work.get(Work.F_DESC));
 			if (tgtRole != null) {
 				Object value = tgtRole.get(ProjectRole.F__ID);
 				if (value != null) {
 					work.put(roleFieldName, value);
 					// 标记该角色已使用
-					tgtRole.put("used", Boolean.TRUE);
+					tgtRole.put("used", Boolean.TRUE); //$NON-NLS-1$
 				}
 			}
 		}
@@ -717,25 +718,25 @@ public class ProjectToolkit {
 
 		// 校验是否可以依据传入的参数创建项目
 		if (workOrder == null) {
-			throw new Exception("未录入工作令号无法新建项目");
+			throw new Exception(Messages.get().ProjectToolkit_22);
 		}
 		if (prj_manager == null) {
-			throw new Exception("未录入项目经理无法新建项目");
+			throw new Exception(Messages.get().ProjectToolkit_23);
 		}
 		if (desc == null) {
-			throw new Exception("未录入项目名称无法新建项目");
+			throw new Exception(Messages.get().ProjectToolkit_24);
 		}
 		if (launchorg_id == null || launchorg_id.size() == 0) {
-			throw new Exception("未录入项目发起部门无法新建项目");
+			throw new Exception(Messages.get().ProjectToolkit_25);
 		}
 		if (org_id == null) {
-			throw new Exception("未录入项目管理部门无法新建项目");
+			throw new Exception(Messages.get().ProjectToolkit_26);
 		}
 		if (planfinish == null) {
-			throw new Exception("未录入项目计划完成时间无法新建项目");
+			throw new Exception(Messages.get().ProjectToolkit_27);
 		}
 		if (planstart == null) {
-			throw new Exception("未录入项目计划开始时间无法新建项目");
+			throw new Exception(Messages.get().ProjectToolkit_28);
 		}
 
 		// 依据工作创建项目
@@ -794,7 +795,7 @@ public class ProjectToolkit {
 	public static void doProjectAddStandloneWork(Work work, Project project,
 			IContext context) throws Exception {
 		if (project == null) {
-			throw new Exception("请该项目未创建");
+			throw new Exception(Messages.get().ProjectToolkit_29);
 		}
 
 		ObjectId projectId = project.get_id();
@@ -820,9 +821,9 @@ public class ProjectToolkit {
 			}
 			WriteResult ws = col.update(new BasicDBObject().append(
 					Deliverable.F__ID,
-					new BasicDBObject().append("$in", deliverableIdList)),
+					new BasicDBObject().append("$in", deliverableIdList)), //$NON-NLS-1$
 					new BasicDBObject().append(
-							"$set",
+							"$set", //$NON-NLS-1$
 							new BasicDBObject().append(
 									Deliverable.F_PROJECT_ID, projectId)
 									.append(Deliverable.F_TYPE,
@@ -845,9 +846,9 @@ public class ProjectToolkit {
 			}
 			WriteResult ws = col.update(new BasicDBObject().append(
 					Document.F__ID,
-					new BasicDBObject().append("$in", documentIdList)),
+					new BasicDBObject().append("$in", documentIdList)), //$NON-NLS-1$
 					new BasicDBObject().append(
-							"$set",
+							"$set", //$NON-NLS-1$
 							new BasicDBObject().append(Document.F_PROJECT_ID,
 									projectId).append(Document.F_FOLDER_ID,
 									project.getFolderRootId())), false, true);
@@ -869,10 +870,10 @@ public class ProjectToolkit {
 		cal.set(Calendar.MILLISECOND, 0);
 		cal.add(Calendar.MONTH, 1);
 		cal.add(Calendar.MILLISECOND, -1);
-		String dateCode = String.format("%1$tY/%1$tm/%1$td", cal);
+		String dateCode = String.format("%1$tY/%1$tm/%1$td", cal); //$NON-NLS-1$
 		DBCursor cur = colPd.find(new BasicDBObject().append(
 				ProductItem.F_SALES_DATA_UPDATE,
-				new BasicDBObject().append("$ne", dateCode)));
+				new BasicDBObject().append("$ne", dateCode))); //$NON-NLS-1$
 		while (cur.hasNext()) {
 			DBObject prodData = cur.next();
 			ProductItem pd = ModelService.createModelObject(prodData,

@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.part.NavigatorControl;
 import com.sg.widgets.part.editor.IEditorActionListener;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
@@ -73,7 +74,7 @@ public class ProjectTeamPage implements INavigatorPageBodyPartCreater {
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("项目参与者");
+		col.getColumn().setText(Messages.get().ProjectTeamPage_0);
 
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -84,7 +85,7 @@ public class ProjectTeamPage implements INavigatorPageBodyPartCreater {
 						return user.getLabel();
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override

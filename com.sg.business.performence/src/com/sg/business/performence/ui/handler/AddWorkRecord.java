@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorksPerformence;
+import com.sg.business.performence.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -31,8 +32,8 @@ public class AddWorkRecord extends AbstractNavigatorHandler {
 			WorksPerformence po = work.getWorksPerformence(date, userid);
 
 			if (po != null) {
-				int ok = MessageUtil.showMessage(null, "填报工作记录",
-						"您今天已经填报了工时记录，您希望打开编辑吗？", SWT.ICON_QUESTION | SWT.YES
+				int ok = MessageUtil.showMessage(null, Messages.get().AddWorkRecord_0,
+						Messages.get().AddWorkRecord_1, SWT.ICON_QUESTION | SWT.YES
 								| SWT.NO);
 				if (ok != SWT.YES) {
 					return;
@@ -42,7 +43,7 @@ public class AddWorkRecord extends AbstractNavigatorHandler {
 			}
 
 			try {
-				DataObjectDialog.openDialog(po, "editor.create.workrecord",
+				DataObjectDialog.openDialog(po, "editor.create.workrecord", //$NON-NLS-1$
 						true, null);
 				vc.getViewer().update(work, null);
 			} catch (Exception e) {

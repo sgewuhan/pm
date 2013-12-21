@@ -7,7 +7,7 @@ public interface IActivateSwitch {
 	/**
 	 *  «∑Ò∆Ù”√
 	 */
-	public static final String F_ACTIVATED = "activated";
+	public static final String F_ACTIVATED = "activated"; //$NON-NLS-1$
 	
 	void doSwitchActivation(IContext context)throws Exception;
 

@@ -25,7 +25,7 @@ public class OpenWorkRecord extends AbstractNavigatorHandler {
 			try {
 				DataObjectEditor editor = DataObjectEditor.open(work,
 						Work.EDITOR, false, null);
-				editor.setActivePage("workrecord");
+				editor.setActivePage("workrecord"); //$NON-NLS-1$
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}

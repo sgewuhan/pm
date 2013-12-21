@@ -34,7 +34,7 @@ public class ProjectSelectorOfTaskforms extends MasterDetailDataSetFactory {
 				TaskForm taskForm = (TaskForm) master;
 				try {
 					String obj = (String) taskForm.getProcessInstanceVarible(
-							"prj_manager", context);
+							"prj_manager", context); //$NON-NLS-1$
 					if (obj != null) {
 						User user = UserToolkit.getUserById(obj);
 						List<PrimaryObject> projectList = user

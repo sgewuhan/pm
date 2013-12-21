@@ -27,6 +27,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorksPerformence;
+import com.sg.business.performence.nls.Messages;
 
 public class WorkListCellEditor extends CellEditor {
 
@@ -112,7 +113,7 @@ public class WorkListCellEditor extends CellEditor {
 		viewer = new TableViewer(shell, SWT.FULL_SELECTION);
 		viewer.getTable().setHeaderVisible(true);
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("工作");
+		col.getColumn().setText(Messages.get().WorkListCellEditor_0);
 		col.getColumn().setWidth(200);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -120,47 +121,47 @@ public class WorkListCellEditor extends CellEditor {
 				PrimaryObject[] pos = (PrimaryObject[]) element;
 				Project project = ((Work) pos[0]).getProject();
 				return project == null ? ((Work) pos[0]).getLabel() : (project
-						+ " " + ((Work) pos[0]).getLabel());
+						+ " " + ((Work) pos[0]).getLabel()); //$NON-NLS-1$
 			}
 		});
 
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("计划工时");
+		col.getColumn().setText(Messages.get().WorkListCellEditor_2);
 		col.getColumn().setWidth(60);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				PrimaryObject[] pos = (PrimaryObject[]) element;
 				if(pos[2]==null){
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 				Object works = pos[2].getValue(WorksPerformence.F_WORKS);
 				if (works instanceof Double) {
 					double value = ((Double) works).doubleValue();
-					DecimalFormat df = new DecimalFormat("#####");
+					DecimalFormat df = new DecimalFormat("#####"); //$NON-NLS-1$
 					return df.format(value);
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText("实际工时");
+		col.getColumn().setText(Messages.get().WorkListCellEditor_6);
 		col.getColumn().setWidth(60);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				PrimaryObject[] pos = (PrimaryObject[]) element;
 				if(pos[1]==null){
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 				Object works = pos[1].getValue(WorksPerformence.F_WORKS);
 				if (works instanceof Double) {
 					double value = ((Double) works).doubleValue();
-					DecimalFormat df = new DecimalFormat("#####");
+					DecimalFormat df = new DecimalFormat("#####"); //$NON-NLS-1$
 					return df.format(value);
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 

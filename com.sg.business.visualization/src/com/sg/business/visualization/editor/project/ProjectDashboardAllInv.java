@@ -5,6 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sg.business.visualization.chart.ProjectChartFactory;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
 
@@ -22,7 +23,7 @@ public class ProjectDashboardAllInv extends AbstractProjectPage {
 
 	@Override
 	protected String getPageTitle() {
-		return "成本中心分摊成本";
+		return Messages.get().ProjectDashboardAllInv_0;
 	}
 
 

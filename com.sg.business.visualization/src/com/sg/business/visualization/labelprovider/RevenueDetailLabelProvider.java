@@ -12,9 +12,9 @@ public class RevenueDetailLabelProvider extends AbstractProjectLabelProvider {
 		StringBuffer sb = new StringBuffer();
 		double salesRevenue = pres.getSalesRevenue();
 
-		sb.append("<span style='display:block; text-align:right;font-weight:bold;'>");
+		sb.append("<span style='display:block; text-align:right;font-weight:bold;'>"); //$NON-NLS-1$
 		sb.append(getCurrency(salesRevenue,10));
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}

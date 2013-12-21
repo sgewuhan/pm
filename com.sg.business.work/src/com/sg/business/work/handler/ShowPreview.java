@@ -69,7 +69,7 @@ public class ShowPreview extends AbstractHandler {
 			final Display display, final Browser previewer) {
 		File serverFile = osfile.getServerFile();
 		String serverFilePath = serverFile.getPath();
-		String previewFilePath = serverFilePath + ".pdf";
+		String previewFilePath = serverFilePath + ".pdf"; //$NON-NLS-1$
 		final File previewFile = new File(previewFilePath);
 		if (previewFile.isFile()) {
 			previewOSFile(previewFile, previewer);
@@ -111,7 +111,7 @@ public class ShowPreview extends AbstractHandler {
 		final GridFSFilePrevieweUtil previewUtil = new GridFSFilePrevieweUtil();
 		previewUtil.setRemoteFile(remoteFile);
 		if (!previewUtil.isPreviewAvailable()) {
-			String pathname = System.getProperty("user.dir") + "/temp";
+			String pathname = System.getProperty("user.dir") + "/temp"; //$NON-NLS-1$ //$NON-NLS-2$
 			File file;
 			try {
 				file = remoteFile.createServerFile(pathname);
@@ -125,7 +125,7 @@ public class ShowPreview extends AbstractHandler {
 			String previewPath = file.getParent()
 					+ "/" //$NON-NLS-1$
 					+ masterfileName.substring(0,
-							masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$
+							masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$ //$NON-NLS-2$
 			final File previewFile = new File(previewPath);
 			Job job = previewUtil.createGeneratePDFJob(file, previewPath);
 

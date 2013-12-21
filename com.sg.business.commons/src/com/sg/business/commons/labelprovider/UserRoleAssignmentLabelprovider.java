@@ -30,12 +30,12 @@ public class UserRoleAssignmentLabelprovider extends ColumnLabelProvider {
 		while (cur.hasNext()) {
 			DBObject ra = cur.next();
 			if (rolename != null) {
-				rolename += ", "+ra.get(RoleAssignment.F_ROLE_NAME);
+				rolename += ", "+ra.get(RoleAssignment.F_ROLE_NAME); //$NON-NLS-1$
 			}else{
-				rolename = ""+ra.get(RoleAssignment.F_ROLE_NAME);
+				rolename = ""+ra.get(RoleAssignment.F_ROLE_NAME); //$NON-NLS-1$
 			}
 		}
-		return rolename==null?"":rolename;
+		return rolename==null?"":rolename; //$NON-NLS-1$
 	}
 
 }

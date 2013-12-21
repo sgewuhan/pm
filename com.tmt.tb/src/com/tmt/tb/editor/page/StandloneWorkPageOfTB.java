@@ -29,6 +29,7 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
+import com.tmt.tb.nls.Messages;
 
 @SuppressWarnings("restriction")
 public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
@@ -51,7 +52,7 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 		content.setLayout(new GridLayout());
 		taskForm = (TaskForm) input.getData();
 		this.editable = input.isEditable();
-		taskForm.addFieldValueListener("projecttemplate_id", this);
+		taskForm.addFieldValueListener("projecttemplate_id", this); //$NON-NLS-1$
 		createOptionContent();
 		return content;
 	}
@@ -86,7 +87,7 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 				final Button settingButton = new Button(sectionClient,
 						SWT.CHECK);
 				final String optionName = (String) options.get(i);
-				settingButton.setData("data", optionName);
+				settingButton.setData("data", optionName); //$NON-NLS-1$
 				settingButton.setText(optionName);
 				settingButton.addSelectionListener(new SelectionAdapter() {
 					@Override
@@ -187,7 +188,7 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 			children[i].dispose();
 		}
 
-		Object projecttemplate_id = taskForm.getValue("projecttemplate_id");
+		Object projecttemplate_id = taskForm.getValue("projecttemplate_id"); //$NON-NLS-1$
 		if(projecttemplate_id == null){
 			return;
 		}
@@ -200,17 +201,17 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 		}
 		List<?> standardOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
-		createOptionSetting(content, standardOptions, "标准",
+		createOptionSetting(content, standardOptions, Messages.get().StandloneWorkPageOfTB_0,
 				ProjectTemplate.F_STANDARD_OPTION_SET);
 
 		List<?> productTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
-		createOptionSetting(content, productTypeOptions, "产品类型",
+		createOptionSetting(content, productTypeOptions, Messages.get().StandloneWorkPageOfTB_4,
 				ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
 
 		List<?> projectTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
-		createOptionSetting(content, projectTypeOptions, "项目类型",
+		createOptionSetting(content, projectTypeOptions, Messages.get().StandloneWorkPageOfTB_5,
 				ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
 
 		content.layout();

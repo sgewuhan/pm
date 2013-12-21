@@ -15,15 +15,15 @@ import com.sap.mw.jco.JCO.Table;
 
 public class JCO_ZXFUN_PM_YFFY {
 
-	private static final String REPOSITORY_NAME = "MYRepository";
+	private static final String REPOSITORY_NAME = "MYRepository"; //$NON-NLS-1$
 
-	private static final String PARAMETER_COST_CENTER = "TABLE_IN";
+	private static final String PARAMETER_COST_CENTER = "TABLE_IN"; //$NON-NLS-1$
 
-	private static final String PARAMETER_MONTH = "PERIO";
+	private static final String PARAMETER_MONTH = "PERIO"; //$NON-NLS-1$
 
-	private static final String PARAMETER_YEAR = "GJAHR";
+	private static final String PARAMETER_YEAR = "GJAHR"; //$NON-NLS-1$
 
-	private static final String FUNCTION_NAME = "ZXFUN_PM_YFFY";
+	private static final String FUNCTION_NAME = "ZXFUN_PM_YFFY"; //$NON-NLS-1$
 
 	
 	public static Client getSAPClient() {
@@ -64,7 +64,7 @@ public class JCO_ZXFUN_PM_YFFY {
 
 		if (ftemplate == null) {
 			throw new IllegalArgumentException(
-					"Can not get function template, Name:" + FUNCTION_NAME);
+					"Can not get function template, Name:" + FUNCTION_NAME); //$NON-NLS-1$
 		}
 
 		Map<String, Map<String, Double>> ret = new HashMap<String, Map<String, Double>>();
@@ -78,17 +78,17 @@ public class JCO_ZXFUN_PM_YFFY {
 		Table tableIn = input_table.getTable(PARAMETER_COST_CENTER);
 		for (int i = 0; costCodeArray != null && i < costCodeArray.length; i++) {
 			tableIn.appendRow();
-			tableIn.setValue(costCodeArray[i], "KOSTL");// 成本中心
+			tableIn.setValue(costCodeArray[i], "KOSTL");// 成本中心 //$NON-NLS-1$
 		}
 
 		for (int i = 0; costElementArray != null && i < costElementArray.length; i++) {
 			tableIn.appendRow();
-			tableIn.setValue(costElementArray[i], "KSTAR");// 成本要素
+			tableIn.setValue(costElementArray[i], "KSTAR");// 成本要素 //$NON-NLS-1$
 		}
 
 		for (int i = 0; workordersArray != null && i < workordersArray.length; i++) {
 			tableIn.appendRow();
-			tableIn.setValue(workordersArray[i], "AUFNR");// 工作令号
+			tableIn.setValue(workordersArray[i], "AUFNR");// 工作令号 //$NON-NLS-1$
 		}
 
 		function.setTableParameterList(input_table);
@@ -97,7 +97,7 @@ public class JCO_ZXFUN_PM_YFFY {
 		
 		releaseClient(client);
 		
-		Table result = function.getTableParameterList().getTable("TABLE_OUT");
+		Table result = function.getTableParameterList().getTable("TABLE_OUT"); //$NON-NLS-1$
 		if (result.getNumRows() > 0) {
 			while (result.nextRow()) {
 
@@ -113,13 +113,13 @@ public class JCO_ZXFUN_PM_YFFY {
 				/**
 				 * 转置数据
 				 */
-				String _key = (String) row.get("KOSTL");
+				String _key = (String) row.get("KOSTL"); //$NON-NLS-1$
 				if (Utils.isNullOrEmpty(_key)) {
-					_key = (String) row.get("AUFNR");
+					_key = (String) row.get("AUFNR"); //$NON-NLS-1$
 				}
 
-				String _cost = (String) row.get("WKGBTR");
-				String _accountNumber = (String) row.get("KSTAR");
+				String _cost = (String) row.get("WKGBTR"); //$NON-NLS-1$
+				String _accountNumber = (String) row.get("KSTAR"); //$NON-NLS-1$
 
 				Map<String, Double> rowData = ret.get(_key);
 				if (rowData == null) {
@@ -140,13 +140,13 @@ public class JCO_ZXFUN_PM_YFFY {
 					_accountSummay += cost;
 				}
 				rowData.put(_accountNumber, _accountSummay);
-				Double _rowSummay = rowData.get("summ");
+				Double _rowSummay = rowData.get("summ"); //$NON-NLS-1$
 				if (_rowSummay == null) {
 					_rowSummay = cost;
 				} else {
 					_rowSummay += cost;
 				}
-				rowData.put("summ", _rowSummay);
+				rowData.put("summ", _rowSummay); //$NON-NLS-1$
 			}
 		} else{
 //			System.out.println( costCodeArray);

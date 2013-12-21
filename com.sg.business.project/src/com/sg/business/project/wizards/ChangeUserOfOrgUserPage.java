@@ -15,6 +15,7 @@ import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.part.INavigatablePart;
 import com.sg.widgets.part.NavigatorControl;
 
@@ -29,7 +30,7 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 		super(sName);
 		setTitle(sTitle);
 		setDescription(sDescription);
-		setMessage("将 ? 的工作移交给 ? ");
+		setMessage(Messages.get().ChangeUserOfOrgUserPage_0);
 		this.navigatorid = navigatorid;
 		this.master = master;
 	}
@@ -53,12 +54,12 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 								User assignment = (User) element;
 								
 								wiz.setChangeUserId(assignment.getUserid());
-								setMessage("将 \""
+								setMessage(Messages.get().ChangeUserOfOrgUserPage_1
 										+ UserToolkit.getUserById(wiz
 												.getChangedUserId())
-												+ "\" 的工作移交给 \""
+												+ Messages.get().ChangeUserOfOrgUserPage_2
 												+ UserToolkit.getUserById(assignment
-														.getUserid()) + "\" ");
+														.getUserid()) + "\" "); //$NON-NLS-1$
 								setErrorMessage(null);
 							} else {
 								wiz.setChangeUserId(null);
@@ -86,12 +87,12 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 				User assignment = (User) element;
 				ChangeUserWizard wiz = (ChangeUserWizard) getWizard();
 				if (wiz.getChangedUserId().equals(assignment.getUserid())) {
-					setErrorMessage("无法将 \""
+					setErrorMessage(Messages.get().ChangeUserOfOrgUserPage_4
 							+ UserToolkit.getUserById(wiz
 									.getChangedUserId())
-							+ "\" 的工作移交给 \""
+							+ Messages.get().ChangeUserOfOrgUserPage_5
 							+ UserToolkit.getUserById(assignment.getUserid())
-							+ "\" ");
+							+ "\" "); //$NON-NLS-1$
 				} else {
 					return true;
 				}

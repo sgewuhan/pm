@@ -3,6 +3,7 @@ package com.sg.business.commons.field.presentation;
 import org.eclipse.ui.forms.IFormPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.widgets.commons.valuepresentation.IValuePresentation;
@@ -23,7 +24,7 @@ public class ProjectInfomationOfWork implements IValuePresentation {
 			}
 		}
 
-		return "(нч)";
+		return Messages.get().ProjectInfomationOfWork_0;
 	}
 
 }

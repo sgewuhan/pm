@@ -14,6 +14,7 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.ProjectToolkit;
 
 public class WorkToProjectByWorkOrderService extends ServiceProvider {
@@ -24,13 +25,13 @@ public class WorkToProjectByWorkOrderService extends ServiceProvider {
 	@Override
 	public Map<String, Object> run(Object parameter) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			try {
 				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-				String processId = (String) host.getValue("processId");
-				String processName = (String) host.getValue("processName");
+				String processId = (String) host.getValue("processId"); //$NON-NLS-1$
+				String processName = (String) host.getValue("processName"); //$NON-NLS-1$
 				if (host instanceof Work) {
 					Work work = (Work) host;
 					// 根据工作令号获取项目
@@ -38,7 +39,7 @@ public class WorkToProjectByWorkOrderService extends ServiceProvider {
 					if(project!=null){
 						return result;
 					}
-					String workorder = (String) getInputValue("workorder");
+					String workorder = (String) getInputValue("workorder"); //$NON-NLS-1$
 					DBCollection col = DBActivator.getCollection(
 							IModelConstants.DB, IModelConstants.C_PROJECT);
 					DBObject dbo = col.findOne(new BasicDBObject().append(
@@ -80,12 +81,12 @@ public class WorkToProjectByWorkOrderService extends ServiceProvider {
 					}
 
 				} else {
-					result.put("returnCode", "ERROR");
-					result.put("returnMessage", "附加工作出现错误!");
+					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+					result.put("returnMessage", Messages.get().WorkToProjectByWorkOrderService_0); //$NON-NLS-1$
 				}
 			} catch (Exception e) {
-				result.put("returnCode", "ERROR");
-				result.put("returnMessage", e.getMessage());
+				result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+				result.put("returnMessage", e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return result;

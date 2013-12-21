@@ -18,7 +18,7 @@ public class ProjectDesignateInvestment extends MasterDetailDataSetFactory {
 	protected Object getMasterValue() {
 		Project project = ((Project) master);
 		String[] workOrders = project.getWorkOrders();
-		return new BasicDBObject().append("$in", workOrders);
+		return new BasicDBObject().append("$in", workOrders); //$NON-NLS-1$
 	}
 
 	@Override

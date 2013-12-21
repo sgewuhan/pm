@@ -45,6 +45,7 @@ import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.model.etl.ProjectPresentation;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -64,132 +65,132 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	/**
 	 * 项目编号
 	 */
-	public static final String F_PROJECT_NUMBER = "projectnumber";
+	public static final String F_PROJECT_NUMBER = "projectnumber"; //$NON-NLS-1$
 
 	/**
 	 * 项目负责人字段，保存项目负责人的userid {@link User} ,
 	 */
-	public static final String F_CHARGER = "chargerid";
+	public static final String F_CHARGER = "chargerid"; //$NON-NLS-1$
 
 	/**
 	 * 数组类型字段，每个元素为都是userid
 	 */
-	public static final String F_PARTICIPATE = "participate";
+	public static final String F_PARTICIPATE = "participate"; //$NON-NLS-1$
 
 	/**
 	 * 项目所属的项目职能组织
 	 */
-	public static final String F_FUNCTION_ORGANIZATION = "org_id";
+	public static final String F_FUNCTION_ORGANIZATION = "org_id"; //$NON-NLS-1$
 
 	/**
 	 * 项目发起部门
 	 */
-	public static final String F_LAUNCH_ORGANIZATION = "launchorg_id";
+	public static final String F_LAUNCH_ORGANIZATION = "launchorg_id"; //$NON-NLS-1$
 
 	/**
 	 * 根工作ID
 	 */
-	public static final String F_WORK_ID = "work_id";
+	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 
-	public static final String F_DESCRIPTION = "description";
+	public static final String F_DESCRIPTION = "description"; //$NON-NLS-1$
 
 	/**
 	 * 预算ID
 	 */
-	public static final String F_BUDGET_ID = "budget_id";
+	public static final String F_BUDGET_ID = "budget_id"; //$NON-NLS-1$
 
 	/**
 	 * 适用标准集
 	 */
-	public static final String F_STANDARD_SET_OPTION = "standardset";
+	public static final String F_STANDARD_SET_OPTION = "standardset"; //$NON-NLS-1$
 
 	/**
 	 * 产品类型选项集
 	 */
-	public static final String F_PRODUCT_TYPE_OPTION = "producttype";
+	public static final String F_PRODUCT_TYPE_OPTION = "producttype"; //$NON-NLS-1$
 
 	/**
 	 * 项目类型选项集
 	 */
-	public static final String F_PROJECT_TYPE_OPTION = "projecttype";
+	public static final String F_PROJECT_TYPE_OPTION = "projecttype"; //$NON-NLS-1$
 
 	/**
 	 * 列表类型的字段，工作令号
 	 */
-	public static final String F_WORK_ORDER = "workorder";
+	public static final String F_WORK_ORDER = "workorder"; //$NON-NLS-1$
 
 	/**
 	 * 项目提交流程
 	 */
-	public static final String F_WF_COMMIT = "wf_commit";
+	public static final String F_WF_COMMIT = "wf_commit"; //$NON-NLS-1$
 
 	/**
 	 * 提交流程中的角色指派
 	 */
-	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";
+	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment"; //$NON-NLS-1$
 
 	/**
 	 * 提交流程是否启用
 	 */
-	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
+	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated"; //$NON-NLS-1$
 
 	/**
 	 * 提交流程任务的执行人
 	 */
-	public static final String F_WF_COMMIT_ACTORS = "wf_commit_actors";
+	public static final String F_WF_COMMIT_ACTORS = "wf_commit_actors"; //$NON-NLS-1$
 	/**
 	 * 项目变更流程
 	 */
-	public static final String F_WF_CHANGE = "wf_change";
+	public static final String F_WF_CHANGE = "wf_change"; //$NON-NLS-1$
 
 	/**
 	 * 项目变更流程是否启用
 	 */
-	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
+	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated"; //$NON-NLS-1$
 
 	/**
 	 * 项目变更流程角色指派
 	 */
-	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
+	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment"; //$NON-NLS-1$
 
 	/**
 	 * 项目变更流程任务执行人
 	 */
-	public static final String F_WF_CHANGE_ACTORS = "wf_change_actors";
+	public static final String F_WF_CHANGE_ACTORS = "wf_change_actors"; //$NON-NLS-1$
 
 	/**
 	 * 项目编辑器
 	 */
-	public static final String EDITOR_CREATE_PLAN = "project.editor";
+	public static final String EDITOR_CREATE_PLAN = "project.editor"; //$NON-NLS-1$
 
 	/**
 	 * 项目编辑器
 	 */
-	public static final String EDITOR_PROJECT_FINANCIAL = "editor.project.financial";
+	public static final String EDITOR_PROJECT_FINANCIAL = "editor.project.financial"; //$NON-NLS-1$
 
 	/**
 	 * 项目流程设置
 	 */
-	public static final String EDITOR_SETPROCESS = "project.flow.setting";
+	public static final String EDITOR_SETPROCESS = "project.flow.setting"; //$NON-NLS-1$
 
 	/**
 	 * 项目预算
 	 */
-	public static final String EDITOR_PAGE_BUDGET = "project.financial";
+	public static final String EDITOR_PAGE_BUDGET = "project.financial"; //$NON-NLS-1$
 
-	public static final String EDITOR_PAGE_TEAM = "project.team";
+	public static final String EDITOR_PAGE_TEAM = "project.team"; //$NON-NLS-1$
 
 	/**
 	 * 项目工作分解结构
 	 */
 
-	public static final String EDITOR_PAGE_WBS = "project.wbs";
+	public static final String EDITOR_PAGE_WBS = "project.wbs"; //$NON-NLS-1$
 
-	public static final String EDITOR_PAGE_CHANGE_PROCESS = "processpage2";
+	public static final String EDITOR_PAGE_CHANGE_PROCESS = "processpage2"; //$NON-NLS-1$
 
-	public static final String EDITOR_PAGE_COMMIT_PROCESS = "processpage1";
+	public static final String EDITOR_PAGE_COMMIT_PROCESS = "processpage1"; //$NON-NLS-1$
 
-	public static final String F_FOLDER_ID = "folder_id";
+	public static final String F_FOLDER_ID = "folder_id"; //$NON-NLS-1$
 
 	private SummaryProjectWorks summaryProjectWorks;
 
@@ -200,7 +201,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	@Override
 	public String getTypeName() {
-		return "项目";
+		return Messages.get().Project_0;
 	}
 
 	/**
@@ -406,7 +407,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	public List<PrimaryObject> getCalendarCondition() {
-		ModelRelation mr = ModelService.getModelRelation("project_calendar");
+		ModelRelation mr = ModelService.getModelRelation("project_calendar"); //$NON-NLS-1$
 		return getRelationByModel(mr);
 	}
 
@@ -529,14 +530,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	private void syncRootWorkNameInternal() {
-		Job job = new Job("处理根工作定义名称同步") {
+		Job job = new Job("处理根工作定义名称同步") { //$NON-NLS-1$
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				Object rootId = getValue(F_WORK_ID);
 				DBCollection col = getCollection(IModelConstants.C_WORK);
 				col.update(new BasicDBObject().append(Work.F__ID, rootId),
-						new BasicDBObject().append("$set", new BasicDBObject()
+						new BasicDBObject().append("$set", new BasicDBObject() //$NON-NLS-1$
 								.append(Work.F_DESC, getDesc())));
 				return Status.OK_STATUS;
 			}
@@ -553,7 +554,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Organization org = getFunctionOrganization();
 			Organization company = org.getCompany();
 			if (company == null) {
-				throw new Exception("项目所在管理组织或上级没有定义公司代码,无法保存工作令号，项目保存失败");
+				throw new Exception(Messages.get().Project_1);
 			}
 			company.doSaveWorkOrders((List<?>) wonList);
 		}
@@ -566,7 +567,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 * @throws Exception
 	 */
 	private void ensureProjectManagerRole(final IContext context) {
-		Job job = new Job("确保项目经理角色与项目负责人一致") {
+		Job job = new Job(Messages.get().Project_2) {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -633,9 +634,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			// return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
 			// Status.ERROR, "复制模板出错", e);
 
-			throw new Exception("复制模板出错");
+			throw new Exception(Messages.get().Project_3);
 		}
-		Job job = new Job("从模板复制项目信息") {
+		Job job = new Job("从模板复制项目信息") { //$NON-NLS-1$
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -644,7 +645,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					doCopySystemCanlendar();
 				} catch (Exception e) {
 					return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-							Status.ERROR, "复制系统日历出错", e);
+							Status.ERROR, Messages.get().Project_4, e);
 				}
 
 				// //自动设置任务执行人
@@ -660,12 +661,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	private void generateCode() throws Exception {
 		Organization org = getFunctionOrganization();
 		if (org == null) {
-			throw new Exception("缺少项目管理职能组织");
+			throw new Exception(Messages.get().Project_5);
 		}
 
 		String code = org.getCode();
 		if (code == null) {
-			throw new Exception("项目管理职能组织没有定义代码");
+			throw new Exception(Messages.get().Project_6);
 		}
 
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
@@ -674,10 +675,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 
-		String prefix = code + ("" + year).substring(2);
+		String prefix = code + ("" + year).substring(2); //$NON-NLS-1$
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_PROJECT_NUMBER
-				+ "." + prefix);
-		String seq = String.format("%03x", id).toUpperCase();
+				+ "." + prefix); //$NON-NLS-1$
+		String seq = String.format("%03x", id).toUpperCase(); //$NON-NLS-1$
 
 		String codeValue = prefix + seq;
 		setValue(F_PROJECT_NUMBER, codeValue);
@@ -757,7 +758,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Set<DBObject> toBeInsert = new HashSet<DBObject>();
 			while (iter.hasNext()) {
 				DBObject prole = iter.next();
-				if (!Boolean.TRUE.equals(prole.get("used"))) {
+				if (!Boolean.TRUE.equals(prole.get("used"))) { //$NON-NLS-1$
 					continue;
 				}
 				Object roleId = prole.get(ProjectRole.F_ORGANIZATION_ROLE_ID);
@@ -770,7 +771,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 				}
 
-				prole.removeField("used");
+				prole.removeField("used"); //$NON-NLS-1$
 				toBeInsert.add(prole);
 			}
 
@@ -831,7 +832,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		col = getCollection();
 		WriteResult ws = col.update(
 				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", update));
+				new BasicDBObject().append("$set", update)); //$NON-NLS-1$
 
 		checkWriteResult(ws);
 
@@ -972,7 +973,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 清除已有的非根工作定义
 		WriteResult ws = workCol.remove(new BasicDBObject().append(
 				Work.F_PROJECT_ID, get_id()).append(Work.F__ID,
-				new BasicDBObject().append("$ne", wbsRootId)));
+				new BasicDBObject().append("$ne", wbsRootId))); //$NON-NLS-1$
 		checkWriteResult(ws);
 		Collection<DBObject> collection = worksToBeInsert.values();
 		if (!collection.isEmpty()) {
@@ -1036,12 +1037,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public void doAssignmentByRole(IContext context) throws Exception {
 		Map<ObjectId, List<PrimaryObject>> map = getRoleAssignmentMap();
 		if (map.size() == 0) {
-			throw new Exception("尚未对角色指定人员，无法执行按角色指派工作");
+			throw new Exception(Messages.get().Project_7);
 		}
 
 		String lc = getLifecycleStatus();
 		if (!STATUS_NONE_VALUE.equals(lc)) {
-			throw new Exception("您只能在项目准备状态进行按角色指派工作");
+			throw new Exception(Messages.get().Project_8);
 		}
 
 		List<PrimaryObject> childrenWorks = getChildrenWork();
@@ -1067,13 +1068,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void doAddParticipate(String[] userIds) throws Exception {
 		if (userIds == null) {
-			throw new Exception("请确认需添加的参与者");
+			throw new Exception(Messages.get().Project_9);
 		}
 		DBCollection pjCol = getCollection();
 
-		DBObject update = new BasicDBObject().append("$addToSet",
+		DBObject update = new BasicDBObject().append("$addToSet", //$NON-NLS-1$
 				new BasicDBObject().append(Project.F_PARTICIPATE,
-						new BasicDBObject().append("$each", userIds)));
+						new BasicDBObject().append("$each", userIds))); //$NON-NLS-1$
 
 		WriteResult ws = pjCol.update(
 				new BasicDBObject().append(Project.F__ID, get_id()), update,
@@ -1140,7 +1141,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		col = getCollection(IModelConstants.C_PROJECT_ROLE_ASSIGNMENT);
 		ws = col.remove(new BasicDBObject().append(
 				ProjectRoleAssignment.F_ROLE_ID,
-				new BasicDBObject().append("$in", roleIds)));
+				new BasicDBObject().append("$in", roleIds))); //$NON-NLS-1$
 		checkWriteResult(ws);
 
 		// 删除交付物
@@ -1179,7 +1180,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		if (start != null && finish != null) {
 			// 检查是否合法
 			if (start.after(finish)) {
-				throw new Exception("开始日期必须早于完成日期");
+				throw new Exception(Messages.get().Project_10);
 			}
 			// 计算工期
 			int workingdays = cc.getWorkingDays(start, finish);
@@ -1225,14 +1226,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Object value = getValue(F_WORK_ORDER);
 		if (!(value instanceof BasicBSONList)
 				|| ((BasicBSONList) value).isEmpty()) {
-			CheckListItem checkItem = new CheckListItem("检查工作令号", "工作令号空",
-					"如果本项目在提交后确定工作令号，请忽略本提示。", ICheckListItem.WARRING);
+			CheckListItem checkItem = new CheckListItem(Messages.get().Project_11, Messages.get().Project_12,
+					Messages.get().Project_13, ICheckListItem.WARRING);
 			checkItem.setData(this);
 			checkItem.setEditorId(EDITOR_CREATE_PLAN);
 			checkItem.setKey(F_WORK_ORDER);
 			result.add(checkItem);
 		} else {
-			CheckListItem checkItem = new CheckListItem("检查工作令号");
+			CheckListItem checkItem = new CheckListItem(Messages.get().Project_14);
 			checkItem.setData(this);
 			result.add(checkItem);
 		}
@@ -1241,8 +1242,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ProjectBudget budget = getBudget();
 		value = budget.getBudgetValue();
 		if (value == null || ((Double) value).doubleValue() == 0d) {
-			CheckListItem checkItem = new CheckListItem("检查预算",
-					"没有制定项目预算，或预算为0", "如果本项目在提交后确定预算，请忽略本提示",
+			CheckListItem checkItem = new CheckListItem(Messages.get().Project_15,
+					Messages.get().Project_16, Messages.get().Project_17,
 					ICheckListItem.WARRING);
 			checkItem.setData(this);
 			checkItem.setKey(F_WORK_ORDER);
@@ -1250,7 +1251,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			checkItem.setEditorPageId(EDITOR_PAGE_BUDGET);
 			result.add(checkItem);
 		} else {
-			CheckListItem checkItem = new CheckListItem("检查预算");
+			CheckListItem checkItem = new CheckListItem(Messages.get().Project_18);
 			checkItem.setData(this);
 			result.add(checkItem);
 		}
@@ -1265,9 +1266,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			ObjectId roldId = role.get_id();
 			ra = raMap.get(roldId);
 			if (ra == null) {
-				CheckListItem checkItem = new CheckListItem("检查项目角色指派",
-						"没有确定角色对应人员，" + "角色：[" + role.getLabel() + "]",
-						"如果本项目在提交后确定人员，请忽略本提示", ICheckListItem.WARRING);
+				CheckListItem checkItem = new CheckListItem(Messages.get().Project_19,
+						Messages.get().Project_20 + Messages.get().Project_21 + role.getLabel() + "]", //$NON-NLS-3$
+						Messages.get().Project_22, ICheckListItem.WARRING);
 				checkItem.setData(this);
 				checkItem.setEditorId(EDITOR_CREATE_PLAN);
 				checkItem.setEditorPageId(EDITOR_PAGE_TEAM);
@@ -1277,7 +1278,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			}
 		}
 		if (passed) {
-			CheckListItem checkItem = new CheckListItem("检查项目角色指派");
+			CheckListItem checkItem = new CheckListItem(Messages.get().Project_23);
 			checkItem.setData(this);
 			result.add(checkItem);
 		}
@@ -1285,7 +1286,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		IProcessControl pc = (IProcessControl) getAdapter(IProcessControl.class);
 
 		// 4.1 检查项目变更的流程 ：错误，没有指明流程负责人
-		String title = "检查项目变更流程";
+		String title = Messages.get().Project_24;
 		String process = F_WF_CHANGE;
 		String editorId = EDITOR_SETPROCESS;
 		String pageId = EDITOR_PAGE_CHANGE_PROCESS;
@@ -1298,7 +1299,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		// 4.2 检查项目提交的流程 ：错误，没有指明流程负责人
-		title = "检查项目提交流程";
+		title = Messages.get().Project_25;
 		process = F_WF_COMMIT;
 		pageId = EDITOR_PAGE_COMMIT_PROCESS;
 		passed = ProjectToolkit.checkProcessInternal(this, pc, result, raMap,
@@ -1481,7 +1482,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			throws Exception {
 		Map<String, Message> messageList = new HashMap<String, Message>();
 		// 1. 获取项目负责人
-		String title = "项目计划提交" + " " + this;
+		String title = Messages.get().Project_26 + " " + this; //$NON-NLS-2$
 		appendMessageForCharger(messageList, title, context);
 		// 2. 获取项目的参与者
 
@@ -1506,8 +1507,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForCharger(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, "负责项目"
-				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context);
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, Messages.get().Project_27
+				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context); //$NON-NLS-1$
 	}
 
 	/**
@@ -1518,8 +1519,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForParticipate(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, "参与项目"
-				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context);
+		MessageToolkit.appendMessage(messageList, getChargerId(), title, Messages.get().Project_28
+				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context); //$NON-NLS-1$
 	}
 
 	/**
@@ -1531,7 +1532,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public void appendMessageForChangeWorkflowActor(
 			Map<String, Message> messageList, String title, IContext context) {
 		MessageToolkit.appendWorkflowActorMessage(this, messageList,
-				F_WF_CHANGE, "项目变更流程", title, context.getAccountInfo()
+				F_WF_CHANGE, Messages.get().Project_29, title, context.getAccountInfo()
 						.getConsignerId(), null);
 	}
 
@@ -1571,7 +1572,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		work.setValue(Work.F_PLAN_FINISH, finishDate);
 
-		work.setValue(Work.F_DESC, "项目计划提交" + " " + this);
+		work.setValue(Work.F_DESC, "项目计划提交" + " " + this); //$NON-NLS-1$ //$NON-NLS-2$
 		work.setValue(Work.F_DESCRIPTION, getDesc());
 		work.setValue(Work.F_PLAN_WORKS, new Double(0d));
 		BasicBSONList targets = new BasicBSONList();
@@ -1596,11 +1597,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public Object doCancel(IContext context) throws Exception {
 		Organization org = getFunctionOrganization();
 		if (org == null) {
-			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+			throw new Exception(Messages.get().Project_31 + this);
 		}
 		ObjectId containerOrganizationId = org.getContainerOrganizationId();
 		if (containerOrganizationId == null) {
-			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+			throw new Exception(Messages.get().Project_30 + this);
 		}
 
 		Work root = getWBSRoot();
@@ -1609,7 +1610,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		doChangeLifecycleStatus(context, STATUS_CANCELED_VALUE);
 
 		// 发送项目消息到参与者
-		doNoticeProjectAction(context, "已取消");
+		doNoticeProjectAction(context, "已取消"); //$NON-NLS-1$
 
 		doArchive(context);
 
@@ -1630,7 +1631,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				null,
 				false,
 				new BasicDBObject().append(
-						"$set",
+						"$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_LIFECYCLE,
 								STATUS_FINIHED_VALUE).append(F_ACTUAL_FINISH,
 								new Date())),
@@ -1639,7 +1640,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		set_data(data);
 
 		// 发送项目消息到参与者
-		doNoticeProjectAction(context, "已完成");
+		doNoticeProjectAction(context, "已完成"); //$NON-NLS-1$
 
 		doArchive(context);
 
@@ -1669,7 +1670,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		for (String archiveField : Work.ARCHIVE_FIELDS) {
 			update.put(archiveField, null);
 		}
-		ws = col.update(q, new BasicDBObject().append("$set", update), false,
+		ws = col.update(q, new BasicDBObject().append("$set", update), false, //$NON-NLS-1$
 				true);
 		checkWriteResult(ws);
 
@@ -1681,15 +1682,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 归档项目文件
 		Organization org = getFunctionOrganization();
 		if (org == null) {
-			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+			throw new Exception(Messages.get().Project_32 + this);
 		}
 		ObjectId containerOrganizationId = org.getContainerOrganizationId();
 		if (containerOrganizationId == null) {
-			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+			throw new Exception(Messages.get().Project_33 + this);
 		}
 
 		col = getCollection(IModelConstants.C_FOLDER);
-		ws = col.update(q, new BasicDBObject().append("$set",
+		ws = col.update(q, new BasicDBObject().append("$set", //$NON-NLS-1$
 				new BasicDBObject().append(Folder.F_ROOT_ID,
 						containerOrganizationId)), false, true);
 		checkWriteResult(ws);
@@ -1714,7 +1715,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		// 写日志
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "项目归档",
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().Project_34,
 				new Date(), this.getLabel(), IModelConstants.DB);
 	}
 
@@ -1728,7 +1729,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		doChangeLifecycleStatus(context, STATUS_PAUSED_VALUE);
 
 		// 发送项目消息到参与者
-		doNoticeProjectAction(context, "已暂停");
+		doNoticeProjectAction(context, Messages.get().Project_35);
 		return this;
 	}
 
@@ -1746,7 +1747,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				null,
 				false,
 				new BasicDBObject().append(
-						"$set",
+						"$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_LIFECYCLE,
 								STATUS_WIP_VALUE).append(F_ACTUAL_START,
 								new Date())),
@@ -1755,7 +1756,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		set_data(data);
 
 		// 发送项目消息到参与者
-		doNoticeProjectAction(context, "已启动");
+		doNoticeProjectAction(context, Messages.get().Project_36);
 		return this;
 	}
 
@@ -1781,27 +1782,27 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		participatesIdList.remove(context.getAccountInfo().getConsignerId());
 
 		// 设置通知标题
-		String title = "" + this + " " + actionName;
+		String title = "" + this + " " + actionName; //$NON-NLS-1$ //$NON-NLS-2$
 
 		// 设置通知内容
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='font-size:14px'>");
-		sb.append("您好: ");
-		sb.append("</span><br/><br/>");
-		sb.append("您参与的项目有新的进展。");
-		sb.append("<br/><br/>");
+		sb.append("<span style='font-size:14px'>"); //$NON-NLS-1$
+		sb.append(Messages.get().Project_37);
+		sb.append("</span><br/><br/>"); //$NON-NLS-1$
+		sb.append(Messages.get().Project_38);
+		sb.append("<br/><br/>"); //$NON-NLS-1$
 
-		sb.append(context.getAccountInfo().getUserId() + "|"
+		sb.append(context.getAccountInfo().getUserId() + "|" //$NON-NLS-1$
 				+ context.getAccountInfo().getUserName());
-		sb.append(", ");
+		sb.append(", "); //$NON-NLS-1$
 		sb.append(actionName);
-		sb.append("项目");
-		sb.append("\"");
+		sb.append(Messages.get().Project_39);
+		sb.append("\""); //$NON-NLS-1$
 		sb.append(this);
-		sb.append("\"");
+		sb.append("\""); //$NON-NLS-1$
 
-		sb.append("<br/><br/>");
-		sb.append("如有不明，请查阅有关工作信息。");
+		sb.append("<br/><br/>"); //$NON-NLS-1$
+		sb.append(Messages.get().Project_40);
 
 		Message message = MessageToolkit.makeMessage(participatesIdList, title,
 				context.getAccountInfo().getConsignerId(), sb.toString());
@@ -1838,7 +1839,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				null,
 				null,
 				false,
-				new BasicDBObject().append("$set",
+				new BasicDBObject().append("$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_LIFECYCLE, status)),
 
 				true, false);
@@ -1856,7 +1857,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 1.检查是否本项目的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(this.getChargerId())) {
-			throw new Exception("不是本项目负责人，" + this);
+			throw new Exception(Messages.get().Project_41 + this);
 		}
 		// 2.检查项目的工作是否满足启动条件
 		Work rootWork = getWBSRoot();
@@ -1875,7 +1876,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String userId = context.getAccountInfo().getConsignerId();
 		Organization org = getFunctionOrganization();
 		if (org == null) {
-			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+			throw new Exception(Messages.get().Project_42 + this);
 		}
 
 		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
@@ -1890,13 +1891,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			}
 		}
 		if (b) {
-			throw new Exception("不是本项目项目管理员，" + this);
+			throw new Exception(Messages.get().Project_43 + this);
 		}
 
 		// 2.检查项目是否可以进行归档
 		ObjectId containerOrganizationId = org.getContainerOrganizationId();
 		if (containerOrganizationId == null) {
-			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+			throw new Exception(Messages.get().Project_44 + this);
 		}
 		// TODO 归档判断是否完整
 
@@ -1909,7 +1910,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 1.检查是否本项目的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(this.getChargerId())) {
-			throw new Exception("不是本项目负责人，" + this);
+			throw new Exception(Messages.get().Project_45 + this);
 		}
 		// 2.检查项目的工作是否满足启动条件
 		Work work = getWBSRoot();
@@ -1918,11 +1919,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 3.检查项目是否可以进行归档
 		Organization org = getFunctionOrganization();
 		if (org == null) {
-			throw new Exception("项目无管理部门或管理部门被删除，" + this);
+			throw new Exception(Messages.get().Project_46 + this);
 		}
 		ObjectId containerOrganizationId = org.getContainerOrganizationId();
 		if (containerOrganizationId == null) {
-			throw new Exception("项目管理部门及其上级部门无文档容器，" + this);
+			throw new Exception(Messages.get().Project_47 + this);
 		}
 		// TODO 归档判断是否完整
 
@@ -1934,7 +1935,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 1.检查是否本项目的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(this.getChargerId())) {
-			throw new Exception("不是本项目负责人，" + this);
+			throw new Exception(Messages.get().Project_48 + this);
 		}
 		return null;
 	}
@@ -1951,7 +1952,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 1.检查是否本项目的负责人
 		String userId = context.getAccountInfo().getConsignerId();
 		if (!userId.equals(this.getChargerId())) {
-			throw new Exception("不是本项目负责人，" + this);
+			throw new Exception(Messages.get().Project_49 + this);
 		}
 
 		// 需要检查是否已经创建了提交工作，如果是，则不能提交，如果生命周期状态不对，也不能提交
@@ -1959,7 +1960,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 判断当前项目状态是否可以进行提交
 		String lc = getLifecycleStatus();
 		if (!STATUS_NONE_VALUE.equals(lc)) {
-			throw new Exception("项目当前状态不允许进行提交，" + this);
+			throw new Exception(Messages.get().Project_50 + this);
 		}
 
 		// 判断是否具有提交工作
@@ -1968,11 +1969,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		condition.put(Work.F_PROJECT_ID, get_id());
 		condition.put(
 				Work.F_LIFECYCLE,
-				new BasicDBObject().append("$nin", new String[] {
+				new BasicDBObject().append("$nin", new String[] { //$NON-NLS-1$
 						STATUS_CANCELED_VALUE, STATUS_FINIHED_VALUE }));
 
 		if (getRelationCountByCondition(Work.class, condition) > 0) {
-			throw new Exception("该项目已经进行过提交操作，" + this);
+			throw new Exception(Messages.get().Project_51 + this);
 		}
 	}
 
@@ -2035,17 +2036,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public void doChangeUsers(String changedUserId, String changeUserId,
 			List<PrimaryObject> changeWork, IContext context) throws Exception {
 
-		String messageContent = "";
+		String messageContent = ""; //$NON-NLS-1$
 		for (PrimaryObject po : changeWork) {
 			Work work = (Work) po;
 			String changeWorkUserMessageContent = work.changeWorkUser(
 					changedUserId, changeUserId);
 			if (changeWorkUserMessageContent != null) {
-				messageContent = messageContent + "<br/>"
+				messageContent = messageContent + "<br/>" //$NON-NLS-1$
 						+ changeWorkUserMessageContent;
 			}
 		}
-		if (messageContent != "") {
+		if (messageContent != "") { //$NON-NLS-1$
 			List<?> oldParticipatesIdList = getParticipatesIdList();
 			BasicBSONList newParticipatesIdList = new BasicDBList();
 			if (oldParticipatesIdList != null) {
@@ -2062,7 +2063,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					DBCollection userCol = DBActivator.getCollection(
 							IModelConstants.DB, IModelConstants.C_PROJECT);
 					userCol.update(new BasicDBObject().append(F__ID, get_id()),
-							new BasicDBObject().append("$set",
+							new BasicDBObject().append("$set", //$NON-NLS-1$
 									new BasicDBObject().append(F_PARTICIPATE,
 											newParticipatesIdList)), false,
 							true);
@@ -2071,18 +2072,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 			Message message = ModelService.createModelObject(Message.class);
 			message.setValue(Message.F_RECIEVER, newParticipatesIdList);
-			message.setValue(Message.F_DESC, "工作移交通知");
+			message.setValue(Message.F_DESC, Messages.get().Project_52);
 			message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
 			message.setValue(
 					Message.F_CONTENT,
-					"<span style='font-size:14px'>"
-							+ "您好: "
-							+ "</span><br/><br/>"
+					"<span style='font-size:14px'>" //$NON-NLS-1$
+							+ Messages.get().Project_53
+							+ "</span><br/><br/>" //$NON-NLS-1$
 							+ UserToolkit.getUserById(changeUserId)
 									.getUsername()
-							+ "将代替"
+							+ Messages.get().Project_54
 							+ UserToolkit.getUserById(changedUserId)
-									.getUsername() + "作为：<br/>"
+									.getUsername() + Messages.get().Project_55
 							+ messageContent);
 			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
 			message.doSave(context);
@@ -2095,14 +2096,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String lifecycleStatus = getLifecycleStatus();
 
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { "项目已经取消，无法进行修改", this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Project_56, this, SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { "项目已经完成，无法进行修改", this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Project_57, this, SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
-			message.add(new Object[] { "项目在进行中，不会修改项目流程执行人", this,
+			message.add(new Object[] { Messages.get().Project_58, this,
 					SWT.ICON_WARNING });
 		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(getLifecycleStatus())) {
-			message.add(new Object[] { "项目已经暂停，不会修改项目流程执行人", this,
+			message.add(new Object[] { Messages.get().Project_59, this,
 					SWT.ICON_WARNING });
 		}
 
@@ -2193,7 +2194,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				new BasicDBObject()
 						.append(ProductItem.F_PROJECT_ID, get_id())
 						.append(ProductItem.F_IS_MASS_PRODUCTION,
-								new BasicDBObject().append("$ne", Boolean.TRUE)));
+								new BasicDBObject().append("$ne", Boolean.TRUE))); //$NON-NLS-1$
 	}
 
 	public String[] getProductCode() {
@@ -2229,21 +2230,21 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String[] workorders = getWorkOrders();
 		DBObject matchCondition = new BasicDBObject();
 		matchCondition.put(Project.F_WORK_ORDER,
-				new BasicDBObject().append("$in", workorders));
-		DBObject match = new BasicDBObject().append("$match", matchCondition);
+				new BasicDBObject().append("$in", workorders)); //$NON-NLS-1$
+		DBObject match = new BasicDBObject().append("$match", matchCondition); //$NON-NLS-1$
 		DBObject groupCondition = new BasicDBObject();
 		groupCondition.put(
-				"_id",
+				"_id", //$NON-NLS-1$
 				new BasicDBObject().append(WorkOrderPeriodCost.F_YEAR,
-						"$" + WorkOrderPeriodCost.F_YEAR).append(
+						"$" + WorkOrderPeriodCost.F_YEAR).append( //$NON-NLS-1$
 						WorkOrderPeriodCost.F_MONTH,
-						"$" + WorkOrderPeriodCost.F_MONTH));//
+						"$" + WorkOrderPeriodCost.F_MONTH));// //$NON-NLS-1$
 		String[] costElements = CostAccount.getCostElemenArray();
 		for (int i = 0; i < costElements.length; i++) {
 			groupCondition.put(costElements[i],
-					new BasicDBObject().append("$sum", "$" + costElements[i]));
+					new BasicDBObject().append("$sum", "$" + costElements[i])); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		DBObject group = new BasicDBObject().append("$group", groupCondition);
+		DBObject group = new BasicDBObject().append("$group", groupCondition); //$NON-NLS-1$
 		AggregationOutput agg = col.aggregate(match, group);
 		Iterable<DBObject> results = agg.results();
 		Iterator<DBObject> iter = results.iterator();
@@ -2256,7 +2257,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				Number value = (Number) data.get(costElements[i]);
 				summary += value.doubleValue();
 			}
-			data.put("summ", summary);
+			data.put("summ", summary); //$NON-NLS-1$
 			result.add(data);
 		}
 
@@ -2268,23 +2269,23 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String[] productCode = getProductCode();
 		DBObject matchCondition = new BasicDBObject();
 		matchCondition.put(SalesData.F_MATERIAL_NUMBER,
-				new BasicDBObject().append("$in", productCode));
-		DBObject match = new BasicDBObject().append("$match", matchCondition);
+				new BasicDBObject().append("$in", productCode)); //$NON-NLS-1$
+		DBObject match = new BasicDBObject().append("$match", matchCondition); //$NON-NLS-1$
 		DBObject groupCondition = new BasicDBObject();
 		groupCondition.put(
-				"_id",
+				"_id", //$NON-NLS-1$
 				new BasicDBObject().append(SalesData.F_ACCOUNT_YEAR,
-						"$" + SalesData.F_ACCOUNT_YEAR).append(
+						"$" + SalesData.F_ACCOUNT_YEAR).append( //$NON-NLS-1$
 						SalesData.F_ACCOUNT_MONTH,
-						"$" + SalesData.F_ACCOUNT_MONTH));//
+						"$" + SalesData.F_ACCOUNT_MONTH));// //$NON-NLS-1$
 		groupCondition.put(
 				SalesData.F_SALES_INCOME,
-				new BasicDBObject().append("$sum", "$"
+				new BasicDBObject().append("$sum", "$" //$NON-NLS-1$ //$NON-NLS-2$
 						+ SalesData.F_SALES_INCOME));
 		groupCondition.put(SalesData.F_SALES_COST, new BasicDBObject().append(
-				"$sum", "$" + SalesData.F_SALES_COST));
+				"$sum", "$" + SalesData.F_SALES_COST)); //$NON-NLS-1$ //$NON-NLS-2$
 
-		DBObject group = new BasicDBObject().append("$group", groupCondition);
+		DBObject group = new BasicDBObject().append("$group", groupCondition); //$NON-NLS-1$
 		AggregationOutput agg = col.aggregate(match, group);
 		Iterable<DBObject> results = agg.results();
 		Iterator<DBObject> iter = results.iterator();

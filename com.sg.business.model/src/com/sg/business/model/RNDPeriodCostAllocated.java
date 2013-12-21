@@ -9,13 +9,13 @@ import com.mobnut.db.model.PrimaryObject;
  */
 public class RNDPeriodCostAllocated extends PrimaryObject implements IAccountPeriod {
 
-	public static final String F_YEAR = "year";
+	public static final String F_YEAR = "year"; //$NON-NLS-1$
 
-	public static final String F_MONTH = "month";
+	public static final String F_MONTH = "month"; //$NON-NLS-1$
 
-	public static final String F_COSTCENTERCODE = "costcenter";
+	public static final String F_COSTCENTERCODE = "costcenter"; //$NON-NLS-1$
 
-	public static final String F_WORKORDER = "workorder";
+	public static final String F_WORKORDER = "workorder"; //$NON-NLS-1$
 	
 	@Override
 	public Double getAccountValue(String accountNumber) {

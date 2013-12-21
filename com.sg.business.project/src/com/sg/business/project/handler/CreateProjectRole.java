@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -21,7 +22,7 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class CreateProjectRole extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "´´½¨½ÇÉ«";
+	private static final String TITLE = Messages.get().CreateProjectRole_0;
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,

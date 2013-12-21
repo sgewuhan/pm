@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
 
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.visualization.nls.Messages;
 
 public class DurationSetting extends Shell {
 
@@ -38,7 +39,7 @@ public class DurationSetting extends Shell {
 
 		final int startYear = Calendar.getInstance().get(Calendar.YEAR) - 5;
 		for (int i = startYear; i < (startYear + 6); i++) {
-			yearCombo.add("" + i);
+			yearCombo.add("" + i); //$NON-NLS-1$
 		}
 		yearCombo.select(5);
 
@@ -48,9 +49,9 @@ public class DurationSetting extends Shell {
 		fd.left = new FormAttachment(yearCombo, 4);
 		fd.top = new FormAttachment(0, 4);
 		fd.width = 80;
-		quarterCombo.add("忽略");
+		quarterCombo.add(Messages.get().DurationSetting_0);
 		for (int i = 1; i < 5; i++) {
-			quarterCombo.add("" + i + "季度");
+			quarterCombo.add("" + i + Messages.get().DurationSetting_1); //$NON-NLS-1$
 		}
 
 		final Combo monthCombo = new Combo(this, SWT.READ_ONLY);
@@ -61,16 +62,16 @@ public class DurationSetting extends Shell {
 		fd.right = new FormAttachment(100, -4);
 
 		fd.width = 80;
-		monthCombo.add("忽略");
+		monthCombo.add(Messages.get().DurationSetting_2);
 		for (int i = 1; i < 13; i++) {
-			monthCombo.add("" + i + "月");
+			monthCombo.add("" + i + Messages.get().DurationSetting_3); //$NON-NLS-1$
 		}
 
 		final Button toToday = new Button(this, SWT.CHECK);
-		toToday.setText("截至今日");
+		toToday.setText(Messages.get().DurationSetting_4);
 
 		Button ok = new Button(this, SWT.PUSH);
-		ok.setText("确定");
+		ok.setText(Messages.get().DurationSetting_5);
 		fd = new FormData();
 		ok.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 4);
@@ -88,7 +89,7 @@ public class DurationSetting extends Shell {
 		});
 
 		Button cancel = new Button(this, SWT.PUSH);
-		cancel.setText("取消");
+		cancel.setText(Messages.get().DurationSetting_6);
 		cancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -169,21 +170,21 @@ public class DurationSetting extends Shell {
 			if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR
 					.equals(data.parameters[1])) {
 				sb.append(((Calendar) data.parameters[0]).get(Calendar.YEAR)
-						+ "年");
+						+ Messages.get().DurationSetting_7);
 			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
 					.equals(data.parameters[1])) {
 				Calendar calendar = (Calendar) data.parameters[0];
 				int month = calendar.get(Calendar.MONTH);
-				sb.append(calendar.get(Calendar.YEAR) + "年"
-						+ (1 + (1 + month) / 4) + "季度");
+				sb.append(calendar.get(Calendar.YEAR) + "年" //$NON-NLS-1$
+						+ (1 + (1 + month) / 4) + Messages.get().DurationSetting_8);
 			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
 					.equals(data.parameters[1])) {
 				Calendar calendar = (Calendar) data.parameters[0];
 				int month = calendar.get(Calendar.MONTH);
-				sb.append(calendar.get(Calendar.YEAR) + "年" + (1 + month) + "月");
+				sb.append(calendar.get(Calendar.YEAR) + Messages.get().DurationSetting_9 + (1 + month) + Messages.get().DurationSetting_10);
 			}
 		}else{
-			sb.append("截至今日");
+			sb.append(Messages.get().DurationSetting_11);
 		}
 
 		return sb.toString();

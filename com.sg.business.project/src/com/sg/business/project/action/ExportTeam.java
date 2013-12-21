@@ -13,6 +13,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.project.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.NavigatorAction;
 import com.sg.widgets.part.NavigatorControl;
@@ -22,7 +23,7 @@ public class ExportTeam extends NavigatorAction {
 
 	private Project project=null;
 	public ExportTeam() {
-		setText("µ¼³ö");
+		setText(Messages.get().ExportTeam_0);
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_EXPORT_24));
 	}
@@ -47,7 +48,7 @@ public class ExportTeam extends NavigatorAction {
 	
 	
 	private void doExport(Display display, NavigatorConfigurator configurator,Project project) {
-			ExcelExportJob job = new ExcelExportJob("TEAM");
+			ExcelExportJob job = new ExcelExportJob("TEAM"); //$NON-NLS-1$
 			job.setColumnExportDefinition(configurator.getExportColumns());
 			job.setInput(getExportData(project));
 			job.setUser(true);

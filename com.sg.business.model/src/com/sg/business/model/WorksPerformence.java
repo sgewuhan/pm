@@ -34,7 +34,7 @@ public class WorksPerformence extends AbstractWorksMetadata {
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(dateCode.longValue() * 24 * 60 * 60 * 1000);
 			Date date = cal.getTime();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 			return sdf.format(date);
 		}
 		return null;
@@ -48,14 +48,14 @@ public class WorksPerformence extends AbstractWorksMetadata {
 		ObjectId workId = (ObjectId) getValue(F_WORKID);
 
 		DBObject match = new BasicDBObject();
-		match.put("$match", new BasicDBObject().append(F_WORKID, workId));
+		match.put("$match", new BasicDBObject().append(F_WORKID, workId)); //$NON-NLS-1$
 
 		DBObject group = new BasicDBObject();
 		group.put(
-				"$group",
-				new BasicDBObject().append("_id", "$" + F_WORKID).append(
+				"$group", //$NON-NLS-1$
+				new BasicDBObject().append("_id", "$" + F_WORKID).append( //$NON-NLS-1$ //$NON-NLS-2$
 						F_WORKS,
-						new BasicDBObject().append("$sum", "$" + F_WORKS)));
+						new BasicDBObject().append("$sum", "$" + F_WORKS))); //$NON-NLS-1$ //$NON-NLS-2$
 		DBCollection col = getCollection();
 		AggregationOutput result = col.aggregate(match, group);
 		Iterator<DBObject> iter = result.results().iterator();
@@ -65,7 +65,7 @@ public class WorksPerformence extends AbstractWorksMetadata {
 			if (summary instanceof Double) {
 				col = getCollection(IModelConstants.C_WORK);
 				col.update(new BasicDBObject().append(Work.F__ID, workId),
-						new BasicDBObject().append("$set", new BasicDBObject()
+						new BasicDBObject().append("$set", new BasicDBObject() //$NON-NLS-1$
 								.append(Work.F_ACTUAL_WORKS, summary)));
 			}
 		}

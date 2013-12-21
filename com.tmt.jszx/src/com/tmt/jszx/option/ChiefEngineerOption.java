@@ -26,7 +26,7 @@ public class ChiefEngineerOption implements IFieldOptionProvider {
 	public Option getOption(Object input, Object data, String key, Object value) {
 		
 		
-		Object dept = ((PrimaryObject)data).getValue("dept");
+		Object dept = ((PrimaryObject)data).getValue("dept"); //$NON-NLS-1$
 		if(dept instanceof ObjectId){
 			Organization org = ModelService.createModelObject(Organization.class, (ObjectId)dept);
 	        Role role = org.getRole(IRoleConstance.ROLE_CHIEF_ENGINEER_ID, Organization.ROLE_SEARCH_UP);
@@ -39,7 +39,7 @@ public class ChiefEngineerOption implements IFieldOptionProvider {
 						User user=UserToolkit.getUserById(userId);
 						children.add(new Option(user.getUserid(),user.getLabel(),user.getUserid(),null));
 					}
-					return new Option("","","",children.toArray(new Option[0]));
+					return new Option("","","",children.toArray(new Option[0])); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					
 				}
 			}

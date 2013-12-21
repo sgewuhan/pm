@@ -16,6 +16,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.dataset.organization.LaunchOrgOfCurrentUser;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.part.NavigatablePartAdapter;
 import com.sg.widgets.part.NavigatorControl;
 
@@ -26,8 +27,8 @@ public class SelectWorkDefinitionPage extends WizardPage {
 	protected WorkDefinition workd;
 
 	protected SelectWorkDefinitionPage() {
-		super("SELECT_WORK_DEFINITION");
-		setTitle("请选择将要发起的工作");
+		super("SELECT_WORK_DEFINITION"); //$NON-NLS-1$
+		setTitle(Messages.get().SelectWorkDefinitionPage_1);
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_TEMPLATE_72));
 	}
@@ -36,7 +37,7 @@ public class SelectWorkDefinitionPage extends WizardPage {
 	public void createControl(Composite parent) {
 		Composite content = new Composite(parent, SWT.NONE);
 		navigatorPart = createNavigatorPart();
-		navi = new NavigatorControl("management.organization.standlonework",
+		navi = new NavigatorControl("management.organization.standlonework", //$NON-NLS-1$
 				navigatorPart);
 		navi.createPartContent(content);
 

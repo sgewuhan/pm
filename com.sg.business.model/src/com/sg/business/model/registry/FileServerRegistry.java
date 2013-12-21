@@ -15,12 +15,12 @@ public class FileServerRegistry extends Registry {
 
 	@Override
 	protected String getRootElement() {
-		return "fileserver";
+		return "fileserver"; //$NON-NLS-1$
 	}
 
 	@Override
 	protected String getExtPointName() {
-		return "fileserver";
+		return "fileserver"; //$NON-NLS-1$
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
@@ -24,7 +25,7 @@ public class CreateWorkFromGeneric extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择一个上级", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().CreateWorkFromGeneric_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -36,7 +37,7 @@ public class CreateWorkFromGeneric extends AbstractNavigatorHandler {
 		final Work work = ((Work) selected);
 		Project project = work.getProject();
 		NavigatorSelector nav = new NavigatorSelector(
-				"management.genericwork.definitions", "请选择需要添加剂的通用工作") {
+				"management.genericwork.definitions", Messages.get().CreateWorkFromGeneric_2) { //$NON-NLS-1$
 
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {

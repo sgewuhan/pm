@@ -67,7 +67,7 @@ public class ActivitySelecter extends Composite {
 
 		section1 = new SimpleSection(parent, Section.EXPANDED
 				| Section.SHORT_TITLE_BAR );
-		section1.setText("需指派人员的任务列表");
+		section1.setText("需指派人员的任务列表"); //$NON-NLS-1$
 
 		Control control = createProcessTableTab(section1);
 		section1.setClient(control);

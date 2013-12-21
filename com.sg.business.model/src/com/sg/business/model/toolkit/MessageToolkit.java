@@ -16,18 +16,19 @@ import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Message;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.sg.business.model.nls.Messages;
 
 public class MessageToolkit {
 
 	public static void appendCommitMessageContent(Message message, String contentLine) {
 		Object value = message.getValue(Message.F_CONTENT);
 		if (!(value instanceof String)) {
-			message.setValue(Message.F_CONTENT, "<span style='font-size:14px'>"
-					+ "您好: " + "</span><br/><br/>"
-					+ "您收到了提交的计划信息。<br/>您在计划中将负责和参与以下工作：<br/><br/>"
+			message.setValue(Message.F_CONTENT, "<span style='font-size:14px'>" //$NON-NLS-1$
+					+ Messages.get().MessageToolkit_1 + "</span><br/><br/>" //$NON-NLS-2$
+					+ Messages.get().MessageToolkit_3
 					+ contentLine);
 		} else {
-			message.setValue(Message.F_CONTENT, (String) value + "<br/>"
+			message.setValue(Message.F_CONTENT, (String) value + "<br/>" //$NON-NLS-1$
 					+ contentLine);
 		}
 	}
@@ -67,8 +68,8 @@ public class MessageToolkit {
 						message = makeMessage(userId,title,senderId,content);
 						messageList.put(userId, message);
 					}
-					MessageToolkit.appendCommitMessageContent(message, "参与工作流程，"
-							+ processName + ": " + work.getLabel());
+					MessageToolkit.appendCommitMessageContent(message, Messages.get().MessageToolkit_5
+							+ processName + ": " + work.getLabel()); //$NON-NLS-1$
 					message.appendTargets(work, Work.EDITOR, Boolean.TRUE);
 				}
 			}
@@ -93,8 +94,8 @@ public class MessageToolkit {
 						message = makeMessage(userId,title,senderId,content);
 						messageList.put(userId, message);
 					}
-					MessageToolkit.appendCommitMessageContent(message, "参与项目流程，"
-							+ processName + ": " + project.getLabel());
+					MessageToolkit.appendCommitMessageContent(message, Messages.get().MessageToolkit_7
+							+ processName + ": " + project.getLabel()); //$NON-NLS-1$
 					message.appendTargets(project, Work.EDITOR, Boolean.TRUE);
 				}
 			}
@@ -113,17 +114,17 @@ public class MessageToolkit {
 
 	public static void appendEndMessage(Message message) {
 		Object value = message.getValue(Message.F_CONTENT);
-		message.setValue(Message.F_CONTENT, (String) value + "<br/>"
-				+ "<br/><br/>"
-						+ "您可在[导航]中查看以上消息的对应对象。"
-						+ "<br/>"
-						+ "如果您有任何疑问，请及时与发送人沟通，或直接[回复]本消息。"
-						+ "<br/><br/>"
-						+ "祝工作愉快!"
-						+ "<br/>"
+		message.setValue(Message.F_CONTENT, (String) value + "<br/>" //$NON-NLS-1$
+				+ "<br/><br/>" //$NON-NLS-1$
+						+ Messages.get().MessageToolkit_11
+						+ "<br/>" //$NON-NLS-1$
+						+ Messages.get().MessageToolkit_13
+						+ "<br/><br/>" //$NON-NLS-1$
+						+ Messages.get().MessageToolkit_15
+						+ "<br/>" //$NON-NLS-1$
 						+ new SimpleDateFormat(Utils.SDF_DATE_WEEKDAY_TIME)
-								.format(new Date()) + "<br/>"
-						+ "（本消息由系统自动代发）");
+								.format(new Date()) + "<br/>" //$NON-NLS-1$
+						+ Messages.get().MessageToolkit_18);
 	}
 
 	public static void appendMessage(Map<String, Message> messageList,

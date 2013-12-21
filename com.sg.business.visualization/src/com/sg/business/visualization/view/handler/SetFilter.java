@@ -16,6 +16,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.menus.UIElement;
 
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.business.visualization.ui.DurationSetting;
 import com.sg.business.visualization.ui.ProjectProviderHolder;
 import com.sg.widgets.MessageUtil;
@@ -30,7 +31,7 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 		holder = ProjectProviderHolder.getInstance();
 		ProjectProvider projectProvider = holder.getProjectProvider();
 		if (projectProvider == null) {
-			MessageUtil.showToast("您没有获取组织的绩效数据权限", SWT.ICON_WARNING);
+			MessageUtil.showToast(Messages.get().SetFilter_0, SWT.ICON_WARNING);
 			return null;
 		}
 
@@ -56,7 +57,7 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 		ICommandService commandService = (ICommandService) window
 				.getService(ICommandService.class);
 		if (commandService != null) {
-			commandService.refreshElements("visualization.command.setfilter",
+			commandService.refreshElements("visualization.command.setfilter", //$NON-NLS-1$
 					null);
 		}
 	}
@@ -65,14 +66,14 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 	@Override
 	public void updateElement(UIElement element, Map parameters) {
 		if (holder == null) {
-			element.setText("期间  [本年度]");
+			element.setText(Messages.get().SetFilter_2);
 		} else {
 			ProjectProvider projectProvider = holder.getProjectProvider();
 			String text = DurationSetting.getHeadParameterText(projectProvider);
 			if (text.isEmpty()) {
-				element.setText("期间 [请选择] ");
+				element.setText(Messages.get().SetFilter_3);
 			} else {
-				element.setText("期间 [ " + text+"]");
+				element.setText(Messages.get().SetFilter_4 + text+"]"); //$NON-NLS-2$
 			}
 		}
 	}

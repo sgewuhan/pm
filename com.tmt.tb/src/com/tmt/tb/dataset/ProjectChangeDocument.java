@@ -34,7 +34,7 @@ public class ProjectChangeDocument extends MasterDetailDataSetFactory {
 				String obj;
 				try {
 					obj = (String) taskForm.getProcessInstanceVarible(
-							"project", context);
+							"project", context); //$NON-NLS-1$
 					if (obj != null) {
 						ObjectId _id = new ObjectId(obj);
 						return _id;

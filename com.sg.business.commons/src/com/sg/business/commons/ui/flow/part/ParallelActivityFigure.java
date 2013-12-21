@@ -28,7 +28,7 @@ public class ParallelActivityFigure extends SubgraphFigure {
 	 * @param footer
 	 */
 	public ParallelActivityFigure() {
-		super(new Label(""), new Label(""));
+		super(new Label(""), new Label("")); //$NON-NLS-1$ //$NON-NLS-2$
 		setBorder(new MarginBorder(3, 5, 3, 0));
 		setOpaque(true);
 	}

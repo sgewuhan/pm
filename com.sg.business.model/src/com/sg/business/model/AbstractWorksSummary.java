@@ -64,7 +64,7 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 		Iterator<DBObject> iter = aggregation.results().iterator();
 		while (iter.hasNext()) {
 			DBObject data = iter.next();
-			Object id = data.get("_id");
+			Object id = data.get("_id"); //$NON-NLS-1$
 			if ((id instanceof Number)
 					&& (((Number) id).longValue() >= startDateValue && ((Number) id)
 							.longValue() <= endDateValue)) {
@@ -101,7 +101,7 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 		Iterator<DBObject> iter = result.results().iterator();
 		while (iter.hasNext()) {
 			DBObject data = iter.next();
-			Object id = data.get("_id");
+			Object id = data.get("_id"); //$NON-NLS-1$
 			if ((id instanceof Number)
 					&& (((Number) id).longValue() == dateValue)) {
 				Object val = data.get(WorksPerformence.F_WORKS);
@@ -123,10 +123,10 @@ public abstract class AbstractWorksSummary implements IWorksSummary {
 
 	private AggregationOutput aggregation(DBCollection col) {
 		DBObject match = new BasicDBObject();
-		match.put("$match", getMatchCondition(data));
+		match.put("$match", getMatchCondition(data)); //$NON-NLS-1$
 
 		DBObject group = new BasicDBObject();
-		group.put("$group", getGroupCondition(data));
+		group.put("$group", getGroupCondition(data)); //$NON-NLS-1$
 
 		return col.aggregate(match, group);
 	}

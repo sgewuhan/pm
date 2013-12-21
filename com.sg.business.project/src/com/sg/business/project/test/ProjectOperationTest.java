@@ -14,21 +14,21 @@ public class ProjectOperationTest extends PropertyTester {
 			Object expectedValue) {
 		if (receiver instanceof Project) {
 			Project project = (Project) receiver;
-			if ("operation".equals(property) && args != null && args.length > 0) {
-				if ("edit".equals(args[0])) {
+			if ("operation".equals(property) && args != null && args.length > 0) { //$NON-NLS-1$
+				if ("edit".equals(args[0])) { //$NON-NLS-1$
 					boolean expected = Boolean.TRUE.equals(expectedValue);
 					// 用于控制何种情况下可以使用编辑项目计划的editor打开
 					return expected == project
 							.canEdit(new CurrentAccountContext());
-				} else if ("delete".equals(args[0])) {
+				} else if ("delete".equals(args[0])) { //$NON-NLS-1$
 					boolean expected = Boolean.TRUE.equals(expectedValue);
 					return expected == project
 							.canDelete(new CurrentAccountContext());
-				} else if ("changeuser".equals(args[0])){
+				} else if ("changeuser".equals(args[0])){ //$NON-NLS-1$
 					boolean expected = Boolean.TRUE.equals(expectedValue);
 					return expected == project
 							.canChangUser(new CurrentAccountContext());
-				} else if ("check".equals(args[0])) {
+				} else if ("check".equals(args[0])) { //$NON-NLS-1$
 					boolean expected = Boolean.TRUE.equals(expectedValue);
 					return expected == (project.canCheck() && project
 							.canEdit(new CurrentAccountContext()));
@@ -38,9 +38,9 @@ public class ProjectOperationTest extends PropertyTester {
 			Work work = (Work) receiver;
 			Project project = work.getProject();
 			if (project != null) {
-				if ("operation".equals(property) && args != null
+				if ("operation".equals(property) && args != null //$NON-NLS-1$
 						&& args.length > 0) {
-					if ("move".equals(args[0])) {
+					if ("move".equals(args[0])) { //$NON-NLS-1$
 						boolean expected = Boolean.TRUE.equals(expectedValue);
 						// 只有在项目无状态或者是准备中才能够移动
 						String lc = project.getLifecycleStatus();
@@ -54,9 +54,9 @@ public class ProjectOperationTest extends PropertyTester {
 		} else if(receiver instanceof ProductItem){
 			ProductItem productItem = (ProductItem) receiver;
 			if(productItem != null){
-				if ("operation".equals(property) && args != null
+				if ("operation".equals(property) && args != null //$NON-NLS-1$
 						&& args.length > 0) {
-				if("canSubconcessions".equals(args[0])){
+				if("canSubconcessions".equals(args[0])){ //$NON-NLS-1$
 					return productItem.canChangeToMassProduction();
 				}
 				}

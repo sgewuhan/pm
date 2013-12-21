@@ -45,7 +45,7 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 			// 查询条件为本人负责的项目和本人参与的项目
 			DBObject queryCondition = new BasicDBObject();
 			queryCondition.put(
-					"$or",
+					"$or", //$NON-NLS-1$
 					new BasicDBObject[] {
 							new BasicDBObject().append(Project.F_CHARGER,
 									userId),
@@ -55,7 +55,7 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
-			return new BasicDBObject().append("_id", null);
+			return new BasicDBObject().append("_id", null); //$NON-NLS-1$
 		}
 	}
 

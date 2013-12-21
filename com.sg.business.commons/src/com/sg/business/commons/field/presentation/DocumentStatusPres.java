@@ -16,7 +16,7 @@ public class DocumentStatusPres implements IValuePresentation {
 		if(data instanceof Document){
 			return ((Document)data).getLifecycleName();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

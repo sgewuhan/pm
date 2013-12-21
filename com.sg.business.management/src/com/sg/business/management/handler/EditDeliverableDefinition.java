@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -21,12 +22,12 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class EditDeliverableDefinition extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "编辑交付物定义";
+	private static final String TITLE = Messages.get().EditDeliverableDefinition_0;
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,ViewerControl vc, Command command) {
 		Shell shell = part.getSite().getShell();
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个交付物定义", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, Messages.get().EditDeliverableDefinition_1, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 	

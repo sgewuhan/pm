@@ -79,7 +79,7 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 	private void createPreview(final OSServerFile osfile) {
 		File serverFile = osfile.getServerFile();
 		String serverFilePath = serverFile.getPath();
-		String previewFilePath = serverFilePath+".pdf";
+		String previewFilePath = serverFilePath+".pdf"; //$NON-NLS-1$
 		final File previewFile = new File(previewFilePath);
 		if(previewFile.isFile()){
 			previewOSFile(previewFile);
@@ -125,7 +125,7 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 		if (!previewUtil.isPreviewAvailable()) {
 			final Display display = getSite().getShell().getDisplay();
 
-			String pathname = System.getProperty("user.dir") + "/temp";
+			String pathname = System.getProperty("user.dir") + "/temp"; //$NON-NLS-1$ //$NON-NLS-2$
 			File file;
 			try {
 				file = remoteFile.createServerFile(pathname);
@@ -139,7 +139,7 @@ public class WorkFlowWorkDeliveryPreviewer extends ViewPart implements
 			String previewPath = file.getParent()
 					+ "/" //$NON-NLS-1$
 					+ masterfileName.substring(0,
-							masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$
+							masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$ //$NON-NLS-2$
 			final File previewFile = new File(previewPath);
 			Job job = previewUtil.createGeneratePDFJob(file, previewPath);
 

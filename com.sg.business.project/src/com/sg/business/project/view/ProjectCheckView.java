@@ -19,6 +19,7 @@ import org.eclipse.ui.part.ViewPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.business.project.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.editor.page.NavigatorPage;
@@ -40,7 +41,7 @@ public class ProjectCheckView extends ViewPart {
 		viewer.getTable().setData(RWT.CUSTOM_ITEM_HEIGHT, 64);
 
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("");
+		column.getColumn().setText(""); //$NON-NLS-1$
 		column.getColumn().setWidth(80);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -64,17 +65,17 @@ public class ProjectCheckView extends ViewPart {
 				int type = ci.getType();
 
 				if (type == ICheckListItem.WARRING) {
-					return "警告";
+					return Messages.get().ProjectCheckView_1;
 				} else if (type == ICheckListItem.ERROR) {
-					return "错误";
+					return Messages.get().ProjectCheckView_2;
 				} else {
-					return "通过";
+					return Messages.get().ProjectCheckView_3;
 				}
 			}
 		});
 
 		column = new TableViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("检查项");
+		column.getColumn().setText(Messages.get().ProjectCheckView_4);
 		column.getColumn().setWidth(160);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -86,7 +87,7 @@ public class ProjectCheckView extends ViewPart {
 		});
 
 		column = new TableViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("检查结果");
+		column.getColumn().setText(Messages.get().ProjectCheckView_5);
 		column.getColumn().setWidth(240);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -98,7 +99,7 @@ public class ProjectCheckView extends ViewPart {
 		});
 
 		column = new TableViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("检查提示");
+		column.getColumn().setText(Messages.get().ProjectCheckView_6);
 		column.getColumn().setWidth(240);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -110,7 +111,7 @@ public class ProjectCheckView extends ViewPart {
 		});
 
 		column = new TableViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("目标");
+		column.getColumn().setText(Messages.get().ProjectCheckView_7);
 		column.getColumn().setWidth(180);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -129,15 +130,15 @@ public class ProjectCheckView extends ViewPart {
 				ICheckListItem ci = (ICheckListItem) element;
 				Object data = ci.getData();
 				if (data instanceof PrimaryObject) {
-					return ((PrimaryObject) data).getTypeName() + ":"
+					return ((PrimaryObject) data).getTypeName() + ":" //$NON-NLS-1$
 							+ ((PrimaryObject) data).getLabel();
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 
 		column = new TableViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("对象");
+		column.getColumn().setText(Messages.get().ProjectCheckView_10);
 		column.getColumn().setWidth(160);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -157,10 +158,10 @@ public class ProjectCheckView extends ViewPart {
 				ICheckListItem ci = (ICheckListItem) element;
 				PrimaryObject data = ci.getSelection();
 				if (data != null) {
-					return ((PrimaryObject) data).getTypeName() + ":"
+					return ((PrimaryObject) data).getTypeName() + ":" //$NON-NLS-1$
 							+ ((PrimaryObject) data).getLabel();
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});

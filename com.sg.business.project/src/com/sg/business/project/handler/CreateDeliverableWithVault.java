@@ -1,6 +1,7 @@
 package com.sg.business.project.handler;
 
 import java.util.Map;
+
 import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -10,6 +11,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDeliverable;
 import com.sg.business.model.Work;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -24,7 +26,7 @@ public class CreateDeliverableWithVault extends AbstractNavigatorHandler {
 			Map<String, Object> parameters, IStructuredSelection selection) {
 		final Work work = (Work) selected;
 
-		NavigatorSelector ns = new NavigatorSelector("vault.document.selector") {
+		NavigatorSelector ns = new NavigatorSelector("vault.document.selector") { //$NON-NLS-1$
 
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {
@@ -47,7 +49,7 @@ public class CreateDeliverableWithVault extends AbstractNavigatorHandler {
 									new CurrentAccountContext());
 							vc.getViewer().refresh(work, true);
 						} else {
-							MessageUtil.showToast("选择的交付物不包含文档",
+							MessageUtil.showToast(Messages.get().CreateDeliverableWithVault_1,
 									SWT.ICON_WARNING);
 						}
 						super.doOK(is);
@@ -56,7 +58,7 @@ public class CreateDeliverableWithVault extends AbstractNavigatorHandler {
 					}
 
 				} else {
-					MessageUtil.showToast("请选择文档", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().CreateDeliverableWithVault_2, SWT.ICON_WARNING);
 				}
 			}
 		};

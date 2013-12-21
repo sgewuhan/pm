@@ -31,7 +31,7 @@ public class ETLJob extends AbstractETLJob{
 		BasicDBObject query = new BasicDBObject();
 		query.put(Project.F_LIFECYCLE,
 				new BasicDBObject()
-						.append("$in", new String[] {
+						.append("$in", new String[] { //$NON-NLS-1$
 								Project.STATUS_CANCELED_VALUE,
 								Project.STATUS_FINIHED_VALUE,
 								Project.STATUS_PAUSED_VALUE,

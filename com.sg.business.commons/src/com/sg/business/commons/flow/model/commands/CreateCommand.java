@@ -62,7 +62,7 @@ public class CreateCommand extends Command {
 	 */
 	public void setChild(Activity activity) {
 		child = activity;
-		child.setName("a " + (parent.getChildren().size() + 1));
+		child.setName("a " + (parent.getChildren().size() + 1)); //$NON-NLS-1$
 	}
 
 	/**

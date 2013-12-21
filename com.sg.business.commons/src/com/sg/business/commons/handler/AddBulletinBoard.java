@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.Project;
 import com.sg.widgets.MessageUtil;
@@ -28,10 +29,10 @@ public class AddBulletinBoard extends AbstractNavigatorHandler {
 			Shell shell = part.getSite().getShell();
 
 			String hasproject = (String) parameters
-					.get("bulletinboard.hasproject");
+					.get("bulletinboard.hasproject"); //$NON-NLS-1$
 			// 判断当前选择是否为公告板
 			Project master = (Project) vc.getMaster();
-			if ("true".equals(hasproject)) {
+			if ("true".equals(hasproject)) { //$NON-NLS-1$
 				BulletinBoard bulletinboard = master.makeBulletinBoard(null);
 				bulletinboard.addEventListener(vc);
 				try {
@@ -39,7 +40,7 @@ public class AddBulletinBoard extends AbstractNavigatorHandler {
 							BulletinBoard.EDITOR_CREATE, true, null);
 
 				} catch (Exception e) {
-					MessageUtil.showToast(shell, "创建公告板", e.getMessage(),
+					MessageUtil.showToast(shell, Messages.get().AddBulletinBoard_2, e.getMessage(),
 							SWT.ICON_ERROR);
 				}
 			} else {
@@ -50,7 +51,7 @@ public class AddBulletinBoard extends AbstractNavigatorHandler {
 					DataObjectDialog.openDialog(bulletinboard,
 							BulletinBoard.EDITOR_CREATE, true, null);
 				} catch (Exception e) {
-					MessageUtil.showToast(shell, "创建公告板", e.getMessage(),
+					MessageUtil.showToast(shell, Messages.get().AddBulletinBoard_3, e.getMessage(),
 							SWT.ICON_ERROR);
 				}
 			}

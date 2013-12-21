@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectRole;
+import com.sg.business.project.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.NavigatorAction;
 
@@ -18,7 +19,7 @@ public class FilterUnAssignment extends NavigatorAction {
 	public FilterUnAssignment() {
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_USER_24));
-		setText("过滤没有指定用户的项目角色");
+		setText(Messages.get().FilterUnAssignment_0);
 		this.filtered = false;
 		filter = new ViewerFilter(){
 			

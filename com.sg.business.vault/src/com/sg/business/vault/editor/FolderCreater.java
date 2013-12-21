@@ -6,13 +6,14 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Container;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.vault.nls.Messages;
 import com.sg.widgets.viewer.ChildPrimaryObjectCreator;
 
 public class FolderCreater extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected String getMessageForEmptySelection() {
-		return "您需要选择上级目录或者文件柜后进行创建";
+		return Messages.get().FolderCreater_0;
 	}
 
 	@Override

@@ -20,10 +20,10 @@ public class ProjectApplicationWorkOrderOfXT implements ITaskFormInputHandler {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			Object workOrder;
 			try {
-				workOrder = taskForm.getProcessInstanceVarible("prj_number",
+				workOrder = taskForm.getProcessInstanceVarible("prj_number", //$NON-NLS-1$
 						new CurrentAccountContext());
 				if (workOrder instanceof String) {
-					taskForm.setValue("prj_number", workOrder);
+					taskForm.setValue("prj_number", workOrder); //$NON-NLS-1$
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

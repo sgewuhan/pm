@@ -21,6 +21,7 @@ import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
+import com.tmt.tb.nls.Messages;
 
 public class ProjectBudgetOfTaskFormPage implements IPageDelegator, IFormPart {
 	private TreeViewer viewer;
@@ -46,12 +47,12 @@ public class ProjectBudgetOfTaskFormPage implements IPageDelegator, IFormPart {
 		viewer.setContentProvider(new ProjectBudgetTreeContentProvider());
 
 		TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("预算科目");
+		column.getColumn().setText(Messages.get().ProjectBudgetOfTaskFormPage_0);
 		column.getColumn().setWidth(280);
 		column.setLabelProvider(new ColumnLabelProvider());
 		
 		column = new TreeViewerColumn(viewer, SWT.RIGHT);
-		column.getColumn().setText("预算金额(元)");
+		column.getColumn().setText(Messages.get().ProjectBudgetOfTaskFormPage_1);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider(){
 			@Override
@@ -62,7 +63,7 @@ public class ProjectBudgetOfTaskFormPage implements IPageDelegator, IFormPart {
 					DecimalFormat df = new DecimalFormat(Utils.NF_RMB_MONEY);
 					return df.format(value);
 				}else{
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
@@ -85,9 +86,9 @@ public class ProjectBudgetOfTaskFormPage implements IPageDelegator, IFormPart {
 					ProjectBudget budget = (ProjectBudget)element;
 					Double value = budget.getBudgetValue();
 					if(value == null){
-						return "";
+						return ""; //$NON-NLS-1$
 					}else{
-						return ""+value;
+						return ""+value; //$NON-NLS-1$
 					}
 				}
 				

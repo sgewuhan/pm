@@ -18,25 +18,25 @@ public class PartticipatePres implements IValuePresentation {
 		Object value = field.getValue();
 		if(value instanceof List<?>){
 			List<?> list = (List<?>) value;
-			String result = "<span style='color=#4a4a4a'>";
+			String result = "<span style='color=#4a4a4a'>"; //$NON-NLS-1$
 			for (int i = 0; i < list.size(); i++) {
 				Object element = list.get(i);
 				User user = UserToolkit.getUserById((String) element);
 				if(i!=0){
-					result += "<br/>";
+					result += "<br/>"; //$NON-NLS-1$
 				}
 				Organization org = user.getOrganization();
 				if(org!=null){
-					result += user + "  ("+org+")";
+					result += user + "  ("+org+")"; //$NON-NLS-1$ //$NON-NLS-2$
 				}else{
 					result += user;
 				}
 			}
-			result+="</span>";
+			result+="</span>"; //$NON-NLS-1$
 			return result;
 		}
 		
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

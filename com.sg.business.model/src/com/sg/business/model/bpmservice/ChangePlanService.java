@@ -28,7 +28,7 @@ public class ChangePlanService extends ServiceProvider {
 	public Map<String, Object> run(Object arg0) {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		Object value;
 		if (content instanceof String) {
 			String jsonContent = (String) content;
@@ -37,11 +37,11 @@ public class ChangePlanService extends ServiceProvider {
 				Work changeplan = (Work) host;
 				DBObject processData = WorkflowUtils
 						.getProcessInfoFromJSON(jsonContent);
-				String processId = (String) processData.get("processId");
-				String processName = (String) processData.get("processName");
+				String processId = (String) processData.get("processId"); //$NON-NLS-1$
+				String processName = (String) processData.get("processName"); //$NON-NLS-1$
 				IContext context = new BPMServiceContext(processName, processId);
 
-				value = getInputValue("ecn");
+				value = getInputValue("ecn"); //$NON-NLS-1$
 				List<Work> ecnList = getInputVauleList(value);
 				for (Work ecn : ecnList) {
 					String ecapapa = (String) ecn

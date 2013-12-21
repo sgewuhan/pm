@@ -56,7 +56,7 @@ public class WorkFlowRecord implements IPageDelegator {
 		viewer.getTable().setHeaderVisible(true);
 		viewer.getTable().setLinesVisible(true);
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText(Messages.WorkFlowRecord_1);
+		col.getColumn().setText(Messages.get().WorkFlowRecord_1);
 		col.getColumn().setWidth(100);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -71,7 +71,7 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText(Messages.WorkFlowRecord_4);
+		col.getColumn().setText(Messages.get().WorkFlowRecord_4);
 		col.getColumn().setWidth(64);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -86,7 +86,7 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText(Messages.WorkFlowRecord_7);
+		col.getColumn().setText(Messages.get().WorkFlowRecord_7);
 		col.getColumn().setWidth(80);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -101,7 +101,7 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText(Messages.WorkFlowRecord_10);
+		col.getColumn().setText(Messages.get().WorkFlowRecord_10);
 		col.getColumn().setWidth(60);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -118,7 +118,7 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText(Messages.WorkFlowRecord_14);
+		col.getColumn().setText(Messages.get().WorkFlowRecord_14);
 		col.getColumn().setWidth(140);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -144,7 +144,7 @@ public class WorkFlowRecord implements IPageDelegator {
 		});
 		
 		col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setText(Messages.WorkFlowRecord_17);
+		col.getColumn().setText(Messages.get().WorkFlowRecord_17);
 		col.getColumn().setWidth(140);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override

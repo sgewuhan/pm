@@ -7,21 +7,22 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.bpmservice.MessageService;
+import com.sg.business.taskforms.nls.Messages;
 
 public class ProjectApproveMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "项目审批通知";
+		return Messages.get().ProjectApproveMessageService_0;
 	}
 
 	@Override
 	public String getMessageContent() {
-		Object choice = getInputValue("choice");
-		if ("通过".equals((String) choice)) {
-			return "项目" + getTarget().getLabel() + "：审批通过";
+		Object choice = getInputValue("choice"); //$NON-NLS-1$
+		if ("通过".equals((String) choice)) { //$NON-NLS-1$
+			return Messages.get().ProjectApproveMessageService_3 + getTarget().getLabel() + Messages.get().ProjectApproveMessageService_4;
 		} else {
-			return "项目" + getTarget().getLabel() + "：审批不通过";
+			return Messages.get().ProjectApproveMessageService_5 + getTarget().getLabel() + Messages.get().ProjectApproveMessageService_6;
 		}
 	}
 
@@ -42,7 +43,7 @@ public class ProjectApproveMessageService extends MessageService {
 
 	@Override
 	public PrimaryObject getTarget() {
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);

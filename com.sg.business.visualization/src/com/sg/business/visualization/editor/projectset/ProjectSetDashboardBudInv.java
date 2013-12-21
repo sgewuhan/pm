@@ -11,6 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sg.business.visualization.chart.ProjectChartFactory;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.viewer.ViewerControl;
@@ -44,9 +45,9 @@ public class ProjectSetDashboardBudInv extends AbstractProjectSetPage {
 	protected String getProjectSetPageLabel() {
 		String projectSetName = data.getProjectSetName();
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(projectSetName + " 项目进度状况");
-		sb.append("</span>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>"); //$NON-NLS-1$
+		sb.append(projectSetName + Messages.get().ProjectSetDashboardBudInv_1);
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -54,7 +55,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectSetPage {
 
 		tabFolder = new CTabFolder(parent, SWT.TOP);
 		CTabItem pieTabItem = new CTabItem(tabFolder, SWT.NONE);
-		pieTabItem.setText("预算及超支状况");
+		pieTabItem.setText(Messages.get().ProjectSetDashboardBudInv_3);
 		statusPieChart = new ChartCanvas(tabFolder, SWT.NONE) {
 			@Override
 			public Chart getChart() {
@@ -64,7 +65,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectSetPage {
 		pieTabItem.setControl(statusPieChart);
 
 		CTabItem meterTabItem = new CTabItem(tabFolder, SWT.NONE);
-		meterTabItem.setText("仪表盘");
+		meterTabItem.setText(Messages.get().ProjectSetDashboardBudInv_4);
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setLayout(new GridLayout());
 		finishedProjectMeter = new ChartCanvas(composite, SWT.NONE) {
@@ -123,7 +124,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectSetPage {
 		if (deptParameter.length != 0) {
 			if (deptBarTabItem == null) {
 				deptBarTabItem = new CTabItem(tabFolder, SWT.NONE);
-				deptBarTabItem.setText("项目承担部门");
+				deptBarTabItem.setText(Messages.get().ProjectSetDashboardBudInv_5);
 				deptProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
 					@Override
 					public Chart getChart() {
@@ -139,7 +140,7 @@ public class ProjectSetDashboardBudInv extends AbstractProjectSetPage {
 		if (chargerName.length != 0) {
 			if (pmBarTabItem == null) {
 				pmBarTabItem = new CTabItem(tabFolder, SWT.NONE);
-				pmBarTabItem.setText("项目经理");
+				pmBarTabItem.setText(Messages.get().ProjectSetDashboardBudInv_6);
 				pmProjectBar = new ChartCanvas(tabFolder, SWT.NONE) {
 					@Override
 					public Chart getChart() {

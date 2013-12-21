@@ -23,7 +23,7 @@ public class SupportNotice implements IProcessParameterDelegator {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			try {
 				String act_approve = (String) taskForm
-						.getProcessInstanceVarible("act_approve",
+						.getProcessInstanceVarible("act_approve", //$NON-NLS-1$
 								new CurrentAccountContext());
 				User user = UserToolkit.getUserById(act_approve);
 				if (user != null) {

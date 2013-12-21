@@ -19,27 +19,27 @@ public abstract class AbstractRoleAssignment extends PrimaryObject{
 	 * 用户ID
 	 *  @see #User
 	 */
-	public static final String F_USER_ID = "userid";
+	public static final String F_USER_ID = "userid"; //$NON-NLS-1$
 	
 	/**
 	 * 用户名称
 	 */
-	public static final String F_USER_NAME = "username";
+	public static final String F_USER_NAME = "username"; //$NON-NLS-1$
 	
 	/**
 	 * 角色名称
 	 */
-	public static final String F_ROLE_NAME = "rolename";
+	public static final String F_ROLE_NAME = "rolename"; //$NON-NLS-1$
 
 	/**
 	 * 角色编号
 	 */
-	public static final String F_ROLE_NUMBER = "rolenumber";
+	public static final String F_ROLE_NUMBER = "rolenumber"; //$NON-NLS-1$
 	
 	/**
 	 * 角色ID
 	 */
-	public static final String F_ROLE_ID = "role_id";
+	public static final String F_ROLE_ID = "role_id"; //$NON-NLS-1$
 
 	/**
 	 * 获取用户名称

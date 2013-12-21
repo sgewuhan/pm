@@ -6,6 +6,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
+import com.tmt.kfzx.nls.Messages;
 
 public class ApproveMessageOfKFZX extends MessageService {
 
@@ -16,16 +17,16 @@ public class ApproveMessageOfKFZX extends MessageService {
 	public String getMessageContent() {
 		String messageOperation = getOperation();
 		PrimaryObject host = getTarget();
-		if ("approvemessage".equals(messageOperation)) {
+		if ("approvemessage".equals(messageOperation)) { //$NON-NLS-1$
 			try {
 				if (host instanceof Work) {
 					Work work = (Work) host;
-					String content = "工作:" + work.getLabel();
-					String choice = (String) getInputValue("choice");
-					if ("通过".equals(choice)) {
-						content = content + "审批通过!";
-					} else if ("不通过".equals(choice)) {
-						content = content + "审批不通过.";
+					String content = Messages.get().ApproveMessageOfKFZX_1 + work.getLabel();
+					String choice = (String) getInputValue("choice"); //$NON-NLS-1$
+					if ("通过".equals(choice)) { //$NON-NLS-1$
+						content = content + Messages.get().ApproveMessageOfKFZX_4;
+					} else if ("不通过".equals(choice)) { //$NON-NLS-1$
+						content = content + Messages.get().ApproveMessageOfKFZX_6;
 					}
 					return content;
 				}
@@ -41,7 +42,7 @@ public class ApproveMessageOfKFZX extends MessageService {
 	public List<String> getReceiverList() {
 		String messageOperation = getOperation();
 		PrimaryObject host = getTarget();
-		if ("approvemessage".equals(messageOperation)) {
+		if ("approvemessage".equals(messageOperation)) { //$NON-NLS-1$
 			if (host instanceof Work) {
 				Work work = (Work) host;
 				List<?> participatesIdList = work.getParticipatesIdList();
@@ -54,8 +55,8 @@ public class ApproveMessageOfKFZX extends MessageService {
 	@Override
 	public PrimaryObject getTarget() {
 		String messageOperation = getOperation();
-		if ("approvemessage".equals(messageOperation)) {
-			Object content = getInputValue("content");
+		if ("approvemessage".equals(messageOperation)) { //$NON-NLS-1$
+			Object content = getInputValue("content"); //$NON-NLS-1$
 			if (content instanceof String) {
 				String jsonContent = (String) content;
 				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
@@ -70,8 +71,8 @@ public class ApproveMessageOfKFZX extends MessageService {
 	@Override
 	public String getMessageTitle() {
 		String messageOperation = getOperation();
-		if ("approvemessage".equals(messageOperation)) {
-			return "图纸、文件审批通知";
+		if ("approvemessage".equals(messageOperation)) { //$NON-NLS-1$
+			return Messages.get().ApproveMessageOfKFZX_11;
 		}
 		return super.getMessageTitle();
 	}
@@ -79,7 +80,7 @@ public class ApproveMessageOfKFZX extends MessageService {
 	@Override
 	public String getEditorId() {
 		String messageOperation = getOperation();
-		if ("approvemessage".equals(messageOperation)) {
+		if ("approvemessage".equals(messageOperation)) { //$NON-NLS-1$
 			return Work.EDITOR;
 		}
 		return super.getEditorId();

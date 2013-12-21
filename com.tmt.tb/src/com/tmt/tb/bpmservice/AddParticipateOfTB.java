@@ -11,18 +11,19 @@ import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.tmt.tb.nls.Messages;
 
 public class AddParticipateOfTB extends ServiceProvider {
 
 	@Override
 	public Map<String, Object> run(Object parameter) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
-		String _id = (String) getInputValue("project_id");
-		String prj_financial = (String) getInputValue("act_prj_financial");
+		Object content = getInputValue("content"); //$NON-NLS-1$
+		String _id = (String) getInputValue("project_id"); //$NON-NLS-1$
+		String prj_financial = (String) getInputValue("act_prj_financial"); //$NON-NLS-1$
 		if (_id == null) {
-			result.put("returnCode", "ERROR");
-			result.put("returnMessage", "无法添加财务到相应项目中");
+			result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+			result.put("returnMessage", Messages.get().AddParticipateOfTB_6); //$NON-NLS-1$
 		} else {
 			if (content instanceof String) {
 				String jsonContent = (String) content;
@@ -35,12 +36,12 @@ public class AddParticipateOfTB extends ServiceProvider {
 								Project.class, project_id);
 						project.doAddParticipate(new String[] { prj_financial });
 					} else {
-						result.put("returnCode", "ERROR");
-						result.put("returnMessage", "此工作无法发起项目");
+						result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+						result.put("returnMessage", Messages.get().AddParticipateOfTB_10); //$NON-NLS-1$
 					}
 				} catch (Exception e) {
-					result.put("returnCode", "ERROR");
-					result.put("returnMessage", e.getMessage());
+					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+					result.put("returnMessage", e.getMessage()); //$NON-NLS-1$
 				}
 			}
 		}

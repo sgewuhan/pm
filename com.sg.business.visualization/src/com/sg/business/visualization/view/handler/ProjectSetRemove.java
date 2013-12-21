@@ -20,6 +20,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.UserProjectPerf;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
@@ -27,12 +28,12 @@ import com.sg.widgets.viewer.ViewerControl;
 public class ProjectSetRemove extends AbstractNavigatorHandler {
 	
 	
-	private static final String TITLE = "从项目组合移除";
+	private static final String TITLE = Messages.get().ProjectSetRemove_0;
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
 		final Shell shell = part.getSite().getShell();
-		MessageUtil.showToast(shell, TITLE, "您至少需要选择一个项目", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, Messages.get().ProjectSetRemove_1, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -58,7 +59,7 @@ public class ProjectSetRemove extends AbstractNavigatorHandler {
 			DBCollection perfcol = DBActivator.getCollection(
 					IModelConstants.DB, IModelConstants.C_USERPROJECTPERF);
 			DBObject update = new BasicDBObject();
-			update.put("$pullAll", new BasicDBObject().append(
+			update.put("$pullAll", new BasicDBObject().append( //$NON-NLS-1$
 					UserProjectPerf.F_PROJECT_ID, projectids));
 			perfcol.update(new BasicDBObject().append(UserProjectPerf.F__ID,
 					userProjectPerf.get_id()), update);
@@ -66,7 +67,7 @@ public class ProjectSetRemove extends AbstractNavigatorHandler {
 			
 
 		} else {
-			MessageUtil.showToast("只能移除自定义项目组合中的项目", SWT.ICON_WARNING);
+			MessageUtil.showToast(Messages.get().ProjectSetRemove_3, SWT.ICON_WARNING);
 		}
 
 	}

@@ -17,7 +17,7 @@ public class SEQSorter implements IBSONProvider {
 
 	@Override
 	public DBObject getBSON() {
-		return new BasicDBObject().append("seq", i);
+		return new BasicDBObject().append("seq", i); //$NON-NLS-1$
 	}
 
 }

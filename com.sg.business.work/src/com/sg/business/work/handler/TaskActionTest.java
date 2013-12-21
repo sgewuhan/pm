@@ -22,10 +22,10 @@ public class TaskActionTest extends PropertyTester {
 			return false;
 		}
 		long count;
-		if("start".equals(property)){
+		if("start".equals(property)){ //$NON-NLS-1$
 			count = work.countReservedUserTasks(userId);
 			
-		}else if("finish".equals(property)){
+		}else if("finish".equals(property)){ //$NON-NLS-1$
 			count=work.countReservedAndInprogressUserTasks(userId);
 			
 		}else{
@@ -35,7 +35,7 @@ public class TaskActionTest extends PropertyTester {
 			return false;
 		}
 		Boolean value;
-		if("single".equals(args[0])){
+		if("single".equals(args[0])){ //$NON-NLS-1$
 			value=count==1;
 		}else{
 			value=count>1;

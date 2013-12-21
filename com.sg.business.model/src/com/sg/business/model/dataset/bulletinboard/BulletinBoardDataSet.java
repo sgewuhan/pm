@@ -61,13 +61,13 @@ public class BulletinBoardDataSet extends ContextSingleDataSetFactory {
 			// 设置查询条件
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(BulletinBoard.F_ORGANIZATION_ID,
-					new BasicDBObject().append("$in", orgIds));
+					new BasicDBObject().append("$in", orgIds)); //$NON-NLS-1$
 			condition.put(BulletinBoard.F_PARENT_BULLETIN, null);
 			condition.put(BulletinBoard.F_PROJECT_ID, null);
 			return condition;
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
-			return new BasicDBObject().append("_id", null);
+			return new BasicDBObject().append("_id", null); //$NON-NLS-1$
 		}
 	}
 

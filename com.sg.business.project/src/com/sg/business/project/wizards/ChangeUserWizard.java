@@ -21,6 +21,7 @@ import org.eclipse.ui.PlatformUI;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.MessageBox;
@@ -46,16 +47,16 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 	@Override
 	public void addPages() {
 		ChangeUserOfParticipatePage changeUserOfParticipatePage = new ChangeUserOfParticipatePage(
-				"team", "请选择需要移交工作的用户", "", "project.team", (PrimaryObject) po);
+				"team", Messages.get().ChangeUserWizard_1, "", "project.team", (PrimaryObject) po); //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
 		addPage(changeUserOfParticipatePage);
 
 		ChangeUserOfOrgUserPage changeUserOfOrgUserPage = new ChangeUserOfOrgUserPage(
-				"alluser", "请选择工作将移交给谁", "", "organization.alluser",
+				"alluser", Messages.get().ChangeUserWizard_5, "", "organization.alluser", //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
 				(PrimaryObject) org);
 		addPage(changeUserOfOrgUserPage);
 
 		ChangeUserOfWBSPage changeUserOfWBSPage = new ChangeUserOfWBSPage(
-				"wbs", "请选择要移交的那些工作", "", "project.changeuser.wbs",
+				"wbs", Messages.get().ChangeUserWizard_9, "", "project.changeuser.wbs", //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
 				(PrimaryObject) po);
 		addPage(changeUserOfWBSPage);
 	}
@@ -94,10 +95,10 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 				List<Object[]> message = po.checkChangeUser(changedUserId,
 						changeUserId, changeWork);
 				if (hasError(message)) {
-					WizardPage page = (WizardPage) getPage("wbs");
-					MessageUtil.showToast(null, "更改项目成员",
-							"检查发现了一些错误，请查看检查结果，完成修改后重新执行。", SWT.ICON_ERROR);
-					String newMessage = "";
+					WizardPage page = (WizardPage) getPage("wbs"); //$NON-NLS-1$
+					MessageUtil.showToast(null, Messages.get().ChangeUserWizard_13,
+							Messages.get().ChangeUserWizard_14, SWT.ICON_ERROR);
+					String newMessage = ""; //$NON-NLS-1$
 					for (int i = 0; i < message.size(); i++) {
 						if (message.get(i) != null && message.get(i).length > 2) {
 
@@ -107,12 +108,12 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 								String sMessage = (String) message.get(i)[0];
 								PrimaryObject primaryObject = (PrimaryObject) message
 										.get(i)[1];
-								if (newMessage == "") {
-									newMessage = primaryObject.getDesc() + ":"
+								if (newMessage == "") { //$NON-NLS-1$
+									newMessage = primaryObject.getDesc() + ":" //$NON-NLS-1$
 											+ sMessage;
 								} else {
-									newMessage = newMessage + "\n"
-											+ primaryObject.getDesc() + ":"
+									newMessage = newMessage + "\n" //$NON-NLS-1$
+											+ primaryObject.getDesc() + ":" //$NON-NLS-1$
 											+ sMessage;
 								}
 							}
@@ -124,15 +125,15 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 				} else {
 					if (message != null && message.size() > 0) {
 						MessageBox mb = MessageUtil.createMessageBox(null,
-								"更改项目成员", "检查发现了一些问题，请查看检查结果。" + "\n\n"
-										+ "选择 \"继续\" 忽视警告信息继续操作" + "\n"
-										+ "选择 \"中止\" 停止执行本次操作" + "\n"
-										+ "选择 \"查看\" 取消本次操作并查看检查结果",
+								Messages.get().ChangeUserWizard_20, Messages.get().ChangeUserWizard_21 + "\n\n" //$NON-NLS-3$
+										+ Messages.get().ChangeUserWizard_23 + "\n" //$NON-NLS-2$
+										+ Messages.get().ChangeUserWizard_25 + "\n" //$NON-NLS-2$
+										+ Messages.get().ChangeUserWizard_27,
 								SWT.ICON_WARNING | SWT.YES | SWT.NO
 										| SWT.CANCEL);
-						mb.setButtonText(SWT.YES, "继续");
-						mb.setButtonText(SWT.NO, "中止");
-						mb.setButtonText(SWT.CANCEL, "查看");
+						mb.setButtonText(SWT.YES, Messages.get().ChangeUserWizard_28);
+						mb.setButtonText(SWT.NO, Messages.get().ChangeUserWizard_29);
+						mb.setButtonText(SWT.CANCEL, Messages.get().ChangeUserWizard_30);
 						int result = mb.open();
 						if (result == SWT.CANCEL) {
 							showCheckMessages(message, po);
@@ -140,8 +141,8 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 							po.doChangeUsers(changedUserId, changeUserId,
 									changeWork, context);
 						} else if (result == SWT.NO) {
-							ChangeUserOfWBSPage page = (ChangeUserOfWBSPage) getPage("wbs");
-							String newMessage = "";
+							ChangeUserOfWBSPage page = (ChangeUserOfWBSPage) getPage("wbs"); //$NON-NLS-1$
+							String newMessage = ""; //$NON-NLS-1$
 							for (int i = 0; i < message.size(); i++) {
 								if (message.get(i) != null
 										&& message.get(i).length > 2) {
@@ -149,12 +150,12 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 									String sMessage = (String) message.get(i)[0];
 									PrimaryObject primaryObject = (PrimaryObject) message
 											.get(i)[1];
-									if (newMessage == "") {
+									if (newMessage == "") { //$NON-NLS-1$
 										newMessage = primaryObject.getDesc()
-												+ ":" + sMessage;
+												+ ":" + sMessage; //$NON-NLS-1$
 									} else {
-										newMessage = newMessage + "\n"
-												+ primaryObject.getDesc() + ":"
+										newMessage = newMessage + "\n" //$NON-NLS-1$
+												+ primaryObject.getDesc() + ":" //$NON-NLS-1$
 												+ sMessage;
 									}
 								}
@@ -198,10 +199,10 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 				.getActiveWorkbenchWindow().getActivePage();
 		try {
 			ObjectInformationView view = (ObjectInformationView) page.showView(
-					"com.sg.widgets.objectinfo", "" + selected.hashCode() + "_"
+					"com.sg.widgets.objectinfo", "" + selected.hashCode() + "_" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ getClass().getName(),
 					IWorkbenchPage.VIEW_ACTIVATE);
-			view.setInput(message, "检查" + selected);
+			view.setInput(message, Messages.get().ChangeUserWizard_40 + selected);
 		} catch (PartInitException e) {
 			MessageUtil.showToast(e);
 		}
@@ -221,7 +222,7 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 	public void setChangedUserId(String changedUserId) {
 		this.changedUserId = changedUserId;
 
-		ChangeUserOfWBSPage page = (ChangeUserOfWBSPage) getPage("wbs");
+		ChangeUserOfWBSPage page = (ChangeUserOfWBSPage) getPage("wbs"); //$NON-NLS-1$
 		page.doRefresh();
 	}
 
@@ -251,7 +252,7 @@ public class ChangeUserWizard extends Wizard implements IWorkbenchWizard {
 		boolean expression = selection != null && !selection.isEmpty()
 				&& selection.getFirstElement() instanceof Project;
 		if(!expression){
-			String message = "您需要选择项目后启动向导";
+			String message = Messages.get().ChangeUserWizard_42;
 			MessageUtil.showToast(message, SWT.ICON_ERROR);
 			Assert.isLegal(expression, message);
 		}else{

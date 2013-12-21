@@ -23,6 +23,7 @@ import com.sg.business.model.IProcessControl;
 import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.ProjectToolkit;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.INavigatablePart;
@@ -80,7 +81,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 
 		TreeViewerColumn column = new TreeViewerColumn((TreeViewer) viewer,
 				SWT.CENTER);
-		column.getColumn().setText("负责人");
+		column.getColumn().setText(Messages.get().ChangeUserOfWBSPage_0);
 		column.getColumn().setWidth(60);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -98,11 +99,11 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 
 			@Override
 			public String getText(Object element) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		column = new TreeViewerColumn((TreeViewer) viewer, SWT.CENTER);
-		column.getColumn().setText("指派者");
+		column.getColumn().setText(Messages.get().ChangeUserOfWBSPage_2);
 		column.getColumn().setWidth(60);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -120,11 +121,11 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 
 			@Override
 			public String getText(Object element) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		column = new TreeViewerColumn((TreeViewer) viewer, SWT.CENTER);
-		column.getColumn().setText("参与者");
+		column.getColumn().setText(Messages.get().ChangeUserOfWBSPage_4);
 		column.getColumn().setWidth(60);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -148,11 +149,11 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 
 			@Override
 			public String getText(Object element) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		column = new TreeViewerColumn((TreeViewer) viewer, SWT.CENTER);
-		column.getColumn().setText("执行流程\n执行人");
+		column.getColumn().setText(Messages.get().ChangeUserOfWBSPage_6);
 		column.getColumn().setWidth(70);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -177,11 +178,11 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 
 			@Override
 			public String getText(Object element) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		column = new TreeViewerColumn((TreeViewer) viewer, SWT.CENTER);
-		column.getColumn().setText("变更流程\n执行人");
+		column.getColumn().setText(Messages.get().ChangeUserOfWBSPage_8);
 		column.getColumn().setWidth(70);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -202,7 +203,7 @@ public class ChangeUserOfWBSPage extends WizardPage implements INavigatablePart 
 
 			@Override
 			public String getText(Object element) {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 

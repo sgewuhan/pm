@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -119,7 +120,7 @@ public class WorkNavigatorPanel extends CompassPanel {
 	private AbstractWork getSelected() {
 		IStructuredSelection selection = (IStructuredSelection) viewer
 				.getSelection();
-		Assert.isTrue(selection != null && !selection.isEmpty(), "请先选中节点");
+		Assert.isTrue(selection != null && !selection.isEmpty(), Messages.get().WorkNavigatorPanel_0);
 
 		return (AbstractWork) selection.getFirstElement();
 	}

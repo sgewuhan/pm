@@ -25,10 +25,10 @@ public class MyWasteMessage extends SingleDBCollectionDataSetFactory {
 	public DBObject getQueryCondition() {
 		try {
 			BasicDBObject condition = new BasicDBObject();
-			condition.put(Message.F_WASTE+"."+userId,true);
+			condition.put(Message.F_WASTE+"."+userId,true); //$NON-NLS-1$
 			return condition;
 		} catch (Exception e) {
-			return new BasicDBObject().append("_id", null);
+			return new BasicDBObject().append("_id", null); //$NON-NLS-1$
 		}
 		
 	}

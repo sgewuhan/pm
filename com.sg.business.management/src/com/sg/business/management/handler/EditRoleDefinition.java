@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.RoleDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -20,7 +21,7 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class EditRoleDefinition extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "编辑角色定义";
+	private static final String TITLE = Messages.get().EditRoleDefinition_0;
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
@@ -31,7 +32,7 @@ public class EditRoleDefinition extends AbstractNavigatorHandler {
 		RoleDefinition rd = ((RoleDefinition) selected);
 		if (rd.isOrganizatioRole()) {
 			MessageUtil
-					.showToast(shell, TITLE, "您需要选择一个角色定义", SWT.ICON_WARNING);
+					.showToast(shell, TITLE, Messages.get().EditRoleDefinition_1, SWT.ICON_WARNING);
 			return;
 		}
 
@@ -51,7 +52,7 @@ public class EditRoleDefinition extends AbstractNavigatorHandler {
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
 		Shell shell = part.getSite().getShell();
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个角色定义", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, Messages.get().EditRoleDefinition_2, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 

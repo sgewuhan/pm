@@ -14,7 +14,7 @@ public class DevAccountNumberSetting implements IFunctionExcutable {
 				.getActiveWorkbenchWindow().getActivePage();
 
 		try {
-			page.showView("financial.accountnumber");
+			page.showView("financial.accountnumber"); //$NON-NLS-1$
 		} catch (PartInitException e) {
 		}
 	}

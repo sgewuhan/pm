@@ -11,6 +11,6 @@ public interface IProjectTemplateRelative {
 	/**
 	 * ÏîÄ¿Ä£°åID
 	 */
-	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id";
+	public static final String F_PROJECT_TEMPLATE_ID = "projecttemplate_id"; //$NON-NLS-1$
 
 }

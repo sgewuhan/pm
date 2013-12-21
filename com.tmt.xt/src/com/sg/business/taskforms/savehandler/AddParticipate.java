@@ -42,10 +42,10 @@ public class AddParticipate implements IDataObjectDialogCallback {
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
-		Object listValue = taskform.getValue("reviewer_list");
+		Object listValue = taskform.getValue("reviewer_list"); //$NON-NLS-1$
 		if (listValue instanceof List) {
 			List<?> userList = (List<?>) listValue;
-			Object projectid = taskform.getProcessInstanceVarible("projectid",
+			Object projectid = taskform.getProcessInstanceVarible("projectid", //$NON-NLS-1$
 					new CurrentAccountContext());
 			if (projectid instanceof String) {
 				Project project = ModelService.createModelObject(Project.class,

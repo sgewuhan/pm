@@ -65,7 +65,7 @@ public class CalendarCaculater {
 	 */
 	public double getWorkingTime(Date date) {
 		// 把输入的时间转换成“yyyyMMdd”格式的字符串
-		String sdate = new SimpleDateFormat("yyyyMMdd").format(date);
+		String sdate = new SimpleDateFormat("yyyyMMdd").format(date); //$NON-NLS-1$
 		return getWorkingTime(sdate);
 	}
 

@@ -54,7 +54,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 		String[] costElementArray = CostAccount.getCostElemenArray();
 		// 获取工作令号
 		String[] workOrders = CompanyWorkOrder.getWorkOrders();
-		String message = "";
+		String message = ""; //$NON-NLS-1$
 		while (i != 0) {
 			try {
 				clear(year, month);
@@ -62,7 +62,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 						costCodes);
 			} catch (Exception e) {
 				i--;
-				message += e.getMessage() + "\n";
+				message += e.getMessage() + "\n"; //$NON-NLS-1$
 
 			}
 		}
@@ -74,52 +74,52 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 			throws Exception {
 		long start, end;
 
-		Commons.loginfo("[成本数据]准备获取SAP成本中心数据:" + year + "-" + month);
+		Commons.loginfo("[成本数据]准备获取SAP成本中心数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		RNDPeriodCostAdapter rndAdapter = new RNDPeriodCostAdapter();
 		rndAdapter.runGetData(costCodes, costElementArray, year, month);
 		end = System.currentTimeMillis();
-		Commons.loginfo("[成本数据]获得SAP成本中心数据完成:" + year + "-" + month + " "
+		Commons.loginfo("[成本数据]获得SAP成本中心数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ (end - start) / 1000);
 
-		Commons.loginfo("[成本数据]准备获取SAP工作令号研发成本数据:" + year + "-" + month);
+		Commons.loginfo("[成本数据]准备获取SAP工作令号研发成本数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		WorkorderPeriodCostAdapter workorderadapter = new WorkorderPeriodCostAdapter();
 		workorderadapter.runGetData(workOrders, costElementArray, year, month);
 		end = System.currentTimeMillis();
-		Commons.loginfo("[成本数据]获得SAP工作令号研发成本完成:" + year + "-" + month + " "
-				+ (end - start) / 1000 + "S");
+		Commons.loginfo("[成本数据]获得SAP工作令号研发成本完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ (end - start) / 1000 + "S"); //$NON-NLS-1$
 
-		Commons.loginfo("[销售数据]准备获取SAP销售数据:" + year + "-" + month);
+		Commons.loginfo("[销售数据]准备获取SAP销售数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		runGetData(year, month);
 		end = System.currentTimeMillis();
-		Commons.loginfo("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " "
+		Commons.loginfo("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ (end - start) / 1000);
 
-		Commons.loginfo("[销售数据]准备更新项目销售数据:" + year + "-" + month);
+		Commons.loginfo("[销售数据]准备更新项目销售数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		ProjectToolkit.updateProjectSalesData(year, month, day);
 		end = System.currentTimeMillis();
-		Commons.loginfo("[销售数据]更新项目销售数据完成:" + year + "-" + month + " "
+		Commons.loginfo("[销售数据]更新项目销售数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ (end - start) / 1000);
 
-		Commons.loginfo("[项目数据]准备更新项目ETL数据:" + year + "-" + month);
+		Commons.loginfo("[项目数据]准备更新项目ETL数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		List<DBObject> projectETLList = doProjectETL(year, month, day);
 		end = System.currentTimeMillis();
-		Commons.loginfo("[项目数据]更新项目ETL数据完成:" + year + "-" + month + " "
+		Commons.loginfo("[项目数据]更新项目ETL数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ (end - start) / 1000);
 
 		if (day == 1) {
-			Commons.loginfo("[项目数据]准备更新项目月ETL数据:" + year + "-" + month);
+			Commons.loginfo("[项目数据]准备更新项目月ETL数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 			start = System.currentTimeMillis();
 			projectMonthCol.remove(new BasicDBObject().append(
 					IProjectETL.F_YEAR, year)
 					.append(IProjectETL.F_MONTH, month));
 			projectMonthCol.insert(projectETLList, WriteConcern.NORMAL);
 			end = System.currentTimeMillis();
-			Commons.loginfo("[项目数据]更新项目月ETL数据完成:" + year + "-" + month + " "
+			Commons.loginfo("[项目数据]更新项目月ETL数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ (end - start) / 1000);
 		}
 
@@ -153,7 +153,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 				}
 				projectETLList.add(etl);
 				if (Portal.getDefault().isDevelopMode()) {
-					Commons.loginfo(project.getLabel() + " ETL finished.");
+					Commons.loginfo(project.getLabel() + " ETL finished."); //$NON-NLS-1$
 				}
 			}
 		}
@@ -243,18 +243,18 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 				.distinct(
 						Organization.F_COST_CENTER_CODE,
 						new BasicDBObject().append(
-								"$and",
+								"$and", //$NON-NLS-1$
 								new BasicDBObject[] {
 										new BasicDBObject()
 												.append(Organization.F_COST_CENTER_CODE,
 														new BasicDBObject()
-																.append("$ne",
+																.append("$ne", //$NON-NLS-1$
 																		null)),
 										new BasicDBObject()
 												.append(Organization.F_COST_CENTER_CODE,
 														new BasicDBObject()
-																.append("$ne",
-																		"")) }));
+																.append("$ne", //$NON-NLS-1$
+																		"")) })); //$NON-NLS-1$
 		return (String[]) distinct.toArray(new String[0]);
 
 	}
@@ -273,16 +273,16 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 				saleDataCol.insert(dbo);
 			}
 		};
-		String gjahr = "" + year;
-		String perde = String.format("%03d", month);
-		Connection connection = DDB.getDefault().createConnection("sap");
+		String gjahr = "" + year; //$NON-NLS-1$
+		String perde = String.format("%03d", month); //$NON-NLS-1$
+		Connection connection = DDB.getDefault().createConnection("sap"); //$NON-NLS-1$
 		try {
 			SQLUtil.SQL_QUERY(
-					"sap",
-					"select PALEDGER,GJAHR,PERDE ,MATNR ,VV010,VV030,VV040,BUKRS,BZIRK,KNDNR,VKBUR,VKGRP,VKORG "
-							+ "From SAPSR3.CE14000 "
-							+ "WHERE MANDT = '700' and PALEDGER = '02' and GJAHR = '"
-							+ gjahr + "' and PERDE = " + perde + "", callback,
+					"sap", //$NON-NLS-1$
+					"select PALEDGER,GJAHR,PERDE ,MATNR ,VV010,VV030,VV040,BUKRS,BZIRK,KNDNR,VKBUR,VKGRP,VKORG " //$NON-NLS-1$
+							+ "From SAPSR3.CE14000 " //$NON-NLS-1$
+							+ "WHERE MANDT = '700' and PALEDGER = '02' and GJAHR = '" //$NON-NLS-1$
+							+ gjahr + "' and PERDE = " + perde + "", callback, //$NON-NLS-1$ //$NON-NLS-2$
 					connection);
 		} catch (Exception e) {
 		} finally {
@@ -292,22 +292,22 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 	}
 
 	private void rndClear(int year, int month) {
-		rndCol.remove(new BasicDBObject().append("year", year).append("month",
+		rndCol.remove(new BasicDBObject().append("year", year).append("month", //$NON-NLS-1$ //$NON-NLS-2$
 				month));
-		rndAllocationCol.remove(new BasicDBObject().append("year", year)
-				.append("month", month));
+		rndAllocationCol.remove(new BasicDBObject().append("year", year) //$NON-NLS-1$
+				.append("month", month)); //$NON-NLS-1$
 	}
 
 	private void workOrderClear(int year, int month) {
-		workOrderCol.remove(new BasicDBObject().append("year", year).append(
-				"month", month));
+		workOrderCol.remove(new BasicDBObject().append("year", year).append( //$NON-NLS-1$
+				"month", month)); //$NON-NLS-1$
 	}
 
 	private void saleDataClear(int year, int month) {
-		String gjahr = "" + year;
-		String perde = String.format("%03d", month);
-		saleDataCol.remove(new BasicDBObject().append("GJAHR", gjahr).append(
-				"PERDE", perde));
+		String gjahr = "" + year; //$NON-NLS-1$
+		String perde = String.format("%03d", month); //$NON-NLS-1$
+		saleDataCol.remove(new BasicDBObject().append("GJAHR", gjahr).append( //$NON-NLS-1$
+				"PERDE", perde)); //$NON-NLS-1$
 	}
 
 }

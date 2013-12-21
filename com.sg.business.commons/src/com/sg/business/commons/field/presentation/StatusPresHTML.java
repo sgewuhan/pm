@@ -14,7 +14,7 @@ public class StatusPresHTML implements IValuePresentation {
 		String value = (String) field.getValue();
 		String status = LifecycleToolkit.getLifecycleStatusText(value);
 
-		return "<span style='color=#4a4a4a'>"+status+"</span>";
+		return "<span style='color=#4a4a4a'>"+status+"</span>"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

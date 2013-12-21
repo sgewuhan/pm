@@ -13,7 +13,7 @@ public class EditorArea extends PerspectiveEditorArea {
 	@Override
 	protected void creatEditorArea(Composite parent, IWorkbenchPage page,
 			IPerspectiveDescriptor perspective) {
-		if(perspective.getId().equals("perspective.visualization")){
+		if(perspective.getId().equals("perspective.visualization")){ //$NON-NLS-1$
 			parent.setLayout(new FormLayout());
 			
 			//

@@ -7,18 +7,19 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.bpmservice.AbstractMessageService;
+import com.sg.business.taskforms.nls.Messages;
 
 public class ProjectCloseMessageService extends AbstractMessageService {
 
 
 	@Override
 	public String getMessageTitle() {
-		return "项目结题通知";
+		return Messages.get().ProjectCloseMessageService_0;
 	}
 
 	@Override
 	public String getMessageContent() {
-	    return "项目" + getTarget().getLabel() + "：允许结题";
+	    return Messages.get().ProjectCloseMessageService_1 + getTarget().getLabel() + Messages.get().ProjectCloseMessageService_2;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -38,7 +39,7 @@ public class ProjectCloseMessageService extends AbstractMessageService {
 
 	@Override
 	public PrimaryObject getTarget() {
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);

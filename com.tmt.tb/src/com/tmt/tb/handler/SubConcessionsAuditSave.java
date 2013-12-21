@@ -38,12 +38,12 @@ public class SubConcessionsAuditSave implements IDataObjectDialogCallback {
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
 		List<String> userList = new ArrayList<String>();
-		Object value = taskform.getValue("qm");
+		Object value = taskform.getValue("qm"); //$NON-NLS-1$
 		if (value instanceof List) {
 			userList.add((String) value);
 		}
 
-		value = taskform.getValue("craft");
+		value = taskform.getValue("craft"); //$NON-NLS-1$
 		if (value instanceof String) {
 			userList.add((String) value);
 		}

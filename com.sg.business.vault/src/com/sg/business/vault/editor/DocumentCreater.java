@@ -6,11 +6,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
+import com.sg.business.vault.nls.Messages;
 import com.sg.widgets.viewer.ChildPrimaryObjectCreator;
 
 public class DocumentCreater extends ChildPrimaryObjectCreator {
 
-	private static final String ERROR_MSG = "您需要选择一个文件夹创建文档";
+	private static final String ERROR_MSG = Messages.get().DocumentCreater_0;
 
 	@Override
 	protected String getMessageForEmptySelection() {

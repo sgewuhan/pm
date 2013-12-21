@@ -30,7 +30,7 @@ public class ProductInProject extends MasterDetailDataSetFactory {
 				TaskForm taskForm = (TaskForm) master;
 				ObjectId _id;
 				try {
-					_id = (ObjectId) taskForm.getValue("project_id");
+					_id = (ObjectId) taskForm.getValue("project_id"); //$NON-NLS-1$
 					Project project = ModelService.createModelObject(
 							Project.class, _id);
 					List<PrimaryObject> result = project.getSubconcessionsProduct();

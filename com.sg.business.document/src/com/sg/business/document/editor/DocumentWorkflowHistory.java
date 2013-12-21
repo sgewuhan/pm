@@ -32,6 +32,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.flow.ProcessHistoryUIToolkit;
+import com.sg.business.document.nls.Messages;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDocumentProcess;
 import com.sg.business.model.UserTask;
@@ -65,7 +66,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 				| Section.SHORT_TITLE_BAR | Section.TWISTIE);
 		section1.setFont(font);
 
-		section1.setText("流程历史");
+		section1.setText(Messages.get().DocumentWorkflowHistory_0);
 		Composite table = createProcessContent(section1, doc);
 		section1.setClient(table);
 
@@ -75,7 +76,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		section2 = new SimpleSection(panel, Section.EXPANDED
 				| Section.SHORT_TITLE_BAR | Section.TWISTIE);
 		section2.setFont(font);
-		section2.setText("流程过程详情");
+		section2.setText(Messages.get().DocumentWorkflowHistory_1);
 		Composite table2 = createTaskContent(section2, doc);
 		section2.setClient(table2);
 		section2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
@@ -97,7 +98,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 				if (element instanceof UserTask) {
 					return ((UserTask) element).getHTMLLabel();
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		taskViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -136,7 +137,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 				if (element instanceof DBObject) {
 					return getProcessInstanceLabel((DBObject) element);
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -151,8 +152,8 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 				if (event.detail == RWT.HYPERLINK) {
 					try {
 						String[] para = event.text.substring(
-								event.text.lastIndexOf("/") + 1).split("@");
-						if ("print".equals(para[2])) {
+								event.text.lastIndexOf("/") + 1).split("@"); //$NON-NLS-1$ //$NON-NLS-2$
+						if ("print".equals(para[2])) { //$NON-NLS-1$
 							// 20102652
 							ProcessHistoryUIToolkit.doPrint(Long
 									.parseLong(para[0]), new ObjectId(para[1]));
@@ -169,36 +170,36 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 
 	protected String getProcessInstanceLabel(DBObject dbObject) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 		// 工作desc
 		String workDesc = (String) dbObject.get(PrimaryObject.F_DESC);
 		workDesc = Utils.getPlainText(workDesc);
 		sb.append(workDesc);
 
-		sb.append("  ");
+		sb.append("  "); //$NON-NLS-1$
 
 		// 时间
 		Date date = (Date) dbObject.get(PrimaryObject.F__CDATE);
 		sb.append(String.format(Utils.FORMATE_DATE_SIMPLE, date));
 
-		sb.append("<br/>");
+		sb.append("<br/>"); //$NON-NLS-1$
 
 		// 流程名称
-		sb.append("<small>");
+		sb.append("<small>"); //$NON-NLS-1$
 		String processName = (String) dbObject
 				.get(IDocumentProcess.F_PROCESSNAME);
 		workDesc = Utils.getPlainText(processName);
 		sb.append(processName);
-		sb.append("</small>");
-		sb.append("</span>");
-		sb.append("<a href=\""
-				+ dbObject.get(IDocumentProcess.F_PROCESS_INSTANCEID) + "@"
-				+ doc.get_id() + "@print" + "\" target=\"_rwt\">");
-		sb.append("<img src='");
+		sb.append("</small>"); //$NON-NLS-1$
+		sb.append("</span>"); //$NON-NLS-1$
+		sb.append("<a href=\"" //$NON-NLS-1$
+				+ dbObject.get(IDocumentProcess.F_PROCESS_INSTANCEID) + "@" //$NON-NLS-1$
+				+ doc.get_id() + "@print" + "\" target=\"_rwt\">"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_PRINT_W_48,
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
-		sb.append("' style='border-style:none;position:absolute; right:0; top:0; display:block;' width='32' height='32' />");
-		sb.append("</a>");
+		sb.append("' style='border-style:none;position:absolute; right:0; top:0; display:block;' width='32' height='32' />"); //$NON-NLS-1$
+		sb.append("</a>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import com.mobnut.db.model.IContext;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.event.AccountEvent;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 
 /**
@@ -24,7 +25,7 @@ public class RoleAssignment extends AbstractRoleAssignment {
 	 */
 	@Override
 	public String getTypeName() {
-		return "½ÇÉ«Ö¸ÅÉ";
+		return Messages.get().RoleAssignment_0;
 	}
 
 	/**
@@ -53,6 +54,6 @@ public class RoleAssignment extends AbstractRoleAssignment {
 
 	@Override
 	public String getDefaultEditorId() {
-		return "editorscenario.organization.roleassignment";
+		return "editorscenario.organization.roleassignment"; //$NON-NLS-1$
 	}
 }
