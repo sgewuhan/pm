@@ -2036,9 +2036,9 @@
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.OverSchedualRateView"
-            id="vis2.overschedualrate"
-            name="期间项目超期比率"
+            class="com.sg.business.visualization.view.ProfitRateView"
+            id="vis2.profitrate"
+            name="期间项目利润率"
             restorable="true">
       </view>
       <view
@@ -2064,23 +2064,9 @@
       </view>
       <view
             category="visualization"
-            class="com.sg.business.visualization.view.ProfitListView"
-            id="vis2.profitlist"
-            name="期间利润率排名"
-            restorable="true">
-      </view>
-      <view
-            category="visualization"
-            class="com.sg.business.visualization.view.RevenueListView"
-            id="vis2.revenuelist"
-            name="期间销售额排名"
-            restorable="true">
-      </view>
-      <view
-            category="visualization"
-            class="com.sg.business.visualization.view.OverCostListView"
-            id="vis2.overcostlist"
-            name="期间超支排名"
+            class="com.sg.business.visualization.view.SalesListView"
+            id="vis2.saleslist"
+            name="期间销售排名"
             restorable="true">
       </view>
       <view

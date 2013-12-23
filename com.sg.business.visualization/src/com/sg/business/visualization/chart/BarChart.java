@@ -3,9 +3,8 @@ package com.sg.business.visualization.chart;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
+import org.eclipse.birt.chart.model.attribute.ChartDimension;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
-import org.eclipse.birt.chart.model.attribute.Marker;
-import org.eclipse.birt.chart.model.attribute.MarkerType;
 import org.eclipse.birt.chart.model.attribute.Orientation;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
@@ -25,33 +24,35 @@ import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
 import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
 import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
 import org.eclipse.birt.chart.model.layout.Plot;
-import org.eclipse.birt.chart.model.type.LineSeries;
-import org.eclipse.birt.chart.model.type.impl.LineSeriesImpl;
+import org.eclipse.birt.chart.model.type.BarSeries;
+import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
-public class LineChart extends AbstractChart {
+public class BarChart extends AbstractChart {
 
-	public static Chart getChart(String[] xAxisText, String[] lsText,
-			double[][] lsValue,int shift) {
-		ChartWithAxes cwaLine = ChartWithAxesImpl.create();
-		cwaLine.setType("Line Chart"); //$NON-NLS-1$
-		cwaLine.setSubType("Overlay"); //$NON-NLS-1$
+	public static Chart getChart(String[] xAxisText, String[] bsText,
+			double[][] bsValue,String subType,int shift) {
+		ChartWithAxes cwabar = ChartWithAxesImpl.create();
+		cwabar.setType("Bar Chart"); //$NON-NLS-1$
+		cwabar.setSubType(subType); //$NON-NLS-1$
+		cwabar.setDimension(ChartDimension.TWO_DIMENSIONAL_WITH_DEPTH_LITERAL);
+		cwabar.setSeriesThickness(2);
 
 		// Plot
-		cwaLine.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
-		Plot p = cwaLine.getPlot();
+		cwabar.getBlock().setBackground(ColorDefinitionImpl.TRANSPARENT());
+		Plot p = cwabar.getPlot();
 		p.getClientArea().setBackground(ColorDefinitionImpl.TRANSPARENT());
 
 		// Title
-		cwaLine.getTitle().setVisible(false);
+		cwabar.getTitle().setVisible(false);
 
 		// Legend
-		cwaLine.getLegend().getText().getFont().setSize(FONT_SIZE + 1);
-		cwaLine.getLegend().getText().getFont().setName("Î¢ÈíÑÅºÚ");
-		cwaLine.getLegend().setPosition(Position.BELOW_LITERAL);
-		cwaLine.getLegend().setOrientation(Orientation.HORIZONTAL_LITERAL);
+		cwabar.getLegend().getText().getFont().setSize(FONT_SIZE + 1);
+		cwabar.getLegend().getText().getFont().setName("Î¢ÈíÑÅºÚ");
+		cwabar.getLegend().setPosition(Position.BELOW_LITERAL);
+		cwabar.getLegend().setOrientation(Orientation.HORIZONTAL_LITERAL);
 
 		// X-Axis
-		Axis xAxisPrimary = cwaLine.getPrimaryBaseAxes()[0];
+		Axis xAxisPrimary = cwabar.getPrimaryBaseAxes()[0];
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
@@ -60,7 +61,7 @@ public class LineChart extends AbstractChart {
 				.setColor(ColorDefinitionImpl.create(0x9d, 0x9d, 0x9d));
 
 		// Y-Axis
-		Axis yAxisPrimary = cwaLine.getPrimaryOrthogonalAxis(xAxisPrimary);
+		Axis yAxisPrimary = cwabar.getPrimaryOrthogonalAxis(xAxisPrimary);
 		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
 		yAxisPrimary.getLabel().getCaption().getFont().setSize(FONT_SIZE);
 		yAxisPrimary.getLabel().getCaption()
@@ -82,34 +83,34 @@ public class LineChart extends AbstractChart {
 		sdX.getSeries().add(seCategory);
 
 		// Y-Sereis
+		//TODO ÐèÒª¸Ä±äÑÕÉ«
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		setSeriesColor(sdY);
 		sdY.getSeriesPalette( ).shift( shift );
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
 
-		for (int i = 0; i < lsValue.length; i++) {
-			NumberDataSet orthoValues = NumberDataSetImpl.create(lsValue[i]);
+		for (int i = 0; i < bsValue.length; i++) {
+			NumberDataSet orthoValues = NumberDataSetImpl.create(bsValue[i]);
 			OrthogonalSampleData sdOrthogonal = DataFactory.eINSTANCE
 					.createOrthogonalSampleData();
 			sdOrthogonal.setDataSetRepresentation("");//$NON-NLS-1$
 			sdOrthogonal.setSeriesDefinitionIndex(0);
 			sd.getOrthogonalSampleData().add(sdOrthogonal);
 
-			LineSeries ls = (LineSeries) LineSeriesImpl.create();
-			ls.setSeriesIdentifier(lsText[i]);
-			ls.setDataSet(orthoValues);
-			ls.getLineAttributes().setColor(ColorDefinitionImpl.CREAM());
-			for (int j = 0; j < ls.getMarkers().size(); j++) {
-				Marker marker = (Marker) ls.getMarkers().get(j);
-				marker.setType(MarkerType.CIRCLE_LITERAL);
-				marker.setSize(MARKER_SIZE);
+			BarSeries bs = (BarSeries) BarSeriesImpl.create();
+			bs.setSeriesIdentifier(bsText[i]);
+			bs.setDataSet(orthoValues);
+			bs.getLabel().setVisible(false);
+			if(subType == "Stacked"){
+				bs.setStacked(true);
+//			} else {
+//				bs.setRiser( RiserType.TUBE_LITERAL );
 			}
-			ls.getLabel().setVisible(true);
-			ls.getLabel().getCaption().getFont().setSize(FONT_SIZE);
-			ls.setCurve(true);
-			sdY.getSeries().add(ls);
+//			bs.getLabel().getCaption().getFont().setSize(FONT_SIZE);
+			sdY.getSeries().add(bs);
 		}
-		cwaLine.setSampleData(sd);
-		return cwaLine;
+		cwabar.setSampleData(sd);
+		return cwabar;
 	}
+	
 }

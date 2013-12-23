@@ -692,7 +692,7 @@
             targetID="perspective.vis2.home">
          <view
                closeable="false"
-               id="vis2.combinnatiedrate"
+               id="vis2.saleslist"
                minimized="false"
                moveable="false"
                ratio=".5"
@@ -703,23 +703,23 @@
          </view>
          <view
                closeable="false"
-               id="vis2.overschedualrate"
+               id="vis2.combinnatiedrate"
                minimized="false"
                moveable="false"
                ratio=".33"
                relationship="right"
-               relative="vis2.combinnatiedrate"
+               relative="vis2.saleslist"
                showTitle="false"
                standalone="true">
          </view>
          <view
                closeable="false"
-               id="vis2.profitlist"
+               id="vis2.profitrate"
                minimized="false"
                moveable="false"
                ratio=".5"
                relationship="right"
-               relative="vis2.overschedualrate"
+               relative="vis2.combinnatiedrate"
                showTitle="false"
                standalone="true">
          </view>
@@ -741,7 +741,7 @@
                moveable="false"
                ratio=".33"
                relationship="bottom"
-               relative="vis2.overschedualrate"
+               relative="vis2.profitrate"
                showTitle="false"
                standalone="true">
          </view>

@@ -202,9 +202,17 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			return false;
 		return true;
 	}
-	
-	public Organization getOrganization(){
+
+	public Organization getOrganization() {
 		return organization;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		query.put(Project.F_LAUNCH_ORGANIZATION, new BasicDBObject().append(
+				"$in", getOrganizations(organization)));
+		return projectCol.distinct(Project.F__ID, query);
+	}
 }
