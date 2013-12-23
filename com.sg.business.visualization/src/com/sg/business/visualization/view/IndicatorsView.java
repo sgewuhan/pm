@@ -4,7 +4,6 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
 import com.sg.business.visualization.chart.ProjectChartFactory;
 import com.sg.widgets.birtcharts.ChartCanvas;
