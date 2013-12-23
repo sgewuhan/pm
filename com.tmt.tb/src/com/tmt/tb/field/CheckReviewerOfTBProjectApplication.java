@@ -10,7 +10,7 @@ public class CheckReviewerOfTBProjectApplication extends
 
 	@Override
 	protected boolean choicePassValue(String choice) {
-		if("ª·«©∆¿…Û".equals(choice)){ //$NON-NLS-1$
+		if("ª·«©∆¿…Û".equals(choice)||"ª·“È∆¿…Û".equals(choice)){ //$NON-NLS-1$
 			return true;
 		}
 		return false;
