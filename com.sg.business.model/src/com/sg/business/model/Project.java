@@ -44,6 +44,7 @@ import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.model.etl.ProjectETL;
+import com.sg.business.model.etl.ProjectMonthlyETL;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
@@ -2215,6 +2216,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public ProjectETL getETL() {
 		return new ProjectETL(this);
+	}
+
+	public ProjectMonthlyETL getMonthlyETL() {
+		return new ProjectMonthlyETL(this);
 	}
 
 	/**

@@ -33,51 +33,51 @@ import com.sg.business.resource.BusinessResource;
 @SuppressWarnings("restriction")
 public class ProjectETL implements IProjectETL {
 
-	private Project project;
+	protected Project project;
 
-	private Date now;
+	protected Date now;
 
-	private boolean isDelayDefinited;
+	protected boolean isDelayDefinited;
 
-	private boolean isAdvanceDefinited;
+	protected boolean isAdvanceDefinited;
 
-	private boolean isDelayEstimated;
+	protected boolean isDelayEstimated;
 
-	private boolean isAdvanceEstimated;
+	protected boolean isAdvanceEstimated;
 
-	private double finishedDurationRatio;
+	protected double finishedDurationRatio;
 
-	private double budget;
+	protected double budget;
 
-	private double allocatedInvestment;
+	protected double allocatedInvestment;
 
-	private double designatedInvestment;
+	protected double designatedInvestment;
 
-	private double investment;
+	protected double investment;
 
-	private boolean isOverCostEstimated;
+	protected boolean isOverCostEstimated;
 
-	private boolean isOverCostDefinited;
+	protected boolean isOverCostDefinited;
 
-	private double salesRevenue;
+	protected double salesRevenue;
 
-	private double salesCost;
+	protected double salesCost;
 
-	private String projectDesc;
+	protected String projectDesc;
 
-	private Date planFinish;
+	protected Date planFinish;
 
-	private Date actualFinish;
+	protected Date actualFinish;
 
-	private Date planStart;
+	protected Date planStart;
 
-	private Date actualStart;
+	protected Date actualStart;
 
-	private List<Work> milestones;
+	protected List<Work> milestones;
 
-	private List<PrimaryObject> products;
+	protected List<PrimaryObject> products;
 
-	private String lifecycle;
+	protected String lifecycle;
 
 	public ProjectETL(Project project) {
 		this.project = project;

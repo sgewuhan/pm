@@ -867,7 +867,6 @@ public class ProjectToolkit {
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.MONTH, 1);
 		cal.add(Calendar.MILLISECOND, -1);
 		String dateCode = String.format("%1$tY/%1$tm/%1$td", cal);
 		DBCursor cur = colPd.find(new BasicDBObject().append(

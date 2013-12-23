@@ -315,6 +315,8 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_CALENDAR_24 = "cal2_24.png";
 
+	public static final String IMAGE_SETTINGS_24 = "settings_16.png";
+
 	/**
 	 * Returns the shared instance
 	 * 

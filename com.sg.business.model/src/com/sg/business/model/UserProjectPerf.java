@@ -52,7 +52,7 @@ public class UserProjectPerf extends ProjectProvider {
 	}
 
 	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
-		List<?> projectidlist = getProjectIdList();
+		List<ObjectId> projectidlist = getAllProjectId();
 		BasicDBObject dbo = new BasicDBObject();
 		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist));
 		if (start != null && stop != null) {
@@ -92,8 +92,10 @@ public class UserProjectPerf extends ProjectProvider {
 	 * 
 	 * @return
 	 */
-	private List<?> getProjectIdList() {
-		return (List<?>) getValue(F_PROJECT_ID);
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getAllProjectId() {
+		return  (List<ObjectId>) getValue(F_PROJECT_ID);
 	}
 
 	@Override
@@ -134,4 +136,5 @@ public class UserProjectPerf extends ProjectProvider {
 		DBCollection col = getCollection();
 		col.insert(data);
 	}
+
 }

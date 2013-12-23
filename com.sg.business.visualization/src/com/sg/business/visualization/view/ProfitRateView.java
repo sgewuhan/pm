@@ -5,12 +5,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import com.sg.business.visualization.chart.BarChart;
+import com.sg.business.visualization.chart.LineChart;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
-public class ProfitVolumnView extends AbstractDashWidgetView {
+public class ProfitRateView extends AbstractDashWidgetView {
 
-	public ProfitVolumnView() {
+	public ProfitRateView() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -22,19 +22,20 @@ public class ProfitVolumnView extends AbstractDashWidgetView {
 			@Override
 			public Chart getChart() throws Exception {
 
-				return ProfitVolumnView.this.getChart();
+				return ProfitRateView.this.getChart();
 			}
 		};
 	}
 
 	private Chart getChart() throws Exception {
-		String[] bsText = { "销售利润", "销售成本" };
+		String[] lsText = { "项目利润率" };
 		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7",
 				"8", "9", "10", "11", "12" };
 
-		double[][] value1 = projectProvider.getProfitAndCostByYear();
+		double[] value1 = projectProvider.getProfitRateByYear();
 
-		return BarChart.getChart(xAxisText, bsText, value1, "Side-by-side", -5);
+		return LineChart.getChart(xAxisText, lsText, new double[][] { value1 },
+				-4);
 	}
 
 }
