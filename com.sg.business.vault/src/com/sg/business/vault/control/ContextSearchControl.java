@@ -22,6 +22,7 @@ import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.vault.index.SearchJob;
+import com.sg.business.vault.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.view.NavigatorPart;
 
@@ -40,7 +41,7 @@ public class ContextSearchControl extends WorkbenchWindowControlContribution {
 		panel.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		panel.setLayout(new FormLayout());
 		final Text text = new Text(panel, SWT.NONE);
-		text.setMessage("<ÊäÈë¼ìË÷¹Ø¼ü×Ö>");
+		text.setMessage(Messages.get(panel.getDisplay()).ContextSearchControl_0);
 		FormData fd = new FormData();
 		text.setLayoutData(fd);
 		fd.top = new FormAttachment(0, 2);
@@ -49,7 +50,8 @@ public class ContextSearchControl extends WorkbenchWindowControlContribution {
 		fd.bottom = new FormAttachment(100, -2);
 
 		Button go = new Button(panel, SWT.PUSH);
-		go.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		go.setData(RWT.CUSTOM_VARIANT,
+				Messages.get(panel.getDisplay()).ContextSearchControl_1);
 		go.setImage(BusinessResource.getImage(BusinessResource.IMAGE_SEARCH24));
 		fd = new FormData();
 		go.setLayoutData(fd);
@@ -74,8 +76,10 @@ public class ContextSearchControl extends WorkbenchWindowControlContribution {
 
 	protected void doSearch(final Display display, String text) {
 		if (text.length() == 0) {
-			MessageUtil
-					.showToast(null, "ÄÚÈÝ¼ìË÷", "ÇëÊäÈë¼ìË÷Ìõ¼þ", SWT.ICON_INFORMATION);
+			MessageUtil.showToast(null,
+					Messages.get(display).ContextSearchControl_2,
+					Messages.get(display).ContextSearchControl_3,
+					SWT.ICON_INFORMATION);
 		}
 		final SearchJob job = new SearchJob(text);
 		job.setUser(true);
@@ -98,8 +102,8 @@ public class ContextSearchControl extends WorkbenchWindowControlContribution {
 
 	protected void loadData(ArrayList<PrimaryObject> result) {
 		NavigatorPart part = (NavigatorPart) getWorkbenchWindow()
-				.getActivePage().findView("vault.documents.contextsearch");
-		DataSet dataSet= new DataSet(result);
+				.getActivePage().findView("vault.documents.contextsearch"); //$NON-NLS-1$
+		DataSet dataSet = new DataSet(result);
 		part.getNavigator().getViewerControl().setDataSet(dataSet);
 	}
 

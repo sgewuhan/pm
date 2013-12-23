@@ -73,10 +73,10 @@ public abstract class AbstractUserTaskSelectMenu extends CompoundContributionIte
 		Map<String, Object> para = new HashMap<String, Object>();
 		try {
 			String _userTask = JSON.serialize(userTask.get_data());
-			para.put("runtimework.usertask", _userTask);
+			para.put("runtimework.usertask", _userTask); //$NON-NLS-1$
 		} catch (Exception e) {
 		}
-		para.put("runtimework.usertask_id", userTask.get_id().toString());
+		para.put("runtimework.usertask_id", userTask.get_id().toString()); //$NON-NLS-1$
 		ImageDescriptor icon = BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_24_BLANK);
 		String label = userTask.getTaskName();

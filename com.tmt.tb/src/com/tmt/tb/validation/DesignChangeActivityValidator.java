@@ -8,7 +8,7 @@ public class DesignChangeActivityValidator extends
 
 	@Override
 	public String getECNName() {
-		return "设计变更";
+		return "设计变更"; //$NON-NLS-1$
 	}
 
 }

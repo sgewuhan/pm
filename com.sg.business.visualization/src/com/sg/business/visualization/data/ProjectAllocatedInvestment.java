@@ -18,14 +18,14 @@ public class ProjectAllocatedInvestment extends MasterDetailDataSetFactory {
 	protected Object getMasterValue() {
 		Project project = ((Project) master);
 		String[] workOrders = project.getWorkOrders();
-		return new BasicDBObject().append("$in", workOrders);
+		return new BasicDBObject().append("$in", workOrders); //$NON-NLS-1$
 	}
 
 	
 	
 	@Override
 	protected String getDetailCollectionKey() {
-		return "workorder";
+		return "workorder"; //$NON-NLS-1$
 	}
 
 }

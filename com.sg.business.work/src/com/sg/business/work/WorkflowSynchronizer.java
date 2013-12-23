@@ -23,6 +23,7 @@ import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.UserDataSetFactory;
+import com.sg.business.work.nls.Messages;
 
 public class WorkflowSynchronizer extends RepeatJob {
 
@@ -30,18 +31,18 @@ public class WorkflowSynchronizer extends RepeatJob {
 	private boolean client;
 
 	public WorkflowSynchronizer(boolean client) {
-		super("更新流程信息");
+		super("更新流程信息"); //$NON-NLS-1$
 		this.client = client;
 	}
 
 	public WorkflowSynchronizer() {
-		super("更新流程信息");
+		super("更新流程信息"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		if (client) {
-			monitor.beginTask("正在同步工作流任务...", IProgressMonitor.UNKNOWN);
+			monitor.beginTask(Messages.get().WorkflowSynchronizer_2, IProgressMonitor.UNKNOWN);
 		}
 		if (userId != null) {
 			synchronizeUserTask(userId);

@@ -39,8 +39,8 @@ public class ApplySaveOfJSZX implements IDataObjectDialogCallback {
 		 */
 		// taskform.addWorkParticipatesFromField(new String[]{"chief_master"});
 		List<String> userList = new ArrayList<String>();
-		String chiefMaster = (String) taskform.getValue("chief_engineer");
-		Object dept = taskform.getValue("dept");
+		String chiefMaster = (String) taskform.getValue("chief_engineer"); //$NON-NLS-1$
+		Object dept = taskform.getValue("dept"); //$NON-NLS-1$
 		// ***************************************************
 
 		String deptDirector = getValueByDept(dept, Role.ROLE_DEPT_MANAGER_ID);

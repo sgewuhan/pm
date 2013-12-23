@@ -15,6 +15,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.pm2.nls.Messages;
 
 public class MntRole implements Runnable {
 
@@ -42,7 +43,7 @@ public class MntRole implements Runnable {
 			for(int i=0;i<rolesd.size();i++){
 				RoleDefinition rd = (RoleDefinition) rolesd.get(i);
 				try {
-					checkRoled(rd,workd+"参与者");
+					checkRoled(rd,workd+Messages.get().MntRole_0);
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
@@ -51,7 +52,7 @@ public class MntRole implements Runnable {
 		RoleDefinition rd = workd.getChargerRoleDefinition(RoleDefinition.class);
 		if(rd!=null){
 			try {
-				checkRoled(rd,workd+"负责人");
+				checkRoled(rd,workd+Messages.get().MntRole_1);
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 			}
@@ -68,7 +69,7 @@ public class MntRole implements Runnable {
 				if(rd!=null){
 					DBObject rddata = rd.get_data();
 					if(rddata==null){
-						System.err.println(workd+",流程"+key+":"+_rdId);
+						System.err.println(workd+Messages.get().MntRole_2+key+":"+_rdId); //$NON-NLS-2$
 					}else{
 						rd.getLabel();
 					}

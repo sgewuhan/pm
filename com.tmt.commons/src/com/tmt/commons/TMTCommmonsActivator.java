@@ -7,6 +7,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 
 	private DB db;
 
-	private Set<MongoClient> mongos;
+	private Set<MongoClient> mongos = new HashSet<MongoClient>();
 
 	/**
 	 * The constructor
@@ -81,7 +82,8 @@ public class TMTCommmonsActivator extends AbstractUIPlugin {
 			Properties props = new Properties();
 			props.load(is);
 			String host = props.getProperty("db.host"); //$NON-NLS-1$
-			int port = Integer.parseInt(props.getProperty("db.port")); //$NON-NLS-1$
+			String _port = props.getProperty("db.port");
+			int port = _port==null?10001:Integer.parseInt(_port); //$NON-NLS-1$
 			String dbname = props.getProperty("db.name"); //$NON-NLS-1$
 			if(dbname==null){
 				dbname = name.substring(0, name.indexOf("."));

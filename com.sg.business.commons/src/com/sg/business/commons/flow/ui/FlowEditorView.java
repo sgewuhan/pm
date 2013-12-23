@@ -33,7 +33,7 @@ public class FlowEditorView extends EditorView {
 //      IWorkbench workbench = PlatformUI.getWorkbench();
       DirectEditorInput input = new DirectEditorInput();
       
-      input.setName("Flow Example");
+      input.setName("Flow Example"); //$NON-NLS-1$
       ((FlowEditor)editor).setInput(input);
     } 
     catch (Exception e) {

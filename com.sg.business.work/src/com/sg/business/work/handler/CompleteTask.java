@@ -25,6 +25,7 @@ import com.sg.business.model.TaskForm;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.work.WorkflowSynchronizer;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -42,7 +43,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 		if (selected instanceof Work) {
 
 			UserTask userTask = null;
-			Object _usertask = parameters.get("runtimework.usertask");
+			Object _usertask = parameters.get("runtimework.usertask"); //$NON-NLS-1$
 			try {
 				DBObject userTaskData = (DBObject) JSON
 						.parse((String) _usertask);
@@ -52,7 +53,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 			} catch (Exception e) {
 			}
 			if (userTask == null) {
-				Object _userTaskId = parameters.get("runtimework.usertask_id");
+				Object _userTaskId = parameters.get("runtimework.usertask_id"); //$NON-NLS-1$
 				if (_userTaskId != null) {
 					ObjectId _id = new ObjectId((String) _userTaskId);
 					userTask = ModelService.createModelObject(UserTask.class,
@@ -72,7 +73,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 							work);
 
 					if (userTasks.isEmpty()) {
-						MessageUtil.showToast("没有您需要执行的流程任务",
+						MessageUtil.showToast(Messages.get().CompleteTask_2,
 								SWT.ICON_INFORMATION);
 						return;
 					}
@@ -83,7 +84,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 				String taskstatus = userTask.getStatus();
 				boolean canStartTask = WorkflowService.canStartTask(taskstatus);
 				if (canStartTask) {
-					MessageUtil.showToast("工作的流程任务尚未开始，系统自动开始任务",
+					MessageUtil.showToast(Messages.get().CompleteTask_3,
 							SWT.ICON_INFORMATION);
 					work.doStartTask(Work.F_WF_EXECUTE, userTask, context);
 				}
@@ -95,7 +96,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 				vc.getViewer().setSelection(new StructuredSelection());
 			} catch (Exception e) {
 				e.printStackTrace();
-				MessageUtil.showToast("完成流程任务", e);
+				MessageUtil.showToast(Messages.get().CompleteTask_4, e);
 			}
 		}
 	}
@@ -155,7 +156,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 						.getWorkflowInformation(taskForm);
 			}
 
-			taskFormData.put("editor", taskFormEditorId);
+			taskFormData.put("editor", taskFormEditorId); //$NON-NLS-1$
 		}
 
 		// 2. 完成工作流任务
@@ -166,7 +167,7 @@ public class CompleteTask extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("请选择工作后执行完成流程任务操作", SWT.ICON_INFORMATION);
+		MessageUtil.showToast(Messages.get().CompleteTask_6, SWT.ICON_INFORMATION);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 

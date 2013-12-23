@@ -13,41 +13,42 @@ import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.bpmservice.AbstractMessageService;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.tmt.kfzx.nls.Messages;
 
 public class projectstartMessageOfKFZX extends AbstractMessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "项目启动会议通知";
+		return Messages.get().projectstartMessageOfKFZX_0;
 	}
 
 	@Override
 	public String getMessageContent() {
 		Project pro = (Project) getTarget();
-		String content = "请各位评审专家于";
+		String content = Messages.get().projectstartMessageOfKFZX_1;
 		Date confirmTime = Utils
-				.getDateValue(getInputValue("confirmdata"));
+				.getDateValue(getInputValue("confirmdata")); //$NON-NLS-1$
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE);
-		content ="  "+ content + sdf.format(confirmTime);
-		content = "日  " +content + (String) getInputValue("confirmtime")+"  ";
-		content = content + "在：";
-		String confirmAddress = (String) getInputValue("confirmaddress");
+		content ="  "+ content + sdf.format(confirmTime); //$NON-NLS-1$
+		content = Messages.get().projectstartMessageOfKFZX_4 +content + (String) getInputValue("confirmtime")+"  "; //$NON-NLS-2$ //$NON-NLS-3$
+		content = content + Messages.get().projectstartMessageOfKFZX_7;
+		String confirmAddress = (String) getInputValue("confirmaddress"); //$NON-NLS-1$
 		content = content + confirmAddress;
-		content = content + "参加";
+		content = content + Messages.get().projectstartMessageOfKFZX_9;
 		content = content + pro.getLabel();
-		content = content + " 项目的评审会！<br/>如有问题请与";
-		String projectadminId = (String) getInputValue("act_rule_prj_admin");
+		content = content + Messages.get().projectstartMessageOfKFZX_10;
+		String projectadminId = (String) getInputValue("act_rule_prj_admin"); //$NON-NLS-1$
 		User projectadmin = UserToolkit.getUserById(projectadminId);
 		content = content + projectadmin.getUsername();
-		content = content + "联系!";
+		content = content + Messages.get().projectstartMessageOfKFZX_12;
 		return content;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
-		List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list");
-		String reviewer_admin=(String)getInputValue("reviewer_admin");
+		List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list"); //$NON-NLS-1$
+		String reviewer_admin=(String)getInputValue("reviewer_admin"); //$NON-NLS-1$
 		if(!reviewerList.contains(reviewer_admin)){
 			
 			reviewerList.add(reviewer_admin);
@@ -62,7 +63,7 @@ public class projectstartMessageOfKFZX extends AbstractMessageService {
 
 	@Override
 	public PrimaryObject getTarget() {
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);

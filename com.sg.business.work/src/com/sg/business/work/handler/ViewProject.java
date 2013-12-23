@@ -26,10 +26,10 @@ public class ViewProject extends AbstractNavigatorHandler {
 			if (project == null) {
 				return;
 			}
-			String pageid = (String) para.get("work.project.view");
+			String pageid = (String) para.get("work.project.view"); //$NON-NLS-1$
 			try {
 				DataObjectEditor editor = DataObjectEditor.open(project,
-						"editor.runtimeproject", false, null);
+						"editor.runtimeproject", false, null); //$NON-NLS-1$
 				if (pageid != null) {
 					editor.setActivePage(pageid);
 				}

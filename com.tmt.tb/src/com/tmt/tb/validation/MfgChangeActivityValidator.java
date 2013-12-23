@@ -7,7 +7,7 @@ public class MfgChangeActivityValidator extends AbstractChangeActivityValidator 
 
 	@Override
 	public String getECNName() {
-		return "在制品处理";
+		return "在制品处理"; //$NON-NLS-1$
 	}
 
 }

@@ -31,6 +31,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.finance.nls.Messages;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.RNDPeriodCost;
@@ -86,8 +87,8 @@ public class RNDCostAdjustmentView extends ViewPart {
 							RNDPeriodCost.class);
 				} else {
 					MessageUtil.showToast(
-							"无法获取期间研发成本数据：" + organization.getCostCenterCode()
-									+ "\n" + year + "-" + month,
+							Messages.get().RNDCostAdjustmentView_0 + organization.getCostCenterCode()
+									+ "\n" + year + "-" + month, //$NON-NLS-1$ //$NON-NLS-2$
 							SWT.ICON_WARNING);
 
 					// try {

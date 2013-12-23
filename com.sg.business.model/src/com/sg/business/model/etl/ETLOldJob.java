@@ -19,7 +19,7 @@ public class ETLOldJob implements ISchedualJobRunnable {
 			final int year = cal.get(Calendar.YEAR);
 			final int month = cal.get(Calendar.MONTH) + 1;
 			final int day = 1;
-			System.out.println("" + year + "-" + month + "-" + day);
+			System.out.println("" + year + "-" + month + "-" + day); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			AbstractETLJob etl = new AbstractETLJob() {
 
 				@Override
@@ -42,22 +42,22 @@ public class ETLOldJob implements ISchedualJobRunnable {
 					BasicDBObject query = new BasicDBObject();
 					query.put(
 							Project.F_LIFECYCLE,
-							new BasicDBObject().append("$in", new String[] {
+							new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 									Project.STATUS_CANCELED_VALUE,
 									Project.STATUS_FINIHED_VALUE,
 									Project.STATUS_PAUSED_VALUE,
 									Project.STATUS_WIP_VALUE }));
 					query.put(
-							"$or",
+							"$or", //$NON-NLS-1$
 							new BasicDBObject[] {
 									new BasicDBObject().append(
 											Project.F_PLAN_START,
-											new BasicDBObject().append("$lte",
+											new BasicDBObject().append("$lte", //$NON-NLS-1$
 													cal.getTime())),
 
 									new BasicDBObject().append(
 											Project.F_ACTUAL_START,
-											new BasicDBObject().append("$lte",
+											new BasicDBObject().append("$lte", //$NON-NLS-1$
 													cal.getTime())) });
 
 					return query;

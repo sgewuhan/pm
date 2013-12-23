@@ -17,6 +17,7 @@ import com.mongodb.util.JSON;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.work.WorkflowSynchronizer;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -30,7 +31,7 @@ public class StartTask extends AbstractNavigatorHandler {
 			IStructuredSelection selection) {
 		if (selected instanceof Work) {
 			UserTask userTask = null;
-			Object _usertask = parameters.get("runtimework.usertask");
+			Object _usertask = parameters.get("runtimework.usertask"); //$NON-NLS-1$
 			try {
 				DBObject userTaskData = (DBObject) JSON
 						.parse((String) _usertask);
@@ -40,7 +41,7 @@ public class StartTask extends AbstractNavigatorHandler {
 			} catch (Exception e) {
 			}
 			if (userTask == null) {
-				Object _userTaskId = parameters.get("runtimework.usertask_id");
+				Object _userTaskId = parameters.get("runtimework.usertask_id"); //$NON-NLS-1$
 				if (_userTaskId != null) {
 					ObjectId _id = new ObjectId((String) _userTaskId);
 					userTask = ModelService.createModelObject(UserTask.class,
@@ -59,7 +60,7 @@ public class StartTask extends AbstractNavigatorHandler {
 							work);
 
 					if (userTasks.isEmpty()) {
-						MessageUtil.showToast("没有您需要执行的流程任务",
+						MessageUtil.showToast(Messages.get().StartTask_2,
 								SWT.ICON_INFORMATION);
 						return;
 					}
@@ -71,7 +72,7 @@ public class StartTask extends AbstractNavigatorHandler {
 				vc.getViewer().update(work, null);
 				vc.getViewer().setSelection(new StructuredSelection());
 			} catch (Exception e) {
-				MessageUtil.showToast("开始流程任务", e);
+				MessageUtil.showToast(Messages.get().StartTask_3, e);
 			}
 		}
 	}
@@ -79,7 +80,7 @@ public class StartTask extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("请选择工作后执行开始流程任务操作", SWT.ICON_INFORMATION);
+		MessageUtil.showToast(Messages.get().StartTask_4, SWT.ICON_INFORMATION);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 

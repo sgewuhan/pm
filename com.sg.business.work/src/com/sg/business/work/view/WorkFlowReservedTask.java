@@ -30,13 +30,13 @@ public class WorkFlowReservedTask extends AutoRefreshableTableView {
 				if (event.detail == RWT.HYPERLINK) {
 					try {
 						String _id = event.text.substring(
-								event.text.lastIndexOf("/") + 1,
-								event.text.indexOf("@"));
+								event.text.lastIndexOf("/") + 1, //$NON-NLS-1$
+								event.text.indexOf("@")); //$NON-NLS-1$
 						String action = event.text.substring(event.text
-								.indexOf("@") + 1);
+								.indexOf("@") + 1); //$NON-NLS-1$
 						UserTask userTask = ModelService.createModelObject(
 								UserTask.class, new ObjectId(_id));
-						if ("start".equals(action)) {
+						if ("start".equals(action)) { //$NON-NLS-1$
 							doStart(userTask);
 						} else {
 							doComplete(userTask);

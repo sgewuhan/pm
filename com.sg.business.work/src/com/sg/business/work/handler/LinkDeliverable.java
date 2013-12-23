@@ -15,6 +15,7 @@ import com.sg.business.model.IDeliverable;
 import com.sg.business.model.IWorkRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -37,18 +38,18 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 		final Shell shell = part.getSite().getShell();
 		final PrimaryObject master = vc.getMaster();
 		if (master == null) {
-			MessageUtil.showToast(shell, "创建交付物", "请选择流程", SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, Messages.get().LinkDeliverable_0, Messages.get().LinkDeliverable_1, SWT.ICON_ERROR);
 			return;
 		}
 		
 		Work work = getWork(master);
 		if(work == null){
-			MessageUtil.showToast(shell, "创建交付物", "请选择流程", SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, Messages.get().LinkDeliverable_2, Messages.get().LinkDeliverable_3, SWT.ICON_ERROR);
 			return;
 		}
 
 		NavigatorSelector ns = new NavigatorSelector(
-				"project.deliverable.selector") {
+				"project.deliverable.selector") { //$NON-NLS-1$
 
 			@Override
 			protected boolean isSelectEnabled(IStructuredSelection is) {
@@ -70,8 +71,8 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 							if (document != null) {
 								Work work = getWork(master);
 								if(work == null){
-									MessageUtil.showToast(shell, "创建交付物",
-											"请选择流程", SWT.ICON_ERROR);
+									MessageUtil.showToast(shell, Messages.get().LinkDeliverable_5,
+											Messages.get().LinkDeliverable_6, SWT.ICON_ERROR);
 									return;
 								}
 
@@ -79,7 +80,7 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 										new CurrentAccountContext());
 								vc.doReloadData();
 							} else {
-								MessageUtil.showToast("选择的交付物不包含文档",
+								MessageUtil.showToast(Messages.get().LinkDeliverable_7,
 										SWT.ICON_WARNING);
 							}
 						}
@@ -89,7 +90,7 @@ public class LinkDeliverable extends AbstractNavigatorHandler {
 					}
 
 				} else {
-					MessageUtil.showToast("请选择文档", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().LinkDeliverable_8, SWT.ICON_WARNING);
 				}
 			}
 		};

@@ -10,40 +10,40 @@ public interface ISchedual {
 	/**
 	 * 计划开始时间
 	 */
-	public static final String F_PLAN_START = "planstart";
+	public static final String F_PLAN_START = "planstart"; //$NON-NLS-1$
 
 	/**
 	 * 计划完成时间
 	 */
-	public static final String F_PLAN_FINISH = "planfinish";
+	public static final String F_PLAN_FINISH = "planfinish"; //$NON-NLS-1$
 
 	/**
 	 * 实际开始时间
 	 */
-	public static final String F_ACTUAL_START = "actualstart";
+	public static final String F_ACTUAL_START = "actualstart"; //$NON-NLS-1$
 	
 	/**
 	 * 实际完成时间
 	 */
-	public static final String F_ACTUAL_FINISH = "actualfinish";
+	public static final String F_ACTUAL_FINISH = "actualfinish"; //$NON-NLS-1$
 	
 	/**
 	 * 计划工时
 	 */
-	public static final String F_PLAN_WORKS = "planworks";
+	public static final String F_PLAN_WORKS = "planworks"; //$NON-NLS-1$
 
 	/**
 	 * 实际工时
 	 */
-	public static final String F_ACTUAL_WORKS = "actualworks";
+	public static final String F_ACTUAL_WORKS = "actualworks"; //$NON-NLS-1$
 
 	/**
 	 * 计划工期
 	 */
-	public static final String F_PLAN_DURATION = "planduration";
+	public static final String F_PLAN_DURATION = "planduration"; //$NON-NLS-1$
 
 	/**
 	 * 实际工期
 	 */
-	public static final String F_ACTUAL_DURATION = "actualduration";
+	public static final String F_ACTUAL_DURATION = "actualduration"; //$NON-NLS-1$
 }

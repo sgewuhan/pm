@@ -15,6 +15,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.model.nls.Messages;
 
 /**
  * <p>
@@ -34,41 +35,41 @@ public class WorkDefinition extends AbstractWork implements
 	 * 
 	 * @see #Orgainzation
 	 */
-	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
 
 	/**
 	 * 工作定义是否激活，可使用，只用于{@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE}
 	 */
-	public static final String F_ACTIVATED = "activated";
+	public static final String F_ACTIVATED = "activated"; //$NON-NLS-1$
 
 	/**
 	 * 通用工作定义的编辑器Id
 	 */
-	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition.1";
+	public static final String EDITOR_GENERIC_WORK = "editor.genericWorkDefinition.1"; //$NON-NLS-1$
 
 	/**
 	 * 通用工作定义的编辑器Id,用于编辑根节点
 	 */
-	public static final String EDITOR_GENERIC_WORK_ROOT = "editor.genericWorkDefinition";
+	public static final String EDITOR_GENERIC_WORK_ROOT = "editor.genericWorkDefinition"; //$NON-NLS-1$
 
 	/**
 	 * 独立工作定义的编辑器Id
 	 */
-	public static final String EDITOR_STANDLONE_WORK = "editor.standloneWorkDefinition.1";
+	public static final String EDITOR_STANDLONE_WORK = "editor.standloneWorkDefinition.1"; //$NON-NLS-1$
 
 	/**
 	 * 独立工作定义的编辑器Id,用于编辑根节点
 	 */
-	public static final String EDITOR_STANDLONE_WORK_ROOT = "editor.standloneWorkDefinition";
+	public static final String EDITOR_STANDLONE_WORK_ROOT = "editor.standloneWorkDefinition"; //$NON-NLS-1$
 
 	/**
 	 * 项目模板工作定义的编辑器Id
 	 */
-	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition";
+	public static final String EDITOR_PROJECT_WORK = "editor.workDefinition"; //$NON-NLS-1$
 
-	private static final String POSTFIX_ACTIVATED = "_activated";
+	private static final String POSTFIX_ACTIVATED = "_activated"; //$NON-NLS-1$
 
-	private static final String POSTFIX_ASSIGNMENT = "_assignment";
+	private static final String POSTFIX_ASSIGNMENT = "_assignment"; //$NON-NLS-1$
 
 	
 
@@ -209,7 +210,7 @@ public class WorkDefinition extends AbstractWork implements
 		int type = getWorkDefinitionType();
 		if ((type == WORK_TYPE_GENERIC || type == WORK_TYPE_STANDLONE)
 				&& isActivated()) {
-			throw new Exception("工作定义处于启用状态，不可删除");
+			throw new Exception(Messages.get().WorkDefinition_0);
 		}
 
 		// 删除前后顺序关系
@@ -329,7 +330,7 @@ public class WorkDefinition extends AbstractWork implements
 	public void doClone(WorkDefinition srcWorkDefinition, IContext context)
 			throws Exception {
 		if (srcWorkDefinition == null) {
-			throw new IllegalArgumentException("源对象为空");
+			throw new IllegalArgumentException(Messages.get().WorkDefinition_1);
 		}
 
 		// 创建子工作定义
@@ -434,7 +435,7 @@ public class WorkDefinition extends AbstractWork implements
 	 */
 	@Override
 	public String getTypeName() {
-		return "工作定义";
+		return Messages.get().WorkDefinition_2;
 	}
 
 	/**

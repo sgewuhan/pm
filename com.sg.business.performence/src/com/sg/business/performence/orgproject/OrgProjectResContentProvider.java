@@ -52,11 +52,11 @@ public class OrgProjectResContentProvider implements ITreeContentProvider {
 			if (member.size() > 0) {
 				DBCursor cursor = col.find(new BasicDBObject().append(
 						Project.F_PARTICIPATE,
-						new BasicDBObject().append("$in", participate)));
+						new BasicDBObject().append("$in", participate))); //$NON-NLS-1$
 				while(cursor.hasNext()){
 					DBObject projectdata = cursor.next();
 					Project project = ModelService.createModelObject(projectdata, Project.class);
-					project.setValue("$participate", participate);
+					project.setValue("$participate", participate); //$NON-NLS-1$
 					result.add(project);
 				}
 			}

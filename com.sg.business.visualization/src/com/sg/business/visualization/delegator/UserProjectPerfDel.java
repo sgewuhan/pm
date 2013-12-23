@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.UserProjectPerf;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.IDeleteDelegator;
@@ -29,7 +30,7 @@ public class UserProjectPerfDel implements IDeleteDelegator {
 			}
 		
 		}else{
-			MessageUtil.showToast("只能删除自定义项目组合", SWT.ICON_WARNING);
+			MessageUtil.showToast(Messages.get().UserProjectPerfDel_0, SWT.ICON_WARNING);
 		}
 	}
 }

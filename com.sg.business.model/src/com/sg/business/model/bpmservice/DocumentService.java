@@ -15,7 +15,7 @@ public class DocumentService extends ServiceProvider {
 	public Map<String, Object> run(Object arg0) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
@@ -24,11 +24,11 @@ public class DocumentService extends ServiceProvider {
 				DBObject processData = WorkflowUtils
 						.getProcessInfoFromJSON(jsonContent);
 				String processId = (String) processData
-						.get("processId");
+						.get("processId"); //$NON-NLS-1$
 				String processName = (String) processData
-						.get("processName");
+						.get("processName"); //$NON-NLS-1$
 				work.doSetDocumentLock(new BPMServiceContext(
-						processName, processId),"lock".equals(getOperation()));
+						processName, processId),"lock".equals(getOperation())); //$NON-NLS-1$
 			}
 		}
 		return result;

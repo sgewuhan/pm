@@ -19,6 +19,7 @@ import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.OrgRoot;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
 public class WorkFlowSettingPage extends WizardPage {
@@ -27,8 +28,8 @@ public class WorkFlowSettingPage extends WizardPage {
 	private AbstractProcessPage page;
 
 	protected WorkFlowSettingPage() {
-		super("WORKFLOW_SETTING_PAGE");
-		setTitle("请确定工作执行流程");
+		super("WORKFLOW_SETTING_PAGE"); //$NON-NLS-1$
+		setTitle(Messages.get().WorkFlowSettingPage_1);
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_WORKFLOW_72));
 	}
@@ -63,7 +64,7 @@ public class WorkFlowSettingPage extends WizardPage {
 			@Override
 			protected String getActorNavigatorId(AbstractRoleDefinition roled) {
 				if(roled == null){
-					return "organization.user.selector";
+					return "organization.user.selector"; //$NON-NLS-1$
 				}
 				
 				return super.getActorNavigatorId(roled);

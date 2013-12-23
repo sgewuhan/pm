@@ -16,6 +16,6 @@ public class ProjectOfDelayWork extends ColumnLabelProvider {
 				return project.getDesc();
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

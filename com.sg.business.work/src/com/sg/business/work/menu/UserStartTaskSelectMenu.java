@@ -15,12 +15,12 @@ public class UserStartTaskSelectMenu extends AbstractUserTaskSelectMenu {
 
 	@Override
 	protected String getContributionId() {
-		return "work.processing.starttask";
+		return "work.processing.starttask"; //$NON-NLS-1$
 	}
 
 	@Override
 	protected String getCommandId() {
-		return "runtimework.wfstart";
+		return "runtimework.wfstart"; //$NON-NLS-1$
 	}
 
 	

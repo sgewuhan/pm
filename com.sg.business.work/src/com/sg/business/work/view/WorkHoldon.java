@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Display;
 import com.mobnut.db.model.IContext;
 import com.mobnut.portal.user.IAccountEvent;
 import com.sg.business.work.WorkflowSynchronizer;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.view.AccountSensitiveTableView;
 
@@ -48,7 +49,7 @@ public class WorkHoldon extends AccountSensitiveTableView {
 	@Override
 	public void doRefresh() {
 		if (processSync) {
-			MessageUtil.showToast(null, getPartName(), "请稍候, 正在处理更新。",
+			MessageUtil.showToast(null, getPartName(), Messages.get().WorkHoldon_0,
 					SWT.ICON_INFORMATION);
 			return;
 		}
@@ -71,11 +72,11 @@ public class WorkHoldon extends AccountSensitiveTableView {
 
 	@Override
 	protected String getAccountNoticeText() {
-		return "流程信息更新";
+		return Messages.get().WorkHoldon_1;
 	}
 
 	protected String getAccountNoticeMessage() {
-		return "正在重新获取流程信息...";
+		return Messages.get().WorkHoldon_2;
 	}
 
 }

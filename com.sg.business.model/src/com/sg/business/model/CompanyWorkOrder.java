@@ -8,9 +8,9 @@ import com.mongodb.DBCollection;
 
 public class CompanyWorkOrder extends PrimaryObject {
 
-	public static final String F_ORGANIZATION_ID = "organizationid";
+	public static final String F_ORGANIZATION_ID = "organizationid"; //$NON-NLS-1$
 	
-	public static final String F_WORKORDER = "workorderid";
+	public static final String F_WORKORDER = "workorderid"; //$NON-NLS-1$
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static String[] getWorkOrders() {

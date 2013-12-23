@@ -111,12 +111,12 @@ public abstract class AbstractProcessPage extends
 	}
 
 	protected String getRoleNavigatorId() {
-		return "commons.generic.tableselector";
+		return "commons.generic.tableselector"; //$NON-NLS-1$
 	}
 	
 	protected String getActorNavigatorId(AbstractRoleDefinition roled) {
 //		return "commons.generic.tableselector";
-		return "commons.workflow.tableselector";
+		return "commons.workflow.tableselector"; //$NON-NLS-1$
 	}
 
 	protected abstract int getProcessSettingControl();

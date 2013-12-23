@@ -8,9 +8,9 @@ import com.sg.business.resource.BusinessResource;
 
 public class MonthFolder extends PrimaryObject {
 
-	public static final String F_USERID = "userid";
-	public static final String F_YEAR = "year";
-	public static final String F_MONTH = "month";
+	public static final String F_USERID = "userid"; //$NON-NLS-1$
+	public static final String F_YEAR = "year"; //$NON-NLS-1$
+	public static final String F_MONTH = "month"; //$NON-NLS-1$
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
@@ -19,7 +19,7 @@ public class MonthFolder extends PrimaryObject {
 	
 	@Override
 	public String getLabel() {
-		return ""+getValue(F_YEAR)+"-"+((Integer)getValue(F_MONTH)+1);
+		return ""+getValue(F_YEAR)+"-"+((Integer)getValue(F_MONTH)+1); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	@Override

@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Work;
@@ -29,7 +30,7 @@ public class EditWork extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择一项", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EditWork_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -48,19 +49,19 @@ public class EditWork extends AbstractNavigatorHandler {
 		IProcessControl ipc = (IProcessControl) work
 				.getAdapter(IProcessControl.class);
 		if (work.isSummaryWork()) {
-			editorId = "edit.work.plan.2";
+			editorId = "edit.work.plan.2"; //$NON-NLS-1$
 		} else {
 			if (work.isStandloneWork()) {
 				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
-					editorId = "edit.work.plan.4";
+					editorId = "edit.work.plan.4"; //$NON-NLS-1$
 				} else {
-					editorId = "edit.work.plan.3";
+					editorId = "edit.work.plan.3"; //$NON-NLS-1$
 				}
 			} else {
 				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
-					editorId = "edit.work.plan.1";
+					editorId = "edit.work.plan.1"; //$NON-NLS-1$
 				} else {
-					editorId = "edit.work.plan.0";
+					editorId = "edit.work.plan.0"; //$NON-NLS-1$
 				}
 			}
 		}
@@ -70,7 +71,7 @@ public class EditWork extends AbstractNavigatorHandler {
 		if (conf != null) {
 			try {
 				DataObjectDialog.openDialog(work,
-						(DataEditorConfigurator) conf, true, null, "编辑"
+						(DataEditorConfigurator) conf, true, null, Messages.get().EditWork_6
 								+ selected.getTypeName());
 				// 刷新上级数据
 				List<PrimaryObject> tobeRefresh = new ArrayList<PrimaryObject>();
@@ -89,7 +90,7 @@ public class EditWork extends AbstractNavigatorHandler {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				MessageUtil.showToast(shell, "编辑" + selected.getTypeName(),
+				MessageUtil.showToast(shell, Messages.get().EditWork_7 + selected.getTypeName(),
 						e.getMessage(), SWT.ICON_ERROR);
 			}
 		}

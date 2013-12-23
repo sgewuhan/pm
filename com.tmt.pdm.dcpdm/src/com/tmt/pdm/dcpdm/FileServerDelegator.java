@@ -54,12 +54,12 @@ public class FileServerDelegator implements IFileServerDelegator {
 	}
 
 	private String getFilePath(HashMap tempMap) throws IIPRequestException {
-		String filePath = (String) tempMap.get("md$path"); // server side
+		String filePath = (String) tempMap.get("md$path"); // server side //$NON-NLS-1$
 		return Starter.dss.getLocalPath(filePath);
 	}
 
 	private String getFileName(HashMap tempMap) {
-		String fileTypeDescription = (String) tempMap.get("md$description");
+		String fileTypeDescription = (String) tempMap.get("md$description"); //$NON-NLS-1$
 		File file = new File(fileTypeDescription);
 		return file.getName();
 	}

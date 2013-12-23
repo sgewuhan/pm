@@ -19,22 +19,22 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 	/**
 	 * 是否已转批
 	 */
-	public static final String F_IS_MASS_PRODUCTION = "status_massproduction";
 
+	public static final String F_IS_MASS_PRODUCTION = "status_massproduction"; //$NON-NLS-1$
 	/**
 	 * 销售收入
 	 */
-	public static final String F_SALES_INCOME = "sales_income";
+	public static final String F_SALES_INCOME = "sales_income"; //$NON-NLS-1$
 
 	/**
 	 * 销售成本
 	 */
-	public static final String F_SALES_COST = "sales_cost";
+	public static final String F_SALES_COST = "sales_cost"; //$NON-NLS-1$
 
 	/**
 	 * 销售数据更新时间
 	 */
-	public static final String F_SALES_DATA_UPDATE = "sales_data_update";
+	public static final String F_SALES_DATA_UPDATE = "sales_data_update"; //$NON-NLS-1$
 
 	@Override
 	public Project getProject() {
@@ -62,7 +62,7 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 		DBCollection col = getCollection();
 		WriteResult ws = col.update(
 				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", new BasicDBObject().append(
+				new BasicDBObject().append("$set", new BasicDBObject().append( //$NON-NLS-1$
 						F_IS_MASS_PRODUCTION, Boolean.TRUE)));
 		checkWriteResult(ws);
 	}
@@ -87,21 +87,19 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 		DBCollection col = getCollection(IModelConstants.C_SALESDATA);
 		DBObject matchCondition = new BasicDBObject();
 		matchCondition.put(SalesData.F_MATERIAL_NUMBER, getDesc());
-		DBObject match = new BasicDBObject().append("$match", matchCondition);
+		DBObject match = new BasicDBObject().append("$match", matchCondition); //$NON-NLS-1$
 		DBObject groupCondition = new BasicDBObject();
-		groupCondition.put("_id", "$" + SalesData.F_MATERIAL_NUMBER);// 按物料分组
+		groupCondition.put("_id", "$" + SalesData.F_MATERIAL_NUMBER);// 按物料分组 //$NON-NLS-1$ //$NON-NLS-2$
 		groupCondition.put(SalesData.F_SALES_COST, new BasicDBObject().append(
-				"$sum", "$" + SalesData.F_SALES_COST));// 销售成本
-		groupCondition.put(
-				SalesData.F_SALES_INCOME,
-				new BasicDBObject().append("$sum", "$"
+				"$sum", "$" + SalesData.F_SALES_COST));// 销售成本 //$NON-NLS-1$ //$NON-NLS-2$
+		groupCondition.put(SalesData.F_SALES_INCOME,
+				new BasicDBObject().append("$sum", "$" //$NON-NLS-1$ //$NON-NLS-2$
 						+ SalesData.F_SALES_INCOME));// 销售收入
-		groupCondition.put(
-				SalesData.F_COST_VAR_APP,
-				new BasicDBObject().append("$sum", "$"
+		groupCondition.put(SalesData.F_COST_VAR_APP,
+				new BasicDBObject().append("$sum", "$" //$NON-NLS-1$ //$NON-NLS-2$
 						+ SalesData.F_COST_VAR_APP));// 销售成本差异
 
-		DBObject group = new BasicDBObject().append("$group", groupCondition);
+		DBObject group = new BasicDBObject().append("$group", groupCondition); //$NON-NLS-1$
 		AggregationOutput agg = col.aggregate(match, group);
 		Iterator<DBObject> iter = agg.results().iterator();
 		while (iter.hasNext()) {
@@ -117,11 +115,10 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 		getCollection().update(
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
-						"$set",
+						"$set",//$NON-NLS-1$
 						new BasicDBObject().append(F_SALES_INCOME, result[0])
 								.append(F_SALES_COST, result[1])
 								.append(F_SALES_DATA_UPDATE, dateCode)));
-		// System.out.println("更新销售数据:"+getDesc());
 	}
 
 	public double getSalesRevenue() {
@@ -140,9 +137,10 @@ public class ProductItem extends PrimaryObject implements IProjectRelative {
 		DBCollection col = getCollection(IModelConstants.C_SALESDATA);
 		DBObject matchCondition = new BasicDBObject();
 		matchCondition.put(SalesData.F_MATERIAL_NUMBER, getDesc());
-		matchCondition.put(SalesData.F_ACCOUNT_YEAR, ""+cal.get(Calendar.YEAR));
+		matchCondition.put(SalesData.F_ACCOUNT_YEAR,
+				"" + cal.get(Calendar.YEAR));
 		matchCondition.put(SalesData.F_ACCOUNT_MONTH,
-				String.format("%03d",(cal.get(Calendar.MONTH) + 1)));
+				String.format("%03d", (cal.get(Calendar.MONTH) + 1)));
 		DBObject match = new BasicDBObject().append("$match", matchCondition);
 		DBObject groupCondition = new BasicDBObject();
 		groupCondition.put("_id", "$" + SalesData.F_MATERIAL_NUMBER);// 按物料分组

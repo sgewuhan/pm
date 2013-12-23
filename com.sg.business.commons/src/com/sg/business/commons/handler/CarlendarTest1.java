@@ -13,6 +13,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.DataSetFactory;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -33,17 +34,17 @@ public class CarlendarTest1 extends AbstractNavigatorHandler {
 		CalendarCaculater ds = new CalendarCaculater(dsf.getDataSet()
 				.getDataItems());
 		Shell parentShell = part.getSite().getShell();
-		InputDialog input = new InputDialog(parentShell, "测试某天是否为工作日",
-				"请输入yyyyMMdd格式的日期",
-				new SimpleDateFormat("yyyyMMdd").format(new Date()), null);
+		InputDialog input = new InputDialog(parentShell,Messages.get().CarlendarTest1_0,
+				Messages.get().CarlendarTest1_1,
+				new SimpleDateFormat("yyyyMMdd").format(new Date()), null); //$NON-NLS-1$
 		if (input.open() == InputDialog.OK) {
 			String value = input.getValue();
 			double time = ds.getWorkingTime(value);
 			if (time == 0d) {
-				MessageUtil.showToast(parentShell, value, "是休息日",
+				MessageUtil.showToast(parentShell, value,Messages.get().CarlendarTest1_3,
 						SWT.ICON_INFORMATION);
 			} else {
-				MessageUtil.showToast(parentShell, value, "是工作日，当天工时为" + time,
+				MessageUtil.showToast(parentShell, value,Messages.get().CarlendarTest1_4 + time,
 						SWT.ICON_INFORMATION);
 			}
 		}

@@ -6,6 +6,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.taskform.IValidationHandler;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Work;
+import com.tmt.tb.nls.Messages;
 
 public abstract class AbstractChangeActivityValidator implements
 		IValidationHandler {
@@ -41,7 +42,7 @@ public abstract class AbstractChangeActivityValidator implements
 
 	@Override
 	public String getMessage() {
-		return "变更活动没有全部完成，不能完成此流程活动";
+		return Messages.get().AbstractChangeActivityValidator_0;
 	}
 
 }

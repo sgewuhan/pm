@@ -31,7 +31,7 @@ public class AppendWorkRecord extends AbstractNavigatorHandler {
 		BasicDBObject data = new BasicDBObject();
 		WorksPerformence po = ModelService.createModelObject(data, WorksPerformence.class);
 		try {
-			DataObjectDialog.openDialog(po, "editor.append.workrecord", Boolean.TRUE, null);
+			DataObjectDialog.openDialog(po, "editor.append.workrecord", Boolean.TRUE, null); //$NON-NLS-1$
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}

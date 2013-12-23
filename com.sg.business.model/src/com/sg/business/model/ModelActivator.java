@@ -17,7 +17,7 @@ import com.sg.widgets.registry.config.Configurator;
 
 public class ModelActivator implements BundleActivator {
 
-	public static final String PLUGIN_ID = "com.sg.business.model";
+	public static final String PLUGIN_ID = "com.sg.business.model"; //$NON-NLS-1$
 	private static BundleContext context;
 
 	static BundleContext getContext() {

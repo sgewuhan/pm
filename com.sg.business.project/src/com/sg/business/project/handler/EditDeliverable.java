@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -21,13 +22,13 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class EditDeliverable extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "编辑交付物";
+	private static final String TITLE = Messages.get().EditDeliverable_0;
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
 		final Shell shell = part.getSite().getShell();
-		MessageUtil.showToast(shell, TITLE, "您需要选择一个交付物", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, Messages.get().EditDeliverable_1, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 

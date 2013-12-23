@@ -13,6 +13,7 @@ import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.part.INavigatablePart;
@@ -23,15 +24,15 @@ public class PreviewPage extends WizardPage implements INavigatablePart {
 	private NavigatorControl navi;
 
 	protected PreviewPage() {
-		super("预览");
+		super(Messages.get().PreviewPage_0);
 		
-		setDescription("项目的分解结构和交付物");
+		setDescription(Messages.get().PreviewPage_1);
 
 	}
 
 	@Override
 	public void createControl(Composite parent) {
-		navi = new NavigatorControl("management.deliverables", this);
+		navi = new NavigatorControl("management.deliverables", this); //$NON-NLS-1$
 		navi.createPartContent(parent);
 		ProjectPreviewer wiz = (ProjectPreviewer) getWizard();
 		ProjectTemplate template = wiz.getProjectTemplate();

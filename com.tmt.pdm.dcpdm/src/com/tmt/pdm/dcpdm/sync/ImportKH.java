@@ -27,7 +27,7 @@ public class ImportKH implements Runnable {
 			if (org instanceof ObjectId) {
 				col.update(new BasicDBObject().append(Project.F__ID,
 						next.get(Project.F__ID)), new BasicDBObject().append(
-						"$set", new BasicDBObject().append(
+						"$set", new BasicDBObject().append( //$NON-NLS-1$
 								Project.F_LAUNCH_ORGANIZATION,
 								new Object[] { org })));
 			}

@@ -16,6 +16,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.etl.ProjectETL;
+import com.sg.business.model.nls.Messages;
 
 public abstract class ProjectProvider extends PrimaryObject {
 
@@ -24,17 +25,17 @@ public abstract class ProjectProvider extends PrimaryObject {
 	/**
 	 * 参数名称：按年计算
 	 */
-	public static final String PARAMETER_SUMMARY_BY_YEAR = "y";
+	public static final String PARAMETER_SUMMARY_BY_YEAR = "y"; //$NON-NLS-1$
 
 	/**
 	 * 参数名称:按季度计算
 	 */
-	public static final String PARAMETER_SUMMARY_BY_QUARTER = "q";
+	public static final String PARAMETER_SUMMARY_BY_QUARTER = "q"; //$NON-NLS-1$
 
 	/**
 	 * 参数:按月计算
 	 */
-	public static final String PARAMETER_SUMMARY_BY_MONTH = "m";
+	public static final String PARAMETER_SUMMARY_BY_MONTH = "m"; //$NON-NLS-1$
 
 	public Object[] parameters;
 
@@ -137,7 +138,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 				start = calendar.getTime();
 				return start;
 			default:
-				throw new Exception("时间参数异常");
+				throw new Exception(Messages.get().ProjectProvider_0);
 			}
 		}
 
@@ -176,7 +177,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 					end = calendar.getTime();
 					return end;
 				default:
-					throw new Exception("时间参数异常");
+					throw new Exception(Messages.get().ProjectProvider_1);
 				}
 			}
 		}
@@ -268,7 +269,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
 		BasicDBObject dbo = new BasicDBObject();
 		dbo.put(ILifecycle.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
+				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
 						ILifecycle.STATUS_WIP_VALUE }));
 		if (start != null && stop != null) {
@@ -276,33 +277,6 @@ public abstract class ProjectProvider extends PrimaryObject {
 					new BasicDBObject().append("$gte", start).append("$lte",
 							stop));
 
-			// dbo.put("$or",
-			// new BasicDBObject[] {
-			//
-			// new BasicDBObject().append(Project.F_ACTUAL_START,
-			// new BasicDBObject().append("$gte", start)
-			// .append("$lte", stop))
-			// ,
-			// new BasicDBObject().append(Project.F_PLAN_FINISH,
-			// new BasicDBObject().append("$gte", start)
-			// .append("$lte", stop))
-			// ,
-			// new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-			// new BasicDBObject().append("$gte", start)
-			// .append("$lte", stop))
-			// ,
-			// new BasicDBObject().append(
-			// "$and",
-			// new BasicDBObject[] {
-			// new BasicDBObject().append(
-			// Project.F_ACTUAL_START,
-			// new BasicDBObject().append(
-			// "$lte", start)),
-			// new BasicDBObject().append(
-			// Project.F_ACTUAL_FINISH,
-			// new BasicDBObject().append(
-			// "$gte", stop)) })
-			// });
 		}
 
 		return dbo;

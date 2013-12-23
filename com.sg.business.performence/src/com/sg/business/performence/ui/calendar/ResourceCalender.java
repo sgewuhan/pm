@@ -53,7 +53,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		createGridViewerEditor();
 
 		calendar = Calendar.getInstance();
-		font = new Font(parent.getDisplay(), "Arial", 14, SWT.NORMAL);
+		font = new Font(parent.getDisplay(), "Arial", 14, SWT.NORMAL); //$NON-NLS-1$
 		initdata();
 	}
 
@@ -80,7 +80,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		// 16, SWT.NORMAL ) );
 		// column.setSummary( false );
 		// column.setMinimumWidth( 100 );
-		labelColumn.setText("");
+		labelColumn.setText(""); //$NON-NLS-1$
 
 		GridViewerColumn vColumn = new GridViewerColumn(viewer, labelColumn);
 		vColumn.setLabelProvider(new PrimaryObjectLabelProvider());
@@ -97,7 +97,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		// 16, SWT.NORMAL ) );
 		// column.setSummary( false );
 		// column.setMinimumWidth( 100 );
-		summaryColumn.setText("P/A");
+		summaryColumn.setText("P/A"); //$NON-NLS-1$
 		summaryColumn.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_SUMMARY_16));
 		vColumn = new GridViewerColumn(viewer, summaryColumn);
@@ -172,7 +172,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		column.setDetail(false);
 		column.setSummary(true); // column.setMinimumWidth( 100 );
 		// column.setDetail(true);
-		column.setText("P/A");
+		column.setText("P/A"); //$NON-NLS-1$
 		column.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_SUMMARY_16));
 
@@ -196,7 +196,7 @@ public abstract class ResourceCalender extends ViewPart implements
 		// column.setMinimumWidth( 100 );
 		column.setDetail(true);
 		column.setSummary(false);
-		column.setText("" + dateOfMonth);
+		column.setText("" + dateOfMonth); //$NON-NLS-1$
 
 		GridViewerColumn vColumn = new GridViewerColumn(viewer, column);
 
@@ -302,7 +302,7 @@ public abstract class ResourceCalender extends ViewPart implements
 
 						}
 
-						labelColumn.setText("" + year);
+						labelColumn.setText("" + year); //$NON-NLS-1$
 						loadData(false);
 
 						push.stop();

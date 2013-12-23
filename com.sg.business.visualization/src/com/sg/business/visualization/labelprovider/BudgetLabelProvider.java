@@ -9,12 +9,12 @@ public class BudgetLabelProvider extends AbstractProjectLabelProvider {
 		
 		// ÏîÄ¿µÄÔ¤Ëã
 		double value = project.getPresentation().getBudgetValue();
-		String bv = (value == 0d) ? "" : String.format("%.2f",value / 10000);
+		String bv = (value == 0d) ? "" : String.format("%.2f",value / 10000); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-weight:bold;font-size:10pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:right;'>");
+		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-weight:bold;font-size:10pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:right;'>"); //$NON-NLS-1$
 		sb.append(bv);
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

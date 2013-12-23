@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -24,7 +25,7 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择一个上级", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().CreateWorkDefinition_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -46,7 +47,7 @@ public class CreateWorkDefinition extends AbstractNavigatorHandler {
 				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, "创建" + po.getTypeName());
+					true, null, Messages.get().CreateWorkDefinition_1 + po.getTypeName());
 
 			// 4. 将更改消息传递到编辑器
 			sendNavigatorActionEvent(part,

@@ -16,7 +16,7 @@ public class VersionPres implements IValuePresentation {
 		if(data instanceof Document){
 			return ((Document)data) .getRevId();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

@@ -35,7 +35,7 @@ public class SequentialActivityFigure extends SubgraphFigure {
 	 * @param footer
 	 */
 	public SequentialActivityFigure() {
-		super(new StartTag(""), new EndTag(""));
+		super(new StartTag(""), new EndTag("")); //$NON-NLS-1$ //$NON-NLS-2$
 		setBorder(MARGIN_BORDER);
 		setOpaque(true);
 	}

@@ -7,6 +7,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -25,7 +26,7 @@ public class Container extends PrimaryObject {
 	/**
 	 * 容器类型：所有者,文本表示
 	 */
-	public static final String TYPETEXT_OWNER = "所有者";// 本组织以及本组织的下级组织
+	public static final String TYPETEXT_OWNER = Messages.get().Container_0;// 本组织以及本组织的下级组织
 
 	/**
 	 * 容器类型：授权访问,数字表示
@@ -35,7 +36,7 @@ public class Container extends PrimaryObject {
 	/**
 	 * 容器类型：授权访问,文本表示
 	 */
-	public static final String TYPETEXT_GUEST_GRANTED = "授权访问";//
+	public static final String TYPETEXT_GUEST_GRANTED = Messages.get().Container_1;//
 
 	/**
 	 * 容器类型：授权管理,数字表示
@@ -45,22 +46,22 @@ public class Container extends PrimaryObject {
 	/**
 	 * 容器类型：授权管理,文本表示
 	 */
-	public static final String TYPETEXT_ADMIN_GRANTED = "授权管理";//
+	public static final String TYPETEXT_ADMIN_GRANTED = Messages.get().Container_2;//
 
 	/**
 	 * 容器类型
 	 */
-	public static final String F_CONTAINER_TYPE = "containertype";
+	public static final String F_CONTAINER_TYPE = "containertype"; //$NON-NLS-1$
 
 	/**
 	 * 容器原型存储的数据库
 	 */
-	public static final String F_SOURCE_DB = "sourceDB";
+	public static final String F_SOURCE_DB = "sourceDB"; //$NON-NLS-1$
 
 	/**
 	 * 容器原型存储的集合
 	 */
-	public static final String F_SOURCE_COLLECTION = "sourceCollection";
+	public static final String F_SOURCE_COLLECTION = "sourceCollection"; //$NON-NLS-1$
 
 	/**
 	 * 删除容器
@@ -105,15 +106,15 @@ public class Container extends PrimaryObject {
 		Assert.isNotNull(type);
 		switch (type.intValue()) {
 		case TYPE_OWNER:
-			return "部门内部文件柜";
+			return Messages.get().Container_6;
 		case TYPE_ADMIN_GRANTED:
-			return "可管理的文件柜";
+			return Messages.get().Container_7;
 		case TYPE_GUEST_GRANTED:
-			return "可访问的文件柜";
+			return Messages.get().Container_8;
 		default:
 			break;
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	public int getContainerType(){
@@ -177,6 +178,6 @@ public class Container extends PrimaryObject {
 	 */
 	@Override
 	public String getTypeName() {
-		return "容器";
+		return Messages.get().Container_10;
 	}
 }

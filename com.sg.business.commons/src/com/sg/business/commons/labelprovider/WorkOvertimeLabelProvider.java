@@ -9,7 +9,7 @@ import com.sg.business.resource.BusinessResource;
 public class WorkOvertimeLabelProvider extends ColumnLabelProvider {
 	@Override
 	public String getText(Object element) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	@Override

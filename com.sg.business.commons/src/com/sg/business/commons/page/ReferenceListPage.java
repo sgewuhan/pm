@@ -50,12 +50,12 @@ public class ReferenceListPage extends AbstractFormPageDelegator {
 					PrimaryObject po = ModelService.createModelObject(md.getModelClass(), targetId);
 					String typeName = po.getTypeName();
 					if(typeName!=null&&typeName.length()>0){
-						return typeName+":" +po.getLabel();
+						return typeName+":" +po.getLabel(); //$NON-NLS-1$
 					}else{
 						return po.getLabel();
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 			
 			@Override

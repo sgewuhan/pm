@@ -26,7 +26,7 @@ public class UserOrganizationPathLabelprovider extends ColumnLabelProvider {
 		PrimaryObject dbo = ((PrimaryObject)element);
 		ObjectId parentId = (ObjectId) dbo.getValue(User.F_ORGANIZATION_ID);
 		if(parentId==null){
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return getPath(parentId);
 	}
@@ -34,10 +34,10 @@ public class UserOrganizationPathLabelprovider extends ColumnLabelProvider {
 	private String getPath(ObjectId id) {
 		DBObject org=orgCol.findOne(new BasicDBObject().append(Organization.F__ID,id));
 		if(org == null){
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		String fullDesc = (String) org.get(Organization.F_FULLDESC);
-		return fullDesc==null?"":fullDesc;
+		return fullDesc==null?"":fullDesc; //$NON-NLS-1$
 //		DBObject org = orgCol.findOne(new BasicDBObject().append(Organization.F__ID,id));
 //		ObjectId parentId = (ObjectId) org.get(Organization.F_PARENT_ID);
 //		String orgName = (String) org.get(Organization.F_DESC);

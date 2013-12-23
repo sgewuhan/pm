@@ -24,6 +24,7 @@ import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.tmt.pdm.client.Starter;
+import com.tmt.pdm.dcpdm.nls.Messages;
 import com.tmt.pdm.dcpdm.sync.ImportData;
 
 import dyna.framework.service.dos.DOSChangeable;
@@ -90,7 +91,7 @@ public class DCPDMUtil {
 
 		// 取出PDM中的对象
 		DOSChangeable pdmObject = Starter.dos.get(ouid);
-		Object docNumber = pdmObject.get("md$number");
+		Object docNumber = pdmObject.get("md$number"); //$NON-NLS-1$
 		Document document = null;
 		if (!Utils.isNullOrEmptyString(docNumber)) {
 			DBCollection docCol = DBActivator.getCollection(IModelConstants.DB,
@@ -111,7 +112,7 @@ public class DCPDMUtil {
 			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_LINK);
 			deli.setValue(Deliverable.F_DOCUMENT_ID, document.get_id());
 		}
-		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description"));
+		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description")); //$NON-NLS-1$
 		deli.doSave(context);
 
 		writePDMInfo(ouid, document);
@@ -124,7 +125,7 @@ public class DCPDMUtil {
 		List<?> partContainer = DCPDMUtil.getPartContainerCode(userId);
 
 		if (docContainer == null) {
-			throw new Exception("您所在的组织尚未确定PDM系统中可使用图文档容器。");
+			throw new Exception(Messages.get().DCPDMUtil_2);
 		}
 
 		return createDocumentFromDCPDM(work, docContainer, partContainer, shell);
@@ -137,7 +138,7 @@ public class DCPDMUtil {
 		List<?> partContainer = DCPDMUtil.getPartContainerCode(userId);
 
 		if (docContainer == null) {
-			throw new Exception("您所在的组织尚未确定PDM系统中可使用图文档容器。");
+			throw new Exception(Messages.get().DCPDMUtil_3);
 		}
 
 		PDMObjectSelector selector = new PDMObjectSelector(shell, docContainer,
@@ -151,7 +152,7 @@ public class DCPDMUtil {
 			List<Document> result = new ArrayList<Document>();
 			for (int i = 0; i < sel.length; i++) {
 				DOSChangeable pdmObject = Starter.dos.get(sel[i]);
-				Object docNumber = pdmObject.get("md$number");
+				Object docNumber = pdmObject.get("md$number"); //$NON-NLS-1$
 				Document document = null;
 				if (!Utils.isNullOrEmptyString(docNumber)) {
 					DBCollection docCol = DBActivator.getCollection(
@@ -185,7 +186,7 @@ public class DCPDMUtil {
 
 			@Override
 			protected String getNamespace() {
-				return "vault_file";
+				return "vault_file"; //$NON-NLS-1$
 			}
 
 			@Override

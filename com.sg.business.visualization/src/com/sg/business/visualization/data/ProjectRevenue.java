@@ -18,7 +18,7 @@ public class ProjectRevenue extends MasterDetailDataSetFactory {
 	protected Object getMasterValue() {
 		Project project = ((Project) master);
 		String[] productCode = project.getProductCode();
-		return new BasicDBObject().append("$in", productCode);
+		return new BasicDBObject().append("$in", productCode); //$NON-NLS-1$
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import com.mobnut.db.DBActivator;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.finance.nls.Messages;
 import com.sg.business.model.CostAccount;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.RNDPeriodCost;
@@ -72,7 +73,7 @@ public class CostCenterViewer extends TableViewer {
 			public String getText(Object element) {
 				String costCode = ((RNDPeriodCost) element).getCostCode();
 				if (costCode == null) {
-					return "请选择成本中心";
+					return Messages.get().CostCenterViewer_0;
 				} else {
 					return super.getText(element);
 				}
@@ -80,7 +81,7 @@ public class CostCenterViewer extends TableViewer {
 		});
 		final TableColumn column = viewerColumn.getColumn();
 		column.setWidth(120);
-		column.setText("成本对象");
+		column.setText(Messages.get().CostCenterViewer_1);
 		column.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -102,15 +103,15 @@ public class CostCenterViewer extends TableViewer {
 		final TableColumn column = viewerColumn.getColumn();
 		column.setWidth(120);
 		String columnTitle;
-		if (accountName.contains("-")) {
+		if (accountName.contains("-")) { //$NON-NLS-1$
 			columnTitle = accountName.replace('-', '\n');
 		} else {
-			columnTitle = accountName + "\n ";
+			columnTitle = accountName + "\n "; //$NON-NLS-1$
 		}
 		column.setText(columnTitle);
-		column.setToolTipText(accountName + "(" + accountNumber + ")\n点输入定位列");
-		column.setData("accountNumber", accountNumber);
-		column.setData("accountName", accountName);
+		column.setToolTipText(accountName + "(" + accountNumber + Messages.get().CostCenterViewer_2); //$NON-NLS-1$
+		column.setData("accountNumber", accountNumber); //$NON-NLS-1$
+		column.setData("accountName", accountName); //$NON-NLS-1$
 		column.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

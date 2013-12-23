@@ -32,7 +32,7 @@ public class SearchJob extends Job {
 	private ArrayList<PrimaryObject> searchResultData;
 
 	public SearchJob(String name) {
-		super("¼ìË÷"+name);
+		super("¼ìË÷"+name); //$NON-NLS-1$
 		this.queryText = name;
 	}
 
@@ -52,7 +52,7 @@ public class SearchJob extends Job {
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(file));
 		IndexSearcher searcher = new IndexSearcher(reader);
 		Analyzer analyzer = new SmartChineseAnalyzer(Version.LUCENE_44, true);
-		QueryParser parser = new QueryParser(Version.LUCENE_44, "contents", analyzer);
+		QueryParser parser = new QueryParser(Version.LUCENE_44, "contents", analyzer); //$NON-NLS-1$
 		Query query = parser.parse(queryText);
 		
 		TopDocs searchResult = searcher.search(query, 200);
@@ -61,9 +61,9 @@ public class SearchJob extends Job {
 		searchResultData = new ArrayList<PrimaryObject>();
 		for (int i = 0; i < docs.length; i++) {
 			Document doc = searcher.doc(docs[i].doc);
-			String docId = doc.get("docId");
-			String db = doc.get("docDB");
-			String col = doc.get("docCollection");
+			String docId = doc.get("docId"); //$NON-NLS-1$
+			String db = doc.get("docDB"); //$NON-NLS-1$
+			String col = doc.get("docCollection"); //$NON-NLS-1$
 			if(docId==null||db==null||col==null){
 				continue;
 			}

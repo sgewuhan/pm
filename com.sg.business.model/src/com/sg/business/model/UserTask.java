@@ -22,109 +22,110 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 public class UserTask extends PrimaryObject implements IWorkRelative{
 
-	public static final String F_FORM_CHOICE = "form_choice";
+	public static final String F_FORM_CHOICE = "form_choice"; //$NON-NLS-1$
 	
-	public static final String F_FORM_COMMENT = "form_comment";
+	public static final String F_FORM_COMMENT = "form_comment"; //$NON-NLS-1$
 
-	public static final String F_WORK_ID = "work_id";
+	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 	
-	public static final String F_WORK_DESC = "work_desc";
+	public static final String F_WORK_DESC = "work_desc"; //$NON-NLS-1$
 
 
-	public static final String F_USERID = "userid";
+	public static final String F_USERID = "userid"; //$NON-NLS-1$
 
-	public static final String F_TASKID = "taskid";
+	public static final String F_TASKID = "taskid"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段,任务名称
 	 */
-	public static final String F_TASK_NAME = "taskname";
+	public static final String F_TASK_NAME = "taskname"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，任务备注
 	 */
-	public static final String F_DESCRIPTION = "description";
+	public static final String F_DESCRIPTION = "description"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段,实际的活动所有者
 	 */
-	public static final String F_ACTUALOWNER = "actualowner";
+	public static final String F_ACTUALOWNER = "actualowner"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，任务的创建者
 	 */
-	public static final String F_CREATEDBY = "createdby";
+	public static final String F_CREATEDBY = "createdby"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，创建时间
 	 */
-	public static final String F_CREATEDON = "createdon";
+	public static final String F_CREATEDON = "createdon"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，流程定义id
 	 */
-	public static final String F_PROCESSID = "processid";
+	public static final String F_PROCESSID = "processid"; //$NON-NLS-1$
 
 	/**
 	 * 流程名称
 	 */
-	public static final String F_PROCESSNAME = "processname";
+	public static final String F_PROCESSNAME = "processname"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，流程实例id
 	 */
-	public static final String F_PROCESSINSTANCEID = "instanceid";
+	public static final String F_PROCESSINSTANCEID = "instanceid"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，任务状态
 	 */
-	public static final String F_STATUS = "status";
+	public static final String F_STATUS = "status"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，流程实例id
 	 */
-	public static final String F_WORKITEMID = "workitemid";
+	public static final String F_WORKITEMID = "workitemid"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，通知日期
 	 */
-	public static final String F_NOTICEDATE = "noticedate";
+	public static final String F_NOTICEDATE = "noticedate"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，执行人Id(登录帐户)
 	 */
-	public static final String F_ACTOR = "actor";
+	public static final String F_ACTOR = "actor"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，开始日期
 	 */
-	public static final String F_STARTDATE = "startdate";
+	public static final String F_STARTDATE = "startdate"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，完成日期
 	 */
-	public static final String F_FINISHDATE = "finishdata";
+	public static final String F_FINISHDATE = "finishdata"; //$NON-NLS-1$
 
 	/**
 	 * 任务字段，任务的操作
 	 */
-	public static final String F_ACTION = "action";
+	public static final String F_ACTION = "action"; //$NON-NLS-1$
 
 	/**
 	 * 流程定义关键字
 	 */
-	public static final String F_PROCESSKEY = "processkey";
+	public static final String F_PROCESSKEY = "processkey"; //$NON-NLS-1$
 
 	/**
 	 * 该活动生命周期是否已经改变
 	 */
-	public static final String F_LIFECYCLE_CHANGE_FLAG = "lifecyclechanged";
+	public static final String F_LIFECYCLE_CHANGE_FLAG = "lifecyclechanged"; //$NON-NLS-1$
 
 
 	public String getStatus() {
@@ -206,7 +207,7 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 		// 更新旧的相同任务Id的数据为完成
 		WriteResult ws = getCollection().update(
 				new BasicDBObject().append(UserTask.F_TASKID, getTaskId()),
-				new BasicDBObject().append("$set", new BasicDBObject().append(
+				new BasicDBObject().append("$set", new BasicDBObject().append( //$NON-NLS-1$
 						UserTask.F_LIFECYCLE_CHANGE_FLAG, Boolean.TRUE)),
 				false, true);
 		checkWriteResult(ws);
@@ -224,7 +225,7 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 			final String taskName, final IContext context) throws Exception {
 		// doNoticeWorkflowInternal(actorId, taskName, key, action, context);
 
-		Job job = new Job("发送流程通知") {
+		Job job = new Job("发送流程通知") { //$NON-NLS-1$
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -248,33 +249,33 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 
 		// 设置通知标题
 		Project project = work.getProject();
-		String title = (project == null ? "" : project.getLabel()) + work + " "
-				+ "流程任务: " + taskName;
+		String title = (project == null ? "" : project.getLabel()) + work + " " //$NON-NLS-1$ //$NON-NLS-2$
+				+ Messages.get().UserTask_0 + taskName;
 		// 设置通知内容
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='font-size:14px'>");
-		sb.append("您好: ");
-		sb.append("</span><br/><br/>");
-		sb.append("您收到了一项流程任务。");
-		sb.append("<br/><br/>");
+		sb.append("<span style='font-size:14px'>"); //$NON-NLS-1$
+		sb.append(Messages.get().UserTask_1);
+		sb.append("</span><br/><br/>"); //$NON-NLS-1$
+		sb.append(Messages.get().UserTask_2);
+		sb.append("<br/><br/>"); //$NON-NLS-1$
 
-		sb.append("工作");
-		sb.append("\"");
+		sb.append(Messages.get().UserTask_3);
+		sb.append("\""); //$NON-NLS-1$
 		sb.append(work);
-		sb.append("\"");
+		sb.append("\""); //$NON-NLS-1$
 		if (work.isProjectWork()) {
-			sb.append(" \"");
-			sb.append("项目:");
+			sb.append(" \""); //$NON-NLS-1$
+			sb.append(Messages.get().UserTask_4);
 			sb.append(project);
-			sb.append(" \"");
+			sb.append(" \""); //$NON-NLS-1$
 		}
-		sb.append("流程任务: ");
-		sb.append("\"");
+		sb.append(Messages.get().UserTask_5);
+		sb.append("\""); //$NON-NLS-1$
 		sb.append(taskName);
-		sb.append("\"。");
+		sb.append("\"。"); //$NON-NLS-1$
 
-		sb.append("<br/><br/>");
-		sb.append("请登陆系统后查阅有关工作信息和流程历史");
+		sb.append("<br/><br/>"); //$NON-NLS-1$
+		sb.append(Messages.get().UserTask_6);
 
 		Message message = MessageToolkit.makeMessage(recievers, title, context
 				.getAccountInfo().getConsignerId(), sb.toString());
@@ -294,7 +295,7 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 	private void doMarkMessageSended() throws Exception {
 		WriteResult ws = getCollection().update(
 				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set",
+				new BasicDBObject().append("$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_NOTICEDATE, new Date())));
 		checkWriteResult(ws);
 	}
@@ -332,68 +333,68 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 	@Override
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 		// 显示否决图标
 		String choice = getChoice();
 		if (choice != null) {
 			if (Utils.isDenied(choice)) {
-				sb.append("<img src='");
+				sb.append("<img src='"); //$NON-NLS-1$
 				sb.append(FileUtil.getImageURL(
 						BusinessResource.IMAGE_DENIED_32,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER));
-				sb.append("' style='position:absolute; right:0; top:0; display:block;' width='32' height='32' />");
+				sb.append("' style='position:absolute; right:0; top:0; display:block;' width='32' height='32' />"); //$NON-NLS-1$
 			} else if (Utils.isAdmit(choice)) {
-				sb.append("<img src='");
+				sb.append("<img src='"); //$NON-NLS-1$
 				sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_PASS_32,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER));
-				sb.append("' style='position:absolute; right:0; top:0; display:block;' width='32' height='32' />");
+				sb.append("' style='position:absolute; right:0; top:0; display:block;' width='32' height='32' />"); //$NON-NLS-1$
 			}
 		}
 		
 		
 		// 显示流程任务的内容
 		String status = getStatus();
-		sb.append("<span style='float:right;padding-right:14px'>");
+		sb.append("<span style='float:right;padding-right:14px'>"); //$NON-NLS-1$
 		User owner = getActualOwner();
 		sb.append(owner);
-		sb.append(" ");
+		sb.append(" "); //$NON-NLS-1$
 
 		Date createOn = get_cdate();
-		sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", createOn));
-		sb.append(" ");
+		sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", createOn)); //$NON-NLS-1$
+		sb.append(" "); //$NON-NLS-1$
 
 		if (Status.Reserved.name().equals(status)) {
-			sb.append("接收");
+			sb.append(Messages.get().UserTask_7);
 		} else if (Status.InProgress.name().equals(status)) {
-			sb.append("开始");
+			sb.append(Messages.get().UserTask_8);
 		} else if (Status.Completed.name().equals(status)) {
-			sb.append("完成");
+			sb.append(Messages.get().UserTask_9);
 		} else if (Status.Created.name().equals(status)) {
-			sb.append("创建");
+			sb.append(Messages.get().UserTask_10);
 		} else if (Status.Ready.name().equals(status)) {
-			sb.append("预备");
+			sb.append(Messages.get().UserTask_11);
 		} else if (Status.Suspended.name().equals(status)) {
-			sb.append("暂停");
+			sb.append(Messages.get().UserTask_12);
 		} else if (Status.Exited.name().equals(status)) {
-			sb.append("退出");
+			sb.append(Messages.get().UserTask_13);
 		}
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		if (Status.Completed.name().equals(status)) {
 			String editorId = (String) getStringValue(TaskForm.F_EDITOR);
 			if (editorId != null) {
-				sb.append("<a href=\"" + get_id().toString() + "@"
-						+ "open" + "\" target=\"_rwt\">");
-				sb.append("<img src='");
+				sb.append("<a href=\"" + get_id().toString() + "@" //$NON-NLS-1$ //$NON-NLS-2$
+						+ "open" + "\" target=\"_rwt\">"); //$NON-NLS-1$ //$NON-NLS-2$
+				sb.append("<img src='"); //$NON-NLS-1$
 				sb.append(FileUtil.getImageURL(
 						BusinessResource.IMAGE_BULLETING_16,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER));
-				sb.append("' style='border-style:none;float:right;padding:0px;margin:0px' width='16' height='16' />");
-				sb.append("</a>");
+				sb.append("' style='border-style:none;float:right;padding:0px;margin:0px' width='16' height='16' />"); //$NON-NLS-1$
+				sb.append("</a>"); //$NON-NLS-1$
 			}
 		}
 
@@ -401,27 +402,27 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 		sb.append(desc);
 
 		if (choice != null) {
-			sb.append(" ");
+			sb.append(" "); //$NON-NLS-1$
 			String coloredString = Utils.appendColor(choice);
 			sb.append(coloredString);
-			sb.append("");
+			sb.append(""); //$NON-NLS-1$
 		}
 		
 
-		sb.append("<br/>");
+		sb.append("<br/>"); //$NON-NLS-1$
 
 		// 显示任务详细信息
-		sb.append("<small>");
+		sb.append("<small>"); //$NON-NLS-1$
 		String comment = getComment();
 		if (comment != null) {
-			sb.append(" ");
+			sb.append(" "); //$NON-NLS-1$
 			comment = Utils.getPlainText(comment);
 			comment = Utils.getLimitLengthString(comment, 40);
 			sb.append(comment);
 		}
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 	

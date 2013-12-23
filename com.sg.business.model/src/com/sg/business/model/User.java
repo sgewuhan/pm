@@ -22,6 +22,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.service.HTService;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
@@ -38,60 +39,60 @@ public class User extends PrimaryObject {
 	/**
 	 * 用户邮箱
 	 */
-	public static final String F_EMAIL = "email";
+	public static final String F_EMAIL = "email"; //$NON-NLS-1$
 
 	/**
 	 * 用户ID
 	 */
-	public static final String F_USER_ID = "userid";
+	public static final String F_USER_ID = "userid"; //$NON-NLS-1$
 
 	/**
 	 * 用户名称
 	 */
-	public static final String F_USER_NAME = "username";
+	public static final String F_USER_NAME = "username"; //$NON-NLS-1$
 
 	/**
 	 * 用户昵称
 	 */
-	public static final String F_NICK = "nick";
+	public static final String F_NICK = "nick"; //$NON-NLS-1$
 
 	/**
 	 * 用户头部照片
 	 */
-	public static final String F_HEADPIC = "headpic";
+	public static final String F_HEADPIC = "headpic"; //$NON-NLS-1$
 
 	/**
 	 * 激活
 	 */
-	public static final String F_ACTIVATED = "activated";
+	public static final String F_ACTIVATED = "activated"; //$NON-NLS-1$
 
 	/**
 	 * 所属组织ID
 	 * 
 	 * @see #Orgainzation
 	 */
-	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
 
 	/**
 	 * 所属组织名称
 	 * 
 	 * @see #Orgainzation
 	 */
-	public static final String F_ORGANIZATION_NAME = "organization_name";
+	public static final String F_ORGANIZATION_NAME = "organization_name"; //$NON-NLS-1$
 
 	/**
 	 * 委托人
 	 */
-	public static final String F_CONSIGNER = "consigner";
+	public static final String F_CONSIGNER = "consigner"; //$NON-NLS-1$
 
 	/**
 	 * 是否系统管理员
 	 */
-	public static final String F_IS_ADMIN = "isadmin";
+	public static final String F_IS_ADMIN = "isadmin"; //$NON-NLS-1$
 
-	private static final String F_LASTOPENED = "lastopened";
+	private static final String F_LASTOPENED = "lastopened"; //$NON-NLS-1$
 
-	public static final String F_SCENARIO = "scenario";
+	public static final String F_SCENARIO = "scenario"; //$NON-NLS-1$
 
 	/**
 	 * 获取组织_id
@@ -191,7 +192,7 @@ public class User extends PrimaryObject {
 
 		// 查询id包含在已经取出的id数组中的记录，并反射为角色对象
 		cur = roleCol.find(new BasicDBObject().append(Role.F__ID,
-				new BasicDBObject().append("$in", roleIds)));
+				new BasicDBObject().append("$in", roleIds))); //$NON-NLS-1$
 		while (cur.hasNext()) {
 			result.add(ModelService.createModelObject(cur.next(), Role.class));
 		}
@@ -206,7 +207,7 @@ public class User extends PrimaryObject {
 	 */
 	@Override
 	public String getLabel() {
-		return getUsername() + "|" + getUserid();
+		return getUsername() + "|" + getUserid(); //$NON-NLS-1$
 	}
 
 	/**
@@ -229,7 +230,7 @@ public class User extends PrimaryObject {
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		if (context != null
-				&& "organization.member".equals(context.getPartId())) {// 删除团队成员
+				&& "organization.member".equals(context.getPartId())) {// 删除团队成员 //$NON-NLS-1$
 
 			setValue(F_ORGANIZATION_ID, null);
 			try {
@@ -289,7 +290,7 @@ public class User extends PrimaryObject {
 				IModelConstants.C_ORGANIZATION);
 		DBObject condition = new BasicDBObject();
 		condition.put(Organization.F__ID,
-				new BasicDBObject().append("$in", orgIds));
+				new BasicDBObject().append("$in", orgIds)); //$NON-NLS-1$
 		condition.put(Organization.F_IS_FUNCTION_DEPARTMENT, Boolean.TRUE);
 		DBCursor cur = orgCol.find(condition);
 		while (cur.hasNext()) {
@@ -327,7 +328,7 @@ public class User extends PrimaryObject {
 				IModelConstants.C_ORGANIZATION);
 		DBObject condition = new BasicDBObject();
 		condition.put(Organization.F__ID,
-				new BasicDBObject().append("$in", orgIds));
+				new BasicDBObject().append("$in", orgIds)); //$NON-NLS-1$
 		DBCursor cur = orgCol.find(condition);
 		while (cur.hasNext()) {
 			Organization org = ModelService.createModelObject(cur.next(),
@@ -360,7 +361,7 @@ public class User extends PrimaryObject {
 	 */
 	@Override
 	public String getTypeName() {
-		return "用户";
+		return Messages.get().User_0;
 	}
 
 	public List<DBObject> getLastOpen() {
@@ -369,13 +370,13 @@ public class User extends PrimaryObject {
 		if (value != null) {
 			for (int i = 0; i < value.size(); i++) {
 				DBObject element = (DBObject) value.get(i);
-				if (!Utils.contains(result, element, "id")) {
+				if (!Utils.contains(result, element, "id")) { //$NON-NLS-1$
 					result.add(element);
 				}
 			}
 
 			Collections.sort(result, new DBObjectComparator(
-					new String[] { "date,-1" }));
+					new String[] { "date,-1" })); //$NON-NLS-1$
 		}
 
 		return result;

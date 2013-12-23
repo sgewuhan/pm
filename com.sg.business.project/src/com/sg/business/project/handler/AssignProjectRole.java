@@ -12,6 +12,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.User;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -21,7 +22,7 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class AssignProjectRole extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "指派成员";
+	private static final String TITLE = Messages.get().AssignProjectRole_0;
 
 	@Override
 	protected void execute(PrimaryObject selected, final IWorkbenchPart part,
@@ -30,14 +31,14 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 		final Shell shell = part.getSite().getShell();
 		if (!(selected instanceof ProjectRole)) {
 			MessageUtil
-					.showToast(shell, TITLE, "只能对项目角色指派成员", SWT.ICON_WARNING);
+					.showToast(shell, TITLE, Messages.get().AssignProjectRole_1, SWT.ICON_WARNING);
 			return;
 		}
 
 		final ProjectRole rd = ((ProjectRole) selected);
 		if (rd.isOrganizatioRole()) {
 			MessageUtil
-					.showToast(shell, TITLE, "只能对项目角色指派成员", SWT.ICON_WARNING);
+					.showToast(shell, TITLE, Messages.get().AssignProjectRole_2, SWT.ICON_WARNING);
 			return;
 		}
 
@@ -45,7 +46,7 @@ public class AssignProjectRole extends AbstractNavigatorHandler {
 
 		// 显示用户选择器
 		// 可选择项目所属职能部门的及下级部门的所有成员
-		NavigatorSelector ns = new NavigatorSelector("project.launchorg.member") {//organization.alluser
+		NavigatorSelector ns = new NavigatorSelector("project.launchorg.member") {//organization.alluser //$NON-NLS-1$
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void doOK(IStructuredSelection is) {

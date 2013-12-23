@@ -17,6 +17,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.etl.ProjectPresentation;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
 
@@ -39,13 +40,13 @@ public class OrganizationProjectProvider extends ProjectProvider {
 
 	@Override
 	public String getTypeName() {
-		return "组织项目集";
+		return Messages.get().OrganizationProjectProvider_0;
 	}
 
 	@Override
 	public String getProjectSetCoverImage() {
-		return FileUtil.getImageURL("project_72.png",
-				"com.sg.business.project", BusinessResource.IMAGE_FOLDER);
+		return FileUtil.getImageURL("project_72.png", //$NON-NLS-1$
+				"com.sg.business.project", BusinessResource.IMAGE_FOLDER); //$NON-NLS-1$
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		DBCursor cur = orgCol.find(new BasicDBObject().append(
 				Organization.F_PARENT_ID, organization.get_id()).append(
 				Organization.F__ID,
-				new BasicDBObject().append("$in", getAviableOrganizationId())));
+				new BasicDBObject().append("$in", getAviableOrganizationId()))); //$NON-NLS-1$
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
 			Organization org = ModelService.createModelObject(dbo,
@@ -99,20 +100,20 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		List prjOrgList = projectCol.distinct(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append(
 						ILifecycle.F_LIFECYCLE,
-						new BasicDBObject().append("$in", new String[] {
+						new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 								ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE })));
 		set.addAll(prjOrgList);
 
 		List parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
 				new BasicDBObject().append(Organization.F__ID,
-						new BasicDBObject().append("$in", prjOrgList)));
+						new BasicDBObject().append("$in", prjOrgList))); //$NON-NLS-1$
 		while (parentOrgList != null && !parentOrgList.isEmpty()
 				|| (parentOrgList.size() == 1 && parentOrgList.get(0) != null)) {
 			set.addAll(parentOrgList);
 			parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
 					new BasicDBObject().append(Organization.F__ID,
-							new BasicDBObject().append("$in", parentOrgList)));
+							new BasicDBObject().append("$in", parentOrgList))); //$NON-NLS-1$
 		}
 		return set.toArray(new Object[0]);
 	}
@@ -120,7 +121,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	public List<ProjectProvider> getSubUserProvider(PrimaryObject po) {
 		List<ProjectProvider> list = new ArrayList<ProjectProvider>();
 		DBCursor cur = usercol.find(new BasicDBObject().append(User.F_USER_ID,
-				new BasicDBObject().append("$in", getAviableUser(po))));
+				new BasicDBObject().append("$in", getAviableUser(po)))); //$NON-NLS-1$
 		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
 			User user = ModelService.createModelObject(dbo, User.class);
@@ -137,7 +138,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				Project.F_CHARGER,
 				new BasicDBObject().append(
 						ILifecycle.F_LIFECYCLE,
-						new BasicDBObject().append("$in", new String[] {
+						new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 								ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE })).append(
 						Project.F_LAUNCH_ORGANIZATION, po.get_id()));
@@ -160,7 +161,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
 		return super.getQueryCondtion(start, stop).append(
 				Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in",
+				new BasicDBObject().append("$in", //$NON-NLS-1$
 						getOrganizations(organization)));
 	}
 

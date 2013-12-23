@@ -66,7 +66,7 @@ public class ManagementProjectRootWork extends SingleDBCollectionDataSetFactory 
 			// 获取当前用户具有业务管理员角色的组织项下的项目
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Project.F_FUNCTION_ORGANIZATION,
-					new BasicDBObject().append("$in", ids));
+					new BasicDBObject().append("$in", ids)); //$NON-NLS-1$
 
 			// 该项目的状态必须是进行中
 			condition.put(Project.F_LIFECYCLE, Project.STATUS_WIP_VALUE);

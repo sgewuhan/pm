@@ -13,6 +13,6 @@ public class DateCodeLabelProvider extends ColumnLabelProvider {
 			return ((WorksPerformence) element).getLogDate();
 		}
 		
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

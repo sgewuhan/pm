@@ -1,6 +1,7 @@
 package com.sg.business.performence.works;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.performence.nls.Messages;
 import com.sg.widgets.commons.valuevalidator.AbstractValidator;
 
 public class WorksFinishedPercentValidator extends AbstractValidator {
@@ -15,12 +16,12 @@ public class WorksFinishedPercentValidator extends AbstractValidator {
 		if(value instanceof Number){
 			Number number = (Number) value;
 			if(number.doubleValue()>1){
-				return "工作量完成百分比不能超过100%";
+				return Messages.get().WorksFinishedPercentValidator_0;
 			}else{
 				return null;
 			}
 		}
-		return "类型不正确";
+		return Messages.get().WorksFinishedPercentValidator_1;
 	}
 
 }

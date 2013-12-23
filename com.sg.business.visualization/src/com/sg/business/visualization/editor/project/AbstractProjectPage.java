@@ -110,11 +110,11 @@ public abstract class AbstractProjectPage implements
 		// ÃÌº”œÓƒøºØ∫œ∑‚√ÊÕº∆¨
 		if (coverImageURL != null) {
 			StringBuffer sb = new StringBuffer();
-			sb.append("<img src='");
+			sb.append("<img src='"); //$NON-NLS-1$
 			sb.append(coverImageURL);
-			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='"
-					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='"
-					+ (INFOBANNER_HEIGHT - MARGIN) + "' />");
+			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='" //$NON-NLS-1$ //$NON-NLS-2$
+					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='" //$NON-NLS-1$
+					+ (INFOBANNER_HEIGHT - MARGIN) + "' />"); //$NON-NLS-1$
 			cover.setText(sb.toString());
 		}
 
@@ -134,9 +134,9 @@ public abstract class AbstractProjectPage implements
 		fd.top = new FormAttachment(32);
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:13pt'>");
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:13pt'>"); //$NON-NLS-1$
 		sb.append(desc + getPageTitle());
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		filterLabel.setText(sb.toString());
 

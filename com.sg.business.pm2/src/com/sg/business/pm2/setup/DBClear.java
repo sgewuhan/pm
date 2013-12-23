@@ -217,7 +217,7 @@ public class DBClear implements ISchedualJobRunnable {
 		// 清楚项目的日历牌设置
 		col = getCol(IModelConstants.C_CALENDAR_SETTING);
 		col.remove(new BasicDBObject().append(CalendarSetting.F_PROJECT_ID,
-				new BasicDBObject().append("$ne", null)));
+				new BasicDBObject().append("$ne", null))); //$NON-NLS-1$
 
 		// 清除公司关联的工作令号
 		col = getCol(IModelConstants.C_COMPANY_WORKORDER);
@@ -234,15 +234,15 @@ public class DBClear implements ISchedualJobRunnable {
 		// 清除目录
 		col = getCol(IModelConstants.C_FOLDER);
 		col.remove(new BasicDBObject().append(CalendarSetting.F_PROJECT_ID,
-				new BasicDBObject().append("$ne", null)));
+				new BasicDBObject().append("$ne", null))); //$NON-NLS-1$
 
 		// 清除除了文档模板以外的编号
 		col = getCol(IModelConstants.C__IDS);
-		col.remove(new BasicDBObject().append("name",
-				new BasicDBObject().append("$ne", "documenttemplatenumber")));
+		col.remove(new BasicDBObject().append("name", //$NON-NLS-1$
+				new BasicDBObject().append("$ne", "documenttemplatenumber"))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// 清除log
-		col = getCol("log");
+		col = getCol("log"); //$NON-NLS-1$
 		col.drop();
 
 		// 清除消息
@@ -294,11 +294,11 @@ public class DBClear implements ISchedualJobRunnable {
 		col.drop();
 
 		// 清除用户的最近打开
-		col = getCol("account");
+		col = getCol("account"); //$NON-NLS-1$
 		col.update(
 				new BasicDBObject(),
-				new BasicDBObject().append("$unset",
-						new BasicDBObject().append("lastopened", "")), false,
+				new BasicDBObject().append("$unset", //$NON-NLS-1$
+						new BasicDBObject().append("lastopened", "")), false, //$NON-NLS-1$ //$NON-NLS-2$
 				true);
 	}
 

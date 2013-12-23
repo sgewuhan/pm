@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
@@ -26,8 +27,8 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, final IWorkbenchPart part,
 			final ViewerControl vc, Command command,
 			Map<String, Object> parameters, IStructuredSelection selection) {
-		NavigatorSelector n = new NavigatorSelector("management.roleselector",
-				"选择组织角色") {
+		NavigatorSelector n = new NavigatorSelector("management.roleselector", //$NON-NLS-1$
+				Messages.get().LinkOrganizationRole_1) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()
@@ -52,7 +53,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 					}
 
 				} else {
-					MessageUtil.showToast("请选择角色", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().LinkOrganizationRole_2, SWT.ICON_WARNING);
 				}
 			}
 		};
@@ -67,13 +68,13 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 		if (master instanceof ProjectTemplate) {
 			ProjectTemplate pt = (ProjectTemplate) master;
 			if (pt.hasOrganizationRole(role)) {
-				throw new Exception("该角色已经添加");
+				throw new Exception(Messages.get().LinkOrganizationRole_3);
 			}
 			roled = pt.makeOrganizationRole(role);
 		} else {
 			WorkDefinition workd = (WorkDefinition) master;
 			if (workd.hasOrganizationRole(role)) {
-				throw new Exception("该角色已经添加");
+				throw new Exception(Messages.get().LinkOrganizationRole_4);
 			}
 			roled = workd.makeOrganizationRole(role);
 		}

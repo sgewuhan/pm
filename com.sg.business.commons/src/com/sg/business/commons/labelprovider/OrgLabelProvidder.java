@@ -26,7 +26,7 @@ public class OrgLabelProvidder extends ConfiguratorColumnLabelProvider {
 	public String getText(Object element) {
 		Organization org = getOrganization(element);
 		
-		return org == null?"":org.getLabel();
+		return org == null?"":org.getLabel(); //$NON-NLS-1$
 	}
 	
 	private Organization getOrganization(Object element) {

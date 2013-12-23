@@ -40,12 +40,12 @@ public class ProjectApproveAuditSaveOfTB implements IDataObjectDialogCallback {
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
 		List<String> userList = new ArrayList<String>();
-		Object listValue = taskform.getValue("reviewer_list");
+		Object listValue = taskform.getValue("reviewer_list"); //$NON-NLS-1$
 		if (listValue instanceof List) {
 			userList.addAll((Collection<? extends String>) listValue);
 		}
 
-		Object value = taskform.getValue("reviewer_admin");
+		Object value = taskform.getValue("reviewer_admin"); //$NON-NLS-1$
 		if (value instanceof String) {
 			userList.add((String) value);
 		}

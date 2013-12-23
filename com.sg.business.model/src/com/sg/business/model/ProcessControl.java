@@ -13,6 +13,7 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.runtime.Workflow;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 
 public abstract class ProcessControl implements IProcessControl {
@@ -207,7 +208,7 @@ public abstract class ProcessControl implements IProcessControl {
 
 	public DBObject getWorkflowDefinition(String workflowKey) {
 		DBObject result = new BasicDBObject();
-		result.put("KEY", primaryObject.getValue(workflowKey));
+		result.put("KEY", primaryObject.getValue(workflowKey)); //$NON-NLS-1$
 		result.put(POSTFIX_ACTIVATED,
 				primaryObject.getValue(workflowKey + POSTFIX_ACTIVATED));
 		result.put(POSTFIX_ACTORS,
@@ -221,7 +222,7 @@ public abstract class ProcessControl implements IProcessControl {
 		List<String[]> result = new ArrayList<String[]>();
 		// 检查流程是否已经激活
 		if (!isWorkflowActivateAndAvailable(key)) {
-			result.add(new String[] { "error", "没有为工作定义流程或激活流程" });
+			result.add(new String[] { "error", Messages.get().ProcessControl_2 }); //$NON-NLS-1$
 			return result;
 		}
 		// 检查流程的需要指定用户的节点是否已经指定
@@ -238,23 +239,23 @@ public abstract class ProcessControl implements IProcessControl {
 					User user = UserToolkit.getUserById(actorId);
 					if (user == null) {
 						result.add(new String[] {
-								"error",
-								"流程任务:\"" + nodeName + "\""
-										+ ", 无法确定执行人，流程可能无法正常执行。" });
+								"error", //$NON-NLS-1$
+								Messages.get().ProcessControl_4 + nodeName + "\"" //$NON-NLS-2$
+										+ Messages.get().ProcessControl_6 });
 					} else {
 						result.add(new String[] {
-								"info",
-								"流程任务:\"" + nodeName + "\"" + ", 执行人[" + user
-										+ "]。" });
+								"info", //$NON-NLS-1$
+								Messages.get().ProcessControl_8 + nodeName + "\"" + Messages.get().ProcessControl_10 + user //$NON-NLS-2$
+										+ "]。" }); //$NON-NLS-1$
 					}
 				} else {
 					AbstractRoleDefinition rd = getProcessActionAssignment(key,
 							na.getNodeActorParameter());
 					if (rd == null) {
 						result.add(new String[] {
-								"error",
-								"流程任务:\"" + nodeName + "\""
-										+ ", 无法确定执行人，流程可能无法正常执行。" });
+								"error", //$NON-NLS-1$
+								Messages.get().ProcessControl_13 + nodeName + "\"" //$NON-NLS-2$
+										+ Messages.get().ProcessControl_15 });
 					} else {
 						List<PrimaryObject> roleAssiment = null;
 						if (rd instanceof ProjectRole) {
@@ -268,34 +269,34 @@ public abstract class ProcessControl implements IProcessControl {
 						}
 						if (roleAssiment == null) {
 							result.add(new String[] {
-									"error",
-									"流程任务:\"" + nodeName + "\""
-											+ ", 指派的角色没有对应成员，流程可能无法正常执行。" });
+									"error", //$NON-NLS-1$
+									Messages.get().ProcessControl_17 + nodeName + "\"" //$NON-NLS-2$
+											+ Messages.get().ProcessControl_19 });
 						} else {
-							String userList = "";
+							String userList = ""; //$NON-NLS-1$
 							for (int j = 0; j < roleAssiment.size(); j++) {
 								AbstractRoleAssignment a = (AbstractRoleAssignment) roleAssiment
 										.get(j);
 								if (j != 0) {
-									userList += ", ";
+									userList += ", "; //$NON-NLS-1$
 								}
-								userList += a.getUserid() + "|"
+								userList += a.getUserid() + "|" //$NON-NLS-1$
 										+ a.getUsername();
 							}
 
 							if (roleAssiment.size() > 1) {
 								result.add(new String[] {
-										"warning",
-										"流程任务:\"" + nodeName + "\""
-												+ ", 指派的角色对应多名成员, " + userList
-												+ "，请确定该设置。" });
+										"warning", //$NON-NLS-1$
+										Messages.get().ProcessControl_24 + nodeName + "\"" //$NON-NLS-2$
+												+ Messages.get().ProcessControl_26 + userList
+												+ Messages.get().ProcessControl_27 });
 							} else {
 
 								result.add(new String[] {
-										"info",
-										"流程任务:\"" + nodeName + "\""
-												+ ", 通过角色指派到[" + userList
-												+ "]。" });
+										"info", //$NON-NLS-1$
+										"流程任务:\"" + nodeName + "\"" //$NON-NLS-1$ //$NON-NLS-2$
+												+ Messages.get().ProcessControl_31 + userList
+												+ "]。" }); //$NON-NLS-1$
 							}
 
 						}

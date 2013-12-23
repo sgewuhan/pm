@@ -26,7 +26,7 @@ public class EditWorkRecord extends AbstractNavigatorHandler {
 			WorkRecord po = work.makeWorkRecord();
 
 			try {
-				DataObjectDialog.openDialog(po, "editor.create.workrecord",
+				DataObjectDialog.openDialog(po, "editor.create.workrecord", //$NON-NLS-1$
 						true, null);
 
 			} catch (Exception e) {

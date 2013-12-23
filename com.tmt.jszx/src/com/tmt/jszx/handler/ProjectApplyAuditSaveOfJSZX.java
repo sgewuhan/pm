@@ -38,7 +38,7 @@ public class ProjectApplyAuditSaveOfJSZX implements IDataObjectDialogCallback {
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
 		List<String> userList = new ArrayList<String>();
-		Object value = taskform.getValue("worker");
+		Object value = taskform.getValue("worker"); //$NON-NLS-1$
 		if (value instanceof List) {
 			userList.add((String) value);
 		}

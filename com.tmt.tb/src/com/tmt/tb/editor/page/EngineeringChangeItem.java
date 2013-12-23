@@ -46,7 +46,7 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 
 		List<Work> changeItems = new ArrayList<Work>();
 		try {
-			Object value = taskform.getProcessInstanceVarible("ecn",
+			Object value = taskform.getProcessInstanceVarible("ecn", //$NON-NLS-1$
 					context);
 			if (value == null) {
 
@@ -92,7 +92,7 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 	}
 
 	private void createTable(PrimaryObjectEditorInput input,Composite parent) {
-		TableConfigurator configurator=(TableConfigurator) Widgets.getTableRegistry().getConfigurator("ec.standlonework");
+		TableConfigurator configurator=(TableConfigurator) Widgets.getTableRegistry().getConfigurator("ec.standlonework"); //$NON-NLS-1$
 		viewer=new CTableViewer(parent, configurator);
 	}
 
@@ -110,7 +110,7 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 	@Override
 	public void commit(boolean onSave) {
 		TaskForm taskform = (TaskForm) getInputData();
-		taskform.setValue("ecn",viewer.getInput() );
+		taskform.setValue("ecn",viewer.getInput() ); //$NON-NLS-1$
 		setDirty(false);
 		
 	}

@@ -124,7 +124,7 @@ public class DroolsProcessDiagram extends ActivityDiagram {
 		String nodeName = _node.getName();
 		for (int i = 0; i < history.size(); i++) {
 			DBObject historyItem = (DBObject) history.get(i);
-			if (nodeName.equals(historyItem.get("taskname"))){
+			if (nodeName.equals(historyItem.get("taskname"))){ //$NON-NLS-1$
 				result.add(historyItem.toMap());
 			}
 		}

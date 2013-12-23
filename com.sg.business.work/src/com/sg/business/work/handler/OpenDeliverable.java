@@ -23,7 +23,7 @@ public class OpenDeliverable extends AbstractNavigatorHandler {
 			Work work = (Work) selected;
 			try {
 				DataObjectEditor
-						.open(work, "edit.work.deliverable", true, null);
+						.open(work, "edit.work.deliverable", true, null); //$NON-NLS-1$
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}

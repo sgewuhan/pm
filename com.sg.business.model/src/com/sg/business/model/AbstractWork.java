@@ -17,6 +17,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.business.model.bson.SEQSorter;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -51,39 +52,39 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	 * {@link #WORK_TYPE_GENERIC}, {@link #WORK_TYPE_STANDLONE},
 	 * {@link #WORK_TYPE_PROJECT}
 	 */
-	public static final String F_WORK_TYPE = "worktype";
+	public static final String F_WORK_TYPE = "worktype"; //$NON-NLS-1$
 
 	/**
 	 * 内部类型
 	 */
-	public static final String F_INTERNAL_TYPE = "internaltype";
+	public static final String F_INTERNAL_TYPE = "internaltype"; //$NON-NLS-1$
 
 	/**
 	 * 变更工作
 	 */
-	public static final String INTERNAL_TYPE_CHANGE = "变更工作";
+	public static final String INTERNAL_TYPE_CHANGE = Messages.get().AbstractWork_2;
 
-	public static final String INTERNAL_TYPE_CHANGERANGE = "变更范围";
+	public static final String INTERNAL_TYPE_CHANGERANGE = Messages.get().AbstractWork_3;
 
-	public static final String INTERNAL_TYPE_CHANGEITEM = "变更项";
+	public static final String INTERNAL_TYPE_CHANGEITEM = Messages.get().AbstractWork_4;
 
-	public static final String F_INTERNAL_PARA_CHARGERID = "chargerpara";
+	public static final String F_INTERNAL_PARA_CHARGERID = "chargerpara"; //$NON-NLS-1$
 
-	public static final String F_INTERNAL_PARA_NOSKIP = "noskippara";
+	public static final String F_INTERNAL_PARA_NOSKIP = "noskippara"; //$NON-NLS-1$
 
-	public static final String F_INTERNAL_DEFAULTSELECTED = "defaultselected";
+	public static final String F_INTERNAL_DEFAULTSELECTED = "defaultselected"; //$NON-NLS-1$
 
-	public static final String F_INTERNAL_ECAPARA = "ecapara";
+	public static final String F_INTERNAL_ECAPARA = "ecapara"; //$NON-NLS-1$
 
 	/**
 	 * 工作定义的上级工作定义
 	 */
-	public static final String F_PARENT_ID = "parent_id";
+	public static final String F_PARENT_ID = "parent_id"; //$NON-NLS-1$
 
 	/**
 	 * 根工作_id字段，用于保存根工作的_id的值
 	 */
-	public static final String F_ROOT_ID = "root_id";
+	public static final String F_ROOT_ID = "root_id"; //$NON-NLS-1$
 
 	/**
 	 * 返回显示图标
@@ -125,9 +126,9 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public String getWBSCode() {
 		AbstractWork parent = (AbstractWork) getParent();
 		if (parent == null) {
-			return "1";
+			return "1"; //$NON-NLS-1$
 		} else {
-			return parent.getWBSCode() + "." + (getSequance() + 1);
+			return parent.getWBSCode() + "." + (getSequance() + 1); //$NON-NLS-1$
 		}
 	}
 
@@ -290,15 +291,15 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public PrimaryObject[] doMoveDown(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
+			throw new Exception(Messages.get().AbstractWork_13);
 		}
 
 		List<PrimaryObject> children = parent.getChildrenWork();
 		int index = children.indexOf(this);
-		Assert.isTrue(index != -1, "下移出错，无法定位将要移动的节点");
+		Assert.isTrue(index != -1, Messages.get().AbstractWork_14);
 
 		if ((index + 1) >= children.size()) {
-			throw new Exception("已经是本层的最后一个");
+			throw new Exception(Messages.get().AbstractWork_15);
 		}
 		children.remove(index);
 		children.add(index + 1, this);
@@ -316,14 +317,14 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public PrimaryObject[] doMoveUp(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
+			throw new Exception(Messages.get().AbstractWork_16);
 		}
 		List<PrimaryObject> children = parent.getChildrenWork();
 		int index = children.indexOf(this);
-		Assert.isTrue(index != -1, "上移出错，无法定位将要移动的节点");
+		Assert.isTrue(index != -1, Messages.get().AbstractWork_17);
 
 		if (index == 0) {
-			throw new Exception("已经是本层的第一个");
+			throw new Exception(Messages.get().AbstractWork_18);
 		}
 		children.remove(index);
 		children.add(index - 1, this);
@@ -343,7 +344,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public PrimaryObject[] doMoveLeft(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
+			throw new Exception(Messages.get().AbstractWork_19);
 		}
 
 		AbstractWork grandpa = (AbstractWork) parent
@@ -353,10 +354,10 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 
 		List<PrimaryObject> parentChildren = parent.getChildrenWork();
 		int index = parentChildren.indexOf(this);
-		Assert.isTrue(index != -1, "升级出错，无法定位将要升级的节点");
+		Assert.isTrue(index != -1, Messages.get().AbstractWork_20);
 
 		if (grandpa == null) {
-			throw new Exception("节点已经不能升级");
+			throw new Exception(Messages.get().AbstractWork_21);
 		}
 
 		// 1 自己的下面所有的兄弟变成自己的儿子，从自己的最后一个儿子开始添加
@@ -372,7 +373,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		setValue(F_PARENT_ID, grandpa.get_id());
 		List<PrimaryObject> grandpaChildren = grandpa.getChildrenWork();
 		index = grandpaChildren.indexOf(parent);
-		Assert.isTrue(index != -1, "升级出错，无法定位将要移动的父节点");
+		Assert.isTrue(index != -1, Messages.get().AbstractWork_22);
 		grandpaChildren.add(index + 1, this);
 		doSaveAndResetSeq(grandpaChildren, context);
 		return new PrimaryObject[] { this, parent, grandpa };
@@ -388,15 +389,15 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 	public PrimaryObject[] doMoveRight(IContext context) throws Exception {
 		AbstractWork parent = (AbstractWork) getParentPrimaryObjectCache();
 		if (parent == null) {
-			throw new Exception("您不能移动顶层的工作");
+			throw new Exception(Messages.get().AbstractWork_23);
 		}
 		List<PrimaryObject> parentChildren = parent.getChildrenWork();
 		int index = parentChildren.indexOf(this);
-		Assert.isTrue(index != -1, "降级出错，无法定位将要降级的节点");
+		Assert.isTrue(index != -1, Messages.get().AbstractWork_24);
 
 		// 变成上兄弟的最后一个儿子，从父中移除自己
 		if (index == 0) {
-			throw new Exception("节点已经不能降级");
+			throw new Exception(Messages.get().AbstractWork_25);
 		}
 		AbstractWork upperBrother = (AbstractWork) parentChildren
 				.get(index - 1);
@@ -425,7 +426,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 			AbstractWork child = (AbstractWork) children.get(i);
 			ws = col.update(
 					new BasicDBObject().append(F__ID, child.get_id()),
-					new BasicDBObject().append("$set",
+					new BasicDBObject().append("$set", //$NON-NLS-1$
 							new BasicDBObject().append(F_SEQ, new Integer(i))));
 			checkWriteResult(ws);
 

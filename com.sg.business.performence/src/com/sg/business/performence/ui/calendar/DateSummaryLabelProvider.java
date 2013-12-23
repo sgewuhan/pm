@@ -59,9 +59,9 @@ public class DateSummaryLabelProvider extends ColumnLabelProvider {
 
 		double summary = getSummary(element);
 		if (summary < 1) {
-			cell.setText("");
+			cell.setText(""); //$NON-NLS-1$
 		} else {
-			DecimalFormat df = new DecimalFormat("#########");
+			DecimalFormat df = new DecimalFormat("#########"); //$NON-NLS-1$
 			cell.setText(df.format(summary));
 		}
 

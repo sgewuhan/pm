@@ -25,10 +25,10 @@ public class MyRecievedMessage extends SingleDBCollectionDataSetFactory {
 			
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Message.F_RECIEVER,userId);
-			condition.put(Message.F_WASTE+"."+userId,new BasicDBObject().append("$ne", true));
+			condition.put(Message.F_WASTE+"."+userId,new BasicDBObject().append("$ne", true)); //$NON-NLS-1$ //$NON-NLS-2$
 			return condition;
 		} catch (Exception e) {
-			return new BasicDBObject().append("_id", null);
+			return new BasicDBObject().append("_id", null); //$NON-NLS-1$
 		}
 		
 	}

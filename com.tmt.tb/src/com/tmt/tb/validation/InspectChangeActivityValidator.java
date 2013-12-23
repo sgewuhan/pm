@@ -8,7 +8,7 @@ public class InspectChangeActivityValidator extends
 
 	@Override
 	public String getECNName() {
-		return "检验变更";
+		return "检验变更"; //$NON-NLS-1$
 	}
 
 }

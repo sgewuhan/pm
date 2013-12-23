@@ -15,7 +15,7 @@ public class RoleDescLabelProvider extends ColumnLabelProvider {
 		} else if (element instanceof RoleAssignment) {
 			return ((RoleAssignment) element).getUsername();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

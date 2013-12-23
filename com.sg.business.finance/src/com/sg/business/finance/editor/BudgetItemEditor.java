@@ -26,6 +26,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+import com.sg.business.finance.nls.Messages;
 import com.sg.business.model.BudgetItem;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -120,7 +121,7 @@ public class BudgetItemEditor extends EditorPart {
 
 		Menu menu = new Menu(viewer.getTree());
 		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("添加科目");
+		menuItem.setText(Messages.get().BudgetItemEditor_0);
 		menuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -128,7 +129,7 @@ public class BudgetItemEditor extends EditorPart {
 			}
 		});
 		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("删除科目");
+		menuItem.setText(Messages.get().BudgetItemEditor_1);
 		menuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -137,7 +138,7 @@ public class BudgetItemEditor extends EditorPart {
 		});
 
 		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("编辑科目");
+		menuItem.setText(Messages.get().BudgetItemEditor_2);
 		menuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -172,10 +173,10 @@ public class BudgetItemEditor extends EditorPart {
 		BudgetItem budgetItem = getSelectedBudgetItem();
 		if (budgetItem == null) {
 			MessageUtil
-					.showToast(shell, "预算科目", "没有选中预算科目", SWT.ICON_WARNING);
+					.showToast(shell, Messages.get().BudgetItemEditor_3, Messages.get().BudgetItemEditor_4, SWT.ICON_WARNING);
 			return;
 		}
-		InputDialog id = new InputDialog(shell, "预算科目", "请输入科目名称", "", null);
+		InputDialog id = new InputDialog(shell, Messages.get().BudgetItemEditor_5, Messages.get().BudgetItemEditor_6, "", null); //$NON-NLS-3$
 		if (InputDialog.OK == id.open()) {
 			String budgetItemName = id.getValue();
 			budgetItem.editBudgetItem(budgetItemName);
@@ -192,13 +193,13 @@ public class BudgetItemEditor extends EditorPart {
 
 		BudgetItem budgetItem = getSelectedBudgetItem();
 		if (budgetItem == null) {
-			MessageUtil.showToast(shell, "预算科目", "没有选中上级预算科目",
+			MessageUtil.showToast(shell, Messages.get().BudgetItemEditor_8, Messages.get().BudgetItemEditor_9,
 					SWT.ICON_WARNING);
 			return;
 		}
 		BudgetItem parent = budgetItem.getParent();
 		if (parent == null) {
-			MessageUtil.showMessage(shell, "预算科目", "顶级预算科目不可删除",
+			MessageUtil.showMessage(shell, Messages.get().BudgetItemEditor_10, Messages.get().BudgetItemEditor_11,
 					SWT.ICON_WARNING);
 			return;
 		}
@@ -214,11 +215,11 @@ public class BudgetItemEditor extends EditorPart {
 		BudgetItem parentBudgetItem = getSelectedBudgetItem();
 		if (parentBudgetItem == null) {
 			MessageUtil
-					.showToast(shell, "预算科目", "没有选中上级预算科目", SWT.ICON_WARNING);
+					.showToast(shell, Messages.get().BudgetItemEditor_12, Messages.get().BudgetItemEditor_13, SWT.ICON_WARNING);
 			return;
 		}
 
-		InputDialog id = new InputDialog(shell, "预算科目", "请输入科目名称", "", null);
+		InputDialog id = new InputDialog(shell, Messages.get().BudgetItemEditor_14, Messages.get().BudgetItemEditor_15, "", null); //$NON-NLS-3$
 		if (InputDialog.OK == id.open()) {
 			String budgetItemName = id.getValue();
 			parentBudgetItem.createChild(budgetItemName);

@@ -21,6 +21,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.viewer.ColumnAutoResizer;
 
 public class ChangeUserOfParticipatePage extends WizardPage {
@@ -32,7 +33,7 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 		super(sName);
 		setTitle(sTitle);
 		setDescription(sDescription);
-		setMessage("将 ? 的工作移交给其他人");
+		setMessage(Messages.get().ChangeUserOfParticipatePage_0);
 		this.master = master;
 	}
 
@@ -65,7 +66,7 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 						return user.getLabel();
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			@Override
@@ -112,23 +113,23 @@ public class ChangeUserOfParticipatePage extends WizardPage {
 				if (selection != null && !selection.isEmpty()) {
 					Object element = selection.getFirstElement();
 					wiz.setChangedUserId((String) element);
-					setMessage("将 \""
+					setMessage(Messages.get().ChangeUserOfParticipatePage_2
 							+ UserToolkit.getUserById((String) element)
-							+ "\" 的工作移交给其他人");
+							+ Messages.get().ChangeUserOfParticipatePage_3);
 
 					ChangeUserOfOrgUserPage changeUserOfOrgUserPage = (ChangeUserOfOrgUserPage) getNextPage();
 					if (wiz.getChangeUserId() != null) {
 						changeUserOfOrgUserPage.setErrorMessage(null);
-						changeUserOfOrgUserPage.setMessage("将 \""
+						changeUserOfOrgUserPage.setMessage(Messages.get().ChangeUserOfParticipatePage_4
 								+ UserToolkit.getUserById((String) element)
-								+ "\" 的工作移交给 \""
+								+ Messages.get().ChangeUserOfParticipatePage_5
 								+ UserToolkit.getUserById(wiz.getChangeUserId())
-								+ "\" ");
+								+ "\" "); //$NON-NLS-1$
 					} else {
 						changeUserOfOrgUserPage.setErrorMessage(null);
-						changeUserOfOrgUserPage.setMessage("将 \""
+						changeUserOfOrgUserPage.setMessage(Messages.get().ChangeUserOfParticipatePage_7
 								+ UserToolkit.getUserById((String) element)
-								+ "\" 的工作移交给 ? ");
+								+ Messages.get().ChangeUserOfParticipatePage_8);
 					}
 				} else {
 					wiz.setChangedUserId(null);

@@ -87,8 +87,8 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		Calendar calendar = Calendar.getInstance();
 		DBObject date = getQueryCondition();
 		if (date != null) {
-			year = (int) date.get("year");
-			month = (int) date.get("month");
+			year = (int) date.get("year"); //$NON-NLS-1$
+			month = (int) date.get("month"); //$NON-NLS-1$
 
 			calendar.set(Calendar.YEAR, year);
 			calendar.set(Calendar.MONTH, month);
@@ -119,25 +119,25 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 		// 状态为已完成或者进行中
 		dbo.put(ILifecycle.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
+				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
 						ILifecycle.STATUS_WIP_VALUE }));
 
 		BasicDBObject ucondition = new BasicDBObject();
 		ucondition.put(
-				"$or",
+				"$or", //$NON-NLS-1$
 				new BasicDBObject[] {
 						// 工作负责人为当前用户所管理部门下的职员
 						new BasicDBObject().append(Work.F_CHARGER,
-								new BasicDBObject().append("$in",
+								new BasicDBObject().append("$in", //$NON-NLS-1$
 										getUserIdSet())),
 						// 项目id为当前用户所管理的项目id
 						new BasicDBObject().append(Work.F_PROJECT_ID,
-								new BasicDBObject().append("$in",
+								new BasicDBObject().append("$in", //$NON-NLS-1$
 										getUsersFunctionProjectIds())),
 						// 项目id为当前用户所负责的项目id
 						new BasicDBObject().append(Work.F_PROJECT_ID,
-								new BasicDBObject().append("$in",
+								new BasicDBObject().append("$in", //$NON-NLS-1$
 										getUsersChargerProjectIds())),
 
 						// 工作负责人或参与者为当前用户
@@ -148,34 +148,34 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 
 		BasicDBObject dcondition = new BasicDBObject();
 		dcondition.put(
-				"$or",
+				"$or", //$NON-NLS-1$
 				new BasicDBObject[] {
 
 						new BasicDBObject().append(Work.F_ACTUAL_START,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
+								new BasicDBObject().append("$gte", start) //$NON-NLS-1$
+										.append("$lte", stop)), //$NON-NLS-1$
 
 						new BasicDBObject().append(Work.F_PLAN_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
+								new BasicDBObject().append("$gte", start) //$NON-NLS-1$
+										.append("$lte", stop)), //$NON-NLS-1$
 
 						new BasicDBObject().append(Work.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", start)
-										.append("$lte", stop)),
+								new BasicDBObject().append("$gte", start) //$NON-NLS-1$
+										.append("$lte", stop)), //$NON-NLS-1$
 
 						new BasicDBObject().append(
-								"$and",
+								"$and", //$NON-NLS-1$
 								new BasicDBObject[] {
 										new BasicDBObject().append(
 												Work.F_ACTUAL_START,
 												new BasicDBObject().append(
-														"$lte", start)),
+														"$lte", start)), //$NON-NLS-1$
 										new BasicDBObject().append(
 												Work.F_ACTUAL_FINISH,
 												new BasicDBObject().append(
-														"$gte", stop)) }) });
+														"$gte", stop)) }) }); //$NON-NLS-1$
 
-		dbo.put("$and", new BasicDBObject[] { ucondition, dcondition });
+		dbo.put("$and", new BasicDBObject[] { ucondition, dcondition }); //$NON-NLS-1$
 		return dbo;
 	}
 
@@ -185,7 +185,7 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		Object ids = getOrganizationIdCascade(null).toArray();
 		List distinct = userCol.distinct(User.F_USER_ID, new BasicDBObject()
 				.append(User.F_ORGANIZATION_ID,
-						new BasicDBObject().append("$in", ids)));
+						new BasicDBObject().append("$in", ids))); //$NON-NLS-1$
 		return distinct;
 	}
 
@@ -245,7 +245,7 @@ public class DelayWork extends SingleDBCollectionDataSetFactory {
 		List<ObjectId> list = new ArrayList<ObjectId>();
 		DBCursor pids = projectCol.find(new BasicDBObject().append(
 				Project.F_FUNCTION_ORGANIZATION,
-				new BasicDBObject().append("$in", ids)), new BasicDBObject()
+				new BasicDBObject().append("$in", ids)), new BasicDBObject() //$NON-NLS-1$
 				.append(Project.F__ID, 1));
 		while (pids.hasNext()) {
 			DBObject next = pids.next();

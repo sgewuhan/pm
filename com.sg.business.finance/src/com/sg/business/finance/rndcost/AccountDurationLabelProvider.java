@@ -18,9 +18,9 @@ public class AccountDurationLabelProvider extends ColumnLabelProvider {
 	public String getText(Object element) {
 		Double value = ((IAccountPeriod)element).getAccountValue(accountNumber);
 		if(value == null){
-			return "";
+			return ""; //$NON-NLS-1$
 		}
-		DecimalFormat df = new DecimalFormat("#,###,###,###.00");
+		DecimalFormat df = new DecimalFormat("#,###,###,###.00"); //$NON-NLS-1$
 		return df.format(value.doubleValue());
 	}
 

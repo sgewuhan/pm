@@ -14,6 +14,7 @@ import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 
@@ -25,29 +26,29 @@ import com.sg.business.resource.BusinessResource;
 public class DeliverableDefinition extends AbstractOptionFilterable implements IDeliverable {
 
 	
-	public static final String F_DOCUMENTNUMBER = "documentnumber";
+	public static final String F_DOCUMENTNUMBER = "documentnumber"; //$NON-NLS-1$
 
 	/**
 	 * 交付物所属的工作
 	 */
-	public static final String F_WORK_DEFINITION_ID = "workd_id";
+	public static final String F_WORK_DEFINITION_ID = "workd_id"; //$NON-NLS-1$
 
-	public static final String F_DOCUMENT_DEFINITION_ID = "documentd_id";
+	public static final String F_DOCUMENT_DEFINITION_ID = "documentd_id"; //$NON-NLS-1$
 
 	/**
 	 * 交付物的编辑器ID,请与plugins.xml保持一致
 	 */
-	public static final String EDITOR = "editor.deliverableDefinition";
+	public static final String EDITOR = "editor.deliverableDefinition"; //$NON-NLS-1$
 
 	/**
 	 * 所属模板ID
 	 */
-	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
+	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id"; //$NON-NLS-1$
 
 	/**
 	 * 通用工作定义和独立工作定义使用
 	 */
-	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
 
 	/**
 	 * 返回显示图标
@@ -91,7 +92,7 @@ public class DeliverableDefinition extends AbstractOptionFilterable implements I
 	private String generateAutoIncreaseNumer() {
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C__IDS);
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_TEMPLATE_NUMBER);
-		return String.format("%06x", id).toUpperCase();
+		return String.format("%06x", id).toUpperCase(); //$NON-NLS-1$
 	}
 
 	/**
@@ -118,8 +119,8 @@ public class DeliverableDefinition extends AbstractOptionFilterable implements I
 		if (docd_id != null) {
 			DocumentDefinition docd = ModelService.createModelObject(
 					DocumentDefinition.class, docd_id);
-			Assert.isNotNull(docd, "DeliverableDefinition"
-					+ get_id().toString() + " lost documentDefinition: "
+			Assert.isNotNull(docd, "DeliverableDefinition" //$NON-NLS-1$
+					+ get_id().toString() + " lost documentDefinition: " //$NON-NLS-1$
 					+ docd_id);
 			return docd.getLabel();
 		}
@@ -144,7 +145,7 @@ public class DeliverableDefinition extends AbstractOptionFilterable implements I
 	 */
 	@Override
 	public String getTypeName() {
-		return "交付定义";
+		return Messages.get().DeliverableDefinition_0;
 	}
 	
 	/**

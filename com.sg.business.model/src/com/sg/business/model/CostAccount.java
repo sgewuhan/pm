@@ -7,7 +7,7 @@ import com.mongodb.DBCursor;
 
 public class CostAccount extends PrimaryObject {
 
-	public static final String F_COST_ACCOUNTNUMBER = "accountnumber";
+	public static final String F_COST_ACCOUNTNUMBER = "accountnumber"; //$NON-NLS-1$
 	
 	/**
 	 * 获取成本元素代码

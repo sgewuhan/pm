@@ -25,14 +25,15 @@ import com.sg.business.model.Project;
 import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.WorkOrderPeriodCost;
 import com.sg.business.model.WorksPerformence;
+import com.sg.business.model.nls.Messages;
 
 public class WorkorderPeriodCostAllocate {
 
-	public static final String COSECENTERCODE = "cost";
-	public static final String ACCOUNTNUMERS = "account";
-	public static final String YEAR = "year";
-	public static final String MONTH = "month";
-	public static final String RNDCOST = "rndcost";
+	public static final String COSECENTERCODE = "cost"; //$NON-NLS-1$
+	public static final String ACCOUNTNUMERS = "account"; //$NON-NLS-1$
+	public static final String YEAR = "year"; //$NON-NLS-1$
+	public static final String MONTH = "month"; //$NON-NLS-1$
+	public static final String RNDCOST = "rndcost"; //$NON-NLS-1$
 	private DBCollection costAllocateCol;
 	private DBCollection workPerformenceCol;
 	private DBCollection projectCol;
@@ -52,22 +53,22 @@ public class WorkorderPeriodCostAllocate {
 		Object year = parameter.get(YEAR);
 		Object month = parameter.get(MONTH);
 		if (!(year instanceof Integer) || !(month instanceof Integer)) {
-			throw new IllegalArgumentException("期间 year, month参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate_5);
 		}
 
 		Object costCenterCode = parameter.get(COSECENTERCODE);
 		if (!(costCenterCode instanceof String)) {
-			throw new IllegalArgumentException("成本中心代码 costcode 参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate_6);
 		}
 
 		Object account = parameter.get(ACCOUNTNUMERS);
 		if (account != null && !(account instanceof String[])) {
-			throw new IllegalArgumentException("科目表  account 参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate_7);
 		}
 
 		Object rndCost = parameter.get(RNDCOST);
 		if (!(rndCost instanceof RNDPeriodCost)) {
-			throw new IllegalArgumentException("成本中心研发成本  rndcost 参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate_8);
 		}
 
 		// 1. 根据成本中心获得组织
@@ -75,7 +76,7 @@ public class WorkorderPeriodCostAllocate {
 		Organization org = rndpc.getOrganization();
 
 		if (org == null) {
-			throw new IllegalArgumentException("成本中心无法获得对应的组织");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate_9);
 		}
 
 		// 准备保存工作令号对应工时的数据
@@ -83,7 +84,7 @@ public class WorkorderPeriodCostAllocate {
 
 		Organization company = org.getCompany();
 		if (company == null) {
-			throw new IllegalArgumentException("成本中心无法获得对应的公司代码");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate_10);
 		}
 		
 		
@@ -94,7 +95,7 @@ public class WorkorderPeriodCostAllocate {
 		// 3. 获得人员在期间的工时记录
 		BasicDBObject query = new BasicDBObject();
 		query.put(WorksPerformence.F_USERID,
-				new BasicDBObject().append("$in", userIdArr));
+				new BasicDBObject().append("$in", userIdArr)); //$NON-NLS-1$
 
 		Date[] period = getStartAndEnd((Integer) year, (Integer) month);
 		long start = period[0].getTime() / (24 * 60 * 60 * 1000);
@@ -102,12 +103,12 @@ public class WorkorderPeriodCostAllocate {
 
 		BasicDBObject startCondition = new BasicDBObject().append(
 				WorksPerformence.F_DATECODE,
-				new BasicDBObject().append("$gte", new Long(start)));
+				new BasicDBObject().append("$gte", new Long(start))); //$NON-NLS-1$
 		BasicDBObject endCondition = new BasicDBObject().append(
 				WorksPerformence.F_DATECODE,
-				new BasicDBObject().append("$lte", new Long(end)));
+				new BasicDBObject().append("$lte", new Long(end))); //$NON-NLS-1$
 
-		query.put("$and", new BasicDBObject[] { startCondition, endCondition });
+		query.put("$and", new BasicDBObject[] { startCondition, endCondition }); //$NON-NLS-1$
 
 		DBObject fields = new BasicDBObject();
 		fields.put(WorksPerformence.F_DATECODE, 1);

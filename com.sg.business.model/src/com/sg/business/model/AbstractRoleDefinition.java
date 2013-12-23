@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -22,14 +23,14 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 	/**
 	 * 基础角色/项目角色/项目经理
 	 */
-	public static final String ROLE_PROJECT_MANAGER_ID = "P000";
-	public static final String ROLE_PROJECT_MANAGER_TEXT = "项目经理";
+	public static final String ROLE_PROJECT_MANAGER_ID = "P000"; //$NON-NLS-1$
+	public static final String ROLE_PROJECT_MANAGER_TEXT = Messages.get().AbstractRoleDefinition_1;
 
 	/**
 	 * 基础角色/项目角色/项目访问者
 	 */
-	public static final String ROLE_PROJECT_GUEST_ID = "P001";
-	public static final String ROLE_PROJECT_GUEST_TEXT = "项目访问者";
+	public static final String ROLE_PROJECT_GUEST_ID = "P001"; //$NON-NLS-1$
+	public static final String ROLE_PROJECT_GUEST_TEXT = Messages.get().AbstractRoleDefinition_3;
 
 	/**
 	 * 系统角色ID
@@ -46,12 +47,12 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 	/**
 	 * 角色ID
 	 */
-	public static final String F_ORGANIZATION_ROLE_ID = "role_id";
+	public static final String F_ORGANIZATION_ROLE_ID = "role_id"; //$NON-NLS-1$
 
 	/**
 	 * 角色编号
 	 */
-	public static final String F_ROLE_NUMBER = "rolenumber";
+	public static final String F_ROLE_NUMBER = "rolenumber"; //$NON-NLS-1$
 
 	/**
 	 * 判断角色是否为组织角色
@@ -103,10 +104,10 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 				Role role = getOrganizationRole();
 				return role.getLabel();
 			} else {
-				return getDesc() + "|" + getRoleNumber();
+				return getDesc() + "|" + getRoleNumber(); //$NON-NLS-1$
 			}
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
@@ -137,22 +138,23 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 	 */
 	public boolean isReservedNumber(String rn) {
 		return rn != null
-				&& (rn.toUpperCase().startsWith("T0") || rn.toUpperCase()
-						.startsWith("P0"));
+				&& (rn.toUpperCase().startsWith("T0") || rn.toUpperCase() //$NON-NLS-1$
+						.startsWith("P0")); //$NON-NLS-1$
 	}
 
 	/**
 	 * 检查角色编号是否合法
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void check() throws Exception {
-		
+
 		// [bug:18] 连带处理
 		String rn = getRoleNumber();
 		if (isReservedNumber(rn)) {
-			throw new Exception("输入的角色编号是系统保留的编号");
+			throw new Exception(Messages.get().AbstractRoleDefinition_10);
 		}
-		
+
 	}
 
 }

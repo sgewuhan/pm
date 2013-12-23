@@ -21,6 +21,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.event.AccountEvent;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -36,67 +37,67 @@ public class Role extends PrimaryObject {
 	/**
 	 * 所属组织ID
 	 */
-	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
 
 	/**
 	 * 角色编号
 	 */
-	public static final String F_ROLE_NUMBER = "rolenumber";
+	public static final String F_ROLE_NUMBER = "rolenumber"; //$NON-NLS-1$
 
 	/**
 	 * 默认编辑器
 	 */
-	public static final String EDITOR_DEFAULT = "editor.organization.role";
+	public static final String EDITOR_DEFAULT = "editor.organization.role"; //$NON-NLS-1$
 
 	/**
 	 * 基础角色/组织角色/系统管理员
 	 */
-	public static final String ROLE_ADMIN_ID = "T000";
-	public static final String ROLE_ADMIN_TEXT = "系统管理员";
+	public static final String ROLE_ADMIN_ID = "T000"; //$NON-NLS-1$
+	public static final String ROLE_ADMIN_TEXT = Messages.get().Role_4;
 
 	/**
 	 * 基础角色/组织角色/组织管理员
 	 */
 	@Deprecated
-	public static final String ROLE_ORGANIZATION_ADMIN_ID = "T000";
+	public static final String ROLE_ORGANIZATION_ADMIN_ID = "T000"; //$NON-NLS-1$
 	@Deprecated
-	public static final String ROLE_ORGANIZATION_ADMIN_TEXT = "组织管理员";
+	public static final String ROLE_ORGANIZATION_ADMIN_TEXT = Messages.get().Role_6;
 
 	/**
 	 * 基础角色/组织角色/文档管理员
 	 */
-	public static final String ROLE_VAULT_ADMIN_ID = "T001";
-	public static final String ROLE_VALUT_ADMIN_TEXT = "文档管理员";
+	public static final String ROLE_VAULT_ADMIN_ID = "T001"; //$NON-NLS-1$
+	public static final String ROLE_VALUT_ADMIN_TEXT = Messages.get().Role_8;
 
 	/**
 	 * 基础角色/组织角色/项目管理员
 	 */
-	public static final String ROLE_PROJECT_ADMIN_ID = "T002";
-	public static final String ROLE_PROJECT_ADMIN_TEXT = "项目管理员";
+	public static final String ROLE_PROJECT_ADMIN_ID = "T002"; //$NON-NLS-1$
+	public static final String ROLE_PROJECT_ADMIN_TEXT = Messages.get().Role_10;
 
 	/**
 	 * 基础角色/组织角色/业务管理员
 	 */
-	public static final String ROLE_BUSINESS_ADMIN_ID = "T004";
-	public static final String ROLE_BUSINESS_ADMIN_TEXT = "业务管理员";
+	public static final String ROLE_BUSINESS_ADMIN_ID = "T004"; //$NON-NLS-1$
+	public static final String ROLE_BUSINESS_ADMIN_TEXT = Messages.get().Role_12;
 
 	/**
 	 * 基础角色/组织角色/文档访问者
 	 */
-	public static final String ROLE_VAULT_GUEST_ID = "T003";
-	public static final String ROLE_VAULT_GUEST_TEXT = "文档访问者";
+	public static final String ROLE_VAULT_GUEST_ID = "T003"; //$NON-NLS-1$
+	public static final String ROLE_VAULT_GUEST_TEXT = Messages.get().Role_14;
 
 	/**
 	 * 基础角色/组织角色/部门经理
 	 */
-	public static final String ROLE_DEPT_MANAGER_ID = "T005";
-	public static final String ROLE_DEPT_MANAGER_TEXT = "管理者";
+	public static final String ROLE_DEPT_MANAGER_ID = "T005"; //$NON-NLS-1$
+	public static final String ROLE_DEPT_MANAGER_TEXT = Messages.get().Role_16;
 
 	/**
 	 * 基础角色/组织角色/财务经理，该角色只能出现在事业部级别的组织
 	 */
-	public static final String ROLE_FINANCIAL_MANAGER_ID = "T006";
-	public static final String ROLE_FINANCIAL_MANAGER_TEXT = "财务经理";
+	public static final String ROLE_FINANCIAL_MANAGER_ID = "T006"; //$NON-NLS-1$
+	public static final String ROLE_FINANCIAL_MANAGER_TEXT = Messages.get().Role_18;
 	
 	
 
@@ -117,8 +118,8 @@ public class Role extends PrimaryObject {
 			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,
 			ROLE_DEPT_MANAGER_TEXT, ROLE_FINANCIAL_MANAGER_TEXT };
 
-	public static final String ROLE_ASSIGNMENT_ID="T007";
-	public static final String ROLE_ASSIGNMENT_TEXT="指派者";
+	public static final String ROLE_ASSIGNMENT_ID="T007"; //$NON-NLS-1$
+	public static final String ROLE_ASSIGNMENT_TEXT=Messages.get().Role_20;
 
 	
 
@@ -131,7 +132,7 @@ public class Role extends PrimaryObject {
 	 */
 	@Override
 	public String getLabel() {
-		return getDesc() + "|" + getRoleNumber();
+		return getDesc() + "|" + getRoleNumber(); //$NON-NLS-1$
 	}
 
 	/**
@@ -191,8 +192,8 @@ public class Role extends PrimaryObject {
 					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
 		}
 
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "为角色指派用户",
-				new Date(), "角色：" + this + "\n用户" + users.toString(),
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().Role_22,
+				new Date(), Messages.get().Role_23 + this + Messages.get().Role_24 + users.toString(),
 				IModelConstants.DB);
 	}
 
@@ -210,7 +211,7 @@ public class Role extends PrimaryObject {
 		long countUser = getRelationCountByCondition(RoleAssignment.class,
 				new BasicDBObject().append(RoleAssignment.F_ROLE_ID, get_id()));
 		if (countUser > 0) {
-			message.add(new Object[] { "该角色项下存在指派的用户", this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_25, this, SWT.ICON_ERROR });
 		}
 
 		// 2.项目模板的RoleDefinition引用的角色
@@ -218,7 +219,7 @@ public class Role extends PrimaryObject {
 				RoleAssignment.class, new BasicDBObject().append(
 						RoleDefinition.F_ORGANIZATION_ROLE_ID, get_id()));
 		if (countRoleDefinition > 0) {
-			message.add(new Object[] { "在项目模版中引用了该角色", this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_26, this, SWT.ICON_ERROR });
 		}
 
 		// 3.独立工作定义的WBS引用的角色
@@ -228,15 +229,15 @@ public class Role extends PrimaryObject {
 		values.add(new BasicDBObject().append(WorkDefinition.F_CHARGER_ROLE_ID,
 				get_id()));
 		values.add(new BasicDBObject().append(
-				WorkDefinition.F_PARTICIPATE_ROLE_SET, Pattern.compile("^.*"
-						+ get_id() + ".*$", Pattern.CASE_INSENSITIVE)));
+				WorkDefinition.F_PARTICIPATE_ROLE_SET, Pattern.compile("^.*" //$NON-NLS-1$
+						+ get_id() + ".*$", Pattern.CASE_INSENSITIVE))); //$NON-NLS-1$
 		long countWorkDefinition = getRelationCountByCondition(
 				WorkDefinition.class,
-				new BasicDBObject().append("$or", values).append(
+				new BasicDBObject().append("$or", values).append( //$NON-NLS-1$
 						WorkDefinition.F_WORK_TYPE,
 						WorkDefinition.WORK_TYPE_STANDLONE));
 		if (countWorkDefinition > 0) {
-			message.add(new Object[] { "在独立工作定义中引用了该角色", this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_30, this, SWT.ICON_ERROR });
 		}
 
 		// 4.项目ProjectRole引用的角色
@@ -244,7 +245,7 @@ public class Role extends PrimaryObject {
 				new BasicDBObject().append(ProjectRole.F_ORGANIZATION_ROLE_ID,
 						get_id()));
 		if (countProjectRole > 0) {
-			message.add(new Object[] { "在项目中引用了该角色", this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_31, this, SWT.ICON_ERROR });
 		}
 
 		// 5.独立工作的WBS引用的角色
@@ -253,14 +254,14 @@ public class Role extends PrimaryObject {
 				Work.F_ASSIGNMENT_CHARGER_ROLE_ID, get_id()));
 		values.add(new BasicDBObject().append(Work.F_CHARGER_ROLE_ID, get_id()));
 		values.add(new BasicDBObject().append(Work.F_PARTICIPATE_ROLE_SET,
-				Pattern.compile("^.*" + get_id() + ".*$",
+				Pattern.compile("^.*" + get_id() + ".*$", //$NON-NLS-1$ //$NON-NLS-2$
 						Pattern.CASE_INSENSITIVE)));
 		long countWork = getRelationCountByCondition(
 				Work.class,
-				new BasicDBObject().append("$or", values).append(
+				new BasicDBObject().append("$or", values).append( //$NON-NLS-1$
 						Work.F_PROJECT_ID, null));
 		if (countWork > 0) {
-			message.add(new Object[] { "在独立工作中引用了该角色", this, SWT.ICON_WARNING });
+			message.add(new Object[] { Messages.get().Role_35, this, SWT.ICON_WARNING });
 		}
 
 		return message;
@@ -313,9 +314,9 @@ public class Role extends PrimaryObject {
 	 */
 	public String getRoleTypeText() {
 		if (isSystemRole()) {
-			return "系统角色";
+			return Messages.get().Role_36;
 		} else {
-			return "用户角色";
+			return Messages.get().Role_37;
 		}
 	}
 
@@ -389,8 +390,8 @@ public class Role extends PrimaryObject {
 	 */
 	private boolean isReservedNumber(String rn) {
 		return rn != null
-				&& (rn.toUpperCase().startsWith("T0") || rn.toUpperCase()
-						.startsWith("P0"));
+				&& (rn.toUpperCase().startsWith("T0") || rn.toUpperCase() //$NON-NLS-1$
+						.startsWith("P0")); //$NON-NLS-1$
 	}
 
 	/**
@@ -402,15 +403,15 @@ public class Role extends PrimaryObject {
 		String rn = getRoleNumber();
 		// 检查角色编号是否合法
 		if (isReservedNumber(rn)) {
-			throw new Exception("输入的角色编号是系统保留的编号");
+			throw new Exception(Messages.get().Role_40);
 		}
 		// 检查角色编号在当前组织中是否存在
 		Organization org = getOrganization();
 		if (org == null) {
-			throw new Exception("角色所属的组织已不存在");
+			throw new Exception(Messages.get().Role_41);
 		}
 		if (org.hasRole(rn)) {
-			throw new Exception("角色编号在所属的组织中重复");
+			throw new Exception(Messages.get().Role_42);
 		}
 
 	}
@@ -422,7 +423,7 @@ public class Role extends PrimaryObject {
 	 */
 	@Override
 	public String getTypeName() {
-		return "角色";
+		return Messages.get().Role_43;
 	}
 
 	@Override

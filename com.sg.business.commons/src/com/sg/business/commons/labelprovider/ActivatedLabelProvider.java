@@ -24,7 +24,7 @@ public class ActivatedLabelProvider extends ConfiguratorColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 

@@ -21,6 +21,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.visualization.VisualizationActivator;
 import com.sg.business.visualization.data.ProjectSetFolder;
+import com.sg.business.visualization.nls.Messages;
 
 public class TypeProjectSetFolder extends ProjectSetFolder {
 
@@ -61,9 +62,9 @@ public class TypeProjectSetFolder extends ProjectSetFolder {
 		return col.distinct(
 				Project.F_PRODUCT_TYPE_OPTION,
 				new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION,
-						new BasicDBObject().append("$in", ids)).append(
+						new BasicDBObject().append("$in", ids)).append( //$NON-NLS-1$
 						ILifecycle.F_LIFECYCLE,
-						new BasicDBObject().append("$in", new String[] {
+						new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 								ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE })));
 	}
@@ -118,16 +119,16 @@ public class TypeProjectSetFolder extends ProjectSetFolder {
 	
 	@Override
 	public String getLabel() {
-		return "产品类型分组";
+		return Messages.get().TypeProjectSetFolder_2;
 	}
 
 	@Override
 	public String getImageURL() {
-		return FileUtil.getImageURL("folder_32.png", VisualizationActivator.PLUGIN_ID);
+		return FileUtil.getImageURL("folder_32.png", VisualizationActivator.PLUGIN_ID); //$NON-NLS-1$
 	}
 
 	@Override
 	public String getDescription() {
-		return "按您管理组织承担项目的产品类型分组";
+		return Messages.get().TypeProjectSetFolder_4;
 	}
 }

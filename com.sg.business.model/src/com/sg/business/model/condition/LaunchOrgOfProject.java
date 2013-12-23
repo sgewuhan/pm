@@ -19,7 +19,7 @@ public class LaunchOrgOfProject implements IRelationConditionProvider {
 		Object ids = primaryObject.getValue(Project.F_LAUNCH_ORGANIZATION);
 		if((ids instanceof List<?>)||(ids instanceof Object[])){
 			BasicDBObject query = new BasicDBObject();
-			query.put(Organization.F__ID, new BasicDBObject().append("$in", ids));
+			query.put(Organization.F__ID, new BasicDBObject().append("$in", ids)); //$NON-NLS-1$
 			return query;
 		}
 		return new BasicDBObject().append(Organization.F__ID, null);

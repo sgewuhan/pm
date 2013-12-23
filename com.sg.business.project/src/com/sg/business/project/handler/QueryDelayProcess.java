@@ -21,6 +21,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 
@@ -47,12 +48,12 @@ public class QueryDelayProcess extends AbstractNavigatorHandler {
 			final Combo comboYear = new Combo(composite, SWT.READ_ONLY);
 			comboYear.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
 					| GridData.HORIZONTAL_ALIGN_FILL));
-			comboYear.add("" + calendar.get(Calendar.YEAR));
-			comboYear.add("" + (calendar.get(Calendar.YEAR) - 1));
-			comboYear.add("" + (calendar.get(Calendar.YEAR) - 2));
+			comboYear.add("" + calendar.get(Calendar.YEAR)); //$NON-NLS-1$
+			comboYear.add("" + (calendar.get(Calendar.YEAR) - 1)); //$NON-NLS-1$
+			comboYear.add("" + (calendar.get(Calendar.YEAR) - 2)); //$NON-NLS-1$
 			final Combo comboMonth = new Combo(composite, SWT.READ_ONLY);
 			for (int i = 1; i < 13; i++) {
-				comboMonth.add("" + i);
+				comboMonth.add("" + i); //$NON-NLS-1$
 			}
 
 			comboMonth.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
@@ -122,12 +123,12 @@ public class QueryDelayProcess extends AbstractNavigatorHandler {
 
 		Shell parentShell = part.getSite().getShell();
 		InputDialogExtension input = new InputDialogExtension(parentShell,
-				"Ñ¡ÔñÔÂ·Ý", null, null, null);
+				Messages.get().QueryDelayProcess_4, null, null, null);
 		if (input.open() == InputDialog.OK) {
 
 			vc.getDataSetFactory().setQueryCondition(
-					new BasicDBObject().append("year", input.year).append(
-							"month", input.month));
+					new BasicDBObject().append("year", input.year).append( //$NON-NLS-1$
+							"month", input.month)); //$NON-NLS-1$
 			vc.doReloadData(true);
 		}
 	}

@@ -62,11 +62,11 @@ public class LifecycleToolkit {
 		}
 		
 		for (int i = 0; i < messages.size(); i++) {
-			String msgtext = messages.get(i)[0]==null?"":messages.get(i)[0].toString();
+			String msgtext = messages.get(i)[0]==null?"":messages.get(i)[0].toString(); //$NON-NLS-1$
 			Object msgObject = messages.get(i)[1];
 			Object msgType = messages.get(i)[2];
 			if(new Integer(SWT.ICON_ERROR).equals(msgType)){
-				throw new Exception(msgtext+"\n"+msgObject);
+				throw new Exception(msgtext+"\n"+msgObject); //$NON-NLS-1$
 			}
 		}
 	}

@@ -128,15 +128,15 @@ public abstract class AbstractProjectSetPage implements
 						String path;
 						String orj;
 						String eventCode;
-						if (event.text.startsWith("http")) {
+						if (event.text.startsWith("http")) { //$NON-NLS-1$
 							URL url = new URL(event.text);
 							path = url.getPath();
-							orj = path.substring(1, path.indexOf("/", 1));
-							eventCode = path.substring(path.lastIndexOf("/") + 1);
+							orj = path.substring(1, path.indexOf("/", 1)); //$NON-NLS-1$
+							eventCode = path.substring(path.lastIndexOf("/") + 1); //$NON-NLS-1$
 						} else {
 							path = event.text;
-							orj= path.substring(0, path.indexOf("/"));
-							eventCode = path.substring(path.lastIndexOf("/") + 1);
+							orj= path.substring(0, path.indexOf("/")); //$NON-NLS-1$
+							eventCode = path.substring(path.lastIndexOf("/") + 1); //$NON-NLS-1$
 						}
 						call(orj, eventCode);
 					} catch (Exception e) {
@@ -150,13 +150,13 @@ public abstract class AbstractProjectSetPage implements
 	protected abstract Composite createContent(Composite body);
 
 	protected void call(String orj, String eventCode) {
-		if (eventCode.equals("desc")) {
+		if (eventCode.equals("desc")) { //$NON-NLS-1$
 			ObjectId projectId = new ObjectId(orj);
 			Project project = ModelService.createModelObject(Project.class,
 					projectId);
 
 			try {
-				DataObjectEditor.open(project, "editor.visualization.project",
+				DataObjectEditor.open(project, "editor.visualization.project", //$NON-NLS-1$
 						false, null);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
@@ -177,11 +177,11 @@ public abstract class AbstractProjectSetPage implements
 		StringBuffer sb = new StringBuffer();
 		// ÃÌº”œÓƒøºØ∫œ∑‚√ÊÕº∆¨
 		if (projectSetCover != null) {
-			sb.append("<img src='");
+			sb.append("<img src='"); //$NON-NLS-1$
 			sb.append(projectSetCover);
-			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='"
-					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='"
-					+ (INFOBANNER_HEIGHT - MARGIN) + "' />");
+			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='" //$NON-NLS-1$ //$NON-NLS-2$
+					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='" //$NON-NLS-1$
+					+ (INFOBANNER_HEIGHT - MARGIN) + "' />"); //$NON-NLS-1$
 			cover.setText(sb.toString());
 		}
 
@@ -268,9 +268,9 @@ public abstract class AbstractProjectSetPage implements
 
 	protected String getParameterText() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:13pt'>");
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:13pt'>"); //$NON-NLS-1$
 		sb.append(DurationSetting.getHeadParameterText(data));
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 }

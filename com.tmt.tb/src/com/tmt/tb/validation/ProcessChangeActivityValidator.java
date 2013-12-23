@@ -8,7 +8,7 @@ public class ProcessChangeActivityValidator extends
 
 	@Override
 	public String getECNName() {
-		return "工艺变更";
+		return "工艺变更"; //$NON-NLS-1$
 	}
 
 }

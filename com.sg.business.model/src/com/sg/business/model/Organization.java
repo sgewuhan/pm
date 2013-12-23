@@ -29,6 +29,7 @@ import com.mongodb.WriteResult;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.model.event.AccountEvent;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
@@ -46,89 +47,89 @@ public class Organization extends PrimaryObject {
 	/**
 	 * 部门和团队编辑器
 	 */
-	public static final String EDITOR_SUBTEAM = "editor.organization.subteam";
+	public static final String EDITOR_SUBTEAM = "editor.organization.subteam"; //$NON-NLS-1$
 
 	/**
 	 * 顶级组织编辑器
 	 */
-	public static final String EDITOR_TEAM = "editor.organization.team";
+	public static final String EDITOR_TEAM = "editor.organization.team"; //$NON-NLS-1$
 	/**
 	 * 组织编号
 	 */
-	public static final String F_ORGANIZATION_NUMBER = "organizationnumber";
+	public static final String F_ORGANIZATION_NUMBER = "organizationnumber"; //$NON-NLS-1$
 
 	/**
 	 * 组织说明
 	 */
-	public static final String F_DESCRIPTION = "description";
+	public static final String F_DESCRIPTION = "description"; //$NON-NLS-1$
 
 	/**
 	 * 组织全称
 	 */
-	public static final String F_FULLDESC = "fulldesc";
+	public static final String F_FULLDESC = "fulldesc"; //$NON-NLS-1$
 
 	/**
 	 * 组织的上级组织_id
 	 */
-	public static final String F_PARENT_ID = "parent_id";
+	public static final String F_PARENT_ID = "parent_id"; //$NON-NLS-1$
 
 	/**
 	 * 组织是否具有项目管理职能,具有项目管理职能的组织可以为项目的归口组织
 	 */
-	public static final String F_IS_FUNCTION_DEPARTMENT = "isfunctiondepartment";
+	public static final String F_IS_FUNCTION_DEPARTMENT = "isfunctiondepartment"; //$NON-NLS-1$
 
 	/**
 	 * 组织是否可以为文档容器,为文档容器的组织可以归档项目文档
 	 */
-	public static final String F_IS_CONTAINER = "iscontainer";
+	public static final String F_IS_CONTAINER = "iscontainer"; //$NON-NLS-1$
 
 	/**
 	 * 组织的成本中心代码， 成本中心代码为SAP系统中的成本中心代码
 	 */
-	public static final String F_COST_CENTER_CODE = "costcentercode";
+	public static final String F_COST_CENTER_CODE = "costcentercode"; //$NON-NLS-1$
 
 	/**
 	 * 组织类型，组织类型分为法人，事业部，部门和团队
 	 */
-	public static final String F_ORGANIZATION_TYPE = "organizationtype";
+	public static final String F_ORGANIZATION_TYPE = "organizationtype"; //$NON-NLS-1$
 
 	/**
 	 * 组织的流程库，是流程库名称的列表
 	 */
-	public static final String F_KBASE = "kbase";
+	public static final String F_KBASE = "kbase"; //$NON-NLS-1$
 
 	/**
 	 * 组织代码，用于设定与组织有关的编码
 	 */
-	public static final String F_CODE = "code";
+	public static final String F_CODE = "code"; //$NON-NLS-1$
 
 	/**
 	 * 公司代码，与SAP对应的公司代码
 	 */
-	public static final String F_COMPANY_CODE = "companycode";
+	public static final String F_COMPANY_CODE = "companycode"; //$NON-NLS-1$
 
 	/**
 	 * PDM 图文档容器代码
 	 */
-	public static final String F_PDM_DOC_DRAWING_COMTAINER = "pdmcontainer";
+	public static final String F_PDM_DOC_DRAWING_COMTAINER = "pdmcontainer"; //$NON-NLS-1$
 
 	/**
 	 * PDM 零部件容器代码
 	 */
-	private static final String F_PDM_PART_COMTAINER = "pdmpartcontainer";
+	private static final String F_PDM_PART_COMTAINER = "pdmpartcontainer"; //$NON-NLS-1$
 
 	/**
 	 * 组织类型
 	 */
-	public static final String ORG_TYPE_COMPANY = "法人";
+	public static final String ORG_TYPE_COMPANY = Messages.get().Organization_0;
 
-	public static final String ORG_TYPE_BUSINESS_UNIT = "事业部";
+	public static final String ORG_TYPE_BUSINESS_UNIT = Messages.get().Organization_16;
 
-	public static final String ORG_TYPE_DEPARTMENT = "部门";
+	public static final String ORG_TYPE_DEPARTMENT = Messages.get().Organization_17;
 
-	public static final String ORG_TYPE_TEAM = "团队";
+	public static final String ORG_TYPE_TEAM = Messages.get().Organization_18;
 
-	public static final String F_FILEBASE = "filebase";
+	public static final String F_FILEBASE = "filebase"; //$NON-NLS-1$
 
 	/*
 	 * 向上级组织查找角色
@@ -240,21 +241,21 @@ public class Organization extends PrimaryObject {
 	@Override
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 
-		String imageUrl = "<img src='" + getImageURL()
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
+		String imageUrl = "<img src='" + getImageURL() //$NON-NLS-1$
+				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
 		String label = getLabel();
 		String path = getFullName();
 
 		sb.append(imageUrl);
-		sb.append("<b>");
+		sb.append("<b>"); //$NON-NLS-1$
 		sb.append(label);
-		sb.append("</b>");
-		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("</b>"); //$NON-NLS-1$
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small>"); //$NON-NLS-1$
 		sb.append(path);
-		sb.append("</small></span>");
+		sb.append("</small></span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -321,7 +322,7 @@ public class Organization extends PrimaryObject {
 				IModelConstants.DB, IModelConstants.C_PROJECT_TEMPLATE);
 		projectTemplateCol.update(
 				new BasicDBObject(ProjectTemplate.F__ID, projectTemplateId),
-				new BasicDBObject("$set", (new BasicDBObject().append(
+				new BasicDBObject("$set", (new BasicDBObject().append( //$NON-NLS-1$
 						ProjectTemplate.F_ORGANIZATION_ID, get_id()))), false,
 				true);
 	}
@@ -336,7 +337,7 @@ public class Organization extends PrimaryObject {
 				IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
 		projectTemplateCol.update(
 				new BasicDBObject(WorkDefinition.F__ID, workDefinitionId),
-				new BasicDBObject("$set", (new BasicDBObject().append(
+				new BasicDBObject("$set", (new BasicDBObject().append( //$NON-NLS-1$
 						WorkDefinition.F_ORGANIZATION_ID, get_id()))), false,
 				true);
 	}
@@ -354,9 +355,9 @@ public class Organization extends PrimaryObject {
 		// 更新用户表，关联至组织
 		userCol.update(
 				new BasicDBObject().append(User.F__ID,
-						new BasicDBObject().append("$in", userIdList)),
+						new BasicDBObject().append("$in", userIdList)), //$NON-NLS-1$
 				new BasicDBObject().append(
-						"$set",
+						"$set", //$NON-NLS-1$
 						new BasicDBObject().append(User.F_ORGANIZATION_ID,
 								get_id()).append(User.F_ORGANIZATION_NAME,
 								getDesc())), false, true);
@@ -425,27 +426,27 @@ public class Organization extends PrimaryObject {
 		// 检查如果是事业部类型的组织，组织代码必须填写
 		String type = getOrganizationType();
 		if (Utils.isNullOrEmpty(type)) {
-			throw new Exception("公司类型不可为空" + this);
+			throw new Exception(Messages.get().Organization_32 + this);
 		}
 		if (ORG_TYPE_COMPANY.equals(type)
 				|| ORG_TYPE_BUSINESS_UNIT.equals(type)) {
 			String companyCode = getCompanyCode();
 			if (Utils.isNullOrEmpty(companyCode)) {
-				throw new Exception("事业部或公司类型的组织需要具有\"公司代码\"" + this);
+				throw new Exception(Messages.get().Organization_33 + this);
 			}
 		}
 
 		if (isFunctionDepartment()) {
 			String code = getCode();
 			if (Utils.isNullOrEmpty(code)) {
-				throw new Exception("具有项目管理职能的组织需要具有\"代码\"" + this);
+				throw new Exception(Messages.get().Organization_34 + this);
 			}
 		}
 
 		if (isContainer()) {
 			String code = getFileBase();
 			if (Utils.isNullOrEmpty(code)) {
-				throw new Exception("具有文档容器的组织需要具有\"容器代码\"" + this);
+				throw new Exception(Messages.get().Organization_35 + this);
 			}
 		}
 
@@ -608,7 +609,7 @@ public class Organization extends PrimaryObject {
 		DBObject condition = new BasicDBObject();
 		condition.put(Role.F_ORGANIZATION_ID, get_id());
 		condition.put(Role.F_ROLE_NUMBER,
-				new BasicDBObject().append("$in", Role.ROLE_ID_SYSTEM));
+				new BasicDBObject().append("$in", Role.ROLE_ID_SYSTEM)); //$NON-NLS-1$
 		return getRelationByCondition(Role.class, condition);
 	}
 
@@ -701,7 +702,7 @@ public class Organization extends PrimaryObject {
 	public String getPath() {
 		PrimaryObject parent = getParentOrganization();
 		if (parent instanceof Organization) {
-			return ((Organization) parent).getPath() + "/" + getDesc();
+			return ((Organization) parent).getPath() + "/" + getDesc(); //$NON-NLS-1$
 		} else {
 			return getDesc();
 		}
@@ -718,10 +719,10 @@ public class Organization extends PrimaryObject {
 		PrimaryObject parent = getParentOrganization();
 		if (parent instanceof Organization) {
 			if (level > 1) {
-				return ((Organization) parent).getPath(level - 1) + "/"
+				return ((Organization) parent).getPath(level - 1) + "/" //$NON-NLS-1$
 						+ getDesc();
 			} else {
-				return "../" + getDesc();
+				return "../" + getDesc(); //$NON-NLS-1$
 			}
 		} else {
 			return getDesc();
@@ -889,7 +890,7 @@ public class Organization extends PrimaryObject {
 	 */
 	@Override
 	public String getTypeName() {
-		return "组织";
+		return Messages.get().Organization_40;
 	}
 
 	/**
@@ -902,8 +903,8 @@ public class Organization extends PrimaryObject {
 	public void doCopyProjectTemplates(PrimaryObject selectList,
 			IContext context) throws Exception {
 		AccountInfo account = context.getAccountInfo();
-		BasicDBObject accountInfo = new BasicDBObject().append("userid",
-				account.getUserId()).append("username", account.getUserName());
+		BasicDBObject accountInfo = new BasicDBObject().append("userid", //$NON-NLS-1$
+				account.getUserId()).append("username", account.getUserName()); //$NON-NLS-1$
 		List<DBObject> projectTemplateList = new ArrayList<DBObject>();
 		List<DBObject> budgetItemList = new ArrayList<DBObject>();
 		List<DBObject> roleDefinitionList = new ArrayList<DBObject>();
@@ -1477,7 +1478,7 @@ public class Organization extends PrimaryObject {
 				.insert(projectTemplateList);
 		error = projectTemplateWriteResult.getError();
 		if (error != null) {
-			System.out.println("复制基本信息出错");
+			System.out.println(Messages.get().Organization_43);
 			throw new Exception(error);
 		}
 
@@ -1488,7 +1489,7 @@ public class Organization extends PrimaryObject {
 					.insert(budgetItemList);
 			error = budgetItemWriteResult.getError();
 			if (error != null) {
-				System.out.println("复制预算出错");
+				System.out.println(Messages.get().Organization_44);
 				throw new Exception(error);
 			}
 		}
@@ -1500,7 +1501,7 @@ public class Organization extends PrimaryObject {
 					.insert(roleDefinitionList);
 			error = roleDefinitionWriteResult.getError();
 			if (error != null) {
-				System.out.println("复制角色出错");
+				System.out.println(Messages.get().Organization_45);
 				throw new Exception(error);
 			}
 		}
@@ -1512,7 +1513,7 @@ public class Organization extends PrimaryObject {
 					.insert(workDefinitionList);
 			error = workDefinitionWriteResult.getError();
 			if (error != null) {
-				System.out.println("复制工作定义出错");
+				System.out.println(Messages.get().Organization_46);
 				throw new Exception(error);
 			}
 		}
@@ -1525,7 +1526,7 @@ public class Organization extends PrimaryObject {
 					.insert(deliverableDefinitionList);
 			error = deliverableDefinitionWriteResult.getError();
 			if (error != null) {
-				System.out.println("复制交付物出错");
+				System.out.println(Messages.get().Organization_47);
 				throw new Exception(error);
 			}
 		}
@@ -1537,7 +1538,7 @@ public class Organization extends PrimaryObject {
 					.insert(documentDefinitionList);
 			error = documentDefinitionWriteResult.getError();
 			if (error != null) {
-				System.out.println("复制交付物文档出错");
+				System.out.println(Messages.get().Organization_48);
 				throw new Exception(error);
 			}
 		}
@@ -1549,14 +1550,14 @@ public class Organization extends PrimaryObject {
 					.insert(workConnectionList);
 			error = workConnectionWriteResult.getError();
 			if (error != null) {
-				System.out.println("复制前后置关系出错");
+				System.out.println(Messages.get().Organization_49);
 				throw new Exception(error);
 			}
 		}
 
 		// 写日志
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "复制项目模版",
-				new Date(), "组织：" + this + "\n项目模版" + selectList.toString(),
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().Organization_50,
+				new Date(), Messages.get().Organization_51 + this + Messages.get().Organization_52 + selectList.toString(),
 				IModelConstants.DB);
 
 	}

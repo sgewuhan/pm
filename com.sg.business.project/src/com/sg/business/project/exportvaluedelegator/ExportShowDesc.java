@@ -23,15 +23,15 @@ public class ExportShowDesc implements IExportValueDelegator {
 
 		System.out.println(dataRow.values());
 		
-		Object object = dataRow.get("userid");
+		Object object = dataRow.get("userid"); //$NON-NLS-1$
 		if (object instanceof String) {
 			User user = UserToolkit.getUserById((String) object);
-			System.out.println("    " + user.getLabel());
+			System.out.println("    " + user.getLabel()); //$NON-NLS-1$
 
-			return "    " + user.getLabel();
+			return "    " + user.getLabel(); //$NON-NLS-1$
 		}
 		
-		object = dataRow.get("role_id");
+		object = dataRow.get("role_id"); //$NON-NLS-1$
 		if (object instanceof ObjectId) {
 			Role role = ModelService.createModelObject(Role.class,
 					(ObjectId) object);
@@ -41,7 +41,7 @@ public class ExportShowDesc implements IExportValueDelegator {
 		}
 		
 
-		object=dataRow.get("_id");
+		object=dataRow.get("_id"); //$NON-NLS-1$
 		if(object instanceof ObjectId){
 			ProjectRole projectRole = ModelService.createModelObject(ProjectRole.class,
 					(ObjectId) object);

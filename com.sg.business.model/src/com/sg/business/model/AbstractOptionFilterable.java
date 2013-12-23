@@ -29,48 +29,48 @@ public abstract class AbstractOptionFilterable extends PrimaryObject {
 	/**
 	 * 选项值，值可为必须，可选，排除
 	 */
-	public static final String SF_VALUE = "value";
+	public static final String SF_VALUE = "value"; //$NON-NLS-1$
 
 	/**
 	 * 选项集下的选项
 	 */
-	public static final String SF_OPTION = "option";
+	public static final String SF_OPTION = "option"; //$NON-NLS-1$
 
 	/**
 	 * 选项集
 	 */
-	public static final String SF_OPTIONSET = "optionset";
+	public static final String SF_OPTIONSET = "optionset"; //$NON-NLS-1$
 
 	/**
 	 * 根据模板创建后添加，且禁止删除
 	 */
-	public static final String VALUE_MANDATORY = "必须";
+	public static final String VALUE_MANDATORY = "必须"; //$NON-NLS-1$
 
 	/**
 	 * 根据模板创建后添加，可以删除
 	 */
-	public static final String VALUE_OPTION = "可选";
+	public static final String VALUE_OPTION = "可选"; //$NON-NLS-1$
 
-	public static final String VALUE_EMPTY = "";
+	public static final String VALUE_EMPTY = ""; //$NON-NLS-1$
 
 	/**
 	 * 根据模板创建后不添加
 	 */
-	public static final String VALUE_EXCLUDE = "排除";
+	public static final String VALUE_EXCLUDE = "排除"; //$NON-NLS-1$
 
 	/**
 	 * “标准”选项集的名称
 	 */
-	public static final String OPTIONSET_NAME_STANDARD = "标准";
+	public static final String OPTIONSET_NAME_STANDARD = "标准"; //$NON-NLS-1$
 
-	public static final String OPTIONSET_NAME_PRODUCTTYPE = "产品类型";
+	public static final String OPTIONSET_NAME_PRODUCTTYPE = "产品类型"; //$NON-NLS-1$
 
-	public static final String OPTIONSET_NAME_PROJECTTYPE = "项目类型";
+	public static final String OPTIONSET_NAME_PROJECTTYPE = "项目类型"; //$NON-NLS-1$
 
 	public static final String[] VALUE_SET = new String[] { VALUE_EMPTY,
 			VALUE_MANDATORY, VALUE_OPTION, VALUE_EXCLUDE };
 
-	public static final String F_OPTION_FILTERS = "optionFilters";
+	public static final String F_OPTION_FILTERS = "optionFilters"; //$NON-NLS-1$
 
 	/**
 	 * 返回选项集中选项的值（必须，可选，排除）

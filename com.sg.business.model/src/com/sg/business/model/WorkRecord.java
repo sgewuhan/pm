@@ -45,15 +45,15 @@ public class WorkRecord extends PrimaryObject {
 	//
 	// }
 
-	public static final String F_WORK_ID = "work_id";
+	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 
-	public static final String F_RECORDERID = "userid";
+	public static final String F_RECORDERID = "userid"; //$NON-NLS-1$
 
-	public static final String F_RECORDDATE = "recorddate";
+	public static final String F_RECORDDATE = "recorddate"; //$NON-NLS-1$
 
-	public static final String F_CONTENT = "content";
+	public static final String F_CONTENT = "content"; //$NON-NLS-1$
 
-	public static final String F_WORKS_FINISHED_PERCENT = "worksfinishedpercent";
+	public static final String F_WORKS_FINISHED_PERCENT = "worksfinishedpercent"; //$NON-NLS-1$
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
@@ -62,7 +62,7 @@ public class WorkRecord extends PrimaryObject {
 		DBCollection col = getCollection(IModelConstants.C_WORK);
 		col.update(
 				new BasicDBObject().append(Work.F__ID, workId),
-				new BasicDBObject().append("$push",
+				new BasicDBObject().append("$push", //$NON-NLS-1$
 						new BasicDBObject().append(Work.F_RECORD, get_data())));
 
 		Work work = ModelService.createModelObject(Work.class, workId);
@@ -71,7 +71,7 @@ public class WorkRecord extends PrimaryObject {
 			Double workPercent = (Double) get_data().get(
 					F_WORKS_FINISHED_PERCENT);
 			col.update(new BasicDBObject().append(Work.F__ID, workId),
-					new BasicDBObject().append("$set", new BasicDBObject()
+					new BasicDBObject().append("$set", new BasicDBObject() //$NON-NLS-1$
 							.append(Work.F_ACTUAL_WORKS, planWorks
 									* workPercent)));
 		}
@@ -81,21 +81,21 @@ public class WorkRecord extends PrimaryObject {
 	@Override
 	public String getHTMLLabel() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'><b>");
+		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:9pt'><b>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 		Object value = getValue(F_RECORDERID);
 		if (value instanceof String) {
 			User user = UserToolkit.getUserById((String) value);
 			sb.append(user);
-			sb.append("  ");
+			sb.append("  "); //$NON-NLS-1$
 		}
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		sb.append(getDesc());
 
-		sb.append("  ");
+		sb.append("  "); //$NON-NLS-1$
 
 		value = getValue(F_WORKS_FINISHED_PERCENT);
 		if (value instanceof Double) {
@@ -104,11 +104,11 @@ public class WorkRecord extends PrimaryObject {
 			sb.append(finished);
 		}
 
-		sb.append("</b></span>");
+		sb.append("</b></span>"); //$NON-NLS-1$
 
-		sb.append("<br/><small>");
+		sb.append("<br/><small>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 		value = getValue(F_RECORDDATE);
 		if (value instanceof Date) {
 			SimpleDateFormat sdf = new SimpleDateFormat(
@@ -116,14 +116,14 @@ public class WorkRecord extends PrimaryObject {
 			String recordDate = sdf.format(value);
 			sb.append(recordDate);
 		}
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		Object content = getValue(F_CONTENT);
 		if (content != null) {
 			sb.append(content);
 		}
 
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}

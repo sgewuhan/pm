@@ -15,6 +15,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -25,7 +26,7 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 
 public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard {
 
-	private static final String PAGE_LAUNCH_WORK_BASICPAGE = "launch.work.basicpage";
+	private static final String PAGE_LAUNCH_WORK_BASICPAGE = "launch.work.basicpage"; //$NON-NLS-1$
 	private SelectWorkDefinitionPage selectWorkDefinitionPage;
 	private PrimaryObjectEditorInput editorInput;
 	private BasicWizardPage basicPage;
@@ -56,7 +57,7 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard {
 	}
 
 	public LaunchWorkWizard() {
-		setWindowTitle("发起工作");
+		setWindowTitle(Messages.get().LaunchWorkWizard_1);
 		initInput();
 	}
 
@@ -66,7 +67,7 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard {
 		work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
 
 		DataEditorConfigurator editor = (DataEditorConfigurator) Widgets
-				.getEditorRegistry().getConfigurator("editor.work.launch");
+				.getEditorRegistry().getConfigurator("editor.work.launch"); //$NON-NLS-1$
 		editorInput = new PrimaryObjectEditorInput(work, editor, null);
 		editorInput.setEditable(true);
 		editorInput.setNeedHostPartListenSaveEvent(false);

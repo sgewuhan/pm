@@ -14,6 +14,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 角色定义
@@ -29,14 +30,14 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 	/**
 	 * 创建角色的编辑器
 	 */
-	public static final String EDITOR_ROLE_DEFINITION_CREATE = "editor.roleDefinition";
+	public static final String EDITOR_ROLE_DEFINITION_CREATE = "editor.roleDefinition"; //$NON-NLS-1$
 
-	public static final String F_WORK_ID = "work_id";
+	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 	
 	/**
 	 * 独立工作定义_id
 	 */
-	public static final String F_WORKDEFINITION_ID="workdefinition_id";
+	public static final String F_WORKDEFINITION_ID="workdefinition_id"; //$NON-NLS-1$
 
 	/**
 	 * 删除角色检查
@@ -50,14 +51,14 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 		values.add(new BasicDBObject().append(Work.F_CHARGER_ROLE_ID,
 				getOrganizationRoleId()));
 		values.add(new BasicDBObject().append(Work.F_PARTICIPATE_ROLE_SET,
-				Pattern.compile("^.*" + getOrganizationRoleId() + ".*$",
+				Pattern.compile("^.*" + getOrganizationRoleId() + ".*$", //$NON-NLS-1$ //$NON-NLS-2$
 						Pattern.CASE_INSENSITIVE)));
 		long countWork = getRelationCountByCondition(
 				Work.class,
-				new BasicDBObject().append("$or", values).append(
+				new BasicDBObject().append("$or", values).append( //$NON-NLS-1$
 						Work.F_PARENT_ID, getProjectTemplateId()));
 		if (countWork > 0) {
-			message.add(new Object[] { "在WBS中引用了该角色", this, SWT.ICON_WARNING });
+			message.add(new Object[] { Messages.get().RoleDefinition_0, this, SWT.ICON_WARNING });
 		}
 
 		ProjectTemplate projectTemplate = getProjectTemplate();
@@ -80,7 +81,7 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 						ProjectTemplate.F_WF_COMMIT, nap);
 				if (getOrganizationRoleId()
 						.equals(role.getOrganizationRoleId())) {
-					message.add(new Object[] { "在项目模版的提交流程中引用了该角色", this,
+					message.add(new Object[] { Messages.get().RoleDefinition_1, this,
 							SWT.ICON_WARNING });
 					break;
 				}
@@ -106,7 +107,7 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 						ProjectTemplate.F_WF_CHANGE, nap);
 				if (getOrganizationRoleId()
 						.equals(role.getOrganizationRoleId())) {
-					message.add(new Object[] { "在项目模版的变更流程中引用了该角色", this,
+					message.add(new Object[] { "在项目模版的变更流程中引用了该角色", this, //$NON-NLS-1$
 							SWT.ICON_WARNING });
 					break;
 				}
@@ -146,7 +147,7 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 									WorkDefinition.F_WF_EXECUTE, nap);
 					if (getOrganizationRoleId().equals(
 							role.getOrganizationRoleId())) {
-						message.add(new Object[] { "在工作的执行流程中引用了该角色",
+						message.add(new Object[] { "在工作的执行流程中引用了该角色", //$NON-NLS-1$
 								workDefinition, SWT.ICON_WARNING });
 						break;
 					}
@@ -172,7 +173,7 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 									WorkDefinition.F_WF_CHANGE, nap);
 					if (getOrganizationRoleId().equals(
 							role.getOrganizationRoleId())) {
-						message.add(new Object[] { "在工作的变更流程中引用了该角色",
+						message.add(new Object[] { "在工作的变更流程中引用了该角色", //$NON-NLS-1$
 								workDefinition, SWT.ICON_WARNING });
 						break;
 					}
@@ -190,7 +191,7 @@ public class RoleDefinition extends AbstractRoleDefinition implements
 	 */
 	@Override
 	public String getTypeName() {
-		return "角色定义";
+		return "角色定义"; //$NON-NLS-1$
 	}
 
 	/**

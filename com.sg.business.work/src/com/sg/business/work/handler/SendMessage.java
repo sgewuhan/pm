@@ -14,6 +14,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.MessageToolkit;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -46,11 +47,11 @@ public class SendMessage extends AbstractNavigatorHandler {
 	private Map<String, Message> getSenderMessage(Work work, IContext context) {
 
 		Map<String, Message> messageList = new HashMap<String, Message>();
-		String title = "工作分派";
+		String title = Messages.get().SendMessage_0;
 
 		// 添加消息：负责人
 		MessageToolkit.appendMessage(messageList, work.getChargerId(), title,
-				"负责工作" + ": " + work.getLabel(), work, Work.EDITOR, context);
+				Messages.get().SendMessage_1 + ": " + work.getLabel(), work, Work.EDITOR, context); //$NON-NLS-2$
 
 		// 添加消息：参与者
 		List participatesidlist = work.getParticipatesIdList();
@@ -58,7 +59,7 @@ public class SendMessage extends AbstractNavigatorHandler {
 
 			for (Object id : participatesidlist) {
 				MessageToolkit.appendMessage(messageList, (String) id, title,
-						"参与工作" + ": " + work.getLabel(), work, Work.EDITOR,
+						Messages.get().SendMessage_3 + ": " + work.getLabel(), work, Work.EDITOR, //$NON-NLS-2$
 						context);
 			}
 		}
@@ -68,7 +69,7 @@ public class SendMessage extends AbstractNavigatorHandler {
 		String assignerId = work.getAssignerId();
 		if (!consignerId.equals(assignerId)) {
 			MessageToolkit.appendMessage(messageList, work.getAssignerId(),
-					title, "为工作指派负责人和参与者，工作" + ": " + work.getLabel(), work,
+					title, Messages.get().SendMessage_5 + ": " + work.getLabel(), work, //$NON-NLS-2$
 					Work.EDITOR, context);
 		}
 

@@ -44,6 +44,7 @@ import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.page.AbstractFormPageDelegator;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
+import com.tmt.tb.nls.Messages;
 
 
 public class EngineeringChangePlan extends AbstractFormPageDelegator {
@@ -73,7 +74,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			Task task = taskform.getExecuteTask(context);
 			String taskName = task.getNames().get(0).getText();
 			List<Work> ecnList = new ArrayList<Work>();
-			value = taskform.getProcessInstanceVarible("ecn", context);
+			value = taskform.getProcessInstanceVarible("ecn", context); //$NON-NLS-1$
 
 			if (value instanceof List<?>) {
 				List<?> list = (List<?>) value;
@@ -135,8 +136,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		Button createWorkButton = new Button(parent, SWT.PUSH);
 		createWorkButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_CREATEWORK_24));
-		createWorkButton.setToolTipText("添加变更计划");
-		createWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		createWorkButton.setToolTipText(Messages.get().EngineeringChangePlan_1);
+		createWorkButton.setData(RWT.CUSTOM_VARIANT, Messages.get().EngineeringChangePlan_2);
 		createWorkButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -156,7 +157,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 		final Menu menu = new Menu(parent.getShell(), SWT.POP_UP);
 		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("从项目中选择...");
+		menuItem.setText("从项目中选择..."); //$NON-NLS-1$
 		menuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -164,7 +165,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			}
 		});
 		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("从文档库中选择...");
+		menuItem.setText(Messages.get().EngineeringChangePlan_4);
 		menuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -173,7 +174,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		});
 
 		menuItem = new MenuItem(menu, SWT.NONE);
-		menuItem.setText("链接PDM...");
+		menuItem.setText(Messages.get().EngineeringChangePlan_5);
 		menuItem.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -185,8 +186,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		final Button createDeliverableButton = new Button(parent, SWT.PUSH);
 		createDeliverableButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_DELIVERABLECREATE_24));
-		createDeliverableButton.setToolTipText("添加变更对象");
-		createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		createDeliverableButton.setToolTipText(Messages.get().EngineeringChangePlan_6);
+		createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
 		createDeliverableButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -209,8 +210,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		Button editWorkButton = new Button(parent, SWT.PUSH);
 		editWorkButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_EDITWORK_24));
-		editWorkButton.setToolTipText("编辑变更计划");
-		editWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		editWorkButton.setToolTipText(Messages.get().EngineeringChangePlan_8);
+		editWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
 		editWorkButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -231,8 +232,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		Button deleteButton = new Button(parent, SWT.PUSH);
 		deleteButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_REMOVE_24));
-		deleteButton.setToolTipText("删除");
-		deleteButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		deleteButton.setToolTipText(Messages.get().EngineeringChangePlan_10);
+		deleteButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
 		deleteButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -257,8 +258,8 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		Button refreshButton = new Button(parent, SWT.PUSH);
 		refreshButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_REFRESH_24));
-		refreshButton.setToolTipText("刷新");
-		refreshButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		refreshButton.setToolTipText(Messages.get().EngineeringChangePlan_12);
+		refreshButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
 		refreshButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -294,7 +295,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			}
 			setDirty(true);
 		} else {
-			MessageUtil.showToast("请选择删除的对象", SWT.ICON_WARNING);
+			MessageUtil.showToast(Messages.get().EngineeringChangePlan_14, SWT.ICON_WARNING);
 			return;
 		}
 
@@ -342,7 +343,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 							return false;
 						}
 					};
-					DataObjectDialog.openDialog(work, "edit.work.plan.4",
+					DataObjectDialog.openDialog(work, "edit.work.plan.4", //$NON-NLS-1$
 							false, handler);
 					workListCreater.refresh();
 					setDirty(true);
@@ -352,7 +353,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_16, SWT.ICON_WARNING);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -373,7 +374,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				// 彈出选择
 
 				NavigatorSelector ns = new NavigatorSelector(
-						"project.documents.released", "选择变更对象") {
+						"project.documents.released", Messages.get().EngineeringChangePlan_18) { //$NON-NLS-1$
 					@Override
 					protected void doOK(IStructuredSelection is) {
 						List docList =is.toList();
@@ -398,7 +399,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				TaskForm taskform = (TaskForm) getInputData();
 				try {
 					Object value = taskform.getProcessInstanceVarible(
-							"project", context);
+							"project", context); //$NON-NLS-1$
 					Assert.isLegal(value instanceof String);
 					ObjectId _id = new ObjectId((String) value);
 					Project master = ModelService.createModelObject(
@@ -412,7 +413,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_20, SWT.ICON_WARNING);
 
 	}
 	
@@ -432,7 +433,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 			}
 			if (work != null) {
 				NavigatorSelector ns = new NavigatorSelector(
-						"vault.document.selector", "选择变更对象") {
+						"vault.document.selector", Messages.get().EngineeringChangePlan_22) { //$NON-NLS-1$
 					@Override
 					protected void doOK(IStructuredSelection is) {
 						List docList =is.toList();
@@ -458,7 +459,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				return;
 			}
 		}
-		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_23, SWT.ICON_WARNING);
 
 	}
 
@@ -491,12 +492,12 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 			return;
 		}
-		MessageUtil.showToast("请选择变更计划", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EngineeringChangePlan_24, SWT.ICON_WARNING);
 	}
 
 	protected void createWork() {
 		NavigatorSelector ns = new NavigatorSelector(
-				"organization.navigaor.projectfunctionorg", "选择变更计划") {
+				"organization.navigaor.projectfunctionorg", Messages.get().EngineeringChangePlan_26) { //$NON-NLS-1$
 
 			@Override
 			protected void doOK(IStructuredSelection is) {

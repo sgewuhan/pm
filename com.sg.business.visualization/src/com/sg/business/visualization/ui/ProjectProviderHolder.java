@@ -59,12 +59,12 @@ public class ProjectProviderHolder {
 	}
 
 	public static ProjectProviderHolder getInstance() {
-		Object value = RWT.getUISession().getAttribute("projectProviderHolder");
+		Object value = RWT.getUISession().getAttribute("projectProviderHolder"); //$NON-NLS-1$
 		if (value instanceof ProjectProviderHolder) {
 			return (ProjectProviderHolder) value;
 		} else {
 			ProjectProviderHolder holder = new ProjectProviderHolder();
-			RWT.getUISession().setAttribute("projectProviderHolder", holder);
+			RWT.getUISession().setAttribute("projectProviderHolder", holder); //$NON-NLS-1$
 			return holder;
 		}
 	}

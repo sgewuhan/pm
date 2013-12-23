@@ -12,6 +12,7 @@ import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Message;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.MessageToolkit;
 
 public abstract class AbstractMessageService extends ServiceProvider {
@@ -21,15 +22,15 @@ public abstract class AbstractMessageService extends ServiceProvider {
 	public Map<String, Object> run(Object parameter) {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 
 			try {
 				DBObject processData = WorkflowUtils
 						.getProcessInfoFromJSON(jsonContent);
-				String processId = (String) processData.get("processId");
-				String processName = (String) processData.get("processName");
+				String processId = (String) processData.get("processId"); //$NON-NLS-1$
+				String processName = (String) processData.get("processName"); //$NON-NLS-1$
 
 				String messageTitle = getMessageTitle();
 				String messageContent = getMessageContent();
@@ -53,13 +54,13 @@ public abstract class AbstractMessageService extends ServiceProvider {
 										processName, processId));
 					}
 				} else {
-					result.put("returnCode", "ERROR");
-					result.put("returnMessage", "请确认消息发送人");
+					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+					result.put("returnMessage", Messages.get().AbstractMessageService_0); //$NON-NLS-1$
 				}
 
 			} catch (Exception e) {
-				result.put("returnCode", "ERROR");
-				result.put("returnMessage", e.getMessage());
+				result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+				result.put("returnMessage", e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return result;

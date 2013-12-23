@@ -96,7 +96,7 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 		IRelationConditionProvider irc = mr.getRelationConditionProvider();
 
 		DBObject condition = null;
-		if ("organization_organization".equals(mr.getId())) {
+		if ("organization_organization".equals(mr.getId())) { //$NON-NLS-1$
 
 			if (irc != null) {
 				condition = irc.getCondition(po);
@@ -104,13 +104,13 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 				condition = new BasicDBObject();
 				condition.put(mr.getEnd2Key(), po.getValue(mr.getEnd1Key()));
 				condition.put(Organization.F__ID, new BasicDBObject().append(
-						"$in", getAvailableOrganization()));
+						"$in", getAvailableOrganization())); //$NON-NLS-1$
 			}
 
-		} else if ("organization_projectmanager".equals(mr.getId())) {
+		} else if ("organization_projectmanager".equals(mr.getId())) { //$NON-NLS-1$
 			condition = new BasicDBObject();
 			condition.put(User.F_USER_ID,
-					new BasicDBObject().append("$in", getAvailableUser(po)));
+					new BasicDBObject().append("$in", getAvailableUser(po))); //$NON-NLS-1$
 		}
 		StructuredDBCollectionDataSetFactory sdf = po
 				.getRelationDataSetFactory(end2Class, condition);
@@ -125,7 +125,7 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 		Class<? extends PrimaryObject> end2Class = mr.getEnd2Class();
 		IRelationConditionProvider irc = mr.getRelationConditionProvider();
 		DBObject condition = null;
-		if ("organization_organization".equals(mr.getId())) {
+		if ("organization_organization".equals(mr.getId())) { //$NON-NLS-1$
 
 			if (irc != null) {
 				condition = irc.getCondition(po);
@@ -133,13 +133,13 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 				condition = new BasicDBObject();
 				condition.put(mr.getEnd2Key(), po.getValue(mr.getEnd1Key()));
 				condition.put(Organization.F__ID, new BasicDBObject().append(
-						"$in", getAvailableOrganization()));
+						"$in", getAvailableOrganization())); //$NON-NLS-1$
 			}
 
-		} else if ("organization_projectmanager".equals(mr.getId())) {
+		} else if ("organization_projectmanager".equals(mr.getId())) { //$NON-NLS-1$
 			condition = new BasicDBObject();
 			condition.put(User.F_USER_ID,
-					new BasicDBObject().append("$in", getAvailableUser(po)));
+					new BasicDBObject().append("$in", getAvailableUser(po))); //$NON-NLS-1$
 		}
 		StructuredDBCollectionDataSetFactory sdf = po
 				.getRelationDataSetFactory(end2Class, condition);
@@ -153,14 +153,14 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 			List prjOrgList = projectcol.distinct(
 					Project.F_LAUNCH_ORGANIZATION, new BasicDBObject().append(
 							ILifecycle.F_LIFECYCLE,
-							new BasicDBObject().append("$in", new String[] {
+							new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 									ILifecycle.STATUS_FINIHED_VALUE,
 									ILifecycle.STATUS_WIP_VALUE })));
 			set.addAll(prjOrgList);
 
 			List parentOrgList = orgcol.distinct(Organization.F_PARENT_ID,
 					new BasicDBObject().append(Organization.F__ID,
-							new BasicDBObject().append("$in", prjOrgList)));
+							new BasicDBObject().append("$in", prjOrgList))); //$NON-NLS-1$
 			while (parentOrgList != null
 					&& !parentOrgList.isEmpty()
 					|| (parentOrgList.size() == 1 && parentOrgList.get(0) != null)) {
@@ -168,7 +168,7 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 				parentOrgList = orgcol.distinct(Organization.F_PARENT_ID,
 						new BasicDBObject().append(Organization.F__ID,
 								new BasicDBObject()
-										.append("$in", parentOrgList)));
+										.append("$in", parentOrgList))); //$NON-NLS-1$
 			}
 
 			aviOrg = set.toArray(new Object[0]);
@@ -184,7 +184,7 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 				Project.F_CHARGER,
 				new BasicDBObject().append(
 						ILifecycle.F_LIFECYCLE,
-						new BasicDBObject().append("$in", new String[] {
+						new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 								ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE })).append(
 						Project.F_LAUNCH_ORGANIZATION, po.get_id()));

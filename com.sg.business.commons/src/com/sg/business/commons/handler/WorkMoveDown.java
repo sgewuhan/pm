@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -20,12 +21,12 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class WorkMoveDown extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "下移工作定义";
+	private static final String TITLE = Messages.get().WorkMoveDown_0;
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast(part.getSite().getShell(), TITLE, "您需要选择一个工作定义",
+		MessageUtil.showToast(part.getSite().getShell(), TITLE, Messages.get().WorkMoveDown_1,
 				SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}

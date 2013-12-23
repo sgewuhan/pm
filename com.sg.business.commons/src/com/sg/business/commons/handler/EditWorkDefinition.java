@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -25,7 +26,7 @@ public class EditWorkDefinition extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择一项", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().EditWorkDefinition_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -45,7 +46,7 @@ public class EditWorkDefinition extends AbstractNavigatorHandler {
 		if (conf != null) {
 			try {
 				DataObjectDialog.openDialog(workdefinition,
-						(DataEditorConfigurator) conf, true, null, "编辑"
+						(DataEditorConfigurator) conf, true, null, Messages.get().EditWorkDefinition_1
 								+ selected.getTypeName());
 
 				// 4. 将更改消息传递到编辑器
@@ -54,7 +55,7 @@ public class EditWorkDefinition extends AbstractNavigatorHandler {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				MessageUtil.showToast(shell, "编辑" + selected.getTypeName(),
+				MessageUtil.showToast(shell, Messages.get().EditWorkDefinition_2 + selected.getTypeName(),
 						e.getMessage(), SWT.ICON_ERROR);
 			}
 		}

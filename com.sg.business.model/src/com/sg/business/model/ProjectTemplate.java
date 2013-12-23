@@ -13,6 +13,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -28,70 +29,70 @@ public class ProjectTemplate extends PrimaryObject{
 	/**
 	 * 所属组织
 	 */
-	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
 
 
 	/**
 	 * 预算定义ID
 	 */
-	public static final String F_BUDGET_ID = "budget_id";
+	public static final String F_BUDGET_ID = "budget_id"; //$NON-NLS-1$
 
 	/**
 	 * 工作定义ID
 	 */
-	public static final String F_WORK_DEFINITON_ID = "workd_id";
+	public static final String F_WORK_DEFINITON_ID = "workd_id"; //$NON-NLS-1$
 
 	/**
 	 * 标准集，用于选配，确定工作和交付物是否必须
 	 */
-	public static final String F_STANDARD_OPTION_SET = "standardset";
+	public static final String F_STANDARD_OPTION_SET = "standardset"; //$NON-NLS-1$
 
 	/**
 	 * 产品类型，用于选配，确定工作和交付物是否必须
 	 */
-	public static final String F_PRODUCTTYPE_OPTION_SET = "producttype";
+	public static final String F_PRODUCTTYPE_OPTION_SET = "producttype"; //$NON-NLS-1$
 
 	/**
 	 * 项目类型，用于选配，确定工作和交付物是否必须
 	 */
-	public static final String F_PROJECTTYPE_OPTION_SET = "projecttype";
+	public static final String F_PROJECTTYPE_OPTION_SET = "projecttype"; //$NON-NLS-1$
 
 	/**
 	 * 提交流程的定义
 	 */
-	public static final String F_WF_COMMIT = "wf_commit";
+	public static final String F_WF_COMMIT = "wf_commit"; //$NON-NLS-1$
 
 	/**
 	 * 流程定义中的指派
 	 */
-	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment";
+	public static final String F_WF_COMMIT_ASSIGNMENT = "wf_commit_assignment"; //$NON-NLS-1$
 
 	/**
 	 * 流程是否启用
 	 */
-	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated";
+	public static final String F_WF_COMMIT_ACTIVATED = "wf_commit_activated"; //$NON-NLS-1$
 
-	public static final String POSTFIX_ACTIVATED = "_activated";
+	public static final String POSTFIX_ACTIVATED = "_activated"; //$NON-NLS-1$
 
-	public static final String POSTFIX_ASSIGNMENT = "_assignment";
+	public static final String POSTFIX_ASSIGNMENT = "_assignment"; //$NON-NLS-1$
 
 	/**
 	 * 变更流程定义
 	 */
-	public static final String F_WF_CHANGE = "wf_change";
+	public static final String F_WF_CHANGE = "wf_change"; //$NON-NLS-1$
 
 	/**
 	 * 流程是否启用
 	 */
-	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated";
+	public static final String F_WF_CHANGE_ACTIVATED = "wf_change_activated"; //$NON-NLS-1$
 
 	/**
 	 * 变更流程定义中的指派
 	 */
-	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment";
+	public static final String F_WF_CHANGE_ASSIGNMENT = "wf_change_assignment"; //$NON-NLS-1$
 
 
-	public static final String F_ACTIVATED = "activated";
+	public static final String F_ACTIVATED = "activated"; //$NON-NLS-1$
 
 	/**
 	 * 返回显示图标
@@ -175,7 +176,7 @@ public class ProjectTemplate extends PrimaryObject{
 	@Override
 	public void doRemove(IContext context) throws Exception {
 		if (isActivated()) {
-			throw new Exception("项目模板启用状态不可删除");
+			throw new Exception(Messages.get().ProjectTemplate_0);
 		}
 
 		// 删除预算根
@@ -374,7 +375,7 @@ public class ProjectTemplate extends PrimaryObject{
 		BasicDBObject query = new BasicDBObject().append(
 				WorkDefinition.F_PROJECT_TEMPLATE_ID, getValue(F__ID)).append(
 				WorkDefinition.F_ROOT_ID,
-				new BasicDBObject().append("$ne", getWBSRoot().get_id()));
+				new BasicDBObject().append("$ne", getWBSRoot().get_id())); //$NON-NLS-1$
 		return getRelationByCondition(WorkDefinition.class, query);
 	}
 
@@ -417,7 +418,7 @@ public class ProjectTemplate extends PrimaryObject{
 	 */
 	@Override
 	public String getTypeName() {
-		return "项目模板";
+		return Messages.get().ProjectTemplate_1;
 	}
 
 	@SuppressWarnings("unchecked")

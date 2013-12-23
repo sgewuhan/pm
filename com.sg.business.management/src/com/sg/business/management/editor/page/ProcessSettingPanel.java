@@ -32,6 +32,7 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
@@ -40,9 +41,9 @@ import com.sg.widgets.MessageUtil;
 @Deprecated
 public class ProcessSettingPanel extends Composite {
 
-	private static final String F_POSTFIX_ASSIGNMENT = "_assignment";
+	private static final String F_POSTFIX_ASSIGNMENT = "_assignment"; //$NON-NLS-1$
 	private static final int MARGIN = 4;
-	private static final String F_POSTFIX_ACTIVATED = "_activated";
+	private static final String F_POSTFIX_ACTIVATED = "_activated"; //$NON-NLS-1$
 	private String key;
 	private PrimaryObject primaryObject;
 	private TableViewer processViewer;
@@ -92,7 +93,7 @@ public class ProcessSettingPanel extends Composite {
 		this.setLayout(new FormLayout());
 		// 是否启用
 		activeButton = new Button(this, SWT.CHECK);
-		activeButton.setText("启用");
+		activeButton.setText(Messages.get().ProcessSettingPanel_2);
 		FormData fd = new FormData();
 		activeButton.setLayoutData(fd);
 		fd.top = new FormAttachment(0, MARGIN);
@@ -100,14 +101,14 @@ public class ProcessSettingPanel extends Composite {
 
 		// 流程库
 		final Text text = new Text(this, SWT.BORDER);
-		text.setMessage("<请输入流程库的名称，查询可用流程>");
+		text.setMessage(Messages.get().ProcessSettingPanel_3);
 		fd = new FormData();
 		text.setLayoutData(fd);
 		fd.top = new FormAttachment(activeButton, MARGIN);
 		fd.left = new FormAttachment(0, MARGIN);
 
 		Button queryButton = new Button(this, SWT.PUSH);
-		queryButton.setText("查询");
+		queryButton.setText(Messages.get().ProcessSettingPanel_4);
 		fd = new FormData();
 		queryButton.setLayoutData(fd);
 		fd.top = new FormAttachment(activeButton, MARGIN);
@@ -154,7 +155,7 @@ public class ProcessSettingPanel extends Composite {
 		processViewer.setContentProvider(ArrayContentProvider.getInstance());
 		TableViewerColumn column = new TableViewerColumn(processViewer,
 				SWT.LEFT);
-		column.getColumn().setText("活动名称");
+		column.getColumn().setText(Messages.get().ProcessSettingPanel_5);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -166,7 +167,7 @@ public class ProcessSettingPanel extends Composite {
 		});
 
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派类别");
+		column.getColumn().setText(Messages.get().ProcessSettingPanel_6);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -174,21 +175,21 @@ public class ProcessSettingPanel extends Composite {
 			public String getText(Object element) {
 				NodeAssignment na = (NodeAssignment) element;
 				if (na.isDyanmic()) {
-					return "动态指派";
+					return Messages.get().ProcessSettingPanel_7;
 				} else if (na.isRuleAssignment()) {
-					return "规则指派";
+					return Messages.get().ProcessSettingPanel_8;
 				} else if (na.isStaticActor()) {
-					return "静态执行人";
+					return Messages.get().ProcessSettingPanel_9;
 				} else if (na.isStaticGroup()) {
-					return "静态执行组";
+					return Messages.get().ProcessSettingPanel_10;
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
 
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("规则名称");
+		column.getColumn().setText(Messages.get().ProcessSettingPanel_0);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -199,13 +200,13 @@ public class ProcessSettingPanel extends Composite {
 				if (name != null) {
 					return name;
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
 
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派参数");
+		column.getColumn().setText(Messages.get().ProcessSettingPanel_14);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -218,7 +219,7 @@ public class ProcessSettingPanel extends Composite {
 		});
 
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("执行角色");
+		column.getColumn().setText(Messages.get().ProcessSettingPanel_15);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -228,17 +229,17 @@ public class ProcessSettingPanel extends Composite {
 				String ap = na.getNodeActorParameter();
 				ObjectId roleId = (ObjectId) processAssignment.get(ap);
 				if(roleId == null){
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 				//如果是通用工作定义或者是独立工作定义，取出的是角色
 				if(isGenericWorkDefinition()||isStandloneWorkDefinition()){
 					Role roled = ModelService.createModelObject(
 							Role.class, roleId);
-					return roled == null ? "" : roled.getLabel();
+					return roled == null ? "" : roled.getLabel(); //$NON-NLS-1$
 				}else{//取出的是角色定义
 					RoleDefinition roled = ModelService.createModelObject(
 							RoleDefinition.class, roleId);
-					return roled == null ? "" : roled.getLabel();
+					return roled == null ? "" : roled.getLabel(); //$NON-NLS-1$
 				}
 				
 			}
@@ -246,7 +247,7 @@ public class ProcessSettingPanel extends Composite {
 		});
 
 		String[] rolednames = new String[roleds.size() + 1];
-		rolednames[0] = "";
+		rolednames[0] = ""; //$NON-NLS-1$
 		for (int i = 1; i < rolednames.length; i++) {
 			rolednames[i] = roleds.get(i - 1).getLabel();
 		}
@@ -310,12 +311,12 @@ public class ProcessSettingPanel extends Composite {
 		activeButton.setSelection(Boolean.TRUE.equals(activated));
 
 		if (processDefinition != null) {
-			processLabel.setText("<big >" + processDefinition.getProcessName()
-					+ "</big>");
+			processLabel.setText("<big >" + processDefinition.getProcessName() //$NON-NLS-1$
+					+ "</big>"); //$NON-NLS-1$
 			processViewer.setInput(processDefinition.getNodesAssignment());
 			packTableViewer(processViewer);
 		} else {
-			processLabel.setText("<big>" + "未定义流程" + "</big>");
+			processLabel.setText("<big>" + Messages.get().ProcessSettingPanel_23 + "</big>"); //$NON-NLS-1$ //$NON-NLS-3$
 			processViewer.setInput(null);
 		}
 		layout(true);
@@ -324,7 +325,7 @@ public class ProcessSettingPanel extends Composite {
 
 	private void queryProcess(Label processLabel, String kbase, String key) {
 		if (kbase.isEmpty()) {
-			MessageUtil.showToast("请输入流程库名称", SWT.ERROR);
+			MessageUtil.showToast(Messages.get().ProcessSettingPanel_25, SWT.ERROR);
 			return;
 		}
 		ProcessSelectorDialog d = new ProcessSelectorDialog(getShell(), kbase);
@@ -333,7 +334,7 @@ public class ProcessSettingPanel extends Composite {
 		if (ok == Window.OK) {
 			process = d.getSelection();
 			if (process == null) {
-				MessageUtil.showToast("无法获得流程库包含的流程", SWT.ERROR);
+				MessageUtil.showToast(Messages.get().ProcessSettingPanel_26, SWT.ERROR);
 				return;
 			} else {
 				if (processDefinition != null

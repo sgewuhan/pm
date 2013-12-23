@@ -9,6 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.viewer.ICreateEditorDelegator;
 import com.sg.widgets.viewer.ViewerControl;
@@ -19,7 +20,7 @@ public class CreateFolderOfProject implements ICreateEditorDelegator {
 	public IInputProvider create(IStructuredSelection selection,
 			String editorId, ViewerControl viewerControl) throws Exception {
 		if (selection == null || selection.isEmpty()) {
-			throw new Exception("您需要选择上级目录后进行创建");
+			throw new Exception(Messages.get().CreateFolderOfProject_0);
 		}
 		Folder po = ModelService.createModelObject(new BasicDBObject(), Folder.class);
 		

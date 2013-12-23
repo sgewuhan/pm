@@ -18,6 +18,7 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import com.mobnut.db.model.DataSet;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.User;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
@@ -162,7 +163,7 @@ public abstract class ActivityEditor extends Composite {
 
 		Section section = new SimpleSection(this, Section.EXPANDED
 				| Section.SHORT_TITLE_BAR);
-		section.setText("任务信息以及执行人指派");
+		section.setText(Messages.get().ActivityEditor_0);
 		Composite panel = new Composite(section, SWT.NONE);
 		createContent(panel);
 		section.setClient(panel);
@@ -185,7 +186,7 @@ public abstract class ActivityEditor extends Composite {
 
 		// 活动名称
 		Label label = new Label(parent, SWT.NONE);
-		label.setText("活动名称");
+		label.setText(Messages.get().ActivityEditor_1);
 		label.setLayoutData(getGridData1());
 
 		activiteName = new Text(parent, SWT.BORDER);
@@ -194,7 +195,7 @@ public abstract class ActivityEditor extends Composite {
 
 		// 指派类别
 		label = new Label(parent, SWT.NONE);
-		label.setText("指派类别");
+		label.setText(Messages.get().ActivityEditor_2);
 		label.setLayoutData(getGridData1());
 		assignmentType = new Text(parent, SWT.BORDER);
 		assignmentType.setLayoutData(getGridData2());
@@ -202,7 +203,7 @@ public abstract class ActivityEditor extends Composite {
 
 		// 指派规则
 		label = new Label(parent, SWT.NONE);
-		label.setText("指派规则");
+		label.setText(Messages.get().ActivityEditor_3);
 		label.setLayoutData(getGridData1());
 		assignmentRule = new Text(parent, SWT.BORDER);
 		assignmentRule.setLayoutData(getGridData2());
@@ -215,14 +216,14 @@ public abstract class ActivityEditor extends Composite {
 		// 选择角色
 		if (hasRoleSelector) {
 			label = new Label(parent, SWT.NONE);
-			label.setText("角色限定");
+			label.setText(Messages.get().ActivityEditor_4);
 			label.setLayoutData(getGridData1());
 			roleText = new Text(parent, SWT.BORDER);
 			roleText.setEditable(false);
 			roleText.setLayoutData(getGridData3());
 			roleSelectorButton = new Button(parent, SWT.PUSH);
 			roleSelectorButton.setEnabled(false);
-			roleSelectorButton.setText("..");
+			roleSelectorButton.setText(".."); //$NON-NLS-1$
 			roleSelectorButton.setLayoutData(getGridData1());
 			roleSelectorButton.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -235,14 +236,14 @@ public abstract class ActivityEditor extends Composite {
 		// 创建选择用户
 		if (hasActorSelector) {
 			label = new Label(parent, SWT.NONE);
-			label.setText("活动执行人");
+			label.setText(Messages.get().ActivityEditor_6);
 			label.setLayoutData(getGridData1());
 			actorText = new Text(parent, SWT.BORDER);
 			actorText.setEditable(false);
 			actorText.setLayoutData(getGridData3());
 			actorSelectorButton = new Button(parent, SWT.PUSH);
 			actorSelectorButton.setEnabled(false);
-			actorSelectorButton.setText("..");
+			actorSelectorButton.setText(".."); //$NON-NLS-1$
 			actorSelectorButton.setLayoutData(getGridData1());
 			actorSelectorButton.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -306,32 +307,32 @@ public abstract class ActivityEditor extends Composite {
 		}
 
 		if (nodeAssignment == null) {
-			activiteName.setText("");
-			assignmentType.setText("无需指派");
-			assignmentRule.setText("");
-			roleText.setText("");
+			activiteName.setText(""); //$NON-NLS-1$
+			assignmentType.setText(Messages.get().ActivityEditor_9);
+			assignmentRule.setText(""); //$NON-NLS-1$
+			roleText.setText(""); //$NON-NLS-1$
 			if (actorText != null && actor != null && !actor.isEmpty()) {
 				actorText.setText(actor.getLabel());
 			} else if (actorText != null) {
-				actorText.setText("");
+				actorText.setText(""); //$NON-NLS-1$
 			}
 		} else {
 			activiteName.setText(nodeAssignment.getNodeName());
 			if (nodeAssignment.isDyanmic()) {
-				assignmentType.setText("动态指派");
+				assignmentType.setText(Messages.get().ActivityEditor_13);
 			} else if (nodeAssignment.isRuleAssignment()) {
-				assignmentType.setText("规则指派");
+				assignmentType.setText(Messages.get().ActivityEditor_14);
 			} else if (nodeAssignment.isStaticActor()) {
-				assignmentType.setText("静态执行人");
+				assignmentType.setText(Messages.get().ActivityEditor_15);
 			} else if (nodeAssignment.isStaticGroup()) {
-				assignmentType.setText("静态执行组");
+				assignmentType.setText(Messages.get().ActivityEditor_16);
 			} else {
-				assignmentType.setText("");
+				assignmentType.setText(""); //$NON-NLS-1$
 			}
 
 			String ruleName = nodeAssignment.getRuleAssignmentName();
 			if (ruleName == null) {
-				assignmentRule.setText("");
+				assignmentRule.setText(""); //$NON-NLS-1$
 			} else {
 				assignmentRule.setText(ruleName);
 			}
@@ -340,7 +341,7 @@ public abstract class ActivityEditor extends Composite {
 				if (roleDef != null && !roleDef.isEmpty()) {
 					roleText.setText(roleDef.getLabel());
 				} else if (roleText != null) {
-					roleText.setText("");
+					roleText.setText(""); //$NON-NLS-1$
 				}
 			}
 
@@ -348,7 +349,7 @@ public abstract class ActivityEditor extends Composite {
 				if (actor != null && !actor.isEmpty()) {
 					actorText.setText(actor.getLabel());
 				} else if (actorText != null) {
-					actorText.setText("");
+					actorText.setText(""); //$NON-NLS-1$
 				}
 			}
 		}
@@ -410,7 +411,7 @@ public abstract class ActivityEditor extends Composite {
 		actor = user;
 
 		if (actor == null) {
-			actorText.setText("");
+			actorText.setText(""); //$NON-NLS-1$
 		} else {
 			actorText.setText(actor.getLabel());
 		}
@@ -430,7 +431,7 @@ public abstract class ActivityEditor extends Composite {
 		roleDef = role;
 
 		if (role == null) {
-			roleText.setText("");
+			roleText.setText(""); //$NON-NLS-1$
 		} else {
 			roleText.setText(role.getLabel());
 		}

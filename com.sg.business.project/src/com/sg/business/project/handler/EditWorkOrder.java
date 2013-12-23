@@ -14,7 +14,7 @@ public class EditWorkOrder extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		if(part instanceof IEditablePart){
-			((IEditablePart)part).doEdit("project.workorder.editor",null,null,true);
+			((IEditablePart)part).doEdit("project.workorder.editor",null,null,true); //$NON-NLS-1$
 		}
 		return null;
 	}

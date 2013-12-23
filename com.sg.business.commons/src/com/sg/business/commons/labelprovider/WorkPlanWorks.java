@@ -18,6 +18,6 @@ public class WorkPlanWorks extends ConfiguratorColumnLabelProvider {
 			}
 
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

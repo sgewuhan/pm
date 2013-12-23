@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -20,7 +21,7 @@ public class RemoveDeliverable extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择一项", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().RemoveDeliverable_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -30,8 +31,8 @@ public class RemoveDeliverable extends AbstractNavigatorHandler {
 			Map<String, Object> parameters, IStructuredSelection selection) {
 		Shell shell = part.getSite().getShell();
 		int yes = MessageUtil
-				.showMessage(shell, "删除" + selected.getTypeName(), "您确定要删除这个"
-						+ selected.getTypeName() + "吗？\n该操作将不可恢复，选择YES确认删除。",
+				.showMessage(shell, Messages.get().RemoveDeliverable_1 + selected.getTypeName(), Messages.get().RemoveDeliverable_2
+						+ selected.getTypeName() + Messages.get().RemoveDeliverable_3,
 						SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 		if (yes != SWT.YES) {
 			return;
@@ -43,7 +44,7 @@ public class RemoveDeliverable extends AbstractNavigatorHandler {
 		try {
 			selected.doRemove(new CurrentAccountContext());
 		} catch (Exception e) {
-			MessageUtil.showMessage(shell, "删除" + selected.getTypeName(),
+			MessageUtil.showMessage(shell, Messages.get().RemoveDeliverable_4 + selected.getTypeName(),
 					e.getMessage(), SWT.ICON_WARNING);
 		}
 		selected.removeEventListener(currentViewerControl);

@@ -9,6 +9,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 
+import com.sg.business.finance.nls.Messages;
+
 public class WorkOrderCostViewer extends TableViewer {
 
 	public WorkOrderCostViewer(Composite parent, int style, String[][] columns) {
@@ -46,15 +48,15 @@ public class WorkOrderCostViewer extends TableViewer {
 		final TableColumn column = viewerColumn.getColumn();
 		column.setWidth(120);
 		String columnTitle;
-		if (accountName.contains("-")) {
+		if (accountName.contains("-")) { //$NON-NLS-1$
 			columnTitle = accountName.replace('-', '\n');
 		} else {
-			columnTitle = accountName + "\n ";
+			columnTitle = accountName + "\n "; //$NON-NLS-1$
 		}
 		column.setText(columnTitle);
-		column.setToolTipText(accountName + "(" + accountNumber + ")\n点输入定位列");
-		column.setData("accountNumber", accountNumber);
-		column.setData("accountName", accountName);
+		column.setToolTipText(accountName + "(" + accountNumber + Messages.get().WorkOrderCostViewer_3); //$NON-NLS-1$
+		column.setData("accountNumber", accountNumber); //$NON-NLS-1$
+		column.setData("accountName", accountName); //$NON-NLS-1$
 		return column;
 	}
 

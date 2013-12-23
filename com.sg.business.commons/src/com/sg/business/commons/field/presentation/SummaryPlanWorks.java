@@ -23,7 +23,7 @@ public class SummaryPlanWorks implements IValuePresentation {
 			}
 
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

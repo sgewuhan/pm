@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -18,7 +19,7 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class LockDocument extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "锁定交付物文档";
+	private static final String TITLE = Messages.get().LockDocument_0;
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,

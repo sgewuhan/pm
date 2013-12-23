@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.Widgets;
 
@@ -21,8 +22,8 @@ import com.sg.widgets.Widgets;
 public class OptionSettingPage extends WizardPage {
 
 	protected OptionSettingPage() {
-		super("选项设置");
-		setDescription("请选择项目的选项条件，设置完成后点击下一步预览工作分解结构和交付物");
+		super(Messages.get().OptionSettingPage_0);
+		setDescription(Messages.get().OptionSettingPage_1);
 	}
 
 	@Override
@@ -36,19 +37,19 @@ public class OptionSettingPage extends WizardPage {
 		List<?> standardOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
 		if (standardOptions != null && standardOptions.size() > 0) {
-			createOptionSetting(content, standardOptions, "标准");
+			createOptionSetting(content, standardOptions, Messages.get().OptionSettingPage_2);
 		}
 
 		List<?> productTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
 		if (productTypeOptions != null && productTypeOptions.size() > 0) {
-			createOptionSetting(content, productTypeOptions, "产品类型");
+			createOptionSetting(content, productTypeOptions, Messages.get().OptionSettingPage_3);
 		}
 
 		List<?> projectTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
 		if (projectTypeOptions != null && projectTypeOptions.size() > 0) {
-			createOptionSetting(content, projectTypeOptions, "项目类型");
+			createOptionSetting(content, projectTypeOptions, Messages.get().OptionSettingPage_4);
 		}
 		setControl(content);
 		setPageComplete(true);
@@ -86,7 +87,7 @@ public class OptionSettingPage extends WizardPage {
 		for (int i = 0; i < standardOptions.size(); i++) {
 			final Button settingButton = new Button(sectionClient, SWT.CHECK);
 			final String optionName = (String) standardOptions.get(i);
-			settingButton.setData("data", optionName);
+			settingButton.setData("data", optionName); //$NON-NLS-1$
 			settingButton.setText(optionName);
 			settingButton.addSelectionListener(new SelectionAdapter() {
 				@Override

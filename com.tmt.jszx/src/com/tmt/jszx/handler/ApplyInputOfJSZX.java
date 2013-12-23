@@ -32,7 +32,7 @@ public class ApplyInputOfJSZX implements ITaskFormInputHandler {
 				String consignerId = context.getAccountInfo().getConsignerId();
 				User user = UserToolkit.getUserById(consignerId);
 				Organization org = user.getOrganization();
-				taskForm.setValue("dept", org.get_id());
+				taskForm.setValue("dept", org.get_id()); //$NON-NLS-1$
 
 			} catch (Exception e) {
 				e.printStackTrace();

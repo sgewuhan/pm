@@ -18,6 +18,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.ProjectRole;
 
@@ -85,7 +86,7 @@ public abstract class ProcessViewer extends TableViewer {
 			ProcessViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("执行角色");
+		column.getColumn().setText(Messages.get().ProcessViewer_0);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -99,7 +100,7 @@ public abstract class ProcessViewer extends TableViewer {
 							ProjectRole.class, roleId);
 					return roled.getLabel();
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 
 			}
 
@@ -108,7 +109,7 @@ public abstract class ProcessViewer extends TableViewer {
 		if (editable && roleDefinitions != null) {
 
 			String[] rolednames = new String[roleDefinitions.size() + 1];
-			rolednames[0] = "";
+			rolednames[0] = ""; //$NON-NLS-1$
 			for (int i = 1; i < rolednames.length; i++) {
 				rolednames[i] = roleDefinitions.get(i - 1).getLabel();
 			}
@@ -170,7 +171,7 @@ public abstract class ProcessViewer extends TableViewer {
 	protected void createParameterColumn(ProcessViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派参数");
+		column.getColumn().setText(Messages.get().ProcessViewer_3);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -186,7 +187,7 @@ public abstract class ProcessViewer extends TableViewer {
 	protected void createRuleColumn(ProcessViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("规则名称");
+		column.getColumn().setText(Messages.get().ProcessViewer_4);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -197,7 +198,7 @@ public abstract class ProcessViewer extends TableViewer {
 				if (name != null) {
 					return name;
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
@@ -206,7 +207,7 @@ public abstract class ProcessViewer extends TableViewer {
 	protected void createAssignmentTypeColumn(ProcessViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派类别");
+		column.getColumn().setText(Messages.get().ProcessViewer_6);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -214,15 +215,15 @@ public abstract class ProcessViewer extends TableViewer {
 			public String getText(Object element) {
 				NodeAssignment na = (NodeAssignment) element;
 				if (na.isDyanmic()) {
-					return "动态指派";
+					return Messages.get().ProcessViewer_7;
 				} else if (na.isRuleAssignment()) {
-					return "规则指派";
+					return Messages.get().ProcessViewer_8;
 				} else if (na.isStaticActor()) {
-					return "静态执行人";
+					return Messages.get().ProcessViewer_9;
 				} else if (na.isStaticGroup()) {
-					return "静态执行组";
+					return Messages.get().ProcessViewer_10;
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
@@ -231,7 +232,7 @@ public abstract class ProcessViewer extends TableViewer {
 	protected void createActionNameColumn(ProcessViewer processViewer) {
 		TableViewerColumn column = new TableViewerColumn(processViewer,
 				SWT.LEFT);
-		column.getColumn().setText("活动名称");
+		column.getColumn().setText(Messages.get().ProcessViewer_12);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 

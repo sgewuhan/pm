@@ -37,6 +37,7 @@ import com.mobnut.portal.user.IAccountEvent;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.pm2.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
@@ -82,7 +83,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 		headerPic = new CLabel(headPicContainer, SWT.NONE);
 		headerPic.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic");
+		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic"); //$NON-NLS-1$
 		resetImageURL();
 
 		fd = new FormData();
@@ -96,7 +97,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		// 创建菜单
 		final Menu dropDownMenu = new Menu(shell, SWT.POP_UP);
 		MenuItem item = new MenuItem(dropDownMenu, SWT.PUSH);
-		item.setText("更改我的个人信息");
+		item.setText(Messages.get().HeadArea_1);
 		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_USER_24));
 		List<String[]> consigners = UserSessionContext.getSession()
 				.getConsignerList();
@@ -111,7 +112,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 			for (int i = 0; i < consigners.size(); i++) {
 				item = new MenuItem(dropDownMenu, SWT.PUSH);
 				final String[] cs = consigners.get(i);
-				item.setText("代管 " + cs[0] + "|" + consigners.get(i)[1]);
+				item.setText(Messages.get().HeadArea_2 + cs[0] + "|" + consigners.get(i)[1]); //$NON-NLS-2$
 				item.setImage(BusinessResource
 						.getImage(BusinessResource.IMAGE_ASSIGNMENT_24));
 				item.addSelectionListener(new SelectionAdapter() {
@@ -120,8 +121,8 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 						int yes = MessageUtil
 								.showMessage(
 										shell,
-										"切换至代管账户",
-										"切换至代管账户将中止某些您当前的操作进程。\n请确保您已经保存了重要的数据。选择YES切换至托管账户",
+										Messages.get().HeadArea_4,
+										Messages.get().HeadArea_5,
 										SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 						if (yes == SWT.YES) {
 							UserSessionContext.getSession()
@@ -131,7 +132,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				});
 			}
 			item = new MenuItem(dropDownMenu, SWT.PUSH);
-			item.setText("取消代管");
+			item.setText(Messages.get().HeadArea_6);
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -142,7 +143,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 		// 添加个人设置
 		item = new MenuItem(dropDownMenu, SWT.PUSH);
-		item.setText("用户设置");
+		item.setText(Messages.get().HeadArea_7);
 		item.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_VARIABLE_24));
 		item.addSelectionListener(new SelectionAdapter() {
@@ -151,7 +152,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				IWorkbenchPage page = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage();
 				try {
-					page.showView("com.mobnut.admin.personalsetting");
+					page.showView("com.mobnut.admin.personalsetting"); //$NON-NLS-1$
 				} catch (PartInitException pe) {
 					MessageUtil.showToast(pe);
 				}
@@ -159,7 +160,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		});
 		
 		item = new MenuItem(dropDownMenu,SWT.PUSH);
-		item.setText("报告问题和建议");
+		item.setText(Messages.get().HeadArea_9);
 		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_REPORT_ADD_24));
 		item.addSelectionListener(new SelectionAdapter(){
 			@Override
@@ -190,7 +191,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		});
 
 		welcomeMessage = new Label(parent, SWT.NONE);
-		welcomeMessage.setData(RWT.CUSTOM_VARIANT, "welcomemessage");
+		welcomeMessage.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
 		setWelcomeMessage(getWelcomeMessage(user.getUsername()));
 		fd = new FormData();
 		welcomeMessage.setLayoutData(fd);
@@ -232,7 +233,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		}
 		if (imageURL == null) {
 			imageURL = FileUtil.getImageURL(ImageResource.LOGO_GRAY_48,
-					Widgets.PLUGIN_ID, "image");
+					Widgets.PLUGIN_ID, "image"); //$NON-NLS-1$
 		}
 
 	}
@@ -273,7 +274,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 	protected void editUserProfile(User user) {
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
-				.getEditorRegistry().getConfigurator("editor.user");
+				.getEditorRegistry().getConfigurator("editor.user"); //$NON-NLS-1$
 		try {
 			IEditorSaveHandler save = new IEditorSaveHandler() {
 
@@ -296,7 +297,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 					return true;
 				}
 			};
-			DataObjectDialog.openDialog(user, conf, true, save, "编辑用户资料");
+			DataObjectDialog.openDialog(user, conf, true, save, Messages.get().HeadArea_13);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -313,35 +314,35 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		case 3:
 		case 4:
 		case 5:
-			return username + " 您好";
+			return username + Messages.get().HeadArea_14;
 		case 6:
 		case 7:
-			return username + " 早上好 ";
+			return username + Messages.get().HeadArea_15;
 		case 8:
 		case 9:
 		case 10:
 		case 11:
-			return username + " 上午好";
+			return username + Messages.get().HeadArea_16;
 		case 12:
 		case 13:
-			return username + " 中午好";
+			return username + Messages.get().HeadArea_17;
 		case 14:
 		case 15:
 		case 16:
 		case 17:
 		case 18:
 
-			return username + " 下午好";
+			return username + Messages.get().HeadArea_18;
 		case 19:
 		case 20:
 		case 21:
 		case 22:
-			return username + " 晚上好";
+			return username + Messages.get().HeadArea_19;
 		case 23:
 		case 24:
-			return username + "zzZ..  ";
+			return username + "zzZ..  "; //$NON-NLS-1$
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -357,7 +358,7 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				AccountInfo user = UserSessionContext.getAccountInfo();
 				if (user.isConsigning()) {
 					setWelcomeMessage(getWelcomeMessage(user.getUserName())
-							+ " 代表:" + user.getconsignerName());
+							+ Messages.get().HeadArea_22 + user.getconsignerName());
 				} else {
 					setWelcomeMessage(getWelcomeMessage(user.getUserName()));
 				}
@@ -374,8 +375,8 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 	@Override
 	public void resetImageURL() {
-		headerPic.setText("<img src='" + imageURL
-				+ "' style='float:left' width='48' height='48' />");
+		headerPic.setText("<img src='" + imageURL //$NON-NLS-1$
+				+ "' style='float:left' width='48' height='48' />"); //$NON-NLS-1$
 	}
 
 }
