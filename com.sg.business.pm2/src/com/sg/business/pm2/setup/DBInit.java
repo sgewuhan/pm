@@ -15,6 +15,7 @@ import com.sg.business.model.Deliverable;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectRoleAssignment;
@@ -39,11 +40,11 @@ public class DBInit implements ISchedualJobRunnable {
 		// 创建索引
 		ensureIndex();
 		// syncUser 同步用户
-		syncUser();
+		// syncUser();
 
 		// 初始化设置
-		initSetting();
-		
+		// initSetting();
+
 		return true;
 
 	}
@@ -173,7 +174,7 @@ public class DBInit implements ISchedualJobRunnable {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
-		
+
 		setting = new BasicDBObject();
 		setting.put("varid", IModelConstants.S_U_TASK_RESERVED_REFRESH_INTERVAL); //$NON-NLS-1$
 		setting.put("desc", Messages.get().DBInit_0); //$NON-NLS-1$
@@ -328,6 +329,12 @@ public class DBInit implements ISchedualJobRunnable {
 		// 创建工作归档字段索引
 		ensureIndex(db, IModelConstants.C_WORK,
 				new BasicDBObject().append(Work.F_ARCHIVE, 1));
+
+		// 创建项目负责人字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_CHARGER, 1));
+
+		// TODO 增加索引
 
 		/**
 		 * 请注意！！！
