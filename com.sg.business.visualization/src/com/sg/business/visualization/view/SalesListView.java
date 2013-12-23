@@ -14,6 +14,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
@@ -25,8 +26,9 @@ import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.visualization.ui.SalesListSetting;
 
-public class ProfitListView extends AbstractDashWidgetView {
+public class SalesListView extends AbstractDashWidgetView {
 
 	private int month;
 	private int year;
@@ -36,19 +38,44 @@ public class ProfitListView extends AbstractDashWidgetView {
 	@SuppressWarnings("rawtypes")
 	protected Class selected;
 
-	public ProfitListView() {
+	public SalesListView() {
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public void setLimitNumber(int limitNumber) {
+		this.limitNumber = limitNumber;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public int getLimitNumber() {
+		return limitNumber;
 	}
 
 	@Override
 	protected void createContent(Composite parent) {
 		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, -1);
 		selected = Project.class;
 		limitNumber = 10;
 		year = cal.get(Calendar.YEAR);
 		month = cal.get(Calendar.MONTH) + 1;
 		parent.setLayout(new FillLayout());
 
-		CTabFolder tabFolder = new CTabFolder(parent, SWT.NONE);
+		final CTabFolder tabFolder = new CTabFolder(parent, SWT.NONE);
 		tabFolder.setBackground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_WHITE));
 		tabFolder.setTabHeight(24);
@@ -66,7 +93,7 @@ public class ProfitListView extends AbstractDashWidgetView {
 		projectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ProfitListView.this.selected = Project.class;
+				SalesListView.this.selected = Project.class;
 				doRefresh();
 			}
 		});
@@ -76,7 +103,7 @@ public class ProfitListView extends AbstractDashWidgetView {
 		chargerButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ProfitListView.this.selected = User.class;
+				SalesListView.this.selected = User.class;
 				doRefresh();
 			}
 		});
@@ -86,23 +113,34 @@ public class ProfitListView extends AbstractDashWidgetView {
 		orgButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ProfitListView.this.selected = Organization.class;
+				SalesListView.this.selected = Organization.class;
 				doRefresh();
 			}
 		});
-		
+
 		Button settingsButton = createButton(composite,
 				BusinessResource.getImage(BusinessResource.IMAGE_SETTINGS_24));
+
 		settingsButton.addSelectionListener(new SelectionAdapter() {
-			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ProfitListView.this.selected = User.class;
-				doRefresh();
+				SalesListSetting shell = new SalesListSetting(tabFolder
+						.getShell(), SalesListView.this) {
+					@Override
+					protected void setFilter(int yearIndex, int monthIndex,
+							int limitNumberIndex) {
+						super.setFilter(yearIndex, monthIndex, limitNumberIndex);
+						doRefresh();
+					}
+				};
+
+				shell.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+				Point location = new Point(0, 100);
+				shell.open(location);
+
 			}
 		});
-		
-		
+
 		tabFolder.setTopRight(composite);
 
 		super.createContent(parent);
@@ -198,7 +236,12 @@ public class ProfitListView extends AbstractDashWidgetView {
 
 		for (Object object : asList) {
 			if (object != null) {
-				tempList.add(object);
+				Object[] children =  (Object[]) object;
+				List<Object> asChildrenList = Arrays.asList(children);
+				List<Object> tempChildrenList = new ArrayList<Object>();
+				tempChildrenList.addAll(asChildrenList);
+				tempChildrenList.add(Boolean.FALSE);
+				tempList.add(tempChildrenList.toArray(new Object[0]));
 			}
 		}
 		Comparator<? super Object> sorter = new Comparator<Object>() {
@@ -234,7 +277,12 @@ public class ProfitListView extends AbstractDashWidgetView {
 
 		for (Object object : asList) {
 			if (object != null) {
-				tempList.add(object);
+				Object[] children =  (Object[]) object;
+				List<Object> asChildrenList = Arrays.asList(children);
+				List<Object> tempChildrenList = new ArrayList<Object>();
+				tempChildrenList.addAll(asChildrenList);
+				tempChildrenList.add(Boolean.FALSE);
+				tempList.add(tempChildrenList.toArray(new Object[0]));
 			}
 		}
 		return tempList.toArray(new Object[0]);

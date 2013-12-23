@@ -271,7 +271,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
-						ILifecycle.STATUS_WIP_VALUE }));
+								ILifecycle.STATUS_WIP_VALUE }));
 		if (start != null && stop != null) {
 			dbo.put(Project.F_ACTUAL_START,
 					new BasicDBObject().append("$gte", start).append("$lte",
@@ -528,7 +528,6 @@ public abstract class ProjectProvider extends PrimaryObject {
 		List<ObjectId> projectIdList = getAllProjectId();
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month - 1, 1);
-		cal.add(Calendar.MONTH, -1);
 
 		Object[] topList = getTopList(limitNumber, sortType, groupField,
 				groupByField, cal.get(Calendar.YEAR),
@@ -552,7 +551,6 @@ public abstract class ProjectProvider extends PrimaryObject {
 		List<ObjectId> projectIdList = getAllProjectId();
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month - 1, 1);
-		cal.add(Calendar.MONTH, -1);
 
 		Object[] topList = getTopList(limitNumber, sortType, groupField,
 				groupByField, unWindField, cal.get(Calendar.YEAR),
@@ -593,12 +591,8 @@ public abstract class ProjectProvider extends PrimaryObject {
 			String groupField, String groupByField, int year, int month)
 			throws Exception {
 		List<ObjectId> projectIdList = getAllProjectId();
-		Calendar cal = Calendar.getInstance();
-		cal.set(year, month - 1, 1);
-		cal.add(Calendar.MONTH, -1);
 		return getTopList(limitNumber, sortType, groupField, groupByField,
-				cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,
-				projectIdList);
+				year, month, projectIdList);
 	}
 
 	private Object[] getTopList(int limitNumber, int sortType,
@@ -646,12 +640,8 @@ public abstract class ProjectProvider extends PrimaryObject {
 			String groupField, String groupByField, String unWindField,
 			int year, int month) throws Exception {
 		List<ObjectId> projectIdList = getAllProjectId();
-		Calendar cal = Calendar.getInstance();
-		cal.set(year, month - 1, 1);
-		cal.add(Calendar.MONTH, -1);
 		return getTopList(limitNumber, sortType, groupField, groupByField,
-				unWindField, cal.get(Calendar.YEAR),
-				cal.get(Calendar.MONTH) + 1, projectIdList);
+				unWindField, year, month, projectIdList);
 	}
 
 	private Object[] getTopList(int limitNumber, int sortType,
