@@ -50,8 +50,7 @@ public class ContextSearchControl extends WorkbenchWindowControlContribution {
 		fd.bottom = new FormAttachment(100, -2);
 
 		Button go = new Button(panel, SWT.PUSH);
-		go.setData(RWT.CUSTOM_VARIANT,
-				Messages.get(panel.getDisplay()).ContextSearchControl_1);
+		go.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
 		go.setImage(BusinessResource.getImage(BusinessResource.IMAGE_SEARCH24));
 		fd = new FormData();
 		go.setLayoutData(fd);

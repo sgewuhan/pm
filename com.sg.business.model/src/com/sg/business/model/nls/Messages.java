@@ -11,8 +11,6 @@ public class Messages extends NLS {
 	public String AbstractRoleDefinition_1;
 	public String AbstractRoleDefinition_10;
 	public String AbstractRoleDefinition_3;
-	public String AbstractRoleDefinition_8;
-	public String AbstractRoleDefinition_9;
 	public String AbstractWork_13;
 	public String AbstractWork_14;
 	public String AbstractWork_15;
@@ -397,9 +395,6 @@ public class Messages extends NLS {
 	public String Work_80;
 	public String Work_83;
 	public String Work_84;
-	public String Work_85;
-	public String Work_86;
-	public String Work_87;
 	public String Work_88;
 	public String Work_89;
 	public String Work_91;

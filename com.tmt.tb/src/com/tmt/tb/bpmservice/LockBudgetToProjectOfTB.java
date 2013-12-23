@@ -49,8 +49,8 @@ public class LockBudgetToProjectOfTB extends ServiceProvider {
 						result.put("returnMessage", Messages.get().LockBudgetToProjectOfTB_11); //$NON-NLS-1$
 					}
 				} catch (Exception e) {
-					result.put("returnCode", Messages.get().LockBudgetToProjectOfTB_13); //$NON-NLS-1$
-					result.put(Messages.get().LockBudgetToProjectOfTB_14, e.getMessage());
+					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+					result.put("returnMessage", e.getMessage()); //$NON-NLS-1$
 				}
 			}
 		}
