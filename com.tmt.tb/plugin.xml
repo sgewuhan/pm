@@ -8,7 +8,6 @@
             name="立项申请"
             persistentFields="prj_number,accessory,application_leader"
             processDefinitionId="tb.tbProjectApplication"
-            saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="prj_number"
@@ -2254,7 +2253,7 @@
             serviceProvider="com.tmt.tb.bpmservice.AddParticipateOfTB">
       </service>
       <service
-            interface="com.tmt.tb.service2"
+            interface="tbmessage.service.action"
             name="通知财务"
             operation="financialmessage"
             serviceProvider="com.tmt.tb.bpmservice.ApplicationMessageOfTB">
