@@ -20,7 +20,7 @@ public abstract class AbstractDashWidgetView extends StandaloneViewPart
 	private ProjectProviderHolder holder;
 
 	@Override
-	final protected void createContent(Composite parent) {
+	protected void createContent(Composite parent) {
 		this.panel = parent;
 		loadData(parent);
 	}
@@ -57,7 +57,7 @@ public abstract class AbstractDashWidgetView extends StandaloneViewPart
 		}
 	}
 
-	private void clean() {
+	protected void clean() {
 		Control[] children = panel.getChildren();
 		if (children != null) {
 			for (int i = 0; i < children.length; i++) {

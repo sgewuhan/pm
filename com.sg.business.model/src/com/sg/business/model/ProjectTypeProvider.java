@@ -210,4 +210,15 @@ public class ProjectTypeProvider extends ProjectProvider {
 	public String getDesc() {
 		return desc;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		Object ids = getOrganizationIdCascade(null).toArray();
+		query.put(Project.F_PROJECT_TYPE_OPTION, getDesc());
+		query.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", ids));
+		return projectCol.distinct(Project.F__ID, query);
+	}
 }

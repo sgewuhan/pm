@@ -15,11 +15,23 @@ public interface IProjectETL {
 
 	public static final String F_FINISHED_DURATION_RATIO = "finished_duration_ratio"; //$NON-NLS-1$
 
+	public static final String F_MONTH_INVESTMENT = "month_investment";//$NON-NLS-1$
+
+	public static final String F_MONTH_INVESTMENT_ALLOCATED = "month_investment_allocated";//$NON-NLS-1$
+
+	public static final String F_MONTH_INVESTMENT_DESIGNATED = "month_investment_designated";//$NON-NLS-1$
+
 	public static final String F_INVESTMENT = "investment"; //$NON-NLS-1$
 
 	public static final String F_INVESTMENT_ALLOCATED = "investment_allocated"; //$NON-NLS-1$
 
 	public static final String F_INVESTMENT_DESIGNATED = "investment_designated"; //$NON-NLS-1$
+
+	public static final String F_MONTH_SALES_REVENUE = "month_sales_revenue";//$NON-NLS-1$
+
+	public static final String F_MONTH_SALES_COST = "month_sales_cost";//$NON-NLS-1$
+	
+	public static final String F_MONTH_SALES_PROFIT = "month_sales_profit";//$NON-NLS-1$
 
 	public static final String F_SALES_REVENUE = "sales_revenue"; //$NON-NLS-1$
 

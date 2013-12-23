@@ -138,22 +138,23 @@ public abstract class AbstractRoleDefinition extends PrimaryObject {
 	 */
 	public boolean isReservedNumber(String rn) {
 		return rn != null
-				&& (rn.toUpperCase().startsWith(Messages.get().AbstractRoleDefinition_8) || rn.toUpperCase()
-						.startsWith(Messages.get().AbstractRoleDefinition_9));
+				&& (rn.toUpperCase().startsWith("T0") || rn.toUpperCase() //$NON-NLS-1$
+						.startsWith("P0")); //$NON-NLS-1$
 	}
 
 	/**
 	 * 检查角色编号是否合法
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public void check() throws Exception {
-		
+
 		// [bug:18] 连带处理
 		String rn = getRoleNumber();
 		if (isReservedNumber(rn)) {
 			throw new Exception(Messages.get().AbstractRoleDefinition_10);
 		}
-		
+
 	}
 
 }

@@ -3,7 +3,6 @@ package com.sg.business.visualization.chart;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
-import org.eclipse.birt.chart.model.attribute.ColorDefinition;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.Marker;
 import org.eclipse.birt.chart.model.attribute.MarkerType;
@@ -29,15 +28,10 @@ import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.LineSeries;
 import org.eclipse.birt.chart.model.type.impl.LineSeriesImpl;
 
-import com.mobnut.commons.util.Utils;
-
-public class LineChart {
-
-	protected static final int MARKER_SIZE = 2;
-	protected static final int FONT_SIZE = 7;
+public class LineChart extends AbstractChart {
 
 	public static Chart getChart(String[] xAxisText, String[] lsText,
-			double[][] lsValue) {
+			double[][] lsValue,int shift) {
 		ChartWithAxes cwaLine = ChartWithAxesImpl.create();
 		cwaLine.setType("Line Chart"); //$NON-NLS-1$
 		cwaLine.setSubType("Overlay"); //$NON-NLS-1$
@@ -90,6 +84,7 @@ public class LineChart {
 		// Y-Sereis
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		setSeriesColor(sdY);
+		sdY.getSeriesPalette( ).shift( shift );
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
 
 		for (int i = 0; i < lsValue.length; i++) {
@@ -116,34 +111,5 @@ public class LineChart {
 		}
 		cwaLine.setSampleData(sd);
 		return cwaLine;
-	}
-
-	protected static void setSeriesColor(SeriesDefinition sdY) {
-		sdY.getSeriesPalette().getEntries().clear();
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_BLUE[13]));
-		sdY.getSeriesPalette().getEntries()
-				.add(getColor(Utils.COLOR_YELLOW[13]));
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_RED[13]));
-		sdY.getSeriesPalette().getEntries()
-				.add(getColor(Utils.COLOR_GREEN[13]));
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_PINK[13]));
-		sdY.getSeriesPalette().getEntries()
-				.add(getColor(Utils.COLOR_BROWN[13]));
-		sdY.getSeriesPalette().getEntries()
-				.add(getColor(Utils.COLOR_OLIVER[13]));
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_BLUE[6]));
-		sdY.getSeriesPalette().getEntries()
-				.add(getColor(Utils.COLOR_YELLOW[6]));
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_RED[6]));
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_GREEN[6]));
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_PINK[6]));
-		sdY.getSeriesPalette().getEntries().add(getColor(Utils.COLOR_BROWN[6]));
-		sdY.getSeriesPalette().getEntries()
-				.add(getColor(Utils.COLOR_OLIVER[6]));
-	}
-
-	protected static ColorDefinition getColor(String colorCode) {
-		int[] rgb = Utils.getRGB(colorCode);// "正常完成"
-		return ColorDefinitionImpl.create(rgb[0], rgb[1], rgb[2]);
 	}
 }

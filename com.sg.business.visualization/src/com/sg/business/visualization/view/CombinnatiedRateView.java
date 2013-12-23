@@ -10,8 +10,6 @@ import com.sg.widgets.birtcharts.ChartCanvas;
 
 public class CombinnatiedRateView extends AbstractDashWidgetView {
 
-	private ChartCanvas chart;
-
 	public CombinnatiedRateView() {
 	}
 
@@ -19,28 +17,25 @@ public class CombinnatiedRateView extends AbstractDashWidgetView {
 	protected void drawContent(Composite parent) {
 		parent.setLayout(new FillLayout());
 
-		chart = new ChartCanvas(parent, SWT.NONE) {
+		new ChartCanvas(parent, SWT.NONE) {
 			@Override
-			public Chart getChart() {
+			public Chart getChart() throws Exception {
 
 				return CombinnatiedRateView.this.getChart();
 			}
 		};
 	}
 
-	private Chart getChart() {
+	private Chart getChart() throws Exception {
 		String[] lsText = { "项目超支率", "项目超期率" };
 		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7",
 				"8", "9", "10", "11", "12" };
-		
-		double[] value1 = new double[] { 25, 35, 15, 25, 35, 15, 25, 35, 15,
-				25, 35, 15 };
-		double[] value2 = new double[] { 10, 10, 25, 10, 10, 25, 10, 10, 25,
-				10, 10, 25 };
 
-		return LineChart.getChart(xAxisText, lsText, new double[][] { value1, value2 });
+		double[] value1 = projectProvider.getRateValueByYear("overcost_def");
+		double[] value2 = projectProvider.getRateValueByYear("isdelay_def");
+
+		return LineChart.getChart(xAxisText, lsText, new double[][] { value1,
+				value2 }, -2);
 	}
-
-	
 
 }

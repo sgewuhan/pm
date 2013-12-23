@@ -191,4 +191,15 @@ public class ProductTypeProvider extends ProjectProvider {
 		return desc;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		Object ids = getOrganizationIdCascade(null).toArray();
+		query.put(Project.F_PRODUCT_TYPE_OPTION, getDesc());
+		query.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", ids));
+		return projectCol.distinct(Project.F__ID, query);
+	}
+
 }

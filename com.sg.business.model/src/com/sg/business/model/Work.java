@@ -1579,10 +1579,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 3.判断非级联完成的工作是否存在是必须的，是必须时，必须完成该工作
 		condition = new BasicDBObject();
 		condition.put(F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
-				new BasicDBObject().append(Messages.get().Work_85, Boolean.TRUE));
+				new BasicDBObject().append("$ne", Boolean.TRUE));//$NON-NLS-1$
 		condition.put(F_PARENT_ID, id);
 		condition
-				.put(Messages.get().Work_86,
+				.put("$or",//$NON-NLS-1$
 						new BasicDBObject[] {
 								new BasicDBObject().append(F_MILESTONE,
 										Boolean.TRUE),
@@ -1590,7 +1590,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 										Boolean.TRUE) });
 		condition.put(
 				F_LIFECYCLE,
-				new BasicDBObject().append(Messages.get().Work_87, new String[] {
+				new BasicDBObject().append("$in", new String[] {//$NON-NLS-1$
 						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE,
 						STATUS_NONE_VALUE, null, STATUS_ONREADY_VALUE }));
 
