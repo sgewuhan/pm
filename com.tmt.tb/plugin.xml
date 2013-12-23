@@ -319,6 +319,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="confirmtime"
+                        inputValidator="com.tmt.tb.field.CheckConfirmOfTBProjectApplication"
                         label="%text.label.1"
                         labelVisible="true"
                         name="confirmtime"
@@ -391,6 +392,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.3"
                         labelVisible="false"
                         name="comment"
@@ -407,7 +409,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -469,7 +471,7 @@
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -684,7 +686,7 @@
                         navigatorId="tb.taskforms.project.selector"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
