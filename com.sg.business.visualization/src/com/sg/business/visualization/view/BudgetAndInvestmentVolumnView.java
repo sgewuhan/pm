@@ -2,7 +2,7 @@ package com.sg.business.visualization.view;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sg.business.visualization.chart.BarChart;
@@ -10,20 +10,21 @@ import com.sg.widgets.birtcharts.ChartCanvas;
 
 public class BudgetAndInvestmentVolumnView extends AbstractDashWidgetView {
 
-	public BudgetAndInvestmentVolumnView() {
-	}
+	private ChartCanvas chart;
 
 	@Override
 	protected void drawContent(Composite parent) {
-		parent.setLayout(new FillLayout());
+		parent.setLayout(new GridLayout(1, true));
 
-		new ChartCanvas(parent, SWT.NONE) {
+		chart =new ChartCanvas(parent, SWT.NONE) {
 			@Override
 			public Chart getChart() throws Exception {
 
 				return BudgetAndInvestmentVolumnView.this.getChart();
 			}
 		};
+		layout(chart, 1, 1);
+		parent.layout();
 	}
 
 	private Chart getChart() throws Exception {

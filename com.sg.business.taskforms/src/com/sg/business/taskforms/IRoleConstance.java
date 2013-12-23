@@ -48,7 +48,7 @@ public interface IRoleConstance {
 	/**
 	 * 开发中心主任
 	 */
-	public static final String ROLE_DEVELOPMENTDIRECTOR_ID = Messages.get().IRoleConstance_12;
+	public static final String ROLE_DEVELOPMENTDIRECTOR_ID = "Development Director";//$NON-NLS-1$
 	public static final String ROLE_DEVELOPMENTDIRECTOR_TEXT = Messages.get().IRoleConstance_13;
 	
 	/**

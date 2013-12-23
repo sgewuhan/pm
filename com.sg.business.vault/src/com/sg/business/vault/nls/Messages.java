@@ -8,7 +8,6 @@ import com.mobnut.commons.util.NLS2;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "com.sg.business.vault.nls.messages"; //$NON-NLS-1$
 	public String ContextSearchControl_0;
-	public String ContextSearchControl_1;
 	public String ContextSearchControl_2;
 	public String ContextSearchControl_3;
 	public String CreateVaultDocument_0;

@@ -692,7 +692,7 @@
             targetID="perspective.vis2.home">
          <view
                closeable="false"
-               id="vis2.profitlist"
+               id="vis2.saleslist"
                minimized="false"
                moveable="false"
                ratio=".5"
@@ -708,7 +708,7 @@
                moveable="false"
                ratio=".33"
                relationship="right"
-               relative="vis2.profitlist"
+               relative="vis2.saleslist"
                showTitle="false"
                standalone="true">
          </view>

@@ -137,7 +137,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		createWorkButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_CREATEWORK_24));
 		createWorkButton.setToolTipText(Messages.get().EngineeringChangePlan_1);
-		createWorkButton.setData(RWT.CUSTOM_VARIANT, Messages.get().EngineeringChangePlan_2);
+		createWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");//$NON-NLS-1$
 		createWorkButton.addSelectionListener(new SelectionListener() {
 
 			@Override

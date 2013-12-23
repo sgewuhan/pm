@@ -175,29 +175,41 @@ public class ListCTabItem extends CTabItem {
 					Object[] objects = (Object[]) element;
 					Integer lastNumber = (Integer) objects[3];
 					int number = (int) objects[2];
+					Boolean type = (Boolean) objects[4];
+
+					String ImageURL1;
+					String ImageURL2;
+					if (type) {
+						ImageURL1 = FileUtil.getImageURL("up_16.png",
+								VisualizationActivator.PLUGIN_ID);
+						ImageURL2 = FileUtil.getImageURL("down_16.png",
+								VisualizationActivator.PLUGIN_ID);
+					} else {
+						ImageURL1 = FileUtil.getImageURL("down_16.png",
+								VisualizationActivator.PLUGIN_ID);
+						ImageURL2 = FileUtil.getImageURL("up_16.png",
+								VisualizationActivator.PLUGIN_ID);
+					}
+
 					StringBuffer sb = new StringBuffer();
-					String upImageURL = FileUtil.getImageURL("up_16.png",
-							VisualizationActivator.PLUGIN_ID);
-					String downImageURL = FileUtil.getImageURL("down_16.png",
-							VisualizationActivator.PLUGIN_ID);
 					sb.append("<span style='position:absolute;FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:7pt;"
 							+ "text-align:center;'>");
 					if (lastNumber == null) {
 
 						sb.append("<img src='"
-								+ upImageURL
+								+ ImageURL1
 								+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />");
 					} else {
 						int intLastValue = lastNumber.intValue();
 						if (intLastValue > number) {
 							sb.append("<img src='"
-									+ upImageURL
+									+ ImageURL1
 									+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />");
 							sb.append("<br/>");
 							sb.append(intLastValue - number);
 						} else if (intLastValue < number) {
 							sb.append("<img src='"
-									+ downImageURL
+									+ ImageURL2
 									+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />");
 							sb.append("<br/>");
 							sb.append(number - intLastValue);
