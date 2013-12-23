@@ -337,16 +337,21 @@
                   type="Date">
             </column>
             <column
+                  column="workorder"
+                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2StringArray"
+                  name="%column.name.24"
+                  type="String">
+            </column>
+            <column
                   column="_temp_itemcode"
                   importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2StringArray"
                   name="%column.name.23"
                   type="String">
             </column>
             <column
-                  column="workorder"
-                  importValueDelegator="com.sg.widgets.commons.importvalue.ImportString2StringArray"
-                  name="%column.name.24"
-                  type="String">
+                  column="_budget_code"
+                  name="预算值"
+                  type="Double">
             </column>
          </importAction>
       </navigator>
@@ -4450,14 +4455,6 @@
    </extension>
    <extension
          point="com.mobnut.admin.schedualJob">
-      <schedualJob
-            day="999999"
-            id="project.produtinit"
-            name="%schedualJob.name"
-            rule="month"
-            run="com.sg.business.project.setup.ProdutInit"
-            time="0:0:0">
-      </schedualJob>
       <schedualJob
             day="999999"
             id="project.delete"

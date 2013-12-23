@@ -10,7 +10,9 @@ public class ETLOldJob implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {
-		for (int i = 24; i >= 0; i--) {
+		//2009-1-1 57
+		
+		for (int i = 56; i >= 0; i--) {
 			final Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MONTH, -i);
 			cal.set(Calendar.DATE, 1);

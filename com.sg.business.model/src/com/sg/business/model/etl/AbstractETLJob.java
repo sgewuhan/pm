@@ -80,7 +80,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 		rndAdapter.runGetData(costCodes, costElementArray, year, month);
 		end = System.currentTimeMillis();
 		Commons.loginfo("[成本数据]获得SAP成本中心数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ (end - start) / 1000);
+				+ (end - start) / 1000 + " S");
 
 		Commons.loginfo("[成本数据]准备获取SAP工作令号研发成本数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
@@ -88,28 +88,28 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 		workorderadapter.runGetData(workOrders, costElementArray, year, month);
 		end = System.currentTimeMillis();
 		Commons.loginfo("[成本数据]获得SAP工作令号研发成本完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ (end - start) / 1000 + "S"); //$NON-NLS-1$
+				+ (end - start) / 1000 + " S"); //$NON-NLS-1$
 
 		Commons.loginfo("[销售数据]准备获取SAP销售数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		runGetData(year, month);
 		end = System.currentTimeMillis();
 		Commons.loginfo("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ (end - start) / 1000);
+				+ (end - start) / 1000 + " S");
 
 		Commons.loginfo("[销售数据]准备更新项目销售数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		ProjectToolkit.updateProjectSalesData(year, month, day);
 		end = System.currentTimeMillis();
 		Commons.loginfo("[销售数据]更新项目销售数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ (end - start) / 1000);
+				+ (end - start) / 1000 + " S");
 
 		Commons.loginfo("[项目数据]准备更新项目ETL数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
 		List<DBObject> projectETLList = doProjectETL(year, month, day);
 		end = System.currentTimeMillis();
 		Commons.loginfo("[项目数据]更新项目ETL数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ (end - start) / 1000);
+				+ (end - start) / 1000 + " S");
 
 		if (day == 1) {
 			Commons.loginfo("[项目数据]准备更新项目月ETL数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
@@ -120,7 +120,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 			projectMonthCol.insert(projectETLList, WriteConcern.NORMAL);
 			end = System.currentTimeMillis();
 			Commons.loginfo("[项目数据]更新项目月ETL数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					+ (end - start) / 1000);
+					+ (end - start) / 1000 + " S");
 		}
 
 		return true;
