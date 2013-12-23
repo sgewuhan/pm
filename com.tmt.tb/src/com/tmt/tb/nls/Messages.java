@@ -24,14 +24,12 @@ public class Messages extends NLS {
 	public String ComplateChangeActivityValidator_0;
 	public String CreateWorkOrderToProjectOfTB_12;
 	public String CreateWorkOrderToProjectOfTB_6;
-	public String CreateWorkOrderToProjectOfTB_7;
 	public String EngineeringChangePlan_1;
 	public String EngineeringChangePlan_10;
 	public String EngineeringChangePlan_12;
 	public String EngineeringChangePlan_14;
 	public String EngineeringChangePlan_16;
 	public String EngineeringChangePlan_18;
-	public String EngineeringChangePlan_2;
 	public String EngineeringChangePlan_20;
 	public String EngineeringChangePlan_22;
 	public String EngineeringChangePlan_23;
@@ -45,8 +43,6 @@ public class Messages extends NLS {
 	public String LinkWorkToProjectOfTB_11;
 	public String LinkWorkToProjectOfTB_5;
 	public String LockBudgetToProjectOfTB_11;
-	public String LockBudgetToProjectOfTB_13;
-	public String LockBudgetToProjectOfTB_14;
 	public String LockBudgetToProjectOfTB_5;
 	public String ProjectBudgetOfCreateProjectPage_1;
 	public String ProjectBudgetOfCreateProjectPage_2;

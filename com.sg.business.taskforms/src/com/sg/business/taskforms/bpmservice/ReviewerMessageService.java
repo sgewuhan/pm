@@ -70,8 +70,7 @@ public class ReviewerMessageService extends MessageService {
 			}
 			return reviewerList;
 		} else if ("projectapplication".equals(value)) { //$NON-NLS-1$
-			List<String> reviewerList = (ArrayList<String>) getInputValue(Messages.get().ReviewerMessageService_20);
-			System.out.println(""); //$NON-NLS-1$
+			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list"); //$NON-NLS-1$
 			return reviewerList;
 		}
 		return null;

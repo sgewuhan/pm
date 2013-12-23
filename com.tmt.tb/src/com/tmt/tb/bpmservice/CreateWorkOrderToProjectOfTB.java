@@ -25,7 +25,8 @@ public class CreateWorkOrderToProjectOfTB extends ServiceProvider {
 		String workOrder = (String) getInputValue("prj_number"); //$NON-NLS-1$
 		if (_id == null) {
 			result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
-			result.put("returnMessage", Messages.get().CreateWorkOrderToProjectOfTB_6); //$NON-NLS-1$
+			result.put(
+					"returnMessage", Messages.get().CreateWorkOrderToProjectOfTB_6); //$NON-NLS-1$
 		} else {
 			if (content instanceof String) {
 				String jsonContent = (String) content;
@@ -33,7 +34,7 @@ public class CreateWorkOrderToProjectOfTB extends ServiceProvider {
 					ObjectId project_id = new ObjectId(_id);
 					DBObject processData = WorkflowUtils
 							.getProcessInfoFromJSON(jsonContent);
-					String processId = (String) processData.get(Messages.get().CreateWorkOrderToProjectOfTB_7);
+					String processId = (String) processData.get("processId");//$NON-NLS-1$
 					String processName = (String) processData
 							.get("processName"); //$NON-NLS-1$
 
@@ -48,7 +49,8 @@ public class CreateWorkOrderToProjectOfTB extends ServiceProvider {
 								processId));
 					} else {
 						result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
-						result.put("returnMessage", Messages.get().CreateWorkOrderToProjectOfTB_12); //$NON-NLS-1$
+						result.put(
+								"returnMessage", Messages.get().CreateWorkOrderToProjectOfTB_12); //$NON-NLS-1$
 					}
 				} catch (Exception e) {
 					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$

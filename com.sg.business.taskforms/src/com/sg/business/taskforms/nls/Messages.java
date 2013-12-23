@@ -13,7 +13,6 @@ public class Messages extends NLS {
 	public String DocumentApprovalMessageService_2;
 	public String IRoleConstance_1;
 	public String IRoleConstance_11;
-	public String IRoleConstance_12;
 	public String IRoleConstance_13;
 	public String IRoleConstance_15;
 	public String IRoleConstance_17;
@@ -43,7 +42,6 @@ public class Messages extends NLS {
 	public String ReviewerMessageService_12;
 	public String ReviewerMessageService_14;
 	public String ReviewerMessageService_15;
-	public String ReviewerMessageService_20;
 	public String ReviewerMessageService_3;
 	public String WorkSubconcessionsMessageService_0;
 	public String WorkSubconcessionsMessageService_3;
