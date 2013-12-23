@@ -271,8 +271,27 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="xtProjectApprove.audit"
+            editorId="xtDocumentApprove.approve"
             name="审批"
+            persistentFields="comment,choice"
+            processDefinitionId="xt.xtProjectApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterName="reviewer_list"
+               taskFormFieldName="reviewer_list">
+         </processParameter>
+         <processParameter
+               processParameterName="reviewer_admin"
+               taskFormFieldName="reviewer_admin">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtSubconcessions.dataaudit"
+            name="预审"
             persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
@@ -356,90 +375,6 @@
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="xtProjectApprove.audit"
-            name="%editor.name.1">
-         <basicpage
-               id="basicpage1"
-               title="%basicpage.title.5">
-            <pagecolumn>
-               <section
-                     label="%section.label.3">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="messagecontent"
-                        label="%text.label.1"
-                        labelVisible="true"
-                        name="messagecontent"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <navigatorSelector
-                        editable="true"
-                        id="reviewer_admin"
-                        label="%navigatorSelector.label"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="reviewer_admin"
-                        navigatorId="organization.user"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
-                        editable="true"
-                        id="reviewer_list"
-                        label="%list.label"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
-                        name="reviewer_list"
-                        persistable="true"
-                        required="true">
-                  </list>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="%radio.label.1"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否资料预审"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="%basicpage.title.6">
-         </basicpage>
-         <basicpage
-               id="page3"
-               title="%basicpage.title.7">
-            <pagecolumn>
-               <section
-                     label="%section.label.4">
-                  <file
-                        editPart="OfficeFileUploader"
-                        editable="true"
-                        id="accessory"
-                        labelVisible="true"
-                        name="accessory"
-                        persistable="true"
-                        required="false">
-                  </file>
-               </section>
-            </pagecolumn>
-         </basicpage>
-      </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
@@ -818,7 +753,6 @@
             name="立项申请"
             persistentFields="prj_number,accessory,application_leader"
             processDefinitionId="xt.xtProjectApplication"
-            saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="prj_number"
