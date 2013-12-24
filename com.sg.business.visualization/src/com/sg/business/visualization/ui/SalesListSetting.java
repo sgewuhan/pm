@@ -136,11 +136,11 @@ public class SalesListSetting extends Shell {
 		}
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH);
-		if(year == yearIndex ||monthIndex > month){
+		if (year == yearIndex && monthIndex > month) {
 			return;
 		}
 		profitListView.setYear(yearIndex);
-		profitListView.setMonth(monthIndex );
+		profitListView.setMonth(monthIndex);
 		profitListView.setLimitNumber((limitNumberIndex + 1) * 5);
 	}
 }

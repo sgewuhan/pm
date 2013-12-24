@@ -1226,9 +1226,9 @@
          </property>
       </product>
    </extension>
-   <!--extension
+   <extension
          point="com.mobnut.admin.schedualJob">
-      <schedualJob
+      <!--<schedualJob
             day="999999"
             id="pm2.dbreset"
             name="数据库重置"
@@ -1236,6 +1236,15 @@
             run="com.sg.business.pm2.setup.DBClear"
             time="0:0:0">
       </schedualJob>
+      
+      <schedualJob
+            day="999999"
+            id="pm2.mntpack"
+            name="维护角色数据"
+            rule="month"
+            run="com.sg.business.pm2.set.MntRole"
+            time="0:0:0">
+      </schedualJob>-->
       <schedualJob
             day="999999"
             id="pm2.dbinit"
@@ -1244,15 +1253,7 @@
             run="com.sg.business.pm2.setup.DBInit"
             time="0:0:0">
       </schedualJob>
-      <schedualJob
-            day="999999"
-            id="pm2.mntpack"
-            name="维护角色数据"
-            rule="month"
-            run="com.sg.business.pm2.set.MntRole"
-            time="0:0:0">
-      </schedualJob>
-   </extension-->
+   </extension>
    <extension
          point="com.mobnut.portal.portalNotice">
       <notice
