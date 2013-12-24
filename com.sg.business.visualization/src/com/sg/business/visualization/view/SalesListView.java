@@ -12,7 +12,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -76,11 +75,13 @@ public class SalesListView extends AbstractDashWidgetView {
 		parent.setLayout(new FillLayout());
 
 		final CTabFolder tabFolder = new CTabFolder(parent, SWT.NONE);
-		tabFolder.setBackground(parent.getDisplay().getSystemColor(
-				SWT.COLOR_WHITE));
+		tabFolder.setData(RWT.CUSTOM_VARIANT, "toplist");
+//		tabFolder.setBackground(parent.getDisplay().getSystemColor(
+//				SWT.COLOR_WHITE));
 		tabFolder.setTabHeight(24);
 
 		profitItem = createProfitItem(tabFolder, "销售利润排行");
+//		profitItem.setData(RWT.CUSTOM_VARIANT, "toplist");
 		tabFolder.setSelection(profitItem);
 
 		revenueItem = createProfitItem(tabFolder, "销售额排行");
@@ -154,9 +155,9 @@ public class SalesListView extends AbstractDashWidgetView {
 		return button;
 	}
 
-	@Override
-	public void applyStyle(Color[] style) {
-	}
+//	@Override
+//	public void applyStyle(Color[] style) {
+//	}
 
 	private ListCTabItem createProfitItem(CTabFolder tabFolder, String title) {
 		ListCTabItem tabItem = new ListCTabItem(tabFolder, title);

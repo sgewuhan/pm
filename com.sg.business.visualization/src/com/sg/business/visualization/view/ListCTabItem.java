@@ -12,8 +12,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -34,7 +32,6 @@ import com.sg.business.visualization.VisualizationActivator;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.viewer.ColumnAutoResizer;
 
-@SuppressWarnings("restriction")
 public class ListCTabItem extends CTabItem {
 
 	private TableViewer topViewer;
@@ -49,7 +46,6 @@ public class ListCTabItem extends CTabItem {
 		FormLayout layout = new FormLayout();
 		composite.setLayout(layout);
 
-		setBackground(composite);
 		FormData fd = new FormData();
 		topViewer = createTableViewer(composite, fd);
 		fd.left = new FormAttachment(0, 0);
@@ -229,21 +225,21 @@ public class ListCTabItem extends CTabItem {
 		col.getColumn().setWidth(20);
 	}
 
-	private void setBackground(Composite composite) {
-		Object adapter = composite.getAdapter(IWidgetGraphicsAdapter.class);
-		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
-		int[] percents = new int[] { 0, 50, 100 };
-		Color[] style = new Color[] {
-
-		Widgets.getColor(null, 0xf0, 0xf8, 0xdb),
-
-		Widgets.getColor(null, 0xff, 0xff, 0xff),
-
-		Widgets.getColor(null, 0xff, 0xe4, 0xe4),
-
-		};
-		gfxAdapter.setBackgroundGradient(style, percents, true);
-	}
+//	private void setBackground(Composite composite) {
+//		Object adapter = composite.getAdapter(IWidgetGraphicsAdapter.class);
+//		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
+//		int[] percents = new int[] { 0, 50, 100 };
+//		Color[] style = new Color[] {
+//
+//		Widgets.getColor(null, 0xd0, 0xf8, 0xdb),
+//
+//		Widgets.getColor(null, 0xff, 0xff, 0xff),
+//
+//		Widgets.getColor(null, 0xff, 0xe4, 0xe4),
+//
+//		};
+//		gfxAdapter.setBackgroundGradient(style, percents, true);
+//	}
 
 	@SuppressWarnings("rawtypes")
 	public void setInput(Object[] topData, Object[] bottomData, Class selected) {
