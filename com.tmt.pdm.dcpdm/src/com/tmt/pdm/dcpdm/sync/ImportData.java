@@ -95,6 +95,20 @@ public abstract class ImportData implements Runnable {
 	}
 
 	protected ObjectId getFolderId(){
+		
+		
+		//交付物所属项目的根文件夹ID
+//		ObjectId projectId = (ObjectId)deli.getValue(Deliverable.F_PROJECT_ID);
+//		ObjectId folderId = null;
+//		if (projectId != null) {
+//			Project project = ModelService.createModelObject(Project.class,
+//					projectId);
+//			folderId = project.getFolderRootId();
+//		}
+//		document.setValue(Document.F_PROJECT_ID, projectId);
+//		document.setValue(Document.F_FOLDER_ID, folderId);
+		
+		
 		return null;
 	}
 
