@@ -73,11 +73,11 @@ import com.sg.business.visualization.nls.Messages;
 
 public class ProjectChartFactory {
 
-	private static final int STRONG_SIZE = 7;
+	private static final int STRONG_SIZE = 9;
 
-	private static final int NORMAL_SIZE = 7;
+	private static final int NORMAL_SIZE = 9;
 
-	private static final int SMALL_SIZE = 7;
+	private static final int SMALL_SIZE = 9;
 
 	// 正常完成
 	private static final ColorDefinition color1 = getRGBColorDefinition(Utils.COLOR_GREEN[10]);

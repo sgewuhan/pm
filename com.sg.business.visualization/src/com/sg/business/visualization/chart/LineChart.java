@@ -45,8 +45,7 @@ public class LineChart extends AbstractChart {
 		cwaLine.getTitle().setVisible(false);
 
 		// Legend
-		cwaLine.getLegend().getText().getFont().setSize(FONT_SIZE + 1);
-		cwaLine.getLegend().getText().getFont().setName("Î¢ÈíÑÅºÚ");
+		cwaLine.getLegend().getText().getFont().setSize(LEGEND_FONT_SIZE);
 		cwaLine.getLegend().setPosition(Position.BELOW_LITERAL);
 		cwaLine.getLegend().setOrientation(Orientation.HORIZONTAL_LITERAL);
 
@@ -55,14 +54,14 @@ public class LineChart extends AbstractChart {
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
-		xAxisPrimary.getLabel().getCaption().getFont().setSize(FONT_SIZE);
+		xAxisPrimary.getLabel().getCaption().getFont().setSize(TICK_FONT_SIZE);
 		xAxisPrimary.getLabel().getCaption()
 				.setColor(ColorDefinitionImpl.create(0x9d, 0x9d, 0x9d));
 
 		// Y-Axis
 		Axis yAxisPrimary = cwaLine.getPrimaryOrthogonalAxis(xAxisPrimary);
 		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
-		yAxisPrimary.getLabel().getCaption().getFont().setSize(FONT_SIZE);
+		yAxisPrimary.getLabel().getCaption().getFont().setSize(TICK_FONT_SIZE);
 		yAxisPrimary.getLabel().getCaption()
 				.setColor(ColorDefinitionImpl.create(0x9d, 0x9d, 0x9d));
 
@@ -105,7 +104,7 @@ public class LineChart extends AbstractChart {
 				marker.setSize(MARKER_SIZE);
 			}
 			ls.getLabel().setVisible(true);
-			ls.getLabel().getCaption().getFont().setSize(FONT_SIZE);
+			ls.getLabel().getCaption().getFont().setSize(TICK_FONT_SIZE);
 			ls.setCurve(true);
 			sdY.getSeries().add(ls);
 		}
