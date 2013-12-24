@@ -23,14 +23,18 @@ import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectRoleAssignment;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.RNDPeriodCost;
+import com.sg.business.model.RNDPeriodCostAllocated;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.SalesData;
 import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkConnection;
 import com.sg.business.model.WorkDefinitionConnection;
+import com.sg.business.model.WorkOrderPeriodCost;
+import com.sg.business.model.etl.IProjectETL;
 import com.sg.business.pm2.nls.Messages;
 
 public class DBInit implements ISchedualJobRunnable {
@@ -342,78 +346,203 @@ public class DBInit implements ISchedualJobRunnable {
 		// 创建用户表的组织id字段索引
 		ensureIndex(db, IModelConstants.C_USER,
 				new BasicDBObject().append(User.F_ORGANIZATION_ID, 1));
-		
-		//创建组织表的组织的上级组织id字段索引
+
+		// 创建组织表的组织的上级组织id字段索引
 		ensureIndex(db, IModelConstants.C_ORGANIZATION,
 				new BasicDBObject().append(Organization.F_PARENT_ID, 1));
-		
-		//创建物资编码表的项目id字段索引
+
+		// 创建物资编码表的项目id字段索引
 		ensureIndex(db, IModelConstants.C_PRODUCT,
 				new BasicDBObject().append(ProductItem.F_PROJECT_ID, 1));
-		
-		//创建项目表的计划开始时间字段索引
+
+		// 创建项目表的计划开始时间字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_PLAN_START, 1));
-		
-		//创建项目表的计划完成时间字段索引
+
+		// 创建项目表的计划完成时间字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_PLAN_FINISH, 1));
-		
-		//创建项目表的实际开始时间字段索引
+
+		// 创建项目表的实际开始时间字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_ACTUAL_START, 1));
-		
-		//创建项目表的实际完成时间字段索引
+
+		// 创建项目表的实际完成时间字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_ACTUAL_FINISH, 1));
-		
-		//创建项目表的负责人字段索引
+
+		// 创建项目表的负责人字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_CHARGER, 1));
-		
-		//创建项目表的项目发起部门字段索引
+
+		// 创建项目表的项目发起部门字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION, 1));
-		
-		//创建项目表的项目管理部门字段索引
+
+		// 创建项目表的项目管理部门字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_FUNCTION_ORGANIZATION, 1));
-		
-		//创建项目表的工作令号字段索引
+
+		// 创建项目表的工作令号字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_WORK_ORDER, 1));
-		
-		//创建流程记录表的工作id字段索引
+
+		// 创建流程记录表的工作id字段索引
 		ensureIndex(db, IModelConstants.C_USERTASK,
 				new BasicDBObject().append(UserTask.F_WORK_ID, 1));
-		
-		//创建工作表的归档字段索引
+
+		// 创建工作表的归档字段索引
 		ensureIndex(db, IModelConstants.C_WORK,
 				new BasicDBObject().append(Work.F_ARCHIVE, 1));
-		
-		//创建工作表的工作定义的上级工作定义字段索引
+
+		// 创建工作表的工作定义的上级工作定义字段索引
 		ensureIndex(db, IModelConstants.C_WORK,
 				new BasicDBObject().append(Work.F_PARENT_ID, 1));
-		
-		//创建工作表的项目id字段索引
+
+		// 创建工作表的项目id字段索引
 		ensureIndex(db, IModelConstants.C_WORK,
 				new BasicDBObject().append(Work.F_PROJECT_ID, 1));
 
-		// TODO 增加索引 IModelConstants.C_PROJECT_MONTH_DATA
-		
-		
-		// TODO 增加索引 IModelConstants.C_SALESDATA
-		
-		
-		// TODO 增加索引 IModelConstants.C_RND_PEROIDCOST_ALLOCATION
-		
-		
-		// TODO 增加索引 IModelConstants.C_RND_PEROIDCOST_COSTCENTER
-		
-		
-		// TODO 增加索引 IModelConstants.C_WORKORDER_COST
-		
+		// 创建项目月ETL表的项目id字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(IProjectETL.F_PROJECTID, 1));
 
+		// 创建项目月ETL表的年字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(IProjectETL.F_YEAR, 1));
+
+		// 创建项目月ETL表的月字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(IProjectETL.F_MONTH, 1));
+
+		// 创建项目月ETL表的计划开始时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_PLAN_START, 1));
+
+		// 创建项目月ETL表的计划完成时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_PLAN_FINISH, 1));
+
+		// 创建项目月ETL表的实际开始时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_ACTUAL_START, 1));
+
+		// 创建项目月ETL表的实际完成时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_ACTUAL_FINISH, 1));
+
+		// 创建项目月ETL表的负责人字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_CHARGER, 1));
+
+		// 创建项目月ETL表的项目发起部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION, 1));
+
+		// 创建项目月ETL表的项目管理部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_FUNCTION_ORGANIZATION, 1));
+
+		// 创建项目月ETL表的工作令号字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_WORK_ORDER, 1));
+
+		// 创建项目月ETL表的适用标准集字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_STANDARD_SET_OPTION, 1));
+
+		// 创建项目月ETL表的产品类型选项集字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_PRODUCT_TYPE_OPTION, 1));
+
+		// 创建项目月ETL表的项目类型选项集字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_PROJECT_TYPE_OPTION, 1));
+
+		// 创建项目月ETL表的计划工时字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_PLAN_WORKS, 1));
+
+		// 创建项目月ETL表的实际工时字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_ACTUAL_WORKS, 1));
+
+		// 创建项目月ETL表的计划工期字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_PLAN_DURATION, 1));
+
+		// 创建项目月ETL表的实际工期字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_ACTUAL_DURATION, 1));
+		
+		// 创建销售数据表的期间字段索引
+		ensureIndex(db, IModelConstants.C_SALESDATA,
+				new BasicDBObject().append(SalesData.F_ACCOUNT_MONTH, 1));
+		
+		// 创建销售数据表的会计年度字段索引
+		ensureIndex(db, IModelConstants.C_SALESDATA,
+				new BasicDBObject().append(SalesData.F_ACCOUNT_YEAR, 1));
+		
+		// 创建销售数据表的产品物料编码字段索引
+		ensureIndex(db, IModelConstants.C_SALESDATA,
+				new BasicDBObject().append(SalesData.F_MATERIAL_NUMBER, 1));
+		
+		// 创建销售数据表的经营范围的货币类型字段索引
+		ensureIndex(db, IModelConstants.C_SALESDATA,
+				new BasicDBObject().append(SalesData.F_PALEDGE, 1));
+		
+		// 创建销售数据表的销售部门字段索引
+		ensureIndex(db, IModelConstants.C_SALESDATA,
+				new BasicDBObject().append(SalesData.F_SALES_DEPT, 1));
+		
+		// 创建工作令号的期间成本表的年字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_ALLOCATION,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_YEAR, 1));
+		
+		// 创建工作令号的期间成本表的月字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_ALLOCATION,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_MONTH, 1));
+		
+		// 创建工作令号的期间成本表的成本中心代码字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_ALLOCATION,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_COSTCENTERCODE, 1));
+		
+		// 创建工作令号的期间成本表的工作令号字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_ALLOCATION,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_WORKORDER, 1));
+
+		// 创建成本中心的期间成本（从SAP获取）表的年字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_COSTCENTER,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_YEAR, 1));
+		
+		// 创建成本中心的期间成本（从SAP获取）表的月字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_COSTCENTER,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_MONTH, 1));
+		
+		// 创建成本中心的期间成本（从SAP获取）表的成本中心代码字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_COSTCENTER,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_COSTCENTERCODE, 1));
+		
+		// 创建成本中心的期间成本（从SAP获取）表的工作令号字段索引
+		ensureIndex(db, IModelConstants.C_RND_PEROIDCOST_COSTCENTER,
+				new BasicDBObject().append(RNDPeriodCostAllocated.F_WORKORDER, 1));
+
+		// 创建工作令号的对应研发成本表的年字段索引
+		ensureIndex(db, IModelConstants.C_WORKORDER_COST,
+				new BasicDBObject().append(WorkOrderPeriodCost.F_YEAR, 1));
+		
+		// 创建工作令号的对应研发成本表的月字段索引
+		ensureIndex(db, IModelConstants.C_WORKORDER_COST,
+				new BasicDBObject().append(WorkOrderPeriodCost.F_MONTH, 1));
+		
+		// 创建工作令号的对应研发成本表的成本中心代码字段索引
+		ensureIndex(db, IModelConstants.C_WORKORDER_COST,
+				new BasicDBObject().append(WorkOrderPeriodCost.F_COSTCENTERCODE, 1));
+		
+		// 创建工作令号的对应研发成本表的工作令号字段索引
+		ensureIndex(db, IModelConstants.C_WORKORDER_COST,
+				new BasicDBObject().append(WorkOrderPeriodCost.F_WORKORDER, 1));
+		
 		/**
 		 * 请注意！！！
 		 * 
@@ -431,7 +560,7 @@ public class DBInit implements ISchedualJobRunnable {
 			DBCollection col = db.getCollection(colname);
 			col.createIndex(index);
 		} catch (Exception e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
