@@ -281,7 +281,7 @@ public class SalesListView extends AbstractDashWidgetView {
 				List<Object> asChildrenList = Arrays.asList(children);
 				List<Object> tempChildrenList = new ArrayList<Object>();
 				tempChildrenList.addAll(asChildrenList);
-				tempChildrenList.add(Boolean.FALSE);
+				tempChildrenList.add(Boolean.TRUE);
 				tempList.add(tempChildrenList.toArray(new Object[0]));
 			}
 		}
