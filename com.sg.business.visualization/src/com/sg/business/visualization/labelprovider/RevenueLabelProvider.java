@@ -16,7 +16,7 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 		double salesRevenue = pres.getSalesRevenue();
 
 		// 项目的成本
-		double totalCost = pres.getSalesCost()+pres.getInvestment();
+		double totalCost = pres.getSalesCost();//+pres.getInvestment();
 
 		// 项目的销售利润
 		double salesProfit = salesRevenue - totalCost;
