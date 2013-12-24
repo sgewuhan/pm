@@ -15,6 +15,8 @@ import com.sg.business.model.Deliverable;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Organization;
+import com.sg.business.model.ProductItem;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectRole;
@@ -25,6 +27,7 @@ import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.User;
+import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkConnection;
 import com.sg.business.model.WorkDefinitionConnection;
@@ -49,6 +52,7 @@ public class DBInit implements ISchedualJobRunnable {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void initSetting() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_SETTING);
@@ -186,6 +190,7 @@ public class DBInit implements ISchedualJobRunnable {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void syncUser() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
@@ -334,7 +339,80 @@ public class DBInit implements ISchedualJobRunnable {
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_CHARGER, 1));
 
-		// TODO 增加索引
+		// 创建用户表的组织id字段索引
+		ensureIndex(db, IModelConstants.C_USER,
+				new BasicDBObject().append(User.F_ORGANIZATION_ID, 1));
+		
+		//创建组织表的组织的上级组织id字段索引
+		ensureIndex(db, IModelConstants.C_ORGANIZATION,
+				new BasicDBObject().append(Organization.F_PARENT_ID, 1));
+		
+		//创建物资编码表的项目id字段索引
+		ensureIndex(db, IModelConstants.C_PRODUCT,
+				new BasicDBObject().append(ProductItem.F_PROJECT_ID, 1));
+		
+		//创建项目表的计划开始时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_PLAN_START, 1));
+		
+		//创建项目表的计划完成时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_PLAN_FINISH, 1));
+		
+		//创建项目表的实际开始时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_ACTUAL_START, 1));
+		
+		//创建项目表的实际完成时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_ACTUAL_FINISH, 1));
+		
+		//创建项目表的负责人字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_CHARGER, 1));
+		
+		//创建项目表的项目发起部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION, 1));
+		
+		//创建项目表的项目管理部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_FUNCTION_ORGANIZATION, 1));
+		
+		//创建项目表的工作令号字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_WORK_ORDER, 1));
+		
+		//创建流程记录表的工作id字段索引
+		ensureIndex(db, IModelConstants.C_USERTASK,
+				new BasicDBObject().append(UserTask.F_WORK_ID, 1));
+		
+		//创建工作表的归档字段索引
+		ensureIndex(db, IModelConstants.C_WORK,
+				new BasicDBObject().append(Work.F_ARCHIVE, 1));
+		
+		//创建工作表的工作定义的上级工作定义字段索引
+		ensureIndex(db, IModelConstants.C_WORK,
+				new BasicDBObject().append(Work.F_PARENT_ID, 1));
+		
+		//创建工作表的项目id字段索引
+		ensureIndex(db, IModelConstants.C_WORK,
+				new BasicDBObject().append(Work.F_PROJECT_ID, 1));
+
+		// TODO 增加索引 IModelConstants.C_PROJECT_MONTH_DATA
+		
+		
+		// TODO 增加索引 IModelConstants.C_SALESDATA
+		
+		
+		// TODO 增加索引 IModelConstants.C_RND_PEROIDCOST_ALLOCATION
+		
+		
+		// TODO 增加索引 IModelConstants.C_RND_PEROIDCOST_COSTCENTER
+		
+		
+		// TODO 增加索引 IModelConstants.C_WORKORDER_COST
+		
 
 		/**
 		 * 请注意！！！

@@ -68,7 +68,7 @@ public class SalesListView extends AbstractDashWidgetView {
 	@Override
 	protected void createContent(Composite parent) {
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.MONTH, -1);
+		cal.add(Calendar.MONTH, -1);
 		selected = Project.class;
 		limitNumber = 10;
 		year = cal.get(Calendar.YEAR);
