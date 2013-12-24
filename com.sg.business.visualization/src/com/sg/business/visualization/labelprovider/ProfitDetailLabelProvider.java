@@ -16,7 +16,7 @@ public class ProfitDetailLabelProvider extends AbstractProjectLabelProvider {
 		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:8pt;'>"); //$NON-NLS-1$
 		// ÆÚÄ©
 		double salesRevenue = pres.getSalesRevenue();
-		double totalCost = pres.getSalesCost() + pres.getInvestment();
+		double totalCost = pres.getSalesCost();// + pres.getInvestment();
 
 		// ÆÚÄ©ÀûÈó
 		double profit = salesRevenue - totalCost;

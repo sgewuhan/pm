@@ -88,7 +88,7 @@ public abstract class ImportData implements Runnable {
 		}
 		
 		doc.setValue(Document.F_VAULT, fileList);
-		doc.setValue(Document.F_FOLDER_ID, getFolderId());
+//		doc.setValue(Document.F_FOLDER_ID, getFolderId());
 		doc.doSave(new BackgroundContext());
 
 		Commons.loginfo("Import Successs."+doso); //$NON-NLS-1$

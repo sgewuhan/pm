@@ -114,7 +114,7 @@ public class DCPDMUtil {
 		}
 		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description")); //$NON-NLS-1$
 		deli.doSave(context);
-
+		document = deli.getDocument();
 		writePDMInfo(ouid, document);
 	}
 
