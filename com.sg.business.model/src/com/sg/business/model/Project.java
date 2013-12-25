@@ -2407,6 +2407,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						new BasicDBObject()
 							.append(F_BUSINESS_CHARGER, userid)
 							.append(F_BUSINESS_ORGANIZATION, orgid)
+							.append(ProjectETL.F_BUSINESS_MANAGER_TEXT, username)
+							.append(ProjectETL.F_BUSINESS_ORGANIZATION_TEXT, orgtext)
 						));
 		
 		setValue(F_BUSINESS_CHARGER,userid);
