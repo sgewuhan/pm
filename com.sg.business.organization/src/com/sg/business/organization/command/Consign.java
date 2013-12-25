@@ -25,7 +25,7 @@ public class Consign extends AbstractNavigatorHandler {
 			Map<String, Object> parameters, IStructuredSelection selection) {
 		final User user = (User) selected;
 		// 显示用户选择器
-		NavigatorSelector ns = new NavigatorSelector("organization.user") { //$NON-NLS-1$
+		NavigatorSelector ns = new NavigatorSelector("organization.user.selector") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (Utils.isNullOrEmpty(is)) {

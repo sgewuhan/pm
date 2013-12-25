@@ -74,6 +74,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public static final String F_CHARGER = "chargerid"; //$NON-NLS-1$
 
 	/**
+	 * 项目商务负责人字段，保存项目商务负责人的userid {@link User} ,
+	 */
+	public static final String F_BUSINESS_CHARGER = "businesschargerid"; //$NON-NLS-1$
+
+	/**
 	 * 数组类型字段，每个元素为都是userid
 	 */
 	public static final String F_PARTICIPATE = "participate"; //$NON-NLS-1$
@@ -246,6 +251,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public String getChargerId() {
 		return (String) getValue(F_CHARGER);
+	}
+	
+
+	private String getBusinessChargerId() {
+		return (String) getValue(F_BUSINESS_CHARGER);
 	}
 
 	/**
@@ -1118,10 +1128,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				get_id()));
 		checkWriteResult(ws);
 
-		//删除物资编码
+		// 删除物资编码
 		col = getCollection(IModelConstants.C_PRODUCT);
-		ws = col.remove(new BasicDBObject().append(
-				ProductItem.F_PROJECT_ID, get_id()));
+		ws = col.remove(new BasicDBObject().append(ProductItem.F_PROJECT_ID,
+				get_id()));
 		checkWriteResult(ws);
 
 		// 删除role
@@ -1227,14 +1237,16 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Object value = getValue(F_WORK_ORDER);
 		if (!(value instanceof BasicBSONList)
 				|| ((BasicBSONList) value).isEmpty()) {
-			CheckListItem checkItem = new CheckListItem(Messages.get().Project_11, Messages.get().Project_12,
+			CheckListItem checkItem = new CheckListItem(
+					Messages.get().Project_11, Messages.get().Project_12,
 					Messages.get().Project_13, ICheckListItem.WARRING);
 			checkItem.setData(this);
 			checkItem.setEditorId(EDITOR_CREATE_PLAN);
 			checkItem.setKey(F_WORK_ORDER);
 			result.add(checkItem);
 		} else {
-			CheckListItem checkItem = new CheckListItem(Messages.get().Project_14);
+			CheckListItem checkItem = new CheckListItem(
+					Messages.get().Project_14);
 			checkItem.setData(this);
 			result.add(checkItem);
 		}
@@ -1243,16 +1255,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		ProjectBudget budget = getBudget();
 		value = budget.getBudgetValue();
 		if (value == null || ((Double) value).doubleValue() == 0d) {
-			CheckListItem checkItem = new CheckListItem(Messages.get().Project_15,
-					Messages.get().Project_16, Messages.get().Project_17,
-					ICheckListItem.WARRING);
+			CheckListItem checkItem = new CheckListItem(
+					Messages.get().Project_15, Messages.get().Project_16,
+					Messages.get().Project_17, ICheckListItem.WARRING);
 			checkItem.setData(this);
 			checkItem.setKey(F_WORK_ORDER);
 			checkItem.setEditorId(EDITOR_CREATE_PLAN);
 			checkItem.setEditorPageId(EDITOR_PAGE_BUDGET);
 			result.add(checkItem);
 		} else {
-			CheckListItem checkItem = new CheckListItem(Messages.get().Project_18);
+			CheckListItem checkItem = new CheckListItem(
+					Messages.get().Project_18);
 			checkItem.setData(this);
 			result.add(checkItem);
 		}
@@ -1267,8 +1280,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			ObjectId roldId = role.get_id();
 			ra = raMap.get(roldId);
 			if (ra == null) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Project_19,
-						Messages.get().Project_20 + Messages.get().Project_21 + role.getLabel() + "]", //$NON-NLS-3$
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Project_19, Messages.get().Project_20
+								+ Messages.get().Project_21 + role.getLabel()
+								+ "]", //$NON-NLS-3$
 						Messages.get().Project_22, ICheckListItem.WARRING);
 				checkItem.setData(this);
 				checkItem.setEditorId(EDITOR_CREATE_PLAN);
@@ -1279,7 +1294,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			}
 		}
 		if (passed) {
-			CheckListItem checkItem = new CheckListItem(Messages.get().Project_23);
+			CheckListItem checkItem = new CheckListItem(
+					Messages.get().Project_23);
 			checkItem.setData(this);
 			result.add(checkItem);
 		}
@@ -1445,9 +1461,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		List<?> participates = getParticipatesIdList();
 		String userId = context.getAccountInfo().getConsignerId();
 
-		return participates != null && participates.contains(userId);
-		// return super.canRead(context);
+		if( participates != null && participates.contains(userId)){
+			return true;
+		}
+		
+		//如果是项目商务负责人，可以打开
+		String businessChargerId = getBusinessChargerId();
+		return userId.equals(businessChargerId);
 	}
+
 
 	@Override
 	public String getLifecycleStatusText() {
@@ -1508,8 +1530,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForCharger(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, Messages.get().Project_27
-				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context); //$NON-NLS-1$
+		MessageToolkit
+				.appendMessage(
+						messageList,
+						getChargerId(),
+						title,
+						Messages.get().Project_27 + ": " + getLabel(), this, EDITOR_CREATE_PLAN, context); //$NON-NLS-1$
 	}
 
 	/**
@@ -1520,8 +1546,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public void appendMessageForParticipate(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, Messages.get().Project_28
-				+ ": " + getLabel(), this, EDITOR_CREATE_PLAN, context); //$NON-NLS-1$
+		MessageToolkit
+				.appendMessage(
+						messageList,
+						getChargerId(),
+						title,
+						Messages.get().Project_28 + ": " + getLabel(), this, EDITOR_CREATE_PLAN, context); //$NON-NLS-1$
 	}
 
 	/**
@@ -1533,8 +1563,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public void appendMessageForChangeWorkflowActor(
 			Map<String, Message> messageList, String title, IContext context) {
 		MessageToolkit.appendWorkflowActorMessage(this, messageList,
-				F_WF_CHANGE, Messages.get().Project_29, title, context.getAccountInfo()
-						.getConsignerId(), null);
+				F_WF_CHANGE, Messages.get().Project_29, title, context
+						.getAccountInfo().getConsignerId(), null);
 	}
 
 	/**
@@ -1716,8 +1746,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		// 写日志
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().Project_34,
-				new Date(), this.getLabel(), IModelConstants.DB);
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
+				Messages.get().Project_34, new Date(), this.getLabel(),
+				IModelConstants.DB);
 	}
 
 	/**
@@ -1836,10 +1867,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	private void doChangeLifecycleStatus(IContext context, String status) {
 		DBCollection col = getCollection();
 		DBObject data = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()),
-				null,
-				null,
-				false,
+				new BasicDBObject().append(F__ID, get_id()), null, null, false,
 				new BasicDBObject().append("$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_LIFECYCLE, status)),
 
@@ -1968,8 +1996,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		BasicDBObject condition = new BasicDBObject();
 		condition.put(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 		condition.put(Work.F_PROJECT_ID, get_id());
-		condition.put(
-				Work.F_LIFECYCLE,
+		condition.put(Work.F_LIFECYCLE,
 				new BasicDBObject().append("$nin", new String[] { //$NON-NLS-1$
 						STATUS_CANCELED_VALUE, STATUS_FINIHED_VALUE }));
 
@@ -2075,8 +2102,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			message.setValue(Message.F_RECIEVER, newParticipatesIdList);
 			message.setValue(Message.F_DESC, Messages.get().Project_52);
 			message.setValue(Message.F_ISHTMLBODY, Boolean.TRUE);
-			message.setValue(
-					Message.F_CONTENT,
+			message.setValue(Message.F_CONTENT,
 					"<span style='font-size:14px'>" //$NON-NLS-1$
 							+ Messages.get().Project_53
 							+ "</span><br/><br/>" //$NON-NLS-1$
@@ -2084,7 +2110,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 									.getUsername()
 							+ Messages.get().Project_54
 							+ UserToolkit.getUserById(changedUserId)
-									.getUsername() + Messages.get().Project_55
+									.getUsername()
+							+ Messages.get().Project_55
 							+ messageContent);
 			message.appendTargets(this, EDITOR_CREATE_PLAN, Boolean.TRUE);
 			message.doSave(context);
@@ -2097,9 +2124,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		String lifecycleStatus = getLifecycleStatus();
 
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { Messages.get().Project_56, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Project_56, this,
+					SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { Messages.get().Project_57, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Project_57, this,
+					SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
 			message.add(new Object[] { Messages.get().Project_58, this,
 					SWT.ICON_WARNING });
@@ -2283,8 +2312,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 						"$" + SalesData.F_ACCOUNT_YEAR).append( //$NON-NLS-1$
 						SalesData.F_ACCOUNT_MONTH,
 						"$" + SalesData.F_ACCOUNT_MONTH));// //$NON-NLS-1$
-		groupCondition.put(
-				SalesData.F_SALES_INCOME,
+		groupCondition.put(SalesData.F_SALES_INCOME,
 				new BasicDBObject().append("$sum", "$" //$NON-NLS-1$ //$NON-NLS-2$
 						+ SalesData.F_SALES_INCOME));
 		groupCondition.put(SalesData.F_SALES_COST, new BasicDBObject().append(
@@ -2302,6 +2330,32 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 
 		return result;
+	}
+
+	/**
+	 * 更改值，同时将更改同步到ETL数据
+	 * 
+	 * @param field
+	 * @param value
+	 * @throws Exception
+	 */
+	public void doModifyValueWithETL(String field, String value)
+			throws Exception {
+		// 更新本记录值
+		DBCollection col = getCollection();
+		WriteResult ws = col.update(
+				queryThis(),
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(field, value).append(
+						"etl." + field, value)));
+		checkWriteResult(ws);
+
+		//更新月记录值
+		col = getCollection(IModelConstants.C_PROJECT_MONTH_DATA);
+		ws = col.update(new BasicDBObject().append(ProjectMonthlyETL.F_PROJECTID, this.get_id()), new BasicDBObject().append("$set",
+				new BasicDBObject().append(field, value)));
+		checkWriteResult(ws);
+
 	}
 
 }

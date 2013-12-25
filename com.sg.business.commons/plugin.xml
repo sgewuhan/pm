@@ -1264,6 +1264,15 @@
             width="120">
       </column>
       <column
+            column="businesschargerid"
+            id="businesschargerid"
+            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            lazyDisplay="true"
+            name="%column.name.businesschargerid"
+            type="String"
+            width="120">
+      </column>
+      <column
             column="org_id"
             id="project.org_id"
             labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"

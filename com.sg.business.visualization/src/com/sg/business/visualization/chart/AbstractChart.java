@@ -8,7 +8,7 @@ import com.mobnut.commons.util.Utils;
 
 public class AbstractChart {
 
-	protected static final int MARKER_SIZE = 2;
+	protected static final int MARKER_SIZE = 3;
 	protected static final float LEGEND_FONT_SIZE = 9f;
 	protected static final float TICK_FONT_SIZE = 7f;
 
