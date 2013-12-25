@@ -12,6 +12,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IAddTableItemHandler;
+import com.tmt.xt.nls.Messages;
 
 public class AddProductItem implements IAddTableItemHandler {
 
@@ -22,11 +23,11 @@ public class AddProductItem implements IAddTableItemHandler {
 	public boolean addItem(final BasicDBList inputData, final AbstractFieldPart part) {
 		PrimaryObject master = part.getInput().getData();
 		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
-				"productitem.selector") {
+				"productitem.selector") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if(is==null||is.isEmpty()){
-					MessageUtil.showToast("ÇëÑ¡ÔñÎï×Ê±àÂë", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().AddProductItem_1, SWT.ICON_WARNING);
 				}else{
 					Iterator<?> iter = is.iterator();
 					while(iter.hasNext()){

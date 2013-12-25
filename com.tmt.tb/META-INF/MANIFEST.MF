@@ -2,6 +2,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tb
 Bundle-SymbolicName: com.tmt.tb;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Activator: com.tmt.tb.TBActivator
 Bundle-Vendor: TMT
 Require-Bundle: org.eclipse.rap.ui,

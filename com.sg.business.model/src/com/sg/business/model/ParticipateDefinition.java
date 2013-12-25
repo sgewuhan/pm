@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 参与者定义
@@ -15,6 +16,6 @@ public class ParticipateDefinition extends PrimaryObject {
 	 */
 	@Override
 	public String getTypeName() {
-		return "参与者定义";
+		return Messages.get().ParticipateDefinition_0;
 	}
 }

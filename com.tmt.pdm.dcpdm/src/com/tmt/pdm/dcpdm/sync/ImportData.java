@@ -40,7 +40,7 @@ public abstract class ImportData implements Runnable {
 			e.printStackTrace();
 		}
 		
-		Commons.loginfo("Import Finished.");
+		Commons.loginfo("Import Finished."); //$NON-NLS-1$
 
 	}
 
@@ -67,8 +67,8 @@ public abstract class ImportData implements Runnable {
 		DOSChangeable doso = Starter.dos.get(ouid);
 		HashMap valueMap = doso.getValueMap();
 
-		doc.setValue(Document.F_DOCUMENT_NUMBER, doso.get("md$number"));
-		doc.setValue(Document.F_DESC, doso.get("md$description"));
+		doc.setValue(Document.F_DOCUMENT_NUMBER, doso.get("md$number")); //$NON-NLS-1$
+		doc.setValue(Document.F_DESC, doso.get("md$description")); //$NON-NLS-1$
 		doc.setValue(Document.F_PDM_OUID, ouid);
 		transferPDMField(valueMap, doc.get_data());
 
@@ -88,10 +88,10 @@ public abstract class ImportData implements Runnable {
 		}
 		
 		doc.setValue(Document.F_VAULT, fileList);
-		doc.setValue(Document.F_FOLDER_ID, getFolderId());
+//		doc.setValue(Document.F_FOLDER_ID, getFolderId());
 		doc.doSave(new BackgroundContext());
 
-		Commons.loginfo("Import Successs."+doso);
+		Commons.loginfo("Import Successs."+doso); //$NON-NLS-1$
 	}
 
 	protected ObjectId getFolderId(){
@@ -103,24 +103,24 @@ public abstract class ImportData implements Runnable {
 
 		while (iter.hasNext()) {
 			String key = (String) iter.next();
-			String field = key.replaceAll("\\@", "_");
-			field = field.replaceAll("\\$", "_");
-			field = field.replaceAll("\\.", "_");
-			data.put("pdm_"+field, valueMap.get(key));
+			String field = key.replaceAll("\\@", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+			field = field.replaceAll("\\$", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+			field = field.replaceAll("\\.", "_"); //$NON-NLS-1$ //$NON-NLS-2$
+			data.put("pdm_"+field, valueMap.get(key)); //$NON-NLS-1$
 		}
 	}
 
 	private DBObject syncFile( HashMap tempMap)
 			throws IIPRequestException, FileNotFoundException {
 		// String fileTypeId = (String) tempMap.get("md$filetype.id");
-		 String fileTypeDescription = (String) tempMap.get("md$description");
+		 String fileTypeDescription = (String) tempMap.get("md$description"); //$NON-NLS-1$
 		// // local
 		// // full
 		// // file
 		// // path
 		// // stored.
 		// String fileVersion = (String) tempMap.get("md$version");
-		String filePath = (String) tempMap.get("md$path"); // server side file
+		String filePath = (String) tempMap.get("md$path"); // server side file //$NON-NLS-1$
 															// path. NOT for
 															// // client.
 		// String checkOutTime = (String) tempMap.get("md$checkedout.date");
@@ -154,7 +154,7 @@ public abstract class ImportData implements Runnable {
 				getNamespace());
 		rf.setFileName(fileName);
 		DBObject refData = rf.getOutputRefData();
-		refData.put("_id", fid);
+		refData.put("_id", fid); //$NON-NLS-1$
 		transferPDMField(tempMap, refData);
 		return refData;
 	}

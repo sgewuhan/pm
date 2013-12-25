@@ -14,9 +14,9 @@ public class UserIdLabelProviderInField extends ColumnLabelProvider {
 			if(user!=null){
 				return user.getLabel();
 			}else{
-				return "?";
+				return "?"; //$NON-NLS-1$
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

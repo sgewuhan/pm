@@ -10,6 +10,7 @@ import com.mobnut.commons.util.file.ExcelExportJob;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.sg.business.project.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.NavigatorAction;
 import com.sg.widgets.part.NavigatorControl;
@@ -18,7 +19,7 @@ import com.sg.widgets.registry.config.NavigatorConfigurator;
 public class ExportWBS extends NavigatorAction {
 
 	public ExportWBS() {
-		setText("µ¼³ö");
+		setText(Messages.get().ExportWBS_0);
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_EXPORT_24));
 	}
@@ -37,7 +38,7 @@ public class ExportWBS extends NavigatorAction {
 	
 	
 	private void doExport(Display display, NavigatorConfigurator configurator, Work wbsRoot) {
-			ExcelExportJob job = new ExcelExportJob("WBS");
+			ExcelExportJob job = new ExcelExportJob("WBS"); //$NON-NLS-1$
 			job.setColumnExportDefinition(configurator.getExportColumns());
 			job.setInput(getExportData(wbsRoot));
 			job.setUser(true);

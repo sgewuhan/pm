@@ -23,7 +23,7 @@ public class ProjectSetOption implements IFieldOptionProvider {
 	public Option getOption(Object input, Object data, String key, Object value) {
 		List<Option> options = new ArrayList<Option>();
 		
-		String userid = (String) ((PrimaryObject)data).getValue("userid");
+		String userid = (String) ((PrimaryObject)data).getValue("userid"); //$NON-NLS-1$
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_USERPROJECTPERF);
 		DBCursor cur = col.find(new BasicDBObject().append(UserProjectPerf.F_USERID, userid));
 		while(cur.hasNext()){
@@ -34,7 +34,7 @@ public class ProjectSetOption implements IFieldOptionProvider {
 				options.add(option);
 			}
 		}
-		return new Option("","","",options.toArray(new Option[0]));
+		return new Option("","","",options.toArray(new Option[0])); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 

@@ -12,6 +12,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.performence.nls.Messages;
 import com.sg.business.performence.ui.calendar.ResourceCalender;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -20,7 +21,7 @@ public class OrgProjectResCalender extends ResourceCalender {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		setTitleToolTip("“我”管理部门的各项目实际工时");
+		setTitleToolTip(Messages.get().OrgProjectResCalender_0);
 	}
 	
 	@Override

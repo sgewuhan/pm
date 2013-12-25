@@ -12,6 +12,7 @@ import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.sg.business.model.nls.Messages;
 
 public class ProductSubconcessionsByProjectIdService extends ServiceProvider {
 
@@ -21,19 +22,19 @@ public class ProductSubconcessionsByProjectIdService extends ServiceProvider {
 	@Override
 	public Map<String, Object> run(Object parameter) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			try {
 				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-				String processId = (String) host.getValue("processId");
-				String processName = (String) host.getValue("processName");
+				String processId = (String) host.getValue("processId"); //$NON-NLS-1$
+				String processName = (String) host.getValue("processName"); //$NON-NLS-1$
 				if (host instanceof Work) {
 					Work work = (Work) host;
 					// 根据项目id获取项目
 					Project project = work.getProject();
 					if (project == null) {
-						String projectid = (String) getInputValue("projectid");
+						String projectid = (String) getInputValue("projectid"); //$NON-NLS-1$
 						ObjectId project_id = new ObjectId(projectid);
 						if (project_id != null) {
 							project = ModelService.createModelObject(
@@ -42,7 +43,7 @@ public class ProductSubconcessionsByProjectIdService extends ServiceProvider {
 					}
 					// 商品转批
 					if (project != null) {
-						Object product = host.getValue("product");
+						Object product = host.getValue("product"); //$NON-NLS-1$
 						if (product instanceof List<?>) {
 							List<?> productList = (List<?>) product;
 							project.doChangeMassProduction(
@@ -52,12 +53,12 @@ public class ProductSubconcessionsByProjectIdService extends ServiceProvider {
 					}
 
 				} else {
-					result.put("returnCode", "ERROR");
-					result.put("returnMessage", "商品转批出现错误!");
+					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+					result.put("returnMessage", Messages.get().ProductSubconcessionsByProjectIdService_0); //$NON-NLS-1$
 				}
 			} catch (Exception e) {
-				result.put("returnCode", "ERROR");
-				result.put("returnMessage", e.getMessage());
+				result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+				result.put("returnMessage", e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return result;

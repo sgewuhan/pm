@@ -9,6 +9,7 @@ import java.util.Map;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 日历设置
@@ -20,60 +21,60 @@ public class CalendarSetting extends PrimaryObject {
 	/**
 	 * 开始日期
 	 */
-	public static final String F_START_DATE = "startdate";
+	public static final String F_START_DATE = "startdate"; //$NON-NLS-1$
 	/**
 	 * 结束日期
 	 */
-	public static final String F_END_DATE = "enddate";
+	public static final String F_END_DATE = "enddate"; //$NON-NLS-1$
 	/**
 	 * 工作日
 	 */
-	public static final String F_WORKINGDAY = "workingday";
+	public static final String F_WORKINGDAY = "workingday"; //$NON-NLS-1$
 	/**
 	 * 条件
 	 */
-	public static final String F_CONDITION = "condition";
+	public static final String F_CONDITION = "condition"; //$NON-NLS-1$
 	/**
 	 * 操作符
 	 */
-	public static final String F_OPERATOR = "operator";
+	public static final String F_OPERATOR = "operator"; //$NON-NLS-1$
 	/**
 	 * 值
 	 */
-	public static final String F_VALUE = "value";
+	public static final String F_VALUE = "value"; //$NON-NLS-1$
 	/**
 	 * 优先级
 	 */
-	public static final String F_SEQ = "seq";
+	public static final String F_SEQ = "seq"; //$NON-NLS-1$
 	/**
 	 * 每天工时（小时）
 	 */
-	public static final String F_WORKING_TIME = "worktime";
+	public static final String F_WORKING_TIME = "worktime"; //$NON-NLS-1$
 
 	/**
 	 * 项目Id, 如果为空，该条目为系统日历
 	 */
-	public static final String F_PROJECT_ID = "project_id";
+	public static final String F_PROJECT_ID = "project_id"; //$NON-NLS-1$
 
 	/**
 	 * 条件的类型，每月的日期
 	 */
-	public static final String CONDITON_DAY_OF_MONTH = "日";
+	public static final String CONDITON_DAY_OF_MONTH = Messages.get().CalendarSetting_6;
 
 	/**
 	 * 条件的类型，每周的第几日
 	 */
-	public static final String CONDITON_DAY_OF_WEEK = "周";
+	public static final String CONDITON_DAY_OF_WEEK = Messages.get().CalendarSetting_5;
 
-	public static final String OPERATOR_EQ = "等于";
+	public static final String OPERATOR_EQ = Messages.get().CalendarSetting_4;
 
-	public static final String OPERATOR_LT = "小于";
+	public static final String OPERATOR_LT = Messages.get().CalendarSetting_3;
 
-	public static final String OPERATOR_LE = "小于等于";
+	public static final String OPERATOR_LE = Messages.get().CalendarSetting_2;
 
-	public static final String OPERATOR_GT = "大于等于";
+	public static final String OPERATOR_GT = Messages.get().CalendarSetting_1;
 
-	public static final String OPERATOR_GE = "大于";
+	public static final String OPERATOR_GE = Messages.get().CalendarSetting_0;
 	
 	private HashMap<String, Double> workingTimeMap;
 
@@ -162,7 +163,7 @@ public class CalendarSetting extends PrimaryObject {
 	 */
 	private String getConditionValue() {
 		String value = (String) getValue(F_VALUE);
-		return value.replaceAll("，", ",");
+		return value.replaceAll("，", ","); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -186,7 +187,7 @@ public class CalendarSetting extends PrimaryObject {
 	}
 
 	private void initTimeMap() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); //$NON-NLS-1$
 		Calendar start = getStartDate();
 		Calendar end = getEndDate();
 
@@ -214,7 +215,7 @@ public class CalendarSetting extends PrimaryObject {
 			int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 			if (OPERATOR_EQ.equals(getOperator())) {
 				// 如果取等于，可以使用逗号分隔的值
-				String[] values = getConditionValue().split(",");
+				String[] values = getConditionValue().split(","); //$NON-NLS-1$
 				for (int i = 0; i < values.length; i++) {
 					try {
 						int v = Integer.parseInt(values[i]);
@@ -257,7 +258,7 @@ public class CalendarSetting extends PrimaryObject {
 
 			if (OPERATOR_EQ.equals(getOperator())) {
 				// 如果取等于，可以使用逗号分隔的值
-				String[] values = getConditionValue().split(",");
+				String[] values = getConditionValue().split(","); //$NON-NLS-1$
 				for (int i = 0; i < values.length; i++) {
 					try {
 						int v = Integer.parseInt(values[i]);

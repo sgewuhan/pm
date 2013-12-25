@@ -10,6 +10,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.UserProjectPerf;
 import com.sg.business.visualization.VisualizationActivator;
 import com.sg.business.visualization.data.ProjectSetFolder;
+import com.sg.business.visualization.nls.Messages;
 
 public class OwnerProjectSetFolder extends ProjectSetFolder {
 
@@ -38,16 +39,16 @@ public class OwnerProjectSetFolder extends ProjectSetFolder {
 
 	@Override
 	public String getLabel() {
-		return "自定义项目组合";
+		return Messages.get().OwnerProjectSetFolder_0;
 	}
 
 	@Override
 	public String getImageURL() {
-		return FileUtil.getImageURL("owner_folder_32.png", VisualizationActivator.PLUGIN_ID);
+		return FileUtil.getImageURL("owner_folder_32.png", VisualizationActivator.PLUGIN_ID); //$NON-NLS-1$
 	}
 
 	@Override
 	public String getDescription() {
-		return "按您定义的项目组合";
+		return Messages.get().OwnerProjectSetFolder_2;
 	}
 }

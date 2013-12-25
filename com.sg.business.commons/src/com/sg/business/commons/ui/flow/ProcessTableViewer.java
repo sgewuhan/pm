@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.commons.nls.Messages;
 
 public class ProcessTableViewer extends TableViewer {
 
@@ -30,7 +31,7 @@ public class ProcessTableViewer extends TableViewer {
 				// if (needAss) {
 				// }
 				if(((NodeAssignment) element).forceAssignment()){
-					return name + "(*)";
+					return name + "(*)"; //$NON-NLS-1$
 				}
 				return name;
 			}
@@ -53,7 +54,7 @@ public class ProcessTableViewer extends TableViewer {
 	protected void createParameterColumn(ProcessTableViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派参数");
+		column.getColumn().setText(Messages.get().ProcessTableViewer_1);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -69,7 +70,7 @@ public class ProcessTableViewer extends TableViewer {
 	protected void createRuleColumn(ProcessTableViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("规则名称");
+		column.getColumn().setText(Messages.get().ProcessTableViewer_2);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -80,7 +81,7 @@ public class ProcessTableViewer extends TableViewer {
 				if (name != null) {
 					return name;
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
@@ -89,7 +90,7 @@ public class ProcessTableViewer extends TableViewer {
 	protected void createAssignmentTypeColumn(ProcessTableViewer processViewer) {
 		TableViewerColumn column;
 		column = new TableViewerColumn(processViewer, SWT.LEFT);
-		column.getColumn().setText("指派类别");
+		column.getColumn().setText(Messages.get().ProcessTableViewer_4);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 
@@ -97,15 +98,15 @@ public class ProcessTableViewer extends TableViewer {
 			public String getText(Object element) {
 				NodeAssignment na = (NodeAssignment) element;
 				if (na.isDyanmic()) {
-					return "动态指派";
+					return Messages.get().ProcessTableViewer_5;
 				} else if (na.isRuleAssignment()) {
-					return "规则指派";
+					return Messages.get().ProcessTableViewer_6;
 				} else if (na.isStaticActor()) {
-					return "静态执行人";
+					return Messages.get().ProcessTableViewer_7;
 				} else if (na.isStaticGroup()) {
-					return "静态执行组";
+					return Messages.get().ProcessTableViewer_8;
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
@@ -114,7 +115,7 @@ public class ProcessTableViewer extends TableViewer {
 	protected void createActionNameColumn(ProcessTableViewer processViewer) {
 		TableViewerColumn column = new TableViewerColumn(processViewer,
 				SWT.LEFT);
-		column.getColumn().setText("活动名称");
+		column.getColumn().setText(Messages.get().ProcessTableViewer_10);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 

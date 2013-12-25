@@ -6,6 +6,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
+import com.sg.business.taskforms.nls.Messages;
 
 public class DocumentApprovalMessageService extends MessageService {
 
@@ -15,13 +16,13 @@ public class DocumentApprovalMessageService extends MessageService {
 	@Override
 	public String getMessageTitle() {
 		// TODO Auto-generated method stub
-		return "文件审批通过消息";
+		return Messages.get().DocumentApprovalMessageService_0;
 	}
 
 	@Override
 	public String getMessageContent() {
 		// TODO Auto-generated method stub
-		  return "工作：" + getTarget().getLabel() + "完成审批";
+		  return Messages.get().DocumentApprovalMessageService_1 + getTarget().getLabel() + Messages.get().DocumentApprovalMessageService_2;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -44,7 +45,7 @@ public class DocumentApprovalMessageService extends MessageService {
 
 	@Override
 	public PrimaryObject getTarget() {
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);

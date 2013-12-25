@@ -37,10 +37,10 @@ public class ProjectResContentProvider implements ITreeContentProvider {
 					result[i] = UserToolkit.getUserById((String) idlist.get(i));
 					if(result[i] == null){
 						result[i] = ModelService.createModelObject(User.class);
-						result[i].setValue(User.F_USER_ID, "?");
-						result[i].setValue(User.F_USER_NAME, "?");
+						result[i].setValue(User.F_USER_ID, "?"); //$NON-NLS-1$
+						result[i].setValue(User.F_USER_NAME, "?"); //$NON-NLS-1$
 					}
-					result[i].setValue("$projectid", ((Project) parentElement).get_id());
+					result[i].setValue("$projectid", ((Project) parentElement).get_id()); //$NON-NLS-1$
 				}
 				return result;
 			}

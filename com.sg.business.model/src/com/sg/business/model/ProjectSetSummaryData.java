@@ -8,29 +8,29 @@ import com.mongodb.DBObject;
 
 public class ProjectSetSummaryData {
 
-	private static final String F_FINISHED = "finished";
+	private static final String F_FINISHED = "finished"; //$NON-NLS-1$
 
-	private static final String F_FINISHED_ADVANCE = "finished_advance";
+	private static final String F_FINISHED_ADVANCE = "finished_advance"; //$NON-NLS-1$
 
-	private static final String F_FINISHED_COST_NORMAL = "finished_cost_normal";
+	private static final String F_FINISHED_COST_NORMAL = "finished_cost_normal"; //$NON-NLS-1$
 
-	private static final String F_FINISHED_COST_OVER = "finished_cost_over";
+	private static final String F_FINISHED_COST_OVER = "finished_cost_over"; //$NON-NLS-1$
 
-	private static final String F_FINISHED_DELAY = "finished_delay";
+	private static final String F_FINISHED_DELAY = "finished_delay"; //$NON-NLS-1$
 
-	private static final String F_FINISHED_NORMAL = "finished_normal";
+	private static final String F_FINISHED_NORMAL = "finished_normal"; //$NON-NLS-1$
 
-	private static final String F_PROCESSING = "processing";
+	private static final String F_PROCESSING = "processing"; //$NON-NLS-1$
 
-	private static final String F_PROCESSING_ADVANCE = "processing_advance";
+	private static final String F_PROCESSING_ADVANCE = "processing_advance"; //$NON-NLS-1$
 
-	private static final String F_PROCESSING_COST_NORMAL = "processing_cost_normal";
+	private static final String F_PROCESSING_COST_NORMAL = "processing_cost_normal"; //$NON-NLS-1$
 
-	private static final String F_PROCESSING_COST_OVER = "processing_cost_over";
+	private static final String F_PROCESSING_COST_OVER = "processing_cost_over"; //$NON-NLS-1$
 
-	private static final String F_PROCESSING_DELAY = "processing_delay";
+	private static final String F_PROCESSING_DELAY = "processing_delay"; //$NON-NLS-1$
 
-	private static final String F_PROCESSING_NORMAL = "processing_normal";
+	private static final String F_PROCESSING_NORMAL = "processing_normal"; //$NON-NLS-1$
 
 	public int total;
 

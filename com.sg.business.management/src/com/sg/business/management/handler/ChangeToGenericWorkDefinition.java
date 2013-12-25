@@ -41,7 +41,7 @@ public class ChangeToGenericWorkDefinition extends AbstractNavigatorHandler {
 			IWorkbenchPage page = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage();
 			NavigatorPart np = (NavigatorPart) page
-					.findView("management.genericwork.definitions");
+					.findView("management.genericwork.definitions"); //$NON-NLS-1$
 			np.reloadMaster();
 
 		} catch (Exception e) {

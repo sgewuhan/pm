@@ -6,21 +6,22 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
+import com.tmt.jszx.nls.Messages;
 
 public class ProjectApplyMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return "技术委托通知";
+		return Messages.get().ProjectApplyMessageService_0;
 	}
 
 	@Override
 	public String getMessageContent() {
-		Object choice = getInputValue("choice");
-		if ("通过".equals((String) choice)) {
-			return "工作" + getTarget().getLabel() + "：委托接受";
+		Object choice = getInputValue("choice"); //$NON-NLS-1$
+		if ("通过".equals((String) choice)) { //$NON-NLS-1$
+			return Messages.get().ProjectApplyMessageService_3 + getTarget().getLabel() + Messages.get().ProjectApplyMessageService_4;
 		} else {
-			return "工作" + getTarget().getLabel() + "：委托否决";
+			return Messages.get().ProjectApplyMessageService_5 + getTarget().getLabel() + Messages.get().ProjectApplyMessageService_6;
 		}
 	}
 
@@ -42,7 +43,7 @@ public class ProjectApplyMessageService extends MessageService {
 
 	@Override
 	public PrimaryObject getTarget() {
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);

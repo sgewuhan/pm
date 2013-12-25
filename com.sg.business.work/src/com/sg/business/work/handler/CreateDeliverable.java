@@ -13,6 +13,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.IDeliverable;
 import com.sg.business.model.IWorkRelative;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -36,7 +37,7 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 		final Shell shell = part.getSite().getShell();
 		PrimaryObject master = currentViewerControl.getMaster();
 		if (master == null) {
-			MessageUtil.showToast(shell, "创建交付物", "请选择流程", SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, Messages.get().CreateDeliverable_0, Messages.get().CreateDeliverable_1, SWT.ICON_ERROR);
 			return;
 		}
 
@@ -47,7 +48,7 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 			IWorkRelative iWorkRelative = (IWorkRelative) master;
 			work = iWorkRelative.getWork();
 		} else {
-			MessageUtil.showToast(shell, "创建交付物", "请选择流程", SWT.ICON_ERROR);
+			MessageUtil.showToast(shell, Messages.get().CreateDeliverable_2, Messages.get().CreateDeliverable_3, SWT.ICON_ERROR);
 			return;
 		}
 
@@ -58,10 +59,10 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, "添加" + po.getTypeName());
+					true, null, Messages.get().CreateDeliverable_4 + po.getTypeName());
 		} catch (Exception e) {
 			e.printStackTrace();
-			MessageUtil.showToast(shell, "添加" + po.getTypeName(),
+			MessageUtil.showToast(shell, Messages.get().CreateDeliverable_5 + po.getTypeName(),
 					e.getMessage(), SWT.ICON_ERROR);
 		}
 		currentViewerControl.doReloadData();

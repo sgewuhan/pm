@@ -8,7 +8,7 @@ public class RelevantChangeActivityValidator extends
 
 	@Override
 	public String getECNName() {
-		return "相关部门变更";
+		return "相关部门变更"; //$NON-NLS-1$
 	}
 
 }

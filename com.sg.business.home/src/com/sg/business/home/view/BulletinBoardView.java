@@ -1,6 +1,7 @@
 package com.sg.business.home.view;
 
 import com.mobnut.portal.user.IAccountEvent;
+import com.sg.business.home.nls.Messages;
 import com.sg.widgets.part.view.AccountSensitiveTreeView;
 
 /**
@@ -19,7 +20,7 @@ public class BulletinBoardView extends AccountSensitiveTreeView {
 	 */
 	@Override
 	protected String getAccountNoticeMessage() {
-		return "正在重新检索公告板数据...";
+		return Messages.get().BulletinBoardView_0;
 	}
 
 	/**

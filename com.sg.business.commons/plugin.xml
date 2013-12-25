@@ -6,7 +6,7 @@
       <adminFunction
             id="com.sg.business.commons.admin.CalendarSetting"
             image="image/calendar_48.png"
-            label="日历"
+            label="%adminFunction.label"
             run="com.sg.business.commons.admin.CalendarSetting">
       </adminFunction>
       <!--adminFunction
@@ -21,7 +21,7 @@
       <view
             class="com.sg.widgets.part.view.TableNavigator"
             id="commons.admin.calendar"
-            name="日历设置"
+            name="%view.name"
             restorable="true">
       </view>
    </extension>
@@ -33,94 +33,94 @@
          <filterAction>
             <column
                   column="desc"
-                  name="名称"
+                  name="%column.name"
                   type="String">
             </column>
             <column
                   column="startdate"
-                  name="开始日期"
+                  name="%column.name.0"
                   type="Date">
             </column>
             <column
                   column="enddate"
-                  name="结束日期"
+                  name="%column.name.1"
                   type="Date">
             </column>
             <column
                   column="workingday"
-                  name="工作日"
+                  name="%column.name.2"
                   type="Boolean">
             </column>
             <column
                   column="condition"
-                  name="条件"
+                  name="%column.name.3"
                   type="String">
             </column>
             <column
                   column="operator"
-                  name="计算"
+                  name="%column.name.4"
                   type="String">
             </column>
             <column
                   column="value"
-                  name="值"
+                  name="%column.name.5"
                   type="String">
             </column>
             <column
                   column="seq"
-                  name="优先级"
+                  name="%column.name.6"
                   type="Integer">
             </column>
             <column
                   column="worktime"
-                  name="每天工时（小时）"
+                  name="%column.name.7"
                   type="Double">
             </column>
          </filterAction>
          <searchAction>
             <column
                   column="desc"
-                  name="名称"
+                  name="%column.name.8"
                   type="String">
             </column>
             <column
                   column="startdate"
-                  name="开始日期"
+                  name="%column.name.9"
                   type="Date">
             </column>
             <column
                   column="enddate"
-                  name="结束日期"
+                  name="%column.name.10"
                   type="Date">
             </column>
             <column
                   column="workingday"
-                  name="工作日"
+                  name="%column.name.11"
                   type="Boolean">
             </column>
             <column
                   column="condition"
-                  name="条件"
+                  name="%column.name.12"
                   type="String">
             </column>
             <column
                   column="operator"
-                  name="计算"
+                  name="%column.name.13"
                   type="String">
             </column>
             <column
                   column="value"
-                  name="值"
+                  name="%column.name.14"
                   type="String">
             </column>
             <column
                   column="seq"
-                  name="优先级"
+                  name="%column.name.15"
                   type="Integer">
             </column>
             <column
                   column="worktime"
-                  name="每天工时（小时）"
+                  name="%column.name.16"
                   type="Double">
             </column>
          </searchAction>
@@ -169,46 +169,46 @@
             popupMenu="popup:commons.admin.calendar">
          <column
                column="desc"
-               name="名称"
+               name="%column.name.17"
                type="String">
          </column>
          <column
                column="startdate"
-               name="开始日期"
+               name="%column.name.18"
                type="Date">
          </column>
          <column
                column="enddate"
-               name="结束日期"
+               name="%column.name.19"
                type="Date">
          </column>
          <column
                column="workingday"
-               name="工作日"
+               name="%column.name.20"
                type="Boolean">
          </column>
          <column
                column="condition"
-               name="条件"
+               name="%column.name.21"
                type="String">
          </column>
          <column
                column="operator"
-               name="计算"
+               name="%column.name.22"
                type="String"></column>
          <column
                column="value"
-               name="值"
+               name="%column.name.23"
                type="String">
          </column>
          <column
                column="seq"
-               name="优先级"
+               name="%column.name.24"
                type="Integer">
          </column>
          <column
                column="worktime"
-               name="每天工时（小时）"
+               name="%column.name.25"
                type="Double">
          </column>
       </table>
@@ -233,19 +233,19 @@
             collectionName="calendarsetting"
             dbName="pm2"
             id="calendar.setting"
-            name="日历条件">
+            name="%editor.name">
          <basicpage
-               description="日历规则"
+               description="%basicpage.description"
                id="basicpage1"
-               title="日历规则">
+               title="%basicpage.title">
             <pagecolumn>
                <section
-                     label="规则设置">
+                     label="%section.label">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -256,7 +256,7 @@
                         defaultValue="true"
                         editable="true"
                         id="workingday"
-                        label="工作日"
+                        label="%checkbox.label"
                         labelVisible="true"
                         name="workingday"
                         persistable="true"
@@ -265,7 +265,7 @@
                   <spinner
                         editable="true"
                         id="seq"
-                        label="优先级别"
+                        label="%spinner.label"
                         labelVisible="true"
                         name="seq"
                         persistable="true"
@@ -277,7 +277,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="worktime"
-                        label="每天工时"
+                        label="%text.label.0"
                         labelVisible="true"
                         name="worktime"
                         persistable="true"
@@ -288,7 +288,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="startdate"
-                        label="开始日期"
+                        label="%dateTime.label"
                         labelVisible="true"
                         name="startdate"
                         persistable="true"
@@ -299,7 +299,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="enddate"
-                        label="结束日期"
+                        label="%dateTime.label.0"
                         labelVisible="true"
                         name="enddate"
                         persistable="true"
@@ -310,12 +310,12 @@
             </pagecolumn>
             <pagecolumn>
                <section
-                     label="高级设置">
+                     label="%section.label.0">
                   <combo
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="condition"
-                        label="条件"
+                        label="%combo.label"
                         labelVisible="true"
                         name="condition"
                         option="calendarrule.option"
@@ -327,7 +327,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="operator"
-                        label="计算"
+                        label="%combo.label.0"
                         labelVisible="false"
                         name="operator"
                         option="calendarrule.operator"
@@ -339,7 +339,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="value"
-                        label="取值（周条件时，1代表周一,7代表周日）"
+                        label="%text.label.1"
                         labelVisible="true"
                         name="value"
                         persistable="true"
@@ -358,12 +358,12 @@
             id="calendarrule.option">
          <option
                id="周"
-               label="周"
+               label="%option.label"
                value="周">
          </option>
          <option
                id="日"
-               label="日"
+               label="%option.label.0"
                value="日">
          </option>
       </option>
@@ -371,27 +371,27 @@
             id="calendarrule.operator">
          <option
                id="大于"
-               label="大于"
+               label="%option.label.1"
                value="大于">
          </option>
          <option
                id="大于等于"
-               label="大于等于"
+               label="%option.label.2"
                value="大于等于">
          </option>
          <option
                id="等于"
-               label="等于"
+               label="%option.label.3"
                value="等于">
          </option>
          <option
                id="小于等于"
-               label="小于等于"
+               label="%option.label.4"
                value="小于等于">
          </option>
          <option
                id="小于"
-               label="小于"
+               label="%option.label.5"
                value="小于">
          </option>
       </option>
@@ -399,46 +399,46 @@
             id="com.sg.business.option.organizationType">
          <option
                id="法人"
-                label="法人"
+                label="%option.label.6"
                value="法人">
          </option>
          <option
                id="事业部"
-                label="事业部"
+                label="%option.label.7"
                value="事业部">
          </option>
          <option
                id="部门"
-                label="部门"
+                label="%option.label.8"
                value="部门">
          </option>
          <option
                id="团队"
-                label="团队"
+                label="%option.label.9"
                value="团队">
          </option>
       </option>
       <option
             id="connectiontype"
-            label="顺序关系">
+            label="%option.label.10">
          <option
                id="SF"
-               label="开始-完成"
+               label="%option.label.11"
                value="SF">
          </option>
          <option
                id="SS"
-               label="开始-开始"
+               label="%option.label.12"
                value="SS">
          </option>
          <option
                id="FF"
-               label="完成-完成"
+               label="%option.label.13"
                value="FF">
          </option>
          <option
                id="FS"
-               label="完成-开始"
+               label="%option.label.14"
                value="FS">
          </option>
       </option>
@@ -459,27 +459,27 @@
             id="日期单位">
          <option
                id="周"
-               label="周"
+               label="%option.label.17"
                value="w">
          </option>
          <option
                id="天"
-               label="天"
+               label="%option.label.18"
                value="d">
          </option>
          <option
                id="小时"
-               label="小时"
+               label="%option.label.19"
                value="h">
          </option>
          <option
                id="分钟"
-               label="分钟"
+               label="%option.label.20"
                value="m">
          </option>
          <option
                id="秒"
-               label="秒"
+               label="%option.label.21"
                value="s">
          </option>
       </option>
@@ -487,56 +487,56 @@
             id="status">
          <option
                id="规划中"
-               label="规划中">
+               label="%option.label.22">
          </option>
          <option
                id="准备中"
-               label="准备中"
+               label="%option.label.23"
                value="ready">
          </option>
          <option
                id="进行中"
-               label="进行中"
+               label="%option.label.24"
                value="wip">
          </option>
          <option
                id="已暂停"
-               label="已暂停"
+               label="%option.label.25"
                value="paused">
          </option>
          <option
                id="已完成"
-               label="已完成"
+               label="%option.label.26"
                value="finished">
          </option>
          <option
                id="已取消"
-               label="已取消"
+               label="%option.label.27"
                value="canceled">
          </option>
       </option>
       <option
             id="进展状况"
-            label="进展状况"
+            label="%option.label.28"
             value="进展状况">
          <option
                id="进度提前"
-               label="进度提前"
+               label="%option.label.29"
                value="进度提前">
          </option>
          <option
                id="正常进行"
-               label="正常进行"
+               label="%option.label.30"
                value="正常进行">
          </option>
          <option
                id="进度滞后"
-               label="进度滞后"
+               label="%option.label.31"
                value="进度滞后">
          </option>
          <option
                id="严重滞后"
-               label="严重滞后"
+               label="%option.label.32"
                value="严重滞后">
          </option>
       </option>
@@ -544,12 +544,12 @@
             id="deliverable.type">
          <option
                id="output"
-               label="输出"
+               label="%option.label.33"
                value="output">
          </option>
          <option
                id="reference"
-               label="参考"
+               label="%option.label.34"
                value="reference">
          </option>
       </option>
@@ -557,17 +557,17 @@
             id="change.type">
          <option
                id="变更工作"
-               label="变更工作"
+               label="%option.label.35"
                value="变更工作">
          </option>
          <option
                id="变更范围"
-               label="变更范围"
+               label="%option.label.36"
                value="变更范围">
          </option>
          <option
                id="变更项"
-               label="变更项"
+               label="%option.label.37"
                value="变更项">
          </option>
       </option>
@@ -579,52 +579,52 @@
             locationURI="popup:commons.admin.calendar">
          <command
                commandId="carlendartest1"
-               label="测试某天是否为工作日"
+               label="%command.label"
                style="push">
          </command>
          <command
                commandId="carlendartest2"
-               label="测试某时间段有多少工作日"
+               label="%command.label.0"
                style="push">
          </command>
       </menuContribution>
    </extension>
    <extension
          id="organization"
-         name="组织"
+         name="%extension.name"
          point="com.sg.widgets.column">
       <column
             column="organizationtype"
             id="organization.organizationType"
-            name="组织类型"
+            name="%column.name.26"
             style="SWT.LEFT"
             type="String">
       </column>
       <column
             column="isfunctiondepartment"
             id="organization.isFunctionDepartment"
-            name="项目管理\n职能"
+            name="%column.name.27"
             style="SWT.CENTER"
             type="Boolean">
       </column>
       <column
             column="iscontainer"
             id="organization.isContainer"
-            name="文档容器"
+            name="%column.name.28"
             style="SWT.CENTER"
             type="Boolean">
       </column>
       <column
             column="costcentercode"
             id="organization.costCenterCode"
-            name="成本中心代码"
+            name="%column.name.29"
             style="SWT.LEFT"
             type="String">
       </column>
       <column
             column="description"
             id="organization.description"
-            name="说明"
+            name="%column.name.30"
             style="SWT.LEFT"
             type="String"
             width="120">
@@ -633,7 +633,7 @@
             column="desc"
             id="organization.desc.html"
             labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
-            name="组织名称"
+            name="%column.name.31"
             style="SWT.LEFT"
             type="String"
             width="-1">
@@ -646,7 +646,7 @@
             column="rolenumber"
             id="role.roleNumber"
             labelProvider="com.sg.business.commons.labelprovider.RoleNumberLabelProvider"
-            name="编号"
+            name="%column.name.32"
             style="SWT.LEFT"
             type="String"
             width="160">
@@ -654,7 +654,7 @@
       <column
             column="description"
             id="role.description"
-            name="说明"
+            name="%column.name.33"
             type="String"
             width="120">
       </column>
@@ -662,7 +662,7 @@
             column="desc"
             id="role.desc"
             labelProvider="com.sg.business.commons.labelprovider.RoleDescLabelProvider"
-            name="名称"
+            name="%column.name.34"
             type="String"
             width="240">
       </column>
@@ -670,7 +670,7 @@
             column="roletype"
             id="role.roleType"
             labelProvider="com.sg.business.commons.labelprovider.RoleTypeLabelProvider"
-            name="类型"
+            name="%column.name.35"
             type="String">
       </column>
    </extension>
@@ -680,7 +680,7 @@
       <column
             column="userid"
             id="account.userid"
-            name="用户编号"
+            name="%column.name.36"
             style="SWT.LEFT"
             type="String"
             width="100">
@@ -688,7 +688,7 @@
       <column
             column="username"
             id="account.username"
-            name="姓名"
+            name="%column.name.37"
             style="SWT.LEFT"
             type="String"
             width="70">
@@ -696,14 +696,14 @@
       <column
             column="email"
             id="account.email"
-            name="电子邮箱"
+            name="%column.name.38"
             type="String"
             width="160">
       </column>
       <column
             column="activated"
             id="account.activated"
-            name="激活"
+            name="%column.name.39"
             type="Boolean"
             width="60">
       </column>
@@ -712,7 +712,7 @@
             id="account.organizationpath"
             labelProvider="com.sg.business.commons.labelprovider.UserOrganizationPathLabelprovider"
             lazyDisplay="true"
-            name="组织"
+            name="%column.name.40"
             type="String"
             width="160">
       </column>
@@ -721,7 +721,7 @@
             id="account.roleassignment"
             labelProvider="com.sg.business.commons.labelprovider.UserRoleAssignmentLabelprovider"
             lazyDisplay="true"
-            name="角色"
+            name="%column.name.41"
             type="String"
             width="80">
       </column>
@@ -730,7 +730,7 @@
             id="account.scenario"
             labelProvider="com.sg.business.commons.labelprovider.UserScenarioLabelprovider"
             lazyDisplay="true"
-            name="使用场景"
+            name="%column.name.42"
             type="String"
             width="80">
       </column>
@@ -741,7 +741,7 @@
       <column
             column="desc"
             id="folder.desc"
-            name="名称"
+            name="%column.name.43"
             type="String"
             width="180">
       </column>
@@ -749,7 +749,7 @@
             column="folderType"
             id="folder.folderType"
             labelProvider="com.sg.business.commons.labelprovider.FolderTypeLabelProvider"
-            name="类型说明"
+            name="%column.name.44"
             type="String"
             width="180">
       </column>
@@ -757,32 +757,32 @@
             column="containerPath"
             id="folder.containerPath"
             labelProvider="com.sg.business.commons.labelprovider.ContainerPathLabelProvider"
-            name="容器路径"
+            name="%column.name.45"
             type="String"
             width="180">
       </column>
    </extension>
    <extension
          id="document"
-         name="文档"
+         name="%extension.name.0"
          point="com.sg.widgets.column">
       <column
             column="documentnumber"
             id="document.documentNumber"
-            name="编号"
+            name="%column.name.46"
             type="String"
             width="80">
       </column>
       <column
             column="documenttype"
             id="document.documentType"
-            name="类型"
+            name="%column.name.47"
             type="String"
             width="80">
       </column>
       <column
             id="f_vid"
-            name="版本号"
+            name="%column.name.48"
             type="String"
             width="50">
       </column>
@@ -790,14 +790,14 @@
             column="_caccount"
             id="generic._caccount"
             labelProvider="com.sg.widgets.commons.labelprovider.AccountLabelProvider"
-            name="创建者"
+            name="%column.name.49"
             type="String"
             width="80">
       </column>
       <column
             column="_cdate"
             id="generic._cdate"
-            name="创建时间"
+            name="%column.name.50"
             type="DateTime"
             width="80">
       </column>
@@ -805,26 +805,26 @@
             column="_maccount"
             id="generic._maccount"
             labelProvider="com.sg.widgets.commons.labelprovider.AccountLabelProvider"
-            name="修订者"
+            name="%column.name.51"
             type="String"
             width="80">
       </column>
       <column
             column="_mdate"
             id="generic._mdate"
-            name="修订时间"
+            name="%column.name.52"
             type="DateTime"
             width="80">
       </column>
    </extension>
    <extension
          id="projecttemplate"
-         name="项目模板"
+         name="%extension.name.1"
          point="com.sg.widgets.column">
       <column
             column="desc"
             id="projecttemplate.desc"
-            name="项目模板名称"
+            name="%column.name.53"
             type="String"
             width="-1">
       </column>
@@ -832,7 +832,7 @@
             column="activated"
             id="generic.activated"
             labelProvider="com.sg.business.commons.labelprovider.ActivatedLabelProvider"
-            name="激活"
+            name="%column.name.54"
             style="SWT.CENTER"
             type="Boolean"
             width="24">
@@ -840,14 +840,14 @@
       <column
             column="desc"
             id="work.desc"
-            name="名称"
+            name="%column.name.55"
             type="String"
             width="240">
       </column>
       <column
             column="desc"
             id="work.desc.1"
-            name="名称"
+            name="%column.name.56"
             type="String"
             width="-1">
       </column>
@@ -856,7 +856,7 @@
             id="work.seq"
             labelProvider="com.sg.business.commons.labelprovider.WBSCodeLabelprovider"
             lazyDisplay="true"
-            name="WBS序号"
+            name="%column.name.57"
             type="Integer"
             width="60">
       </column>
@@ -864,7 +864,7 @@
             column="desc"
             id="roledefinition.desc"
             labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider"
-            name="角色名称"
+            name="%column.name.58"
             type="String"
             width="-1">
       </column>
@@ -872,7 +872,7 @@
             column="rolenumber"
             id="roledefinition.number"
             labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider"
-            name="角色编号"
+            name="%column.name.59"
             type="String"
             width="80">
       </column>
@@ -880,7 +880,7 @@
             column="roletype"
             id="roledefinition.type"
             labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionTypeLabelProvider"
-            name="角色类型"
+            name="%column.name.60"
             type="String"
             width="80">
       </column>
@@ -888,7 +888,7 @@
             column="description"
             id="roledefinition.description"
             labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionDescLabelProvider"
-            name="说明"
+            name="%column.name.61"
             type="String"
             width="240">
       </column>
@@ -896,7 +896,7 @@
             column="charger_roled_id"
             id="workdefinition.chargerrole"
             labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkDefLabelProvider"
-            name="负责人角色"
+            name="%column.name.62"
             type="String"
             width="120">
       </column>
@@ -915,65 +915,65 @@
          point="org.eclipse.ui.commands">
       <category
             id="com.sg.business.management"
-            name="业务管理">
+            name="%category.name">
       </category>
       <command
             categoryId="com.sg.business.management"
             id="work.create"
-            name="添加">
+            name="%command.name">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.create.fromgenericwork"
-            name="添加通用工作">
+            name="%command.name.0">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.edit"
-            name="编辑">
+            name="%command.name.1">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.remove"
-            name="删除">
+            name="%command.name.2">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.moveup"
-            name="上移">
+            name="%command.name.3">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.movedown"
-            name="下移">
+            name="%command.name.4">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.moveleft"
-            name="升级">
+            name="%command.name.5">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.moveright"
-            name="降级">
+            name="%command.name.6">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.showcompass"
-            name="显示移动罗盘">
+            name="%command.name.7">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="work.setcharger"
-            name="指定负责人角色">
+            name="%command.name.8">
       </command>
       <command
             id="carlendartest1"
-            name="测试某天是否为工作日">
+            name="%command.name.9">
       </command>
       <command
             id="carlendartest2"
-            name="测试某时间段有多少工作日">
+            name="%command.name.10">
       </command>
    </extension>
    <extension
@@ -1178,14 +1178,14 @@
       <column
             column="projectnumber"
             id="project.projectnumber"
-            name="项目编号"
+            name="%column.name.63"
             type="String"
             width="80">
       </column>
       <column
             column="desc"
             id="project.desc"
-            name="名称"
+            name="%column.name.64"
             type="String"
             width="180">
       </column>
@@ -1193,64 +1193,64 @@
             column="status"
             id="project.status"
             labelProvider="com.sg.business.commons.labelprovider.StatusLabelProvider"
-            name="状态"
-            toolTipText="状态"
+            name="%column.name.65"
+            toolTipText="%column.toolTipText"
             type="String"
             width="24">
       </column>
       <column
             column="planstart"
             id="planstart"
-            name="计划开始"
+            name="%column.name.66"
             type="Date"
             width="72">
       </column>
       <column
             column="planfinish"
             id="planfinish"
-            name="计划完成"
+            name="%column.name.67"
             type="Date"
             width="72">
       </column>
       <column
             column="planduration"
             id="planduration"
-            name="计划工期"
+            name="%column.name.68"
             type="Integer"
             width="72">
       </column>
       <column
             column="planworks"
             id="planworks"
-            name="计划工时"
+            name="%column.name.69"
             type="Integer"
             width="72">
       </column>
       <column
             column="actualstart"
             id="actualstart"
-            name="实际开始"
+            name="%column.name.70"
             type="Date"
             width="72">
       </column>
       <column
             column="actualfinish"
             id="actualfinish"
-            name="实际完成"
+            name="%column.name.71"
             type="Date"
             width="72">
       </column>
       <column
             column="actualduration"
             id="actualduration"
-            name="实际工期"
+            name="%column.name.72"
             type="Integer"
             width="72">
       </column>
       <column
             column="actualworks"
             id="actualworks"
-            name="实际工时"
+            name="%column.name.73"
             type="Integer"
             width="72">
       </column>
@@ -1259,7 +1259,7 @@
             id="chargerid"
             labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
             lazyDisplay="true"
-            name="负责人"
+            name="%column.name.74"
             type="String"
             width="120">
       </column>
@@ -1268,7 +1268,7 @@
             id="project.org_id"
             labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
             lazyDisplay="true"
-            name="职能组织"
+            name="%column.name.75"
             type="String"
             width="160">
       </column>
@@ -1277,14 +1277,14 @@
             id="project.launchorg_id"
             labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
             lazyDisplay="true"
-            name="发起组织"
+            name="%column.name.76"
             type="String"
             width="160">
       </column>
       <column
             column="workorder"
             id="project.workorder"
-            name="工作令号"
+            name="%column.name.77"
             type="String"
             width="60">
       </column>
@@ -1293,7 +1293,7 @@
             id="participate"
             labelProvider="com.sg.business.commons.labelprovider.UserIdListLabelProvider"
             lazyDisplay="false"
-            name="参与者"
+            name="%column.name.78"
             type="String"
             width="120">
       </column>
@@ -1303,7 +1303,7 @@
             id="work.overtime"
             labelProvider="com.sg.business.commons.labelprovider.WorkOvertimeLabelProvider"
             name=" "
-            toolTipText="超期预警\n红:已超期\n黄:预警"
+            toolTipText="%column.toolTipText.0"
             type="String"
             width="24">
       </column>
@@ -1314,7 +1314,7 @@
             labelProvider="com.sg.business.commons.labelprovider.WorkOverloadLabelProvider"
             lazyDisplay="true"
             name=" "
-            toolTipText="工作超量\n灰:严重资源过量\n蓝:资源过量\n绿:基本正常\n黄:资源不足\n红:资源严重不足"
+            toolTipText="%column.toolTipText.1"
             type="String"
             width="24">
       </column>
@@ -1327,7 +1327,7 @@
             id="planstart_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
             lazyDisplay="true"
-            name="计划开始"
+            name="%column.name.81"
             type="Date"
             width="72">
       </column>
@@ -1337,7 +1337,7 @@
             id="planfinish_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
             lazyDisplay="true"
-            name="计划完成"
+            name="%column.name.82"
             type="Date"
             width="72">
       </column>
@@ -1346,7 +1346,7 @@
             id="planduration_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
             lazyDisplay="true"
-            name="计划工期"
+            name="%column.name.83"
             style="SWT.RIGHT"
             type="Integer"
             width="72">
@@ -1357,7 +1357,7 @@
             id="planworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
             lazyDisplay="true"
-            name="计划工时"
+            name="%column.name.84"
             style="SWT.RIGHT"
             type="Double"
             width="72">
@@ -1367,7 +1367,7 @@
             id="actualstart_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
             lazyDisplay="true"
-            name="实际开始"
+            name="%column.name.85"
             type="Date"
             width="72">
       </column>
@@ -1376,7 +1376,7 @@
             id="actualfinish_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
             lazyDisplay="true"
-            name="实际完成"
+            name="%column.name.86"
             type="Date"
             width="72">
       </column>
@@ -1385,7 +1385,7 @@
             id="actualduration_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
             lazyDisplay="true"
-            name="实际工期"
+            name="%column.name.87"
             style="SWT.RIGHT"
             type="Integer"
             width="72">
@@ -1395,7 +1395,7 @@
             id="actualworks_e"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
             lazyDisplay="true"
-            name="实际工时"
+            name="%column.name.88"
             style="SWT.RIGHT"
             type="Double"
             width="72">
@@ -1404,14 +1404,14 @@
             column="charger_roled_id"
             id="work.chargerrole"
             labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkLabelProvider"
-            name="负责人角色"
+            name="%column.name.89"
             type="String"
             width="120">
       </column>
       <column
             column="milestone"
             id="milestone"
-            name="里程碑"
+            name="%column.name.90"
             type="Boolean"
             width="60">
       </column>
@@ -1420,7 +1420,7 @@
             id="planstart_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
             lazyDisplay="true"
-            name="计划开始"
+            name="%column.name.91"
             type="Date"
             width="72">
       </column>
@@ -1429,7 +1429,7 @@
             id="planfinish_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
             lazyDisplay="true"
-            name="计划完成"
+            name="%column.name.92"
             type="Date"
             width="72">
       </column>
@@ -1438,7 +1438,7 @@
             id="planduration_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
             lazyDisplay="true"
-            name="计划工期"
+            name="%column.name.93"
             style="SWT.RIGHT"
             type="Integer"
             width="72">
@@ -1448,7 +1448,7 @@
             id="planworks_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
             lazyDisplay="true"
-            name="计划工时"
+            name="%column.name.94"
             style="SWT.RIGHT"
             type="Double"
             width="72">
@@ -1458,7 +1458,7 @@
             id="actualstart_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
             lazyDisplay="true"
-            name="实际开始"
+            name="%column.name.95"
             type="Date"
             width="72">
       </column>
@@ -1467,7 +1467,7 @@
             id="actualfinish_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
             lazyDisplay="true"
-            name="实际完成"
+            name="%column.name.96"
             type="Date"
             width="72">
       </column>
@@ -1476,7 +1476,7 @@
             id="actualduration_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
             lazyDisplay="true"
-            name="实际工期"
+            name="%column.name.97"
             style="SWT.RIGHT"
             type="Integer"
             width="72">
@@ -1486,7 +1486,7 @@
             id="actualworks_c"
             labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
             lazyDisplay="true"
-            name="实际工时"
+            name="%column.name.98"
             style="SWT.RIGHT"
             type="Double"
             width="72">
@@ -1527,18 +1527,18 @@
          point="org.eclipse.ui.commands">
       <command
             id="bulletinboard.reply"
-            name="回复公告">
+            name="%command.name.11">
       </command>
       <command
             id="bulletinboard.open"
-            name="查看公告">
+            name="%command.name.12">
       </command>
       <command
             id="bulletinboard.create"
-            name="新建公告">
+            name="%command.name.13">
          <commandParameter
                id="bulletinboard.hasproject"
-               name="hasproject"
+               name="%commandParameter.name"
                optional="true">
          </commandParameter>
       </command>
@@ -1564,20 +1564,20 @@
             collectionName="bulletinboard"
             dbName="pm2"
             id="bulletinboard.editor.create"
-            name="公告"
-            titleToolTips="公告">
+            name="%editor.name.0"
+            titleToolTips="%editor.titleToolTips">
          <basicpage
-               description="新公告"
+               description="%basicpage.description.0"
                id="basicpage"
-               title="新公告">
+               title="%basicpage.title.0">
             <pagecolumn>
                <section
-                     label="公告">
+                     label="%section.label.1">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="标题"
+                        label="%text.label.2"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1590,7 +1590,7 @@
                         editable="true"
                         heightHint="280"
                         id="content"
-                        label="公告内容"
+                        label="%text.label.3"
                         labelVisible="true"
                         name="content"
                         persistable="true"
@@ -1602,7 +1602,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publisher"
-                        label="发布人"
+                        label="%text.label.4"
                         labelVisible="true"
                         name="publisher"
                         persistable="true"
@@ -1616,7 +1616,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publish_date"
-                        label="发布时间"
+                        label="%text.label.5"
                         labelVisible="true"
                         name="publish_date"
                         persistable="true"
@@ -1630,7 +1630,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="organization_id"
-                        label="发布部门"
+                        label="%text.label.6"
                         labelVisible="true"
                         name="organization_id"
                         persistable="true"
@@ -1643,19 +1643,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="附件"
+               description="%basicpage.description.1"
                id="basicpage2"
-               title="附件">
+               title="%basicpage.title.1">
             <pagecolumn
                   id="附件">
                <section
-                     label="附件">
+                     label="%section.label.2">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         heightHint="240"
                         id="attachment"
-                        label="附件"
+                        label="%file.label"
                         labelVisible="false"
                         name="attachment"
                         persistable="true"
@@ -1669,21 +1669,21 @@
             collectionName="bulletinboard"
             dbName="pm2"
             id="bulletinboard.editor.reply"
-            name="回复公告"
-            titleToolTips="回复公告">
+            name="%editor.name.1"
+            titleToolTips="%editor.titleToolTips.0">
          <basicpage
-               description="新公告"
+               description="%basicpage.description.2"
                id="basicpage"
-               title="新公告">
+               title="%basicpage.title.2">
             <pagecolumn>
                <section
-                     label="回复">
+                     label="%section.label.3">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="160"
                         id="content"
-                        label="回复内容"
+                        label="%text.label.7"
                         labelVisible="true"
                         name="content"
                         persistable="true"
@@ -1695,7 +1695,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publisher"
-                        label="回复人"
+                        label="%text.label.8"
                         labelVisible="true"
                         name="publisher"
                         persistable="true"
@@ -1709,7 +1709,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publish_date"
-                        label="回复时间"
+                        label="%text.label.9"
                         labelVisible="true"
                         name="publish_date"
                         persistable="true"
@@ -1723,7 +1723,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="organization_id"
-                        label="回复部门"
+                        label="%text.label.10"
                         labelVisible="true"
                         name="organization_id"
                         persistable="true"
@@ -1736,19 +1736,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="附件"
+               description="%basicpage.description.3"
                id="basicpage2"
-               title="附件">
+               title="%basicpage.title.3">
             <pagecolumn
                   id="附件">
                <section
-                     label="附件">
+                     label="%section.label.4">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         heightHint="240"
                         id="attachment"
-                        label="附件"
+                        label="%file.label.0"
                         labelVisible="false"
                         name="attachment"
                         persistable="true"
@@ -1763,16 +1763,16 @@
          point="com.sg.widgets.option">
       <option
             id="knowledgebase"
-            label="knowledgebase"
+            label="%option.label.38"
             value="knowledgebase">
          <option
                id="pm"
-               label="项目管理流程库"
+               label="%option.label.39"
                value="pm">
          </option>
          <option
                id="com.tmt"
-               label="测试流程库"
+               label="%option.label.40"
                value="com.tmt">
          </option>
       </option>

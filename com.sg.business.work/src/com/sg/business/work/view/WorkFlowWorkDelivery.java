@@ -33,6 +33,7 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.sg.business.model.Document;
 import com.sg.business.model.UserTask;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.part.view.TreeNavigator;
 
 public class WorkFlowWorkDelivery extends TreeNavigator {
@@ -46,22 +47,22 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 				if (event.detail == RWT.HYPERLINK) {
 					try {
 						String _data = event.text.substring(
-								event.text.lastIndexOf("/") + 1,
-								event.text.indexOf("@"));
+								event.text.lastIndexOf("/") + 1, //$NON-NLS-1$
+								event.text.indexOf("@")); //$NON-NLS-1$
 						String action = event.text.substring(event.text
-								.indexOf("@") + 1);
-						if ("downloadall".equals(action)) {
+								.indexOf("@") + 1); //$NON-NLS-1$
+						if ("downloadall".equals(action)) { //$NON-NLS-1$
 							Document doc = ModelService.createModelObject(
 									Document.class, new ObjectId(_data));
 							download(doc);
-						} else if("download".equals(action)){
-							_data = URLDecoder.decode(_data, "utf-8");
+						} else if("download".equals(action)){ //$NON-NLS-1$
+							_data = URLDecoder.decode(_data, "utf-8"); //$NON-NLS-1$
 							DBObject dbo = (DBObject) JSON.parse(_data);
-							String db = (String) dbo.get("d");
-							String namespace = (String) dbo.get("n");
-							String oid = (String) dbo.get("o");
-							String fileName = (String) dbo.get("a");
-							String filepath = (String)dbo.get("f");
+							String db = (String) dbo.get("d"); //$NON-NLS-1$
+							String namespace = (String) dbo.get("n"); //$NON-NLS-1$
+							String oid = (String) dbo.get("o"); //$NON-NLS-1$
+							String fileName = (String) dbo.get("a"); //$NON-NLS-1$
+							String filepath = (String)dbo.get("f"); //$NON-NLS-1$
 							if(filepath==null){
 								FileUtil.download(getViewSite().getShell(),db, namespace, oid, fileName);
 							}else{
@@ -154,7 +155,7 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 	protected void updatePartName(IWorkbenchPart part) {
 		if (master != null) {
 			String workname = ((UserTask) master).getWorkName();
-			setPartName(workname + " ÎÄµµ");
+			setPartName(workname + Messages.get().WorkFlowWorkDelivery_0);
 		} else {
 			setPartName(originalPartName);
 		}

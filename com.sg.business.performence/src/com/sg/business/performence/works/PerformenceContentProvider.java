@@ -97,15 +97,15 @@ public class PerformenceContentProvider extends RelationContentProvider {
 			long endCode = cal.getTimeInMillis() / (24 * 60 * 60 * 1000);
 			DBCursor cur = collection.find(new BasicDBObject().append(
 					WorksPerformence.F_USERID, userid)
-					.append("$and",
+					.append("$and", //$NON-NLS-1$
 							new DBObject[] {
 									new BasicDBObject().append(
 											WorksPerformence.F_DATECODE,
-											new BasicDBObject().append("$gt",
+											new BasicDBObject().append("$gt", //$NON-NLS-1$
 													startCode)),
 									new BasicDBObject().append(
 											WorksPerformence.F_DATECODE,
-											new BasicDBObject().append("$lt",
+											new BasicDBObject().append("$lt", //$NON-NLS-1$
 													endCode)) }));
 
 			Object[] result = new Object[cur.size()];

@@ -13,6 +13,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.UserProjectPerf;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.dnd.DropPrimaryObjectTarget;
 import com.sg.widgets.viewer.ViewerControl;
@@ -34,7 +35,7 @@ public class DropProjectToOwnerSet extends DropPrimaryObjectTarget {
 			addProjectSet(userProjectPerf, dragsItems);
 			targetViewerControl.getViewer().refresh();
 		} else {
-			MessageUtil.showToast("请添加至自定义项目组合下", SWT.ICON_WARNING);
+			MessageUtil.showToast(Messages.get().DropProjectToOwnerSet_0, SWT.ICON_WARNING);
 		}
 
 		super.doDrop(sourceId, dragsItems, event, targetViewerControl);
@@ -51,9 +52,9 @@ public class DropProjectToOwnerSet extends DropPrimaryObjectTarget {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USERPROJECTPERF);
 		DBObject update = new BasicDBObject();
-		update.put("$addToSet", new BasicDBObject().append(
+		update.put("$addToSet", new BasicDBObject().append( //$NON-NLS-1$
 				UserProjectPerf.F_PROJECT_ID,
-				new BasicDBObject().append("$each", projectIds)));
+				new BasicDBObject().append("$each", projectIds))); //$NON-NLS-1$
 		col.update(new BasicDBObject().append(UserProjectPerf.F__ID,
 				userProjectPerf.get_id()), update, true, false);
 	}

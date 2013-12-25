@@ -21,6 +21,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.UserProjectPerf;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.ComboInputDialog;
@@ -29,13 +30,13 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class ProjectSetAdd extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "添加项目至项目组合";
+	private static final String TITLE = Messages.get().ProjectSetAdd_0;
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
 		final Shell shell = part.getSite().getShell();
-		MessageUtil.showToast(shell, TITLE, "您至少需要选择一个项目", SWT.ICON_WARNING);
+		MessageUtil.showToast(shell, TITLE, Messages.get().ProjectSetAdd_1, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -67,11 +68,11 @@ public class ProjectSetAdd extends AbstractNavigatorHandler {
 		DBObject condition = new BasicDBObject();
 		condition.put(UserProjectPerf.F_DESC, projectSetName);
 		DBObject update = new BasicDBObject();
-		update.put("$addToSet", new BasicDBObject().append(
+		update.put("$addToSet", new BasicDBObject().append( //$NON-NLS-1$
 				UserProjectPerf.F_PROJECT_ID,
-				new BasicDBObject().append("$each", projectIds)));
+				new BasicDBObject().append("$each", projectIds))); //$NON-NLS-1$
 		update.put(
-				"$set",
+				"$set", //$NON-NLS-1$
 				new BasicDBObject()
 						.append(UserProjectPerf.F_USERID, userid)
 						.append(UserProjectPerf.F_DESC, projectSetName));
@@ -88,11 +89,11 @@ public class ProjectSetAdd extends AbstractNavigatorHandler {
 			
 			@Override
 			public String isValid(String newText) {
-				return Utils.isNullOrEmpty(newText)?"您需要输入项目集合名称":null;
+				return Utils.isNullOrEmpty(newText)?Messages.get().ProjectSetAdd_5:null;
 			}
 		};
 		ComboInputDialog input = new ComboInputDialog(parentShell, TITLE,
-				"请选择现有的项目组合名称\n或输入新的项目组合名称", "", items, val);
+				Messages.get().ProjectSetAdd_6, "", items, val); //$NON-NLS-2$
 		int ok = input.open();
 		if (ok == ComboInputDialog.OK) {
 			return input.getValue();

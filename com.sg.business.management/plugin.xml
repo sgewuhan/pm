@@ -11,35 +11,35 @@
             category="management"
             class="com.sg.widgets.part.view.AccountSensitiveTableView"
             id="management.organization.navigaor"
-            name="组织"
+            name="%view.name"
             restorable="true">
       </view>
       <view
             category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.projecttemplates"
-            name="项目模板"
+            name="%view.name.0"
             restorable="true">
       </view>
       <view
             category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.genericwork.definitions"
-            name="通用工作定义"
+            name="%view.name.1"
             restorable="true">
       </view>
       <view
             category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.standlonework.definitions"
-            name="独立工作定义"
+            name="%view.name.2"
             restorable="true">
       </view>
       <view
             category="management"
             class="com.sg.widgets.part.view.TableNavigator"
             id="management.documentdefinition"
-            name="文档模板"
+            name="%view.name.3"
             restorable="true">
       </view>
    </extension>
@@ -335,7 +335,7 @@
          <column
                column="desc"
                labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider2"
-               name="名称"
+               name="%column.name"
                width="-1">
          </column>
       </table>
@@ -347,20 +347,20 @@
          <column
                column="end1label"
                labelProvider="com.sg.business.commons.labelprovider.End1WorkDefLabelProvider"
-               name="前置工作"
+               name="%column.name.0"
                type="String"
                width="120">
          </column>
          <column
                column="end2label"
                labelProvider="com.sg.business.commons.labelprovider.End2WorkDefLabelProvider"
-               name="后置工作"
+               name="%column.name.1"
                type="String"
                width="120">
          </column>
          <column
                column="connectiontype"
-               name="类型"
+               name="%column.name.2"
                type="String"
                width="50">
          </column>
@@ -369,12 +369,12 @@
                name="±"></column>
          <column
                column="interval"
-               name="间隔时间"
+               name="%column.name.4"
                type="String">
          </column>
          <column
                column="unit"
-               name="单位"
+               name="%column.name.5"
                type="String">
          </column>
       </table>
@@ -411,13 +411,13 @@
          </column>
          <column
                column="wf_execute_activated"
-               name="流程状态"
+               name="%column.name.6"
                type="Boolean">
          </column>
          <column
                column="wf_execute"
                labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
-               name="流程"
+               name="%column.name.7"
                width="100">
          </column>
          <column
@@ -452,7 +452,7 @@
             popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                column="desc"
-               name="名称"
+               name="%column.name.8"
                style="SWT.LEFT"
                type="String"
                width="180">
@@ -478,13 +478,13 @@
          </column>
          <column
                column="wf_execute_activated"
-               name="流程状态"
+               name="%column.name.9"
                type="Boolean">
          </column>
          <column
                column="wf_execute"
                labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
-               name="流程"
+               name="%column.name.10"
                width="100">
          </column>
       </tree>
@@ -498,7 +498,7 @@
             popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                column="desc"
-               name="名称"
+               name="%column.name.11"
                style="SWT.LEFT"
                type="String"
                width="150">
@@ -537,7 +537,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
-               name="名称"
+               name="%column.name.12"
                type="String"
                width="-1">
          </column>
@@ -560,22 +560,22 @@
             id="editor.projecttemplate"
             image="image/projecttemplate_24.png"
             isDefault="true"
-            name="项目模板"
-            titleToolTips="项目模板">
+            name="%editor.name"
+            titleToolTips="%editor.titleToolTips">
          <basicpage
-               description="项目模板基本信息"
+               description="%basicpage.description"
                id="basicpage"
                image="image/projecttemplate_24.png"
-               title="基本">
+               title="%basicpage.title">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="模板名称"
+                        label="%text.label"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -585,7 +585,7 @@
                   <checkbox
                         editable="true"
                         id="activated"
-                        label="启用"
+                        label="%checkbox.label"
                         labelVisible="true"
                         name="activated"
                         persistable="true"
@@ -593,13 +593,13 @@
                   </checkbox>
                </section>
                <section
-                     label="说明">
+                     label="%section.label.0">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="240"
                         id="description"
-                        label="模板说明"
+                        label="%text.label.0"
                         labelVisible="false"
                         name="description"
                         persistable="true"
@@ -611,19 +611,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="可用于工作筛选的选项"
+               description="%basicpage.description.0"
                id="optionpage"
                image="image/options_24.png"
-               title="选项">
+               title="%basicpage.title.0">
             <pagecolumn>
                <section
                      expand="true"
-                     label="适用标准">
+                     label="%section.label.1">
                   <list
                         editable="true"
                         heightHint="112"
                         id="standardset"
-                        label="标准集"
+                        label="%list.label"
                         labelVisible="false"
                         name="standardset"
                         persistable="true"
@@ -632,12 +632,12 @@
                </section>
                <section
                      expand="true"
-                     label="产品类型">
+                     label="%section.label.2">
                   <list
                         editable="true"
                         heightHint="112"
                         id="producttype"
-                        label="产品类型"
+                        label="%list.label.0"
                         labelVisible="false"
                         name="producttype"
                         persistable="true"
@@ -646,12 +646,12 @@
                </section>
                <section
                      expand="true"
-                     label="项目类型">
+                     label="%section.label.3">
                   <list
                         editable="true"
                         heightHint="112"
                         id="projecttype"
-                        label="项目类型"
+                        label="%list.label.1"
                         labelVisible="false"
                         name="projecttype"
                         persistable="true"
@@ -661,18 +661,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="设定项目预算科目"
+               description="%basicpage.description.1"
                id="budgetpage"
                image="image/financial_24.png"
                pageDelegator="com.sg.business.management.editor.page.BugetTemplatePage"
-               title="预算">
+               title="%basicpage.title.1">
          </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="rolepage"
                image="image/role_24.png"
                navigatorId="management.roledefinition"
-               title="角色">
+               title="%navigatorpage.title">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
@@ -686,29 +686,29 @@
                id="deliverables"
                navigatorId="management.deliverables"
                pageBodyPartCreater="com.sg.business.management.editor.page.DeliverablesBody"
-               title="交付物">
+               title="%navigatorpage.title.1">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
                id="connectionpage"
                navigatorId="management.workdconnection"
-               title="前后置">
+               title="%navigatorpage.title.2">
          </navigatorpage>
          <basicpage
-               description="项目提交流程"
+               description="%basicpage.description.2"
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_commit"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateCommitProcessDefPage"
-               title="提交流程">
+               title="%basicpage.title.2">
          </basicpage>
          <basicpage
-               description="项目变更流程"
+               description="%basicpage.description.3"
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_change"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateChangeProcessDefPage"
-               title="变更流程">
+               title="%basicpage.title.3">
          </basicpage>
          <versionControl>
             <fieldname
@@ -722,22 +722,22 @@
             id="editor.workDefinition"
             image="image/work_24.png"
             isDefault="false"
-            name="工作定义"
-            titleToolTips="工作定义">
+            name="%editor.name.0"
+            titleToolTips="%editor.titleToolTips.0">
          <basicpage
-               description="工作定义的基本信息"
+               description="%basicpage.description.4"
                id="basicpage"
                image="image/work_24.png"
-               title="基本信息">
+               title="%basicpage.title.4">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.4">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label.1"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -750,7 +750,7 @@
                         editable="true"
                         heightHint="90"
                         id="description"
-                        label="说明"
+                        label="%text.label.2"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -760,7 +760,7 @@
                   <checkbox
                         editable="true"
                         id="milestone"
-                        label="里程碑"
+                        label="%checkbox.label.0"
                         labelVisible="true"
                         name="milestone"
                         persistable="true"
@@ -769,7 +769,7 @@
                   <spinner
                         editable="true"
                         id="standardworks"
-                        label="标准工时(h)"
+                        label="%spinner.label"
                         labelVisible="true"
                         name="standardworks"
                         persistable="true"
@@ -781,7 +781,7 @@
                      <spinner
                            editable="true"
                            id="remindbefore"
-                           label="设置在计划完成前提醒(时)"
+                           label="%spinner.label.0"
                            labelVisible="true"
                            name="remindbefore"
                            persistable="true"
@@ -793,13 +793,13 @@
             <pagecolumn
                   id="2">
                <section
-                     label="负责人和参与者角色">
+                     label="%section.label.5">
                   <combo
                         dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="charger_roled_id"
-                        label="负责人角色"
+                        label="%combo.label"
                         labelVisible="true"
                         name="charger_roled_id"
                         persistable="true"
@@ -811,7 +811,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="assignmentcharger_roled_id"
-                        label="指派人角色"
+                        label="%combo.label.0"
                         labelVisible="true"
                         name="assignmentcharger_roled_id"
                         persistable="true"
@@ -823,7 +823,7 @@
                         dataSetFactory="com.sg.business.model.dataset.projecttemplate.RoleDefOfProjectTemplateOption"
                         editable="true"
                         id="participate_roled_set"
-                        label="参与者角色"
+                        label="%table.label"
                         labelVisible="true"
                         name="participate_roled_set"
                         persistable="true"
@@ -833,17 +833,17 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="设置工作定义的特性"
+               description="%basicpage.description.5"
                id="settingpage"
-               title="设置">
+               title="%basicpage.title.5">
             <pagecolumn>
                <section
-                     label="工作和交付物">
+                     label="%section.label.6">
                   <checkbox
                         defaultValue="true"
                         editable="true"
                         id="s_canbreakdown"
-                        label="是否允许分解工作"
+                        label="%checkbox.label.1"
                         labelVisible="true"
                         name="s_canbreakdown"
                         persistable="true"
@@ -853,7 +853,7 @@
                         defaultValue="true"
                         editable="true"
                         id="s_canadddeliverables"
-                        label="是否允许添加交付物"
+                        label="%checkbox.label.2"
                         labelVisible="true"
                         name="s_canadddeliverables"
                         persistable="true"
@@ -863,7 +863,7 @@
                         defaultValue="true"
                         editable="true"
                         id="s_canmodifyplanworks"
-                        label="是否允许修改计划工时"
+                        label="%checkbox.label.3"
                         labelVisible="true"
                         name="s_canmodifyplanworks"
                         persistable="true"
@@ -871,12 +871,12 @@
                   </checkbox>
                </section>
                <section
-                     label="开始和完成设定">
+                     label="%section.label.7">
                   <checkbox
                         defaultValue="false"
                         editable="true"
                         id="s_autostartwithparent"
-                        label="上级工作开始时，本工作自动开始"
+                        label="%checkbox.label.4"
                         labelVisible="true"
                         name="s_autostartwithparent"
                         persistable="true"
@@ -886,7 +886,7 @@
                         defaultValue="false"
                         editable="true"
                         id="s_autofinishwithparent"
-                        label="上级工作完成时，本工作自动完成"
+                        label="%checkbox.label.5"
                         labelVisible="true"
                         name="s_autofinishwithparent"
                         persistable="true"
@@ -896,7 +896,7 @@
                         defaultValue="false"
                         editable="true"
                         id="s_canskiptofinish"
-                        label="是否可以跳过进行中的流程完成工作"
+                        label="%checkbox.label.6"
                         labelVisible="true"
                         name="s_canskiptofinish"
                         persistable="true"
@@ -904,12 +904,12 @@
                   </checkbox>
                </section>
                <section
-                     label="变更设定">
+                     label="%section.label.8">
                   <checkbox
                         defaultValue="false"
                         editable="true"
                         id="s_workchangeflowmandory"
-                        label="需启动变更流程实施工作的更改"
+                        label="%checkbox.label.7"
                         labelVisible="true"
                         name="s_workchangeflowmandory"
                         persistable="true"
@@ -919,7 +919,7 @@
                         defaultValue="false"
                         editable="true"
                         id="s_projectchangeflowmandory"
-                        label="需启动项目变更流程实施工作的更改"
+                        label="%checkbox.label.8"
                         labelVisible="true"
                         name="s_projectchangeflowmandory"
                         persistable="true"
@@ -929,18 +929,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="工作的执行流程"
+               description="%basicpage.description.6"
                id="processpage_execute"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdExecuteProcessDefPage"
-               title="执行流程">
+               title="%basicpage.title.6">
          </basicpage>
          <basicpage
-               description="工作的变更流程"
+               description="%basicpage.description.7"
                id="processpage_change"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdChangeProcessDefPage"
-               title="变更流程">
+               title="%basicpage.title.7">
          </basicpage>
       </editor>
       <editor
@@ -949,23 +949,23 @@
             id="editor.roleDefinition"
             image="image/role_24.png"
             isDefault="false"
-            name="角色定义"
-            titleToolTips="角色定义">
+            name="%editor.name.1"
+            titleToolTips="%editor.titleToolTips.1">
          <basicpage
-               description="角色定义"
+               description="%basicpage.description.8"
                id="basicpage1"
                image="image/role_24.png"
-               title="基本信息">
+               title="%basicpage.title.8">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.9">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="rolenumber"
                         inputValidator="com.sg.business.commons.field.validator.RoleNumberInputValidator"
-                        label="编号"
+                        label="%text.label.3"
                         labelVisible="true"
                         name="rolenumber"
                         persistable="true"
@@ -976,7 +976,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label.4"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -987,7 +987,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.5"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -1003,21 +1003,21 @@
             dbName="pm2"
             id="editor.deliverableDefinition"
             image="image/deliverable_24.png"
-            name="交付物定义">
+            name="%editor.name.2">
          <basicpage
-               description="交付物是工作需要提交的对象，请定义交付物的属性"
+               description="%basicpage.description.9"
                id="basicpage"
                image="image/deliverable_24.png"
-               title="交付物定义">
+               title="%basicpage.title.9">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.10">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label.6"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1029,7 +1029,7 @@
                         editPart="Combo"
                         editable="true"
                         id="type"
-                        label="类型"
+                        label="%combo.label.1"
                         labelVisible="true"
                         name="type"
                         option="deliverable.type"
@@ -1041,7 +1041,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.7"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -1062,20 +1062,20 @@
             dbName="pm2"
             id="editor.workDefinitionConnection"
             isDefault="true"
-            name="工作顺序关系"
-            titleToolTips="工作顺序关系">
+            name="%editor.name.3"
+            titleToolTips="%editor.titleToolTips.2">
          <basicpage
                id="basicpage"
-               title="基本信息">
+               title="%basicpage.title.10">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.11">
                   <selectionDialog
                         dataSetFactory="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjecttemplateOption"
                         editable="true"
                         id="end1_id"
-                        label="前置工作"
+                        label="%selectionDialog.label"
                         labelVisible="true"
                         name="end1_id"
                         persistable="true"
@@ -1086,7 +1086,7 @@
                         dataSetFactory="com.sg.business.model.dataset.projecttemplate.WorkDefConnectionOfProjecttemplateOption"
                         editable="true"
                         id="end2_id"
-                        label="后置工作"
+                        label="%selectionDialog.label.0"
                         labelVisible="true"
                         name="end2_id"
                         persistable="true"
@@ -1097,7 +1097,7 @@
                         defaultValue="FS"
                         editable="true"
                         id="connectiontype"
-                        label="顺序关系"
+                        label="%radio.label"
                         labelVisible="true"
                         name="connectiontype"
                         option="connectiontype"
@@ -1113,7 +1113,7 @@
                            editPart="Combo(Read Only)"
                            editable="true"
                            id="operator"
-                           label="操作符"
+                           label="%combo.label.2"
                            labelVisible="true"
                            name="operator"
                            option="操作符"
@@ -1125,7 +1125,7 @@
                            defaultValue="0"
                            editable="true"
                            id="interval"
-                           label="间隔时间"
+                           label="%spinner.label.1"
                            labelVisible="true"
                            name="interval"
                            persistable="true"
@@ -1136,7 +1136,7 @@
                            editPart="Combo(Read Only)"
                            editable="true"
                            id="unit"
-                           label="单位"
+                           label="%combo.label.3"
                            labelVisible="false"
                            name="unit"
                            option="日期单位"
@@ -1154,20 +1154,20 @@
             dbName="pm2"
             id="editor.organization.knowledgebase"
             image="image/org_24.png"
-            name="组织流程库">
+            name="%editor.name.4">
          <basicpage
-               description="请设定组织可用的流程库"
+               description="%basicpage.description.10"
                id="basicpage1"
                image="image/org_24.png"
-               title="流程库">
+               title="%basicpage.title.11">
             <pagecolumn>
                <section
-                     label="基本信息">
+                     label="%section.label.12">
                   <selectionDialog
                         dataSetFactory="com.sg.business.model.dataset.organization.OrgFinder"
                         editable="false"
                         id="parent_id"
-                        label="上级组织"
+                        label="%selectionDialog.label.1"
                         labelVisible="true"
                         name="parent_id"
                         persistable="true"
@@ -1178,7 +1178,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="desc"
-                        label="组织名称"
+                        label="%text.label.8"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1189,7 +1189,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="fulldesc"
-                        label="组织全称"
+                        label="%text.label.9"
                         labelVisible="true"
                         name="fulldesc"
                         persistable="true"
@@ -1200,7 +1200,7 @@
                         editPart="Combo(Read Only)"
                         editable="false"
                         id="organizationtype"
-                        label="类型"
+                        label="%combo.label.4"
                         labelVisible="true"
                         name="organizationtype"
                         option="com.sg.business.option.organizationType"
@@ -1210,11 +1210,11 @@
                   </combo>
                </section>
                <section
-                     label="流程库">
+                     label="%section.label.13">
                   <list
                         editable="true"
                         id="kbase"
-                        label="组织流程库名称"
+                        label="%list.label.2"
                         labelVisible="true"
                         name="kbase"
                         option="knowledgebase"
@@ -1223,7 +1223,7 @@
                      <fieldaction
                            handler="com.sg.business.management.editor.ReloadKnowledgebase"
                            image="image/reload_base_16.png"
-                           name="management.reloadknowledgebase">
+                           name="%fieldaction.name">
                      </fieldaction>
                   </list>
                </section>
@@ -1239,22 +1239,22 @@
             id="editor.genericWorkDefinition"
             image="image/work_24.png"
             isDefault="false"
-            name="通用工作定义"
-            titleToolTips="通用工作定义">
+            name="%editor.name.5"
+            titleToolTips="%editor.titleToolTips.3">
          <basicpage
-               description="通用工作定义是可添加到多项目中工作模块"
+               description="%basicpage.description.11"
                id="basicpage"
                image="image/work_24.png"
-               title="基本信息">
+               title="%basicpage.title.12">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.14">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label.10"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1265,7 +1265,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.11"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -1275,7 +1275,7 @@
                   <checkbox
                         editable="true"
                         id="activated"
-                        label="启用"
+                        label="%checkbox.label.9"
                         labelVisible="true"
                         name="activated"
                         persistable="true"
@@ -1295,21 +1295,21 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="deliverables"
                navigatorId="management.genericworkd.deliverables"
-               title="交付物">
+               title="%navigatorpage.title.4">
          </navigatorpage>
          <basicpage
-               description="通用工作的执行流程"
+               description="%basicpage.description.12"
                id="processpage_execute"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
-               title="执行流程">
+               title="%basicpage.title.13">
          </basicpage>
          <basicpage
-               description="通用工作的变更流程"
+               description="%basicpage.description.13"
                id="processpage_change"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
-               title="变更流程">
+               title="%basicpage.title.14">
          </basicpage>
          <versionControl>
             <fieldname
@@ -1323,22 +1323,22 @@
             id="editor.genericWorkDefinition.1"
             image="image/work_24.png"
             isDefault="false"
-            name="通用工作定义"
-            titleToolTips="通用工作定义">
+            name="%editor.name.6"
+            titleToolTips="%editor.titleToolTips.4">
          <basicpage
-               description="通用工作定义是可添加到多项目中工作模块"
+               description="%basicpage.description.14"
                id="basicpage"
                image="image/work_24.png"
-               title="基本信息">
+               title="%basicpage.title.15">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.15">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label.12"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1349,7 +1349,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.13"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -1360,18 +1360,18 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="通用工作的执行流程"
+               description="%basicpage.description.15"
                id="processpage_execute"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
-               title="执行流程">
+               title="%basicpage.title.16">
          </basicpage>
          <basicpage
-               description="通用工作的执行流程"
+               description="%basicpage.description.16"
                id="processpage_change"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
-               title="变更流程">
+               title="%basicpage.title.17">
          </basicpage>
          <versionControl>
             <fieldname
@@ -1385,22 +1385,22 @@
             id="editor.standloneWorkDefinition.1"
             image="image/work_24.png"
             isDefault="false"
-            name="独立工作定义"
-            titleToolTips="独立工作定义">
+            name="%editor.name.7"
+            titleToolTips="%editor.titleToolTips.5">
          <basicpage
-               description="独立工作定义"
+               description="%basicpage.description.17"
                id="basicpage"
                image="image/work_24.png"
-               title="基本信息">
+               title="%basicpage.title.18">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.16">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label.14"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1411,7 +1411,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.15"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -1421,7 +1421,7 @@
                   <checkbox
                         editable="true"
                         id="activated"
-                        label="启用"
+                        label="%checkbox.label.10"
                         labelVisible="true"
                         name="activated"
                         persistable="true"
@@ -1429,14 +1429,14 @@
                   </checkbox>
                </section>
                <section
-                     label="系统属性">
+                     label="%section.label.17">
                   <fieldgroup
                         columnCount="2">
                      <combo
                            editPart="Combo(Read Only)"
                            editable="true"
                            id="internaltype"
-                           label="内部类型"
+                           label="%combo.label.5"
                            labelVisible="true"
                            name="internaltype"
                            option="change.type"
@@ -1448,7 +1448,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="chargerpara"
-                           label="负责人流程参数"
+                           label="%text.label.16"
                            labelVisible="true"
                            name="chargerpara"
                            persistable="true"
@@ -1459,7 +1459,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="noskippara"
-                           label="流程跳过参数"
+                           label="%text.label.17"
                            labelVisible="true"
                            name="noskippara"
                            persistable="true"
@@ -1470,7 +1470,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="ecapara"
-                           label="变更活动流程参数"
+                           label="%text.label.18"
                            labelVisible="true"
                            name="ecapara"
                            persistable="true"
@@ -1480,7 +1480,7 @@
                      <checkbox
                            editable="true"
                            id="defaultselected"
-                           label="默认值参数"
+                           label="%checkbox.label.11"
                            labelVisible="true"
                            name="defaultselected"
                            persistable="true"
@@ -1491,12 +1491,12 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="独立工作的执行流程"
+               description="%basicpage.description.18"
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
-               title="执行流程">
+               title="%basicpage.title.19">
          </basicpage>
          <!--取消独立工作定义的变更流程，这个功能没有实际的用途
          <basicpage
@@ -1519,22 +1519,22 @@
             id="editor.standloneWorkDefinition"
             image="image/work_24.png"
             isDefault="false"
-            name="独立工作定义"
-            titleToolTips="独立工作定义">
+            name="%editor.name.8"
+            titleToolTips="%editor.titleToolTips.6">
          <basicpage
-               description="独立工作定义"
+               description="%basicpage.description.19"
                id="basicpage"
                image="image/work_24.png"
-               title="基本信息">
+               title="%basicpage.title.20">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label.18">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="名称"
+                        label="%text.label.19"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -1545,7 +1545,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.20"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -1555,7 +1555,7 @@
                   <checkbox
                         editable="true"
                         id="activated"
-                        label="启用"
+                        label="%checkbox.label.12"
                         labelVisible="true"
                         name="activated"
                         persistable="true"
@@ -1563,14 +1563,14 @@
                   </checkbox>
                </section>
                <section
-                     label="系统属性">
+                     label="%section.label.19">
                   <fieldgroup
                         columnCount="2">
                      <combo
                            editPart="Combo(Read Only)"
                            editable="true"
                            id="internaltype"
-                           label="内部类型"
+                           label="%combo.label.6"
                            labelVisible="true"
                            name="internaltype"
                            option="change.type"
@@ -1582,7 +1582,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="chargerpara"
-                           label="负责人流程参数"
+                           label="%text.label.21"
                            labelVisible="true"
                            name="chargerpara"
                            persistable="true"
@@ -1593,7 +1593,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="noskippara"
-                           label="流程跳过参数"
+                           label="%text.label.22"
                            labelVisible="true"
                            name="noskippara"
                            persistable="true"
@@ -1604,7 +1604,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="ecapara"
-                           label="变更活动流程参数"
+                           label="%text.label.23"
                            labelVisible="true"
                            name="ecapara"
                            persistable="true"
@@ -1614,7 +1614,7 @@
                      <checkbox
                            editable="true"
                            id="defaultselected"
-                           label="默认值参数"
+                           label="%checkbox.label.13"
                            labelVisible="true"
                            name="defaultselected"
                            persistable="true"
@@ -1629,7 +1629,7 @@
                id="rolepage"
                image="image/role_24.png"
                navigatorId="management.standloneworkrole"
-               title="角色">
+               title="%navigatorpage.title.5">
          </navigatorpage>
          <!--navigatorpage
                createAfterSave="true"
@@ -1641,15 +1641,15 @@
                createAfterSave="true"
                id="deliverables"
                navigatorId="management.genericworkd.deliverables"
-               title="交付物">
+               title="%navigatorpage.title.6">
          </navigatorpage>
          <basicpage
-               description="独立工作的执行流程"
+               description="%basicpage.description.20"
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
                pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
-               title="执行流程">
+               title="%basicpage.title.21">
          </basicpage>
          <!--basicpage
                description="独立工作的变更流程"
@@ -1683,7 +1683,7 @@
          <menu
                icon="image/create2_24.png"
                id="org.create2.popup"
-               label="创建">
+               label="%menu.label">
             <dynamic
                   class="com.sg.widgets.command.CreateDynamicContribution"
                   id="com.sg.widgets.dynamic.create">
@@ -1701,7 +1701,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/24_blank.png"
-               label="设定流程库"
+               label="%command.label"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1719,13 +1719,13 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.0"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.addtocompare"
                icon="image/compare_24.png"
-               label="加入对比"
+               label="%command.label.1"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1744,13 +1744,13 @@
          <command
                commandId="work.create"
                icon="image/creatework_24.png"
-               label="添加"
+               label="%command.label.2"
                style="push">
          </command>
          <command
                commandId="work.edit"
                icon="image/editwork_24.png"
-               label="编辑..."
+               label="%command.label.3"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1765,7 +1765,7 @@
          <command
                commandId="work.remove"
                icon="image/removework_24.png"
-               label="删除"
+               label="%command.label.4"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1783,29 +1783,29 @@
          </separator>
          <menu
                icon="image/24_blank.png"
-               label="移动工作定义">
+               label="%menu.label.0">
             <command
                   commandId="work.moveup"
                   icon="image/up_24.png"
-                  label="上移"
+                  label="%command.label.5"
                   style="push">
             </command>
             <command
                   commandId="work.movedown"
                   icon="image/down_24.png"
-                  label="下移"
+                  label="%command.label.6"
                   style="push">
             </command>
             <command
                   commandId="work.moveleft"
                   icon="image/left_24.png"
-                  label="升级"
+                  label="%command.label.7"
                   style="push">
             </command>
             <command
                   commandId="work.moveright"
                   icon="image/right_24.png"
-                  label="降级"
+                  label="%command.label.8"
                   style="push">
             </command>
             <separator
@@ -1814,7 +1814,7 @@
             <command
                   commandId="work.showcompass"
                   icon="image/naviclose_24.png"
-                  label="显示移动罗盘"
+                  label="%command.label.9"
                   style="push">
             </command>
             <visibleWhen
@@ -1834,13 +1834,13 @@
          <command
                commandId="management.wbstemplate.copygeneric"
                icon="image/genericwork_24.png"
-               label="添加通用工作定义"
+               label="%command.label.10"
                style="push">
          </command>
          <command
                commandId="management.wbstemplate.changetogeneric"
                icon="image/changetogenericwork_24.png"
-               label="转为通用工作定义"
+               label="%command.label.11"
                style="push">
          </command>
          <separator
@@ -1850,7 +1850,7 @@
          <command
                commandId="work.setcharger"
                icon="image/24_blank.png"
-               label="指定负责人角色"
+               label="%command.label.12"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1869,7 +1869,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.13"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1888,7 +1888,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.14"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1903,7 +1903,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/work_24.png"
-               label="编辑WBS模板"
+               label="%command.label.15"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1926,7 +1926,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/financial_24.png"
-               label="编辑预算模板"
+               label="%command.label.16"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1949,7 +1949,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/role_24.png"
-               label="编辑角色"
+               label="%command.label.17"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1972,7 +1972,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/deliverableedit_24.png"
-               label="编辑交付物"
+               label="%command.label.18"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -1999,13 +1999,13 @@
          <command
                commandId="generic.activateswith"
                icon="image/status_24.png"
-               label="启用/停用"
+               label="%command.label.19"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.20"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2020,7 +2020,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.21"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2039,19 +2039,19 @@
          <command
                commandId="management.roledefinition.create"
                icon="image/createrole_24.png"
-               label="添加"
+               label="%command.label.22"
                style="push">
          </command>
          <command
                commandId="management.roledefinition.link"
                icon="image/24_blank.png"
-               label="添加组织角色"
+               label="%command.label.23"
                style="push">
          </command>
          <command
                commandId="management.roledefinition.edit"
                icon="image/editrole_24.png"
-               label="编辑..."
+               label="%command.label.24"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2066,7 +2066,7 @@
          <command
                commandId="management.roledefinition.remove"
                icon="image/removerole_24.png"
-               label="删除"
+               label="%command.label.25"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2085,7 +2085,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.26"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2104,7 +2104,7 @@
          <command
                commandId="management.deliverables.create"
                icon="image/deliverablecreate_24.png"
-               label="创建交付物定义"
+               label="%command.label.27"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2122,7 +2122,7 @@
          <command
                commandId="management.deliverables.link"
                icon="image/24_blank.png"
-               label="链接交付文档..."
+               label="%command.label.28"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2140,7 +2140,7 @@
          <command
                commandId="management.deliverables.edit"
                icon="image/deliverableedit_24.png"
-               label="编辑..."
+               label="%command.label.29"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2158,7 +2158,7 @@
          <command
                commandId="management.deliverables.remove"
                icon="image/deliverableremove_24.png"
-               label="删除"
+               label="%command.label.30"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2180,7 +2180,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.31"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2199,13 +2199,13 @@
          <command
                commandId="work.create"
                icon="image/creatework_24.png"
-               label="添加"
+               label="%command.label.32"
                style="push">
          </command>
          <command
                commandId="work.edit"
                icon="image/editwork_24.png"
-               label="编辑..."
+               label="%command.label.33"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2220,7 +2220,7 @@
          <command
                commandId="work.remove"
                icon="image/removework_24.png"
-               label="删除"
+               label="%command.label.34"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2238,29 +2238,29 @@
          </separator>
          <menu
                icon="image/24_blank.png"
-               label="移动工作定义">
+               label="%menu.label.1">
             <command
                   commandId="work.moveup"
                   icon="image/up_24.png"
-                  label="上移"
+                  label="%command.label.35"
                   style="push">
             </command>
             <command
                   commandId="work.movedown"
                   icon="image/down_24.png"
-                  label="下移"
+                  label="%command.label.36"
                   style="push">
             </command>
             <command
                   commandId="work.moveleft"
                   icon="image/left_24.png"
-                  label="升级"
+                  label="%command.label.37"
                   style="push">
             </command>
             <command
                   commandId="work.moveright"
                   icon="image/right_24.png"
-                  label="降级"
+                  label="%command.label.38"
                   style="push">
             </command>
             <separator
@@ -2269,7 +2269,7 @@
             <command
                   commandId="work.showcompass"
                   icon="image/naviclose_24.png"
-                  label="显示移动罗盘"
+                  label="%command.label.39"
                   style="push">
             </command>
             <visibleWhen
@@ -2285,7 +2285,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.40"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2304,7 +2304,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.41"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2342,7 +2342,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/deliverable_24.png"
-               label="编辑交付物"
+               label="%command.label.42"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -2369,13 +2369,13 @@
          <command
                commandId="generic.activateswith"
                icon="image/status_24.png"
-               label="启用/停用"
+               label="%command.label.43"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.44"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2390,7 +2390,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.45"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2409,7 +2409,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.46"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2424,7 +2424,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/work_24.png"
-               label="编辑WBS模板"
+               label="%command.label.47"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -2447,7 +2447,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/deliverable_24.png"
-               label="编辑交付物"
+               label="%command.label.48"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.editorid"
@@ -2474,13 +2474,13 @@
          <command
                commandId="generic.activateswith"
                icon="image/status_24.png"
-               label="启用/停用"
+               label="%command.label.49"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.50"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2495,7 +2495,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.51"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2514,7 +2514,7 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.52"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2533,7 +2533,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.53"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2548,7 +2548,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.54"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2567,13 +2567,13 @@
          <command
                commandId="management.workdconnection.create"
                icon="image/24_blank.png"
-               label="添加顺序关系..."
+               label="%command.label.55"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/edit_24.png"
-               label="编辑"
+               label="%command.label.56"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2592,7 +2592,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.57"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2607,7 +2607,7 @@
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.58"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2626,13 +2626,13 @@
          <command
                commandId="management.roledefinition.link"
                icon="image/24_blank.png"
-               label="添加组织角色"
+               label="%command.label.59"
                style="push">
          </command>
          <command
                commandId="management.roledefinition.remove"
                icon="image/removerole_24.png"
-               label="删除"
+               label="%command.label.60"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2651,7 +2651,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.61"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -2666,32 +2666,32 @@
       </menuContribution>
    </extension>
    <extension
-         name="角色定义"
+         name="%extension.name"
          point="org.eclipse.ui.commands">
       <command
             categoryId="com.sg.business.management"
             id="management.roledefinition.create"
-            name="添加">
+            name="%command.name">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="management.roledefinition.edit"
-            name="编辑">
+            name="%command.name.0">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="management.roledefinition.remove"
-            name="删除">
+            name="%command.name.1">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="management.roledefinition.link"
-            name="添加组织角色">
+            name="%command.name.2">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="generic.activateswith"
-            name="启用停用开关">
+            name="%command.name.3">
       </command>
    </extension>
    <extension
@@ -2730,21 +2730,21 @@
       <command
             categoryId="com.sg.business.management"
             id="management.deliverables.create"
-            name="添加交付物定义">
+            name="%command.name.4">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="management.deliverables.edit"
-            name="编辑交付物定义">
+            name="%command.name.5">
       </command>
       <command
             id="management.deliverables.remove"
-            name="删除交付物定义">
+            name="%command.name.6">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="management.deliverables.link"
-            name="链接交付物定义">
+            name="%command.name.7">
       </command>
    </extension>
    <extension
@@ -2771,7 +2771,7 @@
       <command
             categoryId="com.sg.business.management"
             id="management.workdconnection.create"
-            name="添加工作顺序关系">
+            name="%command.name.8">
       </command>
    </extension>
    <extension
@@ -2785,25 +2785,25 @@
          point="com.sg.widgets.option">
       <option
             id="connectiontype"
-            label="顺序关系">
+            label="%option.label">
          <option
                id="SF"
-               label="开始-完成"
+               label="%option.label.0"
                value="SF">
          </option>
          <option
                id="SS"
-               label="开始-开始"
+               label="%option.label.1"
                value="SS">
          </option>
          <option
                id="FF"
-               label="完成-完成"
+               label="%option.label.2"
                value="FF">
          </option>
          <option
                id="FS"
-               label="完成-开始"
+               label="%option.label.3"
                value="FS">
          </option>
       </option>
@@ -2822,12 +2822,12 @@
       <command
             categoryId="com.sg.business.management"
             id="management.wbstemplate.copygeneric"
-            name="添加通用工作定义">
+            name="%command.name.9">
       </command>
       <command
             categoryId="com.sg.business.management"
             id="management.wbstemplate.changetogeneric"
-            name="转为通用工作定义">
+            name="%command.name.10">
       </command>
    </extension>
    <extension

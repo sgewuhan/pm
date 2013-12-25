@@ -20,16 +20,16 @@ public class PrimaryObjectTest extends PropertyTester {
 //		System.out.println(">>>>>>>>");
 
 		if (receiver instanceof PrimaryObject) {
-			if ("properties".equals(properties)) {
+			if ("properties".equals(properties)) { //$NON-NLS-1$
 				PrimaryObject po = (PrimaryObject) receiver;
 				if (args != null && args.length > 0) {
 					try {
-						Object value = po.getValue("" + args[0]);
+						Object value = po.getValue("" + args[0]); //$NON-NLS-1$
 						return Util.equals(expectedValue, value);
 					} catch (Exception e) {
 					}
 				}
-			} else if ("method".equals(properties)) {
+			} else if ("method".equals(properties)) { //$NON-NLS-1$
 				if (args != null && args.length > 0) {
 					PrimaryObject po = (PrimaryObject) receiver;
 					Method[] methods = po.getClass().getMethods();

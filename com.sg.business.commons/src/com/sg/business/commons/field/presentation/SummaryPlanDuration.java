@@ -27,7 +27,7 @@ public class SummaryPlanDuration implements IValuePresentation {
 			}
 
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.sg.business.model;
 
+import com.sg.business.model.nls.Messages;
+
 /**
  * 工作定义的前后置关系
  * <p/>
@@ -12,7 +14,7 @@ public class WorkDefinitionConnection extends AbstractWorkConnection implements 
 	/**
 	 * 工作定义的编辑器ID
 	 */
-	public static final String EDITOR = "editor.workDefinitionConnection";
+	public static final String EDITOR = "editor.workDefinitionConnection"; //$NON-NLS-1$
 	
 	/**
 	 * 返回类型名称
@@ -20,6 +22,6 @@ public class WorkDefinitionConnection extends AbstractWorkConnection implements 
 	 */
 	@Override
 	public String getTypeName() {
-		return "工作定义前后置关系";
+		return Messages.get().WorkDefinitionConnection_1;
 	}
 }

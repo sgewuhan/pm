@@ -27,7 +27,7 @@ public class ProjectChangeAddParticipate implements IEditorSaveHandler {
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
-		Object value = taskform.getValue("project");
+		Object value = taskform.getValue("project"); //$NON-NLS-1$
 
 		if (value instanceof ObjectId) {
 			Project pro = ModelService.createModelObject(Project.class,

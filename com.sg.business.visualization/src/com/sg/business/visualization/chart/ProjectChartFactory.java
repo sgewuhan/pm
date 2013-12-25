@@ -69,20 +69,21 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.model.SalesData;
+import com.sg.business.visualization.nls.Messages;
 
 public class ProjectChartFactory {
 
-	private static final int STRONG_SIZE = 9;
+	private static final int STRONG_SIZE = 7;
 
-	private static final int NORMAL_SIZE = 9;
+	private static final int NORMAL_SIZE = 7;
 
-	private static final int SMALL_SIZE = 8;
+	private static final int SMALL_SIZE = 7;
 
 	// 正常完成
 	private static final ColorDefinition color1 = getRGBColorDefinition(Utils.COLOR_GREEN[10]);
 
 	// "超期完成"
-	private static final ColorDefinition color2 = getRGBColorDefinition("#00a99d");
+	private static final ColorDefinition color2 = getRGBColorDefinition("#00a99d"); //$NON-NLS-1$
 
 	// "进度延迟"
 	private static final ColorDefinition color3 = getRGBColorDefinition(Utils.COLOR_RED[5]);
@@ -642,8 +643,8 @@ public class ProjectChartFactory {
 		seDial1.getNeedle().setDecorator(LineDecorator.ARROW_LITERAL);
 
 		Dial dial = seDial1.getDial();
-		dial.setFill(GradientImpl.create(getRGBColorDefinition("#b5b5b5"),
-				getRGBColorDefinition("#ffffff"), -90, false));
+		dial.setFill(GradientImpl.create(getRGBColorDefinition("#b5b5b5"), //$NON-NLS-1$
+				getRGBColorDefinition("#ffffff"), -90, false)); //$NON-NLS-1$
 
 		dial.setStartAngle(0);
 		dial.setStopAngle(180);
@@ -695,7 +696,7 @@ public class ProjectChartFactory {
 
 	private static void adjustFont(FontDefinition font, int size) {
 		font.setSize(size);
-		font.setName("Segoe");
+		font.setName("微软雅黑");//$NON-NLS-1$
 	}
 
 	private static ColorDefinition getRGBColorDefinition(String colorCode) {
@@ -717,8 +718,8 @@ public class ProjectChartFactory {
 		// 进度提前
 		int value6 = data.sum.processing_advance;
 
-		String pieChartCaption = "进度摘要";
-		String[] texts = new String[] { "正常完成", "超期完成", "进度延迟", "正常进行", "进度提前" };
+		String pieChartCaption = Messages.get().ProjectChartFactory_4;
+		String[] texts = new String[] { Messages.get().ProjectChartFactory_5, Messages.get().ProjectChartFactory_6, Messages.get().ProjectChartFactory_7, Messages.get().ProjectChartFactory_8, Messages.get().ProjectChartFactory_9 };
 		double[] values = new double[] { (value1 + value3), value2, value4,
 				value5, value6 };
 		return createPieChart(pieChartCaption, texts, values);
@@ -734,7 +735,7 @@ public class ProjectChartFactory {
 		int sum = value1 + value2 + value3;
 		double finishProjectOverTimeRate = sum == 0 ? 0 : (100d * value2 / sum);
 
-		return createMeterChart("已完成项目超期 ", "进度延迟", finishProjectOverTimeRate);
+		return createMeterChart(Messages.get().ProjectChartFactory_10, Messages.get().ProjectChartFactory_11, finishProjectOverTimeRate);
 	}
 
 	public static Chart getProcessProjectSchedualMeterChart(ProjectProvider data) {
@@ -749,7 +750,7 @@ public class ProjectChartFactory {
 		double processProjectOverTimeRate = sum == 0 ? 0
 				: (100d * value4 / sum);
 
-		return createMeterChart("进行中项目超期 ", "进度延迟", processProjectOverTimeRate);
+		return createMeterChart(Messages.get().ProjectChartFactory_12, Messages.get().ProjectChartFactory_13, processProjectOverTimeRate);
 	}
 
 	public static Chart getProjectSchedualMeter(ProjectProvider data) {
@@ -768,7 +769,7 @@ public class ProjectChartFactory {
 		int sum = value1 + value2 + value3 + value4 + value5 + value6;
 		double allProjectOverTimeRate = sum == 0 ? 0
 				: (100d * (value2 + value4) / sum);
-		return createMeterChart("总体项目超期率 ", "进度延迟", allProjectOverTimeRate);
+		return createMeterChart(Messages.get().ProjectChartFactory_14, Messages.get().ProjectChartFactory_15, allProjectOverTimeRate);
 	}
 
 	public static Chart getDeptSchedualBar(ProjectProvider data) {
@@ -789,8 +790,8 @@ public class ProjectChartFactory {
 			deptValue2[i] = projectProvider.sum.processing_delay;
 		}
 
-		return create2StackedBarChart("部门项目执行状况", deptParameter, deptValue1,
-				deptValue2, new String[] { "正常", "超期" });
+		return create2StackedBarChart(Messages.get().ProjectChartFactory_16, deptParameter, deptValue1,
+				deptValue2, new String[] { Messages.get().ProjectChartFactory_17, Messages.get().ProjectChartFactory_18 });
 	}
 
 	public static Chart getDeptCombinationSchedualBar(ProjectProvider data) {
@@ -813,13 +814,13 @@ public class ProjectChartFactory {
 			deptValue2[i] = projectProvider.sum.processing_delay;
 			deptValue3[i] = projectProvider.sum.total_sales_revenue
 					/ 10000
-					- (projectProvider.sum.total_sales_cost + projectProvider.sum.total_investment_amount)
-					/ 10000;
+//					- (projectProvider.sum.total_sales_cost + projectProvider.sum.total_investment_amount)
+					-projectProvider.sum.total_sales_cost/ 10000;
 		}
 
-		return createCombinnationStackedBarChart("各部门项目运行综合状况", deptParameter,
-				deptValue1, deptValue2, deptValue3, new String[] { "正常进行",
-						"超期风险", "销售利润" });
+		return createCombinnationStackedBarChart(Messages.get().ProjectChartFactory_19, deptParameter,
+				deptValue1, deptValue2, deptValue3, new String[] { Messages.get().ProjectChartFactory_20,
+						Messages.get().ProjectChartFactory_21, Messages.get().ProjectChartFactory_22 });
 	}
 
 	public static Chart getChargerSchedualBar(ProjectProvider data) {
@@ -840,8 +841,8 @@ public class ProjectChartFactory {
 			userValue2[i] = projectProvider.sum.processing_delay;
 		}
 
-		return create2StackedBarChart("项目经理项目执行状况", chargerName, userValue1,
-				userValue2, new String[] { "正常", "超期" });
+		return create2StackedBarChart(Messages.get().ProjectChartFactory_23, chargerName, userValue1,
+				userValue2, new String[] { Messages.get().ProjectChartFactory_24, Messages.get().ProjectChartFactory_25 });
 	}
 
 	public static Chart getFinishedProjectBudgetAndCostMeter(
@@ -855,7 +856,7 @@ public class ProjectChartFactory {
 		double finishedProjectOverCostRate = sum == 0 ? 0
 				: (100d * value2 / sum);
 
-		return createMeterChart("超支完成项目比例 ", "预算超支",
+		return createMeterChart(Messages.get().ProjectChartFactory_26, Messages.get().ProjectChartFactory_27,
 				finishedProjectOverCostRate);
 	}
 
@@ -869,8 +870,8 @@ public class ProjectChartFactory {
 		// "正常运行"
 		int value4 = data.sum.processing_cost_normal;
 
-		String pieChartCaption = "预算使用摘要";
-		String[] texts = new String[] { "预算内完成", "超预算完成", "超支风险", "正常运行" };
+		String pieChartCaption = Messages.get().ProjectChartFactory_28;
+		String[] texts = new String[] { Messages.get().ProjectChartFactory_29, Messages.get().ProjectChartFactory_30, Messages.get().ProjectChartFactory_31, Messages.get().ProjectChartFactory_32 };
 		double[] values = new double[] { value1, value2, value3, value4 };
 		return createPieChart(pieChartCaption, texts, values);
 	}
@@ -885,7 +886,7 @@ public class ProjectChartFactory {
 		double processProjectOverTimeRate = sum == 0 ? 0
 				: (100d * value3 / sum);
 
-		return createMeterChart("进行中项目超支风险 ", "超支风险",
+		return createMeterChart(Messages.get().ProjectChartFactory_33, Messages.get().ProjectChartFactory_34,
 				processProjectOverTimeRate);
 	}
 
@@ -905,8 +906,8 @@ public class ProjectChartFactory {
 			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
 			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
 		}
-		return create2StackedBarChart("部门项目预算执行状况", deptParameter, deptValue1,
-				deptValue2, new String[] { "预算", "实际" });
+		return create2StackedBarChart(Messages.get().ProjectChartFactory_35, deptParameter, deptValue1,
+				deptValue2, new String[] { Messages.get().ProjectChartFactory_36, Messages.get().ProjectChartFactory_37 });
 	}
 
 	public static Chart getChargerBudgetAndCostBar(ProjectProvider data) {
@@ -925,22 +926,22 @@ public class ProjectChartFactory {
 			userValue1[i] = projectProvider.sum.total_budget_amount / 10000;
 			userValue2[i] = projectProvider.sum.total_investment_amount / 10000;
 		}
-		return create2StackedBarChart("项目经理预算执行状况", chargerName, userValue1,
-				userValue2, new String[] { "预算", "实际" });
+		return create2StackedBarChart(Messages.get().ProjectChartFactory_38, chargerName, userValue1,
+				userValue2, new String[] { Messages.get().ProjectChartFactory_39, Messages.get().ProjectChartFactory_40 });
 	}
 
 	public static Chart getCostAndProfitBar(ProjectProvider data) {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost
-				+ data.sum.total_investment_amount;
+		long value2 = data.sum.total_sales_cost;
+//				+ data.sum.total_investment_amount;
 
 		// "利润"
 		long value3 = value1 - value2;
 
-		String pieChartCaption = "销售成本及利润";
-		String[] texts = new String[] { "销售成本", "销售利润" };
+		String pieChartCaption = Messages.get().ProjectChartFactory_41;
+		String[] texts = new String[] { Messages.get().ProjectChartFactory_42, Messages.get().ProjectChartFactory_43 };
 		double[] values = new double[] { value2 / 10000, value3 / 10000 };
 		return createStackedBarChart(pieChartCaption, texts, values, null);
 	}
@@ -949,14 +950,14 @@ public class ProjectChartFactory {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost
-				+ data.sum.total_investment_amount;
+		long value2 = data.sum.total_sales_cost;
+//				+ data.sum.total_investment_amount;
 		// "利润"
 		long value3 = value1 - value2;
 		// 利润率
 		double profit = value1 == 0 ? 0 : 100d * value3 / value1;
 
-		return createMeterChart("销售利润率", "销售收入", profit);
+		return createMeterChart(Messages.get().ProjectChartFactory_44, Messages.get().ProjectChartFactory_45, profit);
 	}
 
 	public static Chart getDeptRevenueBar(ProjectProvider data) {
@@ -975,8 +976,8 @@ public class ProjectChartFactory {
 			deptValue1[i] = projectProvider.sum.total_budget_amount / 10000;
 			deptValue2[i] = projectProvider.sum.total_investment_amount / 10000;
 		}
-		return create2StackedBarChart("按部门计算项目收入情况", deptParameter, deptValue1,
-				deptValue2, new String[] { "销售收入", "销售利润" });
+		return create2StackedBarChart(Messages.get().ProjectChartFactory_46, deptParameter, deptValue1,
+				deptValue2, new String[] { Messages.get().ProjectChartFactory_47, Messages.get().ProjectChartFactory_48 });
 	}
 
 	public static Chart getProjectChargerRevenueBar(ProjectProvider data) {
@@ -994,18 +995,18 @@ public class ProjectChartFactory {
 			chargerName[i] = projectProvider.getDesc();
 			userValue1[i] = projectProvider.sum.total_sales_revenue / 10000;
 			userValue2[i] = (projectProvider.sum.total_sales_revenue
-					- projectProvider.sum.total_sales_cost - projectProvider.sum.total_investment_amount) / 10000;
+					- projectProvider.sum.total_sales_cost) / 10000;
 		}
-		return create2StackedBarChart("按项目经理计算项目收入情况", chargerName, userValue1,
-				userValue2, new String[] { "销售收入", "销售利润" });
+		return create2StackedBarChart(Messages.get().ProjectChartFactory_49, chargerName, userValue1,
+				userValue2, new String[] { Messages.get().ProjectChartFactory_50, Messages.get().ProjectChartFactory_51 });
 	}
 
 	public static Chart getROIMeter(ProjectProvider data) {
 		// "销售收入"
 		long value1 = data.sum.total_sales_revenue;
 		// "销售成本
-		long value2 = data.sum.total_sales_cost
-				+ data.sum.total_investment_amount;
+		long value2 = data.sum.total_sales_cost;
+//				+ data.sum.total_investment_amount;
 		// "利润"
 		long profit = value1 - value2;
 
@@ -1014,7 +1015,7 @@ public class ProjectChartFactory {
 
 		double roi = value1 == 0 ? 0 : 100d * profit / inv;
 
-		return createMeterChart("ROI", "ROI", roi);
+		return createMeterChart("ROI", "ROI", roi); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static Chart getProjectDesignatedInvestmentBar(Project project) {
@@ -1031,23 +1032,23 @@ public class ProjectChartFactory {
 			String collection) {
 		List<DBObject> result = project.getAggregationCost(collection);
 
-		String seriesTitle = "期间";
-		String title = project.getLabel() + " 成本";
+		String seriesTitle = Messages.get().ProjectChartFactory_54;
+		String title = project.getLabel() + Messages.get().ProjectChartFactory_55;
 
 		String[] deptParameter = new String[result.size()];
 		double[] deptValue1 = new double[result.size()];
 		for (int i = 0; i < result.size(); i++) {
 			DBObject dbo = result.get(i);
-			Object value = dbo.get("_id");
+			Object value = dbo.get("_id"); //$NON-NLS-1$
 			if (value instanceof DBObject) {
-				deptParameter[i] = ((DBObject) value).get("year") + "/"
-						+ ((DBObject) value).get("month");
+				deptParameter[i] = ((DBObject) value).get("year") + "/" //$NON-NLS-1$ //$NON-NLS-2$
+						+ ((DBObject) value).get("month"); //$NON-NLS-1$
 
 			} else {
-				deptParameter[i] = "unknown";
+				deptParameter[i] = "unknown"; //$NON-NLS-1$
 			}
 
-			value = dbo.get("summ");
+			value = dbo.get("summ"); //$NON-NLS-1$
 			if (value instanceof Number) {
 				deptValue1[i] = getDoubleValueTenThousand(((Number) value)
 						.doubleValue());
@@ -1075,21 +1076,21 @@ public class ProjectChartFactory {
 		// 构造期间
 		Set<String> p = new HashSet<String>();
 		for (int i = 0; i < costResult1.size(); i++) {
-			Object value = costResult1.get(i).get("_id");
+			Object value = costResult1.get(i).get("_id"); //$NON-NLS-1$
 			if (value instanceof DBObject) {
 				p.add(getCode(value));
 			}
 		}
 
 		for (int i = 0; i < costResult2.size(); i++) {
-			Object value = costResult2.get(i).get("_id");
+			Object value = costResult2.get(i).get("_id"); //$NON-NLS-1$
 			if (value instanceof DBObject) {
 				p.add(getCode(value));
 			}
 		}
 
 		for (int i = 0; i < result.size(); i++) {
-			Object value = result.get(i).get("_id");
+			Object value = result.get(i).get("_id"); //$NON-NLS-1$
 			if (value instanceof DBObject) {
 				p.add(getCode2(value));
 			}
@@ -1099,8 +1100,8 @@ public class ProjectChartFactory {
 		l.addAll(p);
 		Collections.sort(l);
 
-		String[] seriesTitle = new String[] { "收入", "利润" };
-		String title = project.getLabel() + " 销售收入及利润";
+		String[] seriesTitle = new String[] { Messages.get().ProjectChartFactory_65, Messages.get().ProjectChartFactory_66 };
+		String title = project.getLabel() + Messages.get().ProjectChartFactory_67;
 
 		String[] deptParameter = l.toArray(new String[0]);
 		double[] deptValue1 = new double[deptParameter.length];// 收入
@@ -1122,24 +1123,24 @@ public class ProjectChartFactory {
 
 	private static String getCode2(Object value) {
 		return ((DBObject) value).get(SalesData.F_ACCOUNT_YEAR)
-				+ "/"
-				+ ("" + ((DBObject) value).get(SalesData.F_ACCOUNT_MONTH))
+				+ "/" //$NON-NLS-1$
+				+ ("" + ((DBObject) value).get(SalesData.F_ACCOUNT_MONTH)) //$NON-NLS-1$
 						.substring(1);
 	}
 
 	private static String getCode(Object value) {
-		return ((DBObject) value).get("year") + "/"
-				+ String.format("%02d", ((DBObject) value).get("month"));
+		return ((DBObject) value).get("year") + "/" //$NON-NLS-1$ //$NON-NLS-2$
+				+ String.format("%02d", ((DBObject) value).get("month")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private static double getCostData(String code, List<DBObject> result) {
 		for (int i = 0; i < result.size(); i++) {
 			DBObject dbObject = result.get(i);
-			Object value = dbObject.get("_id");
+			Object value = dbObject.get("_id"); //$NON-NLS-1$
 			if (value instanceof DBObject) {
 				String _code = getCode(value);
 				if (_code.equals(code)) {
-					Object v = dbObject.get("summ");
+					Object v = dbObject.get("summ"); //$NON-NLS-1$
 					if (v instanceof Number) {
 						return ((Number) v).doubleValue();
 					} else {
@@ -1154,7 +1155,7 @@ public class ProjectChartFactory {
 	private static double[] getRevenueData(String code, List<DBObject> result) {
 		for (int i = 0; i < result.size(); i++) {
 			DBObject dbObject = result.get(i);
-			Object value = dbObject.get("_id");
+			Object value = dbObject.get("_id"); //$NON-NLS-1$
 			if (value instanceof DBObject) {
 				DBObject dbo = (DBObject) value;
 				String _code = getCode2(dbo);

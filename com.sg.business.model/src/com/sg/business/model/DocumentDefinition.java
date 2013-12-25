@@ -16,6 +16,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -29,22 +30,22 @@ public class DocumentDefinition extends PrimaryObject {
 	/**
 	 * 所属组织ID
 	 */
-	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
 
 	/**
 	 * 附件不能为空
 	 */
-	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty";
+	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty"; //$NON-NLS-1$
 
 	/**
 	 * 文档模板编辑器ID
 	 */
-	public static final String F_DOCUMENT_EDITORID = "document_editorid";
+	public static final String F_DOCUMENT_EDITORID = "document_editorid"; //$NON-NLS-1$
 
 	/**
 	 * 描述
 	 */
-	public static final String F_DESCRIPTION = "description";
+	public static final String F_DESCRIPTION = "description"; //$NON-NLS-1$
 
 	/**
 	 * 文件类型的字段 <br/>
@@ -52,9 +53,9 @@ public class DocumentDefinition extends PrimaryObject {
 	 * "namespace" : "templatefile_file", "fileName" : "流程.xlsx", "preview" :
 	 * ObjectId("5209d03fe5abb85488af9c82"), "db" : "pm2" }]<code/>
 	 */
-	public static final String F_TEMPLATEFILE = "templatefile";
+	public static final String F_TEMPLATEFILE = "templatefile"; //$NON-NLS-1$
 
-	public static final String F_DOCUMENT_TYPE = "documenttype";
+	public static final String F_DOCUMENT_TYPE = "documenttype"; //$NON-NLS-1$
 
 
 	/**
@@ -79,7 +80,7 @@ public class DocumentDefinition extends PrimaryObject {
 		if (projectTemplates.size() > 0) {
 
 			throw new Exception(
-					"文档模板被项目模板的工作交付物引用，请在项目模板删除引用该文档模板的交付物定义后再删除文档模板。\n项目模板:\n"
+					Messages.get().DocumentDefinition_0
 							+ Utils.getLimitLengthString(
 									projectTemplates.toString(), 80));
 		}
@@ -88,7 +89,7 @@ public class DocumentDefinition extends PrimaryObject {
 		if (genericWorkDefinitions.size() > 0) {
 
 			throw new Exception(
-					"文档模板被通用工作定义或者独立工作定义的交付物引用，请在删除引用该文档模板的交付物定义后再删除文档模板。\n工作定义:\n"
+					Messages.get().DocumentDefinition_1
 							+ Utils.getLimitLengthString(
 									genericWorkDefinitions.toString(), 80));
 		}
@@ -167,7 +168,7 @@ public class DocumentDefinition extends PrimaryObject {
 	 */
 	@Override
 	public String getTypeName() {
-		return "文档定义";
+		return Messages.get().DocumentDefinition_2;
 	}
 
 	/**

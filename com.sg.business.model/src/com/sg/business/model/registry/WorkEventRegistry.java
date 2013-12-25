@@ -15,12 +15,12 @@ public class WorkEventRegistry extends Registry {
 
 	@Override
 	protected String getRootElement() {
-		return "event";
+		return "event"; //$NON-NLS-1$
 	}
 
 	@Override
 	protected String getExtPointName() {
-		return "workevent";
+		return "workevent"; //$NON-NLS-1$
 	}
 
 	@Override

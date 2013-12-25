@@ -39,7 +39,7 @@ public class SupportAuditSave implements IDataObjectDialogCallback {
 	public boolean doSaveAfter(PrimaryObjectEditorInput input,
 			IProgressMonitor monitor, String operation) throws Exception {
         TaskForm taskform = (TaskForm) input.getData();
-        Object value = taskform.getValue("support");
+        Object value = taskform.getValue("support"); //$NON-NLS-1$
         if(value instanceof String){
         	String userid=(String) value;
         	List<String> userList = new ArrayList<String>();

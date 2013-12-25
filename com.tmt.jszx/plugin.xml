@@ -265,18 +265,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectApply.audit"
-            name="审核">
+            name="%editor.name">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -287,7 +287,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -301,19 +301,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.0">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.1">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.0">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -327,18 +327,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectApply.approval"
-            name="批准">
+            name="%editor.name.0">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.2">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label.1">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.0"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -349,7 +349,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.0"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -363,19 +363,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.3">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.4">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.2">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.0"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -389,17 +389,17 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectApply.apply"
-            name="申请技术支持">
+            name="%editor.name.1">
          <basicpage
                id="basicpage1"
-               title="技术支持">
+               title="%basicpage.title.5">
             <pagecolumn>
                <section
-                     label="请选择委托部门">
+                     label="%section.label.3">
                   <navigatorSelector
                         editable="true"
                         id="dept"
-                        label="委托部门"
+                        label="%navigatorSelector.label"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
@@ -415,7 +415,7 @@
                         editable="true"
                         id="chief_engineer"
                         isComputeField="true"
-                        label="首席师"
+                        label="%combo.label"
                         labelVisible="true"
                         name="chief_engineer"
                         optionProvider="com.tmt.jszx.option.ChiefEngineerOption"
@@ -429,19 +429,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.6">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.7">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.4">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.1"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -455,17 +455,17 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectApply.directorAudit"
-            name="受托研究室主任审核">
+            name="%editor.name.2">
          <basicpage
                id="basicpage1"
-               title="审批">
+               title="%basicpage.title.8">
             <pagecolumn>
                <section
-                     label="请选择执行人和审核意见">
+                     label="%section.label.5">
                   <navigatorSelector
                         editable="true"
                         id="worker"
-                        label="执行人"
+                        label="%navigatorSelector.label.0"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -478,7 +478,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.1"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -492,19 +492,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.9">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.10">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.6">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.2"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -518,18 +518,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectApply.determineProject_number"
-            name="确定工作令号">
+            name="%editor.name.3">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.11">
             <pagecolumn>
                <section
-                     label="请填写工作令号">
+                     label="%section.label.7">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="project_number"
-                        label="工作令号"
+                        label="%text.label.1"
                         labelVisible="true"
                         name="project_number"
                         persistable="true"
@@ -542,19 +542,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.12">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.13">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.8">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.3"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -637,18 +637,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectChange.audit"
-            name="审核">
+            name="%editor.name.4">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.14">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label.9">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.2"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -659,7 +659,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.2"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -673,19 +673,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.15">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.16">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.10">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.4"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -699,18 +699,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectChange.approval"
-            name="批准">
+            name="%editor.name.5">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.17">
             <pagecolumn>
                <section
-                     label="请填写意见和结论">
+                     label="%section.label.11">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.3"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -721,7 +721,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="%radio.label.3"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -735,19 +735,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.18">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.19">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.12">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.5"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -910,18 +910,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.application"
-            name="提交评审">
+            name="%editor.name.6">
          <basicpage
                id="basicpage1"
-               title="审批">
+               title="%basicpage.title.20">
             <pagecolumn>
                <section
-                     label="请填写评审专家组成员">
+                     label="%section.label.13">
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipateFromAllUser"
                         editable="true"
                         id="reviewer_list"
-                        label="评审组"
+                        label="%list.label"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
@@ -934,19 +934,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.21">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.22">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.14">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.6"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -960,18 +960,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.deptdirector"
-            name="研究室审核">
+            name="%editor.name.7">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.23">
             <pagecolumn>
                <section
-                     label="请填写审核意见和结论">
+                     label="%section.label.15">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="审核意见"
+                        label="%text.label.4"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -982,12 +982,12 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="审核结论"
+                        label="%radio.label.4"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -996,19 +996,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.24">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.25">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.16">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.7"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1022,17 +1022,17 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.deputydirector"
-            name="批准评审">
+            name="%editor.name.8">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.26">
             <pagecolumn>
                <section
-                     label="请填写批准评审意见、结论并确认评审组组长">
+                     label="%section.label.17">
                   <navigatorSelector
                         editable="true"
                         id="review_convener"
-                        label="评审组组长"
+                        label="%navigatorSelector.label.1"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -1046,7 +1046,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="批准评审意见"
+                        label="%text.label.5"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -1057,12 +1057,12 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="批准评审结论"
+                        label="%radio.label.5"
                         labelVisible="false"
                         name="choice"
                         option="评审批准"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1071,19 +1071,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.27">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.28">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.18">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.8"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1097,17 +1097,17 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.editreview"
-            name="修改评审专家">
+            name="%editor.name.9">
          <basicpage
                id="basicpage1"
-               title="审批">
+               title="%basicpage.title.29">
             <pagecolumn>
                <section
-                     label="请修改评审专家组成员和评审组组长">
+                     label="%section.label.19">
                   <navigatorSelector
                         editable="true"
                         id="review_convener"
-                        label="评审组组长"
+                        label="%navigatorSelector.label.2"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -1121,12 +1121,12 @@
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="reviewer_list"
-                        label="评审组"
+                        label="%list.label.0"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </list>
                </section>
             </pagecolumn>
@@ -1134,19 +1134,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.30">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.31">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.20">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.9"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1160,18 +1160,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.expertgroupcountersign"
-            name="专家评审">
+            name="%editor.name.10">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.32">
             <pagecolumn>
                <section
-                     label="请填写专家意见和结论">
+                     label="%section.label.21">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="评审意见"
+                        label="%text.label.6"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -1182,12 +1182,12 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="评审结论"
+                        label="%radio.label.6"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1196,19 +1196,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.33">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.34">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.22">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.10"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1222,32 +1222,32 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.expertgroupreview"
-            name="专家意见形式审查">
+            name="%editor.name.11">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.35">
             <pagecolumn>
                <section
-                     label="请填写形式审查结论">
+                     label="%section.label.23">
                   <radio
                         editable="true"
                         id="choice"
-                        label="形式审查结论"
+                        label="%radio.label.7"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
                <section
-                     label="请选择需要重新评审的专家">
+                     label="%section.label.24">
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
                         editable="true"
                         id="reviewer_list_s"
-                        label="评审组"
+                        label="%list.label.1"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list_s"
@@ -1260,19 +1260,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.36">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.37">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.25">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.11"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1286,13 +1286,13 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.replyexpertgroup"
-            name="专家意见回复">
+            name="%editor.name.12">
          <basicpage
                id="page1"
-               title="评审意见">
+               title="%basicpage.title.38">
             <pagecolumn>
                <section
-                     label="回复专家意见">
+                     label="%section.label.26">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
@@ -1308,26 +1308,26 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.39">
          </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.confirmtime"
-            name="确定评审会时间">
+            name="%editor.name.13">
          <basicpage
                id="page1"
-               title="评审意见">
+               title="%basicpage.title.40">
             <pagecolumn>
                <section
-                     label="确定评审会时间及地点">
+                     label="%section.label.27">
                   <dateTime
                         defaultValueProvider="com.sg.business.commons.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="confirmtime"
-                        label="评审会时间"
+                        label="%dateTime.label"
                         labelVisible="true"
                         name="confirmtime"
                         persistable="true"
@@ -1338,7 +1338,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="confirmaddress"
-                        label="评审会地点"
+                        label="%text.label.7"
                         labelVisible="true"
                         name="confirmaddress"
                         persistable="true"
@@ -1352,19 +1352,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.41">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.42">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.28">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.12"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1378,18 +1378,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.meetingreview"
-            name="评审会">
+            name="%editor.name.14">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.43">
             <pagecolumn>
                <section
-                     label="请填写会议评审意见和结论">
+                     label="%section.label.29">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="评审意见"
+                        label="%text.label.8"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -1400,12 +1400,12 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="评审结论"
+                        label="%radio.label.8"
                         labelVisible="false"
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1414,19 +1414,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.44">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.45">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.30">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.13"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1440,13 +1440,13 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszx.jszxProjectReview.correction"
-            name="整改">
+            name="%editor.name.15">
          <basicpage
                id="page1"
-               title="评审意见">
+               title="%basicpage.title.46">
             <pagecolumn>
                <section
-                     label="整改结果发布">
+                     label="%section.label.31">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
@@ -1462,7 +1462,7 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.47">
          </basicpage>
       </editor>
    </extension>
@@ -1505,18 +1505,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszxdevelopmenttaskbookapproval.audit"
-            name="审核">
+            name="%editor.name.16">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.48">
             <pagecolumn>
                <section
-                     label="请填写审核意见和结论">
+                     label="%section.label.32">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="审核意见"
+                        label="%text.label.9"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -1527,7 +1527,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="审核结论"
+                        label="%radio.label.9"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -1541,19 +1541,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.49">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.50">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.33">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.14"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1567,18 +1567,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszxdevelopmenttaskbookapproval.review"
-            name="复核">
+            name="%editor.name.17">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.51">
             <pagecolumn>
                <section
-                     label="请填写复核意见和结论">
+                     label="%section.label.34">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="审核意见"
+                        label="%text.label.10"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -1589,7 +1589,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="审核结论"
+                        label="%radio.label.10"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -1603,19 +1603,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.52">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.53">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.35">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.15"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1629,18 +1629,18 @@
             collectionName="taskform"
             dbName="pm2"
             id="jszxdevelopmenttaskbookapproval.approval"
-            name="批准">
+            name="%editor.name.18">
          <basicpage
                id="page1"
-               title="审核">
+               title="%basicpage.title.54">
             <pagecolumn>
                <section
-                     label="请填写批准意见和结论">
+                     label="%section.label.36">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        label="意见"
+                        label="%text.label.11"
                         labelVisible="false"
                         name="comment"
                         persistable="true"
@@ -1651,7 +1651,7 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="批准"
+                        label="%radio.label.11"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -1665,19 +1665,19 @@
          <basicpage
                id="page2"
                pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
+               title="%basicpage.title.55">
          </basicpage>
          <basicpage
                id="page3"
-               title="附件">
+               title="%basicpage.title.56">
             <pagecolumn>
                <section
-                     label="请上传附件">
+                     label="%section.label.37">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         id="accessory"
-                        label="附件"
+                        label="%file.label.16"
                         labelVisible="false"
                         name="accessory"
                         persistable="true"
@@ -1810,6 +1810,7 @@
          <structure
                modelRelation="organization_organization">
          </structure>
+         
       </tree>
       <tree
             autoExpandLevel="2"
@@ -1819,7 +1820,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
-               name="名称"
+               name="%column.name"
                type="String"
                width="-1">
          </column>

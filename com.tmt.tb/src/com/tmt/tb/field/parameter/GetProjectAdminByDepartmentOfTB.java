@@ -22,7 +22,7 @@ public class GetProjectAdminByDepartmentOfTB implements
 	@Override
 	public Object getValue(String processParameter, String taskDatakey,
 			PrimaryObject taskFormData) {
-		Object value = taskFormData.getValue("dept");
+		Object value = taskFormData.getValue("dept"); //$NON-NLS-1$
 		String prjAdmin = null;
 		if (value instanceof ObjectId) {
 			ObjectId objectId = (ObjectId) value;

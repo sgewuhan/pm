@@ -16,6 +16,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -32,7 +33,7 @@ public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 		final Work work = (Work) selected;
 
 		NavigatorSelector ns = new NavigatorSelector(
-				"management.documentdefinition") {
+				"management.documentdefinition") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()) {
@@ -58,7 +59,7 @@ public class CreateDeliverableWithTemplate extends AbstractNavigatorHandler {
 					}
 
 				} else {
-					MessageUtil.showToast("请选择文档定义", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().CreateDeliverableWithTemplate_1, SWT.ICON_WARNING);
 				}
 			}
 		};

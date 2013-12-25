@@ -37,11 +37,11 @@ public class ProjectSetNavigator extends TreeNavigator {
 				if (event.detail == RWT.HYPERLINK) {
 
 					String parameter = event.text.substring(event.text
-							.lastIndexOf("/") + 1);
+							.lastIndexOf("/") + 1); //$NON-NLS-1$
 
-					String[] paras = parameter.split("@");
+					String[] paras = parameter.split("@"); //$NON-NLS-1$
 					try {
-						if ("Organization".equals(paras[0])) {
+						if ("Organization".equals(paras[0])) { //$NON-NLS-1$
 							Organization org = ModelService.createModelObject(
 									Organization.class, new ObjectId(paras[1]));
 							viewer.setSelection(new StructuredSelection(org));
@@ -50,16 +50,16 @@ public class ProjectSetNavigator extends TreeNavigator {
 							if(!is.isEmpty()){
 								open((Organization) is.getFirstElement());
 							}
-						} else if ("User".equals(paras[0])) {
+						} else if ("User".equals(paras[0])) { //$NON-NLS-1$
 							User user = ModelService.createModelObject(
 									User.class, new ObjectId(paras[1]));
 							viewer.setSelection(new StructuredSelection(user));
 							open(user);
-						} else if ("ProductTypeProvider".equals(paras[0])) {
+						} else if ("ProductTypeProvider".equals(paras[0])) { //$NON-NLS-1$
 							ProjectProvider pp = new ProjectTypeProvider(
 									paras[1], paras[2]);
 							open(pp);
-						} else if ("UserProjectPerf".equals(paras[0])) {
+						} else if ("UserProjectPerf".equals(paras[0])) { //$NON-NLS-1$
 							UserProjectPerf pperf = ModelService
 									.createModelObject(UserProjectPerf.class,
 											new ObjectId(paras[1]));
@@ -107,7 +107,7 @@ public class ProjectSetNavigator extends TreeNavigator {
 
 	private void open(ProjectProvider pp) throws Exception {
 		DataObjectEditor
-				.open(pp, "editor.visualization.projectset", true, null);
+				.open(pp, "editor.visualization.projectset", true, null); //$NON-NLS-1$
 	}
 
 }

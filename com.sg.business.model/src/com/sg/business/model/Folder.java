@@ -9,6 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
@@ -23,47 +24,47 @@ public class Folder extends PrimaryObject {
 	/**
 	 * 文件类型
 	 */
-	public static final String F_FOLDER_TYPE = "folderType";
+	public static final String F_FOLDER_TYPE = "folderType"; //$NON-NLS-1$
 
 	/**
 	 * 上级文件夹ID
 	 */
-	public static final String F_PARENT_ID = "parent_id";
+	public static final String F_PARENT_ID = "parent_id"; //$NON-NLS-1$
 
 	/**
 	 * 根文件夹ID
 	 */
-	public static final String F_ROOT_ID = "root_id";
+	public static final String F_ROOT_ID = "root_id"; //$NON-NLS-1$
 
 	/**
 	 * 容器存储的数据库
 	 */
-	public static final String F_CONTAINER_DB = "containerdb";
+	public static final String F_CONTAINER_DB = "containerdb"; //$NON-NLS-1$
 
 	/**
 	 * 容器存储的集合
 	 */
-	public static final String F_CONTAINER_COLLECTION = "containerCollection";
+	public static final String F_CONTAINER_COLLECTION = "containerCollection"; //$NON-NLS-1$
 
 	/**
 	 * 项目ID
 	 */
-	public static final String F_PROJECT_ID = "project_id";
+	public static final String F_PROJECT_ID = "project_id"; //$NON-NLS-1$
 
 	/**
 	 * 是否项目根文件夹
 	 */
-	public static final String F_IS_PROJECT_FOLDERROOT = "isflderroot";
+	public static final String F_IS_PROJECT_FOLDERROOT = "isflderroot"; //$NON-NLS-1$
 
 	/**
 	 * 是否流程生成文件夹
 	 */
-	public static final String F_IS_WORKFLOW_FOLDER = "iswfflder";
+	public static final String F_IS_WORKFLOW_FOLDER = "iswfflder"; //$NON-NLS-1$
 
 	/**
 	 * 是否开放文件夹
 	 */
-	public static final String F_OPENED = "opened";
+	public static final String F_OPENED = "opened"; //$NON-NLS-1$
 
 	/**
 	 * 是否项目根文件夹
@@ -242,14 +243,14 @@ public class Folder extends PrimaryObject {
 	 */
 	@Override
 	public String getTypeName() {
-		return "目录";
+		return Messages.get().Folder_0;
 	}
 
 	public void doMoveToOtherFolder(ObjectId get_id) throws Exception {
 		DBCollection col = getCollection();
 		WriteResult ws = col.update(
 				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set",
+				new BasicDBObject().append("$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_PARENT_ID, get_id)));
 
 		checkWriteResult(ws);
@@ -266,7 +267,7 @@ public class Folder extends PrimaryObject {
 
 	@Override
 	public String getDefaultEditorId() {
-		return "editor.folder";
+		return "editor.folder"; //$NON-NLS-1$
 	}
 
 	public Document makeCreateDocument(IContext context) {

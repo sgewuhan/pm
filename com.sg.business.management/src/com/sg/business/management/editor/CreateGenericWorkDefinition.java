@@ -1,6 +1,7 @@
 package com.sg.business.management.editor;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.Organization;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.Widgets;
@@ -12,7 +13,7 @@ public class CreateGenericWorkDefinition extends ChildPrimaryObjectCreator {
 
 	@Override
 	protected String getMessageForEmptySelection() {
-		return "您需要选择组织后进行创建";
+		return Messages.get().CreateGenericWorkDefinition_0;
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class CreateGenericWorkDefinition extends ChildPrimaryObjectCreator {
 			String operation) {
 		// 刷新role列表
 		IMasterListenerPart part = (IMasterListenerPart) Widgets
-				.getViewPart("management.genericwork.definitions");
+				.getViewPart("management.genericwork.definitions"); //$NON-NLS-1$
 		if (part != null) {
 			part.reloadMaster();
 		}

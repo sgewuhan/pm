@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Jszx
 Bundle-SymbolicName: com.tmt.jszx;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Activator: com.tmt.jszx.JSZXActivator
 Bundle-Vendor: TMT
 Require-Bundle: org.eclipse.core.runtime,

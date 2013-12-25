@@ -12,6 +12,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.Role;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -24,8 +25,8 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
 			final ViewerControl vc, Command command,
 			Map<String, Object> parameters, IStructuredSelection selection) {
-		NavigatorSelector n = new NavigatorSelector("management.roleselector",
-				"选择组织角色") {
+		NavigatorSelector n = new NavigatorSelector("management.roleselector", //$NON-NLS-1$
+				Messages.get().LinkOrganizationRole_1) {
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()
@@ -44,7 +45,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 					}
 
 				} else {
-					MessageUtil.showToast("请选择角色", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().LinkOrganizationRole_2, SWT.ICON_WARNING);
 				}
 			}
 		};
@@ -56,7 +57,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 		Project master = (Project) vc.getMaster();
 
 		if (master.hasOrganizationRole(role)) {
-			throw new Exception("该角色已经添加");
+			throw new Exception(Messages.get().LinkOrganizationRole_3);
 		}
 
 		ProjectRole roled = master.makeOrganizationRole(role);

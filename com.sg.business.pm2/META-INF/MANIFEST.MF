@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Pm2
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: com.sg.business.pm2;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.sg.business.pm2.PM2Activator
-Bundle-Vendor: SG
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Localization: OSGI-INF/l10n/bundle
 Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.core.runtime,
  com.mobnut.db,

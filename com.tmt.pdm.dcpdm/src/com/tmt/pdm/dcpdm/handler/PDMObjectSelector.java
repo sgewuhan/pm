@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.tmt.pdm.client.Starter;
+import com.tmt.pdm.dcpdm.nls.Messages;
 
 public class PDMObjectSelector extends Dialog {
 
@@ -52,10 +53,10 @@ public class PDMObjectSelector extends Dialog {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		composite.setLayout(new FormLayout());
 		final Text inputText = new Text(composite, SWT.BORDER | SWT.ICON_SEARCH);
-		inputText.setMessage("请输入编号");
+		inputText.setMessage(Messages.get().PDMObjectSelector_0);
 
 		Button button = new Button(composite, SWT.PUSH);
-		button.setText("查询");
+		button.setText(Messages.get().PDMObjectSelector_1);
 		button.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
@@ -119,18 +120,18 @@ public class PDMObjectSelector extends Dialog {
 		String cdate = (String) ar.get(5);
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 		sb.append(name);
-		sb.append(" [");
+		sb.append(" ["); //$NON-NLS-1$
 		sb.append(number);
-		sb.append("] 版本:");
+		sb.append(Messages.get().PDMObjectSelector_4);
 		sb.append(version);
-		sb.append(" <br/>创建:");
+		sb.append(Messages.get().PDMObjectSelector_5);
 		sb.append(cdate);
-		sb.append(" | ");
+		sb.append(" | "); //$NON-NLS-1$
 		sb.append(user);
 		
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		
 		return sb.toString();
 	}
@@ -145,16 +146,16 @@ public class PDMObjectSelector extends Dialog {
 			protected IStatus run(IProgressMonitor monitor) {
 				for (int i = 0; i < docContainers.length; i++) {
 					ArrayList fieldlist = new ArrayList();
-					fieldlist.add("80001a79");// 编号
-					fieldlist.add("80001a7a");// 名称
-					fieldlist.add("800017ac");// 版本
+					fieldlist.add("80001a79");// 编号 //$NON-NLS-1$
+					fieldlist.add("80001a7a");// 名称 //$NON-NLS-1$
+					fieldlist.add(Messages.get().PDMObjectSelector_11);// 版本
 //					fieldlist.add("86366c51");// 阶段
-					fieldlist.add("80001aac");// 创建时间
-					fieldlist.add("80001a7c");// 创建人
+					fieldlist.add("80001aac");// 创建时间 //$NON-NLS-1$
+					fieldlist.add("80001a7c");// 创建人 //$NON-NLS-1$
 
 					HashMap condition = new HashMap();
-					condition.put("80001a79", "*" + input + "*");
-					condition.put("version.condition.type", "wip");
+					condition.put("80001a79", "*" + input + "*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
 					try {
 						ArrayList r = Starter.dos.list(docContainers[i],
 								fieldlist, condition);

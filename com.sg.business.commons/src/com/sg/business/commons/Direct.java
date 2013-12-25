@@ -19,11 +19,11 @@ public class Direct implements EntryPoint {
 
 	@Override
 	public int createUI() {
-		String _id = RWT.getRequest().getParameter("id");
-		String _class = RWT.getRequest().getParameter("class");
-		String _editable = RWT.getRequest().getParameter("editable");
-		String _edittype = RWT.getRequest().getParameter("edittype");
-		String _editor = RWT.getRequest().getParameter("editor");
+		String _id = RWT.getRequest().getParameter("id"); //$NON-NLS-1$
+		String _class = RWT.getRequest().getParameter("class"); //$NON-NLS-1$
+		String _editable = RWT.getRequest().getParameter("editable"); //$NON-NLS-1$
+		String _edittype = RWT.getRequest().getParameter("edittype"); //$NON-NLS-1$
+		String _editor = RWT.getRequest().getParameter("editor"); //$NON-NLS-1$
 
 		Display display = PlatformUI.createDisplay();
 

@@ -20,6 +20,7 @@ import com.mobnut.portal.user.IAccountEvent;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.work.WorkflowSynchronizer;
 import com.sg.business.work.filter.WorkFilterControl;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -31,8 +32,8 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 	class ShowFilterMenuAction extends Action {
 
 		public ShowFilterMenuAction() {
-			setId("work.showFilterMenu");
-			setText("过滤");
+			setId("work.showFilterMenu"); //$NON-NLS-1$
+			setText(Messages.get().WorkInProcess_1);
 			setImageDescriptor(Widgets
 					.getImageDescriptor(ImageResource.FILTER_24));
 		}
@@ -154,7 +155,7 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 	@Override
 	public void doRefresh() {
 		if (processSync) {
-			MessageUtil.showToast(null, getPartName(), "请稍候, 正在处理更新。",
+			MessageUtil.showToast(null, getPartName(), Messages.get().WorkInProcess_2,
 					SWT.ICON_INFORMATION);
 			return;
 		}
@@ -182,11 +183,11 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 
 	@Override
 	protected String getAccountNoticeText() {
-		return "流程信息更新";
+		return Messages.get().WorkInProcess_3;
 	}
 
 	protected String getAccountNoticeMessage() {
-		return "正在重新获取流程信息...";
+		return Messages.get().WorkInProcess_4;
 	}
 
 }

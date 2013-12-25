@@ -12,12 +12,12 @@ import com.mobnut.db.model.PrimaryObject;
 
 public class MessageService extends AbstractMessageService {
 
-	private static final String TITLE = "msg_title";
-	private static final String CONTENT = "msg_content";
-	private static final String RECEIVERS = "msg_receivers";
-	private static final String EDITOR = "msg_editor";
-	private static final String CLASSNAME = "msg_class";
-	private static final String TARGET = "msg_target";
+	private static final String TITLE = "msg_title"; //$NON-NLS-1$
+	private static final String CONTENT = "msg_content"; //$NON-NLS-1$
+	private static final String RECEIVERS = "msg_receivers"; //$NON-NLS-1$
+	private static final String EDITOR = "msg_editor"; //$NON-NLS-1$
+	private static final String CLASSNAME = "msg_class"; //$NON-NLS-1$
+	private static final String TARGET = "msg_target"; //$NON-NLS-1$
 
 	@Override
 	public String getMessageTitle() {
@@ -45,7 +45,7 @@ public class MessageService extends AbstractMessageService {
 			System.out.println(1);
 			if (inputValue instanceof String) {
 				String receiverList = (String) getInputValue(RECEIVERS);
-				String[] receivers = receiverList.split(",");
+				String[] receivers = receiverList.split(","); //$NON-NLS-1$
 				return Arrays.asList(receivers);
 			} else if (inputValue instanceof ArrayList<?>) {
 				ArrayList<?> arrayList = (ArrayList<?>) inputValue;

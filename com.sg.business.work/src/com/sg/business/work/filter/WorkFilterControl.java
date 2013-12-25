@@ -22,7 +22,7 @@ public class WorkFilterControl {
 	public MenuManager createMenu() {
 		actionMap = new HashMap<Integer, WorkFilterAction>();
 
-		MenuManager menuManager = new MenuManager("#filterMenu");
+		MenuManager menuManager = new MenuManager("#filterMenu"); //$NON-NLS-1$
 		menuManager.add(createAction(WorkFilterAction.SHOW_ALL_PROJECT_WORK));
 		menuManager.add(createAction(WorkFilterAction.SHOW_MY_PROJECT_WORK));
 		menuManager.add(new Separator());

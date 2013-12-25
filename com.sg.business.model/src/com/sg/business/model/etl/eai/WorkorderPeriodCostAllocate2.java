@@ -24,6 +24,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.WorkOrderPeriodCost;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 使用项目实际开始时间和完成时间进行研发成本分摊 仅用于期初数据的导入
@@ -33,11 +34,11 @@ import com.sg.business.model.WorkOrderPeriodCost;
  */
 public class WorkorderPeriodCostAllocate2 {
 
-	public static final String COSECENTERCODE = "cost";
-	public static final String ACCOUNTNUMERS = "account";
-	public static final String YEAR = "year";
-	public static final String MONTH = "month";
-	public static final String RNDCOST = "rndcost";
+	public static final String COSECENTERCODE = "cost"; //$NON-NLS-1$
+	public static final String ACCOUNTNUMERS = "account"; //$NON-NLS-1$
+	public static final String YEAR = "year"; //$NON-NLS-1$
+	public static final String MONTH = "month"; //$NON-NLS-1$
+	public static final String RNDCOST = "rndcost"; //$NON-NLS-1$
 	private DBCollection costAllocateCol;
 	private DBCollection projectCol;
 
@@ -54,22 +55,22 @@ public class WorkorderPeriodCostAllocate2 {
 		Object year = parameter.get(YEAR);
 		Object month = parameter.get(MONTH);
 		if (!(year instanceof Integer) || !(month instanceof Integer)) {
-			throw new IllegalArgumentException("期间 year, month参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate2_5);
 		}
 
 		Object costCenterCode = parameter.get(COSECENTERCODE);
 		if (!(costCenterCode instanceof String)) {
-			throw new IllegalArgumentException("成本中心代码 costcode 参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate2_6);
 		}
 
 		Object account = parameter.get(ACCOUNTNUMERS);
 		if (account != null && !(account instanceof String[])) {
-			throw new IllegalArgumentException("科目表  account 参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate2_7);
 		}
 
 		Object rndCost = parameter.get(RNDCOST);
 		if (!(rndCost instanceof RNDPeriodCost)) {
-			throw new IllegalArgumentException("成本中心研发成本  rndcost 参数错误");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate2_8);
 		}
 
 		// 1. 根据成本中心获得组织
@@ -77,12 +78,12 @@ public class WorkorderPeriodCostAllocate2 {
 		Organization org = rndpc.getOrganization();
 
 		if (org == null) {
-			throw new IllegalArgumentException("成本中心无法获得对应的组织");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate2_9);
 		}
 
 		Organization company = org.getCompany();
 		if (company == null) {
-			throw new IllegalArgumentException("成本中心无法获得对应的公司代码");
+			throw new IllegalArgumentException(Messages.get().WorkorderPeriodCostAllocate2_10);
 		}
 
 		// 获得组织下级所有正在进行的项目
@@ -94,24 +95,46 @@ public class WorkorderPeriodCostAllocate2 {
 
 		// 承担组织在orgids中,在当月处于进行状态的的项目的工作令号
 		Calendar cal = Calendar.getInstance();
-		cal.set(((Integer) year).intValue(), ((Integer) month).intValue()-1, 1,
-				0, 0, 0);
-		cal.add(Calendar.SECOND, -1);
+		cal.set(((Integer) year).intValue(),
+				((Integer) month).intValue() - 1, 1, 0, 0, 0);
 		Date stop = cal.getTime();
+
+		// 增加取后一月份第一天的数据
+		cal.add(Calendar.MONTH, 1);
+		Date start = cal.getTime();
 
 		BasicDBObject query = new BasicDBObject();
 		query.put(Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in", orgids));
-		//TODO 可能需要增加的条件
+				new BasicDBObject().append("$in", orgids)); //$NON-NLS-1$
 		query.put(
-				"$or",
+				"$and", //$NON-NLS-1$
 				new BasicDBObject[] {
-						// 完成时间为空
-						// 或者完成时间大于该月最后一天
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								null),
-						new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-								new BasicDBObject().append("$gte", stop)) });
+						new BasicDBObject().append(
+								"$or", //$NON-NLS-1$
+								new BasicDBObject[] {
+										// 完成时间为空
+										// 或者完成时间大于前一月的最后一天
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH, null),
+										new BasicDBObject().append(
+												Project.F_ACTUAL_FINISH,
+												new BasicDBObject().append(
+														"$gte", stop)) }), //$NON-NLS-1$
+														
+						new BasicDBObject().append(
+								"$or", //$NON-NLS-1$
+								new BasicDBObject[] {
+										//开始时间必须不为空
+										//开始时间必须小于当月的最后一天
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$ne", null)), //$NON-NLS-1$
+										new BasicDBObject().append(
+												Project.F_ACTUAL_START,
+												new BasicDBObject().append(
+														"$lt", start)) }) }); //$NON-NLS-1$
+
 		@SuppressWarnings("rawtypes")
 		List workorders = projectCol.distinct(Project.F_WORK_ORDER, query);
 
@@ -128,14 +151,13 @@ public class WorkorderPeriodCostAllocate2 {
 
 		// 将研发成本平摊到每个工作令号
 		if (effectiveWorkOrders.isEmpty()) {
-			Commons.logerror("成本中心" + costCenterCode +company +", 在期间:" + year
-					+ month + " 无可分摊研发成本的工作令号,可能是在该期间没有正在进行的项目可供分摊。");
+			Commons.logerror(Messages.get().WorkorderPeriodCostAllocate2_18 + costCenterCode + company + Messages.get().WorkorderPeriodCostAllocate2_19
+					+ year + month + Messages.get().WorkorderPeriodCostAllocate2_20);
 			return new ArrayList<WorkOrderPeriodCost>();
 		}
 
 		List<DBObject> toBeInsert = new ArrayList<DBObject>();
-//TODO 没有处理有效的工作令号
-		Iterator<?> iter = workorders.iterator();
+		Iterator<?> iter = effectiveWorkOrders.iterator();
 		while (iter.hasNext()) {
 			String workOrderNumber = (String) iter.next();
 			DBObject wopc = new BasicDBObject();
@@ -154,7 +176,7 @@ public class WorkorderPeriodCostAllocate2 {
 				if (cost == null) {
 					wopc.put(key, 0d);
 				} else {
-					double value = ((Double) cost) /workorders.size();
+					double value = ((Double) cost) / effectiveWorkOrders.size();
 					wopc.put(key, value);
 				}
 			}
@@ -175,7 +197,6 @@ public class WorkorderPeriodCostAllocate2 {
 
 		return result;
 	}
-
 
 	public Date[] getStartAndEnd(Integer year, Integer month) {
 		Calendar cal = Calendar.getInstance();

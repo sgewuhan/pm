@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.INavigatorActionListener;
@@ -67,7 +68,7 @@ public class ShowWorkCompase extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast(part.getSite().getShell(), "移动工作定义", "您需要选择一项", SWT.ICON_WARNING);
+		MessageUtil.showToast(part.getSite().getShell(), Messages.get().ShowWorkCompase_0, Messages.get().ShowWorkCompase_1, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 }

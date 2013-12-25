@@ -8,7 +8,7 @@ public class PackageChangeActivityValidator extends
 
 	@Override
 	public String getECNName() {
-		return "包装变更";
+		return "包装变更"; //$NON-NLS-1$
 	}
 
 }

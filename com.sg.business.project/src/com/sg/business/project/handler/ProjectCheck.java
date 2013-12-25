@@ -14,6 +14,7 @@ import org.eclipse.ui.PlatformUI;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.business.project.nls.Messages;
 import com.sg.business.project.view.ProjectCheckView;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -33,9 +34,9 @@ public class ProjectCheck extends AbstractNavigatorHandler {
 					.getActiveWorkbenchWindow().getActivePage();
 			try {
 				ProjectCheckView part1 = (ProjectCheckView) page
-						.showView("project.view.check");
+						.showView("project.view.check"); //$NON-NLS-1$
 				part1.setInput(result);
-				MessageUtil.showToast("项目计划检查完成，双击条目定位检查目标",
+				MessageUtil.showToast(Messages.get().ProjectCheck_1,
 						SWT.ICON_INFORMATION);
 			} catch (PartInitException e) {
 				MessageUtil.showToast(e);

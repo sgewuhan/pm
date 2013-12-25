@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -22,7 +24,7 @@ public class ProjectManagerProvider extends ProjectProvider {
 	public void setUser(User user) {
 		this.user = user;
 		setValue(F__ID, user.get_id());
-		setValue(F_DESC, user.getUserid()+"/"+user.getUsername());
+		setValue(F_DESC, user.getUserid()+"/"+user.getUsername()); //$NON-NLS-1$
 		projectCol = getCollection(IModelConstants.C_PROJECT);
 	}
 	
@@ -84,6 +86,14 @@ public class ProjectManagerProvider extends ProjectProvider {
 	@Override
 	public String getProjectSetCoverImage() {
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		query.put(Project.F_CHARGER, user.getUserid());
+		return projectCol.distinct(Project.F__ID, query);
 	}
 
 }

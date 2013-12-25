@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.mobnut.db.model.DataSet;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.commons.ui.flow.ActivityEditor.IActivityEditListener;
 import com.sg.business.commons.ui.flow.ActivitySelecter.INodeSelectionListener;
 import com.sg.business.model.AbstractRoleDefinition;
@@ -216,10 +217,10 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			public String getText(Object element) {
 				if (element instanceof DroolsProcessDefinition) {
 					DroolsProcessDefinition definition = (DroolsProcessDefinition) element;
-					return definition.getProcessName() + "["
-							+ definition.getKbase() + "]";
+					return definition.getProcessName() + "[" //$NON-NLS-1$
+							+ definition.getKbase() + "]"; //$NON-NLS-1$
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
@@ -248,7 +249,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 					}
 				});
 		activatedChecker = new Button(parent, SWT.CHECK);
-		activatedChecker.setText("∆Ù”√");
+		activatedChecker.setText(Messages.get().ProcessSettingPanel2_3);
 
 		fd = new FormData();
 		activatedChecker.setLayoutData(fd);

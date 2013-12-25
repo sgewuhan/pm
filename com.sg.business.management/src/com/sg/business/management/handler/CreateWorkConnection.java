@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinitionConnection;
 import com.sg.widgets.MessageUtil;
@@ -20,7 +21,7 @@ import com.sg.widgets.viewer.ViewerControl;
 
 public class CreateWorkConnection extends AbstractNavigatorHandler {
 
-	private static final String TITLE = "创建工作顺序关系";
+	private static final String TITLE = Messages.get().CreateWorkConnection_0;
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,

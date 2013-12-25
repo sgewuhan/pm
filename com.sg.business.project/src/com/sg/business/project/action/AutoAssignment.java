@@ -14,6 +14,7 @@ import org.eclipse.ui.PlatformUI;
 import com.mobnut.db.model.IContext;
 import com.sg.business.model.Project;
 import com.sg.business.project.ProjectActivator;
+import com.sg.business.project.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -25,7 +26,7 @@ import com.sg.widgets.part.NavigatorAction;
 public class AutoAssignment extends NavigatorAction {
 
 	public AutoAssignment() {
-		setText("按角色自动指派");
+		setText(Messages.get().AutoAssignment_0);
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_ASSIGNMENT_24));
 	}
@@ -37,24 +38,24 @@ public class AutoAssignment extends NavigatorAction {
 		int result = MessageUtil
 				.showMessage(
 						shell,
-						"按角色自动指派",
-						"将要运行按角色指派。\n工作的负责人、参与者和流程活动的执行人都将按照角色进行分配人员。\n运行完成后，将覆盖您以前的设定。\n\n选择YES继续，选择NO取消操作。\n",
+						Messages.get().AutoAssignment_1,
+						Messages.get().AutoAssignment_2,
 						SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 		if (result == SWT.YES) {
 			// 获得项目
 			final Project project = (Project) getInput().getData();
 			final Display display = shell.getDisplay();
 			final IContext context = new CurrentAccountContext();
-			Job job = new Job("按角色自动指派"){
+			Job job = new Job(Messages.get().AutoAssignment_3){
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-					monitor.beginTask("设置角色数据", IProgressMonitor.UNKNOWN);
+					monitor.beginTask(Messages.get().AutoAssignment_4, IProgressMonitor.UNKNOWN);
 					try {
 						project.doAssignmentByRole(context);
 					} catch (Exception e) {
 						return new Status(Status.ERROR, ProjectActivator.PLUGIN_ID,
-								Status.ERROR, "按角色自动指派出错", e);
+								Status.ERROR, Messages.get().AutoAssignment_5, e);
 					}
 					return Status.OK_STATUS;
 				}
@@ -69,7 +70,7 @@ public class AutoAssignment extends NavigatorAction {
 						@Override
 						public void run() {
 							getNavigator().reload(true);
-							getNavigator().getViewerControl().loadColumnGroup("team");							
+							getNavigator().getViewerControl().loadColumnGroup("team");							 //$NON-NLS-1$
 						}
 					});
 					

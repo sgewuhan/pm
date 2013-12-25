@@ -61,7 +61,7 @@ public class FinishedWork extends SingleDBCollectionDataSetFactory{
 			// 生命周期状态为准备、进行中
 			queryCondition
 					.put(Work.F_LIFECYCLE,
-							new BasicDBObject().append("$in", new String[] {
+							new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 									Work.STATUS_FINIHED_VALUE,
 									Work.STATUS_CANCELED_VALUE}));
 			return queryCondition;

@@ -7,6 +7,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.sg.business.model.nls.Messages;
 
 public class ActivateSwitch implements IActivateSwitch {
 
@@ -23,9 +24,9 @@ public class ActivateSwitch implements IActivateSwitch {
 		setActivated(activated);
 		col.update(
 				new BasicDBObject().append(PrimaryObject.F__ID, po.get_id()),
-				new BasicDBObject().append("$set", new BasicDBObject().append(F_ACTIVATED, activated)));
+				new BasicDBObject().append("$set", new BasicDBObject().append(F_ACTIVATED, activated))); //$NON-NLS-1$
 
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), "…Ë÷√º§ªÓ◊¥Ã¨",
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().ActivateSwitch_1,
 				new Date(), po.getLabel(), IModelConstants.DB);
 	}
 

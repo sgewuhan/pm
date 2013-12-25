@@ -8,7 +8,7 @@ public class PurchaseChangeActivityValidator extends
 
 	@Override
 	public String getECNName() {
-		return "采购变更";
+		return "采购变更"; //$NON-NLS-1$
 	}
 
 }

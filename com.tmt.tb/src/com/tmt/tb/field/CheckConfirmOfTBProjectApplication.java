@@ -10,7 +10,7 @@ public class CheckConfirmOfTBProjectApplication extends
 
 	@Override
 	protected boolean choicePassValue(String choice) {
-		if("会议评审".equals(choice)){
+		if("会议评审".equals(choice)){ //$NON-NLS-1$
 			return true;
 		}
 		return false;

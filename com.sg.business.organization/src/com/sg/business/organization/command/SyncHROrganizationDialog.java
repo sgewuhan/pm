@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.sg.business.organization.nls.Messages;
+
 public class SyncHROrganizationDialog extends Dialog {
 
 	private String title;
@@ -37,7 +39,7 @@ public class SyncHROrganizationDialog extends Dialog {
 
 	protected SyncHROrganizationDialog(Shell parentShell) {
 		super(parentShell);
-		this.title = "HR组织数据同步";
+		this.title = Messages.get().SyncHROrganizationDialog_0;
 	}
 
 	@Override
@@ -61,8 +63,8 @@ public class SyncHROrganizationDialog extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, "确认", false);
-		createButton(parent, IDialogConstants.CANCEL_ID, "取消", true);
+		createButton(parent, IDialogConstants.OK_ID, Messages.get().SyncHROrganizationDialog_1, false);
+		createButton(parent, IDialogConstants.CANCEL_ID, Messages.get().SyncHROrganizationDialog_2, true);
 	}
 
 	@Override
@@ -70,7 +72,7 @@ public class SyncHROrganizationDialog extends Dialog {
 		Composite content = (Composite) super.createDialogArea(parent);
 		content.setLayout(new FormLayout());
 		Label messageLabel = new Label(content, SWT.NONE);
-		messageLabel.setText("请勾选需同步的组织");
+		messageLabel.setText(Messages.get().SyncHROrganizationDialog_3);
 		FormData fd = new FormData();
 		messageLabel.setLayoutData(fd);
 		fd.top = new FormAttachment(0, 10);
@@ -93,7 +95,7 @@ public class SyncHROrganizationDialog extends Dialog {
 
 	private void createTabItemOrgToBeRename(TabFolder tab) {
 		TabItem tabItem = new TabItem(tab, SWT.NONE);
-		tabItem.setText("HR中更名的组织");
+		tabItem.setText(Messages.get().SyncHROrganizationDialog_4);
 		Composite panel = new Composite(tab, SWT.NONE);
 		panel.setLayout(new FillLayout());
 		renameOrgTable = createTable(panel);
@@ -103,7 +105,7 @@ public class SyncHROrganizationDialog extends Dialog {
 
 	private void createTabItemOrgToBeRemove(TabFolder tab) {
 		TabItem tabItem = new TabItem(tab, SWT.NONE);
-		tabItem.setText("HR中移除的组织");
+		tabItem.setText(Messages.get().SyncHROrganizationDialog_5);
 		Composite panel = new Composite(tab, SWT.NONE);
 		panel.setLayout(new FillLayout());
 		removeOrgTree = createTree(panel,SWT.NONE);
@@ -114,7 +116,7 @@ public class SyncHROrganizationDialog extends Dialog {
 
 	private void createTabItemOrgToBeInsert(TabFolder tab) {
 		TabItem tabItem = new TabItem(tab, SWT.NONE);
-		tabItem.setText("HR中的新组织");
+		tabItem.setText(Messages.get().SyncHROrganizationDialog_6);
 		Composite panel = new Composite(tab, SWT.NONE);
 		panel.setLayout(new FillLayout());
 		newOrgTree = createTree(panel,SWT.CHECK);

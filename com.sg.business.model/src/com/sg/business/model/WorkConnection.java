@@ -3,6 +3,7 @@ package com.sg.business.model;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.ModelService;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 工作的前后置关系
@@ -12,7 +13,7 @@ import com.mobnut.db.model.ModelService;
  * 
  */
 public class WorkConnection extends AbstractWorkConnection implements IProjectRelative {
-	public static final String EDITOR = "editor.workConnection";
+	public static final String EDITOR = "editor.workConnection"; //$NON-NLS-1$
 
 	/**
 	 * 返回类型名称
@@ -20,7 +21,7 @@ public class WorkConnection extends AbstractWorkConnection implements IProjectRe
 	 */
 	@Override
 	public String getTypeName() {
-		return "工作前后置关系";
+		return Messages.get().WorkConnection_1;
 	}
 	
 	/**

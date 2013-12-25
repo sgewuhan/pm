@@ -20,6 +20,7 @@ import com.sg.business.model.Message;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.organization.nls.Messages;
 import com.sg.sqldb.utility.SQLResult;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;
@@ -55,32 +56,32 @@ public class UserExchange {
 	/**
 	 * 消息标题
 	 */
-	public static final String MESSAGE_DESC = "系统消息：PM系统中存在用户需要";
+	public static final String MESSAGE_DESC = Messages.get().UserExchange_0;
 
 	/**
 	 * 消息内容（后半部分）
 	 */
-	public static final String MESSAGE_CONTENT_AFTER1 = "”需要被";
+	public static final String MESSAGE_CONTENT_AFTER1 = Messages.get().UserExchange_1;
 
 	/**
 	 * 消息内容（后半部分）
 	 */
-	public static final String MESSAGE_CONTENT_AFTER2 = "，请在PM系统中将该用户参与或管理的项目进行移交！";
+	public static final String MESSAGE_CONTENT_AFTER2 = Messages.get().UserExchange_2;
 
 	/**
 	 * 消息内容（前半部分）
 	 */
-	public static final String MESSAGE_CONTENT_BEFORE = "HR系统中用户：“";
+	public static final String MESSAGE_CONTENT_BEFORE = Messages.get().UserExchange_3;
 
 	/**
 	 * 删除
 	 */
-	public static final String MESSAGE_SENDTYPE_DELETE = "删除";
+	public static final String MESSAGE_SENDTYPE_DELETE = Messages.get().UserExchange_4;
 
 	/**
 	 * 修改
 	 */
-	public static final String MESSAGE_SENDTYPE_UPDATE = "更改归属组织";
+	public static final String MESSAGE_SENDTYPE_UPDATE = Messages.get().UserExchange_5;
 
 	public String getUserId() {
 		return userId;
@@ -197,34 +198,34 @@ public class UserExchange {
 		try {
 			// 获取用户
 			if (hrOrgId != null) {
-				result = SQLUtil.SQL_QUERY("hr",
-						"select * from tb_nczz.pm_emp where unit = '" + hrOrgId + "'");
+				result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
+						"select * from tb_nczz.pm_emp where unit = '" + hrOrgId + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
-				String query = "";
+				String query = ""; //$NON-NLS-1$
 				DBCollection coll = DBActivator.getCollection(
 						IModelConstants.DB, IModelConstants.C_ORGANIZATION);
 				DBCursor childCursor = coll.find();
 				// 循环构造当前组织的子组织
 				while (childCursor.hasNext()) {
 					DBObject childRow = childCursor.next();
-					if (query == "") {
+					if (query == "") { //$NON-NLS-1$
 						query = (String) childRow
 								.get(Organization.F_ORGANIZATION_NUMBER);
 					} else {
 						query = query
-								+ "','"
+								+ "','" //$NON-NLS-1$
 								+ (String) childRow
 										.get(Organization.F_ORGANIZATION_NUMBER);
 					}
 
 				}
-				if (query != "") {
-					result = SQLUtil.SQL_QUERY("hr",
-							"select * from tb_nczz.pm_emp where unit in ('"
-									+ query + "')");
+				if (query != "") { //$NON-NLS-1$
+					result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
+							"select * from tb_nczz.pm_emp where unit in ('" //$NON-NLS-1$
+									+ query + "')"); //$NON-NLS-1$
 				} else {
-					result = SQLUtil.SQL_QUERY("hr",
-							"select * from tb_nczz.pm_emp ");
+					result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
+							"select * from tb_nczz.pm_emp "); //$NON-NLS-1$
 				}
 			}
 			if (!result.isEmpty()) {
@@ -233,10 +234,10 @@ public class UserExchange {
 				while (iter.hasNext()) {
 					row = iter.next();
 					UserExchange userExchange = new UserExchange();
-					userExchange.seteMail("" + row.getValue("email"));
-					userExchange.setUnitId("" + row.getValue("unit"));
-					userExchange.setUserId("" + row.getValue("code"));
-					userExchange.setUserName("" + row.getValue("name"));
+					userExchange.seteMail("" + row.getValue("email")); //$NON-NLS-1$ //$NON-NLS-2$
+					userExchange.setUnitId("" + row.getValue("unit")); //$NON-NLS-1$ //$NON-NLS-2$
+					userExchange.setUserId("" + row.getValue("code")); //$NON-NLS-1$ //$NON-NLS-2$
+					userExchange.setUserName("" + row.getValue("name")); //$NON-NLS-1$ //$NON-NLS-2$
 					childrenSet.add(userExchange);
 				}
 			}
@@ -304,17 +305,17 @@ public class UserExchange {
 		Message message;
 		// 设置消息内容
 		String messageContent = null;
-		String orgInfo = "";
+		String orgInfo = ""; //$NON-NLS-1$
 		if (UserExchange.MESSAGE_SENDTYPE_UPDATE.equals(sendType)) {
-			orgInfo = "为:";
+			orgInfo = Messages.get().UserExchange_6;
 		}
 		for (UserExchange userExchange : messageSet) {
-			if (orgInfo != "") {
+			if (orgInfo != "") { //$NON-NLS-1$
 				orgInfo = orgInfo
 						+ userExchange.getPmOrgByOrganizationId().getDesc();
 			}
 			if (messageContent != null) {
-				messageContent = messageContent + "<br/>"
+				messageContent = messageContent + "<br/>" //$NON-NLS-1$
 						+ UserExchange.MESSAGE_CONTENT_BEFORE
 						+ userExchange.getUserName()
 						+ UserExchange.MESSAGE_CONTENT_AFTER1 + sendType
@@ -365,7 +366,7 @@ public class UserExchange {
 			if (org != null) {
 				user.setValue(User.F_ORGANIZATION_ID, org.get_id());
 				user.setValue(User.F_ORGANIZATION_NAME, org.getDesc());
-				user.setValue("_orgnumber", org.getOrganizationNumber());
+				user.setValue("_orgnumber", org.getOrganizationNumber()); //$NON-NLS-1$
 			}
 			try {
 				user.doSave(new BackgroundContext());

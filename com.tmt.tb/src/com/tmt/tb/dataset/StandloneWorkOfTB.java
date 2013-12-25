@@ -28,7 +28,7 @@ public class StandloneWorkOfTB extends OptionDataSetFactory {
 		TaskForm taskForm = (TaskForm) data;
 		ObjectId org_id = null;
 		try {
-			String obj = (String) taskForm.getProcessInstanceVarible("dept",
+			String obj = (String) taskForm.getProcessInstanceVarible("dept", //$NON-NLS-1$
 					context);
 			if (obj != null) {
 				ObjectId deptid = new ObjectId(obj);

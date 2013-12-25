@@ -27,6 +27,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.part.SimpleSection;
 
 public class ConfirmPage extends WizardPage {
@@ -56,8 +57,8 @@ public class ConfirmPage extends WizardPage {
 	private boolean hasWarning;
 
 	protected ConfirmPage() {
-		super("WORKFLOW_CONFIRM_PAGE");
-		setTitle("请确定将要发起的工作");
+		super("WORKFLOW_CONFIRM_PAGE"); //$NON-NLS-1$
+		setTitle(Messages.get().ConfirmPage_1);
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_WORKFLOW_72));
 	}
@@ -75,7 +76,7 @@ public class ConfirmPage extends WizardPage {
 		section.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true, 1, 1));
 
 		startImmediately = new Button(content, SWT.CHECK);
-		startImmediately.setText("是否立即开始工作");
+		startImmediately.setText(Messages.get().ConfirmPage_2);
 		startImmediately.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -85,7 +86,7 @@ public class ConfirmPage extends WizardPage {
 			}
 		});
 		Label label = new Label(content, SWT.WRAP);
-		label.setText("如果选中此项，当您完成向导时，工作创建后将自动开始，如果定义了流程，流程也将自动启动。\n如果不选中此项，工作创建后处于准备状态，您可以修改后再手动执行\"开始\"操作。");
+		label.setText(Messages.get().ConfirmPage_3);
 		setControl(content);
 		setPageComplete(true);
 
@@ -97,7 +98,7 @@ public class ConfirmPage extends WizardPage {
 		//
 		SimpleSection section = new SimpleSection(parent, Section.EXPANDED
 				| Section.SHORT_TITLE_BAR );
-		section.setText("工作流设置");
+		section.setText(Messages.get().ConfirmPage_4);
 		processSummary = new Label(section, SWT.WRAP);
 		processSummary.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		section.setClient(processSummary);
@@ -107,11 +108,11 @@ public class ConfirmPage extends WizardPage {
 	private Section createBasicInfoPanel(Composite parent) {
 		SimpleSection section = new SimpleSection(parent, Section.EXPANDED
 				| Section.SHORT_TITLE_BAR );
-		section.setText("工作基本信息");
+		section.setText(Messages.get().ConfirmPage_5);
 		Composite panel = new Composite(section, SWT.NONE);
 		panel.setLayout(new GridLayout(4, false));
 		Label label = new Label(panel, SWT.NONE);
-		label.setText("名称: ");
+		label.setText(Messages.get().ConfirmPage_6);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1,
 				1));
 
@@ -120,7 +121,7 @@ public class ConfirmPage extends WizardPage {
 				3, 1));
 
 		label = new Label(panel, SWT.NONE);
-		label.setText("说明: ");
+		label.setText(Messages.get().ConfirmPage_7);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 4,
 				1));
 
@@ -132,7 +133,7 @@ public class ConfirmPage extends WizardPage {
 		workSummary.setEditable(false);
 
 		label = new Label(panel, SWT.NONE);
-		label.setText("计划开始: ");
+		label.setText(Messages.get().ConfirmPage_8);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1,
 				1));
 
@@ -141,7 +142,7 @@ public class ConfirmPage extends WizardPage {
 				1, 1));
 
 		label = new Label(panel, SWT.NONE);
-		label.setText("计划完成: ");
+		label.setText(Messages.get().ConfirmPage_9);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1,
 				1));
 
@@ -150,7 +151,7 @@ public class ConfirmPage extends WizardPage {
 				false, 1, 1));
 
 		label = new Label(panel, SWT.NONE);
-		label.setText("工作定义: ");
+		label.setText(Messages.get().ConfirmPage_10);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1,
 				1));
 
@@ -176,16 +177,16 @@ public class ConfirmPage extends WizardPage {
 		
 		Object value = work.getDesc();
 		if (value != null) {
-			workName.setText("" + value);
+			workName.setText("" + value); //$NON-NLS-1$
 		} else {
-			workName.setText("");
+			workName.setText(""); //$NON-NLS-1$
 		}
 
 		value = work.getValue(Work.F_DESCRIPTION);
 		if (value != null) {
-			workSummary.setText("" + value);
+			workSummary.setText("" + value); //$NON-NLS-1$
 		} else {
-			workSummary.setText("");
+			workSummary.setText(""); //$NON-NLS-1$
 		}
 
 		value = work.getValue(Work.F_WORK_DEFINITION_ID);
@@ -195,12 +196,12 @@ public class ConfirmPage extends WizardPage {
 			if (workd != null && !workd.isEmpty()) {
 				String label = workd.getLabel();
 				Organization org = workd.getOrganization();
-				workDefinition.setText(label + "[" + org + "]");
+				workDefinition.setText(label + "[" + org + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
-				workDefinition.setText("");
+				workDefinition.setText(""); //$NON-NLS-1$
 			}
 		} else {
-			workDefinition.setText("");
+			workDefinition.setText(""); //$NON-NLS-1$
 		}
 
 		Date date = work.getPlanStart();
@@ -219,47 +220,47 @@ public class ConfirmPage extends WizardPage {
 			IProcessControl ipc = work.getAdapter(IProcessControl.class);
 			DroolsProcessDefinition pd = ipc
 					.getProcessDefinition(Work.F_WF_EXECUTE);
-			sb.append("流程: ");
+			sb.append(Messages.get().ConfirmPage_19);
 			sb.append(pd);
-			sb.append("<br/>");
+			sb.append("<br/>"); //$NON-NLS-1$
 			List<String[]> result = ipc.checkProcessRunnable(Work.F_WF_EXECUTE);
 			hasError = false;
 			hasWarning = false;
 			for(int i=0;i<result.size();i++){
 				String[] res = result.get(i);
-				if(res[0].equals("error")){
+				if(res[0].equals("error")){ //$NON-NLS-1$
 					String imageUrl = FileUtil.getImageURL(BusinessResource.IMAGE_ERROR_16,
 							BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-					sb.append("<img src='" + imageUrl
-							+ "' style='float:left;padding:6px' width='16' height='16' />");
+					sb.append("<img src='" + imageUrl //$NON-NLS-1$
+							+ "' style='float:left;padding:6px' width='16' height='16' />"); //$NON-NLS-1$
 					hasError = true;
-				}else if(res[0].equals("info")){
+				}else if(res[0].equals("info")){ //$NON-NLS-1$
 					
-				}else if(res[0].equals("warning")){
+				}else if(res[0].equals("warning")){ //$NON-NLS-1$
 					String imageUrl = FileUtil.getImageURL(BusinessResource.IMAGE_WARNING_16,
 							BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
-					sb.append("<img src='" + imageUrl
-							+ "' style='float:left;padding:6px' width='16' height='16' />");
+					sb.append("<img src='" + imageUrl //$NON-NLS-1$
+							+ "' style='float:left;padding:6px' width='16' height='16' />"); //$NON-NLS-1$
 					hasWarning = true;
 				}
 				
 				sb.append(res[1]);
-				sb.append("<br/>");
+				sb.append("<br/>"); //$NON-NLS-1$
 			}
 			processSummary.setText(sb.toString());
 			
 			if(hasError){
-				setMessage("工作的流程设置存在一些问题，在解决问题以前，工作将无法启动。",DialogPage.ERROR);
+				setMessage(Messages.get().ConfirmPage_29,DialogPage.ERROR);
 				startImmediately.setEnabled(false);
 			}else if(hasWarning){
-				setMessage("工作的流程设置存在一些问题，建议您解决这些问题后，启动工作。",DialogPage.WARNING);
+				setMessage(Messages.get().ConfirmPage_30,DialogPage.WARNING);
 				startImmediately.setEnabled(true);
 			}else{
 				setMessage(null);
 				startImmediately.setEnabled(true);
 			}
 		} else {
-			processSummary.setText("工作定义没有预设流程");
+			processSummary.setText(Messages.get().ConfirmPage_31);
 		}
 
 		content.layout();

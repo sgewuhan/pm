@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.commons.selector.DateFromToSelector;
 import com.sg.widgets.viewer.CTreeViewer;
 
@@ -127,20 +128,20 @@ public class WorkFilterAction2 extends Action {
 	}
 
 	private void setDateText(Date[] fromto) {
-		String dateText = " [";
+		String dateText = " ["; //$NON-NLS-1$
 		if (fromto.length > 0 && fromto[0] != null) {
 			dateText += String.format(Utils.FORMATE_DATE_COMPACT_SASH, fromto[0]);
 		} else {
-			dateText += " ";
+			dateText += " "; //$NON-NLS-1$
 		}
 
-		dateText += " ~ ";
+		dateText += " ~ "; //$NON-NLS-1$
 		if (fromto.length > 1 && fromto[1] != null) {
 			dateText += String.format(Utils.FORMATE_DATE_COMPACT_SASH, fromto[1]);
 		} else {
-			dateText += " ";
+			dateText += " "; //$NON-NLS-1$
 		}
-		dateText += "]";
+		dateText += "]"; //$NON-NLS-1$
 
 		setText(getNameByCode(code) + dateText);
 	}
@@ -200,40 +201,40 @@ public class WorkFilterAction2 extends Action {
 	private static String getNameByCode(int filterCode) {
 		switch (filterCode) {
 		case SHOW_ALL_PROJECT_WORK:
-			return "显示全部工作";
+			return Messages.get().WorkFilterAction2_5;
 
 		case SHOW_MY_PROJECT_WORK:
-			return "显示项目与我有关的工作";
+			return Messages.get().WorkFilterAction2_6;
 
 		case SHOW_WORK_ON_READY:
-			return "准备中";
+			return Messages.get().WorkFilterAction2_7;
 
 		case SHOW_WORK_ON_PROGRESS:
-			return "进行中";
+			return Messages.get().WorkFilterAction2_8;
 
 		case SHOW_WORK_CHARGED:
-			return "我负责的工作";
+			return Messages.get().WorkFilterAction2_9;
 
 		case SHOW_WORK_PATICIPATE:
-			return "我参与的工作";
+			return Messages.get().WorkFilterAction2_10;
 
 		case SHOW_WORK_ASSIGNMENT:
-			return "需要我指派的工作";
+			return Messages.get().WorkFilterAction2_11;
 
 		case SHOW_REMIND_WORK:
-			return "超期预警";
+			return Messages.get().WorkFilterAction2_12;
 
 		case SHOW_DELAYED_WORK:
-			return "已经超期";
+			return Messages.get().WorkFilterAction2_13;
 
 		case SHOW_MARKED_WORK:
-			return "我标记的工作";
+			return Messages.get().WorkFilterAction2_14;
 
 		case SHOW_PLANSTART_FILTER:
-			return "计划开始时间区间";
+			return Messages.get().WorkFilterAction2_15;
 
 		case SHOW_PLANFINISH_FILTER:
-			return "计划完成时间区间";
+			return Messages.get().WorkFilterAction2_16;
 
 		default:
 			break;

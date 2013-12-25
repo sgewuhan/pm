@@ -18,52 +18,52 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 	/**
 	 * 前置节点
 	 */
-	public static final String F_END1_ID = "end1_id";
+	public static final String F_END1_ID = "end1_id"; //$NON-NLS-1$
 
 	/**
 	 * 后置节点
 	 */
-	public static final String F_END2_ID = "end2_id";
+	public static final String F_END2_ID = "end2_id"; //$NON-NLS-1$
 
 	/**
 	 * 链接类型
 	 */
-	public static final String F_CONNECTIONTYPE = "connectiontype";
+	public static final String F_CONNECTIONTYPE = "connectiontype"; //$NON-NLS-1$
 
 	/**
 	 * 间隔
 	 */
-	public static final String F_INTERVAL = "interval";
+	public static final String F_INTERVAL = "interval"; //$NON-NLS-1$
 
 	/**
 	 * 操作
 	 */
-	public static final String F_OPERATOR = "operator";
+	public static final String F_OPERATOR = "operator"; //$NON-NLS-1$
 
 	/**
 	 * 时间单位
 	 */
-	public static final String F_UNIT = "unit";
+	public static final String F_UNIT = "unit"; //$NON-NLS-1$
 
 	/**
 	 * 类型，前置任务完成，后置任务完成
 	 */
-	public static final String TYPE_FF = "FF";
+	public static final String TYPE_FF = "FF"; //$NON-NLS-1$
 
 	/**
 	 * 类型，前置任务完成，后置任务开始
 	 */
-	public static final String TYPE_FS = "FS";
+	public static final String TYPE_FS = "FS"; //$NON-NLS-1$
 
 	/**
 	 * 类型，前置任务开始，后置任务开始
 	 */
-	public static final String TYPE_SS = "SS";
+	public static final String TYPE_SS = "SS"; //$NON-NLS-1$
 
 	/**
 	 * 类型，前置任务开始，后置任务结束
 	 */
-	public static final String TYPE_SF = "SF";
+	public static final String TYPE_SF = "SF"; //$NON-NLS-1$
 
 	/**
 	 * 时间单位，一周
@@ -114,7 +114,7 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 			
 			long interval = getInterval(UNIT_DAY);
 			
-			return end1Label + " [" + type + " " + interval + "d] " + end2Label;
+			return end1Label + " [" + type + " " + interval + "d] " + end2Label; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return null;
 	}
@@ -162,20 +162,20 @@ public abstract class AbstractWorkConnection extends PrimaryObject {
 	public int getInterval() {
 		int interval = ((Integer) getValue(F_INTERVAL)).intValue();
 		Object op = getValue(F_OPERATOR);
-		if ("-".equals(op)) {
+		if ("-".equals(op)) { //$NON-NLS-1$
 			interval = -1 * interval;
 		}
 
 		Object unit = getValue(F_UNIT);
-		if ("d".equals(unit)) {// 取天
+		if ("d".equals(unit)) {// 取天 //$NON-NLS-1$
 			interval = interval * UNIT_DAY;
-		} else if ("w".equals(unit)) {// 取周
+		} else if ("w".equals(unit)) {// 取周 //$NON-NLS-1$
 			interval = interval * UNIT_WEEK;
-		} else if ("h".equals(unit)) {// 取小时
+		} else if ("h".equals(unit)) {// 取小时 //$NON-NLS-1$
 			interval = interval * UNIT_HOUR;
-		} else if ("m".equals(unit)) {// 分钟
+		} else if ("m".equals(unit)) {// 分钟 //$NON-NLS-1$
 			interval = interval * UNIT_MINUTE;
-		} else if ("s".equals(unit)) {// 秒
+		} else if ("s".equals(unit)) {// 秒 //$NON-NLS-1$
 			interval = interval * UNIT_SECOND;
 		}
 		return interval;

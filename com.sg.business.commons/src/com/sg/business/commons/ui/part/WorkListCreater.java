@@ -22,6 +22,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
@@ -47,7 +48,7 @@ public class WorkListCreater extends Composite {
 		viewer.setContentProvider(new TemplateWorkContentProvider());
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(240);
-		viewerColumn.getColumn().setText("名称");
+		viewerColumn.getColumn().setText(Messages.get().WorkListCreater_0);
 		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -62,7 +63,7 @@ public class WorkListCreater extends Composite {
 
 		viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(100);
-		viewerColumn.getColumn().setText("计划开始");
+		viewerColumn.getColumn().setText(Messages.get().WorkListCreater_1);
 		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -73,13 +74,13 @@ public class WorkListCreater extends Composite {
 						return String.format(Utils.FORMATE_DATE_SIMPLE, date);
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 
 		viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(100);
-		viewerColumn.getColumn().setText("计划完成");
+		viewerColumn.getColumn().setText(Messages.get().WorkListCreater_3);
 		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -90,13 +91,13 @@ public class WorkListCreater extends Composite {
 						return String.format(Utils.FORMATE_DATE_SIMPLE, date);
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 
 		viewerColumn = new TreeViewerColumn(viewer, SWT.LEFT);
 		viewerColumn.getColumn().setWidth(100);
-		viewerColumn.getColumn().setText("负责人");
+		viewerColumn.getColumn().setText(Messages.get().WorkListCreater_5);
 		viewerColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -107,7 +108,7 @@ public class WorkListCreater extends Composite {
 						return charger.getLabel();
 					}
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 

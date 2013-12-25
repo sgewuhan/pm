@@ -11,21 +11,21 @@
             category="message"
             class="com.sg.business.message.view.Inbox"
             id="message.recieved"
-            name="收件箱"
+            name="%view.name"
             restorable="true">
       </view>
       <view
             category="message"
             class="com.sg.business.message.view.Outbox"
             id="message.send"
-            name="发件箱"
+            name="%view.name.0"
             restorable="true">
       </view>
       <view
             category="message"
             class="com.sg.business.message.view.Wastebox"
             id="message.waste"
-            name="废件箱"
+            name="%view.name.1"
             restorable="true">
       </view>
    </extension>
@@ -37,82 +37,82 @@
          <filterAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.0"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.1"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.2"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.3"
                   type="DateTime">
             </column>
          </filterAction>
          <searchAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.4"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.5"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.6"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.7"
                   type="String"
                   >
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.8"
                   type="DateTime">
             </column>
          </searchAction>
          <sortAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.9"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.10"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.11"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.12"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.13"
                   type="DateTime">
             </column>
          </sortAction>
@@ -123,81 +123,81 @@
          <filterAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.14"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.15"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.16"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.17"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.18"
                   type="DateTime">
             </column>
          </filterAction>
          <searchAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.19"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.20"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.21"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.22"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.23"
                   type="DateTime">
             </column>
          </searchAction>
          <sortAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.24"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.25"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.26"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.27"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.28"
                   type="DateTime">
             </column>
          </sortAction>
@@ -208,81 +208,81 @@
          <filterAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.29"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.30"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.31"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.32"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.33"
                   type="DateTime">
             </column>
          </filterAction>
          <searchAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.34"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.35"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.36"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.37"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.38"
                   type="DateTime">
             </column>
          </searchAction>
          <sortAction>
             <column
                   column="markread"
-                  name="已读"
+                  name="%column.name.39"
                   type="Boolean">
             </column>
             <column
                   column="importance"
-                  name="重要度"
+                  name="%column.name.40"
                   type="String">
             </column>
             <column
                   column="sender"
-                  name="发件人"
+                  name="%column.name.41"
                   type="String">
             </column>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.42"
                   type="String">
             </column>
             <column
                   column="senddate"
-                  name="发送日期"
+                  name="%column.name.43"
                   type="DateTime">
             </column>
          </sortAction>
@@ -309,7 +309,7 @@
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
                lazyDisplay="true"
-               name="标题"
+               name="%column.name.44"
                type="String"
                width="-1">
          </column>
@@ -331,7 +331,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
-               name="标题"
+               name="%column.name.45"
                type="String"
                width="-1">
          </column>
@@ -353,7 +353,7 @@
          <column
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
-               name="标题"
+               name="%column.name.46"
                type="String"
                width="-1">
          </column>
@@ -365,22 +365,22 @@
             collectionName="message"
             dbName="pm2"
             id="message.editor.create"
-            name="消息"
-            titleToolTips="消息">
+            name="%editor.name"
+            titleToolTips="%editor.titleToolTips">
          <basicpage
-               description="消息"
+               description="%basicpage.description"
                id="basicpage"
                image="image/message_add_24.png"
-               title="消息">
+               title="%basicpage.title">
             <pagecolumn>
                <section
-                     label="收件人">
+                     label="%section.label">
                   <list
                         addTableItemHandler="com.sg.business.message.editor.field.AddReciever"
                         editable="true"
                         heightHint="120"
                         id="reciever"
-                        label="收件人"
+                        label="%list.label"
                         labelVisible="false"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reciever"
@@ -389,12 +389,12 @@
                   </list>
                </section>
                <section
-                     label="基本信息">
+                     label="%section.label.0">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="标题"
+                        label="%text.label"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -405,7 +405,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="importance"
-                        label="重要度"
+                        label="%combo.label"
                         labelVisible="true"
                         name="importance"
                         option="com.sg.crm.action.ip.option"
@@ -418,7 +418,7 @@
                         editable="true"
                         heightHint="160"
                         id="content"
-                        label="内容"
+                        label="%text.label.0"
                         labelVisible="false"
                         name="content"
                         persistable="true"
@@ -431,16 +431,16 @@
          <basicpage
                id="basicpage2"
                image="image/message_24.png"
-               title="附件">
+               title="%basicpage.title.0">
             <pagecolumn>
                <section
-                     label="附件">
+                     label="%section.label.1">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         heightHint="240"
                         id="attachment"
-                        label="附件"
+                        label="%file.label"
                         labelVisible="false"
                         name="attachment"
                         persistable="true"
@@ -454,21 +454,21 @@
             collectionName="message"
             dbName="pm2"
             id="message.editor.reply"
-            name="回复消息"
-            titleToolTips="回复消息">
+            name="%editor.name.0"
+            titleToolTips="%editor.titleToolTips.0">
          <basicpage
-               description="回复消息"
+               description="%basicpage.description.0"
                id="basicpage"
                image="image/message_reply_24.png"
-               title="消息">
+               title="%basicpage.title.1">
             <pagecolumn>
                <section
-                     label="基本信息">
+                     label="%section.label.2">
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
                         id="desc"
-                        label="标题"
+                        label="%text.label.1"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -481,7 +481,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="reciever"
-                           label="收件人"
+                           label="%text.label.2"
                            labelVisible="true"
                            name="reciever"
                            persistable="true"
@@ -493,7 +493,7 @@
                            editPart="Combo(Read Only)"
                            editable="true"
                            id="importance"
-                           label="重要度"
+                           label="%combo.label.0"
                            labelVisible="true"
                            name="importance"
                            option="com.sg.crm.action.ip.option"
@@ -504,13 +504,13 @@
                   </fieldgroup>
                </section>
                <section
-                     label="内容">
+                     label="%section.label.3">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         heightHint="160"
                         id="content"
-                        label="内容"
+                        label="%text.label.3"
                         labelVisible="false"
                         name="content"
                         persistable="true"
@@ -523,16 +523,16 @@
          <basicpage
                id="basicpage2"
                image="image/message_24.png"
-               title="附件">
+               title="%basicpage.title.2">
             <pagecolumn>
                <section
-                     label="附件">
+                     label="%section.label.4">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
                         heightHint="240"
                         id="attachment"
-                        label="附件"
+                        label="%file.label.0"
                         labelVisible="false"
                         name="attachment"
                         persistable="true"
@@ -546,21 +546,21 @@
             collectionName="message"
             dbName="pm2"
             id="message.editor.htmlview"
-            name="查看消息"
-            titleToolTips="查看消息">
+            name="%editor.name.1"
+            titleToolTips="%editor.titleToolTips.1">
          <basicpage
-               description="消息"
+               description="%basicpage.description.1"
                id="basicpage"
                image="image/message_24.png"
-               title="消息">
+               title="%basicpage.title.3">
             <pagecolumn>
                <section
-                     label="基本信息">
+                     label="%section.label.5">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
                         id="desc"
-                        label="标题"
+                        label="%text.label.4"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -572,7 +572,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="importance"
-                        label="重要度"
+                        label="%text.label.5"
                         labelVisible="true"
                         name="importance"
                         persistable="true"
@@ -586,7 +586,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="sender"
-                           label="发件人"
+                           label="%text.label.6"
                            labelVisible="true"
                            name="sender"
                            persistable="true"
@@ -599,7 +599,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="reciever"
-                           label="收件人"
+                           label="%text.label.7"
                            labelVisible="true"
                            name="reciever"
                            persistable="true"
@@ -615,7 +615,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="senddate"
-                           label="发送日期"
+                           label="%text.label.8"
                            labelVisible="true"
                            name="senddate"
                            persistable="true"
@@ -629,7 +629,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="recievedate"
-                           label="收件日期"
+                           label="%text.label.9"
                            labelVisible="true"
                            name="recievedate"
                            persistable="true"
@@ -642,14 +642,14 @@
                   </fieldgroup>
                </section>
                <section
-                     label="内容">
+                     label="%section.label.6">
                   <text
                         editPart="Text(Multi Line)"
                         editable="false"
                         heightHint="160"
                         id="content"
                         isHTML="true"
-                        label="内容"
+                        label="%text.label.10"
                         labelVisible="false"
                         name="content"
                         persistable="true"
@@ -660,19 +660,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="附件"
+               description="%basicpage.description.2"
                id="basicpage2"
                image="image/message_24.png"
-               title="附件">
+               title="%basicpage.title.4">
             <pagecolumn>
                <section
-                     label="附件">
+                     label="%section.label.7">
                   <file
                         editPart="OfficeFileUploader"
                         editable="false"
                         heightHint="240"
                         id="attachment"
-                        label="附件"
+                        label="%file.label.1"
                         labelVisible="false"
                         name="attachment"
                         persistable="true"
@@ -682,32 +682,32 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="导航"
+               description="%basicpage.description.3"
                id="basicpage3"
                image="image/message_24.png"
                pageDelegator="com.sg.business.commons.page.ReferenceListPage"
-               title="导航">
+               title="%basicpage.title.5">
          </basicpage>
       </editor>
       <editor
             collectionName="message"
             dbName="pm2"
             id="message.editor.view"
-            name="查看消息"
-            titleToolTips="查看消息">
+            name="%editor.name.2"
+            titleToolTips="%editor.titleToolTips.2">
          <basicpage
-               description="消息"
+               description="%basicpage.description.4"
                id="basicpage"
                image="image/message_24.png"
-               title="消息">
+               title="%basicpage.title.6">
             <pagecolumn>
                <section
-                     label="基本信息">
+                     label="%section.label.8">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
                         id="desc"
-                        label="标题"
+                        label="%text.label.11"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
@@ -719,7 +719,7 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="importance"
-                        label="重要度"
+                        label="%text.label.12"
                         labelVisible="true"
                         name="importance"
                         persistable="true"
@@ -733,7 +733,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="sender"
-                           label="发件人"
+                           label="%text.label.13"
                            labelVisible="true"
                            name="sender"
                            persistable="true"
@@ -746,7 +746,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="reciever"
-                           label="收件人"
+                           label="%text.label.14"
                            labelVisible="true"
                            name="reciever"
                            persistable="true"
@@ -762,7 +762,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="senddate"
-                           label="发送日期"
+                           label="%text.label.15"
                            labelVisible="true"
                            name="senddate"
                            persistable="true"
@@ -776,7 +776,7 @@
                            editPart="Text(Single Line)"
                            editable="false"
                            id="recievedate"
-                           label="收件日期"
+                           label="%text.label.16"
                            labelVisible="true"
                            name="recievedate"
                            persistable="true"
@@ -789,14 +789,14 @@
                   </fieldgroup>
                </section>
                <section
-                     label="内容">
+                     label="%section.label.9">
                   <text
                         editPart="Text(Multi Line)"
                         editable="false"
                         heightHint="160"
                         id="content"
                         isHTML="false"
-                        label="内容"
+                        label="%text.label.17"
                         labelVisible="false"
                         name="content"
                         persistable="true"
@@ -807,19 +807,19 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="附件"
+               description="%basicpage.description.5"
                id="basicpage2"
                image="image/message_24.png"
-               title="附件">
+               title="%basicpage.title.7">
             <pagecolumn>
                <section
-                     label="附件">
+                     label="%section.label.10">
                   <file
                         editPart="OfficeFileUploader"
                         editable="false"
                         heightHint="240"
                         id="attachment"
-                        label="附件"
+                        label="%file.label.2"
                         labelVisible="false"
                         name="attachment"
                         persistable="true"
@@ -829,11 +829,11 @@
             </pagecolumn>
          </basicpage>
          <basicpage
-               description="导航"
+               description="%basicpage.description.6"
                id="basicpage3"
                image="image/message_24.png"
                pageDelegator="com.sg.business.commons.page.ReferenceListPage"
-               title="导航">
+               title="%basicpage.title.8">
          </basicpage>
       </editor>
    </extension>
@@ -845,7 +845,7 @@
          <command
                commandId="message.open"
                icon="image/message_open_24.png"
-               label="查看消息"
+               label="%command.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -860,7 +860,7 @@
          <command
                commandId="message.reply"
                icon="image/message_reply_24.png"
-               label="回复消息"
+               label="%command.label.0"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -879,7 +879,7 @@
          <command
                commandId="message.markread"
                icon="image/markread_24.png"
-               label="标记已读"
+               label="%command.label.1"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -898,7 +898,7 @@
          <command
                commandId="message.unmarkread"
                icon="image/unmarkread_24.png"
-               label="标记未读"
+               label="%command.label.2"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -917,7 +917,7 @@
          <command
                commandId="message.markstar"
                icon="image/markstar_24.png"
-               label="加上星标"
+               label="%command.label.3"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -936,7 +936,7 @@
          <command
                commandId="message.unmarkstar"
                icon="image/unmarkstar_24.png"
-               label="取消星标"
+               label="%command.label.4"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -959,13 +959,13 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.5"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.6"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -984,7 +984,7 @@
          <command
                commandId="message.open"
                icon="image/message_open_24.png"
-               label="查看消息"
+               label="%command.label.7"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -999,7 +999,7 @@
          <command
                commandId="message.add"
                icon="image/message_add_24.png"
-               label="新消息"
+               label="%command.label.8"
                style="push">
          </command>
          <separator
@@ -1009,7 +1009,7 @@
          <command
                commandId="message.markstar"
                icon="image/markstar_24.png"
-               label="加上星标"
+               label="%command.label.9"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1024,7 +1024,7 @@
          <command
                commandId="message.unmarkstar"
                icon="image/unmarkstar_24.png"
-               label="取消星标"
+               label="%command.label.10"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1043,13 +1043,13 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.11"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/trash_24.png"
-               label="删除"
+               label="%command.label.12"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1068,7 +1068,7 @@
          <command
                commandId="message.restore"
                icon="image/24_blank.png"
-               label="还原"
+               label="%command.label.13"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1083,7 +1083,7 @@
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.14"
                style="push">
          </command>
       </menuContribution>
@@ -1093,7 +1093,7 @@
          <command
                commandId="message.sendtoselecteduser"
                icon="image/message_add_24.png"
-               label="发送消息"
+               label="%command.label.15"
                style="push">
          </command>
       </menuContribution>
@@ -1103,13 +1103,13 @@
          <command
                commandId="message.add"
                icon="image/message_add_24.png"
-               label="新消息"
+               label="%command.label.16"
                style="push">
          </command>
          <command
                commandId="message.open"
                icon="image/message_open_24.png"
-               label="查看消息"
+               label="%command.label.17"
                style="push">
          </command>
       </menuContribution>
@@ -1119,13 +1119,13 @@
          <command
                commandId="message.reply"
                icon="image/message_reply_24.png"
-               label="回复消息"
+               label="%command.label.18"
                style="push">
          </command>
          <command
                commandId="message.open"
                icon="image/message_open_24.png"
-               label="查看消息"
+               label="%command.label.19"
                style="push">
          </command>
       </menuContribution>
@@ -1135,7 +1135,7 @@
          <command
                commandId="message.restore"
                icon="image/message_restore_24.png"
-               label="还原"
+               label="%command.label.20"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -1153,39 +1153,39 @@
          point="org.eclipse.ui.commands">
       <command
             id="message.add"
-            name="新消息">
+            name="%command.name">
       </command>
       <command
             id="message.reply"
-            name="回复消息">
+            name="%command.name.0">
       </command>
       <command
             id="message.open"
-            name="查看消息">
+            name="%command.name.1">
       </command>
       <command
             id="message.markread"
-            name="标记已读">
+            name="%command.name.2">
       </command>
       <command
             id="message.unmarkread"
-            name="标记未读">
+            name="%command.name.3">
       </command>
       <command
             id="message.markstar"
-            name="加上星标">
+            name="%command.name.4">
       </command>
       <command
             id="message.unmarkstar"
-            name="取消星标">
+            name="%command.name.5">
       </command>
       <command
             id="message.sendtoselecteduser"
-            name="发送消息">
+            name="%command.name.6">
       </command>
       <command
             id="message.restore"
-            name="还原">
+            name="%command.name.7">
       </command>
    </extension>
    <extension

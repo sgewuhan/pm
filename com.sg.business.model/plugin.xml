@@ -630,51 +630,19 @@
    <extension
          point="com.mobnut.admin.schedualJob">
       <schedualJob
-            id="visualization.databuilding"
-            name="ETL 项目数据分析"
+            id="finance.schedual.etl"
+            name="ETL"
             rule="day"
-            run="com.sg.business.model.etl.ProjectETLJob"
-            time="05:00:00">
+            run="com.sg.business.model.etl.ETLJob"
+            time="2:05:00">
       </schedualJob>
       <schedualJob
-            day="1"
-            id="finance.schedual.rndcostallocation"
-            name="ETL 成本中心期间研发成本获取和计算"
+            day="9999999999"
+            id="finance.schedual.etlold"
+            name="ETL 历史数据导入"
             rule="month"
-            run="com.sg.business.model.etl.RNDCostAllocationETLJob"
-            time="0:05:00">
-      </schedualJob>
-      <schedualJob
-            day="1"
-            id="finance.schedual.workordercostgather"
-            name="ETL 工作令号期间研发成本获取和计算"
-            rule="month"
-            run="com.sg.business.model.etl.WorkorderCostGatherETLJob"
-            time="1:05:00">
-      </schedualJob>
-      <schedualJob
-            day="1"
-            id="finance.schedual.salesincomeallocation"
-            name="ETL 期间销售数据获取和计算"
-            rule="month"
-            run="com.sg.business.model.etl.RevenueAllocationETLJob"
-            time="2:00:00">
-      </schedualJob>
-      <schedualJob
-            day="100000"
-            id="finance.schedual.loaddemodata"
-            name="处理基础数据中的工时分配"
-            rule="month"
-            run="com.sg.business.model.etl.temp.LoadDemoData"
-            time="2:00:00">
-      </schedualJob>
-      <schedualJob
-            day="1000000"
-            id="finance.schedual.calculateProductSalesData"
-            name="处理产品的销售数据（一次性）"
-            rule="month"
-            run="com.sg.business.model.etl.temp.CalculateProductSalesDate"
-            time="0:05:00">
+            run="com.sg.business.model.etl.ETLOldJob"
+            time="2:05:00">
       </schedualJob>
    </extension>
 

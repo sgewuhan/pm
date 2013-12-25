@@ -11,21 +11,21 @@ public class OvercostCostLabelProvider extends AbstractProjectLabelProvider {
 	protected String getProjectText(Project project) {
 		ProjectPresentation pres = project.getPresentation();
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:8pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:right;'>");
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:8pt;margin-left:0;word-break : break-all; white-space:normal; display:block; text-align:right;'>"); //$NON-NLS-1$
 
 		double budgetValue = pres.getBudgetValue();
 //		double dr = pres.getFinishedDurationRatio();
 
 		double investment = pres.getDesignatedInvestment();
 		if (budgetValue == 0 || budgetValue>=investment) {
-			sb.append("");
+			sb.append(""); //$NON-NLS-1$
 		} else {
 //			sb.append("‘§À„:");
 			int ratio = new BigDecimal(100 * (investment-budgetValue) / budgetValue)
 					.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
 			
 			sb.append(ratio);
-			sb.append("%");
+			sb.append("%"); //$NON-NLS-1$
 
 //			if(dr != 0){
 //				sb.append("<br/>");
@@ -38,7 +38,7 @@ public class OvercostCostLabelProvider extends AbstractProjectLabelProvider {
 //				
 //			}
 		}
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

@@ -64,11 +64,11 @@ public class ManagementProject extends SingleDBCollectionDataSetFactory {
 			//获取当前用户具有业务管理员角色的组织项下的项目
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Project.F_FUNCTION_ORGANIZATION,
-					new BasicDBObject().append("$in", ids));
+					new BasicDBObject().append("$in", ids)); //$NON-NLS-1$
 			return condition;
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
-			return new BasicDBObject().append("_id", null);
+			return new BasicDBObject().append("_id", null); //$NON-NLS-1$
 		}
 	}
 

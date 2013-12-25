@@ -31,7 +31,7 @@ public class ProjectDelete implements ISchedualJobRunnable {
 		// Project.class);
 		DBCollection projectCol = getCol();
 		BasicDBObject ref = new BasicDBObject();
-		String projectNumber = "DQJY1301F";
+		String projectNumber = ""; //$NON-NLS-1$
 		ref.put(Project.F_PROJECT_NUMBER, projectNumber);
 		DBCursor cursor = projectCol.find(ref);
 		while (cursor.hasNext()) {

@@ -66,11 +66,11 @@ public class DirectOpenMemento implements IMemento {
 
 	@Override
 	public String getString(String key) {
-		if(key.equals("id")){
+		if(key.equals("id")){ //$NON-NLS-1$
 			return _id;
-		}else if(key.equals("editor")){
+		}else if(key.equals("editor")){ //$NON-NLS-1$
 			return _editor;
-		}else if(key.equals("class")){
+		}else if(key.equals("class")){ //$NON-NLS-1$
 			return _class;
 		}
 		return null;
@@ -78,8 +78,8 @@ public class DirectOpenMemento implements IMemento {
 
 	@Override
 	public Boolean getBoolean(String key) {
-		if(key.equals("editable")){
-			return "true".equalsIgnoreCase(_editable);
+		if(key.equals("editable")){ //$NON-NLS-1$
+			return "true".equalsIgnoreCase(_editable); //$NON-NLS-1$
 		}
 		return null;
 	}

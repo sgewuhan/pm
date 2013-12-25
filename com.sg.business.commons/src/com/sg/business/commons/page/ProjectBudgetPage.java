@@ -22,6 +22,7 @@ import com.mobnut.commons.util.file.ExcelExportJob;
 import com.mobnut.commons.util.file.IColumnExportDefinition;
 import com.mobnut.commons.util.file.IExportValueDelegator;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.resource.BusinessResource;
@@ -53,12 +54,12 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 		viewer.setContentProvider(new ProjectBudgetTreeContentProvider());
 
 		TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText("预算科目");
+		column.getColumn().setText(Messages.get().ProjectBudgetPage_0);
 		column.getColumn().setWidth(280);
 		column.setLabelProvider(new ColumnLabelProvider());
 
 		column = new TreeViewerColumn(viewer, SWT.RIGHT);
-		column.getColumn().setText("预算金额(元)");
+		column.getColumn().setText(Messages.get().ProjectBudgetPage_1);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -69,7 +70,7 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 					DecimalFormat df = new DecimalFormat(Utils.NF_RMB_MONEY);
 					return df.format(value);
 				} else {
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			}
 		});
@@ -92,9 +93,9 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 					ProjectBudget budget = (ProjectBudget) element;
 					Double value = budget.getBudgetValue();
 					if (value == null) {
-						return "";
+						return ""; //$NON-NLS-1$
 					} else {
-						return "" + value;
+						return "" + value; //$NON-NLS-1$
 					}
 				}
 
@@ -125,14 +126,14 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 
 	
 	private void doExport() {
-		ExcelExportJob job = new ExcelExportJob("预算");
+		ExcelExportJob job = new ExcelExportJob(Messages.get().ProjectBudgetPage_5);
 
 		IColumnExportDefinition[] columns = new IColumnExportDefinition[2];
 		columns[0] = new IColumnExportDefinition() {
 
 			@Override
 			public String getName() {
-				return "预算科目";
+				return Messages.get().ProjectBudgetPage_6;
 			}
 
 			@Override
@@ -147,7 +148,7 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 
 			@Override
 			public String getColumn() {
-				return "desc";
+				return "desc"; //$NON-NLS-1$
 			}
 
 			@Override
@@ -159,11 +160,11 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 							IColumnExportDefinition iColumnExportDefinition) {
 
 						String dataRowValue = (String) dataRow
-								.get("desc");
-						Object level = dataRow.get("level");
+								.get("desc"); //$NON-NLS-1$
+						Object level = dataRow.get("level"); //$NON-NLS-1$
 						if (level instanceof Integer) {
 							for (int i = 0; i < (Integer) level; i++) {
-								dataRowValue = "   " + dataRowValue;
+								dataRowValue = "   " + dataRowValue; //$NON-NLS-1$
 							}
 						}
 
@@ -179,7 +180,7 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 
 			@Override
 			public String getName() {
-				return "预算金额（元）";
+				return Messages.get().ProjectBudgetPage_11;
 			}
 
 			@Override
@@ -194,7 +195,7 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 
 			@Override
 			public String getColumn() {
-				return "budgetvalue";
+				return "budgetvalue"; //$NON-NLS-1$
 			}
 
 			@Override
@@ -217,13 +218,13 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		if (obj instanceof ProjectBudget) {
 			ProjectBudget projectBudget = (ProjectBudget) obj;
-			projectBudget.setValue("level", level);
+			projectBudget.setValue("level", level); //$NON-NLS-1$
 			result.add(projectBudget);
 			ProjectBudget[] children = projectBudget.getChildren();
 			if (children != null) {
 				for (int i = 0; i < children.length; i++) {
 					ProjectBudget child = children[i];
-					child.setValue("level", level);
+					child.setValue("level", level); //$NON-NLS-1$
 					result.addAll(getExportData(child, level + 1));
 				}
 			}
@@ -240,7 +241,7 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 	public void initialize(IManagedForm form) {
 		this.form = form;
 		
-		Action action = new Action("导出"){
+		Action action = new Action(Messages.get().ProjectBudgetPage_15){
 			@Override
 			public void run() {
 				doExport();

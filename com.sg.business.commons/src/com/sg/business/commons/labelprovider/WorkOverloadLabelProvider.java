@@ -11,7 +11,7 @@ public class WorkOverloadLabelProvider extends ConfiguratorColumnLabelProvider {
 
 	@Override
 	public String getText(Object element) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	public Image getImage(Object element) {

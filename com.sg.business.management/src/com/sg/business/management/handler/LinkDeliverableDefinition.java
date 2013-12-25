@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.DocumentDefinition;
 import com.sg.business.model.IDeliverable;
@@ -30,7 +31,7 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 		final WorkDefinition workd = (WorkDefinition) selected;
 
 		NavigatorSelector ns = new NavigatorSelector(
-				"management.documentdefinition") {
+				"management.documentdefinition") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if (is != null && !is.isEmpty()) {
@@ -51,7 +52,7 @@ public class LinkDeliverableDefinition extends AbstractNavigatorHandler {
 					}
 
 				} else {
-					MessageUtil.showToast("请选择文档定义", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().LinkDeliverableDefinition_1, SWT.ICON_WARNING);
 				}
 			}
 		};

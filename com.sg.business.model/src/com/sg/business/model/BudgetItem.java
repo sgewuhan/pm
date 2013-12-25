@@ -9,6 +9,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 预算
@@ -20,17 +21,17 @@ public class BudgetItem extends PrimaryObject {
 	/**
 	 * 下级预算
 	 */
-	public static final String F_CHILDREN = "children";
+	public static final String F_CHILDREN = "children"; //$NON-NLS-1$
 	
 	/**
 	 * 默认预算，是最上级的预算
 	 */
-	public static final String F_ISDEFAULT = "isdefault";
+	public static final String F_ISDEFAULT = "isdefault"; //$NON-NLS-1$
 	
 	/**
 	 * 项目模板_id字段
 	 */
-	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id";
+	public static final String F_PROJECTTEMPLATE_ID = "projecttemplate_id"; //$NON-NLS-1$
 
 	/**
 	 * 返回默认预算，默认预算为最上层预算。如果没有，则插入最上级预算，字段desc为默认预算
@@ -43,7 +44,7 @@ public class BudgetItem extends PrimaryObject {
 				Boolean.TRUE));
 		if (data == null) {
 			data = new BasicDBObject().append(F_ISDEFAULT, Boolean.TRUE)
-					.append(F__ID, new ObjectId()).append(F_DESC, "默认预算");
+					.append(F__ID, new ObjectId()).append(F_DESC, Messages.get().BudgetItem_3);
 			col.insert(data);
 		}
 		return ModelService.createModelObject(data, BudgetItem.class);
@@ -185,6 +186,6 @@ public class BudgetItem extends PrimaryObject {
 
 	@Override
 	public String getTypeName() {
-		return "预算";
+		return Messages.get().BudgetItem_4;
 	}
 }

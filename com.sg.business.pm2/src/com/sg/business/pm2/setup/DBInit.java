@@ -15,6 +15,9 @@ import com.sg.business.model.Deliverable;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Organization;
+import com.sg.business.model.ProductItem;
+import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectRoleAssignment;
@@ -24,9 +27,11 @@ import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.User;
+import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkConnection;
 import com.sg.business.model.WorkDefinitionConnection;
+import com.sg.business.pm2.nls.Messages;
 
 public class DBInit implements ISchedualJobRunnable {
 
@@ -38,145 +43,146 @@ public class DBInit implements ISchedualJobRunnable {
 		// 创建索引
 		ensureIndex();
 		// syncUser 同步用户
-		syncUser();
+		// syncUser();
 
 		// 初始化设置
-		initSetting();
-		
+		// initSetting();
+
 		return true;
 
 	}
 
+	@SuppressWarnings("unused")
 	private void initSetting() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_SETTING);
 
 		BasicDBObject setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_PROCESS_BASE_URL);
-		setting.put("desc", "项目流程库地址");
-		setting.put("value",
-				"http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/Guvnor.jsp?");
+		setting.put("varid", IModelConstants.S_PROCESS_BASE_URL); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_1); //$NON-NLS-1$
+		setting.put("value", //$NON-NLS-1$
+				"http://localhost:8080/drools-guvnor/org.drools.guvnor.Guvnor/Guvnor.jsp?"); //$NON-NLS-1$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_DEFAULT_PROJECT_COMMIT_DURATION);
-		setting.put("desc", "项目提交工作默认天数");
-		setting.put("value", "5");
+		setting.put("varid", IModelConstants.S_DEFAULT_PROJECT_COMMIT_DURATION); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_2); //$NON-NLS-1$
+		setting.put("value", "5"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_S_TASK_DELAY);
-		setting.put("desc", "流程任务延迟标记时间（分钟）");
-		setting.put("value", "1");
+		setting.put("varid", IModelConstants.S_S_TASK_DELAY); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_3); //$NON-NLS-1$
+		setting.put("value", "1"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_S_WORK_RESERVED_REFRESH_INTERVAL);
-		setting.put("desc", "待办工作刷新周期(分钟)");
-		setting.put("value", "5");
+		setting.put("varid", IModelConstants.S_S_WORK_RESERVED_REFRESH_INTERVAL); //$NON-NLS-1$
+		setting.put("desc", "待办工作刷新周期(分钟)"); //$NON-NLS-1$ //$NON-NLS-2$
+		setting.put("value", "5"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 
 		setting = new BasicDBObject();
-		setting.put("varid",
+		setting.put("varid", //$NON-NLS-1$
 				IModelConstants.S_U_MESSAGE_RESERVED_REFRESH_INTERVAL);
-		setting.put("desc", "消息刷新周期(分钟)");
-		setting.put("value", "30");
+		setting.put("desc", Messages.get().DBInit_4); //$NON-NLS-1$
+		setting.put("value", "30"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_EAI_SAP_MAXCONN);
-		setting.put("desc", "SAP最大连接数");
-		setting.put("value", "20");
+		setting.put("varid", IModelConstants.S_EAI_SAP_MAXCONN); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_5); //$NON-NLS-1$
+		setting.put("value", "20"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_EAI_SAP_CLIENT);
-		setting.put("desc", "SAP 客户端");
-		setting.put("value", "700");
+		setting.put("varid", IModelConstants.S_EAI_SAP_CLIENT); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_6); //$NON-NLS-1$
+		setting.put("value", "700"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_EAI_SAP_USERID);
-		setting.put("desc", "SAP User Id");
-		setting.put("value", "ITFSAP");
+		setting.put("varid", IModelConstants.S_EAI_SAP_USERID); //$NON-NLS-1$
+		setting.put("desc", "SAP User Id"); //$NON-NLS-1$ //$NON-NLS-2$
+		setting.put("value", "ITFSAP"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_EAI_SAP_PASSWORD);
-		setting.put("desc", "SAP User password");
-		setting.put("value", "12392008");
+		setting.put("varid", IModelConstants.S_EAI_SAP_PASSWORD); //$NON-NLS-1$
+		setting.put("desc", "SAP User password"); //$NON-NLS-1$ //$NON-NLS-2$
+		setting.put("value", "12392008"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_EAI_SAP_LANGUAGE);
-		setting.put("desc", "SAP 语言");
-		setting.put("value", "ZH");
+		setting.put("varid", IModelConstants.S_EAI_SAP_LANGUAGE); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_7); //$NON-NLS-1$
+		setting.put("value", "ZH"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_EAI_SAP_HOST);
-		setting.put("desc", "SAP 主机");
-		setting.put("value", "172.16.9.74");// 90
+		setting.put("varid", IModelConstants.S_EAI_SAP_HOST); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_8); //$NON-NLS-1$
+		setting.put("value", "172.16.9.74");// 90 //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_EAI_SAP_INSTANCENUMBER);
-		setting.put("desc", "SAP 实例编号");
-		setting.put("value", "00");// 01
-		try {
-			col.insert(setting);
-		} catch (Exception e) {
-		}
-
-		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_MAJOR_VID_SEQ);
-		setting.put("desc", "主版本号序列");
-		setting.put("value",
-				"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z");
+		setting.put("varid", IModelConstants.S_EAI_SAP_INSTANCENUMBER); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_9); //$NON-NLS-1$
+		setting.put("value", "00");// 01 //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
 
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
-		setting.put("desc", "超支比例估计系数");
-		setting.put("value", "0.3");
+		setting.put("varid", IModelConstants.S_MAJOR_VID_SEQ); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_10); //$NON-NLS-1$
+		setting.put("value", //$NON-NLS-1$
+				"A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"); //$NON-NLS-1$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
 		}
-		
+
 		setting = new BasicDBObject();
-		setting.put("varid", IModelConstants.S_U_TASK_RESERVED_REFRESH_INTERVAL);
-		setting.put("desc", "流程任务刷新周期(分钟)");
-		setting.put("value", "30");
+		setting.put("varid", IModelConstants.S_S_BI_OVER_COST_ESTIMATE); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_11); //$NON-NLS-1$
+		setting.put("value", "0.3"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			col.insert(setting);
+		} catch (Exception e) {
+		}
+
+		setting = new BasicDBObject();
+		setting.put("varid", IModelConstants.S_U_TASK_RESERVED_REFRESH_INTERVAL); //$NON-NLS-1$
+		setting.put("desc", Messages.get().DBInit_0); //$NON-NLS-1$
+		setting.put("value", "30"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			col.insert(setting);
 		} catch (Exception e) {
@@ -184,6 +190,7 @@ public class DBInit implements ISchedualJobRunnable {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void syncUser() {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_USER);
@@ -209,7 +216,7 @@ public class DBInit implements ISchedualJobRunnable {
 
 		// 全局设置和用户设置ID和用户ID需要保持唯一
 		ensureUniqureIndex(db, IModelConstants.C_SETTING, new BasicDBObject()
-				.append("varid", 1).append("userid", 1));
+				.append("varid", 1).append("userid", 1)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// 同一组织下角色编号不可重复
 		ensureUniqureIndex(db, IModelConstants.C_ROLE, new BasicDBObject()
@@ -328,6 +335,85 @@ public class DBInit implements ISchedualJobRunnable {
 		ensureIndex(db, IModelConstants.C_WORK,
 				new BasicDBObject().append(Work.F_ARCHIVE, 1));
 
+		// 创建项目负责人字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_CHARGER, 1));
+
+		// 创建用户表的组织id字段索引
+		ensureIndex(db, IModelConstants.C_USER,
+				new BasicDBObject().append(User.F_ORGANIZATION_ID, 1));
+		
+		//创建组织表的组织的上级组织id字段索引
+		ensureIndex(db, IModelConstants.C_ORGANIZATION,
+				new BasicDBObject().append(Organization.F_PARENT_ID, 1));
+		
+		//创建物资编码表的项目id字段索引
+		ensureIndex(db, IModelConstants.C_PRODUCT,
+				new BasicDBObject().append(ProductItem.F_PROJECT_ID, 1));
+		
+		//创建项目表的计划开始时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_PLAN_START, 1));
+		
+		//创建项目表的计划完成时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_PLAN_FINISH, 1));
+		
+		//创建项目表的实际开始时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_ACTUAL_START, 1));
+		
+		//创建项目表的实际完成时间字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_ACTUAL_FINISH, 1));
+		
+		//创建项目表的负责人字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_CHARGER, 1));
+		
+		//创建项目表的项目发起部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION, 1));
+		
+		//创建项目表的项目管理部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_FUNCTION_ORGANIZATION, 1));
+		
+		//创建项目表的工作令号字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_WORK_ORDER, 1));
+		
+		//创建流程记录表的工作id字段索引
+		ensureIndex(db, IModelConstants.C_USERTASK,
+				new BasicDBObject().append(UserTask.F_WORK_ID, 1));
+		
+		//创建工作表的归档字段索引
+		ensureIndex(db, IModelConstants.C_WORK,
+				new BasicDBObject().append(Work.F_ARCHIVE, 1));
+		
+		//创建工作表的工作定义的上级工作定义字段索引
+		ensureIndex(db, IModelConstants.C_WORK,
+				new BasicDBObject().append(Work.F_PARENT_ID, 1));
+		
+		//创建工作表的项目id字段索引
+		ensureIndex(db, IModelConstants.C_WORK,
+				new BasicDBObject().append(Work.F_PROJECT_ID, 1));
+
+		// TODO 增加索引 IModelConstants.C_PROJECT_MONTH_DATA
+		
+		
+		// TODO 增加索引 IModelConstants.C_SALESDATA
+		
+		
+		// TODO 增加索引 IModelConstants.C_RND_PEROIDCOST_ALLOCATION
+		
+		
+		// TODO 增加索引 IModelConstants.C_RND_PEROIDCOST_COSTCENTER
+		
+		
+		// TODO 增加索引 IModelConstants.C_WORKORDER_COST
+		
+
 		/**
 		 * 请注意！！！
 		 * 
@@ -352,7 +438,7 @@ public class DBInit implements ISchedualJobRunnable {
 	private void ensureUniqureIndex(DB db, String colname, BasicDBObject index) {
 		try {
 			DBCollection col = db.getCollection(colname);
-			col.ensureIndex(index, "unique", true);
+			col.ensureIndex(index, "unique", true); //$NON-NLS-1$
 		} catch (Exception e) {
 			// e.printStackTrace();
 		}

@@ -25,7 +25,7 @@ public class OrgOfProjectManagerCondition implements IRelationConditionProvider 
 	public DBObject getCondition(PrimaryObject primaryObject) {
 		List<String> list = getProjectIdList(primaryObject);
 		return new BasicDBObject().append(User.F_USER_ID,
-				new BasicDBObject().append("$in", list));
+				new BasicDBObject().append("$in", list)); //$NON-NLS-1$
 	}
 
 	private List<String> getProjectIdList(PrimaryObject primaryObject) {
@@ -35,7 +35,7 @@ public class OrgOfProjectManagerCondition implements IRelationConditionProvider 
 		DBCursor cur = col.find(new BasicDBObject().append(
 				Project.F_LAUNCH_ORGANIZATION, primaryObject.get_id()).append(
 				ILifecycle.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
+				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
 						ILifecycle.STATUS_WIP_VALUE })));
 

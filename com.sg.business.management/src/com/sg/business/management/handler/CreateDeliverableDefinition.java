@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.Deliverable;
 import com.sg.widgets.MessageUtil;
@@ -28,7 +29,7 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择添加的上级对象", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().CreateDeliverableDefinition_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -53,9 +54,9 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, "添加" + po.getTypeName());
+					true, null, Messages.get().CreateDeliverableDefinition_1 + po.getTypeName());
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, "添加" + po.getTypeName(),
+			MessageUtil.showToast(shell, Messages.get().CreateDeliverableDefinition_2 + po.getTypeName(),
 					e.getMessage(), SWT.ICON_ERROR);
 		}
 
@@ -66,7 +67,7 @@ public class CreateDeliverableDefinition extends AbstractNavigatorHandler {
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
 		NavigatorPart np = (NavigatorPart) page
-				.findView("management.documentdefinition");
+				.findView("management.documentdefinition"); //$NON-NLS-1$
 		if (np != null) {
 			np.reloadMaster();
 		}

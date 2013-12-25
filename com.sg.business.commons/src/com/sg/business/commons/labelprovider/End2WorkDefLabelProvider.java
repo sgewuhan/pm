@@ -18,6 +18,6 @@ public class End2WorkDefLabelProvider extends ColumnLabelProvider {
 		WorkDefinition end2 = ((WorkDefinitionConnection) element).getEnd2();
 		if (end2 != null)
 			return end2.getLabel();
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

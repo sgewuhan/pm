@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 
 import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
@@ -30,7 +31,7 @@ import com.sg.widgets.viewer.CTreeViewer;
 public class DeliverablesBody implements INavigatorPageBodyPartCreater,
 		IPrimaryObjectEventListener {
 
-	private static final String IS_OPTION_COLUMN = "isOptionColumn";
+	private static final String IS_OPTION_COLUMN = "isOptionColumn"; //$NON-NLS-1$
 	private ProjectTemplate projectTemplate;
 	private CTreeViewer viewer;
 
@@ -69,15 +70,15 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater,
 		
 		ArrayList<?> standardSet = (ArrayList<?>) projectTemplate
 				.getStandardOptionSet();
-		createColumns(standardSet, viewer, "标准");
+		createColumns(standardSet, viewer, Messages.get().DeliverablesBody_1);
 
 		ArrayList<?> productTypeSet = (ArrayList<?>) projectTemplate
 				.getProductOptionSet();
-		createColumns(productTypeSet, viewer, "产品类型");
+		createColumns(productTypeSet, viewer, Messages.get().DeliverablesBody_2);
 
 		ArrayList<?> projectTypeSet = (ArrayList<?>) projectTemplate
 				.getProjectOptionSet();
-		createColumns(projectTypeSet, viewer, "项目类型");
+		createColumns(projectTypeSet, viewer, Messages.get().DeliverablesBody_3);
 	}
 
 	private void createColumns(ArrayList<?> set, final CTreeViewer viewer,
@@ -91,9 +92,9 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater,
 			col = new TreeViewerColumn(viewer, SWT.CENTER);
 			col.getColumn().setData(IS_OPTION_COLUMN, Boolean.TRUE);
 			if (i == 0) {
-				col.getColumn().setText(optionSetName + "\n" + optionName);
+				col.getColumn().setText(optionSetName + "\n" + optionName); //$NON-NLS-1$
 			} else {
-				col.getColumn().setText("\n" + optionName);
+				col.getColumn().setText("\n" + optionName); //$NON-NLS-1$
 			}
 			col.getColumn().setWidth(80);
 			col.setLabelProvider(new ColumnLabelProvider() {
@@ -104,7 +105,7 @@ public class DeliverablesBody implements INavigatorPageBodyPartCreater,
 								.getOptionValueSetting(optionSetName,
 										optionName);
 					}
-					return "";
+					return ""; //$NON-NLS-1$
 				}
 			});
 			final CellEditor editor = new ComboBoxCellEditor(viewer.getTree(),

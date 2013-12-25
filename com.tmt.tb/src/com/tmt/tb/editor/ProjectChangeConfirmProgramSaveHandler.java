@@ -10,6 +10,7 @@ import com.sg.business.model.TaskForm;
 import com.sg.business.model.Work;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.tmt.tb.nls.Messages;
 
 public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandler {
 
@@ -21,12 +22,12 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 			IProgressMonitor monitor, String operation) throws Exception {
 		
 		TaskForm taskform = (TaskForm) input.getData();
-		String choice = (String) taskform.getValue("choice");
-		taskform.setProcessInputValue("choice", choice);
-		if("不通过".equals(choice)){
+		String choice = (String) taskform.getValue("choice"); //$NON-NLS-1$
+		taskform.setProcessInputValue("choice", choice); //$NON-NLS-1$
+		if("不通过".equals(choice)){ //$NON-NLS-1$
 			return true;
 		}
-		Object ecn = taskform.getValue("ecn");
+		Object ecn = taskform.getValue("ecn"); //$NON-NLS-1$
 		if(ecn instanceof List<?>){
 			List<?> ecnlist = (List<?>) ecn;
 			String var;
@@ -37,28 +38,28 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 				if(Boolean.TRUE.equals(noskip)){
 					Object value = work.getValue(Work.F_PLAN_START);
 					if(value==null){
-						throw new Exception("请设置计划开始时间。\n"+work);
+						throw new Exception(Messages.get().ProjectChangeConfirmProgramSaveHandler_4+work);
 					}
 					value = work.getValue(Work.F_PLAN_FINISH);
 					if(value==null){
-						throw new Exception("请设置计划完成时间。\n"+work);
+						throw new Exception(Messages.get().ProjectChangeConfirmProgramSaveHandler_5+work);
 					}
 					value = work.getValue(Work.F_CHARGER);
 					if(value==null){
-						throw new Exception("请设置负责人。\n"+work);
+						throw new Exception(Messages.get().ProjectChangeConfirmProgramSaveHandler_6+work);
 					}
 					checkDuration(work);
 					
-					var = (String) work.getValue("chargerpara");
+					var = (String) work.getValue("chargerpara"); //$NON-NLS-1$
 					taskform.setProcessInputValue(var, value);
-					var=(String) work.getValue("noskippara");
-					taskform.setProcessInputValue(var, "是");
+					var=(String) work.getValue("noskippara"); //$NON-NLS-1$
+					taskform.setProcessInputValue(var, "是"); //$NON-NLS-1$
 					
 					
 
 				}else{
-					var=(String) work.getValue("noskippara");
-					taskform.setProcessInputValue(var, "否");
+					var=(String) work.getValue("noskippara"); //$NON-NLS-1$
+					taskform.setProcessInputValue(var, "否"); //$NON-NLS-1$
 				}
 				
 			}
@@ -87,7 +88,7 @@ public class ProjectChangeConfirmProgramSaveHandler implements IEditorSaveHandle
 		if (start != null && finish != null) {
 			// 检查是否合法
 			if (start.after(finish)) {
-				throw new Exception("开始日期必须早于完成日期");
+				throw new Exception(Messages.get().ProjectChangeConfirmProgramSaveHandler_12);
 			}
 
 		}

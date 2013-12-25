@@ -6,6 +6,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import com.sg.business.management.nls.Messages;
 import com.sg.business.management.wizard.ProjectPreviewer;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.resource.BusinessResource;
@@ -16,7 +17,7 @@ public class PreviewOptionAction extends Action {
 
 	public PreviewOptionAction(ProjectTemplate projectTemplate) {
 		this.projectTemplate = projectTemplate;
-		setText("查看选项预览");
+		setText(Messages.get().PreviewOptionAction_0);
 		setImageDescriptor(BusinessResource
 				.getImageDescriptor(BusinessResource.IMAGE_PREVIEW_24));
 	}

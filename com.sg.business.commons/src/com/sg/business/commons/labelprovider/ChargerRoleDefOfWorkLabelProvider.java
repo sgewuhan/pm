@@ -15,7 +15,7 @@ public class ChargerRoleDefOfWorkLabelProvider extends ConfiguratorColumnLabelPr
 		if(chargerRoleDef!=null){
 			return chargerRoleDef.getLabel();
 		}else{
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 	

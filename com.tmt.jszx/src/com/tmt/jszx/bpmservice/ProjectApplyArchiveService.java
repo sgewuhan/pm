@@ -18,6 +18,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.BPMServiceContext;
+import com.tmt.jszx.nls.Messages;
 
 public class ProjectApplyArchiveService extends ServiceProvider {
 
@@ -27,16 +28,16 @@ public class ProjectApplyArchiveService extends ServiceProvider {
 	@Override
 	public Map<String, Object> run(Object parameter) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			try {
 				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-				String processId = (String) host.getValue("processId");
-				String processName = (String) host.getValue("processName");
+				String processId = (String) host.getValue("processId"); //$NON-NLS-1$
+				String processName = (String) host.getValue("processName"); //$NON-NLS-1$
 				if (host instanceof Work) {
 					Work work = (Work) host;
-					String dept=(String) getInputValue("dept");
+					String dept=(String) getInputValue("dept"); //$NON-NLS-1$
 					ObjectId orgId=new ObjectId(dept);
 						if (orgId != null) {
 							Organization org = ModelService.createModelObject(
@@ -44,9 +45,9 @@ public class ProjectApplyArchiveService extends ServiceProvider {
 							ObjectId containerOrgId = org
 									.getContainerOrganizationId();
 							if (containerOrgId != null) {
-								String filderNmae = ""
+								String filderNmae = "" //$NON-NLS-1$
 										+ work.getProject().getDesc();
-								filderNmae = filderNmae + "-" + work.getDesc();
+								filderNmae = filderNmae + "-" + work.getDesc(); //$NON-NLS-1$
 								ObjectId folderId;
 								BasicDBObject folderCondition = new BasicDBObject();
 								folderCondition.put(Folder.F_IS_WORKFLOW_FOLDER, Boolean.FALSE);
@@ -86,14 +87,14 @@ public class ProjectApplyArchiveService extends ServiceProvider {
 								}
 								
 							} else {
-								result.put("returnCode", "ERROR");
-								result.put("returnMessage", "委托组织无法进行文件归档!");
+								result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+								result.put("returnMessage", Messages.get().ProjectApplyArchiveService_0); //$NON-NLS-1$
 							}
 						}
 					}
 			} catch (Exception e) {
-				result.put("returnCode", "ERROR");
-				result.put("returnMessage", e.getMessage());
+				result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+				result.put("returnMessage", e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return result;

@@ -17,6 +17,7 @@ import org.eclipse.ui.menus.UIElement;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.business.visualization.ui.ProjectProviderHolder;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 
@@ -30,7 +31,7 @@ public class SetDepartmentFilter extends AbstractHandler implements
 		Shell parent = HandlerUtil.getActiveShell(event);
 		holder = ProjectProviderHolder.getInstance();
 		DropdownNavigatorSelector nv = new DropdownNavigatorSelector(
-				"vis.projectset.navigator.org"){
+				"vis.projectset.navigator.org"){ //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if(is!=null&&!is.isEmpty()){
@@ -61,7 +62,7 @@ public class SetDepartmentFilter extends AbstractHandler implements
 		ICommandService commandService = (ICommandService) window
 				.getService(ICommandService.class);
 		if (commandService != null) {
-			commandService.refreshElements("visualization.command.setdepartment",
+			commandService.refreshElements("visualization.command.setdepartment", //$NON-NLS-1$
 					null);
 		}
 	}
@@ -74,10 +75,10 @@ public class SetDepartmentFilter extends AbstractHandler implements
 			if(pp !=null){
 				element.setText(pp.getProjectSetName());
 			}else{
-				element.setText("组织 [请选择]");
+				element.setText(Messages.get().SetDepartmentFilter_2);
 			}
 		}else{
-			element.setText("组织 [本组织]");
+			element.setText(Messages.get().SetDepartmentFilter_3);
 		}
 	}
 

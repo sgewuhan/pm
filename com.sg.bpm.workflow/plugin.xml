@@ -22,7 +22,7 @@
       <adminFunction
             id="com.mobnut.admin.functions.browsdroolslib"
             image="image/lib_48.png"
-            label="流程库"
+            label="%adminFunction.label"
             run="com.sg.bpm.workflow.admin.BrowseLib">
       </adminFunction>
    </extension>

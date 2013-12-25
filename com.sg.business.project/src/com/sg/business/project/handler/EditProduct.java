@@ -14,7 +14,7 @@ public class EditProduct extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		if(part instanceof IEditablePart){
-			((IEditablePart)part).doEdit("project.product.editor",null,null,null);
+			((IEditablePart)part).doEdit("project.product.editor",null,null,null); //$NON-NLS-1$
 		}
 		return null;
 	}

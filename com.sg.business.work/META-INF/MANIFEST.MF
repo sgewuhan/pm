@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Work
 Bundle-SymbolicName: com.sg.business.work;singleton:=true
 Bundle-Version: 1.0.0
+Bundle-Localization: OSGI-INF/l10n/bundle
 Bundle-Activator: com.sg.business.work.WorkActivator
 Bundle-Vendor: SG
 Require-Bundle: org.eclipse.rap.ui,

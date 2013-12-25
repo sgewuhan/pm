@@ -21,6 +21,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.OrganizationProjectProvider;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.visualization.chart.ProjectChartFactory;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.part.NavigatablePartAdapter;
@@ -112,11 +113,11 @@ public class DashDepartment extends AbstractDashWidgetView {
 					- subProjectProvider.sum.total_sales_cost-subProjectProvider.sum.total_investment_amount)/unit;
 		}
 
-		title1 = "正常进行";
+		title1 = Messages.get().DashDepartment_0;
 
-		title2 = "超期风险";
+		title2 = Messages.get().DashDepartment_1;
 
-		title3 = "销售利润";
+		title3 = Messages.get().DashDepartment_2;
 	}
 
 	private void createControl(Composite parent) {
@@ -126,7 +127,7 @@ public class DashDepartment extends AbstractDashWidgetView {
 		composite.setLayout(new FillLayout());
 		createDeptSelector(composite);
 		ExpandItem item = new ExpandItem(expandBar, SWT.NONE, 0);
-		item.setText("X-轴 （选择部门）");
+		item.setText(Messages.get().DashDepartment_3);
 		item.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item.setControl(composite);
 		item.setExpanded(true);
@@ -135,7 +136,7 @@ public class DashDepartment extends AbstractDashWidgetView {
 		composite.setLayout(new FillLayout());
 		createBarDataSelector(composite);
 		item = new ExpandItem(expandBar, SWT.NONE, 1);
-		item.setText("Y1-轴 指标 （条图数据系列）");
+		item.setText(Messages.get().DashDepartment_4);
 		item.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item.setControl(composite);
 
@@ -143,7 +144,7 @@ public class DashDepartment extends AbstractDashWidgetView {
 		composite.setLayout(new GridLayout());
 		createLineDataSelector(composite);
 		item = new ExpandItem(expandBar, SWT.NONE, 2);
-		item.setText("Y2-轴 指标  （连线图数据系列）");
+		item.setText(Messages.get().DashDepartment_5);
 		item.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item.setControl(composite);
 
@@ -151,13 +152,13 @@ public class DashDepartment extends AbstractDashWidgetView {
 	}
 
 	private void createLineDataSelector(Composite parent) {
-		createY2Button(parent,"销售收入",Y2_SALES_REVENUE);
-		Button button = createY2Button(parent,"销售利润",Y2_SALES_PROFIT);
+		createY2Button(parent,Messages.get().DashDepartment_6,Y2_SALES_REVENUE);
+		Button button = createY2Button(parent,Messages.get().DashDepartment_7,Y2_SALES_PROFIT);
 		button.setSelection(true);
 
-		createY2Button(parent,"研发投入",Y2_RND_INVESTMENT);
-		createY2Button(parent,"超期进行项目数",Y2_OVER_SCHEDUAL);
-		createY2Button(parent,"超支进行项目数",Y2_OVER_BUDGET);
+		createY2Button(parent,Messages.get().DashDepartment_8,Y2_RND_INVESTMENT);
+		createY2Button(parent,Messages.get().DashDepartment_9,Y2_OVER_SCHEDUAL);
+		createY2Button(parent,Messages.get().DashDepartment_10,Y2_OVER_BUDGET);
 	}
 
 	private Button createY2Button(Composite parent, String text,final int key) {
@@ -208,22 +209,22 @@ public class DashDepartment extends AbstractDashWidgetView {
 
 			switch (y1Type) {
 			case Y1_PROCESS_BUDGET:
-				title1 = "正常";
-				title2 = "超支风险";
+				title1 = Messages.get().DashDepartment_11;
+				title2 = Messages.get().DashDepartment_12;
 				deptValue1[i] = sub.sum.processing_cost_normal;
 				deptValue2[i] = sub.sum.processing_cost_over;
 				break;
 			case Y1_PROCESS_SCHEDUAL:
-				title1 = "正常进行";
-				title2 = "超期风险";
+				title1 = Messages.get().DashDepartment_13;
+				title2 = Messages.get().DashDepartment_14;
 				deptValue1[i] = sub.sum.processing_normal
 						+ sub.sum.processing_advance;
 				deptValue2[i] = sub.sum.processing_delay;
 
 				break;
 			case Y1_PROJECT_COUNT:
-				title1 = "进行";
-				title2 = "完成";
+				title1 = Messages.get().DashDepartment_15;
+				title2 = Messages.get().DashDepartment_16;
 				deptValue1[i] = sub.sum.processing;
 				deptValue2[i] = sub.sum.finished;
 
@@ -235,25 +236,25 @@ public class DashDepartment extends AbstractDashWidgetView {
 
 			switch (y2Type) {
 			case Y2_RND_INVESTMENT:
-				title3 = "研发成本";
+				title3 = Messages.get().DashDepartment_17;
 				deptValue3[i] = sub.sum.total_investment_amount / unit;
 				break;
 			case Y2_BUDGET:
-				title3 = "项目预算";
+				title3 = Messages.get().DashDepartment_18;
 				deptValue3[i] = sub.sum.total_budget_amount / unit;
 				break;
 			case Y2_OVERCOST:
-				title3 = "超支";
+				title3 = Messages.get().DashDepartment_19;
 				deptValue3[i] = sub.sum.total_investment_amount / unit
 						- sub.sum.total_budget_amount / unit;
 				break;
 			case Y2_SALES_PROFIT:
-				title3 = "销售利润";
+				title3 = Messages.get().DashDepartment_20;
 				deptValue3[i] = (sub.sum.total_sales_revenue 
 						- sub.sum.total_sales_cost-sub.sum.total_investment_amount)/unit;
 				break;
 			case Y2_SALES_REVENUE:
-				title3 = "销售收入";
+				title3 = Messages.get().DashDepartment_21;
 				deptValue3[i] = sub.sum.total_sales_revenue / unit;
 				break;
 
@@ -287,20 +288,20 @@ public class DashDepartment extends AbstractDashWidgetView {
 	}
 
 	private void createBarDataSelector(Composite parent) {
-		Button button = createY1Button(parent, "正常/超期", Y1_PROCESS_SCHEDUAL);
-		button.setToolTipText("在Y轴条图显示正常和超期项目的数量");
+		Button button = createY1Button(parent, Messages.get().DashDepartment_22, Y1_PROCESS_SCHEDUAL);
+		button.setToolTipText(Messages.get().DashDepartment_23);
 		button.setSelection(true);
 
-		button = createY1Button(parent, "正常/超支", Y1_PROCESS_BUDGET);
-		button.setToolTipText("在Y轴条图显示预算正常和有超支风险的项目数量");
+		button = createY1Button(parent, Messages.get().DashDepartment_24, Y1_PROCESS_BUDGET);
+		button.setToolTipText(Messages.get().DashDepartment_25);
 
-		button = createY1Button(parent, "进行/完成", Y1_PROJECT_COUNT);
-		button.setText("进行/完成");
-		button.setToolTipText("在Y轴条图显示正在进行和已经完成的项目数量");
+		button = createY1Button(parent, Messages.get().DashDepartment_26, Y1_PROJECT_COUNT);
+		button.setText(Messages.get().DashDepartment_27);
+		button.setToolTipText(Messages.get().DashDepartment_28);
 	}
 
 	private void createDeptSelector(Composite parent) {
-		navi = new NavigatorControl("vis.org.selector.managerrole",
+		navi = new NavigatorControl("vis.org.selector.managerrole", //$NON-NLS-1$
 				new NavigatablePartAdapter() {
 				}, true);
 		navi.createPartContent(parent);
@@ -332,7 +333,7 @@ public class DashDepartment extends AbstractDashWidgetView {
 
 	protected Chart getChartData(ProjectProvider data) {
 		return ProjectChartFactory.createCombinnationStackedBarChart(
-				data.getProjectSetName() + "各部门项目运行综合状况", deptParameter,
+				data.getProjectSetName() + Messages.get().DashDepartment_30, deptParameter,
 				deptValue1, deptValue2, deptValue3, new String[] { title1,
 						title2, title3 });
 	}

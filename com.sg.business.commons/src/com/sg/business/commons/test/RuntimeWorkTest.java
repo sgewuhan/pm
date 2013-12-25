@@ -10,7 +10,7 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class RuntimeWorkTest extends PropertyTester {
 
-	private static final String PROPERTY_ACTION = "action";
+	private static final String PROPERTY_ACTION = "action"; //$NON-NLS-1$
 
 	@Override
 	public boolean test(Object receiver, String property, Object[] args,
@@ -18,20 +18,20 @@ public class RuntimeWorkTest extends PropertyTester {
 		if (receiver instanceof Work) {
 			Work work = (Work) receiver;
 			if (property.equals(PROPERTY_ACTION)) {
-				if ("createChildWork".equals(args[0])) {
+				if ("createChildWork".equals(args[0])) { //$NON-NLS-1$
 					return work.canCreateChildWork(new CurrentAccountContext());
-				} else if ("createDeliverable".equals(args[0])) {
+				} else if ("createDeliverable".equals(args[0])) { //$NON-NLS-1$
 					return work
 							.canCreateDeliverable(new CurrentAccountContext());
-				} else if ("reassignment".equals(args[0])) {
+				} else if ("reassignment".equals(args[0])) { //$NON-NLS-1$
 					return work.canReassignment(new CurrentAccountContext());
-				} else if ("modify".equals(args[0])) {
+				} else if ("modify".equals(args[0])) { //$NON-NLS-1$
 					return work.canEdit(new CurrentAccountContext());
-				} else if ("workrecord".equals(args[0])) {
+				} else if ("workrecord".equals(args[0])) { //$NON-NLS-1$
 					return work.canEditWorkRecord(new CurrentAccountContext());
-				} else if ("openproject".equals(args[0])) {
+				} else if ("openproject".equals(args[0])) { //$NON-NLS-1$
 					return work.getProjectId() != null;
-				} else if ("delete".equals(args[0])) {
+				} else if ("delete".equals(args[0])) { //$NON-NLS-1$
 					return work.canDelete(new CurrentAccountContext());
 				}
 
@@ -46,11 +46,11 @@ public class RuntimeWorkTest extends PropertyTester {
 
 		} else if (receiver instanceof Deliverable) {
 			Deliverable deliverable = (Deliverable) receiver;
-			if ("editDeliverable".equals(args[0])) {
+			if ("editDeliverable".equals(args[0])) { //$NON-NLS-1$
 				return deliverable.canEdit(new CurrentAccountContext());
-			} else if ("deleteDeliverable".equals(args[0])) {
+			} else if ("deleteDeliverable".equals(args[0])) { //$NON-NLS-1$
 				return deliverable.canDelete(new CurrentAccountContext());
-			} else if ("lock".equals(args[0])) {
+			} else if ("lock".equals(args[0])) { //$NON-NLS-1$
 				IContext context = new CurrentAccountContext();
 				if (deliverable.canEdit(context)) {
 					Document document = deliverable.getDocument();
@@ -58,7 +58,7 @@ public class RuntimeWorkTest extends PropertyTester {
 				} else {
 					return false;
 				}
-			} else if ("unlock".equals(args[0])) {
+			} else if ("unlock".equals(args[0])) { //$NON-NLS-1$
 				Document document = deliverable.getDocument();
 				return document.canUnLock(new CurrentAccountContext());
 			}

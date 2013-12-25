@@ -87,7 +87,7 @@ public class SplitTransitionCommand extends Command {
 	 */
 	public void setNewActivity(Activity activity) {
 		newActivity = activity;
-		newActivity.setName("a " + (parent.getChildren().size() + 1));
+		newActivity.setName("a " + (parent.getChildren().size() + 1)); //$NON-NLS-1$
 	}
 
 	/**

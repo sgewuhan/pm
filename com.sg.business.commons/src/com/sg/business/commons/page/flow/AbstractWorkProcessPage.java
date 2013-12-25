@@ -41,7 +41,7 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			ProcessSettingPanel2 psp = getProcessSettingPanel();
 			AbstractRoleDefinition role = psp.getSelectedRole();
 			if (role == null) {
-				return "organization.user.selector";
+				return "organization.user.selector"; //$NON-NLS-1$
 			}
 		}
 

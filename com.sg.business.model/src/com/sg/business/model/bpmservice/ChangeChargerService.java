@@ -17,7 +17,7 @@ public class ChangeChargerService extends ServiceProvider  {
 	public Map<String, Object> run(Object arg0) {
 
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
@@ -25,12 +25,12 @@ public class ChangeChargerService extends ServiceProvider  {
 				Work work = (Work) host;
 				DBObject processData = WorkflowUtils
 						.getProcessInfoFromJSON(jsonContent);
-				String processId = (String) processData.get("processId");
-				String processName = (String) processData.get("processName");
+				String processId = (String) processData.get("processId"); //$NON-NLS-1$
+				String processName = (String) processData.get("processName"); //$NON-NLS-1$
 				IContext context = new BPMServiceContext(processName, processId);
 				
 				String oleChargerId = work.getChargerId();
-				String newChargerId = (String) getInputValue("project_manager");
+				String newChargerId = (String) getInputValue("project_manager"); //$NON-NLS-1$
 				work.addParticipate(oleChargerId);
 				work.setValue(Work.F_CHARGER, newChargerId);
 				try {

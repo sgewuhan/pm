@@ -11,6 +11,7 @@ import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.ProjectToolkit;
 
 public class WorkToProjectByProjectIdService extends ServiceProvider {
@@ -21,13 +22,13 @@ public class WorkToProjectByProjectIdService extends ServiceProvider {
 	@Override
 	public Map<String, Object> run(Object parameter) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		Object content = getInputValue("content");
+		Object content = getInputValue("content"); //$NON-NLS-1$
 		if (content instanceof String) {
 			String jsonContent = (String) content;
 			try {
 				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-				String processId = (String) host.getValue("processId");
-				String processName = (String) host.getValue("processName");
+				String processId = (String) host.getValue("processId"); //$NON-NLS-1$
+				String processName = (String) host.getValue("processName"); //$NON-NLS-1$
 				if (host instanceof Work) {
 					Work work = (Work) host;
 					// 根据工作令号获取项目
@@ -36,7 +37,7 @@ public class WorkToProjectByProjectIdService extends ServiceProvider {
 						return result;
 					}
 					// 根据项目id获取项目
-					String projectid = (String) getInputValue("projectid");
+					String projectid = (String) getInputValue("projectid"); //$NON-NLS-1$
 					ObjectId project_id = new ObjectId(projectid);
 					if (project_id != null) {
 						project = ModelService.createModelObject(Project.class,
@@ -51,12 +52,12 @@ public class WorkToProjectByProjectIdService extends ServiceProvider {
 					}
 
 				} else {
-					result.put("returnCode", "ERROR");
-					result.put("returnMessage", "附加工作出现错误!");
+					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+					result.put("returnMessage", Messages.get().WorkToProjectByProjectIdService_0); //$NON-NLS-1$
 				}
 			} catch (Exception e) {
-				result.put("returnCode", "ERROR");
-				result.put("returnMessage", e.getMessage());
+				result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
+				result.put("returnMessage", e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return result;

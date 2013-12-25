@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.Organization;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
@@ -20,11 +21,11 @@ public class AddOrganization implements IAddTableItemHandler {
 	public boolean addItem(final BasicDBList inputData, final AbstractFieldPart part) {
 		PrimaryObject master = part.getInput().getData();
 		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
-				"organization.selector") {
+				"organization.selector") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if(is==null||is.isEmpty()){
-					MessageUtil.showToast("请选择参与组织", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().AddOrganization_1, SWT.ICON_WARNING);
 				}else{
 					Iterator<?> iter = is.iterator();
 					while(iter.hasNext()){

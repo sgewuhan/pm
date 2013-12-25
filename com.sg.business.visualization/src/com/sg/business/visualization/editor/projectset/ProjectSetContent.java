@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.sg.business.model.ProjectProvider;
+import com.sg.business.visualization.nls.Messages;
 
 public class ProjectSetContent extends AbstractProjectSetPage {
 
@@ -74,9 +75,9 @@ public class ProjectSetContent extends AbstractProjectSetPage {
 	protected String getProjectSetPageLabel() {
 		String projectSetName = data.getProjectSetName();
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>");
-		sb.append(projectSetName + " 项目综合运营状态");
-		sb.append("</span>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>"); //$NON-NLS-1$
+		sb.append(projectSetName + Messages.get().ProjectSetContent_1);
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 	
@@ -84,16 +85,16 @@ public class ProjectSetContent extends AbstractProjectSetPage {
 		int value1 = data.sum.processing;
 		int value2 = data.sum.finished;
 		int value3 = data.sum.total;
-		projectStatusSummary.setText("进行/完成/总数：" + value1 + "/" + value2 + "/"
+		projectStatusSummary.setText(Messages.get().ProjectSetContent_3 + value1 + "/" + value2 + "/" //$NON-NLS-2$ //$NON-NLS-3$
 				+ value3);
 		value1 = data.sum.processing_normal;
 		value2 = data.sum.processing_delay;
 		value3 = data.sum.processing_advance;
-		schedualSummary.setText("正常/超期/提前：" + value1 + "/" + value2 + "/"
+		schedualSummary.setText(Messages.get().ProjectSetContent_6 + value1 + "/" + value2 + Messages.get().ProjectSetContent_8 //$NON-NLS-2$
 				+ value3);
 		value1 = data.sum.finished_cost_normal;
 		value2 = data.sum.finished_cost_over;
-		costSummary.setText("正常/超支：" + value1 + "/" + value2);
+		costSummary.setText(Messages.get().ProjectSetContent_9 + value1 + Messages.get().ProjectSetContent_10 + value2);
 
 		header.layout();
 	}

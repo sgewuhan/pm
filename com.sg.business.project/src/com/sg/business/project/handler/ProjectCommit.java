@@ -14,6 +14,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -58,10 +59,10 @@ public class ProjectCommit extends AbstractNavigatorHandler {
 
 				Shell shell = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getShell();
-				int i = MessageUtil.showMessage(shell, "计划提交",
-						"计划提交工作已经创建，您是否需要立即开始该工作？" + "\n"
-								+ "选择YES将立刻开始提交工作并启动流程。" + "\n"
-								+ "选择NO,您可以在我的工作中重新编辑并在以后提交。", SWT.YES | SWT.NO
+				int i = MessageUtil.showMessage(shell, Messages.get().ProjectCommit_0,
+						Messages.get().ProjectCommit_1 + "\n" //$NON-NLS-2$
+								+ Messages.get().ProjectCommit_3 + "\n" //$NON-NLS-2$
+								+ Messages.get().ProjectCommit_5, SWT.YES | SWT.NO
 								| SWT.ICON_QUESTION);
 				if (i == SWT.YES) {
 					// 在该编辑器确定后启动工作

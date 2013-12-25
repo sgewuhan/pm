@@ -14,11 +14,11 @@ import com.sg.business.model.WorkOrderPeriodCost;
 
 public class BasicPeriodCostAdapter {
 
-	public static final String ORGCODE = "org";
-	public static final String COSECENTERCODE = "cost";
-	public static final String ACCOUNTNUMERS = "account";
-	public static final String YEAR = "year";
-	public static final String MONTH = "month";
+	public static final String ORGCODE = "org"; //$NON-NLS-1$
+	public static final String COSECENTERCODE = "cost"; //$NON-NLS-1$
+	public static final String ACCOUNTNUMERS = "account"; //$NON-NLS-1$
+	public static final String YEAR = "year"; //$NON-NLS-1$
+	public static final String MONTH = "month"; //$NON-NLS-1$
 
 
 	/**

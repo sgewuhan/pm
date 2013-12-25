@@ -18,6 +18,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.etl.ProjectPresentation;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
 
@@ -135,7 +136,7 @@ public class ProjectTypeProvider extends ProjectProvider {
 		Object ids = getOrganizationIdCascade(null).toArray();
 		dbo.put(Project.F_PROJECT_TYPE_OPTION, getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in", ids));
+				new BasicDBObject().append("$in", ids)); //$NON-NLS-1$
 		return dbo;
 	}
 
@@ -197,7 +198,7 @@ public class ProjectTypeProvider extends ProjectProvider {
 
 	@Override
 	public String getProjectSetName() {
-		return getDesc() + "ÏîÄ¿¼¯";
+		return getDesc() + Messages.get().ProjectTypeProvider_1;
 	}
 
 	@Override
@@ -208,5 +209,16 @@ public class ProjectTypeProvider extends ProjectProvider {
 	@Override
 	public String getDesc() {
 		return desc;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		Object ids = getOrganizationIdCascade(null).toArray();
+		query.put(Project.F_PROJECT_TYPE_OPTION, getDesc());
+		query.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", ids));
+		return projectCol.distinct(Project.F__ID, query);
 	}
 }

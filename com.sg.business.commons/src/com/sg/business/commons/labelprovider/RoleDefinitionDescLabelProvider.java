@@ -2,6 +2,7 @@ package com.sg.business.commons.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
@@ -18,10 +19,10 @@ public class RoleDefinitionDescLabelProvider extends ColumnLabelProvider {
 				Organization org = role.getOrganization();
 				return org.getPath();
 			} else {
-				return "ÏîÄ¿½ÇÉ«";
+				return Messages.get().RoleDefinitionDescLabelProvider_0;
 			}
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 

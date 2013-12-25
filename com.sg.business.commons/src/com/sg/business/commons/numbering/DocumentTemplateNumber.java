@@ -12,7 +12,7 @@ public class DocumentTemplateNumber extends ExtendValue {
 	public Object getExtendValue() {
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C__IDS);
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_TEMPLATE_NUMBER);
-		return String.format("%06x", id).toUpperCase();
+		return String.format("%06x", id).toUpperCase(); //$NON-NLS-1$
 	}
 
 

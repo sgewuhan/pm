@@ -13,8 +13,8 @@ public class WorkEventConfigurator extends Configurator {
 
 	public WorkEventConfigurator(IConfigurationElement ce) {
 		super(ce);
-		this.name =getString("name");
-		this.eventType = getString("eventType");
+		this.name =getString("name"); //$NON-NLS-1$
+		this.eventType = getString("eventType"); //$NON-NLS-1$
 	}
 
 	public String getName() {
@@ -26,11 +26,11 @@ public class WorkEventConfigurator extends Configurator {
 	}
 
 	public IWorkFilter getWorkFilter(){
-		return (IWorkFilter) getExecutable("workFilter");
+		return (IWorkFilter) getExecutable("workFilter"); //$NON-NLS-1$
 	}
 	
 	public IEventAction getEventAction(){
-		return (IEventAction) getExecutable("eventAction");
+		return (IEventAction) getExecutable("eventAction"); //$NON-NLS-1$
 
 	}
 	

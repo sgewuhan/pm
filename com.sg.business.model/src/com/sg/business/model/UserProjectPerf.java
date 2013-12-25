@@ -15,15 +15,16 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.etl.ProjectPresentation;
+import com.sg.business.model.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 public class UserProjectPerf extends ProjectProvider {
 
-	public static final String F_PROJECT_ID = "project_id";
+	public static final String F_PROJECT_ID = "project_id"; //$NON-NLS-1$
 
-	public static final String F_USERID = "userid";
+	public static final String F_USERID = "userid"; //$NON-NLS-1$
 
-	public static final String EDITOR_SETTING = "editor.visualization.addprojectset";
+	public static final String EDITOR_SETTING = "editor.visualization.addprojectset"; //$NON-NLS-1$
 
 	public List<PrimaryObject> getProjectSet() {
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
@@ -52,36 +53,36 @@ public class UserProjectPerf extends ProjectProvider {
 	}
 
 	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
-		List<?> projectidlist = getProjectIdList();
+		List<ObjectId> projectidlist = getAllProjectId();
 		BasicDBObject dbo = new BasicDBObject();
-		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist));
+		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist)); //$NON-NLS-1$
 		if (start != null && stop != null) {
-			dbo.put("$or",
+			dbo.put("$or", //$NON-NLS-1$
 					new BasicDBObject[] {
 
 							new BasicDBObject().append(Project.F_ACTUAL_START,
-									new BasicDBObject().append("$gte", start)
-											.append("$lte", stop)),
+									new BasicDBObject().append("$gte", start) //$NON-NLS-1$
+											.append("$lte", stop)), //$NON-NLS-1$
 
 							new BasicDBObject().append(Project.F_PLAN_FINISH,
-									new BasicDBObject().append("$gte", start)
-											.append("$lte", stop)),
+									new BasicDBObject().append("$gte", start) //$NON-NLS-1$
+											.append("$lte", stop)), //$NON-NLS-1$
 
 							new BasicDBObject().append(Project.F_ACTUAL_FINISH,
-									new BasicDBObject().append("$gte", start)
-											.append("$lte", stop)),
+									new BasicDBObject().append("$gte", start) //$NON-NLS-1$
+											.append("$lte", stop)), //$NON-NLS-1$
 
 							new BasicDBObject().append(
-									"$and",
+									"$and", //$NON-NLS-1$
 									new BasicDBObject[] {
 											new BasicDBObject().append(
 													Project.F_ACTUAL_START,
 													new BasicDBObject().append(
-															"$lte", start)),
+															"$lte", start)), //$NON-NLS-1$
 											new BasicDBObject().append(
 													Project.F_ACTUAL_FINISH,
 													new BasicDBObject().append(
-															"$gte", stop)) }) });
+															"$gte", stop)) }) }); //$NON-NLS-1$
 
 		}
 		return dbo;
@@ -92,8 +93,10 @@ public class UserProjectPerf extends ProjectProvider {
 	 * 
 	 * @return
 	 */
-	private List<?> getProjectIdList() {
-		return (List<?>) getValue(F_PROJECT_ID);
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getAllProjectId() {
+		return  (List<ObjectId>) getValue(F_PROJECT_ID);
 	}
 
 	@Override
@@ -103,7 +106,7 @@ public class UserProjectPerf extends ProjectProvider {
 
 	@Override
 	public String getTypeName() {
-		return "自定义项目组合";
+		return Messages.get().UserProjectPerf_0;
 	}
 
 	@Override
@@ -134,4 +137,5 @@ public class UserProjectPerf extends ProjectProvider {
 		DBCollection col = getCollection();
 		col.insert(data);
 	}
+
 }

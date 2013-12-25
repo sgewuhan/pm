@@ -24,7 +24,7 @@ public class CostSummary extends ColumnLabelProvider {
 			}
 		}
 		
-		return String.format("%.2f",sum);
+		return String.format("%.2f",sum); //$NON-NLS-1$
 	}
 
 }

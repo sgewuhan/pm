@@ -44,7 +44,7 @@ public class ColumnLocator extends Shell {
 								suggestArray[i][0], suggestArray[i][1]) {
 							@Override
 							public String getLabel() {
-								return getContent() + "|" + getDescription();
+								return getContent() + "|" + getDescription(); //$NON-NLS-1$
 							}
 						};
 						result.add(cp);
@@ -56,7 +56,7 @@ public class ColumnLocator extends Shell {
 									suggestArray[i][0], suggestArray[i][1]) {
 								@Override
 								public String getLabel() {
-									return getContent() + "|"
+									return getContent() + "|" //$NON-NLS-1$
 											+ getDescription();
 								}
 							};
@@ -178,7 +178,7 @@ public class ColumnLocator extends Shell {
 	protected void scrollColumn(String text) {
 		TableColumn[] columns = table.getColumns();
 		for (int i = 0; i < columns.length; i++) {
-			String number = (String) columns[i].getData("accountNumber");
+			String number = (String) columns[i].getData("accountNumber"); //$NON-NLS-1$
 			if (text.equals(number)) {
 				table.showColumn(columns[i]);
 			}

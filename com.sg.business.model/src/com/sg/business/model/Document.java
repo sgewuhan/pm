@@ -39,6 +39,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
@@ -52,122 +53,122 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	/**
 	 * 缺省主版本号
 	 */
-	public static final String[] DEFAULT_MAJOR_VID_SEQ = new String[] { "A",
-			"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+	public static final String[] DEFAULT_MAJOR_VID_SEQ = new String[] { "A", //$NON-NLS-1$
+			"B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 
 	/**
 	 * 已发布
 	 */
-	public static final String STATUS_RELEASED_ID = "released";
-	public static final String STATUS_RELEASED_TEXT = "已发布";
+	public static final String STATUS_RELEASED_ID = "released"; //$NON-NLS-1$
+	public static final String STATUS_RELEASED_TEXT = Messages.get().Document_0;
 
 	/**
 	 * 工作中
 	 */
-	public static final String STATUS_WORKING_ID = "working";
-	public static final String STATUS_WORKING_TEXT = "工作中";
+	public static final String STATUS_WORKING_ID = "working"; //$NON-NLS-1$
+	public static final String STATUS_WORKING_TEXT = Messages.get().Document_1;
 
 	/**
 	 * 已废弃
 	 */
-	public static final String STATUS_DEPOSED_ID = "deposed";
-	public static final String STATUS_DEPOSED_TEXT = "已废弃";
+	public static final String STATUS_DEPOSED_ID = "deposed"; //$NON-NLS-1$
+	public static final String STATUS_DEPOSED_TEXT = Messages.get().Document_2;
 
 	/**
 	 * 文档类型
 	 */
-	public static final String F_DOCUMENT_TYPE = "documenttype";
+	public static final String F_DOCUMENT_TYPE = "documenttype"; //$NON-NLS-1$
 
 	/**
 	 * 文档编号
 	 */
-	public static final String F_DOCUMENT_NUMBER = "documentnumber";
+	public static final String F_DOCUMENT_NUMBER = "documentnumber"; //$NON-NLS-1$
 
 	/**
 	 * 摘要信息
 	 */
-	public static final String F__SUMMARY = "_summary";
+	public static final String F__SUMMARY = "_summary"; //$NON-NLS-1$
 
 	/**
 	 * 文件夹_id字段值
 	 */
-	public static final String F_FOLDER_ID = "folder_id";
+	public static final String F_FOLDER_ID = "folder_id"; //$NON-NLS-1$
 
 	/**
 	 * 文档附件的存储位置
 	 */
-	public static final String F_VAULT = "vault";
+	public static final String F_VAULT = "vault"; //$NON-NLS-1$
 
 	/**
 	 * 附件不能为空
 	 */
-	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty";
+	public static final String F_ATTACHMENT_CANNOT_EMPTY = "attachmentcannotempty"; //$NON-NLS-1$
 
 	/**
 	 * 文档描述
 	 */
-	public static final String F_DESCRIPTION = "description";
+	public static final String F_DESCRIPTION = "description"; //$NON-NLS-1$
 
 	/**
 	 * 文件命名空间
 	 */
-	public static final String FILE_NAMESPACE = "vault_file";
+	public static final String FILE_NAMESPACE = "vault_file"; //$NON-NLS-1$
 
 	/**
 	 * 数据库名称
 	 */
-	public static final String FILE_DB = "pm2";
+	public static final String FILE_DB = "pm2"; //$NON-NLS-1$
 
 	/**
 	 * 文档编辑器ID
 	 */
-	public static final String EDITOR = "editor.document.generic";
+	public static final String EDITOR = "editor.document.generic"; //$NON-NLS-1$
 
-	public static final String F_WORK_ID = "work_id";
+	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 
 	/**
 	 * 主版本号
 	 */
-	public static final String F_MAJOR_VID = "major_vid";
+	public static final String F_MAJOR_VID = "major_vid"; //$NON-NLS-1$
 
 	/**
 	 * 文档状态
 	 */
-	public static final String F_LIFECYCLE = "status";
+	public static final String F_LIFECYCLE = "status"; //$NON-NLS-1$
 
 	/**
 	 * 是否锁定
 	 */
-	public static final String F_LOCK = "islocked";
+	public static final String F_LOCK = "islocked"; //$NON-NLS-1$
 
 	/**
 	 * 锁定者
 	 */
-	public static final String F_LOCKED_BY = "lockedby";
+	public static final String F_LOCKED_BY = "lockedby"; //$NON-NLS-1$
 
 	/**
 	 * 锁定时间
 	 */
-	public static final String F_LOCKED_ON = "lockdate";
+	public static final String F_LOCKED_ON = "lockdate"; //$NON-NLS-1$
 
 	/**
 	 * 链接到PDM的ID
 	 */
-	public static final String F_PDM_OUID = "pdm_ouid";
+	public static final String F_PDM_OUID = "pdm_ouid"; //$NON-NLS-1$
 
 	/**
 	 * 审批历史
 	 */
-	public static final String F_WF_HISTORY = "wf_history";
+	public static final String F_WF_HISTORY = "wf_history"; //$NON-NLS-1$
 
-	public static final String F_SECOND_VID = "svid";
+	public static final String F_SECOND_VID = "svid"; //$NON-NLS-1$
 
-	public static final String F_FILEBASE = "filebase";
+	public static final String F_FILEBASE = "filebase"; //$NON-NLS-1$
 
 	@Override
 	protected String[] getVersionFields() {
-		return new String[] { "$all" };
+		return new String[] { "$all" }; //$NON-NLS-1$
 	}
 
 	@Override
@@ -198,7 +199,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		DBCollection ids = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C__IDS);
 
-		String prefix = "";
+		String prefix = ""; //$NON-NLS-1$
 		Project project = getProject();
 		if (project != null) {
 			prefix = project.getProjectNumber();
@@ -217,8 +218,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			}
 		}
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER
-				+ "." + prefix);
-		String seq = String.format("%03d", id).toUpperCase();
+				+ "." + prefix); //$NON-NLS-1$
+		String seq = String.format("%03d", id).toUpperCase(); //$NON-NLS-1$
 		String codeValue = prefix + seq;
 		setValue(F_DOCUMENT_NUMBER, codeValue);
 	}
@@ -238,16 +239,16 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			BasicDBObject condition = new BasicDBObject();
 			condition.put(Document.F_DOCUMENT_NUMBER, documentNumber);
 			condition.put(Document.F__ID,
-					new BasicDBObject().append("$ne", get_id()));
+					new BasicDBObject().append("$ne", get_id())); //$NON-NLS-1$
 			long l = getRelationCountByCondition(Document.class, condition);
 			if (l > 0) {
-				throw new Exception("该文档编号已存在，请重新录入文档编号");
+				throw new Exception(Messages.get().Document_3);
 			}
 		}
 	}
 
 	protected void generatePreview() {
-		Job job = new Job("generate preview internal") {
+		Job job = new Job("generate preview internal") { //$NON-NLS-1$
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				OpenOfficeConnection connection = new SocketOpenOfficeConnection(
@@ -276,8 +277,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						if (previewUtil.isPreviewAvailable()) {
 							continue;
 						}
-						String pathname = System.getProperty("user.dir")
-								+ "/temp";
+						String pathname = System.getProperty("user.dir") //$NON-NLS-1$
+								+ "/temp"; //$NON-NLS-1$
 						try {
 							serverFile = remoteFile.createServerFile(pathname);
 						} catch (IOException e1) {
@@ -287,8 +288,8 @@ public class Document extends PrimaryObject implements IProjectRelative {
 						previewOid = new ObjectId();
 						String masterfileName = serverFile.getName();
 						String previewFileName = masterfileName.substring(0,
-								masterfileName.lastIndexOf(".")) + ".pdf";
-						previewFile = new File(serverFile.getParent() + "/"
+								masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$ //$NON-NLS-2$
+						previewFile = new File(serverFile.getParent() + "/" //$NON-NLS-1$
 								+ previewFileName);
 
 						// 如果目标路径不存在, 则新建该路径
@@ -351,7 +352,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		collection.update(
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
-						"$set",
+						"$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_MAJOR_VID, major)
 								.append(F_SECOND_VID, 0x0)
 								.append(F_LIFECYCLE, STATUS_WORKING_ID)));
@@ -363,7 +364,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		String[] seq = null;
 		if (value != null) {
 			try {
-				seq = value.split(",");
+				seq = value.split(","); //$NON-NLS-1$
 			} catch (Exception e) {
 			}
 		}
@@ -479,7 +480,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	 */
 	@Override
 	public String getTypeName() {
-		return "文档";
+		return "文档"; //$NON-NLS-1$
 	}
 
 	/**
@@ -516,7 +517,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		DBCollection col = getCollection();
 		WriteResult ws = col.update(
 				new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set",
+				new BasicDBObject().append("$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_FOLDER_ID, get_id)));
 
 		checkWriteResult(ws);
@@ -534,11 +535,11 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	public String getTypeIconURL() {
 		String type = getDocumentType();
 		if (!Utils.isNullOrEmpty(type)) {
-			return FileUtil.getImageURL("doc_" + type + "_24.png",
+			return FileUtil.getImageURL("doc_" + type + "_24.png", //$NON-NLS-1$ //$NON-NLS-2$
 					BusinessResource.PLUGIN_ID);
 		}
 
-		return FileUtil.getImageURL("doc_generic_24.png",
+		return FileUtil.getImageURL("doc_generic_24.png", //$NON-NLS-1$
 				BusinessResource.PLUGIN_ID);
 	}
 
@@ -546,7 +547,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		// Integer vid = getIntegerValue(F__VID);
 		Integer vid = getIntegerValue(F_SECOND_VID);
 		String release = getStringValue(F_MAJOR_VID);
-		return release + "." + vid;
+		return release + "." + vid; //$NON-NLS-1$
 	}
 
 	public String getLifecycle() {
@@ -604,7 +605,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 			String name = getCollectionName();
 			IFileServerDelegator fsd = ModelActivator
 					.getFileServerDelegator(name);
-			Assert.isNotNull(fsd, "没有定义文件服务器");
+			Assert.isNotNull(fsd, Messages.get().Document_4);
 			return fsd.getFiles(this);
 		} else {
 			List<RemoteFile> remoteFiles = getGridFSFileValue(F_VAULT);
@@ -625,13 +626,13 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		// 检查文档编号
 		String documentNumber = getDocumentNumber();
 		if (Utils.isNullOrEmpty(documentNumber)) {
-			throw new Exception("文档缺少编号：" + this);
+			throw new Exception(Messages.get().Document_5 + this);
 		}
 
 		// 检查文件
 		List<IServerFile> sf = getServerFileValue();
 		if (sf.isEmpty()) {
-			throw new Exception("必须交付的文档缺少附件：" + this);
+			throw new Exception(Messages.get().Document_6 + this);
 		}
 
 	}
@@ -647,7 +648,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		DBCollection col = getCollection();
 		col.update(new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
-						"$set",
+						"$set", //$NON-NLS-1$
 						new BasicDBObject()
 								.append(F_LOCK, Boolean.TRUE)
 								.append(F_LOCKED_BY,
@@ -667,7 +668,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		col.update(
 				new BasicDBObject().append(F__ID, get_id()),
 				new BasicDBObject().append(
-						"$set",
+						"$set", //$NON-NLS-1$
 						new BasicDBObject().append(F_LOCK, Boolean.FALSE)
 								.append(F_LOCKED_BY, null)
 								.append(F_LOCKED_ON, null)));
@@ -681,9 +682,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		setValue(F_LIFECYCLE, status);
 		Date newValue = new Date();
-		setValue(status + "_date", newValue);
+		setValue(status + "_date", newValue); //$NON-NLS-1$
 		BasicDBObject object = new BasicDBObject().append(F_LIFECYCLE, status)
-				.append(status + "_date", newValue);
+				.append(status + "_date", newValue); //$NON-NLS-1$
 		if (!STATUS_WORKING_ID.equals(getLifecycle())) {
 			setValue(F_LOCK, Boolean.FALSE);
 			setValue(F_LOCKED_BY, null);
@@ -694,19 +695,19 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		DBCollection col = getCollection();
 		col.update(new BasicDBObject().append(F__ID, get_id()),
-				new BasicDBObject().append("$set", object));
+				new BasicDBObject().append("$set", object)); //$NON-NLS-1$
 	}
 
 	@Override
 	public String getLabel() {
 		String desc = getDesc();
-		desc = desc == null ? "" : desc;
+		desc = desc == null ? "" : desc; //$NON-NLS-1$
 		String num = getDocumentNumber();
 		if (Utils.isNullOrEmpty(num)) {
-			num = " * ";
+			num = " * "; //$NON-NLS-1$
 		}
 		String rev = getRevId();
-		return desc + "|" + num + " [" + rev + "]";
+		return desc + "|" + num + " [" + rev + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public boolean canLock(IContext context) {
@@ -728,7 +729,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 	}
 
 	public Date getReleaseOn() {
-		return getDateValue(STATUS_RELEASED_ID + "_date");
+		return getDateValue(STATUS_RELEASED_ID + "_date"); //$NON-NLS-1$
 	}
 
 	@SuppressWarnings({ "rawtypes" })

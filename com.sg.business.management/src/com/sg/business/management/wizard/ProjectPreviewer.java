@@ -4,6 +4,7 @@ import org.eclipse.jface.wizard.Wizard;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 
@@ -15,7 +16,7 @@ public class ProjectPreviewer extends Wizard {
 	private BasicDBList filters = new BasicDBList();
 
 	public ProjectPreviewer(ProjectTemplate projectTemplate) {
-		setWindowTitle("项目工作和交付物预览");
+		setWindowTitle(Messages.get().ProjectPreviewer_0);
 		setProjectTemplate(projectTemplate);
 	}
 

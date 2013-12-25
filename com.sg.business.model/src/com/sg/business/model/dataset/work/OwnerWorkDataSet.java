@@ -19,7 +19,7 @@ public class OwnerWorkDataSet extends SingleDBCollectionDataSetFactory {
 		// 只需要进行中和已完成的
 		BasicDBObject wip = new BasicDBObject().append(Work.F_LIFECYCLE, Work.STATUS_WIP_VALUE);
 		BasicDBObject finish = new BasicDBObject().append(Work.F_LIFECYCLE,Work.STATUS_FINIHED_VALUE);
-		condition.put("$or", new Object[] { wip, finish });
+		condition.put("$or", new Object[] { wip, finish }); //$NON-NLS-1$
 
 		setQueryCondition(condition);
 		setSort(new BasicDBObject().append(Work.F__ID, -1));

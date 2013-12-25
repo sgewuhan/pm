@@ -11,6 +11,7 @@ import org.eclipse.ui.PlatformUI;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.commons.dnd.DropPrimaryObjectTarget;
 import com.sg.widgets.viewer.CTreeViewer;
 import com.sg.widgets.viewer.ViewerControl;
@@ -36,8 +37,8 @@ public class DropProjectFolder extends DropPrimaryObjectTarget {
 						.getActiveWorkbenchWindow().getShell();
 				MessageBox mb = new MessageBox(shell, SWT.ICON_QUESTION
 						| SWT.YES | SWT.NO);
-				mb.setMessage("当前需移动的信息中包括根文件夹，是否跳过根文件夹继续移动?");
-				mb.setText("移动到其它文件夹");
+				mb.setMessage(Messages.get().DropProjectFolder_0);
+				mb.setText(Messages.get().DropProjectFolder_1);
 				int ret = mb.open();
 				if (ret == SWT.YES) {
 					try {

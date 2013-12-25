@@ -16,12 +16,12 @@ public class UserFinishTaskSelectMenu  extends AbstractUserTaskSelectMenu {
 
 	@Override
 	protected String getCommandId() {
-		return "runtimework.wffinish";
+		return "runtimework.wffinish"; //$NON-NLS-1$
 	}
 
 	@Override
 	protected String getContributionId() {
-		return "work.processing.finishtask";
+		return "work.processing.finishtask"; //$NON-NLS-1$
 	}
 
 }

@@ -21,6 +21,7 @@ import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -30,93 +31,93 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	/**
 	 * 上级的消息id
 	 */
-	public static final String F_PARENT_MESSAGE = "parent_id";
+	public static final String F_PARENT_MESSAGE = "parent_id"; //$NON-NLS-1$
 
 	/**
 	 * 发送者字段，userid
 	 */
-	public static final String F_SENDER = "sender";
+	public static final String F_SENDER = "sender"; //$NON-NLS-1$
 
 	/**
 	 * 接收者
 	 */
-	public static final String F_RECIEVER = "reciever";
+	public static final String F_RECIEVER = "reciever"; //$NON-NLS-1$
 
 	/**
 	 * 标题字段
 	 */
-	public static final String F_DESC = "desc";
+	public static final String F_DESC = "desc"; //$NON-NLS-1$
 
 	/**
 	 * 内容
 	 */
-	public static final String F_CONTENT = "content";
+	public static final String F_CONTENT = "content"; //$NON-NLS-1$
 
 	/**
 	 * 发送日期
 	 */
-	private static final String F_SENDDATE = "senddate";
+	private static final String F_SENDDATE = "senddate"; //$NON-NLS-1$
 
 	/**
 	 * 接收日期
 	 */
-	public static final String F_RECIEVEDDATE = "recievedate";
+	public static final String F_RECIEVEDDATE = "recievedate"; //$NON-NLS-1$
 
 	/**
 	 * 已读标志,DBObject类型字段,保存了用户ID，是否已读<br/>
 	 * {"zhonghua": true,"zhansan":true}
 	 */
-	public static final String F_MARK_READ = "markread";
+	public static final String F_MARK_READ = "markread"; //$NON-NLS-1$
 
 	/**
 	 * 星标标志
 	 */
-	public static final String F_MARK_STAR = "markstar";
+	public static final String F_MARK_STAR = "markstar"; //$NON-NLS-1$
 
 	/**
 	 * 废件箱
 	 */
-	public static final String F_WASTE = "waste";
+	public static final String F_WASTE = "waste"; //$NON-NLS-1$
 
 	/**
 	 * 重要度
 	 */
-	public static final String F_IMPORTANCE = "importance";
+	public static final String F_IMPORTANCE = "importance"; //$NON-NLS-1$
 
 	/**
 	 * 电子邮件提醒发送日期
 	 */
-	public static final String F_EMAIL_NOTICE_DATE = "emailnoticedate";
+	public static final String F_EMAIL_NOTICE_DATE = "emailnoticedate"; //$NON-NLS-1$
 
 	/**
 	 * 附件,文件列表型字段
 	 */
-	public static final String F_ATTACHMENT = "attachment";
+	public static final String F_ATTACHMENT = "attachment"; //$NON-NLS-1$
 
 	/**
 	 * 回复编辑器ID
 	 */
-	public static final String EDITOR_REPLY = "message.editor.reply";
+	public static final String EDITOR_REPLY = "message.editor.reply"; //$NON-NLS-1$
 
 	/**
 	 * 新消息编辑器
 	 */
-	public static final String EDITOR_SEND = "message.editor.create";
+	public static final String EDITOR_SEND = "message.editor.create"; //$NON-NLS-1$
 
 	/**
 	 * 消息查看编辑器
 	 */
-	public static final String EDITOR_VIEW = "message.editor.view";
+	public static final String EDITOR_VIEW = "message.editor.view"; //$NON-NLS-1$
 
 	/**
 	 * 消息查看HTML编辑器
 	 */
-	public static final String EDITOR_HTMLVIEW = "message.editor.htmlview";
+	public static final String EDITOR_HTMLVIEW = "message.editor.htmlview"; //$NON-NLS-1$
 
 	/**
 	 * 使用html的内容
 	 */
-	public static final String F_ISHTMLBODY = "ishtmlcontent";
+	public static final String F_ISHTMLBODY = "ishtmlcontent"; //$NON-NLS-1$
 
 	/**
 	 * 构建回复信息对象
@@ -131,7 +132,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		BasicDBList recieverList = new BasicDBList();
 		recieverList.add(value);
 		reply.setValue(F_RECIEVER, recieverList);
-		reply.setValue(F_DESC, "RE:" + getDesc());
+		reply.setValue(F_DESC, "RE:" + getDesc()); //$NON-NLS-1$
 		return reply;
 	}
 
@@ -289,7 +290,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		boolean isReply = isReply();
 		boolean isRead = isRead(new CurrentAccountContext());
 		boolean isStar = isStar(new CurrentAccountContext());
-		String userid = "";
+		String userid = ""; //$NON-NLS-1$
 		try {
 			userid = UserSessionContext.getAccountInfo().getConsignerId();
 		} catch (Exception e) {
@@ -298,34 +299,34 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		}
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 
 		// 添加日期
 		SimpleDateFormat sdf = new SimpleDateFormat(
 				Utils.SDF_DATETIME_COMPACT_SASH);
 		Date date = (Date) getValue(F_SENDDATE);
 		String sendDate = sdf.format(date);
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 		sb.append(sendDate);
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		// 添加图标
 		String imageUrl = null;
 		// 如果为已读消息，显示图标地址为getImageURLForOpen()
 		if (isRead || userid.equals(getValue(F_SENDER))) {
-			imageUrl = "<img src='"
+			imageUrl = "<img src='" //$NON-NLS-1$
 					+ getImageURLForOpen()
-					+ "' style='float:left;padding:6px' width='24' height='24' />";
+					+ "' style='float:left;padding:6px' width='24' height='24' />"; //$NON-NLS-1$
 		} else {
-			imageUrl = "<img src='"
+			imageUrl = "<img src='" //$NON-NLS-1$
 					+ (isReply ? getImageURLForReply() : getImageURL())
-					+ "' style='float:left;padding:6px' width='24' height='24' />";
+					+ "' style='float:left;padding:6px' width='24' height='24' />"; //$NON-NLS-1$
 		}
 		sb.append(imageUrl);
 
 		if (isStar) {
-			sb.append("<img src='" + getImageURLForStar()
-					+ "' width='14' height='14' />");
+			sb.append("<img src='" + getImageURLForStar() //$NON-NLS-1$
+					+ "' width='14' height='14' />"); //$NON-NLS-1$
 		}
 		// 添加主题
 		String label = getLabel();
@@ -334,18 +335,18 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		if (isRead || getValue(F_SENDER).equals(userid)) {
 			sb.append(label);
 		} else {
-			sb.append("<b>" + label + "</b>");
+			sb.append("<b>" + label + "</b>"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		Object importance = getValue(F_IMPORTANCE);
 		if (!Utils.isNullOrEmptyString(importance)) {
-			sb.append("  (");
+			sb.append("  ("); //$NON-NLS-1$
 			sb.append(importance);
-			sb.append(")");
+			sb.append(")"); //$NON-NLS-1$
 		}
 
-		sb.append("</span><br/>");
+		sb.append("</span><br/>"); //$NON-NLS-1$
 
-		sb.append("<small>");
+		sb.append("<small>"); //$NON-NLS-1$
 
 		String senderId = (String) getValue(F_SENDER);
 		
@@ -354,15 +355,15 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		 * BUG:10003 zhonghua 消息中显示发件人null, 这些发件人是系统发件或者是后台发件
 		 */
 		if (sender == null) {
-			sb.append("From: " + senderId);
+			sb.append("From: " + senderId); //$NON-NLS-1$
 		} else {
-			sb.append("From: " + sender);
+			sb.append("From: " + sender); //$NON-NLS-1$
 		}
-		sb.append("  ");
+		sb.append("  "); //$NON-NLS-1$
 		String recieverLabel = getRecieverLabel();
-		sb.append("To: " + recieverLabel);
+		sb.append("To: " + recieverLabel); //$NON-NLS-1$
 
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -373,7 +374,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	 * @return String
 	 */
 	public String getRecieverLabel() {
-		String result = "";
+		String result = ""; //$NON-NLS-1$
 		Object value = getValue(F_RECIEVER);
 		if (value instanceof BasicBSONList) {
 			BasicBSONList recieverList = (BasicBSONList) value;
@@ -386,7 +387,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 					result = user.getLabel();
 					// 如果收件人有多个人，则显示第一个收件人加省略号
 					if (recieverList.size() > 1) {
-						result += " ...";
+						result += " ..."; //$NON-NLS-1$
 					}
 				}
 			}
@@ -445,7 +446,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 			// new AccountEvent(AccountEvent.EVENT_MESSAGE, this));
 			// }
 		} else {
-			throw new Exception("缺少收件人");
+			throw new Exception(Messages.get().Message_0);
 
 		}
 
@@ -505,17 +506,17 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 
 		BasicBSONList targetlist = getTargetList();
 		if (targetlist != null && targetlist.size() > 0) {
-			sb.append("<br/><br/><br/>请查阅：");
+			sb.append(Messages.get().Message_1);
 
 			for (int i = 0; i < targetlist.size(); i++) {
-				sb.append("<br/><a href='"+ Portal.getHttpRoot()+ "/direct?");
+				sb.append("<br/><a href='"+ Portal.getHttpRoot()+ "/direct?"); //$NON-NLS-1$ //$NON-NLS-2$
 				DBObject target = (DBObject) targetlist.get(i);
-				sb.append("id="+target.get(SF_TARGET));
-				sb.append("&class="+target.get(SF_TARGET_CLASS));
-				sb.append("&editable="+target.get(SF_TARGET_EDITABLE));
-				sb.append("&edittype="+target.get(SF_TARGET_EDITING_TYPE));
-				sb.append("&editor="+target.get(SF_TARGET_EDITOR));
-				sb.append("'>" + target.get(SF_TARGET_NAME) + "</a>");
+				sb.append("id="+target.get(SF_TARGET)); //$NON-NLS-1$
+				sb.append("&class="+target.get(SF_TARGET_CLASS)); //$NON-NLS-1$
+				sb.append("&editable="+target.get(SF_TARGET_EDITABLE)); //$NON-NLS-1$
+				sb.append("&edittype="+target.get(SF_TARGET_EDITING_TYPE)); //$NON-NLS-1$
+				sb.append("&editor="+target.get(SF_TARGET_EDITOR)); //$NON-NLS-1$
+				sb.append("'>" + target.get(SF_TARGET_NAME) + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			}
 		}
@@ -524,7 +525,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		while (iter.hasNext()) {
 			User reciever = iter.next();
 			String to = reciever.getEmail();
-			String content = reciever.getUsername() + ", " + sb.toString();
+			String content = reciever.getUsername() + ", " + sb.toString(); //$NON-NLS-1$
 			MailJob job = new MailJob(to, subject, content);
 			job.schedule();
 		}
@@ -571,6 +572,6 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 
 	@Override
 	public String getTypeName() {
-		return "消息";
+		return Messages.get().Message_2;
 	}
 }

@@ -39,11 +39,11 @@ public class SubConcessionsAuditSaveOfAudit implements
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
 		List<String> userList = new ArrayList<String>();
-		Object value = taskform.getValue("data_audit");
+		Object value = taskform.getValue("data_audit"); //$NON-NLS-1$
 		if (value instanceof List) {
 			userList.add((String) value);
 		}
-		value = taskform.getValue("prj_manager");
+		value = taskform.getValue("prj_manager"); //$NON-NLS-1$
 		if (value instanceof List) {
 			userList.add((String) value);
 		}

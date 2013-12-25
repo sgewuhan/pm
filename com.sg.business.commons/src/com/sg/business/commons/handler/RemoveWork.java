@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
@@ -26,7 +27,7 @@ public class RemoveWork extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择一项执行删除", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().RemoveWork_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -37,9 +38,9 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		Shell shell = part.getSite().getShell();
 
 		int size = selection.size();
-		int yes = MessageUtil.showMessage(shell, "删除" + selected.getDesc()
-				+ (size > 1 ? " 等工作。" : ""), "您确定要删除 " + selected.getDesc()
-				+ (size > 1 ? " 等工作" : " 工作") + "吗？\n该操作将不可恢复，选择YES确认删除。",
+		int yes = MessageUtil.showMessage(shell, Messages.get().RemoveWork_1 + selected.getDesc()
+				+ (size > 1 ? Messages.get().RemoveWork_2 : ""), Messages.get().RemoveWork_4 + selected.getDesc() //$NON-NLS-2$ //$NON-NLS-1$
+				+ (size > 1 ? Messages.get().RemoveWork_5 : Messages.get().RemoveWork_6) + Messages.get().RemoveWork_7,
 				SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 		if (yes != SWT.YES) {
 			return;
@@ -111,8 +112,8 @@ public class RemoveWork extends AbstractNavigatorHandler {
 		Assert.isNotNull(currentViewerControl);
 
 		if (selected.getParentPrimaryObjectCache() == null) {
-			MessageUtil.showToast(shell, "删除" + selected.getTypeName(), "顶级"
-					+ selected.getTypeName() + "不可删除", SWT.ICON_WARNING);
+			MessageUtil.showToast(shell, Messages.get().RemoveWork_8 + selected.getTypeName(), Messages.get().RemoveWork_9
+					+ selected.getTypeName() + Messages.get().RemoveWork_10, SWT.ICON_WARNING);
 			return false;
 		}
 
@@ -133,7 +134,7 @@ public class RemoveWork extends AbstractNavigatorHandler {
 					new Integer(INavigatorActionListener.REFRESH));
 
 		} catch (Exception e) {
-			MessageUtil.showMessage(shell, "删除" + selected.getTypeName(),
+			MessageUtil.showMessage(shell, Messages.get().RemoveWork_11 + selected.getTypeName(),
 					e.getMessage(), SWT.ICON_WARNING);
 			return false;
 		}

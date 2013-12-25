@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.Deliverable;
+import com.sg.business.project.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -26,7 +27,7 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择工作后添加交付物", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().CreateDeliverable_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -51,13 +52,13 @@ public class CreateDeliverable extends AbstractNavigatorHandler {
 				po.getDefaultEditorId());
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, "添加" + po.getTypeName());
+					true, null, Messages.get().CreateDeliverable_1 + po.getTypeName());
 			// 4. 将更改消息传递到编辑器
 			sendNavigatorActionEvent(part, INavigatorActionListener.CUSTOMER,
 					new Integer(INavigatorActionListener.REFRESH));
 		} catch (Exception e) {
 			e.printStackTrace();
-			MessageUtil.showToast(shell, "添加" + po.getTypeName(),
+			MessageUtil.showToast(shell, Messages.get().CreateDeliverable_2 + po.getTypeName(),
 					e.getMessage(), SWT.ICON_ERROR);
 		}
 

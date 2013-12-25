@@ -16,6 +16,7 @@ import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.performence.nls.Messages;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
@@ -39,16 +40,16 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 				return getRuntimeWorkHTMLLabel(work);
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	private String getProjectHTMLLabel(Work work) {
 		Project project = work.getProject();
 		if (project == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 
 		// **********************************************************************************
 		// 右侧第一行，标记
@@ -56,14 +57,14 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 		String userId = context.getAccountInfo().getConsignerId();
 		boolean userMarked = work.isMarked(userId);
 		if (userMarked) {
-			String selectbar = "<img src='"
+			String selectbar = "<img src='" //$NON-NLS-1$
 					+ getSelectorURL(work, ImageResource.BLUE_BULLETIN)
-					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />"; //$NON-NLS-1$
 			sb.append(selectbar);
 		} else {
-			String selectbar = "<img src='"
+			String selectbar = "<img src='" //$NON-NLS-1$
 					+ getSelectorURL(work, ImageResource.WHITE_BULLETIN)
-					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+					+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />"; //$NON-NLS-1$
 			sb.append(selectbar);
 
 		}
@@ -73,40 +74,40 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 		// 如果需要再指派，添加再指派图标
 		String assignerId = work.getAssignerId();
 		if (userId.equals(assignerId)) {
-			String imageUrl = "<img src='"
+			String imageUrl = "<img src='" //$NON-NLS-1$
 					+ FileUtil.getImageURL(
 							BusinessResource.IMAGE_REASSIGNMENT_24,
 							BusinessResource.PLUGIN_ID,
 							BusinessResource.IMAGE_FOLDER)
-					+ "' style='float:right;padding-right:4px' width='24' height='24' />";
+					+ "' style='float:right;padding-right:4px' width='24' height='24' />"; //$NON-NLS-1$
 			sb.append(imageUrl);
 		}
 
 		User charger = project.getCharger();
 		if (charger != null) {
-			sb.append("<span style='float:right;padding-right:4px'>");
+			sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 			sb.append(charger);
-			sb.append("</span>");
+			sb.append("</span>"); //$NON-NLS-1$
 		}
 
 		// **********************************************************************************
 		// 左侧第一行，工作图标
-		String imageUrl = "<img src='"
+		String imageUrl = "<img src='" //$NON-NLS-1$
 				+ FileUtil.getImageURL(BusinessResource.IMAGE_PROJECT_32,
 						BusinessResource.PLUGIN_ID,
 						BusinessResource.IMAGE_FOLDER)
-				+ "' style='float:left;padding:6px' width='24' height='24' />";
+				+ "' style='float:left;padding:6px' width='24' height='24' />"; //$NON-NLS-1$
 		sb.append(imageUrl);
 
 		String desc = project.getDesc();
 		desc = Utils.getPlainText(desc);
-		sb.append("<b>项目: " + desc + "</b>");
+		sb.append(Messages.get().RuntimeWorkLabelprovider2_1 + desc + "</b>"); //$NON-NLS-2$
 
 		String projectNumber = project.getProjectNumber();
-		sb.append(" [" + projectNumber + "]");
+		sb.append(" [" + projectNumber + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Date _planStart = project.getPlanStart();
-		String planStart = "";
+		String planStart = ""; //$NON-NLS-1$
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_MONTH_DATE_COMPACT_SASH);
 
 		if (_planStart != null) {
@@ -119,30 +120,30 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 		// "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
 		// sb.append(selectbar);
 
-		sb.append(" ");
+		sb.append(" "); //$NON-NLS-1$
 		sb.append(planStart);
-		sb.append("~");
+		sb.append("~"); //$NON-NLS-1$
 
 		Date _planFinish = project.getPlanFinish();
-		String planFinish = "";
+		String planFinish = ""; //$NON-NLS-1$
 		if (_planFinish != null) {
 			planFinish = sdf.format(_planFinish);
 		}
 		sb.append(planFinish);
-		sb.append("  ");
+		sb.append("  "); //$NON-NLS-1$
 
-		sb.append("<br/><small>");
+		sb.append("<br/><small>"); //$NON-NLS-1$
 		String[] workOrders = project.getWorkOrders();
 		for (int i = 0; i < workOrders.length; i++) {
 			if (i == 0) {
-				sb.append("<b>WON</b>:");
+				sb.append("<b>WON</b>:"); //$NON-NLS-1$
 			} else {
-				sb.append(" ");
+				sb.append(" "); //$NON-NLS-1$
 			}
 			sb.append(workOrders[i]);
 		}
 
-		sb.append("</small></span>");
+		sb.append("</small></span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -160,9 +161,9 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 
 		boolean isOwner = isOwner(work, userId);
 		if (!isOwner) {
-			sb.append("<span style='color:#bbbbbb;FONT-FAMILY:微软雅黑;font-size:9pt'>");
+			sb.append("<span style='color:#bbbbbb;FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 		} else {
-			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>");
+			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 		}
 
 		// ---------------------------------------------------------------------------
@@ -195,35 +196,35 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 
 			}
 		}
-		String selectbar = "<img src='"
+		String selectbar = "<img src='" //$NON-NLS-1$
 				+ selectbarUrl
-				+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />";
+				+ "' style='float:right;padding:0px;margin:0px' width='6' height='40' />"; //$NON-NLS-1$
 		sb.append(selectbar);
 		// -----------------------------------------------------------------------------------------
 
 		
 		if (charger != null) {
-			sb.append("<span style='float:right;padding-right:4px'>");
+			sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 			sb.append(charger);
-			sb.append("</span>");
+			sb.append("</span>"); //$NON-NLS-1$
 		}
 
 		String assignerId = work.getAssignerId();
 		if (userId.equals(assignerId)) {
-			String imageUrl = "<img src='"
+			String imageUrl = "<img src='" //$NON-NLS-1$
 					+ FileUtil.getImageURL(
 							BusinessResource.IMAGE_REASSIGNMENT_16,
 							BusinessResource.PLUGIN_ID,
 							BusinessResource.IMAGE_FOLDER)
-							+ "' style='float:right' width='16' height='16' />";
+							+ "' style='float:right' width='16' height='16' />"; //$NON-NLS-1$
 			sb.append(imageUrl);
 		}
 
 		IProcessControl pc = (IProcessControl) work
 				.getAdapter(IProcessControl.class);
 
-		String imageUrl = "<img src='" + getHeaderImageURL(work, pc)
-				+ "' style='float:left;padding:6px' width='16' height='16' />";
+		String imageUrl = "<img src='" + getHeaderImageURL(work, pc) //$NON-NLS-1$
+				+ "' style='float:left;padding:6px' width='16' height='16' />"; //$NON-NLS-1$
 		sb.append(imageUrl);
 
 		// 工作desc
@@ -233,18 +234,18 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 		
 		Project project = work.getProject();
 		if(project!=null){
-			sb.append(" ");
-			sb.append("项目:");
+			sb.append(" "); //$NON-NLS-1$
+			sb.append(Messages.get().RuntimeWorkLabelprovider2_0);
 			sb.append(project);
 		}
 		
 		// 有关时间
-		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small>"); //$NON-NLS-1$
 
 		sb.append(getWorkflowSummaryInformation(work,userId));
 
-		String planStart = "";
+		String planStart = ""; //$NON-NLS-1$
 		if (_planStart != null) {
 			planStart = sdf.format(_planStart);
 		}
@@ -255,41 +256,41 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 		// "' style='float:left;padding:px;margin:0px' width='16' height='8' />";
 		// sb.append(selectbar);
 
-		sb.append("");
-		sb.append("<b>P</b>:");
+		sb.append(""); //$NON-NLS-1$
+		sb.append("<b>P</b>:"); //$NON-NLS-1$
 		sb.append(planStart);
-		sb.append("~");
+		sb.append("~"); //$NON-NLS-1$
 
-		String planFinish = "";
+		String planFinish = ""; //$NON-NLS-1$
 		if (_planFinish != null) {
 			planFinish = sdf.format(_planFinish);
 		}
 		sb.append(planFinish);
-		sb.append("  ");
+		sb.append("  "); //$NON-NLS-1$
 
-		String actualStart = "";
+		String actualStart = ""; //$NON-NLS-1$
 		if (_actualStart != null) {
 			actualStart = sdf.format(_actualStart);
 		}
-		sb.append("<b>A</b>:");
+		sb.append("<b>A</b>:"); //$NON-NLS-1$
 		sb.append(actualStart);
-		sb.append("~");
+		sb.append("~"); //$NON-NLS-1$
 
-		String actualFinish = "";
+		String actualFinish = ""; //$NON-NLS-1$
 		if (_actualFinish != null) {
 			actualFinish = sdf.format(_actualFinish);
 		}
 		sb.append(actualFinish);
-		sb.append("  ");
+		sb.append("  "); //$NON-NLS-1$
 
-		sb.append("<b>D</b>:");
+		sb.append("<b>D</b>:"); //$NON-NLS-1$
 
 		Integer actualDuration = work.getActualDuration();
 		if (actualDuration == null) {
 			actualDuration = 0;
 		}
 		sb.append(actualDuration);
-		sb.append("/");
+		sb.append("/"); //$NON-NLS-1$
 
 		Integer planDuration = work.getPlanDuration();
 		if (planDuration == null) {
@@ -297,35 +298,35 @@ public class RuntimeWorkLabelprovider2 extends ConfiguratorColumnLabelProvider {
 		}
 		sb.append(planDuration);
 
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
 	private String getWorkflowSummaryInformation(Work work,String userId) {
 		UserTask userTask = work.getLastDisplayTask(userId);
 		if(userTask == null){
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 		// 根据状态取流程图标
 		Object taskstatus = userTask.getValue(UserTask.F_STATUS);
-		sb.append("<img src='" + getTaskStatusImageURL(taskstatus)
-				+ "' style='float:left;padding:6px' width='10' height='10' />");
+		sb.append("<img src='" + getTaskStatusImageURL(taskstatus) //$NON-NLS-1$
+				+ "' style='float:left;padding:6px' width='10' height='10' />"); //$NON-NLS-1$
 
 		Object taskname = userTask.getValue(UserTask.F_DESC);
-		sb.append(" ");
+		sb.append(" "); //$NON-NLS-1$
 		sb.append(taskname);
-		sb.append(" ");
+		sb.append(" "); //$NON-NLS-1$
 		Object owner = userTask.getValue(UserTask.F_ACTUALOWNER);
 		if (owner instanceof String) {
 			User ownerUser = UserToolkit.getUserById((String) owner);
 			sb.append(ownerUser);
 		}
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

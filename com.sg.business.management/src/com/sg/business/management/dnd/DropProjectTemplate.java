@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.widgets.commons.dnd.DropPrimaryObjectTarget;
@@ -33,8 +34,8 @@ public class DropProjectTemplate extends DropPrimaryObjectTarget {
 
 		MessageBox mb = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES
 				| SWT.NO | SWT.CANCEL);
-		mb.setMessage("是否复制当前项目模版到该组织中?");
-		mb.setText("更改项目模版");
+		mb.setMessage(Messages.get().DropProjectTemplate_0);
+		mb.setText(Messages.get().DropProjectTemplate_1);
 		int ret = mb.open();
 
 		Object targetPo = event.item.getData();

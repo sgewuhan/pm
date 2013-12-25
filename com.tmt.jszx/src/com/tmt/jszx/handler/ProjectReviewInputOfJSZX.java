@@ -26,12 +26,12 @@ public class ProjectReviewInputOfJSZX implements ITaskFormInputHandler {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			try {
 				List<String> reviewer_list = (ArrayList<String>) taskForm
-						.getProcessInstanceVarible("reviewer_list",
+						.getProcessInstanceVarible("reviewer_list", //$NON-NLS-1$
 								new CurrentAccountContext());
 				if (reviewer_list != null && reviewer_list.size() > 0) {
 					BasicDBList reviewerlist = new BasicDBList();
 					reviewerlist.addAll(reviewer_list);
-					taskForm.setValue("reviewer_list", reviewerlist);
+					taskForm.setValue("reviewer_list", reviewerlist); //$NON-NLS-1$
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

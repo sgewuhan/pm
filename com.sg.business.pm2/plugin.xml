@@ -5,78 +5,83 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.vis2.home"
+            name="%perspective.name.14">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.work"
-            name="工作">
+            name="%perspective.name">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.simplework"
-            name="工作">
+            name="%perspective.name.0">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.workflow"
-            name="流程">
+            name="%perspective.name.1">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis.home"
-            name="绩效总览">
+            name="%perspective.name.2">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorShowPerspective"
             id="perspective.visualization"
-            name="项目组合">
+            name="%perspective.name.3">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.resource"
-            name="资源">
+            name="%perspective.name.4">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.delay"
-            name="超期">
+            name="%perspective.name.5">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
-            name="项目管理">
+            name="%perspective.name.6">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.management"
-            name="业务管理">
+            name="%perspective.name.7">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.organization"
-            name="组织">
+            name="%perspective.name.8">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vault"
-            name="文档库">
+            name="%perspective.name.9">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.bulletinboard"
-            name="公告">
+            name="%perspective.name.10">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.system"
-            name="系统">
+            name="%perspective.name.11">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.message"
-            name="消息">
+            name="%perspective.name.12">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.finance"
-            name="财务">
+            name="%perspective.name.13">
       </perspective>
    </extension>
    <extension
@@ -683,13 +688,93 @@
                visible="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.vis2.home">
+         <view
+               closeable="false"
+               id="vis2.saleslist"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.combinnatiedrate"
+               minimized="false"
+               moveable="false"
+               ratio=".33"
+               relationship="right"
+               relative="vis2.saleslist"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitrate"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="right"
+               relative="vis2.combinnatiedrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.indicators"
+               minimized="false"
+               moveable="false"
+               ratio=".33"
+               relationship="bottom"
+               relative="vis2.combinnatiedrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.budgetandinvestmentvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".33"
+               relationship="bottom"
+               relative="vis2.profitrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="bottom"
+               relative="vis2.indicators"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.overschedualvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="bottom"
+               relative="vis2.budgetandinvestmentvolumn"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
       <scenario
             id="visualization"
             isDefault="true"
-            name="绩效可视化（展现组织的绩效数据，需要同时具备管理者角色）">
+            name="%scenario.name">
          <perspective
                id="perspective.vis.home">
          </perspective>
@@ -701,7 +786,7 @@
       <scenario
             id="work"
             isDefault="true"
-            name="工作与流程（包括所有工作有关的透视图）">
+            name="%scenario.name.0">
          <perspective
                default="true"
                id="perspective.work">
@@ -712,14 +797,14 @@
       </scenario>
       <scenario
             id="work.simple"
-            name="个人工作管理">
+            name="%scenario.name.1">
          <perspective
                id="perspective.simplework"></perspective>
       </scenario>
       <scenario
             id="projectmanagement"
             isDefault="true"
-            name="项目管理（管理项目以及延期工作，需要同时具备项目管理员角色）">
+            name="%scenario.name.2">
          <perspective
                id="perspective.project">
          </perspective>
@@ -727,28 +812,28 @@
       <scenario
             id="resourcemanagement"
             isDefault="true"
-            name="资源管理（管理部门资源，需同时具备项目管理员或部门管理者角色）">
+            name="%scenario.name.3">
          <perspective
                id="perspective.resource">
          </perspective>
       </scenario>
       <scenario
             id="vault"
-            name="文档库">
+            name="%scenario.name.4">
          <perspective
                id="perspective.vault">
          </perspective>
       </scenario>
       <scenario
             id="businessmanager"
-            name="业务管理">
+            name="%scenario.name.5">
          <perspective
                id="perspective.management">
          </perspective>
       </scenario>
       <scenario
             id="systemmanager"
-            name="系统管理">
+            name="%scenario.name.6">
          <perspective
                default="false"
                id="perspective.organization">
@@ -759,13 +844,13 @@
       </scenario>
       <scenario
             id="message"
-            name="消息">
+            name="%scenario.name.7">
          <perspective
                id="perspective.message"></perspective>
       </scenario>
       <scenario
             id="bulletinboard"
-            name="公告">
+            name="%scenario.name.8">
          <perspective
                id="perspective.bulletinboard">
          </perspective>
@@ -785,21 +870,21 @@
             id="editor.user"
             isDefault="true"
             labelFieldName="username"
-            name="用户"
-            titleToolTips="用户">
+            name="%editor.name"
+            titleToolTips="%editor.titleToolTips">
          <basicpage
-               description="用户的基本信息"
+               description="%basicpage.description"
                id="basicpage.1"
-               title="基本信息">
+               title="%basicpage.title">
             <pagecolumn
                   id="1">
                <section
-                     label="基本信息">
+                     label="%section.label">
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
                         id="userid"
-                        label="用户编号"
+                        label="%text.label"
                         labelVisible="true"
                         name="userid"
                         persistable="true"
@@ -810,7 +895,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="username"
-                        label="姓名"
+                        label="%text.label.0"
                         labelVisible="true"
                         name="username"
                         persistable="true"
@@ -833,24 +918,24 @@
                         editable="false"
                         id="password"
                         isPassword="true"
-                        label="密码"
+                        label="%text.label.2"
                         labelVisible="true"
                         name="password"
                         persistable="true"
                         required="false"
-                        tooltips="请在HR系统中设定"
+                        tooltips="%text.tooltips"
                         type="String">
                   </text>
                </section>
             </pagecolumn>
             <pagecolumn>
                <section
-                     label="照片">
+                     label="%section.label.0">
                   <file
                         editPart="ImageUploader(Multi)"
                         editable="true"
                         id="headpic"
-                        label="头像"
+                        label="%file.label"
                         labelVisible="false"
                         name="headpic"
                         persistable="true"
@@ -864,14 +949,14 @@
             collectionName="setting"
             dbName="pm2"
             id="admin.editor.globalsetting"
-            name="全局设置">
+            name="%editor.name.0">
          <basicpage
                id="basicpage"
-               title="全局设置">
+               title="%basicpage.title.0">
             <pagecolumn
                   id="1">
                <section
-                     label="全局设置">
+                     label="%section.label.1">
                   <combo
                         editPart="Combo(Read Only)"
                         editable="true"
@@ -890,7 +975,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="desc"
-                           label="名称"
+                           label="%text.label.3"
                            labelVisible="true"
                            name="desc"
                            persistable="true"
@@ -901,7 +986,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="value"
-                           label="值"
+                           label="%text.label.4"
                            labelVisible="true"
                            name="value"
                            persistable="true"
@@ -913,7 +998,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.5"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -928,20 +1013,20 @@
             collectionName="setting"
             dbName="pm2"
             id="admin.editor.personalsetting"
-            name="个人设置">
+            name="%editor.name.1">
          <basicpage
                id="basicpage"
-               title="个人设置">
+               title="%basicpage.title.1">
             <pagecolumn
                   id="1">
                <section
-                     label="个人设置">
+                     label="%section.label.2">
                   <text
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="userid"
-                        label="用户ID"
+                        label="%text.label.6"
                         labelVisible="true"
                         name="userid"
                         persistable="true"
@@ -952,7 +1037,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="varid"
-                        label="ID"
+                        label="%combo.label.0"
                         labelVisible="true"
                         name="varid"
                         option="setting.id"
@@ -966,7 +1051,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="desc"
-                           label="名称"
+                           label="%text.label.7"
                            labelVisible="true"
                            name="desc"
                            persistable="true"
@@ -977,7 +1062,7 @@
                            editPart="Text(Single Line)"
                            editable="true"
                            id="value"
-                           label="值"
+                           label="%text.label.8"
                            labelVisible="true"
                            name="value"
                            persistable="true"
@@ -989,7 +1074,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="description"
-                        label="说明"
+                        label="%text.label.9"
                         labelVisible="true"
                         name="description"
                         persistable="true"
@@ -1005,126 +1090,126 @@
          point="com.sg.widgets.option">
       <option
             id="setting.id"
-            label="setting.id"
+            label="%option.label"
             value="setting.id">
          <option
                id="PROJECT.COMMIT.DURATION"
-               label="PROJECT.COMMIT.DURATION"
+               label="%option.label.0"
                value="PROJECT.COMMIT.DURATION">
          </option>
          <option
                id="WORK.RESERVED.REFRESH.INTERVAL"
-               label="WORK.RESERVED.REFRESH.INTERVAL"
+               label="%option.label.1"
                value="WORK.RESERVED.REFRESH.INTERVAL">
          </option>
 		 <option
                id="WORK.RESERVED.REFRESH.SYSTEM"
-               label="WORK.RESERVED.REFRESH.SYSTEM"
+               label="%option.label.2"
                value="WORK.RESERVED.REFRESH.SYSTEM">
          </option>
          <option
                id="MESSAGEINBOX.REFRESH.INTERVAL"
-               label="MESSAGEINBOX.REFRESH.INTERVAL"
+               label="%option.label.3"
                value="MESSAGEINBOX.REFRESH.INTERVAL">
          </option>
          <option
                id="TASK.DELAYMARK"
-               label="TASK.DELAYMARK"
+               label="%option.label.4"
                value="TASK.DELAYMARK">
          </option>
          <option
                id="SYSTEM.PROCESS_BASE_URL"
-               label="SYSTEM.PROCESS_BASE_URL"
+               label="%option.label.5"
                value="SYSTEM.PROCESS_BASE_URL">
          </option>
          <option
                id="EAI.SAP.MAXCONN"
-               label="EAI.SAP.MAXCONN"
+               label="%option.label.6"
                value="EAI.SAP.MAXCONN">
          </option>
          <option
                id="EAI.SAP.CLIENT"
-               label="EAI.SAP.CLIENT"
+               label="%option.label.7"
                value="EAI.SAP.CLIENT">
          </option>
          <option
                id="EAI.SAP.USERID"
-               label="EAI.SAP.USERID"
+               label="%option.label.8"
                value="EAI.SAP.USERID">
          </option>
          <option
                id="EAI.SAP.PASSWORD"
-               label="EAI.SAP.PASSWORD"
+               label="%option.label.9"
                value="EAI.SAP.PASSWORD">
          </option>
          <option
                id="EAI.SAP.LANG"
-               label="EAI.SAP.LANG"
+               label="%option.label.10"
                value="EAI.SAP.LANG">
          </option>
          <option
                id="EAI.SAP.HOST"
-               label="EAI.SAP.HOST"
+               label="%option.label.11"
                value="EAI.SAP.HOST">
          </option>
          <option
                id="EAI.SAP.INSTANCENUMBER"
-               label="EAI.SAP.INSTANCENUMBER"
+               label="%option.label.12"
                value="EAI.SAP.INSTANCENUMBER">
          </option>
          <option
                id="MAJOR_VID_SEQ"
-               label="MAJOR_VID_SEQ"
+               label="%option.label.13"
                value="MAJOR_VID_SEQ">
          </option>
          <option
                id="BI.OVER.COST.ESTIMATE"
-               label="BI.OVER.COST.ESTIMATE"
+               label="%option.label.14"
                value="BI.OVER.COST.ESTIMATE">
          </option>
          <option
                id="TASKRESERVED.REFRESH.INTERVAL"
-               label="TASKRESERVED.REFRESH.INTERVAL"
+               label="%option.label.15"
                value="TASKRESERVED.REFRESH.INTERVAL">
          </option>
       </option>
       <option
             id="bugtype"
-            label="问题类型"
+            label="%option.label.16"
             value="bugtype">
          <option
                id="系统出错"
-               label="系统出错">
+               label="%option.label.17">
          </option>
          <option
                id="操作不便"
                value="操作不便"
-               label="操作不便">
+               label="%option.label.18">
          </option>
          <option
                id="建议"
-               label="建议"
+               label="%option.label.19"
                value="建议">
          </option>
          <option
                id="其他"
-               label="其他"
+               label="%option.label.20"
                value="其他">
          </option>
          
       </option>
       <option
             id="bugstatus"
-            label="问题状态"
+            label="%option.label.21"
             value="bugstatus">
          <option
                id="开放状态"
-               label="开放状态"
+               label="%option.label.22"
                value="开放状态">
          </option>
          <option
                id="已关闭"
-               label="已关闭"
+               label="%option.label.23"
                value="已关闭">
          </option>
       </option>
@@ -1134,7 +1219,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="com.mobnut.portal.main"
-            name="vis">
+            name="%product.name">
          <property
                name="appName"
                value="vis">

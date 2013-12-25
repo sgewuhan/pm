@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Display;
 import com.mobnut.admin.IFunctionExcutable;
 import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.vault.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 public class Index implements IFunctionExcutable {
@@ -19,23 +20,27 @@ public class Index implements IFunctionExcutable {
 	@Override
 	public void run() {
 		final Display display = Display.getCurrent();
-		Job job = new IndexJob(IModelConstants.DB,IModelConstants.C_DOCUMENT,Document.F_VAULT);
+		Job job = new IndexJob(IModelConstants.DB, IModelConstants.C_DOCUMENT,
+				Document.F_VAULT);
 		job.setUser(true);
-		job.addJobChangeListener(new JobChangeAdapter(){
+		job.addJobChangeListener(new JobChangeAdapter() {
 
 			@Override
 			public void done(IJobChangeEvent event) {
-				display.asyncExec(new Runnable(){
+				display.asyncExec(new Runnable() {
 
 					@Override
 					public void run() {
-						MessageUtil.showToast(null,"建立索引","索引建立完成",SWT.ICON_INFORMATION);
+						MessageUtil.showToast(null,
+								Messages.get(display).Index_0,
+								Messages.get(display).Index_1,
+								SWT.ICON_INFORMATION);
 					}
-					
+
 				});
-				
+
 			}
-			
+
 		});
 		job.schedule();
 	}

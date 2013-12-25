@@ -11,9 +11,9 @@ public class WorkPlanDuration extends ColumnLabelProvider {
 		if (element instanceof Work) {
 			Integer value = ((Work) element).getPlanDuration();
 			if (value != null) {
-				return "" + value;
+				return "" + value; //$NON-NLS-1$
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

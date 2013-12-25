@@ -9,7 +9,7 @@ import com.sg.business.model.IModelConstants;
 
 public class SAPConnectionPool {
 
-	public static String POOL_NAME = "SAPJCO";
+	public static String POOL_NAME = "SAPJCO"; //$NON-NLS-1$
 
 	public Client connSAP() {
 
@@ -24,27 +24,27 @@ public class SAPConnectionPool {
 		}
 
 		value = Setting.getSystemSetting(IModelConstants.S_EAI_SAP_CLIENT);
-		String client = Utils.isNullOrEmptyString(value) ? "700"
+		String client = Utils.isNullOrEmptyString(value) ? "700" //$NON-NLS-1$
 				: (String) value;
 
 		value = Setting.getSystemSetting(IModelConstants.S_EAI_SAP_USERID);
-		String userid = Utils.isNullOrEmptyString(value) ? "ITFSAP"
+		String userid = Utils.isNullOrEmptyString(value) ? "ITFSAP" //$NON-NLS-1$
 				: (String) value;
 
 		value = Setting.getSystemSetting(IModelConstants.S_EAI_SAP_PASSWORD);
-		String password = Utils.isNullOrEmptyString(value) ? "12392008"
+		String password = Utils.isNullOrEmptyString(value) ? "12392008" //$NON-NLS-1$
 				: (String) value;
 
 		value = Setting.getSystemSetting(IModelConstants.S_EAI_SAP_LANGUAGE);
-		String lang = Utils.isNullOrEmptyString(value) ? "ZH" : (String) value;
+		String lang = Utils.isNullOrEmptyString(value) ? "ZH" : (String) value; //$NON-NLS-1$
 
 		value = Setting.getSystemSetting(IModelConstants.S_EAI_SAP_HOST);
-		String host = Utils.isNullOrEmptyString(value) ? "172.16.9.74"
+		String host = Utils.isNullOrEmptyString(value) ? "172.16.9.74" //$NON-NLS-1$
 				: (String) value;
 
 		value = Setting
 				.getSystemSetting(IModelConstants.S_EAI_SAP_INSTANCENUMBER);
-		String instance = Utils.isNullOrEmptyString(value) ? "00"
+		String instance = Utils.isNullOrEmptyString(value) ? "00" //$NON-NLS-1$
 				: (String) value;
 
 		Client mConnection = null;

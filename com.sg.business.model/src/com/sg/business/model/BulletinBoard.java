@@ -28,52 +28,52 @@ public class BulletinBoard extends PrimaryObject {
 	/**
 	 * 发布/回复人
 	 */
-	public static final String F_PUBLISHER = "publisher";
+	public static final String F_PUBLISHER = "publisher"; //$NON-NLS-1$
 
 	/**
 	 * 发布/回复日期
 	 */
-	public static final String F_PUBLISH_DATE = "publish_date";
+	public static final String F_PUBLISH_DATE = "publish_date"; //$NON-NLS-1$
 
 	/**
 	 * 所属组织ID
 	 */
-	public static final String F_ORGANIZATION_ID = "organization_id";
+	public static final String F_ORGANIZATION_ID = "organization_id"; //$NON-NLS-1$
 
 	/**
 	 * 所属项目ID
 	 */
-	public static final String F_PROJECT_ID = "project_id";
+	public static final String F_PROJECT_ID = "project_id"; //$NON-NLS-1$
 
 	/**
 	 * 公告内容
 	 */
-	public static final String F_CONTENT = "content";
+	public static final String F_CONTENT = "content"; //$NON-NLS-1$
 
 	/**
 	 * 上级公告id
 	 */
-	public static final String F_PARENT_BULLETIN = "parent_id";
+	public static final String F_PARENT_BULLETIN = "parent_id"; //$NON-NLS-1$
 
 	/**
 	 * 所有的上级
 	 */
-	public static final String F_SUPER_BULLETIN = "supers";
+	public static final String F_SUPER_BULLETIN = "supers"; //$NON-NLS-1$
 
 	/**
 	 * 附件,文件列表型字段
 	 */
-	public static final String F_ATTACHMENT = "attachment";
+	public static final String F_ATTACHMENT = "attachment"; //$NON-NLS-1$
 
 	/**
 	 * 回复编辑器
 	 */
-	public static final String EDITOR_REPLY = "bulletinboard.editor.reply";
+	public static final String EDITOR_REPLY = "bulletinboard.editor.reply"; //$NON-NLS-1$
 
 	/**
 	 * 公告编辑器
 	 */
-	public static final String EDITOR_CREATE = "bulletinboard.editor.create";
+	public static final String EDITOR_CREATE = "bulletinboard.editor.create"; //$NON-NLS-1$
 
 	/**
 	 * @return : {@link String},发起/回复人
@@ -147,27 +147,27 @@ public class BulletinBoard extends PrimaryObject {
 				Organization.class, getOrganizationId())).getDesc();
 
 		// 显示标题和内容
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'><b>");
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'><b>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 		sb.append(publisher);
-		sb.append("  ");
+		sb.append("  "); //$NON-NLS-1$
 		sb.append(publishDate);
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		sb.append(label);
-		sb.append("</b></span>");
+		sb.append("</b></span>"); //$NON-NLS-1$
 
-		sb.append("<br/><small>");
+		sb.append("<br/><small>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 		sb.append(org);
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		sb.append(content);
 
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -188,22 +188,22 @@ public class BulletinBoard extends PrimaryObject {
 		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
 				date);
 
-		sb.append("<span style='padding-left:4px'>");
+		sb.append("<span style='padding-left:4px'>"); //$NON-NLS-1$
 		sb.append(publisher);
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:4px'>");
+		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
 		sb.append(publishDate);
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
-		sb.append("<br/>");
+		sb.append("<br/>"); //$NON-NLS-1$
 
 		// 设置发布部门
 		String org = ((Organization) ModelService.createModelObject(
 				Organization.class, getOrganizationId())).getDesc();
-		sb.append("<span style='padding-left:4px'>");
+		sb.append("<span style='padding-left:4px'>"); //$NON-NLS-1$
 		sb.append(org);
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -267,7 +267,7 @@ public class BulletinBoard extends PrimaryObject {
 
 	@Override
 	public String getTypeName() {
-		return "公告";
+		return "公告"; //$NON-NLS-1$
 	}
 
 	@Override

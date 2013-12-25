@@ -57,7 +57,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 		ref.put(Work.F_PARTICIPATE, new CurrentAccountContext()
 				.getAccountInfo().getConsignerId());
 		ref.put(Work.F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {
+				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 //						ILifecycle.STATUS_NONE_VALUE,
 						ILifecycle.STATUS_ONREADY_VALUE,
 						ILifecycle.STATUS_WIP_VALUE,
@@ -95,12 +95,12 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 					return null;
 				}
 			}
-			event.setTitle(project.getLabel() + "/" + work.getLabel());
+			event.setTitle(project.getLabel() + "/" + work.getLabel()); //$NON-NLS-1$
 		} else {
 			event.setTitle(work.getLabel());
 		}
 		Object workDesc = work.getValue(Work.F_DESC);
-		String description = workDesc == null ? "" : workDesc.toString();
+		String description = workDesc == null ? "" : workDesc.toString(); //$NON-NLS-1$
 		event.setDescription(description);
 		event.setNoticeMessage(0);
 		event.setStart(planStart);
@@ -154,7 +154,7 @@ public class MyCalendar extends ViewPart implements IEventSelectionListener,
 				.createModelObject(Work.class, new ObjectId(id));
 
 		NavigatorPart view = (NavigatorPart) Widgets
-				.getViewPart("work.processing");
+				.getViewPart("work.processing"); //$NON-NLS-1$
 		if (view != null) {
 			StructuredViewer viewer = view.getNavigator().getViewer();
 			viewer.setSelection(new StructuredSelection(new Object[] { work }),

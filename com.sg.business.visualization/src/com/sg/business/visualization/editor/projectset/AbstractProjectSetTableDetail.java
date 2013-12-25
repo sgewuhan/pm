@@ -27,9 +27,9 @@ public abstract class AbstractProjectSetTableDetail extends AbstractProjectSetPa
 	protected String getProjectSetPageLabel() {
 		String projectSetName = data.getProjectSetName();
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:13pt'>");
-		sb.append(projectSetName + " "+getTitle());
-		sb.append("</span>");
+		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:13pt'>"); //$NON-NLS-1$
+		sb.append(projectSetName + " "+getTitle()); //$NON-NLS-1$
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

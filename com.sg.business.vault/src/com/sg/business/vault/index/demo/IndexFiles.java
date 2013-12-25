@@ -50,39 +50,39 @@ public class IndexFiles {
 
   /** Index all text files under a directory. */
   public static void main(String[] args) {
-    String usage = "java org.apache.lucene.demo.IndexFiles"
-                 + " [-index INDEX_PATH] [-docs DOCS_PATH] [-update]\n\n"
-                 + "This indexes the documents in DOCS_PATH, creating a Lucene index"
-                 + "in INDEX_PATH that can be searched with SearchFiles";
-    String indexPath = "index";
+    String usage = "java org.apache.lucene.demo.IndexFiles" //$NON-NLS-1$
+                 + " [-index INDEX_PATH] [-docs DOCS_PATH] [-update]\n\n" //$NON-NLS-1$
+                 + "This indexes the documents in DOCS_PATH, creating a Lucene index" //$NON-NLS-1$
+                 + "in INDEX_PATH that can be searched with SearchFiles"; //$NON-NLS-1$
+    String indexPath = "index"; //$NON-NLS-1$
     String docsPath = null;
     boolean create = true;
     for(int i=0;i<args.length;i++) {
-      if ("-index".equals(args[i])) {
+      if ("-index".equals(args[i])) { //$NON-NLS-1$
         indexPath = args[i+1];
         i++;
-      } else if ("-docs".equals(args[i])) {
+      } else if ("-docs".equals(args[i])) { //$NON-NLS-1$
         docsPath = args[i+1];
         i++;
-      } else if ("-update".equals(args[i])) {
+      } else if ("-update".equals(args[i])) { //$NON-NLS-1$
         create = false;
       }
     }
 
     if (docsPath == null) {
-      System.err.println("Usage: " + usage);
+      System.err.println("Usage: " + usage); //$NON-NLS-1$
       System.exit(1);
     }
 
     final File docDir = new File(docsPath);
     if (!docDir.exists() || !docDir.canRead()) {
-      System.out.println("Document directory '" +docDir.getAbsolutePath()+ "' does not exist or is not readable, please check the path");
+      System.out.println("Document directory '" +docDir.getAbsolutePath()+ "' does not exist or is not readable, please check the path"); //$NON-NLS-1$ //$NON-NLS-2$
       System.exit(1);
     }
     
     Date start = new Date();
     try {
-      System.out.println("Indexing to directory '" + indexPath + "'...");
+      System.out.println("Indexing to directory '" + indexPath + "'..."); //$NON-NLS-1$ //$NON-NLS-2$
 
       Directory dir = FSDirectory.open(new File(indexPath));
       Analyzer analyzer = new SmartChineseAnalyzer(Version.LUCENE_44);
@@ -118,11 +118,11 @@ public class IndexFiles {
       writer.close();
 
       Date end = new Date();
-      System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+      System.out.println(end.getTime() - start.getTime() + " total milliseconds"); //$NON-NLS-1$
 
     } catch (IOException e) {
-      System.out.println(" caught a " + e.getClass() +
-       "\n with message: " + e.getMessage());
+      System.out.println(" caught a " + e.getClass() + //$NON-NLS-1$
+       "\n with message: " + e.getMessage()); //$NON-NLS-1$
     }
   }
 
@@ -173,7 +173,7 @@ public class IndexFiles {
           // field that is indexed (i.e. searchable), but don't tokenize 
           // the field into separate words and don't index term frequency
           // or positional information:
-          Field pathField = new StringField("path", file.getPath(), Field.Store.YES);
+          Field pathField = new StringField("path", file.getPath(), Field.Store.YES); //$NON-NLS-1$
           doc.add(pathField);
 
           // Add the last modified date of the file a field named "modified".
@@ -192,21 +192,21 @@ public class IndexFiles {
 //          doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(fis, "UTF-8"))));
          
           try {
-			doc.add(new TextField("contents", FileUtil.getContent(file.getName(), fis),Field.Store.NO));
+			doc.add(new TextField("contents", FileUtil.getContent(file.getName(), fis),Field.Store.NO)); //$NON-NLS-1$
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
           if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
             // New index, so we just add the document (no old document can be there):
-            System.out.println("adding " + file);
+            System.out.println("adding " + file); //$NON-NLS-1$
             writer.addDocument(doc);
           } else {
             // Existing index (an old copy of this document may have been indexed) so 
             // we use updateDocument instead to replace the old one matching the exact 
             // path, if present:
-            System.out.println("updating " + file);
-            writer.updateDocument(new Term("path", file.getPath()), doc);
+            System.out.println("updating " + file); //$NON-NLS-1$
+            writer.updateDocument(new Term("path", file.getPath()), doc); //$NON-NLS-1$
           }
           
         } finally {

@@ -41,11 +41,11 @@ public class RestoreMessage extends AbstractNavigatorHandler {
 		}
 
 		// 刷新收件箱
-		String viewId = "message.recieved";
+		String viewId = "message.recieved"; //$NON-NLS-1$
 		Widgets.refreshNavigatorView(viewId);
 
 		// 刷新发件箱
-		viewId = "message.send";
+		viewId = "message.send"; //$NON-NLS-1$
 		Widgets.refreshNavigatorView(viewId);
 	}
 

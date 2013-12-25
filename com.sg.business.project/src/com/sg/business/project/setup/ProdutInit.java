@@ -20,13 +20,13 @@ public class ProdutInit implements ISchedualJobRunnable {
 	@Override
 	public boolean run() throws Exception {
 		DBCollection col = getCol();
-		BasicDBObject append = new BasicDBObject().append("_temp_itemcode",
-				new BasicDBObject().append("$ne", null));
+		BasicDBObject append = new BasicDBObject().append("_temp_itemcode", //$NON-NLS-1$
+				new BasicDBObject().append("$ne", null)); //$NON-NLS-1$
 		DBCursor cursor = col.find(append);
 		while (cursor.hasNext()) {
 			DBObject object = cursor.next();
 			ObjectId project_id = (ObjectId) object.get(Project.F__ID);
-			BasicBSONList items = (BasicBSONList) object.get("_temp_itemcode");
+			BasicBSONList items = (BasicBSONList) object.get("_temp_itemcode"); //$NON-NLS-1$
 			for (Object item : items) {
 				ProductItem productItem = ModelService
 						.createModelObject(ProductItem.class);
@@ -41,8 +41,8 @@ public class ProdutInit implements ISchedualJobRunnable {
 		}
 		col.update(
 				append,
-				new BasicDBObject().append("$unset",
-						new BasicDBObject().append("_temp_itemcode", 1)),
+				new BasicDBObject().append("$unset", //$NON-NLS-1$
+						new BasicDBObject().append("_temp_itemcode", 1)), //$NON-NLS-1$
 				false, true);
 		
 		return true;

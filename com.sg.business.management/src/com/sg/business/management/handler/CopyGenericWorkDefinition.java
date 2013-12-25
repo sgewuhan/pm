@@ -9,6 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.management.nls.Messages;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.MessageUtil;
@@ -26,7 +27,7 @@ public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
 		final WorkDefinition workd = (WorkDefinition) selected;
 		workd.addEventListener(vc);
 		NavigatorSelector ns = new NavigatorSelector(
-				"management.genericwork.definitions") {
+				"management.genericwork.definitions") { //$NON-NLS-1$
 
 			//沒有啟用的通用工作定義不能引用
 			@Override
@@ -61,7 +62,7 @@ public class CopyGenericWorkDefinition extends AbstractNavigatorHandler {
 					}
 
 				} else {
-					MessageUtil.showToast("请选择角色定义", SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().CopyGenericWorkDefinition_1, SWT.ICON_WARNING);
 				}
 			}
 		};

@@ -8,14 +8,14 @@
             class="com.sg.business.home.view.BulletinBoardView"
             icon="image/bulletin_24.png"
             id="home.bulletinboard"
-            name="公告板"
+            name="%view.name"
             restorable="true">
       </view>
       <view
             category="home"
             class="com.sg.business.home.view.LastOpened"
             id="home.lastopen"
-            name="最近编辑"
+            name="%view.name.0"
             restorable="true">
       </view>
       <category
@@ -25,7 +25,7 @@
       <view
             class="com.sg.business.home.view.MyCalendar"
             id="home.mycalender"
-            name="日历"
+            name="%view.name.1"
             restorable="true">
       </view>
    </extension>
@@ -37,34 +37,34 @@
          <searchAction>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name"
                   type="String">
             </column>
             <column
                   column="publisher"
-                  name="发布人"
+                  name="%column.name.0"
                   type="String">
             </column>
             <column
                   column="publish_date"
-                  name="发布日期"
+                  name="%column.name.1"
                   type="Date">
             </column>
          </searchAction>
          <filterAction>
             <column
                   column="desc"
-                  name="标题"
+                  name="%column.name.2"
                   type="String">
             </column>
             <column
                   column="publisher"
-                  name="发布人"
+                  name="%column.name.3"
                   type="String">
             </column>
             <column
                   column="publish_date"
-                  name="发布日期"
+                  name="%column.name.4"
                   type="Date">
             </column>
          </filterAction>
@@ -91,7 +91,7 @@
                column="desc"
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
                lazyDisplay="true"
-               name="标题"
+               name="%column.name.5"
                style="SWT.LEFT"
                type="String"
                width="-1"></column>
@@ -105,19 +105,19 @@
          <command
                commandId="bulletinboard.create"
                icon="image/bulletin_add_24.png"
-               label="新建公告"
+               label="%command.label"
                style="push">
          </command>
          <command
                commandId="bulletinboard.reply"
                icon="image/bulleting_reply_24.png"
-               label="回复公告"
+               label="%command.label.0"
                style="push">
          </command>
          <command
                commandId="bulletinboard.open"
                icon="image/24_blank.png"
-               label="查看公告"
+               label="%command.label.1"
                style="push">
          </command>
          <separator
@@ -127,19 +127,19 @@
          <command
                commandId="com.sg.widgets.command.edit"
                icon="image/bulletin_edit_24.png"
-               label="编辑"
+               label="%command.label.2"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.refresh"
                icon="image/refresh_24.png"
-               label="更新"
+               label="%command.label.3"
                style="push">
          </command>
          <command
                commandId="com.sg.widgets.command.delete"
                icon="image/bulletin_remove_24.png"
-               label="删除"
+               label="%command.label.4"
                style="push">
          </command>
       </menuContribution>

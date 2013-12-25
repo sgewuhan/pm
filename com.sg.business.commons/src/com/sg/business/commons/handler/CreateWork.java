@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
@@ -29,7 +30,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
 			ViewerControl vc, Command command) {
-		MessageUtil.showToast("您需要选择一个上级", SWT.ICON_WARNING);
+		MessageUtil.showToast(Messages.get().CreateWork_0, SWT.ICON_WARNING);
 		return super.nullSelectionContinue(part, vc, command);
 	}
 
@@ -50,11 +51,11 @@ public class CreateWork extends AbstractNavigatorHandler {
 
 		// 使用编辑器打开编辑工作定义
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
-				"edit.work.plan.0");//使用不带流程的工作编辑器进行创建
+				"edit.work.plan.0");//使用不带流程的工作编辑器进行创建 //$NON-NLS-1$
 
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,
-					true, null, "创建" + po.getTypeName());
+					true, null, Messages.get().CreateWork_2 + po.getTypeName());
 			
 			//刷新上级数据
 			List<PrimaryObject> tobeRefresh = new ArrayList<PrimaryObject>();
@@ -72,7 +73,7 @@ public class CreateWork extends AbstractNavigatorHandler {
 					new Integer(INavigatorActionListener.REFRESH));
 
 		} catch (Exception e) {
-			MessageUtil.showToast(shell, "创建" + po.getTypeName(),
+			MessageUtil.showToast(shell, Messages.get().CreateWork_3 + po.getTypeName(),
 					e.getMessage(), SWT.ICON_ERROR);
 		}
 

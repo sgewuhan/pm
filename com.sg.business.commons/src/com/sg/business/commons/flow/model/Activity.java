@@ -25,12 +25,12 @@ public class Activity extends FlowElement {
 	public static final String NAME = "name"; //$NON-NLS-1$
 	static {
 		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(
-				NAME, "Name") };
+				NAME, "Name") }; //$NON-NLS-1$
 	}
 
 	static final long serialVersionUID = 1;
 	private List<Transition> inputs = new ArrayList<Transition>();
-	private String name = "Activity";
+	private String name = "Activity"; //$NON-NLS-1$
 	private List<Transition> outputs = new ArrayList<Transition>();
 	private int sortIndex;
 
@@ -139,7 +139,7 @@ public class Activity extends FlowElement {
 	public String toString() {
 		String className = getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
-		return className + "(" + name + ")";
+		return className + "(" + name + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setHistory(List<Map<String, Object>> history) {
@@ -155,7 +155,7 @@ public class Activity extends FlowElement {
 			Iterator<Map<String, Object>> iter = history.iterator();
 			while (iter.hasNext()) {
 				Map<String, Object> historyItem = iter.next();
-				if ("complete".equals(historyItem.get("form_action"))) {
+				if ("complete".equals(historyItem.get("form_action"))) { //$NON-NLS-1$ //$NON-NLS-2$
 					return true;
 				}
 			}

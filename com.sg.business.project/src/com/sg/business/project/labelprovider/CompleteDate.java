@@ -11,15 +11,15 @@ import com.sg.business.model.UserTask;
 public class CompleteDate extends ColumnLabelProvider {
 	@Override
 	public String getText(Object element) {
-		DateFormat df = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+		DateFormat df = new SimpleDateFormat("yy/MM/dd HH:mm:ss"); //$NON-NLS-1$
 		if (element instanceof UserTask) {
 			UserTask userTask = (UserTask) element;
-			Object value = userTask.getValue("Completed");
+			Object value = userTask.getValue("Completed"); //$NON-NLS-1$
 			if (value instanceof Date) {
 				return df.format((Date) value);
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }

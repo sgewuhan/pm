@@ -15,16 +15,17 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.WorkflowService;
+import com.sg.business.model.nls.Messages;
 
 public class TaskForm extends PrimaryObject {
 
-	public static final String F_WORK_ID = "work_id";
+	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
 	
-	public static final String F_EDITOR = "form_editor";
+	public static final String F_EDITOR = "form_editor"; //$NON-NLS-1$
 	
-	public static final String F_USER_TASK_ID = "usertask_id";
+	public static final String F_USER_TASK_ID = "usertask_id"; //$NON-NLS-1$
 	
-	public static final String F_PROCESSINPUT = "processinput";
+	public static final String F_PROCESSINPUT = "processinput"; //$NON-NLS-1$
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
@@ -41,13 +42,13 @@ public class TaskForm extends PrimaryObject {
 
 	public Work getWork() {
 		ObjectId workid = (ObjectId) getValue(F_WORK_ID);
-		Assert.isNotNull(workid, "任务表单无法确定关联的工作");
+		Assert.isNotNull(workid, Messages.get().TaskForm_4);
 		return ModelService.createModelObject(Work.class, workid);
 	}
 
 	public Task getExecuteTask(IContext context) throws Exception {
 		UserTask userTask = getUserTask();
-		Assert.isNotNull(userTask, "任务表单无法确定关联的工作");
+		Assert.isNotNull(userTask, Messages.get().TaskForm_5);
 		return userTask.getTask();
 	}
 
@@ -65,7 +66,7 @@ public class TaskForm extends PrimaryObject {
 	public void doAddWorkParticipatesFromField(String[] fieldlist)
 			throws Exception {
 		Work work = getWork();
-		Assert.isNotNull(work, "任务表单无法确定关联的工作");
+		Assert.isNotNull(work, Messages.get().TaskForm_6);
 
 		List<String> userList = new ArrayList<String>();
 
@@ -85,19 +86,19 @@ public class TaskForm extends PrimaryObject {
 	
 	public void doAddWorkParticipates(List<String> useridlist) throws Exception{
 		Work work = getWork();
-		Assert.isNotNull(work, "任务表单无法确定关联的工作");
+		Assert.isNotNull(work, Messages.get().TaskForm_7);
 		work.doAddParticipateList(useridlist);
 	}
 
 	public Object getProcessInstanceVarible(String varible, IContext context) throws Exception {
 		Task executeTask = getExecuteTask(context);
-		Assert.isNotNull(executeTask, "无法获得流程任务");
+		Assert.isNotNull(executeTask, Messages.get().TaskForm_8);
 		TaskData taskData = executeTask.getTaskData();
 		Assert.isNotNull(taskData);
 		String processId = taskData.getProcessId();
 		long processInstanceId = taskData.getProcessInstanceId();
 		WorkflowProcessInstance process = WorkflowService.getDefault().getProcessInstance(processId, processInstanceId);
-		Assert.isNotNull(process,"无法获得流程实例");
+		Assert.isNotNull(process,Messages.get().TaskForm_9);
 
 		Object value = process.getVariable(varible);
 		return value;

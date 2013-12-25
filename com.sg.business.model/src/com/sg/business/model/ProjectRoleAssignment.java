@@ -3,6 +3,7 @@ package com.sg.business.model;
 import org.bson.types.ObjectId;
 
 import com.mobnut.db.model.ModelService;
+import com.sg.business.model.nls.Messages;
 
 /**
  * 项目角色指派
@@ -20,7 +21,7 @@ public class ProjectRoleAssignment extends AbstractRoleAssignment implements
 	 */
 	@Override
 	public String getTypeName() {
-		return "项目指派";
+		return Messages.get().ProjectRoleAssignment_0;
 	}
 
 	/**

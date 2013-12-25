@@ -119,17 +119,17 @@ public class DirectWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			return;
 		}
 		try {
-			String _id = memento.getString("id");
+			String _id = memento.getString("id"); //$NON-NLS-1$
 			ObjectId id = new ObjectId(_id);
 			
-			String _class = memento.getString("class");
+			String _class = memento.getString("class"); //$NON-NLS-1$
 			DocumentModelDefinition dmd = ModelService
 					.getDocumentModelDefinition(_class);
 			
 			Class<? extends PrimaryObject> clas = dmd.getModelClass();
 			PrimaryObject po = ModelService.createModelObject(clas, id);
-			boolean editable = memento.getBoolean("editable");
-			Integer val = memento.getInteger("editype");
+			boolean editable = memento.getBoolean("editable"); //$NON-NLS-1$
+			Integer val = memento.getInteger("editype"); //$NON-NLS-1$
 			int editype;
 			if (val == null) {
 				editype = 1;
@@ -137,7 +137,7 @@ public class DirectWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 				editype = val.intValue();
 			}
 
-			String _editor = memento.getString("editor");
+			String _editor = memento.getString("editor"); //$NON-NLS-1$
 			
 			switch (editype) {
 			case UIConstants.EDITING_BY_DIALOG:

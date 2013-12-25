@@ -38,8 +38,8 @@ public class SchedualIndex implements ISchedualJobRunnable {
 	private DB db;
 	private String dbName;
 	private String collectionName;
-	public static String indexPath = System.getProperty("user.dir")
-			+ File.separator + "index";
+	public static String indexPath = System.getProperty("user.dir") //$NON-NLS-1$
+			+ File.separator + "index"; //$NON-NLS-1$
 
 	public SchedualIndex() {
 		this.dbName = IModelConstants.DB;
@@ -91,7 +91,7 @@ public class SchedualIndex implements ISchedualJobRunnable {
 					try {
 						String content = FileUtil.getContent(fileRefData);
 						indexContent(writer, content,
-								((ObjectId) dbo.get("_id")).toString(),
+								((ObjectId) dbo.get("_id")).toString(), //$NON-NLS-1$
 								(String) fileRefData.get(RemoteFile.F_DB),
 								(String) fileRefData
 										.get(RemoteFile.F_NAMESPACE),
@@ -115,26 +115,26 @@ public class SchedualIndex implements ISchedualJobRunnable {
 		Document doc = new Document();
 		System.out.println(filename);
 
-		doc.add(new StringField("docId", docId, Field.Store.YES));
-		doc.add(new StringField("docDB", dbName, Field.Store.YES));
-		doc.add(new StringField("docCollection", collectionName,
+		doc.add(new StringField("docId", docId, Field.Store.YES)); //$NON-NLS-1$
+		doc.add(new StringField("docDB", dbName, Field.Store.YES)); //$NON-NLS-1$
+		doc.add(new StringField("docCollection", collectionName, //$NON-NLS-1$
 				Field.Store.YES));
-		doc.add(new StringField("db", db, Field.Store.YES));
-		doc.add(new StringField("namespace", namespace, Field.Store.YES));
-		doc.add(new StringField("fileId", fileId, Field.Store.YES));
-		doc.add(new StringField("filename", filename, Field.Store.YES));
-		doc.add(new TextField("contents", content, Field.Store.NO));
+		doc.add(new StringField("db", db, Field.Store.YES)); //$NON-NLS-1$
+		doc.add(new StringField("namespace", namespace, Field.Store.YES)); //$NON-NLS-1$
+		doc.add(new StringField("fileId", fileId, Field.Store.YES)); //$NON-NLS-1$
+		doc.add(new StringField("filename", filename, Field.Store.YES)); //$NON-NLS-1$
+		doc.add(new TextField("contents", content, Field.Store.NO)); //$NON-NLS-1$
 
 		if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 			writer.addDocument(doc);
 		} else {
-			writer.updateDocument(new Term("docId", docId), doc);
+			writer.updateDocument(new Term("docId", docId), doc); //$NON-NLS-1$
 		}
 
 		DBCollection docCol = DBActivator.getCollection(db, collectionName);
 		String summary = Utils.getLimitLengthString(content, 500);
-		docCol.update(new BasicDBObject().append("_id", new ObjectId(docId))
-				.append("_summary", null), new BasicDBObject().append("$set",
-				new BasicDBObject().append("_summary", summary)));
+		docCol.update(new BasicDBObject().append("_id", new ObjectId(docId)) //$NON-NLS-1$
+				.append("_summary", null), new BasicDBObject().append("$set", //$NON-NLS-1$ //$NON-NLS-2$
+				new BasicDBObject().append("_summary", summary))); //$NON-NLS-1$
 	}
 }

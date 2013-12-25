@@ -18,7 +18,7 @@ public class WorkActualWorks extends ConfiguratorColumnLabelProvider {
 				return nf.format(value.doubleValue());
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 }
