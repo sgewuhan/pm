@@ -3,7 +3,7 @@
   <bpmn2:itemDefinition id="_contentItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_choiceItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_act_rule_launcherItem" structureRef="String"/>
-  <bpmn2:itemDefinition id="_act_rule_support_auditorItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_act_support_auditorItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_act_approveItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_supportItem" structureRef="String"/>
   <bpmn2:itemDefinition id="_supportnoticeItem" structureRef="String"/>
@@ -73,7 +73,7 @@
     <bpmn2:property id="content" itemSubjectRef="_contentItem"/>
     <bpmn2:property id="choice" itemSubjectRef="_choiceItem"/>
     <bpmn2:property id="act_rule_launcher" itemSubjectRef="_act_rule_launcherItem"/>
-    <bpmn2:property id="act_rule_support_auditor" itemSubjectRef="_act_rule_support_auditorItem"/>
+    <bpmn2:property id="act_support_auditor" itemSubjectRef="_act_support_auditorItem"/>
     <bpmn2:property id="act_approve" itemSubjectRef="_act_approveItem"/>
     <bpmn2:property id="support" itemSubjectRef="_supportItem"/>
     <bpmn2:property id="supportnotice" itemSubjectRef="_supportnoticeItem"/>
@@ -452,7 +452,7 @@
       </bpmn2:dataOutputAssociation>
       <bpmn2:potentialOwner id="_LNCVgV8mEeOoyuNCRQyOFA">
         <bpmn2:resourceAssignmentExpression id="_LNCVgl8mEeOoyuNCRQyOFA">
-          <bpmn2:formalExpression id="_LNCVg18mEeOoyuNCRQyOFA">#{act_rule_support_auditor}</bpmn2:formalExpression>
+          <bpmn2:formalExpression id="_LNCVg18mEeOoyuNCRQyOFA">#{act_support_auditor}</bpmn2:formalExpression>
         </bpmn2:resourceAssignmentExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
