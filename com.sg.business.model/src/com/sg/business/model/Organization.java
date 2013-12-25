@@ -1628,6 +1628,14 @@ public class Organization extends PrimaryObject {
 		}
 		return super.getAdapter(adapter);
 	}
+	
+
+	public ProjectProvider getBusinessManagedProjectProvider() {
+		OrganizationProjectProviderForSales projectProvider = ModelService
+				.createModelObject(OrganizationProjectProviderForSales.class);
+		projectProvider.setOrganization(this);
+		return projectProvider;
+	}
 
 	public boolean isCostCenter() {
 		Object value = getValue(F_COST_CENTER_CODE);
@@ -1753,5 +1761,4 @@ public class Organization extends PrimaryObject {
 		query.append(Folder.F_OPENED, Boolean.TRUE);
 		return getRelationCountByCondition(Folder.class, query);
 	}
-
 }

@@ -108,9 +108,19 @@ public class ProjectPresentation implements IProjectETL {
 	public String getLaunchOrganizationText() {
 		return (String) getETLValue(F_LAUNCH_ORGANIZATION_TEXT);
 	}
+	
+
+	public String getBusinessOrganizationText() {
+		return (String) getETLValue(F_BUSINESS_ORGANIZATION_TEXT);
+	}
 
 	public String getChargerText() {
 		return (String) getETLValue(F_CHARGER_TEXT);
+	}
+	
+
+	public String getBusinessManagerText() {
+		return (String) getETLValue(F_BUSINESS_MANAGER_TEXT);
 	}
 
 	public String getSchedualHTMLLabel() {
@@ -169,4 +179,6 @@ public class ProjectPresentation implements IProjectETL {
 			return null;
 		}
 	}
+
+
 }

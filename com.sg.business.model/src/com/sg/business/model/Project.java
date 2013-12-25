@@ -198,6 +198,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public static final String F_FOLDER_ID = "folder_id"; //$NON-NLS-1$
 
+	public static final String F_BUSINESS_ORGANIZATION = "businessorganization_id";
+
 	private SummaryProjectWorks summaryProjectWorks;
 
 	/**
@@ -252,10 +254,17 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public String getChargerId() {
 		return (String) getValue(F_CHARGER);
 	}
-	
 
-	private String getBusinessChargerId() {
+	public String getBusinessChargerId() {
 		return (String) getValue(F_BUSINESS_CHARGER);
+	}
+
+	public User getBusinessCharger() {
+		String chargerId = getBusinessChargerId();
+		if (Utils.isNullOrEmpty(chargerId)) {
+			return null;
+		}
+		return UserToolkit.getUserById(chargerId);
 	}
 
 	/**
@@ -292,6 +301,15 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return null;
 	}
 
+	public Organization getBusinessOrganization() {
+		ObjectId orgId = getBusinessOrganizationId();
+		if (orgId != null) {
+			return ModelService.createModelObject(Organization.class,
+					(ObjectId) orgId);
+		}
+		return null;
+	}
+
 	/**
 	 * 返回项目发起组织_id
 	 * 
@@ -308,6 +326,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	 */
 	public ObjectId getFunctionOrganizationId() {
 		return (ObjectId) getValue(F_FUNCTION_ORGANIZATION);
+	}
+
+	public ObjectId getBusinessOrganizationId() {
+		return (ObjectId) getValue(F_BUSINESS_ORGANIZATION);
 	}
 
 	/**
@@ -1461,15 +1483,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		List<?> participates = getParticipatesIdList();
 		String userId = context.getAccountInfo().getConsignerId();
 
-		if( participates != null && participates.contains(userId)){
+		if (participates != null && participates.contains(userId)) {
 			return true;
 		}
-		
-		//如果是项目商务负责人，可以打开
+
+		// 如果是项目商务负责人，可以打开
 		String businessChargerId = getBusinessChargerId();
 		return userId.equals(businessChargerId);
 	}
-
 
 	@Override
 	public String getLifecycleStatusText() {
@@ -2333,29 +2354,63 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	}
 
 	/**
-	 * 更改值，同时将更改同步到ETL数据
+	 * 更改ETL数据
 	 * 
 	 * @param field
 	 * @param value
 	 * @throws Exception
 	 */
-	public void doModifyValueWithETL(String field, String value)
-			throws Exception {
+	public void doModifyETL(String field, String value) throws Exception {
 		// 更新本记录值
 		DBCollection col = getCollection();
 		WriteResult ws = col.update(
 				queryThis(),
 				new BasicDBObject().append("$set",
-						new BasicDBObject().append(field, value).append(
-						"etl." + field, value)));
+						new BasicDBObject().append("etl." + field, value)));
+		checkWriteResult(ws);
+	}
+
+	public void doModifyMonthETL(String field, String value) throws Exception {
+		DBCollection col = getCollection(IModelConstants.C_PROJECT_MONTH_DATA);
+		WriteResult ws = col.update(
+				new BasicDBObject().append(ProjectMonthlyETL.F_PROJECTID,
+						this.get_id()),
+				new BasicDBObject().append("$set",
+						new BasicDBObject().append(field, value)));
 		checkWriteResult(ws);
 
-		//更新月记录值
+	}
+
+	public void doUpdateBusinessManager(User user) {
+		String userid = user.getUserid();
+		String username = user.getUsername();
+
+		Organization org = user.getOrganization();
+		ObjectId orgid = org.get_id();
+		String orgtext = org.getPath(2);
+
+		// 更新项目
+
+		DBCollection col = getCollection();
+		col.update(queryThis(), new BasicDBObject().append(
+				"$set",
+				new BasicDBObject().append(F_BUSINESS_CHARGER, userid)
+						.append(F_BUSINESS_ORGANIZATION, orgid)
+						.append("etl." + ProjectETL.F_BUSINESS_MANAGER_TEXT, username)
+						.append("etl." + ProjectETL.F_BUSINESS_ORGANIZATION_TEXT, orgtext)
+						));
+
 		col = getCollection(IModelConstants.C_PROJECT_MONTH_DATA);
-		ws = col.update(new BasicDBObject().append(ProjectMonthlyETL.F_PROJECTID, this.get_id()), new BasicDBObject().append("$set",
-				new BasicDBObject().append(field, value)));
-		checkWriteResult(ws);
-
+		col.update(
+				new BasicDBObject().append(ProjectMonthlyETL.F_PROJECTID,get_id()), 
+				new BasicDBObject().append("$set",
+						new BasicDBObject()
+							.append(F_BUSINESS_CHARGER, userid)
+							.append(F_BUSINESS_ORGANIZATION, orgid)
+						));
+		
+		setValue(F_BUSINESS_CHARGER,userid);
+		setValue(F_BUSINESS_ORGANIZATION, orgid);
 	}
 
 }

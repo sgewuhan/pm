@@ -39,6 +39,11 @@
             name="%perspective.name.3">
       </perspective>
       <perspective
+            class="com.sg.widgets.perspective.EditorShowPerspective"
+            id="perspective.visualization.sales"
+            name="%perspective.name.3">
+      </perspective>
+      <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.resource"
             name="%perspective.name.4">
@@ -344,6 +349,21 @@
                standalone="false"
                visible="true">
          </view-->
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.visualization.sales">
+         <view
+               closeable="false"
+               id="vis.projectset.navigator.sales"
+               minimized="false"
+               moveable="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.sales">
@@ -951,6 +971,10 @@
          </perspective>
          <perspective
                id="perspective.workflow">
+         </perspective>
+         <perspective
+               default="true"
+               id="perspective.visualization.sales">
          </perspective>
       </scenario>
    </extension>

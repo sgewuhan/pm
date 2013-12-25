@@ -80,6 +80,10 @@ public class ProjectMonthlyETL extends ProjectETL {
 		DBObject etl = super.doETL(cal);
 		// 项目负责人字段
 		etl.put(Project.F_CHARGER, project.getValue(Project.F_CHARGER));
+		// 项目商务负责人字段
+		etl.put(Project.F_BUSINESS_CHARGER, project.getValue(Project.F_BUSINESS_CHARGER));
+		// 项目商务负责部门
+		etl.put(Project.F_BUSINESS_ORGANIZATION, project.getValue(Project.F_BUSINESS_ORGANIZATION));
 		// 数组类型字段
 		etl.put(Project.F_PARTICIPATE, project.getValue(Project.F_PARTICIPATE));
 		// 项目所属的项目职能组织

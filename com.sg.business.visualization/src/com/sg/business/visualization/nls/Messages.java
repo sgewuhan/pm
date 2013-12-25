@@ -7,6 +7,7 @@ import com.mobnut.commons.util.NLS2;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "com.sg.business.visualization.nls.messages"; //$NON-NLS-1$
+	public String OrganizationProjectSetFolder_ForSales;
 	public String BudgetAndInvestmentLabelProvider_0;
 	public String BudgetAndInvestmentLabelProvider_1;
 	public String BudgetAndInvestmentLabelProvider_2;

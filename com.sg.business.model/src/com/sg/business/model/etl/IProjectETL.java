@@ -50,6 +50,10 @@ public interface IProjectETL {
 	public static final String F_LAUNCH_ORGANIZATION_TEXT = "launch_org_text"; //$NON-NLS-1$
 
 	public static final String F_CHARGER_TEXT = "charger_text"; //$NON-NLS-1$
+	
+	public static final String F_BUSINESS_MANAGER_TEXT = "businesscharger_text"; //$NON-NLS-1$
+	
+	public static final String F_BUSINESS_ORGANIZATION_TEXT = "business_org_text"; //$NON-NLS-1$
 
 	public static final String F_SCHEDUAL_HTML = "schedual_html"; //$NON-NLS-1$
 

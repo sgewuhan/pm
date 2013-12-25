@@ -107,7 +107,7 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 						"$in", getAvailableOrganization())); //$NON-NLS-1$
 			}
 
-		} else if ("organization_projectmanager".equals(mr.getId())) { //$NON-NLS-1$
+		} else if (getRelationName().equals(mr.getId())) { //$NON-NLS-1$
 			condition = new BasicDBObject();
 			condition.put(User.F_USER_ID,
 					new BasicDBObject().append("$in", getAvailableUser(po))); //$NON-NLS-1$
@@ -136,7 +136,7 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 						"$in", getAvailableOrganization())); //$NON-NLS-1$
 			}
 
-		} else if ("organization_projectmanager".equals(mr.getId())) { //$NON-NLS-1$
+		} else if (getRelationName().equals(mr.getId())) { //$NON-NLS-1$
 			condition = new BasicDBObject();
 			condition.put(User.F_USER_ID,
 					new BasicDBObject().append("$in", getAvailableUser(po))); //$NON-NLS-1$
@@ -146,16 +146,24 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 		return sdf.getTotalCount();
 	}
 
+	protected String getRelationName() {
+		return "organization_projectmanager";
+	}
+
+	protected String getOrganizationFieldName() {
+		return Project.F_LAUNCH_ORGANIZATION;
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Object[] getAvailableOrganization() {
 		if (aviOrg == null) {
 			Set<ObjectId> set = new HashSet<ObjectId>();
-			List prjOrgList = projectcol.distinct(
-					Project.F_LAUNCH_ORGANIZATION, new BasicDBObject().append(
+			List prjOrgList = projectcol.distinct(getOrganizationFieldName(),
+					new BasicDBObject().append(
 							ILifecycle.F_LIFECYCLE,
 							new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 									ILifecycle.STATUS_FINIHED_VALUE,
-									ILifecycle.STATUS_WIP_VALUE })));
+											ILifecycle.STATUS_WIP_VALUE })));
 			set.addAll(prjOrgList);
 
 			List parentOrgList = orgcol.distinct(Organization.F_PARENT_ID,
@@ -181,15 +189,19 @@ public class ProjectSetContentProvider extends RelationContentProvider {
 	private Object getAvailableUser(PrimaryObject po) {
 		Set<ObjectId> set = new HashSet<ObjectId>();
 		List prjManagerList = projectcol.distinct(
-				Project.F_CHARGER,
+				getRelatedUserFieldName(),
 				new BasicDBObject().append(
 						ILifecycle.F_LIFECYCLE,
 						new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 								ILifecycle.STATUS_FINIHED_VALUE,
-								ILifecycle.STATUS_WIP_VALUE })).append(
-						Project.F_LAUNCH_ORGANIZATION, po.get_id()));
+										ILifecycle.STATUS_WIP_VALUE })).append(
+						getOrganizationFieldName(), po.get_id()));
 		set.addAll(prjManagerList);
 		return set.toArray(new Object[0]);
+	}
+
+	protected String getRelatedUserFieldName() {
+		return Project.F_CHARGER;
 	}
 
 }
