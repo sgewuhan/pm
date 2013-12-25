@@ -23,6 +23,8 @@ public class ReviewerMessageService extends MessageService {
 			return Messages.get().ReviewerMessageService_1;
 		} else if ("projectapplication".equals(value)) { //$NON-NLS-1$
 			return Messages.get().ReviewerMessageService_3;
+		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
+			return "转批评审会议通知";
 		}
 		return null;
 	}
@@ -46,10 +48,39 @@ public class ReviewerMessageService extends MessageService {
 
 				Object confirmtime = getInputValue("confirmtime"); //$NON-NLS-1$
 				Object confirmaddress = getInputValue("confirmaddress"); //$NON-NLS-1$
-				String content = Messages.get().ReviewerMessageService_10 + work.getLabel() + "<br/>"; //$NON-NLS-2$
-				content = content + Messages.get().ReviewerMessageService_12 + confirmdate + " " //$NON-NLS-2$
-						+ confirmtime + Messages.get().ReviewerMessageService_14 + confirmaddress
+				String content = Messages.get().ReviewerMessageService_10
+						+ work.getLabel() + "<br/>"; //$NON-NLS-2$
+				content = content
+						+ Messages.get().ReviewerMessageService_12
+						+ confirmdate
+						+ " " //$NON-NLS-2$
+						+ confirmtime
+						+ Messages.get().ReviewerMessageService_14
+						+ confirmaddress
 						+ Messages.get().ReviewerMessageService_15;
+				return content;
+			}
+		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
+			PrimaryObject host = getTarget();
+			if (host instanceof Work) {
+				Work work = (Work) host;
+				Object confirmdate = getInputValue("confirmdate"); //$NON-NLS-1$
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						Utils.SDF_DATE_COMPACT_SASH);
+				if (confirmdate instanceof Date) {
+					confirmdate = sdf.format(confirmdate);
+				}
+
+				Object confirmtime = getInputValue("confirmtime"); //$NON-NLS-1$
+				Object confirmaddress = getInputValue("confirmaddress"); //$NON-NLS-1$
+				String content = "转批工作:" + work.getLabel() + "<br/>"; //$NON-NLS-2$
+				content = content
+						+ Messages.get().ReviewerMessageService_12
+						+ confirmdate
+						+ " " //$NON-NLS-2$
+						+ confirmtime
+						+ Messages.get().ReviewerMessageService_14
+						+ confirmaddress + "<br/> 参加项目转批评审会!";
 				return content;
 			}
 		}
@@ -72,6 +103,9 @@ public class ReviewerMessageService extends MessageService {
 		} else if ("projectapplication".equals(value)) { //$NON-NLS-1$
 			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list"); //$NON-NLS-1$
 			return reviewerList;
+		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
+			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list"); //$NON-NLS-1$
+			return reviewerList;
 		}
 		return null;
 	}
@@ -84,8 +118,6 @@ public class ReviewerMessageService extends MessageService {
 			if (target instanceof Project) {
 				return Project.EDITOR_CREATE_PLAN;
 			}
-		} else if ("projectapplication".equals(value)) { //$NON-NLS-1$
-			return null;
 		}
 		return null;
 	}
@@ -105,6 +137,15 @@ public class ReviewerMessageService extends MessageService {
 				}
 			}
 		} else if ("projectapplication".equals(value)) { //$NON-NLS-1$
+			Object content = getInputValue("content"); //$NON-NLS-1$
+			if (content instanceof String) {
+				String jsonContent = (String) content;
+				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
+				if (host instanceof Work) {
+					return (Work) host;
+				}
+			}
+		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
 			Object content = getInputValue("content"); //$NON-NLS-1$
 			if (content instanceof String) {
 				String jsonContent = (String) content;

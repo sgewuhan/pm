@@ -3596,7 +3596,8 @@
             editorId="tb.tbSubconcessions.application"
             name="转批申请"
             persistentFields="workorder,product,prj_manager,dept,accessory"
-            processDefinitionId="tb.tbSubconcessions">
+            processDefinitionId="tb.tbSubconcessions"
+            saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB">
          <processParameter
                processParameterName="workorder"
                taskFormFieldName="workorder">
@@ -3673,7 +3674,7 @@
       <taskForm
             editorId="tb.tbSubconcessions.meetingconfirmed"
             name="会议确认"
-            persistentFields="review_admin,reviewer_list,choice,accessory"
+            persistentFields="review_admin,reviewer_list,choice,confirmtime,confirmaddress,accessory,confirmdate"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
                processParameterName="review_admin"
@@ -3687,6 +3688,18 @@
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmtime"
+               taskFormFieldName="confirmtime">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmaddress"
+               taskFormFieldName="confirmaddress">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmdate"
+               taskFormFieldName="confirmdate">
          </processParameter>
       </taskForm>
       <taskForm
@@ -3721,7 +3734,7 @@
       </taskForm>
       <taskForm
             editorId="tb.tbSubconcessions.audit"
-            name="开发中心主任批准"
+            name="批准"
             persistentFields="choice,comment,accessory"
             processDefinitionId="tb.tbSubconcessions">
          <processParameter
@@ -4039,15 +4052,57 @@
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
+                        addTableItemHandler="com.tmt.tb.field.action.AddAllUserList"
                         editable="true"
                         id="reviewer_list"
                         label="%list.label.2"
                         labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="false">
                   </list>
+               </section>
+               <section
+                     label="%section.label.5">
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="confirmdate"
+                        inputValidator="com.tmt.tb.field.CheckConfirmOfTBProjectApplication"
+                        label="%dateTime.label"
+                        labelVisible="true"
+                        name="confirmdate"
+                        persistable="true"
+                        required="false"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtime"
+                        inputValidator="com.tmt.tb.field.CheckConfirmOfTBProjectApplication"
+                        label="%text.label.1"
+                        labelVisible="true"
+                        name="confirmtime"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        inputValidator="com.tmt.tb.field.CheckConfirmOfTBProjectApplication"
+                        label="%text.label.2"
+                        labelVisible="true"
+                        name="confirmaddress"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
