@@ -44,6 +44,14 @@
             name="%view.name.3"
             restorable="true">
       </view>
+      <view
+            category="project"
+            class="com.sg.business.project.view.ProjectView"
+            icon="image/project_24.png"
+            id="project.navigator.myproject.sales"
+            name="%view.name"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -51,6 +59,136 @@
             id="project.navigator.myproject"
             provideSelection="true"
             table="project.navigator.myproject">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+            <column
+                  columnDefinitionId="project.status">
+            </column>
+            <column
+                  columnDefinitionId="project.status"
+                  name="%column.name">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="%column.name.0"
+                  type="String">
+            </column>
+            <column
+                  column="producttype"
+                  name="%column.name.1"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="%column.name.2"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="%column.name.3"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.workorder">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+            <column
+                  columnDefinitionId="project.status"
+                  name="%column.name.4">
+            </column>
+            <column
+                  columnDefinitionId="planstart">
+            </column>
+            <column
+                  columnDefinitionId="planfinish">
+            </column>
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+            <column
+                  columnDefinitionId="actualstart">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish">
+            </column>
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+            <column
+                  column="participate"
+                  name="%column.name.5"
+                  type="String">
+            </column>
+            <column
+                  column="producttype"
+                  name="%column.name.6"
+                  type="String">
+            </column>
+            <column
+                  column="projecttype"
+                  name="%column.name.7"
+                  type="String">
+            </column>
+            <column
+                  column="standardset"
+                  name="%column.name.8"
+                  type="String">
+            </column>
+         </searchAction>
+         <createEditor
+               createHandler="com.sg.business.project.editor.CreateProject"
+               editorId="project.editor.wizard">
+         </createEditor>
+      </navigator>
+      <navigator
+            id="project.navigator.myproject.sales"
+            provideSelection="true"
+            table="project.navigator.myproject.sales">
          <filterAction>
             <column
                   columnDefinitionId="project.projectnumber">
@@ -668,6 +806,9 @@
                columnDefinitionId="chargerid">
          </column>
          <column
+               columnDefinitionId="businesschargerid">
+         </column>
+         <column
                columnDefinitionId="planstart">
          </column>
          <column
@@ -732,11 +873,101 @@
       <table
             canCreate="false"
             canDelete="true"
+            canEdit="false"
+            canRead="true"
+            dataSet="com.sg.business.model.dataset.project.MyProjectSales"
+            editorId="project.editor"
+            fix="2"
+            id="project.navigator.myproject.sales"
+            popupMenu="popup:project.navigator.sales">
+         <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
+               columnDefinitionId="project.projectnumber">
+         </column>
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="businesschargerid">
+         </column>
+         <column
+               columnDefinitionId="planstart">
+         </column>
+         <column
+               columnDefinitionId="planfinish">
+         </column>
+         <column
+               columnDefinitionId="actualstart">
+         </column>
+         <column
+               columnDefinitionId="actualfinish">
+         </column>
+         <columnGroup
+               defaultGroup="false"
+               id="com.sg.business.project.columnGroup1"
+               name="%columnGroup.name">
+            <column
+                  columnDefinitionId="planduration">
+            </column>
+            <column
+                  columnDefinitionId="planworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               id="com.sg.business.project.columnGroup1"
+               name="%columnGroup.name.0">
+            <column
+                  columnDefinitionId="actualduration">
+            </column>
+            <column
+                  columnDefinitionId="actualworks">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="%columnGroup.name.1">
+            <column
+                  columnDefinitionId="participate">
+            </column>
+            <column
+                  columnDefinitionId="project.org_id">
+            </column>
+            <column
+                  columnDefinitionId="project.launchorg_id">
+            </column>
+         </columnGroup>
+         <columnGroup
+               defaultGroup="false"
+               name="%columnGroup.name.2">
+            <column
+                  column="producttype"
+                  name="%column.name.43">
+            </column>
+            <column
+                  column="projecttype"
+                  name="%column.name.44">
+            </column>
+            <column
+                  column="standardset"
+                  name="%column.name.45">
+            </column>
+         </columnGroup>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="true"
             collectionName="project"
             dataSet="com.sg.business.model.dataset.project.ManagementProject"
             dbName="pm2"
             editorId="project.editor"
             id="project.navigator.management"
+            multiSelection="true"
             popupMenu="popup:project.navigator.management">
          <column
                columnDefinitionId="project.status">
@@ -749,6 +980,9 @@
          </column>
          <column
                columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="businesschargerid">
          </column>
          <columnGroup
                defaultGroup="false"
@@ -2313,6 +2547,12 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="project.businesscharger.edit"
+               icon="image/24_blank.png"
+               label="%command.label.project.businesscharger.edit"
+               style="push">
+         </command>
          <separator
                name="project.separator1"
                visible="true">
@@ -3145,6 +3385,35 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:project.navigator.sales">
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="%command.label.0"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="editor.runtimeproject.sales">
+            </parameter>
+         </command>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="%command.label.13"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -3285,6 +3554,11 @@
             categoryId="project"
             id="delayprocess.query"
             name="%command.name.23">
+      </command>
+      <command
+            categoryId="project"
+            id="project.businesscharger.edit"
+            name="%command.label.project.businesscharger.edit">
       </command>
    </extension>
    <extension
@@ -3462,6 +3736,10 @@
             class="com.sg.business.project.handler.QueryDelayProcess"
             commandId="delayprocess.query">
       </handler>
+      <handler
+            class="com.sg.business.project.handler.EditProjectBusinessCharger"
+            commandId="project.businesscharger.edit">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -3586,6 +3864,18 @@
                         name="launchorg_id"
                         persistable="true">
                   </list>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="businesschargerid"
+                        label="%text.label.businesschargerid"
+                        labelVisible="true"
+                        name="businesschargerid"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
             <pagecolumn>
@@ -4133,6 +4423,18 @@
                         name="launchorg_id"
                         persistable="true">
                   </list>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="businesschargerid"
+                        label="%text.label.businesschargerid"
+                        labelVisible="true"
+                        name="businesschargerid"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
             <pagecolumn>
@@ -4339,6 +4641,296 @@
                pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
                title="%basicpage.title.16">
          </basicpage>
+      </editor>
+      <editor
+            collectionName="project"
+            dbName="pm2"
+            id="editor.runtimeproject.sales"
+            image="image/project_72.png"
+            isDefault="true"
+            memo="查看项目"
+            name="%editor.name.8">
+         <basicpage
+               description="%basicpage.description.10"
+               id="project.basicpage"
+               image="image/project_24.png"
+               title="%basicpage.title.13">
+            <pagecolumn>
+               <section
+                     label="%section.label.18">
+                  <fieldgroup
+                        columnCount="2"
+                        makeColumnWidthEqual="false">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="projectnumber"
+                           label="%text.label.23"
+                           labelVisible="true"
+                           name="projectnumber"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="status"
+                           label="%combo.label.6"
+                           labelVisible="false"
+                           name="status"
+                           option="status"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="desc"
+                        label="%text.label.24"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="false"
+                        id="description"
+                        label="%text.label.25"
+                        labelVisible="true"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="%section.label.19">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="chargerid"
+                        label="%text.label.26"
+                        labelVisible="true"
+                        name="chargerid"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="org_id"
+                        label="%text.label.27"
+                        labelVisible="true"
+                        name="org_id"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.OrgFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddOrganization"
+                        editable="false"
+                        heightHint="108"
+                        id="launchorg_id"
+                        label="%list.label.2"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        name="launchorg_id"
+                        persistable="true">
+                  </list>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="businesschargerid"
+                        label="%text.label.businesschargerid"
+                        labelVisible="true"
+                        name="businesschargerid"
+                        persistable="false"
+                        presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="%section.label.20">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="planstart"
+                        label="%dateTime.label.5"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="planfinish"
+                        label="%dateTime.label.6"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="false"
+                        id="planduration"
+                        label="%spinner.label.2"
+                        labelVisible="true"
+                        name="planduration"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
+                  </spinner>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="planworks"
+                        label="%text.label.28"
+                        labelVisible="true"
+                        name="planworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+               <section
+                     label="%section.label.21">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualstart"
+                        label="%dateTime.label.7"
+                        labelVisible="true"
+                        name="actualstart"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="false"
+                        id="actualfinish"
+                        label="%dateTime.label.8"
+                        labelVisible="true"
+                        name="actualfinish"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <spinner
+                        editable="false"
+                        id="actualduration"
+                        label="%spinner.label.3"
+                        labelVisible="true"
+                        name="actualduration"
+                        persistable="true"
+                        required="false"
+                        spinnerSetting="0,999999,1,100">
+                  </spinner>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="actualworks"
+                        label="%text.label.29"
+                        labelVisible="true"
+                        name="actualworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+               <section
+                     label="%section.label.22">
+                  <list
+                        editable="false"
+                        id="workorder"
+                        label="%list.label.3"
+                        labelVisible="false"
+                        name="workorder"
+                        persistable="true"
+                        required="false"
+                        tooltips="%list.tooltips.0">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="%basicpage.description.11"
+               id="project.option"
+               title="%basicpage.title.14">
+            <pagecolumn>
+               <section
+                     label="%section.label.23">
+                  <list
+                        editable="false"
+                        heightHint="120"
+                        id="standardset"
+                        label="%list.label.4"
+                        labelVisible="false"
+                        name="standardset"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="%section.label.24">
+                  <list
+                        editable="false"
+                        heightHint="120"
+                        id="producttype"
+                        label="%list.label.5"
+                        labelVisible="false"
+                        name="producttype"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+               <section
+                     label="%section.label.25">
+                  <list
+                        editable="false"
+                        heightHint="120"
+                        id="projecttype"
+                        label="%list.label.6"
+                        labelVisible="false"
+                        name="projecttype"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="%basicpage.description.12"
+               id="project.financial"
+               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               title="%basicpage.title.15">
+         </basicpage>
+         <navigatorpage
+               id="work.project.wbs"
+               navigatorId="work.project.wbs"
+               title="WBS">
+         </navigatorpage>
+         <navigatorpage
+               createAfterSave="true"
+               description="为项目团队的各个角色指定成员"
+               id="work.project.team"
+               navigatorId="work.project.team"
+               title="%navigatorpage.title.6">
+         </navigatorpage>
       </editor>
    </extension>
    <extension

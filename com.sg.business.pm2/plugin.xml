@@ -5,12 +5,12 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.vis2.home"
-            name="%perspective.name.14">
+            id="perspective.work"
+            name="%perspective.name">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
-            id="perspective.work"
+            id="perspective.sales"
             name="%perspective.name">
       </perspective>
       <perspective
@@ -22,6 +22,11 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.workflow"
             name="%perspective.name.1">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.vis2.home"
+            name="%perspective.name.14">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -339,6 +344,96 @@
                standalone="false"
                visible="true">
          </view-->
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.sales">
+         <view
+               closeable="false"
+               id="work.processing"
+               minimized="false"
+               moveable="false"
+               ratio="0.6"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="home.mycalender"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.processing"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="work.paused"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="home.mycalender"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="work.finished"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="work.paused"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.myproject.sales"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="right"
+               relative="work.processing"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delaywork"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.myproject.sales"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.delayprocess"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.delaywork"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="work.performence.record"
+               minimized="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="project.navigator.myproject.sales">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.resource">
@@ -768,6 +863,9 @@
                id="perspective.vis.home">
          </perspective>
          <perspective
+               id="perspective.vis2.home">
+         </perspective>
+         <perspective
                default="true"
                id="perspective.visualization">
          </perspective>
@@ -842,6 +940,17 @@
             name="%scenario.name.8">
          <perspective
                id="perspective.bulletinboard">
+         </perspective>
+      </scenario>
+      <scenario
+            id="sales"
+            name="%scenario.sales">
+         <perspective
+               default="true"
+               id="perspective.sales">
+         </perspective>
+         <perspective
+               id="perspective.workflow">
          </perspective>
       </scenario>
    </extension>
