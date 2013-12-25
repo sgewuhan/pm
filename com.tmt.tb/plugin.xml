@@ -3778,7 +3778,7 @@
                         labelVisible="true"
                         name="workorder"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <list
@@ -3788,7 +3788,7 @@
                         labelVisible="true"
                         name="product"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </list>
                </section>
             </pagecolumn>
@@ -3958,10 +3958,10 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="qm"
-                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
@@ -3971,10 +3971,10 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="craft"
-                        navigatorId="jszx.project_apply.worker.selector"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>
