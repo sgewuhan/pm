@@ -628,10 +628,12 @@ public abstract class ProjectProvider extends PrimaryObject {
 		Iterator<DBObject> iterator = aggregationOutput.results().iterator();
 		Object[] results = new Object[limitNumber];
 		for (int i = 0; i < results.length; i++) {
-			DBObject dbObject = (DBObject) iterator.next();
-			Object _id = dbObject.get("_id");
-			Double month_sales_profit = (Double) dbObject.get(groupField);
-			results[i] = new Object[] { _id, month_sales_profit, i + 1, null };
+			if(iterator.hasNext()){
+				DBObject dbObject = (DBObject) iterator.next();
+				Object _id = dbObject.get("_id");
+				Double month_sales_profit = (Double) dbObject.get(groupField);
+				results[i] = new Object[] { _id, month_sales_profit, i + 1, null };
+			}
 		}
 		return results;
 	}

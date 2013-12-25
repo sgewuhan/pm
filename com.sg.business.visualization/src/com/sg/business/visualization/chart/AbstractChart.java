@@ -9,7 +9,9 @@ import com.mobnut.commons.util.Utils;
 public class AbstractChart {
 
 	protected static final int MARKER_SIZE = 2;
-	protected static final int FONT_SIZE = 7;
+	protected static final float LEGEND_FONT_SIZE = 9f;
+	protected static final float TICK_FONT_SIZE = 7f;
+
 	protected static final String[] colors = new String[] {
 			Utils.COLOR_BLUE[13], Utils.COLOR_YELLOW[13], Utils.COLOR_RED[13],
 			Utils.COLOR_GREEN[13], Utils.COLOR_PINK[13], Utils.COLOR_BROWN[13],

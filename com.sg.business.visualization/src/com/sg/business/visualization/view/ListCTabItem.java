@@ -12,8 +12,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -32,8 +30,8 @@ import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.visualization.VisualizationActivator;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.viewer.ColumnAutoResizer;
 
-@SuppressWarnings("restriction")
 public class ListCTabItem extends CTabItem {
 
 	private TableViewer topViewer;
@@ -48,7 +46,6 @@ public class ListCTabItem extends CTabItem {
 		FormLayout layout = new FormLayout();
 		composite.setLayout(layout);
 
-		setBackground(composite);
 		FormData fd = new FormData();
 		topViewer = createTableViewer(composite, fd);
 		fd.left = new FormAttachment(0, 0);
@@ -140,7 +137,8 @@ public class ListCTabItem extends CTabItem {
 				return "";
 			}
 		});
-		col.getColumn().setWidth(280);
+//		col.getColumn().setWidth(280);
+		new ColumnAutoResizer(tv.getTable(), col.getColumn());
 
 		col = new TableViewerColumn(tv, SWT.CANCEL);
 		col.setLabelProvider(new ColumnLabelProvider() {
@@ -227,21 +225,21 @@ public class ListCTabItem extends CTabItem {
 		col.getColumn().setWidth(20);
 	}
 
-	private void setBackground(Composite composite) {
-		Object adapter = composite.getAdapter(IWidgetGraphicsAdapter.class);
-		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
-		int[] percents = new int[] { 0, 50, 100 };
-		Color[] style = new Color[] {
-
-		Widgets.getColor(null, 0xf0, 0xf8, 0xdb),
-
-		Widgets.getColor(null, 0xff, 0xff, 0xff),
-
-		Widgets.getColor(null, 0xff, 0xe4, 0xe4),
-
-		};
-		gfxAdapter.setBackgroundGradient(style, percents, true);
-	}
+//	private void setBackground(Composite composite) {
+//		Object adapter = composite.getAdapter(IWidgetGraphicsAdapter.class);
+//		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
+//		int[] percents = new int[] { 0, 50, 100 };
+//		Color[] style = new Color[] {
+//
+//		Widgets.getColor(null, 0xd0, 0xf8, 0xdb),
+//
+//		Widgets.getColor(null, 0xff, 0xff, 0xff),
+//
+//		Widgets.getColor(null, 0xff, 0xe4, 0xe4),
+//
+//		};
+//		gfxAdapter.setBackgroundGradient(style, percents, true);
+//	}
 
 	@SuppressWarnings("rawtypes")
 	public void setInput(Object[] topData, Object[] bottomData, Class selected) {
@@ -263,7 +261,7 @@ public class ListCTabItem extends CTabItem {
 		String charger = pres.getChargerText();
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:8pt;color:#333333;margin-left:0; display:block; width=1000px'>");
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;margin-left:0; display:block; width=1000px'>");
 		// œ‘ æœÓƒø∑‚√Ê
 		if (coverImageURL != null) {
 			sb.append("<img src='"
@@ -271,17 +269,17 @@ public class ListCTabItem extends CTabItem {
 					+ "' style='float:left; left:0; top:0; display:block;' width='36' height='36' />");
 		}
 		// œ‘ æœÓƒø√˚≥∆
+		sb.append("<b>");
 		sb.append(desc);
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:7pt;'>");
+		sb.append("</b>");
 		sb.append("<br/>");
+		sb.append("<small>");
 		// œ‘ æ≥–µ£◊È÷Ø
 		sb.append(launchOrganization);
 		// œ‘ æ∏∫‘»À
-		sb.append("</span>");
 		sb.append(" ");
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:7pt;'>");
 		sb.append(charger);
-		sb.append("</span>");
+		sb.append("</small>");
 
 		sb.append("</span>");
 
@@ -291,7 +289,7 @@ public class ListCTabItem extends CTabItem {
 	private String getUserLabel(User user) {
 		if (user != null) {
 			StringBuffer sb = new StringBuffer();
-			sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:8pt;color:#333333;"
+			sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;"
 					+ "margin-left:0; display:block; width=1000px'>");
 			String imageURL = null;
 
@@ -313,17 +311,21 @@ public class ListCTabItem extends CTabItem {
 			}
 
 			// œ‘ æ”√ªß√˚≥∆
-			String userHtmlLabel = user.getHTMLLabel();
+			String userHtmlLabel = user.getUsername();
+			sb.append("<b>");
 			sb.append(userHtmlLabel);
+			sb.append("</b>");
 
-			sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:7pt;'>");
 			sb.append("<br/>");
+			sb.append("<small>");
 
 			// œ‘ æ”√ªßÀ˘ Ù◊È÷Ø
 			Organization org = user.getOrganization();
-			String launchOrganization = org.getFullName();
-			sb.append(launchOrganization);
-			sb.append("</span>");
+			if(org!=null){
+				String path = org.getPath(2);
+				sb.append(path);
+			}
+			sb.append("</small>");
 
 			sb.append("</span>");
 			return sb.toString();
@@ -334,7 +336,7 @@ public class ListCTabItem extends CTabItem {
 
 	private String getOrganizationLabel(Organization org) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:8pt;color:#333333;"
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;"
 				+ "margin-left:0; display:block; width=1000px'>");
 
 		String imageUrl = "<img src='" + org.getImageURL()

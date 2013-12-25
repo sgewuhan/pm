@@ -46,8 +46,7 @@ public class BarChart extends AbstractChart {
 		cwabar.getTitle().setVisible(false);
 
 		// Legend
-		cwabar.getLegend().getText().getFont().setSize(FONT_SIZE + 1);
-		cwabar.getLegend().getText().getFont().setName("Î¢ÈíÑÅºÚ");
+		cwabar.getLegend().getText().getFont().setSize(LEGEND_FONT_SIZE );
 		cwabar.getLegend().setPosition(Position.BELOW_LITERAL);
 		cwabar.getLegend().setOrientation(Orientation.HORIZONTAL_LITERAL);
 
@@ -56,14 +55,14 @@ public class BarChart extends AbstractChart {
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
-		xAxisPrimary.getLabel().getCaption().getFont().setSize(FONT_SIZE);
+		xAxisPrimary.getLabel().getCaption().getFont().setSize(TICK_FONT_SIZE);
 		xAxisPrimary.getLabel().getCaption()
 				.setColor(ColorDefinitionImpl.create(0x9d, 0x9d, 0x9d));
 
 		// Y-Axis
 		Axis yAxisPrimary = cwabar.getPrimaryOrthogonalAxis(xAxisPrimary);
 		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
-		yAxisPrimary.getLabel().getCaption().getFont().setSize(FONT_SIZE);
+		yAxisPrimary.getLabel().getCaption().getFont().setSize(TICK_FONT_SIZE);
 		yAxisPrimary.getLabel().getCaption()
 				.setColor(ColorDefinitionImpl.create(0x9d, 0x9d, 0x9d));
 

@@ -703,7 +703,7 @@
          </view>
          <view
                closeable="false"
-               id="vis2.combinnatiedrate"
+               id="vis2.profitvolumn"
                minimized="false"
                moveable="false"
                ratio=".33"
@@ -717,20 +717,20 @@
                id="vis2.profitrate"
                minimized="false"
                moveable="false"
-               ratio=".5"
-               relationship="right"
-               relative="vis2.combinnatiedrate"
+               ratio=".67"
+               relationship="bottom"
+               relative="vis2.profitvolumn"
                showTitle="false"
                standalone="true">
          </view>
          <view
                closeable="false"
-               id="vis2.indicators"
+               id="vis2.combinnatiedrate"
                minimized="false"
                moveable="false"
-               ratio=".33"
-               relationship="bottom"
-               relative="vis2.combinnatiedrate"
+               ratio=".5"
+               relationship="right"
+               relative="vis2.profitvolumn"
                showTitle="false"
                standalone="true">
          </view>
@@ -739,20 +739,9 @@
                id="vis2.budgetandinvestmentvolumn"
                minimized="false"
                moveable="false"
-               ratio=".33"
-               relationship="bottom"
-               relative="vis2.profitrate"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.profitvolumn"
-               minimized="false"
-               moveable="false"
                ratio=".5"
                relationship="bottom"
-               relative="vis2.indicators"
+               relative="vis2.combinnatiedrate"
                showTitle="false"
                standalone="true">
          </view>
@@ -762,8 +751,8 @@
                minimized="false"
                moveable="false"
                ratio=".5"
-               relationship="bottom"
-               relative="vis2.budgetandinvestmentvolumn"
+               relationship="right"
+               relative="vis2.profitrate"
                showTitle="false"
                standalone="true">
          </view>
@@ -1226,9 +1215,9 @@
          </property>
       </product>
    </extension>
-   <!--extension
+   <extension
          point="com.mobnut.admin.schedualJob">
-      <schedualJob
+      <!--<schedualJob
             day="999999"
             id="pm2.dbreset"
             name="数据库重置"
@@ -1236,6 +1225,15 @@
             run="com.sg.business.pm2.setup.DBClear"
             time="0:0:0">
       </schedualJob>
+      
+      <schedualJob
+            day="999999"
+            id="pm2.mntpack"
+            name="维护角色数据"
+            rule="month"
+            run="com.sg.business.pm2.set.MntRole"
+            time="0:0:0">
+      </schedualJob>-->
       <schedualJob
             day="999999"
             id="pm2.dbinit"
@@ -1244,15 +1242,7 @@
             run="com.sg.business.pm2.setup.DBInit"
             time="0:0:0">
       </schedualJob>
-      <schedualJob
-            day="999999"
-            id="pm2.mntpack"
-            name="维护角色数据"
-            rule="month"
-            run="com.sg.business.pm2.set.MntRole"
-            time="0:0:0">
-      </schedualJob>
-   </extension-->
+   </extension>
    <extension
          point="com.mobnut.portal.portalNotice">
       <notice

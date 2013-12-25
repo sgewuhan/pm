@@ -30,7 +30,7 @@ public class ProjectReviewReviewOfJSZX implements ITaskFormInputHandler {
 				if (reviewer_List != null && reviewer_List.size() > 0) {
 					BasicDBList reviewerList = new BasicDBList();
 					reviewerList.addAll(reviewer_List);
-					taskForm.setValue("reviewer_list", reviewerList); //$NON-NLS-1$
+					taskForm.setValue("reviewer_list_s", reviewerList); //$NON-NLS-1$
 				}
 
 			} catch (Exception e) {
