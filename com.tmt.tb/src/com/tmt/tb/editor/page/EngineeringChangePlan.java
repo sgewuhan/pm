@@ -379,7 +379,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 					protected void doOK(IStructuredSelection is) {
 						List docList =is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_REFERENCE);
+							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -438,7 +438,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 					protected void doOK(IStructuredSelection is) {
 						List docList =is.toList();
 						try {
-							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_LINK);
+							workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
 							setDirty(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -483,7 +483,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				try {
 					List<Document> docList = DCPDMUtil.getDocumentFromDCPDM(
 							userid, parent.getShell());
-					workListCreater.createDeliverable(work, docList,null);
+					workListCreater.createDeliverable(work, docList,IDeliverable.TYPE_OUTPUT);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 				}

@@ -50,6 +50,7 @@ public class ChangePlanService extends ServiceProvider {
 						if (!ecn.isPersistent()) {
 							ObjectId palnid = changeplan.get_id();
 							ecn.setValue(Work.F_PARENT_ID, palnid);
+							ecn.setValue(Work.F_SETTING_CAN_BREAKDOWN, Boolean.TRUE);
 							try {
 								ecn.doSave(context);
 							} catch (Exception e) {
@@ -144,6 +145,7 @@ public class ChangePlanService extends ServiceProvider {
 						eca.setValue(Work.F_PLAN_FINISH, ecn.getPlanFinish());
 					}
 					eca.setValue(Work.F_PARENT_ID, ecn.get_id());
+					eca.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 					eca.doSave(context);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
