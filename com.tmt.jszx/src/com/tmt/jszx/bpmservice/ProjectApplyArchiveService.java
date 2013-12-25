@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Container;
@@ -33,8 +34,10 @@ public class ProjectApplyArchiveService extends ServiceProvider {
 			String jsonContent = (String) content;
 			try {
 				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-				String processId = (String) host.getValue("processId"); //$NON-NLS-1$
-				String processName = (String) host.getValue("processName"); //$NON-NLS-1$
+				DBObject processData = WorkflowUtils
+						.getProcessInfoFromJSON(jsonContent);
+				String processId = (String) processData.get("processId"); //$NON-NLS-1$
+				String processName = (String) processData.get("processName"); //$NON-NLS-1$
 				if (host instanceof Work) {
 					Work work = (Work) host;
 					String dept=(String) getInputValue("dept"); //$NON-NLS-1$

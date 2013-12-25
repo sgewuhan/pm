@@ -10,7 +10,7 @@ public class Messages extends NLS {
 	public String AbstractChangeActivityValidator_0;
 	public String AddParticipateOfTB_10;
 	public String AddParticipateOfTB_6;
-	public String AddStandloneworkList_1;
+	public String AddAllUserList_1;
 	public String ApplicationMessageOfTB_1;
 	public String ApplicationMessageOfTB_10;
 	public String ApplicationMessageOfTB_11;

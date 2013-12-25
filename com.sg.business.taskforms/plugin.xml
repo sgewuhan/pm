@@ -406,6 +406,12 @@
             operation="message"
             serviceProvider="com.sg.business.taskforms.bpmservice.DocumentApprovalMessageService">
       </service>
+      <service
+            interface="meetingmessage.service.action"
+            name="转批评审会议通知"
+            operation="subconcessions"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">

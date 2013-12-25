@@ -30,8 +30,11 @@ public class ProductSubconcessionsByWorkOrderService extends ServiceProvider {
 			String jsonContent = (String) content;
 			try {
 				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
-				String processId = (String) host.getValue("processId"); //$NON-NLS-1$
-				String processName = (String) host.getValue("processName"); //$NON-NLS-1$
+
+				DBObject processData = WorkflowUtils
+						.getProcessInfoFromJSON(jsonContent);
+				String processId = (String) processData.get("processId"); //$NON-NLS-1$
+				String processName = (String) processData.get("processName"); //$NON-NLS-1$
 				if (host instanceof Work) {
 					Work work = (Work) host;
 					// 根据工作令号获取项目

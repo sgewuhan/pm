@@ -49,9 +49,19 @@ public class CreateWork extends AbstractNavigatorHandler {
 		// 2. 侦听po的事件作出合适的响应
 		po.addEventListener(vc);
 
+		
+		
 		// 使用编辑器打开编辑工作定义
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				"edit.work.plan.0");//使用不带流程的工作编辑器进行创建 //$NON-NLS-1$
+		
+		
+		//变更项点创建子工作
+		if((selected.getValue(Work.F_INTERNAL_PARA_CHARGERID))!=null){
+			po.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
+			conf=Widgets.getEditorRegistry().getConfigurator(
+					"edit.work.plan.change");
+		}
 
 		try {
 			DataObjectDialog.openDialog(po, (DataEditorConfigurator) conf,

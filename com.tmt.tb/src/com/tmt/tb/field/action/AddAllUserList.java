@@ -7,16 +7,16 @@ import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
-import com.sg.business.model.WorkDefinition;
+import com.sg.business.model.User;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IAddTableItemHandler;
 import com.tmt.tb.nls.Messages;
 
-public class AddStandloneworkList implements IAddTableItemHandler {
+public class AddAllUserList implements IAddTableItemHandler {
 
-	public AddStandloneworkList() {
+	public AddAllUserList() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -24,19 +24,19 @@ public class AddStandloneworkList implements IAddTableItemHandler {
 	public boolean addItem(final BasicDBList inputData, final AbstractFieldPart part) {
 		PrimaryObject master = part.getInput().getData();
 		DropdownNavigatorSelector ns = new DropdownNavigatorSelector(
-				"organization.navigaor.internalusestandlonework") { //$NON-NLS-1$
+				"organization.user.selector") { //$NON-NLS-1$
 			@Override
 			protected void doOK(IStructuredSelection is) {
 				if(is==null||is.isEmpty()){
-					MessageUtil.showToast(Messages.get().AddStandloneworkList_1, SWT.ICON_WARNING);
+					MessageUtil.showToast(Messages.get().AddAllUserList_1, SWT.ICON_WARNING);
 				}else{
 					Iterator<?> iter = is.iterator();
 					while(iter.hasNext()){
 						Object value = iter.next();
-						if(value instanceof WorkDefinition){
-							String workdid = ((WorkDefinition) value).get_id().toString();
-							if(!inputData.contains(workdid)){
-								inputData.add(workdid);
+						if(value instanceof User){
+							String userid = ((User) value).getUserid();
+							if(!inputData.contains(userid)){
+								inputData.add(userid);
 							}
 						}
 					}
