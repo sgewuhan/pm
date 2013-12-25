@@ -16,7 +16,7 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class VisNavigatorDataSet extends DataSetFactory {
 
-	private User user;
+	protected User user;
 
 	public VisNavigatorDataSet() {
 		String userId = new CurrentAccountContext().getAccountInfo()

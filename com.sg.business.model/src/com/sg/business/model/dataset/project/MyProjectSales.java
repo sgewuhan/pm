@@ -13,44 +13,31 @@ import com.sg.widgets.part.CurrentAccountContext;
  * 项目导航
  * </p>
  * 继承于{@link com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory}，
- * 用于管理当前用户所负责的项目和参与的项目
+ * 用于管理当前用户所商务负责的项目
  * 
  * @author yangjun
- *
+ * 
  */
-public class MyProject extends SingleDBCollectionDataSetFactory {
+public class MyProjectSales extends SingleDBCollectionDataSetFactory {
 
 	private String userId;
 
 	/**
 	 * 项目导航构造函数，用于设置项目导航的存放数据库及数据存储表
 	 */
-	public MyProject() {
-		//设置项目导航的存放数据库及数据存储表
+	public MyProjectSales() {
+		// 设置项目导航的存放数据库及数据存储表
 		super(IModelConstants.DB, IModelConstants.C_PROJECT);
 		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
-
 	}
 
-	/**
-	 * 获取当前账号负责的项目和参与的项目
-	 * 
-	 * @return 返回当前账号负责的项目和参与的项目，
-	 * 为{@link com.mongodb.DBObject}类型的数据
-	 */
 	@Override
 	public DBObject getQueryCondition() {
 		// 获得当前帐号
 		try {
 			// 查询条件为本人负责的项目和本人参与的项目
 			DBObject queryCondition = new BasicDBObject();
-			queryCondition.put(
-					"$or", //$NON-NLS-1$
-					new BasicDBObject[] {
-							new BasicDBObject().append(Project.F_CHARGER,
-									userId),
-							new BasicDBObject().append(Project.F_PARTICIPATE,
-									userId) });
+			queryCondition.put(Project.F_BUSINESS_CHARGER, userId);
 			return queryCondition;
 
 		} catch (Exception e) {
@@ -58,10 +45,9 @@ public class MyProject extends SingleDBCollectionDataSetFactory {
 			return new BasicDBObject().append("_id", null); //$NON-NLS-1$
 		}
 	}
-	
+
 	@Override
 	public DBObject getSort() {
 		return new BasicDBObject().append(Project.F_ACTUAL_START, -1).append(Project.F_PLAN_START, -1); //$NON-NLS-1$
 	}
-
 }

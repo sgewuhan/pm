@@ -22,9 +22,9 @@ import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.part.view.TreeNavigator;
 import com.sg.widgets.viewer.CTreeViewer;
 
-public class ProjectSetNavigator extends TreeNavigator {
+public class ProjectSetNavigatorForSales extends TreeNavigator {
 
-	public ProjectSetNavigator() {
+	public ProjectSetNavigatorForSales() {
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ProjectSetNavigator extends TreeNavigator {
 							IStructuredSelection is = (IStructuredSelection) viewer
 									.getSelection();
 							if(!is.isEmpty()){
-								open((Organization) is.getFirstElement());
+								open(((Organization) is.getFirstElement()).getBusinessManagedProjectProvider());
 							}
 						} else if ("User".equals(paras[0])) { //$NON-NLS-1$
 							User user = ModelService.createModelObject(
@@ -81,7 +81,7 @@ public class ProjectSetNavigator extends TreeNavigator {
 				Object element = isel.getFirstElement();
 				try {
 					if (element instanceof Organization) {
-						open((Organization) element);
+						open(((Organization) element).getBusinessManagedProjectProvider());
 					} else if (element instanceof User) {
 						open((User) element);
 					} else if (element instanceof UserProjectPerf) {
@@ -94,10 +94,6 @@ public class ProjectSetNavigator extends TreeNavigator {
 				}
 			}
 		});
-	}
-
-	private void open(Organization org) throws Exception {
-		open(org.getAdapter(ProjectProvider.class));
 	}
 
 	private void open(User user) throws Exception {

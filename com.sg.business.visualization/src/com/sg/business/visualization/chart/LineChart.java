@@ -97,7 +97,8 @@ public class LineChart extends AbstractChart {
 			LineSeries ls = (LineSeries) LineSeriesImpl.create();
 			ls.setSeriesIdentifier(lsText[i]);
 			ls.setDataSet(orthoValues);
-			ls.getLineAttributes().setColor(ColorDefinitionImpl.CREAM());
+			ls.getLineAttributes().setColor(ColorDefinitionImpl.WHITE());
+			ls.getLineAttributes().setThickness(2);
 			for (int j = 0; j < ls.getMarkers().size(); j++) {
 				Marker marker = (Marker) ls.getMarkers().get(j);
 				marker.setType(MarkerType.CIRCLE_LITERAL);
