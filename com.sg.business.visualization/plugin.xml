@@ -14,6 +14,13 @@
             name="%view.name"
             restorable="true">
       </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.ProjectSetNavigatorForSales"
+            id="vis.projectset.navigator.sales"
+            name="%view.name"
+            restorable="true">
+      </view>
 
    </extension>
    <extension
@@ -73,6 +80,32 @@
       <navigator
             id="vis.projectset.navigator"
             tree="vis.projectset.navigator">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="vis.projectset.navigator.sales"
+            tree="vis.projectset.navigator.sales">
          <filterAction>
             <column
                   columnDefinitionId="com.sg.widgets.column.desc">
@@ -251,6 +284,41 @@
          </structure>
          <structure
                modelRelation="organization_projectmanager">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="organization"
+            contentProvider="com.sg.business.visualization.data.ProjectSetContentProviderForSales"
+            customItemHeight="40"
+            dataSet="com.sg.business.visualization.data.VisNavigatorDataSetForSales"
+            dbName="pm2"
+            deleteDelegator="com.sg.business.visualization.delegator.UserProjectPerfDel"
+            dropTargetListener="com.sg.business.visualization.view.DropProjectToOwnerSet"
+            headerVisiable="false"
+            id="vis.projectset.navigator.sales"
+            idfield="_id"
+            lineVisiable="false"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.labelprovider.ProjectSetNavigatorLabelProvider"
+               name="%column.name"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_businessmanager">
          </structure>
       </tree>
       <tree
@@ -1042,6 +1110,11 @@
          point="com.mobnut.db.documentModelAdapter">
       <doc
             class="com.sg.business.visualization.data.OrganizationProjectSetFolder"
+            collection="dummy"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.visualization.data.OrganizationProjectSetFolderForSales"
             collection="dummy"
             db="pm2">
       </doc>

@@ -176,6 +176,11 @@
             db="pm2">
       </doc>
       <doc
+            class="com.sg.business.model.OrganizationProjectProviderForSales"
+            collection="projectprovider"
+            db="pm2">
+      </doc>
+      <doc
             class="com.sg.business.model.ProjectTypeProvider"
             collection="projecttype"
             db="pm2">
@@ -297,6 +302,15 @@
             end2Key="organization_id"
             id="organization_projectmanager"
             name="组织下的项目负责人">
+      </relation>
+      <relation
+            end1Class="com.sg.business.model.Organization"
+            end1Key="_id"
+            end2Class="com.sg.business.model.User"
+            end2Condition="com.sg.business.model.condition.OrgOfProjectBusinessManagerCondition"
+            end2Key="organization_id"
+            id="organization_businessmanager"
+            name="组织下的项目商务负责人">
       </relation>
    </extension>
    <extension

@@ -34,6 +34,7 @@ import com.sg.business.resource.BusinessResource;
 @SuppressWarnings("restriction")
 public class ProjectETL implements IProjectETL {
 
+
 	protected Project project;
 
 	protected Date now;
@@ -387,6 +388,8 @@ public class ProjectETL implements IProjectETL {
 		List<RemoteFile> coverImageFileList = project.getCoverImages();
 		List<PrimaryObject> launchOrgList = project.getLaunchOrganization();
 		User charger = project.getCharger();
+		User buCharger = project.getBusinessCharger();
+		Organization buOrg = project.getBusinessOrganization();
 
 		Object overCostRatioSetting = Setting
 				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
@@ -562,6 +565,16 @@ public class ProjectETL implements IProjectETL {
 		 */
 		String chargerText = charger == null ? "?" : charger.getUsername(); //$NON-NLS-1$
 		transfered.put(F_CHARGER_TEXT, chargerText);
+
+		/**
+		 * 项目商务负责人
+		 */
+		String businesschargerText = buCharger == null ? "?" : buCharger.getUsername(); //$NON-NLS-1$
+		transfered.put(F_BUSINESS_MANAGER_TEXT, businesschargerText);
+		
+		
+		String path = buOrg.getPath(2);
+		transfered.put(F_BUSINESS_ORGANIZATION_TEXT, path);
 
 		/**
 		 * 项目进度HTML

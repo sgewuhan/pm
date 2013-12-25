@@ -379,6 +379,14 @@ public class DBInit implements ISchedualJobRunnable {
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION, 1));
 
+		// 创建项目表的商务负责人字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_BUSINESS_CHARGER, 1));
+
+		// 创建项目表的项目商务部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT,
+				new BasicDBObject().append(Project.F_BUSINESS_ORGANIZATION, 1));
+
 		// 创建项目表的项目管理部门字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT,
 				new BasicDBObject().append(Project.F_FUNCTION_ORGANIZATION, 1));
@@ -438,6 +446,14 @@ public class DBInit implements ISchedualJobRunnable {
 		// 创建项目月ETL表的项目发起部门字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
 				new BasicDBObject().append(Project.F_LAUNCH_ORGANIZATION, 1));
+
+		// 创建项目月ETL表的商务负责人字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_BUSINESS_CHARGER, 1));
+
+		// 创建项目月ETL表的项目商务部门字段索引
+		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,
+				new BasicDBObject().append(Project.F_BUSINESS_ORGANIZATION, 1));
 
 		// 创建项目月ETL表的项目管理部门字段索引
 		ensureIndex(db, IModelConstants.C_PROJECT_MONTH_DATA,

@@ -33,7 +33,7 @@ public class OrgOfProjectManagerCondition implements IRelationConditionProvider 
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
 		DBCursor cur = col.find(new BasicDBObject().append(
-				Project.F_LAUNCH_ORGANIZATION, primaryObject.get_id()).append(
+				getOrgFieldName(), primaryObject.get_id()).append(
 				ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
@@ -46,6 +46,10 @@ public class OrgOfProjectManagerCondition implements IRelationConditionProvider 
 			list.add(project.getChargerId());
 		}
 		return list;
+	}
+
+	protected String getOrgFieldName() {
+		return Project.F_LAUNCH_ORGANIZATION;
 	}
 
 }

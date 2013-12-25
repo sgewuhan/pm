@@ -97,12 +97,12 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	private Object[] getAviableOrganizationId() {
 		Set<ObjectId> set = new HashSet<ObjectId>();
 
-		List prjOrgList = projectCol.distinct(Project.F_LAUNCH_ORGANIZATION,
+		List prjOrgList = projectCol.distinct(getOrganizationFieldName(),
 				new BasicDBObject().append(
 						ILifecycle.F_LIFECYCLE,
 						new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 								ILifecycle.STATUS_FINIHED_VALUE,
-								ILifecycle.STATUS_WIP_VALUE })));
+										ILifecycle.STATUS_WIP_VALUE })));
 		set.addAll(prjOrgList);
 
 		List parentOrgList = orgCol.distinct(Organization.F_PARENT_ID,
@@ -116,6 +116,15 @@ public class OrganizationProjectProvider extends ProjectProvider {
 							new BasicDBObject().append("$in", parentOrgList))); //$NON-NLS-1$
 		}
 		return set.toArray(new Object[0]);
+	}
+
+	protected String getOrganizationFieldName() {
+		return Project.F_LAUNCH_ORGANIZATION;
+	}
+	
+
+	protected String getRelatedUserFieldName() {
+		return Project.F_CHARGER;
 	}
 
 	public List<ProjectProvider> getSubUserProvider(PrimaryObject po) {
@@ -135,16 +144,17 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	private Object getAviableUser(PrimaryObject po) {
 		Set<ObjectId> set = new HashSet<ObjectId>();
 		List prjManagerList = projectCol.distinct(
-				Project.F_CHARGER,
+				getRelatedUserFieldName(),
 				new BasicDBObject().append(
 						ILifecycle.F_LIFECYCLE,
 						new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 								ILifecycle.STATUS_FINIHED_VALUE,
-								ILifecycle.STATUS_WIP_VALUE })).append(
-						Project.F_LAUNCH_ORGANIZATION, po.get_id()));
+										ILifecycle.STATUS_WIP_VALUE })).append(
+						getOrganizationFieldName(), po.get_id()));
 		set.addAll(prjManagerList);
 		return set.toArray(new Object[0]);
 	}
+
 
 	@Override
 	public String getProjectSetName() {
@@ -160,8 +170,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	 */
 	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
 		return super.getQueryCondtion(start, stop).append(
-				Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in", //$NON-NLS-1$
+				getOrganizationFieldName(), new BasicDBObject().append("$in", //$NON-NLS-1$
 						getOrganizations(organization)));
 	}
 
@@ -211,8 +220,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	@Override
 	public List<ObjectId> getAllProjectId() {
 		BasicDBObject query = new BasicDBObject();
-		query.put(Project.F_LAUNCH_ORGANIZATION, new BasicDBObject().append(
-				"$in", getOrganizations(organization)));
+		query.put(getOrganizationFieldName(), new BasicDBObject().append("$in",
+				getOrganizations(organization)));
 		return projectCol.distinct(Project.F__ID, query);
 	}
 }

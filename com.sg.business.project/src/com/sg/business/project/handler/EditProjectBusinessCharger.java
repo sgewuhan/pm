@@ -47,15 +47,15 @@ public class EditProjectBusinessCharger extends AbstractNavigatorHandler {
 		ns.show();
 	}
 
-	private void processSetting(IStructuredSelection selection, User consigner,
+	private void processSetting(IStructuredSelection selection, User user,
 			ViewerControl vc) throws Exception {
 		Iterator<?> iter = selection.iterator();
 		ColumnViewer viewer = vc.getViewer();
 		while (iter.hasNext()) {
 			Object o = iter.next();
 			if (o instanceof Project) {
-				((Project) o).doModifyValueWithETL(Project.F_BUSINESS_CHARGER,
-						consigner.getUserid());
+				Project project = (Project) o;
+				project.doUpdateBusinessManager(user);
 				viewer.update(o, null);
 			}
 		}
