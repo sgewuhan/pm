@@ -160,6 +160,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label"
                         labelVisible="false"
                         name="comment"
@@ -221,6 +222,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.0"
                         labelVisible="false"
                         name="comment"
@@ -407,7 +409,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -468,7 +470,7 @@
                         name="choice"
                         option="评审实施计划"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -530,7 +532,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -592,7 +594,7 @@
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -648,12 +650,13 @@
                   <radio
                         editable="true"
                         id="choice"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%radio.label.6"
                         labelVisible="false"
                         name="choice"
                         option="是否整改"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -715,7 +718,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -1484,6 +1487,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.9"
                         labelVisible="false"
                         name="comment"
@@ -1562,6 +1566,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.10"
                         labelVisible="false"
                         name="comment"
@@ -1671,6 +1676,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.12"
                         labelVisible="false"
                         name="comment"
@@ -1749,6 +1755,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.13"
                         labelVisible="false"
                         name="comment"
@@ -1841,6 +1848,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.15"
                         labelVisible="false"
                         name="comment"
