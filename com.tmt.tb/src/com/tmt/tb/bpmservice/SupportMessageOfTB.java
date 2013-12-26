@@ -55,6 +55,7 @@ public class SupportMessageOfTB extends MessageService {
 		return super.getMessageContent();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getReceiverList() {
 		String messageOperation = getOperation();
@@ -63,7 +64,7 @@ public class SupportMessageOfTB extends MessageService {
 			if (host instanceof Work) {
 				Work work = (Work) host;
 				List<?> participatesIdList = work.getParticipatesIdList();
-				return (List<String>) participatesIdList;
+				return ((List<String>) participatesIdList);
 			}
 		}
 		return super.getReceiverList();
