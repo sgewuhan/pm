@@ -161,13 +161,6 @@ public class ProjectMonthlyETL extends ProjectETL {
 		etl.put(F_MONTH_SALES_REVENUE, monthSalesRevenue);
 		etl.put(F_MONTH_SALES_PROFIT, monthSalesProfit);
 		
-		Calendar cal1 = Calendar.getInstance();
-		
-		cal1.setTime(cal.getTime());
-		cal1.add(Calendar.MONTH, -1);
-		etl.put(F_YEAR, cal1.get(Calendar.YEAR));
-		etl.put(F_MONTH, cal1.get(Calendar.MONTH) + 1);
-
 		return etl;
 	}
 
