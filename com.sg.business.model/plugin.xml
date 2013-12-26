@@ -589,6 +589,12 @@
             operation="unlock"
             serviceProvider="com.sg.business.model.bpmservice.DocumentService">
       </service>
+      <service
+            interface="archivedocument.service.action"
+            name="文件归档服务"
+            operation="archivedocument"
+            serviceProvider="com.sg.business.model.bpmservice.ArchiveDocument">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">
