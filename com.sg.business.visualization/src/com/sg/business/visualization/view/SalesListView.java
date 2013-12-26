@@ -25,6 +25,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.business.visualization.ui.SalesListSetting;
 
 public class SalesListView extends AbstractDashWidgetView {
@@ -75,16 +76,17 @@ public class SalesListView extends AbstractDashWidgetView {
 		parent.setLayout(new FillLayout());
 
 		final CTabFolder tabFolder = new CTabFolder(parent, SWT.NONE);
-		tabFolder.setData(RWT.CUSTOM_VARIANT, "toplist");
-//		tabFolder.setBackground(parent.getDisplay().getSystemColor(
-//				SWT.COLOR_WHITE));
+		tabFolder.setData(RWT.CUSTOM_VARIANT, "toplist"); //$NON-NLS-1$
+		// tabFolder.setBackground(parent.getDisplay().getSystemColor(
+		// SWT.COLOR_WHITE));
 		tabFolder.setTabHeight(24);
 
-		profitItem = createProfitItem(tabFolder, "销售利润排行");
-//		profitItem.setData(RWT.CUSTOM_VARIANT, "toplist");
+		profitItem = createProfitItem(tabFolder, Messages.get().SalesListView_1);
+		// profitItem.setData(RWT.CUSTOM_VARIANT, "toplist");
 		tabFolder.setSelection(profitItem);
 
-		revenueItem = createProfitItem(tabFolder, "销售额排行");
+		revenueItem = createProfitItem(tabFolder,
+				Messages.get().SalesListView_2);
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setLayout(new RowLayout());
@@ -151,13 +153,13 @@ public class SalesListView extends AbstractDashWidgetView {
 		Button button = new Button(composite, SWT.PUSH);
 		button.setLayoutData(new RowData(20, 20));
 		button.setImage(image);
-		button.setData(RWT.CUSTOM_VARIANT, "whitebutton");
+		button.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
 		return button;
 	}
 
-//	@Override
-//	public void applyStyle(Color[] style) {
-//	}
+	// @Override
+	// public void applyStyle(Color[] style) {
+	// }
 
 	private ListCTabItem createProfitItem(CTabFolder tabFolder, String title) {
 		ListCTabItem tabItem = new ListCTabItem(tabFolder, title);
@@ -237,7 +239,7 @@ public class SalesListView extends AbstractDashWidgetView {
 
 		for (Object object : asList) {
 			if (object != null) {
-				Object[] children =  (Object[]) object;
+				Object[] children = (Object[]) object;
 				List<Object> asChildrenList = Arrays.asList(children);
 				List<Object> tempChildrenList = new ArrayList<Object>();
 				tempChildrenList.addAll(asChildrenList);
@@ -278,7 +280,7 @@ public class SalesListView extends AbstractDashWidgetView {
 
 		for (Object object : asList) {
 			if (object != null) {
-				Object[] children =  (Object[]) object;
+				Object[] children = (Object[]) object;
 				List<Object> asChildrenList = Arrays.asList(children);
 				List<Object> tempChildrenList = new ArrayList<Object>();
 				tempChildrenList.addAll(asChildrenList);

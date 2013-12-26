@@ -6,6 +6,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sg.business.visualization.chart.BarChart;
+import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
 public class OverSchedualVolumnView extends AbstractDashWidgetView {
@@ -28,13 +29,14 @@ public class OverSchedualVolumnView extends AbstractDashWidgetView {
 	}
 
 	private Chart getChart() throws Exception {
-		String[] bsText = { "正常项目数", "超期项目数" };
-		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7",
-				"8", "9", "10", "11", "12" };
+		Messages messages = Messages.get(chart.getDisplay());
+		String[] bsText = { messages.OverSchedualVolumnView_A_0, messages.OverSchedualVolumnView_A_1 };
+		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+				"8", "9", "10", "11", "12" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		double[][] value1 = projectProvider.getDelayValueByYear();
 
-		return BarChart.getChart(xAxisText, bsText, value1, "Stacked", -3);
+		return BarChart.getChart(xAxisText, bsText, value1, "Stacked", -3); //$NON-NLS-1$
 	}
 
 }
