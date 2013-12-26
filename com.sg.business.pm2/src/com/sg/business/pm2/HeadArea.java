@@ -8,8 +8,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,8 +30,6 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.design.ext.IHeadAreaSupport;
-import com.mobnut.portal.user.IAccountChangeListener;
-import com.mobnut.portal.user.IAccountEvent;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -48,7 +44,7 @@ import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
+public class HeadArea implements IHeadAreaSupport {
 
 	private CLabel headerPic;
 	private Label welcomeMessage;
@@ -112,21 +108,25 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 			for (int i = 0; i < consigners.size(); i++) {
 				item = new MenuItem(dropDownMenu, SWT.PUSH);
 				final String[] cs = consigners.get(i);
-				item.setText(Messages.get().HeadArea_2 + cs[0] + "|" + consigners.get(i)[1]); //$NON-NLS-2$
+				item.setText(Messages.get().HeadArea_2 + cs[0]
+						+ "|" + consigners.get(i)[1]); //$NON-NLS-2$
 				item.setImage(BusinessResource
 						.getImage(BusinessResource.IMAGE_ASSIGNMENT_24));
 				item.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						int yes = MessageUtil
-								.showMessage(
-										shell,
-										Messages.get().HeadArea_4,
-										Messages.get().HeadArea_5,
-										SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+						int yes = MessageUtil.showMessage(shell,
+								Messages.get().HeadArea_4,
+								Messages.get().HeadArea_5, SWT.YES | SWT.NO
+										| SWT.ICON_QUESTION);
 						if (yes == SWT.YES) {
-							UserSessionContext.getSession()
-									.setCurrentConsigner(cs[0], cs[1]);
+							try {
+								UserSessionContext.getSession()
+										.setCurrentConsigner(cs[0], cs[1]);
+								UserSessionContext.getSession().logout();
+							} catch (Exception e1) {
+								MessageUtil.showToast(e1);
+							}
 						}
 					}
 				});
@@ -136,7 +136,23 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 			item.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					UserSessionContext.getSession().cancelCurrentConsigner();
+					int yes = MessageUtil.showMessage(shell,
+							Messages.get().HeadArea_4,
+							Messages.get().HeadArea_5, SWT.YES | SWT.NO
+									| SWT.ICON_QUESTION);
+					if (yes == SWT.NO) {
+						return;
+					}
+					try {
+						UserSessionContext.getSession()
+								.cancelCurrentConsigner();
+						MessageUtil.showToast("帐户代管", "已经解除为您解除了代管帐号状态" + "\n"
+								+ "您在下次登录系统后操作的将是您自己的帐户", SWT.ICON_INFORMATION);
+						UserSessionContext.getSession().logout();
+					} catch (Exception e1) {
+						MessageUtil.showToast(e1);
+					}
+
 				}
 			});
 		}
@@ -158,11 +174,12 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 				}
 			}
 		});
-		
-		item = new MenuItem(dropDownMenu,SWT.PUSH);
+
+		item = new MenuItem(dropDownMenu, SWT.PUSH);
 		item.setText(Messages.get().HeadArea_9);
-		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_REPORT_ADD_24));
-		item.addSelectionListener(new SelectionAdapter(){
+		item.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_REPORT_ADD_24));
+		item.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				BugTools.bookBug();
@@ -170,6 +187,28 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 			}
 		});
 		
+		item = new MenuItem(dropDownMenu, SWT.SEPARATOR);
+		
+		item = new MenuItem(dropDownMenu, SWT.PUSH);
+		item.setText(Messages.get().HeadArea_Logout_title);
+		item.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int yes = MessageUtil.showMessage(shell,
+						Messages.get().HeadArea_Logout_title,
+						Messages.get().HeadArea_Logout_message, SWT.YES | SWT.NO
+								| SWT.ICON_QUESTION);
+				if (yes == SWT.NO) {
+					return;
+				}
+				try {
+					UserSessionContext.getSession().logout();
+				} catch (Exception e1) {
+					MessageUtil.showToast(e1);
+				}
+
+			}
+		});
 
 		headerPic.addMouseListener(new MouseListener() {
 
@@ -192,7 +231,10 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 		welcomeMessage = new Label(parent, SWT.NONE);
 		welcomeMessage.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
-		setWelcomeMessage(getWelcomeMessage(user.getUsername()));
+		try {
+			setWelcomeMessage();
+		} catch (Exception e1) {
+		}
 		fd = new FormData();
 		welcomeMessage.setLayoutData(fd);
 		fd.bottom = new FormAttachment(100, -1);
@@ -209,15 +251,15 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 		// fd.left = new FormAttachment(headPicContainer, 6);
 		// fd.top = new FormAttachment(0,2);
 
-		UserSessionContext.getSession().addAccountChangeListener(this);
-		content.addDisposeListener(new DisposeListener() {
-
-			@Override
-			public void widgetDisposed(DisposeEvent event) {
-				UserSessionContext.getSession().removeAccountChangeListener(
-						HeadArea.this);
-			}
-		});
+		// UserSessionContext.getSession().addAccountChangeListener(this);
+		// content.addDisposeListener(new DisposeListener() {
+		//
+		// @Override
+		// public void widgetDisposed(DisposeEvent event) {
+		// UserSessionContext.getSession().removeAccountChangeListener(
+		// HeadArea.this);
+		// }
+		// });
 		return headPicContainer;
 	}
 
@@ -238,8 +280,17 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 
 	}
 
-	private void setWelcomeMessage(String welcomeMessageText) {
-		welcomeMessage.setText(welcomeMessageText);
+	private void setWelcomeMessage() throws Exception {
+		AccountInfo user = UserSessionContext.getAccountInfo();
+		String message;
+		if (user.isConsigning()) {
+			message = getWelcomeMessage(user.getUserName())
+					+ Messages.get().HeadArea_22 + user.getconsignerName();
+		} else {
+			message = getWelcomeMessage(user.getUserName());
+		}
+
+		welcomeMessage.setText(message);
 		welcomeMessage.getParent().layout();
 	}
 
@@ -271,7 +322,6 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 	//
 	// }
 
-
 	protected void editUserProfile(User user) {
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator("editor.user"); //$NON-NLS-1$
@@ -292,12 +342,13 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 					User user = (User) input.getData();
 					loadHeadPic(user);
 					resetImageURL();
-					setWelcomeMessage(getWelcomeMessage(user.getUsername()));
+					// setWelcomeMessage(getWelcomeMessage(user.getUsername()));
 					content.layout();
 					return true;
 				}
 			};
-			DataObjectDialog.openDialog(user, conf, true, save, Messages.get().HeadArea_13);
+			DataObjectDialog.openDialog(user, conf, true, save,
+					Messages.get().HeadArea_13);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -348,24 +399,6 @@ public class HeadArea implements IHeadAreaSupport, IAccountChangeListener {
 	@Override
 	public Image getCenterLogo() {
 		return null;
-	}
-
-	@Override
-	public void accountChanged(IAccountEvent event) {
-		String code = event.getEventCode();
-		if (UserSessionContext.EVENT_CONSIGNER_CHANGED.equals(code)) {
-			try {
-				AccountInfo user = UserSessionContext.getAccountInfo();
-				if (user.isConsigning()) {
-					setWelcomeMessage(getWelcomeMessage(user.getUserName())
-							+ Messages.get().HeadArea_22 + user.getconsignerName());
-				} else {
-					setWelcomeMessage(getWelcomeMessage(user.getUserName()));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	@Override

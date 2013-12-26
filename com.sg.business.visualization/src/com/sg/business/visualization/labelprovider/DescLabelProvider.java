@@ -46,12 +46,16 @@ public class DescLabelProvider extends AbstractProjectLabelProvider {
 		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append("<small style='color=#006789'>"); //$NON-NLS-1$
 		// 显示承担组织
-		sb.append(businessOrganization);
+		if(businessOrganization!=null){
+			sb.append(businessOrganization);
+		}
 		// 显示负责人
 		sb.append("</small>"); //$NON-NLS-1$
 		sb.append(" "); //$NON-NLS-1$
 		sb.append("<small>"); //$NON-NLS-1$
-		sb.append(bm);
+		if(bm!=null){
+			sb.append(bm);
+		}
 		sb.append("</small>"); //$NON-NLS-1$
 		
 		sb.append("</span>"); //$NON-NLS-1$
