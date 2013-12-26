@@ -52,7 +52,7 @@ public class ListCTabItem extends CTabItem {
 		fd.right = new FormAttachment(100, 0);
 		fd.top = new FormAttachment(0, 0);
 		fd.bottom = new FormAttachment(50, -1);
-		createTableViewerColumn(topViewer, "006633");
+		createTableViewerColumn(topViewer, "006633"); //$NON-NLS-1$
 
 		Label l = new Label(composite, SWT.NONE);
 		l.setBackground(Widgets.getColor(composite.getDisplay(), 192, 192, 192));
@@ -69,7 +69,7 @@ public class ListCTabItem extends CTabItem {
 		fd.right = new FormAttachment(100, 0);
 		fd.top = new FormAttachment(50, 1);
 		fd.bottom = new FormAttachment(100, 0);
-		createTableViewerColumn(bottomViewer, "990033");
+		createTableViewerColumn(bottomViewer, "990033"); //$NON-NLS-1$
 
 		this.setControl(composite);
 	}
@@ -93,17 +93,17 @@ public class ListCTabItem extends CTabItem {
 					Object[] objects = (Object[]) element;
 					int number = (int) objects[2];
 					StringBuffer sb = new StringBuffer();
-					sb.append("<span style='position:absolute; right:10;bottom:10;FONT-FAMILY:Œ¢»Ì—≈∫⁄;"
-							+ "font-size:15pt;color:#"
+					sb.append("<span style='position:absolute; right:10;bottom:10;FONT-FAMILY:Œ¢»Ì—≈∫⁄;" //$NON-NLS-1$
+							+ "font-size:15pt;color:#" //$NON-NLS-1$
 							+ color
-							+ ";text-align:center;'>");
-					sb.append("<b>");
+							+ ";text-align:center;'>"); //$NON-NLS-1$
+					sb.append("<b>"); //$NON-NLS-1$
 					sb.append(number);
-					sb.append("</b>");
-					sb.append("</span>");
+					sb.append("</b>"); //$NON-NLS-1$
+					sb.append("</span>"); //$NON-NLS-1$
 					return sb.toString();
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 		});
@@ -132,9 +132,9 @@ public class ListCTabItem extends CTabItem {
 						Organization org = (Organization) po;
 						return getOrganizationLabel(org);
 					}
-					return "";
+					return ""; //$NON-NLS-1$
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 //		col.getColumn().setWidth(280);
@@ -149,18 +149,18 @@ public class ListCTabItem extends CTabItem {
 					Double profit = (Double) objects[1];
 					BigDecimal d = new BigDecimal(profit / 10000d);
 					StringBuffer sb = new StringBuffer();
-					sb.append("<span style='position:absolute; right:0;bottom:10;FONT-FAMILY:Œ¢»Ì—≈∫⁄;"
-							+ "font-size:10pt;color:#"
+					sb.append("<span style='position:absolute; right:0;bottom:10;FONT-FAMILY:Œ¢»Ì—≈∫⁄;" //$NON-NLS-1$
+							+ "font-size:10pt;color:#" //$NON-NLS-1$
 							+ color
-							+ ";text-align:right;'>");
-					sb.append("<b>");
+							+ ";text-align:right;'>"); //$NON-NLS-1$
+					sb.append("<b>"); //$NON-NLS-1$
 					sb.append(d.setScale(2, BigDecimal.ROUND_HALF_UP));
-					sb.append("</b>");
-					sb.append("</span>");
+					sb.append("</b>"); //$NON-NLS-1$
+					sb.append("</span>"); //$NON-NLS-1$
 					return sb.toString();
 
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		col.getColumn().setWidth(70);
@@ -178,48 +178,48 @@ public class ListCTabItem extends CTabItem {
 					String ImageURL1;
 					String ImageURL2;
 					if (type) {
-						ImageURL1 = FileUtil.getImageURL("up_16.png",
+						ImageURL1 = FileUtil.getImageURL("up_16.png", //$NON-NLS-1$
 								VisualizationActivator.PLUGIN_ID);
-						ImageURL2 = FileUtil.getImageURL("down_16.png",
+						ImageURL2 = FileUtil.getImageURL("down_16.png", //$NON-NLS-1$
 								VisualizationActivator.PLUGIN_ID);
 					} else {
-						ImageURL1 = FileUtil.getImageURL("down_16.png",
+						ImageURL1 = FileUtil.getImageURL("down_16.png", //$NON-NLS-1$
 								VisualizationActivator.PLUGIN_ID);
-						ImageURL2 = FileUtil.getImageURL("up_16.png",
+						ImageURL2 = FileUtil.getImageURL("up_16.png", //$NON-NLS-1$
 								VisualizationActivator.PLUGIN_ID);
 					}
 
 					StringBuffer sb = new StringBuffer();
-					sb.append("<span style='position:absolute;FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:7pt;"
-							+ "text-align:center;'>");
+					sb.append("<span style='position:absolute;FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:7pt;" //$NON-NLS-1$
+							+ "text-align:center;'>"); //$NON-NLS-1$
 					if (lastNumber == null) {
 
-						sb.append("<img src='"
+						sb.append("<img src='" //$NON-NLS-1$
 								+ ImageURL1
-								+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />");
+								+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />"); //$NON-NLS-1$
 					} else {
 						int intLastValue = lastNumber.intValue();
 						if (intLastValue > number) {
-							sb.append("<img src='"
+							sb.append("<img src='" //$NON-NLS-1$
 									+ ImageURL1
-									+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />");
-							sb.append("<br/>");
+									+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />"); //$NON-NLS-1$
+							sb.append("<br/>"); //$NON-NLS-1$
 							sb.append(intLastValue - number);
 						} else if (intLastValue < number) {
-							sb.append("<img src='"
+							sb.append("<img src='" //$NON-NLS-1$
 									+ ImageURL2
-									+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />");
-							sb.append("<br/>");
+									+ "' style='float:left; left:0; top:0; display:block;' width='10' height='10' />"); //$NON-NLS-1$
+							sb.append("<br/>"); //$NON-NLS-1$
 							sb.append(number - intLastValue);
 						} else {
-							sb.append("-");
+							sb.append("-"); //$NON-NLS-1$
 						}
 					}
-					sb.append("</span>");
+					sb.append("</span>"); //$NON-NLS-1$
 					return sb.toString();
 
 				}
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 		});
 		col.getColumn().setWidth(20);
@@ -261,27 +261,27 @@ public class ListCTabItem extends CTabItem {
 		String charger = pres.getChargerText();
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;margin-left:0; display:block; width=1000px'>");
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;margin-left:0; display:block; width=1000px'>"); //$NON-NLS-1$
 		// œ‘ æœÓƒø∑‚√Ê
 		if (coverImageURL != null) {
-			sb.append("<img src='"
+			sb.append("<img src='" //$NON-NLS-1$
 					+ coverImageURL
-					+ "' style='float:left; left:0; top:0; display:block;' width='36' height='36' />");
+					+ "' style='float:left; left:0; top:0; display:block;' width='36' height='36' />"); //$NON-NLS-1$
 		}
 		// œ‘ æœÓƒø√˚≥∆
-		sb.append("<b>");
+		sb.append("<b>"); //$NON-NLS-1$
 		sb.append(desc);
-		sb.append("</b>");
-		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("</b>"); //$NON-NLS-1$
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small>"); //$NON-NLS-1$
 		// œ‘ æ≥–µ£◊È÷Ø
 		sb.append(launchOrganization);
 		// œ‘ æ∏∫‘»À
-		sb.append(" ");
+		sb.append(" "); //$NON-NLS-1$
 		sb.append(charger);
-		sb.append("</small>");
+		sb.append("</small>"); //$NON-NLS-1$
 
-		sb.append("</span>");
+		sb.append("</span>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -289,8 +289,8 @@ public class ListCTabItem extends CTabItem {
 	private String getUserLabel(User user) {
 		if (user != null) {
 			StringBuffer sb = new StringBuffer();
-			sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;"
-					+ "margin-left:0; display:block; width=1000px'>");
+			sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;" //$NON-NLS-1$
+					+ "margin-left:0; display:block; width=1000px'>"); //$NON-NLS-1$
 			String imageURL = null;
 
 			List<RemoteFile> headpics = user.getGridFSFileValue(User.F_HEADPIC);
@@ -305,19 +305,19 @@ public class ListCTabItem extends CTabItem {
 
 			// œ‘ æ”√ªß’’∆¨
 			if (imageURL != null) {
-				sb.append("<img src='"
+				sb.append("<img src='" //$NON-NLS-1$
 						+ imageURL
-						+ "' style='float:left; left:0; top:0; display:block;' width='36' height='36' />");
+						+ "' style='float:left; left:0; top:0; display:block;' width='36' height='36' />"); //$NON-NLS-1$
 			}
 
 			// œ‘ æ”√ªß√˚≥∆
 			String userHtmlLabel = user.getUsername();
-			sb.append("<b>");
+			sb.append("<b>"); //$NON-NLS-1$
 			sb.append(userHtmlLabel);
-			sb.append("</b>");
+			sb.append("</b>"); //$NON-NLS-1$
 
-			sb.append("<br/>");
-			sb.append("<small>");
+			sb.append("<br/>"); //$NON-NLS-1$
+			sb.append("<small>"); //$NON-NLS-1$
 
 			// œ‘ æ”√ªßÀ˘ Ù◊È÷Ø
 			Organization org = user.getOrganization();
@@ -325,33 +325,33 @@ public class ListCTabItem extends CTabItem {
 				String path = org.getPath(2);
 				sb.append(path);
 			}
-			sb.append("</small>");
+			sb.append("</small>"); //$NON-NLS-1$
 
-			sb.append("</span>");
+			sb.append("</span>"); //$NON-NLS-1$
 			return sb.toString();
 		} else {
-			return "?";
+			return "?"; //$NON-NLS-1$
 		}
 	}
 
 	private String getOrganizationLabel(Organization org) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;"
-				+ "margin-left:0; display:block; width=1000px'>");
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt;color:#333333;" //$NON-NLS-1$
+				+ "margin-left:0; display:block; width=1000px'>"); //$NON-NLS-1$
 
-		String imageUrl = "<img src='" + org.getImageURL()
-				+ "' style='float:left;padding:2px' width='24' height='24' />";
+		String imageUrl = "<img src='" + org.getImageURL() //$NON-NLS-1$
+				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
 		String label = org.getLabel();
 		String path = org.getFullName();
 
 		sb.append(imageUrl);
-		sb.append("<b>");
+		sb.append("<b>"); //$NON-NLS-1$
 		sb.append(label);
-		sb.append("</b>");
-		sb.append("<br/>");
-		sb.append("<small>");
+		sb.append("</b>"); //$NON-NLS-1$
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append("<small>"); //$NON-NLS-1$
 		sb.append(path);
-		sb.append("</small></span>");
+		sb.append("</small></span>"); //$NON-NLS-1$
 
 		return sb.toString();
 	}

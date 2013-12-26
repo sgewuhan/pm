@@ -154,6 +154,21 @@ public class Messages extends NLS {
 	public String TypeProjectSetFolder_2;
 	public String TypeProjectSetFolder_4;
 	public String UserProjectPerfDel_0;
+	public String SalesListSetting_A_1;
+	public String SalesListSetting_A_3;
+	public String SalesListSetting_A_4;
+	public String SalesListSetting_A_5;
+	public String BudgetAndInvestmentVolumnView_A_0;
+	public String BudgetAndInvestmentVolumnView_A_1;
+	public String CombinnatiedRateView_A_0;
+	public String CombinnatiedRateView_A_1;
+	public String OverSchedualVolumnView_A_0;
+	public String OverSchedualVolumnView_A_1;
+	public String ProfitRateView_A_0;
+	public String ProfitVolumnView_0;
+	public String ProfitVolumnView_1;
+	public String SalesListView_1;
+	public String SalesListView_2;
 	
 	public static Messages get(Display display) {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, display);

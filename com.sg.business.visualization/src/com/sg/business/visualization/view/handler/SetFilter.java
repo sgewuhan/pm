@@ -73,7 +73,7 @@ public class SetFilter extends AbstractHandler implements IElementUpdater {
 			if (text.isEmpty()) {
 				element.setText(Messages.get().SetFilter_3);
 			} else {
-				element.setText(Messages.get().SetFilter_4 + text+"]"); //$NON-NLS-2$
+				element.setText(Messages.get().SetFilter_4 + text+"]"); //$NON-NLS-2$ //$NON-NLS-1$
 			}
 		}
 	}

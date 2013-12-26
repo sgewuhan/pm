@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
 
+import com.sg.business.visualization.nls.Messages;
 import com.sg.business.visualization.view.SalesListView;
 
 public class SalesListSetting extends Shell {
@@ -55,7 +56,7 @@ public class SalesListSetting extends Shell {
 		fd.top = new FormAttachment(0, 4);
 		fd.width = 80;
 		for (int i = 1; i < 13; i++) {
-			monthCombo.add("" + i + "月");
+			monthCombo.add("" + i + Messages.get().SalesListSetting_A_1); //$NON-NLS-1$
 		}
 		monthCombo.select(month - 1);
 
@@ -68,12 +69,12 @@ public class SalesListSetting extends Shell {
 
 		fd.width = 80;
 		for (int i = 1; i < 5; i++) {
-			limitNumberCombo.add("" + i * 5 + " 条");
+			limitNumberCombo.add("" + i * 5 + Messages.get().SalesListSetting_A_3); //$NON-NLS-1$
 		}
 		limitNumberCombo.select(limitNumber / 5 - 1);
 
 		Button ok = new Button(this, SWT.PUSH);
-		ok.setText("确定");
+		ok.setText(Messages.get().SalesListSetting_A_4);
 		fd = new FormData();
 		ok.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 4);
@@ -92,7 +93,7 @@ public class SalesListSetting extends Shell {
 		});
 
 		Button cancel = new Button(this, SWT.PUSH);
-		cancel.setText("取消");
+		cancel.setText(Messages.get().SalesListSetting_A_5);
 		cancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

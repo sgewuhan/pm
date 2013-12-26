@@ -467,7 +467,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 						.doubleValue();
 			}
 		}
-		return new double[][] { sales_profit, sales_cost };
+		return new double[][] { sales_cost ,sales_profit};
 	}
 
 	private AggregationOutput aggregatProfitAndCostByYear() {
