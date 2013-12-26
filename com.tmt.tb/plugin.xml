@@ -4195,7 +4195,9 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            editorId="tbBusinessSupport.editor.apply"
             name="技术支持申请"
+            persistentFields="iscbc,isprice,istechnology"
             processDefinitionId="tbBusinessSupport">
          <processParameter
                processParameterName="iscbc"
@@ -4211,24 +4213,144 @@
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="tbBusinessSupport.editor.tecapprover"
             name="技术支持审批"
+            persistentFields="choice"
             processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
       </taskForm>
       <taskForm
+            editorId="tbBusinessSupport.editor.confirm"
             name="确认技术支持"
+            persistentFields="support,choice"
             processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="support"
+               taskFormFieldName="support">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
       </taskForm>
       <taskForm
-            name="校核"
+            editorId="tbBusinessSupport.editor.business"
+            name="商务报价"
+            persistentFields="priceapprover"
             processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="priceapprover"
+               taskFormFieldName="priceapprover">
+         </processParameter>
       </taskForm>
       <taskForm
-            name="审核"
+            editorId="tbBusinessSupport.editor.cbc"
+            name="编制CBC文件"
+            persistentFields="cbcchecker,cbcauditor,cbcapporver"
             processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="cbcchecker"
+               taskFormFieldName="cbcchecker">
+         </processParameter>
+         <processParameter
+               processParameterName="cbcauditor"
+               taskFormFieldName="cbcauditor">
+         </processParameter>
+         <processParameter
+               processParameterName="cbcapporver"
+               taskFormFieldName="cbcapporver">
+         </processParameter>
       </taskForm>
       <taskForm
-            name="批准"
+            editorId="tbBusinessSupport.editor.tec"
+            name="编制技术方案"
+            persistentFields="tecchecker,tecauditor,tecapporver"
             processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="tecchecker"
+               taskFormFieldName="tecchecker">
+         </processParameter>
+         <processParameter
+               processParameterName="tecauditor"
+               taskFormFieldName="tecauditor">
+         </processParameter>
+         <processParameter
+               processParameterName="tecapporver"
+               taskFormFieldName="tecapporver">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbBusinessSupport.editor.approve"
+            name="商务批准"
+            persistentFields="comment,choice"
+            processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbBusinessSupport.editor.check"
+            name="CBC校核"
+            persistentFields="comment,choice"
+            processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbBusinessSupport.editor.audit"
+            name="CBC审核"
+            persistentFields="comment,choice"
+            processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbBusinessSupport.editor.approve"
+            name="CBC批准"
+            persistentFields="comment,choice"
+            processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbBusinessSupport.editor.check"
+            name="技术方案校核"
+            persistentFields="comment,choice"
+            processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbBusinessSupport.editor.audit"
+            name="技术方案审核"
+            persistentFields="comment,choice"
+            processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="tbBusinessSupport.editor.approve"
+            name="技术方案批准"
+            persistentFields="comment,choice"
+            processDefinitionId="tbBusinessSupport">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
       </taskForm>
    </extension>
    <extension
@@ -4406,6 +4528,22 @@
                         type="String">
                   </radio>
                </section>
+               <section
+                     label="选择执行人">
+                  <navigatorSelector
+                        editable="true"
+                        id="support"
+                        label="执行人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="support"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
             </pagecolumn>
          </basicpage>
          <basicpage
@@ -4435,7 +4573,218 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tbBusinessSupport.editor.confirm"
+            id="tbBusinessSupport.editor.business"
+            name="商务报价">
+         <basicpage
+               id="page1"
+               title="选择审批人">
+            <pagecolumn>
+               <section
+                     label="选择审批人">
+                  <navigatorSelector
+                        editable="true"
+                        id="priceapprover"
+                        label="批准"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="priceapprover"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="%basicpage.title.66">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="%section.label.1">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbBusinessSupport.editor.cbc"
+            name="编制CBC文件">
+         <basicpage
+               id="page1"
+               title="选择审批人">
+            <pagecolumn>
+               <section
+                     label="选择审批人">
+                  <navigatorSelector
+                        editable="true"
+                        id="cbcchecker"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="校核"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="cbcchecker"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="cbcauditor"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="审核"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="cbcauditor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="cbcapporver"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="批准"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="cbcapporver"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="%basicpage.title.66">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="%section.label.1">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbBusinessSupport.editor.tec"
+            name="编制技术文件">
+         <basicpage
+               id="page1"
+               title="选择审批人">
+            <pagecolumn>
+               <section
+                     label="选择审批人">
+                  <navigatorSelector
+                        editable="true"
+                        id="tecchecker"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="校核"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="tecchecker"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="tecauditor"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="审核"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="tecauditor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="tecapporver"
+                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
+                        label="批准"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="tecapporver"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="%basicpage.title.66">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="%section.label.1">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="tbBusinessSupport.editor.check"
             name="校核">
          <basicpage
                id="page1"
@@ -4497,7 +4846,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tbBusinessSupport.editor.confirm"
+            id="tbBusinessSupport.editor.audit"
             name="审核">
          <basicpage
                id="page1"
@@ -4559,7 +4908,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tbBusinessSupport.editor.confirm"
+            id="tbBusinessSupport.editor.approve"
             name="批准">
          <basicpage
                id="page1"
