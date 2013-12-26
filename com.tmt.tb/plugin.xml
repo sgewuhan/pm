@@ -4503,6 +4503,23 @@
                title="确认">
             <pagecolumn>
                <section
+                     label="选择执行人">
+                  <navigatorSelector
+                        editable="true"
+                        id="support"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="执行人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="support"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
                      label="%section.label.51">
                   <text
                         editPart="Text(Multi Line)"
@@ -4527,22 +4544,6 @@
                         required="true"
                         type="String">
                   </radio>
-               </section>
-               <section
-                     label="选择执行人">
-                  <navigatorSelector
-                        editable="true"
-                        id="support"
-                        label="执行人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="support"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
