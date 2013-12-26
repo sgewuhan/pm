@@ -4198,7 +4198,7 @@
             editorId="tbBusinessSupport.editor.apply"
             name="技术支持申请"
             persistentFields="iscbc,isprice,istechnology"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="iscbc"
                taskFormFieldName="iscbc">
@@ -4216,7 +4216,7 @@
             editorId="tbBusinessSupport.editor.tecapprover"
             name="技术支持审批"
             persistentFields="choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -4226,7 +4226,7 @@
             editorId="tbBusinessSupport.editor.confirm"
             name="确认技术支持"
             persistentFields="support,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="support"
                taskFormFieldName="support">
@@ -4240,7 +4240,7 @@
             editorId="tbBusinessSupport.editor.business"
             name="商务报价"
             persistentFields="priceapprover"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="priceapprover"
                taskFormFieldName="priceapprover">
@@ -4250,7 +4250,7 @@
             editorId="tbBusinessSupport.editor.cbc"
             name="编制CBC文件"
             persistentFields="cbcchecker,cbcauditor,cbcapporver"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="cbcchecker"
                taskFormFieldName="cbcchecker">
@@ -4268,7 +4268,7 @@
             editorId="tbBusinessSupport.editor.tec"
             name="编制技术方案"
             persistentFields="tecchecker,tecauditor,tecapporver"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="tecchecker"
                taskFormFieldName="tecchecker">
@@ -4286,7 +4286,7 @@
             editorId="tbBusinessSupport.editor.approve"
             name="商务批准"
             persistentFields="comment,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -4296,7 +4296,7 @@
             editorId="tbBusinessSupport.editor.check"
             name="CBC校核"
             persistentFields="comment,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -4306,7 +4306,7 @@
             editorId="tbBusinessSupport.editor.audit"
             name="CBC审核"
             persistentFields="comment,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -4316,7 +4316,7 @@
             editorId="tbBusinessSupport.editor.approve"
             name="CBC批准"
             persistentFields="comment,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -4326,7 +4326,7 @@
             editorId="tbBusinessSupport.editor.check"
             name="技术方案校核"
             persistentFields="comment,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -4336,7 +4336,7 @@
             editorId="tbBusinessSupport.editor.audit"
             name="技术方案审核"
             persistentFields="comment,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -4346,7 +4346,7 @@
             editorId="tbBusinessSupport.editor.approve"
             name="技术方案批准"
             persistentFields="comment,choice"
-            processDefinitionId="tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
