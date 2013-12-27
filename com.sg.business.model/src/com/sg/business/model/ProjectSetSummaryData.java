@@ -32,6 +32,10 @@ public class ProjectSetSummaryData {
 
 	private static final String F_PROCESSING_NORMAL = "processing_normal"; //$NON-NLS-1$
 
+	private static final String F_PROFIT_SURPLUS = "profit_surplus";
+
+	private static final String F_PROFIT_DEFICIT = "profit_deficit";
+
 	public int total;
 
 	/**
@@ -56,13 +60,11 @@ public class ProjectSetSummaryData {
 	
 	/**
 	 * 投入（研发成本）有关,预算内完成的项目数量
-	 * TODO
 	 */
 	public int finished_cost_normal;
 	
 	/**
 	 * 投入（研发成本）有关,超预算完成的项目数量
-	 * TODO
 	 */
 	public int finished_cost_over ;
 	
@@ -70,6 +72,16 @@ public class ProjectSetSummaryData {
 	 * 估计不会超支的进行中项目数量
 	 */
 	public int processing_cost_normal;
+	
+	/**
+	 * 盈利项目数
+	 */
+	public int profit_surplus;
+	
+	/**
+	 * 亏损项目数
+	 */
+	public int profit_deficit;
 
 	/**
 	 * 估计会超过预算的项目数量
@@ -81,11 +93,12 @@ public class ProjectSetSummaryData {
 	 */
 	public long total_budget_amount;
 	
+	
+	
 	/**
 	 * 项目的总研发成本金额
 	 */
 	public long total_investment_amount;
-	
 	
 	
 	/**
@@ -101,6 +114,7 @@ public class ProjectSetSummaryData {
 	public List<ProjectProvider> subOrganizationProjectProvider = new ArrayList<ProjectProvider>();
 	
 	public List<ProjectProvider> subChargerProjectProvider = new ArrayList<ProjectProvider>();
+
 	
 
 	public DBObject getData() {
@@ -119,6 +133,9 @@ public class ProjectSetSummaryData {
 		data.put(F_PROCESSING_DELAY, processing_delay);
 		data.put(F_PROCESSING_NORMAL, processing_normal);
 		
+		data.put(F_PROFIT_SURPLUS, profit_surplus);
+		data.put(F_PROFIT_DEFICIT, profit_deficit);
+
 		return data;
 	}
 
@@ -141,6 +158,10 @@ public class ProjectSetSummaryData {
 		total_investment_amount = 0;
 		total_sales_revenue = 0;
 		total_sales_cost = 0;
+		
+		profit_surplus = 0;
+		profit_deficit = 0;
+		
 		subOrganizationProjectProvider.clear();
 		subChargerProjectProvider.clear();
 	}

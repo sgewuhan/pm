@@ -169,6 +169,14 @@ public class ProjectPresentation implements IProjectETL {
 		sum.total_investment_amount += getInvestment();
 		sum.total_sales_revenue += getSalesRevenue();
 		sum.total_sales_cost += getSalesCost();
+		
+		
+		//Ó¯Àû¿÷ËðÊý
+		if(getSalesRevenue()>=getSalesCost()){
+			sum.profit_surplus ++;
+		}else{
+			sum.profit_deficit ++;
+		}
 	}
 
 	private Object getETLValue(String field) {

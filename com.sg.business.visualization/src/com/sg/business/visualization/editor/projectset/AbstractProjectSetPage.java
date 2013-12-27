@@ -258,17 +258,19 @@ public abstract class AbstractProjectSetPage implements
 	protected void setBackgroundGradient(Composite header) {
 		Object adapter = header.getAdapter(IWidgetGraphicsAdapter.class);
 		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
-		int[] percents = new int[] { 0, 50, 100 };
+		int[] percents = new int[] { 0,85, 95, 100 };
 		Display display = header.getDisplay();
 		Color[] gradientColors = new Color[] {
 				Widgets.getColor(display, 255, 255, 255),
+				Widgets.getColor(display, 255, 255, 255),
 				Widgets.getColor(display, 240, 240, 240),
-				Widgets.getColor(display, 220, 220, 220)
+				Widgets.getColor(display, 230, 230, 230),
 				};
 
 		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
 	}
 
+	
 	protected String getParameterText() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:"
