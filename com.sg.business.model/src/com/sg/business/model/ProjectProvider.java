@@ -574,6 +574,9 @@ public abstract class ProjectProvider extends PrimaryObject {
 			if (object != null) {
 				Object[] top = (Object[]) object;
 				Object _id = top[selectIndex];
+				if(_id == null){
+					continue;
+				}
 				for (Object lastOject : lastopList) {
 					if (lastOject != null) {
 						Object[] lastTop = (Object[]) lastOject;
