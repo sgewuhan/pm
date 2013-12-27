@@ -2,12 +2,11 @@ package com.sg.business.visualization.nls;
 
 import java.util.Locale;
 
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.commons.util.NLS2;
 
-public class Messages extends NLS {
+public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.visualization.nls.messages"; //$NON-NLS-1$
 	public String OrganizationProjectSetFolder_ForSales;
 	public String BudgetAndInvestmentLabelProvider_0;

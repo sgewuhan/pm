@@ -2,32 +2,17 @@ package com.sg.business.project.setup;
 
 //import java.util.Iterator;
 
-import org.bson.types.BasicBSONList;
-import org.bson.types.ObjectId;
-
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.IContext;
-import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.commons.field.presentation.ProjectInfomationOfWork;
-import com.sg.business.model.BudgetItem;
-import com.sg.business.model.Container;
-import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.ProductItem;
-import com.sg.business.model.Project;
-import com.sg.business.model.ProjectBudget;
-import com.sg.business.model.Work;
-import com.sg.business.model.WorkDefinitionConnection;
 import com.sg.business.model.WorkOrderPeriodCost;
 //import com.sg.sqldb.utility.SQLResult;
 //import com.sg.sqldb.utility.SQLRow;
 //import com.sg.sqldb.utility.SQLUtil;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectCreateAffiliated implements ISchedualJobRunnable {
 

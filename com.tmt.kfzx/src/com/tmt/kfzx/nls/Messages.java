@@ -1,11 +1,12 @@
 package com.tmt.kfzx.nls;
 
-import org.eclipse.osgi.util.NLS;
+import java.util.Locale;
+
 import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.commons.util.NLS2;
 
-public class Messages extends NLS {
+public class Messages {
 	private static final String BUNDLE_NAME = "com.tmt.kfzx.nls.messages"; //$NON-NLS-1$
 	public String ApproveMessageOfKFZX_1;
 	public String ApproveMessageOfKFZX_11;
@@ -33,8 +34,12 @@ public class Messages extends NLS {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, display);
 	}
 
+	public static Messages get(Locale local) {
+		return NLS2.getMessage(BUNDLE_NAME, Messages.class, local);
+	}
+	
 	public static Messages get() {
-		return get(null);
+		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
 	}
 
 }
