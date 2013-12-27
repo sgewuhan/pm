@@ -1314,6 +1314,20 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="xtbusinesssupport.user.application"
+            table="xtbusinesssupport.user.application">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.commonlabel">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -1353,6 +1367,13 @@
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
+      <table
+            dataSet="com.tmt.xt.dataset.UserOfSupportApplication"
+            id="xtbusinesssupport.user.application">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -1373,6 +1394,16 @@
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="xtBusinessSupport.application"
+            name="技术支持申请"
+            persistentFields="support_auditor"
+            processDefinitionId="xt.xtBusinessSupport">
+         <processParameter
+               processParameterName="support_auditor"
+               taskFormFieldName="support_auditor">
+         </processParameter>
+      </taskForm>
       <taskForm
             editorId="xtBusinessSupport.auditor1"
             name="技术支持审批"
@@ -1472,6 +1503,58 @@
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="xtBusinessSupport.application"
+            name="技术支持申请">
+         <basicpage
+               id="page1"
+               title="申请">
+            <pagecolumn>
+               <section
+                     label="请确定技术支持审批人">
+                  <navigatorSelector
+                        editable="true"
+                        id="auditor"
+                        inputValidator="com.sg.business.taskforms.field.CheckByPass"
+                        label="审批人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="auditor"
+                        navigatorId="xtbusinesssupport.user.auditor"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="%basicpage.title.44">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="%basicpage.title.45">
+            <pagecolumn>
+               <section
+                     label="%section.label.32">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"

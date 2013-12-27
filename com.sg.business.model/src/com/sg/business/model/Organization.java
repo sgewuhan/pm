@@ -320,9 +320,9 @@ public class Organization extends PrimaryObject {
 	public void doAddProjectTemplate(ObjectId projectTemplateId) {
 		DBCollection projectTemplateCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_PROJECT_TEMPLATE);
-		projectTemplateCol.update(
-				new BasicDBObject(ProjectTemplate.F__ID, projectTemplateId),
-				new BasicDBObject("$set", (new BasicDBObject().append( //$NON-NLS-1$
+		projectTemplateCol.update(new BasicDBObject(ProjectTemplate.F__ID,
+				projectTemplateId), new BasicDBObject(
+				"$set", (new BasicDBObject().append( //$NON-NLS-1$
 						ProjectTemplate.F_ORGANIZATION_ID, get_id()))), false,
 				true);
 	}
@@ -335,9 +335,9 @@ public class Organization extends PrimaryObject {
 	public void doAddWorkDefinition(ObjectId workDefinitionId) {
 		DBCollection projectTemplateCol = DBActivator.getCollection(
 				IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
-		projectTemplateCol.update(
-				new BasicDBObject(WorkDefinition.F__ID, workDefinitionId),
-				new BasicDBObject("$set", (new BasicDBObject().append( //$NON-NLS-1$
+		projectTemplateCol.update(new BasicDBObject(WorkDefinition.F__ID,
+				workDefinitionId), new BasicDBObject(
+				"$set", (new BasicDBObject().append( //$NON-NLS-1$
 						WorkDefinition.F_ORGANIZATION_ID, get_id()))), false,
 				true);
 	}
@@ -1556,9 +1556,13 @@ public class Organization extends PrimaryObject {
 		}
 
 		// –¥»’÷æ
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().Organization_50,
-				new Date(), Messages.get().Organization_51 + this + Messages.get().Organization_52 + selectList.toString(),
-				IModelConstants.DB);
+		DBUtil.SAVELOG(
+				context.getAccountInfo().getUserId(),
+				Messages.get().Organization_50,
+				new Date(),
+				Messages.get().Organization_51 + this
+						+ Messages.get().Organization_52
+						+ selectList.toString(), IModelConstants.DB);
 
 	}
 
@@ -1588,12 +1592,11 @@ public class Organization extends PrimaryObject {
 	 * @return
 	 */
 	public ObjectId getContainerOrganizationId() {
-		if (isContainer()) {
-			return this.get_id();
-		} else {
-			return ((Organization) getParentOrganization())
-					.getContainerOrganizationId();
+		Organization containerOrg = getContainerOrganization();
+		if(containerOrg != null){
+			containerOrg.get_id();
 		}
+		return null;
 	}
 
 	/**
@@ -1605,9 +1608,12 @@ public class Organization extends PrimaryObject {
 		if (isContainer()) {
 			return this;
 		} else {
-			return ((Organization) getParentOrganization())
-					.getContainerOrganization();
+			Organization parentOrg = (Organization) getParentOrganization();
+			if (parentOrg != null) {
+				return parentOrg.getContainerOrganization();
+			}
 		}
+		return null;
 	}
 
 	private SummaryOrganizationWorks summary;
@@ -1628,7 +1634,6 @@ public class Organization extends PrimaryObject {
 		}
 		return super.getAdapter(adapter);
 	}
-	
 
 	public ProjectProvider getBusinessManagedProjectProvider() {
 		OrganizationProjectProviderForSales projectProvider = ModelService
@@ -1760,5 +1765,22 @@ public class Organization extends PrimaryObject {
 		query.append(Folder.F_ROOT_ID, get_id());
 		query.append(Folder.F_OPENED, Boolean.TRUE);
 		return getRelationCountByCondition(Folder.class, query);
+	}
+
+	public Folder makeFolder(IContext context,Work work) {
+		BasicDBObject folderRootData = new BasicDBObject();
+		folderRootData.put(Folder.F_DESC, work.getDesc());
+		ObjectId folderRootId = new ObjectId();
+		folderRootData.put(Folder.F__ID, folderRootId);
+		String containerCollection, containerDB;
+		containerCollection = IModelConstants.C_ORGANIZATION;
+		Container container = Container.adapter(this,
+				Container.TYPE_ADMIN_GRANTED);
+		containerDB = (String) container.getValue(Container.F_SOURCE_DB);
+		folderRootData.put(Folder.F_CONTAINER_DB, containerDB);
+		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
+		folderRootData.put(Folder.F_ROOT_ID, get_id());
+		return ModelService.createModelObject(folderRootData, Folder.class);
+		
 	}
 }

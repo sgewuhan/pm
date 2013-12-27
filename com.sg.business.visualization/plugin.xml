@@ -387,7 +387,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.1"
                type="String"
@@ -439,7 +439,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.5"
                type="String"
@@ -483,7 +483,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.8"
                type="String"
@@ -551,7 +551,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.DescLabelProvider"
+               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.14"
                type="String"

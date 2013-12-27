@@ -1,11 +1,12 @@
 package com.sg.business.visualization.nls;
 
-import org.eclipse.osgi.util.NLS;
+import java.util.Locale;
+
 import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.commons.util.NLS2;
 
-public class Messages extends NLS {
+public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.visualization.nls.messages"; //$NON-NLS-1$
 	public String OrganizationProjectSetFolder_ForSales;
 	public String BudgetAndInvestmentLabelProvider_0;
@@ -154,13 +155,31 @@ public class Messages extends NLS {
 	public String TypeProjectSetFolder_2;
 	public String TypeProjectSetFolder_4;
 	public String UserProjectPerfDel_0;
+	public String SalesListSetting_A_1;
+	public String SalesListSetting_A_3;
+	public String SalesListSetting_A_4;
+	public String SalesListSetting_A_5;
+	public String BudgetAndInvestmentVolumnView_A_0;
+	public String BudgetAndInvestmentVolumnView_A_1;
+	public String CombinnatiedRateView_A_0;
+	public String CombinnatiedRateView_A_1;
+	public String OverSchedualVolumnView_A_0;
+	public String OverSchedualVolumnView_A_1;
+	public String ProfitRateView_A_0;
+	public String ProfitVolumnView_0;
+	public String ProfitVolumnView_1;
+	public String SalesListView_1;
+	public String SalesListView_2;
 	
 	public static Messages get(Display display) {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, display);
 	}
 
-	public static Messages get() {
-		return get(null);
+	public static Messages get(Locale local) {
+		return NLS2.getMessage(BUNDLE_NAME, Messages.class, local);
 	}
-
+	
+	public static Messages get() {
+		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
+	}
 }

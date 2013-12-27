@@ -4655,6 +4655,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return result;
 	}
 
+	public List<ObjectId> getOutputDeliverableDocumentIds() {
+		List<ObjectId> result = new ArrayList<ObjectId>();
+		List<PrimaryObject> d = getOutputDeliverable();
+		for (int i = 0; i < d.size(); i++) {
+			Deliverable ditem = (Deliverable) d.get(i);
+			Document doc = ditem.getDocument();
+			if (doc != null) {
+				result.add(doc.get_id());
+			}
+		}
+		return result;
+	}
+
 	public List<PrimaryObject> getOutputDeliverable() {
 		BasicDBObject condition = new BasicDBObject();
 		condition.put(Deliverable.F_WORK_ID, get_id());

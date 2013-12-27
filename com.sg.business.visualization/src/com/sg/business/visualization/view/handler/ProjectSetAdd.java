@@ -93,7 +93,7 @@ public class ProjectSetAdd extends AbstractNavigatorHandler {
 			}
 		};
 		ComboInputDialog input = new ComboInputDialog(parentShell, TITLE,
-				Messages.get().ProjectSetAdd_6, "", items, val); //$NON-NLS-2$
+				Messages.get().ProjectSetAdd_6, "", items, val); //$NON-NLS-2$ //$NON-NLS-1$
 		int ok = input.open();
 		if (ok == ComboInputDialog.OK) {
 			return input.getValue();

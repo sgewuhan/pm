@@ -43,8 +43,9 @@ import com.sg.widgets.viewer.ViewerControl;
 public abstract class AbstractProjectSetPage implements
 		INavigatorPageBodyPartCreater, IParameterListener {
 
-	private static final int INFOBANNER_HEIGHT = 68;
-	private static final int MARGIN = 4;
+	protected static final int FONT_SIZE = 12;
+	private static final int INFOBANNER_HEIGHT = 50;
+//	private static final int MARGIN = 2;
 	Label filterLabel;
 	Composite header;
 	protected NavigatorControl navi;
@@ -91,16 +92,6 @@ public abstract class AbstractProjectSetPage implements
 		fd.left = new FormAttachment(0, 1);
 		fd.right = new FormAttachment(100, -1);
 		fd.height = INFOBANNER_HEIGHT;
-		// // 创建分割线
-		// Label line = new Label(body, SWT.NONE);
-		// fd = new FormData();
-		// line.setLayoutData(fd);
-		// Color sepColor = Widgets.getColor(body.getDisplay(), 192, 192, 192);
-		// line.setBackground(sepColor);
-		// fd.top = new FormAttachment(header, 0);
-		// fd.left = new FormAttachment(0, 1);
-		// fd.right = new FormAttachment(100, -1);
-		// fd.height = 1;
 
 		// 创建内容区
 		Composite navigator = createContent(body);
@@ -165,37 +156,39 @@ public abstract class AbstractProjectSetPage implements
 	}
 
 	protected Composite createHeader(Composite body) {
-		String projectSetCover = data.getProjectSetCoverImage();
+//		String projectSetCover = data.getProjectSetCoverImage();
 
 		Composite header = new Composite(body, SWT.NONE);
 		header.setLayout(new FormLayout());
-		setBackgroundGradient(header);
+//		setBackgroundGradient(header);
 
-		Label cover = new Label(header, SWT.NONE);
-		cover.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		
+		
+//		Label cover = new Label(header, SWT.NONE);
+//		cover.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 
-		StringBuffer sb = new StringBuffer();
+//		StringBuffer sb = new StringBuffer();
 		// 添加项目集合封面图片
-		if (projectSetCover != null) {
-			sb.append("<img src='"); //$NON-NLS-1$
-			sb.append(projectSetCover);
-			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='" //$NON-NLS-1$ //$NON-NLS-2$
-					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='" //$NON-NLS-1$
-					+ (INFOBANNER_HEIGHT - MARGIN) + "' />"); //$NON-NLS-1$
-			cover.setText(sb.toString());
-		}
+//		if (projectSetCover != null) {
+//			sb.append("<img src='"); //$NON-NLS-1$
+//			sb.append(projectSetCover);
+//			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='" //$NON-NLS-1$ //$NON-NLS-2$
+//					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='" //$NON-NLS-1$
+//					+ (INFOBANNER_HEIGHT - MARGIN) + "' />"); //$NON-NLS-1$
+//			cover.setText(sb.toString());
+//		}
 
-		FormData fd = new FormData();
-		cover.setLayoutData(fd);
-		fd.left = new FormAttachment();
-		fd.top = new FormAttachment();
-		fd.height = INFOBANNER_HEIGHT;
-		fd.width = INFOBANNER_HEIGHT;
+//		FormData fd = new FormData();
+//		cover.setLayoutData(fd);
+//		fd.left = new FormAttachment();
+//		fd.top = new FormAttachment();
+//		fd.height = INFOBANNER_HEIGHT;
+//		fd.width = INFOBANNER_HEIGHT;
 
 		// 显示数据过滤
 		filterLabel = new Label(header, SWT.NONE);
 		filterLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		fd = new FormData();
+		FormData fd = new FormData();
 		filterLabel.setLayoutData(fd);
 		fd.left = new FormAttachment(30, -INFOBANNER_HEIGHT);
 		fd.top = new FormAttachment(32);
@@ -237,6 +230,15 @@ public abstract class AbstractProjectSetPage implements
 
 		filterLabel.setText(getParameterText());
 
+		
+		Label sep = new Label(header, SWT.NONE);
+		fd = new FormData();
+		sep.setLayoutData(fd);
+		fd.bottom = new FormAttachment(100);
+		fd.left = new FormAttachment();
+		fd.height = 1;
+		fd.right = new FormAttachment(100);
+		sep.setBackground(Widgets.getColor(header.getDisplay(), 192, 192, 192));
 		return header;
 	}
 
@@ -253,22 +255,25 @@ public abstract class AbstractProjectSetPage implements
 		shell.open(location);
 	}
 
-	private void setBackgroundGradient(Composite header) {
+	protected void setBackgroundGradient(Composite header) {
 		Object adapter = header.getAdapter(IWidgetGraphicsAdapter.class);
 		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
 		int[] percents = new int[] { 0, 50, 100 };
 		Display display = header.getDisplay();
 		Color[] gradientColors = new Color[] {
-				Widgets.getColor(header.getDisplay(), 220, 220, 240),
-				Widgets.getColor(header.getDisplay(), 245, 245, 250),
-				Widgets.getColor(display, 255, 255, 255) };
+				Widgets.getColor(display, 255, 255, 255),
+				Widgets.getColor(display, 240, 240, 240),
+				Widgets.getColor(display, 220, 220, 220)
+				};
 
 		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
 	}
 
 	protected String getParameterText() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:13pt'>"); //$NON-NLS-1$
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:"
+				+ FONT_SIZE
+				+ "pt'>"); //$NON-NLS-1$
 		sb.append(DurationSetting.getHeadParameterText(data));
 		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();

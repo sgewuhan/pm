@@ -573,7 +573,7 @@ public class ProjectETL implements IProjectETL {
 		transfered.put(F_BUSINESS_MANAGER_TEXT, businesschargerText);
 		
 		
-		String path = buOrg.getPath(2);
+		String path = buOrg == null ? "?" : buOrg.getPath(2);
 		transfered.put(F_BUSINESS_ORGANIZATION_TEXT, path);
 
 		/**
