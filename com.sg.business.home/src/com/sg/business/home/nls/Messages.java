@@ -1,11 +1,12 @@
 package com.sg.business.home.nls;
 
-import org.eclipse.osgi.util.NLS;
+import java.util.Locale;
+
 import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.commons.util.NLS2;
 
-public class Messages extends NLS {
+public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.home.nls.messages"; //$NON-NLS-1$
 	public String BulletinBoardView_0;
 
@@ -13,7 +14,11 @@ public class Messages extends NLS {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, display);
 	}
 
+	public static Messages get(Locale local) {
+		return NLS2.getMessage(BUNDLE_NAME, Messages.class, local);
+	}
+	
 	public static Messages get() {
-		return get(null);
+		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
 	}
 }

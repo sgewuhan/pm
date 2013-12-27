@@ -29,7 +29,7 @@ public class BudgetAndInvestmentVolumnView extends AbstractDashWidgetView {
 	}
 
 	private Chart getChart() throws Exception {
-		Messages messages = Messages.get(chart.getDisplay());
+		Messages messages = Messages.get(local);
 		String[] bsText = { messages.BudgetAndInvestmentVolumnView_A_0,
 				messages.BudgetAndInvestmentVolumnView_A_1 };
 		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$

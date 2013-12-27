@@ -2,6 +2,7 @@ package com.sg.business.visualization.ui;
 
 import java.util.Calendar;
 
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -51,7 +52,7 @@ public class DurationSetting extends Shell {
 		fd.width = 80;
 		quarterCombo.add(Messages.get().DurationSetting_0);
 		for (int i = 1; i < 5; i++) {
-			quarterCombo.add("" + i + Messages.get().DurationSetting_1); //$NON-NLS-1$
+			quarterCombo.add("Q" + i); //$NON-NLS-1$
 		}
 
 		final Combo monthCombo = new Combo(this, SWT.READ_ONLY);
@@ -63,8 +64,12 @@ public class DurationSetting extends Shell {
 
 		fd.width = 80;
 		monthCombo.add(Messages.get().DurationSetting_2);
+
+		Calendar cal = Calendar.getInstance();
 		for (int i = 1; i < 13; i++) {
-			monthCombo.add("" + i + Messages.get().DurationSetting_3); //$NON-NLS-1$
+			cal.set(Calendar.MONTH, i - 1);
+			monthCombo.add(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT,
+					RWT.getLocale())); //$NON-NLS-1$
 		}
 
 		final Button toToday = new Button(this, SWT.CHECK);
@@ -125,9 +130,8 @@ public class DurationSetting extends Shell {
 			}
 		});
 	}
-	
 
-	public void open(Point location){
+	public void open(Point location) {
 		pack();
 		setLocation(location);
 		super.open();
@@ -145,7 +149,7 @@ public class DurationSetting extends Shell {
 
 			parameters[0] = Calendar.getInstance();
 			((Calendar) parameters[0]).set(Calendar.YEAR, yearIndex);
-			
+
 			if (monthIndex > 0) {
 				parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_MONTH;
 				((Calendar) parameters[0]).set(Calendar.MONTH, monthIndex - 1);
@@ -154,7 +158,7 @@ public class DurationSetting extends Shell {
 				parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER;
 				((Calendar) parameters[0]).set(Calendar.MONTH,
 						3 * (quarterIndex) - 1);
-			} else{
+			} else {
 				parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
 			}
 
@@ -162,28 +166,30 @@ public class DurationSetting extends Shell {
 		}
 
 	}
-	
+
 	public static String getHeadParameterText(ProjectProvider data) {
 		StringBuffer sb = new StringBuffer();
-		if(data == null){
-		}else if (data.parameters != null) {
+		if (data == null) {
+		} else if (data.parameters != null) {
 			if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR
 					.equals(data.parameters[1])) {
-				sb.append(((Calendar) data.parameters[0]).get(Calendar.YEAR)
-						+ Messages.get().DurationSetting_7);
+				sb.append(((Calendar) data.parameters[0]).get(Calendar.YEAR));
 			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
 					.equals(data.parameters[1])) {
 				Calendar calendar = (Calendar) data.parameters[0];
 				int month = calendar.get(Calendar.MONTH);
-				sb.append(calendar.get(Calendar.YEAR) + "Äê" //$NON-NLS-1$
-						+ (1 + (1 + month) / 4) + Messages.get().DurationSetting_8);
+				sb.append(calendar.get(Calendar.YEAR) + "-Q" //$NON-NLS-1$
+						+ (1 + (1 + month) / 4));
 			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
 					.equals(data.parameters[1])) {
 				Calendar calendar = (Calendar) data.parameters[0];
-				int month = calendar.get(Calendar.MONTH);
-				sb.append(calendar.get(Calendar.YEAR) + Messages.get().DurationSetting_9 + (1 + month) + Messages.get().DurationSetting_10);
+//				int month = calendar.get(Calendar.MONTH);
+				sb.append(calendar.get(Calendar.YEAR)
+						+ " "
+						+ calendar.getDisplayName(Calendar.MONTH,
+								Calendar.LONG, RWT.getLocale()));
 			}
-		}else{
+		} else {
 			sb.append(Messages.get().DurationSetting_11);
 		}
 

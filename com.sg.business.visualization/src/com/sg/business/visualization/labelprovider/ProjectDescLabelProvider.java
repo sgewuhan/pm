@@ -3,7 +3,7 @@ package com.sg.business.visualization.labelprovider;
 import com.sg.business.model.Project;
 import com.sg.business.model.etl.ProjectPresentation;
 
-public class DescLabelProvider extends AbstractProjectLabelProvider {
+public class ProjectDescLabelProvider extends AbstractProjectLabelProvider {
 
 	@Override
 	protected String getProjectText(Project project) {
