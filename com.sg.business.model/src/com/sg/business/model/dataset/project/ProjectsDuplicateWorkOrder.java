@@ -44,7 +44,7 @@ public class ProjectsDuplicateWorkOrder extends SingleDBCollectionDataSetFactory
 				sb.append(" ,");
 			}
 		}
-		item.setValue("product", sb.toString());
+		item.setValue("product_text", sb.toString());
 		
 		String[] ws = item.getWorkOrders();
 		sb = new StringBuffer();
@@ -52,7 +52,7 @@ public class ProjectsDuplicateWorkOrder extends SingleDBCollectionDataSetFactory
 			sb.append(ws[i]);
 			sb.append(" ,");
 		}
-		item.setValue("workorder", sb.toString());
+		item.setValue("workorder_text", sb.toString());
 
 		return item;
 	}

@@ -881,7 +881,7 @@
             targetID="perspective.project.admin">
          <view
                closeable="false"
-               id="project.navigator.allproject"
+               id="project.navigator.allproject1"
                minimized="false"
                ratio="0.5"
                relationship="left"
@@ -894,7 +894,16 @@
                minimized="false"
                ratio="0.5"
                relationship="stack"
-               relative="project.navigator.allproject"
+               relative="project.navigator.allproject1"
+               standalone="false">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.allproject"
+               minimized="false"
+               ratio="0.5"
+               relationship="stack"
+               relative="project.navigator.allproject2"
                standalone="false">
          </view>
       </perspectiveExtension>

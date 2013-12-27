@@ -1426,6 +1426,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public boolean canEdit(IContext context) {
+		// 如果是系统管理员可以编辑
+		String uid = context.getAccountInfo().getUserId();
+		User user = UserToolkit.getUserById(uid);
+		if (Boolean.TRUE.equals(user.getValue(User.F_IS_ADMIN))) {
+			return true;
+		}
+
 		// 如果项目已经完成、取消，不能编辑
 		String lc = getLifecycleStatus();
 		if (STATUS_CANCELED_VALUE.equals(lc) || STATUS_FINIHED_VALUE.equals(lc)) {
@@ -2212,6 +2219,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				ProductItem.class);
 	}
 
+
 	/**
 	 * 转批
 	 * 
@@ -2259,6 +2267,18 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		}
 		return result;
 
+	}
+	
+	public String[] getProductCode2() {
+		DBCollection col = getCollection(IModelConstants.C_PRODUCT);
+		List<?> list = col.distinct(ProductItem.F_DESC,
+				new BasicDBObject().append(ProductItem.F_PROJECT_ID, get_id()));
+		
+		String[] result = new String[list.size()];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = (String) list.get(i);
+		}
+		return result;
 	}
 
 	public ProjectPresentation getPresentation() {
@@ -2394,24 +2414,27 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		DBCollection col = getCollection();
 		col.update(queryThis(), new BasicDBObject().append(
 				"$set",
-				new BasicDBObject().append(F_BUSINESS_CHARGER, userid)
+				new BasicDBObject()
+						.append(F_BUSINESS_CHARGER, userid)
 						.append(F_BUSINESS_ORGANIZATION, orgid)
-						.append("etl." + ProjectETL.F_BUSINESS_MANAGER_TEXT, username)
-						.append("etl." + ProjectETL.F_BUSINESS_ORGANIZATION_TEXT, orgtext)
-						));
+						.append("etl." + ProjectETL.F_BUSINESS_MANAGER_TEXT,
+								username)
+						.append("etl."
+								+ ProjectETL.F_BUSINESS_ORGANIZATION_TEXT,
+								orgtext)));
 
 		col = getCollection(IModelConstants.C_PROJECT_MONTH_DATA);
-		col.update(
-				new BasicDBObject().append(ProjectMonthlyETL.F_PROJECTID,get_id()), 
-				new BasicDBObject().append("$set",
-						new BasicDBObject()
-							.append(F_BUSINESS_CHARGER, userid)
-							.append(F_BUSINESS_ORGANIZATION, orgid)
-							.append(ProjectETL.F_BUSINESS_MANAGER_TEXT, username)
-							.append(ProjectETL.F_BUSINESS_ORGANIZATION_TEXT, orgtext)
-						));
-		
-		setValue(F_BUSINESS_CHARGER,userid);
+		col.update(new BasicDBObject().append(ProjectMonthlyETL.F_PROJECTID,
+				get_id()), new BasicDBObject().append(
+				"$set",
+				new BasicDBObject()
+						.append(F_BUSINESS_CHARGER, userid)
+						.append(F_BUSINESS_ORGANIZATION, orgid)
+						.append(ProjectETL.F_BUSINESS_MANAGER_TEXT, username)
+						.append(ProjectETL.F_BUSINESS_ORGANIZATION_TEXT,
+								orgtext)));
+
+		setValue(F_BUSINESS_CHARGER, userid);
 		setValue(F_BUSINESS_ORGANIZATION, orgid);
 	}
 
