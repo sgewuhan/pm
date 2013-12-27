@@ -412,6 +412,12 @@
             operation="subconcessions"
             serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
       </service>
+      <service
+            interface="FixedAssets.service.action"
+            name="固定资产评审专家组确定消息"
+            operation="message"
+            serviceProvider="com.sg.business.taskforms.bpmservice.FixedAssetsService">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
