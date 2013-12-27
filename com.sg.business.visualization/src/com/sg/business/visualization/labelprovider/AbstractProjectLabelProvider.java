@@ -5,10 +5,11 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.sg.business.model.Project;
+import com.sg.business.model.ProjectProvider;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
-abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLabelProvider {
+public abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
@@ -77,6 +78,10 @@ abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLabelProvi
 					+ "'>" //$NON-NLS-1$
 					+ String.format("%.2f",value / 10000) + "</span>"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
+	}
+
+	public String getSummary(ProjectProvider data) {
+		return "";
 	}
 	
 	
