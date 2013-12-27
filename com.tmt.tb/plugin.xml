@@ -2068,6 +2068,14 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="tb.tbBusinessSupport.supportauditor"
+            table="tb.tbBusinessSupport.supportauditor">
+      </navigator>
+      <navigator
+            id="tb.tbBusinessSupport.supportapprover"
+            table="tb.tbBusinessSupport.supportapprover">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -2221,6 +2229,22 @@
             dataSet="com.tmt.tb.dataset.UserOfChangeApprover"
             headerVisiable="false"
             id="changeapprover.navigator">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.tb.dataset.BusinessSupportAuditor"
+            headerVisiable="false"
+            id="tb.tbBusinessSupport.supportauditor">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.tb.dataset.BusinessSupportApprover"
+            headerVisiable="false"
+            id="tb.tbBusinessSupport.supportapprover">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -4197,7 +4221,7 @@
       <taskForm
             editorId="tbBusinessSupport.editor.apply"
             name="技术支持申请"
-            persistentFields="iscbc,isprice,istechnology"
+            persistentFields="iscbc,isprice,istechnology,support_auditor,support_approve"
             processDefinitionId="tb.tbBusinessSupport">
          <processParameter
                processParameterName="iscbc"
@@ -4210,6 +4234,14 @@
          <processParameter
                processParameterName="istechnology"
                taskFormFieldName="istechnology">
+         </processParameter>
+         <processParameter
+               processParameterName="support_auditor"
+               taskFormFieldName="support_auditor">
+         </processParameter>
+         <processParameter
+               processParameterName="support_approve"
+               taskFormFieldName="support_approve">
          </processParameter>
       </taskForm>
       <taskForm
@@ -4405,6 +4437,35 @@
                         required="true"
                         type="String">
                   </radio>
+               </section>
+               <section
+                     label="选择审批者和确认者">
+                  <navigatorSelector
+                        editable="true"
+                        id="support_auditor"
+                        label="批准人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="support_auditor"
+                        navigatorId="tb.tbBusinessSupport.supportauditor"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="support_approve"
+                        label="确认人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="support_approve"
+                        navigatorId="tb.tbBusinessSupport.supportapprover"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -4636,7 +4697,6 @@
                   <navigatorSelector
                         editable="true"
                         id="cbcchecker"
-                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
                         label="校核"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
@@ -4650,7 +4710,6 @@
                   <navigatorSelector
                         editable="true"
                         id="cbcauditor"
-                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
                         label="审核"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
@@ -4664,7 +4723,6 @@
                   <navigatorSelector
                         editable="true"
                         id="cbcapporver"
-                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
                         label="批准"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
@@ -4716,7 +4774,6 @@
                   <navigatorSelector
                         editable="true"
                         id="tecchecker"
-                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
                         label="校核"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
@@ -4730,7 +4787,6 @@
                   <navigatorSelector
                         editable="true"
                         id="tecauditor"
-                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
                         label="审核"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
@@ -4744,7 +4800,6 @@
                   <navigatorSelector
                         editable="true"
                         id="tecapporver"
-                        inputValidator="com.tmt.tb.validation.HasPlanValidation"
                         label="批准"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
