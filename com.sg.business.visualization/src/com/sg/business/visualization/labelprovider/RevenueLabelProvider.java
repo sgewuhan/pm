@@ -80,8 +80,8 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 				+ "margin-left:2;"//$NON-NLS-1$
 				+ "margin-top:8;"//$NON-NLS-1$
 //				+ "text-align:center;"//$NON-NLS-1$
-				+ "word-break:break-all; "//$NON-NLS-1$
-				+ "white-space:normal; "//$NON-NLS-1$
+//				+ "word-break:break-all; "//$NON-NLS-1$
+//				+ "white-space:normal; "//$NON-NLS-1$
 				+ "display:block;"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		sb.append("Ó¯Àû/¿÷Ëð:");
