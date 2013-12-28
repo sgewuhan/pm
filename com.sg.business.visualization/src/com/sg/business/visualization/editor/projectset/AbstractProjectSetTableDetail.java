@@ -4,10 +4,13 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -17,6 +20,7 @@ import com.sg.business.visualization.labelprovider.AbstractProjectLabelProvider;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
+@SuppressWarnings("restriction")
 public abstract class AbstractProjectSetTableDetail extends
 		AbstractProjectSetPage {
 
@@ -57,16 +61,16 @@ public abstract class AbstractProjectSetTableDetail extends
 	private Composite createSummary(Composite body) {
 		Composite comp = new Composite(body, SWT.NONE);
 
-//		Object adapter = comp.getAdapter(IWidgetGraphicsAdapter.class);
-//		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
-//		int[] percents = new int[] { 0, 50, 100 };
-//		Display display = comp.getDisplay();
-//		Color[] gradientColors = new Color[] {
-//				Widgets.getColor(display, 220, 220, 220),
-//				Widgets.getColor(display, 240, 240, 240),
-//				Widgets.getColor(display, 255, 255, 255),
-//				};
-//		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
+		Object adapter = comp.getAdapter(IWidgetGraphicsAdapter.class);
+		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
+		int[] percents = new int[] { 0, 5, 15 };
+		Display display = comp.getDisplay();
+		Color[] gradientColors = new Color[] {
+				Widgets.getColor(display, 220, 220, 220),
+				Widgets.getColor(display, 240, 240, 240),
+				Widgets.getColor(display, 255, 255, 255),
+				};
+		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
 		
 		
 		comp.setLayout(new FormLayout());

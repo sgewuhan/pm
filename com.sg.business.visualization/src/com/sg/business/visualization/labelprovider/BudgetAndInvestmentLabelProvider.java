@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
+import com.sg.business.model.ProjectProvider;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.etl.TinyVisualizationUtil;
 import com.sg.business.visualization.nls.Messages;
@@ -103,6 +104,42 @@ public class BudgetAndInvestmentLabelProvider extends
 		}
 		sb.append("</span>"); //$NON-NLS-1$
 
+		return sb.toString();
+	}
+	
+	
+	@Override
+	public String getSummary(ProjectProvider data) {
+		data.getData();
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='"//$NON-NLS-1$
+				+ "color:#6f6f6f;"//$NON-NLS-1$
+				+ "font-family:微软雅黑;"//$NON-NLS-1$
+				+ "font-style:italic;"//$NON-NLS-1$
+//				+ "font-weight:bold;"//$NON-NLS-1$
+				+ "font-size:9pt;"//$NON-NLS-1$
+				+ "margin-left:2;"//$NON-NLS-1$
+				+ "margin-top:8;"//$NON-NLS-1$
+				+ "text-align:center;"//$NON-NLS-1$
+				+ "word-break:break-all; "//$NON-NLS-1$
+				+ "white-space:normal; "//$NON-NLS-1$
+				+ "display:block;"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		sb.append("进行:");
+		sb.append(" ");//$NON-NLS-1$
+		sb.append(" 超支/正常:");
+		sb.append(data.sum.processing_cost_over);
+		sb.append("/");//$NON-NLS-1$
+		sb.append(data.sum.processing_cost_normal);
+		
+		sb.append("<br/>");//$NON-NLS-1$
+		sb.append("完成:");
+		sb.append(" ");//$NON-NLS-1$
+		sb.append(" 超支/正常:");
+		sb.append(data.sum.finished_cost_over);
+		sb.append("/");
+		sb.append(data.sum.finished_cost_normal);
+		sb.append("</span>");//$NON-NLS-1$
 		return sb.toString();
 	}
 }
