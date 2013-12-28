@@ -128,17 +128,24 @@ public class BudgetAndInvestmentLabelProvider extends
 		sb.append("进行:");
 		sb.append(" ");//$NON-NLS-1$
 		sb.append(" 超支/正常:");
+		sb.append("<span style='color:"+Utils.COLOR_RED[10]+"'>");
 		sb.append(data.sum.processing_cost_over);
+		sb.append("</span>");
 		sb.append("/");//$NON-NLS-1$
+		sb.append("<span style='color:"+Utils.COLOR_GREEN[10]+"'>");
 		sb.append(data.sum.processing_cost_normal);
-		
+		sb.append("</span>");
 		sb.append("<br/>");//$NON-NLS-1$
 		sb.append("完成:");
 		sb.append(" ");//$NON-NLS-1$
 		sb.append(" 超支/正常:");
+		sb.append("<span style='color:"+Utils.COLOR_RED[10]+"'>");
 		sb.append(data.sum.finished_cost_over);
+		sb.append("</span>");
 		sb.append("/");
+		sb.append("<span style='color:"+Utils.COLOR_GREEN[10]+"'>");
 		sb.append(data.sum.finished_cost_normal);
+		sb.append("</span>");
 		sb.append("</span>");//$NON-NLS-1$
 		return sb.toString();
 	}

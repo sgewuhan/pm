@@ -84,11 +84,10 @@ public class ProjectDescLabelProvider extends AbstractProjectLabelProvider {
 				+ "display:block;"//$NON-NLS-1$
 				+ "' "
 				+ ">"); //$NON-NLS-1$
-		sb.append("合计:");
-		sb.append("    ");//$NON-NLS-1$
 		sb.append("项目总数:");
+		sb.append("<b>");
 		sb.append(data.sum.total);
-		sb.append("</span>");//$NON-NLS-1$
+		sb.append("</b></span>");//$NON-NLS-1$
 		return sb.toString();
 	}
 

@@ -1,5 +1,6 @@
 package com.sg.business.visualization.labelprovider;
 
+import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.model.etl.ProjectPresentation;
@@ -34,18 +35,25 @@ public class SchedualLabelProvider extends AbstractProjectLabelProvider {
 		sb.append(data.sum.processing);
 		sb.append(" ");//$NON-NLS-1$
 		sb.append(" 超期/正常:");
+		sb.append("<span style='color:"+Utils.COLOR_RED[10]+"'>");
 		sb.append(data.sum.processing_delay);
+		sb.append("</span>");
 		sb.append("/");//$NON-NLS-1$
+		sb.append("<span style='color:"+Utils.COLOR_GREEN[10]+"'>");
 		sb.append(data.sum.processing_normal+data.sum.processing_advance);
-		
+		sb.append("</span>");
 		sb.append("<br/>");//$NON-NLS-1$
 		sb.append("完成:");
 		sb.append(data.sum.finished);
 		sb.append(" ");//$NON-NLS-1$
 		sb.append(" 超期/正常:");
+		sb.append("<span style='color:"+Utils.COLOR_RED[10]+"'>");
 		sb.append(data.sum.finished_delay);
+		sb.append("</span>");
 		sb.append("/");
+		sb.append("<span style='color:"+Utils.COLOR_GREEN[10]+"'>");
 		sb.append(data.sum.finished_normal+data.sum.finished_advance);
+		sb.append("</span>");
 		sb.append("</span>");//$NON-NLS-1$
 		return sb.toString();
 	}
