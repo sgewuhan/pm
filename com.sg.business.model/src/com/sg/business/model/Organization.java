@@ -1781,6 +1781,5 @@ public class Organization extends PrimaryObject {
 		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
 		folderRootData.put(Folder.F_ROOT_ID, get_id());
 		return ModelService.createModelObject(folderRootData, Folder.class);
-		
 	}
 }

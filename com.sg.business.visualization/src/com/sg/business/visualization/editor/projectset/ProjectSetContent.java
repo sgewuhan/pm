@@ -1,10 +1,7 @@
 package com.sg.business.visualization.editor.projectset;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.sg.business.model.ILifecycle;
-import com.sg.business.model.Project;
 import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
@@ -110,38 +107,14 @@ public class ProjectSetContent extends AbstractProjectSetTableDetail {
 	}
 
 	@Override
-	protected List<ColumnSorters> getColumnSorters(ColumnConfigurator conf) {
+	protected List<ColumnSorter> getColumnSorters(ColumnConfigurator conf) {
 		if (conf.getColumn().equals("planstart")) {
-			ArrayList<ColumnSorters> result = new ArrayList<ColumnSorters>();
-			result.add(new ProjectColumnSorter("计划开始", Project.F_PLAN_START));
-			result.add(new ProjectColumnSorter("计划完成", Project.F_PLAN_FINISH));
-			result.add(new ProjectColumnSorter("实际开始", Project.F_ACTUAL_START));
-			result.add(new ProjectColumnSorter("实际完成", Project.F_ACTUAL_FINISH));
-			result.add(new ProjectColumnSorter("超期") {
-				@Override
-				protected int doCompare(Project p1, Project p2) {
-					String pl1 = p1.getLifecycleStatus();
-					String pl2 = p2.getLifecycleStatus();
-					if (ILifecycle.STATUS_FINIHED_VALUE.equals(pl1)
-							&& ILifecycle.STATUS_FINIHED_VALUE.equals(pl2)) {
-						return 0;
-					}else if(ILifecycle.STATUS_FINIHED_VALUE.equals(pl1)
-							&& !ILifecycle.STATUS_FINIHED_VALUE.equals(pl2)){
-						return -1;
-					}else if(!ILifecycle.STATUS_FINIHED_VALUE.equals(pl1)
-							&& ILifecycle.STATUS_FINIHED_VALUE.equals(pl2)){
-						return 1;
-					}else{
-						long d1 = p1.getDelayDays();
-						long d2 = p2.getDelayDays();
-						
-						return new Long(d1).compareTo(new Long(d2));
-					}
-				}
-			});
-			return result;
+			return getSortOfPlanStartColumn();
+		}else if(conf.getColumn().equals("budget")){
+			return getSortOfBudgetColumn();
+		}else if(conf.getColumn().equals("revenue")){
+			return getSortOfRevenueColumn();
 		}
-
 		return null;
 	}
 

@@ -1,6 +1,9 @@
 package com.sg.business.visualization.editor.projectset;
 
+import java.util.List;
+
 import com.sg.business.visualization.nls.Messages;
+import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class ProjectSetDashboardBudInv extends AbstractProjectSetTableDetail {
 
@@ -145,6 +148,14 @@ public class ProjectSetDashboardBudInv extends AbstractProjectSetTableDetail {
 	@Override
 	protected String getTitle() {
 		return  Messages.get().ProjectSetDashboardBudInv_3;
+	}
+	
+	@Override
+	protected List<ColumnSorter> getColumnSorters(ColumnConfigurator conf) {
+		if(conf.getColumn().equals("budget")){
+			return getSortOfBudgetColumn();
+		}
+		return null;
 	}
 
 }

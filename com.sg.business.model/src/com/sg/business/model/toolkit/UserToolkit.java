@@ -15,6 +15,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 
 public class UserToolkit {
@@ -102,5 +103,12 @@ public class UserToolkit {
 		for (ObjectId userId : userIdList) {
 			updateUser(userId);
 		}
+	}
+
+	public static Organization getRootOrganization() {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_ORGANIZATION);
+		DBObject data = col.findOne(new BasicDBObject().append(Organization.F_PARENT_ID, null));
+		return ModelService.createModelObject(data, Organization.class);
 	}
 }
