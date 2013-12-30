@@ -413,7 +413,7 @@
             serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
       </service>
       <service
-            interface="FixedAssets.service.action"
+            interface="fixedAssets.service.action"
             name="固定资产评审专家组确定消息"
             operation="message"
             serviceProvider="com.sg.business.taskforms.bpmservice.FixedAssetsService">
@@ -1299,8 +1299,9 @@
          </processParameter>
       </taskForm>
       <taskForm
+            editorId="pm.pmFixedAssetsTechnicalReview1.meetingconf"
             name="确定评审会时间"
-            processDefinitionId="pm.pmFixedAssetsTechnicalReview1.meetingconf">
+            processDefinitionId="pm.pmFixedAssetsTechnicalReview1">
          <processParameter
                processParameterName="messagecontent"
                taskFormFieldName="messagecontent">
