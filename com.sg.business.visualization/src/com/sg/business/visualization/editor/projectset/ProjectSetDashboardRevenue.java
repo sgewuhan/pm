@@ -1,6 +1,9 @@
 package com.sg.business.visualization.editor.projectset;
 
+import java.util.List;
+
 import com.sg.business.visualization.nls.Messages;
+import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class ProjectSetDashboardRevenue extends AbstractProjectSetTableDetail {
 
@@ -159,4 +162,11 @@ public class ProjectSetDashboardRevenue extends AbstractProjectSetTableDetail {
 		return  Messages.get().ProjectSetDashboardRevenue_1;
 	}
 
+	@Override
+	protected List<ColumnSorter> getColumnSorters(ColumnConfigurator conf) {
+		if(conf.getColumn().equals("revenue")){
+			return getSortOfRevenueColumn();
+		}
+		return null;
+	}
 }

@@ -1,11 +1,7 @@
 package com.sg.business.visualization.editor.projectset;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.sg.business.model.ILifecycle;
-import com.sg.business.model.Project;
-import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.visualization.nls.Messages;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
@@ -120,114 +116,6 @@ public class ProjectSetContent extends AbstractProjectSetTableDetail {
 			return getSortOfRevenueColumn();
 		}
 		return null;
-	}
-
-	private List<ColumnSorter> getSortOfRevenueColumn() {
-		ArrayList<ColumnSorter> result = new ArrayList<ColumnSorter>();
-		result.add(new ProjectColumnSorter("预算"){
-			@Override
-			protected int doCompare(Project p1, Project p2) {
-				ProjectPresentation ps1 = p1.getPresentation();
-				ProjectPresentation ps2 = p2.getPresentation();
-				double v1 = ps1.getBudgetValue();
-				double v2 = ps2.getBudgetValue();
-				return new Double(v1).compareTo(new Double(v2));
-			}
-		});
-		result.add(new ProjectColumnSorter("实际发生"){
-			@Override
-			protected int doCompare(Project p1, Project p2) {
-				ProjectPresentation ps1 = p1.getPresentation();
-				ProjectPresentation ps2 = p2.getPresentation();
-				double v1 = ps1.getDesignatedInvestment();
-				double v2 = ps2.getDesignatedInvestment();
-				return new Double(v1).compareTo(new Double(v2));
-			}
-		});
-		result.add(new ColumnSorter());//分割符
-		result.add(new ProjectColumnSorter("超支金额"){
-			@Override
-			protected int doCompare(Project p1, Project p2) {
-				ProjectPresentation ps1 = p1.getPresentation();
-				ProjectPresentation ps2 = p2.getPresentation();
-				double v1 = ps1.getDesignatedInvestment()-ps1.getBudgetValue();
-				double v2 = ps2.getDesignatedInvestment()-ps2.getBudgetValue();
-				return new Double(v1).compareTo(new Double(v2));
-			}
-		});
-		
-
-		return result;
-	}
-
-	private List<ColumnSorter> getSortOfBudgetColumn() {
-		ArrayList<ColumnSorter> result = new ArrayList<ColumnSorter>();
-		result.add(new ProjectColumnSorter("预算"){
-			@Override
-			protected int doCompare(Project p1, Project p2) {
-				ProjectPresentation ps1 = p1.getPresentation();
-				ProjectPresentation ps2 = p2.getPresentation();
-				double v1 = ps1.getBudgetValue();
-				double v2 = ps2.getBudgetValue();
-				return new Double(v1).compareTo(new Double(v2));
-			}
-		});
-		result.add(new ProjectColumnSorter("实际发生"){
-			@Override
-			protected int doCompare(Project p1, Project p2) {
-				ProjectPresentation ps1 = p1.getPresentation();
-				ProjectPresentation ps2 = p2.getPresentation();
-				double v1 = ps1.getDesignatedInvestment();
-				double v2 = ps2.getDesignatedInvestment();
-				return new Double(v1).compareTo(new Double(v2));
-			}
-		});
-		result.add(new ColumnSorter());//分割符
-		result.add(new ProjectColumnSorter("超支金额"){
-			@Override
-			protected int doCompare(Project p1, Project p2) {
-				ProjectPresentation ps1 = p1.getPresentation();
-				ProjectPresentation ps2 = p2.getPresentation();
-				double v1 = ps1.getDesignatedInvestment()-ps1.getBudgetValue();
-				double v2 = ps2.getDesignatedInvestment()-ps2.getBudgetValue();
-				return new Double(v1).compareTo(new Double(v2));
-			}
-		});
-		
-
-		return result;
-	}
-
-	private List<ColumnSorter> getSortOfPlanStartColumn() {
-		ArrayList<ColumnSorter> result = new ArrayList<ColumnSorter>();
-		result.add(new ProjectColumnSorter("计划开始", Project.F_PLAN_START));
-		result.add(new ProjectColumnSorter("计划完成", Project.F_PLAN_FINISH));
-		result.add(new ProjectColumnSorter("实际开始", Project.F_ACTUAL_START));
-		result.add(new ProjectColumnSorter("实际完成", Project.F_ACTUAL_FINISH));
-		result.add(new ColumnSorter());//分割符
-		result.add(new ProjectColumnSorter("进度延迟天数") {
-			@Override
-			protected int doCompare(Project p1, Project p2) {
-				String pl1 = p1.getLifecycleStatus();
-				String pl2 = p2.getLifecycleStatus();
-				if (ILifecycle.STATUS_FINIHED_VALUE.equals(pl1)
-						&& ILifecycle.STATUS_FINIHED_VALUE.equals(pl2)) {
-					return 0;
-				}else if(ILifecycle.STATUS_FINIHED_VALUE.equals(pl1)
-						&& !ILifecycle.STATUS_FINIHED_VALUE.equals(pl2)){
-					return -1;
-				}else if(!ILifecycle.STATUS_FINIHED_VALUE.equals(pl1)
-						&& ILifecycle.STATUS_FINIHED_VALUE.equals(pl2)){
-					return 1;
-				}else{
-					long d1 = p1.getDelayDays();
-					long d2 = p2.getDelayDays();
-					
-					return new Long(d1).compareTo(new Long(d2));
-				}
-			}
-		});
-		return result;
 	}
 
 }

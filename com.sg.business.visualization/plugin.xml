@@ -449,10 +449,11 @@
                width="320">
          </column>
          <column
-               column="planfinish"
+               column="planstart"
                labelProvider="com.sg.business.visualization.labelprovider.SchedualLabelProvider"
                lazyDisplay="true"
                name="%column.name.6"
+               sortable="false"
                type="Date"
                width="200">
          </column>
@@ -461,6 +462,7 @@
                labelProvider="com.sg.business.visualization.labelprovider.SchedualDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.7"
+               sortable="false"
                type="String"
                width="160">
          </column>
@@ -493,7 +495,7 @@
                width="320">
          </column>
          <column
-               column="rndcost"
+               column="budget"
                labelProvider="com.sg.business.visualization.labelprovider.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.9"
@@ -502,6 +504,7 @@
          </column>
          <column
                column="col1"
+               columnSorter="com.sg.business.visualization.sorter.BudgetSorter"
                labelProvider="com.sg.business.visualization.labelprovider.BudgetLabelProvider"
                lazyDisplay="true"
                name="%column.name.10"
@@ -510,6 +513,7 @@
          </column>
          <column
                column="col2"
+               columnSorter="com.sg.business.visualization.sorter.DesignatedInvestmentSorter"
                labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.11"
@@ -518,6 +522,7 @@
          </column>
          <column
                column="col3"
+               columnSorter="com.sg.business.visualization.sorter.AllocatedInvestmentSorter"
                labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider2"
                lazyDisplay="true"
                name="%column.name.12"
@@ -526,6 +531,7 @@
          </column>
          <column
                column="col4"
+               columnSorter="com.sg.business.visualization.sorter.OverCostSorter"
                labelProvider="com.sg.business.visualization.labelprovider.OvercostCostLabelProvider"
                lazyDisplay="true"
                name="%column.name.13"
@@ -565,11 +571,13 @@
                labelProvider="com.sg.business.visualization.labelprovider.RevenueLabelProvider"
                lazyDisplay="true"
                name="%column.name.15"
+               sortable="false"
                type="String"
                width="200">
          </column>
          <column
                column="d1"
+               columnSorter="com.sg.business.visualization.sorter.SalesRevenueSorter"
                labelProvider="com.sg.business.visualization.labelprovider.RevenueDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.16"
@@ -577,7 +585,8 @@
                width="60">
          </column>
          <column
-               column="budget"
+               column="d6"
+               columnSorter="com.sg.business.visualization.sorter.DesignatedInvestmentSorter"
                labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.17"
@@ -586,6 +595,7 @@
          </column>
          <column
                column="d2"
+               columnSorter="com.sg.business.visualization.sorter.SalesCostSorter"
                labelProvider="com.sg.business.visualization.labelprovider.SalesCostDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.18"
@@ -594,6 +604,7 @@
          </column>
          <column
                column="d3"
+               columnSorter="com.sg.business.visualization.sorter.SalesProfitSorter"
                labelProvider="com.sg.business.visualization.labelprovider.ProfitDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.19"
