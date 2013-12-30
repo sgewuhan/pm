@@ -7,17 +7,16 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.sg.business.model.ProjectProvider;
-import com.sg.business.visualization.labelprovider.AbstractProjectLabelProvider;
+import com.sg.business.visualization.label.projectset.ISummaryLabelProvider;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class SummaryBlock extends Composite{
 
 	private Label label;
 	private ColumnConfigurator column;
-	private ProjectProvider data;
+	private Object data;
 
-	public SummaryBlock(Composite parent, ProjectProvider data, ColumnConfigurator column) {
+	public SummaryBlock(Composite parent, Object data, ColumnConfigurator column) {
 		super(parent, SWT.NONE);
 		setLayout(new FillLayout());
 		label = new Label(this,SWT.NONE);
@@ -35,10 +34,10 @@ public class SummaryBlock extends Composite{
 		setText(text);
 	}
 	
-	protected String getSummary(ProjectProvider data, ColumnConfigurator column) {
+	protected String getSummary(Object data, ColumnConfigurator column) {
 		ColumnLabelProvider lp = column.getLabelProvider();
-		if (lp instanceof AbstractProjectLabelProvider) {
-			return ((AbstractProjectLabelProvider) lp).getSummary(data);
+		if (lp instanceof ISummaryLabelProvider) {
+			return ((ISummaryLabelProvider) lp).getSummary(data);
 		}
 		return "";
 	}

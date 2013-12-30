@@ -215,6 +215,16 @@
             collection="rndcostallocation"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.DummyModel"
+            collection="dummy"
+            db="pm2">
+      </doc>
+      <doc
+            class="com.sg.business.model.ProjectMonthData"
+            collection="projectmonthdata"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
