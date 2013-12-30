@@ -6,10 +6,8 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.widgets.MenuItem;
 
 import com.sg.business.resource.BusinessResource;
-import com.sg.widgets.ImageResource;
-import com.sg.widgets.Widgets;
 
-public class ColumnSorters {
+public class ColumnSorter {
 
 	private String text;
 	private MenuItem item;
@@ -20,11 +18,18 @@ public class ColumnSorters {
 	private static final int NONE = 0;
 	
 	private int seq;
+	private boolean isSeperater;
 //	private String columnLabel;
 //	private TableColumn column;
 
-	public ColumnSorters(String text) {
+	public ColumnSorter(String text) {
 		this.text = text;
+		seq = NONE;
+	}
+	
+	public ColumnSorter() {
+		this.text = "";
+		isSeperater = true;
 		seq = NONE;
 	}
 
@@ -45,11 +50,11 @@ public class ColumnSorters {
 //			column.setText(columnLabel);
 			break;
 		case ASC:
-			item.setImage(Widgets.getImage(ImageResource.UP_24));
+			item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_UP_SORT_24));
 //			column.setText(columnLabel + "["+text+" ¡ü" +"]");
 			break;
 		case DEC:
-			item.setImage(Widgets.getImage(ImageResource.DOWN_24));
+			item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_DOWN_SORT_24));
 //			column.setText(columnLabel + "["+text+" ¡ý" +"]");
 			break;
 		default:
@@ -99,6 +104,10 @@ public class ColumnSorters {
 	public void removeSorter() {
 		seq = NONE;
 		resetMemuItem();
+	}
+
+	public boolean isSeperater() {
+		return isSeperater;
 	}
 
 //	public void setColumn(TableColumn tableColumn) {

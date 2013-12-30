@@ -1,7 +1,10 @@
 package com.sg.business.visualization.editor.projectset;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.swt.SWT;
@@ -34,6 +37,7 @@ public abstract class AbstractProjectSetTableDetail extends
 		AbstractProjectSetPage {
 
 	private static final int SUMMARY_HEIGHT = 50;
+	private Set<ColumnSorter> tableSorters = new HashSet<ColumnSorter>();
 
 	public AbstractProjectSetTableDetail() {
 
@@ -118,30 +122,30 @@ public abstract class AbstractProjectSetTableDetail extends
 	}
 
 	protected void controlColumn(final TableColumn tableColumn, ColumnConfigurator conf) {
-		final List<ColumnSorters> sorters = getColumnSorters(conf);
+		final List<ColumnSorter> sorters = getColumnSorters(conf);
 		if(sorters==null||sorters.isEmpty()){
 			return;
 		}
 		final Menu dropDownMenu = new Menu(tableColumn.getParent().getShell(), SWT.POP_UP);
 		for (int i = 0; i < sorters.size(); i++) {
-			final ColumnSorters sorter = sorters.get(i);
-			MenuItem item = new MenuItem(dropDownMenu, SWT.PUSH);	
-			sorter.setMenuItem(item);
-//			sorter.setColumn(tableColumn);
-			sorter.setViewer(navi.getViewer());
-			item.setText(sorter.getText());
-			item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_24X24_BLANK));
-			item.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					sorter.sort();
-					for (int j = 0; j < sorters.size(); j++) {
-						if(sorters.get(j)!=sorter){
-							sorters.get(j).removeSorter();
-						}
-					}					
-				}
-			});
+			final ColumnSorter sorter = sorters.get(i);
+			if(sorter.isSeperater()){
+				new MenuItem(dropDownMenu, SWT.SEPARATOR);	
+			}else{
+				MenuItem item = new MenuItem(dropDownMenu, SWT.PUSH);	
+				sorter.setMenuItem(item);
+				sorter.setViewer(navi.getViewer());
+				item.setText(sorter.getText());
+				item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_24X24_BLANK));
+				item.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						sorter.sort();
+						removeOtherSorts(sorter);
+					}
+				});
+				tableSorters.add(sorter);
+			}
 		}
 		
 		tableColumn.addSelectionListener(new SelectionAdapter() {
@@ -164,8 +168,18 @@ public abstract class AbstractProjectSetTableDetail extends
 		
 	}
 
-	protected List<ColumnSorters> getColumnSorters(ColumnConfigurator conf) {
-		return new ArrayList<ColumnSorters>();
+	protected void removeOtherSorts(ColumnSorter sorter) {
+		Iterator<ColumnSorter> iter = tableSorters.iterator();
+		while(iter.hasNext()){
+			ColumnSorter other = iter.next();
+			if(other!=sorter){
+				other.removeSorter();
+			}
+		}
+	}
+
+	protected List<ColumnSorter> getColumnSorters(ColumnConfigurator conf) {
+		return new ArrayList<ColumnSorter>();
 	}
 
 	private void layoutSummaryBlock(SummaryBlock sc, SummaryBlock leftSC,

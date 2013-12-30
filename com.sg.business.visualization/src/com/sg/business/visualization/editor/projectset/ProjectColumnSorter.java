@@ -5,7 +5,7 @@ import org.eclipse.jface.viewers.Viewer;
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
 
-public class ProjectColumnSorter extends ColumnSorters {
+public class ProjectColumnSorter extends ColumnSorter {
 
 	private String field;
 
