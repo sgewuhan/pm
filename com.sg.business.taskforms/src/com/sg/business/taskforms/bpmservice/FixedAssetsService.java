@@ -10,6 +10,8 @@ import com.sg.business.model.toolkit.UserToolkit;
 
 public class FixedAssetsService extends MessageService  {
 
+
+
 	@Override
 	public String getMessageTitle() {
 		PrimaryObject host = getTarget();
@@ -58,6 +60,10 @@ public class FixedAssetsService extends MessageService  {
 		if ("message".equals(messageOperation)) { //$NON-NLS-1$
 		
 				List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list");
+				String prj_admin = (String)getInputValue("act_prj_admin");
+				String review_convener = (String)getInputValue("review_convener");
+				reviewerList.add(prj_admin);
+				reviewerList.add(review_convener);
 				return (List<String>) reviewerList;
 			}
 		

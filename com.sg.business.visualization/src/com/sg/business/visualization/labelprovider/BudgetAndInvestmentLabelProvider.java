@@ -120,25 +120,32 @@ public class BudgetAndInvestmentLabelProvider extends
 				+ "font-size:9pt;"//$NON-NLS-1$
 				+ "margin-left:2;"//$NON-NLS-1$
 				+ "margin-top:8;"//$NON-NLS-1$
-				+ "text-align:center;"//$NON-NLS-1$
-				+ "word-break:break-all; "//$NON-NLS-1$
-				+ "white-space:normal; "//$NON-NLS-1$
+//				+ "text-align:center;"//$NON-NLS-1$
+//				+ "word-break:break-all; "//$NON-NLS-1$
+//				+ "white-space:normal; "//$NON-NLS-1$
 				+ "display:block;"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		sb.append("进行:");
 		sb.append(" ");//$NON-NLS-1$
 		sb.append(" 超支/正常:");
+		sb.append("<span style='color:"+Utils.COLOR_RED[10]+"'>");
 		sb.append(data.sum.processing_cost_over);
+		sb.append("</span>");
 		sb.append("/");//$NON-NLS-1$
+		sb.append("<span style='color:"+Utils.COLOR_GREEN[10]+"'>");
 		sb.append(data.sum.processing_cost_normal);
-		
+		sb.append("</span>");
 		sb.append("<br/>");//$NON-NLS-1$
 		sb.append("完成:");
 		sb.append(" ");//$NON-NLS-1$
 		sb.append(" 超支/正常:");
+		sb.append("<span style='color:"+Utils.COLOR_RED[10]+"'>");
 		sb.append(data.sum.finished_cost_over);
+		sb.append("</span>");
 		sb.append("/");
+		sb.append("<span style='color:"+Utils.COLOR_GREEN[10]+"'>");
 		sb.append(data.sum.finished_cost_normal);
+		sb.append("</span>");
 		sb.append("</span>");//$NON-NLS-1$
 		return sb.toString();
 	}

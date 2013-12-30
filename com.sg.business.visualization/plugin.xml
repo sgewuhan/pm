@@ -377,7 +377,7 @@
             dbName="pm2"
             dragSourceListener="com.sg.widgets.commons.dnd.DragPrimaryObjectSource"
             fix="1"
-            headerVisiable="false"
+            headerVisiable="true"
             id="vis.projectset"
             lineVisiable="false"
             markupEnabled="true"
@@ -394,18 +394,20 @@
                width="320">
          </column>
          <column
-               column="planfinish"
+               column="planstart"
                labelProvider="com.sg.business.visualization.labelprovider.SchedualLabelProvider"
                lazyDisplay="true"
                name="%column.name.2"
+               sortable="false"
                type="Date"
                width="200">
          </column>
          <column
-               column="rndcost"
+               column="budget"
                labelProvider="com.sg.business.visualization.labelprovider.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.3"
+               sortable="false"
                type="String"
                width="200">
          </column>
@@ -414,6 +416,7 @@
                labelProvider="com.sg.business.visualization.labelprovider.RevenueLabelProvider"
                lazyDisplay="true"
                name="%column.name.4"
+               sortable="false"
                type="String"
                width="200">
          </column>

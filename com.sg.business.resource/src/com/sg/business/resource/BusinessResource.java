@@ -319,6 +319,8 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_DOWN_28X12 = "dropdown_28x12.png";
 
+	public static final String IMAGE_24X24_BLANK = "blank_24x24.png";
+
 	/**
 	 * Returns the shared instance
 	 * 

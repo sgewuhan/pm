@@ -2438,4 +2438,16 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		setValue(F_BUSINESS_ORGANIZATION, orgid);
 	}
 
+	public long getDelayDays() {
+		Date pf = getPlanFinish();
+		Date af = getActualFinish();
+		if(pf==null){
+			return -1;
+		}
+		if(af==null){
+			af = new Date();
+		}
+		return (af.getTime()-pf.getTime())/(1000*60*60);
+	}
+
 }
