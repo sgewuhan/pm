@@ -418,6 +418,12 @@
             operation="message"
             serviceProvider="com.sg.business.taskforms.bpmservice.FixedAssetsService">
       </service>
+      <service
+            interface="meetingmessage.service.action"
+            name="固定资产会议评审通知"
+            operation="fixedassets"
+            serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -1303,8 +1309,16 @@
             name="确定评审会时间"
             processDefinitionId="pm.pmFixedAssetsTechnicalReview1">
          <processParameter
-               processParameterName="messagecontent"
-               taskFormFieldName="messagecontent">
+               processParameterName="confirmdate"
+               taskFormFieldName="confirmdate">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmdate"
+               taskFormFieldName="confirmdate">
+         </processParameter>
+         <processParameter
+               processParameterName="confirmaddress"
+               taskFormFieldName="confirmaddress">
          </processParameter>
       </taskForm>
    </extension>
@@ -1546,16 +1560,41 @@
                title="会议内容">
             <pagecolumn>
                <section
-                     label="请填写开会地点，时间...">
-                  <text
-                        editPart="Text(Multi Line)"
+                     label="确认品审会时间及地点">
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        editPart="DateDialog"
                         editable="true"
-                        id="messagecontent"
+                        id="confirmdate"
+                        label="评审会日期"
                         labelVisible="true"
-                        name="messagecontent"
+                        name="confirmdate"
+                        persistable="true"
+                        required="true"
+                        type="Time">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="confirmtime"
+                        label="评审会时间"
+                        labelVisible="true"
+                        name="confirmtime"
                         persistable="true"
                         required="true"
                         type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="confirmaddress"
+                        label="评审会地点"
+                        labelVisible="true"
+                        name="confirmaddress"
+                        persistable="true"
+                        required="true"
+                        type="String"
+                        widthHint="320">
                   </text>
                </section>
             </pagecolumn>
