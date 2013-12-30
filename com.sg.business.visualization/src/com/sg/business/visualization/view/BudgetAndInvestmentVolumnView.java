@@ -1,34 +1,14 @@
 package com.sg.business.visualization.view;
 
 import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 
 import com.sg.business.visualization.chart.BarChart;
 import com.sg.business.visualization.nls.Messages;
-import com.sg.widgets.birtcharts.ChartCanvas;
 
-public class BudgetAndInvestmentVolumnView extends AbstractDashWidgetView {
-
-	private ChartCanvas chart;
+public class BudgetAndInvestmentVolumnView extends AbstractDashChartView {
 
 	@Override
-	protected void drawContent(Composite parent) {
-		parent.setLayout(new GridLayout(1, true));
-
-		chart = new ChartCanvas(parent, SWT.NONE) {
-			@Override
-			public Chart getChart() throws Exception {
-
-				return BudgetAndInvestmentVolumnView.this.getChart();
-			}
-		};
-		layout(chart, 1, 1);
-		parent.layout();
-	}
-
-	private Chart getChart() throws Exception {
+	protected Chart getChartData() throws Exception {
 		Messages messages = Messages.get(local);
 		String[] bsText = { messages.BudgetAndInvestmentVolumnView_A_0,
 				messages.BudgetAndInvestmentVolumnView_A_1 };
@@ -42,5 +22,6 @@ public class BudgetAndInvestmentVolumnView extends AbstractDashWidgetView {
 
 		return BarChart.getChart(xAxisText, bsText, new double[][] { value1,
 				value2 }, "Side-by-side", -1); //$NON-NLS-1$
+
 	}
 }
