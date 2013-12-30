@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
 import com.sg.business.model.toolkit.UserToolkit;
 
 public class FixedAssetsService extends MessageService  {
+
+
 
 	@Override
 	public String getMessageTitle() {
@@ -24,10 +27,9 @@ public class FixedAssetsService extends MessageService  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String getMessageContent() {
-		// TODO Auto-generated method stub
 		String messageOperation = getOperation();
 		PrimaryObject host = getTarget();
-		if ("message".equals(messageOperation)) { //$NON-NLS-1$
+		if ("message".equals(messageOperation)) { 
 			try {
 				if (host instanceof Work) {
 					Work work = (Work) host;
@@ -58,6 +60,10 @@ public class FixedAssetsService extends MessageService  {
 		if ("message".equals(messageOperation)) { //$NON-NLS-1$
 		
 				List<String> reviewerList =(ArrayList<String>) getInputValue("reviewer_list");
+				String prj_admin = (String)getInputValue("act_prj_admin");
+				String review_convener = (String)getInputValue("review_convener");
+				reviewerList.add(prj_admin);
+				reviewerList.add(review_convener);
 				return (List<String>) reviewerList;
 			}
 		
@@ -71,7 +77,13 @@ public class FixedAssetsService extends MessageService  {
 
 	@Override
 	public PrimaryObject getTarget() {
-		return super.getTarget();
+		Object content = getInputValue("content");
+		if (content instanceof String) {
+			String jsonContent = (String) content;
+			PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
+			return host;
+		}
+		return null;
 	}
 
 	public FixedAssetsService() {
