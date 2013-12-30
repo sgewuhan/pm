@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovider;
+package com.sg.business.visualization.label.projectset;
 
 import com.sg.business.model.Project;
 import com.sg.business.model.etl.ProjectPresentation;

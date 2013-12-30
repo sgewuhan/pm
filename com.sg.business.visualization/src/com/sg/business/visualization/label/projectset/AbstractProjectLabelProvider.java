@@ -1,15 +1,15 @@
-package com.sg.business.visualization.labelprovider;
+package com.sg.business.visualization.label.projectset;
 
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.sg.business.model.Project;
-import com.sg.business.model.ProjectProvider;
 import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 
-public abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLabelProvider {
+public abstract class AbstractProjectLabelProvider extends
+		ConfiguratorColumnLabelProvider implements ISummaryLabelProvider {
 
 	@Override
 	public Image getImage(Object element) {
@@ -49,41 +49,38 @@ public abstract class AbstractProjectLabelProvider extends ConfiguratorColumnLab
 		}
 	}
 
-	protected Image getProjectToolTipImage(Project element){
+	protected Image getProjectToolTipImage(Project element) {
 		return null;
 	}
 
-	protected String getProjectToolTipText(Project element){
+	protected String getProjectToolTipText(Project element) {
 		return null;
 	}
 
 	protected abstract String getProjectText(Project project);
-	
 
-	protected void toolsForOpenProject(Project project,StringBuffer sb,String eventCode) {
+	protected void toolsForOpenProject(Project project, StringBuffer sb,
+			String eventCode) {
 		sb.append("<a href=\"" + project.get_id().toString() //$NON-NLS-1$
-				+ "/"+eventCode+"\" target=\"_rwt\">"); //$NON-NLS-1$ //$NON-NLS-2$
-		sb.append("<img src='"+FileUtil.getImageURL(BusinessResource.IMAGE_GO_32, BusinessResource.PLUGIN_ID) //$NON-NLS-1$
-		+"' style='border-style:none;position:absolute; right:0; bottom:2; display:block;' width='14' height='14'/>"); //$NON-NLS-1$
+				+ "/" + eventCode + "\" target=\"_rwt\">"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append("<img src='" + FileUtil.getImageURL(BusinessResource.IMAGE_GO_32, BusinessResource.PLUGIN_ID) //$NON-NLS-1$
+				+ "' style='border-style:none;position:absolute; right:0; bottom:2; display:block;' width='14' height='14'/>"); //$NON-NLS-1$
 		sb.append("<a>"); //$NON-NLS-1$
 	}
-	
-	protected String getCurrency(double value,int size) {
+
+	protected String getCurrency(double value, int size) {
 		if (value >= 0) {
-			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:"+size+"pt;margin-left:1;'>" //$NON-NLS-1$ //$NON-NLS-2$
-					+ String.format("%.2f",value / 10000)+ "</span>"; //$NON-NLS-1$ //$NON-NLS-2$
+			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:" + size + "pt;margin-left:1;'>" //$NON-NLS-1$ //$NON-NLS-2$
+					+ String.format("%.2f", value / 10000) + "</span>"; //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:"+size+"pt;margin-left:1;color=" //$NON-NLS-1$ //$NON-NLS-2$
-					+ Utils.COLOR_RED[10]
-					+ "'>" //$NON-NLS-1$
-					+ String.format("%.2f",value / 10000) + "</span>"; //$NON-NLS-1$ //$NON-NLS-2$
+			return "<span style='FONT-FAMILY:Î¢ÈíÑÅºÚ;font-size:" + size + "pt;margin-left:1;color=" //$NON-NLS-1$ //$NON-NLS-2$
+					+ Utils.COLOR_RED[10] + "'>" //$NON-NLS-1$
+					+ String.format("%.2f", value / 10000) + "</span>"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
-	public String getSummary(ProjectProvider data) {
+	public String getSummary(Object data) {
 		return "";
 	}
-	
-	
-	
+
 }

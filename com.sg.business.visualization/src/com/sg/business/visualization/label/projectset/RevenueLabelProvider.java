@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovider;
+package com.sg.business.visualization.label.projectset;
 
 import java.math.BigDecimal;
 
@@ -69,7 +69,8 @@ public class RevenueLabelProvider extends AbstractProjectLabelProvider {
 	}
 
 	@Override
-	public String getSummary(ProjectProvider data) {
+	public String getSummary(Object input) {
+		ProjectProvider data = (ProjectProvider)input;
 		data.getData();
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='"//$NON-NLS-1$

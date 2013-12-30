@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovider;
+package com.sg.business.visualization.label.projectset;
 
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectProvider;
@@ -67,7 +67,8 @@ public class ProjectDescLabelProvider extends AbstractProjectLabelProvider {
 	}
 
 	@Override
-	public String getSummary(ProjectProvider data) {
+	public String getSummary(Object input) {
+		ProjectProvider data = (ProjectProvider)input;
 		data.getData();
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='"//$NON-NLS-1$

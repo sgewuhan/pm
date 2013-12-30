@@ -2360,7 +2360,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				"$sum", "$" + SalesData.F_SALES_COST)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		DBObject group = new BasicDBObject().append("$group", groupCondition); //$NON-NLS-1$
-		AggregationOutput agg = col.aggregate(match, group);
+		DBObject sort = new BasicDBObject().append("$sort", new BasicDBObject().append("_id", -1)); //$NON-NLS-1$
+		AggregationOutput agg = col.aggregate(match, group,sort);
 		Iterable<DBObject> results = agg.results();
 		Iterator<DBObject> iter = results.iterator();
 

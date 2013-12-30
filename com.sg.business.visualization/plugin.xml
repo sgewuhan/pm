@@ -273,7 +273,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.ProjectSetNavigatorLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectSetNavigatorLabelProvider"
                name="%column.name"
                style="SWT.LEFT"
                type="String"
@@ -308,7 +308,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.ProjectSetNavigatorLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectSetNavigatorLabelProvider"
                name="%column.name"
                style="SWT.LEFT"
                type="String"
@@ -387,7 +387,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.1"
                type="String"
@@ -395,7 +395,7 @@
          </column>
          <column
                column="planstart"
-               labelProvider="com.sg.business.visualization.labelprovider.SchedualLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.SchedualLabelProvider"
                lazyDisplay="true"
                name="%column.name.2"
                sortable="false"
@@ -404,7 +404,7 @@
          </column>
          <column
                column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.BudgetAndInvestmentLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.3"
                sortable="false"
@@ -413,7 +413,7 @@
          </column>
          <column
                column="revenue"
-               labelProvider="com.sg.business.visualization.labelprovider.RevenueLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.RevenueLabelProvider"
                lazyDisplay="true"
                name="%column.name.4"
                sortable="false"
@@ -442,7 +442,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.5"
                type="String"
@@ -450,7 +450,7 @@
          </column>
          <column
                column="planstart"
-               labelProvider="com.sg.business.visualization.labelprovider.SchedualLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.SchedualLabelProvider"
                lazyDisplay="true"
                name="%column.name.6"
                sortable="false"
@@ -459,7 +459,7 @@
          </column>
          <column
                column="status"
-               labelProvider="com.sg.business.visualization.labelprovider.SchedualDetailLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.SchedualDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.7"
                sortable="false"
@@ -488,7 +488,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.8"
                type="String"
@@ -496,7 +496,7 @@
          </column>
          <column
                column="budget"
-               labelProvider="com.sg.business.visualization.labelprovider.BudgetAndInvestmentLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.BudgetAndInvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.9"
                type="String"
@@ -505,7 +505,7 @@
          <column
                column="col1"
                columnSorter="com.sg.business.visualization.sorter.BudgetSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.BudgetLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.BudgetLabelProvider"
                lazyDisplay="true"
                name="%column.name.10"
                type="String"
@@ -514,7 +514,7 @@
          <column
                column="col2"
                columnSorter="com.sg.business.visualization.sorter.DesignatedInvestmentSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.InvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.11"
                type="String"
@@ -523,7 +523,7 @@
          <column
                column="col3"
                columnSorter="com.sg.business.visualization.sorter.AllocatedInvestmentSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider2"
+               labelProvider="com.sg.business.visualization.label.projectset.InvestmentLabelProvider2"
                lazyDisplay="true"
                name="%column.name.12"
                type="String"
@@ -532,7 +532,7 @@
          <column
                column="col4"
                columnSorter="com.sg.business.visualization.sorter.OverCostSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.OvercostCostLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.OvercostCostLabelProvider"
                lazyDisplay="true"
                name="%column.name.13"
                type="String"
@@ -560,7 +560,7 @@
             virtual="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.visualization.labelprovider.ProjectDescLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectDescLabelProvider"
                lazyDisplay="true"
                name="%column.name.14"
                type="String"
@@ -568,7 +568,7 @@
          </column>
          <column
                column="revenue"
-               labelProvider="com.sg.business.visualization.labelprovider.RevenueLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.RevenueLabelProvider"
                lazyDisplay="true"
                name="%column.name.15"
                sortable="false"
@@ -578,7 +578,7 @@
          <column
                column="d1"
                columnSorter="com.sg.business.visualization.sorter.SalesRevenueSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.RevenueDetailLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.RevenueDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.16"
                type="String"
@@ -587,7 +587,7 @@
          <column
                column="d6"
                columnSorter="com.sg.business.visualization.sorter.DesignatedInvestmentSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.InvestmentLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.InvestmentLabelProvider"
                lazyDisplay="true"
                name="%column.name.17"
                type="String"
@@ -596,7 +596,7 @@
          <column
                column="d2"
                columnSorter="com.sg.business.visualization.sorter.SalesCostSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.SalesCostDetailLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.SalesCostDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.18"
                type="String"
@@ -605,7 +605,7 @@
          <column
                column="d3"
                columnSorter="com.sg.business.visualization.sorter.SalesProfitSorter"
-               labelProvider="com.sg.business.visualization.labelprovider.ProfitDetailLabelProvider"
+               labelProvider="com.sg.business.visualization.label.projectset.ProfitDetailLabelProvider"
                lazyDisplay="true"
                name="%column.name.19"
                type="String"
@@ -937,14 +937,12 @@
                id="project.designateinvestment"
                image="image/currency_24.png"
                navigatorId="project.designateinvestment"
-               pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardDesInv"
                title="%navigatorpage.title.5">
          </navigatorpage>
          <navigatorpage
                id="project.allocatedinvestment"
                image="image/currency_24.png"
                navigatorId="project.allocatedinvestment"
-               pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardAllInv"
                title="%navigatorpage.title.6">
          </navigatorpage>
          <navigatorpage
@@ -1636,7 +1634,7 @@
          </column>
          <column
                column="summ"
-               labelProvider="com.sg.business.visualization.labelprovider.CostSummary"
+               labelProvider="com.sg.business.visualization.label.projectset.CostSummary"
                name="%column.name.112"
                type="Double">
          </column>
@@ -2074,41 +2072,32 @@
             useHashlookup="true"
             virtual="true">
          <column
-               column="GJAHR"
-               name="%column.name.197"
-               type="String"
-               width="40">
-         </column>
-         <column
                column="PERDE"
+               labelProvider="com.sg.business.visualization.label.project.ProjectRevenuePeriod"
                name="%column.name.198"
                type="String"
-               width="40">
+               width="80">
          </column>
          <column
-               column="MATNR"
-               name="%column.name.199"
-               type="String">
-         </column>
-         <column
-               column="VV010"
+               column="month_sales_revenue"
+               labelProvider="com.sg.business.visualization.label.project.SalesRevenue"
                name="%column.name.200"
-               type="Double">
+               type="Double"
+               width="160">
          </column>
          <column
-               column="VV030"
+               column="month_sales_cost"
+               labelProvider="com.sg.business.visualization.label.project.SalesCost"
                name="%column.name.201"
-               type="Double">
+               type="Double"
+               width="160">
          </column>
          <column
-               column="VV040"
-               name="%column.name.202"
-               type="Double">
-         </column>
-         <column
-               column="KNDNR"
-               name="%column.name.203"
-               type="String">
+               column="month_sales_profit"
+               labelProvider="com.sg.business.visualization.label.project.SalesProfit"
+               name="%view.name.3"
+               type="Double"
+               width="160">
          </column>
       </table>
    </extension>
