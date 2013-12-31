@@ -181,7 +181,7 @@ public class DCPDMUtil {
 
 	}
 
-	private static void writePDMInfo(String ouid, Document document) throws Exception {
+	private static void writePDMInfo(String ouid, final Document document) throws Exception {
 		ImportData ip = new ImportData() {
 
 			@Override
@@ -192,7 +192,7 @@ public class DCPDMUtil {
 			@Override
 			protected DB getDB() {
 				OrganizationDistributeFileBase filebase = new OrganizationDistributeFileBase();
-				return DBActivator.getDB(filebase.getDB());
+				return DBActivator.getDB(filebase.getDB(document));
 			}
 
 			@Override

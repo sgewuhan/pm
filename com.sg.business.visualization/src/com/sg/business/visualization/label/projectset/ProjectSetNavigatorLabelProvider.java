@@ -1,4 +1,4 @@
-package com.sg.business.visualization.labelprovider;
+package com.sg.business.visualization.label.projectset;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 

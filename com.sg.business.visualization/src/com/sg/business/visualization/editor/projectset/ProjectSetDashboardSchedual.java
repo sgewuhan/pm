@@ -1,6 +1,9 @@
 package com.sg.business.visualization.editor.projectset;
 
+import java.util.List;
+
 import com.sg.business.visualization.nls.Messages;
+import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class ProjectSetDashboardSchedual extends AbstractProjectSetTableDetail {
 
@@ -169,6 +172,14 @@ public class ProjectSetDashboardSchedual extends AbstractProjectSetTableDetail {
 	@Override
 	protected String getTitle() {
 		return  Messages.get().ProjectSetDashboardSchedual_1;
+	}
+	
+	@Override
+	protected List<ColumnSorter> getColumnSorters(ColumnConfigurator conf) {
+		if (conf.getColumn().equals("planstart")) {
+			return getSortOfPlanStartColumn();
+		}
+		return null;
 	}
 
 }

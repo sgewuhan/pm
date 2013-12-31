@@ -25,6 +25,8 @@ public class ReviewerMessageService extends MessageService {
 			return Messages.get().ReviewerMessageService_3;
 		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
 			return "转批评审会议通知";
+		}else if ("fixedassets".equals(value)) {
+			return "固定资产投资项目技术评审会议通知";
 		}
 		return null;
 	}
@@ -53,7 +55,7 @@ public class ReviewerMessageService extends MessageService {
 				content = content
 						+ Messages.get().ReviewerMessageService_12
 						+ confirmdate
-						+ " " //$NON-NLS-2$
+						+ " " 
 						+ confirmtime
 						+ Messages.get().ReviewerMessageService_14
 						+ confirmaddress
@@ -83,6 +85,19 @@ public class ReviewerMessageService extends MessageService {
 						+ confirmaddress + "<br/> 参加项目转批评审会!";
 				return content;
 			}
+		} else if ("fixedassets".equals(value)) {
+
+			Object confirmdate = getInputValue("confirmdate"); //$NON-NLS-1$
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					Utils.SDF_DATE_COMPACT_SASH);
+			if (confirmdate instanceof Date) {
+				confirmdate = sdf.format(confirmdate);
+			}
+			Object confirmtime = getInputValue("confirmtime");
+			Object confirmaddress = getInputValue("confirmaddress");
+			String content = "请您于" + confirmdate + " " + confirmtime + "在"
+					+ confirmaddress + "<br/>参加评审会！";
+			return content;
 		}
 		return null;
 	}
@@ -106,6 +121,13 @@ public class ReviewerMessageService extends MessageService {
 		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
 			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list"); //$NON-NLS-1$
 			return reviewerList;
+		} else if ("fixedassets".equals(value)) {
+			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list"); //$NON-NLS-1$
+			String review_convener = (String) getInputValue("review_convener"); //$NON-NLS-1$
+			if (!reviewerList.contains(review_convener)) {
+				reviewerList.add(review_convener);
+			}
+			return reviewerList;
 		}
 		return null;
 	}
@@ -117,6 +139,11 @@ public class ReviewerMessageService extends MessageService {
 			PrimaryObject target = getTarget();
 			if (target instanceof Project) {
 				return Project.EDITOR_CREATE_PLAN;
+			}
+		}else if("fixedassets".equals(value)){
+			PrimaryObject target = getTarget();
+			if (target instanceof Work) {
+				return Work.EDITOR;
 			}
 		}
 		return null;
@@ -146,6 +173,15 @@ public class ReviewerMessageService extends MessageService {
 				}
 			}
 		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
+			Object content = getInputValue("content"); //$NON-NLS-1$
+			if (content instanceof String) {
+				String jsonContent = (String) content;
+				PrimaryObject host = WorkflowUtils.getHostFromJSON(jsonContent);
+				if (host instanceof Work) {
+					return (Work) host;
+				}
+			}
+		} else if ("fixedassets".equals(value)) {
 			Object content = getInputValue("content"); //$NON-NLS-1$
 			if (content instanceof String) {
 				String jsonContent = (String) content;

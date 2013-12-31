@@ -799,12 +799,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// }
 		// }
 		// }
-
-		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
-
+        // 判断是否为该工作或上级工作的指派者
 		if (hasPermissionForReassignment(context)) {
 			return true;
 		}
+		// 2.判断是否为该工作或上级工作的负责人或项目的项目经理
 		return hasPermission(context);
 	}
 

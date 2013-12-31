@@ -1,6 +1,9 @@
 package com.sg.business.visualization.editor.projectset;
 
+import java.util.List;
+
 import com.sg.business.visualization.nls.Messages;
+import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class ProjectSetContent extends AbstractProjectSetTableDetail {
 
@@ -102,4 +105,17 @@ public class ProjectSetContent extends AbstractProjectSetTableDetail {
 	protected boolean displaySummary() {
 		return true;
 	}
+
+	@Override
+	protected List<ColumnSorter> getColumnSorters(ColumnConfigurator conf) {
+		if (conf.getColumn().equals("planstart")) {
+			return getSortOfPlanStartColumn();
+		}else if(conf.getColumn().equals("budget")){
+			return getSortOfBudgetColumn();
+		}else if(conf.getColumn().equals("revenue")){
+			return getSortOfRevenueColumn();
+		}
+		return null;
+	}
+
 }
