@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.DBActivator;
@@ -39,6 +40,8 @@ public class DeleteProject extends AbstractNavigatorHandler {
 						project.get_id()));
 			}
 		}
+		TableViewer viewer = (TableViewer) vc.getViewer();
+		viewer.remove(array);
 	}
 
 }

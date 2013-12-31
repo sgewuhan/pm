@@ -99,7 +99,7 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 
 		Commons.loginfo("[销售数据]准备更新项目销售数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 		start = System.currentTimeMillis();
-		ProjectToolkit.updateProjectSalesData(year, month, day);
+		ProjectToolkit.updateProjectSalesData();
 		end = System.currentTimeMillis();
 		Commons.loginfo("[销售数据]更新项目销售数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ (end - start) / 1000 + " S");
