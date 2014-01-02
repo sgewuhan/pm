@@ -225,6 +225,11 @@
             collection="projectmonthdata"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.business.model.DummyWork"
+            collection="dummywork"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="com.mobnut.db.modelRelation">
