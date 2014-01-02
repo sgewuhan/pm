@@ -306,4 +306,6 @@ public interface IModelConstants {
 
 	public static final String C_PROJECT_MONTH_DATA = "projectmonthdata"; //$NON-NLS-1$
 
+	public static final String C_PRODUCT_SALESDATA = "productsalesdata";
+
 }

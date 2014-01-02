@@ -1,18 +1,39 @@
 package com.sg.business.model.etl;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
+import org.eclipse.swt.internal.widgets.MarkupValidator;
+
+import com.mobnut.admin.dataset.Setting;
+import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.file.RemoteFile;
+import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import com.sg.business.model.CostAccount;
+import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Organization;
 import com.sg.business.model.ProductItem;
 import com.sg.business.model.Project;
+import com.sg.business.model.ProjectBudget;
+import com.sg.business.model.User;
+import com.sg.business.model.Work;
+import com.sg.business.model.WorkOrderPeriodCost;
+import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.BusinessResource;
 
+@SuppressWarnings("restriction")
 public class ProjectMonthlyETL extends ProjectETL {
 
 	public ProjectMonthlyETL(Project project) {
@@ -81,9 +102,11 @@ public class ProjectMonthlyETL extends ProjectETL {
 		// 项目负责人字段
 		etl.put(Project.F_CHARGER, project.getValue(Project.F_CHARGER));
 		// 项目商务负责人字段
-		etl.put(Project.F_BUSINESS_CHARGER, project.getValue(Project.F_BUSINESS_CHARGER));
+		etl.put(Project.F_BUSINESS_CHARGER,
+				project.getValue(Project.F_BUSINESS_CHARGER));
 		// 项目商务负责部门
-		etl.put(Project.F_BUSINESS_ORGANIZATION, project.getValue(Project.F_BUSINESS_ORGANIZATION));
+		etl.put(Project.F_BUSINESS_ORGANIZATION,
+				project.getValue(Project.F_BUSINESS_ORGANIZATION));
 		// 数组类型字段
 		etl.put(Project.F_PARTICIPATE, project.getValue(Project.F_PARTICIPATE));
 		// 项目所属的项目职能组织
@@ -160,8 +183,645 @@ public class ProjectMonthlyETL extends ProjectETL {
 		etl.put(F_MONTH_SALES_COST, monthSalesCost);
 		etl.put(F_MONTH_SALES_REVENUE, monthSalesRevenue);
 		etl.put(F_MONTH_SALES_PROFIT, monthSalesProfit);
-		
+
 		return etl;
 	}
 
+	public DBObject doETLAgain(Calendar cal) throws Exception {
+		// TODO 需要修改成按月查询
+		now = cal.getTime();
+		planFinish = project.getPlanFinish();
+		actualFinish = project.getActualFinish();
+		planStart = project.getPlanStart();
+		actualStart = project.getActualStart();
+		ProjectBudget projectBudget = project.getBudget();
+		milestones = project.getMileStoneWorks();
+		products = project.getProduct();
+		lifecycle = project.getLifecycleStatus();
+		String desc = project.getDesc();
+		List<RemoteFile> coverImageFileList = project.getCoverImages();
+		List<PrimaryObject> launchOrgList = project.getLaunchOrganization();
+		User charger = project.getCharger();
+		User buCharger = project.getBusinessCharger();
+		Organization buOrg = project.getBusinessOrganization();
+
+		Object overCostRatioSetting = Setting
+				.getSystemSetting(IModelConstants.S_S_BI_OVER_COST_ESTIMATE);
+		double overCostRatio = overCostRatioSetting == null ? .3d : Double
+				.valueOf((String) overCostRatioSetting);
+
+		DBObject transfered = new BasicDBObject();
+
+		/**
+		 * 
+		 * 开始进行数据抽取和转换
+		 * 
+		 */
+		transfered.put(F_YEAR, cal.get(Calendar.YEAR));
+		transfered.put(F_MONTH, cal.get(Calendar.MONTH) + 1);
+		transfered.put(F_TRANSFERDATE, cal.getTimeInMillis());
+		transfered.put(F_PROJECTID, project.get_id());
+
+		// 是否延时完成
+		isDelayDefinited = planFinish != null
+				&& ((actualFinish == null && now.after(planFinish)) || (actualFinish != null && actualFinish
+						.after(planFinish)));
+		transfered.put(F_IS_DELAY_DEFINITED, isDelayDefinited);
+
+		// 是否提前完成
+		isAdvanceDefinited = planFinish != null && actualFinish != null
+				&& actualFinish.before(planFinish);
+		transfered.put(F_IS_ADVANCE_DEFINITED, isAdvanceDefinited);
+
+		isDelayEstimated = false;
+		if (!isDelayDefinited) {
+			for (int i = 0; i < milestones.size() && !isDelayEstimated; i++) {
+				isDelayEstimated = milestones.get(i).isDelayFinish();
+			}
+		} else {
+			isDelayEstimated = true;
+		}
+		transfered.put(F_IS_DELAY_ESTIMATED, isDelayEstimated);
+
+		isAdvanceEstimated = false;
+		if (!isAdvanceDefinited) {
+			for (int i = 0; i < milestones.size() && !isAdvanceEstimated; i++) {
+				isAdvanceEstimated = milestones.get(i).isAdvanceFinish();
+			}
+		} else {
+			isAdvanceEstimated = true;
+		}
+		transfered.put(F_IS_ADVANCE_ESTIMATED, isAdvanceEstimated);
+
+		if (planFinish == null || planStart == null || actualStart == null) {
+			finishedDurationRatio = 0;
+		} else {
+			long pd = (planFinish.getTime() - planStart.getTime());
+			long ad = now.getTime() - actualStart.getTime();
+			finishedDurationRatio = 1d * ad / pd;
+		}
+		transfered.put(F_FINISHED_DURATION_RATIO, finishedDurationRatio);
+
+		if (projectBudget == null) {
+			budget = 0d;
+		} else {
+			Double value = projectBudget.getBudgetValue();
+			budget = value == null ? 0d : value.doubleValue();
+		}
+		transfered.put(F_BUDGET, budget);
+
+		/**
+		 * 取研发成本
+		 */
+		// 分摊到工作令号的研发成本
+
+		allocatedInvestment = extractInvestmentInternal(
+				IModelConstants.C_RND_PEROIDCOST_ALLOCATION, cal);
+		transfered.put(F_INVESTMENT_ALLOCATED, allocatedInvestment);
+
+		// 指定到工作令号研发成本
+
+		designatedInvestment = extractInvestmentInternal(
+				IModelConstants.C_WORKORDER_COST, cal);
+		transfered.put(F_INVESTMENT_DESIGNATED, designatedInvestment);
+
+		// 合计研发成本
+		investment = allocatedInvestment + designatedInvestment;
+		transfered.put(F_INVESTMENT, investment);
+
+		/**
+		 * 估计是否超支
+		 * 
+		 */
+		if (ILifecycle.STATUS_WIP_VALUE.equals(lifecycle)) {
+			if (budget == 0) {
+				isOverCostEstimated = false;
+			} else {
+				double cr = 1d * designatedInvestment / budget;
+				double dr = finishedDurationRatio;
+				isOverCostEstimated = cr - dr >= overCostRatio;
+			}
+		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
+			isOverCostEstimated = designatedInvestment > budget;
+		} else {
+			isOverCostEstimated = false;
+		}
+		transfered.put(F_IS_OVERCOST_ESTIMATED, isOverCostEstimated);
+
+		/**
+		 * 是否确定超支
+		 */
+		if (budget == 0) {
+			isOverCostDefinited = false;
+		} else {
+			isOverCostDefinited = designatedInvestment > budget;
+		}
+		transfered.put(F_IS_OVERCOST_DEFINITED, isOverCostDefinited);
+
+		/**
+		 * 取销售收入,成本
+		 */
+
+		// TODO
+		salesRevenue = 0d;
+		salesCost = 0d;
+		if (products != null) {
+			for (int i = 0; i < products.size(); i++) {
+				ProductItem pd = (ProductItem) products.get(i);
+				salesRevenue += pd.getSalesRevenueByCalendar(cal);
+				salesCost += pd.getSalesCostByCalendar(cal);
+			}
+		}
+		transfered.put(F_SALES_COST, salesCost);
+		transfered.put(F_SALES_REVENUE, salesRevenue);
+
+		/**************************************************************************
+		 * 处理呈现层的优化显示
+		 */
+		/**
+		 * 项目名称
+		 */
+		try {
+			MarkupValidator.getInstance().validate(desc);
+			projectDesc = desc;
+		} catch (Exception e) {
+			projectDesc = Utils.getPlainText(desc);
+		}
+		transfered.put(F_DESC_TEXT, projectDesc);
+
+		/**
+		 * 项目的封面图片地址
+		 */
+		String coverImageURL;
+		if (coverImageFileList.size() > 0) {
+			RemoteFile rf = coverImageFileList.get(0);
+			coverImageURL = FileUtil.getImageURL(rf.getOutputRefData());
+		} else {
+			coverImageURL = null;
+		}
+		transfered.put(F_COVERIMAGE_URL, coverImageURL);
+
+		/**
+		 * 项目的发起组织名称
+		 */
+		String launchOrganizationText = ""; //$NON-NLS-1$
+		for (int i = 0; i < launchOrgList.size(); i++) {
+			Organization primaryObject = (Organization) launchOrgList.get(i);
+			String path = primaryObject.getPath(2);
+			if (i == 0) {
+				launchOrganizationText += path;
+			} else if (i <= 2) {
+				launchOrganizationText += ", " + path; //$NON-NLS-1$
+			} else {
+				launchOrganizationText += " .."; //$NON-NLS-1$
+				break;
+			}
+		}
+		transfered.put(F_LAUNCH_ORGANIZATION_TEXT, launchOrganizationText);
+
+		/**
+		 * 项目负责人
+		 */
+		String chargerText = charger == null ? "?" : charger.getUsername(); //$NON-NLS-1$
+		transfered.put(F_CHARGER_TEXT, chargerText);
+
+		/**
+		 * 项目商务负责人
+		 */
+		String businesschargerText = buCharger == null ? "?" : buCharger.getUsername(); //$NON-NLS-1$
+		transfered.put(F_BUSINESS_MANAGER_TEXT, businesschargerText);
+
+		String path = buOrg == null ? "?" : buOrg.getPath(2);
+		transfered.put(F_BUSINESS_ORGANIZATION_TEXT, path);
+
+		/**
+		 * 项目进度HTML
+		 */
+		// 显示图形化的进度栏
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span>"); //$NON-NLS-1$
+		sb.append(extractSchedualGraphic());
+		sb.append("</span>"); //$NON-NLS-1$
+
+		// 显示计划和实际的进度日期
+		sb.append("<small>"); //$NON-NLS-1$
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append(extractSchedualText());
+		sb.append("</small>"); //$NON-NLS-1$
+		transfered.put(F_SCHEDUAL_HTML, sb.toString());
+
+		/**
+		 * 项目进度详细信息HTML
+		 */
+
+		String schedual_detail = extractSchedualDetailHtml();
+		transfered.put(F_SCHEDUAL_DETAIL_HTML, schedual_detail);
+
+		/**
+		 * 
+		 * 进行数据装载，保存至Project
+		 * 
+		 */
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
+		WriteResult ws = col.update(project.queryThis(),
+				new BasicDBObject().append("$set", //$NON-NLS-1$
+						new BasicDBObject().append(F_ETL, transfered)));
+		String error = ws.getError();
+		if (error != null) {
+			throw new Exception(error);
+		}
+		// 项目负责人字段
+		transfered.put(Project.F_CHARGER, project.getValue(Project.F_CHARGER));
+		// 项目商务负责人字段
+		transfered.put(Project.F_BUSINESS_CHARGER,
+				project.getValue(Project.F_BUSINESS_CHARGER));
+		// 项目商务负责部门
+		transfered.put(Project.F_BUSINESS_ORGANIZATION,
+				project.getValue(Project.F_BUSINESS_ORGANIZATION));
+		// 数组类型字段
+		transfered.put(Project.F_PARTICIPATE,
+				project.getValue(Project.F_PARTICIPATE));
+		// 项目所属的项目职能组织
+		transfered.put(Project.F_FUNCTION_ORGANIZATION,
+				project.getValue(Project.F_FUNCTION_ORGANIZATION));
+		// 项目发起部门
+		transfered.put(Project.F_LAUNCH_ORGANIZATION,
+				project.getValue(Project.F_LAUNCH_ORGANIZATION));
+		// 适用标准集
+		transfered.put(Project.F_STANDARD_SET_OPTION,
+				project.getValue(Project.F_STANDARD_SET_OPTION));
+		// 产品类型选项集
+		transfered.put(Project.F_PRODUCT_TYPE_OPTION,
+				project.getValue(Project.F_PRODUCT_TYPE_OPTION));
+		// 项目类型选项集
+		transfered.put(Project.F_PROJECT_TYPE_OPTION,
+				project.getValue(Project.F_PROJECT_TYPE_OPTION));
+		// 列表类型的字段，工作令号
+		transfered.put(Project.F_WORK_ORDER,
+				project.getValue(Project.F_WORK_ORDER));
+		// 生命周期状态
+		transfered.put(Project.F_LIFECYCLE,
+				project.getValue(Project.F_LIFECYCLE));
+		// 计划开始时间
+		transfered.put(Project.F_PLAN_START,
+				project.getValue(Project.F_PLAN_START));
+		// 计划完成时间
+		transfered.put(Project.F_PLAN_FINISH,
+				project.getValue(Project.F_PLAN_FINISH));
+		// 实际开始时间
+		transfered.put(Project.F_ACTUAL_START,
+				project.getValue(Project.F_ACTUAL_START));
+		// 实际完成时间
+		transfered.put(Project.F_ACTUAL_FINISH,
+				project.getValue(Project.F_ACTUAL_FINISH));
+		// 计划工时
+		transfered.put(Project.F_PLAN_WORKS,
+				project.getValue(Project.F_PLAN_WORKS));
+		// 实际工时
+		transfered.put(Project.F_ACTUAL_WORKS,
+				project.getValue(Project.F_ACTUAL_WORKS));
+		// 计划工期
+		transfered.put(Project.F_PLAN_DURATION,
+				project.getValue(Project.F_PLAN_DURATION));
+		// 实际工期
+		transfered.put(Project.F_ACTUAL_DURATION,
+				project.getValue(Project.F_ACTUAL_DURATION));
+		/**
+		 * 取研发成本
+		 */
+		// 分摊到工作令号的研发成本
+		monthAllocatedInvestment = extractMonthlyInvestmentInternal(
+				IModelConstants.C_RND_PEROIDCOST_ALLOCATION, cal);
+		transfered.put(F_MONTH_INVESTMENT_ALLOCATED, monthAllocatedInvestment);
+
+		// 指定到工作令号研发成本
+		monthDesignatedInvestment = extractMonthlyInvestmentInternal(
+				IModelConstants.C_WORKORDER_COST, cal);
+		transfered
+				.put(F_MONTH_INVESTMENT_DESIGNATED, monthDesignatedInvestment);
+
+		// 合计研发成本
+		monthInvestment = monthAllocatedInvestment + monthDesignatedInvestment;
+		transfered.put(F_MONTH_INVESTMENT, monthInvestment);
+
+		/**
+		 * 取销售收入,成本
+		 */
+		monthSalesRevenue = 0d;
+		monthSalesCost = 0d;
+		if (products != null) {
+			for (int i = 0; i < products.size(); i++) {
+				ProductItem pd = (ProductItem) products.get(i);
+				double[] monthlySalesData = pd.getMonthlySalesData(cal);
+				monthSalesRevenue += monthlySalesData[0];
+				monthSalesCost += monthlySalesData[1];
+			}
+		}
+		monthSalesProfit = monthSalesRevenue - monthSalesCost;
+		transfered.put(F_MONTH_SALES_COST, monthSalesCost);
+		transfered.put(F_MONTH_SALES_REVENUE, monthSalesRevenue);
+		transfered.put(F_MONTH_SALES_PROFIT, monthSalesProfit);
+
+		return transfered;
+	}
+
+	private String extractSchedualGraphic() {
+		StringBuffer sb = new StringBuffer();
+		// 如果项目已经完成
+		String processIcon = extractProcessIcon();
+		if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
+			String bar = TinyVisualizationUtil.getColorBar(8, null, "96%", //$NON-NLS-1$
+					"#ececec", processIcon, "right", null); //$NON-NLS-1$ //$NON-NLS-2$
+			sb.append(bar);
+
+		} else {
+			// 显示进度摘要的图形信息
+			int count = milestones.size();
+			int barCount = count > 1 ? count : 1;
+			double percent = 1d / barCount;
+
+			// 获得当前的阶段
+			Work latest = null;
+			String location;
+			for (int i = 0; i < milestones.size(); i++) {
+				Work work = milestones.get(i);
+				String lc = work.getLifecycleStatus();
+				if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
+					continue;
+				}
+				latest = work;
+			}
+
+			if (latest != null
+					&& ILifecycle.STATUS_WIP_VALUE.equals(latest
+							.getLifecycleStatus())) {
+				location = "right"; //$NON-NLS-1$
+			} else {
+				location = "left"; //$NON-NLS-1$
+			}
+
+			for (int i = 0; i < barCount; i++) {
+				String colorCode;
+				int colorIndex;
+				String icon;
+				if (count != 0) {
+					Work work = milestones.get(i);
+					String lc = work.getLifecycleStatus();
+					// 如果工作完成
+					if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
+						if (isDelayDefinited) {
+							colorCode = "red"; //$NON-NLS-1$
+						} else if (isDelayEstimated) {
+							colorCode = "yellow"; //$NON-NLS-1$
+						} else {
+							colorCode = "green"; //$NON-NLS-1$
+						}
+
+						colorIndex = i;
+					} else {
+						// 如果工作没有开始，显示蓝色
+						colorCode = "blue"; //$NON-NLS-1$
+						colorIndex = i;
+					}
+					if (latest == work) {
+						icon = processIcon;
+					} else {
+						icon = null;
+					}
+				} else {
+					// 没有里程碑
+					if (isDelayDefinited) {
+						colorCode = "red"; //$NON-NLS-1$
+					} else if (isDelayEstimated) {
+						colorCode = "yellow"; //$NON-NLS-1$
+					} else {
+						colorCode = "green"; //$NON-NLS-1$
+					}
+					colorIndex = i;
+					icon = processIcon;
+				}
+
+				if (i == barCount - 1) {
+					percent = 1 - percent * (i) - 0.04;
+				}
+				String bar = TinyVisualizationUtil.getColorBar(colorIndex + 3,
+						colorCode,
+						new DecimalFormat("#.00").format(100 * percent) + "%", //$NON-NLS-1$ //$NON-NLS-2$
+						null, icon, location, null);
+				sb.append(bar);
+			}
+		}
+
+		return sb.toString();
+	}
+
+	private String extractProcessIcon() {
+		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycle)) {
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_CANCEL_16);
+		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16);
+		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lifecycle)) {
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_READY_16);
+		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lifecycle)) {
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16);
+		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lifecycle)) {
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_PAUSE_16);
+		} else if (ILifecycle.STATUS_NONE_VALUE.equals(lifecycle)) {
+			return BusinessResource
+					.getImageURL(BusinessResource.IMAGE_WORK2_READY_16);
+		}
+		return null;
+	}
+
+	private double extractInvestmentInternal(String colname, Calendar cal) {
+		// 获得工作令号
+		String[] workOrders = project.getWorkOrders();
+		double summary = 0d;
+		if (workOrders.length != 0) {
+			DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+					colname);
+			DBObject matchCondition = new BasicDBObject();
+			matchCondition.put(Project.F_WORK_ORDER,
+					new BasicDBObject().append("$in", workOrders)); //$NON-NLS-1$
+			List<BasicDBObject> matchDateList = new ArrayList<BasicDBObject>();
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH);
+			for (int i = 2009; i <= year; i++) {
+				for (int j = 0; j < 12; j++) {
+					if (i == year && j >= month) {
+						continue;
+					}
+					BasicDBObject dbo = new BasicDBObject();
+					dbo.put(WorkOrderPeriodCost.F_YEAR, i);
+					dbo.put(WorkOrderPeriodCost.F_MONTH, j + 1);
+					matchDateList.add(dbo);
+				}
+			}
+
+			BasicDBObject[] matchDate = matchDateList
+					.toArray(new BasicDBObject[0]);
+			if (matchDate.length > 0) {
+				matchCondition.put("$or", matchDate);
+			}
+			DBObject match = new BasicDBObject().append("$match", //$NON-NLS-1$
+					matchCondition);
+			DBObject groupCondition = new BasicDBObject();
+			groupCondition.put("_id", "$" + Project.F_WORK_ORDER);// 按工作令号分组 //$NON-NLS-1$ //$NON-NLS-2$
+			String[] costElements = CostAccount.getCostElemenArray();
+			for (int i = 0; i < costElements.length; i++) {
+				groupCondition.put(costElements[i],
+						new BasicDBObject().append("$sum", "$" //$NON-NLS-1$ //$NON-NLS-2$
+								+ costElements[i]));
+			}
+			DBObject group = new BasicDBObject().append("$group", //$NON-NLS-1$
+					groupCondition);
+			AggregationOutput agg = col.aggregate(match, group);
+			Iterator<DBObject> iter = agg.results().iterator();
+			while (iter.hasNext()) {
+				DBObject data = iter.next();
+				for (int i = 0; i < costElements.length; i++) {
+					Number value = (Number) data.get(costElements[i]);
+					summary += value.doubleValue();
+				}
+			}
+		}
+		return summary;
+	}
+
+	private String extractSchedualText() {
+		String start = actualStart == null ? (planStart == null ? "" : String //$NON-NLS-1$
+				.format("%tF%n", planStart)) : String.format("%tF%n", //$NON-NLS-1$ //$NON-NLS-2$
+				actualStart);
+		String finish = actualFinish == null ? (planFinish == null ? "" //$NON-NLS-1$
+				: String.format("%tF%n", planFinish)) : String.format("%tF%n", //$NON-NLS-1$ //$NON-NLS-2$
+				actualFinish);
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;margin-left:0;margin-top:2px; white-space:normal; display:block; width=1000px'>"); //$NON-NLS-1$
+
+		sb.append(start);
+		sb.append("~"); //$NON-NLS-1$
+		sb.append(finish);
+
+		// 如果项目已经完成，显示完成旗标
+		// String state = null;
+		if (!ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
+			if (isAdvanceDefinited) {
+				sb.append("<span style='color:" + Utils.COLOR_GREEN[10] + "'>"); //$NON-NLS-1$ //$NON-NLS-2$
+				sb.append(Messages.get().ProjectETL_0);
+				sb.append("</span>"); //$NON-NLS-1$
+			} else {
+				if (isDelayDefinited) {
+					sb.append("<span style='color:" + Utils.COLOR_RED[10] //$NON-NLS-1$
+							+ "'>"); //$NON-NLS-1$
+					sb.append(Messages.get().ProjectETL_1);
+					sb.append("</span>"); //$NON-NLS-1$
+					// state = FileUtil.getImageURL(
+					// BusinessResource.IMAGE_BALL_RED_1_16,
+					// BusinessResource.PLUGIN_ID);
+				} else {
+					if (isDelayEstimated) {
+						sb.append("<span style='color:" //$NON-NLS-1$
+								+ Utils.COLOR_YELLOW[10] + "'>"); //$NON-NLS-1$
+						sb.append(Messages.get().ProjectETL_2);
+						sb.append("</span>"); //$NON-NLS-1$
+						// state = FileUtil.getImageURL(
+						// BusinessResource.IMAGE_BALL_YELLOW_1_16,
+						// BusinessResource.PLUGIN_ID);
+					}
+				}
+			}
+		}
+		// if (state != null) {
+		// sb.append("<img src='"
+		// + state
+		// + "' style='margin-top:0;margin-left:2' width='12' height='12' />");
+		// }
+		sb.append("</span>"); //$NON-NLS-1$
+
+		return sb.toString();
+	}
+
+	private String extractSchedualDetailHtml() {
+		if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
+			return ""; //$NON-NLS-1$
+		}
+
+		// 取正在进行的为中心，前后各一行
+		int index = -1;
+		for (int i = 0; i < milestones.size(); i++) {
+			Work work = milestones.get(i);
+			if (ILifecycle.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())) {
+				index = i;
+				break;
+			}
+		}
+
+		String line1;
+		String line2;
+		String line3;
+
+		if (index == -1) {
+			return ""; //$NON-NLS-1$
+		} else if (index == 0) {
+			line1 = extractWorkLabel(milestones.get(index), true);
+			line2 = milestones.size() > 1 ? extractWorkLabel(milestones.get(1),
+					false) : ""; //$NON-NLS-1$
+			line3 = milestones.size() > 2 ? extractWorkLabel(milestones.get(2),
+					false) : ""; //$NON-NLS-1$
+		} else {
+			line1 = extractWorkLabel(milestones.get(index - 1), false);
+			line2 = extractWorkLabel(milestones.get(index), true);
+			line3 = milestones.size() > (index + 1) ? extractWorkLabel(
+					milestones.get(index + 1), false) : ""; //$NON-NLS-1$
+		}
+
+		StringBuffer sb = new StringBuffer();
+		sb.append(line1);
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append(line2);
+		sb.append("<br/>"); //$NON-NLS-1$
+		sb.append(line3);
+		return sb.toString();
+	}
+
+	private String extractWorkLabel(Work work, boolean em) {
+		// Date ps = work.getPlanStart();
+		Date pf = work.getPlanFinish();
+		// Date as = work.getActualStart();
+		Date af = work.getActualFinish();
+
+		// String start = as == null ? (ps == null ? "" : String.format("%tF%n",
+		// ps)) : String.format("%tF%n", as);
+		String finish = af == null ? (pf == null ? "" : String.format("%tF%n", //$NON-NLS-1$ //$NON-NLS-2$
+				pf)) : String.format("%tF%n", af); //$NON-NLS-1$
+
+		StringBuffer sb = new StringBuffer();
+		if (em) {
+			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;'>"); //$NON-NLS-1$
+			sb.append(work.getLabel());
+			// sb.append(" ");
+			// sb.append(start);
+			// sb.append("~");
+			sb.append(finish);
+			sb.append(Messages.get().ProjectETL_3);
+			sb.append("</span>"); //$NON-NLS-1$
+		} else {
+			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;color:#a0a0a0'>"); //$NON-NLS-1$
+			sb.append(work.getLabel());
+			// sb.append(" ");
+			// sb.append(start);
+			// sb.append("~");
+			sb.append(finish);
+			sb.append("</span>"); //$NON-NLS-1$
+		}
+
+		return sb.toString();
+	}
 }

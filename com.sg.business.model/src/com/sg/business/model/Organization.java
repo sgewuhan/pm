@@ -1593,7 +1593,7 @@ public class Organization extends PrimaryObject {
 	 */
 	public ObjectId getContainerOrganizationId() {
 		Organization containerOrg = getContainerOrganization();
-		if(containerOrg != null){
+		if (containerOrg != null) {
 			containerOrg.get_id();
 		}
 		return null;
@@ -1767,7 +1767,7 @@ public class Organization extends PrimaryObject {
 		return getRelationCountByCondition(Folder.class, query);
 	}
 
-	public Folder makeFolder(IContext context,Work work) {
+	public Folder makeFolder(IContext context, Work work) {
 		BasicDBObject folderRootData = new BasicDBObject();
 		folderRootData.put(Folder.F_DESC, work.getDesc());
 		ObjectId folderRootId = new ObjectId();
@@ -1781,5 +1781,47 @@ public class Organization extends PrimaryObject {
 		folderRootData.put(Folder.F_CONTAINER_COLLECTION, containerCollection);
 		folderRootData.put(Folder.F_ROOT_ID, get_id());
 		return ModelService.createModelObject(folderRootData, Folder.class);
+
+	}
+
+	public List<String> getCostCenterCodeList() {
+		List<String> result = new ArrayList<String>();
+		String costCenterCode = getCostCenterCode();
+		if (costCenterCode != null) {
+			result.add(costCenterCode);
+		}
+		List<PrimaryObject> childrenOrgList = getChildrenOrganization();
+		for (PrimaryObject po : childrenOrgList) {
+			Organization childrenOrg = (Organization) po;
+			result.addAll(childrenOrg.getCostCenterCodeList());
+		}
+
+		return result;
+	}
+
+	public List<Organization> getChildrenFunctionOrg() {
+		List<Organization> result = new ArrayList<Organization>();
+		if(isFunctionDepartment()){
+			result.add(this);
+		}
+		List<PrimaryObject> childrenOrg = getChildrenOrganization();
+		for (PrimaryObject po : childrenOrg) {
+			Organization org = (Organization) po;
+			result.addAll(org.getChildrenFunctionOrg());
+		}
+		return result;
+	}
+
+	public List<ObjectId> getChildrenFunctionOrgId() {
+		List<ObjectId> result = new ArrayList<ObjectId>();
+		if(isFunctionDepartment()){
+			result.add(get_id());
+		}
+		List<PrimaryObject> childrenOrg = getChildrenOrganization();
+		for (PrimaryObject po : childrenOrg) {
+			Organization org = (Organization) po;
+			result.addAll(org.getChildrenFunctionOrgId());
+		}
+		return result;
 	}
 }

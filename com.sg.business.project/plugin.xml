@@ -6587,6 +6587,11 @@
                label="%command.label.24"
                style="push">
          </command>
+         <command
+               commandId="project.workorder.reload"
+               label="重新获取数据"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -6599,6 +6604,10 @@
             id="project.admin.delete"
             name="删除项目">
       </command>
+      <command
+            id="project.workorder.reload"
+            name="重新获取数据">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -6609,6 +6618,10 @@
       <handler
             class="com.sg.business.project.handler.DeleteProject"
             commandId="project.admin.delete">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.ReloadWorkorderCost"
+            commandId="project.workorder.reload">
       </handler>
    </extension>
 
