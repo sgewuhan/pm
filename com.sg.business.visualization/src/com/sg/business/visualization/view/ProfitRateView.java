@@ -1,7 +1,11 @@
 package com.sg.business.visualization.view;
 
-import org.eclipse.birt.chart.model.Chart;
+import java.util.List;
 
+import org.eclipse.birt.chart.model.Chart;
+import org.eclipse.jface.action.Action;
+
+import com.sg.business.visualization.action.ZoomChartAction;
 import com.sg.business.visualization.chart.LineChart;
 import com.sg.business.visualization.nls.Messages;
 
@@ -17,6 +21,14 @@ public class ProfitRateView extends AbstractDashChartView {
 
 		return LineChart.getChart(xAxisText, lsText, new double[][] { value1 },
 				-4);
+	}
+	
+	@Override
+	protected List<Action> getActions() {
+		List<Action> result = super.getActions();
+		result.add(new ZoomChartAction(this));
+		
+		return result;
 	}
 
 }

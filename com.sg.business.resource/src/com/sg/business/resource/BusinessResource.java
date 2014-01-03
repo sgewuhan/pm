@@ -324,6 +324,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_UP_SORT_24 = "up_sort_24.png";
 	public static final String IMAGE_DOWN_SORT_24 = "down_sort_24.png";
 
+	public static final String IMAGE_UP_28X12 = "dropup_28x12.png";
+
 	/**
 	 * Returns the shared instance
 	 * 
