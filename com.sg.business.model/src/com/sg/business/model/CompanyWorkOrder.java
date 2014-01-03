@@ -2,8 +2,11 @@ package com.sg.business.model;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 
 public class CompanyWorkOrder extends PrimaryObject {
@@ -29,5 +32,14 @@ public class CompanyWorkOrder extends PrimaryObject {
 		return (String[]) res.toArray(new String[0]);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static String[] getWorkOrders(Organization org) {
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,IModelConstants.C_PROJECT);
+		List<ObjectId> childrenFunctionOrgId = org.getChildrenFunctionOrgId();
+		BasicDBObject query = new BasicDBObject();
+		query.put(Project.F_FUNCTION_ORGANIZATION, new BasicDBObject().append("$in", childrenFunctionOrgId));		
+		List res = col.distinct(Project.F_WORK_ORDER,query);
+		return (String[]) res.toArray(new String[0]);
+	}
 
 }

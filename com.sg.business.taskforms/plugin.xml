@@ -252,6 +252,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label"
                         labelVisible="false"
                         name="comment"
@@ -268,7 +269,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -295,6 +296,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.0"
                         labelVisible="false"
                         name="comment"
@@ -311,7 +313,7 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
                </section>
@@ -554,6 +556,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.1"
                         labelVisible="false"
                         name="comment"
@@ -617,6 +620,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
                         label="%text.label.2"
                         labelVisible="false"
                         name="comment"
@@ -1313,8 +1317,8 @@
                taskFormFieldName="confirmdate">
          </processParameter>
          <processParameter
-               processParameterName="confirmdate"
-               taskFormFieldName="confirmdate">
+               processParameterName="confirmtime"
+               taskFormFieldName="confirmtime">
          </processParameter>
          <processParameter
                processParameterName="confirmaddress"

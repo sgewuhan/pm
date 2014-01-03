@@ -1,6 +1,5 @@
 package com.sg.business.model.toolkit;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +29,6 @@ import com.sg.business.model.DocumentDefinition;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.IWorkCloneFields;
-import com.sg.business.model.ProductItem;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.Work;
@@ -859,26 +857,37 @@ public class ProjectToolkit {
 		}
 	}
 
-	public static void updateProjectSalesData(int year, int month, int day) {
+	public static void updateProjectSalesData() {
 		DBCollection colPd = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PRODUCT);
-		Calendar cal = Calendar.getInstance();
-		cal.set(year, month - 1, day);
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.MILLISECOND, -1);
-		String dateCode = String.format("%1$tY/%1$tm/%1$td", cal); //$NON-NLS-1$
-		DBCursor cur = colPd.find(new BasicDBObject().append(
-				ProductItem.F_SALES_DATA_UPDATE,
-				new BasicDBObject().append("$ne", dateCode))); //$NON-NLS-1$
-		while (cur.hasNext()) {
-			DBObject prodData = cur.next();
-			ProductItem pd = ModelService.createModelObject(prodData,
-					ProductItem.class);
-			pd.doCalculateSalesData(dateCode);
-		}
+				IModelConstants.C_SALESDATA);
+		String map = "function Map()"
+				+ "{"
+				+ "emit(this.MATNR,{VV030: this.VV030, sales_income: this.VV010, VV040:this.VV040});"
+				+ "}";
+		String reduce = "function Reduce(key, values)"
+				+ "{"
+				+ "var reduced = {VV030:0, sales_income:0,VV040:0};"
+				+ "values.forEach(function(val) "
+				+ "{"
+				+ "reduced.VV030 += val.VV030;"
+				+ "reduced.sales_income += val.sales_income;"
+				+ "reduced.VV040 += val.VV040;"
+				+ "});"
+				+ "return reduced;"
+				+ "}";
+		String finalize ="function Finalize(key, reduced)"
+				+ "{"
+				+ "reduced.sales_cost = reduced.VV030 + reduced.VV040;"
+				+ "return reduced;"
+				+ "}";
+		BasicDBObject command = new BasicDBObject();
+		command.put("mapreduce", IModelConstants.C_SALESDATA);
+		command.put("map", map);
+		command.put("reduce", reduce);
+		command.put("finalize", finalize);
+		command.put("out", IModelConstants.C_PRODUCT_SALESDATA);
+		
+		colPd.mapReduce(command);
 	}
 
 }

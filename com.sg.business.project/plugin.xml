@@ -3723,6 +3723,29 @@
             </visibleWhen>
          </menu>
          <command
+               commandId="work.admin.setting"
+               label="强制更新"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="force"
+                              property="work.forceupdate">
+                        </test>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
                commandId="com.sg.widgets.command.edit"
                icon="image/worksetting_24.png"
                label="%command.label.54"
@@ -4428,6 +4451,11 @@
             id="project.businesscharger.edit"
             name="%command.label.project.businesscharger.edit">
       </command>
+      <command
+            categoryId="project"
+            id="work.admin.setting"
+            name="强制更新">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -4608,6 +4636,10 @@
             class="com.sg.business.project.handler.EditProjectBusinessCharger"
             commandId="project.businesscharger.edit">
       </handler>
+      <handler
+            class="com.sg.business.project.handler.ForceUpdateWork"
+            commandId="work.admin.setting">
+      </handler>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -4623,6 +4655,13 @@
             id="project.operation.test"
             namespace="project"
             properties="operation"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.sg.business.project.test.ForceTest"
+            id="work.forceupdate.test"
+            namespace="work"
+            properties="forceupdate"
             type="java.lang.Object">
       </propertyTester>
    </extension>
@@ -6187,6 +6226,206 @@
             </pagecolumn>
          </basicpage>
       </editor>
+      <editor
+            collectionName="forcework"
+            dbName="pm2"
+            id="edit.work.forceupdate"
+            image="image/work_24.png"
+            isDefault="false"
+            memo="用于强制变更工作"
+            name="工作">
+         <basicpage
+               description="基本信息"
+               id="basicpage"
+               image="image/work_24.png"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String"
+                        widthHint="240">
+                  </text>
+                  <fieldgroup
+                        columnCount="2"
+                        makeColumnWidthEqual="false">
+                     <checkbox
+                           editable="true"
+                           id="milestone"
+                           label="里程碑"
+                           labelVisible="true"
+                           name="milestone"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="status"
+                           label="状态"
+                           labelVisible="false"
+                           name="status"
+                           option="status"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo></fieldgroup>
+               </section>
+               <section
+                     label="计划">
+                  <dateTime
+                        editPart="DateDialog"
+                        id="planstart"
+                        label="计划开始"
+                        labelVisible="true"
+                        name="planstart"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        id="planfinish"
+                        label="计划完成"
+                        labelVisible="true"
+                        name="planfinish"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        id="actualstart"
+                        label="实际开始"
+                        labelVisible="true"
+                        name="actualstart"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        id="actualfinish"
+                        label="实际完成"
+                        labelVisible="true"
+                        name="actualfinish"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        id="planduration"
+                        isComputeField="true"
+                        label="计划工期（天）"
+                        labelVisible="true"
+                        name="planduration"
+                        persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.SummaryPlanDuration"
+                        required="false"
+                        type="Integer">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="standardworks"
+                        label="标准工时（时）"
+                        labelVisible="true"
+                        name="standardworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="planworks"
+                        label="计划工时（时）"
+                        labelVisible="true"
+                        name="planworks"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     label="团队">
+                  <navigatorSelector
+                        editable="true"
+                        id="chargerid"
+                        label="负责人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="chargerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddParticipate"
+                        editable="true"
+                        id="participate"
+                        label="参与者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="participate"
+                        persistable="true"
+                        required="false">
+                  </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="assignerid"
+                        label="指派人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="assignerid"
+                        navigatorId="project.participte.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="说明"
+               id="memopage"
+               image="image/work_24.png"
+               title="说明">
+            <pagecolumn>
+               <section
+                     label="说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="120"
+                        id="description"
+                        label="说明"
+                        labelVisible="false"
+                        name="description"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -6348,6 +6587,11 @@
                label="%command.label.24"
                style="push">
          </command>
+         <command
+               commandId="project.workorder.reload"
+               label="重新获取数据"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -6360,6 +6604,10 @@
             id="project.admin.delete"
             name="删除项目">
       </command>
+      <command
+            id="project.workorder.reload"
+            name="重新获取数据">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -6370,6 +6618,10 @@
       <handler
             class="com.sg.business.project.handler.DeleteProject"
             commandId="project.admin.delete">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.ReloadWorkorderCost"
+            commandId="project.workorder.reload">
       </handler>
    </extension>
 

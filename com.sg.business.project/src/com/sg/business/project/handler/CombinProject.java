@@ -74,7 +74,7 @@ public class CombinProject extends AbstractNavigatorHandler {
 			set.addAll(Arrays.asList(ws));
 		}
 		String[] pnArray = set.toArray(new String[0]);
-
+		
 		// 更新工作令号
 		DBCollection projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);

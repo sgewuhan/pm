@@ -20,28 +20,16 @@ public class FixedAssetsService extends MessageService {
 	@Override
 	public String getMessageContent() {
 		String messageOperation = getOperation();
-		PrimaryObject host = getTarget();
 		if ("message".equals(messageOperation)) {
-			try {
-				if (host instanceof Work) {
-					Work work = (Work) host;
-					String content = work.getLabel();
-					String review_convener = (String) getInputValue("review_convener");
-					List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list");
-					String reviewer_admin = UserToolkit.getUserById(
-							review_convener).getUsername();
-					content = content + "评审组组长是：" + reviewer_admin
-							+ "<\br>评审专家有：";
-					for (int i = 0; i < reviewerList.size(); i++) {
-						String userid = reviewerList.get(i);
-						String username = UserToolkit.getUserById(userid)
-								.getUsername();
-						content = content + username + "<\br>";
-					}
-					return content;
-				}
-			} catch (Exception e) {
-				return null;
+			
+			String review_convener = (String) getInputValue("review_convener");
+			String review_convener_name = UserToolkit.getUserById(review_convener).getUsername();
+			String content = "评审组组长是：" + review_convener_name + "<\br>评审专家有：";
+			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list");
+			for (String userid : reviewerList) {
+				String username = UserToolkit.getUserById(userid).getUsername();
+				content = content + username + "<\br>";
+				return content;
 			}
 		}
 		return null;
@@ -52,16 +40,12 @@ public class FixedAssetsService extends MessageService {
 	public List<String> getReceiverList() {
 		String messageOperation = getOperation();
 		if ("message".equals(messageOperation)) {
-			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list");
-			String prj_admin = (String) getInputValue("act_prj_admin");
-			String review_convener = (String) getInputValue("review_convener");
-			if (!reviewerList.contains(prj_admin)) {
-				reviewerList.add(prj_admin);
-			}
+			List<String> reviewerList = (ArrayList<String>) getInputValue("reviewer_list"); //$NON-NLS-1$
+			String review_convener = (String) getInputValue("review_convener"); //$NON-NLS-1$
 			if (!reviewerList.contains(review_convener)) {
 				reviewerList.add(review_convener);
 			}
-			return (List<String>) reviewerList;
+			return reviewerList;
 		}
 
 		return null;

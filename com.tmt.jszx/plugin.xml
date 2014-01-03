@@ -834,8 +834,7 @@
             editorId="jszx.jszxProjectReview.expertgroupcountersign"
             name="专家评审"
             persistentFields="choice,comment,accessory"
-            processDefinitionId="jszx.jszxProjectReview"
-            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertAccessoryOfJSZX">
+            processDefinitionId="jszx.jszxProjectReview">
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectReview.expertgroupreview"
@@ -857,8 +856,7 @@
             editorId="jszx.jszxProjectReview.replyexpertgroup"
             name="专家意见回复"
             persistentFields="accessory"
-            processDefinitionId="jszx.jszxProjectReview"
-            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertAccessoryOfJSZX">
+            processDefinitionId="jszx.jszxProjectReview">
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectReview.confirmtime"
@@ -888,8 +886,7 @@
             editorId="jszx.jszxProjectReview.expertgroupcountersign"
             name="专家意见"
             persistentFields="choice,comment,accessory"
-            processDefinitionId="jszx.jszxProjectReview"
-            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertAccessoryOfJSZX">
+            processDefinitionId="jszx.jszxProjectReview">
       </taskForm>
       <taskForm
             editorId="jszx.jszxProjectReview.deptdirector"
@@ -905,8 +902,7 @@
             editorId="jszx.jszxProjectReview.correction"
             name="整改"
             persistentFields="accessory"
-            processDefinitionId="jszx.jszxProjectReview"
-            saveHandler="com.tmt.jszx.handler.ProjectReviewExpertAccessoryOfJSZX">
+            processDefinitionId="jszx.jszxProjectReview">
       </taskForm>
    </extension> <extension
          point="com.sg.widgets.dataEditor">
