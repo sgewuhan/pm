@@ -773,9 +773,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		// 复制角色定义
 		Map<ObjectId, DBObject> roleMap = doMakeRolesWithTemplate(id, context);
 
-		// 复制工作定义
 		Map<ObjectId, DBObject> workMap = doSetupWBSWithTemplate(id, wbsRootId,
 				folderRootId, roleMap, context);
+		// 复制工作定义
 
 		// 复制工作的前后序关系
 		doSetupWorkConnectionWithTemplate(id, workMap, context);
@@ -2219,7 +2219,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				ProductItem.class);
 	}
 
-
 	/**
 	 * 转批
 	 * 
@@ -2268,12 +2267,12 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		return result;
 
 	}
-	
+
 	public String[] getProductCode2() {
 		DBCollection col = getCollection(IModelConstants.C_PRODUCT);
 		List<?> list = col.distinct(ProductItem.F_DESC,
 				new BasicDBObject().append(ProductItem.F_PROJECT_ID, get_id()));
-		
+
 		String[] result = new String[list.size()];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = (String) list.get(i);
@@ -2360,8 +2359,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				"$sum", "$" + SalesData.F_SALES_COST)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		DBObject group = new BasicDBObject().append("$group", groupCondition); //$NON-NLS-1$
-		DBObject sort = new BasicDBObject().append("$sort", new BasicDBObject().append("_id", -1)); //$NON-NLS-1$
-		AggregationOutput agg = col.aggregate(match, group,sort);
+		DBObject sort = new BasicDBObject().append(
+				"$sort", new BasicDBObject().append("_id", -1)); //$NON-NLS-1$
+		AggregationOutput agg = col.aggregate(match, group, sort);
 		Iterable<DBObject> results = agg.results();
 		Iterator<DBObject> iter = results.iterator();
 
@@ -2442,13 +2442,13 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 	public long getDelayDays() {
 		Date pf = getPlanFinish();
 		Date af = getActualFinish();
-		if(pf==null){
+		if (pf == null) {
 			return -1;
 		}
-		if(af==null){
+		if (af == null) {
 			af = new Date();
 		}
-		return (af.getTime()-pf.getTime())/(1000*60*60);
+		return (af.getTime() - pf.getTime()) / (1000 * 60 * 60);
 	}
 
 }

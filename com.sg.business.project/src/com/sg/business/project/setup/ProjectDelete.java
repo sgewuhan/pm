@@ -1,15 +1,15 @@
 package com.sg.business.project.setup;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.ModelService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Project;
-import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.business.model.ProjectMonthData;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -31,20 +31,18 @@ public class ProjectDelete implements ISchedualJobRunnable {
 		// Project.class);
 		DBCollection projectCol = getCol();
 		BasicDBObject ref = new BasicDBObject();
-		String projectNumber = ""; //$NON-NLS-1$
-		ref.put(Project.F_PROJECT_NUMBER, projectNumber);
+		ref.put(ProjectMonthData.F_YEAR, 2013);
+		ref.put(ProjectMonthData.F_MONTH, 11);
+		
 		DBCursor cursor = projectCol.find(ref);
 		while (cursor.hasNext()) {
 			DBObject next = cursor.next();
-			Project project = ModelService.createModelObject(next,
-					Project.class);
-			System.out.println(project.get_id());
-			try {
-				project.doRemove(new CurrentAccountContext());
-			} catch (Exception e) {
+			ObjectId object = (ObjectId) next.get(ProjectMonthData.F_PROJECTID);
+			ref.put(ProjectMonthData.F_PROJECTID, object);
+			long count = col.count(ref);
+			if(count >1){
+				col.remove(next);
 			}
-			col.remove(new BasicDBObject().append(Project.F__ID,
-					project.get_id()));
 		}
 
 		// List<PrimaryObject> projectList = null;
@@ -188,7 +186,7 @@ public class ProjectDelete implements ISchedualJobRunnable {
 
 	private DBCollection getCol() {
 		return DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT);
+				IModelConstants.C_PROJECT_MONTH_DATA);
 	}
 
 	// private DBCollection getCol(String collectionName) {

@@ -6,6 +6,7 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mobnut.portal.Portal;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
@@ -288,13 +289,17 @@ public class Folder extends PrimaryObject {
 			User user = UserToolkit.getUserById(userId);
 			org = user.getOrganization();
 		}
-		Organization container = org.getContainerOrganization();
-		filebase = container.getFileBase();
+		if (org != null) {
+			Organization container = org.getContainerOrganization();
+			filebase = container.getFileBase();
+		} else {
+			filebase = Portal.getBasicDB().getName();
+		}
 
 		doc = ModelService.createModelObject(Document.class);
 		doc.setValue(Document.F_PROJECT_ID, projectId);
 		doc.setValue(Document.F_FOLDER_ID, folderId);
-		doc.setValue(Document.F_FILEBASE, filebase);
+		doc.setValue(Document.F_FILEBASE_DB, filebase);
 		doc.setValue(Document.F_LIFECYCLE, Document.STATUS_WORKING_ID);
 		doc.setValue(Document.F_LOCK, Boolean.FALSE);
 

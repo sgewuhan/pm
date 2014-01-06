@@ -114,16 +114,20 @@ public abstract class AbstractETLJob implements ISchedualJobRunnable {
 		if (day == 1) {
 			Commons.loginfo("[项目数据]准备更新项目月ETL数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
 			start = System.currentTimeMillis();
-			projectMonthCol.remove(new BasicDBObject().append(
-					IProjectETL.F_YEAR, year)
-					.append(IProjectETL.F_MONTH, month));
-			projectMonthCol.insert(projectETLList, WriteConcern.NORMAL);
+			doProjectMonthETL(year, month, projectETLList);
 			end = System.currentTimeMillis();
 			Commons.loginfo("[项目数据]更新项目月ETL数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ (end - start) / 1000 + " S");
 		}
 
 		return true;
+	}
+
+	public void doProjectMonthETL(int year, int month, List<DBObject> projectETLList) {
+		projectMonthCol.remove(new BasicDBObject().append(
+				IProjectETL.F_YEAR, year)
+				.append(IProjectETL.F_MONTH, month));
+		projectMonthCol.insert(projectETLList, WriteConcern.NORMAL);
 	}
 
 	public List<DBObject> doProjectETL(int year, int month, int day)

@@ -164,8 +164,6 @@ public class Document extends PrimaryObject implements IProjectRelative {
 
 	public static final String F_SECOND_VID = "svid"; //$NON-NLS-1$
 
-	public static final String F_FILEBASE = "filebase"; //$NON-NLS-1$
-
 	@Override
 	protected String[] getVersionFields() {
 		return new String[] { "$all" }; //$NON-NLS-1$
