@@ -3894,6 +3894,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					}
 				}
 			};
+		}else if (adapter == DummyWork.class) {
+			DummyWork dummyWork = ModelService
+					.createModelObject(DummyWork.class);
+			dummyWork.setSource(this);
+			return (T) dummyWork;
 		}
 		return super.getAdapter(adapter);
 	}
