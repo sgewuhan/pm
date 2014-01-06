@@ -1,18 +1,24 @@
 package com.sg.business.model.etl;
 
 import java.util.Calendar;
+import java.util.List;
 
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
+import com.mobnut.commons.Commons;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.sg.business.model.Project;
+import com.sg.business.model.etl.eai.RNDPeriodCostAdapter;
+import com.sg.business.model.etl.eai.WorkorderPeriodCostAdapter;
+import com.sg.business.model.toolkit.ProjectToolkit;
 
 public class ETLOldJob implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() throws Exception {
-		//2009-1-1 57
+		//2009-1-1 58
 		
-		for (int i = 57; i >= -1; i--) {
+		for (int i = 0; i >= -1; i--) {
 			final Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MONTH, -i);
 			cal.set(Calendar.DATE, 1);
@@ -24,6 +30,60 @@ public class ETLOldJob implements ISchedualJobRunnable {
 			System.out.println("" + year + "-" + month + "-" + day); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			AbstractETLJob etl = new AbstractETLJob() {
 
+				@Override
+				protected boolean doETL(int year, int month, int day,
+						String[] costElementArray, String[] workOrders,
+						String[] costCodes) throws Exception {
+					long start, end;
+
+					Commons.loginfo("[项目数据]准备更新项目ETL数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
+					start = System.currentTimeMillis();
+					List<DBObject> projectETLList = doProjectETL(year, month, day);
+					end = System.currentTimeMillis();
+					Commons.loginfo("[项目数据]更新项目ETL数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							+ (end - start) / 1000 + " S");
+
+					if (day == 1) {
+						Commons.loginfo("[项目数据]准备更新项目月ETL数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
+						start = System.currentTimeMillis();
+						doProjectMonthETL(year, month, projectETLList);
+						end = System.currentTimeMillis();
+						Commons.loginfo("[项目数据]更新项目月ETL数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								+ (end - start) / 1000 + " S");
+					}
+
+					Commons.loginfo("[成本数据]准备获取SAP成本中心数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
+					start = System.currentTimeMillis();
+					RNDPeriodCostAdapter rndAdapter = new RNDPeriodCostAdapter();
+					rndAdapter.runGetData(costCodes, costElementArray, year, month);
+					end = System.currentTimeMillis();
+					Commons.loginfo("[成本数据]获得SAP成本中心数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							+ (end - start) / 1000 + " S");
+
+					Commons.loginfo("[成本数据]准备获取SAP工作令号研发成本数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
+					start = System.currentTimeMillis();
+					WorkorderPeriodCostAdapter workorderadapter = new WorkorderPeriodCostAdapter();
+					workorderadapter.runGetData(workOrders, costElementArray, year, month);
+					end = System.currentTimeMillis();
+					Commons.loginfo("[成本数据]获得SAP工作令号研发成本完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							+ (end - start) / 1000 + " S"); //$NON-NLS-1$
+
+					Commons.loginfo("[销售数据]准备获取SAP销售数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
+					start = System.currentTimeMillis();
+					runGetData(year, month);
+					end = System.currentTimeMillis();
+					Commons.loginfo("[销售数据]获得SAP销售数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							+ (end - start) / 1000 + " S");
+
+					Commons.loginfo("[销售数据]准备更新项目销售数据:" + year + "-" + month); //$NON-NLS-1$ //$NON-NLS-2$
+					start = System.currentTimeMillis();
+					ProjectToolkit.updateProjectSalesData();
+					end = System.currentTimeMillis();
+					Commons.loginfo("[销售数据]更新项目销售数据完成:" + year + "-" + month + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							+ (end - start) / 1000 + " S");
+					return true;
+				}
+				
 				@Override
 				protected int getYear() {
 					return year;
