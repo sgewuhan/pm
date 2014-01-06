@@ -39,6 +39,7 @@ public abstract class AbstractDashChartView extends AbstractDashWidgetView {
 
 	protected boolean showSeriesLabel;
 
+
 	@Override
 	protected void drawContent(Composite parent) {
 		parent.setLayout(new FormLayout());
@@ -189,5 +190,9 @@ public abstract class AbstractDashChartView extends AbstractDashWidgetView {
 
 	public void switchSeriesLabel() {
 		showSeriesLabel = !showSeriesLabel;
+	}
+
+	public void setSubtype(String subtype) {
+		chartSubType = subtype;
 	}
 }

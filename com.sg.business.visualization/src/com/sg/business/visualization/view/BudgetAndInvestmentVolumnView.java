@@ -1,7 +1,13 @@
 package com.sg.business.visualization.view;
 
-import org.eclipse.birt.chart.model.Chart;
+import java.util.List;
 
+import org.eclipse.birt.chart.model.Chart;
+import org.eclipse.jface.action.Action;
+
+import com.sg.business.visualization.action.ChartSeriesSwitchAction;
+import com.sg.business.visualization.action.SetChartTypeToBarAction;
+import com.sg.business.visualization.action.SetChartTypeToLineAction;
 import com.sg.business.visualization.chart.CommonChart;
 import com.sg.business.visualization.nls.Messages;
 
@@ -21,7 +27,23 @@ public class BudgetAndInvestmentVolumnView extends AbstractDashChartView {
 				"investment_designated", "investment_allocated" }); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return CommonChart.getChart(xAxisText, bsText, new double[][] { value1,
-				value2 }, CommonChart.TYPE_BAR,CommonChart.TYPE_SUBTYPE_SIDE_BY_SIDE,showSeriesLabel, -1); //$NON-NLS-1$
+				value2 },chartType,chartSubType,showSeriesLabel, -1); //$NON-NLS-1$
 
+	}
+	
+	@Override
+	protected void initChartParameters() {
+		chartType = CommonChart.TYPE_BAR;
+		chartSubType = CommonChart.TYPE_SUBTYPE_SIDE_BY_SIDE;
+	}
+	
+	@Override
+	protected List<Action> getActions() {
+		List<Action> result = super.getActions();
+		// 更改图例类型
+		result.add(new SetChartTypeToBarAction(this));
+		result.add(new SetChartTypeToLineAction(this));
+		result.add(new ChartSeriesSwitchAction(this));
+		return result;
 	}
 }

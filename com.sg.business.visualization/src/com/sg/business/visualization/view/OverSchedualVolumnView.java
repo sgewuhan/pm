@@ -1,7 +1,15 @@
 package com.sg.business.visualization.view;
 
-import org.eclipse.birt.chart.model.Chart;
+import java.util.List;
 
+import org.eclipse.birt.chart.model.Chart;
+import org.eclipse.jface.action.Action;
+
+import com.sg.business.visualization.action.ChartSeriesSwitchAction;
+import com.sg.business.visualization.action.SetChartSubtypeToSidebySideAction;
+import com.sg.business.visualization.action.SetChartSubtypeToStackedAction;
+import com.sg.business.visualization.action.SetChartTypeToBarAction;
+import com.sg.business.visualization.action.SetChartTypeToLineAction;
 import com.sg.business.visualization.chart.CommonChart;
 import com.sg.business.visualization.nls.Messages;
 
@@ -18,7 +26,25 @@ public class OverSchedualVolumnView extends AbstractDashChartView {
 		double[][] value1 = projectProvider.getDelayValueByYear();
 
 		return CommonChart.getChart(xAxisText, bsText, value1,
-				CommonChart.TYPE_BAR, CommonChart.TYPE_SUBTYPE_STACKED,showSeriesLabel, -3);
+				chartType, chartSubType,showSeriesLabel, -3);
+	}
+	
+	@Override
+	protected void initChartParameters() {
+		chartType = CommonChart.TYPE_BAR;
+		chartSubType = CommonChart.TYPE_SUBTYPE_STACKED;
+	}
+	
+	@Override
+	protected List<Action> getActions() {
+		List<Action> result = super.getActions();
+		// 更改图例类型
+		result.add(new SetChartTypeToBarAction(this));
+		result.add(new SetChartTypeToLineAction(this));
+		result.add(new ChartSeriesSwitchAction(this));
+		result.add(new SetChartSubtypeToSidebySideAction(this));
+		result.add(new SetChartSubtypeToStackedAction(this));
+		return result;
 	}
 
 }
