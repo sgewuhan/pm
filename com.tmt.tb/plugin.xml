@@ -1359,6 +1359,7 @@
       <taskForm
             editorId="tbprojectchange.application"
             name="变更申请"
+            persistentFields="project"
             processDefinitionId="tb.tbProjectChange"
             saveHandler="com.tmt.tb.handler.ProjectChangeAddParticipate">
          <processParameter
@@ -1375,6 +1376,7 @@
       <taskForm
             editorId="tbprojectchange.confirmProgram"
             name="确认变更方案"
+            persistentFields="plan,hasplan,other,hasother,project_supervisor,choice"
             processDefinitionId="tb.tbProjectChange"
             saveHandler="com.tmt.tb.editor.ProjectChangeConfirmProgramSaveHandler">
          <processParameter
@@ -1401,6 +1403,10 @@
          <processParameter
                processParameterName="project_supervisor"
                taskFormFieldName="project_supervisor">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm

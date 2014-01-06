@@ -15,7 +15,11 @@ public class StandloneWork implements IRelationConditionProvider {
 						primaryObject.get_id())
 				.append(WorkDefinition.F_WORK_TYPE,
 						WorkDefinition.WORK_TYPE_STANDLONE)
-				.append(WorkDefinition.F_PARENT_ID, null);
+				.append(WorkDefinition.F_PARENT_ID, null)
+				.append(WorkDefinition.F_INTERNAL_TYPE,
+						new BasicDBObject().append("$nin", new String[] {
+								WorkDefinition.INTERNAL_TYPE_CHANGEITEM,
+								WorkDefinition.INTERNAL_TYPE_CHANGERANGE }));
 	}
 
 }
