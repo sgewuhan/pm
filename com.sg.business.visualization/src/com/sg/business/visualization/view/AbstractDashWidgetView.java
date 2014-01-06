@@ -23,6 +23,11 @@ public abstract class AbstractDashWidgetView extends StandaloneViewPart
 	protected void createContent(Composite parent) {
 		this.panel = parent;
 		loadData(parent);
+		initChartParameters();
+	}
+
+	protected void initChartParameters() {
+		
 	}
 
 	private void loadData(final Composite parent) {

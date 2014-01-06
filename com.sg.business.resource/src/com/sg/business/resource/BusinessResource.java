@@ -326,6 +326,11 @@ public class BusinessResource extends AbstractUIPlugin {
 
 	public static final String IMAGE_UP_28X12 = "dropup_28x12.png";
 
+	public static final String IMAGE_CHART_BAR_16 = "chart_bar_16.png";
+
+	public static final String IMAGE_CHART_LINE_16 = "chart_line_16.png";
+	public static final String IMAGE_CHART_SHOW_NUMBER_16 = "number_16.png";
+
 	/**
 	 * Returns the shared instance
 	 * 

@@ -2,14 +2,14 @@ package com.sg.business.visualization.view;
 
 import org.eclipse.birt.chart.model.Chart;
 
-import com.sg.business.visualization.chart.BarChart;
+import com.sg.business.visualization.chart.CommonChart;
 import com.sg.business.visualization.nls.Messages;
 
 public class ProfitVolumnView extends AbstractDashChartView {
 
 	@Override
 	protected Chart getChartData() throws Exception {
-		Messages messages = Messages.get(local);
+		Messages messages = Messages.get(locale);
 		String[] bsText = { messages.ProfitVolumnView_1,
 				messages.ProfitVolumnView_0 };
 		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
@@ -17,7 +17,8 @@ public class ProfitVolumnView extends AbstractDashChartView {
 
 		double[][] value1 = projectProvider.getProfitAndCostByYear();
 
-		return BarChart.getChart(xAxisText, bsText, value1, "Stacked", -5); //$NON-NLS-1$
+		return CommonChart.getChart(xAxisText, bsText, value1,
+				CommonChart.TYPE_BAR, CommonChart.TYPE_SUBTYPE_STACKED,showSeriesLabel, - 5);
 	}
 
 }
