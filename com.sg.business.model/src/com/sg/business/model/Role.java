@@ -25,6 +25,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.nls.Messages;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -205,7 +206,13 @@ public class Role extends PrimaryObject {
 		String js = getStringValue(F_RULE);
 		List<PrimaryObject> rs = getRelationById(F__ID,
 				RoleAssignment.F_ROLE_ID, RoleAssignment.class);
-		parameters.put("assignment", rs);
+		parameters.put(RoleParameter.ASSIGNMENT, rs);
+		//转换处理
+		Object projectId = parameters.get(RoleParameter.PROJECT_ID);
+		if(projectId instanceof ObjectId){
+			Project project = ModelService.createModelObject(Project.class, (ObjectId)projectId);
+			parameters.put(RoleParameter.PROJECT, project);
+		}
 		if (js != null) {
 			Object result = JavaScriptEvaluator.evaluate(js, parameters);
 			if (result instanceof String[]) {
@@ -362,10 +369,15 @@ public class Role extends PrimaryObject {
 	 */
 	@Override
 	public boolean canEdit(IContext context) {
-		// 系统的角色不可以更改
-		if (isSystemRole()) {
-			return false;
-		}
+//		String uid = context.getAccountInfo().getUserId();
+//		User user = UserToolkit.getUserById(uid);
+//		if (Boolean.TRUE.equals(user.getValue(User.F_IS_ADMIN))) {
+//			return true;
+//		}
+//		// 系统的角色不可以更改
+//		if (isSystemRole()) {
+//			return false;
+//		}
 		return super.canEdit(context);
 	}
 
