@@ -951,6 +951,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			if (roleId != null) {
 				// 设置为组织角色
 				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
+				
+				// 复制角色规则脚本
+				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleddata.get(Role.F_RULE));
+				
 				// // 将组织角色中的成员加入到项目的参与者
 				// Role role = ModelService.createModelObject(Role.class,
 				// (ObjectId) roleId);

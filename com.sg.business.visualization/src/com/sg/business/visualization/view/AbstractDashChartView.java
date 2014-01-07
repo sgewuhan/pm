@@ -37,7 +37,7 @@ public abstract class AbstractDashChartView extends AbstractDashWidgetView {
 
 	protected String chartSubType;
 
-	protected boolean showSeriesLabel;
+	protected boolean showSeriesLabel = true;
 
 
 	@Override
