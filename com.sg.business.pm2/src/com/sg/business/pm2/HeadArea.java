@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -22,9 +23,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
 
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
@@ -186,18 +189,48 @@ public class HeadArea implements IHeadAreaSupport {
 
 			}
 		});
-		
+
+		Menu submenu = new Menu(dropDownMenu);
+		MenuItem item2 = new MenuItem(dropDownMenu, SWT.CASCADE);
+		item2.setText(Messages.get().HeadArea_Perspective_Switch);
+		item2.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_PERSPECTIVE_24));
+		item2.setMenu(submenu);
+		IPerspectiveDescriptor[] pers = UserSessionContext.getSession()
+				.getScenarioPerspectives();
+		MenuItem subItem;
+		for (int i = 0; i < pers.length; i++) {
+			final IPerspectiveDescriptor p = pers[i];
+			subItem = new MenuItem(submenu, SWT.PUSH);
+			subItem.setText(p.getLabel());
+			ImageDescriptor imageDescriptor = p.getImageDescriptor();
+			subItem.setImage(imageDescriptor.createImage());
+			subItem.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					try {
+						PlatformUI.getWorkbench().showPerspective(
+								p.getId(),
+								PlatformUI.getWorkbench()
+										.getActiveWorkbenchWindow());
+					} catch (WorkbenchException e1) {
+					}
+				}
+			});
+		}
+
 		item = new MenuItem(dropDownMenu, SWT.SEPARATOR);
-		
 		item = new MenuItem(dropDownMenu, SWT.PUSH);
 		item.setText(Messages.get().HeadArea_Logout_title);
+		item.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_LOGOUT_24));
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int yes = MessageUtil.showMessage(shell,
 						Messages.get().HeadArea_Logout_title,
-						Messages.get().HeadArea_Logout_message, SWT.YES | SWT.NO
-								| SWT.ICON_QUESTION);
+						Messages.get().HeadArea_Logout_message, SWT.YES
+								| SWT.NO | SWT.ICON_QUESTION);
 				if (yes == SWT.NO) {
 					return;
 				}
