@@ -12,7 +12,6 @@ import com.sg.business.model.Role;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -40,7 +39,7 @@ public class UserSelectorOfTaskforms extends MasterDetailDataSetFactory {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				try {
 					List<PrimaryObject> roles = user
-							.getRoles(IRoleConstance.ROLE_A_PROJECR_ID);
+							.getRoles(Role.ROLE_PROJECT_ADMIN_ID);
 					for (PrimaryObject po : roles) {
 						if (po instanceof Role) {
 							Role role = (Role) po;

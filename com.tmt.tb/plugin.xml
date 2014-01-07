@@ -914,7 +914,7 @@
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
-                        navigatorId="organization.user"
+                        navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
