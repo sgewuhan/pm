@@ -1,22 +1,50 @@
 package com.sg.business.visualization.view;
 
-import org.eclipse.birt.chart.model.Chart;
+import java.util.List;
 
-import com.sg.business.visualization.chart.BarChart;
+import org.eclipse.birt.chart.model.Chart;
+import org.eclipse.jface.action.Action;
+
+import com.sg.business.visualization.action.ChartSeriesSwitchAction;
+import com.sg.business.visualization.action.SetChartSubtypeToSidebySideAction;
+import com.sg.business.visualization.action.SetChartSubtypeToStackedAction;
+import com.sg.business.visualization.action.SetChartTypeToBarAction;
+import com.sg.business.visualization.action.SetChartTypeToLineAction;
+import com.sg.business.visualization.chart.CommonChart;
 import com.sg.business.visualization.nls.Messages;
 
 public class OverSchedualVolumnView extends AbstractDashChartView {
 
 	@Override
 	protected Chart getChartData() throws Exception {
-		Messages messages = Messages.get(local);
-		String[] bsText = { messages.OverSchedualVolumnView_A_0, messages.OverSchedualVolumnView_A_1 };
+		Messages messages = Messages.get(locale);
+		String[] bsText = { messages.OverSchedualVolumnView_A_0,
+				messages.OverSchedualVolumnView_A_1 };
 		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 				"8", "9", "10", "11", "12" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		double[][] value1 = projectProvider.getDelayValueByYear();
 
-		return BarChart.getChart(xAxisText, bsText, value1, "Stacked", -3); //$NON-NLS-1$
+		return CommonChart.getChart(xAxisText, bsText, value1,
+				chartType, chartSubType,showSeriesLabel, -3);
+	}
+	
+	@Override
+	protected void initChartParameters() {
+		chartType = CommonChart.TYPE_BAR;
+		chartSubType = CommonChart.TYPE_SUBTYPE_STACKED;
+	}
+	
+	@Override
+	protected List<Action> getActions() {
+		List<Action> result = super.getActions();
+		// 更改图例类型
+		result.add(new SetChartTypeToBarAction(this));
+		result.add(new SetChartTypeToLineAction(this));
+		result.add(new ChartSeriesSwitchAction(this));
+		result.add(new SetChartSubtypeToSidebySideAction(this));
+		result.add(new SetChartSubtypeToStackedAction(this));
+		return result;
 	}
 
 }

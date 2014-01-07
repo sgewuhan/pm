@@ -8,11 +8,11 @@ import com.sg.business.visualization.view.AbstractDashChartView;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 
-public class ZoomChartAction extends Action {
+public class ZoomViewAction extends Action {
 
 	private AbstractDashChartView view;
 
-	public ZoomChartAction(AbstractDashChartView view) {
+	public ZoomViewAction(AbstractDashChartView view) {
 		setText("放缩");
 		setToolTipText("放大缩小显示");
 		setImageDescriptor(Widgets.getImageDescriptor(ImageResource.ZOOM_16));
