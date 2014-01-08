@@ -661,14 +661,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			final IContext context) throws Exception {
 
 		// 复制模板
-		try {
+//		try {
 			doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
-		} catch (Exception e) {
-			// return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-			// Status.ERROR, "复制模板出错", e);
-
-			throw new Exception(Messages.get().Project_3);
-		}
+//		} catch (Exception e) {
+//			// return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
+//			// Status.ERROR, "复制模板出错", e);
+//
+//			throw new Exception(Messages.get().Project_3);
+//		}
 		Job job = new Job("从模板复制项目信息") { //$NON-NLS-1$
 
 			@Override
@@ -799,9 +799,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					// 将组织角色中的成员加入到项目的参与者
 					Role role = ModelService.createModelObject(Role.class,
 							(ObjectId) roleId);
-					List<PrimaryObject> ass = role.getAssignment();
+					HashMap<String, Object> parameters = new HashMap<String, Object>();
+					parameters.put(RoleParameter.PROJECT_ID, get_id());
+					List<PrimaryObject> ass = role.getAssignment(parameters);
 					doAddParticipateFromAssignment(ass);
-
 				}
 
 				prole.removeField("used"); //$NON-NLS-1$
@@ -811,7 +812,6 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			DBObject[] insertData = toBeInsert.toArray(new DBObject[0]);
 			// 插入到数据库
 			DBCollection col_role = getCollection(IModelConstants.C_PROJECT_ROLE);
-
 			WriteResult ws = col_role.insert(insertData, WriteConcern.NORMAL);
 			checkWriteResult(ws);
 		}
@@ -951,6 +951,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			if (roleId != null) {
 				// 设置为组织角色
 				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
+				
+				// 复制角色规则脚本
+				prole.setValue(Role.F_RULE, roleddata.get(Role.F_RULE));
+				
 				// // 将组织角色中的成员加入到项目的参与者
 				// Role role = ModelService.createModelObject(Role.class,
 				// (ObjectId) roleId);

@@ -4277,7 +4277,8 @@
             editorId="tbBusinessSupport.editor.confirm"
             name="确认技术支持"
             persistentFields="support,choice"
-            processDefinitionId="tb.tbBusinessSupport">
+            processDefinitionId="tb.tbBusinessSupport"
+            saveHandler="com.tmt.tb.handler.BusinessSupportAddParticipate">
          <processParameter
                processParameterName="support"
                taskFormFieldName="support">

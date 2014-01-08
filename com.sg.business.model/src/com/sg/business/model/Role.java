@@ -3,12 +3,15 @@ package com.sg.business.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.bson.types.ObjectId;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.javascript.JavaScriptEvaluator;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
@@ -22,6 +25,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.nls.Messages;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -98,8 +102,6 @@ public class Role extends PrimaryObject {
 	 */
 	public static final String ROLE_FINANCIAL_MANAGER_ID = "T006"; //$NON-NLS-1$
 	public static final String ROLE_FINANCIAL_MANAGER_TEXT = Messages.get().Role_18;
-	
-	
 
 	/**
 	 * 系统角色ID
@@ -118,14 +120,10 @@ public class Role extends PrimaryObject {
 			ROLE_VALUT_ADMIN_TEXT, ROLE_VAULT_GUEST_TEXT,
 			ROLE_DEPT_MANAGER_TEXT, ROLE_FINANCIAL_MANAGER_TEXT };
 
-	public static final String ROLE_ASSIGNMENT_ID="T007"; //$NON-NLS-1$
-	public static final String ROLE_ASSIGNMENT_TEXT=Messages.get().Role_20;
+	public static final String ROLE_ASSIGNMENT_ID = "T007"; //$NON-NLS-1$
+	public static final String ROLE_ASSIGNMENT_TEXT = Messages.get().Role_20;
 
-	
-
-	
-
-	
+	public static final String F_RULE = "rule";
 
 	/**
 	 * 角色在系统中的的显示内容
@@ -192,14 +190,54 @@ public class Role extends PrimaryObject {
 					new AccountEvent(AccountEvent.EVENT_ROLE_CHANGED, this));
 		}
 
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().Role_22,
-				new Date(), Messages.get().Role_23 + this + Messages.get().Role_24 + users.toString(),
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
+				Messages.get().Role_22, new Date(), Messages.get().Role_23
+						+ this + Messages.get().Role_24 + users.toString(),
 				IModelConstants.DB);
 	}
 
+	@Deprecated
 	public List<PrimaryObject> getAssignment() {
 		return getRelationById(F__ID, RoleAssignment.F_ROLE_ID,
 				RoleAssignment.class);
+	}
+
+	public List<PrimaryObject> getAssignment(Map<String, Object> parameters) {
+		String js = getStringValue(F_RULE);
+		List<PrimaryObject> rs = getRelationById(F__ID,
+				RoleAssignment.F_ROLE_ID, RoleAssignment.class);
+		parameters.put(RoleParameter.ASSIGNMENT, rs);
+		//转换处理
+		Object projectId = parameters.get(RoleParameter.PROJECT_ID);
+		if(projectId instanceof ObjectId){
+			Project project = ModelService.createModelObject(Project.class, (ObjectId)projectId);
+			parameters.put(RoleParameter.PROJECT, project);
+		}
+		if (js != null) {
+			Object result = JavaScriptEvaluator.evaluate(js, parameters);
+			if (result instanceof String[]) {
+				ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
+				for (int i = 0; i < rs.size(); i++) {
+					Object userid = rs.get(i)
+							.getValue(RoleAssignment.F_USER_ID);
+					if (Utils.inArray(userid, (String[]) result)) {
+						rs1.add(rs.get(i));
+					}
+				}
+				return rs1;
+			} else if (result instanceof String) {
+				ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
+				for (int i = 0; i < rs.size(); i++) {
+					Object userid = rs.get(i)
+							.getValue(RoleAssignment.F_USER_ID);
+					if (Util.equals(userid, result)) {
+						rs1.add(rs.get(i));
+					}
+				}
+				return rs1;
+			}
+		}
+		return rs;
 	}
 
 	/**
@@ -211,7 +249,8 @@ public class Role extends PrimaryObject {
 		long countUser = getRelationCountByCondition(RoleAssignment.class,
 				new BasicDBObject().append(RoleAssignment.F_ROLE_ID, get_id()));
 		if (countUser > 0) {
-			message.add(new Object[] { Messages.get().Role_25, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_25, this,
+					SWT.ICON_ERROR });
 		}
 
 		// 2.项目模板的RoleDefinition引用的角色
@@ -219,7 +258,8 @@ public class Role extends PrimaryObject {
 				RoleAssignment.class, new BasicDBObject().append(
 						RoleDefinition.F_ORGANIZATION_ROLE_ID, get_id()));
 		if (countRoleDefinition > 0) {
-			message.add(new Object[] { Messages.get().Role_26, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_26, this,
+					SWT.ICON_ERROR });
 		}
 
 		// 3.独立工作定义的WBS引用的角色
@@ -237,7 +277,8 @@ public class Role extends PrimaryObject {
 						WorkDefinition.F_WORK_TYPE,
 						WorkDefinition.WORK_TYPE_STANDLONE));
 		if (countWorkDefinition > 0) {
-			message.add(new Object[] { Messages.get().Role_30, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_30, this,
+					SWT.ICON_ERROR });
 		}
 
 		// 4.项目ProjectRole引用的角色
@@ -245,7 +286,8 @@ public class Role extends PrimaryObject {
 				new BasicDBObject().append(ProjectRole.F_ORGANIZATION_ROLE_ID,
 						get_id()));
 		if (countProjectRole > 0) {
-			message.add(new Object[] { Messages.get().Role_31, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Role_31, this,
+					SWT.ICON_ERROR });
 		}
 
 		// 5.独立工作的WBS引用的角色
@@ -256,12 +298,12 @@ public class Role extends PrimaryObject {
 		values.add(new BasicDBObject().append(Work.F_PARTICIPATE_ROLE_SET,
 				Pattern.compile("^.*" + get_id() + ".*$", //$NON-NLS-1$ //$NON-NLS-2$
 						Pattern.CASE_INSENSITIVE)));
-		long countWork = getRelationCountByCondition(
-				Work.class,
+		long countWork = getRelationCountByCondition(Work.class,
 				new BasicDBObject().append("$or", values).append( //$NON-NLS-1$
 						Work.F_PROJECT_ID, null));
 		if (countWork > 0) {
-			message.add(new Object[] { Messages.get().Role_35, this, SWT.ICON_WARNING });
+			message.add(new Object[] { Messages.get().Role_35, this,
+					SWT.ICON_WARNING });
 		}
 
 		return message;
@@ -327,10 +369,15 @@ public class Role extends PrimaryObject {
 	 */
 	@Override
 	public boolean canEdit(IContext context) {
-		// 系统的角色不可以更改
-		if (isSystemRole()) {
-			return false;
-		}
+//		String uid = context.getAccountInfo().getUserId();
+//		User user = UserToolkit.getUserById(uid);
+//		if (Boolean.TRUE.equals(user.getValue(User.F_IS_ADMIN))) {
+//			return true;
+//		}
+//		// 系统的角色不可以更改
+//		if (isSystemRole()) {
+//			return false;
+//		}
 		return super.canEdit(context);
 	}
 

@@ -425,6 +425,7 @@
             end1Class="com.sg.business.model.ProjectRole"
             end1Key="role_id"
             end2Class="com.sg.business.model.RoleAssignment"
+            end2Condition="com.sg.business.model.condition.ProjectRoleAssignment"
             end2Key="role_id"
             id="ProjectRole_RoleAssignment"
             name="项目的组织角色指派">
