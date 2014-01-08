@@ -30,6 +30,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.vis2.home.sales"
+            name="绩效分析">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis.home"
             name="%perspective.name.2">
       </perspective>
@@ -905,6 +910,42 @@
                relationship="stack"
                relative="project.navigator.allproject2"
                standalone="false">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.vis2.home.sales">
+         <view
+               closeable="false"
+               id="vis2.saleslist.sales"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitvolumn.sales"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="right"
+               relative="vis2.saleslist.sales"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitrate.sales"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="bottom"
+               relative="vis2.profitvolumn.sales"
+               showTitle="false"
+               standalone="true">
          </view>
       </perspectiveExtension>
    </extension>

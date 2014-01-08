@@ -1,4 +1,4 @@
-package com.tmt.tb.bpmservice;
+package com.sg.business.model.bpmservice;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +12,8 @@ import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
-import com.sg.business.model.bpmservice.BPMServiceContext;
-import com.tmt.tb.nls.Messages;
 
-public class CreateWorkOrderToProjectOfTB extends ServiceProvider {
+public class CreateWorkOrderToProject extends ServiceProvider {
 
 	@Override
 	public Map<String, Object> run(Object parameter) {
@@ -26,7 +24,7 @@ public class CreateWorkOrderToProjectOfTB extends ServiceProvider {
 		if (_id == null) {
 			result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
 			result.put(
-					"returnMessage", Messages.get().CreateWorkOrderToProjectOfTB_6); //$NON-NLS-1$
+					"returnMessage", "此工作无法关联项目"); //$NON-NLS-1$
 		} else {
 			if (content instanceof String) {
 				String jsonContent = (String) content;
@@ -50,7 +48,7 @@ public class CreateWorkOrderToProjectOfTB extends ServiceProvider {
 					} else {
 						result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
 						result.put(
-								"returnMessage", Messages.get().CreateWorkOrderToProjectOfTB_12); //$NON-NLS-1$
+								"returnMessage", "此工作无法发起项目"); //$NON-NLS-1$
 					}
 				} catch (Exception e) {
 					result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$

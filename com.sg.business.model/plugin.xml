@@ -610,6 +610,30 @@
             operation="archivedocument"
             serviceProvider="com.sg.business.model.bpmservice.ArchiveDocument">
       </service>
+      <service
+            interface="createproject.service.action"
+            name="添加新创建项目的工作令号"
+            operation="inputworkorder"
+            serviceProvider="com.sg.business.model.bpmservice.CreateWorkOrderToProject">
+      </service>
+      <service
+            interface="createproject.service.action"
+            name="锁定预算"
+            operation="lockbudget"
+            serviceProvider="com.sg.business.model.bpmservice.LockBudgetToProject">
+      </service>
+      <service
+            interface="createproject.service.action"
+            name="添加财务到项目中(act_prj_financial)"
+            operation="addparticipate"
+            serviceProvider="com.sg.business.model.bpmservice.AddParticipateByFinancial">
+      </service>
+      <service
+            interface="createproject.service.action"
+            name="写入商务负责人(act_rule_launcher)"
+            operation="inputsales"
+            serviceProvider="com.sg.business.model.bpmservice.AddParticipateBySales">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">

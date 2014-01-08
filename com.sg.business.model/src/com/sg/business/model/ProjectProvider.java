@@ -368,6 +368,66 @@ public abstract class ProjectProvider extends PrimaryObject {
 		return rate;
 	}
 
+
+	public double[] getProfitRateForSalesByYear() {
+		AggregationOutput aggregationOutput = aggregateRevenueAndCostForSalesByYear();
+		Iterator<DBObject> iterator = aggregationOutput.results().iterator();
+		double[] sales_cost = new double[12];
+		double[] sales_revenue = new double[12];
+		while (iterator.hasNext()) {
+			DBObject dbObject = (DBObject) iterator.next();
+			int month = (int) dbObject.get("_id");
+			sales_cost[month - 1] = ((Number) dbObject
+					.get(ProjectETL.F_SALES_COST)).doubleValue();
+			sales_revenue[month - 1] = ((Number) dbObject
+					.get(ProjectETL.F_SALES_REVENUE)).doubleValue();
+		}
+		double[] rate = new double[12];
+		for (int i = 0; i < sales_revenue.length; i++) {
+			if (sales_revenue[i] != 0d) {
+				BigDecimal d = new BigDecimal(100d
+						* (sales_revenue[i] - sales_cost[i]) / sales_revenue[i]);
+				rate[i] = d.setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
+			} else {
+				rate[i] = 0d;
+			}
+		}
+		return rate;
+	}
+	
+
+	private AggregationOutput aggregateRevenueAndCostForSalesByYear() {
+		Calendar cal = parameters == null ? Calendar.getInstance()
+				: (Calendar) parameters[0];
+		int year = cal.get(Calendar.YEAR);
+		//TODO
+		List<ObjectId> projectIdList = getAllProjectId();
+		BasicDBObject query = new BasicDBObject();
+		query.put(
+				"$match",
+				new BasicDBObject().append(ProjectETL.F_YEAR, year).append(
+						ProjectETL.F_PROJECTID,
+						new BasicDBObject().append("$in", projectIdList)));
+
+		BasicDBObject group = new BasicDBObject();
+		group.put(
+				"$group",
+				new BasicDBObject()
+						.append("_id", "$month")
+						.append(ProjectETL.F_SALES_COST,
+								new BasicDBObject().append("$sum", "$"
+										+ ProjectETL.F_SALES_COST))
+						.append(ProjectETL.F_SALES_REVENUE,
+								new BasicDBObject().append("$sum", "$"
+										+ ProjectETL.F_SALES_REVENUE)));
+
+		BasicDBObject sort = new BasicDBObject();
+		sort.put("$sort", new BasicDBObject().append("_id", 1));
+		DBCollection col = getCollection(IModelConstants.C_PROJECT_MONTH_DATA);
+		AggregationOutput aggregationOutput = col.aggregate(query, group, sort);
+		return aggregationOutput;
+	}
+
 	private AggregationOutput aggregateRevenueAndCostByYear() {
 		Calendar cal = parameters == null ? Calendar.getInstance()
 				: (Calendar) parameters[0];
