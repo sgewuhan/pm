@@ -25,7 +25,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.nls.Messages;
-import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 /**
@@ -196,7 +195,6 @@ public class Role extends PrimaryObject {
 				IModelConstants.DB);
 	}
 
-	@Deprecated
 	public List<PrimaryObject> getAssignment() {
 		return getRelationById(F__ID, RoleAssignment.F_ROLE_ID,
 				RoleAssignment.class);

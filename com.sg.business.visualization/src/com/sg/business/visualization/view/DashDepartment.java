@@ -303,7 +303,7 @@ public class DashDepartment extends AbstractDashWidgetView {
 	private void createDeptSelector(Composite parent) {
 		navi = new NavigatorControl("vis.org.selector.managerrole", //$NON-NLS-1$
 				new NavigatablePartAdapter() {
-				}, true);
+				});
 		navi.createPartContent(parent);
 		tree = (Tree) navi.getControl();
 		// 选择第一级的节点

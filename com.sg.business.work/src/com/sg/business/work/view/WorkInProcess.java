@@ -21,9 +21,9 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.work.WorkflowSynchronizer;
 import com.sg.business.work.filter.WorkFilterControl;
 import com.sg.business.work.nls.Messages;
-import com.sg.widgets.ImageResource;
+//import com.sg.widgets.ImageResource;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.Widgets;
+//import com.sg.widgets.Widgets;
 import com.sg.widgets.part.view.AccountSensitiveTreeView;
 
 @SuppressWarnings("restriction")
@@ -34,8 +34,8 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 		public ShowFilterMenuAction() {
 			setId("work.showFilterMenu"); //$NON-NLS-1$
 			setText(Messages.get().WorkInProcess_1);
-			setImageDescriptor(Widgets
-					.getImageDescriptor(ImageResource.FILTER_24));
+//			setImageDescriptor(Widgets
+//					.getImageDescriptor(ImageResource.FILTER_24));
 		}
 
 		@Override

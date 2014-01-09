@@ -2178,6 +2178,35 @@
                label="%command.label.27"
                style="push"
                tooltip="%command.tooltip">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <with
+                        variable="activeWorkbenchWindow.activePerspective">
+                     <equals
+                           value="perspective.work">
+                     </equals>
+                  </with>
+                  <with
+                        variable="activeWorkbenchWindow.activePerspective">
+                     <equals
+                           value="perspective.sales">
+                     </equals>
+                  </with>
+                  <with
+                        variable="activeWorkbenchWindow.activePerspective">
+                     <equals
+                           value="perspective.simplework">
+                     </equals>
+                  </with>
+                  <with
+                        variable="activeWorkbenchWindow.activePerspective">
+                     <equals
+                           value="perspective.workflow">
+                     </equals>
+                  </with>
+               </or>
+            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
@@ -2205,14 +2234,14 @@
             locationURI="toolbar:workflow.workdelivery?after=additions">
          <command
                commandId="workflow.createdeliverable"
-               icon="image/deliverablecreate_24.png"
                label="%command.label.29"
+               mode="FORCE_TEXT"
                style="push">
          </command>
          <command
                commandId="workflow.linkdeliverable"
-               icon="image/documentlink_24.png"
                label="%command.label.30"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>

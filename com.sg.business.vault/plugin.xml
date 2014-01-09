@@ -404,6 +404,7 @@
                commandId="com.sg.business.vault.switchPreview"
                icon="image/preview_24.png"
                label="%command.label"
+               mode="FORCE_TEXT"
                style="toggle">
          </command>
       </menuContribution>
@@ -417,6 +418,7 @@
                commandId="com.sg.business.vault.switchPreview"
                icon="image/preview_24.png"
                label="%command.label.0"
+               mode="FORCE_TEXT"
                style="toggle">
          </command>
       </menuContribution>

@@ -4085,7 +4085,7 @@
             </visibleWhen>
          </command>
       </menuContribution>
-      <menuContribution
+      <!--menuContribution
             allPopups="false"
             locationURI="toolbar:project.navigator.myproject?after=additions">
          <command
@@ -4106,7 +4106,7 @@
                label="%command.label.73"
                style="push">
          </command>
-      </menuContribution>
+      </menuContribution-->
       <menuContribution
             allPopups="false"
             locationURI="popup:menu.project.bulletinboard">
@@ -4261,8 +4261,8 @@
             locationURI="toolbar:project.navigator.delayprocess?after=additions">
          <command
                commandId="delayprocess.query"
-               icon="image/search_24.png"
                label="%command.label.89"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>
@@ -4271,8 +4271,8 @@
             locationURI="toolbar:project.navigator.delaywork?after=additions">
          <command
                commandId="delayprocess.query"
-               icon="image/search_24.png"
                label="%command.label.90"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>
