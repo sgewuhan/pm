@@ -2153,5 +2153,29 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.ProfitRateForSalesView"
+            id="vis2.profitrate.sales"
+            name="期间项目利润率"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.ProfitVolumnForSalesView"
+            id="vis2.profitvolumn.sales"
+            name="期间销售利润"
+            restorable="true">
+      </view>
+      <view
+            category="visualization"
+            class="com.sg.business.visualization.view.SalesListForSalesView"
+            id="vis2.saleslist.sales"
+            name="期间销售排名"
+            restorable="true">
+      </view>
+   </extension>
 
 </plugin>

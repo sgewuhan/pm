@@ -9,8 +9,6 @@ import com.mobnut.commons.util.NLS2;
 public class Messages {
 	private static final String BUNDLE_NAME = "com.tmt.tb.nls.messages"; //$NON-NLS-1$
 	public String AbstractChangeActivityValidator_0;
-	public String AddParticipateOfTB_10;
-	public String AddParticipateOfTB_6;
 	public String AddAllUserList_1;
 	public String ApplicationMessageOfTB_1;
 	public String ApplicationMessageOfTB_10;
@@ -23,8 +21,6 @@ public class Messages {
 	public String ApplicationMessageOfTB_5;
 	public String ApplicationMessageOfTB_8;
 	public String ComplateChangeActivityValidator_0;
-	public String CreateWorkOrderToProjectOfTB_12;
-	public String CreateWorkOrderToProjectOfTB_6;
 	public String EngineeringChangePlan_1;
 	public String EngineeringChangePlan_10;
 	public String EngineeringChangePlan_12;
@@ -43,8 +39,6 @@ public class Messages {
 	public String HasPlanValidation_4;
 	public String LinkWorkToProjectOfTB_11;
 	public String LinkWorkToProjectOfTB_5;
-	public String LockBudgetToProjectOfTB_11;
-	public String LockBudgetToProjectOfTB_5;
 	public String ProjectBudgetOfCreateProjectPage_1;
 	public String ProjectBudgetOfCreateProjectPage_2;
 	public String ProjectBudgetOfTaskFormPage_0;

@@ -74,23 +74,32 @@
       </taskForm>
       <taskForm
             editorId="tbprojectapplication.approve"
+            inputHandler="com.tmt.tb.handler.ProjectApplicationSetProjectTypeOfTB"
             name="批准"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,projecttype"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+         <processParameter
+               processParameterName="projecttype"
+               taskFormFieldName="projecttype">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbprojectapplication.assign"
             name="指派项目负责人"
-            persistentFields="prj_manager,accessory"
+            persistentFields="prj_manager,accessory,projecttype"
             processDefinitionId="tb.tbProjectApplication"
             saveHandler="com.tmt.tb.handler.ProjectApplicationAuditSaveOfTB">
          <processParameter
                processParameterName="prj_manager"
                taskFormFieldName="prj_manager">
+         </processParameter>
+         <processParameter
+               processParameterName="projecttype"
+               taskFormFieldName="projecttype">
          </processParameter>
       </taskForm>
       <taskForm
@@ -536,6 +545,20 @@
                         type="String">
                   </radio>
                </section>
+               <section
+                     label="请确认项目等级">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="projecttype"
+                        label="项目等级"
+                        labelVisible="true"
+                        name="projecttype"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
             </pagecolumn>
          </basicpage>
          <basicpage
@@ -586,6 +609,20 @@
                         persistable="true"
                         required="true">
                   </navigatorSelector>
+               </section>
+               <section
+                     label="请输入项目等级">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="projecttype"
+                        label="项目等级"
+                        labelVisible="true"
+                        name="projecttype"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -2258,30 +2295,6 @@
    </extension>
    <extension
          point="com.sg.bpm.service.serviceTask">
-      <service
-            interface="createproject.service.action"
-            name="工作于项目进行关联"
-            operation="linkproject"
-            serviceProvider="com.tmt.tb.bpmservice.LinkWorkToProjectOfTB">
-      </service>
-      <service
-            interface="createproject.service.action"
-            name="添加新创建项目的工作令号"
-            operation="tbprojectapplication"
-            serviceProvider="com.tmt.tb.bpmservice.CreateWorkOrderToProjectOfTB">
-      </service>
-      <service
-            interface="createproject.service.action"
-            name="锁定预算"
-            operation="lockbudget"
-            serviceProvider="com.tmt.tb.bpmservice.LockBudgetToProjectOfTB">
-      </service>
-      <service
-            interface="createproject.service.action"
-            name="添加财务到项目中"
-            operation="addparticipate"
-            serviceProvider="com.tmt.tb.bpmservice.AddParticipateOfTB">
-      </service>
       <service
             interface="tbmessage.service.action"
             name="通知财务"

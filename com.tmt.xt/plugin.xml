@@ -822,23 +822,32 @@
       </taskForm>
       <taskForm
             editorId="tbprojectapplication.approve"
+            inputHandler="com.tmt.xt.handler.ProjectApplicationSetProjectTypeOfXT"
             name="批准"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,projecttype"
             processDefinitionId="xt.xtProjectApplication">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+         <processParameter
+               processParameterName="projecttype"
+               taskFormFieldName="projecttype">
+         </processParameter>
       </taskForm>
       <taskForm
             editorId="tbprojectapplication.assign"
             name="指派项目负责人"
-            persistentFields="prj_manager,accessory"
+            persistentFields="prj_manager,accessory,projecttype"
             processDefinitionId="xt.xtProjectApplication"
             saveHandler="com.tmt.xt.handler.ProjectApplicationAuditSaveOfXT">
          <processParameter
                processParameterName="prj_manager"
                taskFormFieldName="prj_manager">
+         </processParameter>
+         <processParameter
+               processParameterName="projecttype"
+               taskFormFieldName="projecttype">
          </processParameter>
       </taskForm>
       <taskForm
