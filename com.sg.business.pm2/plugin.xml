@@ -5,6 +5,11 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.work.home"
+            name="%perspective.name">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.work"
             name="%perspective.name">
       </perspective>
@@ -949,6 +954,32 @@
                standalone="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.work.home">
+         <view
+               closeable="false"
+               id="com.sg.business.pm2.homenavigator"
+               minimized="true"
+               moveable="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.myproject"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="top"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -973,6 +1004,10 @@
             name="%scenario.name.0">
          <perspective
                default="true"
+               id="perspective.work.home">
+         </perspective>
+         <perspective
+               default="false"
                id="perspective.work">
          </perspective>
          <perspective
@@ -1461,6 +1496,43 @@
       <notice
             noticeCreator="com.mobnut.portal.notice.ImageNoticeCreator">
       </notice>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="com.sg.widgets.part.SideBarNavigator"
+            id="com.sg.business.pm2.homenavigator"
+            name="Navigator">
+      </view>
+   </extension>
+   <extension
+         point="com.sg.widgets.sidebar">
+      <sidebar
+            id="com.sg.business.pm2.homenavigator">
+         <expanditem
+               expanded="true"
+               id="1"
+               label="待处理"
+               navigatorId="processing.home.navigator"></expanditem>
+         <expanditem
+               expanded="false"
+               id="2"
+               label="新工作"
+               navigatorId="message.recieved">
+         </expanditem>
+         <expanditem
+               expanded="false"
+               id="3"
+               label="新消息"
+               navigatorId="message.send">
+         </expanditem>
+         <expanditem
+               id="4"
+               label="新公告"
+               navigatorId="vault.folder.admin">
+         </expanditem>
+      </sidebar>
    </extension>
 
 </plugin>
