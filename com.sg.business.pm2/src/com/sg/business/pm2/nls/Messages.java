@@ -8,6 +8,7 @@ import com.mobnut.commons.util.NLS2;
 
 public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.pm2.nls.messages"; //$NON-NLS-1$
+	public String AssignWork;
 	public String HeadArea_Perspective_Switch;
 	public String HeadArea_Logout_title;
 	public String HeadArea_Logout_message;

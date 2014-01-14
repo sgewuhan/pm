@@ -4251,43 +4251,5 @@
          </column>
       </tree>
    </extension>
-   <extension
-         point="com.sg.widgets.navigator">
-      <navigator
-            id="processing.home.navigator"
-            memo="用于首页的快速导航"
-            table="processing.home.navigator">
-      </navigator>
-   </extension>
-   <extension
-         point="com.sg.widgets.table">
-      <table
-            canCreate="false"
-            canDelete="false"
-            canEdit="false"
-            customItemHeight="36"
-            dataSet="com.sg.business.model.dataset.work.ProcessingNavigatorItemSet"
-            fullSelection="true"
-            hasBorder="false"
-            hasCheck="false"
-            headerVisiable="false"
-            id="processing.home.navigator"
-            lineVisiable="false"
-            markupEnabled="true"
-            multiSelection="false"
-            preload="10"
-            useHashlookup="true"
-            virtual="false">
-         <column
-               column="desc"
-               labelProvider="com.sg.business.work.labelprovider.RuntimeWorkLabelprovider3"
-               lazyDisplay="true"
-               name="%column.name.5"
-               style="SWT.LEFT"
-               type="String"
-               width="-1">
-         </column>
-      </table>
-   </extension>
 
 </plugin>

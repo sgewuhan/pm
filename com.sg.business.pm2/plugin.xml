@@ -957,7 +957,7 @@
       <perspectiveExtension
             targetID="perspective.work.home">
          <view
-               closeable="false"
+               closeable="true"
                id="com.sg.business.pm2.homenavigator"
                minimized="true"
                moveable="false"
@@ -1511,10 +1511,10 @@
       <sidebar
             id="com.sg.business.pm2.homenavigator">
          <expanditem
+               content="com.sg.business.pm2.home.Todolist"
                expanded="true"
                id="1"
-               label="待处理"
-               navigatorId="processing.home.navigator"></expanditem>
+               label="待处理"></expanditem>
          <expanditem
                expanded="false"
                id="2"
