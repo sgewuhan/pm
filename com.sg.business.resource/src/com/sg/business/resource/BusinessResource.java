@@ -226,6 +226,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_WORKFLOW_72 = "workflow_72.png";
 
 	public static final String IMAGE_REASSIGNMENT_16 = "reassignment_16.png";
+	
+	public static final String IMAGE_REASSIGNMENT_16X12 = "reassignment_16x12.png";
 
 	public static final String IMAGE_REASSIGNMENT_24 = "reassignment_24.png";
 
@@ -295,6 +297,10 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_REFRESH_24 = "refresh_24.png";
 
 	public static final String IMAGE_FLOW_16X9 = "flow_16x9.png";
+	
+	public static final String IMAGE_FLOW_16X12 = "flow_16x12.png";
+	
+	public static final String IMAGE_FLOW_16 = "flow_16.png";
 
 	public static final String IMAGE_COMPANY_24 = "company_24.png";
 
@@ -337,6 +343,12 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_LOGOUT_24 = "logout_24.png";
 	
 	public static final String IMAGE_PERSPECTIVE_24 = "perspective_24.png";
+
+	public static final String IMAGE_START_16X12 = "work2_wip_16x12.png";
+
+	public static final String IMAGE_FINISH_16X12 = "work2_finish_16x12.png";
+	
+
 
 
 	/**

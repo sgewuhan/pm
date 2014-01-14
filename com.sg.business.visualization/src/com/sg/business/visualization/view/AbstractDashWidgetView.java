@@ -10,7 +10,7 @@ import com.sg.business.visualization.ui.IProjectProviderHolderListener;
 import com.sg.business.visualization.ui.ProjectProviderHolder;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.part.IRefreshablePart;
-import com.sg.widgets.part.StandaloneViewPart;
+import com.sg.widgets.part.view.StandaloneViewPart;
 
 public abstract class AbstractDashWidgetView extends StandaloneViewPart
 		implements IProjectProviderHolderListener,IRefreshablePart {

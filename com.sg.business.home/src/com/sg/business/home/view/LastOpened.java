@@ -310,4 +310,8 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		setFocus();
 	}
 
+	@Override
+	public void setNavigatorControl(NavigatorControl navigatorControl) {
+	}
+
 }

@@ -2,7 +2,7 @@ package com.sg.business.visualization.view;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.sg.widgets.part.StandaloneViewPart;
+import com.sg.widgets.part.view.StandaloneViewPart;
 
 public class DashBudget extends StandaloneViewPart {
 

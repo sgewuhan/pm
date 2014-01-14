@@ -211,8 +211,10 @@ public class ChangeUserOfOrgUserPage extends WizardPage implements
 
 	@Override
 	public void activate() {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void setNavigatorControl(NavigatorControl navigatorControl) {
 	}
 
 }
