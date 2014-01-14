@@ -101,8 +101,8 @@ public class ProcessingNavigatorItemSet extends DataSetFactory {
 			public int compare(PrimaryObject p0, PrimaryObject p1) {
 				Work work0 = (Work) p0;
 				Work work1 = (Work) p1;
-				Date ps0 = work0.getPlanStart();
-				Date ps1 = work1.getPlanStart();
+				Date ps0 = work0.getPlanFinish();
+				Date ps1 = work1.getPlanFinish();
 				if (ps0 == null) {
 					Calendar cal = Calendar.getInstance();
 					cal.set(Calendar.YEAR, 3000);

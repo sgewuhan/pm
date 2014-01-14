@@ -64,12 +64,13 @@ public class TodolistLabel extends LabelProvider {
 				currentTask = result.get(0);
 			}
 		}
-		
+
 		int code = getOperationCode(work, currentTask);
 
 		// 标记
 		String selectbarUrl = null;
 		Date _planStart = work.getPlanStart();
+		Date _actualStart = work.getActualStart();
 		Date _planFinish = work.getPlanFinish();
 		int remindBefore = work.getRemindBefore();
 
@@ -111,16 +112,13 @@ public class TodolistLabel extends LabelProvider {
 				+ "' style='border-style:none;position:absolute; left:0; top:0; display:block;' width='4' height='36' />"; //$NON-NLS-1$
 		sb.append(selectbar);
 
-		sb.append("<span style='font-family:微软雅黑;font-size:9pt;float:right;'>"); //$NON-NLS-1$
-		if (currentTask != null) {
-			sb.append(currentTask.getTaskName());
-		}else if(code == ASSIGN_WORK){
-			sb.append(Messages.get(locale).AssignWork);
-		}
-		sb.append("</span>");
+		String imageUrl = "<img src='" + getHeaderImageURL(work) //$NON-NLS-1$
+				+ "' style='position:absolute; left:6px; top:1px;' width='16' height='16' />"; //$NON-NLS-1$
+		sb.append(imageUrl);
 
-		sb.append("<span style='font-family:微软雅黑;font-size:9pt;padding-left:6px;'>"); //$NON-NLS-1$
-
+		sb.append("<span style='font-family:微软雅黑;font-size:9pt;padding-left:24px;'>"); //$NON-NLS-1$
+		
+		
 		// 工作desc
 		String workDesc = work.getDesc();
 		workDesc = Utils.getPlainText(workDesc);
@@ -139,32 +137,55 @@ public class TodolistLabel extends LabelProvider {
 
 		// 有关时间
 		sb.append("<br/>"); //$NON-NLS-1$
-
-		sb.append("<small style='color:#909090;padding-left:6px;'>"); //$NON-NLS-1$
-		String planStart = "?"; //$NON-NLS-1$
-		if (_planStart != null) {
-			planStart = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
-					_planStart);
+		
+		sb.append("<span style='font-family:微软雅黑;font-size:9pt;float:right;'>"); //$NON-NLS-1$
+		if (currentTask != null) {
+			sb.append("<img src='"); //$NON-NLS-1$
+			sb.append(FileUtil.getImageURL(
+					BusinessResource.IMAGE_FLOW_16X12,
+					BusinessResource.PLUGIN_ID,
+					BusinessResource.IMAGE_FOLDER));
+			sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
+			sb.append(currentTask.getTaskName());
+		} else if (code == ASSIGN_WORK) {
+			sb.append("<img src='"); //$NON-NLS-1$
+			sb.append(FileUtil.getImageURL(
+					BusinessResource.IMAGE_REASSIGNMENT_16X12,
+					BusinessResource.PLUGIN_ID,
+					BusinessResource.IMAGE_FOLDER));
+			sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
+			sb.append(Messages.get(locale).AssignWork);
 		}
+		sb.append("</span>");
+		
 
-		sb.append(""); //$NON-NLS-1$
-		sb.append(planStart);
-		sb.append("~"); //$NON-NLS-1$
+		String start = "?"; //$NON-NLS-1$
+		String color = "";
+		if(_actualStart!=null){
+			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+					_actualStart);
+		}else if (_planStart != null) {
+			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+					_planStart);
+			color = "color:#909090;";
+		}
+		sb.append("<small style='padding-left:6px;"+color+"'>"); //$NON-NLS-1$
+		sb.append(start);
+		sb.append("</small>");
+		sb.append("<small style='color:#909090;'>"); //$NON-NLS-1$
 
-		String planFinish = "?"; //$NON-NLS-1$
+		String finish = "?"; //$NON-NLS-1$
 		if (_planFinish != null) {
-			planFinish = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
+			finish = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
 					_planFinish);
 		}
-		sb.append(planFinish);
-		sb.append("  "); //$NON-NLS-1$
+		sb.append("~"); //$NON-NLS-1$
+		sb.append(finish);
 
 		sb.append("</small>"); //$NON-NLS-1$
-
 		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
-
 
 	private int getOperationCode(Work work, UserTask currentTask) {
 		// 如果是准备中的工作，显示为开始工作
@@ -194,5 +215,30 @@ public class TodolistLabel extends LabelProvider {
 				BusinessResource.IMAGE_FOLDER);
 	}
 
+	private String getHeaderImageURL(Work work) {
+		String lc = work.getLifecycleStatus();
+		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lc)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_CANCEL_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lc)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_FINISH_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (ILifecycle.STATUS_ONREADY_VALUE.equals(lc)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_READY_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (ILifecycle.STATUS_WIP_VALUE.equals(lc)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_WIP_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (ILifecycle.STATUS_PAUSED_VALUE.equals(lc)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_PAUSE_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		} else if (ILifecycle.STATUS_NONE_VALUE.equals(lc)) {
+			return FileUtil.getImageURL(BusinessResource.IMAGE_WORK2_READY_16,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+		}
+		return null;
+		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_16,
+		// BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+	}
 
 }
