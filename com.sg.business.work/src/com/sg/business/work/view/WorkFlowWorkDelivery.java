@@ -32,7 +32,9 @@ import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.sg.business.model.Document;
-import com.sg.business.model.UserTask;
+import com.sg.business.model.IWorkRelative;
+import com.sg.business.model.Work;
+//import com.sg.business.model.UserTask;
 import com.sg.business.work.nls.Messages;
 import com.sg.widgets.part.view.TreeNavigator;
 
@@ -55,18 +57,20 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 							Document doc = ModelService.createModelObject(
 									Document.class, new ObjectId(_data));
 							download(doc);
-						} else if("download".equals(action)){ //$NON-NLS-1$
+						} else if ("download".equals(action)) { //$NON-NLS-1$
 							_data = URLDecoder.decode(_data, "utf-8"); //$NON-NLS-1$
 							DBObject dbo = (DBObject) JSON.parse(_data);
 							String db = (String) dbo.get("d"); //$NON-NLS-1$
 							String namespace = (String) dbo.get("n"); //$NON-NLS-1$
 							String oid = (String) dbo.get("o"); //$NON-NLS-1$
 							String fileName = (String) dbo.get("a"); //$NON-NLS-1$
-							String filepath = (String)dbo.get("f"); //$NON-NLS-1$
-							if(filepath==null){
-								FileUtil.download(getViewSite().getShell(),db, namespace, oid, fileName);
-							}else{
-								FileUtil.download(getViewSite().getShell(),filepath, fileName);
+							String filepath = (String) dbo.get("f"); //$NON-NLS-1$
+							if (filepath == null) {
+								FileUtil.download(getViewSite().getShell(), db,
+										namespace, oid, fileName);
+							} else {
+								FileUtil.download(getViewSite().getShell(),
+										filepath, fileName);
 							}
 						}
 						doRefresh();
@@ -88,7 +92,7 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 			}
 
 			String zipFileName = pathname + "/" //$NON-NLS-1$
-					+doc.getDesc() + ".zip"; //$NON-NLS-1$
+					+ doc.getDesc() + ".zip"; //$NON-NLS-1$
 			FileOutputStream dest = new FileOutputStream(zipFileName);
 			ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
 					dest), Charset.forName("GBK")); //$NON-NLS-1$
@@ -131,14 +135,14 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 
 			File zipFile = new File(zipFileName);
 			if (zipFile.isFile()) {
-				FileUtil.download(getSite().getShell(), zipFile, zipFile.getName());
+				FileUtil.download(getSite().getShell(), zipFile,
+						zipFile.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	private String checkName(String fileName, Set<String> fileNameSet) {
 		fileName = fileName.replaceAll("/", "_"); //$NON-NLS-1$ //$NON-NLS-2$
 		int i = 1;
@@ -153,8 +157,11 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 
 	@Override
 	protected void updatePartName(IWorkbenchPart part) {
-		if (master != null) {
-			String workname = ((UserTask) master).getWorkName();
+		if (master instanceof Work) {
+			String workname = master.getLabel();
+			setPartName(workname + Messages.get().WorkFlowWorkDelivery_0);
+		} else if (master instanceof IWorkRelative) {
+			String workname = ((IWorkRelative) master).getWork().getLabel();
 			setPartName(workname + Messages.get().WorkFlowWorkDelivery_0);
 		} else {
 			setPartName(originalPartName);
@@ -188,18 +195,18 @@ public class WorkFlowWorkDelivery extends TreeNavigator {
 
 	private boolean selectDocument() {
 		IStructuredSelection selection = navi.getViewerControl().getSelection();
-		if(selection!=null&&!selection.isEmpty()){
+		if (selection != null && !selection.isEmpty()) {
 			Object selected = selection.getFirstElement();
 			return selected instanceof Document;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void doCreate() {
-		
+
 		return;
-//		super.doCreate();
+		// super.doCreate();
 	}
 
 }

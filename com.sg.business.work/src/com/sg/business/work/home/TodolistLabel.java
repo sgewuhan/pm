@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home;
+package com.sg.business.work.home;
 
 import java.util.Date;
 import java.util.List;
@@ -14,8 +14,8 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Project;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
-import com.sg.business.pm2.nls.Messages;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.work.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.CurrentAccountContext;

@@ -8,14 +8,18 @@ import java.util.Iterator;
 import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 
 public class WorksPerformence extends AbstractWorksMetadata {
+
+	private static final String F_CONTENT = "content";
 
 	@Override
 	public Image getImage() {
@@ -27,6 +31,36 @@ public class WorksPerformence extends AbstractWorksMetadata {
 	// return getDesc()+" "+getLogDate();
 	//
 	// }
+
+	@Override
+	public String getHTMLLabel() {
+		String userId = getStringValue(F_USERID);
+		User commiter = UserToolkit.getUserById(userId);
+		String desc = getStringValue(F_DESC);// 进展状态
+		Date commitdate = getDateValue(F_COMMITDATE);// 提交日期
+		Integer works = getIntegerValue(F_WORKS);
+		String content = getStringValue(F_CONTENT);
+		if(content!=null){
+			content = Utils.getLimitLengthString(content, 6);
+		}else{
+			content = "";
+		}
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("<b>");
+		sb.append(desc);
+		sb.append("</b>");
+		sb.append(String.format(Utils.FORMATE_DATE_COMPACT_SASH, commitdate));
+		sb.append(" ");
+		sb.append(commiter.getUsername());
+		sb.append(" ");
+		sb.append(" 工时:");
+		sb.append(works);
+		sb.append("h 说明:");
+		sb.append(content);
+
+		return sb.toString();
+	}
 
 	public String getLogDate() {
 		Long dateCode = (Long) getValue(F_DATECODE);

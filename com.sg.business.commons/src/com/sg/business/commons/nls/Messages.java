@@ -145,6 +145,8 @@ public class Messages {
 	public String WorkMoveUp_0;
 	public String WorkMoveUp_1;
 	public String WorkNavigatorPanel_0;
+	public String Duration;
+	public String Works;
 
 	public static Messages get(Display display) {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class, display);

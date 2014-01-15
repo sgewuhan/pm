@@ -1,6 +1,7 @@
-package com.sg.business.pm2.home;
+package com.sg.business.work.home;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
@@ -44,5 +45,11 @@ public class Todolist implements ISidebarItem {
 		doRefresh();
 		return parent;
 	}
+
+	@Override
+	public ISelectionProvider getSelectionProvider() {
+		return viewer;
+	}
+
 
 }

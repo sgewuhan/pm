@@ -8,7 +8,8 @@ import com.mongodb.DBObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.UserTask;
+import com.sg.business.model.IWorkRelative;
+import com.sg.business.model.Work;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
 public class RelatitedWorkDeliveryDataSet extends MasterDetailDataSetFactory {
@@ -24,8 +25,12 @@ public class RelatitedWorkDeliveryDataSet extends MasterDetailDataSetFactory {
 
 	@Override
 	protected Object getMasterValue() {
-		ObjectId workId = ((UserTask) master).getWorkId();
-		return workId;
+		if(master instanceof Work){
+			return master.get_id();
+		}else if(master instanceof IWorkRelative){
+			return ((IWorkRelative) master).getWork().get_id();
+		}
+		return null;
 	}
 
 	@Override
