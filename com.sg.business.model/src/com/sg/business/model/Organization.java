@@ -1594,7 +1594,7 @@ public class Organization extends PrimaryObject {
 	public ObjectId getContainerOrganizationId() {
 		Organization containerOrg = getContainerOrganization();
 		if (containerOrg != null) {
-			containerOrg.get_id();
+			return containerOrg.get_id();
 		}
 		return null;
 	}
