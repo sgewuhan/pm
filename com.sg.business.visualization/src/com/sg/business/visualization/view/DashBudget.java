@@ -2,9 +2,9 @@ package com.sg.business.visualization.view;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.sg.widgets.part.view.StandaloneViewPart;
+import com.sg.widgets.part.view.CViewPart;
 
-public class DashBudget extends StandaloneViewPart {
+public class DashBudget extends CViewPart {
 
 
 	@Override

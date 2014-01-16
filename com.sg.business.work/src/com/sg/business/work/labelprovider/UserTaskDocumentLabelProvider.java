@@ -10,7 +10,6 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.commons.util.file.OSServerFile;
 import com.mobnut.db.file.IServerFile;
 import com.mobnut.db.model.AccountInfo;
-import com.mobnut.portal.Portal;
 import com.sg.business.model.Document;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.work.nls.Messages;
@@ -40,7 +39,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		String fileName = serverFile.getFileName();
 		Date uploadDate = serverFile.getUploadDate();
 		long length = serverFile.getLength();
-		String md5 = serverFile.getMD5();
+//		String md5 = serverFile.getMD5();
 		// DBObject meta = gsFile.getMetaData();
 
 		StringBuffer sb = new StringBuffer();
@@ -89,10 +88,10 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append(getLength(length));
 		sb.append(Messages.get().UserTaskDocumentLabelProvider_1);
 		sb.append(String.format(Utils.FORMATE_DATE_FULL, uploadDate));
-		if (Portal.getDefault().isDevelopMode()) {
-			sb.append(" MD5:"); //$NON-NLS-1$
-			sb.append(md5);
-		}
+//		if (Portal.getDefault().isDevelopMode()) {
+//			sb.append(" MD5:"); //$NON-NLS-1$
+//			sb.append(md5);
+//		}
 		sb.append("</small>"); //$NON-NLS-1$
 
 		sb.append("</span>"); //$NON-NLS-1$
@@ -119,42 +118,6 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 	private String getDocumentText(Document doc) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
-
-		sb.append("<span style='float:right;padding-right:14px'>"); //$NON-NLS-1$
-
-		// 显示状态
-		String status = doc.getLifecycleName();
-		sb.append(" <span style='color:rgb(0,128,0)'>"); //$NON-NLS-1$
-		sb.append(status);
-
-		if (doc.isLocked()) {
-			sb.append(Messages.get().UserTaskDocumentLabelProvider_2);
-			// sb.append("[");
-			// User lockuser = doc.getLockedBy();
-			// if(lockuser!=null){
-			// sb.append(lockuser);
-			// }
-			// Date date = doc.getLockOn();
-			// if(date!=null){
-			// sb.append(", ");
-			// sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", date));
-			// }
-			// sb.append("]");
-			// sb.append(" ");
-		}
-
-		sb.append("</span>"); //$NON-NLS-1$
-
-		AccountInfo ca = doc.get_caccount();
-		if (ca != null) {
-
-			sb.append(" "); //$NON-NLS-1$
-			sb.append(ca.getUserName());
-			sb.append("|"); //$NON-NLS-1$
-			sb.append(ca.getUserId());
-		}
-
-		sb.append("</span>"); //$NON-NLS-1$
 
 		// 显示文档图标
 		sb.append("<img src='"); //$NON-NLS-1$
@@ -199,18 +162,50 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append("<small>"); //$NON-NLS-1$
 		// 显示创建时间，创建人
-		Date date = doc.get_cdate();
-		sb.append("<span style='float:right;padding-right:14px'>"); //$NON-NLS-1$
-		sb.append(String.format(Utils.FORMATE_DATE_FULL, date));
+//		Date date = doc.get_cdate();
+//		sb.append(String.format(Utils.FORMATE_DATE_FULL, date));
+
+		AccountInfo ca = doc.get_caccount();
+		if (ca != null) {
+
+			sb.append(" "); //$NON-NLS-1$
+			sb.append(ca.getUserName());
+//			sb.append("|"); //$NON-NLS-1$
+//			sb.append(ca.getUserId());
+		}
+		
+		// 显示状态
+		String status = doc.getLifecycleName();
+		sb.append(" <span style='color:rgb(0,128,0)'>"); //$NON-NLS-1$
+		sb.append(status);
+
+		if (doc.isLocked()) {
+			sb.append(Messages.get().UserTaskDocumentLabelProvider_2);
+			// sb.append("[");
+			// User lockuser = doc.getLockedBy();
+			// if(lockuser!=null){
+			// sb.append(lockuser);
+			// }
+			// Date date = doc.getLockOn();
+			// if(date!=null){
+			// sb.append(", ");
+			// sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", date));
+			// }
+			// sb.append("]");
+			// sb.append(" ");
+		}
+
 		sb.append("</span>"); //$NON-NLS-1$
 
-		String summary = doc.getSummary();
-		if (summary != null) {
-			sb.append(Messages.get().UserTaskDocumentLabelProvider_3);
-			String plainText = Utils.getPlainText(summary);
-			plainText = Utils.getLimitLengthString(plainText, 40);
-			sb.append(plainText);
-		}
+
+		
+//		String summary = doc.getSummary();
+//		if (summary != null) {
+//			sb.append(Messages.get().UserTaskDocumentLabelProvider_3);
+//			String plainText = Utils.getPlainText(summary);
+//			plainText = Utils.getLimitLengthString(plainText, 40);
+//			sb.append(plainText);
+//		}
 		sb.append("</small>"); //$NON-NLS-1$
 
 		sb.append("</span>"); //$NON-NLS-1$

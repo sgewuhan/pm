@@ -3765,7 +3765,7 @@
                         labelVisible="false"
                         name="participate"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.PartticipatePres"
+                        presentation="com.sg.business.commons.field.presentation.ParticipatePres"
                         required="false"
                         type="String">
                   </text>
@@ -4165,41 +4165,17 @@
                         editPart="Text(Single Line)"
                         editable="false"
                         id="desc"
+                        isHTML="true"
                         label="%text.label.31"
                         labelVisible="true"
                         name="desc"
                         persistable="true"
+                        presentation="com.sg.business.commons.field.presentation.WorkPres"
                         required="true"
                         type="String"
                         userlabelForReadonly="true"
                         widthHint="240">
                   </text>
-                  <fieldgroup
-                        columnCount="2">
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="false"
-                           id="status"
-                           isHTML="true"
-                           label="%text.label.34"
-                           labelVisible="true"
-                           name="status"
-                           persistable="true"
-                           presentation="com.sg.business.commons.field.presentation.StatusPres"
-                           required="false"
-                           type="String"
-                           userlabelForReadonly="true">
-                     </text>
-                     <checkbox
-                           editable="false"
-                           id="milestone"
-                           label="%checkbox.label.15"
-                           labelVisible="true"
-                           name="milestone"
-                           persistable="true"
-                           required="false">
-                     </checkbox>
-                  </fieldgroup>
                   <text
                         editPart="Text(Single Line)"
                         editable="false"
@@ -4236,7 +4212,7 @@
                         labelVisible="true"
                         name="participate"
                         persistable="true"
-                        presentation="com.sg.business.commons.field.presentation.PartticipatePres"
+                        presentation="com.sg.business.commons.field.presentation.ParticipatePres"
                         required="false"
                         type="String"
                         userlabelForReadonly="true">
@@ -4274,11 +4250,30 @@
                   </fieldgroup>
                </section>
                <section
-                     expand="false"
+                     label="%view.name.5">
+                  <tree
+                        ctreeId="workflow.workdelivery"
+                        editable="true"
+                        heightHint="200"
+                        id="workflow.workdelivery"
+                        isComputeField="true"
+                        label="%view.name.5"
+                        labelVisible="false"
+                        name="workflow.workdelivery"
+                        persistable="false"
+                        required="false">
+                  </tree>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     expand="true"
                      label="%navigatorpage.title.0">
                   <table
                         ctableId="work.workperformenceofwork2"
                         editable="true"
+                        heightHint="197"
                         id="work.workperformenceofwork"
                         isComputeField="true"
                         label="%navigatorpage.title.0"
@@ -4289,35 +4284,17 @@
                   </table>
                </section>
                <section
-                     expand="false"
+                     expand="true"
                      label="%view.name.4">
                   <table
                         ctableId="workflow.taskhistory"
                         editable="true"
+                        heightHint="200"
                         id="workflow.taskhistory"
                         isComputeField="true"
                         label="%view.name.4"
                         labelVisible="false"
                         name="workflow.taskhistory"
-                        persistable="false"
-                        required="false"
-                        widthHint="400">
-                  </table>
-               </section>
-            </pagecolumn>
-            <pagecolumn
-                  id="2">
-               <section
-                     label="%view.name.5">
-                  <table
-                        ctableId="workflow.workdelivery"
-                        editable="true"
-                        heightHint="400"
-                        id="workflow.workdelivery"
-                        isComputeField="true"
-                        label="%view.name.5"
-                        labelVisible="false"
-                        name="workflow.workdelivery"
                         persistable="false"
                         required="false">
                   </table>
@@ -4419,6 +4396,7 @@
             dataSet="com.sg.business.model.dataset.usertask.OwnerReservedTaskDataSet"
             headerVisiable="false"
             id="workflow.taskreserved"
+            lineVisiable="false"
             markupEnabled="true"
             virtual="true">
          <column
@@ -4438,6 +4416,7 @@
             dataSet="com.sg.business.model.dataset.usertask.TaskHistoryDataSet"
             headerVisiable="false"
             id="workflow.taskhistory"
+            lineVisiable="false"
             markupEnabled="true"
             virtual="true">
          <column
@@ -4452,6 +4431,7 @@
    <extension
          point="com.sg.widgets.tree">
        <tree
+             autoExpandLevel="-1"
              canCreate="false"
              canDelete="false"
              canEdit="true"
@@ -4461,6 +4441,7 @@
              dataSet="com.sg.business.model.dataset.usertask.RelatitedWorkDeliveryDataSet"
              headerVisiable="false"
              id="workflow.workdelivery"
+             lineVisiable="false"
              markupEnabled="true"
              virtual="true">
          <column

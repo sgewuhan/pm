@@ -34,6 +34,7 @@ public class WorksPerformence extends AbstractWorksMetadata {
 
 	@Override
 	public String getHTMLLabel() {
+
 		String userId = getStringValue(F_USERID);
 		User commiter = UserToolkit.getUserById(userId);
 		String desc = getStringValue(F_DESC);// 进展状态
@@ -41,24 +42,29 @@ public class WorksPerformence extends AbstractWorksMetadata {
 		Integer works = getIntegerValue(F_WORKS);
 		String content = getStringValue(F_CONTENT);
 		if(content!=null){
-			content = Utils.getLimitLengthString(content, 6);
+			content = Utils.getLimitLengthString(content, 16);
 		}else{
 			content = "";
 		}
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<b>");
+		sb.append("<span style='font-family:微软雅黑;font-size:9pt;'>"); //$NON-NLS-1$
+		if(desc.contains("滞后")){
+			sb.append("<q style='color:rgb(255,100,100);'>");
+		}else{
+			sb.append("<q style='color:rgb(0,128,0);'>");
+		}
 		sb.append(desc);
-		sb.append("</b>");
+		sb.append("</q> ");
 		sb.append(String.format(Utils.FORMATE_DATE_COMPACT_SASH, commitdate));
 		sb.append(" ");
 		sb.append(commiter.getUsername());
 		sb.append(" ");
 		sb.append(" 工时:");
 		sb.append(works);
-		sb.append("h 说明:");
+		sb.append("h <q style='color:#b0b0b0'>说明:");
 		sb.append(content);
-
+		sb.append("</q></span>");
 		return sb.toString();
 	}
 

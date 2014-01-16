@@ -10,7 +10,7 @@ import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.commons.valuepresentation.IValuePresentation;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 
-public class PartticipatePres implements IValuePresentation {
+public class ParticipatePres implements IValuePresentation {
 
 	@Override
 	public String getPresentValue(IFormPart part) {
@@ -27,12 +27,19 @@ public class PartticipatePres implements IValuePresentation {
 				}
 				Organization org = user.getOrganization();
 				if(org!=null){
-					result += user + "  ("+org+")"; //$NON-NLS-1$ //$NON-NLS-2$
+					String path = org.getPath(2);
+					result += user + "  ("+path+")"; //$NON-NLS-1$ //$NON-NLS-2$
 				}else{
 					result += user;
 				}
 			}
 			result+="</span>"; //$NON-NLS-1$
+			//²¹¿ÕÐÐ
+			if(list.size()<3){
+				for (int i = list.size(); i < 4; i++) {
+					result += "<br/>"; //$NON-NLS-1$
+				}
+			}
 			return result;
 		}
 		

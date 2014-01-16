@@ -31,5 +31,6 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 			ISelection selection) {
 		return part.getSite().getId().equals("homenavigator");
 	}
+	
 
 }
