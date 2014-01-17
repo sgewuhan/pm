@@ -1,6 +1,7 @@
 package com.tmt.jszx.bpmservice;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 			return Messages.get().ProjectReviewServiceOfJSZX_1;
 		} else if ("workmessage".equals(getOperation())) { //$NON-NLS-1$
 			return Messages.get().ProjectReviewServiceOfJSZX_3;
+		} else if ("reviewermessage".equals(getOperation())) { //$NON-NLS-1$
+			return Messages.get().ProjectReviewServiceOfJSZX_3;
 		} else {
 			return super.getMessageTitle();
 		}
@@ -42,31 +45,47 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 							.getDateValue(getInputValue("confirmtime")); //$NON-NLS-1$
 					SimpleDateFormat sdf = new SimpleDateFormat(Utils.SDF_DATE);
 					content = content + sdf.format(confirmTime);
-					content = content + Messages.get().ProjectReviewServiceOfJSZX_7;
+					content = content
+							+ Messages.get().ProjectReviewServiceOfJSZX_7;
 					String confirmAddress = (String) getInputValue("confirmaddress"); //$NON-NLS-1$
 					content = content + confirmAddress;
-					content = content + Messages.get().ProjectReviewServiceOfJSZX_9;
+					content = content
+							+ Messages.get().ProjectReviewServiceOfJSZX_9;
 					content = content + pro.getLabel();
-					content = content + Messages.get().ProjectReviewServiceOfJSZX_10;
+					content = content
+							+ Messages.get().ProjectReviewServiceOfJSZX_10;
 					String projectadminId = (String) getInputValue("act_rule_prj_admin"); //$NON-NLS-1$
 					User projectadmin = UserToolkit.getUserById(projectadminId);
 					content = content + projectadmin.getUsername();
-					content = content + Messages.get().ProjectReviewServiceOfJSZX_12;
+					content = content
+							+ Messages.get().ProjectReviewServiceOfJSZX_12;
 					return content;
 				} catch (Exception e) {
 					return null;
 				}
 			} else if ("workmessage".equals(getOperation())) { //$NON-NLS-1$
 				try {
-					String content = Messages.get().ProjectReviewServiceOfJSZX_14 + pro.getLabel();
+					String content = Messages.get().ProjectReviewServiceOfJSZX_14
+							+ pro.getLabel();
 					String choice = (String) getInputValue("choice"); //$NON-NLS-1$
 					if ("整改".equals(choice)) { //$NON-NLS-1$
-						content = content + Messages.get().ProjectReviewServiceOfJSZX_0;
+						content = content
+								+ Messages.get().ProjectReviewServiceOfJSZX_0;
 					} else if ("通过".equals(choice)) { //$NON-NLS-1$
-						content = content + Messages.get().ProjectReviewServiceOfJSZX_19;
+						content = content
+								+ Messages.get().ProjectReviewServiceOfJSZX_19;
 					} else if ("不通过".equals(choice)) { //$NON-NLS-1$
-						content = content + Messages.get().ProjectReviewServiceOfJSZX_21;
+						content = content
+								+ Messages.get().ProjectReviewServiceOfJSZX_21;
 					}
+					return content;
+				} catch (Exception e) {
+					return null;
+				}
+			} else if ("reviewermessage".equals(getOperation())) { //$NON-NLS-1$
+				try {
+					String content = Messages.get().ProjectReviewServiceOfJSZX_14
+							+ pro.getLabel();
 					return content;
 				} catch (Exception e) {
 					return null;
@@ -95,11 +114,11 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 	@Override
 	public List<String> getReceiverList() {
 		if ("meetingmessage".equals(getOperation())) { //$NON-NLS-1$
-			 List<String> receiverList = super.getReceiverList();
-			 String launcher = (String) getInputValue("act_rule_launcher"); //$NON-NLS-1$
-			 receiverList.add(launcher);
-			 return receiverList;
-		} else {
+			List<String> receiverList = super.getReceiverList();
+			String launcher = (String) getInputValue("act_rule_launcher"); //$NON-NLS-1$
+			receiverList.add(launcher);
+			return receiverList;
+		} else if ("workmessage".equals(getOperation())) {
 			Object content = getInputValue("content"); //$NON-NLS-1$
 			if (content instanceof String) {
 				String jsonContent = (String) content;
@@ -110,7 +129,24 @@ public class ProjectReviewServiceOfJSZX extends MessageService {
 					return (List<String>) participatesIdList;
 				}
 			}
-			return null;
+		}else if ("reviewermessage".equals(getOperation())) { //$NON-NLS-1$
+			 Object inputValue = getInputValue("reviewer_list");
+			 if (inputValue instanceof ArrayList<?>) {
+					ArrayList<?> arrayList = (ArrayList<?>) inputValue;
+					List<String> receivers = new ArrayList<String>();
+					for (Object object : arrayList) {
+						if (object instanceof String) {
+							String string = (String) object;
+							receivers.add(string);
+						}
+					}
+					if (receivers != null && receivers.size() > 0) {
+						return receivers;
+					} else {
+						return null;
+					}
+				}
 		}
+		return null;
 	}
 }

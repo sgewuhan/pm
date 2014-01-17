@@ -861,7 +861,7 @@
       <taskForm
             editorId="jszx.jszxProjectReview.confirmtime"
             name="确定评审会时间"
-            persistentFields="confirmtime,confirmaddress,accessory"
+            persistentFields="confirmtime,confirmaddress,accessory,choice"
             processDefinitionId="jszx.jszxProjectReview">
          <processParameter
                processParameterName="confirmtime"
@@ -870,6 +870,20 @@
          <processParameter
                processParameterName="confirmaddress"
                taskFormFieldName="confirmaddress">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="jszx.jszxProjectReview.meetingreview"
+            name="专家组组长审核"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="jszx.jszxProjectReview">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
@@ -1322,6 +1336,20 @@
                title="%basicpage.title.40">
             <pagecolumn>
                <section
+                     label="请确定评审方式">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审方式"
+                        labelVisible="false"
+                        name="choice"
+                        option="评审实施计划"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+               <section
                      label="%section.label.27">
                   <dateTime
                         defaultValueProvider="com.sg.business.commons.value.TodayDefault"
@@ -1385,7 +1413,7 @@
                title="%basicpage.title.43">
             <pagecolumn>
                <section
-                     label="%section.label.29">
+                     label="请填写评审意见和结论">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -1704,6 +1732,12 @@
             interface="jszxprojectreview.service.action"
             name="项目评审流程完成消息"
             operation="workmessage"
+            serviceProvider="com.tmt.jszx.bpmservice.ProjectReviewServiceOfJSZX">
+      </service>
+      <service
+            interface="jszxprojectreview.service.action"
+            name="通知专家组"
+            operation="reviewermessage"
             serviceProvider="com.tmt.jszx.bpmservice.ProjectReviewServiceOfJSZX">
       </service>
       <service

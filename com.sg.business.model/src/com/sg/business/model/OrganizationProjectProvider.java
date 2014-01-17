@@ -224,4 +224,13 @@ public class OrganizationProjectProvider extends ProjectProvider {
 				getOrganizations(organization)));
 		return projectCol.distinct(Project.F__ID, query);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getSalesAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		query.put(Project.F_BUSINESS_ORGANIZATION, new BasicDBObject().append("$in",
+				getOrganizations(organization)));
+		return projectCol.distinct(Project.F__ID, query);
+	}
 }

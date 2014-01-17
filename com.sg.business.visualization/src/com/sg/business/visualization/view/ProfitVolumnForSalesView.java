@@ -5,15 +5,15 @@ import java.util.List;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.action.Action;
 
+import com.sg.business.visualization.action.ChartSeriesSwitchAction;
 import com.sg.business.visualization.action.SetChartSubtypeToSidebySideAction;
 import com.sg.business.visualization.action.SetChartSubtypeToStackedAction;
 import com.sg.business.visualization.action.SetChartTypeToBarAction;
 import com.sg.business.visualization.action.SetChartTypeToLineAction;
-import com.sg.business.visualization.action.ChartSeriesSwitchAction;
 import com.sg.business.visualization.chart.CommonChart;
 import com.sg.business.visualization.nls.Messages;
 
-public class ProfitVolumnView extends AbstractDashChartView {
+public class ProfitVolumnForSalesView extends AbstractDashChartView {
 
 	@Override
 	protected Chart getChartData() throws Exception {
@@ -23,7 +23,7 @@ public class ProfitVolumnView extends AbstractDashChartView {
 		String[] xAxisText = new String[] { "1", "2", "3", "4", "5", "6", "7", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 				"8", "9", "10", "11", "12" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
-		double[][] value1 = projectProvider.getProfitAndCostByYear(null);
+		double[][] value1 = projectProvider.getProfitAndCostByYear("sales");
 
 		return CommonChart.getChart(xAxisText, bsText, value1,
 				chartType, chartSubType,showSeriesLabel, - 5);

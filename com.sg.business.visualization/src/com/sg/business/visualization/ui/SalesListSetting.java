@@ -16,16 +16,16 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
 
 import com.sg.business.visualization.nls.Messages;
-import com.sg.business.visualization.view.SalesListView;
+import com.sg.business.visualization.view.AbstractSalesListView;
 
 public class SalesListSetting extends Shell {
 
-	private SalesListView profitListView;
+	private AbstractSalesListView profitListView;
 	private int limitNumber;
 	private int month;
 	private int year;
 
-	public SalesListSetting(Shell parent, SalesListView profitListView) {
+	public SalesListSetting(Shell parent, AbstractSalesListView profitListView) {
 		super(parent, SWT.BORDER);
 		this.profitListView = profitListView;
 		limitNumber = profitListView.getLimitNumber();
