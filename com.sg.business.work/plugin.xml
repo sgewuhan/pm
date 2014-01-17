@@ -4436,7 +4436,7 @@
             </pagecolumn>
             <pageAction
                   class="com.sg.business.work.home.action.StartWork"
-                  icon="image/work_start_24.png"
+                  icon="image/start_b_24.png"
                   id="startwork"
                   label="%command.label.2"
                   mode="FORCE_TEXT"
@@ -4785,17 +4785,9 @@
             </pagecolumn>
             <pageAction
                   class="com.sg.business.work.home.action.StartWork"
-                  icon="image/work_finish_24.png"
+                  icon="image/complete_b_24.png"
                   id="startwork"
                   label="%command.label.3"
-                  mode="FORCE_TEXT"
-                  style="push">
-            </pageAction>
-            <pageAction
-                  class="com.sg.business.work.home.action.LogWork"
-                  icon="image/log_24.png"
-                  id="logwork"
-                  label="%logwork"
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>
