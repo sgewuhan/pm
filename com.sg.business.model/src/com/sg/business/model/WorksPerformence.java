@@ -42,7 +42,7 @@ public class WorksPerformence extends AbstractWorksMetadata {
 		Integer works = getIntegerValue(F_WORKS);
 		String content = getStringValue(F_CONTENT);
 		if(content!=null){
-			content = Utils.getLimitLengthString(content, 16);
+			content = Utils.getLimitLengthString(content, 32);
 		}else{
 			content = "";
 		}
@@ -62,9 +62,9 @@ public class WorksPerformence extends AbstractWorksMetadata {
 		sb.append(" ");
 		sb.append(" 工时:");
 		sb.append(works);
-		sb.append("h <q style='color:#b0b0b0'>说明:");
+		sb.append("h <br/><small style='color:#b0b0b0'>说明:");
 		sb.append(content);
-		sb.append("</q></span>");
+		sb.append("</small></span>");
 		return sb.toString();
 	}
 

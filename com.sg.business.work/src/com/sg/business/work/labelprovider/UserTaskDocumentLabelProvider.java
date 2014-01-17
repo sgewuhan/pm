@@ -39,7 +39,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		String fileName = serverFile.getFileName();
 		Date uploadDate = serverFile.getUploadDate();
 		long length = serverFile.getLength();
-//		String md5 = serverFile.getMD5();
+		// String md5 = serverFile.getMD5();
 		// DBObject meta = gsFile.getMetaData();
 
 		StringBuffer sb = new StringBuffer();
@@ -60,7 +60,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		if (serverFile instanceof OSServerFile) {
 			sb.append("<img src='"); //$NON-NLS-1$
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_OUTREP_16,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+					BusinessResource.PLUGIN_ID));
 			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />"); //$NON-NLS-1$
 		}
 
@@ -71,14 +71,14 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 			sb.append("'>"); //$NON-NLS-1$
 			sb.append(fileName);
 			sb.append("</a>"); //$NON-NLS-1$
-		}else{
+		} else {
 			sb.append("<a href='"); //$NON-NLS-1$
 			String downloadURL = serverFile.getInternalDownloadURL();
 			sb.append(downloadURL + "@download"); //$NON-NLS-1$
 			sb.append("' target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append(fileName);
 			sb.append("</a>"); //$NON-NLS-1$
-			
+
 		}
 
 		sb.append("<br/>"); //$NON-NLS-1$
@@ -88,10 +88,10 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append(getLength(length));
 		sb.append(Messages.get().UserTaskDocumentLabelProvider_1);
 		sb.append(String.format(Utils.FORMATE_DATE_FULL, uploadDate));
-//		if (Portal.getDefault().isDevelopMode()) {
-//			sb.append(" MD5:"); //$NON-NLS-1$
-//			sb.append(md5);
-//		}
+		// if (Portal.getDefault().isDevelopMode()) {
+		//			sb.append(" MD5:"); //$NON-NLS-1$
+		// sb.append(md5);
+		// }
 		sb.append("</small>"); //$NON-NLS-1$
 
 		sb.append("</span>"); //$NON-NLS-1$
@@ -127,7 +127,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		if (doc.isLocked()) {
 			sb.append("<img src='"); //$NON-NLS-1$
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_LOCK_16,
-					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+					BusinessResource.PLUGIN_ID));
 			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />"); //$NON-NLS-1$
 		}
 
@@ -154,7 +154,7 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWNLOAD_15X10,
-				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+				BusinessResource.PLUGIN_ID));
 		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='15' height='10' />"); //$NON-NLS-1$
 		sb.append("</a>"); //$NON-NLS-1$
 		sb.append("</span>"); //$NON-NLS-1$
@@ -162,18 +162,18 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append("<small>"); //$NON-NLS-1$
 		// 显示创建时间，创建人
-//		Date date = doc.get_cdate();
-//		sb.append(String.format(Utils.FORMATE_DATE_FULL, date));
+		// Date date = doc.get_cdate();
+		// sb.append(String.format(Utils.FORMATE_DATE_FULL, date));
 
 		AccountInfo ca = doc.get_caccount();
 		if (ca != null) {
 
 			sb.append(" "); //$NON-NLS-1$
 			sb.append(ca.getUserName());
-//			sb.append("|"); //$NON-NLS-1$
-//			sb.append(ca.getUserId());
+			//			sb.append("|"); //$NON-NLS-1$
+			// sb.append(ca.getUserId());
 		}
-		
+
 		// 显示状态
 		String status = doc.getLifecycleName();
 		sb.append(" <span style='color:rgb(0,128,0)'>"); //$NON-NLS-1$
@@ -197,18 +197,24 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 
 		sb.append("</span>"); //$NON-NLS-1$
 
-
-		
-//		String summary = doc.getSummary();
-//		if (summary != null) {
-//			sb.append(Messages.get().UserTaskDocumentLabelProvider_3);
-//			String plainText = Utils.getPlainText(summary);
-//			plainText = Utils.getLimitLengthString(plainText, 40);
-//			sb.append(plainText);
-//		}
+		// String summary = doc.getSummary();
+		// if (summary != null) {
+		// sb.append(Messages.get().UserTaskDocumentLabelProvider_3);
+		// String plainText = Utils.getPlainText(summary);
+		// plainText = Utils.getLimitLengthString(plainText, 40);
+		// sb.append(plainText);
+		// }
 		sb.append("</small>"); //$NON-NLS-1$
 
 		sb.append("</span>"); //$NON-NLS-1$
+
+		if (!doc.isLocked()) {
+			sb.append("<img src='"); //$NON-NLS-1$
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_ADD_24,
+					BusinessResource.PLUGIN_ID));
+			sb.append("' style='position:absolute; right:4; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+
+		}
 		return sb.toString();
 	}
 

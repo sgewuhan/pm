@@ -358,11 +358,10 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 		String status = getStatus();
 		sb.append("<span style='float:right;padding-right:14px'>"); //$NON-NLS-1$
 		User owner = getActualOwner();
-		sb.append(owner);
+		sb.append(owner.getUsername());
 		sb.append(" "); //$NON-NLS-1$
-
 		Date createOn = get_cdate();
-		sb.append(String.format("%1$tm/%1$te %1$tH:%1$tM", createOn)); //$NON-NLS-1$
+		sb.append(String.format("%1$ty/%1$tm/%1$te %1$tH:%1$tM", createOn)); //$NON-NLS-1$
 		sb.append(" "); //$NON-NLS-1$
 
 		if (Status.Reserved.name().equals(status)) {
@@ -412,7 +411,7 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 		sb.append("<br/>"); //$NON-NLS-1$
 
 		// 显示任务详细信息
-		sb.append("<small>"); //$NON-NLS-1$
+		sb.append("<small style='color:#b0b0b0'>"); //$NON-NLS-1$
 		String comment = getComment();
 		if (comment != null) {
 			sb.append(" "); //$NON-NLS-1$

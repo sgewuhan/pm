@@ -25,6 +25,9 @@ public class WorkPres implements IValuePresentation {
 		StringBuffer sb = new StringBuffer();
 		String workDesc = work.getDesc();
 		sb.append(workDesc);
+		if(work.isSummaryWork()){
+			sb.append(" [总成型工作]");
+		}
 		sb.append(" <q style='color:rgb(0,128,0);'>");
 		sb.append(work.getLifecycleStatusText());
 		sb.append("</q> ");

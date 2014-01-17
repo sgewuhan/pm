@@ -17,7 +17,19 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 		if (!(primary instanceof Work)) {
 			return null;
 		}
-		String editorId = "navigator.view.work";
+		Work work = (Work) primary;
+		String editorId = "navigator.view.work2";
+		if(Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())){
+			editorId =  "navigator.view.work.1";
+		}else if(Work.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())){
+			if(work.isExecuteWorkflowActivateAndAvailable()){
+				editorId = "navigator.view.work.2";
+			}else{
+				editorId = "navigator.view.work.3";
+			}
+		}
+		
+		
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator(editorId);
 		PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(
