@@ -4471,7 +4471,7 @@
                         navigatorId="tb.tbBusinessSupport.supportauditor"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
@@ -4484,7 +4484,7 @@
                         navigatorId="tb.tbBusinessSupport.supportapprover"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                </section>
             </pagecolumn>

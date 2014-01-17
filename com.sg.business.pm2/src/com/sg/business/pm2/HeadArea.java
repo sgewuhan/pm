@@ -89,8 +89,8 @@ public class HeadArea implements IHeadAreaSupport {
 		headerPic.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 2);
 		fd.top = new FormAttachment(0, 2);
-		fd.height = 46;
-		fd.width = 46;
+		fd.height = 24;
+		fd.width = 24;
 
 		final Shell shell = headerPic.getShell();
 		// ´´½¨²Ëµ¥
@@ -442,7 +442,7 @@ public class HeadArea implements IHeadAreaSupport {
 	@Override
 	public void resetImageURL() {
 		headerPic.setText("<img src='" + imageURL //$NON-NLS-1$
-				+ "' style='float:left' width='48' height='48' />"); //$NON-NLS-1$
+				+ "' style='float:left' width='24' height='24' />"); //$NON-NLS-1$
 	}
 
 }

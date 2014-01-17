@@ -132,8 +132,9 @@
             locationURI="toolbar:performence.works.org?after=additions">
          <command
                commandId="performence.works.org.displayyear"
-               icon="image/cal1_24.png"
+               icon="image/cal1_16.png"
                label="%command.label"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -147,8 +148,9 @@
          </command>
          <command
                commandId="performence.works.org.display3month"
-               icon="image/cal2_24.png"
+               icon="image/cal2_16.png"
                label="%command.label.0"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -162,8 +164,9 @@
          </command>
          <command
                commandId="performence.works.org.displayleft"
-               icon="image/left_24.png"
+               icon="image/left_16.png"
                label="%command.label.1"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -177,8 +180,9 @@
          </command>
          <command
                commandId="performence.works.org.displayright"
-               icon="image/right_24.png"
+               icon="image/right_16.png"
                label="%command.label.2"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -192,14 +196,14 @@
          </command>
          <command
                commandId="performence.collapse"
-               icon="image/collapse_24.png"
                label="%command.label.3"
+               mode="FORCE_TEXT"
                style="push">
          </command>
          <command
                commandId="performence.expandAll"
-               icon="image/expand_24.png"
                label="%command.label.4"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>
@@ -208,8 +212,9 @@
             locationURI="toolbar:performence.works.project?after=additions">
          <command
                commandId="performence.works.org.displayyear"
-               icon="image/cal1_24.png"
+               icon="image/cal1_16.png"
                label="%command.label.5"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -223,8 +228,9 @@
          </command>
          <command
                commandId="performence.works.org.display3month"
-               icon="image/cal2_24.png"
+               icon="image/cal2_16.png"
                label="%command.label.6"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -238,8 +244,9 @@
          </command>
          <command
                commandId="performence.works.org.displayleft"
-               icon="image/left_24.png"
+               icon="image/left_16.png"
                label="%command.label.7"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -253,8 +260,9 @@
          </command>
          <command
                commandId="performence.works.org.displayright"
-               icon="image/right_24.png"
+               icon="image/right_16.png"
                label="%command.label.8"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -268,14 +276,14 @@
          </command>
          <command
                commandId="performence.collapse"
-               icon="image/collapse_24.png"
                label="%command.label.9"
+               mode="FORCE_TEXT"
                style="push">
          </command>
          <command
                commandId="performence.expandAll"
-               icon="image/expand_24.png"
                label="%command.label.10"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>
@@ -284,8 +292,9 @@
             locationURI="toolbar:performence.works.project.org?after=additions">
          <command
                commandId="performence.works.org.displayyear"
-               icon="image/cal1_24.png"
+               icon="image/cal1_16.png"
                label="%command.label.11"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -299,8 +308,9 @@
          </command>
          <command
                commandId="performence.works.org.display3month"
-               icon="image/cal2_24.png"
+               icon="image/cal2_16.png"
                label="%command.label.12"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -314,8 +324,9 @@
          </command>
          <command
                commandId="performence.works.org.displayleft"
-               icon="image/left_24.png"
+               icon="image/left_16.png"
                label="%command.label.13"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -329,8 +340,9 @@
          </command>
          <command
                commandId="performence.works.org.displayright"
-               icon="image/right_24.png"
+               icon="image/right_16.png"
                label="%command.label.14"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -344,14 +356,15 @@
          </command>
          <command
                commandId="performence.collapse"
-               icon="image/collapse_24.png"
                label="%command.label.15"
+               mode="FORCE_TEXT"
                style="push">
          </command>
          <command
                commandId="performence.expandAll"
                icon="image/expand_24.png"
                label="%command.label.16"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>
@@ -386,8 +399,8 @@
             locationURI="toolbar:work.performence.record?after=additions">
          <command
                commandId="work.addrecord"
-               icon="image/log_add_24.png"
                label="%command.label.20"
+               mode="FORCE_TEXT"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -464,8 +477,8 @@
             locationURI="toolbar:works.register?after=additions">
          <command
                commandId="work.appendrecord"
-               icon="image/log_add_24.png"
                label="%command.label.24"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>

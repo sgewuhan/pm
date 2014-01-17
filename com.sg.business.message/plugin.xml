@@ -1102,14 +1102,14 @@
             locationURI="toolbar:message.send?after=additions">
          <command
                commandId="message.add"
-               icon="image/message_add_24.png"
                label="%command.label.16"
+               mode="FORCE_TEXT"
                style="push">
          </command>
          <command
                commandId="message.open"
-               icon="image/message_open_24.png"
                label="%command.label.17"
+               mode="FORCE_TEXT"
                style="push">
          </command>
       </menuContribution>
@@ -1118,13 +1118,11 @@
             locationURI="toolbar:message.recieved?after=additions">
          <command
                commandId="message.reply"
-               icon="image/message_reply_24.png"
                label="%command.label.18"
                style="push">
          </command>
          <command
                commandId="message.open"
-               icon="image/message_open_24.png"
                label="%command.label.19"
                style="push">
          </command>
@@ -1134,7 +1132,6 @@
             locationURI="toolbar:message.waste?after=additions">
          <command
                commandId="message.restore"
-               icon="image/message_restore_24.png"
                label="%command.label.20"
                style="push">
             <visibleWhen
