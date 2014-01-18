@@ -71,6 +71,8 @@ public abstract class ProjectProvider extends PrimaryObject {
 
 	public abstract List<ObjectId> getAllProjectId();
 
+	public abstract List<ObjectId> getSalesAllProjectId();
+
 	/**
 	 * 设置查询参数
 	 * 
@@ -342,8 +344,14 @@ public abstract class ProjectProvider extends PrimaryObject {
 		return aggregationOutput;
 	}
 
-	public double[] getProfitRateByYear() {
-		AggregationOutput aggregationOutput = aggregateRevenueAndCostByYear();
+	public double[] getProfitRateByYear(String type) {
+		List<ObjectId> projectIdList;
+		if ("sales".equals(type)) {
+			projectIdList = getSalesAllProjectId();
+		} else {
+			projectIdList = getAllProjectId();
+		}
+		AggregationOutput aggregationOutput = aggregateRevenueAndCostByYear(projectIdList);
 		Iterator<DBObject> iterator = aggregationOutput.results().iterator();
 		double[] sales_cost = new double[12];
 		double[] sales_revenue = new double[12];
@@ -368,71 +376,11 @@ public abstract class ProjectProvider extends PrimaryObject {
 		return rate;
 	}
 
-
-	public double[] getProfitRateForSalesByYear() {
-		AggregationOutput aggregationOutput = aggregateRevenueAndCostForSalesByYear();
-		Iterator<DBObject> iterator = aggregationOutput.results().iterator();
-		double[] sales_cost = new double[12];
-		double[] sales_revenue = new double[12];
-		while (iterator.hasNext()) {
-			DBObject dbObject = (DBObject) iterator.next();
-			int month = (int) dbObject.get("_id");
-			sales_cost[month - 1] = ((Number) dbObject
-					.get(ProjectETL.F_SALES_COST)).doubleValue();
-			sales_revenue[month - 1] = ((Number) dbObject
-					.get(ProjectETL.F_SALES_REVENUE)).doubleValue();
-		}
-		double[] rate = new double[12];
-		for (int i = 0; i < sales_revenue.length; i++) {
-			if (sales_revenue[i] != 0d) {
-				BigDecimal d = new BigDecimal(100d
-						* (sales_revenue[i] - sales_cost[i]) / sales_revenue[i]);
-				rate[i] = d.setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
-			} else {
-				rate[i] = 0d;
-			}
-		}
-		return rate;
-	}
-	
-
-	private AggregationOutput aggregateRevenueAndCostForSalesByYear() {
+	private AggregationOutput aggregateRevenueAndCostByYear(
+			List<ObjectId> projectIdList) {
 		Calendar cal = parameters == null ? Calendar.getInstance()
 				: (Calendar) parameters[0];
 		int year = cal.get(Calendar.YEAR);
-		//TODO
-		List<ObjectId> projectIdList = getAllProjectId();
-		BasicDBObject query = new BasicDBObject();
-		query.put(
-				"$match",
-				new BasicDBObject().append(ProjectETL.F_YEAR, year).append(
-						ProjectETL.F_PROJECTID,
-						new BasicDBObject().append("$in", projectIdList)));
-
-		BasicDBObject group = new BasicDBObject();
-		group.put(
-				"$group",
-				new BasicDBObject()
-						.append("_id", "$month")
-						.append(ProjectETL.F_SALES_COST,
-								new BasicDBObject().append("$sum", "$"
-										+ ProjectETL.F_SALES_COST))
-						.append(ProjectETL.F_SALES_REVENUE,
-								new BasicDBObject().append("$sum", "$"
-										+ ProjectETL.F_SALES_REVENUE)));
-
-		BasicDBObject sort = new BasicDBObject();
-		sort.put("$sort", new BasicDBObject().append("_id", 1));
-		DBCollection col = getCollection(IModelConstants.C_PROJECT_MONTH_DATA);
-		AggregationOutput aggregationOutput = col.aggregate(query, group, sort);
-		return aggregationOutput;
-	}
-
-	private AggregationOutput aggregateRevenueAndCostByYear() {
-		Calendar cal = parameters == null ? Calendar.getInstance()
-				: (Calendar) parameters[0];
-		int year = cal.get(Calendar.YEAR);
-		List<ObjectId> projectIdList = getAllProjectId();
 		BasicDBObject query = new BasicDBObject();
 		query.put(
 				"$match",
@@ -504,8 +452,15 @@ public abstract class ProjectProvider extends PrimaryObject {
 		return total;
 	}
 
-	public double[][] getProfitAndCostByYear() {
-		AggregationOutput aggregationOutput = aggregatProfitAndCostByYear();
+	public double[][] getProfitAndCostByYear(String type) {
+		List<ObjectId> projectIdList;
+		if ("sales".equals(type)) {
+			projectIdList = getSalesAllProjectId();
+		} else {
+			projectIdList = getAllProjectId();
+		}
+
+		AggregationOutput aggregationOutput = aggregatProfitAndCostByYear(projectIdList);
 		Iterator<DBObject> iterator = aggregationOutput.results().iterator();
 		double[] sales_cost = new double[12];
 		double[] sales_profit = new double[12];
@@ -527,14 +482,14 @@ public abstract class ProjectProvider extends PrimaryObject {
 						.doubleValue();
 			}
 		}
-		return new double[][] { sales_cost ,sales_profit};
+		return new double[][] { sales_cost, sales_profit };
 	}
 
-	private AggregationOutput aggregatProfitAndCostByYear() {
+	private AggregationOutput aggregatProfitAndCostByYear(
+			List<ObjectId> projectIdList) {
 		Calendar cal = parameters == null ? Calendar.getInstance()
 				: (Calendar) parameters[0];
 		int year = cal.get(Calendar.YEAR);
-		List<ObjectId> projectIdList = getAllProjectId();
 		BasicDBObject query = new BasicDBObject();
 		query.put(
 				"$match",
@@ -583,9 +538,14 @@ public abstract class ProjectProvider extends PrimaryObject {
 	}
 
 	public Object[] getHasLastNumberTopList(int limitNumber, int sortType,
-			String groupField, String groupByField, int year, int month)
-			throws Exception {
-		List<ObjectId> projectIdList = getAllProjectId();
+			String groupField, String groupByField, int year, int month,
+			String type) throws Exception {
+		List<ObjectId> projectIdList;
+		if ("sales".equals(type)) {
+			projectIdList = getSalesAllProjectId();
+		} else {
+			projectIdList = getAllProjectId();
+		}
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month - 1, 1);
 
@@ -607,8 +567,13 @@ public abstract class ProjectProvider extends PrimaryObject {
 
 	public Object[] getHasLastNumberTopList(int limitNumber, int sortType,
 			String groupField, String groupByField, String unWindField,
-			int year, int month) throws Exception {
-		List<ObjectId> projectIdList = getAllProjectId();
+			int year, int month, String type) throws Exception {
+		List<ObjectId> projectIdList;
+		if ("sales".equals(type)) {
+			projectIdList = getSalesAllProjectId();
+		} else {
+			projectIdList = getAllProjectId();
+		}
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month - 1, 1);
 
@@ -634,7 +599,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 			if (object != null) {
 				Object[] top = (Object[]) object;
 				Object _id = top[selectIndex];
-				if(_id == null){
+				if (_id == null) {
 					continue;
 				}
 				for (Object lastOject : lastopList) {
@@ -691,11 +656,12 @@ public abstract class ProjectProvider extends PrimaryObject {
 		Iterator<DBObject> iterator = aggregationOutput.results().iterator();
 		Object[] results = new Object[limitNumber];
 		for (int i = 0; i < results.length; i++) {
-			if(iterator.hasNext()){
+			if (iterator.hasNext()) {
 				DBObject dbObject = (DBObject) iterator.next();
 				Object _id = dbObject.get("_id");
 				Double month_sales_profit = (Double) dbObject.get(groupField);
-				results[i] = new Object[] { _id, month_sales_profit, i + 1, null };
+				results[i] = new Object[] { _id, month_sales_profit, i + 1,
+						null };
 			}
 		}
 		return results;

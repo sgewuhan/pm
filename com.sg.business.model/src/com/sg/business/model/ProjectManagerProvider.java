@@ -101,4 +101,12 @@ public class ProjectManagerProvider extends ProjectProvider {
 		return projectCol.distinct(Project.F__ID, query);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getSalesAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		query.put(Project.F_BUSINESS_CHARGER, user.getUserid());
+		return projectCol.distinct(Project.F__ID, query);
+	}
+
 }

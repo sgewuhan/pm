@@ -42,7 +42,6 @@ public class MessageService extends AbstractMessageService {
 	public List<String> getReceiverList() {
 		try {
 			Object inputValue = getInputValue(RECEIVERS);
-			System.out.println(1);
 			if (inputValue instanceof String) {
 				String receiverList = (String) getInputValue(RECEIVERS);
 				String[] receivers = receiverList.split(","); //$NON-NLS-1$

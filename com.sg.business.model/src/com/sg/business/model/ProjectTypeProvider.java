@@ -38,7 +38,7 @@ public class ProjectTypeProvider extends ProjectProvider {
 		setValue(F_DESC, desc);
 
 	}
-	
+
 	@Override
 	public boolean doSave(IContext context) throws Exception {
 		return true;
@@ -51,7 +51,6 @@ public class ProjectTypeProvider extends ProjectProvider {
 	@Override
 	public void doInsert(IContext context) throws Exception {
 	}
-	
 
 	@Override
 	public List<PrimaryObject> getProjectSet() {
@@ -218,6 +217,17 @@ public class ProjectTypeProvider extends ProjectProvider {
 		Object ids = getOrganizationIdCascade(null).toArray();
 		query.put(Project.F_PROJECT_TYPE_OPTION, getDesc());
 		query.put(Project.F_LAUNCH_ORGANIZATION,
+				new BasicDBObject().append("$in", ids));
+		return projectCol.distinct(Project.F__ID, query);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObjectId> getSalesAllProjectId() {
+		BasicDBObject query = new BasicDBObject();
+		Object ids = getOrganizationIdCascade(null).toArray();
+		query.put(Project.F_PROJECT_TYPE_OPTION, getDesc());
+		query.put(Project.F_BUSINESS_ORGANIZATION,
 				new BasicDBObject().append("$in", ids));
 		return projectCol.distinct(Project.F__ID, query);
 	}

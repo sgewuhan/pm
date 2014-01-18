@@ -138,4 +138,9 @@ public class UserProjectPerf extends ProjectProvider {
 		col.insert(data);
 	}
 
+	@Override
+	public List<ObjectId> getSalesAllProjectId() {
+		return getAllProjectId();
+	}
+
 }

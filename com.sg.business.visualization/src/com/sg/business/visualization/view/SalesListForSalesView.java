@@ -7,7 +7,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectETL;
 
-public class SalesListView extends AbstractSalesListView {
+public class SalesListForSalesView extends AbstractSalesListView {
 
 	@Override
 	protected void drawContent(Composite parent) {
@@ -19,49 +19,49 @@ public class SalesListView extends AbstractSalesListView {
 			if (selected.equals(Project.class)) {
 				topSalesProfit = projectProvider.getHasLastNumberTopList(
 						limitNumber, -1, ProjectETL.F_MONTH_SALES_PROFIT,
-						ProjectETL.F_PROJECTID, year, month, null);
+						ProjectETL.F_PROJECTID, year, month,"sales");
 				bottomSalesProfit = projectProvider.getHasLastNumberTopList(
 						limitNumber, 1, ProjectETL.F_MONTH_SALES_PROFIT,
-						ProjectETL.F_PROJECTID, year, month, null);
+						ProjectETL.F_PROJECTID, year, month,"sales");
 
 				topSales = projectProvider.getHasLastNumberTopList(limitNumber,
 						-1, ProjectETL.F_MONTH_SALES_REVENUE,
-						ProjectETL.F_PROJECTID, year, month, null);
+						ProjectETL.F_PROJECTID, year, month,"sales");
 				bottomSales = projectProvider.getHasLastNumberTopList(
 						limitNumber, 1, ProjectETL.F_MONTH_SALES_REVENUE,
-						ProjectETL.F_PROJECTID, year, month, null);
+						ProjectETL.F_PROJECTID, year, month,"sales");
 			} else if (selected.equals(User.class)) {
 				topSalesProfit = projectProvider.getHasLastNumberTopList(
 						limitNumber, -1, ProjectETL.F_MONTH_SALES_PROFIT,
-						Project.F_CHARGER, year, month, null);
+						Project.F_CHARGER, year, month,"sales");
 				bottomSalesProfit = projectProvider.getHasLastNumberTopList(
 						limitNumber, 1, ProjectETL.F_MONTH_SALES_PROFIT,
-						Project.F_CHARGER, year, month, null);
+						Project.F_CHARGER, year, month,"sales");
 
 				topSales = projectProvider.getHasLastNumberTopList(limitNumber,
 						-1, ProjectETL.F_MONTH_SALES_REVENUE,
-						Project.F_CHARGER, year, month, null);
+						Project.F_CHARGER, year, month,"sales");
 				bottomSales = projectProvider.getHasLastNumberTopList(
 						limitNumber, 1, ProjectETL.F_MONTH_SALES_REVENUE,
-						Project.F_CHARGER, year, month, null);
+						Project.F_CHARGER, year, month,"sales");
 			} else if (selected.equals(Organization.class)) {
 				topSalesProfit = projectProvider.getHasLastNumberTopList(
 						limitNumber, -1, ProjectETL.F_MONTH_SALES_PROFIT,
 						Project.F_LAUNCH_ORGANIZATION,
-						Project.F_LAUNCH_ORGANIZATION, year, month, null);
+						Project.F_LAUNCH_ORGANIZATION, year, month,"sales");
 				bottomSalesProfit = projectProvider.getHasLastNumberTopList(
 						limitNumber, 1, ProjectETL.F_MONTH_SALES_PROFIT,
 						Project.F_LAUNCH_ORGANIZATION,
-						Project.F_LAUNCH_ORGANIZATION, year, month, null);
+						Project.F_LAUNCH_ORGANIZATION, year, month,"sales");
 
 				topSales = projectProvider.getHasLastNumberTopList(limitNumber,
 						-1, ProjectETL.F_MONTH_SALES_REVENUE,
 						Project.F_LAUNCH_ORGANIZATION,
-						Project.F_LAUNCH_ORGANIZATION, year, month, null);
+						Project.F_LAUNCH_ORGANIZATION, year, month,"sales");
 				bottomSales = projectProvider.getHasLastNumberTopList(
 						limitNumber, 1, ProjectETL.F_MONTH_SALES_REVENUE,
 						Project.F_LAUNCH_ORGANIZATION,
-						Project.F_LAUNCH_ORGANIZATION, year, month, null);
+						Project.F_LAUNCH_ORGANIZATION, year, month,"sales");
 			}
 
 			topSalesProfit = removeList(topSalesProfit);

@@ -1525,13 +1525,13 @@
                      label="请确定技术支持审批人">
                   <navigatorSelector
                         editable="true"
-                        id="auditor"
+                        id="support_auditor"
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="审批人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="auditor"
+                        name="support_auditor"
                         navigatorId="xtbusinesssupport.user.auditor"
                         navigatorReturnField="userid"
                         persistable="true"

@@ -1605,6 +1605,23 @@
          </basicpage>
       </editor>
    </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="pmprintdocument.print"
+            name="审批打印"
+            processDefinitionId="pm.pmPrintDocument">
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pmprintdocument.print"
+            name="审批打印">
+      </editor>
+   </extension>
  </plugin>
    
 
