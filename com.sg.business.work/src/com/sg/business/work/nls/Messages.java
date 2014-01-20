@@ -8,6 +8,8 @@ import com.mobnut.commons.util.NLS2;
 
 public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.work.nls.messages"; //$NON-NLS-1$
+	public String AddWorkRecord_0;
+	public String AddWorkRecord_1;
 	public String FinishTask;
 	public String StartWork;
 	public String FinishWork;

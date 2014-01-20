@@ -18,18 +18,22 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 public class WorkDetail extends PrimaryObjectDetailFormView {
 
 	@Override
-	public void initContent() {
+	protected void initContent() {
+		initContent("请在左边导航栏中选择您要处理的工作");
+	}
+	
+	public void initContent(String text) {
 		content.setLayout(new GridLayout());
 		Label label = new Label(content,SWT.NONE);
-		String text = "<span style='font-size:18pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
-					+ "请在左边导航栏中选择待处理的工作" + "</span>";
+		text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
+					+ text + "</span>";
 		label.setText(text);
 		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER,false,false));
 		content.layout();
-		setPartName("工作");
+		setPartName("工作");		
 	}
-	
+
 	@Override
 	protected PrimaryObjectEditorInput getInput(PrimaryObject primary) {
 		if (!(primary instanceof Work)) {
@@ -60,6 +64,6 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 			ISelection selection) {
 		return part.getSite().getId().equals("homenavigator");
 	}
-	
+
 
 }
