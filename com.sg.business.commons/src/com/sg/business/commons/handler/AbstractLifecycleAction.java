@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPage;
@@ -30,45 +31,64 @@ public abstract class AbstractLifecycleAction extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
-			ViewerControl vc, Command command, Map<String, Object> parameters, IStructuredSelection selection) {
+			ViewerControl vc, Command command, Map<String, Object> parameters,
+			IStructuredSelection selection) {
 		if (selected instanceof ILifecycle) {
 			ILifecycle lc = (ILifecycle) selected;
 			CurrentAccountContext context = new CurrentAccountContext();
+			String name = "";
 			try {
-				List<Object[]> message = checkBeforeExecute(lc, context);
-				String name = command.getName();
-				if (hasError(message)) {
-					MessageUtil.showToast(null, name,
-							Messages.get().AbstractLifecycleAction_0, SWT.ICON_ERROR);
-					showCheckMessages(message, selected);
-				} else {
-					if (message != null && message.size() > 0) {
-						MessageBox mb = MessageUtil.createMessageBox(null,
-								name, Messages.get().AbstractLifecycleAction_1 + "\n\n" //$NON-NLS-2$ //$NON-NLS-1$
-										+ Messages.get().AbstractLifecycleAction_3 + "\n" //$NON-NLS-2$ //$NON-NLS-1$
-										+ Messages.get().AbstractLifecycleAction_5 + "\n" //$NON-NLS-2$ //$NON-NLS-1$
-										+ Messages.get().AbstractLifecycleAction_7,
-								SWT.ICON_WARNING | SWT.YES | SWT.NO
-										| SWT.CANCEL);
-						mb.setButtonText(SWT.YES, Messages.get().AbstractLifecycleAction_8);
-						mb.setButtonText(SWT.NO, Messages.get().AbstractLifecycleAction_9);
-						mb.setButtonText(SWT.CANCEL, Messages.get().AbstractLifecycleAction_10);
-						int result = mb.open();
-						if (result == SWT.NO) {
-							return;
-						} else if (result == SWT.CANCEL) {
-							showCheckMessages(message, selected);
-							return;
-						}
-					}
-					execute(lc, context);
-					vc.getViewer().refresh(selected);
-					vc.getViewer().setSelection(null);
-				}
+				name = command.getName();
+			} catch (NotDefinedException e1) {
+			}
+			try {
+				execute(lc, context, name, selected, vc);
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 			}
 		}
+	}
+
+	public int execute(ILifecycle lc, IContext context, String name,
+			PrimaryObject work, ViewerControl vc) throws Exception {
+		List<Object[]> message = checkBeforeExecute(lc, context);
+		if (hasError(message)) {
+			MessageUtil.showToast(null, name,
+					Messages.get().AbstractLifecycleAction_0, SWT.ICON_ERROR);
+			showCheckMessages(message, work);
+		} else {
+			if (message != null && message.size() > 0) {
+				MessageBox mb = MessageUtil.createMessageBox(null, name,
+						Messages.get().AbstractLifecycleAction_1
+								+ "\n\n" //$NON-NLS-2$ //$NON-NLS-1$
+								+ Messages.get().AbstractLifecycleAction_3
+								+ "\n" //$NON-NLS-2$ //$NON-NLS-1$
+								+ Messages.get().AbstractLifecycleAction_5
+								+ "\n" //$NON-NLS-2$ //$NON-NLS-1$
+								+ Messages.get().AbstractLifecycleAction_7,
+						SWT.ICON_WARNING | SWT.YES | SWT.NO | SWT.CANCEL);
+				mb.setButtonText(SWT.YES,
+						Messages.get().AbstractLifecycleAction_8);
+				mb.setButtonText(SWT.NO,
+						Messages.get().AbstractLifecycleAction_9);
+				mb.setButtonText(SWT.CANCEL,
+						Messages.get().AbstractLifecycleAction_10);
+				int result = mb.open();
+				if (result == SWT.NO) {
+					return result;
+				} else if (result == SWT.CANCEL) {
+					showCheckMessages(message, work);
+					return result;
+				}
+			}
+			execute(lc, context);
+			if (vc != null) {
+				vc.getViewer().refresh(work);
+				vc.getViewer().setSelection(null);
+			}
+			return SWT.YES;
+		}
+		return SWT.NO;
 	}
 
 	private boolean hasError(List<Object[]> message) {
@@ -102,7 +122,8 @@ public abstract class AbstractLifecycleAction extends AbstractNavigatorHandler {
 					"com.sg.widgets.objectinfo", "" + selected.hashCode() + "_" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							+ getClass().getName(),
 					IWorkbenchPage.VIEW_ACTIVATE);
-			view.setInput(message, Messages.get().AbstractLifecycleAction_14 + selected);
+			view.setInput(message, Messages.get().AbstractLifecycleAction_14
+					+ selected);
 		} catch (PartInitException e) {
 			MessageUtil.showToast(e);
 		}

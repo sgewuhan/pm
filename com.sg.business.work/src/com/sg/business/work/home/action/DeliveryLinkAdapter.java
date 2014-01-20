@@ -23,8 +23,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
@@ -90,20 +88,11 @@ public class DeliveryLinkAdapter implements SelectionListener {
 		// 显示文件上传对话框
 		TreeItem item = (TreeItem) event.item;
 		// item.getBounds();
-		final Point point = item.getParent().toDisplay(item.getBounds().x,
-				item.getBounds().y + item.getBounds().height);
+//		final Point point = item.getParent().toDisplay(item.getBounds().x,
+//				item.getBounds().y + item.getBounds().height);
 
 		FileDialog fileDialog = new FileDialog(getShell(), SWT.MULTI
-				| SWT.NO_TRIM) {
-
-			@Override
-			protected Rectangle getShellBounds() {
-				Rectangle bounds = super.getShellBounds();
-				bounds.x = point.x;
-				bounds.y = point.y;
-				return bounds;
-			}
-		};
+				| SWT.NO_TRIM) ;
 
 		fileDialog.open();
 		String[] serverFileNames = fileDialog.getFileNames();

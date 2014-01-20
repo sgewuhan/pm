@@ -5,7 +5,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -19,7 +18,7 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 public class WorkDetail extends PrimaryObjectDetailFormView {
 
 	@Override
-	protected void initContent(Composite content) {
+	public void initContent() {
 		content.setLayout(new GridLayout());
 		Label label = new Label(content,SWT.NONE);
 		String text = "<span style='font-size:18pt;font-family:Î¢ÈíÑÅºÚ;color:#A6A6A6'>" //$NON-NLS-1$
@@ -27,6 +26,8 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 		label.setText(text);
 		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER,false,false));
+		content.layout();
+		setPartName("¹¤×÷");
 	}
 	
 	@Override
@@ -45,7 +46,6 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 				editorId = "navigator.view.work.3";
 			}
 		}
-		
 		
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator(editorId);

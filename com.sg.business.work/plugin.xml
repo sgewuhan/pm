@@ -4771,6 +4771,13 @@
                         persistable="false"
                         required="false">
                   </table>
+                  <pageAction
+                        class="com.sg.business.work.home.action.LogWork"
+                        id="logwork"
+                        label="%logwork"
+                        mode="FORCE_TEXT"
+                        style="push">
+                  </pageAction>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -4793,9 +4800,9 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
+                  class="com.sg.business.work.home.action.FinishWork"
                   icon="image/complete_b_24.png"
-                  id="startwork"
+                  id="finishwork"
                   label="%command.label.3"
                   mode="FORCE_TEXT"
                   style="push">
