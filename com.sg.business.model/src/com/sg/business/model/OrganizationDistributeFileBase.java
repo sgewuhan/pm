@@ -65,6 +65,8 @@ public class OrganizationDistributeFileBase implements IFileBase {
 			String filebase = doc.get_filebase_namespace();
 			if (filebase instanceof String) {
 				return filebase;
+			}else{
+				return Document.FILE_NAMESPACE;
 			}
 		}
 		return null;

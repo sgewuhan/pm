@@ -4284,6 +4284,7 @@
              id="workflow.workdelivery"
              lineVisiable="false"
              markupEnabled="true"
+             selectionListener="com.sg.business.work.home.action.DeliveryLinkAdapter"
              virtual="true">
          <column
                column="desc"
@@ -4434,14 +4435,6 @@
                   </fieldgroup>
                </section>
             </pagecolumn>
-            <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
-                  icon="image/start_b_24.png"
-                  id="startwork"
-                  label="%command.label.2"
-                  mode="FORCE_TEXT"
-                  style="push">
-            </pageAction>
             <pagecolumn
                   weight="6">
                <section
@@ -4460,6 +4453,22 @@
                   </tree>
                </section>
             </pagecolumn>
+            <pageAction
+                  class="com.sg.business.work.home.action.StartWork"
+                  icon="image/start_b_24.png"
+                  id="startwork"
+                  label="%command.label.2"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
+                  class="com.sg.business.work.home.action.EditWork"
+                  icon="image/edit_b_24.png"
+                  id="editwork"
+                  label="%command.label.7"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
          </basicpage>
       </editor>
       <editor
@@ -4631,7 +4640,7 @@
             </pagecolumn>
             <pageAction
                   class="com.sg.business.work.home.action.CompleteTask"
-                  icon="image/complete_24.png"
+                  icon="image/complete_b_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"
                   mode="FORCE_TEXT"

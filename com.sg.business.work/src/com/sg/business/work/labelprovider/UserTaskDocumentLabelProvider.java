@@ -72,9 +72,9 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 			sb.append(fileName);
 			sb.append("</a>"); //$NON-NLS-1$
 		} else {
-			sb.append("<a href='"); //$NON-NLS-1$
+			sb.append("<a href='download@"); //$NON-NLS-1$
 			String downloadURL = serverFile.getInternalDownloadURL();
-			sb.append(downloadURL + "@download"); //$NON-NLS-1$
+			sb.append(downloadURL ); 
 			sb.append("' target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append(fileName);
 			sb.append("</a>"); //$NON-NLS-1$
@@ -149,15 +149,15 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 		sb.append("</b>"); //$NON-NLS-1$
 
 		// 下载链接
-		sb.append("<span style='padding-left:4px'>"); //$NON-NLS-1$
-		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
-		sb.append("<img src='"); //$NON-NLS-1$
-		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWNLOAD_15X10,
-				BusinessResource.PLUGIN_ID));
-		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='15' height='10' />"); //$NON-NLS-1$
-		sb.append("</a>"); //$NON-NLS-1$
-		sb.append("</span>"); //$NON-NLS-1$
+//		sb.append("<span style='padding-left:4px'>"); //$NON-NLS-1$
+//		sb.append("<a href=\"" + doc.get_id().toString() + "@" + "downloadall" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+//		sb.append("<img src='"); //$NON-NLS-1$
+//		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWNLOAD_15X10,
+//				BusinessResource.PLUGIN_ID));
+//		sb.append("' style='border-style:none;padding-top:4px;margin:0px' width='15' height='10' />"); //$NON-NLS-1$
+//		sb.append("</a>"); //$NON-NLS-1$
+//		sb.append("</span>"); //$NON-NLS-1$
 
 		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append("<small>"); //$NON-NLS-1$
@@ -208,13 +208,25 @@ public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 
 		sb.append("</span>"); //$NON-NLS-1$
 
+		//上传
 		if (!doc.isLocked()) {
+			sb.append("<a href=\"upload@" + doc.get_id().toString() //$NON-NLS-1$ 
+					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append("<img src='"); //$NON-NLS-1$
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_ADD_24,
 					BusinessResource.PLUGIN_ID));
-			sb.append("' style='position:absolute; right:4; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
-
+			sb.append("' style='border-style:none;position:absolute; right:8; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+			sb.append("</a>");
 		}
+
+		//下载
+		sb.append("<a href=\"downloadall@" + doc.get_id().toString() //$NON-NLS-1$ 
+				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWN_24,
+				BusinessResource.PLUGIN_ID));
+		sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+		sb.append("</a>");
 		return sb.toString();
 	}
 

@@ -1,6 +1,12 @@
 package com.sg.business.work.home;
 
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.rap.rwt.RWT;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
@@ -12,6 +18,17 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 
 public class WorkDetail extends PrimaryObjectDetailFormView {
 
+	@Override
+	protected void initContent(Composite content) {
+		content.setLayout(new GridLayout());
+		Label label = new Label(content,SWT.NONE);
+		String text = "<span style='font-size:18pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
+					+ "请在左边导航栏中选择待处理的工作" + "</span>";
+		label.setText(text);
+		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER,false,false));
+	}
+	
 	@Override
 	protected PrimaryObjectEditorInput getInput(PrimaryObject primary) {
 		if (!(primary instanceof Work)) {

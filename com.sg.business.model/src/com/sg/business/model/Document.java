@@ -1,7 +1,6 @@
 package com.sg.business.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -295,11 +294,13 @@ public class Document extends PrimaryObject implements IProjectRelative {
 							previewFile.getParentFile().mkdirs();
 						}
 
-						converter.convert(serverFile, previewFile);
-						remoteFile.setPreviewUploaded(previewFile, previewOid);
 						try {
+							converter.convert(serverFile, previewFile);
+							remoteFile.setPreviewUploaded(previewFile,
+									previewOid);
 							remoteFile.addPreview();
-						} catch (FileNotFoundException e) {
+						} catch (Exception e) {
+							e.printStackTrace();
 							continue;
 						}
 

@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.model,
  com.sg.business.commons,
  com.sg.business.resource,
- com.mobnut.admin
+ com.mobnut.admin,
+ org.eclipse.rap.addons.filedialog;bundle-version="0.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.work.home
