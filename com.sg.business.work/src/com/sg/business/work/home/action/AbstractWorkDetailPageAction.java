@@ -28,7 +28,7 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 
 	protected abstract void run(Work data, Control control);
 	
-	protected void pageClear() {
+	public void pageClear() {
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		SideBarNavigator view = (SideBarNavigator) page.findView("homenavigator");
 		if(view!=null){
@@ -36,6 +36,8 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 		}
 		WorkDetail view2 = (WorkDetail) page.findView("pm2.work.detail");
 		view2.cleanUI();
+		view2.cleanInput();
 		view2.initContent();
 	}
+	
 }

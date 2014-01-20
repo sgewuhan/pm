@@ -4701,4 +4701,28 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		}
 	}
 
+	public String getEditorId() {
+		String editorId;
+		IProcessControl ipc = (IProcessControl) getAdapter(IProcessControl.class);
+		if (isSummaryWork()) {
+			editorId = "edit.work.plan.2"; //$NON-NLS-1$
+		} else {
+			if (isStandloneWork()) {
+				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
+					editorId = "edit.work.plan.4"; //$NON-NLS-1$
+				} else {
+					editorId = "edit.work.plan.3"; //$NON-NLS-1$
+				}
+			} else {
+				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
+					editorId = "edit.work.plan.1"; //$NON-NLS-1$
+				} else {
+					editorId = "edit.work.plan.0"; //$NON-NLS-1$
+				}
+			}
+		}
+		
+		return editorId;
+	}
+
 }

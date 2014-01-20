@@ -14,7 +14,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
-import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -45,26 +44,8 @@ public class EditWork extends AbstractNavigatorHandler {
 
 		work.addEventListener(vc);
 
-		String editorId;
-		IProcessControl ipc = (IProcessControl) work
-				.getAdapter(IProcessControl.class);
-		if (work.isSummaryWork()) {
-			editorId = "edit.work.plan.2"; //$NON-NLS-1$
-		} else {
-			if (work.isStandloneWork()) {
-				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
-					editorId = "edit.work.plan.4"; //$NON-NLS-1$
-				} else {
-					editorId = "edit.work.plan.3"; //$NON-NLS-1$
-				}
-			} else {
-				if (ipc.isWorkflowActivateAndAvailable(Work.F_WF_EXECUTE)) {
-					editorId = "edit.work.plan.1"; //$NON-NLS-1$
-				} else {
-					editorId = "edit.work.plan.0"; //$NON-NLS-1$
-				}
-			}
-		}
+		String editorId = work.getEditorId();
+		
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				editorId);
 
