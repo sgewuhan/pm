@@ -21,17 +21,17 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 	protected void initContent() {
 		initContent("请在左边导航栏中选择您要处理的工作");
 	}
-	
+
 	public void initContent(String text) {
 		content.setLayout(new GridLayout());
-		Label label = new Label(content,SWT.NONE);
+		Label label = new Label(content, SWT.NONE);
 		text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
-					+ text + "</span>";
+				+ text + "</span>";
 		label.setText(text);
 		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER,false,false));
+		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
 		content.layout();
-		setPartName("工作");		
+		setPartName("工作");
 	}
 
 	@Override
@@ -41,16 +41,25 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 		}
 		Work work = (Work) primary;
 		String editorId = "navigator.view.work2";
-		if(Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())){
-			editorId =  "navigator.view.work.1";
-		}else if(Work.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())){
-			if(work.isExecuteWorkflowActivateAndAvailable()){
-				editorId = "navigator.view.work.2";
-			}else{
-				editorId = "navigator.view.work.3";
+
+		if (work.isSummaryWork()) {
+			if (Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
+				editorId = "navigator.view.work.4";
+			} else if (Work.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())) {
+				editorId = "navigator.view.work.5";
+			}
+		} else {
+			if (Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
+				editorId = "navigator.view.work.1";
+			} else if (Work.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())) {
+				if (work.isExecuteWorkflowActivateAndAvailable()) {
+					editorId = "navigator.view.work.2";
+				} else {
+					editorId = "navigator.view.work.3";
+				}
 			}
 		}
-		
+
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator(editorId);
 		PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(
@@ -58,12 +67,11 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 		editorInput.setEditable(false);
 		return editorInput;
 	}
-	
+
 	@Override
 	protected boolean responseSelectionChanged(IWorkbenchPart part,
 			ISelection selection) {
 		return part.getSite().getId().equals("homenavigator");
 	}
-
 
 }
