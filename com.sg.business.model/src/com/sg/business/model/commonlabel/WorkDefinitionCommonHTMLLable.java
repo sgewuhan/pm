@@ -30,7 +30,7 @@ public class WorkDefinitionCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("<a href=\"launchwork@" + workd.get_id().toString() //$NON-NLS-1$ 
 				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 		sb.append("<img src='"); //$NON-NLS-1$
-		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_NAVIGATE_24,
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
 				BusinessResource.PLUGIN_ID));
 		sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
 		sb.append("</a>");//$NON-NLS-1$
