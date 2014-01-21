@@ -18,9 +18,9 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.ProjectRole;
+import com.sg.business.resource.nls.Messages;
 
 public abstract class ProcessViewer extends TableViewer {
 

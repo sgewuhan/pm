@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.RoleDefinition;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;

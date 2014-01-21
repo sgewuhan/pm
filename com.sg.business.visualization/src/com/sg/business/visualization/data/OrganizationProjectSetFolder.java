@@ -7,9 +7,9 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
+import com.sg.business.resource.nls.Messages;
 import com.sg.business.visualization.VisualizationActivator;
 import com.sg.business.visualization.data.ProjectSetFolder;
-import com.sg.business.visualization.nls.Messages;
 
 public class OrganizationProjectSetFolder extends ProjectSetFolder {
 

@@ -1,9 +1,9 @@
 package com.sg.business.management.editor;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.Organization;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.IMasterListenerPart;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;

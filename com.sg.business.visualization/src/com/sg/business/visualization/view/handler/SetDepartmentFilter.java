@@ -17,7 +17,7 @@ import org.eclipse.ui.menus.UIElement;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectProvider;
-import com.sg.business.visualization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.business.visualization.ui.ProjectProviderHolder;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 

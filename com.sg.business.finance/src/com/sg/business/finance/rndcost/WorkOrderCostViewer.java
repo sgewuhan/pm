@@ -9,7 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 
-import com.sg.business.finance.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class WorkOrderCostViewer extends TableViewer {
 

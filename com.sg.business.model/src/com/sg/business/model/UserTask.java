@@ -22,10 +22,10 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.taskform.TaskFormConfig;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 
 public class UserTask extends PrimaryObject implements IWorkRelative{
 

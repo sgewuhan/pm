@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.sg.business.organization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class SyncHROrganizationDialog extends Dialog {
 

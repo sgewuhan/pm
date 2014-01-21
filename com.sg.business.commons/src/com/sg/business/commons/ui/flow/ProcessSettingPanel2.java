@@ -24,11 +24,11 @@ import org.eclipse.swt.widgets.Composite;
 import com.mobnut.db.model.DataSet;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.commons.ui.flow.ActivityEditor.IActivityEditListener;
 import com.sg.business.commons.ui.flow.ActivitySelecter.INodeSelectionListener;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.User;
+import com.sg.business.resource.nls.Messages;
 
 public abstract class ProcessSettingPanel2 extends Composite {
 

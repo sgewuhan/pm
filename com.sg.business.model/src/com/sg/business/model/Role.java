@@ -24,8 +24,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.event.AccountEvent;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * ½ÇÉ«

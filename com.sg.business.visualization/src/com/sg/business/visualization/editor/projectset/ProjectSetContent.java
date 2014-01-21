@@ -2,7 +2,7 @@ package com.sg.business.visualization.editor.projectset;
 
 import java.util.List;
 
-import com.sg.business.visualization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class ProjectSetContent extends AbstractProjectSetTableDetail {

@@ -1,7 +1,7 @@
 package com.sg.business.taskforms.field;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.taskforms.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.valuevalidator.AbstractValidator;
 
 public abstract class AbstractCheckFieldByChoice extends AbstractValidator {

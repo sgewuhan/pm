@@ -21,9 +21,9 @@ import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class Message extends PrimaryObject implements IReferenceContainer {

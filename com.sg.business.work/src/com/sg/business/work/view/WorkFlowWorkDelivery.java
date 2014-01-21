@@ -6,7 +6,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.sg.business.model.Document;
 import com.sg.business.model.IWorkRelative;
 import com.sg.business.model.Work;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.view.TreeNavigator;
 
 public class WorkFlowWorkDelivery extends TreeNavigator {

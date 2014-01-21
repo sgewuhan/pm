@@ -3,8 +3,8 @@ package com.sg.business.project.action;
 import org.eclipse.swt.SWT;
 
 import com.sg.business.model.Project;
-import com.sg.business.project.nls.Messages;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.NavigatorAction;

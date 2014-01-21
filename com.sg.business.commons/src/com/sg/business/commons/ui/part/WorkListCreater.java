@@ -22,12 +22,12 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
+import com.sg.business.resource.nls.Messages;
 
 public class WorkListCreater extends Composite {
 

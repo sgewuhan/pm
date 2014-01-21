@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
-import com.sg.business.organization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;

@@ -5,8 +5,8 @@ import java.util.List;
 import com.mobnut.db.model.IContext;
 import com.mobnut.portal.user.UserSessionContext;
 import com.sg.business.model.event.AccountEvent;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * 角色和用户的关系

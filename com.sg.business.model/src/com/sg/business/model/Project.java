@@ -46,12 +46,12 @@ import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.model.etl.ProjectMonthlyETL;
 import com.sg.business.model.etl.ProjectPresentation;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.UIConstants;
 
 /**

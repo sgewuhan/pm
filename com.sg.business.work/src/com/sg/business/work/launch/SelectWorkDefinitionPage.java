@@ -16,7 +16,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.dataset.organization.LaunchOrgOfCurrentUser;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.NavigatablePartAdapter;
 import com.sg.widgets.part.NavigatorControl;
 

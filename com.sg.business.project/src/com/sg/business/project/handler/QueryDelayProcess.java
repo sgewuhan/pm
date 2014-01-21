@@ -21,7 +21,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 

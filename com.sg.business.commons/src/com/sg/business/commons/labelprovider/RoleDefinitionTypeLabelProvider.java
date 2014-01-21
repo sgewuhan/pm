@@ -2,8 +2,8 @@ package com.sg.business.commons.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractRoleDefinition;
+import com.sg.business.resource.nls.Messages;
 
 public class RoleDefinitionTypeLabelProvider extends ColumnLabelProvider {
 

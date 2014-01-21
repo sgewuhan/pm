@@ -21,8 +21,8 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.business.model.event.AccountEvent;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.ProjectToolkit;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * ÏîÄ¿½ÇÉ«

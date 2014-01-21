@@ -21,7 +21,7 @@ import com.mobnut.db.model.IPrimaryObjectValueChangeListener;
 import com.mongodb.BasicDBList;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectTemplate;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;

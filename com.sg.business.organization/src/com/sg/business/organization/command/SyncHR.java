@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.sg.business.organization.OrganizationActivator;
-import com.sg.business.organization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * <P>

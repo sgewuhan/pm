@@ -7,7 +7,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.UserProjectPerf;
-import com.sg.business.visualization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.valuevalidator.AbstractValidator;
 
 public class ProjectSetValidator extends AbstractValidator {

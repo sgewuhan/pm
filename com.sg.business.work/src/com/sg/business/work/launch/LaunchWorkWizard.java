@@ -15,7 +15,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.CurrentAccountContext;

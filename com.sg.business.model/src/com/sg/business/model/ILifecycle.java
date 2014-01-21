@@ -3,7 +3,7 @@ package com.sg.business.model;
 import java.util.List;
 
 import com.mobnut.db.model.IContext;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * 项目和工作的生命周期状态

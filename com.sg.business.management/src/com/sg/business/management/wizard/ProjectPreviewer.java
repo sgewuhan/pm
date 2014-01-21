@@ -4,9 +4,9 @@ import org.eclipse.jface.wizard.Wizard;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
+import com.sg.business.resource.nls.Messages;
 
 public class ProjectPreviewer extends Wizard {
 

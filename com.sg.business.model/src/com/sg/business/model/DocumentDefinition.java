@@ -16,8 +16,8 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * 文档模板定义

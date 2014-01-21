@@ -24,7 +24,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.WorkOrderPeriodCost;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * 使用项目实际开始时间和完成时间进行研发成本分摊 仅用于期初数据的导入

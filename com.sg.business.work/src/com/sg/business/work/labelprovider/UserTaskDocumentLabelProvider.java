@@ -12,7 +12,7 @@ import com.mobnut.db.file.IServerFile;
 import com.mobnut.db.model.AccountInfo;
 import com.sg.business.model.Document;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class UserTaskDocumentLabelProvider extends ColumnLabelProvider {
 

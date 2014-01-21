@@ -8,8 +8,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.commons.ui.flow.ProcessHistoryDialog;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.viewer.ViewerControl;
 

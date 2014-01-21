@@ -4300,11 +4300,13 @@
              canDelete="false"
              canEdit="false"
              canRead="false"
+             customItemHeight="40"
              dataSet="com.sg.business.model.dataset.project.WBSAndDeliveryOfWork"
              fix="1"
              headerVisiable="false"
              id="work.wbsndelivery"
-             lineVisiable="false">
+             lineVisiable="false"
+             markupEnabled="true">
           <structure
                 modelRelation="work_work">
           </structure>
@@ -4313,7 +4315,7 @@
           </structure>
           <column
                 column="desc"
-                labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+                labelProvider="com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider"
                 name="%column.name.6"
                 style="SWT.LEFT"
                 type="String"

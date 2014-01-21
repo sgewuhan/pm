@@ -9,7 +9,7 @@ import java.util.Map;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * »’¿˙…Ë÷√

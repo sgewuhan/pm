@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.IContext;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.ILifecycle;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 public class LifeCycleActionFinish extends AbstractLifecycleAction {

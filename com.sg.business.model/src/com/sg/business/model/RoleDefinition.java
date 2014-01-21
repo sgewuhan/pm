@@ -14,7 +14,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * ½ÇÉ«¶¨Òå

@@ -9,11 +9,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;
@@ -74,7 +74,7 @@ public class LinkOrganizationRole extends AbstractNavigatorHandler {
 		} else {
 			WorkDefinition workd = (WorkDefinition) master;
 			if (workd.hasOrganizationRole(role)) {
-				throw new Exception(Messages.get().LinkOrganizationRole_4);
+				throw new Exception(Messages.get().LinkOrganizationRole_14);
 			}
 			roled = workd.makeOrganizationRole(role);
 		}

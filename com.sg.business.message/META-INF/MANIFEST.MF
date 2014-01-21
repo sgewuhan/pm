@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.business.commons,
  org.eclipse.core.expressions,
  com.mobnut.admin,
- com.mobnut.commons
+ com.mobnut.commons,
+ com.sg.business.resource;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

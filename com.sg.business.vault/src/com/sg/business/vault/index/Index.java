@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Display;
 import com.mobnut.admin.IFunctionExcutable;
 import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.vault.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 public class Index implements IFunctionExcutable {

@@ -1,7 +1,7 @@
 package com.sg.business.finance.admin;
 
 import com.mobnut.admin.functions.FunctionEditorExcutable;
-import com.sg.business.finance.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class BudgetItemFunction extends FunctionEditorExcutable {
 

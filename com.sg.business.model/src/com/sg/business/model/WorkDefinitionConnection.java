@@ -1,6 +1,6 @@
 package com.sg.business.model;
 
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * 工作定义的前后置关系

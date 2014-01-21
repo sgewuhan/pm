@@ -14,8 +14,8 @@ import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.ILifecycle;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;

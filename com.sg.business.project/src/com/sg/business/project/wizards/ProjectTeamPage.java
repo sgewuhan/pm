@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.NavigatorControl;
 import com.sg.widgets.part.editor.IEditorActionListener;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;

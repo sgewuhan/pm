@@ -7,8 +7,8 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * ½»¸¶Îï

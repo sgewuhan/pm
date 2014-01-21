@@ -12,8 +12,8 @@ import com.mongodb.DBObject;
 import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Message;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.MessageToolkit;
+import com.sg.business.resource.nls.Messages;
 
 public abstract class AbstractMessageService extends ServiceProvider {
 

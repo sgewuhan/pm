@@ -35,7 +35,7 @@ import com.sg.business.model.WorkConnection;
 import com.sg.business.model.WorkDefinitionConnection;
 import com.sg.business.model.WorkOrderPeriodCost;
 import com.sg.business.model.etl.IProjectETL;
-import com.sg.business.pm2.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class DBInit implements ISchedualJobRunnable {
 

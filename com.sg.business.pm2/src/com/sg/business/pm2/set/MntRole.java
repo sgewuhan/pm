@@ -15,7 +15,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
-import com.sg.business.pm2.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class MntRole implements Runnable {
 

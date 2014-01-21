@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public abstract class AbstractWorksMetadata extends PrimaryObject implements
 		IProjectRelative {

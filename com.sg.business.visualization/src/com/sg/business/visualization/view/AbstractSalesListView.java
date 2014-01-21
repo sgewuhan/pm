@@ -24,7 +24,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.visualization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.business.visualization.ui.SalesListSetting;
 
 public abstract class AbstractSalesListView extends AbstractDashWidgetView {

@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
 
-import com.sg.business.visualization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.business.visualization.view.AbstractSalesListView;
 
 public class SalesListSetting extends Shell {

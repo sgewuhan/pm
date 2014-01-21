@@ -1,7 +1,7 @@
 package com.sg.business.home.view;
 
 import com.mobnut.portal.user.IAccountEvent;
-import com.sg.business.home.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.view.AccountSensitiveTreeView;
 
 /**

@@ -27,7 +27,7 @@ import com.sg.business.model.Organization;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.SimpleSection;
 
 public class ConfirmPage extends WizardPage {

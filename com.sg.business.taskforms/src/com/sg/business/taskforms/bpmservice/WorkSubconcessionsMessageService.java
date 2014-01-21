@@ -6,7 +6,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
-import com.sg.business.taskforms.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class WorkSubconcessionsMessageService extends MessageService {
 

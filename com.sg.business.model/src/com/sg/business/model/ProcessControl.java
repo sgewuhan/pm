@@ -13,8 +13,8 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.runtime.Workflow;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.resource.nls.Messages;
 
 public abstract class ProcessControl implements IProcessControl {
 

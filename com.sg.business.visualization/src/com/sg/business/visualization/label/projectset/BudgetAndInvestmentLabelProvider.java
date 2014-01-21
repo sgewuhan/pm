@@ -8,7 +8,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.etl.TinyVisualizationUtil;
-import com.sg.business.visualization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class BudgetAndInvestmentLabelProvider extends
 		AbstractProjectLabelProvider {

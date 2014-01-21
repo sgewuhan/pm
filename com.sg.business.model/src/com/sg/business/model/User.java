@@ -22,9 +22,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.service.HTService;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * ”√ªß

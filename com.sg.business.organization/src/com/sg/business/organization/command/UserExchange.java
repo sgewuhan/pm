@@ -20,7 +20,7 @@ import com.sg.business.model.Message;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.organization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.sqldb.utility.SQLResult;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;

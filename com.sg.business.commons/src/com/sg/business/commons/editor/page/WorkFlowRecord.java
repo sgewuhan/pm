@@ -15,10 +15,10 @@ import org.eclipse.ui.forms.IFormPart;
 
 import com.mobnut.commons.util.Utils;
 import com.mongodb.DBObject;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.Work;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;

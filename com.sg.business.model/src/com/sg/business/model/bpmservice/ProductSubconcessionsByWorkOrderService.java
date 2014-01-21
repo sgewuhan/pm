@@ -15,7 +15,7 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class ProductSubconcessionsByWorkOrderService extends ServiceProvider {
 

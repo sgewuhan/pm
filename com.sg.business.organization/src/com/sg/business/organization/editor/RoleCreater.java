@@ -3,7 +3,7 @@ package com.sg.business.organization.editor;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
-import com.sg.business.organization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.IMasterListenerPart;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;

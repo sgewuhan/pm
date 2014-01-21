@@ -23,7 +23,7 @@ import com.sg.business.model.IProcessControl;
 import com.sg.business.model.IWorkCloneFields;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.ProjectToolkit;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.INavigatablePart;

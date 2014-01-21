@@ -8,8 +8,8 @@ import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.Organization;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;

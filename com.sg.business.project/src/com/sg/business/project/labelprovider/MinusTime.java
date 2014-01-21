@@ -5,7 +5,7 @@ import java.util.Date;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
 import com.sg.business.model.UserTask;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class MinusTime extends ColumnLabelProvider {
 

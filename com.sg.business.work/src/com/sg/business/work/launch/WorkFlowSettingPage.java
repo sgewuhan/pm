@@ -19,7 +19,7 @@ import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.OrgRoot;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
 public class WorkFlowSettingPage extends WizardPage {

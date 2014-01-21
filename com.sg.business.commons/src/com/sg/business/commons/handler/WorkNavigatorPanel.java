@@ -6,8 +6,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractWork;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.CompassPanel;

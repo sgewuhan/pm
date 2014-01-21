@@ -9,7 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.viewer.ICreateEditorDelegator;
 import com.sg.widgets.viewer.ViewerControl;

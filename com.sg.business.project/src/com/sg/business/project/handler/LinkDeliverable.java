@@ -12,7 +12,7 @@ import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;

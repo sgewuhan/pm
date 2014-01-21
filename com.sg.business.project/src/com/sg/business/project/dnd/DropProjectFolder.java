@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.dnd.DropPrimaryObjectTarget;
 import com.sg.widgets.viewer.CTreeViewer;
 import com.sg.widgets.viewer.ViewerControl;

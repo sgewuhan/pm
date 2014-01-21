@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.dnd.DropPrimaryObjectTarget;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;

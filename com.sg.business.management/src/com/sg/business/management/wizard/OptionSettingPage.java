@@ -14,8 +14,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.Section;
 
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.ProjectTemplate;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.Widgets;
 
 @SuppressWarnings("restriction")

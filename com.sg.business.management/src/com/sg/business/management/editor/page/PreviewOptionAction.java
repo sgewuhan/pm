@@ -6,10 +6,10 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-import com.sg.business.management.nls.Messages;
 import com.sg.business.management.wizard.ProjectPreviewer;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 
 public class PreviewOptionAction extends Action {
 

@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.commons.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class ProcessTableViewer extends TableViewer {
 

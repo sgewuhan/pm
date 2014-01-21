@@ -12,7 +12,7 @@ import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
-import com.sg.business.taskforms.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class ReviewerMessageService extends MessageService {
 

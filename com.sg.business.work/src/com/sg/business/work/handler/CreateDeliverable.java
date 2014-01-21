@@ -13,7 +13,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.IDeliverable;
 import com.sg.business.model.IWorkRelative;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;

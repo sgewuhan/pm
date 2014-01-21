@@ -23,7 +23,7 @@ import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.UserDataSetFactory;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class WorkflowSynchronizer extends RepeatJob {
 

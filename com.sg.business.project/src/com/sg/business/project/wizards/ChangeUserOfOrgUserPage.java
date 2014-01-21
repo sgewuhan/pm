@@ -15,7 +15,7 @@ import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.INavigatablePart;
 import com.sg.widgets.part.NavigatorControl;
 

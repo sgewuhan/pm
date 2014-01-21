@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
-import com.sg.business.vault.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.viewer.ChildPrimaryObjectCreator;
 
 public class DocumentCreater extends ChildPrimaryObjectCreator {

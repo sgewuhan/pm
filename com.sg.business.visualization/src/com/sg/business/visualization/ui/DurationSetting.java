@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
 
 import com.sg.business.model.ProjectProvider;
-import com.sg.business.visualization.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class DurationSetting extends Shell {
 

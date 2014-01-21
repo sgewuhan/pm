@@ -7,8 +7,8 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectRole;
-import com.sg.business.project.nls.Messages;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.NavigatorAction;
 
 public class FilterUnAssignment extends NavigatorAction {

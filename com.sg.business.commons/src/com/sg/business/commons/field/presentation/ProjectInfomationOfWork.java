@@ -3,9 +3,9 @@ package com.sg.business.commons.field.presentation;
 import org.eclipse.ui.forms.IFormPart;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.valuepresentation.IValuePresentation;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;

@@ -7,8 +7,8 @@ import org.eclipse.ui.forms.IFormPart;
 
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.Work;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.valuepresentation.IValuePresentation;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;

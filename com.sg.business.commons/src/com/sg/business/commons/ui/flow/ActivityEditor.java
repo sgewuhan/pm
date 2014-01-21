@@ -18,9 +18,9 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import com.mobnut.db.model.DataSet;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.User;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.selector.DropdownNavigatorSelector;
 import com.sg.widgets.part.SimpleSection;
 import com.sg.widgets.viewer.ViewerControl;

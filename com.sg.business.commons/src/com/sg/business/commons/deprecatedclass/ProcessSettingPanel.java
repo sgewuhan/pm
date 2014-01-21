@@ -22,9 +22,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
-import com.sg.business.commons.nls.Messages;
 import com.sg.business.commons.page.ProcessViewer;
 import com.sg.business.model.IProcessControl;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 public class ProcessSettingPanel extends Composite {
@@ -68,7 +68,7 @@ public class ProcessSettingPanel extends Composite {
 		//  «∑Ò∆Ù”√
 		activeButton = new Button(this, SWT.CHECK);
 		activeButton.setEnabled(editable);
-		activeButton.setText(Messages.get().ProcessSettingPanel_0);
+		activeButton.setText(Messages.get().ProcessSettingPanel_40);
 		FormData fd = new FormData();
 		activeButton.setLayoutData(fd);
 		fd.top = new FormAttachment(0, MARGIN);
@@ -78,7 +78,7 @@ public class ProcessSettingPanel extends Composite {
 		final Text text = new Text(this, SWT.BORDER);
 		text.setEnabled(editable);
 
-		text.setMessage(Messages.get().ProcessSettingPanel_1);
+		text.setMessage(Messages.get().ProcessSettingPanel_41);
 		fd = new FormData();
 		text.setLayoutData(fd);
 		fd.top = new FormAttachment(activeButton, MARGIN);
@@ -87,7 +87,7 @@ public class ProcessSettingPanel extends Composite {
 		Button queryButton = new Button(this, SWT.PUSH);
 		queryButton.setEnabled(editable);
 
-		queryButton.setText(Messages.get().ProcessSettingPanel_2);
+		queryButton.setText(Messages.get().ProcessSettingPanel_42);
 		fd = new FormData();
 		queryButton.setLayoutData(fd);
 		fd.top = new FormAttachment(activeButton, MARGIN);
@@ -155,7 +155,7 @@ public class ProcessSettingPanel extends Composite {
 			processViewer.setInput(processDefinition.getNodesAssignment());
 			packTableViewer(processViewer);
 		} else {
-			processLabel.setText("<big>" + Messages.get().ProcessSettingPanel_6 + "</big>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			processLabel.setText("<big>" + Messages.get().ProcessSettingPanel_46 + "</big>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			processViewer.setInput(null);
 		}
 		layout(true);
@@ -164,7 +164,7 @@ public class ProcessSettingPanel extends Composite {
 
 	private void queryProcess(Label processLabel, String kbase, String key) {
 		if (kbase.isEmpty()) {
-			MessageUtil.showToast(Messages.get().ProcessSettingPanel_8, SWT.ERROR);
+			MessageUtil.showToast(Messages.get().ProcessSettingPanel_48, SWT.ERROR);
 			return;
 		}
 		ProcessSelectorDialog d = new ProcessSelectorDialog(getShell(), kbase);
@@ -173,7 +173,7 @@ public class ProcessSettingPanel extends Composite {
 		if (ok == Window.OK) {
 			process = d.getSelection();
 			if (process == null) {
-				MessageUtil.showToast(Messages.get().ProcessSettingPanel_9, SWT.ERROR);
+				MessageUtil.showToast(Messages.get().ProcessSettingPanel_49, SWT.ERROR);
 				return;
 			} else {
 				if (processDefinition != null

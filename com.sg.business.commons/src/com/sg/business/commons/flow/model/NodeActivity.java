@@ -7,7 +7,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.jbpm.workflow.core.node.EndNode;
 import org.jbpm.workflow.core.node.StartNode;
 
-import com.sg.business.commons.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class NodeActivity extends Activity {
 

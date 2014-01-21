@@ -8,9 +8,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.UserProjectPerf;
+import com.sg.business.resource.nls.Messages;
 import com.sg.business.visualization.VisualizationActivator;
 import com.sg.business.visualization.data.ProjectSetFolder;
-import com.sg.business.visualization.nls.Messages;
 
 public class OwnerProjectSetFolder extends ProjectSetFolder {
 

@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.List;
 
 import com.mobnut.db.model.DataSet;
 import com.sg.business.model.dataset.work.ProcessingNavigatorItemSet;
+import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.part.ISidebarItem;
 
 public class Todolist implements ISidebarItem {
@@ -35,7 +36,7 @@ public class Todolist implements ISidebarItem {
 	public Composite create(Composite parent) {
 		viewer = new ListViewer(parent, SWT.SINGLE);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		viewer.setLabelProvider(new TodolistLabel());
+		viewer.setLabelProvider(new HTMLAdvanceLabelProvider());
 		viewer.setUseHashlookup(true);
 		
 		List list = viewer.getList();

@@ -38,9 +38,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.model.commonlabel.DocumentCommonHTMLLable;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 /**
  * 文档 工作完成后产生的文档
@@ -497,6 +499,14 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == CommonHTMLLabel.class){
+			return (T)(new DocumentCommonHTMLLable(this));
+		}
+		return super.getAdapter(adapter);
+	}
+	
 	/**
 	 * 返回默认编辑器ID
 	 * 

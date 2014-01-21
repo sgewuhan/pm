@@ -1,7 +1,7 @@
 package com.sg.business.model;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * 参与者定义

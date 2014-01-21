@@ -11,7 +11,7 @@ import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.ConfiguratorColumnLabelProvider;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 

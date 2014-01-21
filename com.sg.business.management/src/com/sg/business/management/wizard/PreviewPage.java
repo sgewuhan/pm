@@ -13,9 +13,9 @@ import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.INavigatablePart;
 import com.sg.widgets.part.NavigatorControl;
 

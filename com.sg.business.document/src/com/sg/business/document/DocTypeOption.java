@@ -1,6 +1,6 @@
 package com.sg.business.document;
 
-import com.sg.business.document.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.options.IOptionContribution;
 import com.sg.widgets.registry.config.Option;
 

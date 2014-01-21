@@ -8,8 +8,8 @@ import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.portal.user.IAccountEvent;
+import com.sg.business.resource.nls.Messages;
 import com.sg.business.work.WorkflowSynchronizer;
-import com.sg.business.work.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.view.AccountSensitiveTableView;
 

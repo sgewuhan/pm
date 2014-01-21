@@ -9,13 +9,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.DeliverableDefinition;
 import com.sg.business.model.DocumentDefinition;
 import com.sg.business.model.IDeliverable;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.selector.NavigatorSelector;

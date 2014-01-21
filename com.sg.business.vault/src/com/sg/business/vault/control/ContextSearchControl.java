@@ -21,8 +21,8 @@ import org.eclipse.ui.menus.WorkbenchWindowControlContribution;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.business.vault.index.SearchJob;
-import com.sg.business.vault.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.view.NavigatorPart;
 

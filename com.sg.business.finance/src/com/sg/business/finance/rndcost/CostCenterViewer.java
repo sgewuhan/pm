@@ -16,10 +16,10 @@ import com.mobnut.db.DBActivator;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.finance.nls.Messages;
 import com.sg.business.model.CostAccount;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.RNDPeriodCost;
+import com.sg.business.resource.nls.Messages;
 
 public class CostCenterViewer extends TableViewer {
 

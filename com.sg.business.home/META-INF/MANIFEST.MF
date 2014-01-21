@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.widgets,
  com.sg.widgets.fullcalendar,
  com.sg.business.model,
- com.sg.business.commons
+ com.sg.business.commons,
+ com.sg.business.resource;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

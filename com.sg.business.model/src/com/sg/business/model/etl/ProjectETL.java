@@ -28,8 +28,8 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
-import com.sg.business.model.nls.Messages;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 
 @SuppressWarnings("restriction")
 public class ProjectETL implements IProjectETL {

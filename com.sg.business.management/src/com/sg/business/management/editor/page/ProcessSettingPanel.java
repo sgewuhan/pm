@@ -32,10 +32,10 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 @Deprecated

@@ -1,7 +1,7 @@
 package com.sg.business.project.view;
 
 import com.mobnut.portal.user.IAccountEvent;
-import com.sg.business.project.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.view.AccountSensitiveTableView;
 
 public class ProjectView extends AccountSensitiveTableView {

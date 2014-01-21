@@ -16,7 +16,7 @@ import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Message;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class MessageToolkit {
 

@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Control;
 
 import com.sg.business.commons.handler.LifeCycleActionStart;
 import com.sg.business.model.Work;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 

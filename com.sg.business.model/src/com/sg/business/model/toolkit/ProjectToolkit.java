@@ -36,7 +36,7 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.bson.SEQSorter;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 
 public class ProjectToolkit {

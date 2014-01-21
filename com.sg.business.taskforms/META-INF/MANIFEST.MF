@@ -16,7 +16,8 @@ Require-Bundle: com.sg.bpm.service,
  com.sg.thirdparty,
  com.sg.widgets,
  org.eclipse.rap.ui.forms;bundle-version="2.2.0",
- com.mobnut.commons;bundle-version="1.0.0"
+ com.mobnut.commons;bundle-version="1.0.0",
+ com.sg.business.resource;bundle-version="1.0.0"
 Export-Package: com.sg.business.taskforms,
  com.sg.business.taskforms.field,
  com.sg.business.taskforms.systemprojectapprove,

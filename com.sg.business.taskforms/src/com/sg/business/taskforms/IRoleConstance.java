@@ -1,6 +1,6 @@
 package com.sg.business.taskforms;
 
-import com.sg.business.taskforms.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public interface IRoleConstance {
 

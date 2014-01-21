@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.work.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.selector.DateFromToSelector;
 import com.sg.widgets.viewer.CTreeViewer;
 

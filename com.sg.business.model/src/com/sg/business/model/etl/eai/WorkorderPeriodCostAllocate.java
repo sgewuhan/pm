@@ -25,7 +25,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.RNDPeriodCost;
 import com.sg.business.model.WorkOrderPeriodCost;
 import com.sg.business.model.WorksPerformence;
-import com.sg.business.model.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 public class WorkorderPeriodCostAllocate {
 

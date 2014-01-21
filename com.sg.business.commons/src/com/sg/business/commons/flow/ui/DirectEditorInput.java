@@ -20,7 +20,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
 import com.sg.business.commons.flow.model.ActivityDiagram;
-import com.sg.business.commons.nls.Messages;
+import com.sg.business.resource.nls.Messages;
 
 /**
  * @author Austin.Riddle

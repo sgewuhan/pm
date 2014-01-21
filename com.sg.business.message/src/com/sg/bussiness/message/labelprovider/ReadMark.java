@@ -2,8 +2,8 @@ package com.sg.bussiness.message.labelprovider;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
-import com.sg.business.message.nls.Messages;
 import com.sg.business.model.Message;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class ReadMark extends ColumnLabelProvider {

@@ -16,10 +16,10 @@ import org.eclipse.swt.widgets.TreeColumn;
 
 import com.mobnut.db.model.IPrimaryObjectEventListener;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.management.nls.Messages;
 import com.sg.business.model.AbstractOptionFilterable;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.NavigatorControl;
 import com.sg.widgets.part.editor.IEditorActionListener;
