@@ -7,6 +7,7 @@ import org.eclipse.swt.events.SelectionListener;
 
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.WorkDefinition;
+import com.sg.business.work.launch.LaunchWorkWizard;
 
 public class LaunchWorkLinkAdapter implements SelectionListener {
 
@@ -30,7 +31,7 @@ public class LaunchWorkLinkAdapter implements SelectionListener {
 	private void doLaunch(String _data, SelectionEvent event) {
 		WorkDefinition workd = ModelService.createModelObject(WorkDefinition.class,
 				new ObjectId(_data));
-		System.out.println(workd);
+		LaunchWorkWizard.OPEN(workd);
 	}
 
 	@Override

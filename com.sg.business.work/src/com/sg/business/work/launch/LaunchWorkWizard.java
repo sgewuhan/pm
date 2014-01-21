@@ -33,35 +33,37 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard {
 	private WorkFlowSettingPage flowSettingPage;
 	private boolean startWorkWhenFinish;
 	private ConfirmPage comfirmPage;
+	private WorkDefinition initWorkDefinition;
 
-	public static LaunchWorkWizard OPEN() {
+	public static LaunchWorkWizard OPEN(WorkDefinition workd) {
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 
 		if (window != null) {
-			LaunchWorkWizard wiz = new LaunchWorkWizard();
+			LaunchWorkWizard wiz = new LaunchWorkWizard(workd);
 			Shell shell = window.getShell();
 			WizardDialog wizardDialog = new WizardDialog(shell, wiz) {
 				@Override
 				protected Point getInitialSize() {
 					Point size = super.getInitialSize();
-					return new Point(660, size.y);
+					return new Point(500, size.y);
 				}
 			};
-
 			wizardDialog.open();
 			return wiz;
 		}
 		return null;
-
 	}
 
-	public LaunchWorkWizard() {
-		setWindowTitle(Messages.get().LaunchWorkWizard_1);
-		initInput();
+	public static LaunchWorkWizard OPEN() {
+		return OPEN(null);
 	}
 
-	private void initInput() {
+	public LaunchWorkWizard(WorkDefinition workd) {
+		initInput(workd);
+	}
+
+	private void initInput(WorkDefinition workd) {
 		Work work = ModelService.createModelObject(Work.class);
 		IContext context = new CurrentAccountContext();
 		work.setValue(Work.F_CHARGER, context.getAccountInfo().getConsignerId());// 设置负责人为当前用户
@@ -72,21 +74,40 @@ public class LaunchWorkWizard extends Wizard implements IWorkbenchWizard {
 		editorInput.setEditable(true);
 		editorInput.setNeedHostPartListenSaveEvent(false);
 		editorInput.setContext(new CurrentAccountContext());
+
+		if (workd != null) {
+			setWorkDefinition(workd);
+			setWindowTitle(Messages.get().LaunchWorkWizard_1 + ":"
+					+ workd.getLabel());
+		} else {
+			setWindowTitle(Messages.get().LaunchWorkWizard_1);
+		}
+		
+		this.initWorkDefinition = workd;
+
 	}
 
 	@Override
 	public void addPages() {
-		selectWorkDefinitionPage = new SelectWorkDefinitionPage();
+		if (initWorkDefinition == null) {
+			selectWorkDefinitionPage = new SelectWorkDefinitionPage();
+			addPage(selectWorkDefinitionPage);
+		}
 
 		BasicPageConfigurator conf = (BasicPageConfigurator) Widgets
 				.getPageRegistry().getConfigurator(PAGE_LAUNCH_WORK_BASICPAGE);
 		basicPage = new BasicWizardPage(conf);
 		basicPage.setInput(editorInput);
-
-		addPage(selectWorkDefinitionPage);
 		addPage(basicPage);
-
+		
+		// 判断有无流程，如果无流程，则返回空
+		Work work = (Work) editorInput.getData();
+		if (work.isExecuteWorkflowActivateAndAvailable()) {
+			addPage( getFlowSettingPage());
+		}
+		addPage( getConfirmPage());
 	}
+	
 
 	@Override
 	public boolean performFinish() {
