@@ -203,7 +203,7 @@
             editorId="editor.folder"
             id="vault.folder.org"
             idfield="_id"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:vault.folder.admin">
          <column
                columnDefinitionId="folder.desc">
          </column>
@@ -245,7 +245,7 @@
             editorId="editor.folder"
             id="vault.folder.granted"
             idfield="_id"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:vault.folder.admin">
          <column
                columnDefinitionId="folder.desc">
          </column>
@@ -266,7 +266,7 @@
             editorId="editor.folder"
             id="vault.folder.open"
             idfield="_id"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:vault.folder.admin">
          <column
                columnDefinitionId="folder.desc">
          </column>
@@ -335,7 +335,7 @@
          point="com.sg.widgets.table">
       <table
             canCreate="false"
-            canDelete="false"
+            canDelete="true"
             canEdit="true"
             collectionName="document"
             dataSet="com.sg.business.model.dataset.folder.DocumentOfFolder"
@@ -343,7 +343,7 @@
             editorId="editor.document.generic"
             id="vault.documents"
             idfield="_id"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:vault.folder.user">
          <column
                columnDefinitionId="document.documentNumber">
          </column>
@@ -371,7 +371,7 @@
             canEdit="false"
             editorId="editor.document.generic"
             id="vault.documents.contextsearch"
-            popupMenu="popup:com.sg.widget.navigator">
+            popupMenu="popup:vault.folder.user">
          <column
                columnDefinitionId="document.documentNumber">
          </column>
@@ -432,6 +432,45 @@
                label="%command.label.1"
                style="push">
          </command>
+         <command
+               commandId="vault.folder.createdocument"
+               icon="image/create2_24.png"
+               id="create"
+               label="%command.label.2"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.edit"
+               icon="image/edit_24.png"
+               label="%command.label.3"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.refresh"
+               icon="image/refresh_24.png"
+               label="%command.label.4"
+               style="push">
+         </command>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               icon="image/trash_24.png"
+               label="%command.label.5"
+               style="push">
+         </command>
+         <separator
+               name="common.separator"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.addtocompare"
+               icon="image/compare_24.png"
+               label="%command.label.6"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:vault.folder.user">
          <command
                commandId="vault.folder.createdocument"
                icon="image/create2_24.png"

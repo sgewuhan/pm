@@ -23,11 +23,26 @@ public class CreateVaultDocument extends AbstractNavigatorHandler {
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
 			ViewerControl vc, Command command, Map<String, Object> parameters,
 			IStructuredSelection selection) {
-		if (selected instanceof Folder) {
-			Folder folder = (Folder) selected;
-			Document doc = folder.makeCreateDocument(new CurrentAccountContext());
+		Folder folder = null;
+		if (selected == null) {
+			PrimaryObject master = vc.getMaster();
+			if (master instanceof Folder) {
+				folder = (Folder) master;
+			}
+		} else if (selected instanceof Folder) {
+			folder = (Folder) selected;
+
+		} else if (selected instanceof Document) {
+			Document doc = (Document) selected;
+			folder = doc.getFolder();
+		}
+
+		if (folder != null) {
+			Document doc = folder
+					.makeCreateDocument(new CurrentAccountContext());
 			if (doc == null) {
-				MessageUtil.showToast(Messages.get().CreateVaultDocument_0, SWT.ICON_WARNING);
+				MessageUtil.showToast(Messages.get().CreateVaultDocument_0,
+						SWT.ICON_WARNING);
 			} else {
 				try {
 					DataObjectEditor.open(doc, "editor.forder.document", //$NON-NLS-1$
@@ -36,7 +51,13 @@ public class CreateVaultDocument extends AbstractNavigatorHandler {
 					MessageUtil.showToast(e);
 				}
 			}
-		}		
+		}
+	}
+
+	@Override
+	protected boolean nullSelectionContinue(IWorkbenchPart part,
+			ViewerControl vc, Command command) {
+		return true;
 	}
 
 }
