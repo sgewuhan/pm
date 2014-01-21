@@ -1,6 +1,7 @@
 package com.sg.business.work.home;
 
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,7 +32,6 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
 		content.layout();
-		setPartName("นคื๗");
 	}
 
 	@Override
@@ -71,7 +71,14 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 	@Override
 	protected boolean responseSelectionChanged(IWorkbenchPart part,
 			ISelection selection) {
-		return part.getSite().getId().equals("homenavigator");
+		if (!part.getSite().getId().equals("homenavigator")) {
+			return false;
+		}
+		if (selection == null || selection.isEmpty()
+				|| (!(selection instanceof IStructuredSelection))) {
+			return false;
+		}
+		return ((IStructuredSelection) selection).getFirstElement() instanceof Work;
 	}
 
 	public void setInputWork(Work work) {

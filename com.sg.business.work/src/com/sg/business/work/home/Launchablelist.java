@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.List;
 
 import com.mobnut.db.model.DataSet;
 import com.sg.business.model.dataset.projecttemplate.LaunchableWorkSet;
+import com.sg.business.work.home.action.LaunchWorkLinkAdapter;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.part.ISidebarItem;
 
@@ -42,6 +43,7 @@ public class Launchablelist implements ISidebarItem {
 		List list = viewer.getList();
 		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(36));
+		list.addSelectionListener(new LaunchWorkLinkAdapter());
 		dataSetFactory = new LaunchableWorkSet();
 		doRefresh();
 		return parent;

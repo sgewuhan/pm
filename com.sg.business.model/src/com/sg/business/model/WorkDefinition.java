@@ -15,7 +15,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.model.commonlabel.WorkDefinitionCommonHTMLLable;
 import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 /**
  * <p>
@@ -499,6 +501,8 @@ public class WorkDefinition extends AbstractWork implements
 			} else {
 				return null;
 			}
+		}else if(adapter == CommonHTMLLabel.class){
+			return (T)(new WorkDefinitionCommonHTMLLable(this));
 		}
 		return super.getAdapter(adapter);
 	}
@@ -564,5 +568,6 @@ public class WorkDefinition extends AbstractWork implements
 		work.bindingWorkflowDefinition(Work.F_WF_EXECUTE, wfdef);
 		return work;
 	}
+	
 
 }

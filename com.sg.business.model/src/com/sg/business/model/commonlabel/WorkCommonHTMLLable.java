@@ -111,9 +111,9 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			String projectDesc = project.getDesc();
 			projectDesc = Utils.getPlainText(projectDesc);
 			sb.append(" ");
-			sb.append("<span style='color:#909090;'>");
+			sb.append("<span style='color:#909090;'>");//$NON-NLS-1$
 			sb.append(projectDesc);
-			sb.append("</span>");
+			sb.append("</span>");//$NON-NLS-1$
 		}
 
 		// 有关时间
@@ -136,22 +136,22 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 					BusinessResource.IMAGE_FOLDER));
 			sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
 		}
-		sb.append("</span>");
+		sb.append("</span>");//$NON-NLS-1$
 		
 
 		String start = "?"; //$NON-NLS-1$
-		String color = "";
+		String color = "";//$NON-NLS-1$
 		if(_actualStart!=null){
 			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
 					_actualStart);
 		}else if (_planStart != null) {
 			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
 					_planStart);
-			color = "color:#909090;";
+			color = "color:#909090;";//$NON-NLS-1$
 		}
 		sb.append("<small style='padding-left:6px;"+color+"'>"); //$NON-NLS-1$
 		sb.append(start);
-		sb.append("</small>");
+		sb.append("</small>");//$NON-NLS-1$
 		sb.append("<small style='color:#909090;'>"); //$NON-NLS-1$
 
 		String finish = "?"; //$NON-NLS-1$
@@ -173,7 +173,7 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_NAVIGATE_24,
 					BusinessResource.PLUGIN_ID));
 			sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
-			sb.append("</a>");
+			sb.append("</a>");//$NON-NLS-1$
 		}
 		
 		return sb.toString();
