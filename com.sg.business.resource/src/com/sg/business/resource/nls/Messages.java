@@ -7,7 +7,8 @@ import org.eclipse.swt.widgets.Display;
 import com.mobnut.commons.util.NLS2;
 
 public class Messages {
-	private static final String BUNDLE_NAME = "com.sg.business.work.nls.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "com.sg.business.resource.nls.messages"; //$NON-NLS-1$
+	
 	public static Messages get() {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
 	}

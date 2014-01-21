@@ -4290,7 +4290,7 @@
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.UserTaskDocumentLabelProvider"
                lazyDisplay="true"
-               name="desc"
+               name="descWithControl"
                width="-1">
          </column>
       </tree>
@@ -4316,7 +4316,7 @@
           <column
                 column="desc"
                 labelProvider="com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider"
-                name="%column.name.6"
+                name="descWithOutControl"
                 style="SWT.LEFT"
                 type="String"
                 width="-1">

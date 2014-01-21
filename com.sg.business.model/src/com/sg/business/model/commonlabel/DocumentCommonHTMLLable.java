@@ -5,18 +5,25 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.AccountInfo;
 import com.sg.business.model.Document;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 
 	private Document doc;
 
 	public DocumentCommonHTMLLable(Document document) {
-		this.doc =document;
+		this.doc = document;
 	}
-	
+
 	@Override
 	public String getHTML() {
+		Object configurator = getData();
+		boolean control = (configurator instanceof ColumnConfigurator)
+				&& "descWithControl".equals(((ColumnConfigurator) configurator)
+						.getName());
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 
@@ -48,7 +55,6 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("Rev:"); //$NON-NLS-1$
 		sb.append(rev);
 		sb.append("</b>"); //$NON-NLS-1$
-
 
 		sb.append("<br/>"); //$NON-NLS-1$
 		sb.append("<small>"); //$NON-NLS-1$
@@ -85,8 +91,8 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 
 		sb.append("</span>"); //$NON-NLS-1$
 
-		//上传
-		if (!doc.isLocked()) {
+		// 上传
+		if (!doc.isLocked() && control) {
 			sb.append("<a href=\"upload@" + doc.get_id().toString() //$NON-NLS-1$ 
 					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append("<img src='"); //$NON-NLS-1$
@@ -96,7 +102,7 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 			sb.append("</a>");
 		}
 
-		//下载
+		// 下载
 		sb.append("<a href=\"downloadall@" + doc.get_id().toString() //$NON-NLS-1$ 
 				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 		sb.append("<img src='"); //$NON-NLS-1$

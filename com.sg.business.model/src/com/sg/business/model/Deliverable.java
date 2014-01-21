@@ -7,8 +7,10 @@ import org.eclipse.swt.graphics.Image;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.commonlabel.DocumentCommonHTMLLable;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 /**
  * 交付物
@@ -73,6 +75,14 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == CommonHTMLLabel.class){
+			return (T)(new DocumentCommonHTMLLable(getDocument()));
+		}
+		return super.getAdapter(adapter);
+	}
+	
 	/**
 	 * 返回交付物文档
 	 * 
