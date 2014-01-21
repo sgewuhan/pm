@@ -21,7 +21,7 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 	public String getHTML() {
 		Object configurator = getData();
 		boolean control = (configurator instanceof ColumnConfigurator)
-				&& "descWithControl".equals(((ColumnConfigurator) configurator)
+				&& "workdelivery".equals(((ColumnConfigurator) configurator)
 						.getName());
 
 		StringBuffer sb = new StringBuffer();
@@ -103,13 +103,15 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 		}
 
 		// обть
-		sb.append("<a href=\"downloadall@" + doc.get_id().toString() //$NON-NLS-1$ 
-				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
-		sb.append("<img src='"); //$NON-NLS-1$
-		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWN_24,
-				BusinessResource.PLUGIN_ID));
-		sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
-		sb.append("</a>");
+		if (control) {
+			sb.append("<a href=\"downloadall@" + doc.get_id().toString() //$NON-NLS-1$ 
+					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+			sb.append("<img src='"); //$NON-NLS-1$
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWN_24,
+					BusinessResource.PLUGIN_ID));
+			sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+			sb.append("</a>");
+		}
 		return sb.toString();
 	}
 

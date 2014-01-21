@@ -74,4 +74,9 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 		return part.getSite().getId().equals("homenavigator");
 	}
 
+	public void setInputWork(Work work) {
+		PrimaryObjectEditorInput newInput = getInput(work);
+		setInput(newInput);
+	}
+
 }

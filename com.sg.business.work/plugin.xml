@@ -4290,7 +4290,7 @@
                column="desc"
                labelProvider="com.sg.business.work.labelprovider.UserTaskDocumentLabelProvider"
                lazyDisplay="true"
-               name="descWithControl"
+               name="workdelivery"
                width="-1">
          </column>
       </tree>
@@ -4306,7 +4306,8 @@
              headerVisiable="false"
              id="work.wbsndelivery"
              lineVisiable="false"
-             markupEnabled="true">
+             markupEnabled="true"
+             selectionListener="com.sg.business.work.home.action.WorkLinkAdapter">
           <structure
                 modelRelation="work_work">
           </structure>
@@ -4316,7 +4317,7 @@
           <column
                 column="desc"
                 labelProvider="com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider"
-                name="descWithOutControl"
+                name="wbsndelivery"
                 style="SWT.LEFT"
                 type="String"
                 width="-1">
@@ -4331,12 +4332,12 @@
                content="com.sg.business.work.home.Todolist"
                expanded="true"
                id="1"
-               label="待处理">
+               label="处理工作">
          </expanditem>
          <expanditem
                expanded="false"
                id="2"
-               label="新工作"
+               label="发起工作"
                navigatorId="message.recieved">
          </expanditem>
          <expanditem

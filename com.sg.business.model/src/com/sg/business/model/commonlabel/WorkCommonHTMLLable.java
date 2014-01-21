@@ -13,6 +13,7 @@ import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.registry.config.ColumnConfigurator;
 
 public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
@@ -30,6 +31,11 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 	
 	@Override
 	public String getHTML() {
+		Object configurator = getData();
+		boolean control = (configurator instanceof ColumnConfigurator)
+				&& "wbsndelivery".equals(((ColumnConfigurator) configurator)
+						.getName());
+		
 		String userId = getContext().getAccountInfo().getConsignerId();
 		UserTask currentTask = null;
 		if (work.isExecuteWorkflowActivateAndAvailable()) {// 如果有流程
@@ -158,6 +164,18 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
 		sb.append("</small>"); //$NON-NLS-1$
 		sb.append("</span>"); //$NON-NLS-1$
+		
+		
+		if (control) {
+			sb.append("<a href=\"gowork@" + work.get_id().toString() //$NON-NLS-1$ 
+					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+			sb.append("<img src='"); //$NON-NLS-1$
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_NAVIGATE_24,
+					BusinessResource.PLUGIN_ID));
+			sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+			sb.append("</a>");
+		}
+		
 		return sb.toString();
 	}
 

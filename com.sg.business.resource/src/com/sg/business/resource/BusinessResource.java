@@ -349,6 +349,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_START_16X12 = "work2_wip_16x12.png";
 
 	public static final String IMAGE_FINISH_16X12 = "work2_finish_16x12.png";
+
+	public static final String IMAGE_NAVIGATE_24 = "go_b_24.png";
 	
 
 
