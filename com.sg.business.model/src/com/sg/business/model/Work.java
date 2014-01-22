@@ -1070,8 +1070,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					if (!STATUS_WIP_VALUE.equals(project.getLifecycleStatus())) {
 						throw new Exception(Messages.get().Work_32 + this);
 					}
+				} else {
+					if (!isStandloneWork()) {
+						throw new Exception(Messages.get().Work_33 + this);
+					}
 				}
-				throw new Exception(Messages.get().Work_33 + this);
 			}
 
 			if (isMandatory()) {
