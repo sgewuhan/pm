@@ -34,7 +34,7 @@ public class Todolist implements ISidebarItem {
 
 	@Override
 	public Composite create(Composite parent) {
-		viewer = new ListViewer(parent, SWT.SINGLE);
+		viewer = new ListViewer(parent, SWT.SINGLE|SWT.V_SCROLL);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.setLabelProvider(new HTMLAdvanceLabelProvider());
 		viewer.setUseHashlookup(true);

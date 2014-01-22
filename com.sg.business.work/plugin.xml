@@ -4332,23 +4332,23 @@
                content="com.sg.business.work.home.Todolist"
                expanded="true"
                id="1"
-               label="处理工作">
+               label="%todolist">
          </expanditem>
          <expanditem
                content="com.sg.business.work.home.Launchablelist"
                expanded="false"
                id="2"
-               label="发起工作">
+               label="%launchwork">
          </expanditem>
          <expanditem
                expanded="false"
                id="3"
-               label="新消息"
+               label="%newmessage"
                navigatorId="message.send">
          </expanditem>
          <expanditem
                id="4"
-               label="新公告"
+               label="%newnotice"
                navigatorId="vault.folder.admin">
          </expanditem>
       </sidebar>

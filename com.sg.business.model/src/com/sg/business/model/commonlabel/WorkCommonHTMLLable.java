@@ -24,20 +24,20 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 	private static final int FINISH_WORK = 3;
 	private static final int ASSIGN_WORK = 4;
 	private static final int NONE = 0;
-	
+
 	private Work work;
-	
-	public WorkCommonHTMLLable(Work work){
+
+	public WorkCommonHTMLLable(Work work) {
 		this.work = work;
 	}
-	
+
 	@Override
 	public String getHTML() {
 		Object configurator = getData();
 		boolean control = (configurator instanceof ColumnConfigurator)
 				&& "wbsndelivery".equals(((ColumnConfigurator) configurator)
 						.getName());
-		
+
 		String userId = getContext().getAccountInfo().getConsignerId();
 		UserTask currentTask = null;
 		if (work.isExecuteWorkflowActivateAndAvailable()) {// 如果有流程
@@ -48,7 +48,7 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			}
 		}
 
-		int code = getOperationCode(work, currentTask,userId);
+		int code = getOperationCode(work, currentTask, userId);
 
 		// 标记
 		String selectbarUrl = null;
@@ -100,8 +100,7 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		sb.append(imageUrl);
 
 		sb.append("<span style='font-family:微软雅黑;font-size:9pt;padding-left:24px;'>"); //$NON-NLS-1$
-		
-		
+
 		// 工作desc
 		String workDesc = work.getDesc();
 		workDesc = Utils.getPlainText(workDesc);
@@ -120,78 +119,76 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
 		// 有关时间
 		sb.append("<br/>"); //$NON-NLS-1$
-		
-		sb.append("<span style='font-family:微软雅黑;font-size:9pt;float:right;'>"); //$NON-NLS-1$
-		if (currentTask != null) {
-			sb.append("<img src='"); //$NON-NLS-1$
-			sb.append(FileUtil.getImageURL(
-					BusinessResource.IMAGE_FLOW_16X12,
-					BusinessResource.PLUGIN_ID,
-					BusinessResource.IMAGE_FOLDER));
-			sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
-			sb.append(currentTask.getTaskName());
-		} else if (code == ASSIGN_WORK) {
-			sb.append("<img src='"); //$NON-NLS-1$
-			sb.append(FileUtil.getImageURL(
-					BusinessResource.IMAGE_REASSIGNMENT_16X12,
-					BusinessResource.PLUGIN_ID,
-					BusinessResource.IMAGE_FOLDER));
-			sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
+
+		if (!control) {
+			sb.append("<span style='font-family:微软雅黑;font-size:9pt;float:right;'>"); //$NON-NLS-1$
+			if (currentTask != null) {
+				sb.append("<img src='"); //$NON-NLS-1$
+				sb.append(FileUtil.getImageURL(
+						BusinessResource.IMAGE_FLOW_16X12,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER));
+				sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
+				sb.append(currentTask.getTaskName());
+			} else if (code == ASSIGN_WORK) {
+				sb.append("<img src='"); //$NON-NLS-1$
+				sb.append(FileUtil.getImageURL(
+						BusinessResource.IMAGE_REASSIGNMENT_16X12,
+						BusinessResource.PLUGIN_ID,
+						BusinessResource.IMAGE_FOLDER));
+				sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
+			}
+			sb.append("</span>");//$NON-NLS-1$
 		}
-		sb.append("</span>");//$NON-NLS-1$
-		
 
 		String start = "?"; //$NON-NLS-1$
 		String color = "";//$NON-NLS-1$
-		if(_actualStart!=null){
-			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
-					_actualStart);
-		}else if (_planStart != null) {
-			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
-					_planStart);
+		if (_actualStart != null) {
+			start = String
+					.format(Utils.FORMATE_DATE_COMPACT_SASH, _actualStart);
+		} else if (_planStart != null) {
+			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH, _planStart);
 			color = "color:#909090;";//$NON-NLS-1$
 		}
-		sb.append("<small style='padding-left:6px;"+color+"'>"); //$NON-NLS-1$
+		sb.append("<small style='padding-left:6px;" + color + "'>"); //$NON-NLS-1$
 		sb.append(start);
 		sb.append("</small>");//$NON-NLS-1$
 		sb.append("<small style='color:#909090;'>"); //$NON-NLS-1$
 
 		String finish = "?"; //$NON-NLS-1$
 		if (_planFinish != null) {
-			finish = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
-					_planFinish);
+			finish = String
+					.format(Utils.FORMATE_DATE_COMPACT_SASH, _planFinish);
 		}
 		sb.append("~"); //$NON-NLS-1$
 		sb.append(finish);
-		
-		
-		if(control){
-			//显示负责人和指派者
+
+		if (control) {
+			// 显示负责人和指派者
 			sb.append(" ");
 			sb.append(Messages.get(getLocale()).Work_187);
 			sb.append(": ");
 			User user = work.getCharger();
-			if(user == null){
+			if (user == null) {
 				sb.append("?");
-			}else{
+			} else {
 				sb.append(user.getUsername());
 			}
-			
+
 			sb.append(" ");
 			sb.append(Messages.get(getLocale()).Role_20);
 			sb.append(": ");
 			user = work.getAssigner();
-			if(user == null){
+			if (user == null) {
 				sb.append("?");
-			}else{
+			} else {
 				sb.append(user.getUsername());
 			}
 		}
 
 		sb.append("</small>"); //$NON-NLS-1$
 		sb.append("</span>"); //$NON-NLS-1$
-		
-		
+
 		if (control) {
 			sb.append("<a href=\"gowork@" + work.get_id().toString() //$NON-NLS-1$ 
 					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
@@ -201,12 +198,12 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
 			sb.append("</a>");//$NON-NLS-1$
 		}
-		
+
 		return sb.toString();
 	}
 
-	private int getOperationCode(Work work, UserTask currentTask,String userId) {
-		
+	private int getOperationCode(Work work, UserTask currentTask, String userId) {
+
 		// 如果是准备中的工作，显示为开始工作
 		// 如果是进行中的工作，判断是否在当前的流程任务中
 		if (currentTask != null) {
