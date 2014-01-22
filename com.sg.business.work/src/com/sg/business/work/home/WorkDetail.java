@@ -40,18 +40,20 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 			return null;
 		}
 		Work work = (Work) primary;
-		String editorId = "navigator.view.work2";
+		String editorId;
 
 		if (work.isSummaryWork()) {
 			if (Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
 				editorId = "navigator.view.work.4";
 			} else if (Work.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())) {
 				editorId = "navigator.view.work.5";
+			}else{
+				editorId = "navigator.view.work.2";
 			}
 		} else {
 			if (Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
 				editorId = "navigator.view.work.1";
-			} else if (Work.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())) {
+			} else  {
 				if (work.isExecuteWorkflowActivateAndAvailable()) {
 					editorId = "navigator.view.work.2";
 				} else {

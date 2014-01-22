@@ -7,9 +7,11 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Project;
+import com.sg.business.model.User;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.ImageResource;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
@@ -161,6 +163,30 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		}
 		sb.append("~"); //$NON-NLS-1$
 		sb.append(finish);
+		
+		
+		if(control){
+			//显示负责人和指派者
+			sb.append(" ");
+			sb.append(Messages.get(getLocale()).Work_187);
+			sb.append(": ");
+			User user = work.getCharger();
+			if(user == null){
+				sb.append("?");
+			}else{
+				sb.append(user.getUsername());
+			}
+			
+			sb.append(" ");
+			sb.append(Messages.get(getLocale()).Role_20);
+			sb.append(": ");
+			user = work.getAssigner();
+			if(user == null){
+				sb.append("?");
+			}else{
+				sb.append(user.getUsername());
+			}
+		}
 
 		sb.append("</small>"); //$NON-NLS-1$
 		sb.append("</span>"); //$NON-NLS-1$

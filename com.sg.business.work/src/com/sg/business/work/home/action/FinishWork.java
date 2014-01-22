@@ -26,6 +26,9 @@ public class FinishWork extends AbstractWorkDetailPageAction {
 		
 	}
 
-
+	@Override
+	protected boolean visiableWhen(Work work) {
+		return work.canFinish();
+	}
 
 }

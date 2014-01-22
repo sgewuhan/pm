@@ -15,13 +15,16 @@ public class OpenProject extends AbstractWorkDetailPageAction {
 		if (project == null) {
 			return;
 		}
+		
+		
 		try {
 			DataObjectEditor
-					.open(project, "editor.runtimeproject", false, null); //$NON-NLS-1$
+					.open(project, "project.editor", true, null); //$NON-NLS-1$
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
 
 	}
+	
 
 }

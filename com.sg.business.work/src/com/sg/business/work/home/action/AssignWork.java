@@ -2,6 +2,7 @@ package com.sg.business.work.home.action;
 
 import org.eclipse.swt.widgets.Control;
 
+import com.mobnut.db.model.IContext;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
@@ -9,11 +10,11 @@ import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.registry.config.Configurator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-public class EditWork extends AbstractWorkDetailPageAction {
+public class AssignWork extends AbstractWorkDetailPageAction {
 
 	@Override
 	protected void run(Work work, Control control) {
-		String editorId = work.getEditorId();
+		String editorId = "editor.runtimereassignment";
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(
 				editorId);
@@ -30,11 +31,14 @@ public class EditWork extends AbstractWorkDetailPageAction {
 				MessageUtil.showToast(e);
 			}
 		}
-
 	}
 
 	@Override
 	protected boolean visiableWhen(Work work) {
-		return work.canEdit(getContext());
+		IContext context = getContext();
+		String userId = context.getAccountInfo().getConsignerId();
+		String assignerId = work.getAssignerId();
+		return userId.equals(assignerId)&&work.canEdit(context);
 	}
+
 }

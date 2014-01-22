@@ -150,4 +150,11 @@ public class CompleteTask extends AbstractWorkDetailPageAction {
 		dropDownMenu.setVisible(true);
 	}
 
+	
+	@Override
+	protected boolean visiableWhen(Work work) {
+		String userId = getContext().getAccountInfo().getUserId();
+		long count = work.countReservedAndInprogressUserTasks(userId);
+		return count>=1;
+	}
 }

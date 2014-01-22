@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.List;
 
 import com.mobnut.db.model.DataSet;
 import com.sg.business.model.dataset.projecttemplate.LaunchableWorkSet;
-import com.sg.business.work.home.action.LaunchWorkLinkAdapter;
+import com.sg.business.work.home.link.LaunchWorkLinkAdapter;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.part.ISidebarItem;
 

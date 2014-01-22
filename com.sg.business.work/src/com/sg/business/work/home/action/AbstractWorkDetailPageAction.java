@@ -1,26 +1,56 @@
 package com.sg.business.work.home.action;
 
+import java.util.Locale;
+
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
+import com.mobnut.db.model.IContext;
 import com.sg.business.model.Work;
 import com.sg.business.work.home.WorkDetail;
+import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.IDataObjectEditorAction;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.view.SideBarNavigator;
 
 public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorAction{
+	
+	private Locale locale;
+	private IContext context;
+
+	public AbstractWorkDetailPageAction(){
+		this.context = new CurrentAccountContext();
+		this.locale = RWT.getLocale();
+	}
+	
+	public Locale getLocale() {
+		return locale;
+	}
+	
+	public IContext getContext() {
+		return context;
+	}
+	
 	@Override
-	public boolean visiableWhen(PrimaryObjectEditorInput input) {
+	final public boolean visiableWhen(PrimaryObjectEditorInput input) {
+		return visiableWhen((Work)input.getData());
+	}
+
+	protected boolean visiableWhen(Work work) {
 		return true;
 	}
 
 	@Override
-	public boolean enableWhen(PrimaryObjectEditorInput input) {
-		return true;
+	final public boolean enableWhen(PrimaryObjectEditorInput input) {
+		return enableWhen((Work)input.getData());
 	}
 	
+	protected boolean enableWhen(Work work) {
+		return true;
+	}
+
 	@Override
 	public void run(PrimaryObjectEditorInput input, Control control) {
 		run((Work)input.getData(),control);

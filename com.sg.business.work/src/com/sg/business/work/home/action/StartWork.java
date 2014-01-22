@@ -25,5 +25,10 @@ public class StartWork extends AbstractWorkDetailPageAction {
 		}
 		
 	}
+	
+	@Override
+	protected boolean visiableWhen(Work work) {
+		return work.canStart();
+	}
 
 }

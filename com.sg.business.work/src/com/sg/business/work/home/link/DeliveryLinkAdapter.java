@@ -1,4 +1,4 @@
-package com.sg.business.work.home.action;
+package com.sg.business.work.home.link;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

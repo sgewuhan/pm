@@ -4284,7 +4284,7 @@
              id="workflow.workdelivery"
              lineVisiable="false"
              markupEnabled="true"
-             selectionListener="com.sg.business.work.home.action.DeliveryLinkAdapter"
+             selectionListener="com.sg.business.work.home.link.DeliveryLinkAdapter"
              virtual="true">
          <column
                column="desc"
@@ -4307,7 +4307,7 @@
              id="work.wbsndelivery"
              lineVisiable="false"
              markupEnabled="true"
-             selectionListener="com.sg.business.work.home.action.WorkLinkAdapter">
+             selectionListener="com.sg.business.work.home.link.WorkLinkAdapter">
           <structure
                 modelRelation="work_work">
           </structure>
@@ -4472,7 +4472,7 @@
                   <tree
                         ctreeId="workflow.workdelivery"
                         editable="true"
-                        heightHint="197"
+                        heightHint="500"
                         id="workflow.workdelivery"
                         isComputeField="true"
                         label="%view.name.5"
@@ -4496,6 +4496,14 @@
                   icon="image/edit_b_24.png"
                   id="editwork"
                   label="%command.label.7"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
+                  class="com.sg.business.work.home.action.AssignWork"
+                  icon="image/assign_b_24.png"
+                  id="editwork"
+                  label="%command.label.11"
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>
@@ -4677,6 +4685,14 @@
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>
+            <pageAction
+                  class="com.sg.business.work.home.action.AssignWork"
+                  icon="image/assign_b_24.png"
+                  id="editwork"
+                  label="%command.label.11"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
          </basicpage>
       </editor>
       <editor
@@ -4839,6 +4855,14 @@
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>
+            <pageAction
+                  class="com.sg.business.work.home.action.AssignWork"
+                  icon="image/assign_b_24.png"
+                  id="editwork"
+                  label="%command.label.11"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
          </basicpage>
       </editor>
       <editor
@@ -4985,6 +5009,14 @@
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>
+            <pageAction
+                  class="com.sg.business.work.home.action.AssignWork"
+                  icon="image/assign_b_24.png"
+                  id="editwork"
+                  label="%command.label.11"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
          </basicpage>
       </editor>
       <editor
@@ -5120,6 +5152,14 @@
                   icon="image/complete_b_24.png"
                   id="finishwork"
                   label="%command.label.3"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
+                  class="com.sg.business.work.home.action.AssignWork"
+                  icon="image/assign_b_24.png"
+                  id="editwork"
+                  label="%command.label.11"
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>

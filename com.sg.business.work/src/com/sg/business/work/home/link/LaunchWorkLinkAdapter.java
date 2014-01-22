@@ -1,20 +1,15 @@
-package com.sg.business.work.home.action;
+package com.sg.business.work.home.link;
 
 import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.ModelService;
-import com.sg.business.model.Work;
-import com.sg.business.work.home.WorkDetail;
+import com.sg.business.model.WorkDefinition;
+import com.sg.business.work.launch.LaunchWorkWizard;
 
-public class WorkLinkAdapter implements SelectionListener {
-
-	public WorkLinkAdapter() {
-	}
+public class LaunchWorkLinkAdapter implements SelectionListener {
 
 	@Override
 	public void widgetSelected(SelectionEvent event) {
@@ -25,25 +20,22 @@ public class WorkLinkAdapter implements SelectionListener {
 						event.text.indexOf("@")); //$NON-NLS-1$
 				String _data = event.text
 						.substring(event.text.indexOf("@") + 1); //$NON-NLS-1$
-				if ("gowork".equals(action)) { //$NON-NLS-1$
-					goWork(_data, event);
+				if ("launchwork".equals(action)) { //$NON-NLS-1$
+					doLaunch(_data, event);
 				}
 			} catch (Exception e) {
 			}
 		}
 	}
 
-	private void goWork(String _data, SelectionEvent event) {
-		Work work = ModelService.createModelObject(Work.class,
+	private void doLaunch(String _data, SelectionEvent event) {
+		WorkDefinition workd = ModelService.createModelObject(WorkDefinition.class,
 				new ObjectId(_data));
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		WorkDetail view = (WorkDetail) page.findView("pm2.work.detail");
-		view.setInputWork(work);
+		LaunchWorkWizard.OPEN(workd);
 	}
 
 	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 

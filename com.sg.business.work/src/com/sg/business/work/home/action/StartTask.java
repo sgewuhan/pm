@@ -81,6 +81,11 @@ public class StartTask extends AbstractWorkDetailPageAction {
 		dropDownMenu.setVisible(true);
 	}
 
-
+	@Override
+	protected boolean visiableWhen(Work work) {
+		String userId = getContext().getAccountInfo().getUserId();
+		long count = work.countReservedUserTasks(userId);
+		return count>=1;
+	}
 
 }

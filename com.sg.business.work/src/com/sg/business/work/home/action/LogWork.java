@@ -22,9 +22,10 @@ public class LogWork extends AbstractWorkDetailPageAction {
 		WorksPerformence po = work.getWorksPerformence(date, userid);
 
 		if (po != null) {
-			int ok = MessageUtil.showMessage(null, Messages.get(control.getDisplay()).AddWorkRecord_0,
-					Messages.get(control.getDisplay()).AddWorkRecord_1, SWT.ICON_QUESTION | SWT.YES
-							| SWT.NO);
+			int ok = MessageUtil.showMessage(null,
+					Messages.get(control.getDisplay()).AddWorkRecord_0,
+					Messages.get(control.getDisplay()).AddWorkRecord_1,
+					SWT.ICON_QUESTION | SWT.YES | SWT.NO);
 			if (ok != SWT.YES) {
 				return;
 			}
@@ -38,9 +39,12 @@ public class LogWork extends AbstractWorkDetailPageAction {
 			pageReload();
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
-		}		
+		}
 	}
 
-
+	@Override
+	protected boolean visiableWhen(Work work) {
+		return work.canEditWorkRecord(getContext());
+	}
 
 }

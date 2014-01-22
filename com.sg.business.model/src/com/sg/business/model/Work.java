@@ -801,7 +801,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// }
 		// }
 		// }
-        // 判断是否为该工作或上级工作的指派者
+		// 判断是否为该工作或上级工作的指派者
 		if (hasPermissionForReassignment(context)) {
 			return true;
 		}
@@ -1314,8 +1314,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			Object value = getPlanStart();
 			boolean passed = true;
 			if (value == null) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_47,
-						Messages.get().Work_48, Messages.get().Work_49, ICheckListItem.ERROR);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_47, Messages.get().Work_48,
+						Messages.get().Work_49, ICheckListItem.ERROR);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
@@ -1327,8 +1328,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			value = getPlanFinish();
 			if (value == null) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_50,
-						Messages.get().Work_51, Messages.get().Work_52, ICheckListItem.ERROR);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_50, Messages.get().Work_51,
+						Messages.get().Work_52, ICheckListItem.ERROR);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
@@ -1340,9 +1342,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			value = getPlanWorks();
 			if (value == null) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_53,
-						Messages.get().Work_54, Messages.get().Work_55,
-						ICheckListItem.WARRING);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_53, Messages.get().Work_54,
+						Messages.get().Work_55, ICheckListItem.WARRING);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
@@ -1354,8 +1356,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			value = getDesc();
 			if (value == null) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_56,
-						Messages.get().Work_57, Messages.get().Work_58, ICheckListItem.ERROR);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_56, Messages.get().Work_57,
+						Messages.get().Work_58, ICheckListItem.ERROR);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
@@ -1365,7 +1368,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_59);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_59);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				result.add(checkItem);
@@ -1376,8 +1380,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 2 检查负责人
 			value = getCharger();
 			if (value == null) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_60,
-						Messages.get().Work_61, Messages.get().Work_62, ICheckListItem.ERROR);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_60, Messages.get().Work_61,
+						Messages.get().Work_62, ICheckListItem.ERROR);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
@@ -1390,8 +1395,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 3.检查参与者
 			value = getParticipatesIdList();
 			if (value == null || ((BasicBSONList) value).isEmpty()) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_63,
-						Messages.get().Work_64, Messages.get().Work_65, ICheckListItem.WARRING);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_63, Messages.get().Work_64,
+						Messages.get().Work_65, ICheckListItem.WARRING);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				checkItem.setEditorId(Project.EDITOR_CREATE_PLAN);
@@ -1401,7 +1407,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				passed = false;
 			}
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_66);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_66);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				result.add(checkItem);
@@ -1439,9 +1446,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			// 检查工作交付物
 			List<PrimaryObject> docs = getDeliverableDocuments();
 			if (docs.isEmpty()) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_69,
-						Messages.get().Work_70, Messages.get().Work_71,
-						ICheckListItem.WARRING);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_69, Messages.get().Work_70,
+						Messages.get().Work_71, ICheckListItem.WARRING);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				checkItem.setKey(F_PARTICIPATE);
@@ -1449,7 +1456,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				passed = false;
 			}
 			if (passed) {
-				CheckListItem checkItem = new CheckListItem(Messages.get().Work_72);
+				CheckListItem checkItem = new CheckListItem(
+						Messages.get().Work_72);
 				checkItem.setData(project);
 				checkItem.setSelection(this);
 				result.add(checkItem);
@@ -1486,8 +1494,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 3.检查工作名称
 		value = getDesc();
 		if (Utils.isNullOrEmptyString(value)) {
-			message.add(new Object[] { Messages.get().Work_76, this, SWT.ICON_ERROR,
-					EDIT_WORK_PLAN_0 });
+			message.add(new Object[] { Messages.get().Work_76, this,
+					SWT.ICON_ERROR, EDIT_WORK_PLAN_0 });
 		}
 		// 4.检查负责人
 		value = getCharger();
@@ -1499,8 +1507,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 5.检查参与者
 		value = getParticipatesIdList();
 		if (!(value instanceof List) || ((List<?>) value).isEmpty()) {
-			message.add(new Object[] { Messages.get().Work_78, this, SWT.ICON_WARNING,
-					EDIT_WORK_PLAN_0 });
+			message.add(new Object[] { Messages.get().Work_78, this,
+					SWT.ICON_WARNING, EDIT_WORK_PLAN_0 });
 		}
 
 		// // 6.1.检查工作变更的流程 ：错误，没有指明流程负责人
@@ -1521,8 +1529,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 7.检查工作交付物,警告
 		List<PrimaryObject> docs = getDeliverableDocuments();
 		if (docs.isEmpty()) {
-			message.add(new Object[] { Messages.get().Work_80, this, SWT.ICON_WARNING,
-					EDITOR });
+			message.add(new Object[] { Messages.get().Work_80, this,
+					SWT.ICON_WARNING, EDITOR });
 		}
 		return message;
 	}
@@ -1543,8 +1551,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// 1.判断非级联完成的工作是否已经在已完成状态、已取消、准备中、无状态的状态
 		DBObject condition = new BasicDBObject();
 		condition.put(F_PARENT_ID, id);
-		condition.put(
-				F_LIFECYCLE,
+		condition.put(F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE }));
 		condition.put(F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH,
@@ -1589,11 +1596,10 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 										Boolean.TRUE),
 								new BasicDBObject().append(F_MANDATORY,
 										Boolean.TRUE) });
-		condition.put(
-				F_LIFECYCLE,
-				new BasicDBObject().append("$in", new String[] {//$NON-NLS-1$
-						STATUS_PAUSED_VALUE, STATUS_WIP_VALUE,
-						STATUS_NONE_VALUE, null, STATUS_ONREADY_VALUE }));
+		condition.put(F_LIFECYCLE, new BasicDBObject().append(
+				"$in", new String[] {//$NON-NLS-1$
+				STATUS_PAUSED_VALUE, STATUS_WIP_VALUE, STATUS_NONE_VALUE, null,
+						STATUS_ONREADY_VALUE }));
 
 		count = getRelationCountByCondition(Work.class, condition);
 		if (count > 0) {
@@ -1789,11 +1795,19 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	 * @return
 	 */
 	public User getCharger() {
-		String chargerId = getChargerId();
-		if (Utils.isNullOrEmpty(chargerId)) {
+		String userId = getChargerId();
+		if (Utils.isNullOrEmpty(userId)) {
 			return null;
 		}
-		return UserToolkit.getUserById(chargerId);
+		return UserToolkit.getUserById(userId);
+	}
+
+	public User getAssigner() {
+		String userId = getAssignerId();
+		if (Utils.isNullOrEmpty(userId)) {
+			return null;
+		}
+		return UserToolkit.getUserById(userId);
 	}
 
 	/**
@@ -1874,34 +1888,46 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	public void appendMessageForCharger(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, Messages.get().Work_89
-				+ ": " + getLabel(), this, EDITOR, context); //$NON-NLS-1$
+		MessageToolkit
+				.appendMessage(
+						messageList,
+						getChargerId(),
+						title,
+						Messages.get().Work_89 + ": " + getLabel(), this, EDITOR, context); //$NON-NLS-1$
 	}
 
 	public void appendMessageForAssigner(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title,
-				Messages.get().Work_91 + ": " + getLabel(), this, EDITOR, context); //$NON-NLS-2$
+		MessageToolkit
+				.appendMessage(
+						messageList,
+						getChargerId(),
+						title,
+						Messages.get().Work_91 + ": " + getLabel(), this, EDITOR, context); //$NON-NLS-2$
 	}
 
 	public void appendMessageForParticipate(Map<String, Message> messageList,
 			String title, IContext context) {
-		MessageToolkit.appendMessage(messageList, getChargerId(), title, Messages.get().Work_93
-				+ ": " + getLabel(), this, EDITOR, context); //$NON-NLS-1$
+		MessageToolkit
+				.appendMessage(
+						messageList,
+						getChargerId(),
+						title,
+						Messages.get().Work_93 + ": " + getLabel(), this, EDITOR, context); //$NON-NLS-1$
 	}
 
 	public void appendMessageForExecuteWorkflowActor(
 			Map<String, Message> messageList, String title, IContext context) {
 		MessageToolkit.appendWorkflowActorMessage(this, messageList,
-				F_WF_EXECUTE, Messages.get().Work_95, title, context.getAccountInfo()
-						.getConsignerId(), null);
+				F_WF_EXECUTE, Messages.get().Work_95, title, context
+						.getAccountInfo().getConsignerId(), null);
 	}
 
 	public void appendMessageForChangeWorkflowActor(
 			Map<String, Message> messageList, String title, IContext context) {
 		MessageToolkit.appendWorkflowActorMessage(this, messageList,
-				F_WF_CHANGE, Messages.get().Work_96, title, context.getAccountInfo()
-						.getConsignerId(), null);
+				F_WF_CHANGE, Messages.get().Work_96, title, context
+						.getAccountInfo().getConsignerId(), null);
 	}
 
 	/**
@@ -1991,8 +2017,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		checkWriteResult(ws);
 		fireEvent(IPrimaryObjectEventListener.REMOVE);
 
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().Work_98, new Date(),
-				getLabel() + "\n" + getDbName() + "\\" + getCollectionName() //$NON-NLS-1$ //$NON-NLS-2$
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
+				Messages.get().Work_98, new Date(), getLabel()
+						+ "\n" + getDbName() + "\\" + getCollectionName() //$NON-NLS-1$ //$NON-NLS-2$
 						+ Messages.get().Work_101 + get_id(), getDbName());
 	}
 
@@ -2079,10 +2106,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	private DBObject getChildrenGroupValue(String field1, String field2,
 			String op, DBCollection col) {
 		DBObject group = new BasicDBObject();
-		group.put(
-				"$group", //$NON-NLS-1$
-				new BasicDBObject()
-						.append(F__ID, "$" + F_PARENT_ID) //$NON-NLS-1$
+		group.put("$group", //$NON-NLS-1$
+				new BasicDBObject().append(F__ID, "$" + F_PARENT_ID) //$NON-NLS-1$
 						.append("result" + field1, //$NON-NLS-1$
 								new BasicDBObject().append(op, "$" + field1)) //$NON-NLS-1$
 						.append("result" + field2, //$NON-NLS-1$
@@ -2482,7 +2507,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 					ProcessInstance processInstance = wf.startHumanProcess(
 							actorParameter, params);
-					Assert.isNotNull(processInstance, Messages.get().Work_120 + this);
+					Assert.isNotNull(processInstance, Messages.get().Work_120
+							+ this);
 
 					update.put(F_WF_EXECUTE
 							+ IProcessControl.POSTFIX_INSTANCEID,
@@ -2848,10 +2874,12 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			}
 			((List) historyList).add(wfHistory);
 
-			WriteResult ws = col.update(new BasicDBObject().append(
-					Document.F__ID, document.get_id()), new BasicDBObject()
-					.append("$set", new BasicDBObject().append( //$NON-NLS-1$
-							Document.F_WF_HISTORY, historyList)));
+			WriteResult ws = col.update(
+					new BasicDBObject().append(Document.F__ID,
+							document.get_id()),
+					new BasicDBObject().append(
+							"$set", new BasicDBObject().append( //$NON-NLS-1$
+									Document.F_WF_HISTORY, historyList)));
 			checkWriteResult(ws);
 		}
 
@@ -2985,8 +3013,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				col.insert(data, WriteConcern.NORMAL);
 
 				try {
-					DBUtil.SAVELOG(userid, Messages.get().Work_140, new Date(), Messages.get().Work_141,
-							IModelConstants.DB);
+					DBUtil.SAVELOG(userid, Messages.get().Work_140, new Date(),
+							Messages.get().Work_141, IModelConstants.DB);
 				} catch (Exception e) {
 				}
 				return org.eclipse.core.runtime.Status.OK_STATUS;
@@ -3087,7 +3115,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 								new Long(dateCode));
 						po.setValue(WorksPerformence.F_WORKS, new Double(
 								personDayWorks));
-						po.setValue(WorksPerformence.F_DESC, Messages.get().Work_143);
+						po.setValue(WorksPerformence.F_DESC,
+								Messages.get().Work_143);
 						records.add(po);
 					}
 
@@ -3476,7 +3505,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 			// 保存任务名称
 			List<I18NText> names = task.getNames();
-			Assert.isLegal(names != null && names.size() > 0, Messages.get().Work_173);
+			Assert.isLegal(names != null && names.size() > 0,
+					Messages.get().Work_173);
 			String taskName = names.get(0).getText();
 			userTask.setValue(UserTask.F_DESC, taskName);
 			userTask.setValue(UserTask.F_TASK_NAME, taskName);// 兼容history
@@ -3546,7 +3576,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public void doStartTask(String processKey, UserTask userTask,
 			IContext context) throws Exception {
 		String lc = getLifecycleStatus();
-		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), Messages.get().Work_175);
+		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc),
+				Messages.get().Work_175);
 
 		// Task task = userTask.getTask();
 		// Assert.isNotNull(task, "无法获得当前的流程任务");
@@ -3605,7 +3636,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			Map<String, Object> taskMetaData, IContext context)
 			throws Exception {
 		String lc = getLifecycleStatus();
-		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc), Messages.get().Work_178);
+		Assert.isTrue(ILifecycle.STATUS_WIP_VALUE.equals(lc),
+				Messages.get().Work_178);
 
 		// Task task = getTask(processKey, context);
 		// Assert.isNotNull(task, "无法获得当前的流程任务");
@@ -3896,13 +3928,13 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					}
 				}
 			};
-		}else if (adapter == DummyWork.class) {
+		} else if (adapter == DummyWork.class) {
 			DummyWork dummyWork = ModelService
 					.createModelObject(DummyWork.class);
 			dummyWork.setSource(this);
 			return (T) dummyWork;
-		}else if(adapter == CommonHTMLLabel.class){
-			return (T)(new WorkCommonHTMLLable(this));
+		} else if (adapter == CommonHTMLLabel.class) {
+			return (T) (new WorkCommonHTMLLable(this));
 		}
 		return super.getAdapter(adapter);
 	}
@@ -4035,9 +4067,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		String lifecycleStatus = getLifecycleStatus();
 
 		if (ILifecycle.STATUS_CANCELED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { Messages.get().Work_204, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Work_204, this,
+					SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycleStatus)) {
-			message.add(new Object[] { Messages.get().Work_205, this, SWT.ICON_ERROR });
+			message.add(new Object[] { Messages.get().Work_205, this,
+					SWT.ICON_ERROR });
 		} else if (ILifecycle.STATUS_WIP_VALUE.equals(getLifecycleStatus())) {
 			message.add(new Object[] { Messages.get().Work_206, this,
 					SWT.ICON_WARNING });
@@ -4626,8 +4660,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		DBCollection workCol = getCollection();
 
 		DBObject update = new BasicDBObject().append("$addToSet", //$NON-NLS-1$
-				new BasicDBObject().append(
-						Work.F_PARTICIPATE,
+				new BasicDBObject().append(Work.F_PARTICIPATE,
 						new BasicDBObject().append("$each", //$NON-NLS-1$
 								userList.toArray(new String[0]))));
 
@@ -4725,7 +4758,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 				}
 			}
 		}
-		
+
 		return editorId;
 	}
 
