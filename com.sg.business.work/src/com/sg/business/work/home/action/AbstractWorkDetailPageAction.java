@@ -19,6 +19,7 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 	
 	private Locale locale;
 	private IContext context;
+	private Control control;
 
 	public AbstractWorkDetailPageAction(){
 		this.context = new CurrentAccountContext();
@@ -75,6 +76,15 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		WorkDetail view2 = (WorkDetail) page.findView("pm2.work.detail");
 		view2.loadMaster();
+	}
+	
+	@Override
+	public void setControl(Control control) {
+		this.control = control;
+	}
+	
+	public Control getControl() {
+		return control;
 	}
 	
 }
