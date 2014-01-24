@@ -556,6 +556,7 @@ public class WorkDefinition extends AbstractWork implements
 		work.setValue(Work.F_WORK_CATAGORY, getValue(F_WORK_CATAGORY));
 		work.setValue(Work.F_WORK_TYPE, Work.WORK_TYPE_STANDLONE);
 		work.setValue(Work.F_WORK_DEFINITION_ID, get_id());
+		work.setValue(Work.F_WORK_DEFINITION_NAME, getDesc());
 		//传递内部参数
 		work.setValue(Work.F_INTERNAL_PARA_CHARGERID, getValue(F_INTERNAL_PARA_CHARGERID));
 		work.setValue(Work.F_INTERNAL_PARA_NOSKIP, getValue(F_INTERNAL_PARA_NOSKIP));

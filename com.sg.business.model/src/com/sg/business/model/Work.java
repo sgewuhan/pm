@@ -158,6 +158,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_RECORD = "record"; //$NON-NLS-1$
 
 	public static final String F_WORK_DEFINITION_ID = "workd_id"; //$NON-NLS-1$
+	
+	public static final String F_WORK_DEFINITION_NAME= "workddesc"; //$NON-NLS-1$
 
 	public static final String F_USE_PROJECT_ROLE = "useprojectrole"; //$NON-NLS-1$
 
@@ -173,6 +175,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
 			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
 			F_WF_EXECUTE_ASSIGNMENT, F_TARGETS };
+
 
 	private Double overCount = null;
 
