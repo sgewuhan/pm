@@ -175,5 +175,8 @@ public class ProjectBudgetOfTaskFormPage implements IPageDelegator, IFormPart {
 	public boolean canRefresh() {
 		return false;
 	}
-
+	@Override
+	public boolean createBody() {
+		return false;
+	}
 }

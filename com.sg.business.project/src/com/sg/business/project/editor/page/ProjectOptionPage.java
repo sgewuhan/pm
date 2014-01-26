@@ -238,4 +238,8 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		return false;
 	}
 
+	@Override
+	public boolean createBody() {
+		return false;
+	}
 }

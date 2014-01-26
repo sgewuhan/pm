@@ -215,4 +215,9 @@ public class BugetTemplatePage implements IPageDelegator, IFormPart {
 		return false;
 	}
 
+	@Override
+	public boolean createBody() {
+		return false;
+	}
+
 }

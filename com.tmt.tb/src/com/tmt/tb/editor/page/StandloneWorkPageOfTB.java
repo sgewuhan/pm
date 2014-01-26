@@ -241,5 +241,8 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 	public boolean canRefresh() {
 		return false;
 	}
-
+	@Override
+	public boolean createBody() {
+		return false;
+	}
 }

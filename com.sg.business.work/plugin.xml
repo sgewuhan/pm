@@ -5176,6 +5176,7 @@
                description="%basicpage.description.27"
                id="basicpage1"
                image="image/work_72.png"
+               pageDelegator="com.sg.business.commons.page.flow.LaunchWorkWithProcessPage"
                title="%basicpage.title.27">
             <pagecolumn>
                <section
@@ -5246,13 +5247,6 @@
                   </navigatorSelector>
                </section>
             </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="%basicpage.description.29"
-               id="processpage1"
-               image="image/workflow_72.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
-               title="%basicpage.title.29">
          </basicpage>
       </editor>
       <editor
