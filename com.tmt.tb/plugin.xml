@@ -57,10 +57,10 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="tb.tbProjectReview.expertgroupcountersign"
+            editorId="tb.tbProjectApplication.expertgroupcountersign"
             name="专家评审"
             persistentFields="choice,comment,accessory"
-            processDefinitionId="tb.tbProjectReview">
+            processDefinitionId="tb.tbProjectApplication">
       </taskForm>
       <taskForm
             editorId="tb.tbProjectReview.meetingreview"
@@ -388,7 +388,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="tb.tbProjectReview.expertgroupcountersign"
+            id="tb.tbProjectApplication.expertgroupcountersign"
             name="%editor.name.2">
          <basicpage
                id="page1"
