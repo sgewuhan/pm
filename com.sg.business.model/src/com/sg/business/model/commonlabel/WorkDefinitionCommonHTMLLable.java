@@ -1,9 +1,7 @@
 package com.sg.business.model.commonlabel;
 
-import com.mobnut.commons.util.file.FileUtil;
 import com.sg.business.model.Organization;
 import com.sg.business.model.WorkDefinition;
-import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 public class WorkDefinitionCommonHTMLLable extends CommonHTMLLabel {
@@ -27,13 +25,13 @@ public class WorkDefinitionCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("</small>");
 		sb.append("</span>");
 		
-		sb.append("<a href=\"launchwork@" + workd.get_id().toString() //$NON-NLS-1$ 
-				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
-		sb.append("<img src='"); //$NON-NLS-1$
-		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
-				BusinessResource.PLUGIN_ID));
-		sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
-		sb.append("</a>");//$NON-NLS-1$
+//		sb.append("<a href=\"launchwork@" + workd.get_id().toString() //$NON-NLS-1$ 
+//				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+//		sb.append("<img src='"); //$NON-NLS-1$
+//		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_GO_48,
+//				BusinessResource.PLUGIN_ID));
+//		sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+//		sb.append("</a>");//$NON-NLS-1$
 		return sb.toString();
 	}
 
