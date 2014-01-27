@@ -13,6 +13,7 @@ import com.sg.business.work.home.WorkDetail;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.IDataObjectEditorAction;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.part.view.SideBarNavigator;
 
 public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorAction{
@@ -20,6 +21,8 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 	private Locale locale;
 	private IContext context;
 	private Control control;
+	private PrimaryObjectEditorInput input;
+	private IValidable validable;
 
 	public AbstractWorkDetailPageAction(){
 		this.context = new CurrentAccountContext();
@@ -32,6 +35,14 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 	
 	public IContext getContext() {
 		return context;
+	}
+	
+	public PrimaryObjectEditorInput getInput() {
+		return input;
+	}
+	
+	public IValidable getValidable() {
+		return validable;
 	}
 	
 	@Override
@@ -54,6 +65,7 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 
 	@Override
 	public void run(PrimaryObjectEditorInput input, Control control) {
+		this.input = input;
 		run((Work)input.getData(),control);
 	}
 
@@ -85,6 +97,11 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 	
 	public Control getControl() {
 		return control;
+	}
+	
+	@Override
+	public void setValidable(IValidable validable) {
+		this.validable = validable;
 	}
 	
 }

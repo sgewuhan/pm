@@ -5245,8 +5245,26 @@
                         persistable="true"
                         required="true">
                   </navigatorSelector>
+                  <checkbox
+                        defaultValue="true"
+                        editable="true"
+                        id="startImmediately"
+                        label="%startImmediately"
+                        labelVisible="true"
+                        name="startImmediately"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                </section>
             </pagecolumn>
+            <pageAction
+                  class="com.sg.business.work.home.action.LaunchWork"
+                  icon="image/go_b_24.png"
+                  id="launchwork"
+                  label="%editor.name.10"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
          </basicpage>
       </editor>
       <editor
@@ -5328,8 +5346,26 @@
                         persistable="true"
                         required="true">
                   </navigatorSelector>
+                  <checkbox
+                        defaultValue="true"
+                        editable="true"
+                        id="startImmediately"
+                        label="%startImmediately"
+                        labelVisible="true"
+                        name="startImmediately"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                </section>
             </pagecolumn>
+            <pageAction
+                  class="com.sg.business.work.home.action.LaunchWork"
+                  icon="image/go_b_24.png"
+                  id="launchwork"
+                  label="%editor.name.10"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
          </basicpage>
       </editor>
    </extension>

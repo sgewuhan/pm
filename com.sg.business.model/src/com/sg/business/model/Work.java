@@ -164,6 +164,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_USE_PROJECT_ROLE = "useprojectrole"; //$NON-NLS-1$
 
 	public static final String F_PERFORMENCE = "performence"; //$NON-NLS-1$
+	
+	public static final String F_STARTIMMEDIATELY = "startImmediately";//$NON-NLS-1$
+
 
 	public static final String[] ARCHIVE_FIELDS = new String[] {
 			F_ASSIGNMENT_CHARGER_ROLE_ID, F_CHARGER_ROLE_ID,
@@ -175,6 +178,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
 			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
 			F_WF_EXECUTE_ASSIGNMENT, F_TARGETS };
+
 
 
 	private Double overCount = null;
