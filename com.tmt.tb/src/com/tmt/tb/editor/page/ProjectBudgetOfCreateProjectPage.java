@@ -216,7 +216,10 @@ public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
 	public void valueChanged(String key, Object oldValue, Object newValue) {
 		
 	}
-	
+	@Override
+	public boolean createBody() {
+		return false;
+	}
 
 
 }

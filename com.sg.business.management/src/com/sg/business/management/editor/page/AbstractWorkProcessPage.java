@@ -105,5 +105,10 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 	@Override
 	public void refresh() {
 	}
+	
+	@Override
+	public boolean createBody() {
+		return false;
+	}
 
 }

@@ -198,4 +198,9 @@ public class WorkFlowRecord implements IPageDelegator {
 		return null;
 	}
 
+	@Override
+	public boolean createBody() {
+		return false;
+	}
+
 }

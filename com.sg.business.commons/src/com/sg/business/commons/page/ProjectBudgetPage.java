@@ -305,4 +305,9 @@ public class ProjectBudgetPage implements IPageDelegator, IFormPart {
 		return false;
 	}
 
+	@Override
+	public boolean createBody() {
+		return false;
+	}
+
 }
