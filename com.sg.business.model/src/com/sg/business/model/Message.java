@@ -21,9 +21,11 @@ import com.mobnut.portal.user.UserSessionContext;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.sg.business.model.commonlabel.MessageHTMLLable;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class Message extends PrimaryObject implements IReferenceContainer {
@@ -56,7 +58,7 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	/**
 	 * 发送日期
 	 */
-	private static final String F_SENDDATE = "senddate"; //$NON-NLS-1$
+	public static final String F_SENDDATE = "senddate"; //$NON-NLS-1$
 
 	/**
 	 * 接收日期
@@ -281,6 +283,15 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 				BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == CommonHTMLLabel.class) {
+			return (T) (new MessageHTMLLable(this));
+		}
+		return super.getAdapter(adapter);
+	}
+	
 	/**
 	 * 返回标题的显示内容
 	 * 
@@ -300,15 +311,6 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
-
-		// 添加日期
-		SimpleDateFormat sdf = new SimpleDateFormat(
-				Utils.SDF_DATETIME_COMPACT_SASH);
-		Date date = (Date) getValue(F_SENDDATE);
-		String sendDate = sdf.format(date);
-		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
-		sb.append(sendDate);
-		sb.append("</span>"); //$NON-NLS-1$
 
 		// 添加图标
 		String imageUrl = null;
@@ -347,21 +349,30 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 		sb.append("</span><br/>"); //$NON-NLS-1$
 
 		sb.append("<small>"); //$NON-NLS-1$
+		// 添加日期
+		SimpleDateFormat sdf = new SimpleDateFormat(
+				Utils.SDF_DATETIME_COMPACT_SASH);
+		Date date = (Date) getValue(F_SENDDATE);
+		String sendDate = sdf.format(date);
+//		sb.append("<span style='float:'>"); //$NON-NLS-1$
+		sb.append(sendDate);
+//		sb.append("</span>"); //$NON-NLS-1$
 
-		String senderId = (String) getValue(F_SENDER);
-		
-		User sender = UserToolkit.getUserById(senderId);
-		/**
-		 * BUG:10003 zhonghua 消息中显示发件人null, 这些发件人是系统发件或者是后台发件
-		 */
-		if (sender == null) {
-			sb.append("From: " + senderId); //$NON-NLS-1$
-		} else {
-			sb.append("From: " + sender); //$NON-NLS-1$
-		}
-		sb.append("  "); //$NON-NLS-1$
-		String recieverLabel = getRecieverLabel();
-		sb.append("To: " + recieverLabel); //$NON-NLS-1$
+//
+//		String senderId = (String) getValue(F_SENDER);
+//		
+//		User sender = UserToolkit.getUserById(senderId);
+//		/**
+//		 * BUG:10003 zhonghua 消息中显示发件人null, 这些发件人是系统发件或者是后台发件
+//		 */
+//		if (sender == null) {
+//			sb.append("From: " + senderId); //$NON-NLS-1$
+//		} else {
+//			sb.append("From: " + sender); //$NON-NLS-1$
+//		}
+//		sb.append("  "); //$NON-NLS-1$
+//		String recieverLabel = getRecieverLabel();
+//		sb.append("To: " + recieverLabel); //$NON-NLS-1$
 
 		sb.append("</small>"); //$NON-NLS-1$
 
