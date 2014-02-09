@@ -51,6 +51,9 @@ public class FolderDistributeFileBase implements IFileBase {
 
 	private String getFileBaseByUserId(String userId) {
 		User user = UserToolkit.getUserById(userId);
+		if(user == null){
+			return null;
+		}
 		Organization org = user.getOrganization();
 		if (org == null) {
 			org = UserToolkit.getRootOrganization();

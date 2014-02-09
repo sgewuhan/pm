@@ -67,8 +67,9 @@
       <taskForm
             editorId="jszx.jszxProjectApply.directorAudit"
             name="受托研究室主任审核"
-            persistentFields="comment,choice,accessory"
-            processDefinitionId="jszx.jszxProjectApply">
+            persistentFields="comment,choice,accessory,worker"
+            processDefinitionId="jszx.jszxProjectApply"
+            saveHandler="com.tmt.jszx.handler.AddWorkerToParticipate">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -187,8 +188,9 @@
       <taskForm
             editorId="jszx.jszxProjectApply.directorAudit"
             name="受托研究室主任审核"
-            persistentFields="comment,choice,accessory"
-            processDefinitionId="jszx.jszxProjectApply1">
+            persistentFields="comment,choice,accessory,worker"
+            processDefinitionId="jszx.jszxProjectApply1"
+            saveHandler="com.tmt.jszx.handler.AddWorkerToParticipate">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">

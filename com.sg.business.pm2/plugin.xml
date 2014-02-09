@@ -985,7 +985,6 @@
          point="com.mobnut.portal.scenario">
       <scenario
             id="visualization"
-            isDefault="true"
             name="%scenario.name">
          <perspective
                id="perspective.vis.home">
@@ -1000,7 +999,6 @@
       </scenario>
       <scenario
             id="work"
-            isDefault="true"
             name="%scenario.name.0">
          <perspective
                default="true"
@@ -1022,7 +1020,6 @@
       </scenario>
       <scenario
             id="projectmanagement"
-            isDefault="true"
             name="%scenario.name.2">
          <perspective
                id="perspective.project">
@@ -1030,7 +1027,6 @@
       </scenario>
       <scenario
             id="resourcemanagement"
-            isDefault="true"
             name="%scenario.name.3">
          <perspective
                id="perspective.resource">
@@ -1038,6 +1034,7 @@
       </scenario>
       <scenario
             id="vault"
+            isDefault="true"
             name="%scenario.name.4">
          <perspective
                id="perspective.vault">
@@ -1195,7 +1192,7 @@
                <section
                      label="%section.label.1">
                   <combo
-                        editPart="Combo(Read Only)"
+                        editPart="Combo"
                         editable="true"
                         id="varid"
                         label="ID"

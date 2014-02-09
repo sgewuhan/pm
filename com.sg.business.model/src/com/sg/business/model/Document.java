@@ -218,6 +218,7 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		}
 		int id = DBUtil.getIncreasedID(ids, IModelConstants.SEQ_DOCUMENT_NUMBER
 				+ "." + prefix); //$NON-NLS-1$
+//		String seq = String.format("%06d", id).toUpperCase(); //$NON-NLS-1$  cctec
 		String seq = String.format("%03d", id).toUpperCase(); //$NON-NLS-1$
 		String codeValue = prefix + seq;
 		setValue(F_DOCUMENT_NUMBER, codeValue);
