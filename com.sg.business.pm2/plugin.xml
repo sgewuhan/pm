@@ -5,8 +5,9 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            icon="image/home_w_24.png"
             id="perspective.work.home"
-            name="%perspective.name">
+            name="onlyicon">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
