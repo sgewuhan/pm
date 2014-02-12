@@ -1,6 +1,5 @@
 package com.sg.business.pm2;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -18,11 +17,14 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -53,6 +55,8 @@ public class HeadArea implements IHeadAreaSupport {
 	private Label welcomeMessage;
 	private Composite content;
 	private String imageURL;
+	private CLabel drop;
+	private Composite headPicContainer;
 
 	public HeadArea() {
 
@@ -71,43 +75,108 @@ public class HeadArea implements IHeadAreaSupport {
 		final User user = UserToolkit.getUserById(account.getUserId());
 		loadHeadPic(user);
 
-		Composite headPicContainer = new Composite(parent, SWT.NONE);
-
-		headPicContainer.setLayout(new FormLayout());
-
+		headPicContainer = new Composite(parent, SWT.NONE);
+		Display display = parent.getDisplay();
+		headPicContainer.setBackground(Widgets.getColor(display, 0x00, 0x99,
+				0xcc));
 		FormData fd = new FormData();
 		headPicContainer.setLayoutData(fd);
 		fd.top = new FormAttachment(0);
-		fd.left = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(100);
+
+		headPicContainer.setLayout(new FormLayout());
 
 		headerPic = new CLabel(headPicContainer, SWT.NONE);
 		headerPic.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic"); //$NON-NLS-1$
+		//		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic"); //$NON-NLS-1$
 		resetImageURL();
 
 		fd = new FormData();
 		headerPic.setLayoutData(fd);
-		fd.left = new FormAttachment(0, 2);
-		fd.top = new FormAttachment(0, 2);
-		fd.height = 24;
-		fd.width = 24;
+		fd.right = new FormAttachment(100, -2);
+		fd.top = new FormAttachment();
 
+		welcomeMessage = new Label(headPicContainer, SWT.NONE);
+		welcomeMessage.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
+		try {
+			setWelcomeMessage();
+		} catch (Exception e1) {
+		}
+		fd = new FormData();
+		welcomeMessage.setLayoutData(fd);
+		fd.top = new FormAttachment(50, -8);
+		fd.right = new FormAttachment(headerPic, -40);
+		fd.left = new FormAttachment(0, 20);
+
+		drop = new CLabel(headPicContainer, SWT.NONE);
+		drop.setData(RWT.CUSTOM_VARIANT, "headpic"); //$NON-NLS-1$
+
+		drop.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_DOWN_W_16));
+		fd = new FormData();
+		drop.setLayoutData(fd);
+		fd.top = new FormAttachment(50, -8);
+		fd.left = new FormAttachment(welcomeMessage, 10);
+		createMenu(user);
+
+		Composite headSearchContainer = new Composite(parent, SWT.NONE);
+		headSearchContainer.setBackground(Widgets.getColor(display, 0x00, 0xbc,
+				0x89));
+		fd = new FormData();
+		headSearchContainer.setLayoutData(fd);
+		fd.top = new FormAttachment(0);
+		fd.right = new FormAttachment(headPicContainer);
+		fd.bottom = new FormAttachment(100);
+		fd.width = 60;
+		headSearchContainer.setLayout(new FormLayout());
+		createSearch(headSearchContainer);
+		return headPicContainer;
+	}
+
+	private void createSearch(Composite parent) {
+		Button button = new Button(parent, SWT.PUSH);
+		button.setImage(BusinessResource.getImage(BusinessResource.IMAGE_SEARCH_W_24));
+		FormData fd = new FormData();
+		button.setLayoutData(fd);
+		fd.right = new FormAttachment(100);
+		fd.left = new FormAttachment(0);
+		fd.top = new FormAttachment(0);
+		fd.bottom = new FormAttachment(100);
+
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				search();
+			}
+		});
+		
+	}
+
+
+	protected void search() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void createMenu(final User user) {
 		final Shell shell = headerPic.getShell();
 		// 创建菜单
 		final Menu dropDownMenu = new Menu(shell, SWT.POP_UP);
 		MenuItem item = new MenuItem(dropDownMenu, SWT.PUSH);
 		item.setText(Messages.get().HeadArea_1);
 		item.setImage(BusinessResource.getImage(BusinessResource.IMAGE_USER_24));
+		item.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				editUserProfile(user);
+			}
+		});
+
 		List<String[]> consigners = UserSessionContext.getSession()
 				.getConsignerList();
 		if (consigners.size() > 0) {
 			item = new MenuItem(dropDownMenu, SWT.SEPARATOR);
-			item.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					editUserProfile(user);
-				}
-			});
 			for (int i = 0; i < consigners.size(); i++) {
 				item = new MenuItem(dropDownMenu, SWT.PUSH);
 				final String[] cs = consigners.get(i);
@@ -243,12 +312,12 @@ public class HeadArea implements IHeadAreaSupport {
 			}
 		});
 
-		headerPic.addMouseListener(new MouseListener() {
+		drop.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				Point point = headerPic.toDisplay(headerPic.getBounds().x,
-						headerPic.getBounds().y + headerPic.getBounds().height);
+				Point point = headPicContainer.toDisplay(headPicContainer.getBounds().x,
+						headPicContainer.getBounds().y + headPicContainer.getBounds().height);
 				dropDownMenu.setLocation(point);
 				dropDownMenu.setVisible(true);
 			}
@@ -261,39 +330,6 @@ public class HeadArea implements IHeadAreaSupport {
 			public void mouseDoubleClick(MouseEvent e) {
 			}
 		});
-
-		welcomeMessage = new Label(parent, SWT.NONE);
-		welcomeMessage.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
-		try {
-			setWelcomeMessage();
-		} catch (Exception e1) {
-		}
-		fd = new FormData();
-		welcomeMessage.setLayoutData(fd);
-		fd.bottom = new FormAttachment(100, -1);
-		fd.left = new FormAttachment(headPicContainer, 6);
-
-		// // 在welCome上面添加一个 小的消息图标
-		//
-		// Label messageButton = new Label(parent,SWT.NONE);
-		// messageButton.setImage(Widgets.getImage(ImageResource.MESSAGE_24));
-		//
-		// fd = new FormData();
-		// messageButton.setLayoutData(fd);
-		// fd.bottom = new FormAttachment(welcomeMessage, -4);
-		// fd.left = new FormAttachment(headPicContainer, 6);
-		// fd.top = new FormAttachment(0,2);
-
-		// UserSessionContext.getSession().addAccountChangeListener(this);
-		// content.addDisposeListener(new DisposeListener() {
-		//
-		// @Override
-		// public void widgetDisposed(DisposeEvent event) {
-		// UserSessionContext.getSession().removeAccountChangeListener(
-		// HeadArea.this);
-		// }
-		// });
-		return headPicContainer;
 	}
 
 	private void loadHeadPic(User user) {
@@ -307,7 +343,7 @@ public class HeadArea implements IHeadAreaSupport {
 			}
 		}
 		if (imageURL == null) {
-			imageURL = FileUtil.getImageURL(ImageResource.LOGO_GRAY_48,
+			imageURL = FileUtil.getImageURL(ImageResource.USER_GRAY_60,
 					Widgets.PLUGIN_ID, "image"); //$NON-NLS-1$
 		}
 
@@ -326,34 +362,6 @@ public class HeadArea implements IHeadAreaSupport {
 		welcomeMessage.setText(message);
 		welcomeMessage.getParent().layout();
 	}
-
-	// protected void editUserProfile(DBObject user) {
-	//
-	// SingleObjectEditorInput editInput = new SingleObjectEditorInput(new
-	// SingleObject(DBActivator.getDefaultDBCollection(IDBConstants.COLLECTION_USER),user));
-	// ISingleObjectEditorDialogCallback call = new
-	// SingleObjectEditorDialogCallback() {
-	//
-	// @Override
-	// public boolean saveBefore(ISingleObjectEditorInput input) {
-	// SingleObject data = (SingleObject) input.getInputData();
-	//
-	// // 将用户名转换为小写
-	// String userName = (String) data.getValue(IDBConstants.FIELD_DESC);
-	// if (userName == null) {
-	// userName = "";
-	// }
-	// data.setValue(IDBConstants.FIELD_DESC, userName);
-	//
-	// return super.saveBefore(input);
-	// }
-	// };
-	// Shell shell =
-	// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-	// SingleObjectEditorDialog.OPEN(shell, UIConstants.EDITOR_USER_SELF_EDIT,
-	// editInput, call, false);
-	//
-	// }
 
 	protected void editUserProfile(User user) {
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
@@ -389,44 +397,46 @@ public class HeadArea implements IHeadAreaSupport {
 
 	private static String getWelcomeMessage(String username) {
 
-		GregorianCalendar ca = new GregorianCalendar();
-		int h = ca.get(GregorianCalendar.HOUR_OF_DAY);
-		switch (h) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-			return username + Messages.get().HeadArea_14;
-		case 6:
-		case 7:
-			return username + Messages.get().HeadArea_15;
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-			return username + Messages.get().HeadArea_16;
-		case 12:
-		case 13:
-			return username + Messages.get().HeadArea_17;
-		case 14:
-		case 15:
-		case 16:
-		case 17:
-		case 18:
+		return username;
 
-			return username + Messages.get().HeadArea_18;
-		case 19:
-		case 20:
-		case 21:
-		case 22:
-			return username + Messages.get().HeadArea_19;
-		case 23:
-		case 24:
-			return username + "zzZ..  "; //$NON-NLS-1$
-		}
-		return ""; //$NON-NLS-1$
+		// GregorianCalendar ca = new GregorianCalendar();
+		// int h = ca.get(GregorianCalendar.HOUR_OF_DAY);
+		// switch (h) {
+		// case 0:
+		// case 1:
+		// case 2:
+		// case 3:
+		// case 4:
+		// case 5:
+		// return username + Messages.get().HeadArea_14;
+		// case 6:
+		// case 7:
+		// return username + Messages.get().HeadArea_15;
+		// case 8:
+		// case 9:
+		// case 10:
+		// case 11:
+		// return username + Messages.get().HeadArea_16;
+		// case 12:
+		// case 13:
+		// return username + Messages.get().HeadArea_17;
+		// case 14:
+		// case 15:
+		// case 16:
+		// case 17:
+		// case 18:
+		//
+		// return username + Messages.get().HeadArea_18;
+		// case 19:
+		// case 20:
+		// case 21:
+		// case 22:
+		// return username + Messages.get().HeadArea_19;
+		// case 23:
+		// case 24:
+		//			return username + "zzZ..  "; //$NON-NLS-1$
+		// }
+		//		return ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -442,7 +452,41 @@ public class HeadArea implements IHeadAreaSupport {
 	@Override
 	public void resetImageURL() {
 		headerPic.setText("<img src='" + imageURL //$NON-NLS-1$
-				+ "' style='float:left' width='24' height='24' />"); //$NON-NLS-1$
+				+ "' style='float:left' width='60' height='60' />"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void creatLeftPart(Composite parent) {
+		Label label = new Label(parent, SWT.NONE);
+		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		StringBuffer sb = new StringBuffer();
+		sb.append("<img src='" + FileUtil.getImageURL("logo_w.png", BusinessResource.PLUGIN_ID) + "' style='float:left; left:0; top:0; display:block;' width='140' height='30' />"); //$NON-NLS-1$ //$NON-NLS-2$
+		label.setText(sb.toString());
+		FormData fd = new FormData();
+		label.setLayoutData(fd);
+		fd.left = new FormAttachment(0, 4);
+		fd.top = new FormAttachment(50, -15);
+		
+		Label sep = new Label(parent, SWT.NONE);
+		sep.setBackground(Widgets.getColor(parent.getDisplay(), 0xff, 0xbb, 0x00));
+		fd = new FormData();
+		sep.setLayoutData(fd);
+		fd.left = new FormAttachment(label, 4);
+		fd.top = new FormAttachment(50, -20);
+		fd.height = 40;
+		fd.width = 2;
+		
+		Label text = new Label(parent, SWT.NONE);
+		fd = new FormData();
+		text.setLayoutData(fd);
+		text.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
+		text.setText("绩效导向\n项目管理平台");
+		fd.left = new FormAttachment(sep, 4);
+		fd.top = new FormAttachment(50, -20);
+		fd.height = 40;
+		fd.right = new FormAttachment(100,-20);
 	}
 
 }
+
+

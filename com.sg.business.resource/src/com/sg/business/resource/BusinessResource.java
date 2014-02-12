@@ -351,9 +351,13 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FINISH_16X12 = "work2_finish_16x12.png";
 
 	public static final String IMAGE_NAVIGATE_24 = "go_b_24.png";
+
+	public static final String IMAGE_OPEN_DETAIL = "opendetail.png";
+
+	public static final String IMAGE_DOWN_W_16 = "down_w_16.png";
+
+	public static final String IMAGE_SEARCH_W_24 = "search_w_24.png";
 	
-
-
 
 	/**
 	 * Returns the shared instance

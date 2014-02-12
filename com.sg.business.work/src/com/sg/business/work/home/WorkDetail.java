@@ -11,6 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.Message;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.Widgets;
@@ -21,8 +22,11 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 
 public class WorkDetail extends PrimaryObjectDetailFormView {
 
+	private CurrentAccountContext context;
+
 	@Override
 	protected void initContent() {
+		context = new CurrentAccountContext();
 		initContent("请在左边导航栏中选择您要处理的工作");
 	}
 
@@ -44,13 +48,31 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 			editorInput = getInputFromWork((Work) primary);
 		}else if(primary instanceof WorkDefinition){
 			editorInput = getInputFromWorkDefinition((WorkDefinition) primary);
+		}else if(primary instanceof Message){
+			editorInput = getInputFromMessage((Message)primary);
 		}
+		return editorInput;
+	}
+
+	private PrimaryObjectEditorInput getInputFromMessage(Message message) {
+		try {
+			message.doMarkRead(context, Boolean.TRUE);
+		} catch (Exception e) {
+			return null;
+		}
+		String editorId = "message.editor.view";
+		
+		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
+				.getEditorRegistry().getConfigurator(editorId);
+		PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(message, conf, null);
+		editorInput.setEditable(true);
+		editorInput.setNeedHostPartListenSaveEvent(false);
+		editorInput.setContext(context);
 		return editorInput;
 	}
 
 	private PrimaryObjectEditorInput getInputFromWorkDefinition(WorkDefinition workd) {
 		Work work = ModelService.createModelObject(Work.class);
-		CurrentAccountContext context = new CurrentAccountContext();
 		work.setValue(Work.F_CHARGER, context.getConsignerId());// 设置负责人为当前用户
 		try {
 			workd.makeStandloneWork(work, context);
@@ -114,7 +136,7 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 			return false;
 		}
 		Object element = ((IStructuredSelection) selection).getFirstElement();
-		return element instanceof Work || element instanceof WorkDefinition;
+		return element instanceof Work || element instanceof WorkDefinition||element instanceof Message;
 	}
 
 	public void setInputWork(Work work) {

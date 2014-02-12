@@ -4225,6 +4225,91 @@
                id="workflow.taskreserved">
          </masterProvider>
       </navigator>
+      <navigator
+            id="home.message.recieved"
+            table="home.message.recieved">
+         <filterAction>
+            <column
+                  column="markread"
+                  name="%column.name"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="%column.name.0"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  name="%column.name.1"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="%column.name.2"
+                  type="String">
+            </column>
+            <column
+                  column="senddate"
+                  name="%column.name.3"
+                  type="DateTime">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="markread"
+                  name="%column.name.4"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="%column.name.5"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  name="%column.name.6"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="%column.name.7"
+                  type="String">
+            </column>
+            <column
+                  column="senddate"
+                  name="%column.name.8"
+                  type="DateTime">
+            </column>
+         </searchAction>
+         <sortAction>
+            <column
+                  column="markread"
+                  name="%column.name.9"
+                  type="Boolean">
+            </column>
+            <column
+                  column="importance"
+                  name="%column.name.10"
+                  type="String">
+            </column>
+            <column
+                  column="sender"
+                  name="%column.name.11"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="%column.name.12"
+                  type="String">
+            </column>
+            <column
+                  column="senddate"
+                  name="%column.name.13"
+                  type="DateTime">
+            </column>
+         </sortAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -4265,6 +4350,29 @@
                labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
                lazyDisplay="true"
                name="desc"
+               width="-1">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            customItemHeight="40"
+            dataSet="com.sg.business.model.dataset.message.MyRecievedMessage"
+            editorId="message.editor.create"
+            headerVisiable="false"
+            id="home.message.recieved"
+            lineVisiable="false"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.HTMLLabelprovider"
+               lazyDisplay="true"
+               name="desc"
+               type="String"
                width="-1">
          </column>
       </table>
@@ -4341,10 +4449,10 @@
                label="%launchwork">
          </expanditem>
          <expanditem
+               content="com.sg.business.work.home.Messagelist"
                expanded="false"
                id="3"
-               label="%newmessage"
-               navigatorId="message.send">
+               label="%newmessage">
          </expanditem>
          <expanditem
                id="4"
