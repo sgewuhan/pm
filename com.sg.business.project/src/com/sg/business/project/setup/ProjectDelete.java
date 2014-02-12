@@ -9,7 +9,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.ProjectMonthData;
+import com.sg.business.model.Work;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -21,7 +21,29 @@ public class ProjectDelete implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() {
-		DBCollection col = getCol();
+
+		DBCollection col1 = getCol(IModelConstants.C_WORK);
+		DBCollection col2 = getCol(IModelConstants.C_WORK);
+
+		BasicDBObject ref = new BasicDBObject();
+		ref.put(Work.F_IS_PROJECT_WBSROOT,
+				new BasicDBObject().append("$ne", Boolean.TRUE));
+		ref.put(Work.F_WORK_TYPE,
+				new BasicDBObject().append("$ne", Work.WORK_TYPE_STANDLONE));
+		DBCursor cursor = col1.find(ref);
+		while (cursor.hasNext()) {
+			DBObject workData = cursor.next();
+			ObjectId parent_id = (ObjectId) workData.get(Work.F_PARENT_ID);
+			BasicDBObject query = new BasicDBObject();
+			query.put(Work.F__ID, parent_id);
+			long count = col2.count(query);
+			if (count == 0) {
+				System.out.println("ObjectId('" + workData.get(Work.F__ID)
+						+ "')");
+			}
+		}
+
+		// DBCollection col = getCol();
 		// ObjectId _id = new ObjectId("525b4d18f0209adcc595131f");
 		//
 		// Organization org = ModelService.createModelObject(Organization.class,
@@ -29,21 +51,21 @@ public class ProjectDelete implements ISchedualJobRunnable {
 		// List<PrimaryObject> projectList = org.getRelationById(
 		// Organization.F__ID, Project.F_FUNCTION_ORGANIZATION,
 		// Project.class);
-		DBCollection projectCol = getCol();
-		BasicDBObject ref = new BasicDBObject();
-		ref.put(ProjectMonthData.F_YEAR, 2013);
-		ref.put(ProjectMonthData.F_MONTH, 11);
-		
-		DBCursor cursor = projectCol.find(ref);
-		while (cursor.hasNext()) {
-			DBObject next = cursor.next();
-			ObjectId object = (ObjectId) next.get(ProjectMonthData.F_PROJECTID);
-			ref.put(ProjectMonthData.F_PROJECTID, object);
-			long count = col.count(ref);
-			if(count >1){
-				col.remove(next);
-			}
-		}
+		// DBCollection projectCol = getCol();
+		// BasicDBObject ref = new BasicDBObject();
+		// ref.put(ProjectMonthData.F_YEAR, 2013);
+		// ref.put(ProjectMonthData.F_MONTH, 11);
+		//
+		// DBCursor cursor = projectCol.find(ref);
+		// while (cursor.hasNext()) {
+		// DBObject next = cursor.next();
+		// ObjectId object = (ObjectId) next.get(ProjectMonthData.F_PROJECTID);
+		// ref.put(ProjectMonthData.F_PROJECTID, object);
+		// long count = col.count(ref);
+		// if (count > 1) {
+		// col.remove(next);
+		// }
+		// }
 
 		// List<PrimaryObject> projectList = null;
 		// for (PrimaryObject po : projectList) {
@@ -184,13 +206,13 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	// }
 	// }
 
-	private DBCollection getCol() {
-		return DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT_MONTH_DATA);
-	}
-
-	// private DBCollection getCol(String collectionName) {
-	// return DBActivator.getCollection(IModelConstants.DB, collectionName);
+	// private DBCollection getCol() {
+	// return DBActivator.getCollection(IModelConstants.DB,
+	// IModelConstants.C_PROJECT_MONTH_DATA);
 	// }
+
+	private DBCollection getCol(String collectionName) {
+		return DBActivator.getCollection(IModelConstants.DB, collectionName);
+	}
 
 }

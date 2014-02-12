@@ -135,15 +135,17 @@ public class ProcessingNavigatorItemSet extends DataSetFactory {
 		// 准备中的工作，如果是需要我指派的显示，上级是准备中的不显示
 		if (ILifecycle.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
 			String aid = work.getAssignerId();
-			if(!userId.equals(aid)){
-				Work parent = (Work) work.getParent();
-				if (parent != null
-						&& ILifecycle.STATUS_ONREADY_VALUE.equals(parent
-								.getLifecycleStatus())) {
-					return;
+			if (aid != null) {
+				if (!userId.equals(aid)) {
+					Work parent = (Work) work.getParent();
+					if (parent != null
+							&& ILifecycle.STATUS_ONREADY_VALUE.equals(parent
+									.getLifecycleStatus())) {
+						return;
+					}
 				}
 			}
-			
+
 			// 去除下级的工作
 			removeChildWork(result, work);
 			result.add(work);
