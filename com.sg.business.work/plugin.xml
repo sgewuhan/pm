@@ -4454,17 +4454,13 @@
                id="3"
                label="%newmessage">
          </expanditem>
-         <expanditem
-               id="4"
-               label="%newnotice"
-               navigatorId="vault.folder.admin">
-         </expanditem>
       </sidebar>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
             addToRecent="false"
+            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="navigator.view.work.1"
@@ -4618,6 +4614,8 @@
          </basicpage>
       </editor>
       <editor
+            addToRecent="false"
+            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="navigator.view.work.2"
@@ -4804,6 +4802,8 @@
          </basicpage>
       </editor>
       <editor
+            addToRecent="false"
+            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="navigator.view.work.3"
@@ -4975,6 +4975,7 @@
       </editor>
       <editor
             addToRecent="false"
+            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="navigator.view.work.4"
@@ -5129,6 +5130,7 @@
       </editor>
       <editor
             addToRecent="false"
+            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="navigator.view.work.5"
@@ -5274,6 +5276,8 @@
          </basicpage>
       </editor>
       <editor
+            addToRecent="false"
+            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="navigator.work.launch"
@@ -5376,6 +5380,8 @@
          </basicpage>
       </editor>
       <editor
+            addToRecent="false"
+            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="navigator.work.launch.1"

@@ -27,20 +27,23 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 	@Override
 	protected void initContent() {
 		context = new CurrentAccountContext();
-		initContent("请在左边导航栏中选择您要处理的工作");
+		goHome();
 	}
 
-	public void initContent(String text) {
+
+	@Override
+	public void goHome() {
+		cleanUI();
 		content.setLayout(new GridLayout());
 		Label label = new Label(content, SWT.NONE);
-		text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
-				+ text + "</span>";
+		String text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
+				+ "请在左边导航栏中选择您要处理的工作" + "</span>";
 		label.setText(text);
 		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
 		content.layout();
 	}
-
+	
 	@Override
 	protected PrimaryObjectEditorInput getInput(PrimaryObject primary) {
 		PrimaryObjectEditorInput editorInput = null;
@@ -144,14 +147,14 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 		setInput(newInput);
 	}
 	
-	@Override
-	protected void loadTitle(PrimaryObject data) {
-		if(!data.isPersistent()){
-			String desc = data.getText(Work.F_WORK_DEFINITION_NAME);
-			setPartName("发起工作:"+desc);
-		}else{
-			super.loadTitle(data);
-		}
-	}
+//	@Override
+//	protected void loadTitle(PrimaryObject data) {
+//		if(!data.isPersistent()){
+//			String desc = data.getText(Work.F_WORK_DEFINITION_NAME);
+//			setPartName("发起工作:"+desc);
+//		}else{
+//			super.loadTitle(data);
+//		}
+//	}
 
 }

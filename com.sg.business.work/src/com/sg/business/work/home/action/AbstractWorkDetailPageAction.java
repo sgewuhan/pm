@@ -80,8 +80,7 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 		WorkDetail view2 = (WorkDetail) page.findView("pm2.work.detail");
 		view2.cleanUI();
 		view2.cleanInput();
-		String text = "操作已完成。<br/>请在左边导航栏中选择您要处理的工作。" ;
-		view2.initContent(text);
+		view2.goHome();
 	}
 	
 	public void pageReload() {
