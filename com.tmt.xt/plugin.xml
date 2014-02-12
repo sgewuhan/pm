@@ -323,7 +323,7 @@
       <taskForm
             editorId="xtProjectApprove.reviewplan"
             name="评审实施计划"
-            persistentFields="comment,choice,accessory"
+            persistentFields="messagecontent,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
@@ -453,10 +453,10 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        id="comment"
+                        id="messagecontent"
                         label="%text.label.3"
                         labelVisible="false"
-                        name="comment"
+                        name="messagecontent"
                         persistable="true"
                         required="false"
                         type="String"
