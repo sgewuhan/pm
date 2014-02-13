@@ -120,8 +120,8 @@ public class HeadArea implements IHeadAreaSupport {
 		createMenu(user);
 
 		Composite headSearchContainer = new Composite(parent, SWT.NONE);
-		headSearchContainer.setBackground(Widgets.getColor(display, 0x00, 0xbc,
-				0x89));
+//		headSearchContainer.setBackground(Widgets.getColor(display, 0x00, 0xbc,
+//				0x89));
 		fd = new FormData();
 		headSearchContainer.setLayoutData(fd);
 		fd.top = new FormAttachment(0);

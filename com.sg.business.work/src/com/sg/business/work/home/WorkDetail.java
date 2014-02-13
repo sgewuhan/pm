@@ -2,11 +2,7 @@ package com.sg.business.work.home;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.ModelService;
@@ -35,12 +31,13 @@ public class WorkDetail extends PrimaryObjectDetailFormView {
 	public void goHome() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		Label label = new Label(content, SWT.NONE);
-		String text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
-				+ "请在左边导航栏中选择您要处理的工作" + "</span>";
-		label.setText(text);
-		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
+		new GenericHomePanel(content);
+//		Label label = new Label(content, SWT.NONE);
+//		String text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
+//				+ "请在左边导航栏中选择您要处理的工作" + "</span>";
+//		label.setText(text);
+//		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+//		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
 		content.layout();
 	}
 	

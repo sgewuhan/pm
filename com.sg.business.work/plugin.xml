@@ -4440,18 +4440,21 @@
                content="com.sg.business.work.home.Todolist"
                expanded="true"
                id="1"
+               image="image/tasks2_w_32_48.png"
                label="%todolist">
          </expanditem>
          <expanditem
                content="com.sg.business.work.home.Launchablelist"
                expanded="false"
                id="2"
+               image="image/tasks_w_32_48.png"
                label="%launchwork">
          </expanditem>
          <expanditem
                content="com.sg.business.work.home.Messagelist"
                expanded="false"
                id="3"
+               image="image/message_w_32_48.png"
                label="%newmessage">
          </expanditem>
       </sidebar>
