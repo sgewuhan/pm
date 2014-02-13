@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -121,8 +120,8 @@ public class HeadArea implements IHeadAreaSupport {
 		createMenu(user);
 
 		Composite headSearchContainer = new Composite(parent, SWT.NONE);
-		headSearchContainer.setBackground(Widgets.getColor(display, 0x00, 0xbc,
-				0x89));
+//		headSearchContainer.setBackground(Widgets.getColor(display, 0x00, 0xbc,
+//				0x89));
 		fd = new FormData();
 		headSearchContainer.setLayoutData(fd);
 		fd.top = new FormAttachment(0);
@@ -136,6 +135,7 @@ public class HeadArea implements IHeadAreaSupport {
 
 	private void createSearch(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
+		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
 		button.setImage(BusinessResource.getImage(BusinessResource.IMAGE_SEARCH_W_24));
 		FormData fd = new FormData();
 		button.setLayoutData(fd);

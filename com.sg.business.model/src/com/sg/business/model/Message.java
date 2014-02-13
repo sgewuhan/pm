@@ -22,10 +22,12 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.commonlabel.MessageHTMLLable;
+import com.sg.business.model.input.MessageEditorInputFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
 public class Message extends PrimaryObject implements IReferenceContainer {
@@ -288,6 +290,8 @@ public class Message extends PrimaryObject implements IReferenceContainer {
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == CommonHTMLLabel.class) {
 			return (T) (new MessageHTMLLable(this));
+		}else if(adapter == IEditorInputFactory.class){
+			return (T) (new MessageEditorInputFactory(this));
 		}
 		return super.getAdapter(adapter);
 	}
