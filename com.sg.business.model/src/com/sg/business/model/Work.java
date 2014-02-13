@@ -48,6 +48,7 @@ import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.commonlabel.WorkCommonHTMLLable;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
+import com.sg.business.model.input.WorkEditorInputFactory;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -3945,6 +3946,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return (T) dummyWork;
 		} else if (adapter == CommonHTMLLabel.class) {
 			return (T) (new WorkCommonHTMLLable(this));
+		} else if(adapter == IEditorInputFactory.class){
+			return (T) (new WorkEditorInputFactory(this));
 		}
 		return super.getAdapter(adapter);
 	}

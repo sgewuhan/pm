@@ -135,7 +135,7 @@ public class HeadArea implements IHeadAreaSupport {
 
 	private void createSearch(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
-		button.setData(RWT.CUSTOM_VARIANT, "perspectiveActive1");
+		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
 		button.setImage(BusinessResource.getImage(BusinessResource.IMAGE_SEARCH_W_24));
 		FormData fd = new FormData();
 		button.setLayoutData(fd);

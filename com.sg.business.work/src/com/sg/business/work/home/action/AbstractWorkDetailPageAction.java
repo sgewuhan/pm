@@ -9,11 +9,11 @@ import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.IContext;
 import com.sg.business.model.Work;
-import com.sg.business.work.home.WorkDetail;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.IDataObjectEditorAction;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;
+import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 import com.sg.widgets.part.view.SideBarNavigator;
 
 public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorAction{
@@ -77,7 +77,7 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 		if(view!=null){
 			view.doRefresh();
 		}
-		WorkDetail view2 = (WorkDetail) page.findView("pm2.work.detail");
+		PrimaryObjectDetailFormView view2 = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
 		view2.cleanUI();
 		view2.cleanInput();
 		view2.goHome();
@@ -85,7 +85,7 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 	
 	public void pageReload() {
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		WorkDetail view2 = (WorkDetail) page.findView("pm2.work.detail");
+		PrimaryObjectDetailFormView view2 = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
 		view2.loadMaster();
 	}
 	

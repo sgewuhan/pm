@@ -16,6 +16,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.model.commonlabel.WorkDefinitionCommonHTMLLable;
+import com.sg.business.model.input.WorkDefinitionEditorInputFactory;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
@@ -503,6 +504,8 @@ public class WorkDefinition extends AbstractWork implements
 			}
 		}else if(adapter == CommonHTMLLabel.class){
 			return (T)(new WorkDefinitionCommonHTMLLable(this));
+		}else if(adapter == IEditorInputFactory.class){
+			return (T) (new WorkDefinitionEditorInputFactory(this));
 		}
 		return super.getAdapter(adapter);
 	}

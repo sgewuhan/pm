@@ -1495,5 +1495,47 @@
             noticeCreator="com.mobnut.portal.notice.ImageNoticeCreator">
       </notice>
    </extension>
+   <extension
+         point="com.sg.widgets.sidebar">
+      <sidebar
+            id="homenavigator">
+         <expanditem
+               content="com.sg.business.work.home.Todolist"
+               expanded="true"
+               id="1"
+               image="image/tasks2_w_32_48.png"
+               label="%todolist">
+         </expanditem>
+         <expanditem
+               content="com.sg.business.work.home.Launchablelist"
+               expanded="false"
+               id="2"
+               image="image/tasks_w_32_48.png"
+               label="%launchwork">
+         </expanditem>
+         <expanditem
+               content="com.sg.business.work.home.Messagelist"
+               expanded="false"
+               id="3"
+               image="image/message_w_32_48.png"
+               label="%newmessage">
+         </expanditem>
+      </sidebar>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="com.sg.widgets.part.view.SideBarNavigator"
+            id="homenavigator"
+            name="Navigator">
+      </view>
+      <view
+            class="com.sg.business.work.home.WorkDetail"
+            id="pm2.work.detail"
+            name="工作"
+            restorable="true">
+      </view>
+   </extension>
 
 </plugin>
