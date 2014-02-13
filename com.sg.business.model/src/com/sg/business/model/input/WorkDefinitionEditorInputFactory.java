@@ -1,10 +1,10 @@
 package com.sg.business.model.input;
 
 import com.mobnut.db.model.ModelService;
-import com.sg.business.model.IEditorInputFactory;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.Widgets;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.DataEditorConfigurator;

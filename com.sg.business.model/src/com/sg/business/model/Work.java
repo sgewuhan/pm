@@ -56,6 +56,7 @@ import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.BackgroundContext;
 
 /**

@@ -8,10 +8,10 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.IContext;
-import com.sg.business.model.IEditorInputFactory;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.MessageBox;
 import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;

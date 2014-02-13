@@ -8,8 +8,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.ModelService;
-import com.sg.business.model.IEditorInputFactory;
 import com.sg.business.model.Work;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 public class WorkLinkAdapter implements SelectionListener {

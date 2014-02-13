@@ -19,6 +19,7 @@ import com.sg.business.model.commonlabel.WorkDefinitionCommonHTMLLable;
 import com.sg.business.model.input.WorkDefinitionEditorInputFactory;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 
 /**
  * <p>
