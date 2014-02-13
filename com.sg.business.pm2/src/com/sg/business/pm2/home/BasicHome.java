@@ -1,4 +1,4 @@
-package com.sg.business.work.home;
+package com.sg.business.pm2.home;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -13,7 +13,7 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
-public class WorkDetail extends PrimaryObjectDetailFormView {
+public class BasicHome extends PrimaryObjectDetailFormView {
 
 
 	@Override

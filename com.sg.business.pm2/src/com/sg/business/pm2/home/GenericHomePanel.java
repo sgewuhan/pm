@@ -1,11 +1,11 @@
-package com.sg.business.work.home;
+package com.sg.business.pm2.home;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import com.sg.business.work.home.widget.ProjectBlock;
+import com.sg.business.pm2.home.widget.ProjectBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 
