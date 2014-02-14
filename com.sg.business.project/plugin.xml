@@ -2023,6 +2023,16 @@
                columnDefinitionId="project.desc">
          </column>
          <column
+               column="workorder_text"
+               name="Work Order"
+               type="String">
+         </column>
+         <column
+               column="product_text"
+               name="Product"
+               type="String">
+         </column>
+         <column
                columnDefinitionId="chargerid">
          </column>
          <column
