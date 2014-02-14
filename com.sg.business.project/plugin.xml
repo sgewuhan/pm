@@ -2529,6 +2529,20 @@
          </searchAction>
       </navigator>
       <navigator
+            id="allproject.deliverable.selector"
+            tree="allproject.deliverable.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
             id="vault.document.selector"
             tree="vault.document.selector">
          <filterAction>
@@ -2760,6 +2774,30 @@
             dataSet="com.sg.business.model.dataset.project.WorkOfProject"
             fix="1"
             id="project.deliverable.selector">
+         <structure
+               modelRelation="work_work">
+         </structure>
+         <structure
+               modelRelation="work_deliverable">
+         </structure>
+         <column
+               column="desc"
+               labelProvider="com.sg.widgets.commons.labelprovider.PrimaryObjectLabelProvider"
+               name="%column.name.73"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.WorkOfAllProject"
+            fix="1"
+            id="allproject.deliverable.selector">
          <structure
                modelRelation="work_work">
          </structure>
@@ -3896,6 +3934,30 @@
             </visibleWhen>
          </command>
          <command
+               commandId="project.linkprojectdeliverable"
+               icon="image/24_blank.png"
+               label="链接所负责项目的交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
                commandId="project.createdeliverablewithvault"
                icon="image/24_blank.png"
                label="%command.label.62"
@@ -4369,6 +4431,11 @@
       </command>
       <command
             categoryId="project"
+            id="project.linkprojectdeliverable"
+            name="链接项目交付物文档">
+      </command>
+      <command
+            categoryId="project"
             id="project.editdeliverabledocument"
             name="%command.name.8">
          <commandParameter
@@ -4508,6 +4575,10 @@
       <handler
             class="com.sg.business.project.handler.LinkDeliverable"
             commandId="project.linkdeliverable">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.LinkProjectDeliverable"
+            commandId="project.linkprojectdeliverable">
       </handler>
       <handler
             class="com.sg.business.project.handler.CreateDeliverableWithTemplate"

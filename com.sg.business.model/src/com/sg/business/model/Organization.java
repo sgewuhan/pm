@@ -28,10 +28,12 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sg.bpm.service.BPM;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.model.commonlabel.OrganizationHTMLLable;
 import com.sg.business.model.event.AccountEvent;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 /**
  * 组织
@@ -231,32 +233,6 @@ public class Organization extends PrimaryObject {
 	@Override
 	public String getLabel() {
 		return getDesc();
-	}
-
-	/**
-	 * 返回组织在系统中的显示内容的格式
-	 * 
-	 * @return String
-	 */
-	@Override
-	public String getHTMLLabel() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
-
-		String imageUrl = "<img src='" + getImageURL() //$NON-NLS-1$
-				+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
-		String label = getLabel();
-		String path = getFullName();
-
-		sb.append(imageUrl);
-		sb.append("<b>"); //$NON-NLS-1$
-		sb.append(label);
-		sb.append("</b>"); //$NON-NLS-1$
-		sb.append("<br/>"); //$NON-NLS-1$
-		sb.append("<small>"); //$NON-NLS-1$
-		sb.append(path);
-		sb.append("</small></span>"); //$NON-NLS-1$
-		return sb.toString();
 	}
 
 	public String getFullName() {
@@ -1631,6 +1607,8 @@ public class Organization extends PrimaryObject {
 					.createModelObject(OrganizationProjectProvider.class);
 			projectProvider.setOrganization(this);
 			return (T) projectProvider;
+		} else if (adapter == CommonHTMLLabel.class) {
+			return (T) new OrganizationHTMLLable(this);
 		}
 		return super.getAdapter(adapter);
 	}
@@ -1801,7 +1779,7 @@ public class Organization extends PrimaryObject {
 
 	public List<Organization> getChildrenFunctionOrg() {
 		List<Organization> result = new ArrayList<Organization>();
-		if(isFunctionDepartment()){
+		if (isFunctionDepartment()) {
 			result.add(this);
 		}
 		List<PrimaryObject> childrenOrg = getChildrenOrganization();
@@ -1814,7 +1792,7 @@ public class Organization extends PrimaryObject {
 
 	public List<ObjectId> getChildrenFunctionOrgId() {
 		List<ObjectId> result = new ArrayList<ObjectId>();
-		if(isFunctionDepartment()){
+		if (isFunctionDepartment()) {
 			result.add(get_id());
 		}
 		List<PrimaryObject> childrenOrg = getChildrenOrganization();

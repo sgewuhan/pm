@@ -42,7 +42,8 @@ public class WorkflowSynchronizer extends RepeatJob {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		if (client) {
-			monitor.beginTask(Messages.get().WorkflowSynchronizer_2, IProgressMonitor.UNKNOWN);
+			monitor.beginTask(Messages.get().WorkflowSynchronizer_2,
+					IProgressMonitor.UNKNOWN);
 		}
 		if (userId != null) {
 			synchronizeUserTask(userId);
@@ -66,7 +67,8 @@ public class WorkflowSynchronizer extends RepeatJob {
 
 	public Set<Work> synchronizeUserTask(String userid) {
 		Set<Work> updated = new HashSet<Work>();
-		Task[] tasks = WorkflowService.getDefault().getUserAssignedTasks(userid);
+		Task[] tasks = WorkflowService.getDefault()
+				.getUserAssignedTasks(userid);
 		for (int i = 0; i < tasks.length; i++) {
 			TaskData taskData = tasks[i].getTaskData();
 
@@ -80,7 +82,7 @@ public class WorkflowSynchronizer extends RepeatJob {
 				if (flowKey != null && host instanceof Work) {
 					Work work = (Work) host;
 					work.reload();
-					work.doSaveUserTask(flowKey, tasks[i], null,userid);
+					work.doSaveUserTask(flowKey, tasks[i], null, userid);
 
 					// UserSessionContext.noticeAccountChanged(userid, new
 					// AccountEvent(
@@ -99,7 +101,8 @@ public class WorkflowSynchronizer extends RepeatJob {
 
 	public List<UserTask> synchronizeUserTask(String userid, Work targetWork)
 			throws Exception {
-		Task[] tasks = WorkflowService.getDefault().getUserAssignedTasks(userid);
+		Task[] tasks = WorkflowService.getDefault()
+				.getUserAssignedTasks(userid);
 		ArrayList<UserTask> ret = new ArrayList<UserTask>();
 		for (int i = 0; i < tasks.length; i++) {
 			TaskData taskData = tasks[i].getTaskData();
@@ -115,16 +118,15 @@ public class WorkflowSynchronizer extends RepeatJob {
 					Work work = (Work) host;
 					if (work.get_id().equals(targetWork.get_id())) {
 						UserTask userTask = targetWork.doSaveUserTask(flowKey,
-								tasks[i],null, userid);
+								tasks[i], null, userid);
 						ret.add(userTask);
 					}
 				}
-				
-				
+
 			} catch (Exception e) {
 				// 流程不存在
 				// work被删除
-				if(Portal.getDefault().isDevelopMode()){
+				if (Portal.getDefault().isDevelopMode()) {
 					e.printStackTrace();
 				}
 			}

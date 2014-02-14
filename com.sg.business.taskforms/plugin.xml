@@ -426,6 +426,18 @@
             operation="fixedassets"
             serviceProvider="com.sg.business.taskforms.bpmservice.ReviewerMessageService">
       </service>
+      <service
+            interface="pmPrintDocument.service.action"
+            name="文档打印通知(通过)"
+            operation="finish"
+            serviceProvider="com.sg.business.taskforms.bpmservice.PrintDocumentService">
+      </service>
+      <service
+            interface="pmPrintDocument.service.action"
+            name="文档打印通知(不通过)"
+            operation="cancel"
+            serviceProvider="com.sg.business.taskforms.bpmservice.PrintDocumentService">
+      </service>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
