@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -44,6 +46,7 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.bug.BugTools;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
+import com.sg.widgets.part.IRefreshablePart;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
@@ -119,38 +122,62 @@ public class HeadArea implements IHeadAreaSupport {
 		fd.left = new FormAttachment(welcomeMessage, 10);
 		createMenu(user);
 
-		Composite headSearchContainer = new Composite(parent, SWT.NONE);
-//		headSearchContainer.setBackground(Widgets.getColor(display, 0x00, 0xbc,
-//				0x89));
+		Button search = createSearch(parent);
 		fd = new FormData();
-		headSearchContainer.setLayoutData(fd);
+		search.setLayoutData(fd);
 		fd.top = new FormAttachment(0);
 		fd.right = new FormAttachment(headPicContainer);
 		fd.bottom = new FormAttachment(100);
 		fd.width = 60;
-		headSearchContainer.setLayout(new FormLayout());
-		createSearch(headSearchContainer);
+
+		Button refresh = createRefresh(parent);
+		fd = new FormData();
+		refresh.setLayoutData(fd);
+		fd.top = new FormAttachment(0);
+		fd.right = new FormAttachment(search);
+		fd.bottom = new FormAttachment(100);
+		fd.width = 60;
+		
+		
 		return headPicContainer;
 	}
 
-	private void createSearch(Composite parent) {
+	private Button createRefresh(Composite parent) {
+		Button button = new Button(parent, SWT.PUSH);
+		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
+		button.setImage(BusinessResource.getImage(BusinessResource.IMAGE_REFRESH_W_24));
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				refresh();
+			}
+		});
+		return button;
+	}
+
+	protected void refresh() {
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IViewReference[] vrs = page.getViewReferences();
+		for (int i = 0; i < vrs.length; i++) {
+			IViewPart view = vrs[i].getView(false);
+			if(view instanceof IRefreshablePart){
+				IRefreshablePart refreshablePart = (IRefreshablePart) view;
+				refreshablePart.doRefresh();
+			}
+		}
+	}
+
+	private Button createSearch(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
 		button.setImage(BusinessResource.getImage(BusinessResource.IMAGE_SEARCH_W_24));
-		FormData fd = new FormData();
-		button.setLayoutData(fd);
-		fd.right = new FormAttachment(100);
-		fd.left = new FormAttachment(0);
-		fd.top = new FormAttachment(0);
-		fd.bottom = new FormAttachment(100);
-
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				search();
 			}
 		});
-		
+		return button;
 	}
 
 
