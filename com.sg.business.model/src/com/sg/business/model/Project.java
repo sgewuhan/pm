@@ -41,6 +41,7 @@ import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sg.business.model.check.CheckListItem;
 import com.sg.business.model.check.ICheckListItem;
+import com.sg.business.model.commonlabel.ProjectCommonHTMLLable;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.model.etl.ProjectETL;
@@ -53,6 +54,7 @@ import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.UIConstants;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 /**
  * 项目
@@ -661,14 +663,14 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			final IContext context) throws Exception {
 
 		// 复制模板
-//		try {
-			doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
-//		} catch (Exception e) {
-//			// return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
-//			// Status.ERROR, "复制模板出错", e);
-//
-//			throw new Exception(Messages.get().Project_3);
-//		}
+		// try {
+		doSetupWithTemplate(root.get_id(), context, folderRoot.get_id());
+		// } catch (Exception e) {
+		// // return new Status(Status.ERROR, ModelActivator.PLUGIN_ID,
+		// // Status.ERROR, "复制模板出错", e);
+		//
+		// throw new Exception(Messages.get().Project_3);
+		// }
 		Job job = new Job("从模板复制项目信息") { //$NON-NLS-1$
 
 			@Override
@@ -951,10 +953,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			if (roleId != null) {
 				// 设置为组织角色
 				prole.setValue(ProjectRole.F_ORGANIZATION_ROLE_ID, roleId);
-				
+
 				// 复制角色规则脚本
 				prole.setValue(Role.F_RULE, roleddata.get(Role.F_RULE));
-				
+
 				// // 将组织角色中的成员加入到项目的参与者
 				// Role role = ModelService.createModelObject(Role.class,
 				// (ObjectId) roleId);
@@ -2051,6 +2053,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				summaryProjectWorks = new SummaryProjectWorks(this);
 			}
 			return (T) summaryProjectWorks;
+		} else if (adapter == CommonHTMLLabel.class) {
+			return (T) new ProjectCommonHTMLLable(this);
 		}
 		return super.getAdapter(adapter);
 	}

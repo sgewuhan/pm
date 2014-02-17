@@ -137,15 +137,15 @@ public class HeadArea implements IHeadAreaSupport {
 		fd.right = new FormAttachment(search);
 		fd.bottom = new FormAttachment(100);
 		fd.width = 60;
-		
-		
+
 		return headPicContainer;
 	}
 
 	private Button createRefresh(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
-		button.setImage(BusinessResource.getImage(BusinessResource.IMAGE_REFRESH_W_24));
+		button.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_REFRESH_W_24));
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -156,13 +156,16 @@ public class HeadArea implements IHeadAreaSupport {
 	}
 
 	protected void refresh() {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
 		IViewReference[] vrs = page.getViewReferences();
 		for (int i = 0; i < vrs.length; i++) {
 			IViewPart view = vrs[i].getView(false);
-			if(view instanceof IRefreshablePart){
+			if (view instanceof IRefreshablePart) {
 				IRefreshablePart refreshablePart = (IRefreshablePart) view;
-				refreshablePart.doRefresh();
+				if (refreshablePart.canRefresh()) {
+					refreshablePart.doRefresh();
+				}
 			}
 		}
 	}
@@ -170,7 +173,8 @@ public class HeadArea implements IHeadAreaSupport {
 	private Button createSearch(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
-		button.setImage(BusinessResource.getImage(BusinessResource.IMAGE_SEARCH_W_24));
+		button.setImage(BusinessResource
+				.getImage(BusinessResource.IMAGE_SEARCH_W_24));
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -180,10 +184,9 @@ public class HeadArea implements IHeadAreaSupport {
 		return button;
 	}
 
-
 	protected void search() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void createMenu(final User user) {
@@ -343,8 +346,10 @@ public class HeadArea implements IHeadAreaSupport {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				Point point = headPicContainer.toDisplay(headPicContainer.getBounds().x,
-						headPicContainer.getBounds().y + headPicContainer.getBounds().height);
+				Point point = headPicContainer.toDisplay(
+						headPicContainer.getBounds().x,
+						headPicContainer.getBounds().y
+								+ headPicContainer.getBounds().height);
 				dropDownMenu.setLocation(point);
 				dropDownMenu.setVisible(true);
 			}
@@ -493,16 +498,17 @@ public class HeadArea implements IHeadAreaSupport {
 		label.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 4);
 		fd.top = new FormAttachment(50, -15);
-		
+
 		Label sep = new Label(parent, SWT.NONE);
-		sep.setBackground(Widgets.getColor(parent.getDisplay(), 0xff, 0xbb, 0x00));
+		sep.setBackground(Widgets.getColor(parent.getDisplay(), 0xff, 0xbb,
+				0x00));
 		fd = new FormData();
 		sep.setLayoutData(fd);
 		fd.left = new FormAttachment(label, 4);
 		fd.top = new FormAttachment(50, -20);
 		fd.height = 40;
 		fd.width = 2;
-		
+
 		Label text = new Label(parent, SWT.NONE);
 		fd = new FormData();
 		text.setLayoutData(fd);
@@ -511,9 +517,7 @@ public class HeadArea implements IHeadAreaSupport {
 		fd.left = new FormAttachment(sep, 4);
 		fd.top = new FormAttachment(50, -20);
 		fd.height = 40;
-		fd.right = new FormAttachment(100,-20);
+		fd.right = new FormAttachment(100, -20);
 	}
 
 }
-
-

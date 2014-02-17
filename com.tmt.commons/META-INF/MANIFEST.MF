@@ -1,12 +1,26 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Commons
-Bundle-SymbolicName: com.tmt.commons
+Bundle-SymbolicName: com.tmt.commons;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.tmt.commons.TMTCommmonsActivator
 Bundle-Vendor: TMT
 Require-Bundle: org.eclipse.rap.ui,
+ org.eclipse.rap.ui.forms,
  org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ com.mobnut.commons,
+ com.mobnut.db,
+ com.mobnut.portal,
  com.sg.thirdparty,
- com.mobnut.db
+ com.sg.widgets,
+ com.sg.bpm.service,
+ com.sg.bpm.workflow,
+ com.sg.business.model,
+ com.sg.business.commons,
+ com.sg.business.resource,
+ com.sg.widgets,
+ com.sg.widgets,
+ com.sg.thirdparty,
+ com.mobnut.admin;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

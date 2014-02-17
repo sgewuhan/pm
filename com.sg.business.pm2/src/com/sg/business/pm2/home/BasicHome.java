@@ -12,6 +12,7 @@ import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 public class BasicHome extends PrimaryObjectDetailFormView {
 
+	private GenericHomePanel genericHomePanel;
 
 	@Override
 	protected void initContent() {
@@ -22,7 +23,7 @@ public class BasicHome extends PrimaryObjectDetailFormView {
 	public void goHome() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		new GenericHomePanel(content);
+		genericHomePanel = new GenericHomePanel(content);
 		// Label label = new Label(content, SWT.NONE);
 		//		String text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
 		// + "请在左边导航栏中选择您要处理的工作" + "</span>";
@@ -31,9 +32,8 @@ public class BasicHome extends PrimaryObjectDetailFormView {
 		// label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
 		// false));
 		content.layout();
+		super.goHome();
 	}
-
-
 
 	@Override
 	protected boolean responseSelectionChanged(IWorkbenchPart part,
@@ -50,4 +50,12 @@ public class BasicHome extends PrimaryObjectDetailFormView {
 				|| element instanceof Message;
 	}
 
+	@Override
+	public void doRefresh() {
+		if (isHome) {
+			genericHomePanel.doRefresh();
+		} else {
+			loadMaster();
+		}
+	}
 }
