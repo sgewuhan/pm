@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -27,6 +28,7 @@ import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
+import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -37,30 +39,30 @@ public class ProjectBlock extends Block {
 	private String usetId;
 	private DBCollection projectCol;
 
+	public static final int X_COUNT = 3;
+	public static final int Y_COUNT = 2;
+	public static final int BLOCKSIZE = 100;
+
 	public ProjectBlock(Composite parent) {
 		super(parent);
 	}
 
 	@Override
 	protected void createContent(Composite parent) {
-		parent.setLayout(new FormLayout());
+		parent.setLayout(new FillLayout());
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setBackground(Widgets.getColor(composite.getDisplay(), 0xed,
+				0xed, 0xed));
+		GridLayout gl = new GridLayout(X_COUNT, true);
+		gl.horizontalSpacing = 1;
+		gl.verticalSpacing = 1;
+		gl.marginHeight = 0;
+		gl.marginWidth = 0;
+		composite.setLayout(gl);
+		
+		
+
 		// 显示我负责的项目
-
-		FormData fd = new FormData();
-		tv = createTable(parent);
-		Control table = tv.getControl();
-		table.setLayoutData(fd);
-
-		fd.left = new FormAttachment(0, 0);
-		fd.right = new FormAttachment(100, 0);
-		fd.top = new FormAttachment(0, 1);
-		fd.bottom = new FormAttachment(100, -1);
-		
-		projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT);
-		this.usetId = new CurrentAccountContext().getUserId();
-		
-		setInput();
 	}
 
 	private void setInput() {
@@ -83,9 +85,8 @@ public class ProjectBlock extends Block {
 
 		Control table = tv.getControl();
 		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 40);
-		table.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		table.setData(RWT.CUSTOM_ITEM_HEIGHT, (TOPICSIZE + 1));
+		table.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
 		tv.setContentProvider(ArrayContentProvider.getInstance());
 
 		TableViewerColumn col = new TableViewerColumn(tv, SWT.LEFT);
