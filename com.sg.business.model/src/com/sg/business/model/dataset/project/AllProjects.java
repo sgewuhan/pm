@@ -7,7 +7,6 @@ import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.db.model.mongodb.SingleDBCollectionDataSetFactory;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 
