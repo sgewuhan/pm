@@ -4,6 +4,7 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -12,52 +13,57 @@ import org.eclipse.swt.widgets.Label;
 
 import com.mobnut.commons.util.file.ImageUtil;
 
+@SuppressWarnings("restriction")
 public class ContentBlock extends Composite {
 
-	private int blockSize;
+	protected int blockSize;
+	private Label imageLabel;
+	private Label titleLabel;
 
-	public ContentBlock(Composite parent, Image image, String title,
-			int blockSize) {
+	public ContentBlock(Composite parent) {
 		super(parent, SWT.NONE);
 		setLayout(new FormLayout());
-		this.blockSize = blockSize;
 		// 判断image是否为空
-		if (image != null) {
-			// 创建图文块
-			createGraphicTextBlock(image, title);
-		} else {
-			// 创建文本块
-			createTextBlock(title);
-		}
+		createGraphicTextBlock( );
 	}
 
-	private void createTextBlock(String title) {
-		// TODO Auto-generated method stub
 
-	}
-
-	private void createGraphicTextBlock(Image image, String title) {
+	private void createGraphicTextBlock() {
 		// 背景图片
-		Label imageLabel = new Label(this, SWT.NONE);
-
-		Image scaleFitImage = ImageUtil.scaleFitImage(image, blockSize,
-				blockSize);
-		Rectangle scaleBounds = scaleFitImage.getBounds();
-
-		imageLabel.setImage(scaleFitImage);
-		FormData labelLayoutData = new FormData();
-		labelLayoutData.top = new FormAttachment(0, blockSize / 2
-				- scaleBounds.height / 2);
-		labelLayoutData.left = new FormAttachment(0, blockSize / 2
-				- scaleBounds.width / 2);
-
-		imageLabel.setLayoutData(labelLayoutData);
+		imageLabel = new Label(this, SWT.NONE);
 
 		// 带背景色的文本
-		Label titleLabel = new Label(this, SWT.NONE);
-		titleLabel.setText(title);
-		
-		
+		titleLabel = new Label(this, SWT.NONE);
+		titleLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		titleLabel.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
+				Boolean.TRUE);
 
+		FormData fd = new FormData();
+		titleLabel.setLayoutData(fd);
+		fd.bottom = new FormAttachment(100);
+		fd.left = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+		fd.top = new FormAttachment(0);
+	}
+
+	public void setCoverImage(Image image) {
+		if(image == null){
+			return;
+		}
+		Image sImage = ImageUtil.scaleFitImage(image, blockSize, blockSize);
+		Rectangle scaleBounds = sImage.getBounds();
+		imageLabel.setImage(sImage);
+		FormData fd = new FormData();
+		fd.top = new FormAttachment(0, blockSize / 2 - scaleBounds.height / 2);
+		fd.left = new FormAttachment(0, blockSize / 2 - scaleBounds.width / 2);
+		imageLabel.setLayoutData(fd);
+	}
+
+	public void setContentText(String content) {
+		titleLabel.setText(content);
+	}
+
+	public void setBlockSize(int blockSize) {
+		this.blockSize = blockSize;
 	}
 }

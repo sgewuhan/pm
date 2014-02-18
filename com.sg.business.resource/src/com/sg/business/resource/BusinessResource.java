@@ -359,6 +359,12 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_SEARCH_W_24 = "search_w_24.png";
 
 	public static final String IMAGE_REFRESH_W_24 = "refresh_w_24.png";
+
+	public static final String IMAGE_PROJECT_ONREADY_24 = "project_commit_24.png";
+
+	public static final String IMAGE_PROJECT_WIP_24 = "project_wip_24.png";
+
+	public static final String IMAGE_PROJECT_PREPARING_24 = "project_editing_24.png";
 	
 
 	/**
