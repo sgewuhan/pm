@@ -47,6 +47,7 @@ import com.sg.business.model.dataset.calendarsetting.SystemCalendar;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.model.etl.ProjectMonthlyETL;
 import com.sg.business.model.etl.ProjectPresentation;
+import com.sg.business.model.input.ProjectEditorInputFactory;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -55,6 +56,7 @@ import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.UIConstants;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 
 /**
  * ÏîÄ¿
@@ -2055,6 +2057,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return (T) summaryProjectWorks;
 		} else if (adapter == CommonHTMLLabel.class) {
 			return (T) new ProjectCommonHTMLLable(this);
+		} else if(adapter == IEditorInputFactory.class){
+			return (T) new ProjectEditorInputFactory(this);
 		}
 		return super.getAdapter(adapter);
 	}

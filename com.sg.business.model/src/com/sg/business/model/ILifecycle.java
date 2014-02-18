@@ -21,7 +21,7 @@ public interface ILifecycle {
 	/**
 	 * 无状态，显示文本：{@value}
 	 */
-	public static final String STATUS_NONE_TEXT = ""; //$NON-NLS-1$
+	public static final String STATUS_NONE_TEXT = Messages.get().ILifecycle_1;
 	/**
 	 * 无状态，实际值：{@value}
 	 */

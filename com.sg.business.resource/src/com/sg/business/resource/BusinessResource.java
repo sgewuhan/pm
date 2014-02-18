@@ -27,6 +27,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_FOLDER = "image";//$NON-NLS-1$
 
 	public static final String IMAGE_ADD_24 = "add_b_24.png";//$NON-NLS-1$
+	public static final String IMAGE_ADD_G_24 = "add_g_24.png";//$NON-NLS-1$
+	public static final String IMAGE_ADD_W_24 = "add_w_24.png";//$NON-NLS-1$
 	public static final String IMAGE_DOWN_24 = "down_b_24.png";//$NON-NLS-1$
 	public static final String IMAGE_ACTIVATED_16 = "activated_16.png";//$NON-NLS-1$
 	public static final String IMAGE_DENIED_32 = "denied_32.png";//$NON-NLS-1$

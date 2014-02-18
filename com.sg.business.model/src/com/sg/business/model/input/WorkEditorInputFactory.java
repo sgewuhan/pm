@@ -16,6 +16,15 @@ public class WorkEditorInputFactory implements IEditorInputFactory {
 
 	@Override
 	public PrimaryObjectEditorInput getInput(Object data) {
+		DataEditorConfigurator conf = getEditorConfig(data);
+		PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(
+				work, conf, null);
+		editorInput.setEditable(false);
+		return editorInput;
+	}
+
+	@Override
+	public DataEditorConfigurator getEditorConfig(Object data) {
 		String editorId;
 		if (work.isSummaryWork()) {
 			if (Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
@@ -39,9 +48,6 @@ public class WorkEditorInputFactory implements IEditorInputFactory {
 
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator(editorId);
-		PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(
-				work, conf, null);
-		editorInput.setEditable(false);
-		return editorInput;
+		return conf;
 	}
 }

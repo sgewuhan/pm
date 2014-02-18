@@ -11,6 +11,11 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="perspective.project.charger"
+            name="%perspective.name.6">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.work"
             name="%perspective.name">
       </perspective>
@@ -112,6 +117,21 @@
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="perspective.project.charger">
+         <view
+               closeable="false"
+               id="project.navigator.myproject"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.work">
          <view
@@ -997,6 +1017,17 @@
                default="true"
                id="perspective.visualization">
          </perspective>
+      </scenario>
+      <scenario
+            id="projectcharger"
+            name="%scenario.name.2">
+         <perspective
+               default="true"
+               id="perspective.work.home">
+         </perspective>
+         <perspective
+               default="false"
+               id="perspective.project.charger"></perspective>
       </scenario>
       <scenario
             id="work"

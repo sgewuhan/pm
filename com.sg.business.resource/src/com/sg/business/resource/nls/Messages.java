@@ -377,6 +377,7 @@ public class Messages {
 	public String ILifecycle_5;
 	public String ILifecycle_7;
 	public String ILifecycle_9;
+	public String ILifecycle_1;
 	public String Index_0;
 	public String Index_1;
 	public String IRoleConstance_1;

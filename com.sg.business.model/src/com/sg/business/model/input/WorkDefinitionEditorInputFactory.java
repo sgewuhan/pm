@@ -19,7 +19,7 @@ public class WorkDefinitionEditorInputFactory implements IEditorInputFactory {
 
 	@Override
 	public PrimaryObjectEditorInput getInput(Object data) {
-		if("navigate".equals(data)){
+		if ("navigate".equals(data)) {
 			CurrentAccountContext context = new CurrentAccountContext();
 			Work work = ModelService.createModelObject(Work.class);
 			work.setValue(Work.F_CHARGER, context.getConsignerId());// 设置负责人为当前用户
@@ -28,14 +28,8 @@ public class WorkDefinitionEditorInputFactory implements IEditorInputFactory {
 			} catch (Exception e) {
 				return null;
 			}
-			String editorId;
-			if (work.isExecuteWorkflowActivateAndAvailable()) {
-				editorId = "navigator.work.launch";
-			} else {
-				editorId = "navigator.work.launch.1";
-			}
-			DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
-					.getEditorRegistry().getConfigurator(editorId);
+			
+			DataEditorConfigurator conf = getEditorConfig(work);
 			PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(
 					work, conf, null);
 			editorInput.setEditable(true);
@@ -45,4 +39,22 @@ public class WorkDefinitionEditorInputFactory implements IEditorInputFactory {
 		}
 		return null;
 	}
+
+	@Override
+	public DataEditorConfigurator getEditorConfig(Object data) {
+		if (data instanceof Work) {
+			Work work = (Work) data;
+			String editorId;
+			if (work.isExecuteWorkflowActivateAndAvailable()) {
+				editorId = "navigator.work.launch";
+			} else {
+				editorId = "navigator.work.launch.1";
+			}
+			DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
+					.getEditorRegistry().getConfigurator(editorId);
+			return conf;
+		}
+		return null;
+	}
+
 }

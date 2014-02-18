@@ -1,44 +1,38 @@
 package com.sg.business.model.input;
 
-import com.sg.business.model.Message;
+import com.sg.business.model.Project;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.commons.model.IEditorInputFactory;
-import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-public class MessageEditorInputFactory implements IEditorInputFactory {
+public class ProjectEditorInputFactory implements IEditorInputFactory {
 
-	private Message message;
+	private Project project;
 
-	public MessageEditorInputFactory(Message message) {
-		this.message = message;
+	public ProjectEditorInputFactory(Project project) {
+		this.project = project;
 	}
 
 	@Override
 	public PrimaryObjectEditorInput getInput(Object data) {
-		CurrentAccountContext context;
-		try {
-			context = new CurrentAccountContext();
-			message.doMarkRead(context, Boolean.TRUE);
-		} catch (Exception e) {
-			return null;
-		}
 		DataEditorConfigurator conf = getEditorConfig(data);
 		PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(
-				message, conf, null);
-		editorInput.setEditable(true);
-		editorInput.setNeedHostPartListenSaveEvent(false);
-		editorInput.setContext(context);
+				project, conf, null);
 		return editorInput;
 	}
 
 	@Override
 	public DataEditorConfigurator getEditorConfig(Object data) {
-		String editorId = "message.editor.view";
-
+		String editorId;
+		if ("create".equals(data)) {
+			editorId = "project.editor.wizard";
+		} else {
+			editorId = "project.editor";
+		}
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator(editorId);
 		return conf;
 	}
+
 }
