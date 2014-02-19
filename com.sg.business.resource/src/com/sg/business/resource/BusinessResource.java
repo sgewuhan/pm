@@ -367,6 +367,8 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_PROJECT_WIP_24 = "project_wip_24.png";
 
 	public static final String IMAGE_PROJECT_PREPARING_24 = "project_editing_24.png";
+
+	public static final String IMAGE_ADD_W_48 = "add_w_48.png";
 	
 
 	/**

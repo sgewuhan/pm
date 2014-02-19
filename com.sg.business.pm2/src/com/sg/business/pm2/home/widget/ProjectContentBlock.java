@@ -35,16 +35,13 @@ public class ProjectContentBlock extends ContentBlock {
 		Image img = getProjectCoverImage();
 		setCoverImage(img);
 
-		String projectHead = getProjectHead(false);
-		setHeadText(projectHead);
-
+		setHeadText(getProjectHead(false));
 		setHoverHeadText(getProjectHead(true));
 
-		setHoverBodyText(getProjectBody());
+		setBodyText(getProjectBody(false));
+		setHoverBodyText(getProjectBody(true));
 
-		String projectFoot = getProjectFoot(false);
-		setFootText(projectFoot);
-
+		setFootText(getProjectFoot(false));
 		setHoverFootText(getProjectFoot(true));
 	}
 
@@ -60,9 +57,9 @@ public class ProjectContentBlock extends ContentBlock {
 		
 	}
 
-	private String getProjectHead(boolean hovermask) {
+	private String getProjectHead(boolean hoverMask) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='float:left;color:" + getColor1(hovermask) + ";"
+		sb.append("<span style='float:left;color:" + getColor1(hoverMask) + ";"
 				+ "font-family:Î¢ÈíÑÅºÚ;font-size:10pt;"
 				+ "display:-moz-inline-box; display:inline-block; " + "width:"
 				+ (blockSize - 4) + "px;" + "height:" + (blockSize - 4) + "px;"
@@ -78,24 +75,25 @@ public class ProjectContentBlock extends ContentBlock {
 		return sb.toString();
 	}
 
-	private String getColor1(boolean hovermask) {
-		if (hovermask) {
+	private String getColor1(boolean hoverMask) {
+		if (hoverMask) {
 			return "#f0f0f0";
 		}
 		return "#909090";
 	}
 
-	private String getColor0(boolean hovermask) {
-		if (hovermask) {
+	private String getColor0(boolean hoverMask) {
+		if (hoverMask) {
 			return "#ffffff";
 		}
 		return "#000000";
 	}
 
-	private String getProjectBody() {
+	private String getProjectBody(boolean hoverMask) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='float:left;text-align:"
-				+ "center;color:#ffffff;font-family:Î¢ÈíÑÅºÚ;font-size:11pt;"
+				+ "center;color:"+getColor1(hoverMask)
+				+ ";font-family:Î¢ÈíÑÅºÚ;font-size:11pt;font-weight:bold;"
 				+ "width:" + (blockSize - 4) + "px; display:-moz-inline-box;"
 				+ "display:inline-block;'>"); //$NON-NLS-1$
 		sb.append(project.getLifecycleStatusText());
@@ -103,7 +101,7 @@ public class ProjectContentBlock extends ContentBlock {
 		return sb.toString();
 	}
 
-	private String getProjectFoot(boolean hovermask) {
+	private String getProjectFoot(boolean hoverMask) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:8pt;"
 				+ "float:left;display:-moz-inline-box; display:inline-block;"
@@ -116,15 +114,15 @@ public class ProjectContentBlock extends ContentBlock {
 		if (_actualStart != null) {
 			start = String
 					.format(Utils.FORMATE_DATE_COMPACT_SASH, _actualStart);
-			color = "color:" + getColor0(hovermask) + ";";
+			color = "color:" + getColor0(hoverMask) + ";";
 		} else if (_planStart != null) {
 			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH, _planStart);
-			color = "color:" + getColor1(hovermask) + ";";//$NON-NLS-1$
+			color = "color:" + getColor1(hoverMask) + ";";//$NON-NLS-1$
 		}
 		sb.append("<small style='" + color + "'>"); //$NON-NLS-1$
 		sb.append(start);
 		sb.append("</small>");//$NON-NLS-1$
-		sb.append("<small style='color:" + getColor1(hovermask) + ";'>"); //$NON-NLS-1$
+		sb.append("<small style='color:" + getColor1(hoverMask) + ";'>"); //$NON-NLS-1$
 
 		String finish = "?"; //$NON-NLS-1$
 		if (_planFinish != null) {

@@ -8,7 +8,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
@@ -96,14 +95,14 @@ public class ProjectBlock extends Block {
 		projectCursor.limit(X_COUNT * Y_COUNT - 1);
 
 		for (int i = 0; i < X_COUNT * Y_COUNT - 1; i++) {
-			ProjectContentBlock block;
+			Control block;
 			if (projectCursor.hasNext()) {
 				DBObject projectData = projectCursor.next();
 				Project project = ModelService.createModelObject(projectData,
 						Project.class);
 				block = createContentBlock(project);
 			} else {
-				block = createContentBlock(null);
+				block = new Composite(contentArea,SWT.NONE);
 			}
 			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
 			gd.widthHint = BLOCKSIZE;
@@ -130,7 +129,7 @@ public class ProjectBlock extends Block {
 		};
 		block.setBlockSize(BLOCKSIZE);
 		Image image = BusinessResource
-				.getImage(BusinessResource.IMAGE_ADD_W_24);
+				.getImage(BusinessResource.IMAGE_ADD_W_48);
 		block.setCoverImage(image);
 
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
