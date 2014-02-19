@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.sg.business.pm2.home.widget.ProjectBlock;
+import com.sg.business.pm2.home.widget.WorkBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.part.IRefreshablePart;
@@ -43,7 +44,7 @@ public class GenericHomePanel {
 		gd.widthHint = (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.X_COUNT - 1;
 		projectBlock.setLayoutData(gd);
 
-		Block workBlock = new Block(panel);
+		Block workBlock = new WorkBlock(panel);
 		workBlock.setTopicText("นคื๗");
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		workBlock.setLayoutData(gd);
