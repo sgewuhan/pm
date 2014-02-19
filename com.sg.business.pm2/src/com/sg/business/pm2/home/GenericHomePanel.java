@@ -7,6 +7,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import com.sg.business.pm2.home.widget.BulletinBoardBlock;
+import com.sg.business.pm2.home.widget.DocBlock;
 import com.sg.business.pm2.home.widget.ProjectBlock;
 import com.sg.business.pm2.home.widget.WorkBlock;
 import com.sg.widgets.Widgets;
@@ -46,20 +48,22 @@ public class GenericHomePanel {
 
 		Block workBlock = new WorkBlock(panel);
 		workBlock.setTopicText("工作");
-		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
+		gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd.widthHint = WorkBlock.BLOCKSIZE;
 		workBlock.setLayoutData(gd);
 
-		Block docBlock = new Block(panel);
+		Block docBlock = new DocBlock(panel);
 		docBlock.setTopicText("文档");
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		docBlock.setLayoutData(gd);
 
 		Block performenceBlock = new Block(panel);
 		performenceBlock.setTopicText("绩效");
-		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
 				true, 2, 2));
+		
 
-		Block noticeBlock = new Block(panel);
+		Block noticeBlock = new BulletinBoardBlock(panel);
 		noticeBlock.setTopicText("公告");
 		noticeBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
 				1, 1));

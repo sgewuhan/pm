@@ -18,18 +18,21 @@ import org.eclipse.swt.widgets.List;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.DataSetFactory;
+import com.mobnut.db.model.IContext;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
+import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.ISidebarItem;
 import com.sg.widgets.part.LoadingIdentifier;
 
 public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 	private ListViewer viewer;
-	private DataSetFactory dataSetFactory;
 	private DataSet ds;
 	private LoadingIdentifier loadingIdentifier;
+	protected IContext context;
 
 	public AbstractListViewSideItem() {
+		context = new CurrentAccountContext();
 	}
 
 	@Override
@@ -49,7 +52,8 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				ds = dataSetFactory.getDataSet();
+				
+				ds = getDataSetFactory().getDataSet();
 				return Status.OK_STATUS;
 			}
 
@@ -89,12 +93,11 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 		List list = viewer.getList();
 		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(36));
-		dataSetFactory = createDataSetFactory();
 		doRefresh();
 		return parent;
 	}
 
-	protected abstract DataSetFactory createDataSetFactory();
+	protected abstract DataSetFactory getDataSetFactory();
 
 	@Override
 	public ISelectionProvider getSelectionProvider() {

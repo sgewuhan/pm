@@ -266,6 +266,11 @@ public interface IModelConstants {
 	public static final String S_EAI_SAP_INSTANCENUMBER = "EAI.SAP.INSTANCENUMBER"; //$NON-NLS-1$
 
 	/**
+	 * 设置：默认工作超期预警时间
+	 */
+	public static final String S_S_WORK_REMIND_BEFORE = "WORK.REMIND.BEFORE";
+	
+	/**
 	 * 设置：用户的流程任务
 	 */
 	public static final String C_USERTASK = "usertask"; //$NON-NLS-1$
@@ -307,5 +312,7 @@ public interface IModelConstants {
 	public static final String C_PROJECT_MONTH_DATA = "projectmonthdata"; //$NON-NLS-1$
 
 	public static final String C_PRODUCT_SALESDATA = "productsalesdata";
+
+	
 
 }

@@ -34,22 +34,23 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 		public ShowFilterMenuAction() {
 			setId("work.showFilterMenu"); //$NON-NLS-1$
 			setText(Messages.get().WorkInProcess_1);
-//			setImageDescriptor(Widgets
-//					.getImageDescriptor(ImageResource.FILTER_24));
+			// setImageDescriptor(Widgets
+			// .getImageDescriptor(ImageResource.FILTER_24));
 		}
 
 		@Override
 		public void run() {
-			ToolBarManager2 manager = (ToolBarManager2) getViewSite().getActionBars().getToolBarManager();
+			ToolBarManager2 manager = (ToolBarManager2) getViewSite()
+					.getActionBars().getToolBarManager();
 			ToolBar control = manager.getControl();
 			int index = manager.indexOf(this.getId());
 
 			Menu menu = menuManager.createContextMenu(control);
-			
+
 			Point hl = control.toDisplay(0, 0);
 			hl.y += control.getBounds().height + 2;
-			hl.x += index*32+4;
-					
+			hl.x += index * 32 + 4;
+
 			menu.setLocation(hl);
 			menu.setVisible(true);
 		}
@@ -68,14 +69,14 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 		super.createPartControl(parent);
 		createWorkSynchronizer();
 	}
-	
+
 	@Override
 	protected void createToolbarItem(IToolBarManager manager) {
 		WorkFilterControl fc = new WorkFilterControl(getNavigator().getViewer());
 		menuManager = fc.createMenu();
-		
+
 		manager.add(new ShowFilterMenuAction());
-		
+
 		super.createToolbarItem(manager);
 
 	}
@@ -94,8 +95,8 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 			Integer interval = Utils.getIntegerValue(_interval);
 			if (interval != null) {
 				repeatWorkSynchronizer = createBackgroundSynchronizer(userid);
-				repeatWorkSynchronizer.start(interval.intValue() * 60 * 1000,
-						false);
+				repeatWorkSynchronizer.start(
+						interval.intValue() * 60 * 60 * 1000, false);
 			}
 		}
 	}
@@ -111,12 +112,13 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 				display.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-//						ViewerFilter[] filters = getNavigator().getViewer().getFilters();
+						// ViewerFilter[] filters =
+						// getNavigator().getViewer().getFilters();
 						WorkInProcess.super.doRefresh();
 						processSync = false;
 						getNavigator().getViewer().resetFilters();
-//						getNavigator().getViewer().setFilters(filters);
-						
+						// getNavigator().getViewer().setFilters(filters);
+
 						// System.out.println("refresh by: User");
 					}
 				});
@@ -155,8 +157,8 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 	@Override
 	public void doRefresh() {
 		if (processSync) {
-			MessageUtil.showToast(null, getPartName(), Messages.get().WorkInProcess_2,
-					SWT.ICON_INFORMATION);
+			MessageUtil.showToast(null, getPartName(),
+					Messages.get().WorkInProcess_2, SWT.ICON_INFORMATION);
 			return;
 		}
 		workSynchronizer.schedule();

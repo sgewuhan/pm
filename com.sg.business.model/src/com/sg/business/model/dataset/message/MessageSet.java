@@ -15,7 +15,7 @@ public class MessageSet extends SingleDBCollectionDataSetFactory {
 
 	public MessageSet() {
 		super(IModelConstants.DB, IModelConstants.C_MESSAGE);
-		userId = new CurrentAccountContext().getAccountInfo().getConsignerId();
+		userId = new CurrentAccountContext().getConsignerId();
 	}
 	
 	@Override

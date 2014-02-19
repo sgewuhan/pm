@@ -61,7 +61,7 @@ public class WorkActivator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-		
+
 		stopWorkSync();
 	}
 
@@ -84,7 +84,7 @@ public class WorkActivator extends AbstractUIPlugin {
 				delay = 10;
 			}
 
-			sync.start(delay* 60 * 1000, false);
+			sync.start(delay * 60 * 1000, false);
 		}
 	}
 

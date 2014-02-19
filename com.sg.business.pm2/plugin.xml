@@ -19,7 +19,7 @@
             id="perspective.work"
             name="%perspective.name">
       </perspective>
-      <perspective
+      <!--<perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.sales"
             name="%perspective.name">
@@ -33,7 +33,7 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.workflow"
             name="%perspective.name.1">
-      </perspective>
+      </perspective>-->
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis2.home"
@@ -72,12 +72,12 @@
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project"
-            name="%perspective.name.6">
+            name="%perspective.project">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project.admin"
-            name="%perspective.name.6">
+            name="%perspective.project.admin">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -118,17 +118,28 @@
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="perspective.project.charger">
+            targetID="perspective.work.home">
          <view
                closeable="false"
-               id="project.navigator.myproject"
-               minimized="false"
+               id="homenavigator"
+               minimized="true"
                moveable="false"
-               ratio="0.4"
+               ratio="0.3"
                relationship="left"
                relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="pm2.work.detail"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="top"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
                visible="true">
          </view>
       </perspectiveExtension>
@@ -181,23 +192,12 @@
          </view>
          <view
                closeable="false"
-               id="project.navigator.myproject"
-               minimized="false"
-               moveable="false"
-               ratio="0.4"
-               relationship="right"
-               relative="work.processing"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
                id="project.navigator.delaywork"
                minimized="false"
                moveable="false"
-               relationship="stack"
-               relative="project.navigator.myproject"
+               ratio="0.5"
+               relationship="right"
+               relative="work.processing"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -218,11 +218,82 @@
                id="work.performence.record"
                minimized="false"
                ratio="0.5"
-               relationship="bottom"
-               relative="project.navigator.myproject">
+               relationship="top"
+               relative="project.navigator.delaywork">
          </view>
       </perspectiveExtension>
       <perspectiveExtension
+            targetID="perspective.project.charger">
+         <view
+               closeable="false"
+               id="project.navigator.myproject"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.project">
+         <view
+               closeable="false"
+               id="project.navigator.management"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="works.register"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="project.navigator.management"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.project.admin">
+         <view
+               closeable="false"
+               id="project.navigator.allproject1"
+               minimized="false"
+               ratio="0.5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               standalone="false">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.allproject2"
+               minimized="false"
+               ratio="0.5"
+               relationship="stack"
+               relative="project.navigator.allproject1"
+               standalone="false">
+         </view>
+         <view
+               closeable="false"
+               id="project.navigator.allproject"
+               minimized="false"
+               ratio="0.5"
+               relationship="stack"
+               relative="project.navigator.allproject2"
+               standalone="false">
+         </view>
+      </perspectiveExtension>
+      <!--<perspectiveExtension
             targetID="perspective.simplework">
          <view
                closeable="false"
@@ -287,7 +358,7 @@
                standalone="false"
                visible="true">
          </view>
-      </perspectiveExtension>
+      </perspectiveExtension>-->
       <perspectiveExtension
             targetID="perspective.vis.home">
          <view
@@ -361,6 +432,111 @@
          </view>
       </perspectiveExtension>
       <perspectiveExtension
+            targetID="perspective.vis2.home">
+         <view
+               closeable="false"
+               id="vis2.saleslist"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".33"
+               relationship="right"
+               relative="vis2.saleslist"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitrate"
+               minimized="false"
+               moveable="false"
+               ratio=".67"
+               relationship="bottom"
+               relative="vis2.profitvolumn"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.combinnatiedrate"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="right"
+               relative="vis2.profitvolumn"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.budgetandinvestmentvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="bottom"
+               relative="vis2.combinnatiedrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.overschedualvolumn"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="right"
+               relative="vis2.profitrate"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.vis2.home.sales">
+         <view
+               closeable="false"
+               id="vis2.saleslist.sales"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitvolumn.sales"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="right"
+               relative="vis2.saleslist.sales"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="vis2.profitrate.sales"
+               minimized="false"
+               moveable="false"
+               ratio=".5"
+               relationship="bottom"
+               relative="vis2.profitvolumn.sales"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
             targetID="perspective.visualization">
          <view
                closeable="false"
@@ -370,8 +546,8 @@
                ratio="0.25"
                relationship="left"
                relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
+               showTitle="false"
+               standalone="true"
                visible="true">
          </view>
          <!--view
@@ -396,12 +572,12 @@
                ratio="0.25"
                relationship="left"
                relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
+               showTitle="false"
+               standalone="true"
                visible="true">
          </view>
       </perspectiveExtension>
-      <perspectiveExtension
+      <!--<perspectiveExtension
             targetID="perspective.sales">
          <view
                closeable="false"
@@ -490,7 +666,7 @@
                relationship="bottom"
                relative="project.navigator.myproject.sales">
          </view>
-      </perspectiveExtension>
+      </perspectiveExtension>-->
       <perspectiveExtension
             targetID="perspective.resource">
          <view
@@ -536,7 +712,9 @@
                minimized="false"
                ratio="0.8"
                relationship="left"
-               relative="org.eclipse.ui.editorss">
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
          </view>
       </perspectiveExtension>
       <perspectiveExtension
@@ -631,32 +809,6 @@
                moveable="false"
                relationship="stack"
                relative="vault.documents"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.project">
-         <view
-               closeable="false"
-               id="project.navigator.management"
-               minimized="false"
-               moveable="false"
-               ratio="0.3"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="works.register"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="project.navigator.management"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -840,184 +992,9 @@
                visible="true">
          </view>
       </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.vis2.home">
-         <view
-               closeable="false"
-               id="vis2.saleslist"
-               minimized="false"
-               moveable="false"
-               ratio=".5"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.profitvolumn"
-               minimized="false"
-               moveable="false"
-               ratio=".33"
-               relationship="right"
-               relative="vis2.saleslist"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.profitrate"
-               minimized="false"
-               moveable="false"
-               ratio=".67"
-               relationship="bottom"
-               relative="vis2.profitvolumn"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.combinnatiedrate"
-               minimized="false"
-               moveable="false"
-               ratio=".5"
-               relationship="right"
-               relative="vis2.profitvolumn"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.budgetandinvestmentvolumn"
-               minimized="false"
-               moveable="false"
-               ratio=".5"
-               relationship="bottom"
-               relative="vis2.combinnatiedrate"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.overschedualvolumn"
-               minimized="false"
-               moveable="false"
-               ratio=".5"
-               relationship="right"
-               relative="vis2.profitrate"
-               showTitle="false"
-               standalone="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.project.admin">
-         <view
-               closeable="false"
-               id="project.navigator.allproject1"
-               minimized="false"
-               ratio="0.5"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               standalone="false">
-         </view>
-         <view
-               closeable="false"
-               id="project.navigator.allproject2"
-               minimized="false"
-               ratio="0.5"
-               relationship="stack"
-               relative="project.navigator.allproject1"
-               standalone="false">
-         </view>
-         <view
-               closeable="false"
-               id="project.navigator.allproject"
-               minimized="false"
-               ratio="0.5"
-               relationship="stack"
-               relative="project.navigator.allproject2"
-               standalone="false">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.vis2.home.sales">
-         <view
-               closeable="false"
-               id="vis2.saleslist.sales"
-               minimized="false"
-               moveable="false"
-               ratio=".5"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.profitvolumn.sales"
-               minimized="false"
-               moveable="false"
-               ratio=".5"
-               relationship="right"
-               relative="vis2.saleslist.sales"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="vis2.profitrate.sales"
-               minimized="false"
-               moveable="false"
-               ratio=".5"
-               relationship="bottom"
-               relative="vis2.profitvolumn.sales"
-               showTitle="false"
-               standalone="true">
-         </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="perspective.work.home">
-         <view
-               closeable="false"
-               id="homenavigator"
-               minimized="true"
-               moveable="false"
-               ratio="0.3"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="false"
-               standalone="true">
-         </view>
-         <view
-               closeable="false"
-               id="pm2.work.detail"
-               minimized="false"
-               moveable="false"
-               ratio="0.3"
-               relationship="top"
-               relative="org.eclipse.ui.editorss"
-               showTitle="false"
-               standalone="true"
-               visible="true">
-         </view>
-      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
-      <scenario
-            id="visualization"
-            name="%scenario.name">
-         <perspective
-               id="perspective.vis.home">
-         </perspective>
-         <perspective
-               id="perspective.vis2.home">
-         </perspective>
-         <perspective
-               default="true"
-               id="perspective.visualization">
-         </perspective>
-      </scenario>
       <scenario
             id="projectcharger"
             name="%scenario.name.9">
@@ -1028,8 +1005,33 @@
          <perspective
                default="false"
                id="perspective.project.charger"></perspective>
+         <perspective
+               id="perspective.work"></perspective>
+         <perspective
+               id="perspective.vault">
+         </perspective>
+         <perspective
+               id="perspective.message">
+         </perspective>
+         <perspective
+               id="perspective.bulletinboard">
+         </perspective>
       </scenario>
       <scenario
+            id="visualization"
+            name="%scenario.name">
+         <!--<perspective
+               id="perspective.vis.home">
+         </perspective>
+         <perspective
+               id="perspective.vis2.home">
+         </perspective>-->
+         <perspective
+               default="true"
+               id="perspective.visualization">
+         </perspective>
+      </scenario>
+      <!--<scenario
             id="work"
             name="%scenario.name.0">
          <perspective
@@ -1049,7 +1051,7 @@
             name="%scenario.name.1">
          <perspective
                id="perspective.simplework"></perspective>
-      </scenario>
+      </scenario>-->
       <scenario
             id="projectmanagement"
             name="%scenario.name.2">
@@ -1064,14 +1066,14 @@
                id="perspective.resource">
          </perspective>
       </scenario>
-      <scenario
+      <!--<scenario
             id="vault"
             isDefault="true"
             name="%scenario.name.4">
          <perspective
                id="perspective.vault">
          </perspective>
-      </scenario>
+      </scenario>-->
       <scenario
             id="businessmanager"
             name="%scenario.name.5">
@@ -1093,7 +1095,7 @@
                id="perspective.system">
          </perspective>
       </scenario>
-      <scenario
+      <!--<scenario
             id="message"
             name="%scenario.name.7">
          <perspective
@@ -1120,7 +1122,7 @@
                default="true"
                id="perspective.visualization.sales">
          </perspective>
-      </scenario>
+      </scenario>-->
    </extension>
    <extension
          point="com.mobnut.design.headAreaPart">
@@ -1437,6 +1439,11 @@
                id="TASKRESERVED.REFRESH.INTERVAL"
                label="%option.label.15"
                value="TASKRESERVED.REFRESH.INTERVAL">
+         </option>
+         <option
+               id="WORK.REMIND.BEFORE"
+               label="%option.label.24"
+               value="WORK.REMIND.BEFORE">
          </option>
       </option>
       <option

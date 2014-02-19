@@ -3,12 +3,18 @@ package com.sg.business.pm2.home;
 import com.mobnut.db.model.DataSetFactory;
 import com.sg.business.model.dataset.projecttemplate.LaunchableWorkSet;
 
-public class Launchablelist extends AbstractListViewSideItem{
+public class Launchablelist extends AbstractListViewSideItem {
 
-	@Override
-	protected DataSetFactory createDataSetFactory() {
-		return  new LaunchableWorkSet();
+	private DataSetFactory dataSet;
+
+	public Launchablelist() {
+		super();
+		dataSet = new LaunchableWorkSet();
 	}
 
+	@Override
+	protected DataSetFactory getDataSetFactory() {
+		return dataSet;
+	}
 
 }

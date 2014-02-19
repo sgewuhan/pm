@@ -23,6 +23,7 @@ import org.jbpm.task.Status;
 import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 
+import com.mobnut.admin.dataset.Setting;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
@@ -160,15 +161,14 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_RECORD = "record"; //$NON-NLS-1$
 
 	public static final String F_WORK_DEFINITION_ID = "workd_id"; //$NON-NLS-1$
-	
-	public static final String F_WORK_DEFINITION_NAME= "workddesc"; //$NON-NLS-1$
+
+	public static final String F_WORK_DEFINITION_NAME = "workddesc"; //$NON-NLS-1$
 
 	public static final String F_USE_PROJECT_ROLE = "useprojectrole"; //$NON-NLS-1$
 
 	public static final String F_PERFORMENCE = "performence"; //$NON-NLS-1$
-	
-	public static final String F_STARTIMMEDIATELY = "startImmediately";//$NON-NLS-1$
 
+	public static final String F_STARTIMMEDIATELY = "startImmediately";//$NON-NLS-1$
 
 	public static final String[] ARCHIVE_FIELDS = new String[] {
 			F_ASSIGNMENT_CHARGER_ROLE_ID, F_CHARGER_ROLE_ID,
@@ -180,8 +180,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
 			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
 			F_WF_EXECUTE_ASSIGNMENT, F_TARGETS };
-
-
 
 	private Double overCount = null;
 
@@ -3947,7 +3945,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return (T) dummyWork;
 		} else if (adapter == CommonHTMLLabel.class) {
 			return (T) (new WorkCommonHTMLLable(this));
-		} else if(adapter == IEditorInputFactory.class){
+		} else if (adapter == IEditorInputFactory.class) {
 			return (T) (new WorkEditorInputFactory(this));
 		}
 		return super.getAdapter(adapter);
@@ -4121,8 +4119,15 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		Object value = getValue(F_REMIND_BEFORE);
 		if (value instanceof Integer) {
 			return ((Integer) value).intValue();
+		} else {
+			Object data = Setting
+					.getSystemSetting(IModelConstants.S_S_WORK_REMIND_BEFORE);
+			try {
+				return Integer.parseInt((String) data);
+			} catch (Exception e) {
+				return 0;
+			}
 		}
-		return 0;
 	}
 
 	public boolean isRemindNow() {
@@ -4149,6 +4154,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		} else {
 			return new Date().after(_planFinish);
 		}
+	}
+
+	public boolean isDelayFinishEst() {
+		Date _planFinish = getPlanFinish();
+
+		if (_planFinish == null) {
+			return false;
+		}
+		if (!isDelayFinish()) {
+			int remindBefore = getRemindBefore();
+			long timeMillis = new Date().getTime();
+			long planFinishTime = _planFinish.getTime();
+			return planFinishTime - timeMillis <= remindBefore * 60 * 60 * 1000;
+		}
+		return true;
 	}
 
 	public boolean isDelayStart() {

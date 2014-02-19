@@ -31,7 +31,7 @@ import com.sg.widgets.part.editor.DataObjectWizard;
 
 public class ProjectBlock extends Block {
 
-	private static final String PERSPECTIVE_PROJECT_CHARGER = "perspective.project.charger";
+	private static final String PERSPECTIVE = "perspective.project.charger";
 	private String userId;
 	private DBCollection projectCol;
 	private Composite contentArea;
@@ -49,7 +49,7 @@ public class ProjectBlock extends Block {
 		try {
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-			workbench.showPerspective(PERSPECTIVE_PROJECT_CHARGER, window);
+			workbench.showPerspective(PERSPECTIVE, window);
 		} catch (WorkbenchException e) {
 			MessageUtil.showToast(e);
 		}
@@ -85,6 +85,8 @@ public class ProjectBlock extends Block {
 				new BasicDBObject[] {
 						new BasicDBObject().append(Project.F_CHARGER, userId),
 						new BasicDBObject().append(Project.F_PARTICIPATE,
+								userId),
+						new BasicDBObject().append(Project.F_BUSINESS_CHARGER,
 								userId) }).append(
 				Project.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
@@ -102,7 +104,7 @@ public class ProjectBlock extends Block {
 						Project.class);
 				block = createContentBlock(project);
 			} else {
-				block = new Composite(contentArea,SWT.NONE);
+				block = new Composite(contentArea, SWT.NONE);
 			}
 			GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
 			gd.widthHint = BLOCKSIZE;
