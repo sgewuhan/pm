@@ -25,7 +25,6 @@ import com.sg.business.model.Work;
 import com.sg.business.model.dataset.work.ProcessingNavigatorItemSet;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.block.Block;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class WorkBlock extends Block {
 
@@ -38,7 +37,6 @@ public class WorkBlock extends Block {
 	private static final String PERSPECTIVE = "perspective.work";
 	private Label title;
 	private Label content;
-	private CurrentAccountContext context;
 
 	public WorkBlock(Composite parent) {
 		super(parent);
@@ -57,8 +55,6 @@ public class WorkBlock extends Block {
 
 	@Override
 	protected void createContent(Composite parent) {
-		context = new CurrentAccountContext();
-
 		parent.setLayout(new FormLayout());
 
 		title = new Label(parent, SWT.NONE);

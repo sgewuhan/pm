@@ -1,6 +1,7 @@
 package com.sg.business.pm2.home;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -18,6 +19,7 @@ import com.sg.widgets.part.IRefreshablePart;
 public class GenericHomePanel {
 
 	private Composite panel;
+	private int partHeight;
 
 	/**
 	 * 用于一般用户的主页面板
@@ -27,6 +29,9 @@ public class GenericHomePanel {
 	 * @param panel
 	 */
 	public GenericHomePanel(Composite parent) {
+		Rectangle bounds = parent.getDisplay().getBounds();
+		partHeight = bounds.height - 61;
+
 		parent.setLayout(new FillLayout());
 		panel = new Composite(parent, SWT.NONE);
 		panel.setBackground(Widgets.getColor(panel.getDisplay(), 0xed, 0xed,
@@ -52,18 +57,28 @@ public class GenericHomePanel {
 		gd.widthHint = WorkBlock.BLOCKSIZE;
 		workBlock.setLayoutData(gd);
 
-		Block docBlock = new DocBlock(panel);
-		docBlock.setTopicText("文档");
+		final DocBlock docBlock = new DocBlock(panel) {
+			@Override
+			public int getContentHeight() {
+				return (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.Y_COUNT - 1;
+			}
+		};
+		docBlock.setTopicText("最近的文档");
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		docBlock.setLayoutData(gd);
 
 		Block performenceBlock = new Block(panel);
 		performenceBlock.setTopicText("绩效");
 		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
-				true, 2, 2));
-		
+				true, 2, 1));
 
-		Block noticeBlock = new BulletinBoardBlock(panel);
+		Block noticeBlock = new BulletinBoardBlock(panel) {
+			@Override
+			protected int getContentHeight() {
+				return partHeight - docBlock.getContentHeight()
+						- (Block.TOPICSIZE + 1) * 2 - 3;
+			}
+		};
 		noticeBlock.setTopicText("公告");
 		noticeBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
 				1, 1));

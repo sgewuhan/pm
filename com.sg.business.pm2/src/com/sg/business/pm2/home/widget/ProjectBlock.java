@@ -26,7 +26,6 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.model.IEditorInputFactory;
-import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.DataObjectWizard;
 
 public class ProjectBlock extends Block {
@@ -59,7 +58,7 @@ public class ProjectBlock extends Block {
 	protected void createContent(Composite parent) {
 		projectCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
-		userId = new CurrentAccountContext().getConsignerId();
+		userId = context.getConsignerId();
 		parent.setLayout(new FillLayout());
 		contentArea = new Composite(parent, SWT.NONE);
 		contentArea.setBackground(Widgets.getColor(contentArea.getDisplay(),
