@@ -20,9 +20,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
+import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
@@ -33,7 +35,7 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 public class BulletinBoardBlock extends Block implements
 		ISelectionChangedListener {
 
-	private static final int ITEM_HIGHT = 36;
+	private static final int ITEM_HIGHT = 72;
 	private static final String PERSPECTIVE = "perspective.bulletinboard";
 	private ListViewer viewer;
 
@@ -73,7 +75,16 @@ public class BulletinBoardBlock extends Block implements
 				.getDataSet().getDataItems();
 		java.util.List<Object> input = new ArrayList<Object>();
 		input.addAll(items);
-		input.add("<a ><img></a>");
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("<a href=\"create\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_ADD_24,
+				BusinessResource.PLUGIN_ID));
+		sb.append("' style='border-style:none;position:absolute; right:8; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+		sb.append("</a>");
+
+		input.add(sb.toString());
 		viewer.setInput(input);
 		super.doRefresh();
 	}

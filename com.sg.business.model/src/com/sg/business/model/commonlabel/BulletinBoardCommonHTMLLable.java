@@ -3,10 +3,12 @@ package com.sg.business.model.commonlabel;
 import java.util.Date;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.Organization;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
 public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
@@ -19,7 +21,6 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 
 	@Override
 	public String getHTML() {
-		StringBuffer sb = new StringBuffer();
 		// 设置发布人
 		String publisher = UserToolkit.getUserById(bulletinBoard.getPublisher())
 				.getUsername();
@@ -42,6 +43,16 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 		String org = ((Organization) ModelService.createModelObject(
 				Organization.class, bulletinBoard.getOrganizationId())).getDesc();
 
+		StringBuffer sb = new StringBuffer();
+		
+//		sb.append("<a href=\"reply@" + bulletinBoard.get_id().toString() //$NON-NLS-1$ 
+//				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+//		sb.append("<img src='"); //$NON-NLS-1$
+//		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_ADD_24,
+//				BusinessResource.PLUGIN_ID));
+//		sb.append("' style='border-style:none;position:absolute; right:8; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+//		sb.append("</a>");
+		
 		// 显示标题和内容
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
 
