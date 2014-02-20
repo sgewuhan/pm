@@ -74,10 +74,12 @@
    <extension
          point="com.sg.widgets.navigator">
       <navigator
+            expand="search"
             id="project.navigator.myproject"
             provideSelection="true"
             table="project.navigator.myproject">
-         <filterAction>
+         <filterAction
+               defaultfield="名称">
             <column
                   columnDefinitionId="project.projectnumber">
             </column>
@@ -139,7 +141,8 @@
                   type="String">
             </column>
          </filterAction>
-         <searchAction>
+         <searchAction
+               defaultfield="名称">
             <column
                   columnDefinitionId="project.projectnumber">
             </column>
