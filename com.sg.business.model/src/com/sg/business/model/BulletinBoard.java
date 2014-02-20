@@ -13,8 +13,12 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
+import com.sg.business.model.commonlabel.BulletinBoardCommonHTMLLable;
+import com.sg.business.model.input.BulletinBoardEditorInputFactory;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
 /**
@@ -115,61 +119,6 @@ public class BulletinBoard extends PrimaryObject {
 	 */
 	public ObjectId getParentBulletin() {
 		return (ObjectId) getValue(F_PARENT_BULLETIN);
-	}
-
-	/**
-	 * 返回标题的显示内容
-	 * 
-	 * @return String
-	 */
-	public String getHTMLLabel() {
-		StringBuffer sb = new StringBuffer();
-		// 设置发布人
-		String publisher = UserToolkit.getUserById(getPublisher())
-				.getUsername();
-
-		// 设置标题
-		String label = getLabel();
-		label = Utils.getPlainText(label);
-		label = Utils.getLimitLengthString(label, 20);
-
-		// 设置内容
-		String content = getContent();
-		content = Utils.getPlainText(content);
-		content = Utils.getLimitLengthString(content, 40);
-
-		Date date = getPublishDate();
-		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
-				date);
-
-		// 设置发布部门
-		String org = ((Organization) ModelService.createModelObject(
-				Organization.class, getOrganizationId())).getDesc();
-
-		// 显示标题和内容
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'><b>"); //$NON-NLS-1$
-
-		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
-		sb.append(publisher);
-		sb.append("  "); //$NON-NLS-1$
-		sb.append(publishDate);
-
-		sb.append("</span>"); //$NON-NLS-1$
-
-		sb.append(label);
-		sb.append("</b></span>"); //$NON-NLS-1$
-
-		sb.append("<br/><small>"); //$NON-NLS-1$
-
-		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
-		sb.append(org);
-		sb.append("</span>"); //$NON-NLS-1$
-
-		sb.append(content);
-
-		sb.append("</small>"); //$NON-NLS-1$
-
-		return sb.toString();
 	}
 
 	/**
@@ -303,6 +252,17 @@ public class BulletinBoard extends PrimaryObject {
 				F_SUPER_BULLETIN, get_id()));
 		checkWriteResult(ws);
 		super.doRemove(context);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == CommonHTMLLabel.class) {
+			return (T) new BulletinBoardCommonHTMLLable(this);
+		} else if(adapter == IEditorInputFactory.class){
+			return (T) new BulletinBoardEditorInputFactory(this);
+		}
+		return super.getAdapter(adapter);
 	}
 
 }
