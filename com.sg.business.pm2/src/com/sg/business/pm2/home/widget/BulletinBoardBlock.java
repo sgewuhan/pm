@@ -1,5 +1,7 @@
 package com.sg.business.pm2.home.widget;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -18,6 +20,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
 import com.sg.widgets.MessageUtil;
@@ -64,9 +67,14 @@ public class BulletinBoardBlock extends Block implements
 	@Override
 	public void doRefresh() {
 		BulletinBoardDataSet bulletinBoardDataFactory = new BulletinBoardDataSet();
-		int limit = getContentHeight() / ITEM_HIGHT;
+		int limit = getContentHeight() / ITEM_HIGHT - 1;
 		bulletinBoardDataFactory.setLimit(limit);
-		viewer.setInput(bulletinBoardDataFactory.getDataSet().getDataItems());
+		java.util.List<PrimaryObject> items = bulletinBoardDataFactory
+				.getDataSet().getDataItems();
+		java.util.List<Object> input = new ArrayList<Object>();
+		input.addAll(items);
+		input.add("<a ><img></a>");
+		viewer.setInput(input);
 		super.doRefresh();
 	}
 
@@ -104,7 +112,6 @@ public class BulletinBoardBlock extends Block implements
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 				}
-
 			}
 		}
 	}

@@ -43,21 +43,21 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 				Organization.class, bulletinBoard.getOrganizationId())).getDesc();
 
 		// œ‘ æ±ÍÃ‚∫Õƒ⁄»›
-		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt'><b>"); //$NON-NLS-1$
+		sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;font-size:9pt'>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
+		sb.append("<span style='float:right;padding-right:4px;'><small>"); //$NON-NLS-1$
 		sb.append(publisher);
 		sb.append("  "); //$NON-NLS-1$
 		sb.append(publishDate);
 
-		sb.append("</span>"); //$NON-NLS-1$
+		sb.append("</small></span>"); //$NON-NLS-1$
 
 		sb.append(label);
-		sb.append("</b></span>"); //$NON-NLS-1$
+		sb.append("</span>"); //$NON-NLS-1$
 
-		sb.append("<br/><small>"); //$NON-NLS-1$
+		sb.append("<br/><small style='color:#909090'>"); //$NON-NLS-1$
 
-		sb.append("<span style='float:right;padding-right:4px'>"); //$NON-NLS-1$
+		sb.append("<span style='float:right;padding-right:4px;'>"); //$NON-NLS-1$
 		sb.append(org);
 		sb.append("</span>"); //$NON-NLS-1$
 
