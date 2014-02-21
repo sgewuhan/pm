@@ -21,19 +21,20 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 
 	@Override
 	public String getHTML() {
+		
 		// 设置发布人
-		String publisher = UserToolkit.getUserById(bulletinBoard.getPublisher())
-				.getUsername();
+		String publisher = UserToolkit
+				.getUserById(bulletinBoard.getPublisher()).getUsername();
 
 		// 设置标题
-		String label = bulletinBoard.getLabel();
-		label = Utils.getPlainText(label);
-		label = Utils.getLimitLengthString(label, 20);
+		String title = bulletinBoard.getLabel();
+		title = Utils.getPlainText(title);
+		title = Utils.getLimitLengthString(title, 18);
 
 		// 设置内容
 		String content = bulletinBoard.getContent();
 		content = Utils.getPlainText(content);
-		content = Utils.getLimitLengthString(content, 40);
+		content = Utils.getLimitLengthString(content, 28);
 
 		Date date = bulletinBoard.getPublishDate();
 		String publishDate = String.format(Utils.FORMATE_DATE_COMPACT_SASH,
@@ -41,41 +42,66 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 
 		// 设置发布部门
 		String org = ((Organization) ModelService.createModelObject(
-				Organization.class, bulletinBoard.getOrganizationId())).getDesc();
+				Organization.class, bulletinBoard.getOrganizationId()))
+				.getDesc();
 
 		StringBuffer sb = new StringBuffer();
-		
-//		sb.append("<a href=\"reply@" + bulletinBoard.get_id().toString() //$NON-NLS-1$ 
-//				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
-//		sb.append("<img src='"); //$NON-NLS-1$
-//		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_ADD_24,
-//				BusinessResource.PLUGIN_ID));
-//		sb.append("' style='border-style:none;position:absolute; right:8; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
-//		sb.append("</a>");
-		
-		// 显示标题和内容
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
+		// 显示标题
+		sb.append("<div style='"
+				+ "font-family:微软雅黑;"
+				+ "font-size:10pt;"
+				+ "color:#4d4d4d;"
+				+ "margin:0 2;"
+				+ "display:-moz-inline-box; display:inline-block; "
+				+ "overflow:hidden;" 
+				+ "white-space:nowrap;"
+				+ "text-overflow:ellipsis;" + "'>");
+		sb.append(title);
+		sb.append("</div>");
 
-		sb.append("<span style='float:right;padding-right:4px;'><small>"); //$NON-NLS-1$
-		sb.append(publisher);
-		sb.append("  "); //$NON-NLS-1$
-		sb.append(publishDate);
-
-		sb.append("</small></span>"); //$NON-NLS-1$
-
-		sb.append(label);
-		sb.append("</span>"); //$NON-NLS-1$
-
-		sb.append("<br/><small style='color:#909090'>"); //$NON-NLS-1$
-
-		sb.append("<span style='float:right;padding-right:4px;'>"); //$NON-NLS-1$
-		sb.append(org);
-		sb.append("</span>"); //$NON-NLS-1$
-
+		// 显示内容
+		sb.append("<div style='"
+				+ "font-family:微软雅黑;"
+				+ "font-size:8pt;"
+				+ "color:#909090;"
+				+ "margin:0 2;"
+				+ "overflow:hidden;"
+				+ "white-space:nowrap;"
+				+ "display:-moz-inline-box; "
+				+ "display:inline-block; "
+				+ "'>");
 		sb.append(content);
+		sb.append("</div>");
 
-		sb.append("</small>"); //$NON-NLS-1$
+		 sb.append("<div >");
+		 sb.append("<br/>");
+		 sb.append("<small style='"
+					+ "margin:0 2;"
+		 		+ "'>");
+		 sb.append(org);
+		 sb.append("  ");
+		 sb.append(publisher);
+		 sb.append("  ");
+		 sb.append(publishDate);
+		
+		 sb.append("</small></div>");
+		 
+		 //回复按钮
+		sb.append("<img src='"); //$NON-NLS-1$
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_REPLY_16,
+				BusinessResource.PLUGIN_ID));
+		sb.append("' style='position:absolute; right:4; bottom:2; display:block;' width='16' height='16' />"); //$NON-NLS-1$
 
+		
+		sb.append("<span>"); //$NON-NLS-1$
+		sb.append("<div style='"
+				+ "background-color:#ededed;"
+				+ "position:absolute; "
+				+ "left:0; "
+				+ "bottom:0; "
+				+ "display:block;"
+				+ "width:1000;height:1px'/>");
+		sb.append("</span>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

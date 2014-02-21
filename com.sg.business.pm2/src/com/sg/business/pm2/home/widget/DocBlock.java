@@ -11,6 +11,10 @@ import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -33,21 +37,41 @@ import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.part.editor.DataObjectEditor;
 
+@SuppressWarnings("restriction")
 public class DocBlock extends Block implements ISelectionChangedListener {
 
-	private static final int ITEM_HIGHT = 36;
+	private static final int ITEM_HIGHT = 50;
 	private static final String PERSPECTIVE = "perspective.vault";
 	private ListViewer viewer;
+	protected int width;
 
 	public DocBlock(Composite parent) {
 		super(parent);
 	}
 
 	@Override
-	protected void createContent(Composite parent) {
+	protected void createContent(final Composite parent) {
 		parent.setLayout(new FormLayout());
-
-		viewer = new ListViewer(parent, SWT.SINGLE);
+		parent.addControlListener(new ControlListener() {
+			
+			@Override
+			public void controlResized(ControlEvent e) {
+				width = parent.getBounds().width;
+			}
+			
+			@Override
+			public void controlMoved(ControlEvent e) {
+			}
+		});
+		List list = new List(parent,SWT.SINGLE){
+			@Override
+			public Point computeSize(int wHint, int hHint, boolean changed) {
+				Point p = super.computeSize(wHint, hHint, changed);
+				p.x = width;
+				return p;
+			}
+		};
+		viewer = new ListViewer(list);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider() {
 			@Override
@@ -63,12 +87,14 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 			}
 		};
 		labelProvider.setKey("inlist");
+		labelProvider.setViewer(viewer);
 		viewer.setLabelProvider(labelProvider);
 		viewer.setUseHashlookup(true);
 		viewer.addSelectionChangedListener(this);
 
-		List list = viewer.getList();
 		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		list.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
+				Boolean.TRUE);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(ITEM_HIGHT));
 		FormData fd = new FormData();
 		list.setLayoutData(fd);
