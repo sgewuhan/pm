@@ -80,7 +80,7 @@ public class GenericHomePanel {
 			}
 		};
 		noticeBlock.setTopicText("¹«¸æ");
-		noticeBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
+		noticeBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true,
 				1, 1));
 
 	}

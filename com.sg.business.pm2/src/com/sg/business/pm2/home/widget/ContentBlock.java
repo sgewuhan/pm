@@ -178,7 +178,7 @@ public class ContentBlock extends Composite {
 		fd.left = new FormAttachment();
 		fd.bottom = new FormAttachment(100);
 		fd.right = new FormAttachment(100);
-		mask.setData(RWT.CUSTOM_VARIANT, "bluemask");
+		mask.setData(RWT.CUSTOM_VARIANT, "whitemask");
 		mask.moveAbove(imageLabel);
 		// mask.setBackground(new Color(getDisplay(),0x00,0x99,0xcc));
 
