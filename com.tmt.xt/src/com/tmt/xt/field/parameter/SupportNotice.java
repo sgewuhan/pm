@@ -39,6 +39,6 @@ public class SupportNotice implements IProcessParameterDelegator {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return "";
 	}
 }

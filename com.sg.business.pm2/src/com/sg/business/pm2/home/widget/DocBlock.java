@@ -57,7 +57,15 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 					ObjectId _id = (ObjectId) dbo.get("id");
 					Document document = ModelService.createModelObject(
 							Document.class, _id);
-					return super.getText(document);
+					if (document.get_data() != null) {
+						return super.getText(document);
+					} else{
+						StringBuffer sb = new StringBuffer();
+						sb.append("<span style='font-family:Î¢ÈíÑÅºÚ;font-size:9pt;color:#ff0000;margin: 8px'><del>"); //$NON-NLS-1$
+						sb.append((String) dbo.get("desc"));
+						sb.append("</del></span>"); //$NON-NLS-1$
+						return sb.toString();
+					}
 				}
 				return "";
 			}
@@ -124,7 +132,8 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 		if (selection == null || selection.isEmpty()
 				|| (!(selection instanceof IStructuredSelection))) {
 		} else {
-			Object element = ((IStructuredSelection)selection) .getFirstElement();
+			Object element = ((IStructuredSelection) selection)
+					.getFirstElement();
 			if (element instanceof BasicDBObject) {
 				BasicDBObject dbo = (BasicDBObject) element;
 				ObjectId _id = (ObjectId) dbo.get("id");

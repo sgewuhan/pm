@@ -30,7 +30,7 @@ public class ProfitRateOfHasApprove implements IProcessParameterDelegator {
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return "";
 	}
 
 }

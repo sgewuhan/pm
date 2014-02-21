@@ -21,7 +21,7 @@ public class ChangetToList implements IProcessParameterDelegator {
 			result.addAll((ArrayList<String>) value);
 			return result;
 		}
-		return null;
+		return "";
 	}
 
 }
