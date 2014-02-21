@@ -25,18 +25,24 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 						.getName());
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
+		if("inlist".equals(key)){
+			sb.append("<span style='font-family:微软雅黑;font-size:9pt;margin: 8px'>"); //$NON-NLS-1$
+		}else{
+			sb.append("<span style='font-family:微软雅黑;font-size:9pt'>"); //$NON-NLS-1$
+		}
 
 		// 显示文档图标
-		sb.append("<img src='"); //$NON-NLS-1$
-		sb.append(doc.getTypeIconURL());
-		sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />"); //$NON-NLS-1$
-
-		if (doc.isLocked()) {
+		if (!"inlist".equals(key)) {
 			sb.append("<img src='"); //$NON-NLS-1$
-			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_LOCK_16,
-					BusinessResource.PLUGIN_ID));
-			sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />"); //$NON-NLS-1$
+			sb.append(doc.getTypeIconURL());
+			sb.append("' style='border-style:none;float:left;padding:0px;margin:0px' width='24' height='24' />"); //$NON-NLS-1$
+
+			if (doc.isLocked()) {
+				sb.append("<img src='"); //$NON-NLS-1$
+				sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_LOCK_16,
+						BusinessResource.PLUGIN_ID));
+				sb.append("' style='position:absolute; left:14; bottom:4; display:block;' width='16' height='16' />"); //$NON-NLS-1$
+			}
 		}
 
 		// 显示文件名称
@@ -57,7 +63,11 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("</b>"); //$NON-NLS-1$
 
 		sb.append("<br/>"); //$NON-NLS-1$
-		sb.append("<small>"); //$NON-NLS-1$
+		if("inlist".equals(key)){
+			sb.append("<small style='margin: 8px'>"); //$NON-NLS-1$
+		}else{
+			sb.append("<small>"); //$NON-NLS-1$
+		}
 		// 显示创建时间，创建人
 		// Date date = doc.get_cdate();
 		// sb.append(String.format(Utils.FORMATE_DATE_FULL, date));

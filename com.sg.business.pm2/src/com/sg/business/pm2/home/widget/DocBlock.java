@@ -49,7 +49,7 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 
 		viewer = new ListViewer(parent, SWT.SINGLE);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		viewer.setLabelProvider(new HTMLAdvanceLabelProvider() {
+		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider() {
 			@Override
 			public String getText(Object element) {
 				if (element instanceof DBObject) {
@@ -61,7 +61,9 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 				}
 				return "";
 			}
-		});
+		};
+		labelProvider.setKey("inlist");
+		viewer.setLabelProvider(labelProvider);
 		viewer.setUseHashlookup(true);
 		viewer.addSelectionChangedListener(this);
 
