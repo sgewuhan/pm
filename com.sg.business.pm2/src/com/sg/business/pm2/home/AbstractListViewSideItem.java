@@ -11,9 +11,13 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
 import com.mobnut.db.model.DataSet;
@@ -29,6 +33,7 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 	private ListViewer viewer;
 	private DataSet ds;
 	private LoadingIdentifier loadingIdentifier;
+	private Label loading;
 	protected IContext context;
 
 	public AbstractListViewSideItem() {
@@ -45,6 +50,7 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 		final Control control = viewer.getControl();
 		if (control.isDisposed()) {
 			closeLoadingIdentifier();
+			
 			return;
 		}
 		final Display display = control.getDisplay();
@@ -52,7 +58,7 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				
+
 				ds = getDataSetFactory().getDataSet();
 				return Status.OK_STATUS;
 			}
@@ -65,11 +71,11 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 					closeLoadingIdentifier();
 					return;
 				}
-				
+
 				display.asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						if(control.isDisposed()){
+						if (control.isDisposed()) {
 							closeLoadingIdentifier();
 							return;
 						}
@@ -85,7 +91,10 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 	@Override
 	public Composite create(Composite parent) {
-		viewer = new ListViewer(parent, SWT.SINGLE | SWT.V_SCROLL);
+		Composite bg = new Composite(parent, SWT.NONE);
+		bg.setLayout(new FormLayout());
+
+		viewer = new ListViewer(bg, SWT.SINGLE | SWT.V_SCROLL);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.setLabelProvider(new HTMLAdvanceLabelProvider());
 		viewer.setUseHashlookup(true);
@@ -93,8 +102,26 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 		List list = viewer.getList();
 		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(36));
+		FormData fd = new FormData();
+		list.setLayoutData(fd);
+		fd.left = new FormAttachment();
+		fd.top = new FormAttachment();
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(100);
+
+		// 显示数据读取中
+		loading = new Label(bg, SWT.NONE);
+		loading.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		fd = new FormData();
+		loading.setLayoutData(fd);
+		fd.width = 64;
+		fd.height = 64;
+		fd.left = new FormAttachment(50,-32);
+		fd.top = new FormAttachment(50,-32);
+		loading.moveAbove(null);
+		
 		doRefresh();
-		return parent;
+		return bg;
 	}
 
 	protected abstract DataSetFactory getDataSetFactory();
@@ -107,12 +134,17 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 	private void showLoadingIdentifier() {
 		loadingIdentifier = new LoadingIdentifier();
 		loadingIdentifier.open();
+		loading.setText("<img src='ajax_loader_blue_64.gif' width='" + 64
+				+ "' height='" + 64 + "'/>");
+		loading.moveAbove(null);
 	}
 
 	private void closeLoadingIdentifier() {
 		if (loadingIdentifier != null && !loadingIdentifier.isDisposed()) {
 			loadingIdentifier.close();
 		}
+		loading.setText("");
+		loading.moveBelow(null);
 	}
 
 }
