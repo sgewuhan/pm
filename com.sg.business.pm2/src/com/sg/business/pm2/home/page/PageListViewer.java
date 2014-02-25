@@ -29,7 +29,7 @@ public class PageListViewer extends ListViewer {
 		getControl().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		getControl().setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
 				Boolean.TRUE);
-		getControl().setData(RWT.CUSTOM_ITEM_HEIGHT, 24);
+		getControl().setData(RWT.CUSTOM_ITEM_HEIGHT, 20);
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider();
 		labelProvider.setKey("singleline");
 		labelProvider.setViewer(this);

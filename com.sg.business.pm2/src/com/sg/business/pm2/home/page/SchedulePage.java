@@ -20,6 +20,9 @@ import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
 import org.eclipse.birt.chart.model.impl.ChartWithoutAxesImpl;
 import org.eclipse.birt.chart.model.type.PieSeries;
 import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -36,6 +39,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -47,9 +52,11 @@ import com.sg.business.model.dataset.work.ProcessingNavigatorItemSet;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.TabBlockPage;
+import com.sg.widgets.commons.model.IEditorInputFactory;
+import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 @SuppressWarnings("restriction")
-public class SchedulePage extends TabBlockPage {
+public class SchedulePage extends TabBlockPage implements ISelectionChangedListener {
 
 	private static final int PAGESIZE = 4;
 
@@ -69,8 +76,6 @@ public class SchedulePage extends TabBlockPage {
 
 	private static final String RED = "#ff4444";
 
-	private static final int MARGIN = 8;
-
 	public static final int BLOCKSIZE = 300;
 
 	public SchedulePage(Composite parent) {
@@ -87,7 +92,7 @@ public class SchedulePage extends TabBlockPage {
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
-		fd.height = 60;
+		fd.height = 40;
 
 		Control grsphic = createGraphicBlock(parent);
 		fd = new FormData();
@@ -218,7 +223,7 @@ public class SchedulePage extends TabBlockPage {
 		int margin = 4;
 		FormData fd;
 		Section section;
-		int count = 2;
+		int count = 3;
 		if (!overScheduleInput.isEmpty()) {
 			section = createSection(overScheduleInput,Utils.getRGB(Utils.COLOR_RED[6]));
 			float rate = 1f * overScheduleInput.size() / total;
@@ -237,7 +242,7 @@ public class SchedulePage extends TabBlockPage {
 		// 创建预警工作清单
 		if (!overScheduleEstInput.isEmpty()) {
 			section = createSection(overScheduleEstInput,Utils.getRGB(Utils.COLOR_YELLOW[6]));
-			section.setText("超期预警");
+			section.setText("超期预警"+overScheduleEstInput.size()+"件");
 
 			fd = new FormData();
 			section.setLayoutData(fd);
@@ -250,7 +255,7 @@ public class SchedulePage extends TabBlockPage {
 		// 工作清单
 		if (!emergencyInput.isEmpty() && count > 0) {
 			section = createSection(emergencyInput,Utils.getRGB(Utils.COLOR_OLIVER[6]));
-			section.setText("需处理的工作");
+			section.setText("需处理的工作"+emergencyInput.size()+"件");
 
 			fd = new FormData();
 			section.setLayoutData(fd);
@@ -285,6 +290,7 @@ public class SchedulePage extends TabBlockPage {
 
 		v.setPageSize(PAGESIZE);
 		v.setPageInput(srcInput);
+		v.addSelectionChangedListener(this);
 		section.setClient(v.getControl());
 
 		Composite bar = new Composite(section, SWT.NONE);
@@ -346,14 +352,14 @@ public class SchedulePage extends TabBlockPage {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='");
 		sb.append("width:500px;");
-		sb.append("height:36px;" + "margin:" + MARGIN + "px;");
+		sb.append("height:36px;" + "margin:1px;");
 		sb.append("'>");
 		sb.append("<div style='display:block;width:4px; height:36px;  "
 				+ "float:left;background:" + color + ";'>");
 		sb.append("</div>");
 		sb.append("<div style='" + "display:-moz-inline-box; "
 				+ "display:inline-block;" + "height:36px;" + "color:#909090;"
-				+ "font-family:微软雅黑;font-size:19pt;  " + "margin:1px;" + "'>");
+				+ "font-family:微软雅黑;font-size:19pt; '>");
 		if (reserved > 0) {
 			sb.append("您需要处理的工作" + reserved + "件");
 			if (overSchedule + overScheduleEst > 0) {
@@ -411,5 +417,21 @@ public class SchedulePage extends TabBlockPage {
 		sdef.getSeries().add(sePie);
 
 		return chart;
+	}
+
+	@Override
+	public void selectionChanged(SelectionChangedEvent event) {
+		IStructuredSelection sel = (IStructuredSelection) event.getSelection();
+		if(sel!=null&&!sel.isEmpty()){
+			Work work = (Work) sel.getFirstElement();
+			select(work);
+		}
+	}
+	
+	protected void select(Work work) {
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
+		IEditorInputFactory inputFactory = work.getAdapter(IEditorInputFactory.class);
+		view.setInput(inputFactory.getInput(null));
 	}
 }
