@@ -10,10 +10,12 @@ import org.eclipse.swt.widgets.Control;
 
 import com.sg.business.pm2.home.widget.BulletinBoardBlock;
 import com.sg.business.pm2.home.widget.DocBlock;
+import com.sg.business.pm2.home.widget.PerformanceBlock;
 import com.sg.business.pm2.home.widget.ProjectBlock;
 import com.sg.business.pm2.home.widget.WorkBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
+import com.sg.widgets.block.TabBlock;
 import com.sg.widgets.part.IRefreshablePart;
 
 public class GenericHomePanel {
@@ -67,8 +69,7 @@ public class GenericHomePanel {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		docBlock.setLayoutData(gd);
 
-		Block performenceBlock = new Block(panel);
-		performenceBlock.setTopicText("¼¨Ð§");
+		TabBlock performenceBlock = new PerformanceBlock(panel);
 		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
 				true, 2, 1));
 

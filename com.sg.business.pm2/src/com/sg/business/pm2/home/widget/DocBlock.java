@@ -11,9 +11,6 @@ import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -52,25 +49,7 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 	@Override
 	protected void createContent(final Composite parent) {
 		parent.setLayout(new FormLayout());
-		parent.addControlListener(new ControlListener() {
-			
-			@Override
-			public void controlResized(ControlEvent e) {
-				width = parent.getBounds().width;
-			}
-			
-			@Override
-			public void controlMoved(ControlEvent e) {
-			}
-		});
-		List list = new List(parent,SWT.SINGLE){
-			@Override
-			public Point computeSize(int wHint, int hHint, boolean changed) {
-				Point p = super.computeSize(wHint, hHint, changed);
-				p.x = width;
-				return p;
-			}
-		};
+		List list = new List(parent,SWT.SINGLE);
 		viewer = new ListViewer(list);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider() {
@@ -115,7 +94,7 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 	}
 
 	@Override
-	public void doRefresh() {
+	protected Object doGetData() {
 		int limit = getContentHeight() / ITEM_HIGHT;
 		java.util.List<DBObject> documentList = new ArrayList<DBObject>();
 
@@ -132,10 +111,14 @@ public class DocBlock extends Block implements ISelectionChangedListener {
 				}
 			}
 		}
-
-		viewer.setInput(documentList);
-		super.doRefresh();
+		return documentList;
 	}
+	
+	@Override
+	protected void doDisplayData(Object data) {
+		viewer.setInput(data);
+	}
+	
 
 	public int getContentHeight() {
 		return 201;

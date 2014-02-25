@@ -8,9 +8,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -37,6 +35,7 @@ public class WorkBlock extends Block {
 	private static final String PERSPECTIVE = "perspective.work";
 	private Label title;
 	private Label content;
+	private ProcessingNavigatorItemSet itemSet;
 
 	public WorkBlock(Composite parent) {
 		super(parent);
@@ -55,6 +54,9 @@ public class WorkBlock extends Block {
 
 	@Override
 	protected void createContent(Composite parent) {
+		itemSet = new ProcessingNavigatorItemSet();
+
+		
 		parent.setLayout(new FormLayout());
 
 		title = new Label(parent, SWT.NONE);
@@ -62,13 +64,6 @@ public class WorkBlock extends Block {
 
 		content = new Label(parent, SWT.NONE);
 		content.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		content.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				// TODO Auto-generated method stub
-				System.out.println("111");
-			}
-		});
 
 		FormData fd = new FormData();
 		title.setLayoutData(fd);
@@ -178,13 +173,20 @@ public class WorkBlock extends Block {
 	}
 
 	@Override
-	public void doRefresh() {
+	protected Object doGetData() {
+		DataSet dataSet = itemSet.getDataSet();
+		return dataSet.getDataItems();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void doDisplayData(Object data) {
+		List<PrimaryObject> items = (List<PrimaryObject>) data;
 		int overSchedule = 0;
 		int overScheduleEst = 0;
 		StringBuffer contentBuffer = new StringBuffer();
-		ProcessingNavigatorItemSet itemSet = new ProcessingNavigatorItemSet();
-		DataSet dataSet = itemSet.getDataSet();
-		List<PrimaryObject> items = dataSet.getDataItems();
+
 		for (int i = 0; i < items.size(); i++) {
 			Work work = (Work) items.get(i);
 			boolean delayFinish = work.isDelayFinish();
@@ -208,7 +210,6 @@ public class WorkBlock extends Block {
 		int reserved = items.size();
 		title.setText(getTitle(reserved, overSchedule, overScheduleEst));
 		content.setText(contentBuffer.toString());
-
-		super.doRefresh();
 	}
+	
 }

@@ -40,6 +40,7 @@ public class BulletinBoardBlock extends Block implements
 	private static final int ITEM_HIGHT = 64;
 	private static final String PERSPECTIVE = "perspective.bulletinboard";
 	private ListViewer viewer;
+	private BulletinBoardDataSet bulletinBoardDataFactory;
 
 	public BulletinBoardBlock(Composite parent) {
 		super(parent);
@@ -47,6 +48,8 @@ public class BulletinBoardBlock extends Block implements
 
 	@Override
 	protected void createContent(final Composite parent) {
+		init();
+		
 		parent.setLayout(new FormLayout());
 		List list = new List(parent,SWT.SINGLE);
 		viewer = new ListViewer(list);
@@ -80,19 +83,26 @@ public class BulletinBoardBlock extends Block implements
 		doRefresh();
 	}
 	
+	
+	private void init() {
+		bulletinBoardDataFactory = new BulletinBoardDataSet();
+	}
 
 	@Override
-	public void doRefresh() {
-		BulletinBoardDataSet bulletinBoardDataFactory = new BulletinBoardDataSet();
+	protected Object doGetData() {
 		int limit = getContentHeight() / ITEM_HIGHT - 1;
 		bulletinBoardDataFactory.setLimit(limit);
 		java.util.List<PrimaryObject> items = bulletinBoardDataFactory
 				.getDataSet().getDataItems();
 		java.util.List<Object> input = new ArrayList<Object>();
 		input.addAll(items);
-		
-		viewer.setInput(input);
-		super.doRefresh();
+		return input;
+	}
+
+	
+	@Override
+	protected void doDisplayData(Object data) {
+		viewer.setInput(data);
 	}
 
 	protected int getContentHeight() {
