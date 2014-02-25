@@ -16,7 +16,10 @@ public class BasicHome extends PrimaryObjectDetailFormView {
 
 	@Override
 	protected void initContent() {
-		goHome();
+		cleanUI();
+		content.setLayout(new GridLayout());
+		genericHomePanel = new GenericHomePanel(content);
+		super.goHome();
 	}
 
 	@Override
@@ -24,14 +27,7 @@ public class BasicHome extends PrimaryObjectDetailFormView {
 		cleanUI();
 		content.setLayout(new GridLayout());
 		genericHomePanel = new GenericHomePanel(content);
-		// Label label = new Label(content, SWT.NONE);
-		//		String text = "<span style='font-size:19pt;font-family:微软雅黑;color:#A6A6A6'>" //$NON-NLS-1$
-		// + "请在左边导航栏中选择您要处理的工作" + "</span>";
-		// label.setText(text);
-		// label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		// label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false,
-		// false));
-		content.layout();
+		content.layout(false,false);
 		super.goHome();
 	}
 

@@ -39,6 +39,8 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 	public String getHTML() {
 		if ("record".equals(key)) {
 			return getHTMLForRecord();
+		}else if("singleline".equals(key)){
+			return getHTMLForSingleLine();
 		}
 
 		Object configurator = getData();
@@ -210,6 +212,80 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		return sb.toString();
 	}
 
+	private String getHTMLForSingleLine() {
+		// 工作desc
+		String desc = work.getDesc();
+		desc = Utils.getPlainText(desc);
+		Date _planFinish = work.getPlanFinish();
+		Project project = work.getProject();
+
+		// ---------------------------------------------------------------------------
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div style='cursor:pointer; border-bottom:1px dotted #cdcdcd;height=100%'>");
+		
+		sb.append("<span style='"//$NON-NLS-1$
+				+ "font-family:微软雅黑;"//$NON-NLS-1$
+				+ "font-size:10pt;"//$NON-NLS-1$
+				+ "margin:0 2;"//$NON-NLS-1$
+				+ "color:#4d4d4d;"//$NON-NLS-1$
+				+ "width:"+120+"px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		sb.append(desc);
+		sb.append("</span>");
+
+		sb.append("<span style='"
+				+ "color:#909090;"
+				+ "font-size:8pt;"
+				+ "margin:0 2;"
+				+ "width:"+120+"px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		// 如果是项目文档，显示项目名称
+		if (project != null) {
+			desc = project.getDesc();
+			desc = Utils.getPlainText(desc);
+			sb.append("项目:");
+			sb.append(desc);
+		}
+		sb.append("</span>");
+		
+		
+		// 有关时间
+		sb.append("<span style='"
+				+ "color:#909090;"
+				+ "font-size:8pt;"
+				+ "margin:0 2;"
+				+ "width:60px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		String finish = "?"; //$NON-NLS-1$
+		if (_planFinish != null) {
+			finish = String
+					.format(Utils.FORMATE_DATE_COMPACT_SASH, _planFinish);
+		}
+		sb.append(finish);
+		sb.append("</span>");
+
+				
+//				sb.append("<hr style='" //$NON-NLS-1$
+//						+ "color:#ededed;" //$NON-NLS-1$
+//						+ "position:absolute; " //$NON-NLS-1$
+//						+ "left:0; " //$NON-NLS-1$
+//						+ "bottom:0; " //$NON-NLS-1$
+//						+ "background-color:#ededed;" //$NON-NLS-1$
+//						+ "height:1px;" //$NON-NLS-1$
+//						+ "width:100%;" //$NON-NLS-1$
+//						+ "line-height:1px;" //$NON-NLS-1$
+//						+ "font-size:0;" //$NON-NLS-1$
+//						+ "border:none;" //$NON-NLS-1$
+//						+ "'>"); //$NON-NLS-1$
+				
+		sb.append("</div>");
+
+		return sb.toString();
+	}
+
 	private int getOperationCode(Work work, UserTask currentTask, String userId) {
 
 		// 如果是准备中的工作，显示为开始工作
@@ -351,17 +427,22 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			// 判断如果当前记录是最后一个，不显示分割线
 			ObjectId lastId = input.get(input.size() - 1).get_id();
 			if (!thisId.equals(lastId)) {
-				sb.append("<span>"); //$NON-NLS-1$
-				sb.append("<div style='"
-						+ "background-color:#ededed;"
-						+ "position:absolute; "
-						+ "left:0; "
-						+ "bottom:0; "
-						+ "display:block;"
-						+ "width:"+widthHint
-						+ "px;height:1px'/>");
-				sb.append("</span>"); //$NON-NLS-1$
+				
+				sb.append("<hr style='" //$NON-NLS-1$
+						+ "color:#ededed;" //$NON-NLS-1$
+						+ "position:absolute; " //$NON-NLS-1$
+						+ "left:0; " //$NON-NLS-1$
+						+ "bottom:0; " //$NON-NLS-1$
+						+ "background-color:#ededed;" //$NON-NLS-1$
+						+ "height:1px;" //$NON-NLS-1$
+						+ "width:100%;" //$NON-NLS-1$
+						+ "line-height:1px;" //$NON-NLS-1$
+						+ "font-size:0;" //$NON-NLS-1$
+						+ "border:none;" //$NON-NLS-1$
+						+ "'>"); //$NON-NLS-1$
+				
 			}
+			
 		}
 		sb.append("</div>");
 

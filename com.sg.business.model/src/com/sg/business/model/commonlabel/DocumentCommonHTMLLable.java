@@ -117,7 +117,7 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 			sb.append("<a href=\"upload@" + doc.get_id().toString() //$NON-NLS-1$ 
 					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append("<img src='"); //$NON-NLS-1$
-			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_ADD_24,
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_ADD_G_24,
 					BusinessResource.PLUGIN_ID));
 			sb.append("' style='border-style:none;position:absolute; right:8; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
 			sb.append("</a>");
@@ -128,7 +128,7 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 			sb.append("<a href=\"downloadall@" + doc.get_id().toString() //$NON-NLS-1$ 
 					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append("<img src='"); //$NON-NLS-1$
-			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWN_24,
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWN_G_24,
 					BusinessResource.PLUGIN_ID));
 			sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
 			sb.append("</a>");
@@ -224,15 +224,18 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 				}
 			}
 			if (i != input.size() - 1) {
-				sb.append("<span>"); //$NON-NLS-1$
-				sb.append("<div style='"
-						+ "background-color:#ededed;"
-						+ "position:absolute; "
-						+ "left:0; "
-						+ "bottom:0; "
-						+ "display:block;"
-						+ "width:1000px;height:1px'/>");
-				sb.append("</span>"); //$NON-NLS-1$
+				sb.append("<hr style='" //$NON-NLS-1$
+						+ "color:#ededed;" //$NON-NLS-1$
+						+ "position:absolute; " //$NON-NLS-1$
+						+ "left:0; " //$NON-NLS-1$
+						+ "bottom:0; " //$NON-NLS-1$
+						+ "background-color:#ededed;" //$NON-NLS-1$
+						+ "height:1px;" //$NON-NLS-1$
+						+ "width:100%;" //$NON-NLS-1$
+						+ "line-height:1px;" //$NON-NLS-1$
+						+ "font-size:0;" //$NON-NLS-1$
+						+ "border:none;" //$NON-NLS-1$
+						+ "'>"); //$NON-NLS-1$
 			}
 		}
 		sb.append("</div>");

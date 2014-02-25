@@ -29,7 +29,9 @@ Require-Bundle: org.eclipse.rap.ui,
  com.sg.bpm.service,
  org.eclipse.rap.ui.forms;bundle-version="2.2.0",
  com.sg.bpm.workflow,
- com.sg.business.commons
+ com.sg.business.commons,
+ com.sg.widgets.birtcharts,
+ org.eclipse.birt.chart.engine
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.pm2.home

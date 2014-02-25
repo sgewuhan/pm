@@ -66,7 +66,6 @@ public class HeadArea implements IHeadAreaSupport {
 
 	@Override
 	public Composite creatHeadAreaPart(Composite parent) {
-
 		content = parent;
 		AccountInfo account;
 		try {

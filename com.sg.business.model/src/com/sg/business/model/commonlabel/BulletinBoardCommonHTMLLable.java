@@ -46,6 +46,8 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 				.getDesc();
 
 		StringBuffer sb = new StringBuffer();
+		sb.append("<div style='cursor:pointer; border-bottom:1px dotted #cdcdcd;height=100%'>");
+
 		// œ‘ æ±ÍÃ‚
 		sb.append("<div style='"
 				+ "font-family:Œ¢»Ì—≈∫⁄;"
@@ -93,15 +95,7 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("' style='position:absolute; right:4; bottom:2; display:block;' width='16' height='16' />"); //$NON-NLS-1$
 
 		
-		sb.append("<span>"); //$NON-NLS-1$
-		sb.append("<div style='"
-				+ "background-color:#ededed;"
-				+ "position:absolute; "
-				+ "left:0; "
-				+ "bottom:0; "
-				+ "display:block;"
-				+ "width:1000;height:1px'/>");
-		sb.append("</span>"); //$NON-NLS-1$
+		sb.append("</div>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

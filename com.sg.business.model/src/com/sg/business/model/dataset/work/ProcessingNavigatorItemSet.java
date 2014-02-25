@@ -46,7 +46,7 @@ public class ProcessingNavigatorItemSet extends DataSetFactory {
 	public List<PrimaryObject> doQuery(DataSet ds) throws Exception {
 		// 前提：（项目必须是进行中）并且（本人负责，参与或者是指派者或者是流程任务的执行人）并且（工作必须是准备中或进行中）
 
-		// 按照计划开始时间排序
+		// 按照计划完成时间排序
 
 		// 查询正在进行的项目
 		List<?> projectIdList = projectCol.distinct(Project.F__ID,
@@ -117,7 +117,7 @@ public class ProcessingNavigatorItemSet extends DataSetFactory {
 			}
 
 		};
-		// 按照计划开始时间排序
+		// 按照计划完成时间排序
 		Collections.sort(result, comparator);
 	}
 
