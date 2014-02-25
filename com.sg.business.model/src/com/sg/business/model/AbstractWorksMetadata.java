@@ -86,12 +86,12 @@ public abstract class AbstractWorksMetadata extends PrimaryObject implements
 		}
 
 		value = getValue(F_PROJECT_ID);
-		if (value == null) {
+		if (value == null && project!=null) {
 			setValue(F_PROJECT_ID, project.get_id());
 		}
 
 		value = getValue(F_PROJECTDESC);
-		if (value == null) {
+		if (value == null&& project!=null) {
 			setValue(F_PROJECTDESC, project.getLabel());
 		}
 

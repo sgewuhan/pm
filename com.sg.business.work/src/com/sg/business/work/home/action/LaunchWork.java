@@ -20,7 +20,7 @@ import com.sg.widgets.part.view.SideBarNavigator;
 public class LaunchWork extends AbstractWorkDetailPageAction {
 
 	@Override
-	protected void run(Work work, Control control) {
+	public void run(Work work, Control control) {
 		IValidable val = getValidable();
 		IContext context = getContext();
 		boolean b = val.checkValidOnSave();

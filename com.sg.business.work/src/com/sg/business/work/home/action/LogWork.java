@@ -15,7 +15,7 @@ import com.sg.widgets.part.editor.DataObjectDialog;
 public class LogWork extends AbstractWorkDetailPageAction {
 
 	@Override
-	protected void run(Work work, Control control) {
+	public void run(Work work, Control control) {
 		CurrentAccountContext context = new CurrentAccountContext();
 		String userid = context.getAccountInfo().getConsignerId();
 		Date date = new Date();

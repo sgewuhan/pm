@@ -13,7 +13,7 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 public class AssignWork extends AbstractWorkDetailPageAction {
 
 	@Override
-	protected void run(Work work, Control control) {
+	public void run(Work work, Control control) {
 		String editorId = "editor.runtimereassignment";
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(

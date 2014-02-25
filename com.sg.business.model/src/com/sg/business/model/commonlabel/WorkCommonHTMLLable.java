@@ -3,8 +3,12 @@ package com.sg.business.model.commonlabel;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+import org.eclipse.jface.viewers.StructuredViewer;
+
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
@@ -33,6 +37,10 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
 	@Override
 	public String getHTML() {
+		if ("record".equals(key)) {
+			return getHTMLForRecord();
+		}
+
 		Object configurator = getData();
 		boolean control = (configurator instanceof ColumnConfigurator)
 				&& "wbsndelivery".equals(((ColumnConfigurator) configurator)
@@ -255,6 +263,109 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		return null;
 		// return FileUtil.getImageURL(BusinessResource.IMAGE_WORK_16,
 		// BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER);
+	}
+
+	@SuppressWarnings("unchecked")
+	private String getHTMLForRecord() {
+		StructuredViewer viewer = getViewer();
+		int widthHint = getWidthHint();
+
+		// 工作desc
+		String desc = work.getDesc();
+		desc = Utils.getPlainText(desc);
+		Date _planStart = work.getPlanStart();
+		Date _actualStart = work.getActualStart();
+		Date _planFinish = work.getPlanFinish();
+		Project project = work.getProject();
+
+		// ---------------------------------------------------------------------------
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div style='cursor:pointer;'>");
+		
+		sb.append("<div style='"//$NON-NLS-1$
+				+ "font-family:微软雅黑;"//$NON-NLS-1$
+				+ "font-size:10pt;"//$NON-NLS-1$
+				+ "margin:0 2;"//$NON-NLS-1$
+				+ "color:#4d4d4d;"//$NON-NLS-1$
+				+ "width:"+250+"px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		sb.append(desc);
+		sb.append("</div>");
+
+		sb.append("<div style='"
+				+ "color:#909090;"
+				+ "font-size:8pt;"
+				+ "margin:0 2;"
+				+ "width:"+250+"px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		// 如果是项目文档，显示项目名称
+		if (project != null) {
+			desc = project.getDesc();
+			desc = Utils.getPlainText(desc);
+			sb.append("项目:");
+			sb.append(desc);
+		}
+		sb.append("</div>");
+		
+		
+		// 有关时间
+		sb.append("<div style='"
+				+ "color:#909090;"
+				+ "font-size:8pt;"
+				+ "margin:0 2;"
+				+ "width:"+widthHint+"px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		String start = "?"; //$NON-NLS-1$
+		if (_actualStart != null) {
+			start = String
+					.format(Utils.FORMATE_DATE_COMPACT_SASH, _actualStart);
+		} else if (_planStart != null) {
+			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH, _planStart);
+		}
+		sb.append(start);
+		String finish = "?"; //$NON-NLS-1$
+		if (_planFinish != null) {
+			finish = String
+					.format(Utils.FORMATE_DATE_COMPACT_SASH, _planFinish);
+		}
+		sb.append("~"); //$NON-NLS-1$
+		sb.append(finish);
+		sb.append("</div>");
+
+		
+		sb.append("<a href=\"gowork@" + work.get_id().toString() //$NON-NLS-1$ 
+				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
+		sb.append("<img src='"); //$NON-NLS-1$
+		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_NAVIGATE_24,
+				BusinessResource.PLUGIN_ID));
+		sb.append("' style='border-style:none;position:absolute; right:11; bottom:13; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+		sb.append("</a>");//$NON-NLS-1$
+		
+		
+		List<PrimaryObject> input = (List<PrimaryObject>) viewer.getInput();
+		ObjectId thisId = work.get_id();
+		if (input != null && !input.isEmpty()) {
+			// 判断如果当前记录是最后一个，不显示分割线
+			ObjectId lastId = input.get(input.size() - 1).get_id();
+			if (!thisId.equals(lastId)) {
+				sb.append("<span>"); //$NON-NLS-1$
+				sb.append("<div style='"
+						+ "background-color:#ededed;"
+						+ "position:absolute; "
+						+ "left:0; "
+						+ "bottom:0; "
+						+ "display:block;"
+						+ "width:"+widthHint
+						+ "px;height:1px'/>");
+				sb.append("</span>"); //$NON-NLS-1$
+			}
+		}
+		sb.append("</div>");
+
+		return sb.toString();
 	}
 
 }

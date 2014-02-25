@@ -25,6 +25,7 @@ import com.sg.business.resource.BusinessResource;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
+import com.sg.widgets.block.ButtonContentBlock;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.editor.DataObjectWizard;
 

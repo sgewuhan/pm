@@ -12,7 +12,7 @@ import com.sg.widgets.registry.config.DataEditorConfigurator;
 public class EditWork extends AbstractWorkDetailPageAction {
 
 	@Override
-	protected void run(Work work, Control control) {
+	public void run(Work work, Control control) {
 		String editorId = work.getEditorId();
 
 		Configurator conf = Widgets.getEditorRegistry().getConfigurator(

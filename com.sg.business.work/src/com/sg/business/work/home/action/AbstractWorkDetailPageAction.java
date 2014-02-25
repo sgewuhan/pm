@@ -69,7 +69,7 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 		run((Work)input.getData(),control);
 	}
 
-	protected abstract void run(Work data, Control control);
+	public abstract void run(Work data, Control control);
 	
 	public void pageClear() {
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

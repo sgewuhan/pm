@@ -12,7 +12,7 @@ import com.sg.business.pm2.home.widget.BulletinBoardBlock;
 import com.sg.business.pm2.home.widget.DocBlock;
 import com.sg.business.pm2.home.widget.PerformanceBlock;
 import com.sg.business.pm2.home.widget.ProjectBlock;
-import com.sg.business.pm2.home.widget.WorkBlock;
+import com.sg.business.pm2.home.widget.TodaysWorkBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.block.TabBlock;
@@ -53,10 +53,16 @@ public class GenericHomePanel {
 		gd.widthHint = (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.X_COUNT - 1;
 		projectBlock.setLayoutData(gd);
 
-		Block workBlock = new WorkBlock(panel);
-		workBlock.setTopicText("工作");
+		Block workBlock = new TodaysWorkBlock(panel){
+			@Override
+			public int getContentHeight() {
+				return (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.Y_COUNT - 1;
+			}
+		};
+		workBlock.setTopicText("今日工作");
 		gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-		gd.widthHint = WorkBlock.BLOCKSIZE;
+		gd.widthHint = TodaysWorkBlock.BLOCKWIDTH;
+//		gd.heightHint = (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.Y_COUNT - 1;
 		workBlock.setLayoutData(gd);
 
 		final DocBlock docBlock = new DocBlock(panel) {

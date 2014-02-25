@@ -10,7 +10,7 @@ import com.sg.widgets.part.editor.DataObjectEditor;
 public class OpenProject extends AbstractWorkDetailPageAction {
 
 	@Override
-	protected void run(Work data, Control control) {
+	public void run(Work data, Control control) {
 		Project project = data.getProject();
 		if (project == null) {
 			return;

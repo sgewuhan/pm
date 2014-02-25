@@ -15,6 +15,7 @@ import com.mobnut.db.file.RemoteFile;
 import com.mongodb.DBObject;
 import com.sg.business.model.Project;
 import com.sg.widgets.MessageUtil;
+import com.sg.widgets.block.ContentBlock;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.registry.config.DataEditorConfigurator;

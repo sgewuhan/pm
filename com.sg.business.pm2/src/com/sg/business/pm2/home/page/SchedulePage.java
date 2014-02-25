@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home.widget;
+package com.sg.business.pm2.home.page;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;

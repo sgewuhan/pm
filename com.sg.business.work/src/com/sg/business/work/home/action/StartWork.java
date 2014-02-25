@@ -12,7 +12,7 @@ import com.sg.widgets.part.CurrentAccountContext;
 public class StartWork extends AbstractWorkDetailPageAction {
 
 	@Override
-	protected void run(Work work, Control control) {
+	public void run(Work work, Control control) {
 		LifeCycleActionStart start = new LifeCycleActionStart();
 		CurrentAccountContext context = new CurrentAccountContext();
 		try {

@@ -22,7 +22,7 @@ import com.sg.widgets.part.CurrentAccountContext;
 public class StartTask extends AbstractWorkDetailPageAction {
 
 	@Override
-	protected void run(Work work, Control control) {
+	public void run(Work work, Control control) {
 		CurrentAccountContext context = new CurrentAccountContext();
 		String userId = context.getConsignerId();
 		// 检查是否是多个流程任务，如果是多个显示菜单
