@@ -12,7 +12,6 @@ import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
-import com.sg.business.resource.nls.Messages;
 
 public class ReviewerMessageService extends MessageService {
 
@@ -20,9 +19,9 @@ public class ReviewerMessageService extends MessageService {
 	public String getMessageTitle() {
 		String value = getOperation();
 		if ("message".equals(value)) { //$NON-NLS-1$
-			return Messages.get().ReviewerMessageService_1;
+			return "评审会议通知";
 		} else if ("projectapplication".equals(value)) { //$NON-NLS-1$
-			return Messages.get().ReviewerMessageService_3;
+			return "立项评审会议通知";
 		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
 			return "转批评审会议通知";
 		}else if ("fixedassets".equals(value)) {
@@ -50,16 +49,16 @@ public class ReviewerMessageService extends MessageService {
 
 				Object confirmtime = getInputValue("confirmtime"); //$NON-NLS-1$
 				Object confirmaddress = getInputValue("confirmaddress"); //$NON-NLS-1$
-				String content = Messages.get().ReviewerMessageService_10
+				String content = "立项工作:"
 						+ work.getLabel() + "<br/>"; //$NON-NLS-2$
 				content = content
-						+ Messages.get().ReviewerMessageService_12
+						+ "请您于:<br/> "
 						+ confirmdate
 						+ " " 
 						+ confirmtime
-						+ Messages.get().ReviewerMessageService_14
+						+ "在 "
 						+ confirmaddress
-						+ Messages.get().ReviewerMessageService_15;
+						+ "<br/> 参加项目立项评审会!";
 				return content;
 			}
 		} else if ("subconcessions".equals(value)) { //$NON-NLS-1$
@@ -77,11 +76,11 @@ public class ReviewerMessageService extends MessageService {
 				Object confirmaddress = getInputValue("confirmaddress"); //$NON-NLS-1$
 				String content = "转批工作:" + work.getLabel() + "<br/>"; //$NON-NLS-2$
 				content = content
-						+ Messages.get().ReviewerMessageService_12
+						+ "请您于:<br/> "
 						+ confirmdate
 						+ " " //$NON-NLS-2$
 						+ confirmtime
-						+ Messages.get().ReviewerMessageService_14
+						+ "在 "
 						+ confirmaddress + "<br/> 参加项目转批评审会!";
 				return content;
 			}
