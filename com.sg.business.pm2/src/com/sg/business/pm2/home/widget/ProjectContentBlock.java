@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -33,17 +34,23 @@ public class ProjectContentBlock extends ContentBlock {
 
 	public void setProject(Project project) {
 		this.project = project;
-		Image img = getProjectCoverImage();
-		setCoverImage(img);
-
-		setHeadText(getProjectHead(false));
-		setHoverHeadText(getProjectHead(true));
-
-		setBodyText(getProjectBody(false));
-		setHoverBodyText(getProjectBody(true));
-
-		setFootText(getProjectFoot(false));
-		setHoverFootText(getProjectFoot(true));
+		RWT.getUISession(getDisplay()).exec(new Runnable() {
+			
+			@Override
+			public void run() {
+				Image img = getProjectCoverImage();
+				setCoverImage(img);
+				
+				setHeadText(getProjectHead(false));
+				setHoverHeadText(getProjectHead(true));
+				
+				setBodyText(getProjectBody(false));
+				setHoverBodyText(getProjectBody(true));
+				
+				setFootText(getProjectFoot(false));
+				setHoverFootText(getProjectFoot(true));
+			}
+		});
 	}
 
 	@Override
