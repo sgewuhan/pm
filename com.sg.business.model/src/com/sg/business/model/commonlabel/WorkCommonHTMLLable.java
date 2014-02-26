@@ -39,8 +39,10 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 	public String getHTML() {
 		if ("record".equals(key)) {
 			return getHTMLForRecord();
-		}else if("singleline".equals(key)){
+		} else if ("singleline".equals(key)) {
 			return getHTMLForSingleLine();
+		} else if ("inlist".equals(key)) {
+			return getHTMLForList();
 		}
 
 		Object configurator = getData();
@@ -212,6 +214,138 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		return sb.toString();
 	}
 
+	private String getHTMLForList() {
+
+		String userId = getContext().getAccountInfo().getConsignerId();
+		UserTask currentTask = null;
+		if (work.isExecuteWorkflowActivateAndAvailable()) {// 如果有流程
+			List<UserTask> result = work.getReservedUserTasks(userId);
+			result.addAll(work.getInprogressUserTasks(userId));
+			if (result.size() > 0) {
+				currentTask = result.get(0);
+			}
+		}
+
+		int code = getOperationCode(work, currentTask, userId);
+
+		// 标记
+		String selectbarUrl = null;
+		Date _planStart = work.getPlanStart();
+		Date _actualStart = work.getActualStart();
+		Date _planFinish = work.getPlanFinish();
+		int remindBefore = work.getRemindBefore();
+
+		// 首先判断当前时间是否晚于计划完成时间，如果是，显示为超期标签
+		String lc = work.getLifecycleStatus();
+		if (Work.STATUS_CANCELED_VALUE.equals(lc)
+				|| Work.STATUS_FINIHED_VALUE.equals(lc)) {
+		} else {
+			if (_planFinish != null) {
+				Date now = new Date();
+				if (now.after(_planFinish)) {
+					selectbarUrl = getSelectorURL(work,
+							ImageResource.RED_BULLETIN);
+				} else if (remindBefore > 0
+						&& (_planFinish.getTime() - now.getTime()) < remindBefore * 3600000) {
+					// 然后判断当前时间是否达到提醒时间
+					selectbarUrl = getSelectorURL(work,
+							ImageResource.YELLOW_BULLETIN);
+				}
+			}
+		}
+
+		if (selectbarUrl == null) {
+			boolean userMarked = work.isMarked(userId);
+			if (userMarked) {
+				selectbarUrl = getSelectorURL(work, ImageResource.BLUE_BULLETIN);
+			} else {
+				selectbarUrl = getSelectorURL(work,
+						ImageResource.WHITE_BULLETIN);
+
+			}
+		}
+
+		// ---------------------------------------------------------------------------
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div style='cursor:pointer; border-bottom:1px solid #ededed;height=100%'>");
+
+		String selectbar = "<img src='" //$NON-NLS-1$
+				+ selectbarUrl
+				+ "' style='border-style:none;position:absolute; left:0; top:0; display:block;' width='4' height='36' />"; //$NON-NLS-1$
+		sb.append(selectbar);
+
+		String imageUrl = "<img src='" + getHeaderImageURL(work) //$NON-NLS-1$
+				+ "' style='position:absolute; left:6px; top:1px;' width='16' height='16' />"; //$NON-NLS-1$
+		sb.append(imageUrl);
+
+		sb.append("<span style='font-family:微软雅黑;font-size:9pt;padding-left:24px;'>"); //$NON-NLS-1$
+
+		// 工作desc
+		String workDesc = work.getDesc();
+		workDesc = Utils.getPlainText(workDesc);
+		sb.append(workDesc);
+
+		// 获得有关的项目信息
+		Project project = work.getProject();
+		if (project != null) {
+			String projectDesc = project.getDesc();
+			projectDesc = Utils.getPlainText(projectDesc);
+			sb.append(" ");
+			sb.append("<span style='color:#909090;'>");//$NON-NLS-1$
+			sb.append(projectDesc);
+			sb.append("</span>");//$NON-NLS-1$
+		}
+
+		// 有关时间
+		sb.append("<br/>"); //$NON-NLS-1$
+
+		sb.append("<span style='font-family:微软雅黑;font-size:9pt;float:right;'>"); //$NON-NLS-1$
+		if (currentTask != null) {
+			sb.append("<img src='"); //$NON-NLS-1$
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_FLOW_16X12,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
+			sb.append(currentTask.getTaskName());
+		} else if (code == ASSIGN_WORK) {
+			sb.append("<img src='"); //$NON-NLS-1$
+			sb.append(FileUtil.getImageURL(
+					BusinessResource.IMAGE_REASSIGNMENT_16X12,
+					BusinessResource.PLUGIN_ID, BusinessResource.IMAGE_FOLDER));
+			sb.append("' width='16' height='12' /> "); //$NON-NLS-1$
+		}
+		sb.append("</span>");//$NON-NLS-1$
+
+		String start = "?"; //$NON-NLS-1$
+		String color = "";//$NON-NLS-1$
+		if (_actualStart != null) {
+			start = String
+					.format(Utils.FORMATE_DATE_COMPACT_SASH, _actualStart);
+		} else if (_planStart != null) {
+			start = String.format(Utils.FORMATE_DATE_COMPACT_SASH, _planStart);
+			color = "color:#909090;";//$NON-NLS-1$
+		}
+		sb.append("<small style='padding-left:6px;" + color + "'>"); //$NON-NLS-1$
+		sb.append(start);
+		sb.append("</small>");//$NON-NLS-1$
+		sb.append("<small style='color:#909090;'>"); //$NON-NLS-1$
+
+		String finish = "?"; //$NON-NLS-1$
+		if (_planFinish != null) {
+			finish = String
+					.format(Utils.FORMATE_DATE_COMPACT_SASH, _planFinish);
+		}
+		sb.append("~"); //$NON-NLS-1$
+		sb.append(finish);
+
+
+		sb.append("</small>"); //$NON-NLS-1$
+		sb.append("</span>"); //$NON-NLS-1$
+		sb.append("</div>"); //$NON-NLS-1$
+
+
+		return sb.toString();
+	}
+
 	private String getHTMLForSingleLine() {
 		// 工作desc
 		String desc = work.getDesc();
@@ -222,23 +356,21 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		// ---------------------------------------------------------------------------
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='cursor:pointer; border-bottom:1px dotted #cdcdcd;height=100%'>");
-		
+
 		sb.append("<span style='"//$NON-NLS-1$
 				+ "font-family:微软雅黑;"//$NON-NLS-1$
 				+ "font-size:10pt;"//$NON-NLS-1$
 				+ "margin:0 2;"//$NON-NLS-1$
 				+ "color:#4d4d4d;"//$NON-NLS-1$
-				+ "width:"+120+"px;"
+				+ "width:" + 120
+				+ "px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		sb.append(desc);
 		sb.append("</span>");
 
-		sb.append("<span style='"
-				+ "color:#909090;"
-				+ "font-size:8pt;"
-				+ "margin:0 2;"
-				+ "width:"+120+"px;"
+		sb.append("<span style='" + "color:#909090;" + "font-size:8pt;"
+				+ "margin:0 2;" + "width:" + 120 + "px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		// 如果是项目文档，显示项目名称
@@ -249,14 +381,10 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			sb.append(desc);
 		}
 		sb.append("</span>");
-		
-		
+
 		// 有关时间
-		sb.append("<span style='"
-				+ "color:#909090;"
-				+ "font-size:8pt;"
-				+ "margin:0 2;"
-				+ "width:60px;"
+		sb.append("<span style='" + "color:#909090;" + "font-size:8pt;"
+				+ "margin:0 2;" + "width:60px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		String finish = "?"; //$NON-NLS-1$
@@ -267,20 +395,19 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		sb.append(finish);
 		sb.append("</span>");
 
-				
-//				sb.append("<hr style='" //$NON-NLS-1$
-//						+ "color:#ededed;" //$NON-NLS-1$
-//						+ "position:absolute; " //$NON-NLS-1$
-//						+ "left:0; " //$NON-NLS-1$
-//						+ "bottom:0; " //$NON-NLS-1$
-//						+ "background-color:#ededed;" //$NON-NLS-1$
-//						+ "height:1px;" //$NON-NLS-1$
-//						+ "width:100%;" //$NON-NLS-1$
-//						+ "line-height:1px;" //$NON-NLS-1$
-//						+ "font-size:0;" //$NON-NLS-1$
-//						+ "border:none;" //$NON-NLS-1$
-//						+ "'>"); //$NON-NLS-1$
-				
+		//				sb.append("<hr style='" //$NON-NLS-1$
+		//						+ "color:#ededed;" //$NON-NLS-1$
+		//						+ "position:absolute; " //$NON-NLS-1$
+		//						+ "left:0; " //$NON-NLS-1$
+		//						+ "bottom:0; " //$NON-NLS-1$
+		//						+ "background-color:#ededed;" //$NON-NLS-1$
+		//						+ "height:1px;" //$NON-NLS-1$
+		//						+ "width:100%;" //$NON-NLS-1$
+		//						+ "line-height:1px;" //$NON-NLS-1$
+		//						+ "font-size:0;" //$NON-NLS-1$
+		//						+ "border:none;" //$NON-NLS-1$
+		//						+ "'>"); //$NON-NLS-1$
+
 		sb.append("</div>");
 
 		return sb.toString();
@@ -357,23 +484,21 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		// ---------------------------------------------------------------------------
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='cursor:pointer;'>");
-		
+
 		sb.append("<div style='"//$NON-NLS-1$
 				+ "font-family:微软雅黑;"//$NON-NLS-1$
 				+ "font-size:10pt;"//$NON-NLS-1$
 				+ "margin:0 2;"//$NON-NLS-1$
 				+ "color:#4d4d4d;"//$NON-NLS-1$
-				+ "width:"+250+"px;"
+				+ "width:" + 250
+				+ "px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		sb.append(desc);
 		sb.append("</div>");
 
-		sb.append("<div style='"
-				+ "color:#909090;"
-				+ "font-size:8pt;"
-				+ "margin:0 2;"
-				+ "width:"+250+"px;"
+		sb.append("<div style='" + "color:#909090;" + "font-size:8pt;"
+				+ "margin:0 2;" + "width:" + 250 + "px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		// 如果是项目文档，显示项目名称
@@ -384,14 +509,10 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			sb.append(desc);
 		}
 		sb.append("</div>");
-		
-		
+
 		// 有关时间
-		sb.append("<div style='"
-				+ "color:#909090;"
-				+ "font-size:8pt;"
-				+ "margin:0 2;"
-				+ "width:"+widthHint+"px;"
+		sb.append("<div style='" + "color:#909090;" + "font-size:8pt;"
+				+ "margin:0 2;" + "width:" + widthHint + "px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		String start = "?"; //$NON-NLS-1$
@@ -411,23 +532,30 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		sb.append(finish);
 		sb.append("</div>");
 
-		
 		sb.append("<a href=\"gowork@" + work.get_id().toString() //$NON-NLS-1$ 
 				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 		sb.append("<img src='"); //$NON-NLS-1$
-		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_NAVIGATE_24,
-				BusinessResource.PLUGIN_ID));
-		sb.append("' style='border-style:none;position:absolute; right:11; bottom:13; display:block;' width='24' height='24' />"); //$NON-NLS-1$
+		String imageURL = FileUtil.getImageURL(BusinessResource.IMAGE_S_LEFT_49,
+				BusinessResource.PLUGIN_ID);
+		String imageURL_Hover = FileUtil.getImageURL(BusinessResource.IMAGE_S_LEFT_49_HOVER,
+				BusinessResource.PLUGIN_ID);
+		String imageURL_Pressed = FileUtil.getImageURL(BusinessResource.IMAGE_S_LEFT_49_PRESSED,
+				BusinessResource.PLUGIN_ID);
+		sb.append(imageURL);
+		sb.append("' style='border-style:none;position:absolute; right:0; bottom:1; display:block;' width='50' height='49' "
+				+ " onmouseover=\"this.src='"+ imageURL_Hover + "'\";"
+				+ " onmouseout=\"this.src='"+imageURL+ "'\";"
+				+ " onmousedown=\"this.src='"+imageURL_Pressed+ "'\";"
+				+ "/>"); //$NON-NLS-1$
 		sb.append("</a>");//$NON-NLS-1$
-		
-		
+
 		List<PrimaryObject> input = (List<PrimaryObject>) viewer.getInput();
 		ObjectId thisId = work.get_id();
 		if (input != null && !input.isEmpty()) {
 			// 判断如果当前记录是最后一个，不显示分割线
 			ObjectId lastId = input.get(input.size() - 1).get_id();
 			if (!thisId.equals(lastId)) {
-				
+
 				sb.append("<hr style='" //$NON-NLS-1$
 						+ "color:#ededed;" //$NON-NLS-1$
 						+ "position:absolute; " //$NON-NLS-1$
@@ -440,9 +568,9 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 						+ "font-size:0;" //$NON-NLS-1$
 						+ "border:none;" //$NON-NLS-1$
 						+ "'>"); //$NON-NLS-1$
-				
+
 			}
-			
+
 		}
 		sb.append("</div>");
 

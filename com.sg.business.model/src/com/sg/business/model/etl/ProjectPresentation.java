@@ -187,6 +187,10 @@ public class ProjectPresentation implements IProjectETL {
 			return null;
 		}
 	}
+	
+	public boolean isETLDataAvailable(){
+		return project.getValue(F_ETL) instanceof DBObject;
+	}
 
 
 }

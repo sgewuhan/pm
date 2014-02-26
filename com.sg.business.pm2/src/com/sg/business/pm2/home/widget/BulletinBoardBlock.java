@@ -111,6 +111,8 @@ public class BulletinBoardBlock extends Block implements
 	
 	@Override
 	protected void doDisplayData(Object data) {
+		HTMLAdvanceLabelProvider l = (HTMLAdvanceLabelProvider) viewer.getLabelProvider();
+		l.setWidthHint(viewer.getControl().getBounds().width);
 		viewer.setInput(data);
 	}
 

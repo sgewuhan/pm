@@ -9,7 +9,9 @@ import org.bson.types.ObjectId;
 import org.eclipse.swt.graphics.Image;
 
 import com.mobnut.commons.util.Utils;
+import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
@@ -443,5 +445,19 @@ public class User extends PrimaryObject {
 		} else {
 			return getRelationById(F_USER_ID, Project.F_CHARGER, Project.class);
 		}
+	}
+
+	public String getFirstHeadPicURL() {
+		List<RemoteFile> headpics = getGridFSFileValue(User.F_HEADPIC);
+		if (headpics != null && headpics.size() > 0) {
+			try {
+				return FileUtil.getImageURL(headpics.get(0).getNamespace(),
+						new ObjectId(headpics.get(0).getObjectId()), headpics
+								.get(0).getDbName());
+			} catch (Exception e) {
+			}
+		}
+		
+		return null;
 	}
 }

@@ -282,6 +282,7 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_WARNING_24 = "warning_24.png";
 
 	public static final String IMAGE_PASS_32 = "pass_32.png";
+	
 	public static final String IMAGE_SUM_32 = "sum_32.png";
 
 	// public static final String IMAGE_DOCUMENT_24 = "document_24.png";
@@ -331,7 +332,9 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_DOWN_28X12 = "dropdown_28x12.png";
 
 	public static final String IMAGE_24X24_BLANK = "blank_24x24.png";
+	
 	public static final String IMAGE_UP_SORT_24 = "up_sort_24.png";
+	
 	public static final String IMAGE_DOWN_SORT_24 = "down_sort_24.png";
 
 	public static final String IMAGE_UP_28X12 = "dropup_28x12.png";
@@ -339,9 +342,11 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_CHART_BAR_16 = "chart_bar_16.png";
 
 	public static final String IMAGE_CHART_LINE_16 = "chart_line_16.png";
+	
 	public static final String IMAGE_CHART_SHOW_NUMBER_16 = "number_16.png";
 
 	public static final String IMAGE_CHART_SIDEBYSIDE_16 = "chart_sidebyside_16.png";
+	
 	public static final String IMAGE_CHART_STACKED_16 = "chart_stacked_16.png";
 
 	public static final String IMAGE_LOGOUT_24 = "logout_24.png";
@@ -373,6 +378,12 @@ public class BusinessResource extends AbstractUIPlugin {
 	public static final String IMAGE_REPLY_16 = "reply_16.png";
 
 	public static final String IMAGE_DOWN_G_24 = "down_g_24.png";
+
+	public static final String IMAGE_S_LEFT_49 = "left_49.png";
+	
+	public static final String IMAGE_S_LEFT_49_HOVER = "left_49_h.png";
+	
+	public static final String IMAGE_S_LEFT_49_PRESSED = "left_49_p.png";
 
 	
 

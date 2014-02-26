@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -28,6 +29,7 @@ import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.ISidebarItem;
 import com.sg.widgets.part.LoadingIdentifier;
 
+@SuppressWarnings("restriction")
 public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 	private ListViewer viewer;
@@ -96,11 +98,14 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 		viewer = new ListViewer(bg, SWT.SINGLE | SWT.V_SCROLL);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		viewer.setLabelProvider(new HTMLAdvanceLabelProvider());
+		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider();
+		labelProvider.setKey("inlist");
+		viewer.setLabelProvider(labelProvider);
 		viewer.setUseHashlookup(true);
 
 		List list = viewer.getList();
 		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		list.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(36));
 		FormData fd = new FormData();
 		list.setLayoutData(fd);

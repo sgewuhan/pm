@@ -46,6 +46,11 @@ public class PageListViewer extends ListViewer {
 			}
 		});
 	}
+	
+	@Override
+	public HTMLAdvanceLabelProvider getLabelProvider() {
+		return (HTMLAdvanceLabelProvider) super.getLabelProvider();
+	}
 
 	public void setPageSize(int pageSize) {
 		Assert.isLegal(pageSize > 0);

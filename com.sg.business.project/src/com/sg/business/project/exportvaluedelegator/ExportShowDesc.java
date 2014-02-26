@@ -21,12 +21,12 @@ public class ExportShowDesc implements IExportValueDelegator {
 	public Object getValue(Map<String, Object> dataRow,
 			IColumnExportDefinition iColumnExportDefinition) {
 
-		System.out.println(dataRow.values());
+//		System.out.println(dataRow.values());
 		
 		Object object = dataRow.get("userid"); //$NON-NLS-1$
 		if (object instanceof String) {
 			User user = UserToolkit.getUserById((String) object);
-			System.out.println("    " + user.getLabel()); //$NON-NLS-1$
+//			System.out.println("    " + user.getLabel()); //$NON-NLS-1$
 
 			return "    " + user.getLabel(); //$NON-NLS-1$
 		}

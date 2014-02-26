@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import com.sg.business.pm2.home.page.BudgetPage;
 import com.sg.business.pm2.home.page.SchedulePage;
 import com.sg.widgets.block.TabBlock;
 
@@ -15,6 +16,7 @@ public class PerformanceBlock extends TabBlock {
 	private static final int ID_BUDGET = 2;
 	private static final int ID_SCHEDULE = 3;
 	private SchedulePage schedulePage;
+	private BudgetPage budgetPage;
 
 	public PerformanceBlock(Composite parent) {
 		super(parent, SWT.NONE);
@@ -59,9 +61,6 @@ public class PerformanceBlock extends TabBlock {
 	}
 
 	private void refreshRevenuePage() {
-		if(schedulePage.canRefresh()){
-			schedulePage.doRefresh();		
-		}
 	}
 
 	private void refreshSchedulePage() {
@@ -71,13 +70,12 @@ public class PerformanceBlock extends TabBlock {
 	}
 
 	private void refreshBudgetPage() {
-		// TODO Auto-generated method stub
-		
+		if(budgetPage.canRefresh()){
+			budgetPage.doRefresh();		
+		}		
 	}
 
 	private void refreshListBoardPage() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private Control createRevenuePage(Composite parent) {
@@ -92,9 +90,8 @@ public class PerformanceBlock extends TabBlock {
 	}
 
 	private Control createBudgetPage(Composite parent) {
-		Label control = new Label(parent, SWT.NONE);
-		control.setText("Budget");
-		return control;
+		budgetPage =  new BudgetPage(parent);
+		return budgetPage;
 	}
 
 	private Control createListBoardPage(Composite parent) {
