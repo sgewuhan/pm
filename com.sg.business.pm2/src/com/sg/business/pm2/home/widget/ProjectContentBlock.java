@@ -3,11 +3,9 @@ package com.sg.business.pm2.home.widget;
 import java.util.Date;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.commons.util.Utils;
@@ -38,20 +36,23 @@ public class ProjectContentBlock extends ContentBlock {
 			
 			@Override
 			public void run() {
-				Image img = getProjectCoverImage();
-				setCoverImage(img);
+//				Image img = getProjectCoverImage();
+				String url = getProjectCoverImageURL();
+				if(url!=null){
+					setCoverImage(url);
+				}else{
+					setHeadText(getProjectHead(false));
+					setBodyText(getProjectBody(false));
+					setFootText(getProjectFoot(false));
+				}
 				
-				setHeadText(getProjectHead(false));
 				setHoverHeadText(getProjectHead(true));
-				
-				setBodyText(getProjectBody(false));
 				setHoverBodyText(getProjectBody(true));
-				
-				setFootText(getProjectFoot(false));
 				setHoverFootText(getProjectFoot(true));
 			}
 		});
 	}
+
 
 	@Override
 	protected void mouseClick() {
@@ -145,16 +146,42 @@ public class ProjectContentBlock extends ContentBlock {
 		return sb.toString();
 	}
 
-	private Image getProjectCoverImage() {
+//	private Image getProjectCoverImage() {
+//		List<RemoteFile> images = project.getCoverImages();
+//		Image img = null;
+//		if (images != null && images.size() > 0) {
+//			RemoteFile rf = images.get(0);
+//			DBObject imageObject = rf.getOutputRefData();
+//			String dbName = (String) imageObject.get("db"); //$NON-NLS-1$
+//			ObjectId oid = (ObjectId) imageObject.get("_id"); //$NON-NLS-1$
+//			String namespace = (String) imageObject.get("namespace"); //$NON-NLS-1$
+//			img = FileUtil.getImage(dbName, namespace, oid.toString());
+//		}
+//		// if(img == null){
+//		// String lc = project.getLifecycleStatus();
+//		// if(ILifecycle.STATUS_ONREADY_VALUE.equals(lc)){
+//		// img =
+//		// BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_ONREADY_24);
+//		// }else if(ILifecycle.STATUS_WIP_VALUE.equals(lc)){
+//		// img =
+//		// BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_WIP_24);
+//		// }else{
+//		// img =
+//		// BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_PREPARING_24);
+//		// }
+//		// }
+//		return img;
+//	}
+	
+	private String getProjectCoverImageURL() {
 		List<RemoteFile> images = project.getCoverImages();
-		Image img = null;
 		if (images != null && images.size() > 0) {
 			RemoteFile rf = images.get(0);
 			DBObject imageObject = rf.getOutputRefData();
-			String dbName = (String) imageObject.get("db"); //$NON-NLS-1$
-			ObjectId oid = (ObjectId) imageObject.get("_id"); //$NON-NLS-1$
-			String namespace = (String) imageObject.get("namespace"); //$NON-NLS-1$
-			img = FileUtil.getImage(dbName, namespace, oid.toString());
+//			String dbName = (String) imageObject.get("db"); //$NON-NLS-1$
+//			ObjectId oid = (ObjectId) imageObject.get("_id"); //$NON-NLS-1$
+//			String namespace = (String) imageObject.get("namespace"); //$NON-NLS-1$
+			return FileUtil.getImageURL(imageObject);
 		}
 		// if(img == null){
 		// String lc = project.getLifecycleStatus();
@@ -169,7 +196,7 @@ public class ProjectContentBlock extends ContentBlock {
 		// BusinessResource.getImage(BusinessResource.IMAGE_PROJECT_PREPARING_24);
 		// }
 		// }
-		return img;
+		return null;
 	}
 
 	@Override
