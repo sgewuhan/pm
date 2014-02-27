@@ -7,19 +7,18 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.bpmservice.AbstractMessageService;
-import com.sg.business.resource.nls.Messages;
 
 public class ProjectCloseMessageService extends AbstractMessageService {
 
 
 	@Override
 	public String getMessageTitle() {
-		return Messages.get().ProjectCloseMessageService_0;
+		return "项目结题通知";
 	}
 
 	@Override
 	public String getMessageContent() {
-	    return Messages.get().ProjectCloseMessageService_1 + getTarget().getLabel() + Messages.get().ProjectCloseMessageService_2;
+	    return "项目" + getTarget().getLabel() + "：允许结题";
 	}
 
 	@SuppressWarnings("unchecked")

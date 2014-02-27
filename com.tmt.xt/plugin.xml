@@ -275,20 +275,11 @@
       <taskForm
             editorId="xtDocumentApprove.approve"
             name="审批"
-            persistentFields="comment,choice"
+            persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
-               processParameterName="reviewer_list"
-               taskFormFieldName="reviewer_list">
-         </processParameter>
-         <processParameter
-               processParameterName="reviewer_admin"
-               taskFormFieldName="reviewer_admin">
          </processParameter>
       </taskForm>
       <taskForm
@@ -367,6 +358,16 @@
       <taskForm
             editorId="xtProjectApprove.resultaudit"
             name="处理结果审核"
+            persistentFields="comment,choice,accessory"
+            processDefinitionId="xt.xtProjectApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="xtDocumentApprove.approve"
+            name="签发会议纪要"
             persistentFields="comment,choice,accessory"
             processDefinitionId="xt.xtProjectApprove">
          <processParameter
@@ -929,15 +930,6 @@
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
-         </processParameter>
-         <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
-               processParameterName="reviewer_list"
-               taskFormFieldName="reviewer_list">
-         </processParameter>
-         <processParameter
-               processParameterName="reviewer_admin"
-               taskFormFieldName="reviewer_admin">
          </processParameter>
       </taskForm>
       <taskForm

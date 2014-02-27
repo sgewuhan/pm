@@ -7,22 +7,21 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.bpmservice.MessageService;
-import com.sg.business.resource.nls.Messages;
 
 public class ProjectChangeMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return Messages.get().ProjectChangeMessageService_0;
+		return "项目变更通知";
 	}
 
 	@Override
 	public String getMessageContent() {
 		Object choice = getInputValue("choice"); //$NON-NLS-1$
 		if ("通过".equals((String) choice)) {
-			return Messages.get().ProjectChangeMessageService_3 + getTarget().getLabel() + Messages.get().ProjectChangeMessageService_4;
+			return "项目" + getTarget().getLabel() + "：允许变更";
 		} else {
-			return Messages.get().ProjectChangeMessageService_5 + getTarget().getLabel() + Messages.get().ProjectChangeMessageService_6;
+			return "项目" + getTarget().getLabel() + "：不允许变更";
 		}
 	}
 

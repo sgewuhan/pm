@@ -6,7 +6,6 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
-import com.sg.business.resource.nls.Messages;
 
 public class DocumentApprovalMessageService extends MessageService {
 
@@ -16,13 +15,13 @@ public class DocumentApprovalMessageService extends MessageService {
 	@Override
 	public String getMessageTitle() {
 		// TODO Auto-generated method stub
-		return Messages.get().DocumentApprovalMessageService_0;
+		return "文件审批通过消息";
 	}
 
 	@Override
 	public String getMessageContent() {
 		// TODO Auto-generated method stub
-		  return Messages.get().DocumentApprovalMessageService_1 + getTarget().getLabel() + Messages.get().DocumentApprovalMessageService_2;
+		  return "工作：" + getTarget().getLabel() + "完成审批";
 	}
 
 	@SuppressWarnings("unchecked")

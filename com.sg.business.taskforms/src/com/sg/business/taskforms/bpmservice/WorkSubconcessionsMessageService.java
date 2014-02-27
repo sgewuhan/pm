@@ -6,22 +6,21 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.bpmservice.MessageService;
-import com.sg.business.resource.nls.Messages;
 
 public class WorkSubconcessionsMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return Messages.get().WorkSubconcessionsMessageService_0;
+		return "工作审批通知";
 	}
 
 	@Override
 	public String getMessageContent() {
 		Object choice = getInputValue("choice"); //$NON-NLS-1$
 		if ("通过".equals((String) choice)) { //$NON-NLS-1$
-			return Messages.get().WorkSubconcessionsMessageService_3 + getTarget().getLabel() + Messages.get().WorkSubconcessionsMessageService_4;
+			return "工作" + getTarget().getLabel() + "：审批通过";
 		} else {
-			return "工作" + getTarget().getLabel() + Messages.get().WorkSubconcessionsMessageService_6; //$NON-NLS-1$
+			return "工作" + getTarget().getLabel() + "：审批不通过"; 
 		}
 	}
 

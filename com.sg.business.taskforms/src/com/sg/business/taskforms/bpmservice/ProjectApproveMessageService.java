@@ -7,22 +7,21 @@ import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.Project;
 import com.sg.business.model.bpmservice.MessageService;
-import com.sg.business.resource.nls.Messages;
 
 public class ProjectApproveMessageService extends MessageService {
 
 	@Override
 	public String getMessageTitle() {
-		return Messages.get().ProjectApproveMessageService_0;
+		return "项目审批通知";
 	}
 
 	@Override
 	public String getMessageContent() {
 		Object choice = getInputValue("choice"); //$NON-NLS-1$
 		if ("通过".equals((String) choice)) { //$NON-NLS-1$
-			return Messages.get().ProjectApproveMessageService_3 + getTarget().getLabel() + Messages.get().ProjectApproveMessageService_4;
+			return "项目" + getTarget().getLabel() + "：审批通过";
 		} else {
-			return Messages.get().ProjectApproveMessageService_5 + getTarget().getLabel() + Messages.get().ProjectApproveMessageService_6;
+			return "项目" + getTarget().getLabel() + "：审批不通过";
 		}
 	}
 
