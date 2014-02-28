@@ -36,8 +36,8 @@ public class GenericHomePanel {
 
 		parent.setLayout(new FillLayout());
 		panel = new Composite(parent, SWT.NONE);
-		panel.setBackground(Widgets.getColor(panel.getDisplay(), 0xed, 0xed,
-				0xed));
+		panel.setBackground(Widgets.getColor(panel.getDisplay(), 0xed, 0xed,0xed));
+
 		GridLayout layout = new GridLayout(3, false);
 		layout.horizontalSpacing = 1;
 		layout.verticalSpacing = 1;
