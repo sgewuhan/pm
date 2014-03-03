@@ -220,8 +220,12 @@ public abstract class ProcessControl implements IProcessControl {
 
 	public List<String[]> checkProcessRunnable(String key) {
 		List<String[]> result = new ArrayList<String[]>();
+		DroolsProcessDefinition processd = getProcessDefinition(key);
+		if(processd == null){
+			return result;
+		}
 		// 检查流程是否已经激活
-		if (!isWorkflowActivateAndAvailable(key)) {
+		if (!isWorkflowActivate(key)) {
 			result.add(new String[] { "error", Messages.get().ProcessControl_2 }); //$NON-NLS-1$
 			return result;
 		}
