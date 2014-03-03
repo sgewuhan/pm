@@ -4639,7 +4639,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// getCollection().update(new BasicDBObject().append(F__ID, get_id()),
 		// o);
 	}
-
+	
 	public WorksPerformence getWorksPerformence(Date date, String userid) {
 		Long dateCode = new Long(date.getTime() / (24 * 60 * 60 * 1000));
 

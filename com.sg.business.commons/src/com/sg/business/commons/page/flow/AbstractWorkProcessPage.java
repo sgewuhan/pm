@@ -20,6 +20,7 @@ import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
+import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 
@@ -83,6 +84,21 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 		if (project != null) {
 			Organization org = project.getFunctionOrganization();
 			return org.getDroolsProcessDefinitions();
+		}else{
+			//如果不是项目工作，获取当前用户所在组织的项目管理职能组织
+			User charger = work.getCharger();
+			if(charger==null){
+				String chargerId = new CurrentAccountContext().getConsignerId();
+				charger = UserToolkit.getUserById(chargerId);
+			}
+			Organization org = charger.getOrganization();
+			if(org!=null){
+				org = (Organization) org.getFunctionOrganization();
+			}
+			if(org!=null){
+				return org.getDroolsProcessDefinitions();
+			}
+			
 		}
 		return null;
 	}
