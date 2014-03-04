@@ -6336,6 +6336,67 @@
          </filterAction>
       </navigator>
       <navigator
+            expand="search"
+            id="sales.opportunity.selector"
+            table="sales.opportunity.selector">
+         <searchAction
+               defaultfield="描述">
+            <column
+                  column="desc"
+                  name="描述"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="progress"
+                  name="阶段"
+                  type="String">
+            </column>
+            <column
+                  column="budget"
+                  name="预算"
+                  type="Double">
+            </column>
+            <column
+                  column="req_prod"
+                  name="商品"
+                  type="String">
+            </column>
+         </searchAction>
+         <filterAction
+               defaultfield="描述">
+            <column
+                  column="desc"
+                  name="描述"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="progress"
+                  name="阶段"
+                  type="String">
+            </column>
+            <column
+                  column="budget"
+                  name="预算"
+                  type="Double">
+            </column>
+            <column
+                  column="req_prod"
+                  name="商品"
+                  type="String">
+            </column>
+         </filterAction>
+      </navigator>
+      <navigator
             id="sales.opportunity.company.ineditor"
             table="sales.opportunity.company.ineditor">
          <searchAction>
@@ -6493,6 +6554,57 @@
             <column
                   column="sales_manager"
                   name="销售经理"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            expand="search"
+            id="sales.contract.selector"
+            table="sales.contract.selector">
+         <filterAction
+               defaultfield="名称">
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+            <column
+                  column="sn"
+                  name="编号"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction
+               defaultfield="名称">
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+            <column
+                  column="sn"
+                  name="编号"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
                   type="String">
             </column>
          </searchAction>
@@ -7318,6 +7430,26 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="sales.project.selector"
+            table="sales.project.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="project.projectnumber">
+            </column>
+            <column
+                  columnDefinitionId="project.desc">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -7555,7 +7687,6 @@
             canEdit="false"
             canRead="false"
             dataSet="com.sg.sales.dataset.CompanyContactDataSet"
-            editorId="sales.contact.editor"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -7731,6 +7862,55 @@
          </column>
       </table>
       <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.sales.dataset.OwnerOpportunityDataSet"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.opportunity.selector"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               moveable="true"
+               name="描述"
+               resizable="true"
+               sortable="true"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="company_id"
+               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               name="公司"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="progress"
+               name="阶段"
+               type="String">
+         </column>
+         <column
+               column="budget"
+               name="预算"
+               type="Double">
+         </column>
+         <column
+               column="req_prod"
+               name="商品"
+               type="String">
+         </column>
+      </table>
+      <table
             canCreate="true"
             canDelete="true"
             canEdit="true"
@@ -7800,8 +7980,8 @@
             useHashlookup="true"
             virtual="true">
          <column
-               column="status"
-               name="状态">
+               column="contractstatus"
+               name="执行状态">
          </column>
          <column
                column="sn"
@@ -7833,12 +8013,9 @@
                type="Date">
          </column>
          <column
-               column="contractstatus"
-               name="执行状态">
-         </column>
-         <column
                column="amount"
-               name="金额">
+               name="金额"
+               type="Double">
          </column>
          <column
                column="signby"
@@ -7849,6 +8026,56 @@
                column="sales_manager"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="销售经理">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.sales.dataset.OwnerContractDataSet"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.contract.selector"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="contractstatus"
+               name="执行状态">
+         </column>
+         <column
+               column="sn"
+               name="编号"
+               type="String"
+               width="80">
+         </column>
+         <column
+               column="desc"
+               name="名称"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="company_id"
+               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               name="公司"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="signon"
+               name="签订时间"
+               type="Date">
+         </column>
+         <column
+               column="effectiveon"
+               name="生效时间"
+               type="Date">
          </column>
       </table>
       <table
@@ -7870,8 +8097,8 @@
             useHashlookup="true"
             virtual="true">
          <column
-               column="status"
-               name="状态">
+               column="contractstatus"
+               name="执行状态">
          </column>
          <column
                column="sn"
@@ -7886,13 +8113,6 @@
                width="-1">
          </column>
          <column
-               column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
-               name="公司"
-               type="String"
-               width="200">
-         </column>
-         <column
                column="signon"
                name="签订时间"
                type="Date">
@@ -7903,15 +8123,13 @@
                type="Date">
          </column>
          <column
-               column="contractstatus"
-               name="执行状态">
-         </column>
-         <column
                column="amount"
-               name="金额">
+               name="金额"
+               type="Double">
          </column>
          <column
                column="signby"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="签订人">
          </column>
          <column
@@ -8091,26 +8309,31 @@
          </column>
          <column
                column="work_id"
+               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
                name="工作"
                type="String">
          </column>
          <column
                column="company_id"
+               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
                name="客户"
                type="String">
          </column>
          <column
                column="opportunity_id"
+               labelProvider="com.sg.sales.label.OpportunityIdLabelProvider"
                name="商机"
                type="String">
          </column>
          <column
                column="contract_id"
+               labelProvider="com.sg.sales.label.ContractIdLabelProvider"
                name="合同"
                type="String">
          </column>
          <column
                column="project_id"
+               labelProvider="com.sg.sales.label.ProjectIdLabelProvider"
                name="项目"
                type="String">
          </column>
@@ -8184,21 +8407,25 @@
          </column>
          <column
                column="work_id"
+               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
                name="工作"
                type="String">
          </column>
          <column
                column="opportunity_id"
+               labelProvider="com.sg.sales.label.OpportunityIdLabelProvider"
                name="商机"
                type="String">
          </column>
          <column
                column="contract_id"
+               labelProvider="com.sg.sales.label.ContractIdLabelProvider"
                name="合同"
                type="String">
          </column>
          <column
                column="project_id"
+               labelProvider="com.sg.sales.label.ProjectIdLabelProvider"
                name="项目"
                type="String">
          </column>
@@ -8272,6 +8499,7 @@
          </column>
          <column
                column="work_id"
+               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
                name="工作"
                type="String">
          </column>
@@ -8345,11 +8573,13 @@
          </column>
          <column
                column="work_id"
+               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
                name="工作"
                type="String">
          </column>
          <column
                column="project_id"
+               labelProvider="com.sg.sales.label.ProjectIdLabelProvider"
                name="项目"
                type="String">
          </column>
@@ -8401,6 +8631,40 @@
          </column>
          <column
                columnDefinitionId="actualfinish_c">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.MyProject"
+            editorId="sales.company.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.project.selector"
+            limit="10"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               columnDefinitionId="project.status">
+         </column>
+         <column
+               columnDefinitionId="project.projectnumber">
+         </column>
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               columnDefinitionId="businesschargerid">
          </column>
       </table>
    </extension>
@@ -11328,7 +11592,6 @@
                         id="company_id"
                         label="客户"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
                         modelClass="com.sg.sales.model.Company"
                         name="company_id"
                         navigatorId="sales.company.selector"
@@ -11341,10 +11604,9 @@
                         id="opportunity_id"
                         label="商机"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
-                        modelClass="com.sg.sales.model.Company"
+                        modelClass="com.sg.sales.model.Opportunity"
                         name="opportunity_id"
-                        navigatorId="sales.company.selector"
+                        navigatorId="sales.opportunity.selector"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="false">
@@ -11354,10 +11616,9 @@
                         id="contract_id"
                         label="合同"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
-                        modelClass="com.sg.sales.model.Company"
+                        modelClass="com.sg.sales.model.Contract"
                         name="contract_id"
-                        navigatorId="sales.company.selector"
+                        navigatorId="sales.contract.selector"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="false">
@@ -11367,10 +11628,9 @@
                         id="project_id"
                         label="项目"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
-                        modelClass="com.sg.sales.model.Company"
+                        modelClass="com.sg.business.model.Project"
                         name="project_id"
-                        navigatorId="sales.company.selector"
+                        navigatorId="sales.project.selector"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="false">

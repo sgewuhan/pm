@@ -1,7 +1,10 @@
 package com.sg.sales.model;
 
+import java.util.List;
+
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
@@ -39,6 +42,20 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 				cond2, cond3, cond4, cond5 });
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void addToOwnerList(String userId) {
+		Object value = getValue(F_OWNERLIST);
+		if(!(value instanceof List)){
+			value = new BasicDBList();
+		}
+		List listValue = (List)value;
+		if(!listValue.contains(userId)){
+			listValue.add(userId);
+			setValue(F_OWNERLIST, listValue);
+		}
+	}
+	
+	
 	@Override
 	public void doInsert(IContext context) throws Exception {
 		if (getValue(F_CUSTOMER_REP) == null) {
@@ -76,7 +93,5 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 			return;
 		}
 		duplicateTeam(from,to);
-		
-
 	}
 }
