@@ -9,7 +9,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.sales.model.Opportunity;
-import com.sg.sales.model.TeamControled;
+import com.sg.sales.model.TeamControl;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.editor.DataObjectDialog;
@@ -23,7 +23,7 @@ public class CreateOpportunityOfCompanyHander extends AbstractNavigatorHandler {
 			IStructuredSelection selection) {
 		Opportunity opportunity = ModelService.createModelObject(Opportunity.class);
 		opportunity.setValue(Opportunity.F_COMPANY_ID, selected.get_id());
-		TeamControled.duplicateTeam(selected,opportunity);
+		TeamControl.duplicateTeam(selected,opportunity);
 		
 		try {
 			DataObjectDialog.openDialog(opportunity, "sales.opportunity.editor.create", true, null);

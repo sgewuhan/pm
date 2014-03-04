@@ -1,6 +1,6 @@
 package com.sg.sales.model;
 
-public interface ISalesWork extends ICompanyRelatied{
+public interface ISalesWork extends ICompanyRelative{
 	
 	public static final String F_OPPORTUNITY_ID = "opportunity_id";
 	

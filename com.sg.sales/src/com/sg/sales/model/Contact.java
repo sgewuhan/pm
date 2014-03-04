@@ -1,9 +1,12 @@
 package com.sg.sales.model;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 
-public class Contact extends PrimaryObject implements ICompanyRelatied{
+public class Contact extends PrimaryObject implements ICompanyRelative{
 	
 	
 	public static final String F_LASTNAME = "lastname";
@@ -27,8 +30,13 @@ public class Contact extends PrimaryObject implements ICompanyRelatied{
 	}
 	
 	@Override
-	public Object getCompanyId() {
-		return getValue(F_COMPANY_ID);
+	public ObjectId getCompanyId() {
+		return (ObjectId) getValue(F_COMPANY_ID);
+	}
+
+	@Override
+	public Company getCompany() {
+		return ModelService.createModelObject(Company.class, getCompanyId());
 	}
 	
 	

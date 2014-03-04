@@ -1,7 +1,7 @@
 package com.sg.sales.model;
 
 
-public class Company extends TeamControled implements IDataStatusControl {
+public class Company extends TeamControl implements IDataStatusControl {
 
 	@Override
 	public String getStatusText() {

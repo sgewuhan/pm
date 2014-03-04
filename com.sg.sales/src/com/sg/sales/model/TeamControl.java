@@ -5,7 +5,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-public class TeamControled extends PrimaryObject implements ISalesTeam {
+public class TeamControl extends PrimaryObject implements ISalesTeam {
 
 	public static final String F_VISITORLIST = "visitor_list";
 	public static final String F_OWNERLIST = "owner_list";
@@ -56,5 +56,27 @@ public class TeamControled extends PrimaryObject implements ISalesTeam {
 				from.getValue(ISalesTeam.F_SALES_SUP));
 		to.setValue(ISalesTeam.F_SERVICE_MANAGER,
 				from.getValue(ISalesTeam.F_SERVICE_MANAGER));
+	}
+
+	public static void checkTeam(PrimaryObject from, PrimaryObject to) {
+		Object value = to.getValue(ISalesTeam.F_CUSTOMER_REP);
+		if (value != null) {
+			return;
+		}
+		value = to.getValue(ISalesTeam.F_SALES_MANAGER);
+		if (value != null) {
+			return;
+		}
+		value = to.getValue(ISalesTeam.F_SALES_SUP);
+		if (value != null) {
+			return;
+		}
+		value = to.getValue(ISalesTeam.F_SERVICE_MANAGER);
+		if (value != null) {
+			return;
+		}
+		duplicateTeam(from,to);
+		
+
 	}
 }

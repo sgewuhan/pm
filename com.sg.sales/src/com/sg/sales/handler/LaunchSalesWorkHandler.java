@@ -11,7 +11,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Work;
 import com.sg.sales.model.Company;
-import com.sg.sales.model.ICompanyRelatied;
+import com.sg.sales.model.ICompanyRelative;
 import com.sg.sales.model.ISalesWork;
 import com.sg.sales.model.Opportunity;
 import com.sg.widgets.command.AbstractNavigatorHandler;
@@ -68,9 +68,9 @@ public class LaunchSalesWorkHandler extends AbstractNavigatorHandler {
 						newWork.setValue(ISalesWork.F_COMPANY_ID,
 								parent.get_id());
 					}
-					if (parent instanceof ICompanyRelatied) {
+					if (parent instanceof ICompanyRelative) {
 						newWork.setValue(ISalesWork.F_COMPANY_ID,
-								parent.getValue(ICompanyRelatied.F_COMPANY_ID));
+								parent.getValue(ICompanyRelative.F_COMPANY_ID));
 					}
 					if (parent instanceof Opportunity) {
 						newWork.setValue(ISalesWork.F_OPPORTUNITY_ID,
