@@ -26,6 +26,10 @@ public class Contact extends PrimaryObject implements ICompanyRelatied{
 		return super.doSave(context);
 	}
 	
+	@Override
+	public Object getCompanyId() {
+		return getValue(F_COMPANY_ID);
+	}
 	
 	
 }

@@ -6,12 +6,12 @@ import com.sg.sales.Sales;
 import com.sg.sales.model.TeamControled;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class MyOpportunityDataSet extends SingleDBCollectionDataSetFactory {
+public class OwnerCustomerDataSet extends SingleDBCollectionDataSetFactory {
 
-	public MyOpportunityDataSet() {
-		super(IModelConstants.DB, Sales.C_OPPORTUNITY);
+	public OwnerCustomerDataSet() {
+		super(IModelConstants.DB, Sales.C_COMPANY);
 		String userid = new CurrentAccountContext().getConsignerId();
-		setQueryCondition(TeamControled.getVisitableCondition(userid));
+		setQueryCondition(TeamControled.getOwnerCondition(userid));
 	}
 
 }

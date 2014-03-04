@@ -1,7 +1,14 @@
 package com.sg.sales.model;
 
-import com.mobnut.db.model.PrimaryObject;
 
-public class Company extends PrimaryObject implements ISalesTeam{
+public class Company extends TeamControled implements IDataStatusControl {
+
+	@Override
+	public String getStatusText() {
+		Object value = getValue(IDataStatusControl.F_STATUS);
+		return DataStatusControlUtil.getStatusText(value);
+
+	}
+
 
 }

@@ -27,7 +27,7 @@ import com.sg.widgets.viewer.ViewerControl;
  * @author zhonghua
  * 
  */
-public class LaunchSalesWork extends AbstractNavigatorHandler {
+public class LaunchSalesWorkHandler extends AbstractNavigatorHandler {
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,

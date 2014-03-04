@@ -45,6 +45,8 @@ public class Sales extends AbstractUIPlugin {
 
 	public static final String C_POITEM = "purchaseitem";
 
+	public static final String C_WORKCOST = "workcost";
+
 	// The shared instance
 	private static Sales plugin;
 	

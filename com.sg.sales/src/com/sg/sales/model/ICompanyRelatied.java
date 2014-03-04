@@ -4,4 +4,6 @@ public interface ICompanyRelatied {
 
 	public static final String F_COMPANY_ID = "company_id";
 
+	Object getCompanyId();
+
 }

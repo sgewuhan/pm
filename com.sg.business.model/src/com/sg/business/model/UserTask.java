@@ -33,8 +33,6 @@ public class UserTask extends PrimaryObject implements IWorkRelative{
 	
 	public static final String F_FORM_COMMENT = "form_comment"; //$NON-NLS-1$
 
-	public static final String F_WORK_ID = "work_id"; //$NON-NLS-1$
-	
 	public static final String F_WORK_DESC = "work_desc"; //$NON-NLS-1$
 
 

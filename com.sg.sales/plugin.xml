@@ -5443,6 +5443,211 @@
                value="已关闭">
          </option>
       </option>
+      <option
+            id="sales.cost.catagory"
+            label="成本和费用分类"
+            value="成本和费用分类">
+         <option
+               id="销售费用"
+               label="销售费用"
+               value="销售费用">
+            <option
+                  id="住宿费"
+                  label="住宿费"
+                  value="住宿费">
+            </option>
+            <option
+                  id="交通费"
+                  label="交通费"
+                  value="交通费">
+            </option>
+            <option
+                  id="招待费"
+                  label="招待费"
+                  value="招待费">
+            </option>
+            <option
+                  id="咨询费"
+                  label="咨询费"
+                  value="咨询费">
+            </option>
+         </option>
+         <option
+               id="研发实施费用"
+               label="研发实施费用"
+               value="研发实施费用">
+            <option
+                  id="住宿费"
+                  label="住宿费"
+                  value="住宿费">
+            </option>
+            <option
+                  id="交通费"
+                  label="交通费"
+                  value="交通费">
+            </option>
+            <option
+                  id="鉴定评审费"
+                  label="鉴定评审费"
+                  value="鉴定评审费">
+            </option>
+            <option
+                  id="会议费"
+                  label="会议费"
+                  value="会议费">
+            </option>
+            <option
+                  id="招待费"
+                  label="招待费"
+                  value="招待费">
+            </option>
+         </option>
+         <option
+               id="采购费用"
+               label="采购费用"
+               value="采购费用">
+            <option
+                  id="购进产品"
+                  label="购进产品"
+                  value="购进产品">
+            </option>
+            <option
+                  id="技术服务费"
+                  label="技术服务费"
+                  value="技术服务费">
+            </option>
+         </option>
+         <option
+               id="市场费用"
+               label="市场费用"
+               value="市场费用">
+            <option
+                  id="会议费"
+                  label="会议费"
+                  value="会议费">
+            </option>
+            <option
+                  id="礼品费"
+                  label="礼品费"
+                  value="礼品费">
+            </option>
+            <option
+                  id="招待费"
+                  label="招待费"
+                  value="招待费">
+            </option>
+         </option>
+         <option
+               id="管理费用"
+               label="管理费用"
+               value="管理费用">
+            <option
+                  id="网络通讯"
+                  label="网络通讯"
+                  value="网络通讯">
+            </option>
+            <option
+                  id="房屋租赁"
+                  label="房屋租赁"
+                  value="房屋租赁">
+            </option>
+            <option
+                  id="物业水电"
+                  label="物业水电"
+                  value="物业水电">
+            </option>
+            <option
+                  id="办公用品"
+                  label="办公用品"
+                  value="办公用品">
+            </option>
+            <option
+                  id="运输费"
+                  label="运输费"
+                  value="运输费">
+            </option>
+            <option
+                  id="固定资产采购"
+                  label="固定资产采购"
+                  value="固定资产采购">
+            </option>
+         </option>
+         <option
+               id="工资及福利"
+               label="工资及福利"
+               value="工资及福利">
+            <option
+                  id="工资"
+                  label="工资"
+                  value="工资">
+            </option>
+            <option
+                  id="奖金"
+                  label="奖金"
+                  value="奖金">
+            </option>
+            <option
+                  id="补贴"
+                  label="补贴"
+                  value="补贴">
+            </option>
+            <option
+                  id="福利"
+                  label="福利"
+                  value="福利">
+            </option>
+            <option
+                  id="社保"
+                  label="社保"
+                  value="社保">
+            </option>
+         </option>
+         <option
+               id="财务费用"
+               label="财务费用"
+               value="财务费用">
+            <option
+                  id="财务费用"
+                  label="财务费用"
+                  value="财务费用">
+            </option>
+         </option>
+      </option>
+      <option
+            id="sales.cost.status"
+            label="费用状态"
+            value="费用状态">
+         <option
+               id="填报中"
+               label="填报中"
+               value="填报中">
+         </option>
+         <option
+               id="已提交"
+               label="已提交"
+               value="已提交">
+         </option>
+         <option
+               id="已核对"
+               label="已核对"
+               value="已核对">
+         </option>
+         <option
+               id="已批准"
+               label="已批准"
+               value="已批准">
+         </option>
+         <option
+               id="已发放"
+               label="已发放"
+               value="已发放">
+         </option>
+         <option
+               id="已否决"
+               label="已否决"
+               value="已否决">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.mobnut.db.documentModelAdapter">
@@ -5471,6 +5676,11 @@
             collection="purchaseitem"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.sales.model.WorkCost"
+            collection="workcost"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
@@ -5489,6 +5699,11 @@
             id="sales.contract"
             name="合同">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="sales.cost"
+            name="费用">
+      </perspective>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -5503,6 +5718,9 @@
          </perspective>
          <perspective
                id="sales.contract">
+         </perspective>
+         <perspective
+               id="sales.cost">
          </perspective>
       </scenario>
    </extension>
@@ -5550,6 +5768,20 @@
                standalone="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="sales.cost">
+         <view
+               closeable="false"
+               id="sales.cost.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -5575,6 +5807,12 @@
             class="com.sg.widgets.part.view.TableNavigator"
             id="sales.contract.navigator"
             name="合同"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="sales.cost.navigator"
+            name="费用"
             restorable="true">
       </view>
    </extension>
@@ -5607,9 +5845,9 @@
                   type="String">
             </column>
             <column
-                  column="iscustomer"
+                  column="levelservice"
                   name="客户"
-                  type="Boolean">
+                  type="String">
             </column>
             <column
                   column="capital"
@@ -5617,7 +5855,7 @@
                   type="Float">
             </column>
             <column
-                  column="registedate"
+                  column="registerdate"
                   name="成立日期"
                   type="Date">
             </column>
@@ -5704,9 +5942,9 @@
                   type="String">
             </column>
             <column
-                  column="iscustomer"
+                  column="levelservice"
                   name="客户"
-                  type="Boolean">
+                  type="String">
             </column>
             <column
                   column="capital"
@@ -5714,7 +5952,7 @@
                   type="Float">
             </column>
             <column
-                  column="registedate"
+                  column="registerdate"
                   name="成立日期"
                   type="Date">
             </column>
@@ -6468,6 +6706,618 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="sales.cost.navigator"
+            table="sales.cost.navigator">
+         <filterAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="客户"
+                  type="String">
+            </column>
+            <column
+                  column="opportunity_id"
+                  name="商机"
+                  type="String">
+            </column>
+            <column
+                  column="contract_id"
+                  name="合同"
+                  type="String">
+            </column>
+            <column
+                  column="project_id"
+                  name="项目"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="客户"
+                  type="String">
+            </column>
+            <column
+                  column="opportunity_id"
+                  name="商机"
+                  type="String">
+            </column>
+            <column
+                  column="contract_id"
+                  name="合同"
+                  type="String">
+            </column>
+            <column
+                  column="project_id"
+                  name="项目"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="sales.cost.company.ineditor"
+            table="sales.cost.company.ineditor">
+         <filterAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="客户"
+                  type="String">
+            </column>
+            <column
+                  column="opportunity_id"
+                  name="商机"
+                  type="String">
+            </column>
+            <column
+                  column="contract_id"
+                  name="合同"
+                  type="String">
+            </column>
+            <column
+                  column="project_id"
+                  name="项目"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="客户"
+                  type="String">
+            </column>
+            <column
+                  column="opportunity_id"
+                  name="商机"
+                  type="String">
+            </column>
+            <column
+                  column="contract_id"
+                  name="合同"
+                  type="String">
+            </column>
+            <column
+                  column="project_id"
+                  name="项目"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="sales.cost.opportunity.ineditor"
+            table="sales.cost.opportunity.ineditor">
+         <filterAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="sales.cost.contract.ineditor"
+            table="sales.cost.contract.ineditor">
+         <filterAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  column="coststatus"
+                  name="状态">
+            </column>
+            <column
+                  column="catagory"
+                  name="类别"
+                  type="String">
+            </column>
+            <column
+                  column="detail"
+                  name="科目"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="说明"
+                  type="String">
+            </column>
+            <column
+                  column="startdate"
+                  name="起始时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="finishdate"
+                  name="终止时间"
+                  type="DateTime">
+            </column>
+            <column
+                  column="hamount"
+                  name="发生金额"
+                  type="Double">
+            </column>
+            <column
+                  column="aamount"
+                  name="核定金额"
+                  type="Double">
+            </column>
+            <column
+                  column="costowner"
+                  name="费用使用人"
+                  type="String">
+            </column>
+            <column
+                  column="work_id"
+                  name="工作"
+                  type="String">
+            </column>
+            <column
+                  column="costcloseon"
+                  name="发放日期"
+                  type="Date">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="sales.work.selector.cost"
+            table="sales.work.selector.cost">
+         <filterAction
+               defaultfield="名称">
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+            <column
+                  column="actiontype"
+                  name="活动类型"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  column="actionbudget"
+                  name="预算"
+                  type="Double">
+            </column>
+            <column
+                  columnDefinitionId="actualstart_c">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_c">
+            </column>
+         </filterAction>
+         <searchAction
+               defaultfield="名称">
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+            <column
+                  column="actiontype"
+                  name="活动类型"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  column="actionbudget"
+                  name="预算"
+                  type="Double">
+            </column>
+            <column
+                  columnDefinitionId="actualstart_c">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_c">
+            </column>
+         </searchAction>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -6491,7 +7341,10 @@
             virtual="true">
          <column
                column="status"
-               name="状态">
+               labelProvider="com.sg.sales.label.DataStatusLabel"
+               name="状态"
+               type="String"
+               width="40">
          </column>
          <column
                column="desc"
@@ -6506,22 +7359,25 @@
          <column
                column="industry"
                name="行业"
-               type="String">
+               type="String"
+               width="120">
          </column>
          <column
                column="product"
                name="产品"
+               type="String"
+               width="180">
+         </column>
+         <column
+               column="levelservice"
+               name="客户"
                type="String">
          </column>
          <column
                column="level"
                name="级别"
-               type="String">
-         </column>
-         <column
-               column="iscustomer"
-               name="客户"
-               type="Boolean">
+               type="String"
+               width="40">
          </column>
          <column
                column="capital"
@@ -6529,7 +7385,7 @@
                type="Double">
          </column>
          <column
-               column="registedate"
+               column="registerdate"
                name="成立日期"
                type="Date">
          </column>
@@ -6541,32 +7397,38 @@
          <column
                column="prov"
                name="所在省份"
-               type="String">
+               type="String"
+               width="60">
          </column>
          <column
                column="city"
                name="所在城市"
-               type="String">
+               type="String"
+               width="60">
          </column>
          <column
-               column="cust_representative "
+               column="cust_representative"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="客户代表">
+               name="客户代表"
+               width="60">
          </column>
          <column
                column="sales_manager"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="销售经理">
+               name="销售经理"
+               width="60">
          </column>
          <column
                column="sales_supervisor"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="销售主管">
+               name="销售主管"
+               width="60">
          </column>
          <column
                column="service_manager"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-               name="服务主管">
+               name="服务主管"
+               width="60">
          </column>
       </table>
       <table
@@ -6574,7 +7436,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.MyCustomerDataSet"
+            dataSet="com.sg.sales.dataset.OwnerCustomerDataSet"
             editorId="sales.company.editor"
             fullSelection="true"
             hasBorder="false"
@@ -6603,9 +7465,9 @@
                type="String">
          </column>
          <column
-               column="iscustomer"
+               column="levelservice"
                name="客户"
-               type="Boolean">
+               type="String">
          </column>
          <column
                column="prov"
@@ -6692,7 +7554,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.MyContactDataSet"
+            dataSet="com.sg.sales.dataset.CompanyContactDataSet"
             editorId="sales.contact.editor"
             fullSelection="true"
             hasBorder="false"
@@ -6842,6 +7704,30 @@
                column="req_prod"
                name="商品"
                type="String">
+         </column>
+         <column
+               column="cust_representative"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="客户代表"
+               width="60">
+         </column>
+         <column
+               column="sales_manager"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="销售经理"
+               width="60">
+         </column>
+         <column
+               column="sales_supervisor"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="销售主管"
+               width="60">
+         </column>
+         <column
+               column="service_manager"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="服务主管"
+               width="60">
          </column>
       </table>
       <table
@@ -7140,6 +8026,383 @@
                width="-1">
          </column>
       </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.dataset.MyWorkCostDataSet"
+            editorId="sales.cost.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.cost.navigator"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            popupMenu="popup:com.sg.widget.navigator"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="coststatus"
+               name="状态">
+         </column>
+         <column
+               column="catagory"
+               name="类别"
+               type="String">
+         </column>
+         <column
+               column="detail"
+               name="科目"
+               type="String">
+         </column>
+         <column
+               column="desc"
+               name="说明"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="startdate"
+               name="起始时间"
+               type="DateTime">
+         </column>
+         <column
+               column="finishdate"
+               name="终止时间"
+               type="DateTime">
+         </column>
+         <column
+               column="hamount"
+               name="发生金额"
+               type="Double">
+         </column>
+         <column
+               column="aamount"
+               name="核定金额"
+               type="Double">
+         </column>
+         <column
+               column="costowner"
+               name="费用使用人"
+               type="String">
+         </column>
+         <column
+               column="work_id"
+               name="工作"
+               type="String">
+         </column>
+         <column
+               column="company_id"
+               name="客户"
+               type="String">
+         </column>
+         <column
+               column="opportunity_id"
+               name="商机"
+               type="String">
+         </column>
+         <column
+               column="contract_id"
+               name="合同"
+               type="String">
+         </column>
+         <column
+               column="project_id"
+               name="项目"
+               type="String">
+         </column>
+         <column
+               column="costcloseon"
+               name="发放日期"
+               type="Date">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.dataset.CompanyWorkCostDataSet"
+            editorId="sales.cost.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.cost.company.ineditor"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="coststatus"
+               name="状态">
+         </column>
+         <column
+               column="catagory"
+               name="类别"
+               type="String">
+         </column>
+         <column
+               column="detail"
+               name="科目"
+               type="String">
+         </column>
+         <column
+               column="desc"
+               name="说明"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="startdate"
+               name="起始时间"
+               type="DateTime">
+         </column>
+         <column
+               column="finishdate"
+               name="终止时间"
+               type="DateTime">
+         </column>
+         <column
+               column="hamount"
+               name="发生金额"
+               type="Double">
+         </column>
+         <column
+               column="aamount"
+               name="核定金额"
+               type="Double">
+         </column>
+         <column
+               column="costowner"
+               name="费用使用人"
+               type="String">
+         </column>
+         <column
+               column="work_id"
+               name="工作"
+               type="String">
+         </column>
+         <column
+               column="opportunity_id"
+               name="商机"
+               type="String">
+         </column>
+         <column
+               column="contract_id"
+               name="合同"
+               type="String">
+         </column>
+         <column
+               column="project_id"
+               name="项目"
+               type="String">
+         </column>
+         <column
+               column="costcloseon"
+               name="发放日期"
+               type="Date">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.dataset.CompanyWorkCostDataSet"
+            editorId="sales.cost.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.cost.opportunity.ineditor"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="coststatus"
+               name="状态">
+         </column>
+         <column
+               column="catagory"
+               name="类别"
+               type="String">
+         </column>
+         <column
+               column="detail"
+               name="科目"
+               type="String">
+         </column>
+         <column
+               column="desc"
+               name="说明"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="startdate"
+               name="起始时间"
+               type="DateTime">
+         </column>
+         <column
+               column="finishdate"
+               name="终止时间"
+               type="DateTime">
+         </column>
+         <column
+               column="hamount"
+               name="发生金额"
+               type="Double">
+         </column>
+         <column
+               column="aamount"
+               name="核定金额"
+               type="Double">
+         </column>
+         <column
+               column="costowner"
+               name="费用使用人"
+               type="String">
+         </column>
+         <column
+               column="work_id"
+               name="工作"
+               type="String">
+         </column>
+         <column
+               column="costcloseon"
+               name="发放日期"
+               type="Date">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.dataset.CompanyWorkCostDataSet"
+            editorId="sales.cost.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.cost.contract.ineditor"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="coststatus"
+               name="状态">
+         </column>
+         <column
+               column="catagory"
+               name="类别"
+               type="String">
+         </column>
+         <column
+               column="detail"
+               name="科目"
+               type="String">
+         </column>
+         <column
+               column="desc"
+               name="说明"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="startdate"
+               name="起始时间"
+               type="DateTime">
+         </column>
+         <column
+               column="finishdate"
+               name="终止时间"
+               type="DateTime">
+         </column>
+         <column
+               column="hamount"
+               name="发生金额"
+               type="Double">
+         </column>
+         <column
+               column="aamount"
+               name="核定金额"
+               type="Double">
+         </column>
+         <column
+               column="costowner"
+               name="费用使用人"
+               type="String">
+         </column>
+         <column
+               column="work_id"
+               name="工作"
+               type="String">
+         </column>
+         <column
+               column="project_id"
+               name="项目"
+               type="String">
+         </column>
+         <column
+               column="costcloseon"
+               name="发放日期"
+               type="Date">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.dataset.CostSalesWorkDataSet"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.work.selector.cost"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               labelProvider="com.sg.business.commons.labelprovider.StatusTextLabelProvider"
+               name="状态"
+               width="60">
+         </column>
+         <column
+               column="actiontype"
+               name="活动类型">
+         </column>
+         <column
+               columnDefinitionId="work.desc"
+               width="240">
+         </column>
+         <column
+               columnDefinitionId="chargerid">
+         </column>
+         <column
+               column="actionbudget"
+               name="预算"
+               type="Double">
+         </column>
+         <column
+               columnDefinitionId="actualstart_c">
+         </column>
+         <column
+               columnDefinitionId="actualfinish_c">
+         </column>
+      </table>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -7300,6 +8563,124 @@
                </section>
                <section
                      expand="true"
+                     label="地址和联系方式">
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="prov"
+                           label="省份"
+                           labelVisible="true"
+                           name="prov"
+                           option="com.sg.crm.area"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="city"
+                           isComputeField="true"
+                           label="城市"
+                           labelVisible="true"
+                           name="city"
+                           optionProvider="com.sg.sales.field.option.CityOptions"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="dist"
+                           isComputeField="true"
+                           label="区县"
+                           labelVisible="true"
+                           name="dist"
+                           optionProvider="com.sg.sales.field.option.DistOptions"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="postcode"
+                           label="邮编"
+                           labelVisible="true"
+                           name="postcode"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                  </fieldgroup>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="31"
+                        id="address"
+                        label="地址"
+                        labelVisible="true"
+                        name="address"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <fieldgroup
+                        columnCount="2">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="tel_1"
+                           label="电话"
+                           labelVisible="true"
+                           name="tel_1"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="fax"
+                           label="传真"
+                           labelVisible="true"
+                           name="fax"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="contact"
+                           label="联系人"
+                           labelVisible="true"
+                           name="contact"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="tel_2"
+                           label="电话"
+                           labelVisible="true"
+                           name="tel_2"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                  </fieldgroup>
+               </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
+               <section
+                     expand="true"
                      label="详细信息">
                   <combo
                         editPart="Combo(Read Only)"
@@ -7363,8 +8744,7 @@
                   </combo>
                </section>
             </pagecolumn>
-            <pagecolumn
-                  id="2">
+            <pagecolumn>
                <section
                      expand="true"
                      label="企业规模">
@@ -7457,171 +8837,76 @@
                         type="Date">
                   </dateTime>
                </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               description="企业特性"
+               id="basicpage2"
+               title="特性">
+            <pagecolumn
+                  id="1">
                <section
                      expand="true"
-                     label="地址和联系方式">
-                  <fieldgroup
-                        columnCount="2">
-                     <combo
-                           editPart="Combo(Read Only)"
-                           editable="true"
-                           id="prov"
-                           label="省份"
-                           labelVisible="true"
-                           name="prov"
-                           option="com.sg.crm.area"
-                           persistable="true"
-                           required="true"
-                           type="String">
-                     </combo>
-                     <combo
-                           editPart="Combo(Read Only)"
-                           editable="true"
-                           id="city"
-                           isComputeField="true"
-                           label="城市"
-                           labelVisible="true"
-                           name="city"
-                           optionProvider="com.sg.res.options.CityOptions"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </combo>
-                     <combo
-                           editPart="Combo(Read Only)"
-                           editable="true"
-                           id="dist"
-                           isComputeField="true"
-                           label="区县"
-                           labelVisible="true"
-                           name="dist"
-                           optionProvider="com.sg.res.options.DistOptions"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </combo>
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
-                           id="postcode"
-                           label="邮编"
-                           labelVisible="true"
-                           name="postcode"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                  </fieldgroup>
+                     label="企业特性">
+                  <radio
+                        editable="true"
+                        id="attrvalue0"
+                        label="市场地位"
+                        labelVisible="true"
+                        name="attrvalue0"
+                        option="sales.option.competive"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <checkbox
+                        editable="true"
+                        id="attrvalue1"
+                        label="强调研发、设计、采购，外包生产制造"
+                        labelVisible="true"
+                        name="attrvalue1"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="true"
+                        id="attrvalue2"
+                        label="以制造、加工为主，通过规模化获得优势"
+                        labelVisible="true"
+                        name="attrvalue2"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="true"
+                        id="attrvalue3"
+                        label="强调品牌建设、物流、终端控制和资本运行"
+                        labelVisible="true"
+                        name="attrvalue3"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
+                  <checkbox
+                        editable="true"
+                        id="attrvalue4"
+                        label="全球化制造"
+                        labelVisible="true"
+                        name="attrvalue4"
+                        persistable="true"
+                        required="false">
+                  </checkbox>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="31"
-                        id="address"
-                        label="地址"
+                        heightHint="60"
+                        id="attrvaluex"
+                        label="综合描述"
                         labelVisible="true"
-                        name="address"
+                        name="attrvaluex"
                         persistable="true"
                         required="false"
                         type="String">
                   </text>
-                  <fieldgroup
-                        columnCount="2">
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
-                           id="tel_1"
-                           label="电话"
-                           labelVisible="true"
-                           name="tel_1"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
-                           id="fax"
-                           label="传真"
-                           labelVisible="true"
-                           name="fax"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
-                           id="contact"
-                           label="联系人"
-                           labelVisible="true"
-                           name="contact"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                     <text
-                           editPart="Text(Single Line)"
-                           editable="true"
-                           id="tel_2"
-                           label="电话"
-                           labelVisible="true"
-                           name="tel_2"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </text>
-                  </fieldgroup>
-               </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
-                     expand="true"
-                     label="企业基础评级">
-                  <radio
-                        editable="true"
-                        id="levelpayment"
-                        label="支付能力"
-                        labelVisible="true"
-                        name="levelpayment"
-                        option="sales.option.levelcommon"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <radio
-                        editable="true"
-                        id="levelcredit"
-                        label="信用等级"
-                        labelVisible="true"
-                        name="levelcredit"
-                        option="sales.option.levelcommon"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <radio
-                        editable="true"
-                        id="leveldev"
-                        label="企业发展"
-                        labelVisible="true"
-                        name="leveldev"
-                        option="sales.option.levelcompanydev"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <combo
-                        editPart="Combo(Read Only)"
-                        editable="true"
-                        id="levelsize"
-                        label="企业规模"
-                        labelVisible="true"
-                        name="levelsize"
-                        option="com.sg.res.option.size2"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </combo>
                </section>
                <section
                      expand="true"
@@ -7702,81 +8987,223 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="96"
+                        heightHint="60"
                         id="attrproductx"
                         label="综合描述"
-                        labelVisible="false"
+                        labelVisible="true"
                         name="attrproductx"
                         persistable="true"
                         required="false"
                         type="String">
                   </text>
                </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="2">
                <section
-                     expand="false"
-                     label="企业特性">
-                  <radio
-                        editable="true"
-                        id="attrvalue0"
-                        label="市场地位"
-                        labelVisible="true"
-                        name="attrvalue0"
-                        option="sales.option.competive"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <checkbox
-                        editable="true"
-                        id="attrvalue1"
-                        label="强调研发、设计、采购，外包生产制造"
-                        labelVisible="true"
-                        name="attrvalue1"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="true"
-                        id="attrvalue2"
-                        label="以制造、加工为主，通过规模化获得优势"
-                        labelVisible="true"
-                        name="attrvalue2"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="true"
-                        id="attrvalue3"
-                        label="强调品牌建设、物流、终端控制和资本运行"
-                        labelVisible="true"
-                        name="attrvalue3"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
-                  <checkbox
-                        editable="true"
-                        id="attrvalue4"
-                        label="全球化制造"
-                        labelVisible="true"
-                        name="attrvalue4"
-                        persistable="true"
-                        required="false">
-                  </checkbox>
+                     label="软件应用状况">
+                  <fieldgroup
+                        columnCount="2">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="iterp"
+                           label="ERP"
+                           labelVisible="true"
+                           name="iterp"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itpdm"
+                           label="PDM"
+                           labelVisible="true"
+                           name="itpdm"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itcad2d"
+                           label="2DCAD"
+                           labelVisible="true"
+                           name="itcad2d"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itcad3d"
+                           label="3DCAD"
+                           labelVisible="true"
+                           name="itcad3d"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itcae"
+                           label="CAE"
+                           labelVisible="true"
+                           name="itcae"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itcam"
+                           label="CAM"
+                           labelVisible="true"
+                           name="itcam"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itmes"
+                           label="MES"
+                           labelVisible="true"
+                           name="itmes"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itoa"
+                           label="OA"
+                           labelVisible="true"
+                           name="itoa"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itpm"
+                           label="项目管理"
+                           labelVisible="true"
+                           name="itpm"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itoffice"
+                           label="办公软件"
+                           labelVisible="true"
+                           name="itoffice"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="itos"
+                           label="操作系统"
+                           labelVisible="true"
+                           name="itos"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                  </fieldgroup>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="40"
-                        id="attrvaluex"
-                        label="综合描述"
-                        labelVisible="false"
-                        name="attrvaluex"
+                        heightHint="60"
+                        id="itsum1"
+                        label="正版软件情况综述"
+                        labelVisible="true"
+                        name="itsum1"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="60"
+                        id="itsum2"
+                        label="软件使用情况综述"
+                        labelVisible="true"
+                        name="itsum2"
                         persistable="true"
                         required="false"
                         type="String">
                   </text>
                </section>
+            </pagecolumn>
+            <pagecolumn>
                <section
-                     expand="false"
+                     expand="true"
+                     label="企业基础评级">
+                  <radio
+                        editable="true"
+                        id="levelpayment"
+                        label="支付能力"
+                        labelVisible="true"
+                        name="levelpayment"
+                        option="sales.option.levelcommon"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <radio
+                        editable="true"
+                        id="levelcredit"
+                        label="信用等级"
+                        labelVisible="true"
+                        name="levelcredit"
+                        option="sales.option.levelcommon"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <radio
+                        editable="true"
+                        id="leveldev"
+                        label="企业发展"
+                        labelVisible="true"
+                        name="leveldev"
+                        option="sales.option.levelcompanydev"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <combo
+                        editPart="Combo(Read Only)"
+                        editable="true"
+                        id="levelsize"
+                        label="企业规模"
+                        labelVisible="true"
+                        name="levelsize"
+                        option="com.sg.res.option.size2"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
+               </section>
+               <section
+                     expand="true"
                      label="财务以及信用状况">
                   <radio
                         editable="true"
@@ -7858,10 +9285,10 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="40"
+                        heightHint="60"
                         id="attfinx"
                         label="综合描述"
-                        labelVisible="false"
+                        labelVisible="true"
                         name="attfinx"
                         persistable="true"
                         required="false"
@@ -7880,12 +9307,12 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
-                        id="cust_representative "
+                        id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="cust_representative "
+                        name="cust_representative"
                         navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
@@ -7969,8 +9396,8 @@
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
-               id="sales.cost.navigator"
-               navigatorId="sales.cost.navigator"
+               id="sales.cost.company.ineditor"
+               navigatorId="sales.cost.company.ineditor"
                title="费用">
          </navigatorpage>
          <navigatorpage
@@ -8142,7 +9569,7 @@
                         navigatorId="sales.company.selector"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <fieldgroup
                         columnCount="2">
@@ -8174,13 +9601,13 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="31"
+                        heightHint="80"
                         id="charge"
                         label="主管业务"
                         labelVisible="true"
                         name="charge"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                </section>
@@ -8212,7 +9639,7 @@
                            label="城市"
                            labelVisible="true"
                            name="city"
-                           optionProvider="com.sg.res.options.CityOptions"
+                           optionProvider="com.sg.sales.field.option.CityOptions"
                            persistable="true"
                            required="false"
                            type="String">
@@ -8225,7 +9652,7 @@
                            label="区县"
                            labelVisible="true"
                            name="dist"
-                           optionProvider="com.sg.res.options.DistOptions"
+                           optionProvider="com.sg.sales.field.option.DistOptions"
                            persistable="true"
                            required="false"
                            type="String">
@@ -8264,7 +9691,7 @@
                            labelVisible="true"
                            name="tel_1"
                            persistable="true"
-                           required="false"
+                           required="true"
                            type="String">
                      </text>
                      <text
@@ -8302,7 +9729,7 @@
                         labelVisible="true"
                         name="email"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -8492,7 +9919,7 @@
                         navigatorId="sales.company.selector"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <text
                         editPart="Text(Multi Line)"
@@ -8502,7 +9929,7 @@
                         labelVisible="true"
                         name="desc"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -8535,7 +9962,7 @@
                         labelVisible="true"
                         name="summary"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                </section>
@@ -8554,7 +9981,7 @@
                         name="progress"
                         option="sales.option.opportunity"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </combo>
                   <dateTime
@@ -9166,12 +10593,12 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
-                        id="cust_representative "
+                        id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="cust_representative "
+                        name="cust_representative"
                         navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
@@ -9235,6 +10662,12 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="sales.cost.opportunity.ineditor"
+               navigatorId="sales.cost.opportunity.ineditor"
+               title="费用">
+         </navigatorpage>
          <basicpage
                createAfterSave="true"
                description="系统"
@@ -9322,7 +10755,7 @@
                         navigatorId="sales.company.selector"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <text
                         editPart="Text(Multi Line)"
@@ -9332,7 +10765,7 @@
                         labelVisible="true"
                         name="desc"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -9365,7 +10798,7 @@
                         labelVisible="true"
                         name="summary"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                </section>
@@ -9475,7 +10908,7 @@
                         navigatorId="sales.company.selector"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <text
                         editPart="Text(Single Line)"
@@ -9485,7 +10918,7 @@
                         labelVisible="true"
                         name="amount"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="Double">
                   </text>
                   <text
@@ -9496,7 +10929,7 @@
                         labelVisible="true"
                         name="contact"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <text
@@ -9507,7 +10940,7 @@
                         labelVisible="true"
                         name="contacttel"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </text>
                   <navigatorSelector
@@ -9521,7 +10954,7 @@
                         navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
-                        required="false">
+                        required="true">
                   </navigatorSelector>
                   <dateTime
                         editPart="DateDialog"
@@ -9531,7 +10964,7 @@
                         labelVisible="true"
                         name="signon"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="Date">
                   </dateTime>
                   <dateTime
@@ -9542,7 +10975,7 @@
                         labelVisible="true"
                         name="effectiveon"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="Date">
                   </dateTime>
                   <combo
@@ -9554,7 +10987,7 @@
                         name="contractstatus"
                         option="sales.option.contractstatus"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </combo>
                </section>
@@ -9571,7 +11004,7 @@
                         labelVisible="false"
                         name="payment"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String"
                         widthHint="400">
                   </text>
@@ -9610,12 +11043,12 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
-                        id="cust_representative "
+                        id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="cust_representative "
+                        name="cust_representative"
                         navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
@@ -9691,6 +11124,12 @@
                   required="false">
             </file>
          </vaultpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="sales.cost.contract.ineditor"
+               navigatorId="sales.cost.contract.ineditor"
+               title="费用">
+         </navigatorpage>
       </editor>
       <editor
             collectionName="purchaseorder"
@@ -9755,6 +11194,351 @@
                </section>
             </pagecolumn>
          </basicpage>
+      </editor>
+      <editor
+            collectionName="workcost"
+            dbName="pm2"
+            id="sales.cost.editor"
+            max="true"
+            name="费用">
+         <basicpage
+               id="basicpage1"
+               title="基本信息">
+            <pagecolumn>
+               <section
+                     label="基本信息">
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="catagory"
+                           label="类别"
+                           labelVisible="true"
+                           name="catagory"
+                           option="sales.cost.catagory"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="detail"
+                           isComputeField="true"
+                           label="科目"
+                           labelVisible="true"
+                           name="detail"
+                           optionProvider="com.sg.sales.field.option.DetailCatagory"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="desc"
+                        label="费用说明"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="startdate"
+                        label="起始时间"
+                        labelVisible="true"
+                        name="startdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="finishdate"
+                        label="终止时间"
+                        labelVisible="true"
+                        name="finishdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="hamount"
+                        label="发生金额（元）"
+                        labelVisible="true"
+                        name="hamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="costowner"
+                        label="费用使用人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="costowner"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="submitdate"
+                        label="提交时间"
+                        labelVisible="true"
+                        name="submitdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="相关信息">
+                  <navigatorSelector
+                        editable="true"
+                        id="work_id"
+                        label="工作"
+                        labelVisible="true"
+                        modelClass="com.sg.business.model.Work"
+                        name="work_id"
+                        navigatorId="sales.work.selector.cost"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="true"
+                        tooltips="选择在费用起始期间内的工作">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="company_id"
+                        label="客户"
+                        labelVisible="true"
+                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        modelClass="com.sg.sales.model.Company"
+                        name="company_id"
+                        navigatorId="sales.company.selector"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="opportunity_id"
+                        label="商机"
+                        labelVisible="true"
+                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        modelClass="com.sg.sales.model.Company"
+                        name="opportunity_id"
+                        navigatorId="sales.company.selector"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="contract_id"
+                        label="合同"
+                        labelVisible="true"
+                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        modelClass="com.sg.sales.model.Company"
+                        name="contract_id"
+                        navigatorId="sales.company.selector"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="project_id"
+                        label="项目"
+                        labelVisible="true"
+                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        modelClass="com.sg.sales.model.Company"
+                        name="project_id"
+                        navigatorId="sales.company.selector"
+                        navigatorReturnField="_id"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="费用报销">
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           defaultValue="填报中"
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="coststatus"
+                           label="费用状态"
+                           labelVisible="true"
+                           name="coststatus"
+                           option="sales.cost.status"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </combo>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="aamount"
+                           label="核定金额"
+                           labelVisible="true"
+                           name="aamount"
+                           persistable="true"
+                           required="false"
+                           type="Double">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="checkby"
+                           label="核定票据"
+                           labelVisible="true"
+                           name="checkby"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="checkon"
+                           label="核定日期"
+                           labelVisible="true"
+                           name="checkon"
+                           persistable="true"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="auditby"
+                           label="部门审核"
+                           labelVisible="true"
+                           name="auditby"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="auditon"
+                           label="审核日期"
+                           labelVisible="true"
+                           name="auditon"
+                           persistable="true"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="approveby"
+                           label="报销批准"
+                           labelVisible="true"
+                           name="approveby"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="approveon"
+                           label="批准日期"
+                           labelVisible="true"
+                           name="approveon"
+                           persistable="true"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="costcloseby"
+                           label="财务核发"
+                           labelVisible="true"
+                           name="costcloseby"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="costcloseon"
+                           label="发放日期"
+                           labelVisible="true"
+                           name="costcloseon"
+                           persistable="true"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                  </fieldgroup>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="补充说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="400"
+                        id="appendix"
+                        label="补充说明"
+                        labelVisible="true"
+                        name="appendix"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <vaultpage
+               id="files"
+               title="补充说明">
+            <file
+                  editPart="OfficeFileUploader"
+                  editable="true"
+                  id="files"
+                  label="补充说明"
+                  labelVisible="true"
+                  name="files"
+                  persistable="true"
+                  required="false">
+            </file>
+         </vaultpage>
       </editor>
    </extension>
    <extension
@@ -10062,6 +11846,7 @@
                         editable="false"
                         heightHint="120"
                         id="description"
+                        isHTML="true"
                         label="工作要求"
                         labelVisible="true"
                         name="description"
@@ -10273,6 +12058,7 @@
                         editable="false"
                         heightHint="120"
                         id="description"
+                        isHTML="true"
                         label="工作要求"
                         labelVisible="true"
                         name="description"
@@ -10517,6 +12303,7 @@
                         editable="false"
                         heightHint="120"
                         id="description"
+                        isHTML="true"
                         label="工作要求"
                         labelVisible="true"
                         name="description"
@@ -10595,29 +12382,24 @@
             allPopups="true"
             locationURI="popup:sales.company.navigator">
          <command
+               commandId="com.sg.widgets.command.edit"
+               label="编辑/查看"
+               style="push">
+         </command>
+         <separator
+               name="com.sg.sales.separator1"
+               visible="true">
+         </separator>
+         <command
                commandId="com.sg.widgets.command.create"
                id="create"
                label="创建新客户"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <and>
-                  <with
-                        variable="activePart">
-                     <instanceof
-                           value="com.sg.widgets.part.IEditablePart">
-                     </instanceof>
-                  </with>
-                  <with
-                        variable="activePart">
-                     <test
-                           args="multiEditor"
-                           property="com.sg.widgets.test.activePart"
-                           value="false">
-                     </test>
-                  </with>
-               </and>
-            </visibleWhen>
+         </command>
+         <command
+               commandId="sales.customer.createopportunity"
+               label="发现商机..."
+               style="push">
          </command>
          <command
                commandId="sales.launchwork"
@@ -10630,67 +12412,32 @@
                style="push">
          </command>
          <separator
-               name="com.sg.sales.separator1"
+               name="com.sg.sales.separator3"
                visible="true">
          </separator>
-         <command
-               commandId="com.sg.widgets.command.edit"
-               label="编辑/查看"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activePart">
-                  <instanceof
-                        value="com.sg.widgets.part.IEditablePart">
-                  </instanceof>
-               </with>
-            </visibleWhen>
-         </command>
          <command
                commandId="com.sg.widgets.command.delete"
                label="删除"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <and>
-                  <with
-                        variable="activePart">
-                     <instanceof
-                           value="com.sg.widgets.part.IEditablePart">
-                     </instanceof>
-                  </with>
-               </and>
-            </visibleWhen>
          </command>
       </menuContribution>
       <menuContribution
             allPopups="true"
             locationURI="popup:sales.opportunity.navigator">
          <command
+               commandId="com.sg.widgets.command.edit"
+               label="编辑/查看"
+               style="push">
+         </command>
+         <separator
+               name="com.sg.sales.separator4"
+               visible="true">
+         </separator>
+         <command
                commandId="com.sg.widgets.command.create"
                id="create"
                label="创建新商机"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <and>
-                  <with
-                        variable="activePart">
-                     <instanceof
-                           value="com.sg.widgets.part.IEditablePart">
-                     </instanceof>
-                  </with>
-                  <with
-                        variable="activePart">
-                     <test
-                           args="multiEditor"
-                           property="com.sg.widgets.test.activePart"
-                           value="false">
-                     </test>
-                  </with>
-               </and>
-            </visibleWhen>
          </command>
          <command
                commandId="sales.launchwork"
@@ -10707,34 +12454,9 @@
                visible="true">
          </separator>
          <command
-               commandId="com.sg.widgets.command.edit"
-               label="编辑/查看"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activePart">
-                  <instanceof
-                        value="com.sg.widgets.part.IEditablePart">
-                  </instanceof>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
                commandId="com.sg.widgets.command.delete"
                label="删除"
                style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <and>
-                  <with
-                        variable="activePart">
-                     <instanceof
-                           value="com.sg.widgets.part.IEditablePart">
-                     </instanceof>
-                  </with>
-               </and>
-            </visibleWhen>
          </command>
       </menuContribution>
    </extension>
@@ -10752,11 +12474,15 @@
             id="sales.launchwork.2"
             name="分配工作">
       </command>
+      <command
+            id="sales.customer.createopportunity"
+            name="创建商机">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.sales.handler.LaunchSalesWork"
+            class="com.sg.sales.handler.LaunchSalesWorkHandler"
             commandId="sales.launchwork.1">
          <enabledWhen>
             <with
@@ -10768,8 +12494,20 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.sales.handler.LaunchSalesWork"
+            class="com.sg.sales.handler.LaunchSalesWorkHandler"
             commandId="sales.launchwork">
+      </handler>
+      <handler
+            class="com.sg.sales.handler.CreateOpportunityOfCompanyHander"
+            commandId="sales.customer.createopportunity">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <count
+                     value="1">
+               </count>
+            </with>
+         </enabledWhen>
       </handler>
    </extension>
 
