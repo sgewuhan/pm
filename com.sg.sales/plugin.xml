@@ -5638,7 +5638,8 @@
             </column>
             <column
                   column="status"
-                  name="状态">
+                  name="状态"
+                  type="String">
             </column>
          </filterAction>
          <searchAction
@@ -5796,19 +5797,23 @@
             </column>
             <column
                   column="tel_1"
-                  name="办公电话">
+                  name="办公电话"
+                  type="String">
             </column>
             <column
                   column="tel_2"
-                  name="个人电话">
+                  name="个人电话"
+                  type="String">
             </column>
             <column
                   column="fax"
-                  name="传真">
+                  name="传真"
+                  type="String">
             </column>
             <column
                   column="email"
-                  name="电子邮箱">
+                  name="电子邮箱"
+                  type="String">
             </column>
          </filterAction>
          <searchAction
@@ -5835,19 +5840,23 @@
             </column>
             <column
                   column="tel_1"
-                  name="办公电话">
+                  name="办公电话"
+                  type="String">
             </column>
             <column
                   column="tel_2"
-                  name="个人电话">
+                  name="个人电话"
+                  type="String">
             </column>
             <column
                   column="fax"
-                  name="传真">
+                  name="传真"
+                  type="String">
             </column>
             <column
                   column="email"
-                  name="电子邮箱">
+                  name="电子邮箱"
+                  type="String">
             </column>
          </searchAction>
       </navigator>
@@ -5879,19 +5888,23 @@
             </column>
             <column
                   column="tel_1"
-                  name="办公电话">
+                  name="办公电话"
+                  type="String">
             </column>
             <column
                   column="tel_2"
-                  name="个人电话">
+                  name="个人电话"
+                  type="String">
             </column>
             <column
                   column="fax"
-                  name="传真">
+                  name="传真"
+                  type="String">
             </column>
             <column
                   column="email"
-                  name="电子邮箱">
+                  name="电子邮箱"
+                  type="String">
             </column>
          </filterAction>
          <searchAction
@@ -5918,19 +5931,23 @@
             </column>
             <column
                   column="tel_1"
-                  name="办公电话">
+                  name="办公电话"
+                  type="String">
             </column>
             <column
                   column="tel_2"
-                  name="个人电话">
+                  name="个人电话"
+                  type="String">
             </column>
             <column
                   column="fax"
-                  name="传真">
+                  name="传真"
+                  type="String">
             </column>
             <column
                   column="email"
-                  name="电子邮箱">
+                  name="电子邮箱"
+                  type="String">
             </column>
          </searchAction>
       </navigator>
@@ -5957,19 +5974,23 @@
             </column>
             <column
                   column="tel_1"
-                  name="办公电话">
+                  name="办公电话"
+                  type="String">
             </column>
             <column
                   column="tel_2"
-                  name="个人电话">
+                  name="个人电话"
+                  type="String">
             </column>
             <column
                   column="fax"
-                  name="传真">
+                  name="传真"
+                  type="String">
             </column>
             <column
                   column="email"
-                  name="电子邮箱">
+                  name="电子邮箱"
+                  type="String">
             </column>
          </filterAction>
          <searchAction
@@ -5991,19 +6012,23 @@
             </column>
             <column
                   column="tel_1"
-                  name="办公电话">
+                  name="办公电话"
+                  type="String">
             </column>
             <column
                   column="tel_2"
-                  name="个人电话">
+                  name="个人电话"
+                  type="String">
             </column>
             <column
                   column="fax"
-                  name="传真">
+                  name="传真"
+                  type="String">
             </column>
             <column
                   column="email"
-                  name="电子邮箱">
+                  name="电子邮箱"
+                  type="String">
             </column>
          </searchAction>
          <createEditor
@@ -6132,7 +6157,8 @@
                defaultfield="名称">
             <column
                   column="status"
-                  name="状态">
+                  name="状态"
+                  type="String">
             </column>
             <column
                   column="sn"
@@ -6165,22 +6191,26 @@
             </column>
             <column
                   column="amount"
-                  name="金额">
+                  name="金额"
+                  type="Double">
             </column>
             <column
                   column="signby"
-                  name="签订人">
+                  name="签订人"
+                  type="String">
             </column>
             <column
                   column="sales_manager"
-                  name="销售经理">
+                  name="销售经理"
+                  type="String">
             </column>
          </filterAction>
          <searchAction
                defaultfield="名称">
             <column
                   column="status"
-                  name="状态">
+                  name="状态"
+                  type="String">
             </column>
             <column
                   column="sn"
@@ -6209,19 +6239,23 @@
             </column>
             <column
                   column="contractstatus"
-                  name="执行状态">
+                  name="执行状态"
+                  type="String">
             </column>
             <column
                   column="amount"
-                  name="金额">
+                  name="金额"
+                  type="Double">
             </column>
             <column
                   column="signby"
-                  name="签订人">
+                  name="签订人"
+                  type="String">
             </column>
             <column
                   column="sales_manager"
-                  name="销售经理">
+                  name="销售经理"
+                  type="String">
             </column>
          </searchAction>
       </navigator>
@@ -6233,7 +6267,8 @@
                defaultfield="名称">
             <column
                   column="status"
-                  name="状态">
+                  name="状态"
+                  type="String">
             </column>
             <column
                   column="sn"
@@ -6257,26 +6292,31 @@
             </column>
             <column
                   column="contractstatus"
-                  name="执行状态">
+                  name="执行状态"
+                  type="String">
             </column>
             <column
                   column="amount"
-                  name="金额">
+                  name="金额"
+                  type="Double">
             </column>
             <column
                   column="signby"
-                  name="签订人">
+                  name="签订人"
+                  type="String">
             </column>
             <column
                   column="sales_manager"
-                  name="销售经理">
+                  name="销售经理"
+                  type="String">
             </column>
          </filterAction>
          <searchAction
                defaultfield="名称">
             <column
                   column="status"
-                  name="状态">
+                  name="状态"
+                  type="String">
             </column>
             <column
                   column="sn"
@@ -6300,19 +6340,23 @@
             </column>
             <column
                   column="contractstatus"
-                  name="执行状态">
+                  name="执行状态"
+                  type="String">
             </column>
             <column
                   column="amount"
-                  name="金额">
+                  name="金额"
+                  type="Double">
             </column>
             <column
                   column="signby"
-                  name="签订人">
+                  name="签订人"
+                  type="String">
             </column>
             <column
                   column="sales_manager"
-                  name="销售经理">
+                  name="销售经理"
+                  type="String">
             </column>
          </searchAction>
          <createEditor
@@ -6331,6 +6375,98 @@
       <navigator
             id="sales.action.company.ineditor"
             table="sales.action.company.ineditor">
+         <filterAction
+               defaultfield="名称">
+            <column
+                  name="状态"
+                  column="status"
+                  type="String">
+            </column>
+            <column
+                  column="actiontype"
+                  name="活动类型"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="planstart_c">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_c">
+            </column>
+            <column
+                  column="actionbudget"
+                  name="预算"
+                  type="Double">
+            </column>
+            <column
+                  columnDefinitionId="actualstart_c">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_c">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+            <column
+                  column="description"
+                  name="要求"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction
+               defaultfield="名称">
+            <column
+                  name="状态"
+                  column="status"
+                  type="String">
+            </column>
+            <column
+                  column="actiontype"
+                  name="活动类型"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  columnDefinitionId="chargerid">
+            </column>
+            <column
+                  columnDefinitionId="planstart_c">
+            </column>
+            <column
+                  columnDefinitionId="planfinish_c">
+            </column>
+            <column
+                  column="actionbudget"
+                  name="预算"
+                  type="Double">
+            </column>
+            <column
+                  columnDefinitionId="actualstart_c">
+            </column>
+            <column
+                  columnDefinitionId="actualfinish_c">
+            </column>
+            <column
+                  columnDefinitionId="participate">
+            </column>
+            <column
+                  column="description"
+                  name="要求"
+                  type="String">
+            </column>
+         </searchAction>
       </navigator>
    </extension>
    <extension
@@ -6411,6 +6547,26 @@
                column="city"
                name="所在城市"
                type="String">
+         </column>
+         <column
+               column="cust_representative "
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="客户代表">
+         </column>
+         <column
+               column="sales_manager"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="销售经理">
+         </column>
+         <column
+               column="sales_supervisor"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="销售主管">
+         </column>
+         <column
+               column="service_manager"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="服务主管">
          </column>
       </table>
       <table
@@ -6800,6 +6956,7 @@
          </column>
          <column
                column="signby"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="签订人">
          </column>
          <column
@@ -6937,12 +7094,21 @@
             lineVisiable="true"
             markupEnabled="false"
             multiSelection="true"
-            popupMenu="popup:com.sg.widget.navigator"
             preload="10"
             useHashlookup="true"
             virtual="true">
          <column
-               columnDefinitionId="work.desc">
+               labelProvider="com.sg.business.commons.labelprovider.StatusTextLabelProvider"
+               name="状态"
+               width="60">
+         </column>
+         <column
+               column="actiontype"
+               name="活动类型">
+         </column>
+         <column
+               columnDefinitionId="work.desc"
+               width="240">
          </column>
          <column
                columnDefinitionId="chargerid">
@@ -6954,10 +7120,24 @@
                columnDefinitionId="planfinish_c">
          </column>
          <column
+               column="actionbudget"
+               name="预算"
+               type="Double">
+         </column>
+         <column
                columnDefinitionId="actualstart_c">
          </column>
          <column
                columnDefinitionId="actualfinish_c">
+         </column>
+         <column
+               columnDefinitionId="participate">
+         </column>
+         <column
+               column="description"
+               name="要求"
+               type="String"
+               width="-1">
          </column>
       </table>
    </extension>
@@ -7785,13 +7965,7 @@
                createAfterSave="true"
                id="sales.action.company.ineditor"
                navigatorId="sales.action.company.ineditor"
-               title="销售活动">
-         </navigatorpage>
-         <navigatorpage
-               createAfterSave="true"
-               id="sales.service.navigator"
-               navigatorId="sales.service.navigator"
-               title="技术服务">
+               title="活动">
          </navigatorpage>
          <navigatorpage
                createAfterSave="true"
@@ -9043,6 +9217,8 @@
                         required="false">
                   </navigatorSelector>
                </section>
+            </pagecolumn>
+            <pagecolumn>
                <section
                      label="授权访问者">
                   <list
@@ -10450,7 +10626,7 @@
          </command>
          <command
                commandId="sales.launchwork.1"
-               label="创建与客户有关工作"
+               label="面向客户的销售工作"
                style="push">
          </command>
          <separator
@@ -10494,7 +10670,7 @@
          <command
                commandId="com.sg.widgets.command.create"
                id="create"
-               label="创建新客户"
+               label="创建新商机"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -10523,7 +10699,7 @@
          </command>
          <command
                commandId="sales.launchwork.1"
-               label="创建与商机有关工作"
+               label="面向商机的销售工作"
                style="push">
          </command>
          <separator
@@ -10570,6 +10746,10 @@
       </command>
       <command
             id="sales.launchwork"
+            name="分配工作">
+      </command>
+      <command
+            id="sales.launchwork.2"
             name="分配工作">
       </command>
    </extension>

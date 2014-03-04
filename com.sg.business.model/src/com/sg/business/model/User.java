@@ -209,7 +209,7 @@ public class User extends PrimaryObject {
 	 */
 	@Override
 	public String getLabel() {
-		return getUsername() + "|" + getUserid(); //$NON-NLS-1$
+		return getUsername();// + "|" + getUserid(); //$NON-NLS-1$
 	}
 
 	/**
