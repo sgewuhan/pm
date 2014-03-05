@@ -6,7 +6,9 @@ public interface ISalesWork extends ICompanyRelative{
 	
 	public static final String F_ACTIONTYPE = "actiontype";
 	
-	public static final Object WORK_CATAGORY_SALES = "sales.work";
+	public static final String WORK_CATAGORY_SALES = "sales.work";
+
+	public static final String WORK_CATAGORY_SALES_APPLYEXPENSE = "sales.work.applyexpense";
 	
 
 }

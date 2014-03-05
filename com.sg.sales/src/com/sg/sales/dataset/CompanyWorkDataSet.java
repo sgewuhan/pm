@@ -4,9 +4,9 @@ import com.sg.business.model.IModelConstants;
 import com.sg.sales.model.ISalesWork;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 
-public class CompanySalesWorkDataSet extends MasterDetailDataSetFactory {
+public class CompanyWorkDataSet extends MasterDetailDataSetFactory {
 
-	public CompanySalesWorkDataSet() {
+	public CompanyWorkDataSet() {
 		super(IModelConstants.DB, IModelConstants.C_WORK);
 	}
 

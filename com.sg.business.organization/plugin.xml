@@ -161,6 +161,7 @@
          </masterProvider>
       </navigator>
       <navigator
+            expand="search"
             id="organization.user"
             provideSelection="true"
             table="organization.user">
@@ -178,7 +179,8 @@
                   columnDefinitionId="account.activated">
             </column>
          </filterAction>
-         <searchAction>
+         <searchAction
+               defaultfield="姓名">
             <column
                   columnDefinitionId="account.userid">
             </column>

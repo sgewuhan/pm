@@ -5420,30 +5420,6 @@
          </option>
       </option>
       <option
-            id="sales.option.contractstatus"
-            label="合同状态">
-         <option
-               id="1"
-               label="未生效"
-               value="未生效">
-         </option>
-         <option
-               id="2"
-               label="已生效"
-               value="已生效">
-         </option>
-         <option
-               id="3"
-               label="已废除"
-               value="已废除">
-         </option>
-         <option
-               id="4"
-               label="已关闭"
-               value="已关闭">
-         </option>
-      </option>
-      <option
             id="sales.cost.catagory"
             label="成本和费用分类"
             value="成本和费用分类">
@@ -5633,6 +5609,11 @@
                value="已核对">
          </option>
          <option
+               id="已审核"
+               label="已审核"
+               value="已审核">
+         </option>
+         <option
                id="已批准"
                label="已批准"
                value="已批准">
@@ -5646,6 +5627,30 @@
                id="已否决"
                label="已否决"
                value="已否决">
+         </option>
+      </option>
+      <option
+            id="sales.option.contractstatus"
+            label="合同执行状态">
+         <option
+               id="0"
+               label="未生效"
+               value="未生效">
+         </option>
+         <option
+               id="1"
+               label="执行中"
+               value="执行中">
+         </option>
+         <option
+               id="2"
+               label="已中止"
+               value="已中止">
+         </option>
+         <option
+               id="3"
+               label="已关闭"
+               value="已关闭">
          </option>
       </option>
    </extension>
@@ -5775,7 +5780,7 @@
                id="sales.cost.navigator"
                minimized="false"
                moveable="false"
-               ratio="0.4"
+               ratio="0.3"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="false"
@@ -6819,9 +6824,11 @@
          </searchAction>
       </navigator>
       <navigator
+            expand="search"
             id="sales.cost.navigator"
             table="sales.cost.navigator">
-         <filterAction>
+         <filterAction
+               defaultfield="说明">
             <column
                   column="coststatus"
                   name="状态">
@@ -6844,12 +6851,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -6862,7 +6869,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -6897,7 +6904,8 @@
                   type="Date">
             </column>
          </filterAction>
-         <searchAction>
+         <searchAction
+               defaultfield="说明">
             <column
                   column="coststatus"
                   name="状态">
@@ -6920,12 +6928,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -6938,7 +6946,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -7000,12 +7008,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -7018,7 +7026,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -7076,12 +7084,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -7094,7 +7102,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -7156,12 +7164,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -7174,7 +7182,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -7212,12 +7220,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -7230,7 +7238,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -7272,12 +7280,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -7290,7 +7298,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -7328,12 +7336,12 @@
             <column
                   column="startdate"
                   name="起始时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="finishdate"
                   name="终止时间"
-                  type="DateTime">
+                  type="Date">
             </column>
             <column
                   column="hamount"
@@ -7346,7 +7354,7 @@
                   type="Double">
             </column>
             <column
-                  column="costowner"
+                  column="owner"
                   name="费用使用人"
                   type="String">
             </column>
@@ -7805,6 +7813,13 @@
             useHashlookup="true"
             virtual="true">
          <column
+               column="status"
+               labelProvider="com.sg.sales.label.DataStatusLabel"
+               name="状态"
+               type="String"
+               width="40">
+         </column>
+         <column
                column="desc"
                moveable="true"
                name="描述"
@@ -7981,7 +7996,8 @@
             virtual="true">
          <column
                column="contractstatus"
-               name="执行状态">
+               name="合同状态"
+               type="String">
          </column>
          <column
                column="sn"
@@ -8190,7 +8206,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanySalesWorkDataSet"
+            dataSet="com.sg.sales.dataset.CompanyWorkDataSet"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -8258,7 +8274,7 @@
             lineVisiable="true"
             markupEnabled="false"
             multiSelection="true"
-            popupMenu="popup:com.sg.widget.navigator"
+            popupMenu="popup:sales.cost.navigator"
             preload="10"
             useHashlookup="true"
             virtual="true">
@@ -8285,12 +8301,12 @@
          <column
                column="startdate"
                name="起始时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="finishdate"
                name="终止时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="hamount"
@@ -8303,7 +8319,8 @@
                type="Double">
          </column>
          <column
-               column="costowner"
+               column="owner"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8383,12 +8400,12 @@
          <column
                column="startdate"
                name="起始时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="finishdate"
                name="终止时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="hamount"
@@ -8401,7 +8418,8 @@
                type="Double">
          </column>
          <column
-               column="costowner"
+               column="owner"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8475,12 +8493,12 @@
          <column
                column="startdate"
                name="起始时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="finishdate"
                name="终止时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="hamount"
@@ -8493,7 +8511,8 @@
                type="Double">
          </column>
          <column
-               column="costowner"
+               column="owner"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8549,12 +8568,12 @@
          <column
                column="startdate"
                name="起始时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="finishdate"
                name="终止时间"
-               type="DateTime">
+               type="Date">
          </column>
          <column
                column="hamount"
@@ -8567,7 +8586,8 @@
                type="Double">
          </column>
          <column
-               column="costowner"
+               column="owner"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8665,6 +8685,70 @@
          </column>
          <column
                columnDefinitionId="businesschargerid">
+         </column>
+      </table>
+      <table
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.sales.dataset.ExpenseApplyCostDataSet"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.cost.work.ineditor"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="coststatus"
+               name="状态">
+         </column>
+         <column
+               column="catagory"
+               name="类别"
+               type="String">
+         </column>
+         <column
+               column="detail"
+               name="科目"
+               type="String">
+         </column>
+         <column
+               column="desc"
+               name="说明"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="startdate"
+               name="起始时间"
+               type="Date">
+         </column>
+         <column
+               column="finishdate"
+               name="终止时间"
+               type="Date">
+         </column>
+         <column
+               column="hamount"
+               name="发生金额"
+               type="Double">
+         </column>
+         <column
+               column="owner"
+               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               name="费用使用人"
+               type="String">
+         </column>
+         <column
+               column="work_id"
+               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
+               name="工作"
+               type="String">
          </column>
       </table>
    </extension>
@@ -10229,6 +10313,19 @@
                         required="true"
                         type="String">
                   </text>
+                  <combo
+                        defaultValue="editing"
+                        editPart="Combo(Read Only)"
+                        editable="false"
+                        id="status"
+                        label="状态"
+                        labelVisible="true"
+                        name="status"
+                        option="option.data.status"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -11246,7 +11343,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="contractstatus"
-                        label="执行状态"
+                        label="合同状态"
                         labelVisible="true"
                         name="contractstatus"
                         option="sales.option.contractstatus"
@@ -11535,6 +11632,17 @@
                   <text
                         editPart="Text(Single Line)"
                         editable="true"
+                        id="pamount"
+                        label="票面金额（元）"
+                        labelVisible="true"
+                        name="pamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
                         id="hamount"
                         label="发生金额（元）"
                         labelVisible="true"
@@ -11543,15 +11651,26 @@
                         required="true"
                         type="Double">
                   </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="aamount"
+                        label="实报金额（元）"
+                        labelVisible="true"
+                        name="aamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
-                        id="costowner"
+                        id="owner"
                         label="费用使用人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
-                        name="costowner"
+                        name="owner"
                         navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
@@ -11562,7 +11681,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="submitdate"
-                        label="提交时间"
+                        label="填报日期"
                         labelVisible="true"
                         name="submitdate"
                         persistable="true"
@@ -11637,32 +11756,48 @@
                   </navigatorSelector>
                </section>
                <section
-                     label="费用报销">
+                     label="费用报销处理">
+                  <combo
+                        defaultValue="填报中"
+                        editPart="Combo(Read Only)"
+                        editable="false"
+                        id="coststatus"
+                        label="费用状态"
+                        labelVisible="true"
+                        name="coststatus"
+                        option="sales.cost.status"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
                   <fieldgroup
                         columnCount="2">
-                     <combo
-                           defaultValue="填报中"
-                           editPart="Combo(Read Only)"
-                           editable="true"
-                           id="coststatus"
-                           label="费用状态"
-                           labelVisible="true"
-                           name="coststatus"
-                           option="sales.cost.status"
-                           persistable="true"
-                           required="false"
-                           type="String">
-                     </combo>
                      <text
                            editPart="Text(Single Line)"
-                           editable="true"
-                           id="aamount"
-                           label="核定金额"
+                           editable="false"
+                           id="summitby"
+                           label="费用提交"
                            labelVisible="true"
-                           name="aamount"
+                           name="summitby"
                            persistable="true"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
                            required="false"
-                           type="Double">
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="summiton"
+                           label="提交日期"
+                           labelVisible="true"
+                           name="summiton"
+                           persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd HH:mm:ss"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
                      </text>
                      <text
                            editPart="Text(Single Line)"
@@ -11685,6 +11820,8 @@
                            labelVisible="true"
                            name="checkon"
                            persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd HH:mm:ss"
                            required="false"
                            type="Date"
                            userlabelForReadonly="true">
@@ -11710,6 +11847,8 @@
                            labelVisible="true"
                            name="auditon"
                            persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd HH:mm:ss"
                            required="false"
                            type="Date"
                            userlabelForReadonly="true">
@@ -11735,6 +11874,8 @@
                            labelVisible="true"
                            name="approveon"
                            persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd HH:mm:ss"
                            required="false"
                            type="Date"
                            userlabelForReadonly="true">
@@ -11760,6 +11901,62 @@
                            labelVisible="true"
                            name="costcloseon"
                            persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd HH:mm:ss"
+                           required="false"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="redoby"
+                           label="费用驳回"
+                           labelVisible="true"
+                           name="redoby"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="redoon"
+                           label="驳回日期"
+                           labelVisible="true"
+                           name="redoon"
+                           persistable="true"
+                           required="false"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd HH:mm:ss"
+                           type="Date"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="rejectby"
+                           label="费用否决"
+                           labelVisible="true"
+                           name="rejectby"
+                           persistable="true"
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="rejecton"
+                           label="否决日期"
+                           labelVisible="true"
+                           name="rejecton"
+                           persistable="true"
+                           presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                           presentationFormat="yyyy-MM-dd HH:mm:ss"
                            required="false"
                            type="Date"
                            userlabelForReadonly="true">
@@ -11776,7 +11973,7 @@
                         heightHint="400"
                         id="appendix"
                         label="补充说明"
-                        labelVisible="true"
+                        labelVisible="false"
                         name="appendix"
                         persistable="true"
                         required="false"
@@ -11812,7 +12009,7 @@
             memo="带有流程用于叶子工作的计划制定"
             name="%editor.name.2"
             titleToolTips="%editor.titleToolTips.2"
-            usedBy="com.sg.sales.editor.EditorUsedBySalesWork">
+            usedBy="com.sg.sales.editor.UsedBySalesWork">
          <basicpage
                description="%basicpage.description.9"
                id="basicpage"
@@ -11959,7 +12156,7 @@
             memo="导航器工作的查看（预备，非摘要）"
             name="%editor.name.8"
             titleToolTips="%editor.titleToolTips.8"
-            usedBy="com.sg.sales.editor.EditorUsedBySalesWork">
+            usedBy="com.sg.sales.editor.UsedBySalesWork">
          <basicpage
                description="%basicpage.description.25"
                id="basicpage"
@@ -12172,7 +12369,7 @@
             memo="导航器工作的查看（进行中，非摘要，有流程）"
             name="%editor.name.8"
             titleToolTips="%editor.titleToolTips.8"
-            usedBy="com.sg.sales.editor.EditorUsedBySalesWork">
+            usedBy="com.sg.sales.editor.UsedBySalesWork">
          <basicpage
                description="%basicpage.description.25"
                id="basicpage"
@@ -12417,7 +12614,7 @@
             memo="导航器工作的查看（进行中，非摘要，无流程）"
             name="%editor.name.8"
             titleToolTips="%editor.titleToolTips.8"
-            usedBy="com.sg.sales.editor.EditorUsedBySalesWork">
+            usedBy="com.sg.sales.editor.UsedBySalesWork">
          <basicpage
                description="%basicpage.description.25"
                id="basicpage"
@@ -12637,6 +12834,173 @@
       </editor>
    </extension>
    <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            closeable="true"
+            collectionName="work"
+            dbName="pm2"
+            id="work.plan.sales.applyexpense"
+            image="image/work_24.png"
+            isDefault="false"
+            max="true"
+            memo="报销申请"
+            name="%editor.name.2"
+            titleToolTips="%editor.titleToolTips.2"
+            usedBy="com.sg.sales.editor.UsedBySalesWork">
+         <basicpage
+               description="%basicpage.description.9"
+               id="basicpage"
+               image="image/work_24.png"
+               title="%basicpage.title.9">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="%section.label.13">
+                  <fieldgroup
+                        columnCount="3">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="desc"
+                           label="%text.label.7"
+                           labelVisible="true"
+                           name="desc"
+                           persistable="true"
+                           required="true"
+                           type="String"
+                           widthHint="240">
+                     </text>
+                     <navigatorSelector
+                           defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                           editable="false"
+                           id="chargerid"
+                           label="申请人"
+                           labelVisible="true"
+                           labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                           modelClass="com.sg.business.model.User"
+                           name="chargerid"
+                           navigatorId="organization.user.assignment"
+                           navigatorReturnField="userid"
+                           persistable="true"
+                           required="true">
+                     </navigatorSelector>
+                  </fieldgroup>
+                  <table
+                        ctableId="sales.cost.work.ineditor"
+                        editable="false"
+                        heightHint="200"
+                        id="costitems"
+                        isComputeField="true"
+                        label="费用项"
+                        labelVisible="false"
+                        name="costitems"
+                        persistable="false"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+            <pageAction
+                  class="com.sg.business.work.home.action.StartWork"
+                  icon="image/start_g_24.png"
+                  id="startwork"
+                  label="提交"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+         </basicpage>
+      </editor>
+      <editor
+            closeable="true"
+            collectionName="work"
+            dbName="pm2"
+            id="work.plan.sales.applyexpense.inprogress"
+            image="image/work_24.png"
+            isDefault="false"
+            max="true"
+            memo="报销流程中"
+            name="%editor.name.2"
+            titleToolTips="%editor.titleToolTips.2"
+            usedBy="com.sg.sales.editor.UsedBySalesWork">
+         <basicpage
+               description="%basicpage.description.9"
+               id="basicpage"
+               image="image/work_24.png"
+               title="%basicpage.title.9">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="%section.label.13">
+                  <fieldgroup
+                        columnCount="2">
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="desc"
+                           label="%text.label.7"
+                           labelVisible="true"
+                           name="desc"
+                           persistable="true"
+                           required="true"
+                           type="String"
+                           widthHint="240">
+                     </text>
+                     <navigatorSelector
+                           defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                           editable="false"
+                           id="chargerid"
+                           label="申请人"
+                           labelVisible="true"
+                           labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                           modelClass="com.sg.business.model.User"
+                           name="chargerid"
+                           navigatorId="organization.user.assignment"
+                           navigatorReturnField="userid"
+                           persistable="true"
+                           required="true">
+                     </navigatorSelector>
+                  </fieldgroup>
+                  <table
+                        ctableId="sales.cost.work.ineditor"
+                        editable="false"
+                        heightHint="200"
+                        id="costitems"
+                        isComputeField="true"
+                        label="费用项"
+                        labelVisible="false"
+                        name="costitems"
+                        persistable="false"
+                        required="false">
+                  </table>
+               </section>
+               <section
+                     expand="true"
+                     label="%view.name.4">
+                  <table
+                        ctableId="workflow.taskhistory"
+                        editable="true"
+                        heightHint="300"
+                        id="workflow.taskhistory"
+                        isComputeField="true"
+                        label="%view.name.4"
+                        labelVisible="false"
+                        name="workflow.taskhistory"
+                        persistable="false"
+                        required="false">
+                  </table>
+               </section>
+            </pagecolumn>
+            <pageAction
+                  class="com.sg.business.work.home.action.CompleteTask"
+                  icon="image/complete_g_24.png"
+                  id="finishflowtask"
+                  label="%menu.label.0"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="true"
@@ -12719,6 +13083,39 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:sales.cost.navigator">
+         <command
+               commandId="com.sg.widgets.command.edit"
+               label="编辑/查看"
+               style="push">
+         </command>
+         <separator
+               name="com.sg.sales.separator4"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.create"
+               id="create"
+               label="添加费用记录"
+               style="push">
+         </command>
+         <command
+               commandId="sales.applyexpense"
+               label="报销申请"
+               style="push">
+         </command>
+         <separator
+               name="com.sg.sales.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.sg.widgets.command.delete"
+               label="删除"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -12738,11 +13135,15 @@
             id="sales.customer.createopportunity"
             name="创建商机">
       </command>
+      <command
+            id="sales.applyexpense"
+            name="提交报销申请">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.sales.handler.LaunchSalesWorkHandler"
+            class="com.sg.sales.handler.LaunchWorkHandler"
             commandId="sales.launchwork.1">
          <enabledWhen>
             <with
@@ -12754,7 +13155,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.sales.handler.LaunchSalesWorkHandler"
+            class="com.sg.sales.handler.LaunchWorkHandler"
             commandId="sales.launchwork">
       </handler>
       <handler
@@ -12769,6 +13170,252 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="com.sg.sales.handler.LaunchExpenseApplyWorkHandler"
+            commandId="sales.applyexpense">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <count
+                     value="+">
+               </count>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.actorRule">
+      <actorRule
+            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentChecker"
+            id="payment_checker"
+            name="费用单据检查"
+            runtimeSolve="true">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentAuditor"
+            id="payment_auditor"
+            name="费用部门审核">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentApprover"
+            id="payment_approver"
+            name="费用支付批准">
+      </actorRule>
+      <actorRule
+            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentFinancial"
+            id="payment_financial"
+            name="费用财务记账">
+      </actorRule>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="pm.pmExpenseApprovalProcess.check"
+            name="票据复核"
+            persistentFields="comment,choice"
+            processDefinitionId="pm.pmExpenseApprovalProcess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="pm.pmExpenseApprovalProcess.audit"
+            name="费用审核"
+            persistentFields="comment,choice"
+            processDefinitionId="pm.pmExpenseApprovalProcess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="pm.pmExpenseApprovalProcess.approve"
+            name="费用批准"
+            persistentFields="comment,choice"
+            processDefinitionId="pm.pmExpenseApprovalProcess">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmExpenseApprovalProcess.check"
+            name="票据复核">
+         <basicpage
+               id="page1"
+               title="票据复核">
+            <pagecolumn>
+               <section
+                     label="结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmExpenseApprovalProcess.audit"
+            name="费用审核">
+         <basicpage
+               id="page1"
+               title="费用审核">
+            <pagecolumn>
+               <section
+                     label="结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmExpenseApprovalProcess.approve"
+            name="费用批准">
+         <basicpage
+               id="page1"
+               title="费用批准">
+            <pagecolumn>
+               <section
+                     label="结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否批准"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="expense.service.action"
+            name="费用申请状态服务"
+            operation="summit"
+            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+      </service>
+      <service
+            interface="expense.service.action"
+            name="费用申请状态服务"
+            operation="checked"
+            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+      </service>
+      <service
+            interface="expense.service.action"
+            name="费用申请状态服务"
+            operation="audited"
+            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+      </service>
+      <service
+            interface="expense.service.action"
+            name="费用申请状态服务"
+            operation="editing"
+            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+      </service>
+      <service
+            interface="expense.service.action"
+            name="费用申请状态服务"
+            operation="approved"
+            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+      </service>
+      <service
+            interface="expense.service.action"
+            name="费用申请状态服务"
+            operation="rejected"
+            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+      </service>
+      <service
+            interface="expense.service.action"
+            name="费用申请状态服务"
+            operation="closed"
+            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+      </service>
    </extension>
 
 </plugin>
