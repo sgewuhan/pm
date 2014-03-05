@@ -7,7 +7,7 @@
             class="com.sg.widgets.perspective.EditorHidePerspective"
             icon="image/home_w_24.png"
             id="perspective.work.home"
-            name="onlyicon">
+            name="主页">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -114,6 +114,31 @@
             id="perspective.system"
             name="%perspective.name.11">
       </perspective>
+   </extension>
+   <extension
+         point="com.mobnut.design.perspectiveDefinition">
+      <perspectiveDefinition
+            hideInHead="false"
+            id="perspective.work.home"
+            image="image/home_w_24.png"
+            name="Home"
+            showImage="true"
+            showText="false">
+      </perspectiveDefinition>
+      <perspectiveDefinition
+            hideInHead="true"
+            id="perspective.bulletinboard"
+            name="%perspective.name.10"
+            showImage="false"
+            showText="true">
+      </perspectiveDefinition>
+      <perspectiveDefinition
+            hideInHead="true"
+            id="perspective.message"
+            name="%perspective.name.12"
+            showImage="false"
+            showText="true">
+      </perspectiveDefinition>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
