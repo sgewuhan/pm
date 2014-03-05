@@ -460,4 +460,10 @@ public class User extends PrimaryObject {
 		
 		return null;
 	}
+
+	public Organization getFunctionOrganization() {
+		Organization org = getOrganization();
+		Organization functionOrganization = (Organization) org.getFunctionOrganization();
+		return functionOrganization;
+	}
 }

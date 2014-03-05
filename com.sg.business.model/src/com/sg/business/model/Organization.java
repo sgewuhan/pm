@@ -401,9 +401,9 @@ public class Organization extends PrimaryObject {
 	private void doSaveBefore() throws Exception {
 		// 检查如果是事业部类型的组织，组织代码必须填写
 		String type = getOrganizationType();
-		if (Utils.isNullOrEmpty(type)) {
-			throw new Exception(Messages.get().Organization_32 + this);
-		}
+//		if (Utils.isNullOrEmpty(type)) {
+//			throw new Exception(Messages.get().Organization_32 + this);
+//		}
 		if (ORG_TYPE_COMPANY.equals(type)
 				|| ORG_TYPE_BUSINESS_UNIT.equals(type)) {
 			String companyCode = getCompanyCode();

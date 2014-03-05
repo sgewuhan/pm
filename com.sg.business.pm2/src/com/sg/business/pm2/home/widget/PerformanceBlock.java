@@ -3,9 +3,9 @@ package com.sg.business.pm2.home.widget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 
 import com.sg.business.pm2.home.page.BudgetPage;
+import com.sg.business.pm2.home.page.ListBoardPage;
 import com.sg.business.pm2.home.page.RevenuePage;
 import com.sg.business.pm2.home.page.SchedulePage;
 import com.sg.widgets.block.TabBlock;
@@ -19,6 +19,7 @@ public class PerformanceBlock extends TabBlock {
 	private SchedulePage schedulePage;
 	private BudgetPage budgetPage;
 	private RevenuePage revenuePage;
+	private ListBoardPage listBoardPage;
 
 	public PerformanceBlock(Composite parent) {
 		super(parent, SWT.NONE);
@@ -81,6 +82,9 @@ public class PerformanceBlock extends TabBlock {
 	}
 
 	private void refreshListBoardPage() {
+		if(revenuePage.canRefresh()){
+			revenuePage.doRefresh();
+		}
 	}
 
 	private Control createRevenuePage(Composite parent) {
@@ -99,9 +103,8 @@ public class PerformanceBlock extends TabBlock {
 	}
 
 	private Control createListBoardPage(Composite parent) {
-		Label control = new Label(parent, SWT.NONE);
-		control.setText("List");
-		return control;
+		listBoardPage = new ListBoardPage(parent);
+		return listBoardPage;
 	}
 
 

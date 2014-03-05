@@ -6571,6 +6571,14 @@
             run="com.sg.business.project.setup.ProjectCreateAffiliated"
             time="0:0:0">
       </schedualJob>
+      <schedualJob
+            day="999999"
+            id="project.createaffiliated"
+            name="项目物资初始化"
+            rule="month"
+            run="com.sg.business.project.setup.ProdutInit"
+            time="0:0:0">
+      </schedualJob>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

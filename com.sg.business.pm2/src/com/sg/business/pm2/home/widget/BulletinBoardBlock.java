@@ -13,6 +13,8 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -25,14 +27,19 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.mongodb.BasicDBObject;
+import com.sg.business.home.link.BulletinBoardLinkAdapter;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
 import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.commons.model.IEditorInputFactory;
+import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
@@ -61,6 +68,7 @@ public class BulletinBoardBlock extends Block implements
 				viewer.setSelection(new StructuredSelection(new Object[]{}));
 			}
 		});
+		list.addSelectionListener(new BulletinBoardLinkAdapter());
 		viewer = new ListViewer(list);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider();
@@ -89,6 +97,26 @@ public class BulletinBoardBlock extends Block implements
 		fd.right = new FormAttachment(100,-8);
 		fd.height = 24;
 		fd.width = 24;
+		button.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				BulletinBoard bulletinboard = ModelService.createModelObject(
+						new BasicDBObject(), BulletinBoard.class);
+				try {
+					DataObjectDialog.openDialog(bulletinboard,
+							BulletinBoard.EDITOR_CREATE, true, null);
+				} catch (Exception exception) {
+					MessageUtil.showToast(exception);
+				}
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+			}
+		});
+		
 		doRefresh();
 	}
 	

@@ -198,8 +198,10 @@ public class UserExchange {
 		try {
 			// 获取用户
 			if (hrOrgId != null) {
-				result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
-						"select * from tb_nczz.pm_emp where unit = '" + hrOrgId + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+				result = SQLUtil
+						.SQL_QUERY(
+								"hr", //$NON-NLS-1$
+								"select * from tb_nczz.pm_emp where unit = '" + hrOrgId + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				String query = ""; //$NON-NLS-1$
 				DBCollection coll = DBActivator.getCollection(
@@ -208,37 +210,30 @@ public class UserExchange {
 				// 循环构造当前组织的子组织
 				while (childCursor.hasNext()) {
 					DBObject childRow = childCursor.next();
-					if (query == "") { //$NON-NLS-1$
-						query = (String) childRow
-								.get(Organization.F_ORGANIZATION_NUMBER);
-					} else {
-						query = query
-								+ "','" //$NON-NLS-1$
-								+ (String) childRow
-										.get(Organization.F_ORGANIZATION_NUMBER);
+					query = (String) childRow
+							.get(Organization.F_ORGANIZATION_NUMBER);
+					if (query != "") {
+						result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
+								"select * from tb_nczz.pm_emp where unit in ('" //$NON-NLS-1$
+										+ query + "')"); //$NON-NLS-1$
+						if (!result.isEmpty()) {
+							// 循环构造用户
+							Iterator<SQLRow> iter = result.iterator();
+							while (iter.hasNext()) {
+								row = iter.next();
+								UserExchange userExchange = new UserExchange();
+								userExchange
+										.seteMail("" + row.getValue("email")); //$NON-NLS-1$ //$NON-NLS-2$
+								userExchange
+										.setUnitId("" + row.getValue("unit")); //$NON-NLS-1$ //$NON-NLS-2$
+								userExchange
+										.setUserId("" + row.getValue("code")); //$NON-NLS-1$ //$NON-NLS-2$
+								userExchange
+										.setUserName("" + row.getValue("name")); //$NON-NLS-1$ //$NON-NLS-2$
+								childrenSet.add(userExchange);
+							}
+						}
 					}
-
-				}
-				if (query != "") { //$NON-NLS-1$
-					result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
-							"select * from tb_nczz.pm_emp where unit in ('" //$NON-NLS-1$
-									+ query + "')"); //$NON-NLS-1$
-				} else {
-					result = SQLUtil.SQL_QUERY("hr", //$NON-NLS-1$
-							"select * from tb_nczz.pm_emp "); //$NON-NLS-1$
-				}
-			}
-			if (!result.isEmpty()) {
-				// 循环构造用户
-				Iterator<SQLRow> iter = result.iterator();
-				while (iter.hasNext()) {
-					row = iter.next();
-					UserExchange userExchange = new UserExchange();
-					userExchange.seteMail("" + row.getValue("email")); //$NON-NLS-1$ //$NON-NLS-2$
-					userExchange.setUnitId("" + row.getValue("unit")); //$NON-NLS-1$ //$NON-NLS-2$
-					userExchange.setUserId("" + row.getValue("code")); //$NON-NLS-1$ //$NON-NLS-2$
-					userExchange.setUserName("" + row.getValue("name")); //$NON-NLS-1$ //$NON-NLS-2$
-					childrenSet.add(userExchange);
 				}
 			}
 		} catch (Exception e) {
@@ -315,7 +310,8 @@ public class UserExchange {
 						+ userExchange.getPmOrgByOrganizationId().getDesc();
 			}
 			if (messageContent != null) {
-				messageContent = messageContent + "<br/>" //$NON-NLS-1$
+				messageContent = messageContent
+						+ "<br/>" //$NON-NLS-1$
 						+ UserExchange.MESSAGE_CONTENT_BEFORE
 						+ userExchange.getUserName()
 						+ UserExchange.MESSAGE_CONTENT_AFTER1 + sendType

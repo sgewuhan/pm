@@ -1,15 +1,21 @@
 package com.sg.business.project.setup;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Work;
+import com.sg.business.model.Project;
+import com.sg.sqldb.utility.SQLResult;
+import com.sg.sqldb.utility.SQLRow;
+import com.sg.sqldb.utility.SQLUtil;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -22,26 +28,61 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	@Override
 	public boolean run() {
 
-		DBCollection col1 = getCol(IModelConstants.C_WORK);
-		DBCollection col2 = getCol(IModelConstants.C_WORK);
-
-		BasicDBObject ref = new BasicDBObject();
-		ref.put(Work.F_IS_PROJECT_WBSROOT,
-				new BasicDBObject().append("$ne", Boolean.TRUE));
-		ref.put(Work.F_WORK_TYPE,
-				new BasicDBObject().append("$ne", Work.WORK_TYPE_STANDLONE));
-		DBCursor cursor = col1.find(ref);
-		while (cursor.hasNext()) {
-			DBObject workData = cursor.next();
-			ObjectId parent_id = (ObjectId) workData.get(Work.F_PARENT_ID);
-			BasicDBObject query = new BasicDBObject();
-			query.put(Work.F__ID, parent_id);
-			long count = col2.count(query);
-			if (count == 0) {
-				System.out.println("ObjectId('" + workData.get(Work.F__ID)
-						+ "')");
+		SQLResult result;
+		DBCollection projectCol = getCol(IModelConstants.C_PROJECT);
+		String projectnumber = "";
+		try {
+			result = SQLUtil.SQL_QUERY("budget", //$NON-NLS-1$
+					"select * from jy2 ");
+			if (!result.isEmpty()) {
+				Iterator<SQLRow> iter = result.iterator();
+				while (iter.hasNext()) {
+					SQLRow row = iter.next();
+					projectnumber = "" + row.getValue("projectnumber");
+					BasicDBObject updateData = new BasicDBObject();
+					DBObject dbo = projectCol.findOne(new BasicDBObject()
+							.append(Project.F_PROJECT_NUMBER, projectnumber));
+					ObjectId project_id = (ObjectId) dbo.get(Project.F__ID);
+					String productItem = "" + row.getValue("productitem");
+					if (productItem != "") {
+						String[] productItems = productItem.split(",");
+						List<String> productItemList = new ArrayList<String>();
+						for (String productItemString : productItems) {
+							productItemString = productItemString.trim();
+							productItemList.add(productItemString);
+						}
+						updateData.put("_temp_itemcode", productItemList);
+					}
+					projectCol.update(new BasicDBObject().append(Project.F__ID,
+							project_id), new BasicDBObject().append("$set",
+							updateData));
+				}
 			}
+		} catch (Exception e) {
+			System.out.println(projectnumber);
+			e.printStackTrace();
 		}
+
+		// DBCollection col1 = getCol(IModelConstants.C_WORK);
+		// DBCollection col2 = getCol(IModelConstants.C_WORK);
+		//
+		// BasicDBObject ref = new BasicDBObject();
+		// ref.put(Work.F_IS_PROJECT_WBSROOT,
+		// new BasicDBObject().append("$ne", Boolean.TRUE));
+		// ref.put(Work.F_WORK_TYPE,
+		// new BasicDBObject().append("$ne", Work.WORK_TYPE_STANDLONE));
+		// DBCursor cursor = col1.find(ref);
+		// while (cursor.hasNext()) {
+		// DBObject workData = cursor.next();
+		// ObjectId parent_id = (ObjectId) workData.get(Work.F_PARENT_ID);
+		// BasicDBObject query = new BasicDBObject();
+		// query.put(Work.F__ID, parent_id);
+		// long count = col2.count(query);
+		// if (count == 0) {
+		// System.out.println("ObjectId('" + workData.get(Work.F__ID)
+		// + "')");
+		// }
+		// }
 
 		// DBCollection col = getCol();
 		// ObjectId _id = new ObjectId("525b4d18f0209adcc595131f");
