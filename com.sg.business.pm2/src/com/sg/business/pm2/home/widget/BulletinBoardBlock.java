@@ -34,7 +34,6 @@ import com.sg.business.home.link.BulletinBoardLinkAdapter;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
 import com.sg.business.resource.BusinessResource;
-import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;

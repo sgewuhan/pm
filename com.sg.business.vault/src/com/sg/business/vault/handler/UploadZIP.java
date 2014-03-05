@@ -1,17 +1,14 @@
 package com.sg.business.vault.handler;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,18 +23,14 @@ import org.eclipse.core.commands.Command;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.mobnut.db.file.RemoteFile;
-import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.sg.business.model.Container;
-import com.sg.business.model.Document;
 import com.sg.business.model.Folder;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
-import com.sg.business.model.OrganizationDistributeFileBase;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
@@ -132,6 +125,7 @@ public class UploadZIP extends AbstractNavigatorHandler {
 				zipPath, zf, ze);
 	}
 
+	@SuppressWarnings("resource")
 	private void createDocument(Organization org, IContext context,
 			ObjectId folder_id, String name, String zipPath, ZipFile zf,
 			ZipEntry ze) throws Exception {
