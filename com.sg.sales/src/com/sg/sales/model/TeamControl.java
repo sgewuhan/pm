@@ -13,6 +13,7 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 
 	public static final String F_VISITORLIST = "visitor_list";
 	public static final String F_ORIGINAL_OWNERLIST = "owner_list";
+	public static final String F_OWNER = "owner";
 	
 	@Override
 	public boolean canDelete(IContext context) {
@@ -49,6 +50,10 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 		if (userId.equals(value)) {
 			return true;
 		}
+		value = getValue(F_OWNER);
+		if (userId.equals(value)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -66,6 +71,8 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 
 	// 获得我可以访问的客户的条件
 	public static DBObject getOwnerCondition(String userId) {
+		BasicDBObject cond0 = new BasicDBObject().append(
+				F_OWNER, userId);
 		BasicDBObject cond1 = new BasicDBObject().append(
 				ISalesTeam.F_CUSTOMER_REP, userId);
 		BasicDBObject cond2 = new BasicDBObject().append(
@@ -75,11 +82,13 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 		BasicDBObject cond4 = new BasicDBObject().append(
 				ISalesTeam.F_SERVICE_MANAGER, userId);
 		BasicDBObject cond5 = new BasicDBObject().append(F_ORIGINAL_OWNERLIST, userId);
-		return new BasicDBObject().append("$or", new BasicDBObject[] { cond1,
+		return new BasicDBObject().append("$or", new BasicDBObject[] {cond0, cond1,
 				cond2, cond3, cond4, cond5 });
 	}
 
 	public static DBObject getVisitableCondition(String userId) {
+		BasicDBObject cond0 = new BasicDBObject().append(
+				F_OWNER, userId);
 		BasicDBObject cond1 = new BasicDBObject().append(
 				ISalesTeam.F_CUSTOMER_REP, userId);
 		BasicDBObject cond2 = new BasicDBObject().append(
@@ -89,8 +98,9 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 		BasicDBObject cond4 = new BasicDBObject().append(
 				ISalesTeam.F_SERVICE_MANAGER, userId);
 		BasicDBObject cond5 = new BasicDBObject().append(F_VISITORLIST, userId);
-		return new BasicDBObject().append("$or", new BasicDBObject[] { cond1,
-				cond2, cond3, cond4, cond5 });
+		BasicDBObject cond6 = new BasicDBObject().append(F_ORIGINAL_OWNERLIST, userId);
+		return new BasicDBObject().append("$or", new BasicDBObject[] {cond0, cond1,
+				cond2, cond3, cond4, cond5,cond6 });
 	}
 
 	public void addToOwnerList(String userId) {

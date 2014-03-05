@@ -14,6 +14,7 @@ import com.sg.sales.model.Company;
 import com.sg.sales.model.ICompanyRelative;
 import com.sg.sales.model.ISalesWork;
 import com.sg.sales.model.Opportunity;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.commons.model.IEditorSaveHandler;
 import com.sg.widgets.part.CurrentAccountContext;
@@ -27,7 +28,7 @@ import com.sg.widgets.viewer.ViewerControl;
  * @author zhonghua
  * 
  */
-public class LaunchSalesWorkHandler extends AbstractNavigatorHandler {
+public class LaunchWorkHandler extends AbstractNavigatorHandler {
 
 	@Override
 	protected boolean nullSelectionContinue(IWorkbenchPart part,
@@ -81,7 +82,7 @@ public class LaunchSalesWorkHandler extends AbstractNavigatorHandler {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			MessageUtil.showToast(e);
 		}
 
 	}

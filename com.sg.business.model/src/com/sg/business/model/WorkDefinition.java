@@ -75,6 +75,11 @@ public class WorkDefinition extends AbstractWork implements
 
 	private static final String POSTFIX_ASSIGNMENT = "_assignment"; //$NON-NLS-1$
 
+	/**
+	 * 用于内部工作的id，工作定义的编辑器中输入，预留于程序控制
+	 */
+	public static final String F_INTERNAL_ID = "internalid";
+
 	
 
 	/**

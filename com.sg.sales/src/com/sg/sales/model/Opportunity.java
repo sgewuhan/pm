@@ -4,7 +4,7 @@ import com.mobnut.db.model.IContext;
 
 public class Opportunity extends CompanyRelativeTeamControl implements
 		IDataStatusControl {
-	
+
 	public static final String F_STATUS = "status";
 
 	@Override
@@ -41,18 +41,47 @@ public class Opportunity extends CompanyRelativeTeamControl implements
 	}
 
 	@Override
+	public boolean canDelete(IContext context) {
+		try {
+			if (isPersistent()) {
+				checkDataStatusForRemove(context);
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return super.canDelete(context);
+	}
+
+	@Override
+	public boolean canEdit(IContext context) {
+		try {
+			if (isPersistent()) {
+				checkDataStatusForUpdate(context);
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return super.canEdit(context);
+	}
+
+	@Override
 	public void checkDataStatusForUpdate(IContext context) throws Exception {
-		Object value = getValue(F_STATUS);
-		if (!BASIC_VALUE_DEPOSITE.equals(value)) {
+		if (!BASIC_VALUE_DEPOSITE.equals(getValue(F_STATUS))) {
 			throw new Exception(MESSAGE_CANNOT_MODIFY);
-		}		
+		}
 	}
 
 	@Override
 	public void checkDataStatusForRemove(IContext context) throws Exception {
-		Object value = getValue(F_STATUS);
-		if (!BASIC_VALUE_EDITING.equals(value)) {
+		if (!BASIC_VALUE_EDITING.equals(getValue(F_STATUS))) {
 			throw new Exception(MESSAGE_CANNOT_REMOVE);
+		}
+	}
+
+	@Override
+	public void checkDataStatusForApply(IContext context) throws Exception {
+		if (!BASIC_VALUE_EDITING.equals(getValue(F_STATUS))) {
+			throw new Exception(MESSAGE_CANNOT_APPLY);
 		}
 	}
 }

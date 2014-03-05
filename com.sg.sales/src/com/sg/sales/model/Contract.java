@@ -32,24 +32,53 @@ public class Contract extends CompanyRelativeTeamControl implements IDataStatusC
 	}
 
 	@Override
+	public boolean canDelete(IContext context) {
+		try {
+			if (isPersistent()) {
+				checkDataStatusForRemove(context);
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return super.canDelete(context);
+	}
+
+	@Override
+	public boolean canEdit(IContext context) {
+		try {
+			if (isPersistent()) {
+				checkDataStatusForUpdate(context);
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return super.canEdit(context);
+	}
+	
+	
+	@Override
 	public String getStatusText() {
 		return getStringValue(F_STATUS);
 	}
 
 	@Override
 	public void checkDataStatusForRemove(IContext context) throws Exception {
-		Object value = getValue(F_STATUS);
-		if (!CONTRACT_VALUE_NOTVALID.equals(value)) {
+		if (!CONTRACT_VALUE_NOTVALID.equals(getValue(F_STATUS))) {
 			throw new Exception(MESSAGE_CANNOT_REMOVE);
 		}	
 	}
 
 	@Override
 	public void checkDataStatusForUpdate(IContext context) throws Exception {
-		Object value = getValue(F_STATUS);
-		if (!CONTRACT_VALUE_NOTVALID.equals(value)) {
+		if (!CONTRACT_VALUE_NOTVALID.equals(getValue(F_STATUS))) {
 			throw new Exception(MESSAGE_CANNOT_MODIFY);
 		}			
 	}
 
+	@Override
+	public void checkDataStatusForApply(IContext context) throws Exception {
+		if(!CONTRACT_VALUE_NOTVALID.equals(getValue(F_STATUS))){
+			throw new Exception(MESSAGE_CANNOT_APPLY);
+		}		
+	}
 }
