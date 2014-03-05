@@ -5420,30 +5420,6 @@
          </option>
       </option>
       <option
-            id="sales.option.contractstatus"
-            label="合同状态">
-         <option
-               id="1"
-               label="未生效"
-               value="未生效">
-         </option>
-         <option
-               id="2"
-               label="已生效"
-               value="已生效">
-         </option>
-         <option
-               id="3"
-               label="已废除"
-               value="已废除">
-         </option>
-         <option
-               id="4"
-               label="已关闭"
-               value="已关闭">
-         </option>
-      </option>
-      <option
             id="sales.cost.catagory"
             label="成本和费用分类"
             value="成本和费用分类">
@@ -5646,6 +5622,30 @@
                id="已否决"
                label="已否决"
                value="已否决">
+         </option>
+      </option>
+      <option
+            id="sales.option.contractstatus"
+            label="合同执行状态">
+         <option
+               id="0"
+               label="未生效"
+               value="未生效">
+         </option>
+         <option
+               id="1"
+               label="执行中"
+               value="执行中">
+         </option>
+         <option
+               id="2"
+               label="已中止"
+               value="已中止">
+         </option>
+         <option
+               id="3"
+               label="已关闭"
+               value="已关闭">
          </option>
       </option>
    </extension>
@@ -7805,6 +7805,13 @@
             useHashlookup="true"
             virtual="true">
          <column
+               column="status"
+               labelProvider="com.sg.sales.label.DataStatusLabel"
+               name="状态"
+               type="String"
+               width="40">
+         </column>
+         <column
                column="desc"
                moveable="true"
                name="描述"
@@ -7981,7 +7988,8 @@
             virtual="true">
          <column
                column="contractstatus"
-               name="执行状态">
+               name="合同状态"
+               type="String">
          </column>
          <column
                column="sn"
@@ -10229,6 +10237,19 @@
                         required="true"
                         type="String">
                   </text>
+                  <combo
+                        defaultValue="editing"
+                        editPart="Combo(Read Only)"
+                        editable="false"
+                        id="status"
+                        label="状态"
+                        labelVisible="true"
+                        name="status"
+                        option="option.data.status"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </combo>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -11246,7 +11267,7 @@
                         editPart="Combo(Read Only)"
                         editable="true"
                         id="contractstatus"
-                        label="执行状态"
+                        label="合同状态"
                         labelVisible="true"
                         name="contractstatus"
                         option="sales.option.contractstatus"

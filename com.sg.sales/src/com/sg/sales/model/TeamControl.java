@@ -8,10 +8,61 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class TeamControl extends PrimaryObject implements ISalesTeam {
 
 	public static final String F_VISITORLIST = "visitor_list";
-	public static final String F_OWNERLIST = "owner_list";
+	public static final String F_ORIGINAL_OWNERLIST = "owner_list";
+	
+	@Override
+	public boolean canDelete(IContext context) {
+		String userId = context.getAccountInfo().getConsignerId();
+		Object value = getValue(F_ORIGINAL_OWNERLIST);
+		if(value instanceof List){
+			return ((List) value).contains(userId);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean canEdit(IContext context) {
+		String userId = context.getAccountInfo().getConsignerId();
+		Object value = getValue(F_ORIGINAL_OWNERLIST);
+		if(value instanceof List){
+			if(((List) value).contains(userId)){
+				return true;
+			}
+		}
+		value = getValue(ISalesTeam.F_CUSTOMER_REP);
+		if (userId.equals(value)) {
+			return true;
+		}
+		value = getValue(ISalesTeam.F_SALES_MANAGER);
+		if (userId.equals(value)) {
+			return true;
+		}
+		value = getValue(ISalesTeam.F_SALES_SUP);
+		if (userId.equals(value)) {
+			return true;
+		}
+		value = getValue(ISalesTeam.F_SERVICE_MANAGER);
+		if (userId.equals(value)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean canRead(IContext context) {
+		String userId = context.getAccountInfo().getConsignerId();
+		Object value = getValue(F_VISITORLIST);
+		if(value instanceof List){
+			if(((List) value).contains(userId)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	// 获得我可以访问的客户的条件
 	public static DBObject getOwnerCondition(String userId) {
@@ -23,7 +74,7 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 				ISalesTeam.F_SALES_SUP, userId);
 		BasicDBObject cond4 = new BasicDBObject().append(
 				ISalesTeam.F_SERVICE_MANAGER, userId);
-		BasicDBObject cond5 = new BasicDBObject().append(F_OWNERLIST, userId);
+		BasicDBObject cond5 = new BasicDBObject().append(F_ORIGINAL_OWNERLIST, userId);
 		return new BasicDBObject().append("$or", new BasicDBObject[] { cond1,
 				cond2, cond3, cond4, cond5 });
 	}
@@ -42,16 +93,15 @@ public class TeamControl extends PrimaryObject implements ISalesTeam {
 				cond2, cond3, cond4, cond5 });
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void addToOwnerList(String userId) {
-		Object value = getValue(F_OWNERLIST);
+		Object value = getValue(F_ORIGINAL_OWNERLIST);
 		if(!(value instanceof List)){
 			value = new BasicDBList();
 		}
 		List listValue = (List)value;
 		if(!listValue.contains(userId)){
 			listValue.add(userId);
-			setValue(F_OWNERLIST, listValue);
+			setValue(F_ORIGINAL_OWNERLIST, listValue);
 		}
 	}
 	
