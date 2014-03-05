@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -301,8 +300,6 @@ public class HeadArea implements IHeadAreaSupport {
 			final IPerspectiveDescriptor p = pers[i];
 			subItem = new MenuItem(submenu, SWT.PUSH);
 			subItem.setText(p.getLabel());
-			ImageDescriptor imageDescriptor = p.getImageDescriptor();
-			subItem.setImage(imageDescriptor.createImage());
 			subItem.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {

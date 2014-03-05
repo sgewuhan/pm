@@ -54,4 +54,5 @@ public class BasicHome extends PrimaryObjectDetailFormView {
 			loadMaster();
 		}
 	}
+
 }

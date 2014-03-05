@@ -64,19 +64,19 @@ public class PerformanceBlock extends TabBlock {
 	}
 
 	private void refreshRevenuePage() {
-		if(revenuePage.canRefresh()){
+		if(revenuePage!=null&&revenuePage.canRefresh()){
 			revenuePage.doRefresh();
 		}
 	}
 
 	private void refreshSchedulePage() {
-		if(schedulePage.canRefresh()){
+		if(schedulePage!=null&&schedulePage.canRefresh()){
 			schedulePage.doRefresh();		
 		}		
 	}
 
 	private void refreshBudgetPage() {
-		if(budgetPage.canRefresh()){
+		if(budgetPage!=null&&budgetPage.canRefresh()){
 			budgetPage.doRefresh();		
 		}		
 	}
