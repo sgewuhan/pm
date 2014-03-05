@@ -28,7 +28,7 @@ public class DeptChangeReviewer implements IProcessParameterDelegator {
 			Organization functionOrg = pro.getFunctionOrganization();
 			if(functionOrg!=null){
 				List<String> users = functionOrg.getRoleAssignmentUserIds(
-						IRoleConstance.ROLE_CHANGE_APPROVER_ID, 1);
+						IRoleConstance.ROLE_CHANGE_APPROVER_ID, Organization.ROLE_SEARCH_UP);
 				if (!users.isEmpty()) {
 					return users.get(0);
 				}

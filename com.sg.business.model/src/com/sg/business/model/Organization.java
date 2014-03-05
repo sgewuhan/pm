@@ -133,12 +133,12 @@ public class Organization extends PrimaryObject {
 
 	public static final String F_FILEBASE = "filebase"; //$NON-NLS-1$
 
-	/*
+	/**
 	 * 向上级组织查找角色
 	 */
 	public static final int ROLE_SEARCH_UP = 1;
 
-	/*
+	/**
 	 * 在本机组织查找角色
 	 */
 	public static final int ROLE_NOT_SEARCH = 0;

@@ -22,7 +22,7 @@ public abstract class AbstractRoleParameterDelegator implements IProcessParamete
 			Organization org = ModelService.createModelObject(
 					Organization.class, (ObjectId) value);
 			List<String> users = org.getRoleAssignmentUserIds(
-					getRoldNumber(), 1);
+					getRoldNumber(), Organization.ROLE_SEARCH_UP);
 			if(!users.isEmpty()){
 				return users.get(0);
 			}
