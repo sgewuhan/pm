@@ -22,15 +22,14 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 
 	@Override
 	public String getHTML() {
-		
+
 		// …Ë÷√∑¢≤º»À
-		User user = UserToolkit
-				.getUserById(bulletinBoard.getPublisher());
+		User user = UserToolkit.getUserById(bulletinBoard.getPublisher());
 		String headURL = user.getFirstHeadPicURL();
-		if(headURL == null){
+		if (headURL == null) {
 			return getHTMLWithoutPic(user);
-		}else{
-			return getHTMLWithPic(user,headURL);
+		} else {
+			return getHTMLWithPic(user, headURL);
 		}
 
 	}
@@ -61,80 +60,65 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 		StringBuffer sb = new StringBuffer();
 		String imageUrl = "<img src='" + headURL //$NON-NLS-1$
 				+ "' style='position:absolute; left:0px; top:0px;' width='64' height='64' "
-//				+ " onmouseover=\"this.src='"
-//				+ FileUtil.getImageURL(BusinessResource.IMAGE_CREATEWORK_24, BusinessResource.PLUGIN_ID)
-//				+ "'\";"
-//				+ " onmouseout=\"this.src='"
-//				+headURL
-//				+ "'\";"
+				// + " onmouseover=\"this.src='"
+				// + FileUtil.getImageURL(BusinessResource.IMAGE_CREATEWORK_24,
+				// BusinessResource.PLUGIN_ID)
+				// + "'\";"
+				// + " onmouseout=\"this.src='"
+				// +headURL
+				// + "'\";"
 				+ "/>"; //$NON-NLS-1$
 		sb.append(imageUrl);
-		
-		
-		sb.append("<div style='margin:0 0 0 64;"
-				+ "cursor:pointer; "
-				+ "border-bottom:1px dotted #cdcdcd;"
-				+ "height=100%;"
-				+ "width=100%;"
-				+ "'>");
+
+		sb.append("<div style='margin:0 0 0 64;" + "cursor:pointer; "
+				+ "border-bottom:1px dotted #cdcdcd;" + "height=100%;"
+				+ "width=100%;" + "'>");
 
 		// œ‘ æ±ÍÃ‚
-		sb.append("<div style='"
-				+ "font-family:Œ¢»Ì—≈∫⁄;"
-				+ "font-size:10pt;"
-				+ "color:#4d4d4d;"
-				+ "margin:0 2;"
+		sb.append("<div style='" + "font-family:Œ¢»Ì—≈∫⁄;" + "font-size:10pt;"
+				+ "color:#4d4d4d;" + "margin:0 2;"
 				+ "display:-moz-inline-box; display:inline-block; "
-				+ "overflow:hidden;"
-				+ "width="+(width-70)+";" 
-				+ "white-space:nowrap;"
-				+ "text-overflow:ellipsis;" + "'"
-						+ ">");
+				+ "overflow:hidden;" + "width=" + (width - 70) + ";"
+				+ "white-space:nowrap;" + "text-overflow:ellipsis;" + "'" + ">");
 		sb.append(title);
 		sb.append("</div>");
 
 		// œ‘ æƒ⁄»›
-		sb.append("<div style='"
-				+ "font-family:Œ¢»Ì—≈∫⁄;"
-				+ "font-size:8pt;"
-				+ "color:#909090;"
-				+ "margin:0 2;"
-				+ "overflow:hidden;"
-				+ "white-space:nowrap;"
-				+ "width="+(width-70)+";" 
-//				+ "display:-moz-inline-box; "
-//				+ "display:inline-block; "
-				+ "text-overflow:ellipsis;" 
-				+ "'>");
+		sb.append("<div style='" + "font-family:Œ¢»Ì—≈∫⁄;" + "font-size:8pt;"
+				+ "color:#909090;" + "margin:0 2;" + "overflow:hidden;"
+				+ "white-space:nowrap;" + "width=" + (width - 70) + ";"
+				// + "display:-moz-inline-box; "
+				// + "display:inline-block; "
+				+ "text-overflow:ellipsis;" + "'>");
 		sb.append(content);
 		sb.append("</div>");
 
-		 sb.append("<div >");
-		 sb.append("<br/>");
-		 sb.append("<small style='"
-					+ "margin:0 2;"
-		 		+ "'>");
-		 sb.append(org);
-		 sb.append("  ");
-		 sb.append(publisher);
-		 sb.append("  ");
-		 sb.append(publishDate);
-		
-		 sb.append("</small></div>");
-		 
-		 //ªÿ∏¥∞¥≈•
+		sb.append("<div >");
+		sb.append("<br/>");
+		sb.append("<small style='" + "margin:0 2;" + "'>");
+		sb.append(org);
+		sb.append("  ");
+		sb.append(publisher);
+		sb.append("  ");
+		sb.append(publishDate);
+
+		sb.append("</small></div>");
+
+		// ªÿ∏¥∞¥≈•
+		sb.append("<a href=\"replybulletinboard@" + bulletinBoard.get_id().toString() //$NON-NLS-1$ 
+				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_REPLY_16,
 				BusinessResource.PLUGIN_ID));
-		sb.append("' style='position:absolute; right:4; bottom:2; display:block;' width='16' height='16' />"); //$NON-NLS-1$
+		sb.append("' style='border-style:none;position:absolute; right:4; bottom:2; display:block;' width='16' height='16' />"); //$NON-NLS-1$
+		sb.append("</a>");//$NON-NLS-1$
 
-		
 		sb.append("</div>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
 	private String getHTMLWithoutPic(User user) {
-		
+
 		int width = getWidthHint();
 
 		String publisher = user.getUsername();
@@ -160,59 +144,47 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='cursor:pointer; border-bottom:1px dotted #cdcdcd;height=100%;width="
-				+ width+"'>");
+				+ width + "'>");
 
 		// œ‘ æ±ÍÃ‚
-		sb.append("<div style='"
-				+ "font-family:Œ¢»Ì—≈∫⁄;"
-				+ "font-size:10pt;"
-				+ "color:#4d4d4d;"
-				+ "margin:0 2;"
+		sb.append("<div style='" + "font-family:Œ¢»Ì—≈∫⁄;" + "font-size:10pt;"
+				+ "color:#4d4d4d;" + "margin:0 2;"
 				+ "display:-moz-inline-box; display:inline-block; "
-				+ "overflow:hidden;" 
-				+ "width="+(width-6)+";" 
-				+ "white-space:nowrap;"
-				+ "text-overflow:ellipsis;" 
-				+ "'>");
+				+ "overflow:hidden;" + "width=" + (width - 6) + ";"
+				+ "white-space:nowrap;" + "text-overflow:ellipsis;" + "'>");
 		sb.append(title);
 		sb.append("</div>");
 
 		// œ‘ æƒ⁄»›
-		sb.append("<div style='"
-				+ "font-family:Œ¢»Ì—≈∫⁄;"
-				+ "font-size:8pt;"
-				+ "color:#909090;"
-				+ "margin:0 2;"
-				+ "overflow:hidden;"
-				+ "white-space:nowrap;"
-				+ "width="+(width-6)+";" 
-//				+ "display:-moz-inline-box; "
-//				+ "display:inline-block; "
-				+ "text-overflow:ellipsis;" 
-				+ "'>");
+		sb.append("<div style='" + "font-family:Œ¢»Ì—≈∫⁄;" + "font-size:8pt;"
+				+ "color:#909090;" + "margin:0 2;" + "overflow:hidden;"
+				+ "white-space:nowrap;" + "width=" + (width - 6) + ";"
+				// + "display:-moz-inline-box; "
+				// + "display:inline-block; "
+				+ "text-overflow:ellipsis;" + "'>");
 		sb.append(content);
 		sb.append("</div>");
 
-		 sb.append("<div >");
-		 sb.append("<br/>");
-		 sb.append("<small style='"
-					+ "margin:0 2;"
-		 		+ "'>");
-		 sb.append(org);
-		 sb.append("  ");
-		 sb.append(publisher);
-		 sb.append("  ");
-		 sb.append(publishDate);
-		
-		 sb.append("</small></div>");
-		 
-		 //ªÿ∏¥∞¥≈•
+		sb.append("<div >");
+		sb.append("<br/>");
+		sb.append("<small style='" + "margin:0 2;" + "'>");
+		sb.append(org);
+		sb.append("  ");
+		sb.append(publisher);
+		sb.append("  ");
+		sb.append(publishDate);
+
+		sb.append("</small></div>");
+
+		// ªÿ∏¥∞¥≈•
+		sb.append("<a href=\"replybulletinboard@" + bulletinBoard.get_id().toString() //$NON-NLS-1$ 
+				+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 		sb.append("<img src='"); //$NON-NLS-1$
 		sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_REPLY_16,
 				BusinessResource.PLUGIN_ID));
-		sb.append("' style='position:absolute; right:4; bottom:2; display:block;' width='16' height='16' />"); //$NON-NLS-1$
+		sb.append("' style='border-style:none;position:absolute; right:4; bottom:2; display:block;' width='16' height='16' />"); //$NON-NLS-1$
+		sb.append("</a>");//$NON-NLS-1$
 
-		
 		sb.append("</div>"); //$NON-NLS-1$
 		return sb.toString();
 	}

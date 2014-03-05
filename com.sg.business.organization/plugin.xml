@@ -1248,9 +1248,9 @@
 
    <extension
          point="org.eclipse.ui.menus">
-      <!--menuContribution
+      <menuContribution
             allPopups="false"
-            locationURI="toolbar:main?after=application.separator">
+            locationURI="popup:com.sg.widget.navigator?after=com.sg.widgets.command.edit">
          <command
                commandId="command.organization.syncHR"
                icon="image/import_24.png"
@@ -1267,7 +1267,7 @@
                </with>
             </visibleWhen>
          </command>
-      </menuContribution-->
+      </menuContribution>
       <menuContribution
             allPopups="true"
             locationURI="popup:organization.user">

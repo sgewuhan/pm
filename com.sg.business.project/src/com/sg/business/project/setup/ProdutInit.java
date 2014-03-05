@@ -20,14 +20,21 @@ public class ProdutInit implements ISchedualJobRunnable {
 	@Override
 	public boolean run() throws Exception {
 		DBCollection col = getCol();
+		DBCollection productItemCol = getCol(IModelConstants.C_PRODUCT);
 		BasicDBObject append = new BasicDBObject().append("_temp_itemcode", //$NON-NLS-1$
 				new BasicDBObject().append("$ne", null)); //$NON-NLS-1$
 		DBCursor cursor = col.find(append);
 		while (cursor.hasNext()) {
 			DBObject object = cursor.next();
 			ObjectId project_id = (ObjectId) object.get(Project.F__ID);
+			productItemCol.remove(new BasicDBObject().append(ProductItem.F_PROJECT_ID,
+					project_id));
 			BasicBSONList items = (BasicBSONList) object.get("_temp_itemcode"); //$NON-NLS-1$
 			for (Object item : items) {
+				// long count = productItemCol.count(new BasicDBObject().append(
+				// ProductItem.F_PROJECT_ID, project_id).append(
+				// ProductItem.F_DESC, item.toString()));
+				// if (count == 0) {
 				ProductItem productItem = ModelService
 						.createModelObject(ProductItem.class);
 				productItem.setValue(ProductItem.F_PROJECT_ID, project_id);
@@ -37,20 +44,23 @@ public class ProdutInit implements ISchedualJobRunnable {
 				} catch (Exception e) {
 					throw e;
 				}
+				// }
 			}
 		}
-		col.update(
-				append,
-				new BasicDBObject().append("$unset", //$NON-NLS-1$
-						new BasicDBObject().append("_temp_itemcode", 1)), //$NON-NLS-1$
+		col.update(append, new BasicDBObject().append("$unset", //$NON-NLS-1$
+				new BasicDBObject().append("_temp_itemcode", 1)), //$NON-NLS-1$
 				false, true);
-		
+
 		return true;
 	}
 
 	private DBCollection getCol() {
 		return DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT);
+	}
+
+	private DBCollection getCol(String collectionName) {
+		return DBActivator.getCollection(IModelConstants.DB, collectionName);
 	}
 
 }
