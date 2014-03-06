@@ -18,7 +18,7 @@ public class CompanyRelativeTeamControl extends TeamControl implements ICompanyR
 	
 	@Override
 	public void doInsert(IContext context) throws Exception {
-		TeamControl.checkTeam(getCompany(),this);
+		checkAndDuplicateTeamFrom(getCompany());
 		super.doInsert(context);
 	}
 

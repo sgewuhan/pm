@@ -11,7 +11,9 @@ public class CreateContractOfCompany extends CreateInParentViewerControl {
 	@Override
 	protected void initValue(PrimaryObject parent, PrimaryObject po) {
 		po.setValue(Opportunity.F_COMPANY_ID, parent.get_id());
-		TeamControl.duplicateTeam(parent,po);
+		if(parent instanceof TeamControl){
+			((TeamControl) parent).duplicateTeamTo(po);
+		}
 	}
 
 	@Override

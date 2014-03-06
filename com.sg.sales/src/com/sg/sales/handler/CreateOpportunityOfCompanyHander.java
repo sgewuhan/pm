@@ -23,7 +23,9 @@ public class CreateOpportunityOfCompanyHander extends AbstractNavigatorHandler {
 			IStructuredSelection selection) {
 		Opportunity opportunity = ModelService.createModelObject(Opportunity.class);
 		opportunity.setValue(Opportunity.F_COMPANY_ID, selected.get_id());
-		TeamControl.duplicateTeam(selected,opportunity);
+		if(selected instanceof TeamControl){
+			((TeamControl) selected).duplicateTeamTo(opportunity);
+		}
 		
 		try {
 			DataObjectDialog.openDialog(opportunity, "sales.opportunity.editor.create", true, null);

@@ -29,14 +29,22 @@ public class Company extends TeamControl implements IDataStatusControl {
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		checkDataStatusForRemove(context);
-		super.doRemove(context);
+		if (canDelete(context)) {
+			checkDataStatusForRemove(context);
+			super.doRemove(context);
+		} else {
+			throw new Exception(MESSAGE_NOT_PERMISSION);
+		}
 	}
 
 	@Override
 	public void doUpdate(IContext context) throws Exception {
-		checkDataStatusForUpdate(context);
-		super.doUpdate(context);
+		if (canEdit(context)) {
+			checkDataStatusForUpdate(context);
+			super.doUpdate(context);
+		} else {
+			throw new Exception(MESSAGE_NOT_PERMISSION);
+		}
 	}
 
 	@Override
