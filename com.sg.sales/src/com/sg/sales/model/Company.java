@@ -1,8 +1,9 @@
 package com.sg.sales.model;
 
 import com.mobnut.db.model.IContext;
+import com.sg.sales.ISalesRole;
 
-public class Company extends TeamControl implements IDataStatusControl {
+public class Company extends TeamControl implements IDataStatusControl, ISalesTeam {
 
 	public static final String F_STATUS = "status";
 
@@ -73,14 +74,16 @@ public class Company extends TeamControl implements IDataStatusControl {
 
 	@Override
 	public void checkDataStatusForUpdate(IContext context) throws Exception {
-		if (!BASIC_VALUE_DEPOSITE.equals(getValue(F_STATUS))) {
+		Object value = getValue(F_STATUS);
+		if (!BASIC_VALUE_DEPOSITE.equals(value)&&!BASIC_VALUE_EDITING.equals(value)) {
 			throw new Exception(MESSAGE_CANNOT_MODIFY);
 		}
 	}
 
 	@Override
 	public void checkDataStatusForRemove(IContext context) throws Exception {
-		if (!BASIC_VALUE_EDITING.equals(getValue(F_STATUS))) {
+		Object value = getValue(F_STATUS);
+		if (!BASIC_VALUE_EDITING.equals(value)) {
 			throw new Exception(MESSAGE_CANNOT_REMOVE);
 		}
 	}
@@ -90,6 +93,21 @@ public class Company extends TeamControl implements IDataStatusControl {
 		if (!BASIC_VALUE_EDITING.equals(getValue(F_STATUS))) {
 			throw new Exception(MESSAGE_CANNOT_APPLY);
 		}
+	}
+
+	@Override
+	protected String getPermissionRoleNumber() {
+		return ISalesRole.CRM_ADMIN_NUMBER;
+	}
+
+	@Override
+	protected String[] getVisitableFields() {
+		return VISIABLE_FIELDS;
+	}
+
+	@Override
+	protected String[] getDuplicateTeamFields() {
+		return VISIABLE_FIELDS;
 	}
 
 }

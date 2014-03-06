@@ -9091,8 +9091,6 @@
                         type="String">
                   </combo>
                </section>
-            </pagecolumn>
-            <pagecolumn>
                <section
                      expand="true"
                      label="企业规模">
@@ -9184,6 +9182,64 @@
                         required="false"
                         type="Date">
                   </dateTime>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="团队">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="cust_representative"
+                        label="客户代表"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="cust_representative"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="sales_manager"
+                        label="销售经理"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_manager"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="sales_supervisor"
+                        label="销售主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_supervisor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="service_manager"
+                        label="服务主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="service_manager"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -9645,85 +9701,6 @@
                </section>
             </pagecolumn>
          </basicpage>
-         <basicpage
-               description="负责该客户的业务团队和成员"
-               id="bascipage_manage"
-               title="团队">
-            <pagecolumn>
-               <section
-                     label="团队">
-                  <navigatorSelector
-                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
-                        editable="true"
-                        id="cust_representative"
-                        label="客户代表"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="cust_representative"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <navigatorSelector
-                        editable="true"
-                        id="sales_manager"
-                        label="销售经理"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="sales_manager"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <navigatorSelector
-                        editable="true"
-                        id="sales_supervisor"
-                        label="销售主管"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="sales_supervisor"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <navigatorSelector
-                        editable="true"
-                        id="service_manager"
-                        label="服务主管"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        labelVisible="true"
-                        name="service_manager"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
-                     label="授权访问者">
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
-                        editable="true"
-                        id="visitor_list"
-                        label="访问者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
-                        name="visitor_list"
-                        persistable="true"
-                        required="false">
-                  </list>
-               </section>
-            </pagecolumn>
-         </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="sales.contact.company.ineditor"
@@ -9759,6 +9736,22 @@
                description="系统"
                id="system"
                title="系统">
+            <pagecolumn>
+               <section
+                     expand="true"
+                     label="企业标志">
+                  <file
+                        editPart="ImageUploader(Multi)"
+                        editable="true"
+                        id="cover"
+                        label="企业Logo"
+                        labelVisible="false"
+                        name="cover"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
             <pagecolumn>
                <section
                      label="系统信息">
@@ -9811,22 +9804,6 @@
                         type="String">
                   </text>
                </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
-                     expand="true"
-                     label="企业标志">
-                  <file
-                        editPart="ImageUploader(Multi)"
-                        editable="true"
-                        id="cover"
-                        label="企业Logo"
-                        labelVisible="false"
-                        name="cover"
-                        persistable="true"
-                        required="false">
-                  </file>
-               </section>
                <section
                      expand="true"
                      label="附件">
@@ -9840,6 +9817,47 @@
                         persistable="true"
                         required="false">
                   </file>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="权限信息">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="owner"
+                        label="所有者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        editable="true"
+                        id="owner_list"
+                        label="更改授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="owner_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        editable="true"
+                        id="visitor_list"
+                        label="访问授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="visitor_list"
+                        persistable="true"
+                        required="false">
+                  </list>
                </section>
             </pagecolumn>
          </basicpage>
@@ -10944,85 +10962,6 @@
                </section>
             </pagecolumn>
          </basicpage>
-         <basicpage
-               description="负责该商机的业务团队和成员"
-               id="bascipage_manage"
-               title="团队">
-            <pagecolumn>
-               <section
-                     label="团队">
-                  <navigatorSelector
-                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
-                        editable="true"
-                        id="cust_representative"
-                        label="客户代表"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="cust_representative"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <navigatorSelector
-                        editable="true"
-                        id="sales_manager"
-                        label="销售经理"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="sales_manager"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <navigatorSelector
-                        editable="true"
-                        id="sales_supervisor"
-                        label="销售主管"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="sales_supervisor"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <navigatorSelector
-                        editable="true"
-                        id="service_manager"
-                        label="服务主管"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="service_manager"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
-                     label="授权访问者">
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
-                        editable="true"
-                        id="visitor_list"
-                        label="访问者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
-                        name="visitor_list"
-                        persistable="true"
-                        required="false">
-                  </list>
-               </section>
-            </pagecolumn>
-         </basicpage>
          <navigatorpage
                createAfterSave="true"
                id="sales.cost.opportunity.ineditor"
@@ -11085,6 +11024,105 @@
                         required="false"
                         type="String">
                   </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="权限信息">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="owner"
+                        label="所有者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        editable="true"
+                        id="owner_list"
+                        label="更改授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="owner_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        editable="true"
+                        id="visitor_list"
+                        label="访问授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="visitor_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="团队">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="cust_representative"
+                        label="客户代表"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="cust_representative"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="sales_manager"
+                        label="销售经理"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_manager"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="sales_supervisor"
+                        label="销售主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_supervisor"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="service_manager"
+                        label="服务主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="service_manager"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -11393,11 +11431,84 @@
                navigatorId="sales.purchaseorder.contract.ineditor"
                title="商品明细">
          </navigatorpage>
+         <vaultpage
+               id="files"
+               title="原稿">
+            <file
+                  editPart="OfficeFileUploader"
+                  editable="true"
+                  id="files"
+                  label="合同原件扫描档"
+                  labelVisible="true"
+                  name="files"
+                  persistable="true"
+                  required="false">
+            </file>
+         </vaultpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="sales.cost.contract.ineditor"
+               navigatorId="sales.cost.contract.ineditor"
+               title="费用">
+         </navigatorpage>
          <basicpage
                createAfterSave="true"
-               description="负责该客户的业务团队和成员"
-               id="bascipage_manage"
-               title="团队">
+               description="系统"
+               id="system"
+               title="系统">
+            <pagecolumn>
+               <section
+                     label="系统信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="_caccount"
+                        label="创建者"
+                        labelVisible="true"
+                        name="_caccount"
+                        persistable="true"
+                        presentation="com.sg.widgets.commons.valuepresentation.AccountTextPresentation"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="_cdate"
+                        label="创建时间"
+                        labelVisible="true"
+                        name="_cdate"
+                        persistable="true"
+                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="_maccount"
+                        label="修改者"
+                        labelVisible="true"
+                        name="_maccount"
+                        persistable="true"
+                        presentation="com.sg.widgets.commons.valuepresentation.AccountTextPresentation"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="_mdate"
+                        label="修改时间"
+                        labelVisible="true"
+                        name="_mdate"
+                        persistable="true"
+                        presentation="com.sg.widgets.commons.valuepresentation.DateTimeTextPresentation"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
             <pagecolumn>
                <section
                      label="团队">
@@ -11455,13 +11566,40 @@
                         required="false">
                   </navigatorSelector>
                </section>
+            </pagecolumn>
+            <pagecolumn>
                <section
-                     label="授权访问者">
+                     label="权限信息">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="owner"
+                        label="所有者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        editable="true"
+                        id="owner_list"
+                        label="更改授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        name="owner_list"
+                        persistable="true"
+                        required="false">
+                  </list>
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
                         id="visitor_list"
-                        label="访问者"
+                        label="访问授权"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
                         name="visitor_list"
@@ -11471,26 +11609,6 @@
                </section>
             </pagecolumn>
          </basicpage>
-         <vaultpage
-               id="files"
-               title="原稿">
-            <file
-                  editPart="OfficeFileUploader"
-                  editable="true"
-                  id="files"
-                  label="合同原件扫描档"
-                  labelVisible="true"
-                  name="files"
-                  persistable="true"
-                  required="false">
-            </file>
-         </vaultpage>
-         <navigatorpage
-               createAfterSave="true"
-               id="sales.cost.contract.ineditor"
-               navigatorId="sales.cost.contract.ineditor"
-               title="费用">
-         </navigatorpage>
       </editor>
       <editor
             collectionName="purchaseorder"

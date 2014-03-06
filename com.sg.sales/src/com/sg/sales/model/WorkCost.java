@@ -16,6 +16,7 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IWorkRelative;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.sales.ISalesRole;
 import com.sg.sales.Sales;
 
 public class WorkCost extends TeamControl implements IWorkRelative,
@@ -240,6 +241,21 @@ public class WorkCost extends TeamControl implements IWorkRelative,
 					true);
 		}
 
+	}
+
+	@Override
+	protected String getPermissionRoleNumber() {
+		return ISalesRole.CRM_ADMIN_NUMBER;
+	}
+
+	@Override
+	protected String[] getVisitableFields() {
+		return null;
+	}
+
+	@Override
+	protected String[] getDuplicateTeamFields() {
+		return null;
 	}
 
 }

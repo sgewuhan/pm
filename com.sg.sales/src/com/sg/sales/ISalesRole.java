@@ -19,5 +19,9 @@ public interface ISalesRole {
 	
 	public static final String SALES_SUPERVISOR_NUMBER = "T100";
 	public static final String SALES_SUPERVISOR_AUDIT_TEXT = "销售主管";
+	
+	public static final String CRM_ADMIN_NUMBER = "T901";
+	public static final String CRM_ADMIN_TEXT = "销售数据授权人";
+	
 
 }
