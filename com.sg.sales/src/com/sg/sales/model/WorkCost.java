@@ -8,7 +8,6 @@ import org.bson.types.ObjectId;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
-import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -17,13 +16,13 @@ import com.sg.business.model.IModelConstants;
 import com.sg.business.model.IWorkRelative;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.sales.ISalesRole;
 import com.sg.sales.Sales;
 
-public class WorkCost extends PrimaryObject implements IWorkRelative,
+public class WorkCost extends TeamControl implements IWorkRelative,
 		IDataStatusControl {
 
 	public static final String F_CATAGORY = "catagory";
-	public static final String F_COSTOWNERID = "owner";
 	public static final String F_FINISHDATE = "finishdate";
 	public static final String F_STARTDATE = "startdate";
 	public static final String F_STATUS = "coststatus";
@@ -51,7 +50,7 @@ public class WorkCost extends PrimaryObject implements IWorkRelative,
 	}
 
 	public String getCostOwnerId() {
-		return (String) getValue(F_COSTOWNERID);
+		return (String) getValue(F_OWNER);
 	}
 
 	public Date getFinishDate() {
@@ -93,14 +92,22 @@ public class WorkCost extends PrimaryObject implements IWorkRelative,
 
 	@Override
 	public void doRemove(IContext context) throws Exception {
-		checkDataStatusForRemove(context);
-		super.doRemove(context);
+		if (canDelete(context)) {
+			checkDataStatusForRemove(context);
+			super.doRemove(context);
+		} else {
+			throw new Exception(MESSAGE_NOT_PERMISSION);
+		}
 	}
 
 	@Override
 	public void doUpdate(IContext context) throws Exception {
-		checkDataStatusForUpdate(context);
-		super.doUpdate(context);
+		if (canEdit(context)) {
+			checkDataStatusForUpdate(context);
+			super.doUpdate(context);
+		} else {
+			throw new Exception(MESSAGE_NOT_PERMISSION);
+		}
 	}
 
 	@Override
@@ -234,6 +241,21 @@ public class WorkCost extends PrimaryObject implements IWorkRelative,
 					true);
 		}
 
+	}
+
+	@Override
+	protected String getPermissionRoleNumber() {
+		return ISalesRole.CRM_ADMIN_NUMBER;
+	}
+
+	@Override
+	protected String[] getVisitableFields() {
+		return null;
+	}
+
+	@Override
+	protected String[] getDuplicateTeamFields() {
+		return null;
 	}
 
 }
