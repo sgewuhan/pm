@@ -278,7 +278,8 @@ public class RevenuePage extends TabBlockPage implements
 		}
 		monthSales[0] = sumSales[0] - monthSales[0];
 		monthSales[1] = sumSales[1] - monthSales[1];
-		monthSales[2] = monthSales[1] / monthSales[0] * 100;
+		monthSales[2] = monthSales[0] != 0 ? (monthSales[1] / monthSales[0] * 100)
+				: 0;
 
 		query = new BasicDBObject();
 		query.put(
@@ -315,9 +316,11 @@ public class RevenuePage extends TabBlockPage implements
 				monthSales[i] = d.setScale(2, BigDecimal.ROUND_HALF_UP)
 						.doubleValue();
 			} else if (i == 2) {
-				BigDecimal d = new BigDecimal(monthSales[i]);
-				monthSales[i] = d.setScale(2, BigDecimal.ROUND_HALF_UP)
-						.doubleValue();
+				if (monthSales[i] != 0d) {
+					BigDecimal d = new BigDecimal(monthSales[i]);
+					monthSales[i] = d.setScale(2, BigDecimal.ROUND_HALF_UP)
+							.doubleValue();
+				}
 			}
 		}
 
@@ -352,10 +355,8 @@ public class RevenuePage extends TabBlockPage implements
 			}
 
 		}
-
-		sumSales[2] = sumSales[1] / sumSales[0] * 100;
-		sumSales[4] = sumSales[3] / sumSales[4] * 100;
-
+		sumSales[2] = sumSales[0] != 0 ? (sumSales[1] / sumSales[0] * 100) : 0;
+		sumSales[4] = sumSales[4] != 0 ? (sumSales[3] / sumSales[4] * 100) : 0;
 		return sumSales;
 	}
 
