@@ -5558,11 +5558,6 @@
                   value="工资">
             </option>
             <option
-                  id="奖金"
-                  label="奖金"
-                  value="奖金">
-            </option>
-            <option
                   id="补贴"
                   label="补贴"
                   value="补贴">
@@ -5576,6 +5571,21 @@
                   id="社保"
                   label="社保"
                   value="社保">
+            </option>
+            <option
+                  id="销售奖金"
+                  label="销售奖金"
+                  value="销售奖金">
+            </option>
+            <option
+                  id="项目奖金"
+                  label="项目奖金"
+                  value="项目奖金">
+            </option>
+            <option
+                  id="其他奖金"
+                  label="其他奖金"
+                  value="其他奖金">
             </option>
          </option>
          <option
@@ -8049,7 +8059,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.OwnerContractDataSet"
+            dataSet="com.sg.sales.dataset.AllContractDataSet"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -8322,12 +8332,6 @@
                column="owner"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="费用使用人"
-               type="String">
-         </column>
-         <column
-               column="work_id"
-               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
-               name="工作"
                type="String">
          </column>
          <column
@@ -8693,6 +8697,7 @@
             canEdit="false"
             canRead="false"
             dataSet="com.sg.sales.dataset.ExpenseApplyCostDataSet"
+            doubleClickListener="com.sg.sales.handler.DoubleClickToOpenCost"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -8742,12 +8747,6 @@
                column="owner"
                labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
                name="费用使用人"
-               type="String">
-         </column>
-         <column
-               column="work_id"
-               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
-               name="工作"
                type="String">
          </column>
       </table>
@@ -11679,6 +11678,7 @@
             dbName="pm2"
             id="sales.cost.editor"
             max="true"
+            memo="填报使用"
             name="费用">
          <basicpage
                id="basicpage1"
@@ -11725,87 +11725,109 @@
                         required="true"
                         type="String">
                   </text>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="startdate"
-                        label="起始时间"
-                        labelVisible="true"
-                        name="startdate"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="finishdate"
-                        label="终止时间"
-                        labelVisible="true"
-                        name="finishdate"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="pamount"
-                        label="票面金额（元）"
-                        labelVisible="true"
-                        name="pamount"
-                        persistable="true"
-                        required="true"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="hamount"
-                        label="发生金额（元）"
-                        labelVisible="true"
-                        name="hamount"
-                        persistable="true"
-                        required="true"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="aamount"
-                        label="实报金额（元）"
-                        labelVisible="true"
-                        name="aamount"
-                        persistable="true"
-                        required="true"
-                        type="Double">
-                  </text>
-                  <navigatorSelector
-                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
-                        editable="true"
-                        id="owner"
-                        label="费用使用人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="owner"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-                  <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
-                        editPart="DateDialog"
-                        editable="true"
-                        id="submitdate"
-                        label="填报日期"
-                        labelVisible="true"
-                        name="submitdate"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="locstart"
+                           label="出发地点"
+                           labelVisible="true"
+                           name="locstart"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="locend"
+                           label="目的地点"
+                           labelVisible="true"
+                           name="locend"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <dateTime
+                           editPart="DateDialog"
+                           editable="true"
+                           id="startdate"
+                           label="起始时间"
+                           labelVisible="true"
+                           name="startdate"
+                           persistable="true"
+                           required="true"
+                           type="Date">
+                     </dateTime>
+                     <dateTime
+                           editPart="DateDialog"
+                           editable="true"
+                           id="finishdate"
+                           label="终止时间"
+                           labelVisible="true"
+                           name="finishdate"
+                           persistable="true"
+                           required="true"
+                           type="Date">
+                     </dateTime>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="pamount"
+                           label="票面金额（元）"
+                           labelVisible="true"
+                           name="pamount"
+                           persistable="true"
+                           required="true"
+                           type="Double">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="hamount"
+                           label="发生金额（元）"
+                           labelVisible="true"
+                           name="hamount"
+                           persistable="true"
+                           required="true"
+                           type="Double">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="aamount"
+                           label="实报金额（元）"
+                           labelVisible="true"
+                           name="aamount"
+                           persistable="true"
+                           required="true"
+                           type="Double">
+                     </text>
+                     <navigatorSelector
+                           defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                           editable="true"
+                           id="owner"
+                           label="费用使用人"
+                           labelVisible="true"
+                           labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                           modelClass="com.sg.business.model.User"
+                           name="owner"
+                           navigatorId="organization.user.selector"
+                           navigatorReturnField="userid"
+                           persistable="true"
+                           required="true">
+                     </navigatorSelector>
+                     <dateTime
+                           defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                           editPart="DateDialog"
+                           editable="true"
+                           id="submitdate"
+                           label="填报日期"
+                           labelVisible="true"
+                           name="submitdate"
+                           persistable="true"
+                           required="true"
+                           type="Date">
+                     </dateTime>
                </section>
             </pagecolumn>
             <pagecolumn>
@@ -11821,7 +11843,6 @@
                         navigatorId="sales.work.selector.cost"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="true"
                         tooltips="选择在费用起始期间内的工作">
                   </navigatorSelector>
                   <navigatorSelector
@@ -12114,6 +12135,202 @@
                   required="false">
             </file>
          </vaultpage>
+      </editor>
+      <editor
+            collectionName="workcost"
+            dbName="pm2"
+            id="sales.cost.editor.check"
+            max="true"
+            memo="察看用"
+            name="费用">
+         <basicpage
+               id="basicpage1"
+               title="基本信息">
+            <pagecolumn>
+               <section
+                     label="基本信息">
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="catagory"
+                           label="类别"
+                           labelVisible="true"
+                           name="catagory"
+                           option="sales.cost.catagory"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="detail"
+                           isComputeField="true"
+                           label="科目"
+                           labelVisible="true"
+                           name="detail"
+                           optionProvider="com.sg.sales.field.option.DetailCatagory"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="desc"
+                        label="费用说明"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="locstart"
+                        label="出发地点"
+                        labelVisible="true"
+                        name="locstart"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="locend"
+                        label="目的地点"
+                        labelVisible="true"
+                        name="locend"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="startdate"
+                        label="起始时间"
+                        labelVisible="true"
+                        name="startdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="finishdate"
+                        label="终止时间"
+                        labelVisible="true"
+                        name="finishdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="pamount"
+                        label="票面金额（元）"
+                        labelVisible="true"
+                        name="pamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="hamount"
+                        label="发生金额（元）"
+                        labelVisible="true"
+                        name="hamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="aamount"
+                        label="实报金额（元）"
+                        labelVisible="true"
+                        name="aamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="owner"
+                        label="费用使用人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="submitdate"
+                        label="填报日期"
+                        labelVisible="true"
+                        name="submitdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="file"
+               title="补充说明">
+            <pagecolumn>
+               <section
+                     label="补充说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="400"
+                        id="appendix"
+                        label="补充说明"
+                        labelVisible="false"
+                        name="appendix"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="文件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="files"
+                        label="补充说明"
+                        labelVisible="false"
+                        name="files"
+                        persistable="true"
+                        required="false"
+                        widthHint="300">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
@@ -12451,7 +12668,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
+                  class="com.sg.business.commons.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="%command.label.2"
@@ -12459,7 +12676,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.EditWork"
+                  class="com.sg.business.commons.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -12467,7 +12684,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -12696,7 +12913,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.LogWork"
+                  class="com.sg.business.commons.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -12704,7 +12921,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.CompleteTask"
+                  class="com.sg.business.commons.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"
@@ -12712,7 +12929,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -12925,7 +13142,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.LogWork"
+                  class="com.sg.business.commons.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -12933,7 +13150,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.FinishWork"
+                  class="com.sg.business.commons.action.FinishWork"
                   icon="image/complete_g_24.png"
                   id="finishwork"
                   label="%command.label.3"
@@ -12941,7 +13158,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -13018,7 +13235,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
+                  class="com.sg.business.commons.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="提交"
@@ -13108,7 +13325,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.CompleteTask"
+                  class="com.sg.business.commons.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"

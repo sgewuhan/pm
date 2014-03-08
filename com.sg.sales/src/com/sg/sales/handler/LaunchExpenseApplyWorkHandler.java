@@ -82,6 +82,7 @@ public class LaunchExpenseApplyWorkHandler extends AbstractNavigatorHandler {
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
+		vc.doReloadData(true);
 	}
 
 	private WorkDefinition getWorkDefinifion(CurrentAccountContext context) {
