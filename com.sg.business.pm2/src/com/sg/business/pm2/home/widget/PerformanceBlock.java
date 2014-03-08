@@ -82,8 +82,8 @@ public class PerformanceBlock extends TabBlock {
 	}
 
 	private void refreshListBoardPage() {
-		if(revenuePage.canRefresh()){
-			revenuePage.doRefresh();
+		if(listBoardPage.canRefresh()){
+			listBoardPage.doRefresh();
 		}
 	}
 
