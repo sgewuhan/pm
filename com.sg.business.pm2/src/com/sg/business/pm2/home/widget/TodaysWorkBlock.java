@@ -28,11 +28,11 @@ import org.eclipse.ui.WorkbenchException;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.link.WorkLinkAdapter;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorksPerformence;
 import com.sg.business.model.dataset.work.OwnerPerformenceWorkDataSet;
 import com.sg.business.resource.nls.Messages;
-import com.sg.business.work.home.link.WorkLinkAdapter;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;

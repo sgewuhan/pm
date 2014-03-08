@@ -1,4 +1,4 @@
-package com.sg.business.work.home.link;
+package com.sg.business.commons.link;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.events.SelectionEvent;

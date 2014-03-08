@@ -1,4 +1,4 @@
-package com.sg.business.work.home.action;
+package com.sg.business.commons.action;
 
 import org.eclipse.swt.widgets.Control;
 

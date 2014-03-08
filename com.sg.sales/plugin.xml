@@ -12668,7 +12668,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
+                  class="com.sg.business.commons.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="%command.label.2"
@@ -12676,7 +12676,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.EditWork"
+                  class="com.sg.business.commons.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -12684,7 +12684,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -12913,7 +12913,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.LogWork"
+                  class="com.sg.business.commons.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -12921,7 +12921,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.CompleteTask"
+                  class="com.sg.business.commons.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"
@@ -12929,7 +12929,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -13142,7 +13142,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.LogWork"
+                  class="com.sg.business.commons.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -13150,7 +13150,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.FinishWork"
+                  class="com.sg.business.commons.action.FinishWork"
                   icon="image/complete_g_24.png"
                   id="finishwork"
                   label="%command.label.3"
@@ -13158,7 +13158,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -13235,7 +13235,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
+                  class="com.sg.business.commons.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="提交"
@@ -13325,7 +13325,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.CompleteTask"
+                  class="com.sg.business.commons.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"
