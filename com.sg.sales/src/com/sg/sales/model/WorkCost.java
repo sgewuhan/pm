@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.bson.types.ObjectId;
 
+import com.mobnut.commons.util.Utils;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
@@ -13,14 +14,16 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.AbstractWork;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.IProjectRelative;
 import com.sg.business.model.IWorkRelative;
+import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.sales.ISalesRole;
 import com.sg.sales.Sales;
 
 public class WorkCost extends TeamControl implements IWorkRelative,
-		IDataStatusControl {
+		IDataStatusControl, ICompanyRelative, IProjectRelative {
 
 	public static final String F_CATAGORY = "catagory";
 	public static final String F_FINISHDATE = "finishdate";
@@ -42,11 +45,32 @@ public class WorkCost extends TeamControl implements IWorkRelative,
 	public static final String F_REDO_BY = "redoby";
 	public static final String F_REJECT_ON = "rejecton";
 	public static final String F_REJECT_BY = "rejectby";
+	public static final String F_OPPORTUNITY_ID = "opportunity_id";
+	public static final String F_CONTRACT_ID = "contract_id";
+	public static final String F_DETAIL = "detail";
+	public static final String F_LOCSTART = "locstart";
+	public static final String F_LOCEND = "locend";
+
+	private static final String MESSAGE_ERR_CATA_EMPTY = "类别不可为空";
+	private static final String MESSAGE_ERR_CATA_REQUIRE_RELATIVE = "需要关联的数据";
+
+	private static final String CATA_SALES = "销售费用";
+	private static final String CATA_RND = "研发实施费用";
+	private static final String CATA_PURCHASE = "采购费用";
+
+	private static final String CATA_DETAIL_SALES_BONUS = "销售奖金";
+	private static final String CATA_DETAIL_TRANSPOTATION = "交通费";
+	private static final String CATA_DETAIL_PROJECT_BONUS = "项目奖金";
 
 	@Override
 	public AbstractWork getWork() {
-		return ModelService.createModelObject(Work.class,
-				(ObjectId) getValue(F_WORK_ID));
+		ObjectId workId = getWorkId();
+		return workId != null ? ModelService.createModelObject(Work.class,
+				workId) : null;
+	}
+
+	private ObjectId getWorkId() {
+		return (ObjectId) getValue(F_WORK_ID);
 	}
 
 	public String getCostOwnerId() {
@@ -108,6 +132,97 @@ public class WorkCost extends TeamControl implements IWorkRelative,
 		} else {
 			throw new Exception(MESSAGE_NOT_PERMISSION);
 		}
+	}
+
+	@Override
+	public boolean doSave(IContext context) throws Exception {
+		checkCostRelative(context);
+		return super.doSave(context);
+	}
+
+	/**
+	 * 检查费用相关数据的强制要求
+	 * 
+	 * @param context
+	 * @throws Exception
+	 */
+	private void checkCostRelative(IContext context) throws Exception {
+		Company company = getCompany();
+		Project project = getProject();
+		Contract contract = getContract();
+		Opportunity opportunity = getOpportunity();
+		Work work = (Work) getWork();
+
+		String catagory = getCatagory();
+		if (catagory.isEmpty()) {
+			throw new Exception(MESSAGE_ERR_CATA_EMPTY);
+		}
+
+		String detail = getDetail();
+		// 研发费用
+		if (!validRelative(new Object[] { work, project, contract, company },
+				new String[] { CATA_RND }, catagory, context)) {
+			throw new Exception(MESSAGE_ERR_CATA_REQUIRE_RELATIVE + ":"
+					+ "费用发生的工作，研发所属项目，销售合同和客户");
+		}
+		// 采购需要
+		if (!validRelative(new Object[] { work, contract, company },
+				new String[] { CATA_PURCHASE }, catagory, context)) {
+			throw new Exception(MESSAGE_ERR_CATA_REQUIRE_RELATIVE + ":"
+					+ "费用发生的工作，销售合同和客户");
+		}
+
+		// 销售费用
+		if (!validRelative(new Object[] { work, opportunity, company },
+				new String[] { CATA_SALES }, catagory, context)) {
+			throw new Exception(MESSAGE_ERR_CATA_REQUIRE_RELATIVE + ":"
+					+ "费用发生的工作，销售机会和客户");
+		}
+
+		// 销售奖金需要关联到合同
+		if (!validRelative(new Object[] { contract, company }, new String[] {
+				CATA_DETAIL_PROJECT_BONUS, CATA_DETAIL_SALES_BONUS }, detail,
+				context)) {
+			throw new Exception(MESSAGE_ERR_CATA_REQUIRE_RELATIVE + ":"
+					+ "销售合同和客户");
+		}
+
+		// 项目奖金需要关联到合同
+		if (!validRelative(new Object[] { contract, company, project },
+				new String[] { CATA_DETAIL_PROJECT_BONUS,
+						CATA_DETAIL_SALES_BONUS }, detail, context)) {
+			throw new Exception(MESSAGE_ERR_CATA_REQUIRE_RELATIVE + ":"
+					+ "销售合同，客户和项目");
+		}
+		
+		//交通费需要填写出发点和目标地点
+		if (!validRelative(new Object[] { getValue(F_LOCSTART), getValue(F_LOCEND)},
+				new String[] { 
+						CATA_DETAIL_TRANSPOTATION}, detail, context)) {
+			throw new Exception(MESSAGE_ERR_CATA_REQUIRE_RELATIVE + ":"
+					+ "出发地点和目标地点");
+		}
+
+	}
+
+	private boolean validRelative(Object[] objects, String[] catas,
+			String catagory, IContext context) {
+		if (Utils.inArray(catagory, catas)) {
+			for (int i = 0; i < objects.length; i++) {
+				if (objects[i] == null) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public String getCatagory() {
+		return getText(F_CATAGORY);
+	}
+
+	private String getDetail() {
+		return getText(F_DETAIL);
 	}
 
 	@Override
@@ -258,4 +373,46 @@ public class WorkCost extends TeamControl implements IWorkRelative,
 		return null;
 	}
 
+	@Override
+	public ObjectId getCompanyId() {
+		return (ObjectId) getValue(F_COMPANY_ID);
+	}
+
+	@Override
+	public Company getCompany() {
+		ObjectId _id = getCompanyId();
+		return _id == null ? null : ModelService.createModelObject(
+				Company.class, _id);
+	}
+
+	@Override
+	public Project getProject() {
+		ObjectId _id = getProjectId();
+		return _id == null ? null : ModelService.createModelObject(
+				Project.class, _id);
+	}
+
+	public ObjectId getProjectId() {
+		return (ObjectId) getValue(F_PROJECT_ID);
+	}
+
+	public Opportunity getOpportunity() {
+		ObjectId _id = getOpportunityId();
+		return _id == null ? null : ModelService.createModelObject(
+				Opportunity.class, _id);
+	}
+
+	public ObjectId getOpportunityId() {
+		return (ObjectId) getValue(F_OPPORTUNITY_ID);
+	}
+
+	public Contract getContract() {
+		ObjectId _id = getContractId();
+		return _id == null ? null : ModelService.createModelObject(
+				Contract.class, _id);
+	}
+
+	public ObjectId getContractId() {
+		return (ObjectId) getValue(F_CONTRACT_ID);
+	}
 }
