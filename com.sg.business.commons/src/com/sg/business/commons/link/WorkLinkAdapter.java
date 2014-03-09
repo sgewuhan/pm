@@ -1,4 +1,4 @@
-package com.sg.business.work.home.link;
+package com.sg.business.commons.link;
 
 import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;

@@ -1,22 +1,22 @@
-package com.sg.business.work.home.action;
+package com.sg.business.commons.action;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.commons.handler.LifeCycleActionFinish;
+import com.sg.business.commons.handler.LifeCycleActionStart;
 import com.sg.business.model.Work;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class FinishWork extends AbstractWorkDetailPageAction {
+public class StartWork extends AbstractWorkDetailPageAction {
 
 	@Override
 	public void run(Work work, Control control) {
-		LifeCycleActionFinish finish = new LifeCycleActionFinish();
+		LifeCycleActionStart start = new LifeCycleActionStart();
 		CurrentAccountContext context = new CurrentAccountContext();
 		try {
-			int code = finish.execute(work,context,Messages.get(control.getDisplay()).FinishWork,work,null);
+			int code = start.execute(work,context,Messages.get(control.getDisplay()).StartWork,work,null);
 			if(SWT.YES == code){
 				pageClear();
 			}
@@ -25,10 +25,10 @@ public class FinishWork extends AbstractWorkDetailPageAction {
 		}
 		
 	}
-
+	
 	@Override
 	protected boolean visiableWhen(Work work) {
-		return work.canFinish();
+		return work.canStart();
 	}
 
 }
