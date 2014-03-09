@@ -13768,10 +13768,10 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        id="comment"
+                        id="content"
                         label="说明"
                         labelVisible="false"
-                        name="comment"
+                        name="content"
                         persistable="true"
                         required="false"
                         type="String"
@@ -13798,11 +13798,15 @@
       <taskForm
             editorId="com.sg.sales.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,content"
             processDefinitionId="pm.pmApprove1">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="content"
+               taskFormFieldName="content">
          </processParameter>
       </taskForm>
    </extension>
