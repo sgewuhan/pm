@@ -9203,6 +9203,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"

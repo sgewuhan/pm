@@ -109,5 +109,18 @@ public class Company extends TeamControl implements IDataStatusControl, ISalesTe
 	protected String[] getDuplicateTeamFields() {
 		return VISIABLE_FIELDS;
 	}
+	
+	@Override
+	protected String[] getRoleDesignatedUserFieldName() {
+		return DESIGNATED_FIELDS_BY_ROLE;
+	}
+	
+	@Override
+	protected String getRoleNumberDesignatedUserField(String field) {
+		if(F_SALES_SUP.equals(field)){
+			return ISalesRole.SALES_SUPERVISOR_NUMBER;
+		}
+		return null;
+	}
 
 }
