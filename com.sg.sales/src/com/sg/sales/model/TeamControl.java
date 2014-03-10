@@ -137,7 +137,7 @@ public abstract class TeamControl extends PrimaryObject {
 				}
 			}
 		}
-
+		setValue(F_OWNERLIST, ownerable);
 	}
 
 	protected abstract String getPermissionRoleNumber();
