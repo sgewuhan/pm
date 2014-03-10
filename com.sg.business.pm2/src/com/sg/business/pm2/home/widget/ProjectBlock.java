@@ -1,5 +1,6 @@
 package com.sg.business.pm2.home.widget;
 
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -122,8 +123,11 @@ public class ProjectBlock extends Block {
 				// 默认的项目经理是当前的用户
 				po.setValue(Project.F_CHARGER, userId);
 				try {
-					DataObjectWizard.open(po,
+					DataObjectWizard dw = DataObjectWizard.open(po,
 							inputFactory.getEditorConfig("create"), true, null);
+					if (dw.getResult() == Window.OK) {
+						doRefresh();
+					}
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 				}

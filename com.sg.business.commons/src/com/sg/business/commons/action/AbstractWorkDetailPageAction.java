@@ -16,38 +16,39 @@ import com.sg.widgets.part.editor.fields.IValidable;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 import com.sg.widgets.part.view.SideBarNavigator;
 
-public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorAction{
-	
+public abstract class AbstractWorkDetailPageAction implements
+		IDataObjectEditorAction {
+
 	private Locale locale;
 	private IContext context;
 	private Control control;
 	private PrimaryObjectEditorInput input;
 	private IValidable validable;
 
-	public AbstractWorkDetailPageAction(){
+	public AbstractWorkDetailPageAction() {
 		this.context = new CurrentAccountContext();
 		this.locale = RWT.getLocale();
 	}
-	
+
 	public Locale getLocale() {
 		return locale;
 	}
-	
+
 	public IContext getContext() {
 		return context;
 	}
-	
+
 	public PrimaryObjectEditorInput getInput() {
 		return input;
 	}
-	
+
 	public IValidable getValidable() {
 		return validable;
 	}
-	
+
 	@Override
 	final public boolean visiableWhen(PrimaryObjectEditorInput input) {
-		return visiableWhen((Work)input.getData());
+		return visiableWhen((Work) input.getData());
 	}
 
 	protected boolean visiableWhen(Work work) {
@@ -56,9 +57,9 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 
 	@Override
 	final public boolean enableWhen(PrimaryObjectEditorInput input) {
-		return enableWhen((Work)input.getData());
+		return enableWhen((Work) input.getData());
 	}
-	
+
 	protected boolean enableWhen(Work work) {
 		return true;
 	}
@@ -66,41 +67,55 @@ public abstract class AbstractWorkDetailPageAction implements IDataObjectEditorA
 	@Override
 	public void run(PrimaryObjectEditorInput input, Control control) {
 		this.input = input;
-		run((Work)input.getData(),control);
+		run((Work) input.getData(), control);
 	}
 
 	public abstract void run(Work data, Control control);
-	
+
 	public void pageClear() {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		SideBarNavigator view = (SideBarNavigator) page.findView("homenavigator");
-		if(view!=null){
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+		SideBarNavigator view = (SideBarNavigator) page
+				.findView("homenavigator");
+		if (view != null) {
 			view.doRefresh();
 		}
-		PrimaryObjectDetailFormView view2 = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
+		PrimaryObjectDetailFormView view2 = (PrimaryObjectDetailFormView) page
+				.findView("pm2.work.detail");
 		view2.cleanUI();
 		view2.cleanInput();
 		view2.goHome();
 	}
-	
+
 	public void pageReload() {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view2 = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
-		view2.loadMaster();
+		pageReload(false);
 	}
-	
+
+	/**
+	 * 是否重新加载input, 当编辑器或者input可能发生改变时 reloadInput设置为true
+	 * 
+	 * @param reloadInput
+	 */
+	public void pageReload(boolean reloadInput) {
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+		PrimaryObjectDetailFormView view2 = (PrimaryObjectDetailFormView) page
+				.findView("pm2.work.detail");
+		view2.loadMaster(reloadInput);
+	}
+
 	@Override
 	public void setControl(Control control) {
 		this.control = control;
 	}
-	
+
 	public Control getControl() {
 		return control;
 	}
-	
+
 	@Override
 	public void setValidable(IValidable validable) {
 		this.validable = validable;
 	}
-	
+
 }

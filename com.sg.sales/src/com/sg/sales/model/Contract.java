@@ -1,6 +1,7 @@
 package com.sg.sales.model;
 
 import com.mobnut.db.model.IContext;
+import com.sg.sales.ISalesRole;
 
 public class Contract extends CompanyRelativeTeamControl implements IDataStatusControl{
 
@@ -13,7 +14,7 @@ public class Contract extends CompanyRelativeTeamControl implements IDataStatusC
 		//合同的签订人需要自动加为所有者
 		String signById = (String) getValue(F_SIGNBY);
 		if(signById!=null){
-			addToOwnerList(signById);
+			addToPermissionOwnerList(signById);
 		}
 		super.doInsert(context);
 	}
@@ -87,5 +88,18 @@ public class Contract extends CompanyRelativeTeamControl implements IDataStatusC
 		if(!CONTRACT_VALUE_NOTVALID.equals(getValue(F_STATUS))){
 			throw new Exception(MESSAGE_CANNOT_APPLY);
 		}		
+	}
+	
+	@Override
+	protected String[] getRoleDesignatedUserFieldName() {
+		return DESIGNATED_FIELDS_BY_ROLE;
+	}
+	
+	@Override
+	protected String getRoleNumberDesignatedUserField(String field) {
+		if(F_SALES_SUP.equals(field)){
+			return ISalesRole.SALES_SUPERVISOR_NUMBER;
+		}
+		return null;
 	}
 }
