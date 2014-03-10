@@ -13,7 +13,7 @@ public class Contract extends CompanyRelativeTeamControl implements IDataStatusC
 		//合同的签订人需要自动加为所有者
 		String signById = (String) getValue(F_SIGNBY);
 		if(signById!=null){
-			addToOwnerList(signById);
+			addToPermissionOwnerList(signById);
 		}
 		super.doInsert(context);
 	}
