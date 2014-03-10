@@ -270,6 +270,7 @@ public class WorkCost extends TeamControl implements IWorkRelative,
 		work.setValue(Work.F_PLAN_START, planstart);
 		work.setValue(Work.F_PLAN_FINISH, planfinish);
 		work.setValue(Work.F_EXPENSE_FORBIDDEN, Boolean.TRUE);// 设置本工作为禁止费用
+		work.setValue(ISalesWork.F_EXPENSE_SN, String.format("%1$ty%1$tm", new Date()));
 		work.doSave(context);
 
 		ObjectId workId = work.get_id();
