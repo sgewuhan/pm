@@ -24,6 +24,7 @@ import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.toolkit.UserToolkit;
 
+@SuppressWarnings("restriction")
 public class ListBoard {
 
 	private TableViewer leftViewer;

@@ -18,7 +18,7 @@ public class StartWork extends AbstractWorkDetailPageAction {
 		try {
 			int code = start.execute(work,context,Messages.get(control.getDisplay()).StartWork,work,null);
 			if(SWT.YES == code){
-				pageClear();
+				pageReload(true);
 			}
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
