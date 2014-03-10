@@ -9189,6 +9189,7 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
@@ -9202,6 +9203,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
@@ -9215,6 +9217,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
@@ -9228,6 +9231,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
@@ -9824,6 +9828,7 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="owner"
                         label="所有者"
                         labelVisible="true"
@@ -9838,6 +9843,7 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
@@ -9849,6 +9855,7 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
@@ -11031,6 +11038,7 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="owner"
                         label="所有者"
                         labelVisible="true"
@@ -11045,6 +11053,7 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
@@ -11056,6 +11065,7 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
@@ -11072,6 +11082,7 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
@@ -11085,6 +11096,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
@@ -11098,6 +11110,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
@@ -11111,6 +11124,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
@@ -11514,6 +11528,7 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
@@ -11527,6 +11542,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
@@ -11540,6 +11556,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
@@ -11553,6 +11570,7 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
@@ -11572,6 +11590,7 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="owner"
                         label="所有者"
                         labelVisible="true"
@@ -11586,6 +11605,7 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
@@ -11597,6 +11617,7 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.editable.TeamControledEditable"
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"

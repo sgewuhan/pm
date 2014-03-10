@@ -62,7 +62,7 @@ public class HeadArea implements IHeadAreaSupport {
 	public HeadArea() {
 
 	}
-
+	
 	@Override
 	public Composite creatHeadAreaPart(Composite parent) {
 		content = parent;
@@ -167,7 +167,7 @@ public class HeadArea implements IHeadAreaSupport {
 			}
 		}
 	}
-
+	
 	private Button createSearch(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
@@ -510,10 +510,13 @@ public class HeadArea implements IHeadAreaSupport {
 		text.setLayoutData(fd);
 		text.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
 		text.setText("绩效导向\n项目管理平台");
+//		text.setText("业务管理\n云平台");
 		fd.left = new FormAttachment(sep, 4);
 		fd.top = new FormAttachment(50, -20);
 		fd.height = 40;
 		fd.right = new FormAttachment(100, -20);
 	}
+	
+	
 
 }

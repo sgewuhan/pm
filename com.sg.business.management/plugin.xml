@@ -1497,6 +1497,15 @@
                            persistable="true"
                            required="false">
                      </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="launchforbidden"
+                           label="禁止手工发起"
+                           labelVisible="true"
+                           name="launchforbidden"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
                   </fieldgroup>
                </section>
             </pagecolumn>
@@ -1639,6 +1648,15 @@
                            label="%checkbox.label.13"
                            labelVisible="true"
                            name="defaultselected"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="launchforbidden"
+                           label="禁止手工发起"
+                           labelVisible="true"
+                           name="launchforbidden"
                            persistable="true"
                            required="false">
                      </checkbox>

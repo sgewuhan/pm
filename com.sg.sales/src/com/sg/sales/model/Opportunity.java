@@ -1,6 +1,7 @@
 package com.sg.sales.model;
 
 import com.mobnut.db.model.IContext;
+import com.sg.sales.ISalesRole;
 
 public class Opportunity extends CompanyRelativeTeamControl implements
 		IDataStatusControl {
@@ -91,5 +92,18 @@ public class Opportunity extends CompanyRelativeTeamControl implements
 		if (!BASIC_VALUE_EDITING.equals(getValue(F_STATUS))) {
 			throw new Exception(MESSAGE_CANNOT_APPLY);
 		}
+	}
+	
+	@Override
+	protected String[] getRoleDesignatedUserFieldName() {
+		return DESIGNATED_FIELDS_BY_ROLE;
+	}
+	
+	@Override
+	protected String getRoleNumberDesignatedUserField(String field) {
+		if(F_SALES_SUP.equals(field)){
+			return ISalesRole.SALES_SUPERVISOR_NUMBER;
+		}
+		return null;
 	}
 }
