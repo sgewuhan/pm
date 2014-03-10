@@ -7,18 +7,10 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 
-public class POItem extends PrimaryObject {
+public class Income extends PrimaryObject {
 
 	public static final String F_CONTRACT_ID = "contract_id";
-
-	public double getSummary() {
-		Double price = getDoubleValue("unitprice");
-		Double qty = getDoubleValue("qty");
-		if (price == null || qty == null) {
-			return 0d;
-		}
-		return price.doubleValue() * qty.doubleValue();
-	}
+	public static final String F_AMOUNT = "amount";
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {
@@ -27,16 +19,20 @@ public class POItem extends PrimaryObject {
 			// 更新合同总金额
 			Contract contract = getContract();
 			Assert.isNotNull(contract);
-			contract.doCalculateAmountSummary();
+			contract.doCalculateIncomeSummary();
 		}
 		return b;
 	}
-
+	
 	public Contract getContract() {
 		ObjectId id = (ObjectId) getValue(F_CONTRACT_ID);
-		if (id == null) {
+		if(id == null){
 			return null;
 		}
 		return ModelService.createModelObject(Contract.class, id);
+	}
+
+	public double getAmount() {
+		return getDoubleValue(F_AMOUNT);
 	}
 }

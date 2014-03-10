@@ -5696,6 +5696,11 @@
             collection="workcost"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.sales.model.Income"
+            collection="income"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
@@ -6735,6 +6740,14 @@
          <createEditor
                createHandler="com.sg.sales.handler.CreatePOIOfContract"
                editorId="sales.purchaseorder.editor">
+         </createEditor>
+      </navigator>
+      <navigator
+            id="sales.income.contract.ineditor"
+            table="sales.income.contract.ineditor">
+         <createEditor
+               createHandler="com.sg.sales.handler.CreateIncomeOfContract"
+               editorId="sales.income.editor">
          </createEditor>
       </navigator>
       <navigator
@@ -8215,6 +8228,44 @@
                name="合计"
                type="Double"
                width="200">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.dataset.ContractIncomeDataSet"
+            editorId="sales.income.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.income.contract.ineditor"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            popupMenu="popup:com.sg.widget.navigator"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               name="说明"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="transferdate"
+               name="入账日期"
+               type="Date"
+               width="80">
+         </column>
+         <column
+               column="amount"
+               labelProvider="com.sg.widgets.commons.labelprovider.CurrencyLabelProvider"
+               name="到款金额"
+               type="Double"
+               width="140">
          </column>
       </table>
       <table
@@ -11409,6 +11460,18 @@
                         required="true"
                         type="String">
                   </combo>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="iamount"
+                        label="回款金额（元）"
+                        labelVisible="true"
+                        name="iamount"
+                        persistable="true"
+                        required="false"
+                        textMessage="&lt;自动计算&gt;"
+                        type="Double">
+                  </text>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -11454,25 +11517,17 @@
                navigatorId="sales.purchaseorder.contract.ineditor"
                title="商品明细">
          </navigatorpage>
-         <vaultpage
-               id="files"
-               title="原稿">
-            <file
-                  editPart="OfficeFileUploader"
-                  editable="true"
-                  id="files"
-                  label="合同原件扫描档"
-                  labelVisible="true"
-                  name="files"
-                  persistable="true"
-                  required="false">
-            </file>
-         </vaultpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="income"
+               navigatorId="sales.income.contract.ineditor"
+               title="回款明细">
+         </navigatorpage>
          <navigatorpage
                createAfterSave="true"
                id="sales.cost.contract.ineditor"
                navigatorId="sales.cost.contract.ineditor"
-               title="费用">
+               title="费用和成本">
          </navigatorpage>
          <basicpage
                createAfterSave="true"
@@ -11530,6 +11585,19 @@
                         required="false"
                         type="String">
                   </text>
+               </section>
+               <section
+                     label="合同原件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="files"
+                        label="合同原件扫描档"
+                        labelVisible="true"
+                        name="files"
+                        persistable="true"
+                        required="false">
+                  </file>
                </section>
             </pagecolumn>
             <pagecolumn>
@@ -12359,6 +12427,60 @@
                         required="false"
                         widthHint="300">
                   </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="income"
+            dbName="pm2"
+            id="sales.income.editor"
+            isDefault="true"
+            labelFieldName="desc"
+            name="回款">
+         <basicpage
+               description="商机的基本信息"
+               id="com.sg.crm.basicpage"
+               title="基本">
+            <pagecolumn
+                  id="1">
+               <section
+                     expand="true"
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="amount"
+                        label="金额"
+                        labelVisible="true"
+                        name="amount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="transferdate"
+                        label="入账日期"
+                        labelVisible="true"
+                        name="transferdate"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="说明"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>

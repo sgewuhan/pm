@@ -16,7 +16,9 @@ public class Contract extends CompanyRelativeTeamControl implements
 
 	public static final String F_STATUS = "contractstatus";
 
-	private static final String F_AMOUNT = "amount";
+	public static final String F_AMOUNT = "amount";
+	
+	public static final String F_INCOME = "iamount";
 
 	@Override
 	public void doInsert(IContext context) throws Exception {
@@ -111,21 +113,48 @@ public class Contract extends CompanyRelativeTeamControl implements
 		return null;
 	}
 
-	public void doCalculateAndSummary() {
+	public void doCalculateAmountSummary() {
 		List<PrimaryObject> poitems = getRelationById(F__ID,
 				POItem.F_CONTRACT_ID, POItem.class);
 		double summary = 0d;
-		if(poitems!=null&&poitems.size()>0){
+		if (poitems != null && poitems.size() > 0) {
 			for (PrimaryObject po : poitems) {
-				POItem poi = (POItem)po;
-				summary+=poi.getSummary();
+				POItem poi = (POItem) po;
+				summary += poi.getSummary();
 			}
 		}
 		DBCollection col = getCollection();
-		DBObject newData = col.findAndModify(
-				new BasicDBObject().append(F__ID, get_id()), null, null, false,
-				new BasicDBObject().append("$set", new BasicDBObject().append(F_AMOUNT, new Double(summary))), true, false); //$NON-NLS-1$
+		DBObject newData = col
+				.findAndModify(
+						new BasicDBObject().append(F__ID, get_id()),
+						null,
+						null,
+						false,
+						new BasicDBObject()
+								.append("$set", new BasicDBObject().append(F_AMOUNT, new Double(summary))), true, false); //$NON-NLS-1$
 		set_data(newData);
-		
+
+	}
+
+	public void doCalculateIncomeSummary() {
+		List<PrimaryObject> poitems = getRelationById(F__ID,
+				Income.F_CONTRACT_ID, Income.class);
+		double summary = 0d;
+		if (poitems != null && poitems.size() > 0) {
+			for (PrimaryObject po : poitems) {
+				Income ic = (Income) po;
+				summary += ic.getAmount();
+			}
+		}
+		DBCollection col = getCollection();
+		DBObject newData = col
+				.findAndModify(
+						new BasicDBObject().append(F__ID, get_id()),
+						null,
+						null,
+						false,
+						new BasicDBObject()
+								.append("$set", new BasicDBObject().append(F_INCOME, new Double(summary))), true, false); //$NON-NLS-1$
+		set_data(newData);
 	}
 }
