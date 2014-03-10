@@ -4672,6 +4672,14 @@
                   style="push">
             </pageAction>
             <pageAction
+                  class="com.sg.business.commons.action.EditWork"
+                  icon="image/edit_g_24.png"
+                  id="editwork"
+                  label="%command.label.7"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
                   class="com.sg.business.commons.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
@@ -4841,6 +4849,14 @@
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
+                  class="com.sg.business.commons.action.EditWork"
+                  icon="image/edit_g_24.png"
+                  id="editwork"
+                  label="%command.label.7"
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>
@@ -5146,6 +5162,14 @@
                   </tree>
                </section>
             </pagecolumn>
+            <pageAction
+                  class="com.sg.business.commons.action.EditWork"
+                  icon="image/edit_g_24.png"
+                  id="editwork"
+                  label="%command.label.7"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
             <pageAction
                   class="com.sg.business.commons.action.FinishWork"
                   icon="image/complete_g_24.png"

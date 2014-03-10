@@ -13752,5 +13752,59 @@
             serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
       </service>
    </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="com.sg.sales.approve"
+            name="批准">
+         <basicpage
+               id="com.sg.sales.basicpage2"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="com.sg.sales.approve"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="pm.pmApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
 
 </plugin>
