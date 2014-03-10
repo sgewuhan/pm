@@ -44,16 +44,22 @@ public class LaunchableWorkSet extends DataSetFactory {
 			org = (Organization) org.getParentOrganization();
 		}
 		DBCursor cur = workdCol.find(new BasicDBObject()
-			.append(WorkDefinition.F_ORGANIZATION_ID,new BasicDBObject().append("$in", orgidList))
-			.append(WorkDefinition.F_ACTIVATED,Boolean.TRUE)
-			.append(WorkDefinition.F_WORK_TYPE,WorkDefinition.WORK_TYPE_STANDLONE)
-			.append(WorkDefinition.F_INTERNAL_TYPE,new BasicDBObject().append("$nin", new String[]{WorkDefinition.INTERNAL_TYPE_CHANGE,WorkDefinition.INTERNAL_TYPE_CHANGEITEM,WorkDefinition.INTERNAL_TYPE_CHANGERANGE}))
-			);
+				.append(WorkDefinition.F_ORGANIZATION_ID,new BasicDBObject().append("$in", orgidList))
+				.append(WorkDefinition.F_ACTIVATED, Boolean.TRUE)
+				.append(WorkDefinition.F_LAUNCHABLE, new BasicDBObject().append("$ne", Boolean.TRUE))
+				.append(WorkDefinition.F_WORK_TYPE,WorkDefinition.WORK_TYPE_STANDLONE)
+				.append(WorkDefinition.F_INTERNAL_TYPE,
+						new BasicDBObject().append("$nin", new String[] {
+								WorkDefinition.INTERNAL_TYPE_CHANGE,
+								WorkDefinition.INTERNAL_TYPE_CHANGEITEM,
+								WorkDefinition.INTERNAL_TYPE_CHANGERANGE })));
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-		cur.sort(new BasicDBObject().append(WorkDefinition.F_ORGANIZATION_ID, 1));
-		while(cur.hasNext()){
+		cur.sort(new BasicDBObject()
+				.append(WorkDefinition.F_ORGANIZATION_ID, 1));
+		while (cur.hasNext()) {
 			DBObject dbo = cur.next();
-			result.add(ModelService.createModelObject(dbo, WorkDefinition.class));
+			result.add(ModelService
+					.createModelObject(dbo, WorkDefinition.class));
 		}
 		return result;
 	}
