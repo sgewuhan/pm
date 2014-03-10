@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home;
+package com.sg.sales.home;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;

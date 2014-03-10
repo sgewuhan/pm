@@ -8,6 +8,7 @@ import org.osgi.framework.BundleListener;
 import com.mobnut.admin.dataset.Setting;
 import com.mobnut.portal.Portal;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.WorkflowSynchronizer;
 
 /**
  * The activator class controls the plug-in life cycle

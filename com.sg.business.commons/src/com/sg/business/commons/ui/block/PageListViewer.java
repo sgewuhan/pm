@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home.page;
+package com.sg.business.commons.ui.block;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home.widget;
+package com.sg.business.commons.ui.block;
 
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;

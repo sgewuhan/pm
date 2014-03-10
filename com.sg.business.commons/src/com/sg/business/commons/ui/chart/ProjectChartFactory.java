@@ -1,4 +1,4 @@
-package com.sg.business.visualization.chart;
+package com.sg.business.commons.ui.chart;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

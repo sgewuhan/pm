@@ -1,13 +1,9 @@
-package com.sg.business.pm2.home.widget;
+package com.sg.business.commons.ui.block;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.pm2.home.page.BudgetPage;
-import com.sg.business.pm2.home.page.ListBoardPage;
-import com.sg.business.pm2.home.page.RevenuePage;
-import com.sg.business.pm2.home.page.SchedulePage;
 import com.sg.widgets.block.TabBlock;
 
 public class PerformanceBlock extends TabBlock {

@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home;
+package com.sg.business.commons.ui.sidebar;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

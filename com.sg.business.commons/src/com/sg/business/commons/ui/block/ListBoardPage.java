@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home.page;
+package com.sg.business.commons.ui.block;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +21,6 @@ import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.pm2.home.widget.ListBoard;
 import com.sg.widgets.block.TabBlockPage;
 
 public class ListBoardPage extends TabBlockPage {

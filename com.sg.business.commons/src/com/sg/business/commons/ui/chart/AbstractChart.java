@@ -1,4 +1,4 @@
-package com.sg.business.visualization.chart;
+package com.sg.business.commons.ui.chart;
 
 import org.eclipse.birt.chart.model.attribute.ColorDefinition;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;

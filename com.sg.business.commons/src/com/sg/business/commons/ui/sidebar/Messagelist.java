@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home;
+package com.sg.business.commons.ui.sidebar;
 
 import com.mobnut.db.model.DataSetFactory;
 import com.sg.business.model.dataset.message.MessageSet;

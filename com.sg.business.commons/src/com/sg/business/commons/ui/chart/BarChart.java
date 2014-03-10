@@ -1,4 +1,4 @@
-package com.sg.business.visualization.chart;
+package com.sg.business.commons.ui.chart;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;

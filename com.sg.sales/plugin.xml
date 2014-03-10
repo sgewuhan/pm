@@ -5706,6 +5706,12 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            icon="image/home_w_24.png"
+            id="sales.home"
+            name="主页">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="sales.customer"
             name="客户">
       </perspective>
@@ -5727,6 +5733,13 @@
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
+      <scenario
+            id="sales.home"
+            name="销售主页">
+         <perspective
+               default="true"
+               id="perspective.sales.home"></perspective>
+      </scenario>
       <scenario
             id="sales.scenario"
             index="20"
@@ -5802,6 +5815,43 @@
                standalone="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="sales.home">
+         <view
+               closeable="false"
+               id="homenavigator"
+               minimized="true"
+               moveable="false"
+               ratio="0.3"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="sales.home"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="top"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="com.mobnut.design.perspectiveDefinition">
+      <perspectiveDefinition
+            hideInHead="false"
+            id="sales.home"
+            image="image/home_w_24.png"
+            name="Home"
+            showImage="true"
+            showText="false">
+      </perspectiveDefinition>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -5833,6 +5883,12 @@
             class="com.sg.widgets.part.view.TableNavigator"
             id="sales.cost.navigator"
             name="费用"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.sales.home.SalesHome"
+            id="sales.home"
+            name="销售主页面板"
             restorable="true">
       </view>
    </extension>

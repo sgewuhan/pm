@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home.widget;
+package com.sg.business.commons.ui.block;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ import org.eclipse.ui.WorkbenchException;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
-import com.sg.business.home.link.BulletinBoardLinkAdapter;
+import com.sg.business.commons.link.BulletinBoardLinkAdapter;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
 import com.sg.business.resource.BusinessResource;

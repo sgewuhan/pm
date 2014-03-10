@@ -1,4 +1,4 @@
-package com.sg.business.work;
+package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,9 +19,6 @@ import com.mobnut.portal.Portal;
 import com.mongodb.BasicDBObject;
 import com.sg.bpm.workflow.WorkflowService;
 import com.sg.bpm.workflow.runtime.Workflow;
-import com.sg.business.model.User;
-import com.sg.business.model.UserTask;
-import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.UserDataSetFactory;
 import com.sg.business.resource.nls.Messages;
 

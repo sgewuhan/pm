@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home.page;
+package com.sg.business.commons.ui.block;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -27,12 +27,12 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.commons.ui.chart.CommonChart;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.model.Work;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.resource.nls.Messages;
-import com.sg.business.visualization.chart.CommonChart;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.TabBlockPage;
 import com.sg.widgets.commons.model.IEditorInputFactory;
