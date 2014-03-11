@@ -263,7 +263,8 @@ public class SalesBasicPage extends TabBlockPage implements
 		sb.append("<div style='" + "font-size:11pt;" + "color:#6a6a6a;"
 				+ "border-bottom:1px dotted #cdcdcd;"
 				+ "display:-moz-inline-box; display:inline-block; "
-				+ "height:100%;" + "width:100%;" + "'>");
+				+ "width:280;" 
+				+ "'>");
 		sb.append("<div style='margin:0 0 0 8;'>");
 		sb.append(text);
 		sb.append("</div>");
