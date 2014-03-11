@@ -507,7 +507,7 @@
                taskFormFieldName="reviewer_admin">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -771,7 +771,7 @@
                taskFormFieldName="reviewer_admin">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>

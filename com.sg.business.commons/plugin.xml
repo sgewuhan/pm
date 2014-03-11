@@ -986,7 +986,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.CreateWorkDefinition"
+            class="com.sg.business.commons.operation.handler.CreateWorkDefinition"
             commandId="work.create">
          <activeWhen>
             <with
@@ -1002,7 +1002,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CreateWork"
+            class="com.sg.business.commons.operation.handler.CreateWork"
             commandId="work.create">
          <activeWhen>
             <with
@@ -1018,7 +1018,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.EditWorkDefinition"
+            class="com.sg.business.commons.operation.handler.EditWorkDefinition"
             commandId="work.edit">
          <activeWhen>
             <with
@@ -1034,7 +1034,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.EditWork"
+            class="com.sg.business.commons.operation.handler.EditWork"
             commandId="work.edit">
          <activeWhen>
             <with
@@ -1050,43 +1050,43 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.RemoveWork"
+            class="com.sg.business.commons.operation.handler.RemoveWork"
             commandId="work.remove">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveUp"
+            class="com.sg.business.commons.operation.handler.WorkMoveUp"
             commandId="work.moveup">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveDown"
+            class="com.sg.business.commons.operation.handler.WorkMoveDown"
             commandId="work.movedown">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveLeft"
+            class="com.sg.business.commons.operation.handler.WorkMoveLeft"
             commandId="work.moveleft">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveRight"
+            class="com.sg.business.commons.operation.handler.WorkMoveRight"
             commandId="work.moveright">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.ShowWorkCompase"
+            class="com.sg.business.commons.operation.handler.ShowWorkCompase"
             commandId="work.showcompass">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.ChargerAssignment"
+            class="com.sg.business.commons.operation.handler.ChargerAssignment"
             commandId="work.setcharger">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CarlendarTest1"
+            class="com.sg.business.commons.operation.handler.CarlendarTest1"
             commandId="carlendartest1">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CarlendarTest2"
+            class="com.sg.business.commons.operation.handler.CarlendarTest2"
             commandId="carlendartest2">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CreateWorkFromGeneric"
+            class="com.sg.business.commons.operation.handler.CreateWorkFromGeneric"
             commandId="work.create.fromgenericwork">
          <activeWhen>
             <with
@@ -1562,15 +1562,15 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.ReplyBulletinBoard"
+            class="com.sg.business.commons.operation.handler.ReplyBulletinBoard"
             commandId="bulletinboard.reply">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.OpenBulletinBoard"
+            class="com.sg.business.commons.operation.handler.OpenBulletinBoard"
             commandId="bulletinboard.open">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.AddBulletinBoard"
+            class="com.sg.business.commons.operation.handler.AddBulletinBoard"
             commandId="bulletinboard.create">
       </handler>
    </extension>

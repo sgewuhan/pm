@@ -2453,19 +2453,19 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionStart"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionStart"
             commandId="runtimework.start">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionFinish"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionFinish"
             commandId="runtimework.finish">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionPause"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionPause"
             commandId="runtimework.pause">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionCancel"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionCancel"
             commandId="runtimework.cancel">
       </handler>
       <handler
@@ -2485,7 +2485,7 @@
             commandId="runtimework.view.work">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkflowView"
+            class="com.sg.business.commons.operation.handler.WorkflowView"
             commandId="runtimework.wfview">
       </handler>
       <handler
@@ -4387,7 +4387,7 @@
                         id="project_id"
                         label="%text.label.32"
                         labelVisible="true"
-                        linkAction="com.sg.business.commons.action.OpenProject"
+                        linkAction="com.sg.business.commons.operation.action.OpenProject"
                         name="project_id"
                         persistable="true"
                         presentation="com.sg.business.commons.field.presentation.ProjectInfomationOfWork"
@@ -4475,7 +4475,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.commons.action.StartWork"
+                  class="com.sg.business.commons.operation.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="%command.label.2"
@@ -4483,7 +4483,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.EditWork"
+                  class="com.sg.business.commons.operation.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -4491,7 +4491,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -4543,7 +4543,7 @@
                         id="project_id"
                         label="%text.label.32"
                         labelVisible="true"
-                        linkAction="com.sg.business.commons.action.OpenProject"
+                        linkAction="com.sg.business.commons.operation.action.OpenProject"
                         name="project_id"
                         persistable="true"
                         presentation="com.sg.business.commons.field.presentation.ProjectInfomationOfWork"
@@ -4664,7 +4664,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.commons.action.LogWork"
+                  class="com.sg.business.commons.operation.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -4672,7 +4672,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.EditWork"
+                  class="com.sg.business.commons.operation.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -4680,7 +4680,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.CompleteTask"
+                  class="com.sg.business.commons.operation.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"
@@ -4688,7 +4688,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -4740,7 +4740,7 @@
                         id="project_id"
                         label="%text.label.32"
                         labelVisible="true"
-                        linkAction="com.sg.business.commons.action.OpenProject"
+                        linkAction="com.sg.business.commons.operation.action.OpenProject"
                         name="project_id"
                         persistable="true"
                         presentation="com.sg.business.commons.field.presentation.ProjectInfomationOfWork"
@@ -4845,7 +4845,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.commons.action.LogWork"
+                  class="com.sg.business.commons.operation.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -4853,7 +4853,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.EditWork"
+                  class="com.sg.business.commons.operation.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -4861,7 +4861,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.FinishWork"
+                  class="com.sg.business.commons.operation.action.FinishWork"
                   icon="image/complete_g_24.png"
                   id="finishwork"
                   label="%command.label.3"
@@ -4869,7 +4869,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -4920,7 +4920,7 @@
                         id="project_id"
                         label="%text.label.32"
                         labelVisible="true"
-                        linkAction="com.sg.business.commons.action.OpenProject"
+                        linkAction="com.sg.business.commons.operation.action.OpenProject"
                         name="project_id"
                         persistable="true"
                         presentation="com.sg.business.commons.field.presentation.ProjectInfomationOfWork"
@@ -5008,7 +5008,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.commons.action.StartWork"
+                  class="com.sg.business.commons.operation.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="%command.label.2"
@@ -5016,7 +5016,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.EditWork"
+                  class="com.sg.business.commons.operation.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -5024,7 +5024,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -5075,7 +5075,7 @@
                         id="project_id"
                         label="%text.label.32"
                         labelVisible="true"
-                        linkAction="com.sg.business.commons.action.OpenProject"
+                        linkAction="com.sg.business.commons.operation.action.OpenProject"
                         name="project_id"
                         persistable="true"
                         presentation="com.sg.business.commons.field.presentation.ProjectInfomationOfWork"
@@ -5163,7 +5163,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.commons.action.EditWork"
+                  class="com.sg.business.commons.operation.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -5171,7 +5171,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.FinishWork"
+                  class="com.sg.business.commons.operation.action.FinishWork"
                   icon="image/complete_g_24.png"
                   id="finishwork"
                   label="%command.label.3"
@@ -5179,7 +5179,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -5283,7 +5283,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.commons.action.LaunchWork"
+                  class="com.sg.business.commons.operation.action.LaunchWork"
                   icon="image/go_g_24.png"
                   id="launchwork"
                   label="%editor.name.10"
@@ -5386,7 +5386,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.commons.action.LaunchWork"
+                  class="com.sg.business.commons.operation.action.LaunchWork"
                   icon="image/go_g_24.png"
                   id="launchwork"
                   label="%editor.name.10"
@@ -5411,7 +5411,7 @@
             id="workflow.workdelivery"
             lineVisiable="false"
             markupEnabled="true"
-            selectionListener="com.sg.business.commons.link.DeliveryLinkAdapter"
+            selectionListener="com.sg.business.commons.operation.link.DeliveryLinkAdapter"
             virtual="true">
          <column
                column="desc"
@@ -5434,7 +5434,7 @@
             id="work.wbsndelivery"
             lineVisiable="false"
             markupEnabled="true"
-            selectionListener="com.sg.business.commons.link.WorkLinkAdapter">
+            selectionListener="com.sg.business.commons.operation.link.WorkLinkAdapter">
          <structure
                modelRelation="work_work">
          </structure>

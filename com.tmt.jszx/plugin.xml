@@ -29,7 +29,7 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
          </processParameter>
@@ -170,7 +170,7 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
          </processParameter>
@@ -773,7 +773,7 @@
             processDefinitionId="jszx.jszxProjectReview"
             saveHandler="com.tmt.jszx.handler.ProjectReviewAuditSaveOfJSZX">
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -786,7 +786,7 @@
             processDefinitionId="jszx.jszxProjectReview"
             saveHandler="com.tmt.jszx.handler.ProjectReviewAuditSaveOfJSZX">
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -827,7 +827,7 @@
                taskFormFieldName="review_convener">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -849,7 +849,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list_s"
                taskFormFieldName="reviewer_list_s">
          </processParameter>

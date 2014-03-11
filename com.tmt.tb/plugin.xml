@@ -39,7 +39,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -119,7 +119,7 @@
             persistentFields="project_id,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="project_id"
                taskFormFieldName="project_id">
          </processParameter>
@@ -856,7 +856,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -1400,7 +1400,7 @@
             processDefinitionId="tb.tbProjectChange"
             saveHandler="com.tmt.tb.handler.ProjectChangeAddParticipate">
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="project"
                taskFormFieldName="project">
          </processParameter>
@@ -2921,7 +2921,7 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
          </processParameter>
@@ -3669,7 +3669,7 @@
                taskFormFieldName="workorder">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="product"
                taskFormFieldName="product">
          </processParameter>
@@ -3688,7 +3688,7 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
          </processParameter>
@@ -3747,7 +3747,7 @@
                taskFormFieldName="review_admin">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>

@@ -30,7 +30,7 @@ import org.eclipse.ui.WorkbenchException;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
-import com.sg.business.commons.link.BulletinBoardLinkAdapter;
+import com.sg.business.commons.operation.link.BulletinBoardLinkAdapter;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
 import com.sg.business.resource.BusinessResource;
