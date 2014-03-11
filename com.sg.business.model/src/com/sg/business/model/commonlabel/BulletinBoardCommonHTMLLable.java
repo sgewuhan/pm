@@ -2,6 +2,7 @@ package com.sg.business.model.commonlabel;
 
 import java.util.Date;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
@@ -71,7 +72,7 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 		sb.append(imageUrl);
 
 		sb.append("<div style='margin:0 0 0 64;" + "cursor:pointer; "
-				+ "border-bottom:1px dotted #cdcdcd;" + "height=100%;"
+//				+ "border-bottom:1px dotted #cdcdcd;" + "height=100%;"
 				+ "width=100%;" + "'>");
 
 		// 显示标题
@@ -114,6 +115,18 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("</a>");//$NON-NLS-1$
 
 		sb.append("</div>"); //$NON-NLS-1$
+		sb.append("<hr style='" //$NON-NLS-1$
+				+ "color:#ededed;" //$NON-NLS-1$
+				+ "position:absolute; " //$NON-NLS-1$
+				+ "left:0; " //$NON-NLS-1$
+				+ "bottom:0; " //$NON-NLS-1$
+				+ "background-color:#ededed;" //$NON-NLS-1$
+				+ "height:1px;" //$NON-NLS-1$
+				+ "width:100%;" //$NON-NLS-1$
+				+ "line-height:1px;" //$NON-NLS-1$
+				+ "font-size:0;" //$NON-NLS-1$
+				+ "border:none;" //$NON-NLS-1$
+				+ "'/>"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -143,7 +156,7 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 				.getDesc();
 
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div style='cursor:pointer; border-bottom:1px dotted #cdcdcd;height=100%;width="
+		sb.append("<div style='cursor:pointer; width="
 				+ width + "'>");
 
 		// 显示标题
@@ -186,6 +199,7 @@ public class BulletinBoardCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("</a>");//$NON-NLS-1$
 
 		sb.append("</div>"); //$NON-NLS-1$
+		sb.append(HtmlUtil.createBottomLine(0)); //$NON-NLS-1$
 		return sb.toString();
 	}
 

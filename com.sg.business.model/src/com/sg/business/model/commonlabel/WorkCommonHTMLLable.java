@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.StructuredViewer;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.PrimaryObject;
@@ -267,7 +268,7 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
 		// ---------------------------------------------------------------------------
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div style='cursor:pointer; border-bottom:1px solid #ededed;height=100%'>");
+		sb.append("<div style='cursor:pointer;'>");
 
 		String selectbar = "<img src='" //$NON-NLS-1$
 				+ selectbarUrl
@@ -341,7 +342,8 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("</small>"); //$NON-NLS-1$
 		sb.append("</span>"); //$NON-NLS-1$
 		sb.append("</div>"); //$NON-NLS-1$
-
+		
+		sb.append(HtmlUtil.createBottomLine(4)); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -555,20 +557,7 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 			// 判断如果当前记录是最后一个，不显示分割线
 			ObjectId lastId = input.get(input.size() - 1).get_id();
 			if (!thisId.equals(lastId)) {
-
-				sb.append("<hr style='" //$NON-NLS-1$
-						+ "color:#ededed;" //$NON-NLS-1$
-						+ "position:absolute; " //$NON-NLS-1$
-						+ "left:0; " //$NON-NLS-1$
-						+ "bottom:0; " //$NON-NLS-1$
-						+ "background-color:#ededed;" //$NON-NLS-1$
-						+ "height:1px;" //$NON-NLS-1$
-						+ "width:100%;" //$NON-NLS-1$
-						+ "line-height:1px;" //$NON-NLS-1$
-						+ "font-size:0;" //$NON-NLS-1$
-						+ "border:none;" //$NON-NLS-1$
-						+ "'>"); //$NON-NLS-1$
-
+				sb.append(HtmlUtil.createBottomLine(0)); //$NON-NLS-1$
 			}
 
 		}

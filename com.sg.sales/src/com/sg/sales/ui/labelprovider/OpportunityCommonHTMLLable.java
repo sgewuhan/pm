@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.StructuredViewer;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.AccountInfo;
 import com.sg.sales.model.Company;
@@ -114,19 +115,8 @@ public class OpportunityCommonHTMLLable extends CommonHTMLLabel {
 					break;
 				}
 			}
-			if (i != input.size() - 1) {
-				sb.append("<hr style='" //$NON-NLS-1$
-						+ "color:#ededed;" //$NON-NLS-1$
-						+ "position:absolute; " //$NON-NLS-1$
-						+ "left:0; " //$NON-NLS-1$
-						+ "bottom:0; " //$NON-NLS-1$
-						+ "background-color:#ededed;" //$NON-NLS-1$
-						+ "height:1px;" //$NON-NLS-1$
-						+ "width:100%;" //$NON-NLS-1$
-						+ "line-height:1px;" //$NON-NLS-1$
-						+ "font-size:0;" //$NON-NLS-1$
-						+ "border:none;" //$NON-NLS-1$
-						+ "'>"); //$NON-NLS-1$
+			if (i != input.size() - 1||input.size()<4) {
+				sb.append(HtmlUtil.createBottomLine(0)); //$NON-NLS-1$
 			}
 		}
 		sb.append("</div>");
