@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.page;
+package com.sg.business.commons.ui.viewer;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;

@@ -21,7 +21,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.sg.business.commons.ui.page.ProjectBudgetTreeContentProvider;
+import com.sg.business.commons.ui.viewer.ProjectBudgetTreeContentProvider;
 import com.sg.business.model.BudgetItem;
 import com.sg.business.model.ProjectBudget;
 import com.sg.business.model.ProjectTemplate;
