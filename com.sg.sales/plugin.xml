@@ -12685,7 +12685,7 @@
          <basicpage
                description="%basicpage.description.13"
                id="processpage1"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessSelectorPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessSelectorPage"
                title="%basicpage.title.13">
          </basicpage>
       </editor>
@@ -13857,7 +13857,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -13900,7 +13900,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -13943,7 +13943,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>

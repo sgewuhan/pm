@@ -1,9 +1,11 @@
-package com.tmt.tb.editor.page;
+package com.sg.business.commons.ui.page;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.bson.types.ObjectId;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -16,42 +18,35 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.commons.util.Utils;
-import com.mobnut.db.model.IPrimaryObjectValueChangeListener;
-import com.mobnut.db.model.ModelService;
+import com.mobnut.commons.util.file.ExcelExportJob;
+import com.mobnut.commons.util.file.IColumnExportDefinition;
+import com.mobnut.commons.util.file.IExportValueDelegator;
 import com.mobnut.db.model.PrimaryObject;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.sg.business.commons.ui.page.ProjectBudgetTreeContentProvider;
-import com.sg.business.model.BudgetItem;
+import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
-import com.sg.business.model.ProjectTemplate;
-import com.sg.business.model.TaskForm;
+import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
-import com.tmt.tb.nls.Messages;
 
-public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
-		IFormPart, IPrimaryObjectValueChangeListener {
+public class ProjectBudgetPage implements IPageDelegator, IFormPart {
+
 	private TreeViewer viewer;
 	private ProjectBudget root;
 	private boolean isDirty;
 	private IManagedForm form;
-	private TaskForm taskForm;
 
-	// TODO ÐèÒªÐÞ¸Ä
-
-	public ProjectBudgetOfCreateProjectPage() {
+	public ProjectBudgetPage() {
 	}
 
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 
-		taskForm = (TaskForm) input.getData();
-
-		taskForm.addFieldValueListener("projecttemplate_id", this); //$NON-NLS-1$
+		Project project = (Project) input.getData();
+		root = project.getBudget();
 
 		viewer = new TreeViewer(parent, SWT.FULL_SELECTION);
 		viewer.getTree().setHeaderVisible(true);
@@ -59,12 +54,12 @@ public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
 		viewer.setContentProvider(new ProjectBudgetTreeContentProvider());
 
 		TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.LEFT);
-		column.getColumn().setText(Messages.get().ProjectBudgetOfCreateProjectPage_1);
+		column.getColumn().setText(Messages.get().ProjectBudgetPage_0);
 		column.getColumn().setWidth(280);
 		column.setLabelProvider(new ColumnLabelProvider());
 
 		column = new TreeViewerColumn(viewer, SWT.RIGHT);
-		column.getColumn().setText(Messages.get().ProjectBudgetOfCreateProjectPage_2);
+		column.getColumn().setText(Messages.get().ProjectBudgetPage_1);
 		column.getColumn().setWidth(120);
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -119,36 +114,122 @@ public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
 
 		}
 
-		setViewerData();
+		if (root == null) {
+			viewer.setInput(new ProjectBudget[0]);
+		} else {
+			viewer.setInput(root.getChildren());
+		}
+
+		viewer.expandAll();
 		return (Composite) viewer.getControl();
 	}
 
-	private void setViewerData() {
-		Object projectTemplateId = taskForm.getValue("projecttemplate_id"); //$NON-NLS-1$
-		if(projectTemplateId == null){
-			return;
-		}
-		
-		ProjectTemplate template = ModelService.createModelObject(
-				ProjectTemplate.class,
-				(ObjectId) projectTemplateId);
-		
-		PrimaryObject budgetItem;
-		List<PrimaryObject> budgetItems = template.getBudgetItems();
-		if(budgetItems != null && budgetItems.size() >0){
-			budgetItem = budgetItems.get(0);
-		} else {
-			return;
-		}
-		
-		DBObject tgtData = new BasicDBObject();
-		tgtData.put(ProjectBudget.F_CHILDREN,
-				budgetItem.getValue(BudgetItem.F_CHILDREN));
+	
+	private void doExport() {
+		ExcelExportJob job = new ExcelExportJob(Messages.get().ProjectBudgetPage_5);
 
-		ModelService.createModelObject(tgtData, ProjectBudget.class);
-		
-		viewer.setInput(root.getChildren());
-		viewer.expandAll();
+		IColumnExportDefinition[] columns = new IColumnExportDefinition[2];
+		columns[0] = new IColumnExportDefinition() {
+
+			@Override
+			public String getName() {
+				return Messages.get().ProjectBudgetPage_6;
+			}
+
+			@Override
+			public String getType() {
+				return Utils.TYPE_STRING;
+			}
+
+			@Override
+			public int getWidth() {
+				return 0;
+			}
+
+			@Override
+			public String getColumn() {
+				return "desc"; //$NON-NLS-1$
+			}
+
+			@Override
+			public IExportValueDelegator getExportValueDelegator() {
+				return new IExportValueDelegator() {
+					@Override
+					public Object getValue(
+							Map<String, Object> dataRow,
+							IColumnExportDefinition iColumnExportDefinition) {
+
+						String dataRowValue = (String) dataRow
+								.get("desc"); //$NON-NLS-1$
+						Object level = dataRow.get("level"); //$NON-NLS-1$
+						if (level instanceof Integer) {
+							for (int i = 0; i < (Integer) level; i++) {
+								dataRowValue = "   " + dataRowValue; //$NON-NLS-1$
+							}
+						}
+
+						return dataRowValue;
+					}
+
+				};
+			}
+
+		};
+
+		columns[1] = new IColumnExportDefinition() {
+
+			@Override
+			public String getName() {
+				return Messages.get().ProjectBudgetPage_11;
+			}
+
+			@Override
+			public String getType() {
+				return Utils.TYPE_DOUBLE;
+			}
+
+			@Override
+			public int getWidth() {
+				return 0;
+			}
+
+			@Override
+			public String getColumn() {
+				return "budgetvalue"; //$NON-NLS-1$
+			}
+
+			@Override
+			public IExportValueDelegator getExportValueDelegator() {
+				return null;
+			}
+
+		};
+
+		Object input = viewer.getInput();
+		job.setColumnExportDefinition(columns);
+		job.setInput(getExportData(((Object[]) input)[0], 0));
+		job.setUser(true);
+		job.setFormat(false);
+		job.start(viewer.getControl().getDisplay());
+	}
+	
+
+	private List<PrimaryObject> getExportData(Object obj, int level) {
+		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
+		if (obj instanceof ProjectBudget) {
+			ProjectBudget projectBudget = (ProjectBudget) obj;
+			projectBudget.setValue("level", level); //$NON-NLS-1$
+			result.add(projectBudget);
+			ProjectBudget[] children = projectBudget.getChildren();
+			if (children != null) {
+				for (int i = 0; i < children.length; i++) {
+					ProjectBudget child = children[i];
+					child.setValue("level", level); //$NON-NLS-1$
+					result.addAll(getExportData(child, level + 1));
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -159,6 +240,18 @@ public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
 	@Override
 	public void initialize(IManagedForm form) {
 		this.form = form;
+		
+		Action action = new Action(Messages.get().ProjectBudgetPage_15){
+			@Override
+			public void run() {
+				doExport();
+			}
+			
+		};
+		action.setImageDescriptor(BusinessResource
+				.getImageDescriptor(BusinessResource.IMAGE_EXPORT_24));
+		form.getForm().getToolBarManager().add(action);
+		form.getForm().updateToolBar();
 	}
 
 	@Override
@@ -213,13 +306,8 @@ public class ProjectBudgetOfCreateProjectPage implements IPageDelegator,
 	}
 
 	@Override
-	public void valueChanged(String key, Object oldValue, Object newValue) {
-		
-	}
-	@Override
 	public boolean createBody() {
 		return false;
 	}
-
 
 }

@@ -1182,14 +1182,14 @@
                description="%basicpage.description.2"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessPage"
                title="%basicpage.title.2">
          </basicpage>
          <basicpage
                description="%basicpage.description.3"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkChangeProcessPage"
                title="%basicpage.title.3">
          </basicpage>
       </editor>
@@ -1379,14 +1379,14 @@
                description="%basicpage.description.7"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessPage"
                title="%basicpage.title.7">
          </basicpage>
          <basicpage
                description="%basicpage.description.8"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkChangeProcessPage"
                title="%basicpage.title.8">
          </basicpage>
       </editor>
@@ -2850,7 +2850,7 @@
                description="%basicpage.description.13"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessPage"
                title="%basicpage.title.13">
          </basicpage>
       </editor>
@@ -3296,7 +3296,7 @@
                description="%basicpage.description.18"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessPage"
                title="%basicpage.title.18">
          </basicpage>
       </editor>
@@ -3654,14 +3654,14 @@
                description="%basicpage.description.23"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessPage"
                title="%basicpage.title.23">
          </basicpage>
          <basicpage
                description="%basicpage.description.24"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkChangeProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkChangeProcessPage"
                title="%basicpage.title.24">
          </basicpage>
       </editor>
@@ -4053,7 +4053,7 @@
                description="%basicpage.description.29"
                id="processpage1"
                image="image/workflow_72.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessPage"
                title="%basicpage.title.29">
          </basicpage>
       </editor>
@@ -4140,7 +4140,7 @@
             description="%basicpage.description.31"
             id="launch.work.processpage"
             image="image/workflow_72.png"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessPage"
             title="%basicpage.title.31">
       </basicpage>
    </extension>
@@ -5201,7 +5201,7 @@
                description="%basicpage.description.27"
                id="basicpage1"
                image="image/work_72.png"
-               pageDelegator="com.sg.business.commons.page.flow.LaunchWorkWithProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.LaunchWorkWithProcessPage"
                title="%basicpage.title.27">
             <pagecolumn>
                <section

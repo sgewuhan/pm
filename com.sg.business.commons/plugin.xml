@@ -1511,28 +1511,28 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.sg.business.commons.test.LifeCycleTest"
+            class="com.sg.business.commons.operation.test.LifeCycleTest"
             id="lifecycle.action.test"
             namespace="lifecycle"
             properties="action,status"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.sg.business.commons.test.PrimaryObjectTest"
+            class="com.sg.business.commons.operation.test.PrimaryObjectTest"
             id="primaryobject.properties"
             namespace="primaryobject"
             properties="properties"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.sg.business.commons.test.PrimaryObjectTest"
+            class="com.sg.business.commons.operation.test.PrimaryObjectTest"
             id="primaryobject.method"
             namespace="primaryobject"
             properties="method"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.sg.business.commons.test.RuntimeWorkTest"
+            class="com.sg.business.commons.operation.test.RuntimeWorkTest"
             id="runtimework.action"
             namespace="runtimework"
             properties="action"

@@ -699,7 +699,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_commit"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateCommitProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectTemplateCommitProcessDefPage"
                title="%basicpage.title.2">
          </basicpage>
          <basicpage
@@ -707,7 +707,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectTemplateChangeProcessDefPage"
                title="%basicpage.title.3">
          </basicpage>
          <versionControl>
@@ -932,14 +932,14 @@
                description="%basicpage.description.6"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectWorkdExecuteProcessDefPage"
                title="%basicpage.title.6">
          </basicpage>
          <basicpage
                description="%basicpage.description.7"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectWorkdChangeProcessDefPage"
                title="%basicpage.title.7">
          </basicpage>
       </editor>
@@ -1301,14 +1301,14 @@
                description="%basicpage.description.12"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdExecuteProcessDefPage"
                title="%basicpage.title.13">
          </basicpage>
          <basicpage
                description="%basicpage.description.13"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdChangeProcessDefPage"
                title="%basicpage.title.14">
          </basicpage>
          <versionControl>
@@ -1363,14 +1363,14 @@
                description="%basicpage.description.15"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdExecuteProcessDefPage"
                title="%basicpage.title.16">
          </basicpage>
          <basicpage
                description="%basicpage.description.16"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdChangeProcessDefPage"
                title="%basicpage.title.17">
          </basicpage>
          <versionControl>
@@ -1515,7 +1515,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdExecuteProcessDefPage"
                title="%basicpage.title.19">
          </basicpage>
          <!--取消独立工作定义的变更流程，这个功能没有实际的用途
@@ -1523,7 +1523,7 @@
                description="独立工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage>
          -->
@@ -1688,14 +1688,14 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdExecuteProcessDefPage"
                title="%basicpage.title.21">
          </basicpage>
          <!--basicpage
                description="独立工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage-->
          <versionControl>

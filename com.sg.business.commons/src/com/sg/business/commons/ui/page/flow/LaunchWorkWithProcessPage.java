@@ -1,10 +1,9 @@
-package com.sg.sales.editor;
+package com.sg.business.commons.ui.page.flow;
 
 import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
-import com.sg.business.commons.ui.page.flow.AbstractWorkProcessPage;
 import com.sg.business.model.Work;
 
-public class PageApplyExpense extends AbstractWorkProcessPage {
+public class LaunchWorkWithProcessPage extends AbstractWorkProcessPage {
 
 	@Override
 	protected String getProcessKey() {
@@ -20,4 +19,5 @@ public class PageApplyExpense extends AbstractWorkProcessPage {
 	public boolean createBody() {
 		return true;
 	}
+
 }
