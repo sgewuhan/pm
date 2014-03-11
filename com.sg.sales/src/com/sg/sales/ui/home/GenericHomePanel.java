@@ -62,7 +62,7 @@ public class GenericHomePanel {
 		workBlock.setTopicText("今日工作");
 		gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.widthHint = TodaysWorkBlock.BLOCKWIDTH;
-//		gd.heightHint = (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.Y_COUNT - 1;
+//		gd.heightHint = (CompanyBlock.BLOCKSIZE + 1) * CompanyBlock.Y_COUNT - 1;
 		workBlock.setLayoutData(gd);
 
 		final DocBlock docBlock = new DocBlock(panel) {
