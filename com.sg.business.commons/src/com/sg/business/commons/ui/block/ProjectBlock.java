@@ -8,12 +8,13 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.block.AbstractBusinessBlock;
-import com.sg.widgets.block.ContentBlock;
+import com.sg.widgets.block.BusinessContentBlock;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.editor.DataObjectWizard;
 
@@ -42,7 +43,7 @@ public class ProjectBlock extends AbstractBusinessBlock {
 	}
 
 	@Override
-	protected BasicDBObject getSearchCondition() {
+	protected DBObject getSearchCondition() {
 		return new BasicDBObject().append(
 				"$or", //$NON-NLS-1$
 				new BasicDBObject[] {
@@ -59,14 +60,9 @@ public class ProjectBlock extends AbstractBusinessBlock {
 	}
 
 	@Override
-	protected ContentBlock createBlockContent(Composite contentArea,
+	protected BusinessContentBlock createBlockContent(Composite contentArea,
 			PrimaryObject po) {
-		ProjectContentBlock cb = new ProjectContentBlock(contentArea);
-		cb.setBlockSize(BLOCKSIZE);
-		if (po != null) {
-			cb.setProject((Project) po);
-		}
-		return cb;
+		return new ProjectContentBlock(contentArea);
 	}
 
 	@Override
