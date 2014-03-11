@@ -7629,25 +7629,25 @@
          </column>
          <column
                column="cust_representative"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="客户代表"
                width="60">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理"
                width="60">
          </column>
          <column
                column="sales_supervisor"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售主管"
                width="60">
          </column>
          <column
                column="service_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="服务主管"
                width="60">
          </column>
@@ -7934,25 +7934,25 @@
          </column>
          <column
                column="cust_representative"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="客户代表"
                width="60">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理"
                width="60">
          </column>
          <column
                column="sales_supervisor"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售主管"
                width="60">
          </column>
          <column
                column="service_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="服务主管"
                width="60">
          </column>
@@ -8118,12 +8118,12 @@
          </column>
          <column
                column="signby"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="签订人">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理">
          </column>
       </table>
@@ -8228,12 +8228,12 @@
          </column>
          <column
                column="signby"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="签订人">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理">
          </column>
       </table>
@@ -8341,7 +8341,7 @@
             useHashlookup="true"
             virtual="true">
          <column
-               labelProvider="com.sg.business.commons.labelprovider.StatusTextLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.StatusTextLabelProvider"
                name="状态"
                width="60">
          </column>
@@ -8443,7 +8443,7 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8536,7 +8536,7 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8629,7 +8629,7 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8704,7 +8704,7 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -8743,7 +8743,7 @@
             useHashlookup="true"
             virtual="true">
          <column
-               labelProvider="com.sg.business.commons.labelprovider.StatusTextLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.StatusTextLabelProvider"
                name="状态"
                width="60">
          </column>
@@ -8858,7 +8858,7 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
@@ -9306,7 +9306,7 @@
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
                         navigatorId="organization.user.selector"
@@ -9320,7 +9320,7 @@
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
                         navigatorId="organization.user.selector"
@@ -9334,7 +9334,7 @@
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
                         navigatorId="organization.user.selector"
@@ -9348,7 +9348,7 @@
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
                         navigatorId="organization.user.selector"
@@ -9945,7 +9945,7 @@
                         id="owner"
                         label="所有者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
                         navigatorId="organization.user.selector"
@@ -9960,7 +9960,7 @@
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="owner_list"
                         persistable="true"
                         required="false">
@@ -9972,7 +9972,7 @@
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="visitor_list"
                         persistable="true"
                         required="false">
@@ -11155,7 +11155,7 @@
                         id="owner"
                         label="所有者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
                         navigatorId="organization.user.selector"
@@ -11170,7 +11170,7 @@
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="owner_list"
                         persistable="true"
                         required="false">
@@ -11182,7 +11182,7 @@
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="visitor_list"
                         persistable="true"
                         required="false">
@@ -11199,7 +11199,7 @@
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
                         navigatorId="organization.user.selector"
@@ -11213,7 +11213,7 @@
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
                         navigatorId="organization.user.selector"
@@ -11227,7 +11227,7 @@
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
                         navigatorId="organization.user.selector"
@@ -11241,7 +11241,7 @@
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
                         navigatorId="organization.user.selector"
@@ -11474,7 +11474,7 @@
                         id="signby"
                         label="签订人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="signby"
                         navigatorId="organization.user.selector"
@@ -11666,7 +11666,7 @@
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
                         navigatorId="organization.user.selector"
@@ -11680,7 +11680,7 @@
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
                         navigatorId="organization.user.selector"
@@ -11694,7 +11694,7 @@
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
                         navigatorId="organization.user.selector"
@@ -11708,7 +11708,7 @@
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
                         navigatorId="organization.user.selector"
@@ -11728,7 +11728,7 @@
                         id="owner"
                         label="所有者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
                         navigatorId="organization.user.selector"
@@ -11743,7 +11743,7 @@
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="owner_list"
                         persistable="true"
                         required="false">
@@ -11755,7 +11755,7 @@
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="visitor_list"
                         persistable="true"
                         required="false">
@@ -11963,7 +11963,7 @@
                            id="owner"
                            label="费用使用人"
                            labelVisible="true"
-                           labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                           labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                            modelClass="com.sg.business.model.User"
                            name="owner"
                            navigatorId="organization.user.selector"
@@ -11972,7 +11972,7 @@
                            required="true">
                      </navigatorSelector>
                      <dateTime
-                           defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                           defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                            editPart="DateDialog"
                            editable="true"
                            id="submitdate"
@@ -12426,7 +12426,7 @@
                         id="owner"
                         label="费用使用人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
                         navigatorId="organization.user.selector"
@@ -12435,7 +12435,7 @@
                         required="true">
                   </navigatorSelector>
                   <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="submitdate"
@@ -12515,7 +12515,7 @@
                         type="Double">
                   </text>
                   <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="transferdate"
@@ -12618,7 +12618,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.1"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="organization.user.assignment"
@@ -12633,7 +12633,7 @@
                         id="participate"
                         label="%list.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -12643,7 +12643,7 @@
                         id="assignerid"
                         label="%navigatorSelector.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="assignerid"
                         navigatorId="project.participte.selector"
@@ -13857,7 +13857,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -13900,7 +13900,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -13943,7 +13943,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -14065,7 +14065,7 @@
                         id="compile"
                         label="编制人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="compile"
                         navigatorId="navigator.demo.conventer"

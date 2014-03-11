@@ -277,7 +277,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.0">
          </basicpage>
       </editor>
@@ -321,7 +321,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.2">
          </basicpage>
       </editor>
@@ -594,7 +594,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.4">
          </basicpage>
          <basicpage
@@ -658,7 +658,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.7">
          </basicpage>
          <basicpage
@@ -802,7 +802,7 @@
                         id="reviewer_admin"
                         label="%navigatorSelector.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
                         navigatorId="organization.user"
@@ -816,7 +816,7 @@
                         id="reviewer_list"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="true">
@@ -837,7 +837,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.10">
          </basicpage>
          <basicpage
@@ -900,7 +900,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.13">
          </basicpage>
          <basicpage
@@ -962,7 +962,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.16">
          </basicpage>
          <basicpage
@@ -1025,7 +1025,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.19">
          </basicpage>
          <basicpage
@@ -1150,7 +1150,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.25">
          </basicpage>
          <basicpage
@@ -1213,7 +1213,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.28">
          </basicpage>
          <basicpage
@@ -1380,7 +1380,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.7">
          </basicpage>
          <basicpage
@@ -1420,7 +1420,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="评审组组长"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="review_convener"
                         navigatorId="organization.user.selector"
@@ -1435,7 +1435,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="评审组"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="true">
@@ -1456,7 +1456,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.10">
          </basicpage>
          <basicpage
@@ -1496,7 +1496,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="评审组组长"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="review_convener"
                         navigatorId="organization.user.selector"
@@ -1511,7 +1511,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="评审组"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="true">
@@ -1543,7 +1543,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.10">
          </basicpage>
          <basicpage
@@ -1578,7 +1578,7 @@
                <section
                      label="确认品审会时间及地点">
                   <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="confirmdate"
@@ -1677,7 +1677,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.page.WorkFlowRecord"
                title="%basicpage.title.7">
          </basicpage>
          <basicpage

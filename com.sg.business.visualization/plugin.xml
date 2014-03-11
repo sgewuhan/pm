@@ -788,7 +788,7 @@
                         id="launchorg_id"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>

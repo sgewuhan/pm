@@ -1611,7 +1611,7 @@
             multiSelection="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.commons.labelprovider.ProjectRoleLabelProvider2"
+               labelProvider="com.sg.business.commons.column.labelprovider.ProjectRoleLabelProvider2"
                name="%column.name.46"
                width="-1">
          </column>
@@ -1770,7 +1770,7 @@
                width="160"></column>
          <column
                column="actualowner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="%column.name.62"
                width="140">
          </column>
@@ -2664,7 +2664,7 @@
             </column>
             <column
                   column="wf_execute"
-                  labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
                   name="%column.name.68"
                   width="100">
             </column>
@@ -2804,7 +2804,7 @@
          </column>
          <column
                column="publisher"
-               labelProvider="com.sg.business.commons.labelprovider.PublisherLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.PublisherLabelProvider"
                name="%column.name.75"
                style="SWT.LEFT"
                type="String"
@@ -2812,7 +2812,7 @@
          </column>
          <column
                column="attachment"
-               labelProvider="com.sg.business.commons.labelprovider.AttachmentLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.AttachmentLabelProvider"
                name="%column.name.76"
                style="SWT.CENTER"
                type="String"
@@ -4780,7 +4780,7 @@
                         id="launchorg_id"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -5139,7 +5139,7 @@
                         id="launchorg_id"
                         label="%list.label.1"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true"
                         required="true">
@@ -5340,7 +5340,7 @@
                         id="launchorg_id"
                         label="%list.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -5662,7 +5662,7 @@
                         id="launchorg_id"
                         label="%list.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -5952,7 +5952,7 @@
                         id="launchorg_id"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -6381,7 +6381,7 @@
                         id="chargerid"
                         label="负责人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -6395,7 +6395,7 @@
                         id="participate"
                         label="参与者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -6405,7 +6405,7 @@
                         id="assignerid"
                         label="指派人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="assignerid"
                         navigatorId="project.participte.selector"

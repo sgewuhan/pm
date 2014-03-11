@@ -519,7 +519,7 @@
             </column>
             <column
                   column="wf_execute"
-                  labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
                   name="%column.name.9"
                   width="100">
             </column>
@@ -693,7 +693,7 @@
          <column
                column="project"
                columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
-               labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.ProjectColumnLabelProvider"
                name="%column.name.21"
                width="180">
          </column>
@@ -754,7 +754,7 @@
          <column
                column="project"
                columnSorter="com.sg.widgets.commons.sorter.TableColumnLabelSorterFactory"
-               labelProvider="com.sg.business.commons.labelprovider.ProjectColumnLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.ProjectColumnLabelProvider"
                name="%column.name.22"
                width="180">
          </column>
@@ -818,7 +818,7 @@
          </column>
          <column
                column="userid"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="%column.name.26"
                type="String">
          </column>
@@ -893,7 +893,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -1277,7 +1277,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -1291,7 +1291,7 @@
                         id="participate"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -2631,7 +2631,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.1"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -2645,7 +2645,7 @@
                         id="participate"
                         label="%list.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -2655,7 +2655,7 @@
                         id="assignerid"
                         label="%navigatorSelector.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="assignerid"
                         navigatorId="project.participte.selector"
@@ -2801,7 +2801,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.3"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -2815,7 +2815,7 @@
                         id="participate"
                         label="%list.label.1"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -2964,7 +2964,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.1"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="organization.user.selector"
@@ -2978,7 +2978,7 @@
                         id="participate"
                         label="%list.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -3099,7 +3099,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.4"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -3113,7 +3113,7 @@
                         id="participate"
                         label="%list.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -3123,7 +3123,7 @@
                         id="assignerid"
                         label="%navigatorSelector.label.5"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="assignerid"
                         navigatorId="project.participte.selector"
@@ -3247,7 +3247,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.6"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="organization.user.selector"
@@ -3261,7 +3261,7 @@
                         id="participate"
                         label="%list.label.3"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -3406,7 +3406,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.7"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -3420,7 +3420,7 @@
                         id="participate"
                         label="%list.label.4"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -3937,7 +3937,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.8"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="work.organization.user"
@@ -3952,7 +3952,7 @@
                         id="participate"
                         label="%list.label.5"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -4038,7 +4038,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.9"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="organization.user.assignment"
@@ -4094,7 +4094,7 @@
                      id="chargerid"
                      label="%navigatorSelector.label.10"
                      labelVisible="true"
-                     labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                     labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                      modelClass="com.sg.business.model.User"
                      name="chargerid"
                      navigatorId="organization.user.assignment"
@@ -5262,7 +5262,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.9"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="organization.user.assignment"
@@ -5365,7 +5365,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.9"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="organization.user.assignment"

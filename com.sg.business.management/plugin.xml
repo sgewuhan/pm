@@ -334,7 +334,7 @@
             multiSelection="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider2"
+               labelProvider="com.sg.business.commons.column.labelprovider.RoleDefinitionLabelProvider2"
                name="%column.name"
                width="-1">
          </column>
@@ -346,14 +346,14 @@
             popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                column="end1label"
-               labelProvider="com.sg.business.commons.labelprovider.End1WorkDefLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.End1WorkDefLabelProvider"
                name="%column.name.0"
                type="String"
                width="120">
          </column>
          <column
                column="end2label"
-               labelProvider="com.sg.business.commons.labelprovider.End2WorkDefLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.End2WorkDefLabelProvider"
                name="%column.name.1"
                type="String"
                width="120">
@@ -416,7 +416,7 @@
          </column>
          <column
                column="wf_execute"
-               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+               labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
                name="%column.name.7"
                width="100">
          </column>
@@ -483,7 +483,7 @@
          </column>
          <column
                column="wf_execute"
-               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+               labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
                name="%column.name.10"
                width="100">
          </column>
