@@ -23,6 +23,8 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.business.resource.BusinessResource;
+import com.sg.sales.Sales;
+import com.sg.sales.model.Company;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
@@ -32,9 +34,9 @@ import com.sg.widgets.part.editor.DataObjectWizard;
 
 public class CompanyBlock extends Block {
 
-	private static final String PERSPECTIVE = "perspective.project.charger";
+	private static final String PERSPECTIVE = "sales.customer";
 	private String userId;
-	private DBCollection projectCol;
+	private DBCollection col;
 	private Composite contentArea;
 
 	public static final int X_COUNT = 3;
@@ -58,8 +60,8 @@ public class CompanyBlock extends Block {
 
 	@Override
 	protected void createContent(Composite parent) {
-		projectCol = DBActivator.getCollection(IModelConstants.DB,
-				IModelConstants.C_PROJECT);
+		col = DBActivator.getCollection(IModelConstants.DB,
+				Sales.C_COMPANY);
 		userId = context.getConsignerId();
 		parent.setLayout(new FillLayout());
 		contentArea = new Composite(parent, SWT.NONE);
@@ -81,7 +83,7 @@ public class CompanyBlock extends Block {
 			children[i].dispose();
 		}
 
-		DBCursor projectCursor = projectCol.find(new BasicDBObject().append(
+		DBCursor cursor = col.find(new BasicDBObject().append(
 				"$or", //$NON-NLS-1$
 				new BasicDBObject[] {
 						new BasicDBObject().append(Project.F_CHARGER, userId),
@@ -94,15 +96,15 @@ public class CompanyBlock extends Block {
 						ILifecycle.STATUS_WIP_VALUE,
 						ILifecycle.STATUS_NONE_VALUE,
 						ILifecycle.STATUS_ONREADY_VALUE, null })));
-		projectCursor.sort(new BasicDBObject().append(Project.F__ID, -1));
-		projectCursor.limit(X_COUNT * Y_COUNT - 1);
+		cursor.sort(new BasicDBObject().append(Project.F__ID, -1));
+		cursor.limit(X_COUNT * Y_COUNT - 1);
 
 		for (int i = 0; i < X_COUNT * Y_COUNT - 1; i++) {
 			Control block;
-			if (projectCursor.hasNext()) {
-				DBObject projectData = projectCursor.next();
-				Project project = ModelService.createModelObject(projectData,
-						Project.class);
+			if (cursor.hasNext()) {
+				DBObject projectData = cursor.next();
+				Company project = ModelService.createModelObject(projectData,
+						Company.class);
 				block = createContentBlock(project);
 			} else {
 				block = new Composite(contentArea, SWT.NONE);
@@ -146,15 +148,15 @@ public class CompanyBlock extends Block {
 		contentArea.layout();
 	}
 
-	private CompanyContentBlock createContentBlock(Project project) {
-		if (project == null) {
+	private CompanyContentBlock createContentBlock(Company company) {
+		if (company == null) {
 			CompanyContentBlock cb = new CompanyContentBlock(contentArea);
 			cb.setBlockSize(BLOCKSIZE);
 			return cb;
 		} else {
 			CompanyContentBlock cb = new CompanyContentBlock(contentArea);
 			cb.setBlockSize(BLOCKSIZE);
-			cb.setProject(project);
+			cb.setCompany(company);
 			return cb;
 		}
 	}

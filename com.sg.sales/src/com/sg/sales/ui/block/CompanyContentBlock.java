@@ -13,6 +13,7 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mongodb.DBObject;
 import com.sg.business.model.Project;
+import com.sg.sales.model.Company;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.block.ContentBlock;
 import com.sg.widgets.commons.model.IEditorInputFactory;
@@ -30,6 +31,12 @@ public class CompanyContentBlock extends ContentBlock {
 
 	}
 
+	public void setCompany(Company company) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	public void setProject(Project project) {
 		this.project = project;
 		RWT.getUISession(getDisplay()).exec(new Runnable() {
@@ -204,5 +211,7 @@ public class CompanyContentBlock extends ContentBlock {
 		font.dispose();
 		super.dispose();
 	}
+
+
 
 }
