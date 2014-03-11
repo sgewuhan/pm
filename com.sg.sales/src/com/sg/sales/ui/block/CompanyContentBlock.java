@@ -11,10 +11,11 @@ public class CompanyContentBlock extends BusinessContentBlock {
 		super(parent);
 	}
 	
+	
 	@Override
-	protected String getBodyText(boolean hoverMask) {
+	protected String getFootText(boolean hoverMask) {
 		Company company = (Company) getInput();
-		return company.getLevel();
+		return "客户级别:"+company.getLevel();
 	}
 
 }
