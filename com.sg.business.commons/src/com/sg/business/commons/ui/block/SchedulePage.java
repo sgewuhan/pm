@@ -350,7 +350,7 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 			color = BLUE;
 		}
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='");
+		sb.append("<div style='");
 		sb.append("width:500px;");
 		sb.append("height:36px;" + "margin:1px;");
 		sb.append("'>");
@@ -374,7 +374,7 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 			sb.append("您没有需要处理的工作");
 		}
 		sb.append("</div>");
-		sb.append("</span>");
+		sb.append("</div>");
 		return sb.toString();
 	}
 
