@@ -1,7 +1,7 @@
 package com.sg.sales.editor;
 
-import com.sg.business.commons.page.flow.AbstractWorkProcessPage;
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel;
+import com.sg.business.commons.ui.page.flow.AbstractWorkProcessPage;
 import com.sg.business.model.Work;
 
 public class PageApplyExpense extends AbstractWorkProcessPage {
@@ -13,7 +13,7 @@ public class PageApplyExpense extends AbstractWorkProcessPage {
 
 	@Override
 	protected int getProcessSettingControl() {
-		return ProcessSettingPanel2.ROLE_SELECTOR|ProcessSettingPanel2.ACTOR_SELECTOR;
+		return ProcessSettingPanel.ROLE_SELECTOR|ProcessSettingPanel.ACTOR_SELECTOR;
 	}
 	
 	@Override

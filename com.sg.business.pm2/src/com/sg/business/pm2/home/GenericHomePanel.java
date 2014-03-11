@@ -8,14 +8,14 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.pm2.home.widget.BulletinBoardBlock;
-import com.sg.business.pm2.home.widget.DocBlock;
-import com.sg.business.pm2.home.widget.PerformanceBlock;
-import com.sg.business.pm2.home.widget.ProjectBlock;
-import com.sg.business.pm2.home.widget.TodaysWorkBlock;
+import com.sg.business.commons.ui.block.BulletinBoardBlock;
+import com.sg.business.commons.ui.block.DocBlock;
+import com.sg.business.commons.ui.block.PerformanceBlock;
+import com.sg.business.commons.ui.block.ProjectBlock;
+import com.sg.business.commons.ui.block.TodaysWorkBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
-import com.sg.widgets.block.TabBlock;
+import com.sg.widgets.block.tab.TabBlock;
 import com.sg.widgets.part.IRefreshablePart;
 
 public class GenericHomePanel {

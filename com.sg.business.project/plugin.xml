@@ -1611,7 +1611,7 @@
             multiSelection="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.commons.labelprovider.ProjectRoleLabelProvider2"
+               labelProvider="com.sg.business.commons.column.labelprovider.ProjectRoleLabelProvider2"
                name="%column.name.46"
                width="-1">
          </column>
@@ -1770,7 +1770,7 @@
                width="160"></column>
          <column
                column="actualowner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="%column.name.62"
                width="140">
          </column>
@@ -2664,7 +2664,7 @@
             </column>
             <column
                   column="wf_execute"
-                  labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+                  labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
                   name="%column.name.68"
                   width="100">
             </column>
@@ -2804,7 +2804,7 @@
          </column>
          <column
                column="publisher"
-               labelProvider="com.sg.business.commons.labelprovider.PublisherLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.PublisherLabelProvider"
                name="%column.name.75"
                style="SWT.LEFT"
                type="String"
@@ -2812,7 +2812,7 @@
          </column>
          <column
                column="attachment"
-               labelProvider="com.sg.business.commons.labelprovider.AttachmentLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.AttachmentLabelProvider"
                name="%column.name.76"
                style="SWT.CENTER"
                type="String"
@@ -4549,7 +4549,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionStart"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionStart"
             commandId="project.start">
          <enabledWhen>
             <with
@@ -4565,7 +4565,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionPause"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionPause"
             commandId="project.pause">
          <enabledWhen>
             <with
@@ -4581,7 +4581,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionCancel"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionCancel"
             commandId="project.cancel">
          <enabledWhen>
             <with
@@ -4598,7 +4598,7 @@
          </enabledWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.LifeCycleActionFinish"
+            class="com.sg.business.commons.operation.handler.LifeCycleActionFinish"
             commandId="project.finish">
          <enabledWhen>
             <with
@@ -4657,7 +4657,7 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.sg.business.commons.test.LifeCycleTest"
+            class="com.sg.business.commons.operation.test.LifeCycleTest"
             id="project.action.test"
             namespace="project"
             properties="action"
@@ -4780,7 +4780,7 @@
                         id="launchorg_id"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -4926,7 +4926,7 @@
                description="%basicpage.description.3"
                id="project.financial"
                image="image/financial_24.png"
-               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               pageDelegator="com.sg.business.commons.ui.page.ProjectBudgetPage"
                title="%basicpage.title.6">
          </basicpage>
          <navigatorpage
@@ -5139,7 +5139,7 @@
                         id="launchorg_id"
                         label="%list.label.1"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true"
                         required="true">
@@ -5214,14 +5214,14 @@
                description="%basicpage.description.8"
                id="processpage1"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectCommitProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectCommitProcessPage"
                title="%basicpage.title.11">
          </basicpage>
          <basicpage
                description="%basicpage.description.9"
                id="processpage2"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectChangeProcessPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectChangeProcessPage"
                title="%basicpage.title.12">
          </basicpage>
       </editor>
@@ -5340,7 +5340,7 @@
                         id="launchorg_id"
                         label="%list.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -5515,7 +5515,7 @@
          <basicpage
                description="%basicpage.description.12"
                id="project.financial"
-               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               pageDelegator="com.sg.business.commons.ui.page.ProjectBudgetPage"
                title="%basicpage.title.15">
          </basicpage>
          <navigatorpage
@@ -5559,7 +5559,7 @@
                description="%basicpage.description.13"
                id="project.financial"
                image="image/financial_24.png"
-               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               pageDelegator="com.sg.business.commons.ui.page.ProjectBudgetPage"
                title="%basicpage.title.16">
          </basicpage>
       </editor>
@@ -5662,7 +5662,7 @@
                         id="launchorg_id"
                         label="%list.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -5837,7 +5837,7 @@
          <basicpage
                description="%basicpage.description.12"
                id="project.financial"
-               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               pageDelegator="com.sg.business.commons.ui.page.ProjectBudgetPage"
                title="%basicpage.title.15">
          </basicpage>
          <navigatorpage
@@ -5952,7 +5952,7 @@
                         id="launchorg_id"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         name="launchorg_id"
                         persistable="true">
                   </list>
@@ -6098,7 +6098,7 @@
                description="%basicpage.description.3"
                id="project.financial"
                image="image/financial_24.png"
-               pageDelegator="com.sg.business.commons.page.ProjectBudgetPage"
+               pageDelegator="com.sg.business.commons.ui.page.ProjectBudgetPage"
                title="%basicpage.title.6">
          </basicpage>
          <navigatorpage
@@ -6381,7 +6381,7 @@
                         id="chargerid"
                         label="负责人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="project.participte.selector"
@@ -6395,7 +6395,7 @@
                         id="participate"
                         label="参与者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -6405,7 +6405,7 @@
                         id="assignerid"
                         label="指派人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="assignerid"
                         navigatorId="project.participte.selector"

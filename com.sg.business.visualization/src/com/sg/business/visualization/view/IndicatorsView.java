@@ -5,7 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import com.sg.business.visualization.chart.ProjectChartFactory;
+import com.sg.business.commons.ui.chart.ProjectChartFactory;
 import com.sg.widgets.birtcharts.ChartCanvas;
 
 public class IndicatorsView extends AbstractDashWidgetView {

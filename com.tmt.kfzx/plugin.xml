@@ -281,7 +281,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.0">
          </basicpage>
          <basicpage
@@ -344,7 +344,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.3">
          </basicpage>
          <basicpage
@@ -407,7 +407,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.6">
          </basicpage>
          <basicpage
@@ -470,7 +470,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.9">
          </basicpage>
          <basicpage
@@ -507,7 +507,7 @@
                taskFormFieldName="reviewer_admin">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -557,7 +557,7 @@
                <section
                      label="%section.label.7">
                   <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="confirmdata"
@@ -596,7 +596,7 @@
                         id="reviewer_admin"
                         label="%navigatorSelector.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
                         navigatorId="organization.user"
@@ -610,7 +610,7 @@
                         id="reviewer_list"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="false">
@@ -620,7 +620,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.12">
          </basicpage>
          <basicpage
@@ -671,7 +671,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.15">
          </basicpage>
          <basicpage
@@ -733,7 +733,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.18">
          </basicpage>
          <basicpage
@@ -771,7 +771,7 @@
                taskFormFieldName="reviewer_admin">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -820,7 +820,7 @@
                         id="reviewer_admin"
                         label="%navigatorSelector.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
                         navigatorId="organization.user"
@@ -834,7 +834,7 @@
                         id="reviewer_list"
                         label="%list.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="false">
@@ -844,7 +844,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.21">
          </basicpage>
          <basicpage
@@ -879,7 +879,7 @@
                <section
                      label="%section.label.15">
                   <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="confirmdata"
@@ -918,7 +918,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.24">
          </basicpage>
          <basicpage
@@ -966,7 +966,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.27">
          </basicpage>
       </editor>

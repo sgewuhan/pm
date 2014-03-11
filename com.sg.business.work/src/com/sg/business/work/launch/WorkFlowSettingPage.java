@@ -9,8 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.commons.page.flow.AbstractProcessPage;
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel;
+import com.sg.business.commons.ui.page.flow.AbstractProcessPage;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Role;
@@ -40,8 +40,8 @@ public class WorkFlowSettingPage extends WizardPage {
 
 			@Override
 			protected int getProcessSettingControl() {
-				return ProcessSettingPanel2.ACTOR_SELECTOR
-						| ProcessSettingPanel2.ROLE_SELECTOR;
+				return ProcessSettingPanel.ACTOR_SELECTOR
+						| ProcessSettingPanel.ROLE_SELECTOR;
 			}
 
 			@Override
@@ -99,7 +99,7 @@ public class WorkFlowSettingPage extends WizardPage {
 
 		};
 		page.createPageContent(parent, input, null);
-		ProcessSettingPanel2 psp = page.getProcessSettingPanel();
+		ProcessSettingPanel psp = page.getProcessSettingPanel();
 		psp.setRoleSelectEnable(false);
 		setControl(psp);
 	}

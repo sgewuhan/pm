@@ -39,7 +39,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -119,7 +119,7 @@
             persistentFields="project_id,accessory"
             processDefinitionId="tb.tbProjectApplication">
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="project_id"
                taskFormFieldName="project_id">
          </processParameter>
@@ -188,7 +188,7 @@
                         id="application_leader"
                         label="%navigatorSelector.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="application_leader"
                         navigatorId="tb.taskforms.applicationleader.selector"
@@ -201,7 +201,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.0">
          </basicpage>
          <basicpage
@@ -263,7 +263,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.3">
          </basicpage>
          <basicpage
@@ -311,7 +311,7 @@
                <section
                      label="%section.label.5">
                   <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="confirmdate"
@@ -358,7 +358,7 @@
                         inputValidator="com.tmt.tb.field.CheckReviewerOfTBProjectApplication"
                         label="%list.label"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="false">
@@ -425,7 +425,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.8">
          </basicpage>
          <basicpage
@@ -487,7 +487,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.11">
          </basicpage>
          <basicpage
@@ -563,7 +563,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.14">
          </basicpage>
          <basicpage
@@ -601,7 +601,7 @@
                         id="prj_manager"
                         label="%navigatorSelector.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="prj_manager"
                         navigatorId="tb.taskforms.user.selector"
@@ -628,7 +628,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.17">
          </basicpage>
          <basicpage
@@ -678,7 +678,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.20">
          </basicpage>
          <basicpage
@@ -729,7 +729,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.23">
          </basicpage>
          <basicpage
@@ -821,7 +821,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.26">
          </basicpage>
          <basicpage
@@ -856,7 +856,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -948,7 +948,7 @@
                         id="reviewer_admin"
                         label="%navigatorSelector.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="reviewer_admin"
                         navigatorId="organization.user.selector"
@@ -962,7 +962,7 @@
                         id="reviewer_list"
                         label="%list.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="true">
@@ -983,7 +983,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.29">
          </basicpage>
          <basicpage
@@ -1045,7 +1045,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.32">
          </basicpage>
          <basicpage
@@ -1121,7 +1121,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.35">
          </basicpage>
          <basicpage
@@ -1183,7 +1183,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.38">
          </basicpage>
          <basicpage
@@ -1306,7 +1306,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.44">
          </basicpage>
          <basicpage
@@ -1368,7 +1368,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.47">
          </basicpage>
          <basicpage
@@ -1400,7 +1400,7 @@
             processDefinitionId="tb.tbProjectChange"
             saveHandler="com.tmt.tb.handler.ProjectChangeAddParticipate">
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="project"
                taskFormFieldName="project">
          </processParameter>
@@ -1653,7 +1653,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.50">
          </basicpage>
          <basicpage
@@ -1731,7 +1731,7 @@
                         inputValidator="com.tmt.tb.validation.HasPlanValidation"
                         label="%navigatorSelector.label.4"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="plan"
                         navigatorId="organization.user.selector"
@@ -1759,7 +1759,7 @@
                         inputValidator="com.tmt.tb.validation.RelatedDeptValidation"
                         label="%navigatorSelector.label.5"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="other"
                         navigatorId="organization.user.selector"
@@ -1775,7 +1775,7 @@
                         id="project_supervisor"
                         label="%navigatorSelector.label.6"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="project_supervisor"
                         navigatorId="changeapprover.navigator"
@@ -1793,7 +1793,7 @@
          </basicpage>
          <basicpage
                id="page3"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.54">
          </basicpage>
          <basicpage
@@ -1853,7 +1853,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.57">
          </basicpage>
          <basicpage
@@ -2250,21 +2250,21 @@
          </column>
          <column
                column="planstart"
-               editingSupport="com.sg.business.commons.editingsupport.DateEditing"
+               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
                name="%column.name.0"
                type="Date">
          </column>
          <column
                column="planfinish"
-               editingSupport="com.sg.business.commons.editingsupport.DateEditing"
+               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
                name="%column.name.1"
                type="Date">
          </column>
          <column
               column="chargerid"
-            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
             lazyDisplay="true"
-             editingSupport="com.sg.business.commons.editingsupport.UserNavigatorSelectorEditing"
+             editingSupport="com.sg.business.commons.column.editingsupport.UserNavigatorSelectorEditing"
             name="%column.name.2"
             type="String"
             width="120">
@@ -2476,7 +2476,7 @@
                         id="check"
                         label="%navigatorSelector.label.7"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="check"
                         navigatorId="organization.user.selector"
@@ -2489,7 +2489,7 @@
                         id="auditor"
                         label="%navigatorSelector.label.8"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="auditor"
                         navigatorId="organization.user.selector"
@@ -2502,7 +2502,7 @@
                         id="approve"
                         label="%navigatorSelector.label.9"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="approve"
                         navigatorId="organization.user.selector"
@@ -2526,7 +2526,7 @@
                         id="check"
                         label="%navigatorSelector.label.11"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="check"
                         navigatorId="organization.user.selector"
@@ -2539,7 +2539,7 @@
                         id="craft"
                         label="%navigatorSelector.label.12"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="craft"
                         navigatorId="organization.user.selector"
@@ -2552,7 +2552,7 @@
                         id="purchase"
                         label="%navigatorSelector.label.13"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="purchase"
                         navigatorId="organization.user.selector"
@@ -2565,7 +2565,7 @@
                         id="develop"
                         label="%navigatorSelector.label.14"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.Organization"
                         name="develop"
                         navigatorId="organization.user.selector"
@@ -2600,7 +2600,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.63">
          </basicpage>
          <basicpage
@@ -2660,7 +2660,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage
@@ -2699,7 +2699,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.15"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="craft_new"
                         navigatorId="jszx.project_apply.worker.selector"
@@ -2735,7 +2735,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.69">
          </basicpage>
          <basicpage
@@ -2774,7 +2774,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.16"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="purchase_new"
                         navigatorId="jszx.project_apply.worker.selector"
@@ -2810,7 +2810,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.72">
          </basicpage>
          <basicpage
@@ -2849,7 +2849,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.17"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="develop_new"
                         navigatorId="jszx.project_apply.worker.selector"
@@ -2885,7 +2885,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.75">
          </basicpage>
          <basicpage
@@ -2921,7 +2921,7 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
          </processParameter>
@@ -3087,7 +3087,7 @@
                         id="dept"
                         label="%navigatorSelector.label.18"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
@@ -3100,7 +3100,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.78">
          </basicpage>
          <basicpage
@@ -3139,7 +3139,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.19"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="worker"
                         navigatorId="jszx.project_apply.worker.selector"
@@ -3175,7 +3175,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.81">
          </basicpage>
          <basicpage
@@ -3214,7 +3214,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.20"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="check"
                         navigatorId="organization.user.selector"
@@ -3228,7 +3228,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.21"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="qm"
                         navigatorId="organization.user.selector"
@@ -3242,7 +3242,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.22"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="plan"
                         navigatorId="organization.user.selector"
@@ -3256,7 +3256,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.23"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="craft"
                         navigatorId="organization.user.selector"
@@ -3270,7 +3270,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.24"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="approve"
                         navigatorId="organization.user.selector"
@@ -3284,7 +3284,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.25"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="auditor"
                         navigatorId="organization.user.selector"
@@ -3298,7 +3298,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.26"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="purchase"
                         navigatorId="organization.user.selector"
@@ -3312,7 +3312,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.27"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="develop"
                         navigatorId="organization.user.selector"
@@ -3347,7 +3347,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.84">
          </basicpage>
          <basicpage
@@ -3408,7 +3408,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.87">
          </basicpage>
          <basicpage
@@ -3447,7 +3447,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.28"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="craft_new"
                         navigatorId="jszx.project_apply.worker.selector"
@@ -3483,7 +3483,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.90">
          </basicpage>
          <basicpage
@@ -3522,7 +3522,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.29"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="purchase_new"
                         navigatorId="jszx.project_apply.worker.selector"
@@ -3558,7 +3558,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.93">
          </basicpage>
          <basicpage
@@ -3597,7 +3597,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="%navigatorSelector.label.30"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="develop_new"
                         navigatorId="jszx.project_apply.worker.selector"
@@ -3633,7 +3633,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.96">
          </basicpage>
          <basicpage
@@ -3669,7 +3669,7 @@
                taskFormFieldName="workorder">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="product"
                taskFormFieldName="product">
          </processParameter>
@@ -3688,7 +3688,7 @@
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToObjectId"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="dept"
                taskFormFieldName="dept">
          </processParameter>
@@ -3747,7 +3747,7 @@
                taskFormFieldName="review_admin">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.sg.business.commons.field.processparameterdelegator.ChangetToList"
+               processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
                taskFormFieldName="reviewer_list">
          </processParameter>
@@ -3827,7 +3827,7 @@
                         id="dept"
                         label="%navigatorSelector.label.31"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
@@ -3841,7 +3841,7 @@
                         id="prj_manager"
                         label="%navigatorSelector.label.32"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="prj_manager"
                         navigatorId="organization.user.selector"
@@ -3874,7 +3874,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.99">
          </basicpage>
          <basicpage
@@ -3935,7 +3935,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.102">
          </basicpage>
          <basicpage
@@ -3996,7 +3996,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.105">
          </basicpage>
          <basicpage
@@ -4034,7 +4034,7 @@
                         id="qm"
                         label="%navigatorSelector.label.33"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="qm"
                         navigatorId="organization.user.selector"
@@ -4047,7 +4047,7 @@
                         id="craft"
                         label="%navigatorSelector.label.34"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="craft"
                         navigatorId="organization.user.selector"
@@ -4060,7 +4060,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.108">
          </basicpage>
          <basicpage
@@ -4109,7 +4109,7 @@
                         id="review_admin"
                         label="%navigatorSelector.label.35"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="review_admin"
                         navigatorId="organization.user.selector"
@@ -4123,7 +4123,7 @@
                         id="reviewer_list"
                         label="%list.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reviewer_list"
                         persistable="true"
                         required="false">
@@ -4132,7 +4132,7 @@
                <section
                      label="%section.label.5">
                   <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="DateDialog"
                         editable="true"
                         id="confirmdate"
@@ -4174,7 +4174,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.111">
          </basicpage>
          <basicpage
@@ -4235,7 +4235,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.114">
          </basicpage>
          <basicpage
@@ -4488,7 +4488,7 @@
                         id="dept"
                         label="支持部门"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
                         name="dept"
                         navigatorId="organization.navigaor.projectfunction"
@@ -4501,7 +4501,7 @@
                         id="support_auditor"
                         label="批准人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="support_auditor"
                         navigatorId="tb.tbBusinessSupport.supportauditor"
@@ -4514,7 +4514,7 @@
                         id="support_approve"
                         label="确认人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="support_approve"
                         navigatorId="tb.tbBusinessSupport.supportapprover"
@@ -4527,7 +4527,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.87">
          </basicpage>
          <basicpage
@@ -4588,7 +4588,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
          <basicpage
@@ -4627,7 +4627,7 @@
                         inputValidator="com.sg.business.taskforms.field.CheckByPass"
                         label="执行人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="support"
                         navigatorId="organization.user.selector"
@@ -4666,7 +4666,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage
@@ -4704,7 +4704,7 @@
                         id="priceapprover"
                         label="批准"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="priceapprover"
                         navigatorId="organization.user.selector"
@@ -4717,7 +4717,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage
@@ -4755,7 +4755,7 @@
                         id="cbcchecker"
                         label="校核"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cbcchecker"
                         navigatorId="organization.user.selector"
@@ -4768,7 +4768,7 @@
                         id="cbcauditor"
                         label="审核"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cbcauditor"
                         navigatorId="organization.user.selector"
@@ -4781,7 +4781,7 @@
                         id="cbcapporver"
                         label="批准"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cbcapporver"
                         navigatorId="organization.user.selector"
@@ -4794,7 +4794,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage
@@ -4832,7 +4832,7 @@
                         id="tecchecker"
                         label="校核"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="tecchecker"
                         navigatorId="organization.user.selector"
@@ -4845,7 +4845,7 @@
                         id="tecauditor"
                         label="审核"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="tecauditor"
                         navigatorId="organization.user.selector"
@@ -4858,7 +4858,7 @@
                         id="tecapporver"
                         label="批准"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="tecapporver"
                         navigatorId="organization.user.selector"
@@ -4871,7 +4871,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage
@@ -4933,7 +4933,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage
@@ -4995,7 +4995,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage
@@ -5057,7 +5057,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="%basicpage.title.66">
          </basicpage>
          <basicpage

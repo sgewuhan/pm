@@ -6,6 +6,7 @@ import com.sg.sales.ISalesRole;
 public class Company extends TeamControl implements IDataStatusControl, ISalesTeam {
 
 	public static final String F_STATUS = "status";
+	public static final String F_LEVEL = "level";
 
 	@Override
 	public String getStatusText() {
@@ -121,6 +122,10 @@ public class Company extends TeamControl implements IDataStatusControl, ISalesTe
 			return ISalesRole.SALES_SUPERVISOR_NUMBER;
 		}
 		return null;
+	}
+
+	public String getLevel() {
+		return getStringValue(F_LEVEL);
 	}
 
 }

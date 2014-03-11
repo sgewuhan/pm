@@ -2,7 +2,7 @@ package com.sg.business.commons.ui.flow;
 
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2.IProcessSettingListener;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel.IProcessSettingListener;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.User;

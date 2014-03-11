@@ -7,7 +7,7 @@
             id="com.sg.business.commons.admin.CalendarSetting"
             image="image/calendar_48.png"
             label="%adminFunction.label"
-            run="com.sg.business.commons.admin.CalendarSetting">
+            run="com.sg.business.commons.adminfunction.CalendarSetting">
       </adminFunction>
       <!--adminFunction
             id="com.sg.business.commons.admin.BPMAccountSync"
@@ -652,7 +652,7 @@
       <column
             column="rolenumber"
             id="role.roleNumber"
-            labelProvider="com.sg.business.commons.labelprovider.RoleNumberLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.RoleNumberLabelProvider"
             name="%column.name.32"
             style="SWT.LEFT"
             type="String"
@@ -668,7 +668,7 @@
       <column
             column="desc"
             id="role.desc"
-            labelProvider="com.sg.business.commons.labelprovider.RoleDescLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.RoleDescLabelProvider"
             name="%column.name.34"
             type="String"
             width="240">
@@ -676,7 +676,7 @@
       <column
             column="roletype"
             id="role.roleType"
-            labelProvider="com.sg.business.commons.labelprovider.RoleTypeLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.RoleTypeLabelProvider"
             name="%column.name.35"
             type="String">
       </column>
@@ -717,7 +717,7 @@
       <column
             column="organization_id"
             id="account.organizationpath"
-            labelProvider="com.sg.business.commons.labelprovider.UserOrganizationPathLabelprovider"
+            labelProvider="com.sg.business.commons.column.labelprovider.UserOrganizationPathLabelprovider"
             lazyDisplay="true"
             name="%column.name.40"
             type="String"
@@ -726,7 +726,7 @@
       <column
             column="organization_id"
             id="account.roleassignment"
-            labelProvider="com.sg.business.commons.labelprovider.UserRoleAssignmentLabelprovider"
+            labelProvider="com.sg.business.commons.column.labelprovider.UserRoleAssignmentLabelprovider"
             lazyDisplay="true"
             name="%column.name.41"
             type="String"
@@ -735,7 +735,7 @@
       <column
             column="scenario"
             id="account.scenario"
-            labelProvider="com.sg.business.commons.labelprovider.UserScenarioLabelprovider"
+            labelProvider="com.sg.business.commons.column.labelprovider.UserScenarioLabelprovider"
             lazyDisplay="true"
             name="%column.name.42"
             type="String"
@@ -755,7 +755,7 @@
       <column
             column="folderType"
             id="folder.folderType"
-            labelProvider="com.sg.business.commons.labelprovider.FolderTypeLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.FolderTypeLabelProvider"
             name="%column.name.44"
             type="String"
             width="180">
@@ -763,7 +763,7 @@
       <column
             column="containerPath"
             id="folder.containerPath"
-            labelProvider="com.sg.business.commons.labelprovider.ContainerPathLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.ContainerPathLabelProvider"
             name="%column.name.45"
             type="String"
             width="180">
@@ -838,7 +838,7 @@
       <column
             column="activated"
             id="generic.activated"
-            labelProvider="com.sg.business.commons.labelprovider.ActivatedLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.ActivatedLabelProvider"
             name="%column.name.54"
             style="SWT.CENTER"
             type="Boolean"
@@ -861,7 +861,7 @@
       <column
             column="seq"
             id="work.seq"
-            labelProvider="com.sg.business.commons.labelprovider.WBSCodeLabelprovider"
+            labelProvider="com.sg.business.commons.column.labelprovider.WBSCodeLabelprovider"
             lazyDisplay="true"
             name="%column.name.57"
             type="Integer"
@@ -870,7 +870,7 @@
       <column
             column="desc"
             id="roledefinition.desc"
-            labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.RoleDefinitionLabelProvider"
             name="%column.name.58"
             type="String"
             width="-1">
@@ -878,7 +878,7 @@
       <column
             column="rolenumber"
             id="roledefinition.number"
-            labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.RoleDefinitionLabelProvider"
             name="%column.name.59"
             type="String"
             width="80">
@@ -886,7 +886,7 @@
       <column
             column="roletype"
             id="roledefinition.type"
-            labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionTypeLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.RoleDefinitionTypeLabelProvider"
             name="%column.name.60"
             type="String"
             width="80">
@@ -894,7 +894,7 @@
       <column
             column="description"
             id="roledefinition.description"
-            labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionDescLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.RoleDefinitionDescLabelProvider"
             name="%column.name.61"
             type="String"
             width="240">
@@ -902,7 +902,7 @@
       <column
             column="charger_roled_id"
             id="workdefinition.chargerrole"
-            labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkDefLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.ChargerRoleDefOfWorkDefLabelProvider"
             name="%column.name.62"
             type="String"
             width="120">
@@ -986,7 +986,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.CreateWorkDefinition"
+            class="com.sg.business.commons.operation.handler.CreateWorkDefinition"
             commandId="work.create">
          <activeWhen>
             <with
@@ -1002,7 +1002,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CreateWork"
+            class="com.sg.business.commons.operation.handler.CreateWork"
             commandId="work.create">
          <activeWhen>
             <with
@@ -1018,7 +1018,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.EditWorkDefinition"
+            class="com.sg.business.commons.operation.handler.EditWorkDefinition"
             commandId="work.edit">
          <activeWhen>
             <with
@@ -1034,7 +1034,7 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.EditWork"
+            class="com.sg.business.commons.operation.handler.EditWork"
             commandId="work.edit">
          <activeWhen>
             <with
@@ -1050,43 +1050,43 @@
          </activeWhen>
       </handler>
       <handler
-            class="com.sg.business.commons.handler.RemoveWork"
+            class="com.sg.business.commons.operation.handler.RemoveWork"
             commandId="work.remove">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveUp"
+            class="com.sg.business.commons.operation.handler.WorkMoveUp"
             commandId="work.moveup">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveDown"
+            class="com.sg.business.commons.operation.handler.WorkMoveDown"
             commandId="work.movedown">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveLeft"
+            class="com.sg.business.commons.operation.handler.WorkMoveLeft"
             commandId="work.moveleft">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.WorkMoveRight"
+            class="com.sg.business.commons.operation.handler.WorkMoveRight"
             commandId="work.moveright">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.ShowWorkCompase"
+            class="com.sg.business.commons.operation.handler.ShowWorkCompase"
             commandId="work.showcompass">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.ChargerAssignment"
+            class="com.sg.business.commons.operation.handler.ChargerAssignment"
             commandId="work.setcharger">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CarlendarTest1"
+            class="com.sg.business.commons.operation.handler.CarlendarTest1"
             commandId="carlendartest1">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CarlendarTest2"
+            class="com.sg.business.commons.operation.handler.CarlendarTest2"
             commandId="carlendartest2">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.CreateWorkFromGeneric"
+            class="com.sg.business.commons.operation.handler.CreateWorkFromGeneric"
             commandId="work.create.fromgenericwork">
          <activeWhen>
             <with
@@ -1199,7 +1199,7 @@
       <column
             column="status"
             id="project.status"
-            labelProvider="com.sg.business.commons.labelprovider.StatusLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.StatusLabelProvider"
             name="%column.name.65"
             toolTipText="%column.toolTipText"
             type="String"
@@ -1264,7 +1264,7 @@
       <column
             column="chargerid"
             id="chargerid"
-            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
             lazyDisplay="true"
             name="%column.name.74"
             type="String"
@@ -1273,7 +1273,7 @@
       <column
             column="businesschargerid"
             id="businesschargerid"
-            labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
             lazyDisplay="true"
             name="%column.name.businesschargerid"
             type="String"
@@ -1282,7 +1282,7 @@
       <column
             column="org_id"
             id="project.org_id"
-            labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+            labelProvider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
             lazyDisplay="true"
             name="%column.name.75"
             type="String"
@@ -1291,7 +1291,7 @@
       <column
             column="launchorg_id"
             id="project.launchorg_id"
-            labelProvider="com.sg.business.commons.labelprovider.OrgLabelProvidder"
+            labelProvider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
             lazyDisplay="true"
             name="%column.name.76"
             type="String"
@@ -1307,7 +1307,7 @@
       <column
             column="participate"
             id="participate"
-            labelProvider="com.sg.business.commons.labelprovider.UserIdListLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.UserIdListLabelProvider"
             lazyDisplay="false"
             name="%column.name.78"
             type="String"
@@ -1315,9 +1315,9 @@
       </column>
       <column
             column="overtime"
-            columnSorter="com.sg.business.commons.labelprovider.WorkOvertimeSorter"
+            columnSorter="com.sg.business.commons.column.labelprovider.WorkOvertimeSorter"
             id="work.overtime"
-            labelProvider="com.sg.business.commons.labelprovider.WorkOvertimeLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkOvertimeLabelProvider"
             name=" "
             toolTipText="%column.toolTipText.0"
             type="String"
@@ -1325,9 +1325,9 @@
       </column>
       <column
             column="overload"
-            columnSorter="com.sg.business.commons.labelprovider.WorkOverloadSorter"
+            columnSorter="com.sg.business.commons.column.labelprovider.WorkOverloadSorter"
             id="work.overload"
-            labelProvider="com.sg.business.commons.labelprovider.WorkOverloadLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkOverloadLabelProvider"
             lazyDisplay="true"
             name=" "
             toolTipText="%column.toolTipText.1"
@@ -1339,9 +1339,9 @@
          point="com.sg.widgets.column">
       <column
             column="planstart"
-            editingSupport="com.sg.business.commons.editingsupport.PlanStartEditing"
+            editingSupport="com.sg.business.commons.column.editingsupport.PlanStartEditing"
             id="planstart_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanStart"
             lazyDisplay="true"
             name="%column.name.81"
             type="Date"
@@ -1349,9 +1349,9 @@
       </column>
       <column
             column="planfinish"
-            editingSupport="com.sg.business.commons.editingsupport.PlanFinishEditing"
+            editingSupport="com.sg.business.commons.column.editingsupport.PlanFinishEditing"
             id="planfinish_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanFinish"
             lazyDisplay="true"
             name="%column.name.82"
             type="Date"
@@ -1360,7 +1360,7 @@
       <column
             column="planduration"
             id="planduration_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanDuration"
             lazyDisplay="true"
             name="%column.name.83"
             style="SWT.RIGHT"
@@ -1369,9 +1369,9 @@
       </column>
       <column
             column="planworks"
-            editingSupport="com.sg.business.commons.editingsupport.PlanWorksEditing"
+            editingSupport="com.sg.business.commons.column.editingsupport.PlanWorksEditing"
             id="planworks_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanWorks"
             lazyDisplay="true"
             name="%column.name.84"
             style="SWT.RIGHT"
@@ -1381,7 +1381,7 @@
       <column
             column="actualstart"
             id="actualstart_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualStart"
             lazyDisplay="true"
             name="%column.name.85"
             type="Date"
@@ -1390,7 +1390,7 @@
       <column
             column="actualfinish"
             id="actualfinish_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualFinish"
             lazyDisplay="true"
             name="%column.name.86"
             type="Date"
@@ -1399,7 +1399,7 @@
       <column
             column="actualduration"
             id="actualduration_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualDuration"
             lazyDisplay="true"
             name="%column.name.87"
             style="SWT.RIGHT"
@@ -1409,7 +1409,7 @@
       <column
             column="actualworks"
             id="actualworks_e"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualWorks"
             lazyDisplay="true"
             name="%column.name.88"
             style="SWT.RIGHT"
@@ -1419,7 +1419,7 @@
       <column
             column="charger_roled_id"
             id="work.chargerrole"
-            labelProvider="com.sg.business.commons.labelprovider.ChargerRoleDefOfWorkLabelProvider"
+            labelProvider="com.sg.business.commons.column.labelprovider.ChargerRoleDefOfWorkLabelProvider"
             name="%column.name.89"
             type="String"
             width="120">
@@ -1434,7 +1434,7 @@
       <column
             column="planstart"
             id="planstart_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanStart"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanStart"
             lazyDisplay="true"
             name="%column.name.91"
             type="Date"
@@ -1443,7 +1443,7 @@
       <column
             column="planfinish"
             id="planfinish_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanFinish"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanFinish"
             lazyDisplay="true"
             name="%column.name.92"
             type="Date"
@@ -1452,7 +1452,7 @@
       <column
             column="planduration"
             id="planduration_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanDuration"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanDuration"
             lazyDisplay="true"
             name="%column.name.93"
             style="SWT.RIGHT"
@@ -1462,7 +1462,7 @@
       <column
             column="planworks"
             id="planworks_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkPlanWorks"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkPlanWorks"
             lazyDisplay="true"
             name="%column.name.94"
             style="SWT.RIGHT"
@@ -1472,7 +1472,7 @@
       <column
             column="actualstart"
             id="actualstart_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualStart"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualStart"
             lazyDisplay="true"
             name="%column.name.95"
             type="Date"
@@ -1481,7 +1481,7 @@
       <column
             column="actualfinish"
             id="actualfinish_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualFinish"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualFinish"
             lazyDisplay="true"
             name="%column.name.96"
             type="Date"
@@ -1490,7 +1490,7 @@
       <column
             column="actualduration"
             id="actualduration_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualDuration"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualDuration"
             lazyDisplay="true"
             name="%column.name.97"
             style="SWT.RIGHT"
@@ -1500,7 +1500,7 @@
       <column
             column="actualworks"
             id="actualworks_c"
-            labelProvider="com.sg.business.commons.labelprovider.WorkActualWorks"
+            labelProvider="com.sg.business.commons.column.labelprovider.WorkActualWorks"
             lazyDisplay="true"
             name="%column.name.98"
             style="SWT.RIGHT"
@@ -1511,28 +1511,28 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.sg.business.commons.test.LifeCycleTest"
+            class="com.sg.business.commons.operation.test.LifeCycleTest"
             id="lifecycle.action.test"
             namespace="lifecycle"
             properties="action,status"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.sg.business.commons.test.PrimaryObjectTest"
+            class="com.sg.business.commons.operation.test.PrimaryObjectTest"
             id="primaryobject.properties"
             namespace="primaryobject"
             properties="properties"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.sg.business.commons.test.PrimaryObjectTest"
+            class="com.sg.business.commons.operation.test.PrimaryObjectTest"
             id="primaryobject.method"
             namespace="primaryobject"
             properties="method"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.sg.business.commons.test.RuntimeWorkTest"
+            class="com.sg.business.commons.operation.test.RuntimeWorkTest"
             id="runtimework.action"
             namespace="runtimework"
             properties="action"
@@ -1562,15 +1562,15 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.business.commons.handler.ReplyBulletinBoard"
+            class="com.sg.business.commons.operation.handler.ReplyBulletinBoard"
             commandId="bulletinboard.reply">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.OpenBulletinBoard"
+            class="com.sg.business.commons.operation.handler.OpenBulletinBoard"
             commandId="bulletinboard.open">
       </handler>
       <handler
-            class="com.sg.business.commons.handler.AddBulletinBoard"
+            class="com.sg.business.commons.operation.handler.AddBulletinBoard"
             commandId="bulletinboard.create">
       </handler>
    </extension>
@@ -1628,7 +1628,7 @@
                         userlabelForReadonly="true">
                   </text>
                   <text
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publish_date"
@@ -1642,7 +1642,7 @@
                         userlabelForReadonly="true">
                   </text>
                   <text
-                        defaultValueProvider="com.sg.business.commons.value.OrganizationDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.OrganizationDefault"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="organization_id"
@@ -1721,7 +1721,7 @@
                         userlabelForReadonly="true">
                   </text>
                   <text
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="publish_date"
@@ -1735,7 +1735,7 @@
                         userlabelForReadonly="true">
                   </text>
                   <text
-                        defaultValueProvider="com.sg.business.commons.value.OrganizationDefault"
+                        defaultValueProvider="com.sg.business.commons.field.value.OrganizationDefault"
                         editPart="Text(Single Line)"
                         editable="false"
                         id="organization_id"
@@ -1801,6 +1801,42 @@
             id="com.mobnut.portal.entrypoint.direct"
             path="/direct">
       </entrypoint>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="com.sg.widgets.part.view.SideBarNavigator"
+            id="homenavigator"
+            name="Navigator">
+      </view>
+   </extension>
+   <extension
+         point="com.sg.widgets.sidebar">
+      <sidebar
+            id="homenavigator">
+         <expanditem
+               content="com.sg.business.commons.ui.sidebar.Todolist"
+               expanded="true"
+               id="1"
+               image="image/tasks2_w_32_48.png"
+               label="%todolist">
+         </expanditem>
+         <expanditem
+               content="com.sg.business.commons.ui.sidebar.Launchablelist"
+               expanded="false"
+               id="2"
+               image="image/tasks_w_32_48.png"
+               label="%launchwork">
+         </expanditem>
+         <expanditem
+               content="com.sg.business.commons.ui.sidebar.Messagelist"
+               expanded="false"
+               id="3"
+               image="image/message_w_32_48.png"
+               label="%newmessage">
+         </expanditem>
+      </sidebar>
    </extension>
 
 </plugin>
