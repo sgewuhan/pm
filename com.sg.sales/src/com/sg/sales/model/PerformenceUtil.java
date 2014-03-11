@@ -243,17 +243,11 @@ public class PerformenceUtil {
 	}
 
 	public static long getOpportunityQtySum(String userId) {
-		final DBObject query = new BasicDBObject();
-		query.put(
-				Opportunity.F_PROGRESS,
-				new BasicDBObject().append("$in", new String[] { "预算规划",
-						"交流选型", "招标谈判" }));
-		query.put("$or", getSalesUserCondition(userId));
-
-		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
-				Sales.C_OPPORTUNITY);
-		return col.count(query);
+		String[] progress = new String[] { "预算规划",
+				"交流选型", "招标谈判" };
+		return getOpportunityByProgress(userId, progress);
 	}
+
 
 	public static long getContractQtySeason(String userId, int month) {
 		final Date[] date = Utils.getStartEndOfSeason(month);
@@ -274,7 +268,7 @@ public class PerformenceUtil {
 		query.put("$or",getSalesUserCondition(userId));
 
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
-				Sales.C_CONTACT);
+				Sales.C_CONTRACT);
 		return col.count(query);
 	}
 
@@ -328,7 +322,7 @@ public class PerformenceUtil {
 		return 0;
 	}
 
-	private static double getIncomeAmountSeasonByDate(String userId,
+	private static double getIncomeAmountByDate(String userId,
 			final Date[] date) {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				Sales.C_CONTRACT);
@@ -372,15 +366,56 @@ public class PerformenceUtil {
 		}
 		return 0;
 	}
+	
+
+	private static long getOpportunityByProgress(String userId, String[] progress) {
+		final DBObject query = new BasicDBObject();
+		query.put(
+				Opportunity.F_PROGRESS,
+				new BasicDBObject().append("$in", progress));
+		query.put("$or", getSalesUserCondition(userId));
+
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				Sales.C_OPPORTUNITY);
+		return col.count(query);
+	}
 
 	public static double getIncomeAmountSeason(String userId, int month) {
 		final Date[] date = Utils.getStartEndOfMonth(month);
-		return getIncomeAmountSeasonByDate(userId, date);
+		return getIncomeAmountByDate(userId, date);
 	}
 
 	public static double getIncomeAmountYear(String userId, int year) {
 		final Date[] date = Utils.getStartEndOfYear(year);
-		return getIncomeAmountSeasonByDate(userId, date);
+		return getIncomeAmountByDate(userId, date);
+	}
+
+	public static long getOpportunityLostQty(String userId) {
+		String[] progress = new String[] { "签单失败"};
+		return getOpportunityByProgress(userId, progress);
+	}
+
+	public static long getOpportunityGainQty(String userId) {
+		String[] progress = new String[] { "签单成功"};
+		return getOpportunityByProgress(userId, progress);
+	}
+
+	public static double[] getContractAmountEveryMonth(String userId, int y) {
+		double[] result = new double[12];
+		for (int i = 0; i < result.length; i++) {
+			Date[] date = Utils.getStartEndOfMonth(i);
+			result[i] = getContractAmountByDate(userId, date);
+		}
+		return result;
+	}
+
+	public static double[] getIncomeAmountEveryMonth(String userId, int y) {
+		double[] result = new double[12];
+		for (int i = 0; i < result.length; i++) {
+			Date[] date = Utils.getStartEndOfMonth(i);
+			result[i] = getIncomeAmountByDate(userId, date);
+		}
+		return result;
 	}
 
 }

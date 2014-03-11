@@ -24,11 +24,14 @@ public class OpportunityCommonHTMLLable extends CommonHTMLLabel {
 	public String getHTML() {
 		if ("inlist".equals(key)) {
 			return getHTMLInHomeList();
+		} else if ("singleline".equals(key)) {
+			return getHTMLSingleLine();
 		} else {
 			return getHTMLCommmon();
 		}
 
 	}
+
 
 	/**
 	 * 获得一般的HTMLLabel
@@ -47,7 +50,6 @@ public class OpportunityCommonHTMLLable extends CommonHTMLLabel {
 	@SuppressWarnings("unchecked")
 	private String getHTMLInHomeList() {
 		StructuredViewer viewer = getViewer();
-		// 显示文件名称
 		String desc = opportunity.getDesc();
 		desc = Utils.getPlainText(desc);
 		StringBuffer sb = new StringBuffer();
@@ -115,11 +117,38 @@ public class OpportunityCommonHTMLLable extends CommonHTMLLabel {
 					break;
 				}
 			}
-			if (i != input.size() - 1||input.size()<4) {
+			if (i != input.size() - 1 || input.size() < 4) {
 				sb.append(HtmlUtil.createBottomLine(0)); //$NON-NLS-1$
 			}
 		}
 		sb.append("</div>");
+		return sb.toString();
+	}
+	
+
+	private String getHTMLSingleLine() {
+		// 工作desc
+		Company company = opportunity.getCompany();
+		String desc = Utils.getPlainText(company.getDesc());
+
+		// ---------------------------------------------------------------------------
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div style='cursor:pointer; border-bottom:1px dotted #cdcdcd;height=100%'>");
+
+		sb.append("<span style='"//$NON-NLS-1$
+				+ "font-family:微软雅黑;"//$NON-NLS-1$
+				+ "font-size:10pt;"//$NON-NLS-1$
+				+ "margin:0 2;"//$NON-NLS-1$
+				+ "color:#4d4d4d;"//$NON-NLS-1$
+				+ "width:" + 120
+				+ "px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		sb.append(desc);
+		sb.append("</span>");
+
+		sb.append("</div>");
+
 		return sb.toString();
 	}
 

@@ -10,7 +10,6 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
@@ -49,14 +48,14 @@ public abstract class TeamControl extends PrimaryObject {
 	}
 
 	// 获得我可以访问的客户的条件
-	public static DBObject getOwnerCondition(String userId) {
+	public static BasicDBObject getOwnerCondition(String userId) {
 		Object cond0 = new BasicDBObject().append(F_OWNER, userId);
 		Object cond5 = new BasicDBObject().append(F_PERMISSION_OWNERLIST,
 				userId);
 		return new BasicDBObject().append("$or", new Object[] { cond0, cond5 });
 	}
 
-	public static DBObject getVisitableCondition(String userId) {
+	public static BasicDBObject getVisitableCondition(String userId) {
 		Object cond0 = new BasicDBObject().append(F_OWNER, userId);
 		Object cond5 = new BasicDBObject().append(F_VISITORLIST, userId);
 		Object cond6 = new BasicDBObject().append(F_PERMISSION_OWNERLIST,

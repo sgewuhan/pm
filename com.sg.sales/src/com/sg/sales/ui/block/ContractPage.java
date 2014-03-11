@@ -1,25 +1,10 @@
 package com.sg.sales.ui.block;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.birt.chart.model.ChartWithoutAxes;
-import org.eclipse.birt.chart.model.attribute.ChartDimension;
-import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
-import org.eclipse.birt.chart.model.component.Series;
-import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
-import org.eclipse.birt.chart.model.data.NumberDataSet;
-import org.eclipse.birt.chart.model.data.SeriesDefinition;
-import org.eclipse.birt.chart.model.data.TextDataSet;
-import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
-import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
-import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
-import org.eclipse.birt.chart.model.impl.ChartWithoutAxesImpl;
-import org.eclipse.birt.chart.model.type.PieSeries;
-import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -47,21 +32,28 @@ import org.eclipse.ui.forms.widgets.Section;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.design.ICSSConstants;
+import com.mongodb.BasicDBObject;
 import com.sg.business.commons.ui.block.PageListViewer;
-import com.sg.business.model.Work;
-import com.sg.business.model.dataset.work.ProcessingNavigatorItemSet;
+import com.sg.business.commons.ui.chart.CommonChart;
+import com.sg.sales.model.Opportunity;
+import com.sg.sales.model.PerformenceUtil;
+import com.sg.sales.model.TeamControl;
+import com.sg.sales.model.dataset.MyOpportunityDataSet;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
 import com.sg.widgets.commons.model.IEditorInputFactory;
+import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 @SuppressWarnings("restriction")
-public class ContractPage extends TabBlockPage implements ISelectionChangedListener {
+public class ContractPage extends TabBlockPage implements
+		ISelectionChangedListener {
+
+	private static final String[] X_AXIS_TEXT = new String[] { "1", "2", "3",
+			"4", "5", "6", "7", "8", "9", "10", "11", "12" };
 
 	private static final int PAGESIZE = 4;
-
-	private ProcessingNavigatorItemSet itemSet;
 
 	private Label title;
 
@@ -71,11 +63,27 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 
 	private Font font;
 
-	private static final String BLUE = "#33b5e5";
+	private String userId;
+
+	private long contractQtySeason;
+
+	private double contractAmountSeason;
+
+	private double contractAmountYear;
+
+	private int q;
+
+	private MyOpportunityDataSet opportunityDS;
+
+	private List<PrimaryObject> opportinuties;
+
+	private double[] contractAmountEveryMonth;
+
+	// private static final String BLUE = "#33b5e5";
 
 	private static final String ORANGE = "#ffbb33";
 
-	private static final String RED = "#ff4444";
+	// private static final String RED = "#ff4444";
 
 	public static final int BLOCKSIZE = 300;
 
@@ -95,26 +103,35 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 		fd.right = new FormAttachment(100);
 		fd.height = 40;
 
-		Control grsphic = createGraphicBlock(parent);
-		fd = new FormData();
-		grsphic.setLayoutData(fd);
-		fd.top = new FormAttachment(title);
-		fd.left = new FormAttachment();
-		fd.right = new FormAttachment(45);
-		fd.bottom = new FormAttachment(100);
-
 		Control text = createTextBlock(parent);
 		fd = new FormData();
 		text.setLayoutData(fd);
 		fd.top = new FormAttachment(title);
-		fd.left = new FormAttachment(grsphic);
+		fd.left = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(50);
+
+		Control graphic = createGraphicBlock(parent);
+		fd = new FormData();
+		graphic.setLayoutData(fd);
+		fd.top = new FormAttachment(text);
+		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
 		fd.bottom = new FormAttachment(100);
+
 	}
 
 	private void init() {
-		itemSet = new ProcessingNavigatorItemSet();
+		userId = new CurrentAccountContext().getConsignerId();
 		font = new Font(getDisplay(), "微软雅黑", 16, SWT.NORMAL);
+		opportunityDS = new MyOpportunityDataSet();
+		opportunityDS.setQueryCondition(TeamControl.getVisitableCondition(
+				userId).append(
+				Opportunity.F_PROGRESS,
+				new BasicDBObject().append("$in",
+						new String[] { "签单成功", "签单失败" })));
+		opportunityDS.setSort(new BasicDBObject().append(Opportunity.F__MDATE,
+				-1));
 	}
 
 	@Override
@@ -137,7 +154,7 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 	}
 
 	private Control createGraphicBlock(Composite parent) {
-		graphicContent = new ChartCanvas(parent, SWT.NONE,false);
+		graphicContent = new ChartCanvas(parent, SWT.NONE, false);
 		return graphicContent;
 	}
 
@@ -148,42 +165,78 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 
 	@Override
 	protected Object doGetData() {
-		List<PrimaryObject> items = itemSet.getDataSet().getDataItems();
-		return items;
+		Calendar cal = Calendar.getInstance();
+		int m = cal.get(Calendar.MONTH);
+		int y = cal.get(Calendar.YEAR);
+
+		// 季度
+		q = m / 4 + 1;
+		y = cal.get(Calendar.YEAR);
+		/*
+		 * 签约合同个数（本季度）
+		 */
+		contractQtySeason = PerformenceUtil.getContractQtySeason(userId, m);
+
+		/*
+		 * 签约合同金额（本季度）
+		 */
+		contractAmountSeason = PerformenceUtil.getContractAmountSeason(userId,
+				m);
+
+		/*
+		 * 签约合同个数（年累计）
+		 */
+		// contractQtyYear = PerformenceUtil.getContractQtyYear(userId, y);
+
+		/*
+		 * 丢单
+		 */
+		// opportunityLost = PerformenceUtil.getOpportunityLostQty(userId);
+
+		/*
+		 * 赢单
+		 */
+		// opportunityGain = PerformenceUtil.getOpportunityGainQty(userId);
+
+		/*
+		 * 签约合同金额（年累计）
+		 */
+		contractAmountYear = PerformenceUtil.getContractAmountYear(userId, y);
+
+		/*
+		 * 获得销售机会
+		 */
+		opportinuties = opportunityDS.getDataSet().getDataItems();
+
+		/*
+		 * 获得全年各月的合同金额
+		 */
+
+		contractAmountEveryMonth = PerformenceUtil.getContractAmountEveryMonth(
+				userId, y);
+		for (int i = 0; i < contractAmountEveryMonth.length; i++) {
+			contractAmountEveryMonth[i] = Math.floor(contractAmountEveryMonth[i]/10000);
+		}
+		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doDisplayData(Object data) {
-		List<PrimaryObject> items = (List<PrimaryObject>) data;
-		int overSchedule = 0;
-		int overScheduleEst = 0;
+		title.setText(getTitle());
+		setTextContent();
 
-		for (int i = 0; i < items.size(); i++) {
-			Work work = (Work) items.get(i);
-			boolean delayFinish = work.isDelayFinish();
-			boolean delayFinishEst = work.isDelayFinishEst();
-			if (delayFinish) {
-				overSchedule++;
-			} else if (delayFinishEst) {
-				overScheduleEst++;
-			}
-		}
-		int reserved = items.size();
-		title.setText(getTitle(reserved, overSchedule, overScheduleEst));
-		setTextContent(items);
-
-		setGraphicContent(reserved, overSchedule, overScheduleEst);
+		setGraphicContent();
 
 	}
 
-	private void setGraphicContent(int reserved, int overSchedule,
-			int overScheduleEst) {
-		String[] titles = new String[] { "超期", "预警", "正常" };
-		double[] values = new double[] { overSchedule, overScheduleEst,
-				reserved - overSchedule - overScheduleEst };
+	private void setGraphicContent() {
+		Chart chart = CommonChart
+				.getChart(X_AXIS_TEXT, new String[] { "c" },
+						new double[][] { contractAmountEveryMonth },
+						CommonChart.TYPE_BAR, CommonChart.TYPE_SUBTYPE_STACKED,
+						true, 1);
+		chart.getLegend().setVisible(false);
 
-		Chart chart = getChart(titles, values);
 		graphicContent.setChart(chart);
 		try {
 			graphicContent.redrawChart(false);
@@ -192,88 +245,57 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 		}
 	}
 
-	private void setTextContent(List<PrimaryObject> items) {
+	private void setTextContent() {
 		Control[] children = textContent.getChildren();
 		for (int i = 0; i < children.length; i++) {
 			children[i].dispose();
 		}
 
-		int total = items.size();
-
-		// 显示超期的
-		List<PrimaryObject> overScheduleInput = new ArrayList<PrimaryObject>();
-		// 显示预警的
-		List<PrimaryObject> overScheduleEstInput = new ArrayList<PrimaryObject>();
-		// 显示最紧急的
-		List<PrimaryObject> emergencyInput = new ArrayList<PrimaryObject>();
-		for (int i = 0; i < items.size(); i++) {
-			Work work = (Work) items.get(i);
-			boolean delayFinish = work.isDelayFinish();
-			boolean delayFinishEst = work.isDelayFinishEst();
-			if (delayFinish) {
-				overScheduleInput.add(work);
-			} else if (delayFinishEst) {
-				overScheduleEstInput.add(work);
+		List<PrimaryObject> success = new ArrayList<PrimaryObject>();
+		List<PrimaryObject> failure = new ArrayList<PrimaryObject>();
+		for (int i = 0; i < opportinuties.size(); i++) {
+			Opportunity opp = (Opportunity) opportinuties.get(i);
+			if ("签单成功".equals(opp.getProgress())) {
+				success.add(opp);
 			} else {
-				emergencyInput.add(work);
+				failure.add(opp);
 			}
 		}
 
-		// 创建超期工作清单
-		Control topControl = null;
 		int margin = 4;
 		FormData fd;
-		Section section;
-		int count = 3;
-		if (!overScheduleInput.isEmpty()) {
-			section = createSection(overScheduleInput,Utils.getRGB(Utils.COLOR_RED[6]));
-			float rate = 1f * overScheduleInput.size() / total;
-			String sectionTitle = new DecimalFormat("#").format(100 * rate)
-					+ "%" + "工作逾期未完成";
-			section.setText(sectionTitle);
+		Section sectionLeft = createSection(success,
+				Utils.getRGB(Utils.COLOR_BLUE[6]));
+		sectionLeft.setText(success.size() == 0 ? "没有签单成功的商机" : ("签单成功的商机"
+				+ success.size() + "个"));
 
-			fd = new FormData();
-			section.setLayoutData(fd);
-			fd.top = new FormAttachment(0, margin);
-			fd.left = new FormAttachment();
-			fd.right = new FormAttachment(100, -margin * 2);
-			topControl = section;
-			count--;
-		}
-		// 创建预警工作清单
-		if (!overScheduleEstInput.isEmpty()) {
-			section = createSection(overScheduleEstInput,Utils.getRGB(Utils.COLOR_YELLOW[6]));
-			section.setText("超期预警"+overScheduleEstInput.size()+"件");
+		fd = new FormData();
+		sectionLeft.setLayoutData(fd);
+		fd.top = new FormAttachment(0, margin);
+		fd.left = new FormAttachment();
+		fd.right = new FormAttachment(50, -margin);
 
-			fd = new FormData();
-			section.setLayoutData(fd);
-			fd.top = new FormAttachment(topControl, margin);
-			fd.left = new FormAttachment();
-			fd.right = new FormAttachment(100, -margin * 2);
-			topControl = section;
-			count--;
-		}
-		// 工作清单
-		if (!emergencyInput.isEmpty() && count > 0) {
-			section = createSection(emergencyInput,Utils.getRGB(Utils.COLOR_OLIVER[6]));
-			section.setText("需处理的工作"+emergencyInput.size()+"件");
+		Section sectionRight = createSection(failure,
+				Utils.getRGB(Utils.COLOR_RED[6]));
+		sectionRight.setText(failure.size() == 0 ? "没有签单失败的商机" : ("签单失败的商机"
+				+ failure.size() + "个"));
 
-			fd = new FormData();
-			section.setLayoutData(fd);
-			fd.top = new FormAttachment(topControl, margin);
-			fd.left = new FormAttachment();
-			fd.right = new FormAttachment(100, -margin * 2);
-			topControl = section;
-		}
+		fd = new FormData();
+		sectionRight.setLayoutData(fd);
+		fd.top = new FormAttachment(0, margin);
+		fd.left = new FormAttachment(sectionLeft, margin);
+		fd.right = new FormAttachment(100, -margin);
+
 		textContent.layout();
 	}
 
-	private Section createSection(List<PrimaryObject> srcInput,int[] rgb) {
+	private Section createSection(List<PrimaryObject> srcInput, int[] rgb) {
 		Section section = new Section(textContent,
 				ExpandableComposite.SHORT_TITLE_BAR
 						| ExpandableComposite.EXPANDED);
 		section.setFont(font);
-		section.setForeground(Widgets.getColor(getDisplay(),rgb[0], rgb[1], rgb[2]));
+		section.setForeground(Widgets.getColor(getDisplay(), rgb[0], rgb[1],
+				rgb[2]));
 		Composite sepbg = new Composite(section, SWT.NONE);
 		sepbg.setLayout(new FormLayout());
 		Label sep = new Label(sepbg, SWT.NONE);
@@ -301,7 +323,7 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 		layout.spacing = 4;
 		layout.marginTop = 4;
 		layout.marginBottom = 0;
-		
+
 		bar.setLayout(layout);
 
 		final Button pageBack = new Button(bar, SWT.PUSH);
@@ -309,7 +331,7 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 		pageBack.setLayoutData(new RowData(16, 16));
 		pageBack.setEnabled(v.canPageBack());
 
-		final Label page = new Label(bar,SWT.NONE);
+		final Label page = new Label(bar, SWT.NONE);
 		page.setText(v.getPageText());
 
 		final Button pageNext = new Button(bar, SWT.PUSH);
@@ -341,98 +363,49 @@ public class ContractPage extends TabBlockPage implements ISelectionChangedListe
 		return section;
 	}
 
-	private String getTitle(int reserved, int overSchedule, int overScheduleEst) {
-		String color;
-		if (overSchedule > 0) {
-			color = RED;
-		} else if (overScheduleEst > 0) {
-			color = ORANGE;
-		} else {
-			color = BLUE;
-		}
+	private String getTitle() {
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='");
 		sb.append("width:500px;");
 		sb.append("height:36px;" + "margin:1px;");
 		sb.append("'>");
 		sb.append("<div style='display:block;width:4px; height:36px;  "
-				+ "float:left;background:" + color + ";'>");
+				+ "float:left;background:" + ORANGE + ";'>");
 		sb.append("</div>");
 		sb.append("<div style='" + "display:-moz-inline-box; "
 				+ "display:inline-block;" + "height:36px;" + "color:#909090;"
-				+ "font-family:微软雅黑;font-size:19pt; '>");
-		if (reserved > 0) {
-			sb.append("您需要处理的工作" + reserved + "件");
-			if (overSchedule + overScheduleEst > 0) {
-			}
-			if (overSchedule > 0) {
-				sb.append(" 超期" + overSchedule + "件");
-			}
-			if (overScheduleEst > 0) {
-				sb.append(" 超期预警" + overScheduleEst + "件");
-			}
-		} else {
-			sb.append("您没有需要处理的工作");
-		}
+				+ "font-family:微软雅黑;font-size:17pt; '>");
+
+		sb.append(q + "季度");
+		sb.append("新签合同");
+		sb.append(contractQtySeason);
+		sb.append("个,");
+		sb.append(new Double(Math.floor(contractAmountSeason / 10000)).longValue() + "万元, ");
+		sb.append("全年:");
+		sb.append(new Double(Math.floor(contractAmountYear / 10000)).longValue() + "万元");
+
 		sb.append("</div>");
 		sb.append("</span>");
 		return sb.toString();
 	}
 
-	public Chart getChart(String[] texts, double[] values) {
-		// double maxValue = Utils.max(values);
-		ChartWithoutAxes chart = ChartWithoutAxesImpl.create();
-		chart.setDimension(ChartDimension.TWO_DIMENSIONAL_LITERAL);
-		chart.getTitle().setVisible(false);
-		chart.getLegend().setVisible(false);
-		;
-		TextDataSet categoryValues = TextDataSetImpl.create(texts);//$NON-NLS-1$ //$NON-NLS-2$
-		NumberDataSet seriesOneValues = NumberDataSetImpl.create(values);
-		// Base Series
-		Series series = SeriesImpl.create();
-		series.setDataSet(categoryValues);
-		SeriesDefinition sd = SeriesDefinitionImpl.create();
-		chart.getSeriesDefinitions().add(sd);
-		sd.getSeriesPalette().getEntries().clear();
-		int[] rgb = Utils.getRGB(Utils.COLOR_RED[6]);
-		sd.getSeriesPalette().getEntries()
-				.add(ColorDefinitionImpl.create(rgb[0], rgb[1], rgb[2]));
-		rgb = Utils.getRGB(Utils.COLOR_YELLOW[6]);
-		sd.getSeriesPalette().getEntries()
-				.add(ColorDefinitionImpl.create(rgb[0], rgb[1], rgb[2]));
-		rgb = Utils.getRGB(Utils.COLOR_OLIVER[6]);
-		sd.getSeriesPalette().getEntries()
-				.add(ColorDefinitionImpl.create(rgb[0], rgb[1], rgb[2]));
-		sd.getSeries().add(series);
-
-		// Orthogonal Series
-		PieSeries sePie = (PieSeries) PieSeriesImpl.create();
-		sePie.setDataSet(seriesOneValues);
-		sePie.setExplosion(2);
-		sePie.setRotation(40);
-
-		sePie.setLabelPosition(Position.INSIDE_LITERAL);// 设置在内部显示数字
-		sePie.getLabel().getCaption().getFont().setSize(7f);
-		SeriesDefinition sdef = SeriesDefinitionImpl.create();
-		sd.getSeriesDefinitions().add(sdef);
-		sdef.getSeries().add(sePie);
-
-		return chart;
-	}
-
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		IStructuredSelection sel = (IStructuredSelection) event.getSelection();
-		if(sel!=null&&!sel.isEmpty()){
-			Work work = (Work) sel.getFirstElement();
-			select(work);
+		if (sel != null && !sel.isEmpty()) {
+			Opportunity opp = (Opportunity) sel.getFirstElement();
+			select(opp);
 		}
 	}
-	
-	protected void select(Work work) {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
-		IEditorInputFactory inputFactory = work.getAdapter(IEditorInputFactory.class);
+
+	protected void select(PrimaryObject opp) {
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page
+				.findView("pm2.work.detail");
+		IEditorInputFactory inputFactory = opp
+				.getAdapter(IEditorInputFactory.class);
 		view.setInput(inputFactory.getInput(null));
 	}
 }
