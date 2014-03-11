@@ -1,7 +1,6 @@
 package com.sg.business.commons.ui.flow;
 
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -15,7 +14,6 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.commons.flow.model.DroolsProcessDiagram;
 import com.sg.widgets.part.SimpleSection;
 
 /**
@@ -39,7 +37,7 @@ public class ActivitySelecter extends Composite {
 
 	private ListenerList listeners = new ListenerList();
 
-	private ScrollingGraphicalViewer processViewer;
+//	private ScrollingGraphicalViewer processViewer;
 
 	private SimpleSection section1;
 
@@ -181,11 +179,11 @@ public class ActivitySelecter extends Composite {
 	 * @param processDefinition
 	 */
 	public void setInput(DroolsProcessDefinition processDefinition) {
-		DroolsProcessDiagram diagram = new DroolsProcessDiagram(processDefinition,
-				null);
-		if(processViewer!=null){
-			processViewer.setContents(diagram);
-		}
+//		DroolsProcessDiagram diagram = new DroolsProcessDiagram(processDefinition,
+//				null);
+//		if(processViewer!=null){
+//			processViewer.setContents(diagram);
+//		}
 		processTable.setDataInput(processDefinition);
 		layout();
 	}
