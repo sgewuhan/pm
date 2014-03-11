@@ -1,4 +1,4 @@
-package com.sg.sales.bpm;
+package com.sg.sales.bpm.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +9,7 @@ import com.sg.bpm.service.task.ServiceProvider;
 import com.sg.bpm.workflow.utils.WorkflowUtils;
 import com.sg.business.model.Work;
 import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.part.BackgroundContext;
 
 public class UpdateSatisfied extends ServiceProvider {
 
@@ -24,7 +25,8 @@ public class UpdateSatisfied extends ServiceProvider {
 			if(host instanceof Work){
 				Work work = (Work) host;
 				work = ModelService.createModelObject(Work.class, work.get_id());
-//				work.setValue(Work.F_, newValue);
+				work.setValue(Work.F_ACHIEVED, Boolean.FALSE);
+				work.doSave(new BackgroundContext());
 				}
 			}catch(Exception e){
 				result.put("returnCode", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$
