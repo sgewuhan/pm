@@ -5735,14 +5735,16 @@
          point="com.mobnut.portal.scenario">
       <scenario
             id="sales.home"
+            index="10"
+            isDefault="true"
             name="销售主页">
          <perspective
                default="true"
-               id="perspective.sales.home"></perspective>
+               id="sales.home"></perspective>
       </scenario>
       <scenario
             id="sales.scenario"
-            index="20"
+            index="40"
             name="销售">
          <perspective
                id="sales.customer"></perspective>

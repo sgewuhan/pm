@@ -1021,12 +1021,19 @@
    <extension
          point="com.mobnut.portal.scenario">
       <scenario
-            id="projectcharger"
-            name="%scenario.name.9">
+            id="projectcharger.home"
+            index="10"
+            isDefault="true"
+            name="项目管理首页（项目负责人和参与者）">
          <perspective
                default="true"
                id="perspective.work.home">
          </perspective>
+      </scenario>
+      <scenario
+            id="projectcharger"
+            index="20"
+            name="%scenario.name.9">
          <perspective
                default="false"
                id="perspective.project.charger"></perspective>
@@ -1044,6 +1051,7 @@
       </scenario>
       <scenario
             id="visualization"
+            index="30"
             name="%scenario.name">
          <!--<perspective
                id="perspective.vis.home">
@@ -1079,6 +1087,7 @@
       </scenario>-->
       <scenario
             id="projectmanagement"
+            index="21"
             name="%scenario.name.2">
          <perspective
                id="perspective.project">
@@ -1086,6 +1095,7 @@
       </scenario>
       <scenario
             id="resourcemanagement"
+            index="22"
             name="%scenario.name.3">
          <perspective
                id="perspective.resource">
@@ -1101,6 +1111,7 @@
       </scenario>-->
       <scenario
             id="businessmanager"
+            index="80"
             name="%scenario.name.5">
          <perspective
                id="perspective.management">
@@ -1108,6 +1119,7 @@
       </scenario>
       <scenario
             id="systemmanager"
+            index="90"
             name="%scenario.name.6">
          <perspective
                default="false"
