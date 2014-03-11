@@ -7,6 +7,7 @@ public class Company extends TeamControl implements IDataStatusControl, ISalesTe
 
 	public static final String F_STATUS = "status";
 	public static final String F_LEVEL = "level";
+	public static final String F_SERVICELEVEL = "levelservice";
 
 	@Override
 	public String getStatusText() {

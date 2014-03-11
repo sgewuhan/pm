@@ -11,6 +11,7 @@ public class Income extends PrimaryObject {
 
 	public static final String F_CONTRACT_ID = "contract_id";
 	public static final String F_AMOUNT = "amount";
+	public static final String F_TRANSFERDATE = "transferdate";
 
 	@Override
 	public boolean doSave(IContext context) throws Exception {

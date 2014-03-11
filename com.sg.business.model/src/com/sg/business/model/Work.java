@@ -169,6 +169,11 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_PERFORMENCE = "performence"; //$NON-NLS-1$
 
 	public static final String F_STARTIMMEDIATELY = "startImmediately";//$NON-NLS-1$
+	
+	/**
+	 * 是否达成目标
+	 */
+	public static final String F_ACHIEVED = "achieved";
 
 	/**
 	 * 禁止支出

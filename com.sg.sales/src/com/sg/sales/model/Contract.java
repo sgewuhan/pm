@@ -13,6 +13,8 @@ public class Contract extends CompanyRelativeTeamControl implements
 		IDataStatusControl {
 
 	public static final String F_SIGNBY = "signby";
+	
+	public static final String F_EFFECTIVEON = "effectiveon";
 
 	public static final String F_STATUS = "contractstatus";
 

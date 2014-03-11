@@ -55,9 +55,9 @@ public class RevenuePage extends TabBlockPage implements
 	private DBCollection projectCol;
 
 	private DBCollection projectMonthDataCol;
-
-	private static String[] MONTHS = new String[] { "一月份", "二月份", "三月份", "四月份",
-			"五月份", "六月份", "七月份", "八月份", "九月份", "十月份", "十一月份", "十二月份" };;
+	
+//	private static String[] MONTHS = new String[] { "一月份", "二月份", "三月份", "四月份",
+//			"五月份", "六月份", "七月份", "八月份", "九月份", "十月份", "十一月份", "十二月份" };;
 
 	// private static final String BLUE = "#33b5e5";
 	//
@@ -93,7 +93,7 @@ public class RevenuePage extends TabBlockPage implements
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(50);
-		fd.bottom = new FormAttachment(25);
+		fd.bottom = new FormAttachment(40);
 
 		textContent2 = new Label(parent, SWT.NONE);
 		textContent2.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
@@ -137,6 +137,7 @@ public class RevenuePage extends TabBlockPage implements
 	}
 
 	private void init() {
+		
 		// TODO 此处初始化数据集，collection等
 		font = new Font(getDisplay(), "微软雅黑", 16, SWT.NORMAL);
 
@@ -188,8 +189,8 @@ public class RevenuePage extends TabBlockPage implements
 		/*
 		 * 获取当前的月份
 		 */
-		String month = MONTHS[cal.get(Calendar.MONTH)];
-
+//		String month = MONTHS[cal.get(Calendar.MONTH)];
+		String month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,locale);
 		/*
 		 * 获取当前的月份，当前用户所有项目的销售收入
 		 */

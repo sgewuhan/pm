@@ -14055,15 +14055,12 @@
             collectionName="taskform"
             dbName="pm2"
             id="pm.pmchangeprocess.approve"
-            name="审批变更申请">
+            name="审批">
          <basicpage
                id="com.sg.sales.basicpage1"
-               title="审核">
+               title="审批">
             <pagecolumn>
                <section
-<<<<<<< HEAD
-                     label="请填写变更申请结论并指定实施变更人">
-=======
                      label="请指定编制人和填写结论">
                   <navigatorSelector
                         editable="true"
@@ -14089,11 +14086,10 @@
                         required="false"
                         type="String">
                   </text>
->>>>>>> branch 'master' of https://github.com/sgewuhan/pm.git
                   <radio
                         editable="true"
                         id="choice"
-                        label="变更申请结论"
+                        label="结论"
                         labelVisible="false"
                         name="choice"
                         option="是否通过"
@@ -14101,30 +14097,6 @@
                         required="false"
                         type="String">
                   </radio>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        label="说明"
-                        labelVisible="true"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <navigatorSelector
-                        editable="true"
-                        id="editor"
-                        label="实施变更人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="editor"
-                        navigatorId="pm.navigator.editor"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -14132,25 +14104,14 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="pm.pmchangeprocess.dept_leader"
-            name="批准变更">
+            id="pm.pmchangeprocess.compile"
+            name="编制">
          <basicpage
-               id="com.sg.sales.basicpage3"
-               title="审核">
+               id="com.sg.sales.basicpage2"
+               title="审批">
             <pagecolumn>
                <section
-                     label="请填写变更结论">
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="变更结论"
-                        labelVisible="true"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
+                     label="请填写结论">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
@@ -14163,6 +14124,55 @@
                         required="false"
                         type="String">
                   </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmchangeprocess.dept_leader"
+            name="批准">
+         <basicpage
+               id="com.sg.sales.basicpage3"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="320"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
                </section>
             </pagecolumn>
          </basicpage>
@@ -14172,21 +14182,21 @@
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             editorId="pm.pmchangeprocess.approve"
-            name="审批变更申请"
-            persistentFields="choice,editor,comment"
+            name="审批"
+            persistentFields="choice,compile,comment"
             processDefinitionId="pm.changeProcess1">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterName="editor"
-               taskFormFieldName="editor">
+               processParameterName="compile"
+               taskFormFieldName="compile">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="pm.pmchangeprocess.dept_leader"
-            name="批准变更"
+            editorId="pm.pmchangeprocess.compile"
+            name="编制"
             persistentFields="choice,comment"
             processDefinitionId="pm.changeProcess1">
          <processParameter
@@ -14194,31 +14204,16 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
-   </extension>
-   <extension
-         point="com.sg.widgets.navigator">
-      <navigator
-            id="pm.navigator.editor"
-            provideSelection="true"
-            table="pm.navigator.editor">
-      </navigator>
-   </extension>
-   <extension
-         point="com.sg.widgets.table">
-      <table
-            canCreate="true"
-            canEdit="true"
-            canRead="true"
-            collectionName="user"
-            dataSet="com.sg.sales.dataset.PMChangeProcessDataSet"
-            dbName="pm2"
-            editorId="editor.organization.user"
-            id="pm.navigator.editor"
-            popupMenu="popup:com.sg.widgets.navigator">
-         <column
-               columnDefinitionId="account.username">
-         </column>
-      </table>
+      <taskForm
+            editorId="pm.pmchangeprocess.dept_leader"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="pm.changeProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
    </extension>
 
 </plugin>

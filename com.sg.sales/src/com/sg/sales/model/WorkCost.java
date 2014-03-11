@@ -30,6 +30,7 @@ public class WorkCost extends TeamControl implements IWorkRelative,
 	public static final String F_STARTDATE = "startdate";
 	public static final String F_STATUS = "coststatus";
 	public static final String F_APPLY_WORK_ID = "applywork_id";
+	public static final String F_ACTUAL_AMOUNT = "aamount";
 
 	public static final String F_CHECK_ON = "checkon";
 	public static final String F_CHECK_BY = "checkby";

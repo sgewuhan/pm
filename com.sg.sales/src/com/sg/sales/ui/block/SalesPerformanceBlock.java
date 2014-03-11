@@ -63,7 +63,7 @@ public class SalesPerformanceBlock extends TabBlock {
 
 
 	private Control createSalesPerformencePage(Composite parent) {
-		basicPage =  new SalesBasicPerformencePage(parent);
+		basicPage =  new SalesBasicPage(parent);
 		return basicPage;
 	}
 	private void refreshBasicPage() {
