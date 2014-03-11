@@ -4,17 +4,17 @@ import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.Work;
-import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 public class WorkLinkAdapter implements SelectionListener {
 
-	public WorkLinkAdapter() {
+	private String viewId;
+
+	public WorkLinkAdapter(String homeViewId) {
+		this.viewId = homeViewId;
 	}
 
 	@Override
@@ -30,6 +30,7 @@ public class WorkLinkAdapter implements SelectionListener {
 					goWork(_data, event);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -37,11 +38,9 @@ public class WorkLinkAdapter implements SelectionListener {
 	private void goWork(String _data, SelectionEvent event) {
 		Work work = ModelService.createModelObject(Work.class,
 				new ObjectId(_data));
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
-		IEditorInputFactory inputFactory = work.getAdapter(IEditorInputFactory.class);
-		view.setInput(inputFactory.getInput(null));
+		PrimaryObjectDetailFormView.open(work,viewId);
 	}
+
 
 	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {

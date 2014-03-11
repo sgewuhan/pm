@@ -39,8 +39,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -52,7 +50,6 @@ import com.sg.business.model.dataset.work.ProcessingNavigatorItemSet;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
-import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 @SuppressWarnings("restriction")
@@ -429,9 +426,6 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 	}
 	
 	protected void select(Work work) {
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
-		IEditorInputFactory inputFactory = work.getAdapter(IEditorInputFactory.class);
-		view.setInput(inputFactory.getInput(null));
+		PrimaryObjectDetailFormView.open(work,"pm2.work.detail");
 	}
 }

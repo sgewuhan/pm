@@ -24,8 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -39,12 +37,13 @@ import com.sg.sales.model.Opportunity;
 import com.sg.sales.model.PerformenceUtil;
 import com.sg.sales.model.TeamControl;
 import com.sg.sales.model.dataset.MyOpportunityDataSet;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
+import com.sg.widgets.part.editor.DataObjectEditor;
 
 @SuppressWarnings("restriction")
 public class ContractPage extends TabBlockPage implements
@@ -400,12 +399,12 @@ public class ContractPage extends TabBlockPage implements
 	}
 
 	protected void select(PrimaryObject opp) {
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page
-				.findView("pm2.work.detail");
 		IEditorInputFactory inputFactory = opp
 				.getAdapter(IEditorInputFactory.class);
-		view.setInput(inputFactory.getInput(null));
+		try {
+			DataObjectEditor.open(opp, inputFactory.getEditorConfig(null), true, null);
+		} catch (Exception e) {
+			MessageUtil.showToast(e);
+		}
 	}
 }

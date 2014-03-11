@@ -74,7 +74,7 @@ public class TodaysWorkBlock extends Block {
 				viewer.setSelection(new StructuredSelection(new Object[] {}));
 			}
 		});
-		list.addSelectionListener(new WorkLinkAdapter());
+		list.addSelectionListener(new WorkLinkAdapter(getHomeViewId()));
 		viewer = new ListViewer(list);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider();
@@ -108,6 +108,10 @@ public class TodaysWorkBlock extends Block {
 		fd.right = new FormAttachment(100);
 
 		doRefresh();
+	}
+
+	protected String getHomeViewId() {
+		return "pm2.work.detail";
 	}
 
 	protected void select(Work work) {

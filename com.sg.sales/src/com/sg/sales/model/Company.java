@@ -2,6 +2,8 @@ package com.sg.sales.model;
 
 import com.mobnut.db.model.IContext;
 import com.sg.sales.ISalesRole;
+import com.sg.sales.model.input.CompanyEditorInputFactory;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 
 public class Company extends TeamControl implements IDataStatusControl, ISalesTeam {
 
@@ -127,6 +129,15 @@ public class Company extends TeamControl implements IDataStatusControl, ISalesTe
 
 	public String getLevel() {
 		return getStringValue(F_LEVEL);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == IEditorInputFactory.class) {
+			return (T) (new CompanyEditorInputFactory(this));
+		}
+		return super.getAdapter(adapter);
 	}
 
 }
