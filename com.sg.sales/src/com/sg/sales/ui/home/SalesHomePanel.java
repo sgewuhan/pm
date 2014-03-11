@@ -9,10 +9,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.sg.business.commons.ui.block.BulletinBoardBlock;
-import com.sg.business.commons.ui.block.PerformanceBlock;
 import com.sg.business.commons.ui.block.TodaysWorkBlock;
 import com.sg.sales.ui.block.CompanyBlock;
 import com.sg.sales.ui.block.OpportunityBlock;
+import com.sg.sales.ui.block.SalesPerformanceBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.block.tab.TabBlock;
@@ -75,7 +75,7 @@ public class SalesHomePanel {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		block.setLayoutData(gd);
 
-		TabBlock performenceBlock = new PerformanceBlock(panel);
+		TabBlock performenceBlock = new SalesPerformanceBlock(panel);
 		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
 				true, 2, 1));
 
