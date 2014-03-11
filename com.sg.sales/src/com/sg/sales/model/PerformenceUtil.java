@@ -271,7 +271,7 @@ public class PerformenceUtil {
 				Contract.F_EFFECTIVEON,
 				new BasicDBObject().append("$gte", date[0]).append("$lte",
 						date[1]));
-		query.put(Contract.F_OWNER, userId);
+		query.put("$or",getSalesUserCondition(userId));
 
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				Sales.C_CONTACT);
@@ -303,13 +303,13 @@ public class PerformenceUtil {
 				new BasicDBObject().append(
 						Contract.F_EFFECTIVEON,
 						new BasicDBObject().append("$gte", date[0]).append(
-								"$lte", date[1])).append(Contract.F_OWNER,
-						userId));
+								"$lte", date[1]))
+								.append("$or",getSalesUserCondition(userId)));
 
 		BasicDBObject group = new BasicDBObject();
 		group.put(
 				"$group",
-				new BasicDBObject().append("_id", "$" + Contract.F_OWNER)
+				new BasicDBObject().append("_id", new ObjectId())
 						.append(Contract.F_OWNER,
 								new BasicDBObject().append("$sum", "$"
 										+ Contract.F_AMOUNT)));
@@ -333,11 +333,14 @@ public class PerformenceUtil {
 		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
 				Sales.C_CONTRACT);
 		DBCursor cur = col.find(
-				new BasicDBObject().append(Contract.F_OWNER, userId),
+				new BasicDBObject().append("$or",getSalesUserCondition(userId)),
 				new BasicDBObject().append(Contract.F__ID, 1));
 		ArrayList<ObjectId> contractIdList = new ArrayList<ObjectId>();
 		while (cur.hasNext()) {
 			contractIdList.add((ObjectId) cur.next().get(Contract.F__ID));
+		}
+		if (contractIdList.isEmpty()) {
+			return 0d;
 		}
 
 		BasicDBObject query = new BasicDBObject();

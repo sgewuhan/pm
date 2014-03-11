@@ -263,10 +263,10 @@ public class SalesBasicPage extends TabBlockPage implements
 		sb.append("<div style='" + "font-size:11pt;" + "color:#6a6a6a;"
 				+ "border-bottom:1px dotted #cdcdcd;"
 				+ "display:-moz-inline-box; display:inline-block; "
-				+ "height:100%;" + "width:280;" + "'>");
-		sb.append("<span style='margin:0 0 0 8;'>");
+				+ "height:100%;" + "width:100%;" + "'>");
+		sb.append("<div style='margin:0 0 0 8;'>");
 		sb.append(text);
-		sb.append("</span>");
+		sb.append("</div>");
 		sb.append("</div>");
 		return sb.toString();
 	}
@@ -275,7 +275,7 @@ public class SalesBasicPage extends TabBlockPage implements
 			String text1, String text2) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='" + "font-size:10pt;" + "color:#909090;"
-				+ "margin:0 0 0 8;" + "'>");
+				+ "margin:8 0 8 8;" + "'>");
 		sb.append("<span style='width:100'>");
 		sb.append(label1+": ");
 		sb.append("</span><span style='width:60'>");
@@ -293,7 +293,7 @@ public class SalesBasicPage extends TabBlockPage implements
 	private String appendLine(String label, String text) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='" + "font-size:10pt;" + "color:#909090;"
-				+ "margin:0 0 0 8;" + "'>");
+				+ "margin:8 0 8 8;" + "'>");
 		sb.append("<span style='width:100'>");
 		sb.append(label+": ");
 		sb.append("</span><span>");
