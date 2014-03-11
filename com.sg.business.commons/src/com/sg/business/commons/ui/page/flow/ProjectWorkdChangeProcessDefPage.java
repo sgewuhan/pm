@@ -1,6 +1,6 @@
 package com.sg.business.commons.ui.page.flow;
 
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.model.WorkDefinition;
 
 public class ProjectWorkdChangeProcessDefPage extends AbstractWorkdProcessPage{
@@ -12,7 +12,7 @@ public class ProjectWorkdChangeProcessDefPage extends AbstractWorkdProcessPage{
 		
 	@Override
 	protected int getProcessSettingControl() {
-		return ProcessSettingPanel2.PROCESS_SELECTOR|ProcessSettingPanel2.ROLE_SELECTOR;
+		return ProcessSettingPanel.PROCESS_SELECTOR|ProcessSettingPanel.ROLE_SELECTOR;
 	}
 
 }

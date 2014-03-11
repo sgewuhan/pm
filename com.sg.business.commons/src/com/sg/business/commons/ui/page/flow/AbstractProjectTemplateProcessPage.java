@@ -5,7 +5,7 @@ import java.util.List;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectTemplate;
@@ -43,8 +43,8 @@ public abstract class AbstractProjectTemplateProcessPage extends
 
 	@Override
 	protected int getProcessSettingControl() {
-		return ProcessSettingPanel2.PROCESS_SELECTOR
-				| ProcessSettingPanel2.ROLE_SELECTOR;
+		return ProcessSettingPanel.PROCESS_SELECTOR
+				| ProcessSettingPanel.ROLE_SELECTOR;
 	}
 
 }

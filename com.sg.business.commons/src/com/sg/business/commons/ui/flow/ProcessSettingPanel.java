@@ -30,7 +30,7 @@ import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.User;
 import com.sg.business.resource.nls.Messages;
 
-public abstract class ProcessSettingPanel2 extends Composite {
+public abstract class ProcessSettingPanel extends Composite {
 
 	private static final int MARGIN = 0;
 
@@ -91,7 +91,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 		listeners.remove(listener);
 	}
 
-	public ProcessSettingPanel2(Composite parent, int controlStyle) {
+	public ProcessSettingPanel(Composite parent, int controlStyle) {
 		super(parent, SWT.NONE);
 		this.controlStyle = controlStyle;
 	}
@@ -118,22 +118,22 @@ public abstract class ProcessSettingPanel2 extends Composite {
 				hasActorSelector()) {
 			@Override
 			public DataSet getRoleDataSet() {
-				return ProcessSettingPanel2.this.getRoleDataSet();
+				return ProcessSettingPanel.this.getRoleDataSet();
 			}
 
 			@Override
 			public DataSet getActorDataSet() {
-				return ProcessSettingPanel2.this.getActorDataSet();
+				return ProcessSettingPanel.this.getActorDataSet();
 			}
 
 			@Override
 			protected String getActorNavigatorId(AbstractRoleDefinition roled) {
-				return ProcessSettingPanel2.this.getActorNavigatorId(roled);
+				return ProcessSettingPanel.this.getActorNavigatorId(roled);
 			}
 
 			@Override
 			protected String getRoleNavigatorId() {
-				return ProcessSettingPanel2.this.getRoleNavigatorId();
+				return ProcessSettingPanel.this.getRoleNavigatorId();
 			}
 		};
 		activiteEditor.addActiviteEditListener(new IActivityEditListener() {
@@ -142,7 +142,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			public void actorChanged(User newActor, User oldActor,
 					NodeAssignment nodeAssignment,
 					AbstractRoleDefinition roleDef) {
-				ProcessSettingPanel2.this.actorChanged(newActor, oldActor,
+				ProcessSettingPanel.this.actorChanged(newActor, oldActor,
 						nodeAssignment, roleDef);
 			}
 
@@ -150,7 +150,7 @@ public abstract class ProcessSettingPanel2 extends Composite {
 			public void roleChanged(AbstractRoleDefinition newRole,
 					AbstractRoleDefinition oldRole,
 					NodeAssignment nodeAssignment) {
-				ProcessSettingPanel2.this.roleChanged(newRole, oldRole,
+				ProcessSettingPanel.this.roleChanged(newRole, oldRole,
 						nodeAssignment);
 			}
 		});

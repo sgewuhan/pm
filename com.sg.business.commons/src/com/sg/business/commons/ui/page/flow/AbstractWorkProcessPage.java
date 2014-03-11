@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.IProcessControl;
@@ -39,7 +39,7 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 		Project project = work.getProject();
 		if (project == null) {
 			// 没有关联项目的独立工作
-			ProcessSettingPanel2 psp = getProcessSettingPanel();
+			ProcessSettingPanel psp = getProcessSettingPanel();
 			AbstractRoleDefinition role = psp.getSelectedRole();
 			if (role == null) {
 				return "organization.user.selector"; //$NON-NLS-1$
@@ -50,9 +50,9 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 	}
 
 	@Override
-	public ProcessSettingPanel2 createPageContent(Composite parent,
+	public ProcessSettingPanel createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
-		ProcessSettingPanel2 psp = super.createPageContent(parent, input, conf);
+		ProcessSettingPanel psp = super.createPageContent(parent, input, conf);
 		// 控制角色限定在工作中不可被修改
 		psp.setRoleSelectEnable(false);
 		return psp;
@@ -157,8 +157,8 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 
 	@Override
 	protected int getProcessSettingControl() {
-		return ProcessSettingPanel2.PROCESS_SELECTOR
-				| ProcessSettingPanel2.ROLE_SELECTOR;
+		return ProcessSettingPanel.PROCESS_SELECTOR
+				| ProcessSettingPanel.ROLE_SELECTOR;
 	}
 
 }

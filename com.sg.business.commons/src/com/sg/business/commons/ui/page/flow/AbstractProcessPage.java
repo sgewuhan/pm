@@ -10,7 +10,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.business.commons.ui.flow.ProcessControlSetting;
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.User;
@@ -23,17 +23,17 @@ public abstract class AbstractProcessPage extends
 		AbstractFormPageDelegator {
 
 	private boolean editable;
-	private ProcessSettingPanel2 psp2;
+	private ProcessSettingPanel psp2;
 
 	@Override
-	public ProcessSettingPanel2 createPageContent(Composite parent,
+	public ProcessSettingPanel createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		setFormInput(input);
 		editable = input.isEditable();
 		final IProcessControl ipc = getIProcessControl();
 
-		psp2 = new ProcessSettingPanel2(parent, getProcessSettingControl()) {
+		psp2 = new ProcessSettingPanel(parent, getProcessSettingControl()) {
 
 			@Override
 			protected AbstractRoleDefinition getRoleDefinition(
@@ -172,7 +172,7 @@ public abstract class AbstractProcessPage extends
 		return true;
 	}
 	
-	public ProcessSettingPanel2 getProcessSettingPanel(){
+	public ProcessSettingPanel getProcessSettingPanel(){
 		return psp2;
 	}
 

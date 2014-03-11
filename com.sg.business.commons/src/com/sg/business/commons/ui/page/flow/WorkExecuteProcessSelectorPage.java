@@ -1,6 +1,6 @@
 package com.sg.business.commons.ui.page.flow;
 
-import com.sg.business.commons.ui.flow.ProcessSettingPanel2;
+import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.model.Work;
 
 public class WorkExecuteProcessSelectorPage extends AbstractWorkProcessPage {
@@ -12,8 +12,8 @@ public class WorkExecuteProcessSelectorPage extends AbstractWorkProcessPage {
 	
 	@Override
 	protected int getProcessSettingControl() {
-		return ProcessSettingPanel2.PROCESS_SELECTOR
-				| ProcessSettingPanel2.ROLE_SELECTOR|ProcessSettingPanel2.ACTOR_SELECTOR;
+		return ProcessSettingPanel.PROCESS_SELECTOR
+				| ProcessSettingPanel.ROLE_SELECTOR|ProcessSettingPanel.ACTOR_SELECTOR;
 	}
 
 }
