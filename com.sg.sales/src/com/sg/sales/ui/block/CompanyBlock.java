@@ -10,10 +10,10 @@ import com.sg.business.model.IModelConstants;
 import com.sg.sales.Sales;
 import com.sg.sales.model.Company;
 import com.sg.sales.model.dataset.MyCustomerDataSet;
-import com.sg.widgets.block.AbstractBusinessBlock;
-import com.sg.widgets.block.BusinessContentBlock;
+import com.sg.widgets.block.button.BusinessContentBlock;
+import com.sg.widgets.block.button.ButtonBlock;
 
-public class CompanyBlock extends AbstractBusinessBlock {
+public class CompanyBlock extends ButtonBlock {
 
 	private static final String PERSPECTIVE = "sales.customer";
 	private MyCustomerDataSet dataset;

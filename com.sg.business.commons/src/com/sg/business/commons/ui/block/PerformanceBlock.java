@@ -4,7 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.widgets.block.TabBlock;
+import com.sg.widgets.block.tab.TabBlock;
 
 public class PerformanceBlock extends TabBlock {
 

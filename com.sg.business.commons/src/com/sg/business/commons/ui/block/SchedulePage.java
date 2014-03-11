@@ -51,7 +51,7 @@ import com.sg.business.model.Work;
 import com.sg.business.model.dataset.work.ProcessingNavigatorItemSet;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
-import com.sg.widgets.block.TabBlockPage;
+import com.sg.widgets.block.tab.TabBlockPage;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 

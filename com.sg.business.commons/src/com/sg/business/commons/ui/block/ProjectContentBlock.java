@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Project;
-import com.sg.widgets.block.BusinessContentBlock;
+import com.sg.widgets.block.button.BusinessContentBlock;
 
 public class ProjectContentBlock extends BusinessContentBlock {
 

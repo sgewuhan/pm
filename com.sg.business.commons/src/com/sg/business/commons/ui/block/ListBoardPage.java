@@ -21,7 +21,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.widgets.block.TabBlockPage;
+import com.sg.widgets.block.tab.TabBlockPage;
 
 public class ListBoardPage extends TabBlockPage {
 

@@ -34,7 +34,7 @@ import com.sg.business.model.Work;
 import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.birtcharts.ChartCanvas;
-import com.sg.widgets.block.TabBlockPage;
+import com.sg.widgets.block.tab.TabBlockPage;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 

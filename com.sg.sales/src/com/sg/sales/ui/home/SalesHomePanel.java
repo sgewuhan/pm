@@ -9,13 +9,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import com.sg.business.commons.ui.block.BulletinBoardBlock;
-import com.sg.business.commons.ui.block.DocBlock;
 import com.sg.business.commons.ui.block.PerformanceBlock;
 import com.sg.business.commons.ui.block.TodaysWorkBlock;
 import com.sg.sales.ui.block.CompanyBlock;
+import com.sg.sales.ui.block.OpportunityBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
-import com.sg.widgets.block.TabBlock;
+import com.sg.widgets.block.tab.TabBlock;
 import com.sg.widgets.part.IRefreshablePart;
 
 public class SalesHomePanel {
@@ -62,18 +62,18 @@ public class SalesHomePanel {
 		workBlock.setTopicText("今日工作");
 		gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.widthHint = TodaysWorkBlock.BLOCKWIDTH;
-//		gd.heightHint = (AbstractBusinessBlock.BLOCKSIZE + 1) * AbstractBusinessBlock.Y_COUNT - 1;
+//		gd.heightHint = (ButtonBlock.BLOCKSIZE + 1) * ButtonBlock.Y_COUNT - 1;
 		workBlock.setLayoutData(gd);
 
-		final DocBlock docBlock = new DocBlock(panel) {
+		final OpportunityBlock block = new OpportunityBlock(panel) {
 			@Override
 			public int getContentHeight() {
 				return (CompanyBlock.BLOCKSIZE + 1) * CompanyBlock.Y_COUNT - 1;
 			}
 		};
-		docBlock.setTopicText("最近的文档");
+		block.setTopicText("商机");
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
-		docBlock.setLayoutData(gd);
+		block.setLayoutData(gd);
 
 		TabBlock performenceBlock = new PerformanceBlock(panel);
 		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
@@ -82,7 +82,7 @@ public class SalesHomePanel {
 		Block noticeBlock = new BulletinBoardBlock(panel) {
 			@Override
 			protected int getContentHeight() {
-				return partHeight - docBlock.getContentHeight()
+				return partHeight - block.getContentHeight()
 						- (Block.TOPICSIZE + 1) * 2 - 3;
 			}
 		};

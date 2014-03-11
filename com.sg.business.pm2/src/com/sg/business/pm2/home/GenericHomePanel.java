@@ -15,7 +15,7 @@ import com.sg.business.commons.ui.block.ProjectBlock;
 import com.sg.business.commons.ui.block.TodaysWorkBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
-import com.sg.widgets.block.TabBlock;
+import com.sg.widgets.block.tab.TabBlock;
 import com.sg.widgets.part.IRefreshablePart;
 
 public class GenericHomePanel {

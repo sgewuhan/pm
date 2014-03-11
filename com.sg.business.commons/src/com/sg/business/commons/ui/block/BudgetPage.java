@@ -34,7 +34,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.dataset.project.MyProject;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.widgets.Widgets;
-import com.sg.widgets.block.TabBlockPage;
+import com.sg.widgets.block.tab.TabBlockPage;
 
 public class BudgetPage extends TabBlockPage implements
 		ISelectionChangedListener {

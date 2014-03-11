@@ -13,12 +13,12 @@ import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.block.AbstractBusinessBlock;
-import com.sg.widgets.block.BusinessContentBlock;
+import com.sg.widgets.block.button.BusinessContentBlock;
+import com.sg.widgets.block.button.ButtonBlock;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.editor.DataObjectWizard;
 
-public class ProjectBlock extends AbstractBusinessBlock {
+public class ProjectBlock extends ButtonBlock {
 
 	private static final String PERSPECTIVE = "perspective.project.charger";
 

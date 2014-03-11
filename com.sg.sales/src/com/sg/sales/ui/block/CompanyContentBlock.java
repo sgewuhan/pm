@@ -3,7 +3,7 @@ package com.sg.sales.ui.block;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sg.sales.model.Company;
-import com.sg.widgets.block.BusinessContentBlock;
+import com.sg.widgets.block.button.BusinessContentBlock;
 
 public class CompanyContentBlock extends BusinessContentBlock {
 
