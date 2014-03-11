@@ -14070,7 +14070,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="compile"
-                        navigatorId="navigator.demo.conventer"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -14215,5 +14215,4 @@
          </processParameter>
       </taskForm>
    </extension>
-
 </plugin>
