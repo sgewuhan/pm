@@ -12,7 +12,7 @@ import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 public class SalesHome extends PrimaryObjectDetailFormView {
 
-	private GenericHomePanel genericHomePanel;
+	private SalesHomePanel genericHomePanel;
 
 	
 	/**
@@ -29,7 +29,7 @@ public class SalesHome extends PrimaryObjectDetailFormView {
 	protected void initContent() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		genericHomePanel = new GenericHomePanel(content);
+		genericHomePanel = new SalesHomePanel(content);
 		super.goHome();
 	}
 
@@ -37,7 +37,7 @@ public class SalesHome extends PrimaryObjectDetailFormView {
 	public void goHome() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		genericHomePanel = new GenericHomePanel(content);
+		genericHomePanel = new SalesHomePanel(content);
 		content.layout(false,false);
 		super.goHome();
 	}

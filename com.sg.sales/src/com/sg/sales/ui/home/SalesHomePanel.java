@@ -18,7 +18,7 @@ import com.sg.widgets.block.Block;
 import com.sg.widgets.block.TabBlock;
 import com.sg.widgets.part.IRefreshablePart;
 
-public class GenericHomePanel {
+public class SalesHomePanel {
 
 	private Composite panel;
 	private int partHeight;
@@ -30,7 +30,7 @@ public class GenericHomePanel {
 	 * 
 	 * @param panel
 	 */
-	public GenericHomePanel(Composite parent) {
+	public SalesHomePanel(Composite parent) {
 		Rectangle bounds = parent.getDisplay().getBounds();
 		partHeight = bounds.height - 61;
 
