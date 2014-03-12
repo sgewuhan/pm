@@ -6,29 +6,23 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.commons.ui.chart.CommonChart;
 import com.sg.business.model.Work;
 import com.sg.sales.model.PerformenceUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
-import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
-@SuppressWarnings("restriction")
 public class IncomePage extends TabBlockPage implements
 		ISelectionChangedListener {
 
@@ -94,8 +88,7 @@ public class IncomePage extends TabBlockPage implements
 
 	private Control createTitle(Composite parent) {
 		title = new Label(parent, SWT.NONE);
-		title.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		title.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(title);
 		return title;
 	}
 
@@ -198,12 +191,6 @@ public class IncomePage extends TabBlockPage implements
 	}
 
 	protected void select(Work work) {
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page
-				.findView("pm2.work.detail");
-		IEditorInputFactory inputFactory = work
-				.getAdapter(IEditorInputFactory.class);
-		view.setInput(inputFactory.getInput(null));
+		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,false);
 	}
 }

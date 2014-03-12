@@ -9,17 +9,13 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.DBActivator;
 import com.mongodb.AggregationOutput;
@@ -27,6 +23,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.commons.ui.chart.CommonChart;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
@@ -35,10 +32,7 @@ import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
-import com.sg.widgets.commons.model.IEditorInputFactory;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
-@SuppressWarnings("restriction")
 public class RevenuePage extends TabBlockPage implements
 		ISelectionChangedListener {
 
@@ -55,9 +49,10 @@ public class RevenuePage extends TabBlockPage implements
 	private DBCollection projectCol;
 
 	private DBCollection projectMonthDataCol;
-	
-//	private static String[] MONTHS = new String[] { "一月份", "二月份", "三月份", "四月份",
-//			"五月份", "六月份", "七月份", "八月份", "九月份", "十月份", "十一月份", "十二月份" };;
+
+	// private static String[] MONTHS = new String[] { "一月份", "二月份", "三月份",
+	// "四月份",
+	// "五月份", "六月份", "七月份", "八月份", "九月份", "十月份", "十一月份", "十二月份" };;
 
 	// private static final String BLUE = "#33b5e5";
 	//
@@ -85,9 +80,8 @@ public class RevenuePage extends TabBlockPage implements
 		parent.setLayout(new FormLayout());
 
 		textContent1 = new Label(parent, SWT.NONE);
-		textContent1.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		textContent1.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(textContent1);
+		
 		FormData fd = new FormData();
 		textContent1.setLayoutData(fd);
 		fd.top = new FormAttachment();
@@ -96,9 +90,8 @@ public class RevenuePage extends TabBlockPage implements
 		fd.bottom = new FormAttachment(40);
 
 		textContent2 = new Label(parent, SWT.NONE);
-		textContent2.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		textContent2.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(textContent2);
+
 		fd = new FormData();
 		textContent2.setLayoutData(fd);
 		fd.top = new FormAttachment();
@@ -107,8 +100,8 @@ public class RevenuePage extends TabBlockPage implements
 		fd.bottom = new FormAttachment(40);
 
 		Label label = new Label(parent, SWT.NONE);
-		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		label.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(label);
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='" + "font-family:微软雅黑;" + "margin:8;"
 				+ "width:100%;" + "'>");
@@ -137,8 +130,7 @@ public class RevenuePage extends TabBlockPage implements
 	}
 
 	private void init() {
-		
-		// TODO 此处初始化数据集，collection等
+
 		font = new Font(getDisplay(), "微软雅黑", 16, SWT.NORMAL);
 
 		userId = context.getConsignerId();
@@ -163,7 +155,6 @@ public class RevenuePage extends TabBlockPage implements
 
 	@Override
 	protected Object doGetData() {
-		// TODO 取数，此处获取所有的数据
 		Calendar cal = Calendar.getInstance();
 
 		double[] sumSales = getProjectETL();
@@ -189,8 +180,9 @@ public class RevenuePage extends TabBlockPage implements
 		/*
 		 * 获取当前的月份
 		 */
-//		String month = MONTHS[cal.get(Calendar.MONTH)];
-		String month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG,locale);
+		// String month = MONTHS[cal.get(Calendar.MONTH)];
+		String month = cal
+				.getDisplayName(Calendar.MONTH, Calendar.LONG, locale);
 		/*
 		 * 获取当前的月份，当前用户所有项目的销售收入
 		 */
@@ -526,13 +518,7 @@ public class RevenuePage extends TabBlockPage implements
 	}
 
 	protected void select(Work work) {
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page
-				.findView("pm2.work.detail");
-		IEditorInputFactory inputFactory = work
-				.getAdapter(IEditorInputFactory.class);
-		view.setInput(inputFactory.getInput(null));
+		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,false);
 	}
 
 }

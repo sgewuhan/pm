@@ -14,9 +14,11 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.part.ViewPart;
 
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.resource.BusinessResource;
@@ -35,10 +37,10 @@ public class ProjectCheckView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
-		//viewer.getTable().setHeaderVisible(true);
-		viewer.getTable().setLinesVisible(true);
-		viewer.getTable().setData(RWT.MARKUP_ENABLED, true);
-		viewer.getTable().setData(RWT.CUSTOM_ITEM_HEIGHT, 64);
+		Table table = viewer.getTable();
+		table.setLinesVisible(true);
+		UIFrameworkUtils.enableMarkup(table);
+		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 64);
 
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		column.getColumn().setText(""); //$NON-NLS-1$

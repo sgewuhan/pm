@@ -4,17 +4,14 @@ import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.db.model.IContext;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Work;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.MessageBox;
 import com.sg.widgets.part.editor.fields.IValidable;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 import com.sg.widgets.part.view.SideBarNavigator;
 
 public class LaunchWork extends AbstractWorkDetailPageAction {
@@ -83,18 +80,8 @@ public class LaunchWork extends AbstractWorkDetailPageAction {
 	}
 
 	private void sidebarSelected(String id, Work work) {
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		SideBarNavigator view = (SideBarNavigator) page
-				.findView("homenavigator");
-		if (view != null) {
-			view.doRefresh();
-		}
-		view.setSelection(id, work);
-		
-		PrimaryObjectDetailFormView view2 = (PrimaryObjectDetailFormView) page.findView("pm2.work.detail");
-		IEditorInputFactory inputFactory = work.getAdapter(IEditorInputFactory.class);
-		view2.setInput(inputFactory.getInput(null));
-		view2.loadMaster();
+		SideBarNavigator sidebar = UIFrameworkUtils.getSidebar();
+		sidebar.setSelection(id, work);
+		UIFrameworkUtils.navigateTo(work,UIFrameworkUtils.NAVIGATE_AUTOSELECT,true);
 	}
 }

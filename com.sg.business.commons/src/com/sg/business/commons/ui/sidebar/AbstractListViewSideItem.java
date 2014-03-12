@@ -11,7 +11,6 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -24,12 +23,12 @@ import org.eclipse.swt.widgets.List;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.DataSetFactory;
 import com.mobnut.db.model.IContext;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.ISidebarItem;
 import com.sg.widgets.part.LoadingIdentifier;
 
-@SuppressWarnings("restriction")
 public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 	private ListViewer viewer;
@@ -104,8 +103,7 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 		viewer.setUseHashlookup(true);
 
 		List list = viewer.getList();
-		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		list.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(list);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(36));
 		FormData fd = new FormData();
 		list.setLayoutData(fd);
@@ -116,7 +114,7 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 		// 显示数据读取中
 		loading = new Label(bg, SWT.NONE);
-		loading.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(loading);
 		fd = new FormData();
 		loading.setLayoutData(fd);
 		fd.width = 64;

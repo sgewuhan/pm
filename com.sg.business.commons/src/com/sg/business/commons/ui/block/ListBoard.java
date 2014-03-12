@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -19,12 +18,12 @@ import org.eclipse.swt.widgets.Label;
 
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.toolkit.UserToolkit;
 
-@SuppressWarnings("restriction")
 public class ListBoard {
 
 	private TableViewer leftViewer;
@@ -36,9 +35,8 @@ public class ListBoard {
 		FormData fd = new FormData();
 		leftLabel = new Label(composite, SWT.NONE);
 		leftLabel.setLayoutData(fd);
-		leftLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		leftLabel.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(leftLabel);
+
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(50);
@@ -47,9 +45,8 @@ public class ListBoard {
 		
 		rightLabel = new Label(composite,SWT.NONE);
 		rightLabel.setLayoutData(fd);
-		rightLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		rightLabel.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(rightLabel);
+
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment(50,1);
 		fd.right = new FormAttachment(100,0);
@@ -77,7 +74,8 @@ public class ListBoard {
 		TableViewer tv = new TableViewer(composite, SWT.NONE);
 		Control table = tv.getControl();
 		table.setLayoutData(fd);
-		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(table);
+
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 20);
 		tv.setContentProvider(ArrayContentProvider.getInstance());
 		return tv;

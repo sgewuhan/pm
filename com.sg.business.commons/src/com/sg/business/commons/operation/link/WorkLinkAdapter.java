@@ -6,15 +6,12 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 
 import com.mobnut.db.model.ModelService;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Work;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 public class WorkLinkAdapter implements SelectionListener {
 
-	private String viewId;
-
-	public WorkLinkAdapter(String homeViewId) {
-		this.viewId = homeViewId;
+	public WorkLinkAdapter() {
 	}
 
 	@Override
@@ -36,11 +33,10 @@ public class WorkLinkAdapter implements SelectionListener {
 	}
 
 	private void goWork(String _data, SelectionEvent event) {
-		Work work = ModelService.createModelObject(Work.class,
-				new ObjectId(_data));
-		PrimaryObjectDetailFormView.open(work,viewId);
+		Work work = ModelService.createModelObject(Work.class, new ObjectId(
+				_data));
+		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,true);
 	}
-
 
 	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {

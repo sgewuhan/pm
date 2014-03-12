@@ -28,7 +28,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -45,14 +44,13 @@ import org.eclipse.ui.forms.widgets.Section;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.design.ICSSConstants;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.dataset.work.ProcessingNavigatorItemSet;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
-@SuppressWarnings("restriction")
 public class SchedulePage extends TabBlockPage implements ISelectionChangedListener {
 
 	private static final int PAGESIZE = 4;
@@ -121,8 +119,7 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 
 	private Control createTitle(Composite parent) {
 		title = new Label(parent, SWT.NONE);
-		title.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		title.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(title);
 		return title;
 	}
 
@@ -426,6 +423,6 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 	}
 	
 	protected void select(Work work) {
-		PrimaryObjectDetailFormView.open(work,"pm2.work.detail");
+		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,false);
 	}
 }

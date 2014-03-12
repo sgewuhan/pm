@@ -15,7 +15,6 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -31,6 +30,7 @@ import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.sg.business.commons.operation.link.BulletinBoardLinkAdapter;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
 import com.sg.business.resource.BusinessResource;
@@ -42,7 +42,6 @@ import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-@SuppressWarnings("restriction")
 public class BulletinBoardBlock extends Block implements
 		ISelectionChangedListener {
 
@@ -76,10 +75,8 @@ public class BulletinBoardBlock extends Block implements
 		viewer.setUseHashlookup(true);
 		viewer.addSelectionChangedListener(this);
 
-		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(ITEM_HIGHT));
-		list.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(list);
 		FormData fd = new FormData();
 		list.setLayoutData(fd);
 		fd.top = new FormAttachment();

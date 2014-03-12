@@ -23,6 +23,7 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
@@ -78,7 +79,7 @@ public class ListCTabItem extends CTabItem {
 		TableViewer tv = new TableViewer(composite, SWT.NONE);
 		Control table = tv.getControl();
 		table.setLayoutData(fd);
-		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(table);
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 40);
 		tv.setContentProvider(ArrayContentProvider.getInstance());
 		return tv;

@@ -5895,7 +5895,7 @@
       <view
             class="com.sg.sales.ui.home.SalesHome"
             id="sales.home"
-            name="销售主页面板"
+            name="HOME"
             restorable="true">
       </view>
    </extension>
@@ -12613,7 +12613,7 @@
                         name="actiontype"
                         option="com.sg.crm.actiontype.option"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </combo>
                </section>

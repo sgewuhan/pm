@@ -36,6 +36,7 @@ import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.design.ext.IHeadAreaSupport;
 import com.mobnut.portal.user.UserSessionContext;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
@@ -88,7 +89,7 @@ public class HeadArea implements IHeadAreaSupport {
 		headPicContainer.setLayout(new FormLayout());
 
 		headerPic = new CLabel(headPicContainer, SWT.NONE);
-		headerPic.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(headerPic);
 		//		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic"); //$NON-NLS-1$
 		resetImageURL();
 
@@ -486,7 +487,7 @@ public class HeadArea implements IHeadAreaSupport {
 	@Override
 	public void creatLeftPart(Composite parent) {
 		Label label = new Label(parent, SWT.NONE);
-		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(label);
 		StringBuffer sb = new StringBuffer();
 		sb.append("<img src='" + FileUtil.getImageURL("logo_w.png", BusinessResource.PLUGIN_ID) + "' style='float:left; left:0; top:0; display:block;' width='140' height='30' />"); //$NON-NLS-1$ //$NON-NLS-2$
 		label.setText(sb.toString());
