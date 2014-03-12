@@ -5735,6 +5735,11 @@
             id="sales.cost"
             name="费用">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="sales.contact"
+            name="联系人">
+      </perspective>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -5761,6 +5766,9 @@
          </perspective>
          <perspective
                id="sales.cost">
+         </perspective>
+         <perspective
+               id="sales.contact">
          </perspective>
       </scenario>
    </extension>
@@ -5829,7 +5837,7 @@
                id="homenavigator"
                minimized="true"
                moveable="false"
-               ratio="0.3"
+               ratio="0.25"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="false"
@@ -5848,6 +5856,20 @@
                visible="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="sales.contact">
+         <view
+               closeable="false"
+               id="sales.contact.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.design.perspectiveDefinition">
@@ -5858,6 +5880,13 @@
             name="Home"
             showImage="true"
             showText="false">
+      </perspectiveDefinition>
+      <perspectiveDefinition
+            hideInHead="true"
+            id="sales.contact"
+            name="联系人"
+            showImage="false"
+            showText="true">
       </perspectiveDefinition>
    </extension>
    <extension
@@ -12698,7 +12727,6 @@
       </editor>
       <editor
             addToRecent="false"
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.edit.1"
@@ -12911,7 +12939,6 @@
       </editor>
       <editor
             addToRecent="false"
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.edit.2"
@@ -13157,7 +13184,6 @@
       </editor>
       <editor
             addToRecent="false"
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.edit.3"
@@ -13389,7 +13415,6 @@
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.applyexpense"
@@ -13478,7 +13503,6 @@
          </basicpage>
       </editor>
       <editor
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.applyexpense.inprogress"

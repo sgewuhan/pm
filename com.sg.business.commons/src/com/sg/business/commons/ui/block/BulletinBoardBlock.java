@@ -140,7 +140,7 @@ public class BulletinBoardBlock extends Block implements
 		viewer.setInput(data);
 	}
 
-	protected int getContentHeight() {
+	public int getContentHeight() {
 		return 265;
 	}
 
