@@ -562,7 +562,7 @@
             commandId="vault.folder.uploadzip">
       </handler>
    </extension>
-   <extension
+   <!--extension
          point="com.mobnut.admin.adminFunction">
       <adminFunction
             id="com.sg.business.vault.index.index"
@@ -581,6 +581,6 @@
             run="com.sg.business.vault.index.SchedualIndex"
             time="23:00:00">
       </schedualJob>
-   </extension>
+   </extension-->
 
 </plugin>

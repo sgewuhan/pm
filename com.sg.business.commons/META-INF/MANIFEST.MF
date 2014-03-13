@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.gef,
  com.mobnut.design,
  com.sg.widgets.birtcharts,
- org.eclipse.birt.chart.engine
+ org.eclipse.birt.chart.engine,
+ com.sg.index;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.commons,
