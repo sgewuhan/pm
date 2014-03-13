@@ -26,11 +26,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.sg.business.commons.operation.link.BulletinBoardLinkAdapter;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.BulletinBoard;
 import com.sg.business.model.dataset.bulletinboard.BulletinBoardDataSet;
 import com.sg.business.resource.BusinessResource;
@@ -76,7 +76,7 @@ public class BulletinBoardBlock extends Block implements
 		viewer.addSelectionChangedListener(this);
 
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(ITEM_HIGHT));
-		UIFrameworkUtils.enableMarkup(list);
+		HtmlUtil.enableMarkup(list);
 		FormData fd = new FormData();
 		list.setLayoutData(fd);
 		fd.top = new FormAttachment();

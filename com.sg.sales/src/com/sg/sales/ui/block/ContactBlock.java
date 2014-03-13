@@ -23,10 +23,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.design.ICSSConstants;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.sales.model.Contact;
 import com.sg.sales.model.dataset.MyContactDataSet;
 import com.sg.widgets.MessageUtil;
@@ -65,7 +65,7 @@ public class ContactBlock extends ListBlock {
 		viewer.setUseHashlookup(true);
 		viewer.addSelectionChangedListener(this);
 
-		UIFrameworkUtils.enableMarkup(list);
+		HtmlUtil.enableMarkup(list);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(ITEM_HIGHT));
 		FormData fd = new FormData();
 

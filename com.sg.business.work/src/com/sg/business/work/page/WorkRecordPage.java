@@ -14,7 +14,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
-import com.sg.business.commons.ui.UIFrameworkUtils;
+import com.mobnut.commons.html.HtmlUtil;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkRecord;
 import com.sg.widgets.MessageUtil;
@@ -45,7 +45,7 @@ public class WorkRecordPage extends AbstractFormPageDelegator {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION );
 		Table table = viewer.getTable();
 		table.setLinesVisible(true);
-		UIFrameworkUtils.enableMarkup(table);
+		HtmlUtil.enableMarkup(table);
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(40));
 
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);

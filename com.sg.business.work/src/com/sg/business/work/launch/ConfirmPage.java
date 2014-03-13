@@ -17,11 +17,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Work;
@@ -100,7 +100,7 @@ public class ConfirmPage extends WizardPage {
 				| Section.SHORT_TITLE_BAR );
 		section.setText(Messages.get().ConfirmPage_4);
 		processSummary = new Label(section, SWT.WRAP);
-		UIFrameworkUtils.enableMarkup(processSummary);
+		HtmlUtil.enableMarkup(processSummary);
 		section.setClient(processSummary);
 		return section;
 	}

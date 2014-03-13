@@ -25,6 +25,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.commons.operation.link.WorkLinkAdapter;
@@ -95,7 +96,7 @@ public class TodaysWorkBlock extends Block {
 			}
 		});
 
-		UIFrameworkUtils.enableMarkup(list);
+		HtmlUtil.enableMarkup(list);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(ITEM_HIGHT));
 		FormData fd = new FormData();
 		list.setLayoutData(fd);

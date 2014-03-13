@@ -17,6 +17,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.DBActivator;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
@@ -80,7 +81,7 @@ public class RevenuePage extends TabBlockPage implements
 		parent.setLayout(new FormLayout());
 
 		textContent1 = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(textContent1);
+		HtmlUtil.enableMarkup(textContent1);
 		
 		FormData fd = new FormData();
 		textContent1.setLayoutData(fd);
@@ -90,7 +91,7 @@ public class RevenuePage extends TabBlockPage implements
 		fd.bottom = new FormAttachment(40);
 
 		textContent2 = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(textContent2);
+		HtmlUtil.enableMarkup(textContent2);
 
 		fd = new FormData();
 		textContent2.setLayoutData(fd);
@@ -100,7 +101,7 @@ public class RevenuePage extends TabBlockPage implements
 		fd.bottom = new FormAttachment(40);
 
 		Label label = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(label);
+		HtmlUtil.enableMarkup(label);
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div style='" + "font-family:Î¢ÈíÑÅºÚ;" + "margin:8;"

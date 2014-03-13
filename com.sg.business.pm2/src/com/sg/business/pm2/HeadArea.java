@@ -31,14 +31,21 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
+import com.mobnut.db.model.DocumentModelDefinition;
+import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.design.ext.IHeadAreaSupport;
+import com.mobnut.portal.Portal;
+import com.mobnut.portal.db.Account;
 import com.mobnut.portal.user.UserSessionContext;
-import com.sg.business.commons.ui.UIFrameworkUtils;
-import com.sg.business.model.User;
-import com.sg.business.model.toolkit.UserToolkit;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.ImageResource;
@@ -59,13 +66,18 @@ public class HeadArea implements IHeadAreaSupport {
 	private String imageURL;
 	private CLabel drop;
 	private Composite headPicContainer;
+	private Class<? extends PrimaryObject> userClass;
 
 	public HeadArea() {
 
 	}
-	
+
 	@Override
 	public Composite creatHeadAreaPart(Composite parent) {
+		DocumentModelDefinition dmd = ModelService
+				.getDocumentModelDefinition(Account.C_NAME);
+		userClass = dmd.getModelClass();
+		
 		content = parent;
 		AccountInfo account;
 		try {
@@ -73,8 +85,15 @@ public class HeadArea implements IHeadAreaSupport {
 		} catch (Exception e) {
 			return null;
 		}
-		final User user = UserToolkit.getUserById(account.getUserId());
-		loadHeadPic(user);
+
+		String userId = account.getUserId();
+		DB db = Portal.getBasicDB();
+		DBCollection col = db.getCollection(Account.C_NAME);
+		DBObject userData = col.findOne(
+				new BasicDBObject().append(Account.FIELD_USERID, userId), new BasicDBObject().append(Account.FIELD_HEADPIC,1));
+		if(userData!=null){
+			loadHeadPic(userData);
+		}
 
 		headPicContainer = new Composite(parent, SWT.NONE);
 		Display display = parent.getDisplay();
@@ -89,7 +108,7 @@ public class HeadArea implements IHeadAreaSupport {
 		headPicContainer.setLayout(new FormLayout());
 
 		headerPic = new CLabel(headPicContainer, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(headerPic);
+		HtmlUtil.enableMarkup(headerPic);
 		//		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic"); //$NON-NLS-1$
 		resetImageURL();
 
@@ -119,7 +138,7 @@ public class HeadArea implements IHeadAreaSupport {
 		drop.setLayoutData(fd);
 		fd.top = new FormAttachment(50, -8);
 		fd.left = new FormAttachment(welcomeMessage, 10);
-		createMenu(user);
+		createMenu(account.getLoginUserData());
 
 		Button search = createSearch(parent);
 		fd = new FormData();
@@ -168,7 +187,7 @@ public class HeadArea implements IHeadAreaSupport {
 			}
 		}
 	}
-	
+
 	private Button createSearch(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
@@ -184,11 +203,10 @@ public class HeadArea implements IHeadAreaSupport {
 	}
 
 	protected void search() {
-		// TODO Auto-generated method stub
 
 	}
 
-	private void createMenu(final User user) {
+	private void createMenu(final DBObject dbObject) {
 		final Shell shell = headerPic.getShell();
 		// 创建菜单
 		final Menu dropDownMenu = new Menu(shell, SWT.POP_UP);
@@ -198,7 +216,7 @@ public class HeadArea implements IHeadAreaSupport {
 		item.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				editUserProfile(user);
+				editUserProfile(dbObject);
 			}
 		});
 
@@ -361,14 +379,16 @@ public class HeadArea implements IHeadAreaSupport {
 		});
 	}
 
-	private void loadHeadPic(User user) {
-		List<RemoteFile> headpics = user.getGridFSFileValue(User.F_HEADPIC);
+	private void loadHeadPic(DBObject userData) {
+		PrimaryObject user = ModelService.createModelObject(userData, userClass);
+		List<RemoteFile> headpics = user.getGridFSFileValue(Account.FIELD_HEADPIC);
 		if (headpics != null && headpics.size() > 0) {
 			try {
-				imageURL = FileUtil.getImageURL(headpics.get(0).getNamespace(),
-						new ObjectId(headpics.get(0).getObjectId()), headpics
-								.get(0).getDbName());
+				RemoteFile pic = (RemoteFile) headpics.get(0);
+				imageURL = FileUtil.getImageURL(pic.getNamespace(),
+						new ObjectId(pic.getObjectId()), pic.getDbName());
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		if (imageURL == null) {
@@ -392,7 +412,7 @@ public class HeadArea implements IHeadAreaSupport {
 		welcomeMessage.getParent().layout();
 	}
 
-	protected void editUserProfile(User user) {
+	protected void editUserProfile(DBObject dbObject) {
 		DataEditorConfigurator conf = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator("editor.user"); //$NON-NLS-1$
 		try {
@@ -409,14 +429,14 @@ public class HeadArea implements IHeadAreaSupport {
 				public boolean doSaveAfter(PrimaryObjectEditorInput input,
 						IProgressMonitor monitor, String operation)
 						throws Exception {
-					User user = (User) input.getData();
-					loadHeadPic(user);
+					loadHeadPic(input.getData().get_data());
 					resetImageURL();
-					// setWelcomeMessage(getWelcomeMessage(user.getUsername()));
 					content.layout();
 					return true;
 				}
 			};
+			PrimaryObject user = ModelService.createModelObject(dbObject,
+					userClass);
 			DataObjectDialog.openDialog(user, conf, true, save,
 					Messages.get().HeadArea_13);
 		} catch (Exception e) {
@@ -487,7 +507,7 @@ public class HeadArea implements IHeadAreaSupport {
 	@Override
 	public void creatLeftPart(Composite parent) {
 		Label label = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(label);
+		HtmlUtil.enableMarkup(label);
 		StringBuffer sb = new StringBuffer();
 		sb.append("<img src='" + FileUtil.getImageURL("logo_w.png", BusinessResource.PLUGIN_ID) + "' style='float:left; left:0; top:0; display:block;' width='140' height='30' />"); //$NON-NLS-1$ //$NON-NLS-2$
 		label.setText(sb.toString());
@@ -511,13 +531,11 @@ public class HeadArea implements IHeadAreaSupport {
 		text.setLayoutData(fd);
 		text.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
 		text.setText("绩效导向\n项目管理平台");
-//		text.setText("业务管理\n云平台");
+		// text.setText("业务管理\n云平台");
 		fd.left = new FormAttachment(sep, 4);
 		fd.top = new FormAttachment(50, -20);
 		fd.height = 40;
 		fd.right = new FormAttachment(100, -20);
 	}
-	
-	
 
 }

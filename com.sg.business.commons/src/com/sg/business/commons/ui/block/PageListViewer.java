@@ -13,7 +13,7 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.commons.ui.UIFrameworkUtils;
+import com.mobnut.commons.html.HtmlUtil;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 
 @SuppressWarnings({ "rawtypes" })
@@ -28,7 +28,7 @@ public class PageListViewer extends ListViewer {
 		super(parent, style);
 		setContentProvider(ArrayContentProvider.getInstance());
 		Control control = getControl();
-		UIFrameworkUtils.enableMarkup(control);
+		HtmlUtil.enableMarkup(control);
 		control.setData(RWT.CUSTOM_ITEM_HEIGHT, 20);
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider();
 		labelProvider.setKey("singleline");
