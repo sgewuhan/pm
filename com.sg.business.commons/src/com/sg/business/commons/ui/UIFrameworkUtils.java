@@ -1,9 +1,6 @@
 package com.sg.business.commons.ui;
 
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
@@ -20,7 +17,6 @@ import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 import com.sg.widgets.part.view.SideBarNavigator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
-@SuppressWarnings("restriction")
 public class UIFrameworkUtils {
 
 	/**
@@ -174,12 +170,6 @@ public class UIFrameworkUtils {
 		}
 		return null;
 
-	}
-
-	public static void enableMarkup(Control control) {
-		control.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
 	}
 
 }

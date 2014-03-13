@@ -1188,12 +1188,12 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.sg.bussiness.message.handler.AddMessage"
+            class="com.sg.business.message.handler.AddMessage"
             commandId="message.add">
       </handler>
       <handler
             commandId="message.open"
-            class="com.sg.bussiness.message.handler.OpenMessage">
+            class="com.sg.business.message.handler.OpenMessage">
          <enabledWhen>
             <count
                   value="1">
@@ -1202,31 +1202,31 @@
       </handler>
       <handler
             commandId="message.markread"
-            class="com.sg.bussiness.message.handler.MarkRead">
+            class="com.sg.business.message.handler.MarkRead">
             
       </handler>
       <handler
-            class="com.sg.bussiness.message.handler.UnmarkRead"
+            class="com.sg.business.message.handler.UnmarkRead"
             commandId="message.unmarkread">
       </handler>
       <handler
-            class="com.sg.bussiness.message.handler.MarkStar"
+            class="com.sg.business.message.handler.MarkStar"
             commandId="message.markstar">
       </handler>
       <handler
-            class="com.sg.bussiness.message.handler.UnmarkStar"
+            class="com.sg.business.message.handler.UnmarkStar"
             commandId="message.unmarkstar">
       </handler>
       <handler
-            class="com.sg.bussiness.message.handler.SendToSelectedUser"
+            class="com.sg.business.message.handler.SendToSelectedUser"
             commandId="message.sendtoselecteduser">
       </handler>
       <handler
-            class="com.sg.bussiness.message.handler.ReplyMessage"
+            class="com.sg.business.message.handler.ReplyMessage"
             commandId="message.reply">
       </handler>
       <handler
-            class="com.sg.bussiness.message.handler.RestoreMessage"
+            class="com.sg.business.message.handler.RestoreMessage"
             commandId="message.restore">
       </handler>
    </extension>

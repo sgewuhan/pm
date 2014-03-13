@@ -1162,12 +1162,6 @@
       </scenario>-->
    </extension>
    <extension
-         point="com.mobnut.design.headAreaPart">
-      <headAreaPart
-            getHeadAreaPart="com.sg.business.pm2.HeadArea">
-      </headAreaPart>
-   </extension>
-   <extension
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="account"

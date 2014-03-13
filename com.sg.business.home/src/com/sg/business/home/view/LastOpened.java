@@ -17,12 +17,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
@@ -45,7 +45,7 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		Table table = viewer.getTable();
 		table.setLinesVisible(true);
-		UIFrameworkUtils.enableMarkup(table);
+		HtmlUtil.enableMarkup(table);
 
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		new ColumnAutoResizer(table, column.getColumn());

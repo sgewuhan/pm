@@ -13,10 +13,10 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.UserTask;
 import com.sg.business.model.Work;
@@ -60,10 +60,10 @@ public class WorkBlock extends Block {
 		parent.setLayout(new FormLayout());
 
 		title = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(title);
+		HtmlUtil.enableMarkup(title);
 
 		content = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(content);
+		HtmlUtil.enableMarkup(content);
 
 		FormData fd = new FormData();
 		title.setLayoutData(fd);

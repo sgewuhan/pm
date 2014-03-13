@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectPresentation;
@@ -35,7 +35,7 @@ public class ListBoard {
 		FormData fd = new FormData();
 		leftLabel = new Label(composite, SWT.NONE);
 		leftLabel.setLayoutData(fd);
-		UIFrameworkUtils.enableMarkup(leftLabel);
+		HtmlUtil.enableMarkup(leftLabel);
 
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
@@ -45,7 +45,7 @@ public class ListBoard {
 		
 		rightLabel = new Label(composite,SWT.NONE);
 		rightLabel.setLayoutData(fd);
-		UIFrameworkUtils.enableMarkup(rightLabel);
+		HtmlUtil.enableMarkup(rightLabel);
 
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment(50,1);
@@ -74,7 +74,7 @@ public class ListBoard {
 		TableViewer tv = new TableViewer(composite, SWT.NONE);
 		Control table = tv.getControl();
 		table.setLayoutData(fd);
-		UIFrameworkUtils.enableMarkup(table);
+		HtmlUtil.enableMarkup(table);
 
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 20);
 		tv.setContentProvider(ArrayContentProvider.getInstance());

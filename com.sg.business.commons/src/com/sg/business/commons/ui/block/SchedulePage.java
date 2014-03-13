@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.design.ICSSConstants;
@@ -119,7 +120,7 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 
 	private Control createTitle(Composite parent) {
 		title = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(title);
+		HtmlUtil.enableMarkup(title);
 		return title;
 	}
 

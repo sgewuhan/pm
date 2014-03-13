@@ -6,7 +6,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.sg.business.commons.ui.UIFrameworkUtils;
+import com.mobnut.commons.html.HtmlUtil;
 import com.sg.business.visualization.label.projectset.ISummaryLabelProvider;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
@@ -20,7 +20,7 @@ public class SummaryBlock extends Composite{
 		super(parent, SWT.NONE);
 		setLayout(new FillLayout());
 		label = new Label(this,SWT.NONE);
-		UIFrameworkUtils.enableMarkup(label);
+		HtmlUtil.enableMarkup(label);
 		this.data = data;
 		this.column = column;
 	}

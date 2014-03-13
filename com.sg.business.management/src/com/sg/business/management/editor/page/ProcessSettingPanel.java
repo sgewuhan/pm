@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -31,7 +32,6 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
@@ -115,7 +115,7 @@ public class ProcessSettingPanel extends Composite {
 		fd.left = new FormAttachment(text, MARGIN);
 
 		processLabel = new Label(this, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(processLabel);
+		HtmlUtil.enableMarkup(processLabel);
 
 		fd = new FormData();
 		processLabel.setLayoutData(fd);

@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Work;
@@ -43,7 +44,7 @@ public class SalesBasicPage extends TabBlockPage implements
 		parent.setLayout(new FormLayout());
 
 		textContent1 = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(textContent1);
+		HtmlUtil.enableMarkup(textContent1);
 
 		FormData fd = new FormData();
 		textContent1.setLayoutData(fd);
@@ -53,7 +54,7 @@ public class SalesBasicPage extends TabBlockPage implements
 		fd.bottom = new FormAttachment(100);
 
 		textContent2 = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(textContent2);
+		HtmlUtil.enableMarkup(textContent2);
 
 		fd = new FormData();
 		textContent2.setLayoutData(fd);

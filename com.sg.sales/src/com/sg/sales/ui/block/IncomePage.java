@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.commons.ui.chart.CommonChart;
 import com.sg.business.model.Work;
@@ -88,7 +89,7 @@ public class IncomePage extends TabBlockPage implements
 
 	private Control createTitle(Composite parent) {
 		title = new Label(parent, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(title);
+		HtmlUtil.enableMarkup(title);
 		return title;
 	}
 

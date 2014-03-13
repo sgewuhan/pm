@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.DataSetFactory;
 import com.mobnut.db.model.IContext;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.ISidebarItem;
@@ -103,7 +103,7 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 		viewer.setUseHashlookup(true);
 
 		List list = viewer.getList();
-		UIFrameworkUtils.enableMarkup(list);
+		HtmlUtil.enableMarkup(list);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(36));
 		FormData fd = new FormData();
 		list.setLayoutData(fd);
@@ -114,7 +114,7 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 
 		// 显示数据读取中
 		loading = new Label(bg, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(loading);
+		HtmlUtil.enableMarkup(loading);
 		fd = new FormData();
 		loading.setLayoutData(fd);
 		fd.width = 64;

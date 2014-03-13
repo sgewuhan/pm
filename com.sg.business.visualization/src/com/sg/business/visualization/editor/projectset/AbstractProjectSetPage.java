@@ -13,7 +13,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -23,8 +22,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.ModelService;
-import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.IParameterListener;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectProvider;
@@ -46,7 +45,6 @@ public abstract class AbstractProjectSetPage implements
 
 	protected static final int FONT_SIZE = 12;
 	private static final int INFOBANNER_HEIGHT = 50;
-//	private static final int MARGIN = 2;
 	Label filterLabel;
 	Composite header;
 	protected NavigatorControl navi;
@@ -110,8 +108,7 @@ public abstract class AbstractProjectSetPage implements
 
 	private void handleNavigatorTableEvent() {
 		Table control = (Table) navi.getViewer().getControl();
-		control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		HtmlUtil.enableMarkup(control);
 		control.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
@@ -163,7 +160,7 @@ public abstract class AbstractProjectSetPage implements
 
 		// 显示数据过滤
 		filterLabel = new Label(header, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(filterLabel);
+		HtmlUtil.enableMarkup(filterLabel);
 		FormData fd = new FormData();
 		filterLabel.setLayoutData(fd);
 		fd.left = new FormAttachment(30, -INFOBANNER_HEIGHT);
@@ -196,7 +193,7 @@ public abstract class AbstractProjectSetPage implements
 
 		// 显示项目集合名称
 		Label projectSetLabel = new Label(header, SWT.NONE);
-		UIFrameworkUtils.enableMarkup(projectSetLabel);
+		HtmlUtil.enableMarkup(projectSetLabel);
 		projectSetLabel.setText(getProjectSetPageLabel());
 
 		fd = new FormData();
