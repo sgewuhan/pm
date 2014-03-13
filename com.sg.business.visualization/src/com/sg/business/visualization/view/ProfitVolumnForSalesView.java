@@ -5,13 +5,13 @@ import java.util.List;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.action.Action;
 
+import com.sg.business.commons.ui.chart.CommonChart;
 import com.sg.business.resource.nls.Messages;
 import com.sg.business.visualization.action.ChartSeriesSwitchAction;
 import com.sg.business.visualization.action.SetChartSubtypeToSidebySideAction;
 import com.sg.business.visualization.action.SetChartSubtypeToStackedAction;
 import com.sg.business.visualization.action.SetChartTypeToBarAction;
 import com.sg.business.visualization.action.SetChartTypeToLineAction;
-import com.sg.business.visualization.chart.CommonChart;
 
 public class ProfitVolumnForSalesView extends AbstractDashChartView {
 

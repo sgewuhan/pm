@@ -31,6 +31,7 @@ import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.commons.ui.flow.ProcessHistoryUIToolkit;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDocumentProcess;
@@ -89,6 +90,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		taskViewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		Table table = taskViewer.getTable();
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 40);
+		UIFrameworkUtils.enableMarkup(table);
 		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
 		TableViewerColumn column = new TableViewerColumn(taskViewer, SWT.LEFT);
 		column.getColumn().setWidth(360);
@@ -128,7 +130,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		TableViewer viewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		Table table = viewer.getTable();
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 40);
-		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(table);
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		column.getColumn().setWidth(360);
 		column.setLabelProvider(new ColumnLabelProvider() {

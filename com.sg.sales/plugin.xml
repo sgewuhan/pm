@@ -310,9 +310,9 @@
                value="招标谈判">
          </option>
          <option
-               id="签订合同"
-               label="签订合同"
-               value="签订合同">
+               id="签单成功"
+               label="签单成功"
+               value="签单成功">
          </option>
          <option
                id="启动实施"
@@ -323,6 +323,11 @@
                id="项目结案"
                label="项目结案"
                value="项目结案">
+         </option>
+         <option
+               id="签单失败"
+               label="签单失败"
+               value="签单失败">
          </option>
       </option>
       <option
@@ -5558,11 +5563,6 @@
                   value="工资">
             </option>
             <option
-                  id="奖金"
-                  label="奖金"
-                  value="奖金">
-            </option>
-            <option
                   id="补贴"
                   label="补贴"
                   value="补贴">
@@ -5576,6 +5576,21 @@
                   id="社保"
                   label="社保"
                   value="社保">
+            </option>
+            <option
+                  id="销售奖金"
+                  label="销售奖金"
+                  value="销售奖金">
+            </option>
+            <option
+                  id="项目奖金"
+                  label="项目奖金"
+                  value="项目奖金">
+            </option>
+            <option
+                  id="其他奖金"
+                  label="其他奖金"
+                  value="其他奖金">
             </option>
          </option>
          <option
@@ -5686,9 +5701,20 @@
             collection="workcost"
             db="pm2">
       </doc>
+      <doc
+            class="com.sg.sales.model.Income"
+            collection="income"
+            db="pm2">
+      </doc>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            icon="image/home_w_24.png"
+            id="sales.home"
+            name="主页">
+      </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="sales.customer"
@@ -5709,12 +5735,26 @@
             id="sales.cost"
             name="费用">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="sales.contact"
+            name="联系人">
+      </perspective>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
       <scenario
+            id="sales.home"
+            index="10"
+            isDefault="true"
+            name="销售主页">
+         <perspective
+               default="true"
+               id="sales.home"></perspective>
+      </scenario>
+      <scenario
             id="sales.scenario"
-            index="20"
+            index="40"
             name="销售">
          <perspective
                id="sales.customer"></perspective>
@@ -5726,6 +5766,9 @@
          </perspective>
          <perspective
                id="sales.cost">
+         </perspective>
+         <perspective
+               id="sales.contact">
          </perspective>
       </scenario>
    </extension>
@@ -5787,6 +5830,64 @@
                standalone="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="sales.home">
+         <view
+               closeable="false"
+               id="homenavigator"
+               minimized="true"
+               moveable="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="sales.home"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="top"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="sales.contact">
+         <view
+               closeable="false"
+               id="sales.contact.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="com.mobnut.design.perspectiveDefinition">
+      <perspectiveDefinition
+            hideInHead="false"
+            id="sales.home"
+            image="image/home_w_24.png"
+            name="Home"
+            showImage="true"
+            showText="false">
+      </perspectiveDefinition>
+      <perspectiveDefinition
+            hideInHead="true"
+            id="sales.contact"
+            name="联系人"
+            showImage="false"
+            showText="true">
+      </perspectiveDefinition>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -5818,6 +5919,12 @@
             class="com.sg.widgets.part.view.TableNavigator"
             id="sales.cost.navigator"
             name="费用"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.sales.ui.home.SalesHome"
+            id="sales.home"
+            name="HOME"
             restorable="true">
       </view>
    </extension>
@@ -6728,6 +6835,14 @@
          </createEditor>
       </navigator>
       <navigator
+            id="sales.income.contract.ineditor"
+            table="sales.income.contract.ineditor">
+         <createEditor
+               createHandler="com.sg.sales.handler.CreateIncomeOfContract"
+               editorId="sales.income.editor">
+         </createEditor>
+      </navigator>
+      <navigator
             id="sales.action.company.ineditor"
             table="sales.action.company.ineditor">
          <filterAction
@@ -6831,7 +6946,8 @@
                defaultfield="说明">
             <column
                   column="coststatus"
-                  name="状态">
+                  name="状态"
+                  type="String">
             </column>
             <column
                   column="catagory"
@@ -6908,7 +7024,8 @@
                defaultfield="说明">
             <column
                   column="coststatus"
-                  name="状态">
+                  name="状态"
+                  type="String">
             </column>
             <column
                   column="catagory"
@@ -7466,7 +7583,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.MyCustomerDataSet"
+            dataSet="com.sg.sales.model.dataset.MyCustomerDataSet"
             editorId="sales.company.editor"
             fullSelection="true"
             hasBorder="false"
@@ -7481,7 +7598,7 @@
             virtual="true">
          <column
                column="status"
-               labelProvider="com.sg.sales.label.DataStatusLabel"
+               labelProvider="com.sg.sales.ui.labelprovider.DataStatusLabel"
                name="状态"
                type="String"
                width="40">
@@ -7548,25 +7665,25 @@
          </column>
          <column
                column="cust_representative"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="客户代表"
                width="60">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理"
                width="60">
          </column>
          <column
                column="sales_supervisor"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售主管"
                width="60">
          </column>
          <column
                column="service_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="服务主管"
                width="60">
          </column>
@@ -7576,7 +7693,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.OwnerCustomerDataSet"
+            dataSet="com.sg.sales.model.dataset.OwnerCustomerDataSet"
             editorId="sales.company.editor"
             fullSelection="true"
             hasBorder="false"
@@ -7625,7 +7742,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.MyContactDataSet"
+            dataSet="com.sg.sales.model.dataset.MyContactDataSet"
             editorId="sales.contact.editor"
             fullSelection="true"
             hasBorder="false"
@@ -7646,7 +7763,7 @@
          </column>
          <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="公司"
                type="String"
                width="200">
@@ -7694,7 +7811,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.CompanyContactDataSet"
+            dataSet="com.sg.sales.model.dataset.CompanyContactDataSet"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -7714,7 +7831,7 @@
          </column>
          <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="公司"
                type="String"
                width="200">
@@ -7737,7 +7854,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanyContactDataSet"
+            dataSet="com.sg.sales.model.dataset.CompanyContactDataSet"
             editorId="sales.contact.editor"
             fullSelection="true"
             hasBorder="false"
@@ -7799,7 +7916,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.MyOpportunityDataSet"
+            dataSet="com.sg.sales.model.dataset.MyOpportunityDataSet"
             editorId="sales.opportunity.editor"
             fullSelection="true"
             hasBorder="false"
@@ -7814,7 +7931,7 @@
             virtual="true">
          <column
                column="status"
-               labelProvider="com.sg.sales.label.DataStatusLabel"
+               labelProvider="com.sg.sales.ui.labelprovider.DataStatusLabel"
                name="状态"
                type="String"
                width="40">
@@ -7831,7 +7948,7 @@
          </column>
          <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="公司"
                type="String"
                width="200">
@@ -7853,25 +7970,25 @@
          </column>
          <column
                column="cust_representative"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="客户代表"
                width="60">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理"
                width="60">
          </column>
          <column
                column="sales_supervisor"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售主管"
                width="60">
          </column>
          <column
                column="service_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="服务主管"
                width="60">
          </column>
@@ -7881,7 +7998,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.OwnerOpportunityDataSet"
+            dataSet="com.sg.sales.model.dataset.OwnerOpportunityDataSet"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -7904,7 +8021,7 @@
          </column>
          <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="公司"
                type="String"
                width="200">
@@ -7930,7 +8047,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanyOpportunityDataSet"
+            dataSet="com.sg.sales.model.dataset.CompanyOpportunityDataSet"
             editorId="sales.opportunity.editor"
             fullSelection="true"
             hasBorder="false"
@@ -7955,7 +8072,7 @@
          </column>
          <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="公司"
                type="String"
                width="200">
@@ -7981,7 +8098,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.MyContractDataSet"
+            dataSet="com.sg.sales.model.dataset.MyContractDataSet"
             editorId="sales.contract.editor"
             fullSelection="true"
             hasBorder="false"
@@ -8013,7 +8130,7 @@
          </column>
          <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="公司"
                type="String"
                width="200">
@@ -8030,17 +8147,19 @@
          </column>
          <column
                column="amount"
+               labelProvider="com.sg.widgets.commons.labelprovider.CurrencyLabelProvider"
                name="金额"
-               type="Double">
+               type="Double"
+               width="200">
          </column>
          <column
                column="signby"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="签订人">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理">
          </column>
       </table>
@@ -8049,7 +8168,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.OwnerContractDataSet"
+            dataSet="com.sg.sales.model.dataset.AllContractDataSet"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -8078,7 +8197,7 @@
          </column>
          <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="公司"
                type="String"
                width="200">
@@ -8099,7 +8218,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanyContractDataSet"
+            dataSet="com.sg.sales.model.dataset.CompanyContractDataSet"
             editorId="sales.contract.editor"
             fullSelection="true"
             hasBorder="false"
@@ -8145,12 +8264,12 @@
          </column>
          <column
                column="signby"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="签订人">
          </column>
          <column
                column="sales_manager"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="销售经理">
          </column>
       </table>
@@ -8159,7 +8278,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.ContractPODataSet"
+            dataSet="com.sg.sales.model.dataset.ContractPODataSet"
             editorId="sales.purchaseorder.editor"
             fullSelection="true"
             hasBorder="false"
@@ -8190,15 +8309,17 @@
          </column>
          <column
                column="unitprice"
+               labelProvider="com.sg.widgets.commons.labelprovider.CurrencyLabelProvider"
                name="单价"
                type="Double"
-               width="60">
+               width="140">
          </column>
          <column
                column="summary"
+               labelProvider="com.sg.sales.ui.labelprovider.POItemLabel"
                name="合计"
                type="Double"
-               width="60">
+               width="200">
          </column>
       </table>
       <table
@@ -8206,7 +8327,45 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanyWorkDataSet"
+            dataSet="com.sg.sales.model.dataset.ContractIncomeDataSet"
+            editorId="sales.income.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.income.contract.ineditor"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            popupMenu="popup:com.sg.widget.navigator"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               name="说明"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="transferdate"
+               name="入账日期"
+               type="Date"
+               width="80">
+         </column>
+         <column
+               column="amount"
+               labelProvider="com.sg.widgets.commons.labelprovider.CurrencyLabelProvider"
+               name="到款金额"
+               type="Double"
+               width="140">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.model.dataset.CompanyWorkDataSet"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -8218,7 +8377,7 @@
             useHashlookup="true"
             virtual="true">
          <column
-               labelProvider="com.sg.business.commons.labelprovider.StatusTextLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.StatusTextLabelProvider"
                name="状态"
                width="60">
          </column>
@@ -8265,7 +8424,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.MyWorkCostDataSet"
+            dataSet="com.sg.sales.model.dataset.MyWorkCostDataSet"
             editorId="sales.cost.editor"
             fullSelection="true"
             hasBorder="false"
@@ -8320,37 +8479,31 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
          <column
-               column="work_id"
-               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
-               name="工作"
-               type="String">
-         </column>
-         <column
                column="company_id"
-               labelProvider="com.sg.sales.label.CompanyIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                name="客户"
                type="String">
          </column>
          <column
                column="opportunity_id"
-               labelProvider="com.sg.sales.label.OpportunityIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.OpportunityIdLabelProvider"
                name="商机"
                type="String">
          </column>
          <column
                column="contract_id"
-               labelProvider="com.sg.sales.label.ContractIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.ContractIdLabelProvider"
                name="合同"
                type="String">
          </column>
          <column
                column="project_id"
-               labelProvider="com.sg.sales.label.ProjectIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.ProjectIdLabelProvider"
                name="项目"
                type="String">
          </column>
@@ -8365,7 +8518,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanyWorkCostDataSet"
+            dataSet="com.sg.sales.model.dataset.CompanyWorkCostDataSet"
             editorId="sales.cost.editor"
             fullSelection="true"
             hasBorder="false"
@@ -8419,31 +8572,31 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
          <column
                column="work_id"
-               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.WorkIdLabelProvider"
                name="工作"
                type="String">
          </column>
          <column
                column="opportunity_id"
-               labelProvider="com.sg.sales.label.OpportunityIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.OpportunityIdLabelProvider"
                name="商机"
                type="String">
          </column>
          <column
                column="contract_id"
-               labelProvider="com.sg.sales.label.ContractIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.ContractIdLabelProvider"
                name="合同"
                type="String">
          </column>
          <column
                column="project_id"
-               labelProvider="com.sg.sales.label.ProjectIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.ProjectIdLabelProvider"
                name="项目"
                type="String">
          </column>
@@ -8458,7 +8611,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanyWorkCostDataSet"
+            dataSet="com.sg.sales.model.dataset.CompanyWorkCostDataSet"
             editorId="sales.cost.editor"
             fullSelection="true"
             hasBorder="false"
@@ -8512,13 +8665,13 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
          <column
                column="work_id"
-               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.WorkIdLabelProvider"
                name="工作"
                type="String">
          </column>
@@ -8533,7 +8686,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CompanyWorkCostDataSet"
+            dataSet="com.sg.sales.model.dataset.CompanyWorkCostDataSet"
             editorId="sales.cost.editor"
             fullSelection="true"
             hasBorder="false"
@@ -8587,19 +8740,19 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
                type="String">
          </column>
          <column
                column="work_id"
-               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.WorkIdLabelProvider"
                name="工作"
                type="String">
          </column>
          <column
                column="project_id"
-               labelProvider="com.sg.sales.label.ProjectIdLabelProvider"
+               labelProvider="com.sg.sales.ui.labelprovider.ProjectIdLabelProvider"
                name="项目"
                type="String">
          </column>
@@ -8614,7 +8767,7 @@
             canDelete="true"
             canEdit="true"
             canRead="true"
-            dataSet="com.sg.sales.dataset.CostSalesWorkDataSet"
+            dataSet="com.sg.sales.model.dataset.CostSalesWorkDataSet"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -8626,7 +8779,7 @@
             useHashlookup="true"
             virtual="true">
          <column
-               labelProvider="com.sg.business.commons.labelprovider.StatusTextLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.StatusTextLabelProvider"
                name="状态"
                width="60">
          </column>
@@ -8692,7 +8845,8 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.sg.sales.dataset.ExpenseApplyCostDataSet"
+            dataSet="com.sg.sales.model.dataset.ExpenseApplyCostDataSet"
+            doubleClickListener="com.sg.sales.handler.DoubleClickToOpenCost"
             fullSelection="true"
             hasBorder="false"
             headerVisiable="true"
@@ -8740,14 +8894,8 @@
          </column>
          <column
                column="owner"
-               labelProvider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                name="费用使用人"
-               type="String">
-         </column>
-         <column
-               column="work_id"
-               labelProvider="com.sg.sales.label.WorkIdLabelProvider"
-               name="工作"
                type="String">
          </column>
       </table>
@@ -9190,10 +9338,11 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
                         navigatorId="organization.user.selector"
@@ -9203,10 +9352,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
                         navigatorId="organization.user.selector"
@@ -9216,10 +9366,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
                         navigatorId="organization.user.selector"
@@ -9229,10 +9380,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
                         navigatorId="organization.user.selector"
@@ -9825,10 +9977,11 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner"
                         label="所有者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
                         navigatorId="organization.user.selector"
@@ -9839,10 +9992,11 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="owner_list"
                         persistable="true"
                         required="false">
@@ -9850,10 +10004,11 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="visitor_list"
                         persistable="true"
                         required="false">
@@ -9929,7 +10084,7 @@
                         id="company_id"
                         label="公司"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                         modelClass="com.sg.sales.model.Company"
                         name="company_id"
                         navigatorId="sales.company.selector"
@@ -10279,7 +10434,7 @@
                         id="company_id"
                         label="公司"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                         modelClass="com.sg.sales.model.Company"
                         name="company_id"
                         navigatorId="sales.company.selector"
@@ -10473,7 +10628,7 @@
                         id="p1"
                         label="联系人"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.ContactIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.ContactIdLabelProvider"
                         name="p1"
                         persistable="true"
                         required="false">
@@ -10485,7 +10640,7 @@
                         id="p2"
                         label="支持者"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.ContactIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.ContactIdLabelProvider"
                         name="p1"
                         persistable="true"
                         required="false">
@@ -10497,7 +10652,7 @@
                         id="p3"
                         label="反对者"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.ContactIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.ContactIdLabelProvider"
                         name="p3"
                         persistable="true"
                         required="false">
@@ -10515,7 +10670,7 @@
                         id="p4"
                         label="技术决策者"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.ContactIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.ContactIdLabelProvider"
                         name="p4"
                         persistable="true"
                         required="false">
@@ -10527,7 +10682,7 @@
                         id="p5"
                         label="购买决策者"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.ContactIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.ContactIdLabelProvider"
                         name="p5"
                         persistable="true"
                         required="false">
@@ -10539,7 +10694,7 @@
                         id="p6"
                         label="最终用户"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.ContactIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.ContactIdLabelProvider"
                         name="p6"
                         persistable="true"
                         required="false">
@@ -11032,10 +11187,11 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner"
                         label="所有者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
                         navigatorId="organization.user.selector"
@@ -11046,10 +11202,11 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="owner_list"
                         persistable="true"
                         required="false">
@@ -11057,10 +11214,11 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="visitor_list"
                         persistable="true"
                         required="false">
@@ -11073,10 +11231,11 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
                         navigatorId="organization.user.selector"
@@ -11086,10 +11245,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
                         navigatorId="organization.user.selector"
@@ -11099,10 +11259,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
                         navigatorId="organization.user.selector"
@@ -11112,10 +11273,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
                         navigatorId="organization.user.selector"
@@ -11148,7 +11310,7 @@
                         id="company_id"
                         label="公司"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                         modelClass="com.sg.sales.model.Company"
                         name="company_id"
                         navigatorId="sales.company.selector"
@@ -11301,7 +11463,7 @@
                         id="company_id"
                         label="客户"
                         labelVisible="true"
-                        labelprovider="com.sg.sales.label.CompanyIdLabelProvider"
+                        labelprovider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                         modelClass="com.sg.sales.model.Company"
                         name="company_id"
                         navigatorId="sales.company.selector"
@@ -11311,13 +11473,14 @@
                   </navigatorSelector>
                   <text
                         editPart="Text(Single Line)"
-                        editable="true"
+                        editable="false"
                         id="amount"
                         label="合同金额（元）"
                         labelVisible="true"
                         name="amount"
                         persistable="true"
-                        required="true"
+                        required="false"
+                        textMessage="&lt;自动计算&gt;"
                         type="Double">
                   </text>
                   <text
@@ -11347,7 +11510,7 @@
                         id="signby"
                         label="签订人"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="signby"
                         navigatorId="organization.user.selector"
@@ -11389,6 +11552,18 @@
                         required="true"
                         type="String">
                   </combo>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="iamount"
+                        label="回款金额（元）"
+                        labelVisible="true"
+                        name="iamount"
+                        persistable="true"
+                        required="false"
+                        textMessage="&lt;自动计算&gt;"
+                        type="Double">
+                  </text>
                </section>
             </pagecolumn>
             <pagecolumn
@@ -11398,29 +11573,32 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
+                        heightHint="400"
                         id="payment"
                         label="付款方式"
                         labelVisible="false"
                         name="payment"
                         persistable="true"
                         required="true"
-                        type="String"
-                        widthHint="400">
+                        type="String">
                   </text>
                </section>
+            </pagecolumn>
+            <pagecolumn
+                  id="3">
                <section
                      label="特殊要求">
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
+                        heightHint="400"
                         id="specreq"
                         label="特殊要求"
                         labelVisible="false"
                         name="specreq"
                         persistable="true"
                         required="false"
-                        type="String"
-                        widthHint="200">
+                        type="String">
                   </text>
                </section>
             </pagecolumn>
@@ -11431,25 +11609,17 @@
                navigatorId="sales.purchaseorder.contract.ineditor"
                title="商品明细">
          </navigatorpage>
-         <vaultpage
-               id="files"
-               title="原稿">
-            <file
-                  editPart="OfficeFileUploader"
-                  editable="true"
-                  id="files"
-                  label="合同原件扫描档"
-                  labelVisible="true"
-                  name="files"
-                  persistable="true"
-                  required="false">
-            </file>
-         </vaultpage>
+         <navigatorpage
+               createAfterSave="true"
+               id="income"
+               navigatorId="sales.income.contract.ineditor"
+               title="回款明细">
+         </navigatorpage>
          <navigatorpage
                createAfterSave="true"
                id="sales.cost.contract.ineditor"
                navigatorId="sales.cost.contract.ineditor"
-               title="费用">
+               title="费用和成本">
          </navigatorpage>
          <basicpage
                createAfterSave="true"
@@ -11508,6 +11678,19 @@
                         type="String">
                   </text>
                </section>
+               <section
+                     label="合同原件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="files"
+                        label="合同原件扫描档"
+                        labelVisible="true"
+                        name="files"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
             </pagecolumn>
             <pagecolumn>
                <section
@@ -11515,10 +11698,11 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="cust_representative"
                         label="客户代表"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
                         navigatorId="organization.user.selector"
@@ -11528,10 +11712,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="sales_manager"
                         label="销售经理"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
                         navigatorId="organization.user.selector"
@@ -11541,10 +11726,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="sales_supervisor"
                         label="销售主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
                         navigatorId="organization.user.selector"
@@ -11554,10 +11740,11 @@
                   </navigatorSelector>
                   <navigatorSelector
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="service_manager"
                         label="服务主管"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
                         navigatorId="organization.user.selector"
@@ -11573,10 +11760,11 @@
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner"
                         label="所有者"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
                         navigatorId="organization.user.selector"
@@ -11587,10 +11775,11 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner_list"
                         label="更改授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="owner_list"
                         persistable="true"
                         required="false">
@@ -11598,10 +11787,11 @@
                   <list
                         addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
                         editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="visitor_list"
                         label="访问授权"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="visitor_list"
                         persistable="true"
                         required="false">
@@ -11679,6 +11869,7 @@
             dbName="pm2"
             id="sales.cost.editor"
             max="true"
+            memo="填报使用"
             name="费用">
          <basicpage
                id="basicpage1"
@@ -11725,87 +11916,109 @@
                         required="true"
                         type="String">
                   </text>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="startdate"
-                        label="起始时间"
-                        labelVisible="true"
-                        name="startdate"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-                  <dateTime
-                        editPart="DateDialog"
-                        editable="true"
-                        id="finishdate"
-                        label="终止时间"
-                        labelVisible="true"
-                        name="finishdate"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="pamount"
-                        label="票面金额（元）"
-                        labelVisible="true"
-                        name="pamount"
-                        persistable="true"
-                        required="true"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="hamount"
-                        label="发生金额（元）"
-                        labelVisible="true"
-                        name="hamount"
-                        persistable="true"
-                        required="true"
-                        type="Double">
-                  </text>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="aamount"
-                        label="实报金额（元）"
-                        labelVisible="true"
-                        name="aamount"
-                        persistable="true"
-                        required="true"
-                        type="Double">
-                  </text>
-                  <navigatorSelector
-                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
-                        editable="true"
-                        id="owner"
-                        label="费用使用人"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="owner"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-                  <dateTime
-                        defaultValueProvider="com.sg.business.commons.value.TodayDefault"
-                        editPart="DateDialog"
-                        editable="true"
-                        id="submitdate"
-                        label="填报日期"
-                        labelVisible="true"
-                        name="submitdate"
-                        persistable="true"
-                        required="true"
-                        type="Date">
-                  </dateTime>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="locstart"
+                           label="出发地点"
+                           labelVisible="true"
+                           name="locstart"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="locend"
+                           label="目的地点"
+                           labelVisible="true"
+                           name="locend"
+                           persistable="true"
+                           required="false"
+                           type="String">
+                     </text>
+                     <dateTime
+                           editPart="DateDialog"
+                           editable="true"
+                           id="startdate"
+                           label="起始时间"
+                           labelVisible="true"
+                           name="startdate"
+                           persistable="true"
+                           required="true"
+                           type="Date">
+                     </dateTime>
+                     <dateTime
+                           editPart="DateDialog"
+                           editable="true"
+                           id="finishdate"
+                           label="终止时间"
+                           labelVisible="true"
+                           name="finishdate"
+                           persistable="true"
+                           required="true"
+                           type="Date">
+                     </dateTime>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="pamount"
+                           label="票面金额（元）"
+                           labelVisible="true"
+                           name="pamount"
+                           persistable="true"
+                           required="true"
+                           type="Double">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="hamount"
+                           label="发生金额（元）"
+                           labelVisible="true"
+                           name="hamount"
+                           persistable="true"
+                           required="true"
+                           type="Double">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
+                           id="aamount"
+                           label="实报金额（元）"
+                           labelVisible="true"
+                           name="aamount"
+                           persistable="true"
+                           required="true"
+                           type="Double">
+                     </text>
+                     <navigatorSelector
+                           defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                           editable="true"
+                           id="owner"
+                           label="费用使用人"
+                           labelVisible="true"
+                           labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                           modelClass="com.sg.business.model.User"
+                           name="owner"
+                           navigatorId="organization.user.selector"
+                           navigatorReturnField="userid"
+                           persistable="true"
+                           required="true">
+                     </navigatorSelector>
+                     <dateTime
+                           defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
+                           editPart="DateDialog"
+                           editable="true"
+                           id="submitdate"
+                           label="填报日期"
+                           labelVisible="true"
+                           name="submitdate"
+                           persistable="true"
+                           required="true"
+                           type="Date">
+                     </dateTime>
                </section>
             </pagecolumn>
             <pagecolumn>
@@ -11821,7 +12034,6 @@
                         navigatorId="sales.work.selector.cost"
                         navigatorReturnField="_id"
                         persistable="true"
-                        required="true"
                         tooltips="选择在费用起始期间内的工作">
                   </navigatorSelector>
                   <navigatorSelector
@@ -12115,6 +12327,256 @@
             </file>
          </vaultpage>
       </editor>
+      <editor
+            collectionName="workcost"
+            dbName="pm2"
+            id="sales.cost.editor.check"
+            max="true"
+            memo="察看用"
+            name="费用">
+         <basicpage
+               id="basicpage1"
+               title="基本信息">
+            <pagecolumn>
+               <section
+                     label="基本信息">
+                  <fieldgroup
+                        columnCount="2">
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="catagory"
+                           label="类别"
+                           labelVisible="true"
+                           name="catagory"
+                           option="sales.cost.catagory"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                     <combo
+                           editPart="Combo(Read Only)"
+                           editable="true"
+                           id="detail"
+                           isComputeField="true"
+                           label="科目"
+                           labelVisible="true"
+                           name="detail"
+                           optionProvider="com.sg.sales.field.option.DetailCatagory"
+                           persistable="true"
+                           required="true"
+                           type="String">
+                     </combo>
+                  </fieldgroup>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="desc"
+                        label="费用说明"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="locstart"
+                        label="出发地点"
+                        labelVisible="true"
+                        name="locstart"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="locend"
+                        label="目的地点"
+                        labelVisible="true"
+                        name="locend"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="startdate"
+                        label="起始时间"
+                        labelVisible="true"
+                        name="startdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="finishdate"
+                        label="终止时间"
+                        labelVisible="true"
+                        name="finishdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="pamount"
+                        label="票面金额（元）"
+                        labelVisible="true"
+                        name="pamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="hamount"
+                        label="发生金额（元）"
+                        labelVisible="true"
+                        name="hamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="aamount"
+                        label="实报金额（元）"
+                        labelVisible="true"
+                        name="aamount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        id="owner"
+                        label="费用使用人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="submitdate"
+                        label="填报日期"
+                        labelVisible="true"
+                        name="submitdate"
+                        persistable="true"
+                        required="true"
+                        type="Date">
+                  </dateTime>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="file"
+               title="补充说明">
+            <pagecolumn>
+               <section
+                     label="补充说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="400"
+                        id="appendix"
+                        label="补充说明"
+                        labelVisible="false"
+                        name="appendix"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="文件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="files"
+                        label="补充说明"
+                        labelVisible="false"
+                        name="files"
+                        persistable="true"
+                        required="false"
+                        widthHint="300">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="income"
+            dbName="pm2"
+            id="sales.income.editor"
+            isDefault="true"
+            labelFieldName="desc"
+            name="回款">
+         <basicpage
+               description="商机的基本信息"
+               id="com.sg.crm.basicpage"
+               title="基本">
+            <pagecolumn
+                  id="1">
+               <section
+                     expand="true"
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="amount"
+                        label="金额"
+                        labelVisible="true"
+                        name="amount"
+                        persistable="true"
+                        required="true"
+                        type="Double">
+                  </text>
+                  <dateTime
+                        defaultValueProvider="com.sg.business.commons.field.value.TodayDefault"
+                        editPart="DateDialog"
+                        editable="true"
+                        id="transferdate"
+                        label="入账日期"
+                        labelVisible="true"
+                        name="transferdate"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="desc"
+                        label="说明"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
    </extension>
    <extension
          point="com.sg.widgets.dataEditor">
@@ -12180,7 +12642,7 @@
                         name="actiontype"
                         option="com.sg.crm.actiontype.option"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </combo>
                </section>
@@ -12192,7 +12654,7 @@
                         id="chargerid"
                         label="%navigatorSelector.label.1"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="chargerid"
                         navigatorId="organization.user.assignment"
@@ -12207,7 +12669,7 @@
                         id="participate"
                         label="%list.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="participate"
                         persistable="true"
                         required="false">
@@ -12217,7 +12679,7 @@
                         id="assignerid"
                         label="%navigatorSelector.label.2"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="assignerid"
                         navigatorId="project.participte.selector"
@@ -12233,7 +12695,7 @@
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
-                        heightHint="120"
+                        heightHint="360"
                         id="description"
                         label="%text.label.11"
                         labelVisible="false"
@@ -12259,13 +12721,12 @@
          <basicpage
                description="%basicpage.description.13"
                id="processpage1"
-               pageDelegator="com.sg.business.commons.page.flow.WorkExecuteProcessSelectorPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.WorkExecuteProcessSelectorPage"
                title="%basicpage.title.13">
          </basicpage>
       </editor>
       <editor
             addToRecent="false"
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.edit.1"
@@ -12325,7 +12786,7 @@
                         labelVisible="true"
                         name="company_id"
                         persistable="true"
-                        presentation="com.sg.sales.label.CompanyIdLabelProvider"
+                        presentation="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                         required="true"
                         type="String"
                         userlabelForReadonly="true"
@@ -12340,7 +12801,7 @@
                         labelVisible="true"
                         name="opportunity_id"
                         persistable="true"
-                        presentation="com.sg.sales.label.OpportunityIdLabelProvider"
+                        presentation="com.sg.sales.ui.labelprovider.OpportunityIdLabelProvider"
                         required="true"
                         type="String"
                         userlabelForReadonly="true"
@@ -12451,7 +12912,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
+                  class="com.sg.business.commons.operation.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="%command.label.2"
@@ -12459,7 +12920,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.EditWork"
+                  class="com.sg.business.commons.operation.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
                   label="%command.label.7"
@@ -12467,7 +12928,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -12478,7 +12939,6 @@
       </editor>
       <editor
             addToRecent="false"
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.edit.2"
@@ -12492,6 +12952,7 @@
                description="%basicpage.description.25"
                id="basicpage"
                image="image/work_24.png"
+               menu="popup:project.deliverable"
                title="%basicpage.title.25">
             <pagecolumn
                   id="1"
@@ -12537,7 +12998,7 @@
                         labelVisible="true"
                         name="company_id"
                         persistable="true"
-                        presentation="com.sg.sales.label.CompanyIdLabelProvider"
+                        presentation="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                         required="true"
                         type="String"
                         userlabelForReadonly="true"
@@ -12552,7 +13013,7 @@
                         labelVisible="true"
                         name="opportunity_id"
                         persistable="true"
-                        presentation="com.sg.sales.label.OpportunityIdLabelProvider"
+                        presentation="com.sg.sales.ui.labelprovider.OpportunityIdLabelProvider"
                         required="true"
                         type="String"
                         userlabelForReadonly="true"
@@ -12696,7 +13157,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.LogWork"
+                  class="com.sg.business.commons.operation.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -12704,7 +13165,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.CompleteTask"
+                  class="com.sg.business.commons.operation.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"
@@ -12712,7 +13173,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -12723,7 +13184,6 @@
       </editor>
       <editor
             addToRecent="false"
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.edit.3"
@@ -12737,6 +13197,7 @@
                description="%basicpage.description.25"
                id="basicpage"
                image="image/work_24.png"
+               menu="popup:project.deliverable"
                title="%basicpage.title.25">
             <pagecolumn
                   id="1"
@@ -12782,7 +13243,7 @@
                         labelVisible="true"
                         name="company_id"
                         persistable="true"
-                        presentation="com.sg.sales.label.CompanyIdLabelProvider"
+                        presentation="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
                         required="true"
                         type="String"
                         userlabelForReadonly="true"
@@ -12797,7 +13258,7 @@
                         labelVisible="true"
                         name="opportunity_id"
                         persistable="true"
-                        presentation="com.sg.sales.label.OpportunityIdLabelProvider"
+                        presentation="com.sg.sales.ui.labelprovider.OpportunityIdLabelProvider"
                         required="true"
                         type="String"
                         userlabelForReadonly="true"
@@ -12925,7 +13386,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.LogWork"
+                  class="com.sg.business.commons.operation.action.LogWork"
                   icon="image/log_g_24.png"
                   id="logwork"
                   label="%logwork"
@@ -12933,7 +13394,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.FinishWork"
+                  class="com.sg.business.commons.operation.action.FinishWork"
                   icon="image/complete_g_24.png"
                   id="finishwork"
                   label="%command.label.3"
@@ -12941,7 +13402,7 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.work.home.action.AssignWork"
+                  class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
@@ -12954,7 +13415,6 @@
    <extension
          point="com.sg.widgets.dataEditor">
       <editor
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.applyexpense"
@@ -12986,23 +13446,38 @@
                            persistable="true"
                            required="true"
                            type="String"
+                           userlabelForReadonly="true"
                            widthHint="240">
                      </text>
-                     <navigatorSelector
-                           defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
-                           editable="false"
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
                            id="chargerid"
                            label="申请人"
                            labelVisible="true"
-                           labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                           modelClass="com.sg.business.model.User"
                            name="chargerid"
-                           navigatorId="organization.user.assignment"
-                           navigatorReturnField="userid"
                            persistable="true"
-                           required="true">
-                     </navigatorSelector>
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="expensesn"
+                           label="报销周期"
+                           labelVisible="true"
+                           name="expensesn"
+                           persistable="true"
+                           required="true"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
                   </fieldgroup>
+               </section>
+               <section
+                     label="费用项">
                   <table
                         ctableId="sales.cost.work.ineditor"
                         editable="false"
@@ -13018,7 +13493,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.StartWork"
+                  class="com.sg.business.commons.operation.action.StartWork"
                   icon="image/start_g_24.png"
                   id="startwork"
                   label="提交"
@@ -13028,7 +13503,6 @@
          </basicpage>
       </editor>
       <editor
-            closeable="true"
             collectionName="work"
             dbName="pm2"
             id="work.plan.sales.applyexpense.inprogress"
@@ -13049,7 +13523,7 @@
                <section
                      label="%section.label.13">
                   <fieldgroup
-                        columnCount="2">
+                        columnCount="3">
                      <text
                            editPart="Text(Single Line)"
                            editable="true"
@@ -13060,23 +13534,38 @@
                            persistable="true"
                            required="true"
                            type="String"
+                           userlabelForReadonly="true"
                            widthHint="240">
                      </text>
-                     <navigatorSelector
-                           defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
-                           editable="false"
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="true"
                            id="chargerid"
                            label="申请人"
                            labelVisible="true"
-                           labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
-                           modelClass="com.sg.business.model.User"
                            name="chargerid"
-                           navigatorId="organization.user.assignment"
-                           navigatorReturnField="userid"
                            persistable="true"
-                           required="true">
-                     </navigatorSelector>
+                           presentation="com.sg.business.commons.field.presentation.UserIdFieldPres"
+                           required="false"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
+                     <text
+                           editPart="Text(Single Line)"
+                           editable="false"
+                           id="expensesn"
+                           label="报销周期"
+                           labelVisible="true"
+                           name="expensesn"
+                           persistable="true"
+                           required="true"
+                           type="String"
+                           userlabelForReadonly="true">
+                     </text>
                   </fieldgroup>
+               </section>
+               <section
+                     label="费用项">
                   <table
                         ctableId="sales.cost.work.ineditor"
                         editable="false"
@@ -13108,7 +13597,7 @@
                </section>
             </pagecolumn>
             <pageAction
-                  class="com.sg.business.work.home.action.CompleteTask"
+                  class="com.sg.business.commons.operation.action.CompleteTask"
                   icon="image/complete_g_24.png"
                   id="finishflowtask"
                   label="%menu.label.0"
@@ -13304,23 +13793,23 @@
    <extension
          point="com.sg.bpm.service.actorRule">
       <actorRule
-            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentChecker"
+            actorIdProvider="com.sg.sales.bpm.role.ActorOfPaymentChecker"
             id="payment_checker"
             name="费用单据检查"
             runtimeSolve="true">
       </actorRule>
       <actorRule
-            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentAuditor"
+            actorIdProvider="com.sg.sales.bpm.role.ActorOfPaymentAuditor"
             id="payment_auditor"
             name="费用部门审核">
       </actorRule>
       <actorRule
-            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentApprover"
+            actorIdProvider="com.sg.sales.bpm.role.ActorOfPaymentApprover"
             id="payment_approver"
             name="费用支付批准">
       </actorRule>
       <actorRule
-            actorIdProvider="com.sg.sales.bpm.ActorOfPaymentFinancial"
+            actorIdProvider="com.sg.sales.bpm.role.ActorOfPaymentFinancial"
             id="payment_financial"
             name="费用财务记账">
       </actorRule>
@@ -13399,7 +13888,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -13442,7 +13931,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -13485,7 +13974,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
                title="流程记录">
          </basicpage>
       </editor>
@@ -13496,44 +13985,263 @@
             interface="expense.service.action"
             name="费用申请状态服务"
             operation="summit"
-            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+            serviceProvider="com.sg.sales.bpm.service.ExpenseStatusService">
       </service>
       <service
             interface="expense.service.action"
             name="费用申请状态服务"
             operation="checked"
-            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+            serviceProvider="com.sg.sales.bpm.service.ExpenseStatusService">
       </service>
       <service
             interface="expense.service.action"
             name="费用申请状态服务"
             operation="audited"
-            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+            serviceProvider="com.sg.sales.bpm.service.ExpenseStatusService">
       </service>
       <service
             interface="expense.service.action"
             name="费用申请状态服务"
             operation="editing"
-            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+            serviceProvider="com.sg.sales.bpm.service.ExpenseStatusService">
       </service>
       <service
             interface="expense.service.action"
             name="费用申请状态服务"
             operation="approved"
-            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+            serviceProvider="com.sg.sales.bpm.service.ExpenseStatusService">
       </service>
       <service
             interface="expense.service.action"
             name="费用申请状态服务"
             operation="rejected"
-            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+            serviceProvider="com.sg.sales.bpm.service.ExpenseStatusService">
       </service>
       <service
             interface="expense.service.action"
             name="费用申请状态服务"
             operation="closed"
-            serviceProvider="com.sg.sales.bpm.ExpenseStatusService">
+            serviceProvider="com.sg.sales.bpm.service.ExpenseStatusService">
       </service>
    </extension>
-
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="com.sg.sales.approve"
+            name="批准">
+         <basicpage
+               id="com.sg.sales.basicpage2"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="com.sg.sales.approve"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="pm.pmApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmchangeprocess.approve"
+            name="审批">
+         <basicpage
+               id="com.sg.sales.basicpage1"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请指定编制人和填写结论">
+                  <navigatorSelector
+                        editable="true"
+                        id="compile"
+                        label="编制人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="compile"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmchangeprocess.compile"
+            name="编制">
+         <basicpage
+               id="com.sg.sales.basicpage2"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="320"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="pm.pmchangeprocess.dept_leader"
+            name="批准">
+         <basicpage
+               id="com.sg.sales.basicpage3"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写结论">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="320"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="pm.pmchangeprocess.approve"
+            name="审批"
+            persistentFields="choice,compile,comment"
+            processDefinitionId="pm.changeProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="compile"
+               taskFormFieldName="compile">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="pm.pmchangeprocess.compile"
+            name="编制"
+            persistentFields="choice,comment"
+            processDefinitionId="pm.changeProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="pm.pmchangeprocess.dept_leader"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="pm.changeProcess1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
 </plugin>

@@ -80,6 +80,11 @@ public class WorkDefinition extends AbstractWork implements
 	 */
 	public static final String F_INTERNAL_ID = "internalid";
 
+	/**
+	 * 是否禁止手工发起
+	 */
+	public static final String F_LAUNCHABLE = "launchforbidden";
+
 	
 
 	/**

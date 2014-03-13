@@ -132,7 +132,7 @@
                         textMessage="&lt;自动编号&gt;"
                         type="String">
                      <extendValueDefinition
-                           type="com.sg.business.commons.numbering.DocumentTemplateNumber">
+                           type="com.sg.business.commons.field.numbering.DocumentTemplateNumber">
                      </extendValueDefinition>
                   </text>
                   <text
@@ -568,7 +568,7 @@
                      editable="false"
                      heightHint="280"
                      id="_history"
-                     isComputeField="true"
+                     isComputeField="false"
                      label="%table.label.1"
                      labelVisible="false"
                      name="_history"

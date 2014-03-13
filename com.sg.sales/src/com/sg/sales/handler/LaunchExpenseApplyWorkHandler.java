@@ -17,7 +17,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.sg.business.commons.handler.LifeCycleActionStart;
+import com.sg.business.commons.operation.handler.LifeCycleActionStart;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.User;
@@ -82,6 +82,7 @@ public class LaunchExpenseApplyWorkHandler extends AbstractNavigatorHandler {
 		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
+		vc.doReloadData(true);
 	}
 
 	private WorkDefinition getWorkDefinifion(CurrentAccountContext context) {

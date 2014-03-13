@@ -12,7 +12,6 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -32,6 +31,7 @@ import com.mongodb.DBObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
 import com.sg.bpm.workflow.utils.ProcessSelectorDialog;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
 import com.sg.business.model.WorkDefinition;
@@ -115,7 +115,8 @@ public class ProcessSettingPanel extends Composite {
 		fd.left = new FormAttachment(text, MARGIN);
 
 		processLabel = new Label(this, SWT.NONE);
-		processLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(processLabel);
+
 		fd = new FormData();
 		processLabel.setLayoutData(fd);
 		// fd.left = new FormAttachment(activeButton, MARGIN);

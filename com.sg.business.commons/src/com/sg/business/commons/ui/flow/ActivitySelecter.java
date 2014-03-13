@@ -1,13 +1,9 @@
 package com.sg.business.commons.ui.flow;
 
-import org.drools.definition.process.Node;
 import org.eclipse.core.runtime.ListenerList;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -15,14 +11,9 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.Section;
-import org.jbpm.workflow.core.node.HumanTaskNode;
 
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.bpm.workflow.model.NodeAssignment;
-import com.sg.business.commons.flow.model.DroolsProcessDiagram;
-import com.sg.business.commons.flow.model.NodeActivity;
-import com.sg.business.commons.flow.part.ActivityPartFactory;
-import com.sg.business.commons.flow.part.SimpleActivityPart;
 import com.sg.widgets.part.SimpleSection;
 
 /**
@@ -46,7 +37,7 @@ public class ActivitySelecter extends Composite {
 
 	private ListenerList listeners = new ListenerList();
 
-	private ScrollingGraphicalViewer processViewer;
+//	private ScrollingGraphicalViewer processViewer;
 
 	private SimpleSection section1;
 
@@ -136,51 +127,51 @@ public class ActivitySelecter extends Composite {
 		}
 	}
 
-	/**
-	 * 创建流程图
-	 * 
-	 * @param parent
-	 * @return Control
-	 */
-	protected Control createProcessCanvasTab(Composite parent) {
-		// 创建流程图画板
-		
-		processViewer = new ScrollingGraphicalViewer();
-		processViewer.setRootEditPart(new ScalableRootEditPart());
-		processViewer.setEditPartFactory(new ActivityPartFactory());
-		processViewer.createControl(parent);
-
-		
-		processViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				StructuredSelection is = (StructuredSelection) event
-						.getSelection();
-				if (is == null || is.isEmpty()) {
-					return;
-				}
-				Object element = is.getFirstElement();
-
-				if (element instanceof SimpleActivityPart) {
-					Object model = ((SimpleActivityPart) element).getModel();
-					if(model instanceof NodeActivity){
-						Node node = ((NodeActivity) model).getNode();
-						if (node instanceof HumanTaskNode) {
-							NodeAssignment na = new NodeAssignment(
-									(HumanTaskNode) node);
-							fireNodeSelectionChange(na);
-							return;
-						}
-					}
-				}
-				
-				fireNodeSelectionChange(null);
-
-			}
-		});
-		return processViewer.getControl();
-	}
+//	/**
+//	 * 创建流程图
+//	 * 
+//	 * @param parent
+//	 * @return Control
+//	 */
+//	protected Control createProcessCanvasTab(Composite parent) {
+//		// 创建流程图画板
+//		
+//		processViewer = new ScrollingGraphicalViewer();
+//		processViewer.setRootEditPart(new ScalableRootEditPart());
+//		processViewer.setEditPartFactory(new ActivityPartFactory());
+//		processViewer.createControl(parent);
+//
+//		
+//		processViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+//			
+//			@Override
+//			public void selectionChanged(SelectionChangedEvent event) {
+//				StructuredSelection is = (StructuredSelection) event
+//						.getSelection();
+//				if (is == null || is.isEmpty()) {
+//					return;
+//				}
+//				Object element = is.getFirstElement();
+//
+//				if (element instanceof SimpleActivityPart) {
+//					Object model = ((SimpleActivityPart) element).getModel();
+//					if(model instanceof NodeActivity){
+//						Node node = ((NodeActivity) model).getNode();
+//						if (node instanceof HumanTaskNode) {
+//							NodeAssignment na = new NodeAssignment(
+//									(HumanTaskNode) node);
+//							fireNodeSelectionChange(na);
+//							return;
+//						}
+//					}
+//				}
+//				
+//				fireNodeSelectionChange(null);
+//
+//			}
+//		});
+//		return processViewer.getControl();
+//	}
 
 	/**
 	 * 设置流程图和活动表的数据源
@@ -188,11 +179,11 @@ public class ActivitySelecter extends Composite {
 	 * @param processDefinition
 	 */
 	public void setInput(DroolsProcessDefinition processDefinition) {
-		DroolsProcessDiagram diagram = new DroolsProcessDiagram(processDefinition,
-				null);
-		if(processViewer!=null){
-			processViewer.setContents(diagram);
-		}
+//		DroolsProcessDiagram diagram = new DroolsProcessDiagram(processDefinition,
+//				null);
+//		if(processViewer!=null){
+//			processViewer.setContents(diagram);
+//		}
 		processTable.setDataInput(processDefinition);
 		layout();
 	}

@@ -9,6 +9,8 @@ public interface ISalesWork extends ICompanyRelative{
 	public static final String WORK_CATAGORY_SALES = "sales.work";
 
 	public static final String WORK_CATAGORY_SALES_APPLYEXPENSE = "sales.work.applyexpense";
+
+	public static final String F_EXPENSE_SN = "expensesn";
 	
 
 }

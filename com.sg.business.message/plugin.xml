@@ -382,7 +382,7 @@
                         id="reciever"
                         label="%list.label"
                         labelVisible="false"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProviderInField"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
                         name="reciever"
                         persistable="true"
                         required="true">
@@ -685,7 +685,7 @@
                description="%basicpage.description.3"
                id="basicpage3"
                image="image/message_24.png"
-               pageDelegator="com.sg.business.commons.page.ReferenceListPage"
+               pageDelegator="com.sg.business.commons.ui.page.ReferenceListPage"
                title="%basicpage.title.5">
          </basicpage>
       </editor>
@@ -832,7 +832,7 @@
                description="%basicpage.description.6"
                id="basicpage3"
                image="image/message_24.png"
-               pageDelegator="com.sg.business.commons.page.ReferenceListPage"
+               pageDelegator="com.sg.business.commons.ui.page.ReferenceListPage"
                title="%basicpage.title.8">
          </basicpage>
       </editor>

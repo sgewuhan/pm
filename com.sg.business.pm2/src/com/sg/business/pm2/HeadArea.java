@@ -36,6 +36,7 @@ import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.design.ext.IHeadAreaSupport;
 import com.mobnut.portal.user.UserSessionContext;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.BusinessResource;
@@ -62,7 +63,7 @@ public class HeadArea implements IHeadAreaSupport {
 	public HeadArea() {
 
 	}
-
+	
 	@Override
 	public Composite creatHeadAreaPart(Composite parent) {
 		content = parent;
@@ -88,7 +89,7 @@ public class HeadArea implements IHeadAreaSupport {
 		headPicContainer.setLayout(new FormLayout());
 
 		headerPic = new CLabel(headPicContainer, SWT.NONE);
-		headerPic.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(headerPic);
 		//		headerPic.setData(RWT.CUSTOM_VARIANT, "headpic"); //$NON-NLS-1$
 		resetImageURL();
 
@@ -167,7 +168,7 @@ public class HeadArea implements IHeadAreaSupport {
 			}
 		}
 	}
-
+	
 	private Button createSearch(Composite parent) {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setData(RWT.CUSTOM_VARIANT, "metro_green_active");
@@ -486,7 +487,7 @@ public class HeadArea implements IHeadAreaSupport {
 	@Override
 	public void creatLeftPart(Composite parent) {
 		Label label = new Label(parent, SWT.NONE);
-		label.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(label);
 		StringBuffer sb = new StringBuffer();
 		sb.append("<img src='" + FileUtil.getImageURL("logo_w.png", BusinessResource.PLUGIN_ID) + "' style='float:left; left:0; top:0; display:block;' width='140' height='30' />"); //$NON-NLS-1$ //$NON-NLS-2$
 		label.setText(sb.toString());
@@ -510,10 +511,13 @@ public class HeadArea implements IHeadAreaSupport {
 		text.setLayoutData(fd);
 		text.setData(RWT.CUSTOM_VARIANT, "welcomemessage"); //$NON-NLS-1$
 		text.setText("绩效导向\n项目管理平台");
+//		text.setText("业务管理\n云平台");
 		fd.left = new FormAttachment(sep, 4);
 		fd.top = new FormAttachment(50, -20);
 		fd.height = 40;
 		fd.right = new FormAttachment(100, -20);
 	}
+	
+	
 
 }

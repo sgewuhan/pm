@@ -6,7 +6,6 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,6 +21,7 @@ import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.IProcessControl;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Work;
@@ -100,7 +100,7 @@ public class ConfirmPage extends WizardPage {
 				| Section.SHORT_TITLE_BAR );
 		section.setText(Messages.get().ConfirmPage_4);
 		processSummary = new Label(section, SWT.WRAP);
-		processSummary.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		UIFrameworkUtils.enableMarkup(processSummary);
 		section.setClient(processSummary);
 		return section;
 	}

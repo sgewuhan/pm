@@ -816,7 +816,7 @@
                         id="userid"
                         label="%navigatorSelector.label.0"
                         labelVisible="true"
-                        labelprovider="com.sg.business.commons.labelprovider.UserIdLabelProvider"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="userid"
                         navigatorId="works.append.userselector"

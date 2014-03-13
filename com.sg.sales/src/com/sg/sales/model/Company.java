@@ -2,10 +2,14 @@ package com.sg.sales.model;
 
 import com.mobnut.db.model.IContext;
 import com.sg.sales.ISalesRole;
+import com.sg.sales.model.input.CompanyEditorInputFactory;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 
 public class Company extends TeamControl implements IDataStatusControl, ISalesTeam {
 
 	public static final String F_STATUS = "status";
+	public static final String F_LEVEL = "level";
+	public static final String F_SERVICELEVEL = "levelservice";
 
 	@Override
 	public String getStatusText() {
@@ -108,6 +112,32 @@ public class Company extends TeamControl implements IDataStatusControl, ISalesTe
 	@Override
 	protected String[] getDuplicateTeamFields() {
 		return VISIABLE_FIELDS;
+	}
+	
+	@Override
+	protected String[] getRoleDesignatedUserFieldName() {
+		return DESIGNATED_FIELDS_BY_ROLE;
+	}
+	
+	@Override
+	protected String getRoleNumberDesignatedUserField(String field) {
+		if(F_SALES_SUP.equals(field)){
+			return ISalesRole.SALES_SUPERVISOR_NUMBER;
+		}
+		return null;
+	}
+
+	public String getLevel() {
+		return getStringValue(F_LEVEL);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == IEditorInputFactory.class) {
+			return (T) (new CompanyEditorInputFactory(this));
+		}
+		return super.getAdapter(adapter);
 	}
 
 }

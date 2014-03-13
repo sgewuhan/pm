@@ -4,20 +4,29 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="gsDecumentApprove.audit"
-            name="审核"
-            persistentFields="choice,accessory,comment"
-            processDefinitionId="gs.gsDecumentApprove">
+            name="校核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDocumentApprove1">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsDecumentApprove.approve"
+            editorId="gsDocumentApprove1.auditor"
+            name="审核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDocumentApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsDocumentApprove1.approver"
             name="批准"
-            persistentFields="choice,accessory,comment"
-            processDefinitionId="gs.gsDecumentApprove">
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDocumentApprove1">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -29,26 +38,181 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsDecumentApprove.audit"
-            name="审核">
+            id="gsDocumentApprove1.check"
+            name="校核">
          <basicpage
-               id="page1"
-               title="审核">
+               id="com.tmt.gs.basicpage1"
+               title="校核">
             <pagecolumn>
                <section
-                     label="请填写审批意见">
+                     label="请填写校核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="校核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
                   <text
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
+                        label="说明"
                         labelVisible="true"
                         name="comment"
                         persistable="true"
                         required="false"
                         type="String">
                   </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsDocumentApprove1.auditor"
+            name="审核">
+         <basicpage
+               id="com.tmt.gs.basicpage2"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请填写审核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsDocumentApprove1.approver"
+            name="批准">
+         <basicpage
+               id="com.tmt.gs.basicpage3"
+               title="批准">
+            <pagecolumn>
+               <section
+                     label="请填写批准结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="批准结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="cmment"
+                        label="说明"
+                        labelVisible="true"
+                        name="cmment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="gsDocumentApprove1.check"
+            name="校核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDrawingApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsDocumentApprove1.auditor"
+            name="审核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDrawingApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsDrawingApprove1.craft"
+            name="工艺"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDrawingApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsDrawingApprove1.standard"
+            name="标准化"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDrawingApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsDocumentApprove1.approver"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsDrawingApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsDrawingApprove1.craft"
+            name="工艺">
+         <basicpage
+               id="com.tmt.gs.basicpage4"
+               title="工艺">
+            <pagecolumn>
+               <section
+                     label="请填写工艺结论和说明">
                   <radio
                         editable="true"
                         id="choice"
@@ -57,33 +221,20 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="true"
+                        required="false"
                         type="String">
                   </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.editor.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-         <basicpage
-               id="page3"
-               title="附件">
-            <pagecolumn>
-               <section
-                     label="请上传附件">
-                  <file
-                        editPart="OfficeFileUploader"
+                  <text
+                        editPart="Text(Multi Line)"
                         editable="true"
-                        id="accessory"
-                        label="附件"
-                        labelVisible="false"
-                        name="accessory"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
                         persistable="true"
-                        required="false">
-                  </file>
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -91,20 +242,21 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsDecumentApprove.approve"
-            name="批准">
+            id="gsDrawingApprove1.standard"
+            name="标准化">
          <basicpage
-               id="page1"
-               title="审核">
+               id="com.tmt.gs.basicpage5"
+               title="标准化">
             <pagecolumn>
                <section
-                     label="请填写批准意见">
+                     label="请填写标准化结论和说明">
                   <radio
                         editable="true"
                         id="choice"
-                        label="结论"
+                        label="标准化结论"
                         labelVisible="true"
                         name="choice"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
@@ -113,38 +265,301 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
+                        label="说明"
+                        labelVisible="true"
                         name="comment"
                         persistable="true"
                         required="false"
-                        type="String"
-                        widthHint="320">
+                        type="String">
                   </text>
                </section>
             </pagecolumn>
          </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="gsMoldAcceptApprove.craft"
+            name="工艺审核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsMoldAcceptApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsMoldAcceptApprove.mold"
+            name="模具审核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsMoldAcceptApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsMoldAcceptApprove.production"
+            name="生产审核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsMoldAcceptApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsMoldAcceptApprove.design"
+            name="设计审核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsMoldAcceptApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsMoldAcceptApprove.qc"
+            name="质量审核"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsMoldAcceptApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsMoldAcceptApprove.approve"
+            name="批准"
+            persistentFields="choice,comment"
+            processDefinitionId="gs.gsMoldAcceptApprove">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsMoldAcceptApprove.craft"
+            name="工艺审核">
          <basicpage
-               id="page2"
-               title="流程记录">
-         </basicpage>
-         <basicpage
-               id="page3"
-               title="附件">
+               id="com.tmt.gs.basicpage6"
+               title="工艺审核">
             <pagecolumn>
                <section
-                     label="请上传附件">
-                  <file
-                        editPart="OfficeFileUploader"
+                     label="请填写工艺审核结论和说明">
+                  <radio
                         editable="true"
-                        id="accessory"
-                        label="附件"
+                        id="choice"
+                        label="工艺审核结论"
                         labelVisible="true"
-                        name="accessory"
+                        name="choice"
+                        option="是否通过"
                         persistable="true"
-                        required="false">
-                  </file>
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsMoldAcceptApprove.mold"
+            name="模具审核">
+         <basicpage
+               id="com.tmt.gs.basicpage7"
+               title="模具审核">
+            <pagecolumn>
+               <section
+                     label="请填写模具审核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="模具审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsMoldAcceptApprove.production"
+            name="生产审核">
+         <basicpage
+               id="com.tmt.gs.basicpage8"
+               title="生产审核">
+            <pagecolumn>
+               <section
+                     label="请填写生产审核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="生产审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsMoldAcceptApprove.design"
+            name="设计审核">
+         <basicpage
+               id="com.tmt.gs.basicpage9"
+               title="设计审核">
+            <pagecolumn>
+               <section
+                     label="请填写设计审核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="设计审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsMoldAcceptApprove.qc"
+            name="质量审核">
+         <basicpage
+               id="com.tmt.gs.basicpage10"
+               title="质量审核">
+            <pagecolumn>
+               <section
+                     label="请填写质量审核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="质量审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsMoldAcceptApprove.approve"
+            name="批准">
+         <basicpage
+               id="com.tmt.gs.basicpage11"
+               title="批准">
+            <pagecolumn>
+               <section
+                     label="请填写批准结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="批准结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                </section>
             </pagecolumn>
          </basicpage>

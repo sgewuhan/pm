@@ -17,11 +17,11 @@ import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.sg.business.commons.ui.chart.ProjectChartFactory;
 import com.sg.business.model.Organization;
 import com.sg.business.model.OrganizationProjectProvider;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.resource.nls.Messages;
-import com.sg.business.visualization.chart.ProjectChartFactory;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.part.NavigatablePartAdapter;

@@ -10,10 +10,10 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
@@ -22,6 +22,7 @@ import com.mobnut.db.model.IPresentableObject;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DBObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.MessageUtil;
@@ -42,12 +43,12 @@ public class LastOpened extends ViewPart implements INavigatablePart {
 	@Override
 	public void createPartControl(Composite parent) {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
-		viewer.getTable().setLinesVisible(true);
-		viewer.getTable().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-//		final SimpleDateFormat sdf = new SimpleDateFormat(
-//				Utils.SDF_DATE_COMPACT_SASH);
+		Table table = viewer.getTable();
+		table.setLinesVisible(true);
+		UIFrameworkUtils.enableMarkup(table);
+
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
-		new ColumnAutoResizer(viewer.getTable(), column.getColumn());
+		new ColumnAutoResizer(table, column.getColumn());
 		column.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {

@@ -14,7 +14,7 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 
 import com.mobnut.commons.util.Utils;
-import com.sg.business.commons.page.ProjectBudgetTreeContentProvider;
+import com.sg.business.commons.ui.viewer.ProjectBudgetTreeContentProvider;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.widgets.part.CurrentAccountContext;

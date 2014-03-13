@@ -334,7 +334,7 @@
             multiSelection="true">
          <column
                column="desc"
-               labelProvider="com.sg.business.commons.labelprovider.RoleDefinitionLabelProvider2"
+               labelProvider="com.sg.business.commons.column.labelprovider.RoleDefinitionLabelProvider2"
                name="%column.name"
                width="-1">
          </column>
@@ -346,14 +346,14 @@
             popupMenuProvider="com.sg.widgets.viewer.EditableControledMenuProvider">
          <column
                column="end1label"
-               labelProvider="com.sg.business.commons.labelprovider.End1WorkDefLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.End1WorkDefLabelProvider"
                name="%column.name.0"
                type="String"
                width="120">
          </column>
          <column
                column="end2label"
-               labelProvider="com.sg.business.commons.labelprovider.End2WorkDefLabelProvider"
+               labelProvider="com.sg.business.commons.column.labelprovider.End2WorkDefLabelProvider"
                name="%column.name.1"
                type="String"
                width="120">
@@ -416,7 +416,7 @@
          </column>
          <column
                column="wf_execute"
-               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+               labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
                name="%column.name.7"
                width="100">
          </column>
@@ -483,7 +483,7 @@
          </column>
          <column
                column="wf_execute"
-               labelProvider="com.sg.business.commons.labelprovider.WorkflowDefLabelPro"
+               labelProvider="com.sg.business.commons.column.labelprovider.WorkflowDefLabelPro"
                name="%column.name.10"
                width="100">
          </column>
@@ -699,7 +699,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_commit"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateCommitProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectTemplateCommitProcessDefPage"
                title="%basicpage.title.2">
          </basicpage>
          <basicpage
@@ -707,7 +707,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectTemplateChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectTemplateChangeProcessDefPage"
                title="%basicpage.title.3">
          </basicpage>
          <versionControl>
@@ -932,14 +932,14 @@
                description="%basicpage.description.6"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectWorkdExecuteProcessDefPage"
                title="%basicpage.title.6">
          </basicpage>
          <basicpage
                description="%basicpage.description.7"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.ProjectWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.ProjectWorkdChangeProcessDefPage"
                title="%basicpage.title.7">
          </basicpage>
       </editor>
@@ -1301,14 +1301,14 @@
                description="%basicpage.description.12"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdExecuteProcessDefPage"
                title="%basicpage.title.13">
          </basicpage>
          <basicpage
                description="%basicpage.description.13"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdChangeProcessDefPage"
                title="%basicpage.title.14">
          </basicpage>
          <versionControl>
@@ -1363,14 +1363,14 @@
                description="%basicpage.description.15"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdExecuteProcessDefPage"
                title="%basicpage.title.16">
          </basicpage>
          <basicpage
                description="%basicpage.description.16"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.GenericWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.GenericWorkdChangeProcessDefPage"
                title="%basicpage.title.17">
          </basicpage>
          <versionControl>
@@ -1497,6 +1497,15 @@
                            persistable="true"
                            required="false">
                      </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="launchforbidden"
+                           label="禁止手工发起"
+                           labelVisible="true"
+                           name="launchforbidden"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
                   </fieldgroup>
                </section>
             </pagecolumn>
@@ -1506,7 +1515,7 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdExecuteProcessDefPage"
                title="%basicpage.title.19">
          </basicpage>
          <!--取消独立工作定义的变更流程，这个功能没有实际的用途
@@ -1514,7 +1523,7 @@
                description="独立工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage>
          -->
@@ -1642,6 +1651,15 @@
                            persistable="true"
                            required="false">
                      </checkbox>
+                     <checkbox
+                           editable="true"
+                           id="launchforbidden"
+                           label="禁止手工发起"
+                           labelVisible="true"
+                           name="launchforbidden"
+                           persistable="true"
+                           required="false">
+                     </checkbox>
                   </fieldgroup>
                </section>
             </pagecolumn>
@@ -1670,14 +1688,14 @@
                editorActionDelegator="com.sg.widgets.part.NavigatorActionReloadResponse"
                id="processpage_execute"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdExecuteProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdExecuteProcessDefPage"
                title="%basicpage.title.21">
          </basicpage>
          <!--basicpage
                description="独立工作的变更流程"
                id="processpage_change"
                image="image/flow_24.png"
-               pageDelegator="com.sg.business.commons.page.flow.StandloneWorkdChangeProcessDefPage"
+               pageDelegator="com.sg.business.commons.ui.page.flow.StandloneWorkdChangeProcessDefPage"
                title="变更流程">
          </basicpage-->
          <versionControl>

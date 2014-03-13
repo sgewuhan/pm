@@ -1,11 +1,18 @@
 package com.sg.sales.model;
 
 import com.mobnut.db.model.IContext;
+import com.sg.sales.ISalesRole;
+import com.sg.sales.model.input.OpportunityEditorInputFactory;
+import com.sg.sales.ui.labelprovider.OpportunityCommonHTMLLable;
+import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.commons.model.IEditorInputFactory;
 
 public class Opportunity extends CompanyRelativeTeamControl implements
 		IDataStatusControl {
 
 	public static final String F_STATUS = "status";
+	public static final String F_BUDGET = "budget";
+	public static final String F_PROGRESS = "progress";
 
 	@Override
 	public String getStatusText() {
@@ -92,4 +99,36 @@ public class Opportunity extends CompanyRelativeTeamControl implements
 			throw new Exception(MESSAGE_CANNOT_APPLY);
 		}
 	}
+
+	@Override
+	protected String[] getRoleDesignatedUserFieldName() {
+		return DESIGNATED_FIELDS_BY_ROLE;
+	}
+
+	@Override
+	protected String getRoleNumberDesignatedUserField(String field) {
+		if (F_SALES_SUP.equals(field)) {
+			return ISalesRole.SALES_SUPERVISOR_NUMBER;
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> adapter) {
+		if (adapter == CommonHTMLLabel.class) {
+			return (T) (new OpportunityCommonHTMLLable(this));
+		} else if (adapter == IEditorInputFactory.class) {
+			return (T) (new OpportunityEditorInputFactory(this));
+		}
+		return super.getAdapter(adapter);
+	}
+
+	public Double getBudget() {
+		return getDoubleValue(F_BUDGET);
+	}
+
+	public String getProgress() {
+		return getStringValue(F_PROGRESS);
+	}
+
 }
