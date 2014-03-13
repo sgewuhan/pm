@@ -1,4 +1,4 @@
-package com.sg.bussiness.message.handler;
+package com.sg.business.message.handler;
 
 import java.util.Map;
 

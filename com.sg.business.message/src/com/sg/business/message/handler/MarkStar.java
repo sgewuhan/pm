@@ -1,27 +1,27 @@
-package com.sg.bussiness.message.handler;
+package com.sg.business.message.handler;
 
 import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.commands.Command;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
 import com.sg.widgets.MessageUtil;
-import com.sg.widgets.Widgets;
 import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.viewer.CTableViewer;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class RestoreMessage extends AbstractNavigatorHandler {
+public class MarkStar extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
 			ViewerControl vc, Command command,
 			Map<String, Object> parameters, IStructuredSelection selection) {
+
 		IStructuredSelection ssel = (IStructuredSelection) vc.getViewer()
 				.getSelection();
 		Iterator<?> iter = ssel.iterator();
@@ -30,23 +30,16 @@ public class RestoreMessage extends AbstractNavigatorHandler {
 			if (sel instanceof Message) {
 				Message message = (Message) sel;
 				try {
-					message.doRestore(new CurrentAccountContext(),
-							Boolean.FALSE);
-					CTableViewer viewer = (CTableViewer) vc.getViewer();
-					viewer.remove(message);
+					message.doMarkStar(new CurrentAccountContext(),
+							Boolean.TRUE);
+					vc.getViewer().update(message, null);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 				}
 			}
 		}
+		vc.getViewer().setSelection(new StructuredSelection(new Object[] {}));
 
-		// 刷新收件箱
-		String viewId = "message.recieved"; //$NON-NLS-1$
-		Widgets.refreshNavigatorView(viewId);
-
-		// 刷新发件箱
-		viewId = "message.send"; //$NON-NLS-1$
-		Widgets.refreshNavigatorView(viewId);
 	}
 
 }
