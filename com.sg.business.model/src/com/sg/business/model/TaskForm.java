@@ -89,7 +89,14 @@ public class TaskForm extends PrimaryObject {
 		Assert.isNotNull(work, Messages.get().TaskForm_7);
 		work.doAddParticipateList(useridlist);
 	}
-
+	
+	/**
+	 * 获取流程中变量的值
+	 * @param varible 流程变量名
+	 * @param context
+	 * @return
+	 * @throws Exception
+	 */
 	public Object getProcessInstanceVarible(String varible, IContext context) throws Exception {
 		Task executeTask = getExecuteTask(context);
 		Assert.isNotNull(executeTask, Messages.get().TaskForm_8);

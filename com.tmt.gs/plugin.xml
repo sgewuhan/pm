@@ -4,8 +4,9 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            editorId="gsdocumentapprove1.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDocumentApprove1">
          <processParameter
                processParameterName="choice"
@@ -13,9 +14,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsDocumentApprove1.auditor"
+            editorId="gsdocumentapprove1.auditor"
             name="审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDocumentApprove1">
          <processParameter
                processParameterName="choice"
@@ -23,9 +24,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsDocumentApprove1.approver"
+            editorId="gsdocumentapprove1.craft"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDocumentApprove1">
          <processParameter
                processParameterName="choice"
@@ -38,7 +39,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsDocumentApprove1.check"
+            id="gsdocumentapprove1.check"
             name="校核">
          <basicpage
                id="com.tmt.gs.basicpage1"
@@ -71,11 +72,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage7"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage8"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsDocumentApprove1.auditor"
+            id="gsdocumentapprove1.auditor"
             name="审核">
          <basicpage
                id="com.tmt.gs.basicpage2"
@@ -108,11 +133,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage9"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage10"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="FileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsDocumentApprove1.approver"
+            id="gsdocumentapprove1.approver"
             name="批准">
          <basicpage
                id="com.tmt.gs.basicpage3"
@@ -145,14 +194,38 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage11"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage12"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="gsDocumentApprove1.check"
+            editorId="gsdocumentapprove1.check"
             name="校核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -160,9 +233,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsDocumentApprove1.auditor"
+            editorId="gsdocumentapprove1.auditor"
             name="审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -170,9 +243,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsDrawingApprove1.craft"
+            editorId="gsdocumentapprove1.craft"
             name="工艺"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -180,9 +253,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsDrawingApprove1.standard"
+            editorId="gsdocumentapprove1.standard"
             name="标准化"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -190,9 +263,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsDocumentApprove1.approver"
+            editorId="gsdocumentapprove1.approver"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsDrawingApprove1">
          <processParameter
                processParameterName="choice"
@@ -205,7 +278,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsDrawingApprove1.craft"
+            id="gsdocumentapprove1.craft"
             name="工艺">
          <basicpage
                id="com.tmt.gs.basicpage4"
@@ -238,11 +311,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage13"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage14"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsDrawingApprove1.standard"
+            id="gsdocumentapprove1.standard"
             name="标准化">
          <basicpage
                id="com.tmt.gs.basicpage5"
@@ -275,14 +372,38 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage15"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
-            editorId="gsMoldAcceptApprove.craft"
+            editorId="gsmoldacceptapprove.craft"
             name="工艺审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsMoldAcceptApprove">
          <processParameter
                processParameterName="choice"
@@ -290,9 +411,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsMoldAcceptApprove.mold"
+            editorId="gsmoldacceptapprove.mold"
             name="模具审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsMoldAcceptApprove">
          <processParameter
                processParameterName="choice"
@@ -300,9 +421,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsMoldAcceptApprove.production"
+            editorId="gsmoldacceptapprove.production"
             name="生产审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsMoldAcceptApprove">
          <processParameter
                processParameterName="choice"
@@ -310,9 +431,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsMoldAcceptApprove.design"
+            editorId="gsmoldacceptapprove.design"
             name="设计审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsMoldAcceptApprove">
          <processParameter
                processParameterName="choice"
@@ -320,9 +441,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsMoldAcceptApprove.qc"
+            editorId="gsmoldacceptapprove.qc"
             name="质量审核"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsMoldAcceptApprove">
          <processParameter
                processParameterName="choice"
@@ -330,9 +451,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsMoldAcceptApprove.approve"
+            editorId="gsmoldacceptapprove.approve"
             name="批准"
-            persistentFields="choice,comment"
+            persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsMoldAcceptApprove">
          <processParameter
                processParameterName="choice"
@@ -345,7 +466,7 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsMoldAcceptApprove.craft"
+            id="gsmoldacceptapprove.craft"
             name="工艺审核">
          <basicpage
                id="com.tmt.gs.basicpage6"
@@ -378,11 +499,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage17"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsMoldAcceptApprove.mold"
+            id="gsmoldacceptapprove.mold"
             name="模具审核">
          <basicpage
                id="com.tmt.gs.basicpage7"
@@ -415,11 +560,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage18"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsMoldAcceptApprove.production"
+            id="gsmoldacceptapprove.production"
             name="生产审核">
          <basicpage
                id="com.tmt.gs.basicpage8"
@@ -452,11 +621,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage19"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsMoldAcceptApprove.design"
+            id="gsmoldacceptapprove.design"
             name="设计审核">
          <basicpage
                id="com.tmt.gs.basicpage9"
@@ -489,11 +682,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage20"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsMoldAcceptApprove.qc"
+            id="gsmoldacceptapprove.qc"
             name="质量审核">
          <basicpage
                id="com.tmt.gs.basicpage10"
@@ -526,11 +743,35 @@
                </section>
             </pagecolumn>
          </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage21"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
       </editor>
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsMoldAcceptApprove.approve"
+            id="gsmoldacceptapprove.approve"
             name="批准">
          <basicpage
                id="com.tmt.gs.basicpage11"
@@ -560,6 +801,459 @@
                         required="false"
                         type="String">
                   </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage22"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            editorId="gsopenmoldapprove1.edit"
+            name="编制"
+            persistentFields="mold_use,mold_amount,mold_ask,accessory"
+            processDefinitionId="gs.gsOpenMoldApprove1">
+         <processParameter
+               processParameterName="mold_use"
+               taskFormFieldName="mold_use">
+         </processParameter>
+         <processParameter
+               processParameterName="mold_amount"
+               taskFormFieldName="mold_amount">
+         </processParameter>
+         <processParameter
+               processParameterName="mold_ask"
+               taskFormFieldName="mold_ask">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsopenmoldapprove1.market"
+            name="市场审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="gs.gsOpenMoldApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsopenmoldapprove1.production"
+            name="生产审核"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="gs.gsOpenMoldApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsopenmoldapprove1.technology"
+            name="技术负责人审核"
+            persistentFields="mold_amount,mold_ask,choice,comment,accessory"
+            processDefinitionId="gs.gsOpenMoldApprove1">
+         <processParameter
+               processParameterDelegator="com.tmt.gs.field.parameter.ApproverForAmount"
+               processParameterName="approver"
+               taskFormFieldName="mold_amount">
+         </processParameter>
+         <processParameter
+               processParameterName="mold_ask"
+               taskFormFieldName="mold_ask">
+         </processParameter>
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsopenmoldapprove1.approve"
+            name="批准"
+            persistentFields="choice,comment,accessory"
+            processDefinitionId="gs.gsOpenMoldApprove1">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsopenmoldapprove1.edit"
+            name="整改"
+            persistentFields="mold_use,mold_amount,mold_ask,accessory"
+            processDefinitionId="gs.gsOpenMoldApprove1">
+         <processParameter
+               processParameterName="mold_use"
+               taskFormFieldName="mold_use">
+         </processParameter>
+         <processParameter
+               processParameterName="mold_amount"
+               taskFormFieldName="mold_amoun">
+         </processParameter>
+         <processParameter
+               processParameterName="mold_ask"
+               taskFormFieldName="mold_ask">
+         </processParameter>
+      </taskForm>
+   </extension>
+   <extension
+         point="com.sg.widgets.dataEditor">
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsopenmoldapprove1.edit"
+            name="编制">
+         <basicpage
+               id="com.tmt.gs.basicpage1"
+               title="编制">
+            <pagecolumn>
+               <section
+                     label="请填写模具用途、金额和要求">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="mold_use"
+                        label="模具用途"
+                        labelVisible="true"
+                        name="com.tmt.gs.text1"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="mold_amount"
+                        label="模具金额"
+                        labelVisible="true"
+                        name="mold_amount"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="mold_ask"
+                        label="模具要求"
+                        labelVisible="true"
+                        name="mold_ask"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage23"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsopenmoldapprove1.market"
+            name="市场审核">
+         <basicpage
+               id="com.tmt.gs.basicpage3"
+               title="市场审核">
+            <pagecolumn>
+               <section
+                     label="请填写市场审核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="市场审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage24"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+           collectionName="taskform"
+            dbName="pm2"
+            id="gsopenmoldapprove1.production"
+            name="生产审核">
+         <basicpage
+               id="com.tmt.gs.basicpage4"
+               title="生产审核">
+            <pagecolumn>
+               <section
+                     label="请填写生产审核结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="生产审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage25"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsopenmoldapprove1.technology"
+            name="技术负责人审核">
+         <basicpage
+               id="com.tmt.gs.basicpage5"
+               title="技术负责人审核">
+            <pagecolumn>
+               <section
+                     label="请填写技术负责人审核结论、说明、修改的金额和要求">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="技术负责人审核结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="mold_amount"
+                        label="修改金额"
+                        labelVisible="true"
+                        name="mold_amount"
+                        persistable="true"
+                        required="false"
+                        type="Double">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="mold_ask"
+                        label="修改要求"
+                        labelVisible="true"
+                        name="mold_ask"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage26"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsopenmoldapprove1.approve"
+            name="批准">
+         <basicpage
+               id="com.tmt.gs.basicpage6"
+               title="批准">
+            <pagecolumn>
+               <section
+                     label="请填写批准结论和说明">
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="批准结论"
+                        labelVisible="true"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage27"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="com.tmt.gs.basicpage16"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
                </section>
             </pagecolumn>
          </basicpage>

@@ -87,4 +87,30 @@ public interface IRoleConstance {
 	public static final String ROLE_SUPPORT_APPROVE_ID = "Support Approve"; //$NON-NLS-1$
 	public static final String ROLE_SUPPORT_APPROVE_TEXT = Messages.get().IRoleConstance_25;
 	
+	/**
+	 * 事业部模具批准者
+	 */
+	public static final String ROLE_MOLD_APPROVER_DEPT_ID = "Mold Approver Dept";
+	public static final String ROLE_MOLD_APPROVER_DEPT_TEXT =Messages.get().IRoleConstance_26;
+	
+	/**
+	 * 设备模具批准者
+	 */
+	public static final String ROLE_MOLD_APPROVER_DEVICE_ID = "Mold Approver Device";
+	public static final String ROLE_MOLD_APPROVER_DEVICE_TEXT =Messages.get().IRoleConstance_27;
+	
+	/**
+	 * 总工模具批准者
+	 */
+	public static final String ROLE_MOLD_MAIN_ENGINEER_ID = "Mold Main Engineer";
+	public static final String ROLE_MOLD_MAIN_ENGINEER_TEXT =Messages.get().IRoleConstance_28;
+	
+	/**
+	 * 公司模具批准者
+	 */
+	public static final String ROLE_MOLD_GENERAL_MANAGER_ID = "Mold General Manager";
+	public static final String ROLE_MOLD_GENERAL_MANAGER_TEXT =Messages.get().IRoleConstance_29;
+	
+	
+	
 }
