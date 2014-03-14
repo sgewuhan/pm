@@ -26,8 +26,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.tmt.pdm.client.Starter;
 import com.tmt.pdm.dcpdm.nls.Messages;
 
@@ -77,9 +79,10 @@ public class PDMObjectSelector extends Dialog {
 
 		viewer = new TableViewer(composite, SWT.BORDER | SWT.FULL_SELECTION
 				| SWT.VIRTUAL|SWT.MULTI);
-		viewer.getTable().setData(RWT.CUSTOM_ITEM_HEIGHT,new Integer(40));
-		viewer.getTable().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		viewer.getTable().setLinesVisible(true);
+		Table table = viewer.getTable();
+		table.setData(RWT.CUSTOM_ITEM_HEIGHT,new Integer(40));
+		HtmlUtil.enableMarkup(table);
+		table.setLinesVisible(true);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override

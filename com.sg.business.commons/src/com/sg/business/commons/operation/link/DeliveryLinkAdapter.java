@@ -23,7 +23,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
@@ -53,9 +52,9 @@ public class DeliveryLinkAdapter implements SelectionListener {
 
 	@Override
 	public void widgetSelected(SelectionEvent event) {
-		TreeItem item = (TreeItem) event.item;
-		Tree tree = item.getParent();
-		Point l = tree.toDisplay(0, 0);
+//		TreeItem item = (TreeItem) event.item;
+//		Tree tree = item.getParent();
+//		Point l = tree.toDisplay(0, 0);
 		
 		if (event.detail == RWT.HYPERLINK) {
 			try {

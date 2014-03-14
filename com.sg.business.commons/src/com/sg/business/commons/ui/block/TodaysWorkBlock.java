@@ -15,7 +15,6 @@ import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -26,9 +25,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.commons.operation.link.WorkLinkAdapter;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorksPerformence;
 import com.sg.business.model.dataset.work.OwnerPerformenceWorkDataSet;
@@ -38,11 +39,9 @@ import com.sg.widgets.block.Block;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 import com.sg.widgets.part.editor.DataObjectDialog;
 
-@SuppressWarnings("restriction")
 public class TodaysWorkBlock extends Block {
 
 	public static final int BLOCKWIDTH = 300;
-	private static final String PERSPECTIVE = "perspective.work";
 	private ListViewer viewer;
 	private OwnerPerformenceWorkDataSet ds;
 	private static final int ITEM_HIGHT = 50;
@@ -56,7 +55,7 @@ public class TodaysWorkBlock extends Block {
 		try {
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-			workbench.showPerspective(PERSPECTIVE, window);
+			workbench.showPerspective(UIFrameworkUtils.PERSPECTIVE_WORK, window);
 		} catch (WorkbenchException e) {
 			MessageUtil.showToast(e);
 		}
@@ -74,7 +73,7 @@ public class TodaysWorkBlock extends Block {
 				viewer.setSelection(new StructuredSelection(new Object[] {}));
 			}
 		});
-		list.addSelectionListener(new WorkLinkAdapter(getHomeViewId()));
+		list.addSelectionListener(new WorkLinkAdapter());
 		viewer = new ListViewer(list);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider();
@@ -97,8 +96,7 @@ public class TodaysWorkBlock extends Block {
 			}
 		});
 
-		list.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		list.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(list);
 		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(ITEM_HIGHT));
 		FormData fd = new FormData();
 		list.setLayoutData(fd);
@@ -111,7 +109,7 @@ public class TodaysWorkBlock extends Block {
 	}
 
 	protected String getHomeViewId() {
-		return "pm2.work.detail";
+		return UIFrameworkUtils.VIEW_HOME_COMMON;
 	}
 
 	protected void select(Work work) {

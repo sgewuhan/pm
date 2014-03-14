@@ -7,27 +7,22 @@ import java.util.HashMap;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Work;
 import com.sg.sales.model.PerformenceUtil;
 import com.sg.widgets.block.tab.TabBlockPage;
-import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
-@SuppressWarnings("restriction")
 public class SalesBasicPage extends TabBlockPage implements
 		ISelectionChangedListener {
 
@@ -49,9 +44,8 @@ public class SalesBasicPage extends TabBlockPage implements
 		parent.setLayout(new FormLayout());
 
 		textContent1 = new Label(parent, SWT.NONE);
-		textContent1.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		textContent1.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		HtmlUtil.enableMarkup(textContent1);
+
 		FormData fd = new FormData();
 		textContent1.setLayoutData(fd);
 		fd.top = new FormAttachment();
@@ -60,9 +54,8 @@ public class SalesBasicPage extends TabBlockPage implements
 		fd.bottom = new FormAttachment(100);
 
 		textContent2 = new Label(parent, SWT.NONE);
-		textContent2.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		textContent2.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		HtmlUtil.enableMarkup(textContent2);
+
 		fd = new FormData();
 		textContent2.setLayoutData(fd);
 		fd.top = new FormAttachment();
@@ -314,13 +307,7 @@ public class SalesBasicPage extends TabBlockPage implements
 	}
 
 	protected void select(Work work) {
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
-		PrimaryObjectDetailFormView view = (PrimaryObjectDetailFormView) page
-				.findView("pm2.work.detail");
-		IEditorInputFactory inputFactory = work
-				.getAdapter(IEditorInputFactory.class);
-		view.setInput(inputFactory.getInput(null));
+		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,true);
 	}
 
 }

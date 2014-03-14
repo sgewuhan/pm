@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.Section;
 import org.jbpm.task.Status;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.model.ModelService;
@@ -89,7 +90,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		taskViewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		Table table = taskViewer.getTable();
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 40);
-		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(table);
 		TableViewerColumn column = new TableViewerColumn(taskViewer, SWT.LEFT);
 		column.getColumn().setWidth(360);
 		column.setLabelProvider(new ColumnLabelProvider() {
@@ -128,7 +129,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		TableViewer viewer = new TableViewer(parent, SWT.FULL_SELECTION);
 		Table table = viewer.getTable();
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 40);
-		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(table);
 		TableViewerColumn column = new TableViewerColumn(viewer, SWT.LEFT);
 		column.getColumn().setWidth(360);
 		column.setLabelProvider(new ColumnLabelProvider() {

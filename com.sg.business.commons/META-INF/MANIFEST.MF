@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.rap.ui,
  org.eclipse.rap.gef,
  com.mobnut.design,
  com.sg.widgets.birtcharts,
- org.eclipse.birt.chart.engine
+ org.eclipse.birt.chart.engine,
+ com.sg.index;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.commons,
@@ -43,12 +44,14 @@ Export-Package: com.sg.business.commons,
  com.sg.business.commons.operation.handler,
  com.sg.business.commons.operation.link,
  com.sg.business.commons.operation.test,
+ com.sg.business.commons.ui,
  com.sg.business.commons.ui.block,
  com.sg.business.commons.ui.chart,
  com.sg.business.commons.ui.flow,
  com.sg.business.commons.ui.page,
  com.sg.business.commons.ui.page.flow,
  com.sg.business.commons.ui.part,
+ com.sg.business.commons.ui.sidebar,
  com.sg.business.commons.ui.viewer
 Import-Package: javax.servlet,
  javax.servlet.http

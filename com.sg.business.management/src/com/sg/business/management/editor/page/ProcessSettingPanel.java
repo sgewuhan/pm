@@ -12,7 +12,6 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.window.Window;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,6 +24,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
@@ -115,7 +115,8 @@ public class ProcessSettingPanel extends Composite {
 		fd.left = new FormAttachment(text, MARGIN);
 
 		processLabel = new Label(this, SWT.NONE);
-		processLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(processLabel);
+
 		fd = new FormData();
 		processLabel.setLayoutData(fd);
 		// fd.left = new FormAttachment(activeButton, MARGIN);

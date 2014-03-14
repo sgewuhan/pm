@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.ModelService;
@@ -78,7 +79,7 @@ public class ListCTabItem extends CTabItem {
 		TableViewer tv = new TableViewer(composite, SWT.NONE);
 		Control table = tv.getControl();
 		table.setLayoutData(fd);
-		table.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(table);
 		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 40);
 		tv.setContentProvider(ArrayContentProvider.getInstance());
 		return tv;

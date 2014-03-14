@@ -10,12 +10,13 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.sg.widgets.commons.labelprovider.HTMLAdvanceLabelProvider;
 
-@SuppressWarnings({ "rawtypes", "restriction" })
+@SuppressWarnings({ "rawtypes" })
 public class PageListViewer extends ListViewer {
 
 	private int pageSize;
@@ -26,15 +27,14 @@ public class PageListViewer extends ListViewer {
 	public PageListViewer(Composite parent, int style) {
 		super(parent, style);
 		setContentProvider(ArrayContentProvider.getInstance());
-		getControl().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		getControl().setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
-		getControl().setData(RWT.CUSTOM_ITEM_HEIGHT, 20);
+		Control control = getControl();
+		HtmlUtil.enableMarkup(control);
+		control.setData(RWT.CUSTOM_ITEM_HEIGHT, 20);
 		HTMLAdvanceLabelProvider labelProvider = new HTMLAdvanceLabelProvider();
 		labelProvider.setKey("singleline");
 		labelProvider.setViewer(this);
 		setLabelProvider(labelProvider);
-		getControl().addFocusListener(new FocusListener() {
+		control.addFocusListener(new FocusListener() {
 			
 			@Override
 			public void focusLost(FocusEvent event) {

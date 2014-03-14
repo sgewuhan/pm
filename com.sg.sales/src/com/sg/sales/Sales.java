@@ -49,6 +49,8 @@ public class Sales extends AbstractUIPlugin {
 
 	public static final String C_INCOME = "income";
 
+	public static final String VIEW_HOME_SALES = "sales.home";
+
 	// The shared instance
 	private static Sales plugin;
 	

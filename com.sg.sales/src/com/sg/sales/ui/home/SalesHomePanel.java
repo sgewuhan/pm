@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Control;
 import com.sg.business.commons.ui.block.BulletinBoardBlock;
 import com.sg.business.commons.ui.block.TodaysWorkBlock;
 import com.sg.sales.ui.block.CompanyBlock;
+import com.sg.sales.ui.block.ContactBlock;
 import com.sg.sales.ui.block.OpportunityBlock;
 import com.sg.sales.ui.block.SalesPerformanceBlock;
 import com.sg.widgets.Widgets;
@@ -22,6 +23,7 @@ public class SalesHomePanel {
 
 	private Composite panel;
 	private int partHeight;
+	private boolean showContactBloack;
 
 	/**
 	 * 用于一般用户的主页面板
@@ -32,13 +34,16 @@ public class SalesHomePanel {
 	 */
 	public SalesHomePanel(Composite parent) {
 		Rectangle bounds = parent.getDisplay().getBounds();
+		
+		showContactBloack = bounds.width>1400;
+		
 		partHeight = bounds.height - 61;
 
 		parent.setLayout(new FillLayout());
 		panel = new Composite(parent, SWT.NONE);
 		panel.setBackground(Widgets.getColor(panel.getDisplay(), 0xed, 0xed,0xed));
 
-		GridLayout layout = new GridLayout(3, false);
+		GridLayout layout = new GridLayout(showContactBloack?4:3, false);
 		layout.horizontalSpacing = 1;
 		layout.verticalSpacing = 1;
 		layout.marginHeight = 1;
@@ -75,13 +80,27 @@ public class SalesHomePanel {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1);
 		block.setLayoutData(gd);
 
+		if(showContactBloack){
+			ContactBlock block1 = new ContactBlock(panel)  {
+				@Override
+				public int getContentHeight() {
+					return partHeight - Block.TOPICSIZE ;
+				}
+			};
+			block1.setTopicText("联系人");
+			gd = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2);
+			gd.widthHint = 260;
+			block1.setLayoutData(gd);
+		}
+
+		
 		TabBlock performenceBlock = new SalesPerformanceBlock(panel);
 		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
 				true, 2, 1));
 
 		Block noticeBlock = new BulletinBoardBlock(panel) {
 			@Override
-			protected int getContentHeight() {
+			public int getContentHeight() {
 				return partHeight - block.getContentHeight()
 						- (Block.TOPICSIZE + 1) * 2 - 3;
 			}

@@ -12,7 +12,9 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkRecord;
 import com.sg.widgets.MessageUtil;
@@ -41,12 +43,13 @@ public class WorkRecordPage extends AbstractFormPageDelegator {
 
 	private void createTable(Composite parent) {
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION );
-		viewer.getTable().setLinesVisible(true);
-		viewer.getTable().setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		viewer.getTable().setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(40));
+		Table table = viewer.getTable();
+		table.setLinesVisible(true);
+		HtmlUtil.enableMarkup(table);
+		table.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(40));
 
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
-		new ColumnAutoResizer(viewer.getTable(), col.getColumn());
+		new ColumnAutoResizer(table, col.getColumn());
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {

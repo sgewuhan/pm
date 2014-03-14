@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.rap.ui,
  com.mobnut.commons;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.13",
  com.tmt.pdm.client;bundle-version="1.0.0",
- org.eclipse.rap.ui.forms
+ org.eclipse.rap.ui.forms,
+ com.sg.business.commons
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.tmt.pdm.dcpdm.handler,

@@ -149,7 +149,7 @@
                id="homenavigator"
                minimized="true"
                moveable="false"
-               ratio="0.3"
+               ratio="0.25"
                relationship="left"
                relative="org.eclipse.ui.editorss"
                showTitle="false"
@@ -1162,12 +1162,6 @@
       </scenario>-->
    </extension>
    <extension
-         point="com.mobnut.design.headAreaPart">
-      <headAreaPart
-            getHeadAreaPart="com.sg.business.pm2.HeadArea">
-      </headAreaPart>
-   </extension>
-   <extension
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="account"
@@ -1583,7 +1577,7 @@
       <view
             class="com.sg.business.pm2.home.BasicHome"
             id="pm2.work.detail"
-            name="工作"
+            name="HOME"
             restorable="true">
       </view>
    </extension>

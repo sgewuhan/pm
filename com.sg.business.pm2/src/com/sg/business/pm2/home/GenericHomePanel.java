@@ -81,7 +81,7 @@ public class GenericHomePanel {
 
 		Block noticeBlock = new BulletinBoardBlock(panel) {
 			@Override
-			protected int getContentHeight() {
+			public int getContentHeight() {
 				return partHeight - docBlock.getContentHeight()
 						- (Block.TOPICSIZE + 1) * 2 - 3;
 			}

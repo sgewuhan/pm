@@ -1,5 +1,6 @@
 package com.sg.business.model.commonlabel;
 
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -28,11 +29,104 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 	public String getHTML() {
 		if ("inlist".equals(key)) {
 			return getHTMLInHomeList();
+		} else if("search".equals(key)){
+			return getHTMLInSearch();
 		} else {
 			return getHTMLCommmon();
 		}
-		
+	}
 
+	private String getHTMLInSearch() {
+		String[] teams = (String[]) getViewer().getControl().getData("searchteams");
+		
+		// 显示文件名称
+		String desc = doc.getDesc();
+		desc = Utils.getPlainText(desc);
+		String content = (String) doc.getValue(Document.F_CONTENT);
+		if(content!=null){
+			content = Utils.getPlainText(content);
+			content = content.replaceAll("  ", " ");
+			content = content.replaceAll("\\\n", " ");
+			content = Utils.getLimitLengthString(content, 180);
+			for (int i = 0; i < teams.length; i++) {
+				content =content.replaceAll(teams[i], "<span style='color:#ff0000'>"+teams[i]+"</span>");
+			}
+
+		}else{
+			content = "";
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div style='cursor:pointer;'>");
+		
+		sb.append("<div style='"
+				+ "font-family:微软雅黑;"
+//				+ "font-weight:bold;"
+				+ "font-size:12pt;"
+				+ "margin:0 2;"
+				+ "color:#4d4d4d;"
+				+ "white-space:nowrap;"
+				+ "'><span style='font-weight:bold;'>"); //$NON-NLS-1$
+
+		sb.append(desc);
+		sb.append("</span>");
+
+		// 显示版本
+		String rev = doc.getRevId();
+		sb.append(" <small><b>"); //$NON-NLS-1$
+		sb.append(rev);
+		sb.append("</b></small>"); //$NON-NLS-1$
+
+		// 显示状态
+		String status = doc.getLifecycleName();
+		sb.append(" <small style='color:#1e0fbe;'>"); //$NON-NLS-1$
+		sb.append(status);
+
+		if (doc.isLocked()) {
+			sb.append(Messages.get(getLocale()).UserTaskDocumentLabelProvider_2);
+		}
+		
+		sb.append("</small><small> "); //$NON-NLS-1$
+		// 显示创建时间，创建人
+		Date date = doc.get_cdate();
+		sb.append(String.format(Utils.FORMATE_DATE_FULL, date));
+		
+		AccountInfo ca = doc.get_caccount();
+		if (ca != null) {
+			sb.append(" "); //$NON-NLS-1$
+			sb.append(ca.getUserName());
+		}
+		sb.append("</small></div>");//$NON-NLS-1$
+
+		sb.append("<div style='"
+				+ "color:#006621;"
+				+ "font-size:8pt;"
+				+ "margin:0 2;"
+				+ "'>"); //$NON-NLS-1$
+		// 如果是项目文档，显示项目名称
+		sb.append("项目:");
+		Project project = doc.getProject();
+		if (project != null) {
+			desc = project.getDesc();
+			desc = Utils.getPlainText(desc);
+			sb.append(desc);
+		}
+		sb.append("</div>");
+		
+		sb.append("<div>");
+		
+		sb.append("<div style='"
+				+ "color:#909090;"
+				+ "font-size:8pt;"
+				+"text-overflow:ellipsis;"
+				+ "margin:2 2;"
+				+ "height:20px;"
+				+ "'>"); //$NON-NLS-1$
+		sb.append(content);
+		sb.append("</div>");
+
+//		sb.append(HtmlUtil.createBottomLine(0)); 
+		sb.append("</div>");
+		return sb.toString();
 	}
 
 	/**

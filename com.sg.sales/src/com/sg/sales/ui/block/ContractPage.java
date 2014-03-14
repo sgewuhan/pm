@@ -13,7 +13,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -27,25 +26,23 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.design.ICSSConstants;
 import com.mongodb.BasicDBObject;
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.commons.ui.block.PageListViewer;
 import com.sg.business.commons.ui.chart.CommonChart;
 import com.sg.sales.model.Opportunity;
 import com.sg.sales.model.PerformenceUtil;
 import com.sg.sales.model.TeamControl;
 import com.sg.sales.model.dataset.MyOpportunityDataSet;
-import com.sg.widgets.MessageUtil;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
-import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.CurrentAccountContext;
-import com.sg.widgets.part.editor.DataObjectEditor;
 
-@SuppressWarnings("restriction")
 public class ContractPage extends TabBlockPage implements
 		ISelectionChangedListener {
 
@@ -141,8 +138,7 @@ public class ContractPage extends TabBlockPage implements
 
 	private Control createTitle(Composite parent) {
 		title = new Label(parent, SWT.NONE);
-		title.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-		title.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(title);
 		return title;
 	}
 
@@ -398,13 +394,7 @@ public class ContractPage extends TabBlockPage implements
 		}
 	}
 
-	protected void select(PrimaryObject opp) {
-		IEditorInputFactory inputFactory = opp
-				.getAdapter(IEditorInputFactory.class);
-		try {
-			DataObjectEditor.open(opp, inputFactory.getEditorConfig(null), true, null);
-		} catch (Exception e) {
-			MessageUtil.showToast(e);
-		}
+	protected void select(PrimaryObject po) {
+		UIFrameworkUtils.navigateTo(po, UIFrameworkUtils.NAVIGATE_BY_EDITOR,true);
 	}
 }

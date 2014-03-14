@@ -2,7 +2,6 @@ package com.sg.business.commons.ui.block;
 
 import java.util.List;
 
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -14,6 +13,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.PrimaryObject;
@@ -60,10 +60,10 @@ public class WorkBlock extends Block {
 		parent.setLayout(new FormLayout());
 
 		title = new Label(parent, SWT.NONE);
-		title.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(title);
 
 		content = new Label(parent, SWT.NONE);
-		content.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(content);
 
 		FormData fd = new FormData();
 		title.setLayoutData(fd);

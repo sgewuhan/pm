@@ -705,5 +705,14 @@
             time="2:05:00">
       </schedualJob>
    </extension>
+   <extension
+         point="com.sg.widgets.searchable">
+      <searchable
+            collection="document"
+            db="pm2"
+            id="searchable.document"
+            name="文档">
+      </searchable>
+   </extension>
 
 </plugin>

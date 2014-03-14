@@ -13,7 +13,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
-import org.eclipse.swt.internal.widgets.MarkupValidator;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -23,6 +22,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.ModelService;
 import com.sg.business.model.IParameterListener;
 import com.sg.business.model.Project;
@@ -45,7 +45,6 @@ public abstract class AbstractProjectSetPage implements
 
 	protected static final int FONT_SIZE = 12;
 	private static final int INFOBANNER_HEIGHT = 50;
-//	private static final int MARGIN = 2;
 	Label filterLabel;
 	Composite header;
 	protected NavigatorControl navi;
@@ -109,8 +108,7 @@ public abstract class AbstractProjectSetPage implements
 
 	private void handleNavigatorTableEvent() {
 		Table control = (Table) navi.getViewer().getControl();
-		control.setData(MarkupValidator.MARKUP_VALIDATION_DISABLED,
-				Boolean.TRUE);
+		HtmlUtil.enableMarkup(control);
 		control.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
@@ -156,38 +154,13 @@ public abstract class AbstractProjectSetPage implements
 	}
 
 	protected Composite createHeader(Composite body) {
-//		String projectSetCover = data.getProjectSetCoverImage();
-
 		Composite header = new Composite(body, SWT.NONE);
 		header.setLayout(new FormLayout());
-//		setBackgroundGradient(header);
-
 		
-		
-//		Label cover = new Label(header, SWT.NONE);
-//		cover.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
-
-//		StringBuffer sb = new StringBuffer();
-		// 添加项目集合封面图片
-//		if (projectSetCover != null) {
-//			sb.append("<img src='"); //$NON-NLS-1$
-//			sb.append(projectSetCover);
-//			sb.append("' style='float:left;margin-top:" + MARGIN + "' width='" //$NON-NLS-1$ //$NON-NLS-2$
-//					+ (INFOBANNER_HEIGHT - MARGIN) + "' height='" //$NON-NLS-1$
-//					+ (INFOBANNER_HEIGHT - MARGIN) + "' />"); //$NON-NLS-1$
-//			cover.setText(sb.toString());
-//		}
-
-//		FormData fd = new FormData();
-//		cover.setLayoutData(fd);
-//		fd.left = new FormAttachment();
-//		fd.top = new FormAttachment();
-//		fd.height = INFOBANNER_HEIGHT;
-//		fd.width = INFOBANNER_HEIGHT;
 
 		// 显示数据过滤
 		filterLabel = new Label(header, SWT.NONE);
-		filterLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(filterLabel);
 		FormData fd = new FormData();
 		filterLabel.setLayoutData(fd);
 		fd.left = new FormAttachment(30, -INFOBANNER_HEIGHT);
@@ -220,7 +193,7 @@ public abstract class AbstractProjectSetPage implements
 
 		// 显示项目集合名称
 		Label projectSetLabel = new Label(header, SWT.NONE);
-		projectSetLabel.setData(RWT.MARKUP_ENABLED, Boolean.TRUE);
+		HtmlUtil.enableMarkup(projectSetLabel);
 		projectSetLabel.setText(getProjectSetPageLabel());
 
 		fd = new FormData();

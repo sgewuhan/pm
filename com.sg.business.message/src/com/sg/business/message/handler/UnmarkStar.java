@@ -1,4 +1,4 @@
-package com.sg.bussiness.message.handler;
+package com.sg.business.message.handler;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -15,24 +15,21 @@ import com.sg.widgets.command.AbstractNavigatorHandler;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 
-public class MarkStar extends AbstractNavigatorHandler {
+public class UnmarkStar extends AbstractNavigatorHandler {
 
 	@Override
 	protected void execute(PrimaryObject selected, IWorkbenchPart part,
 			ViewerControl vc, Command command,
 			Map<String, Object> parameters, IStructuredSelection selection) {
 
-		IStructuredSelection ssel = (IStructuredSelection) vc.getViewer()
-				.getSelection();
-		Iterator<?> iter = ssel.iterator();
+		Iterator<?> iter = selection.iterator();
 		while (iter.hasNext()) {
 			Object sel = iter.next();
 			if (sel instanceof Message) {
 				Message message = (Message) sel;
 				try {
 					message.doMarkStar(new CurrentAccountContext(),
-							Boolean.TRUE);
-					vc.getViewer().update(message, null);
+							Boolean.FALSE);
 				} catch (Exception e) {
 					MessageUtil.showToast(e);
 				}
