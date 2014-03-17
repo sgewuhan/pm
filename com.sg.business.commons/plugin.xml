@@ -1848,6 +1848,14 @@
             run="com.sg.business.commons.job.IndexJob"
             time="2:05:00">
       </schedualJob>
+      <schedualJob
+            day="9999999999"
+            id="document.schedual.reindex"
+            name="从Content中抽取文档索引"
+            rule="month"
+            run="com.sg.business.commons.job.IndexJob"
+            time="2:05:00">
+      </schedualJob>
    </extension>
 
 </plugin>

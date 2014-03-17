@@ -1214,15 +1214,29 @@
                   </text>
                   <text
                         editPart="Text(Single Line)"
-                        editable="false"
+                        editable="true"
                         id="password"
+                        inputValidator="com.sg.business.organization.editor.PasswordCheck"
                         isPassword="true"
                         label="%text.label.2"
                         labelVisible="true"
                         name="password"
                         persistable="true"
-                        required="false"
+                        required="true"
                         tooltips="%text.tooltips"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="password2"
+                        inputValidator="com.sg.business.organization.editor.PasswordCheck"
+                        isPassword="true"
+                        label="密码确认"
+                        labelVisible="true"
+                        name="password2"
+                        persistable="true"
+                        required="true"
                         type="String">
                   </text>
                </section>
