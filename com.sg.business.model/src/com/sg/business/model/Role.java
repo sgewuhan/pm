@@ -61,9 +61,7 @@ public class Role extends PrimaryObject {
 	/**
 	 * 基础角色/组织角色/组织管理员
 	 */
-	@Deprecated
 	public static final String ROLE_ORGANIZATION_ADMIN_ID = "T000"; //$NON-NLS-1$
-	@Deprecated
 	public static final String ROLE_ORGANIZATION_ADMIN_TEXT = Messages.get().Role_6;
 
 	/**

@@ -35,6 +35,13 @@
             name="%view.name.2"
             restorable="true">
       </view>
+      <view
+            category="organization"
+            class="com.sg.widgets.part.view.TreeNavigator"
+            id="organization.navigator.admin"
+            name="%view.name"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.navigator">
@@ -123,6 +130,9 @@
          <masterProvider
                id="organization.navigator">
          </masterProvider>
+         <masterProvider
+               id="organization.navigator.admin">
+         </masterProvider>
       </navigator>
       <navigator
             id="organization.member"
@@ -158,6 +168,9 @@
          </searchAction>
          <masterProvider
                id="organization.navigator">
+         </masterProvider>
+         <masterProvider
+               id="organization.navigator.admin">
          </masterProvider>
       </navigator>
       <navigator
@@ -310,6 +323,62 @@
             </column>
          </searchAction>
       </navigator>
+      <navigator
+            id="organization.navigator.admin"
+            provideSelection="true"
+            tree="organization.navigator.admin">
+         <filterAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="com.sg.widgets.column.desc">
+            </column>
+            <column
+                  columnDefinitionId="organization.organizationType">
+            </column>
+            <column
+                  columnDefinitionId="organization.isFunctionDepartment">
+            </column>
+            <column
+                  columnDefinitionId="organization.isContainer">
+            </column>
+            <column
+                  columnDefinitionId="organization.description">
+            </column>
+            <column
+                  columnDefinitionId="organization.costCenterCode">
+            </column>
+         </searchAction>
+         <createEditor
+               editorId="editor.organization.team">
+         </createEditor>
+         <createEditor
+               createHandler="com.sg.business.organization.editor.SubTeamCreater"
+               editorId="editor.organization.subteam">
+         </createEditor>
+         <createEditor
+               createHandler="com.sg.business.organization.editor.RoleCreater"
+               editorId="editor.organization.role">
+         </createEditor>
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -454,6 +523,43 @@
             multiSelection="true">
          <column
                columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            collectionName="organization"
+            dataSet="com.sg.business.model.dataset.organization.OrgAdmin"
+            dbName="pm2"
+            editorId="editor.organization.team"
+            id="organization.navigator.admin"
+            idfield="_id"
+            multiSelection="false"
+            popupMenu="popup:com.sg.widget.navigator">
+         <column
+               columnDefinitionId="com.sg.widgets.column.desc">
+         </column>
+         <column
+               columnDefinitionId="organization.organizationType">
+         </column>
+         <column
+               columnDefinitionId="organization.isFunctionDepartment">
+         </column>
+         <column
+               columnDefinitionId="organization.isContainer">
+         </column>
+         <column
+               columnDefinitionId="organization.costCenterCode">
+         </column>
+         <column
+               column="companycode"
+               name="%column.name.4"
+               type="String">
          </column>
          <structure
                modelRelation="organization_organization">

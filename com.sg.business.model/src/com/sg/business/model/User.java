@@ -466,4 +466,8 @@ public class User extends PrimaryObject {
 		Organization functionOrganization = (Organization) org.getFunctionOrganization();
 		return functionOrganization;
 	}
+
+	public boolean isAdmin() {
+		return Boolean.TRUE.equals(getValue(F_IS_ADMIN));
+	}
 }

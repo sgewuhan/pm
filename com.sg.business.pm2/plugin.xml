@@ -904,7 +904,7 @@
             targetID="perspective.organization">
          <view
                closeable="false"
-               id="organization.navigator"
+               id="organization.navigator.admin"
                minimized="false"
                moveable="false"
                ratio="0.6"
@@ -921,7 +921,7 @@
                moveable="false"
                ratio="0.5"
                relationship="right"
-               relative="organization.navigator"
+               relative="organization.navigator.admin"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -944,7 +944,7 @@
                minimized="false"
                moveable="false"
                relationship="stack"
-               relative="organization.navigator"
+               relative="organization.navigator.admin"
                showTitle="true"
                standalone="false"
                visible="true">
@@ -1131,6 +1131,13 @@
          <perspective
                id="perspective.system">
          </perspective>
+      </scenario>
+      <scenario
+            id="organization"
+            index="80"
+            name="%perspective.name.8">
+         <perspective
+               id="perspective.organization"></perspective>
       </scenario>
       <!--<scenario
             id="message"
