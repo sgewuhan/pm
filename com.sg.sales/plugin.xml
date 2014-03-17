@@ -5740,6 +5740,11 @@
             id="sales.contact"
             name="联系人">
       </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
+            id="sales.data.mnt"
+            name="销售系统数据维护">
+      </perspective>
    </extension>
    <extension
          point="com.mobnut.portal.scenario">
@@ -5769,6 +5774,14 @@
          </perspective>
          <perspective
                id="sales.contact">
+         </perspective>
+      </scenario>
+      <scenario
+            id="sales.scenario.mnt"
+            index="41"
+            name="销售系统数据维护">
+         <perspective
+               id="sales.data.mnt">
          </perspective>
       </scenario>
    </extension>
@@ -5870,6 +5883,52 @@
                standalone="true">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="sales.data.mnt">
+         <view
+               closeable="false"
+               id="sales.company.mnt.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false">
+         </view>
+         <view
+               closeable="false"
+               id="sales.opportunity.mnt.navigator"
+               minimized="false"
+               moveable="false"
+               relationship="stack"
+               relative="sales.company.mnt.navigator"
+               showTitle="true"
+               standalone="false">
+         </view>
+         <view
+               closeable="false"
+               id="sales.contact.mnt.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="stack"
+               relative="sales.company.mnt.navigator"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="sales.contract.mnt.navigator"
+               minimized="false"
+               moveable="false"
+               ratio="0.4"
+               relationship="stack"
+               relative="sales.company.mnt.navigator"
+               showTitle="false"
+               standalone="true">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="com.mobnut.design.perspectiveDefinition">
@@ -5885,6 +5944,13 @@
             hideInHead="true"
             id="sales.contact"
             name="联系人"
+            showImage="false"
+            showText="true">
+      </perspectiveDefinition>
+      <perspectiveDefinition
+            hideInHead="true"
+            id="sales.data.mnt"
+            name="销售系统数据维护"
             showImage="false"
             showText="true">
       </perspectiveDefinition>
@@ -5925,6 +5991,33 @@
             class="com.sg.sales.ui.home.SalesHome"
             id="sales.home"
             name="HOME"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="sales.company.mnt.navigator"
+            name="客户数据"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="sales.opportunity.mnt.navigator"
+            name="商机数据"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="sales.contact.mnt.navigator"
+            name="联系人数据"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.widgets.part.view.TableNavigator"
+            id="sales.contract.mnt.navigator"
+            name="合同数据"
             restorable="true">
       </view>
    </extension>
@@ -7577,6 +7670,251 @@
       </navigator>
    </extension>
    <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            expand="search"
+            id="sales.company.mnt.navigator"
+            table="sales.company.mnt.navigator">
+         <filterAction>
+            <column
+                  column="desc"
+                  name="公司名称"
+                  type="String">
+            </column>
+            <column
+                  column="prov"
+                  name="所在省份"
+                  type="String">
+            </column>
+            <column
+                  column="city"
+                  name="所在城市"
+                  type="String">
+            </column>
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction
+               defaultfield="公司名称">
+            <column
+                  column="desc"
+                  name="公司名称"
+                  type="String">
+            </column>
+            <column
+                  column="prov"
+                  name="所在省份"
+                  type="String">
+            </column>
+            <column
+                  column="city"
+                  name="所在城市"
+                  type="String">
+            </column>
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            expand="search"
+            id="sales.opportunity.mnt.navigator"
+            table="sales.opportunity.mnt.navigator">
+         <searchAction
+               defaultfield="描述">
+            <column
+                  column="desc"
+                  name="描述"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="req_prod"
+                  name="商品"
+                  type="String">
+            </column>
+         </searchAction>
+         <filterAction
+               defaultfield="描述">
+            <column
+                  column="desc"
+                  name="描述"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="req_prod"
+                  name="商品"
+                  type="String">
+            </column>
+         </filterAction>
+      </navigator>
+      <navigator
+            expand="search"
+            id="sales.contact.mnt.navigator"
+            table="sales.contact.mnt.navigator">
+         <filterAction
+               defaultfield="姓名">
+            <column
+                  column="desc"
+                  name="姓名"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="dept"
+                  name="部门"
+                  type="String">
+            </column>
+            <column
+                  column="position"
+                  name="职位"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction
+               defaultfield="姓名">
+            <column
+                  column="desc"
+                  name="姓名"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="dept"
+                  name="部门"
+                  type="String">
+            </column>
+            <column
+                  column="position"
+                  name="职位"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            expand="search"
+            id="sales.contract.mnt.navigator"
+            table="sales.contract.mnt.navigator">
+         <filterAction
+               defaultfield="名称">
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+            <column
+                  column="sn"
+                  name="编号"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="signon"
+                  name="签订时间"
+                  type="Date">
+            </column>
+            <column
+                  column="effectiveon"
+                  name="生效时间"
+                  type="Date">
+            </column>
+            <column
+                  column="contractstatus"
+                  name="执行状态">
+            </column>
+            <column
+                  column="signby"
+                  name="签订人"
+                  type="String">
+            </column>
+            <column
+                  column="sales_manager"
+                  name="销售经理"
+                  type="String">
+            </column>
+         </filterAction>
+         <searchAction
+               defaultfield="名称">
+            <column
+                  column="status"
+                  name="状态"
+                  type="String">
+            </column>
+            <column
+                  column="sn"
+                  name="编号"
+                  type="String">
+            </column>
+            <column
+                  column="desc"
+                  name="名称"
+                  type="String">
+            </column>
+            <column
+                  column="company_id"
+                  name="公司"
+                  type="String">
+            </column>
+            <column
+                  column="signon"
+                  name="签订时间"
+                  type="Date">
+            </column>
+            <column
+                  column="effectiveon"
+                  name="生效时间"
+                  type="Date">
+            </column>
+            <column
+                  column="contractstatus"
+                  name="执行状态"
+                  type="String">
+            </column>
+            <column
+                  column="signby"
+                  name="签订人"
+                  type="String">
+            </column>
+            <column
+                  column="sales_manager"
+                  name="销售经理"
+                  type="String">
+            </column>
+         </searchAction>
+      </navigator>
+   </extension>
+   <extension
          point="com.sg.widgets.table">
       <table
             canCreate="true"
@@ -8901,6 +9239,253 @@
       </table>
    </extension>
    <extension
+         point="com.sg.widgets.table">
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.model.dataset.AllCustomerDataSet"
+            editorId="sales.company.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.company.mnt.navigator"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            popupMenu="popup:sales.mnt.navigator"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="status"
+               labelProvider="com.sg.sales.ui.labelprovider.DataStatusLabel"
+               name="状态"
+               type="String"
+               width="40">
+         </column>
+         <column
+               column="desc"
+               moveable="true"
+               name="名称"
+               resizable="true"
+               sortable="true"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="levelservice"
+               name="客户"
+               type="String">
+         </column>
+         <column
+               column="prov"
+               name="所在省份"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="city"
+               name="所在城市"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="cust_representative"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="客户代表"
+               width="60">
+         </column>
+         <column
+               column="sales_manager"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="销售经理"
+               width="60">
+         </column>
+         <column
+               column="sales_supervisor"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="销售主管"
+               width="60">
+         </column>
+         <column
+               column="service_manager"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="服务主管"
+               width="60">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.model.dataset.MyOpportunityDataSet"
+            editorId="sales.opportunity.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.opportunity.mnt.navigator"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            popupMenu="popup:sales.mnt.navigator"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="status"
+               labelProvider="com.sg.sales.ui.labelprovider.DataStatusLabel"
+               name="状态"
+               type="String"
+               width="40">
+         </column>
+         <column
+               column="desc"
+               moveable="true"
+               name="描述"
+               resizable="true"
+               sortable="true"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="company_id"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
+               name="公司"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="req_prod"
+               name="商品"
+               type="String">
+         </column>
+         <column
+               column="cust_representative"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="客户代表"
+               width="60">
+         </column>
+         <column
+               column="sales_manager"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="销售经理"
+               width="60">
+         </column>
+         <column
+               column="sales_supervisor"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="销售主管"
+               width="60">
+         </column>
+         <column
+               column="service_manager"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="服务主管"
+               width="60">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.model.dataset.MyContactDataSet"
+            editorId="sales.contact.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.contact.mnt.navigator"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            popupMenu="popup:sales.mnt.navigator"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="desc"
+               name="姓名"
+               type="String"
+               width="60">
+         </column>
+         <column
+               column="company_id"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
+               name="公司"
+               type="String"
+               width="200">
+         </column>
+      </table>
+      <table
+            canCreate="true"
+            canDelete="true"
+            canEdit="true"
+            canRead="true"
+            dataSet="com.sg.sales.model.dataset.MyContractDataSet"
+            editorId="sales.contract.editor"
+            fullSelection="true"
+            hasBorder="false"
+            headerVisiable="true"
+            id="sales.contract.mnt.navigator"
+            lineVisiable="true"
+            markupEnabled="false"
+            multiSelection="true"
+            popupMenu="popup:sales.mnt.navigator"
+            preload="10"
+            useHashlookup="true"
+            virtual="true">
+         <column
+               column="contractstatus"
+               name="合同状态"
+               type="String">
+         </column>
+         <column
+               column="sn"
+               name="编号"
+               type="String"
+               width="80">
+         </column>
+         <column
+               column="desc"
+               name="名称"
+               type="String"
+               width="-1">
+         </column>
+         <column
+               column="company_id"
+               labelProvider="com.sg.sales.ui.labelprovider.CompanyIdLabelProvider"
+               name="公司"
+               type="String"
+               width="200">
+         </column>
+         <column
+               column="signon"
+               name="签订时间"
+               type="Date">
+         </column>
+         <column
+               column="effectiveon"
+               name="生效时间"
+               type="Date">
+         </column>
+         <column
+               column="signby"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="签订人">
+         </column>
+         <column
+               column="sales_manager"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               name="销售经理">
+         </column>
+      </table>
+   </extension>
+   <extension
          point="com.sg.widgets.dataEditor">
       <editor
             collectionName="company"
@@ -8932,25 +9517,6 @@
                            required="false"
                            textMessage="&lt;自动编号&gt;"
                            type="String">
-                        <extendValueDefinition
-                              type="com.mobnut.db.value.AutoIncreaseValue">
-                           <extendValueParameter
-                                 key="dbName"
-                                 value="pm2">
-                           </extendValueParameter>
-                           <extendValueParameter
-                                 key="cover"
-                                 value="0">
-                           </extendValueParameter>
-                           <extendValueParameter
-                                 key="length"
-                                 value="8">
-                           </extendValueParameter>
-                           <extendValueParameter
-                                 key="collectionName"
-                                 value="company_id_seq">
-                           </extendValueParameter>
-                        </extendValueDefinition>
                      </text>
                      <combo
                            defaultValue="editing"
@@ -9345,7 +9911,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -9359,7 +9925,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -9373,7 +9939,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -9387,7 +9953,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -9984,7 +10550,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11194,7 +11760,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11238,7 +11804,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11252,7 +11818,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11266,7 +11832,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11280,7 +11846,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11513,7 +12079,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="signby"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -11705,7 +12271,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cust_representative"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11719,7 +12285,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11733,7 +12299,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="sales_supervisor"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11747,7 +12313,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="service_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -11767,7 +12333,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -12002,7 +12568,7 @@
                            labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                            modelClass="com.sg.business.model.User"
                            name="owner"
-                           navigatorId="organization.user.selector"
+                           navigatorId="organization.user.assignment"
                            navigatorReturnField="userid"
                            persistable="true"
                            required="true">
@@ -12465,7 +13031,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="owner"
-                        navigatorId="organization.user.selector"
+                        navigatorId="organization.user.assignment"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -12575,6 +13141,134 @@
                   </text>
                </section>
             </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="company"
+            dbName="pm2"
+            id="sales.company.editor.setteam"
+            isDefault="true"
+            labelFieldName="desc"
+            max="true"
+            name="设定团队和访问者">
+         <basicpage
+               description="企业基本信息"
+               id="basicpage"
+               title="基本">
+            <pagecolumn>
+               <section
+                     label="团队">
+                  <navigatorSelector
+                        editable="true"
+                        id="cust_representative"
+                        label="客户代表"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="cust_representative"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="sales_manager"
+                        label="销售经理"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_manager"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="sales_supervisor"
+                        label="销售主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_supervisor"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        id="service_manager"
+                        label="服务主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="service_manager"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="权限信息">
+                  <navigatorSelector
+                        editable="true"
+                        id="owner"
+                        label="所有者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        editable="true"
+                        id="owner_list"
+                        label="更改授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="owner_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        editable="true"
+                        id="visitor_list"
+                        label="访问授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="visitor_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn>
+            <!--pagecolumn>
+               <section
+                     label="数据所有组织">
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddOrganization"
+                        editable="true"
+                        heightHint="108"
+                        id="owner_org_id"
+                        label="数据所有组织"
+                        labelVisible="false"
+                        labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
+                        name="owner_org_id"
+                        persistable="true"
+                        required="false">
+                  </list>
+               </section>
+            </pagecolumn-->
          </basicpage>
       </editor>
    </extension>
@@ -13721,6 +14415,30 @@
                commandId="com.sg.widgets.command.delete"
                label="删除"
                style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:sales.mnt.navigator">
+         <command
+               commandId="com.sg.widgets.command.batchedit"
+               label="设定所有者"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.class"
+                  value="com.sg.sales.model.Company">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="sales.company.editor.setteam">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
          </command>
       </menuContribution>
    </extension>

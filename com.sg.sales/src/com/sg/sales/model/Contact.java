@@ -7,11 +7,10 @@ import org.bson.types.ObjectId;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
-import com.mobnut.db.model.PrimaryObject;
 import com.sg.sales.ui.labelprovider.ContactCommonHTMLLable;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
 
-public class Contact extends PrimaryObject implements ICompanyRelative{
+public class Contact extends OrganizationControl implements ICompanyRelative{
 	
 	
 	public static final String F_LASTNAME = "lastname";

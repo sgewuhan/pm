@@ -16,7 +16,7 @@ import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 
-public abstract class TeamControl extends PrimaryObject {
+public abstract class TeamControl extends OrganizationControl {
 
 	public static final String F_VISITORLIST = "visitor_list";
 	public static final String F_PERMISSION_OWNERLIST = "owner_list";

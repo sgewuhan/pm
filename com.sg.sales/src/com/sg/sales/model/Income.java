@@ -5,9 +5,8 @@ import org.eclipse.core.runtime.Assert;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
-import com.mobnut.db.model.PrimaryObject;
 
-public class Income extends PrimaryObject {
+public class Income extends OrganizationControl {
 
 	public static final String F_CONTRACT_ID = "contract_id";
 	public static final String F_AMOUNT = "amount";

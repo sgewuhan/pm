@@ -168,8 +168,11 @@ public class WorkInProcess extends AccountSensitiveTreeView {
 	@Override
 	public void dispose() {
 		workSynchronizer.removeJobChangeListener(syncUserListener);
-		repeatWorkSynchronizer.removeJobChangeListener(syncBackgroundListener);
-		repeatWorkSynchronizer.stop();
+		if (repeatWorkSynchronizer != null) {
+			repeatWorkSynchronizer
+					.removeJobChangeListener(syncBackgroundListener);
+			repeatWorkSynchronizer.stop();
+		}
 		menuManager.dispose();
 		super.dispose();
 	}
