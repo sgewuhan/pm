@@ -8,10 +8,10 @@ import com.sg.sales.Sales;
 import com.sg.sales.model.OrganizationControl;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class AllCustomerDataSet extends SingleDBCollectionDataSetFactory {
+public class MntOpportunityDataSet extends SingleDBCollectionDataSetFactory {
 
-	public AllCustomerDataSet() {
-		super(IModelConstants.DB, Sales.C_COMPANY);
+	public MntOpportunityDataSet() {
+		super(IModelConstants.DB, Sales.C_OPPORTUNITY);
 		String userid = new CurrentAccountContext().getConsignerId();
 		setQueryCondition(OrganizationControl.getVisitableCondition(userid));
 		setSort(new BasicDBObject().append(PrimaryObject.F__ID, -1));

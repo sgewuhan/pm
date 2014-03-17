@@ -9,22 +9,14 @@ import com.sg.sales.ISalesRole;
 import com.sg.sales.model.input.CompanyEditorInputFactory;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 
-public class Company extends TeamControl implements IDataStatusControl, ISalesTeam {
+public class Company extends TeamControl implements IDataStatusControl, ISalesTeam,IContactable {
 
 	public static final String F_STATUS = "status";
 	public static final String F_LEVEL = "level";
 	public static final String F_SERVICELEVEL = "levelservice";
 	public static final String F_SN = "sn";
 	public static final String F_DESC_S = "desc_s";
-	public static final String F_WEBSITE = "website";
-	public static final String F_PROV = "prov";
-	public static final String F_CITY = "city";
-	public static final String F_DIST = "dist";
-	public static final String F_POSTCODE = "postcode";
-	public static final String F_ADDRESS = "address";
-	public static final String F_TEL1 = "tel1";
-	public static final String F_TEL2 = "tel2";
-	public static final String F_FAX = "fax";
+
 	public static final String F_INDUSTRY = "industry";
 	public static final String F_PRODUCT = "product";
 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.file.FileUtil;
 import com.mobnut.db.file.RemoteFile;
 import com.sg.sales.model.Company;
@@ -100,7 +99,7 @@ public class ContactCommonHTMLLable extends CommonHTMLLabel {
 //		sb.append(email);
 
 		sb.append("</div>");
-		sb.append(HtmlUtil.createBottomLine(51)); //$NON-NLS-1$
+//		sb.append(HtmlUtil.createBottomLine(51)); //$NON-NLS-1$
 
 		return sb.toString();
 	}
@@ -109,9 +108,11 @@ public class ContactCommonHTMLLable extends CommonHTMLLabel {
 		String name = contact.getName();
 		
 		String email = contact.getEmail();
+		email = email==null?"":email;
 		
 		String tel = contact.getOfficeTelNumber();
-		
+		tel = tel==null?"":tel;
+
 		Company company = contact.getCompany();
 		String companyName = "";
 		if(company!=null){
@@ -119,7 +120,9 @@ public class ContactCommonHTMLLable extends CommonHTMLLabel {
 		}
 		
 		String position = contact.getPosition();
+		position = position==null?"":position;
 		String dept = contact.getDepartment();
+		dept = dept==null?"":dept;
 		
 
 		StringBuffer sb = new StringBuffer();
@@ -146,7 +149,7 @@ public class ContactCommonHTMLLable extends CommonHTMLLabel {
 				+ email + "</a>");
 		sb.append("</div>");
 
-		sb.append(HtmlUtil.createBottomLine(0)); //$NON-NLS-1$
+//		sb.append(HtmlUtil.createBottomLine(0)); //$NON-NLS-1$
 		return sb.toString();
 	}
 

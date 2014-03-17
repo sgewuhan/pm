@@ -3,9 +3,10 @@ package com.sg.sales.ui.block;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.rap.rwt.RWT;
@@ -21,7 +22,7 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Control;
 
 import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
@@ -49,24 +50,25 @@ public class ContactBlock extends ListBlock {
 		init();
 
 		parent.setLayout(new FormLayout());
-		List list = new List(parent, SWT.SINGLE);
+		viewer = new TableViewer(parent,SWT.VIRTUAL);
+		viewer.setUseHashlookup(true);
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		TableViewerColumn column = new TableViewerColumn((TableViewer) viewer, SWT.LEFT);
+		HTMLAdvanceLabelProvider labelProvider = getLabelProvider();
+		labelProvider.setKey("inlist");
+		labelProvider.setViewer(viewer);
+		column.setLabelProvider(labelProvider);
+		column.getColumn().setWidth(260);
+		viewer.addSelectionChangedListener(this);
+		Control list = viewer.getControl();
 		list.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent event) {
 				viewer.setSelection(new StructuredSelection(new Object[] {}));
 			}
 		});
-		viewer = new ListViewer(list);
-		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		HTMLAdvanceLabelProvider labelProvider = getLabelProvider();
-		labelProvider.setKey("inlist");
-		labelProvider.setViewer(viewer);
-		viewer.setLabelProvider(labelProvider);
-		viewer.setUseHashlookup(true);
-		viewer.addSelectionChangedListener(this);
-
 		HtmlUtil.enableMarkup(list);
-		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(ITEM_HIGHT));
+		list.setData(RWT.CUSTOM_ITEM_HEIGHT, new Integer(60));
 		FormData fd = new FormData();
 
 		list.setLayoutData(fd);
@@ -159,8 +161,8 @@ public class ContactBlock extends ListBlock {
 
 	@Override
 	protected Object doGetData() {
-		int limit = getCountByHeight();
-		dataset.setLimit(limit);
+//		int limit = getCountByHeight();
+//		dataset.setLimit(limit);
 		return dataset.getDataSet().getDataItems();
 	}
 

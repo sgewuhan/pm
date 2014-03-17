@@ -9241,11 +9241,11 @@
    <extension
          point="com.sg.widgets.table">
       <table
-            canCreate="true"
-            canDelete="true"
-            canEdit="true"
-            canRead="true"
-            dataSet="com.sg.sales.model.dataset.AllCustomerDataSet"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.sales.model.dataset.MntCustomerDataSet"
             editorId="sales.company.editor"
             fullSelection="true"
             hasBorder="false"
@@ -9254,7 +9254,6 @@
             lineVisiable="true"
             markupEnabled="false"
             multiSelection="true"
-            popupMenu="popup:sales.mnt.navigator"
             preload="10"
             useHashlookup="true"
             virtual="true">
@@ -9318,11 +9317,11 @@
          </column>
       </table>
       <table
-            canCreate="true"
-            canDelete="true"
-            canEdit="true"
-            canRead="true"
-            dataSet="com.sg.sales.model.dataset.MyOpportunityDataSet"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.sales.model.dataset.MntOpportunityDataSet"
             editorId="sales.opportunity.editor"
             fullSelection="true"
             hasBorder="false"
@@ -9331,7 +9330,6 @@
             lineVisiable="true"
             markupEnabled="false"
             multiSelection="true"
-            popupMenu="popup:sales.mnt.navigator"
             preload="10"
             useHashlookup="true"
             virtual="true">
@@ -9390,11 +9388,11 @@
          </column>
       </table>
       <table
-            canCreate="true"
-            canDelete="true"
-            canEdit="true"
-            canRead="true"
-            dataSet="com.sg.sales.model.dataset.MyContactDataSet"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.sales.model.dataset.MntContactDataSet"
             editorId="sales.contact.editor"
             fullSelection="true"
             hasBorder="false"
@@ -9403,7 +9401,6 @@
             lineVisiable="true"
             markupEnabled="false"
             multiSelection="true"
-            popupMenu="popup:sales.mnt.navigator"
             preload="10"
             useHashlookup="true"
             virtual="true">
@@ -9422,11 +9419,11 @@
          </column>
       </table>
       <table
-            canCreate="true"
-            canDelete="true"
-            canEdit="true"
-            canRead="true"
-            dataSet="com.sg.sales.model.dataset.MyContractDataSet"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.sales.model.dataset.MntContractDataSet"
             editorId="sales.contract.editor"
             fullSelection="true"
             hasBorder="false"
@@ -9435,7 +9432,6 @@
             lineVisiable="true"
             markupEnabled="false"
             multiSelection="true"
-            popupMenu="popup:sales.mnt.navigator"
             preload="10"
             useHashlookup="true"
             virtual="true">
@@ -10556,7 +10552,7 @@
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
                         editable="true"
                         editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner_list"
@@ -10568,7 +10564,7 @@
                         required="false">
                   </list>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
                         editable="true"
                         editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="visitor_list"
@@ -10695,6 +10691,42 @@
                         name="charge"
                         persistable="true"
                         required="true"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="个人信息">
+                  <dateTime
+                        editPart="DateDialog"
+                        editable="true"
+                        id="birthday"
+                        label="生日"
+                        labelVisible="true"
+                        name="birthday"
+                        persistable="true"
+                        required="false"
+                        type="Date">
+                  </dateTime>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="40"
+                        id="hobbies"
+                        label="兴趣爱好"
+                        labelVisible="true"
+                        name="hobbies"
+                        persistable="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        heightHint="40"
+                        id="taboo"
+                        label="忌讳"
+                        labelVisible="true"
+                        name="taboo"
+                        persistable="true"
                         type="String">
                   </text>
                </section>
@@ -10974,6 +11006,112 @@
                         required="false"
                         type="String">
                   </text>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="团队">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="cust_representative"
+                        label="客户代表"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="cust_representative"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="sales_manager"
+                        label="销售经理"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_manager"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="sales_supervisor"
+                        label="销售主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="sales_supervisor"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <navigatorSelector
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="service_manager"
+                        label="服务主管"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="service_manager"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="权限信息">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="owner"
+                        label="所有者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="owner_list"
+                        label="更改授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="owner_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="visitor_list"
+                        label="访问授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="visitor_list"
+                        persistable="true"
+                        required="false">
+                  </list>
                </section>
             </pagecolumn>
          </basicpage>
@@ -11749,50 +11887,6 @@
             </pagecolumn>
             <pagecolumn>
                <section
-                     label="权限信息">
-                  <navigatorSelector
-                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
-                        editable="true"
-                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
-                        id="owner"
-                        label="所有者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="owner"
-                        navigatorId="organization.user.assignment"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
-                        editable="true"
-                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
-                        id="owner_list"
-                        label="更改授权"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
-                        name="owner_list"
-                        persistable="true"
-                        required="false">
-                  </list>
-                  <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
-                        editable="true"
-                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
-                        id="visitor_list"
-                        label="访问授权"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
-                        name="visitor_list"
-                        persistable="true"
-                        required="false">
-                  </list>
-               </section>
-            </pagecolumn>
-            <pagecolumn>
-               <section
                      label="团队">
                   <navigatorSelector
                         defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
@@ -11851,6 +11945,50 @@
                         persistable="true"
                         required="false">
                   </navigatorSelector>
+               </section>
+            </pagecolumn>
+            <pagecolumn>
+               <section
+                     label="权限信息">
+                  <navigatorSelector
+                        defaultValueProvider="com.sg.widgets.part.editor.fields.value.CurrentUser"
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="owner"
+                        label="所有者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="owner"
+                        navigatorId="organization.user.assignment"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="owner_list"
+                        label="更改授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="owner_list"
+                        persistable="true"
+                        required="false">
+                  </list>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
+                        editable="true"
+                        editableHandler="com.sg.sales.field.editable.TeamControledEditable"
+                        id="visitor_list"
+                        label="访问授权"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="visitor_list"
+                        persistable="true"
+                        required="false">
+                  </list>
                </section>
             </pagecolumn>
          </basicpage>
@@ -12339,7 +12477,7 @@
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
                         editable="true"
                         editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="owner_list"
@@ -12351,7 +12489,7 @@
                         required="false">
                   </list>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
                         editable="true"
                         editableHandler="com.sg.sales.field.editable.TeamControledEditable"
                         id="visitor_list"
@@ -13229,7 +13367,7 @@
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
                         editable="true"
                         id="owner_list"
                         label="更改授权"
@@ -13240,7 +13378,7 @@
                         required="false">
                   </list>
                   <list
-                        addTableItemHandler="com.sg.business.commons.field.action.AddUserToList"
+                        addTableItemHandler="com.sg.business.commons.field.action.AddUserByAssignmentToList"
                         editable="true"
                         id="visitor_list"
                         label="访问授权"
@@ -14422,14 +14560,77 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="true"
-            locationURI="popup:sales.mnt.navigator">
+            locationURI="toolbar:sales.company.mnt.navigator?after=additions">
          <command
                commandId="com.sg.widgets.command.batchedit"
-               label="设定所有者"
+               label="设定"
                style="push">
             <parameter
                   name="com.sg.widgets.edit.class"
                   value="com.sg.sales.model.Company">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="sales.company.editor.setteam">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="toolbar:sales.opportunity.mnt.navigator?after=additions">
+         <command
+               commandId="com.sg.widgets.command.batchedit"
+               label="设定"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.class"
+                  value="com.sg.sales.model.Opportunity">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="sales.company.editor.setteam">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="toolbar:sales.contact.mnt.navigator?after=additions">
+         <command
+               commandId="com.sg.widgets.command.batchedit"
+               label="设定"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.class"
+                  value="com.sg.sales.model.Contact">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.editorid"
+                  value="sales.company.editor.setteam">
+            </parameter>
+            <parameter
+                  name="com.sg.widgets.edit.type"
+                  value="datadialog">
+            </parameter>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="toolbar:sales.contract.mnt.navigator?after=additions">
+         <command
+               commandId="com.sg.widgets.command.batchedit"
+               label="设定"
+               style="push">
+            <parameter
+                  name="com.sg.widgets.edit.class"
+                  value="com.sg.sales.model.Contract">
             </parameter>
             <parameter
                   name="com.sg.widgets.edit.editorid"
