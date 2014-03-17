@@ -306,8 +306,7 @@ public class UserExchange {
 		}
 		for (UserExchange userExchange : messageSet) {
 			if (orgInfo != "") { //$NON-NLS-1$
-				orgInfo = orgInfo
-						+ userExchange.getPmOrgByOrganizationId().getDesc();
+				orgInfo =  userExchange.getPmOrgByOrganizationId().getDesc();
 			}
 			if (messageContent != null) {
 				messageContent = messageContent

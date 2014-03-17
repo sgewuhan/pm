@@ -341,8 +341,7 @@
             id="vault.documents"
             idfield="_id"
             multiSelection="true"
-            popupMenu="popup:vault.folder.user"
-            popupMenuProvider="com.sg.business.vault.view.EditorDocumentForVault">
+            popupMenu="popup:vault.folder.user">
          <column
                columnDefinitionId="document.documentNumber">
          </column>
@@ -478,10 +477,14 @@
             <visibleWhen
                   checkEnabled="false">
                <with
-                     variable="activePart">
-                  <instanceof
-                        value="com.sg.widgets.part.IEditablePart">
-                  </instanceof>
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="edit"
+                           property="editdocument.action">
+                     </test>
+                  </iterate>
                </with>
             </visibleWhen>
          </command>
@@ -498,14 +501,16 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <and>
-                  <with
-                        variable="activePart">
-                     <instanceof
-                           value="com.sg.widgets.part.IEditablePart">
-                     </instanceof>
-                  </with>
-               </and>
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <test
+                           args="delete"
+                           property="editdocument.action">
+                     </test>
+                  </iterate>
+               </with>
             </visibleWhen>
          </command>
          <separator
@@ -587,6 +592,16 @@
             class="com.sg.business.vault.handler.UploadZIP"
             commandId="vault.folder.uploadzip">
       </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.sg.business.vault.view.EditDocumentPropertyTester"
+            id="editdocument.action"
+            namespace="editdocument"
+            properties="action"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
    <!--extension
          point="com.mobnut.admin.adminFunction">
