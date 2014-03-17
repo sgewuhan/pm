@@ -19,6 +19,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.mobnut.commons,
  com.mobnut.db,
  org.eclipse.rap.ui.forms,
- com.sg.business.commons
+ com.sg.business.commons,
+ org.eclipse.core.expressions
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

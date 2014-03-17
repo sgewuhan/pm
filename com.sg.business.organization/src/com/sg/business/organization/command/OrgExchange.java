@@ -467,9 +467,9 @@ public class OrgExchange {
 	 * 修改PM系统中当前组织的全称
 	 */
 	public void doRenameHR() {
-		if (!checkHR) {
-			return;
-		}
+//		if (!checkHR) {
+//			return;
+//		}
 		Organization organization;
 		organization = ModelService.createModelObject(Organization.class);
 		organization.setValue(Organization.F__ID, pmId);
