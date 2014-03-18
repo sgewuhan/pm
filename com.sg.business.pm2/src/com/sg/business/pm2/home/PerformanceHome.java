@@ -10,10 +10,10 @@ import com.sg.business.model.Message;
 import com.sg.business.model.ProjectProvider;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.widgets.part.editor.DataObjectView;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
-public class PerformanceHome extends PrimaryObjectDetailFormView {
+public class PerformanceHome extends DataObjectView {
 
 	private PerformanceHomePanel homePanel;
 

@@ -11,9 +11,9 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.editor.DataObjectDialog;
 import com.sg.widgets.part.editor.DataObjectEditor;
+import com.sg.widgets.part.editor.DataObjectView;
 import com.sg.widgets.part.editor.DataObjectWizard;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 import com.sg.widgets.part.view.SideBarNavigator;
 import com.sg.widgets.registry.config.DataEditorConfigurator;
 
@@ -45,14 +45,14 @@ public class UIFrameworkUtils {
 	 * 
 	 * @return
 	 */
-	public static PrimaryObjectDetailFormView getHomePart() {
+	public static DataObjectView getHomePart() {
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
 		IViewReference[] vr = page.getViewReferences();
 		for (int i = 0; i < vr.length; i++) {
 			IViewPart _view = vr[i].getView(false);
-			if (_view instanceof PrimaryObjectDetailFormView) {
-				PrimaryObjectDetailFormView pv = (PrimaryObjectDetailFormView) _view;
+			if (_view instanceof DataObjectView) {
+				DataObjectView pv = (DataObjectView) _view;
 				if (pv.isHomeView()) {
 					return pv;
 				}
@@ -89,12 +89,12 @@ public class UIFrameworkUtils {
 	 * @param reloadInput
 	 */
 	public static void refreshHomePart(boolean reloadInput) {
-		PrimaryObjectDetailFormView home = getHomePart();
+		DataObjectView home = getHomePart();
 		home.loadMaster(reloadInput);
 	}
 
-	public static PrimaryObjectDetailFormView navigateHome() {
-		PrimaryObjectDetailFormView home = getHomePart();
+	public static DataObjectView navigateHome() {
+		DataObjectView home = getHomePart();
 		home.cleanUI();
 		home.cleanInput();
 		home.goHome();
@@ -111,7 +111,7 @@ public class UIFrameworkUtils {
 		if (po == null) {
 			return null;
 		} else {
-			PrimaryObjectDetailFormView home = getHomePart();
+			DataObjectView home = getHomePart();
 			IEditorInputFactory inf = po.getAdapter(IEditorInputFactory.class);
 			if (navigateMode == NAVIGATE_BY_VIEW
 					|| navigateMode == NAVIGATE_AUTOSELECT) {

@@ -11,14 +11,11 @@ import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -33,7 +30,6 @@ import com.sg.widgets.Widgets;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 import com.sg.widgets.viewer.ViewerControl;
 
-@SuppressWarnings("restriction")
 public abstract class AbstractProjectSetTableDetail extends
 		AbstractProjectSetPage {
 
@@ -88,16 +84,15 @@ public abstract class AbstractProjectSetTableDetail extends
 	private Composite createSummary(Composite body) {
 		Composite comp = new Composite(body, SWT.NONE);
 
-		Object adapter = comp.getAdapter(IWidgetGraphicsAdapter.class);
-		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
-		int[] percents = new int[] { 0, 5, 15 };
-		Display display = comp.getDisplay();
-		Color[] gradientColors = new Color[] {
-				Widgets.getColor(display, 220, 220, 220),
-				Widgets.getColor(display, 240, 240, 240),
-				Widgets.getColor(display, 255, 255, 255), };
-		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
-
+//		Object adapter = comp.getAdapter(IWidgetGraphicsAdapter.class);
+//		IWidgetGraphicsAdapter gfxAdapter = (IWidgetGraphicsAdapter) adapter;
+//		int[] percents = new int[] { 0, 5, 15 };
+//		Display display = comp.getDisplay();
+//		Color[] gradientColors = new Color[] {
+//				Widgets.getColor(display, 220, 220, 220),
+//				Widgets.getColor(display, 240, 240, 240),
+//				Widgets.getColor(display, 255, 255, 255), };
+//		gfxAdapter.setBackgroundGradient(gradientColors, percents, true);
 		comp.setLayout(new FormLayout());
 		Label sep = new Label(comp, SWT.NONE);
 		FormData fd = new FormData();
@@ -106,7 +101,7 @@ public abstract class AbstractProjectSetTableDetail extends
 		fd.left = new FormAttachment();
 		fd.height = 1;
 		fd.right = new FormAttachment(100);
-		sep.setBackground(Widgets.getColor(comp.getDisplay(), 192, 192, 192));
+		sep.setBackground(Widgets.getColor(comp.getDisplay(), 0xed, 0xed, 0xed));
 
 		// 根据column的数量来创建子容器
 		Table table = (Table) navi.getViewerControl().getViewer().getControl();

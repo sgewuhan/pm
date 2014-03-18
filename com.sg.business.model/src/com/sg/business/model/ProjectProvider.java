@@ -50,9 +50,10 @@ public abstract class ProjectProvider extends PrimaryObject {
 	public ProjectProvider() {
 		super();
 		sum = new ProjectSetSummaryData();
-		parameters = new Object[2];
-		parameters[0] = Calendar.getInstance();
-		parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
+		parameters = null;//默认显示截至当前的数据
+//		parameters = new Object[2];
+//		parameters[0] = Calendar.getInstance();
+//		parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
 	}
 
 	public abstract List<PrimaryObject> getProjectSet();
