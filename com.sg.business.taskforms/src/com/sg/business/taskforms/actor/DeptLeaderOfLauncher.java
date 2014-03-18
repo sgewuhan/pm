@@ -24,6 +24,7 @@ public class DeptLeaderOfLauncher implements IActorIdProvider {
 		Organization org = loginUser.getOrganization();
 		Role role = org.getRole(Role.ROLE_DEPT_MANAGER_ID, Organization.ROLE_NOT_SEARCH);
 		if (role != null) {
+			//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null && assignment.size() > 0) {
 				return ((RoleAssignment) assignment.get(0)).getUserid();

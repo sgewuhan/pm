@@ -3278,6 +3278,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		} else {
 			Role role = ModelService.createModelObject(Role.class, _id);
+			//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 			ralist = role.getAssignment();
 		}
 		List<User> result = new ArrayList<User>();
@@ -4289,6 +4290,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					RoleDefinition rd = ModelService.createModelObject(
 							RoleDefinition.class, value);
 					Role orole = rd.getOrganizationRole();
+					//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 					List<PrimaryObject> roleAss = orole.getAssignment();
 					if (!roleAss.isEmpty()) {
 						if (roleAss.size() > 1) {

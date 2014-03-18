@@ -76,6 +76,10 @@ public class WorkFlowSettingPage extends WizardPage {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				if (roled != null) {
 					Role role = roled.getOrganizationRole();
+					//TODO 根据roled的类型进行判断
+					//TODO 如果是项目时，使用ProjectRole.getAssignment();
+					
+					//TODO 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 					List<PrimaryObject> assignments = role.getAssignment();
 					for (int i = 0; i < assignments.size(); i++) {
 						AbstractRoleAssignment ass = (AbstractRoleAssignment) assignments

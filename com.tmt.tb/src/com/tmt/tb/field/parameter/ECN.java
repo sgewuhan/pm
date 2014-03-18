@@ -9,9 +9,6 @@ import com.sg.bpm.workflow.taskform.IProcessParameterDelegator;
 
 public class ECN implements IProcessParameterDelegator {
 
-	public ECN() {
-	}
-
 	@Override
 	public Object getValue(String processParameter, String taskDatakey,
 			PrimaryObject taskFormData) {

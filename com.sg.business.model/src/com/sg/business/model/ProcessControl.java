@@ -268,6 +268,10 @@ public abstract class ProcessControl implements IProcessControl {
 							if (((RoleDefinition) rd).isOrganizatioRole()) {
 								Role r = ((RoleDefinition) rd)
 										.getOrganizationRole();
+								//TODO 根据primaryObject的类型进行判断
+								//TODO 如果是项目时，使用ProjectRole.getAssignment();
+								
+								//TODO 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 								roleAssiment = r.getAssignment();
 							}
 						}
