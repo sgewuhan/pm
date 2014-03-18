@@ -24,12 +24,12 @@ public class DeptChangeReviewer extends AbstractRoleParameterDelegator {
 	}
 
 	@Override
-	protected int getSelectType() {
+	protected int getSelectType(Object type) {
 		return Organization.ROLE_SEARCH_UP;
 	}
 
 	@Override
-	protected String getRoldNumber() {
+	protected String getRoldNumber(Object type) {
 		return IRoleConstance.ROLE_CHANGE_APPROVER_ID;
 	}
 

@@ -11,12 +11,12 @@ import com.sg.business.model.Role;
 public class DeptDirector extends AbstractRoleParameterDelegator {
 
 	@Override
-	protected String getRoldNumber() {
+	protected String getRoldNumber(Object type) {
 		return Role.ROLE_DEPT_MANAGER_ID;
 	}
 
 	@Override
-	protected int getSelectType() {
+	protected int getSelectType(Object type) {
 		return Organization.ROLE_SEARCH_UP;
 	}
 

@@ -12,12 +12,12 @@ public class ProjectAdmin  extends AbstractRoleParameterDelegator {
 
 
 	@Override
-	protected String getRoldNumber() {
+	protected String getRoldNumber(Object type) {
 		return Role.ROLE_PROJECT_ADMIN_ID;
 	}
 
 	@Override
-	protected int getSelectType() {
+	protected int getSelectType(Object type) {
 		return Organization.ROLE_SEARCH_UP;
 	}
 

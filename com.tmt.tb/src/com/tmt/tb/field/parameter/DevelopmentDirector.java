@@ -12,12 +12,12 @@ public class DevelopmentDirector extends AbstractRoleParameterDelegator {
 
 
 	@Override
-	protected String getRoldNumber() {
+	protected String getRoldNumber(Object type) {
 		return IRoleConstance.ROLE_DEVELOPMENTDIRECTOR_ID;
 	}
 
 	@Override
-	protected int getSelectType() {
+	protected int getSelectType(Object type) {
 		return Organization.ROLE_SEARCH_UP;
 	}
 
