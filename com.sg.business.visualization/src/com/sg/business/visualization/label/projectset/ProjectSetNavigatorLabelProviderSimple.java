@@ -49,7 +49,7 @@ public class ProjectSetNavigatorLabelProviderSimple extends ColumnLabelProvider 
 
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;margin-top:4px'>"); //$NON-NLS-1$
+		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;margin-top:4px;cursor:pointer;'>"); //$NON-NLS-1$
 		sb.append(producttTypeProvider.getDesc());
 		sb.append("</div>"); //$NON-NLS-1$
 		return sb.toString();
@@ -58,7 +58,7 @@ public class ProjectSetNavigatorLabelProviderSimple extends ColumnLabelProvider 
 	private String getUserProjectSetText(UserProjectPerf po) {
 		UserProjectPerf pperf = (UserProjectPerf) po;
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;;margin-top:4px'>"); //$NON-NLS-1$
+		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;;margin-top:4px;cursor:pointer;'>"); //$NON-NLS-1$
 		sb.append(pperf.getDesc());
 		sb.append("</div>"); //$NON-NLS-1$
 		return sb.toString();
@@ -68,7 +68,7 @@ public class ProjectSetNavigatorLabelProviderSimple extends ColumnLabelProvider 
 		User user = (User) po;
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;;margin-top:4px'>"); //$NON-NLS-1$
+		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;;margin-top:4px;cursor:pointer;'>"); //$NON-NLS-1$
 
 		sb.append(user.getLabel());
 		sb.append("</div>"); //$NON-NLS-1$
@@ -82,7 +82,7 @@ public class ProjectSetNavigatorLabelProviderSimple extends ColumnLabelProvider 
 		StringBuffer sb = new StringBuffer();
 
 
-		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;margin-top:4px'>"); //$NON-NLS-1$
+		sb.append("<div style='font-family:Î¢ÈíÑÅºÚ;font-size:10pt;margin-top:4px;cursor:pointer'>"); //$NON-NLS-1$
 		sb.append(label);
 		sb.append("</div>"); //$NON-NLS-1$
 

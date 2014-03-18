@@ -5,9 +5,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Message;
+import com.sg.business.model.ProjectProvider;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
+import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
 
 public class PerformanceHome extends PrimaryObjectDetailFormView {
@@ -42,10 +45,29 @@ public class PerformanceHome extends PrimaryObjectDetailFormView {
 			return false;
 		}
 		Object element = ((IStructuredSelection) selection).getFirstElement();
-		return element instanceof Work || element instanceof WorkDefinition
-				|| element instanceof Message;
+		if( element instanceof Work || element instanceof WorkDefinition
+				|| element instanceof Message){
+			return true;
+		}else if(element instanceof PrimaryObject){
+			PrimaryObject po = (PrimaryObject) element;
+			ProjectProvider pp = po.getAdapter(ProjectProvider.class);
+			if(pp!=null){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
+	@Override
+	protected PrimaryObjectEditorInput getInput(PrimaryObject primary) {
+		ProjectProvider pp = primary.getAdapter(ProjectProvider.class);
+		if(pp!=null){
+			return super.getInput(pp);
+		}
+		return super.getInput(primary);
+	}
+	
 	@Override
 	public void doRefresh() {
 		if (isHome) {

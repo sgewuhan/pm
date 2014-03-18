@@ -60,12 +60,17 @@ public class ProductTypeProvider extends ProjectProvider {
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = projectCol
-					.find(getQueryCondtion(startDate, endDate));
+					.find(getQueryCondition(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
 						Project.class);
 				ProjectPresentation pres = project.getPresentation();
+				if(!pres.isPresentationAvailable()){
+					continue;
+				}
+				
+				
 				if (ILifecycle.STATUS_FINIHED_VALUE.equals(project
 						.getLifecycleStatus())) {
 					sum.finished++;
@@ -114,8 +119,8 @@ public class ProductTypeProvider extends ProjectProvider {
 		return result;
 	}
 
-	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
-		BasicDBObject dbo = super.getQueryCondtion(start, stop);
+	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+		BasicDBObject dbo = super.getQueryCondition(start, stop);
 		Object ids = getOrganizationIdCascade(null).toArray();
 		dbo.put(Project.F_PRODUCT_TYPE_OPTION, getDesc());
 		dbo.put(Project.F_LAUNCH_ORGANIZATION,

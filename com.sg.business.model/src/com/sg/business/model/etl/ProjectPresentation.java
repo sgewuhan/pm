@@ -193,4 +193,13 @@ public class ProjectPresentation implements IProjectETL {
 	}
 
 
+	/**
+	 * 呈现数据是否可用
+	 * @return
+	 */
+	public boolean isPresentationAvailable() {
+		return project !=null&&project.getValue(F_ETL) instanceof DBObject ;
+	}
+
+
 }

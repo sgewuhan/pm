@@ -34,12 +34,15 @@ public class UserProjectPerf extends ProjectProvider {
 			Date endDate = getEndDate();
 			DBCollection projectCol = getCollection(IModelConstants.C_PROJECT);
 			DBCursor cur = projectCol
-					.find(getQueryCondtion(startDate, endDate));
+					.find(getQueryCondition(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
 						Project.class);
 				ProjectPresentation pres = project.getPresentation();
+				if(!pres.isPresentationAvailable()){
+					continue;
+				}
 				pres.loadSummary(sum);
 				result.add(project);
 			}
@@ -52,7 +55,7 @@ public class UserProjectPerf extends ProjectProvider {
 		return result;
 	}
 
-	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
+	protected BasicDBObject getQueryCondition(Date start, Date stop) {
 		List<ObjectId> projectidlist = getAllProjectId();
 		BasicDBObject dbo = new BasicDBObject();
 		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist)); //$NON-NLS-1$

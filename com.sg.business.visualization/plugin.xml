@@ -992,6 +992,37 @@
                title="%navigatorpage.title.7">
          </navigatorpage>
       </editor>
+      <editor
+            collectionName="projectprovider"
+            dbName="pm2"
+            id="editor.visualization.projectset.home"
+            memo="首页用"
+            name="%editor.name">
+         <navigatorpage
+               id="projectset.info"
+               navigatorId="vis.projectset"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetContent"
+               title="%navigatorpage.title">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.schedual"
+               navigatorId="vis.projectset.schedual"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardSchedual"
+               title="%navigatorpage.title.0">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.budgetandinvestment"
+               navigatorId="vis.projectset.budgetandinvestment"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardBudInv"
+               title="%navigatorpage.title.1">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.revenue"
+               navigatorId="vis.projectset.revenue"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardRevenue"
+               title="%navigatorpage.title.2">
+         </navigatorpage>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.menus">

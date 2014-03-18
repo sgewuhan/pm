@@ -161,7 +161,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 	}
 
 	// private long getCountOfYear(Organization organization) {
-	// long cnt = projectCol.count(getQueryCondtion(organization));
+	// long cnt = projectCol.count(getQueryCondition(organization));
 	// return cnt;
 	// }
 	//
@@ -175,7 +175,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 	// }
 
 	// private void setCountOfYear(Organization organization) {
-	// long count = projectCol.count(getQueryCondtion(organization));
+	// long count = projectCol.count(getQueryCondition(organization));
 	// cnt += count;
 	// List<PrimaryObject> childrenOrganization = organization
 	// .getChildrenOrganization();
@@ -198,7 +198,7 @@ public class ProjectSetNavigatorLabelProvider extends ColumnLabelProvider {
 	//
 	// }
 
-	// private DBObject getQueryCondtion(Organization organization) {
+	// private DBObject getQueryCondition(Organization organization) {
 	// Calendar calendar = Calendar.getInstance();
 	// calendar.set(Calendar.MONTH, 0);
 	// calendar.set(Calendar.DATE, 1);
