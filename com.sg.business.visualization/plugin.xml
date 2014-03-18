@@ -248,6 +248,10 @@
             id="vis.projectset.costdetail"
             table="vis.projectset.costdetail">
       </navigator>
+      <navigator
+            id="vis.projectset.navigator.home"
+            tree="vis.projectset.navigator.home">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -274,6 +278,41 @@
          <column
                column="desc"
                labelProvider="com.sg.business.visualization.label.projectset.ProjectSetNavigatorLabelProvider"
+               name="%column.name"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_projectmanager">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="organization"
+            contentProvider="com.sg.business.visualization.data.ProjectSetContentProvider"
+            customItemHeight="40"
+            dataSet="com.sg.business.visualization.data.VisNavigatorDataSet"
+            dbName="pm2"
+            deleteDelegator="com.sg.business.visualization.delegator.UserProjectPerfDel"
+            dropTargetListener="com.sg.business.visualization.view.DropProjectToOwnerSet"
+            headerVisiable="false"
+            id="vis.projectset.navigator.home"
+            idfield="_id"
+            lineVisiable="false"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectSetNavigatorLabelProviderSimple"
                name="%column.name"
                style="SWT.LEFT"
                type="String"
