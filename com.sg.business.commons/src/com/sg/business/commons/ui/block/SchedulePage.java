@@ -88,7 +88,7 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
-		fd.height = 40;
+		fd.height = 32;
 
 		Control grsphic = createGraphicBlock(parent);
 		fd = new FormData();
@@ -349,12 +349,12 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 		sb.append("width:500px;");
 		sb.append("height:36px;" + "margin:1px;");
 		sb.append("'>");
-		sb.append("<div style='display:block;width:4px; height:36px;  "
+		sb.append("<div style='display:block;width:4px; height:28px;  "
 				+ "float:left;background:" + color + ";'>");
 		sb.append("</div>");
 		sb.append("<div style='" + "display:-moz-inline-box; "
-				+ "display:inline-block;" + "height:36px;" + "color:#909090;"
-				+ "font-family:微软雅黑;font-size:19pt; '>");
+				+ "display:inline-block;" + "height:28px;" + "color:#909090;"
+				+ "font-family:微软雅黑;font-size:14pt; '>");
 		if (reserved > 0) {
 			sb.append("您需要处理的工作" + reserved + "件");
 			if (overSchedule + overScheduleEst > 0) {

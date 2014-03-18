@@ -54,8 +54,8 @@ public class ListBoardPage extends TabBlockPage {
 	private void init() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, -1);
-		// year = cal.get(Calendar.YEAR);
-		year = 2013;
+		 year = cal.get(Calendar.YEAR);
+//		year = 2013;
 		month = cal.get(Calendar.MONTH) + 1;
 		String consignerId = context.getConsignerId();
 		User user = UserToolkit.getUserById(consignerId);
@@ -137,7 +137,7 @@ public class ListBoardPage extends TabBlockPage {
 
 		result.add(userNumbers);
 		result.add(results);
-		return null;
+		return result;
 	}
 
 	private Object[] getTopListByPriject() {
@@ -188,6 +188,10 @@ public class ListBoardPage extends TabBlockPage {
 	protected void doDisplayData(Object data) {
 		if (data instanceof List) {
 			viewer.setInput((List<Object[]>) data);
+//			viewer.setYear(year);
+			viewer.setMonth(month);
+			viewer.setOrganization(org);
+			viewer.updateLabel(locale);
 		}
 	}
 
