@@ -1,4 +1,4 @@
-package com.sg.business.visualization.ui;
+package com.sg.business.commons.ui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.PlatformUI;
 
 import com.mobnut.commons.javascript.JavaScriptEvaluator;
 import com.mobnut.db.DBActivator;
@@ -24,12 +24,12 @@ import com.sg.widgets.MessageUtil;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.MultilineInputDialog;
 
-public class CheckFlash extends AbstractHandler {
+public class CheckJS extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		Shell shell = HandlerUtil.getActiveShell(event);
+		Shell shell =PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		String js = "var r = project.getDesc();\n" //$NON-NLS-1$
 				+ "r+=user.getUserid();\n" //$NON-NLS-1$
 				+ "result.setValue(r);"; //$NON-NLS-1$

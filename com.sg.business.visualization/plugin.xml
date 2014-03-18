@@ -958,25 +958,6 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="toolbar:main?before=create">
-         <command
-               commandId="visualization.command.demo1"
-               icon="image/preview_24.png"
-               label="%command.label"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="activeWorkbenchWindow.activePerspective">
-                  <equals
-                        value="perspective.system">
-                  </equals>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
             locationURI="toolbar:main?after=common.separator">
          <command
                commandId="visualization.command.projectset"
@@ -1097,10 +1078,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
-      <handler
-            class="com.sg.business.visualization.ui.CheckFlash"
-            commandId="visualization.command.demo1">
-      </handler>
       <handler
             class="com.sg.business.visualization.view.handler.ProjectSetAdd"
             commandId="visualization.command.projectset">
