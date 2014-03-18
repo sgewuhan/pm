@@ -25,6 +25,7 @@ public abstract class ActorOfRole implements IActorIdProvider {
 			if(org!=null){
 				Role role = org.getRole(getRoleId(), getSearchMethod());
 				if (role != null) {
+					//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 					List<PrimaryObject> assignment = role.getAssignment();
 					if (assignment != null && assignment.size() > 0) {
 						return ((RoleAssignment) assignment.get(0)).getUserid();

@@ -117,6 +117,7 @@ public abstract class TeamControl extends OrganizationControl {
 				Role role = org
 						.getRole(roleNumber, Organization.ROLE_SEARCH_UP);
 				if (role != null) {
+					//TODO 
 					List<PrimaryObject> ralist = role.getAssignment();
 					if (ralist != null) {
 						for (int i = 0; i < ralist.size(); i++) {
@@ -154,6 +155,7 @@ public abstract class TeamControl extends OrganizationControl {
 				if (role == null) {
 					continue;
 				}
+				//TODO
 				List<PrimaryObject> ralist = role.getAssignment();
 				if (ralist == null || ralist.isEmpty()) {
 					continue;

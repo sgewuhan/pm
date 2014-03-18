@@ -1,23 +1,93 @@
 package com.sg.business.model;
 
 public class RoleParameter {
-
 	/**
-	 * 适用所有情况
+	 * 适用范围，项目
 	 */
-	public static final String ASSIGNMENT_USERID = "userIdList";
+	public static final String TYPE_PROJECT = "typeproject";
+	
+	/**
+	 * 适用范围，工作
+	 */
+	public static final String TYPE_WORK = "typework";
+	
+	/**
+	 * 适用范围，工作中的流程
+	 */
+	public static final String TYPE_WORK_PROCESS = "typeprocess";
+	
+	/**
+	 * 适用范围
+	 */
+	public static final String TYPE = "type";
+	
 
 	/**
-	 * 用于项目取角色成员
+	 * 指派人员列表，适用所有情况
+	 */
+	public static final String USERID = "userIdList";
+
+	/**
+	 * 项目ID，用于项目取角色成员
 	 */
 	public static final String PROJECT_ID = "projectId";
+	/**
+	 * 项目，用于项目取角色成员
+	 */
 	public static final String PROJECT = "project";
-	public static final String CHARGER = "charger";
-	public static final String OPTION_PROJECT_STANDARD = "standardOption";
-	public static final String OPTION_PROJECT_PRODUCT = "productOption";
-	public static final String OPTION_PROJECT_TYPE = "projectTypeOption";
-	public static final String BUSINESS_ORGANIZATION = "businessOrganization";
-	public static final String FUNCTION_ORGANIZATION = "functionOrganization";
-	public static final String LAUNCH_ORGANIZATION = "launchOrganizationList";
+	/**
+	 * 项目负责人，用于项目取角色成员
+	 */
+	public static final String PROJECT_CHARGER = "charger";
+	/**
+	 * 项目的适用标准，用于项目取角色成员
+	 */
+	public static final String PROJECT_STANDARD_OPTION = "standardOption";
+	/**
+	 * 项目的产品类型，用于项目取角色成员
+	 */
+	public static final String PROJECT_PRODUCT_OPTION = "productOption";
+	/**
+	 * 项目的项目类型，用于项目取角色成员
+	 */
+	public static final String PROJECT_TYPE_OPTION = "projectTypeOption";
+	/**
+	 * 项目商务部门，用于项目取角色成员
+	 */
+	public static final String PROJECT_BUSINESS_ORGANIZATION = "businessOrganization";
+	/**
+	 * 项目管理部门，用于项目取角色成员
+	 */
+	public static final String PROJECT_FUNCTION_ORGANIZATION = "functionOrganization";
+	/**
+	 * 项目承担部门，用于项目取角色成员
+	 */
+	public static final String PROJECT_LAUNCH_ORGANIZATION = "launchOrganizationList";
 
+	/**
+	 * 工作ID，用于工作、流程取角色成员
+	 */
+	public static final String WORK_ID = "workId";
+	/**
+	 * 工作，用于工作、流程取角色成员
+	 */
+	public static final String WORK = "work";
+	/**
+	 * 工作负责人，用于工作、流程取角色成员
+	 */
+	public static final String WORK_CHARGER = "workCharger";
+	/**
+	 * 工作里程碑，用于工作、流程取角色成员
+	 */
+	public static final String WORK_MILESTONE = "milestone";
+	
+	/**
+	 * 工作类型，用于工作取角色成员
+	 */
+	public static final String WORK_TYPE = "worktype"; 
+	
+	/**
+	 * 流程变量，用于流程取角色成员
+	 */
+	public static final String PROCESS_INPUT = "processinput"; //$NON-NLS-1$
 }

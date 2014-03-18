@@ -203,7 +203,7 @@ public class Role extends PrimaryObject {
 		List<PrimaryObject> rs = getRelationById(F__ID,
 				RoleAssignment.F_ROLE_ID, RoleAssignment.class);
 		//TODO:
-		parameters.put(RoleParameter.ASSIGNMENT_USERID, rs);
+		parameters.put(RoleParameter.USERID, rs);
 		//×ª»»´¦Àí
 		Object projectId = parameters.get(RoleParameter.PROJECT_ID);
 		if(projectId instanceof ObjectId){

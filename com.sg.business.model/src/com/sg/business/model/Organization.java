@@ -1701,6 +1701,7 @@ public class Organization extends PrimaryObject {
 		Role role = getRole(roleNumber, selectType);
 		List<String> result = new ArrayList<String>();
 		if (role != null) {
+			//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 			List<PrimaryObject> assignment = role.getAssignment();
 			if (assignment != null) {
 				for (int i = 0; i < assignment.size(); i++) {

@@ -117,6 +117,7 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			RoleDefinition roledef = (RoleDefinition) roled;
 			Role role = roledef.getOrganizationRole();
 			if (role != null) {
+				//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
 				assignments = role.getAssignment();
 			}
 		}

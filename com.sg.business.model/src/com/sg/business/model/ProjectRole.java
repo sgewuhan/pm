@@ -73,6 +73,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		// 如果是系统角色，需要将该角色的用户添加到项目的参与者
 		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();
+			//TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
 			List<PrimaryObject> ass = role.getAssignment();
 			Project project = getProject();
 			project.doAddParticipateFromAssignment(ass);
@@ -238,6 +239,7 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	public List<PrimaryObject> getAssignment() {
 		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();
+			//TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入項目ID进行人员指派
 			return role.getAssignment();
 		} else {
 			return getRelationById(F__ID, ProjectRoleAssignment.F_ROLE_ID,

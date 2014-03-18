@@ -7,9 +7,6 @@ import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProfitRateOfHasApprove implements IProcessParameterDelegator {
 
-	public ProfitRateOfHasApprove() {
-	}
-
 	@Override
 	public Object getValue(String processParameter, String taskDatakey,
 			PrimaryObject taskFormData) {

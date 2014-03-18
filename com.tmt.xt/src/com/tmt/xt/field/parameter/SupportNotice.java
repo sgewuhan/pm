@@ -1,9 +1,7 @@
 package com.tmt.xt.field.parameter;
 
-import java.util.List;
-
 import com.mobnut.db.model.PrimaryObject;
-import com.sg.bpm.workflow.taskform.IProcessParameterDelegator;
+import com.sg.business.commons.field.processparameter.AbstractRoleParameterDelegator;
 import com.sg.business.model.Organization;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
@@ -11,14 +9,11 @@ import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class SupportNotice implements IProcessParameterDelegator {
-
-	public SupportNotice() {
-	}
+public class SupportNotice extends AbstractRoleParameterDelegator {
 
 	@Override
-	public Object getValue(String processParameter, String taskDatakey,
-			PrimaryObject taskFormData) {
+	protected Organization getOrganization(String processParameter,
+			String taskDatakey, PrimaryObject taskFormData) {
 		if (taskFormData instanceof TaskForm) {
 			TaskForm taskForm = (TaskForm) taskFormData;
 			try {
@@ -27,18 +22,22 @@ public class SupportNotice implements IProcessParameterDelegator {
 								new CurrentAccountContext());
 				User user = UserToolkit.getUserById(act_approve);
 				if (user != null) {
-					Organization org = user.getOrganization();
-					if (org != null) {
-						List<String> userIds = org.getRoleAssignmentUserIds(
-								IRoleConstance.ROLE_SUPPORT_NOTICE_ID,
-								Organization.ROLE_SEARCH_UP);
-						return userIds;
-					}
+					return user.getOrganization();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return "";
+		return null;
+	}
+
+	@Override
+	protected int getSelectType() {
+		return Organization.ROLE_SEARCH_UP;
+	}
+
+	@Override
+	protected String getRoldNumber() {
+		return IRoleConstance.ROLE_SUPPORT_NOTICE_ID;
 	}
 }

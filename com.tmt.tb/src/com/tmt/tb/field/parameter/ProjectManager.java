@@ -11,9 +11,6 @@ import com.sg.business.model.toolkit.UserToolkit;
 
 public class ProjectManager implements IProcessParameterDelegator {
 
-	public ProjectManager() {
-	}
-
 	@Override
 	public Object getValue(String processParameter, String taskDatakey,
 			PrimaryObject taskFormData) {

@@ -1453,6 +1453,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
 					Organization.ROLE_NOT_SEARCH);
 			if (role != null) {
+				//TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
 				List<PrimaryObject> assignmentList = role.getAssignment();
 				if (assignmentList != null && assignmentList.size() > 0) {
 					for (PrimaryObject po : assignmentList) {
@@ -1947,6 +1948,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 		Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
 				Organization.ROLE_NOT_SEARCH);
 		boolean b = true;
+		//TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
 		List<PrimaryObject> assignment = role.getAssignment();
 		for (PrimaryObject po : assignment) {
 			User user = (User) po;
