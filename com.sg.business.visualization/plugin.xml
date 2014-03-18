@@ -1022,6 +1022,13 @@
                pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardRevenue"
                title="%navigatorpage.title.2">
          </navigatorpage>
+         <pageAction
+               class="com.sg.business.visualization.action.ShowProjectSetFilter"
+               icon="image/cal_g_24.png"
+               id="visualization.showProjectSetFilter"
+               label="设置时间"
+               style="push">
+         </pageAction>
       </editor>
    </extension>
    <extension

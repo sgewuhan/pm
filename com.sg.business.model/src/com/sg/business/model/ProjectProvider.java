@@ -9,6 +9,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.util.Util;
+import org.eclipse.rap.rwt.RWT;
 
 import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.AggregationOutput;
@@ -50,10 +51,10 @@ public abstract class ProjectProvider extends PrimaryObject {
 	public ProjectProvider() {
 		super();
 		sum = new ProjectSetSummaryData();
-		parameters = null;//默认显示截至当前的数据
-//		parameters = new Object[2];
-//		parameters[0] = Calendar.getInstance();
-//		parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
+		parameters = null;// 默认显示截至当前的数据
+		// parameters = new Object[2];
+		// parameters[0] = Calendar.getInstance();
+		// parameters[1] = ProjectProvider.PARAMETER_SUMMARY_BY_YEAR;
 	}
 
 	public abstract List<PrimaryObject> getProjectSet();
@@ -99,14 +100,15 @@ public abstract class ProjectProvider extends PrimaryObject {
 		}
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == IEditorInputFactory.class) {
 			return (T) (new ProjectProviderEditorInputFactory(this));
-		}		return super.getAdapter(adapter);
+		}
+		return super.getAdapter(adapter);
 	}
+
 	/**
 	 * 获取查询参数
 	 * 
@@ -114,6 +116,39 @@ public abstract class ProjectProvider extends PrimaryObject {
 	 */
 	public Object[] getParameters() {
 		return this.parameters;
+	}
+
+	@Override
+	public String getLabel() {
+		String desc = getDesc();
+		return desc+getHeadParameterText()+"启动的项目";
+	}
+
+	public String getHeadParameterText() {
+		StringBuffer sb = new StringBuffer();
+		if (parameters != null) {
+			if (ProjectProvider.PARAMETER_SUMMARY_BY_YEAR.equals(parameters[1])) {
+				sb.append(((Calendar) parameters[0]).get(Calendar.YEAR));
+			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_QUARTER
+					.equals(parameters[1])) {
+				Calendar calendar = (Calendar) parameters[0];
+				int month = calendar.get(Calendar.MONTH);
+				sb.append(calendar.get(Calendar.YEAR) + "-Q" //$NON-NLS-1$
+						+ (1 + (1 + month) / 4));
+			} else if (ProjectProvider.PARAMETER_SUMMARY_BY_MONTH
+					.equals(parameters[1])) {
+				Calendar calendar = (Calendar) parameters[0];
+				// int month = calendar.get(Calendar.MONTH);
+				sb.append(calendar.get(Calendar.YEAR)
+						+ " "
+						+ calendar.getDisplayName(Calendar.MONTH,
+								Calendar.LONG, RWT.getLocale()));
+			}
+		} else {
+			sb.append(Messages.get().DurationSetting_11);
+		}
+
+		return sb.toString();
 	}
 
 	final protected Date getStartDate() throws Exception {

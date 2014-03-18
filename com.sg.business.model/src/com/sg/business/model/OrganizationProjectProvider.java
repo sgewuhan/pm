@@ -43,6 +43,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return Messages.get().OrganizationProjectProvider_0;
 	}
 
+	
 	@Override
 	public String getProjectSetCoverImage() {
 		return FileUtil.getImageURL("project_72.png", //$NON-NLS-1$
