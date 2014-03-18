@@ -1,7 +1,6 @@
 package com.sg.business.commons.ui.block;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,7 +32,7 @@ public class ListBoard {
 	private TableViewer rightViewer;
 	private Label leftLabel;
 	private Label rightLabel;
-//	private int year;
+	private int year;
 	private int month;
 	private Organization org;
 	private Label topLabel;
@@ -72,7 +71,7 @@ public class ListBoard {
 
 		fd = new FormData();
 		leftViewer = createTableViewer(composite, fd);
-		fd.left = new FormAttachment();
+		fd.left = new FormAttachment(0,10);
 		fd.right = new FormAttachment(50);
 		fd.top = new FormAttachment(leftLabel);
 		fd.bottom = new FormAttachment(100);
@@ -80,7 +79,7 @@ public class ListBoard {
 
 		fd = new FormData();
 		rightViewer = createTableViewer(composite, fd);
-		fd.left = new FormAttachment(50);
+		fd.left = new FormAttachment(50,10);
 		fd.right = new FormAttachment(100);
 		fd.top = new FormAttachment(rightLabel);
 		fd.bottom = new FormAttachment(100);
@@ -100,7 +99,7 @@ public class ListBoard {
 	}
 
 	private void createTableViewerColumn(TableViewer tv, final String color) {
-		TableViewerColumn col = new TableViewerColumn(tv, SWT.CENTER);
+		TableViewerColumn col = new TableViewerColumn(tv, SWT.LEFT);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -159,9 +158,9 @@ public class ListBoard {
 				}
 			});
 		}
-		col.getColumn().setWidth(200);
+		col.getColumn().setWidth(170);
 
-		col = new TableViewerColumn(tv, SWT.CANCEL);
+		col = new TableViewerColumn(tv, SWT.RIGHT);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -171,10 +170,10 @@ public class ListBoard {
 					if (profit != null) {
 						BigDecimal d = new BigDecimal(profit / 10000d);
 						StringBuffer sb = new StringBuffer();
-						sb.append("<span style='position:absolute; FONT-FAMILY:Œ¢»Ì—≈∫⁄;"
+						sb.append("<span style='FONT-FAMILY:Œ¢»Ì—≈∫⁄;"
 								+ "font-size:9pt;color:#"
 								+ color
-								+ ";text-align:right;'>");
+								+ ";'>");
 						sb.append("<b>");
 						sb.append(d.setScale(2, BigDecimal.ROUND_HALF_UP));
 						sb.append("</b>");
@@ -185,7 +184,7 @@ public class ListBoard {
 				return "";
 			}
 		});
-		col.getColumn().setWidth(40);
+		col.getColumn().setWidth(60);
 
 	}
 
@@ -229,9 +228,9 @@ public class ListBoard {
 		return sb.toString();
 	}
 
-//	public void setYear(int year) {
-//		this.year = year;
-//	}
+	public void setYear(int year) {
+		this.year = year;
+	}
 
 	protected void updateLabel(Locale locale) {
 		StringBuffer sb = new StringBuffer();
@@ -245,13 +244,11 @@ public class ListBoard {
 		sb.append("<div style='" + "display:-moz-inline-box; "
 				+ "display:inline-block;" + "height:28px;" + "color:#909090;"
 				+ "font-family:Œ¢»Ì—≈∫⁄;font-size:14pt; '>");
-//		sb.append(year);
-//		sb.append("ƒÍ");
 		sb.append(org.getLabel());
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.MONTH, month-1);
-		sb.append(cal
-				.getDisplayName(Calendar.MONTH, Calendar.LONG, locale));
+		sb.append(year);
+		sb.append("ƒÍ");
+		sb.append(month);
+		sb.append("‘¬");
 		sb.append("œ˙ €¿˚»Û≈≈√˚");
 		sb.append("</div>");
 		topLabel.setText(sb.toString());

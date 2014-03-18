@@ -9,16 +9,21 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.DBActivator;
+import com.mobnut.design.ICSSConstants;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -50,6 +55,8 @@ public class RevenuePage extends TabBlockPage implements
 	private DBCollection projectCol;
 
 	private DBCollection projectMonthDataCol;
+
+	private Calendar now;
 
 	// private static String[] MONTHS = new String[] { "一月份", "二月份", "三月份",
 	// "四月份",
@@ -127,7 +134,57 @@ public class RevenuePage extends TabBlockPage implements
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
 		fd.bottom = new FormAttachment(100);
+		
+		createPageControl(parent);
 
+	}
+
+	private void createPageControl(Composite parent) {
+		Button pageRight = new Button(parent, SWT.NONE);
+		pageRight.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_RIGHT2_48);
+
+		FormData fd = new FormData();
+		pageRight.setLayoutData(fd);
+		fd.top = new FormAttachment(50,-24);
+		fd.right = new FormAttachment(100,-1);
+		fd.width = 48;
+		fd.height = 48;
+		pageRight.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pageRight();
+			}
+		});
+		
+	
+		Button pageLeft = new Button(parent, SWT.NONE);
+		pageLeft.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_LEFT2_48);
+
+		fd = new FormData();
+		pageLeft.setLayoutData(fd);
+		fd.top = new FormAttachment(50,-24);
+		fd.left = new FormAttachment(0,1);
+		fd.width = 48;
+		fd.height = 48;
+		pageLeft.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pageLeft();
+			}
+		});
+		pageRight.moveAbove(null);
+		pageLeft.moveAbove(null);
+	}
+	
+
+	protected void pageLeft() {
+		now.add(Calendar.MONTH, -1);
+		doRefresh();
+	}
+
+	protected void pageRight() {
+		now.add(Calendar.MONTH, 1);
+		doRefresh();
 	}
 
 	private void init() {
@@ -141,6 +198,9 @@ public class RevenuePage extends TabBlockPage implements
 
 		projectMonthDataCol = DBActivator.getCollection(IModelConstants.DB,
 				IModelConstants.C_PROJECT_MONTH_DATA);
+		
+		now = Calendar.getInstance();
+
 	}
 
 	@Override
@@ -156,15 +216,17 @@ public class RevenuePage extends TabBlockPage implements
 
 	@Override
 	protected Object doGetData() {
-		Calendar cal = Calendar.getInstance();
-
 		double[] sumSales = getProjectETL();
 
-		int year = cal.get(Calendar.YEAR);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, now.get(Calendar.MONTH));
+		cal.set(Calendar.YEAR, now.get(Calendar.YEAR));
+		
 		cal.set(Calendar.DAY_OF_MONTH, 1);
 		cal.add(Calendar.DAY_OF_MONTH, -1);
 
-		double[] monthSales = getProjectMonthETL(cal, year, sumSales);
+		double[] monthSales = getProjectMonthETL(cal, sumSales);
 
 		BigDecimal d = new BigDecimal((sumSales[0]) / 10000d);
 		sumSales[0] = d.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -182,8 +244,8 @@ public class RevenuePage extends TabBlockPage implements
 		 * 获取当前的月份
 		 */
 		// String month = MONTHS[cal.get(Calendar.MONTH)];
-		String month = cal
-				.getDisplayName(Calendar.MONTH, Calendar.LONG, locale);
+		String month = ""+(cal.get(Calendar.MONTH)+1);
+		String year = ""+(cal.get(Calendar.YEAR));
 		/*
 		 * 获取当前的月份，当前用户所有项目的销售收入
 		 */
@@ -234,6 +296,7 @@ public class RevenuePage extends TabBlockPage implements
 				monthSales[12], monthSales[13], monthSales[14] };
 
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("year", year);
 		dataMap.put("month", month);
 		dataMap.put("monthRevenue", monthRevenue);
 		dataMap.put("monthProfit", monthProfit);
@@ -247,7 +310,7 @@ public class RevenuePage extends TabBlockPage implements
 		return dataMap;
 	}
 
-	private double[] getProjectMonthETL(Calendar cal, int year,
+	private double[] getProjectMonthETL(Calendar cal,
 			double[] sumSales) {
 		// year = 2013;
 		double[] monthSales = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -278,7 +341,7 @@ public class RevenuePage extends TabBlockPage implements
 		query = new BasicDBObject();
 		query.put(
 				"$match",
-				new BasicDBObject().append(ProjectETL.F_YEAR, year).append(
+				new BasicDBObject().append(ProjectETL.F_YEAR, cal.get(Calendar.YEAR)).append(
 						"$or",
 						new BasicDBObject[] {
 								new BasicDBObject().append(Project.F_CHARGER,
@@ -357,6 +420,7 @@ public class RevenuePage extends TabBlockPage implements
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doDisplayData(Object data) {
+		String year = "";
 		String month = "";
 		String monthRevenue = "";
 		String monthProfit = "";
@@ -371,6 +435,7 @@ public class RevenuePage extends TabBlockPage implements
 
 		HashMap<String, Object> dataMap = (HashMap<String, Object>) data;
 		if (dataMap != null) {
+			year = (String) dataMap.get("year");
 			month = (String) dataMap.get("month");
 			monthRevenue = (String) dataMap.get("monthRevenue");
 			monthProfit = (String) dataMap.get("monthProfit");
@@ -392,8 +457,11 @@ public class RevenuePage extends TabBlockPage implements
 				+ "display:-moz-inline-box; display:inline-block; "
 				+ "height:100%;" + "width:280;" + "'>");
 		sb.append("<span style='margin:0 0 0 8;'>");
+		sb.append(year);
+		sb.append("年");
 		sb.append(month);
-		sb.append("项目当月各项经济指标");
+		sb.append("月");
+		sb.append("项目各项经济指标");
 		sb.append("</span>");
 		sb.append("</div>");
 
