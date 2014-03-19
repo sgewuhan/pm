@@ -44,7 +44,7 @@ public class MonthlyPerformanceHomePanel {
 		revenueBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
 		
 		Block overControlBlock = new OverControlChartBlock(panel);
-		overControlBlock.setTopicText("超期超支和超支的项目");
+		overControlBlock.setTopicText("超期和超支的项目");
 		overControlBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 //		TabBlock performenceBlock = new PerformanceBlock(panel);
@@ -60,7 +60,7 @@ public class MonthlyPerformanceHomePanel {
 		profitRateBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Block overSchedureBlock = new OverSchdureBlock(panel);
-		overSchedureBlock.setTopicText("正常和已经超期的项目");
+		overSchedureBlock.setTopicText("进度正常和超期的项目");
 		overSchedureBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		
