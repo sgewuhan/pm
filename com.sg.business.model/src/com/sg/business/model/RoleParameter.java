@@ -2,19 +2,24 @@ package com.sg.business.model;
 
 public class RoleParameter {
 	/**
+	 * 适用范围，不使用规则
+	 */
+	public static final int TYPE_NONE = 0;
+	
+	/**
 	 * 适用范围，项目
 	 */
-	public static final String TYPE_PROJECT = "typeproject";
+	public static final int TYPE_PROJECT = 1;
 	
 	/**
 	 * 适用范围，工作
 	 */
-	public static final String TYPE_WORK = "typework";
+	public static final int TYPE_WORK = 2;
 	
 	/**
 	 * 适用范围，工作中的流程
 	 */
-	public static final String TYPE_WORK_PROCESS = "typeprocess";
+	public static final int TYPE_WORK_PROCESS = 3;
 	
 	/**
 	 * 适用范围
@@ -87,7 +92,7 @@ public class RoleParameter {
 	public static final String WORK_TYPE = "worktype"; 
 	
 	/**
-	 * 流程变量，用于流程取角色成员
+	 * 流程变量，用于流程取角色成员，暂时无法使用
 	 */
 	public static final String PROCESS_INPUT = "processinput"; //$NON-NLS-1$
 }

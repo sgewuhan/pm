@@ -3,6 +3,7 @@ package com.sg.business.commons.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -17,6 +18,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
+import com.sg.business.model.RoleParameter;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.nls.Messages;
@@ -29,17 +31,19 @@ public class CheckJS extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		Shell shell =PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getShell();
 		String js = "var r = project.getDesc();\n" //$NON-NLS-1$
 				+ "r+=user.getUserid();\n" //$NON-NLS-1$
 				+ "result.setValue(r);"; //$NON-NLS-1$
-		MultilineInputDialog ip = new MultilineInputDialog(shell, Messages.get().CheckFlash_0,
-				Messages.get().CheckFlash_1, js, null);
+		MultilineInputDialog ip = new MultilineInputDialog(shell,
+				Messages.get().CheckFlash_0, Messages.get().CheckFlash_1, js,
+				null);
 		int ok = ip.open();
 		if (ok == MultilineInputDialog.OK) {
 			evaluate(ip.getValue());
 		}
-		
+
 		// JOFCDemo d = new JOFCDemo(shell,SWT.SHELL_TRIM);
 		// d.doLoadPie();
 		// d.open();
@@ -48,17 +52,75 @@ public class CheckJS extends AbstractHandler {
 
 	private void evaluate(String js) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		DBCollection col = DBActivator.getCollection(IModelConstants.DB, IModelConstants.C_PROJECT);
+		DBCollection col = DBActivator.getCollection(IModelConstants.DB,
+				IModelConstants.C_PROJECT);
 		DBObject dbo = col.findOne();
-		Project project = ModelService.createModelObject(dbo,Project.class);
-		parameters.put("project", project); //$NON-NLS-1$
+		// 转换处理
+		Object projectId = dbo.get(Project.F__ID);
+		parameters.put(RoleParameter.PROJECT_ID, projectId);
+		if (projectId instanceof ObjectId) {
+			Project project = ModelService.createModelObject(Project.class,
+					(ObjectId) projectId);
+			parameters.put(RoleParameter.PROJECT, project);
+			parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
+					project.getBusinessOrganization());
+			parameters.put(RoleParameter.PROJECT_CHARGER, project.getCharger());
+			parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
+					project.getFunctionOrganization());
+			parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
+					project.getLaunchOrganization());
+			parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
+					project.getProductTypeOptions());
+			parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
+					project.getStandardSetOptions());
+			parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
+					project.getProjectTypeOptions());
+		}
+		// 转换处理
+		// Object workId = parameters.get(RoleParameter.WORK_ID);
+		// if (workId instanceof ObjectId) {
+		// Work work = ModelService.createModelObject(Work.class,
+		// (ObjectId) workId);
+		// parameters.put(RoleParameter.WORK, work);
+		// parameters.put(RoleParameter.WORK_CHARGER,
+		// work.getCharger());
+		// parameters.put(RoleParameter.WORK_MILESTONE,
+		// work.isMilestone());
+		// parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+		// }
+		// 转换处理
+		// Object workId = parameters.get(RoleParameter.WORK_ID);
+		// if (workId instanceof ObjectId) {
+		// Work work = ModelService.createModelObject(Work.class,
+		// (ObjectId) workId);
+		// parameters.put(RoleParameter.WORK, work);
+		// parameters.put(RoleParameter.WORK_CHARGER,
+		// work.getCharger());
+		// parameters.put(RoleParameter.WORK_MILESTONE,
+		// work.isMilestone());
+		// parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+		// // ProcessInstance executeProcess =
+		// // work.getExecuteProcess();
+		// //
+		// // try {
+		// // WorkflowProcessInstance workflowProcessInstance =
+		// // WorkflowService.getDefault().getProcessInstance(
+		// // executeProcess.getProcessId(),
+		// // executeProcess.getId());
+		// // workflowProcessInstance.getVariable(arg0)
+		// // } catch (Exception e) {
+		// // e.printStackTrace();
+		// // }
+		// // parameters.put(RoleParameter.PROCESS_INPUT, );
+		// }
+
 		String userId = new CurrentAccountContext().getUserId();
 		User user = UserToolkit.getUserById(userId);
 		parameters.put("user", user); //$NON-NLS-1$
-		try{
+		try {
 			Object result = JavaScriptEvaluator.evaluate(js, parameters);
-			MessageUtil.showToast("Result:"+result, SWT.ICON_INFORMATION); //$NON-NLS-1$
-		}catch(Exception e){
+			MessageUtil.showToast("Result:" + result, SWT.ICON_INFORMATION); //$NON-NLS-1$
+		} catch (Exception e) {
 			MessageUtil.showToast(e);
 		}
 	}

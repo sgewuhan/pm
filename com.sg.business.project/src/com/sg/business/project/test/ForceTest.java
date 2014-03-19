@@ -30,8 +30,9 @@ public class ForceTest extends PropertyTester {
 						String consignerId = new CurrentAccountContext()
 								.getConsignerId();
 						Organization org = project.getFunctionOrganization();
-						Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID, 0);
-						//TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
+						Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
+								Organization.ROLE_NOT_SEARCH);
+						// TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
 						List<PrimaryObject> assignmentList = role
 								.getAssignment();
 						if (assignmentList != null && assignmentList.size() > 0) {
