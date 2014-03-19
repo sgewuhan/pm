@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home;
+package com.sg.business.commons.ui.home;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
@@ -18,7 +18,7 @@ import com.sg.widgets.block.Block;
 import com.sg.widgets.block.tab.TabBlock;
 import com.sg.widgets.part.IRefreshablePart;
 
-public class PerformanceHomePanel {
+public class GenericHomePanel {
 
 	private Composite panel;
 	private int partHeight;
@@ -30,7 +30,7 @@ public class PerformanceHomePanel {
 	 * 
 	 * @param panel
 	 */
-	public PerformanceHomePanel(Composite parent) {
+	public GenericHomePanel(Composite parent) {
 		Rectangle bounds = parent.getDisplay().getBounds();
 		partHeight = bounds.height - 61;
 

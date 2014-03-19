@@ -1632,20 +1632,5 @@
             noticeCreator="com.mobnut.portal.notice.ImageNoticeCreator">
       </notice>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            class="com.sg.business.pm2.home.BasicHome"
-            id="pm2.work.detail"
-            name="HOME"
-            restorable="true">
-      </view>
-      <view
-            class="com.sg.business.pm2.home.PerformanceHome"
-            id="pm2.performance.detail"
-            name="HOME"
-            restorable="true">
-      </view>
-   </extension>
 
 </plugin>

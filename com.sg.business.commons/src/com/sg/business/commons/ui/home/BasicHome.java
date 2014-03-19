@@ -1,4 +1,4 @@
-package com.sg.business.pm2.home;
+package com.sg.business.commons.ui.home;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
