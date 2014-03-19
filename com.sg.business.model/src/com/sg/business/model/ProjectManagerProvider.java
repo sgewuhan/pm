@@ -54,12 +54,15 @@ public class ProjectManagerProvider extends ProjectProvider {
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = projectCol
-					.find(getQueryCondtion(startDate, endDate));
+					.find(getQueryCondition(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
 						Project.class);
 				ProjectPresentation pres = project.getPresentation();
+				if(!pres.isPresentationAvailable()){
+					continue;
+				}
 				pres.loadSummary(sum);
 				result.add(project);
 			}
@@ -74,9 +77,9 @@ public class ProjectManagerProvider extends ProjectProvider {
 		return result;
 	}
 
-	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
-//		return super.getQueryCondtion(start, stop).append(Project.F_CHARGER, user.getUserid());
-		BasicDBObject scond = super.getQueryCondtion(start, stop);
+	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+//		return super.getQueryCondition(start, stop).append(Project.F_CHARGER, user.getUserid());
+		BasicDBObject scond = super.getQueryCondition(start, stop);
 		scond.put("$or", new BasicDBObject[]{new BasicDBObject().append(Project.F_CHARGER, user.getUserid()),
 				new BasicDBObject().append(Project.F_BUSINESS_CHARGER, user.getUserid())});
 		

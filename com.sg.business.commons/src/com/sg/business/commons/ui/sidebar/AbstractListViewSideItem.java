@@ -150,4 +150,9 @@ public abstract class AbstractListViewSideItem implements ISidebarItem {
 		loading.moveBelow(null);
 	}
 
+	public Boolean isExpand() {
+		return null;
+	}
+
+
 }

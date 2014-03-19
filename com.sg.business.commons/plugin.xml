@@ -1816,6 +1816,12 @@
             id="homenavigator"
             name="Navigator">
       </view>
+      <view
+            allowMultiple="false"
+            class="com.sg.widgets.part.view.SideBarNavigator"
+            id="homenavigator2"
+            name="Navigator for Manager">
+      </view>
    </extension>
    <extension
          point="com.sg.widgets.sidebar">
@@ -1824,6 +1830,7 @@
          <expanditem
                content="com.sg.business.commons.ui.sidebar.Todolist"
                expanded="true"
+               expandedWhen="com.sg.business.commons.ui.sidebar.ExpandWhenHasItem"
                id="1"
                image="image/tasks2_w_32_48.png"
                label="%todolist">
@@ -1831,6 +1838,7 @@
          <expanditem
                content="com.sg.business.commons.ui.sidebar.Launchablelist"
                expanded="false"
+               expandedWhen="com.sg.business.commons.ui.sidebar.ExpandWhenHasItem"
                id="2"
                image="image/tasks_w_32_48.png"
                label="%launchwork">
@@ -1839,6 +1847,44 @@
                content="com.sg.business.commons.ui.sidebar.Messagelist"
                expanded="false"
                id="3"
+               image="image/message_w_32_48.png"
+               label="%newmessage">
+         </expanditem>
+      </sidebar>
+      <sidebar
+            id="homenavigator2">
+         <expanditem
+               expanded="true"
+               id="0"
+               image="image/chart_w_32_48.png"
+               label="%performence"
+               navigatorId="vis.projectset.navigator">
+         </expanditem>
+         <expanditem
+               expanded="false"
+               id="1"
+               image="image/list_w_32_48.png"
+               label="%ppm"
+               navigatorId="vis.projectset.navigator.home">
+         </expanditem>
+         <expanditem
+               content="com.sg.business.commons.ui.sidebar.Todolist"
+               expanded="false"
+               id="2"
+               image="image/tasks2_w_32_48.png"
+               label="%todolist">
+         </expanditem>
+         <expanditem
+               content="com.sg.business.commons.ui.sidebar.Launchablelist"
+               expanded="false"
+               id="3"
+               image="image/tasks_w_32_48.png"
+               label="%launchwork">
+         </expanditem>
+         <expanditem
+               content="com.sg.business.commons.ui.sidebar.Messagelist"
+               expanded="false"
+               id="4"
                image="image/message_w_32_48.png"
                label="%newmessage">
          </expanditem>

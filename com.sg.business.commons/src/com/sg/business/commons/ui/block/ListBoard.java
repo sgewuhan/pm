@@ -2,6 +2,7 @@ package com.sg.business.commons.ui.block;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 
 import org.bson.types.ObjectId;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -19,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectPresentation;
@@ -30,42 +32,57 @@ public class ListBoard {
 	private TableViewer rightViewer;
 	private Label leftLabel;
 	private Label rightLabel;
+	private int year;
+	private int month;
+	private Organization org;
+	private Label topLabel;
 
 	public ListBoard(Composite composite) {
 		FormData fd = new FormData();
+		topLabel = new Label(composite, SWT.NONE);
+		topLabel.setLayoutData(fd);
+		HtmlUtil.enableMarkup(topLabel);
+		fd.top = new FormAttachment();
+		fd.left = new FormAttachment();
+		fd.right = new FormAttachment(100);
+		fd.height = 32;
+		
+		fd = new FormData();
 		leftLabel = new Label(composite, SWT.NONE);
 		leftLabel.setLayoutData(fd);
 		HtmlUtil.enableMarkup(leftLabel);
 
-		fd.top = new FormAttachment();
+		fd.top = new FormAttachment(topLabel);
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(50);
-		fd.bottom = new FormAttachment(25);
+//		fd.bottom = new FormAttachment(25);
+		fd.height = 36;
 		
 		
 		rightLabel = new Label(composite,SWT.NONE);
+		fd = new FormData();
 		rightLabel.setLayoutData(fd);
 		HtmlUtil.enableMarkup(rightLabel);
-
-		fd.top = new FormAttachment();
-		fd.left = new FormAttachment(50,1);
-		fd.right = new FormAttachment(100,0);
-		fd.bottom = new FormAttachment(25);
+		fd.top = new FormAttachment(topLabel);
+		fd.left = new FormAttachment(50);
+		fd.right = new FormAttachment(100);
+//		fd.bottom = new FormAttachment(25);
+		fd.height = 36;
 
 		fd = new FormData();
 		leftViewer = createTableViewer(composite, fd);
-		fd.left = new FormAttachment(0, 0);
-		fd.right = new FormAttachment(50, -1);
-		fd.top = new FormAttachment(leftLabel, 0);
-		fd.bottom = new FormAttachment(100, -1);
+		fd.left = new FormAttachment(0,10);
+		fd.right = new FormAttachment(50);
+		fd.top = new FormAttachment(leftLabel);
+		fd.bottom = new FormAttachment(100);
 		createTableViewerColumn(leftViewer, "006633");
 
 		fd = new FormData();
 		rightViewer = createTableViewer(composite, fd);
-		fd.left = new FormAttachment(50, 1);
-		fd.right = new FormAttachment(100, 0);
-		fd.top = new FormAttachment(rightLabel, 0);
-		fd.bottom = new FormAttachment(100, -1);
+		fd.left = new FormAttachment(50,10);
+		fd.right = new FormAttachment(100);
+		fd.top = new FormAttachment(rightLabel);
+		fd.bottom = new FormAttachment(100);
 		createTableViewerColumn(rightViewer, "006633");
 
 	}
@@ -76,13 +93,13 @@ public class ListBoard {
 		table.setLayoutData(fd);
 		HtmlUtil.enableMarkup(table);
 
-		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 20);
+		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 28);
 		tv.setContentProvider(ArrayContentProvider.getInstance());
 		return tv;
 	}
 
 	private void createTableViewerColumn(TableViewer tv, final String color) {
-		TableViewerColumn col = new TableViewerColumn(tv, SWT.CENTER);
+		TableViewerColumn col = new TableViewerColumn(tv, SWT.LEFT);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -91,7 +108,7 @@ public class ListBoard {
 					int number = (int) objects[2];
 					StringBuffer sb = new StringBuffer();
 					sb.append("<span style='position:absolute;FONT-FAMILY:微软雅黑;"
-							+ "font-size:9pt;color:#"
+							+ "font-size:11pt;color:#"
 							+ color
 							+ ";text-align:center;'>");
 					sb.append("<b>");
@@ -141,9 +158,9 @@ public class ListBoard {
 				}
 			});
 		}
-		col.getColumn().setWidth(200);
+		col.getColumn().setWidth(170);
 
-		col = new TableViewerColumn(tv, SWT.CANCEL);
+		col = new TableViewerColumn(tv, SWT.RIGHT);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -153,10 +170,10 @@ public class ListBoard {
 					if (profit != null) {
 						BigDecimal d = new BigDecimal(profit / 10000d);
 						StringBuffer sb = new StringBuffer();
-						sb.append("<span style='position:absolute; FONT-FAMILY:微软雅黑;"
+						sb.append("<span style='FONT-FAMILY:微软雅黑;"
 								+ "font-size:9pt;color:#"
 								+ color
-								+ ";text-align:right;'>");
+								+ ";'>");
 						sb.append("<b>");
 						sb.append(d.setScale(2, BigDecimal.ROUND_HALF_UP));
 						sb.append("</b>");
@@ -167,7 +184,7 @@ public class ListBoard {
 				return "";
 			}
 		});
-		col.getColumn().setWidth(40);
+		col.getColumn().setWidth(60);
 
 	}
 
@@ -184,9 +201,9 @@ public class ListBoard {
 
 			// 显示用户名称
 			String userHtmlLabel = user.getUsername();
-			sb.append("<b>");
+//			sb.append("<b>");
 			sb.append(userHtmlLabel);
-			sb.append("</b>");
+//			sb.append("</b>");
 
 			sb.append("</span>");
 			return sb.toString();
@@ -203,12 +220,72 @@ public class ListBoard {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt;color:#333333;margin-left:0; display:block; width=1000px'>"); //$NON-NLS-1$
 		// 显示项目名称
-		sb.append("<b>"); //$NON-NLS-1$
+//		sb.append("<b>"); //$NON-NLS-1$
 		sb.append(desc);
-		sb.append("</b>"); //$NON-NLS-1$
+//		sb.append("</b>"); //$NON-NLS-1$
 		sb.append("</span>"); //$NON-NLS-1$
 
 		return sb.toString();
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	protected void updateLabel(Locale locale) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div style='");
+		sb.append("width:500px;");
+		sb.append("height:36px;" + "margin:1px;");
+		sb.append("'>");
+		sb.append("<div style='display:block;width:4px; height:28px;  "
+				+ "float:left;background:" + "#33b5e5" + ";'>");
+		sb.append("</div>");
+		sb.append("<div style='" + "display:-moz-inline-box; "
+				+ "display:inline-block;" + "height:28px;" + "color:#909090;"
+				+ "font-family:微软雅黑;font-size:14pt; '>");
+		sb.append(org.getLabel());
+		sb.append(year);
+		sb.append("年");
+		sb.append(month);
+		sb.append("月");
+		sb.append("销售利润排名");
+		sb.append("</div>");
+		topLabel.setText(sb.toString());
+		sb = new StringBuffer();
+		sb.append("<div style='" + "font-family:微软雅黑;" + "margin:8;"
+				+ "width:100%;" + "'>");
+		sb.append("<div style='" + "font-size:11pt;" + "color:#6a6a6a;"
+				+ "border-bottom:1px dotted #cdcdcd;"
+				+ "display:-moz-inline-box; display:inline-block; "
+				+ "height:100%;" + "width:280;" + "'>");
+		sb.append("<span style='margin:0 0 0 8;'>");
+		sb.append("排名前十的项目负责人");
+		sb.append("</span>");
+		sb.append("</div>");
+		leftLabel.setText(sb.toString());
+		sb = new StringBuffer();
+		sb.append("<div style='" + "font-family:微软雅黑;" + "margin:8;"
+				+ "width:100%;" + "'>");
+		sb.append("<div style='" + "font-size:11pt;" + "color:#6a6a6a;"
+				+ "border-bottom:1px dotted #cdcdcd;"
+				+ "display:-moz-inline-box; display:inline-block; "
+				+ "height:100%;" + "width:280;" + "'>");
+		sb.append("<span style='margin:0 0 0 8;'>");
+		sb.append("排名前十的项目");
+		sb.append("</span>");
+		sb.append("</div>");
+		rightLabel.setText(sb.toString());
+
+		
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public void setOrganization(Organization org) {
+		this.org = org;
 	}
 
 }

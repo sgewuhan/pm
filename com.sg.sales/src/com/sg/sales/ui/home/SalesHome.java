@@ -8,9 +8,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import com.sg.business.model.Message;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
-import com.sg.widgets.part.view.PrimaryObjectDetailFormView;
+import com.sg.widgets.part.editor.DataObjectView;
 
-public class SalesHome extends PrimaryObjectDetailFormView {
+public class SalesHome extends DataObjectView {
 
 	private SalesHomePanel genericHomePanel;
 

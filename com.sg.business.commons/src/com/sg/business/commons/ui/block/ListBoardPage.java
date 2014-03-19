@@ -6,11 +6,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.DBActivator;
+import com.mobnut.design.ICSSConstants;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -44,6 +51,64 @@ public class ListBoardPage extends TabBlockPage {
 
 		viewer = createListViewer(parent);
 
+		createPageControl(parent);
+
+	}
+
+	private void createPageControl(Composite parent) {
+		Button pageRight = new Button(parent, SWT.NONE);
+		pageRight.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_RIGHT2_48);
+
+		FormData fd = new FormData();
+		pageRight.setLayoutData(fd);
+		fd.top = new FormAttachment(50, -24);
+		fd.right = new FormAttachment(100, -1);
+		fd.width = 48;
+		fd.height = 48;
+		pageRight.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pageRight();
+			}
+		});
+
+		Button pageLeft = new Button(parent, SWT.NONE);
+		pageLeft.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_LEFT2_48);
+
+		fd = new FormData();
+		pageLeft.setLayoutData(fd);
+		fd.top = new FormAttachment(50, -24);
+		fd.left = new FormAttachment(0, 1);
+		fd.width = 48;
+		fd.height = 48;
+		pageLeft.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pageLeft();
+			}
+		});
+		pageRight.moveAbove(null);
+		pageLeft.moveAbove(null);
+	}
+
+	protected void pageLeft() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month - 1);
+		calendar.add(Calendar.MONTH, -1);
+		year = calendar.get(Calendar.YEAR);
+		month = calendar.get(Calendar.MONTH) + 1;
+		doRefresh();
+	}
+
+	protected void pageRight() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month - 1);
+		calendar.add(Calendar.MONTH, 1);
+		year = calendar.get(Calendar.YEAR);
+		month = calendar.get(Calendar.MONTH) + 1;
+		doRefresh();
 	}
 
 	private ListBoard createListViewer(Composite parent) {
@@ -54,8 +119,8 @@ public class ListBoardPage extends TabBlockPage {
 	private void init() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, -1);
-		// year = cal.get(Calendar.YEAR);
-		year = 2013;
+		year = cal.get(Calendar.YEAR);
+		// year = 2013;
 		month = cal.get(Calendar.MONTH) + 1;
 		String consignerId = context.getConsignerId();
 		User user = UserToolkit.getUserById(consignerId);
@@ -137,7 +202,7 @@ public class ListBoardPage extends TabBlockPage {
 
 		result.add(userNumbers);
 		result.add(results);
-		return null;
+		return result;
 	}
 
 	private Object[] getTopListByPriject() {
@@ -188,6 +253,10 @@ public class ListBoardPage extends TabBlockPage {
 	protected void doDisplayData(Object data) {
 		if (data instanceof List) {
 			viewer.setInput((List<Object[]>) data);
+			 viewer.setYear(year);
+			viewer.setMonth(month);
+			viewer.setOrganization(org);
+			viewer.updateLabel(locale);
 		}
 	}
 

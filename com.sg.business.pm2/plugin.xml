@@ -11,6 +11,12 @@
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
+            icon="image/home_w_24.png"
+            id="perspective.performance.home"
+            name="主页">
+      </perspective>
+      <perspective
+            class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.project.charger"
             name="%perspective.name.6">
       </perspective>
@@ -126,6 +132,14 @@
             showText="false">
       </perspectiveDefinition>
       <perspectiveDefinition
+            hideInHead="false"
+            id="perspective.performance.home"
+            image="image/home_w_24.png"
+            name="Home"
+            showImage="true"
+            showText="false">
+      </perspectiveDefinition>
+      <perspectiveDefinition
             hideInHead="true"
             id="perspective.bulletinboard"
             name="%perspective.name.10"
@@ -158,6 +172,32 @@
          <view
                closeable="false"
                id="pm2.work.detail"
+               minimized="false"
+               moveable="false"
+               ratio="0.3"
+               relationship="top"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="perspective.performance.home">
+         <view
+               closeable="false"
+               id="homenavigator2"
+               minimized="true"
+               moveable="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true">
+         </view>
+         <view
+               closeable="false"
+               id="pm2.performance.detail"
                minimized="false"
                moveable="false"
                ratio="0.3"
@@ -827,17 +867,6 @@
                standalone="false"
                visible="true">
          </view>
-         <view
-               closeable="false"
-               id="vault.documents.contextsearch"
-               minimized="false"
-               moveable="false"
-               relationship="stack"
-               relative="vault.documents"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="perspective.management">
@@ -1028,6 +1057,16 @@
          <perspective
                default="true"
                id="perspective.work.home">
+         </perspective>
+      </scenario>
+      <scenario
+            id="manager.home"
+            index="10"
+            isDefault="true"
+            name="管理者首页">
+         <perspective
+               default="true"
+               id="perspective.performance.home">
          </perspective>
       </scenario>
       <scenario
@@ -1598,6 +1637,12 @@
       <view
             class="com.sg.business.pm2.home.BasicHome"
             id="pm2.work.detail"
+            name="HOME"
+            restorable="true">
+      </view>
+      <view
+            class="com.sg.business.pm2.home.PerformanceHome"
+            id="pm2.performance.detail"
             name="HOME"
             restorable="true">
       </view>

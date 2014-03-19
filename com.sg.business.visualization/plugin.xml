@@ -248,6 +248,10 @@
             id="vis.projectset.costdetail"
             table="vis.projectset.costdetail">
       </navigator>
+      <navigator
+            id="vis.projectset.navigator.home"
+            tree="vis.projectset.navigator.home">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -274,6 +278,41 @@
          <column
                column="desc"
                labelProvider="com.sg.business.visualization.label.projectset.ProjectSetNavigatorLabelProvider"
+               name="%column.name"
+               style="SWT.LEFT"
+               type="String"
+               width="-1">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_projectmanager">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="true"
+            canEdit="false"
+            canRead="false"
+            collectionName="organization"
+            contentProvider="com.sg.business.visualization.data.ProjectSetContentProvider"
+            customItemHeight="40"
+            dataSet="com.sg.business.visualization.data.VisNavigatorDataSet"
+            dbName="pm2"
+            deleteDelegator="com.sg.business.visualization.delegator.UserProjectPerfDel"
+            dropTargetListener="com.sg.business.visualization.view.DropProjectToOwnerSet"
+            headerVisiable="false"
+            id="vis.projectset.navigator.home"
+            idfield="_id"
+            lineVisiable="false"
+            markupEnabled="true"
+            multiSelection="false"
+            virtual="true">
+         <column
+               column="desc"
+               labelProvider="com.sg.business.visualization.label.projectset.ProjectSetNavigatorLabelProviderSimple"
                name="%column.name"
                style="SWT.LEFT"
                type="String"
@@ -952,6 +991,44 @@
                pageBodyPartCreater="com.sg.business.visualization.editor.project.ProjectDashboardRevenue"
                title="%navigatorpage.title.7">
          </navigatorpage>
+      </editor>
+      <editor
+            collectionName="projectprovider"
+            dbName="pm2"
+            id="editor.visualization.projectset.home"
+            memo="首页用"
+            name="%editor.name">
+         <navigatorpage
+               id="projectset.info"
+               navigatorId="vis.projectset"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetContent"
+               title="%navigatorpage.title">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.schedual"
+               navigatorId="vis.projectset.schedual"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardSchedual"
+               title="%navigatorpage.title.0">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.budgetandinvestment"
+               navigatorId="vis.projectset.budgetandinvestment"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardBudInv"
+               title="%navigatorpage.title.1">
+         </navigatorpage>
+         <navigatorpage
+               id="projectset.revenue"
+               navigatorId="vis.projectset.revenue"
+               pageBodyPartCreater="com.sg.business.visualization.editor.projectset.ProjectSetDashboardRevenue"
+               title="%navigatorpage.title.2">
+         </navigatorpage>
+         <pageAction
+               class="com.sg.business.visualization.action.ShowProjectSetFilter"
+               icon="image/cal_g_24.png"
+               id="visualization.showProjectSetFilter"
+               label="设置时间"
+               style="push">
+         </pageAction>
       </editor>
    </extension>
    <extension

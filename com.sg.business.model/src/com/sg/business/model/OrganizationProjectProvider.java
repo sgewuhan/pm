@@ -43,6 +43,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return Messages.get().OrganizationProjectProvider_0;
 	}
 
+	
 	@Override
 	public String getProjectSetCoverImage() {
 		return FileUtil.getImageURL("project_72.png", //$NON-NLS-1$
@@ -57,12 +58,15 @@ public class OrganizationProjectProvider extends ProjectProvider {
 			Date startDate = getStartDate();
 			Date endDate = getEndDate();
 			DBCursor cur = projectCol
-					.find(getQueryCondtion(startDate, endDate));
+					.find(getQueryCondition(startDate, endDate));
 			while (cur.hasNext()) {
 				DBObject dbo = cur.next();
 				Project project = ModelService.createModelObject(dbo,
 						Project.class);
 				ProjectPresentation pres = project.getPresentation();
+				if (!pres.isPresentationAvailable()) {
+					continue;
+				}
 				pres.loadSummary(sum);
 				result.add(project);
 			}
@@ -121,7 +125,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	protected String getOrganizationFieldName() {
 		return Project.F_LAUNCH_ORGANIZATION;
 	}
-	
 
 	protected String getRelatedUserFieldName() {
 		return Project.F_CHARGER;
@@ -155,7 +158,6 @@ public class OrganizationProjectProvider extends ProjectProvider {
 		return set.toArray(new Object[0]);
 	}
 
-
 	@Override
 	public String getProjectSetName() {
 		return getDesc();
@@ -168,8 +170,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	 * @param stop
 	 * @return
 	 */
-	protected BasicDBObject getQueryCondtion(Date start, Date stop) {
-		return super.getQueryCondtion(start, stop).append(
+	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+		return super.getQueryCondition(start, stop).append(
 				getOrganizationFieldName(), new BasicDBObject().append("$in", //$NON-NLS-1$
 						getOrganizations(organization)));
 	}
@@ -229,8 +231,8 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	@Override
 	public List<ObjectId> getSalesAllProjectId() {
 		BasicDBObject query = new BasicDBObject();
-		query.put(Project.F_BUSINESS_ORGANIZATION, new BasicDBObject().append("$in",
-				getOrganizations(organization)));
+		query.put(Project.F_BUSINESS_ORGANIZATION, new BasicDBObject().append(
+				"$in", getOrganizations(organization)));
 		return projectCol.distinct(Project.F__ID, query);
 	}
 }

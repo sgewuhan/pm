@@ -63,7 +63,7 @@ public abstract class AbstractProjectSetPage implements
 				viewerControl.doReloadData(true);
 			}
 		}
-		if (filterLabel != null && !filterLabel.isDisposed()) {
+		if (filterLabel != null && !filterLabel.isDisposed()&&header!=null&&!header.isDisposed()) {
 			filterLabel.setText(getParameterText());
 			header.layout();
 		}
@@ -84,22 +84,22 @@ public abstract class AbstractProjectSetPage implements
 
 		body.setLayout(new FormLayout());
 		// 创建页头
-		header = createHeader(body);
-		FormData fd = new FormData();
-		header.setLayoutData(fd);
-		fd.top = new FormAttachment(0, 1);
-		fd.left = new FormAttachment(0, 1);
-		fd.right = new FormAttachment(100, -1);
-		fd.height = INFOBANNER_HEIGHT;
+//		header = createHeader(body);
+//		FormData fd = new FormData();
+//		header.setLayoutData(fd);
+//		fd.top = new FormAttachment(0);
+//		fd.left = new FormAttachment(0);
+//		fd.right = new FormAttachment(100);
+//		fd.height = INFOBANNER_HEIGHT;
 
 		// 创建内容区
 		Composite navigator = createContent(body);
-		fd = new FormData();
+		FormData fd = new FormData();
 		navigator.setLayoutData(fd);
 		fd.top = new FormAttachment(header, 0);
-		fd.left = new FormAttachment(0, 1);
-		fd.right = new FormAttachment(100, -1);
-		fd.bottom = new FormAttachment(100, -1);
+		fd.left = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(100);
 
 		// 管理navigator表格事件
 		handleNavigatorTableEvent();
