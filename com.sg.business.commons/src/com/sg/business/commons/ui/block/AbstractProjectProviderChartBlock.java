@@ -8,16 +8,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import com.sg.business.model.ProjectProvider;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.Block;
 
-public abstract class AbstractChartBlock extends Block {
+public abstract class AbstractProjectProviderChartBlock extends Block {
 
 	protected static final String PARA_CHART = "chart";
 	protected static final String PARA_LABEL = "label";
 	protected ChartCanvas graphicContent;
+	private ProjectProvider projectProvider;
 
-	public AbstractChartBlock(Composite parent) {
+	public AbstractProjectProviderChartBlock(Composite parent) {
 		super(parent);
 	}
 
@@ -64,6 +66,13 @@ public abstract class AbstractChartBlock extends Block {
 
 	protected abstract Chart doGetChart();
 	
+	public void setProjectProvider(ProjectProvider projectProvider) {
+		this.projectProvider = projectProvider;
+	}
+	
+	protected ProjectProvider getProjectProvider() {
+		return projectProvider;
+	}
 	
 
 }
