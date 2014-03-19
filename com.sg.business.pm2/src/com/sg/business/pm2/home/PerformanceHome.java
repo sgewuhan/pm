@@ -30,7 +30,7 @@ public class PerformanceHome extends DataObjectView {
 		cleanUI();
 		content.setLayout(new GridLayout());
 		homePanel = new PerformanceHomePanel(content);
-		content.layout(false,false);
+		content.layout(false, false);
 		super.goHome();
 	}
 
@@ -45,29 +45,33 @@ public class PerformanceHome extends DataObjectView {
 			return false;
 		}
 		Object element = ((IStructuredSelection) selection).getFirstElement();
-		if( element instanceof Work || element instanceof WorkDefinition
-				|| element instanceof Message){
+		if (element instanceof Work || element instanceof WorkDefinition
+				|| element instanceof Message) {
 			return true;
-		}else if(element instanceof PrimaryObject){
-			PrimaryObject po = (PrimaryObject) element;
-			ProjectProvider pp = po.getAdapter(ProjectProvider.class);
-			if(pp!=null){
+		} else if (element instanceof PrimaryObject) {
+			if (element instanceof ProjectProvider
+					|| ((PrimaryObject) element)
+							.getAdapter(ProjectProvider.class) != null) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	@Override
 	protected PrimaryObjectEditorInput getInput(PrimaryObject primary) {
-		ProjectProvider pp = primary.getAdapter(ProjectProvider.class);
-		if(pp!=null){
-			return super.getInput(pp);
+		if (primary instanceof ProjectProvider) {
+			return super.getInput(primary);
+		} else {
+			ProjectProvider pp = primary.getAdapter(ProjectProvider.class);
+			if (pp != null) {
+				return super.getInput(pp);
+			}
 		}
 		return super.getInput(primary);
 	}
-	
+
 	@Override
 	public void doRefresh() {
 		if (isHome) {

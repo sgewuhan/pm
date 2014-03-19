@@ -43,12 +43,12 @@
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis2.home"
-            name="%perspective.name.14">
+            name="%perspective.name.3">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
             id="perspective.vis2.home.sales"
-            name="绩效分析">
+            name="%perspective.name.3">
       </perspective>
       <perspective
             class="com.sg.widgets.perspective.EditorHidePerspective"
@@ -1099,8 +1099,8 @@
                id="perspective.vis2.home">
          </perspective>-->
          <perspective
-               default="true"
-               id="perspective.visualization">
+               default="false"
+               id="perspective.vis2.home">
          </perspective>
       </scenario>
       <!--<scenario
