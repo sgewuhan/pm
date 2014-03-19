@@ -13,15 +13,15 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.part.editor.DataObjectView;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public class PerformanceHome extends DataObjectView {
+public class MonthlyPerformanceHome extends DataObjectView {
 
-	private PerformanceHomePanel homePanel;
+	private MonthlyPerformanceHomePanel homePanel;
 
 	@Override
 	protected void initContent() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		homePanel = new PerformanceHomePanel(content);
+		homePanel = new MonthlyPerformanceHomePanel(content);
 		super.goHome();
 	}
 
@@ -29,7 +29,7 @@ public class PerformanceHome extends DataObjectView {
 	public void goHome() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		homePanel = new PerformanceHomePanel(content);
+		homePanel = new MonthlyPerformanceHomePanel(content);
 		content.layout(false, false);
 		super.goHome();
 	}
