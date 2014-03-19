@@ -33,4 +33,10 @@ public class DeptChangeReviewer extends AbstractRoleParameterDelegator {
 		return IRoleConstance.ROLE_CHANGE_APPROVER_ID;
 	}
 
+	@Override
+	protected Object setType(String processParameter, String taskDatakey,
+			PrimaryObject taskFormData) {
+		return null;
+	}
+
 }

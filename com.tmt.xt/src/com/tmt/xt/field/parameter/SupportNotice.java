@@ -40,4 +40,10 @@ public class SupportNotice extends AbstractRoleParameterDelegator {
 	protected String getRoldNumber(Object type) {
 		return IRoleConstance.ROLE_SUPPORT_NOTICE_ID;
 	}
+
+	@Override
+	protected Object setType(String processParameter, String taskDatakey,
+			PrimaryObject taskFormData) {
+		return null;
+	}
 }

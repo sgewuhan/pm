@@ -31,4 +31,10 @@ public class DataAudit extends AbstractRoleParameterDelegator {
 		return null;
 	}
 
+	@Override
+	protected Object setType(String processParameter, String taskDatakey,
+			PrimaryObject taskFormData) {
+		return null;
+	}
+
 }

@@ -117,6 +117,15 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		return hasChildrenWork();
 	}
 
+	public boolean isMilestone() {
+		return Boolean.TRUE.equals(getValue(F_MILESTONE));
+	}
+
+	public int getWorkType() {
+		return (int) (getValue(F_WORK_TYPE) == null ? WORK_TYPE_PROJECT
+				: getValue(F_WORK_TYPE));
+	}
+
 	/**
 	 * 返回工作定义在WBS中的编号<br/>
 	 * 层级+序号
@@ -424,8 +433,7 @@ public abstract class AbstractWork extends AbstractOptionFilterable implements
 		WriteResult ws;
 		for (int i = 0; i < children.size(); i++) {
 			AbstractWork child = (AbstractWork) children.get(i);
-			ws = col.update(
-					new BasicDBObject().append(F__ID, child.get_id()),
+			ws = col.update(new BasicDBObject().append(F__ID, child.get_id()),
 					new BasicDBObject().append("$set", //$NON-NLS-1$
 							new BasicDBObject().append(F_SEQ, new Integer(i))));
 			checkWriteResult(ws);

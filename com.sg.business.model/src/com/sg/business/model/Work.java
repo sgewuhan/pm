@@ -782,10 +782,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return Boolean.TRUE.equals(getValue(F_MANDATORY)) || isMilestone();
 	}
 
-	public boolean isMilestone() {
-		return Boolean.TRUE.equals(getValue(F_MILESTONE));
-	}
-
 	public boolean isArchive() {
 		return Boolean.TRUE.equals(getValue(F_ARCHIVE));
 	}
