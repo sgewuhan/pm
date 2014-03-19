@@ -7,18 +7,22 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import com.mobnut.db.model.DataSet;
 import com.sg.business.commons.ui.block.BudgetNCostChartBlock;
 import com.sg.business.commons.ui.block.OverControlChartBlock;
 import com.sg.business.commons.ui.block.OverSchdureBlock;
 import com.sg.business.commons.ui.block.ProfitRateBlock;
 import com.sg.business.commons.ui.block.RevenueNCostChartBlock;
+import com.sg.business.model.Organization;
+import com.sg.business.model.ProjectProvider;
+import com.sg.business.model.dataset.organization.OrgOfOwnerManager;
 import com.sg.widgets.Widgets;
-import com.sg.widgets.block.Block;
 import com.sg.widgets.part.IRefreshablePart;
 
 public class MonthlyPerformanceHomePanel {
 
 	private Composite panel;
+	private ProjectProvider projectProvider;
 
 	/**
 	 * 用于展现绩效的主页面板
@@ -28,6 +32,7 @@ public class MonthlyPerformanceHomePanel {
 	 * @param panel
 	 */
 	public MonthlyPerformanceHomePanel(Composite parent) {
+		init();
 		parent.setLayout(new FillLayout());
 		panel = new Composite(parent, SWT.NONE);
 		panel.setBackground(Widgets.getColor(panel.getDisplay(), 0xed, 0xed,0xed));
@@ -39,31 +44,47 @@ public class MonthlyPerformanceHomePanel {
 		layout.marginWidth = 1;
 		panel.setLayout(layout);
 
-		Block revenueBlock = new RevenueNCostChartBlock(panel);
+		RevenueNCostChartBlock revenueBlock = new RevenueNCostChartBlock(panel);
 		revenueBlock.setTopicText("销售利润和成本");
+		revenueBlock.setProjectProvider(projectProvider);
 		revenueBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
 		
-		Block overControlBlock = new OverControlChartBlock(panel);
+		OverControlChartBlock overControlBlock = new OverControlChartBlock(panel);
 		overControlBlock.setTopicText("超期和超支的项目");
+		overControlBlock.setProjectProvider(projectProvider);
 		overControlBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 //		TabBlock performenceBlock = new PerformanceBlock(panel);
 //		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 //				true, 1, 3));
 
-		Block budgetCostBlock = new BudgetNCostChartBlock(panel);
+		BudgetNCostChartBlock budgetCostBlock = new BudgetNCostChartBlock(panel);
 		budgetCostBlock.setTopicText("预算和累计支出");
+		budgetCostBlock.setProjectProvider(projectProvider);
 		budgetCostBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		Block profitRateBlock = new ProfitRateBlock(panel);
+		ProfitRateBlock profitRateBlock = new ProfitRateBlock(panel);
 		profitRateBlock.setTopicText("平均利润率");
+		profitRateBlock.setProjectProvider(projectProvider);
 		profitRateBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		Block overSchedureBlock = new OverSchdureBlock(panel);
+		OverSchdureBlock overSchedureBlock = new OverSchdureBlock(panel);
 		overSchedureBlock.setTopicText("进度正常和超期的项目");
+		overSchedureBlock.setProjectProvider(projectProvider);
 		overSchedureBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-		
+		doRefresh();
+	}
+
+	private void init() {
+		final OrgOfOwnerManager oom = new OrgOfOwnerManager();
+		DataSet ds = oom.getDataSet();
+		if (!ds.isEmpty()) {
+			Organization org = (Organization) ds.getDataItems().get(0);
+			projectProvider = org.getAdapter(ProjectProvider.class);
+		} else {
+			projectProvider = null;
+		}		
 	}
 
 	public void doRefresh() {

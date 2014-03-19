@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.Block;
 
@@ -16,6 +17,7 @@ public abstract class AbstractChartBlock extends Block {
 	protected static final String PARA_CHART = "chart";
 	protected static final String PARA_LABEL = "label";
 	protected ChartCanvas graphicContent;
+	protected Messages messages;
 
 	public AbstractChartBlock(Composite parent) {
 		super(parent);
@@ -28,6 +30,7 @@ public abstract class AbstractChartBlock extends Block {
 
 	@Override
 	protected void createContent(Composite parent) {
+		messages = Messages.get(locale);
 		parent.setLayout(new FillLayout());
 		graphicContent = new ChartCanvas(parent, SWT.NONE, false);
 	}
