@@ -10,8 +10,6 @@ import org.eclipse.swt.widgets.Control;
 import com.mobnut.db.model.DataSet;
 import com.sg.business.commons.ui.block.BudgetNCostChartBlock;
 import com.sg.business.commons.ui.block.OverControlChartBlock;
-import com.sg.business.commons.ui.block.OverSchdureBlock;
-import com.sg.business.commons.ui.block.ProfitRateBlock;
 import com.sg.business.commons.ui.block.RevenueNCostChartBlock;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectProvider;
@@ -45,7 +43,7 @@ public class MonthlyPerformanceHomePanel {
 		panel.setLayout(layout);
 
 		RevenueNCostChartBlock revenueBlock = new RevenueNCostChartBlock(panel);
-		revenueBlock.setTopicText("销售利润和成本");
+		revenueBlock.setTopicText("经济效益");
 		revenueBlock.setProjectProvider(projectProvider);
 		revenueBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 2));
 		
@@ -62,16 +60,6 @@ public class MonthlyPerformanceHomePanel {
 		budgetCostBlock.setTopicText("预算和累计支出");
 		budgetCostBlock.setProjectProvider(projectProvider);
 		budgetCostBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-		ProfitRateBlock profitRateBlock = new ProfitRateBlock(panel);
-		profitRateBlock.setTopicText("平均利润率");
-		profitRateBlock.setProjectProvider(projectProvider);
-		profitRateBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-		OverSchdureBlock overSchedureBlock = new OverSchdureBlock(panel);
-		overSchedureBlock.setTopicText("进度正常和超期的项目");
-		overSchedureBlock.setProjectProvider(projectProvider);
-		overSchedureBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		doRefresh();
 	}
