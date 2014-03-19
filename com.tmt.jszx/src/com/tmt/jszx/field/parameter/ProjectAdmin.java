@@ -32,4 +32,11 @@ public class ProjectAdmin  extends AbstractRoleParameterDelegator {
 		return null;
 	}
 
+	@Override
+	protected Object setType(String processParameter, String taskDatakey,
+			PrimaryObject taskFormData) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

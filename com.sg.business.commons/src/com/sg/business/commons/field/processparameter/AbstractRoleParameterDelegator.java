@@ -11,16 +11,15 @@ import com.sg.business.model.toolkit.UserToolkit;
 public abstract class AbstractRoleParameterDelegator implements
 		IProcessParameterDelegator {
 
-	private Object type;
-
 	@Override
 	public Object getValue(String processParameter, String taskDatakey,
 			PrimaryObject taskFormData) {
 		Organization org = getOrganization(processParameter, taskDatakey,
 				taskFormData);
+		Object type = setType(processParameter, taskDatakey, taskFormData);
 		if (!org.isEmpty()) {
-			List<String> users = org.getRoleAssignmentUserIds(getRoldNumber(type),
-					getSelectType(type));
+			List<String> users = org.getRoleAssignmentUserIds(
+					getRoldNumber(type), getSelectType(type));
 			if (!users.isEmpty()) {
 				return users.get(0);
 			}
@@ -35,8 +34,7 @@ public abstract class AbstractRoleParameterDelegator implements
 
 	protected abstract String getRoldNumber(Object type);
 
-	protected void setType(Object type) {
-		this.type = type;
-	}
+	protected abstract Object setType(String processParameter,
+			String taskDatakey, PrimaryObject taskFormData);
 
 }

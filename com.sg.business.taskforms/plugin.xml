@@ -201,6 +201,20 @@
                value="不预审">
          </option>
       </option>
+      <option
+            id="讨论方式"
+            label="讨论方式">
+         <option
+               id="会议讨论"
+               label="会议讨论"
+               value="会议讨论">
+         </option>
+         <option
+               id="会签论证"
+               label="会签论证"
+               value="会签论证">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">

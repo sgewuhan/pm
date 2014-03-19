@@ -198,43 +198,127 @@ public class Role extends PrimaryObject {
 				RoleAssignment.class);
 	}
 
+	/**
+	 * 
+	 * @param parameters
+	 * @return
+	 */
 	public List<PrimaryObject> getAssignment(Map<String, Object> parameters) {
-		String js = getStringValue(F_RULE);
-		List<PrimaryObject> rs = getRelationById(F__ID,
-				RoleAssignment.F_ROLE_ID, RoleAssignment.class);
-		//TODO:
-		parameters.put(RoleParameter.USERID, rs);
-		//转换处理
-		Object projectId = parameters.get(RoleParameter.PROJECT_ID);
-		if(projectId instanceof ObjectId){
-			Project project = ModelService.createModelObject(Project.class, (ObjectId)projectId);
-			parameters.put(RoleParameter.PROJECT, project);
+		if (!parameters.isEmpty()) {
+			return getAssignment();
 		}
-		if (js != null) {
-			Object result = JavaScriptEvaluator.evaluate(js, parameters);
-			if (result instanceof String[]) {
-				ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
-				for (int i = 0; i < rs.size(); i++) {
-					Object userid = rs.get(i)
-							.getValue(RoleAssignment.F_USER_ID);
-					if (Utils.inArray(userid, (String[]) result)) {
-						rs1.add(rs.get(i));
-					}
-				}
-				return rs1;
-			} else if (result instanceof String) {
-				ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
-				for (int i = 0; i < rs.size(); i++) {
-					Object userid = rs.get(i)
-							.getValue(RoleAssignment.F_USER_ID);
-					if (Util.equals(userid, result)) {
-						rs1.add(rs.get(i));
-					}
-				}
-				return rs1;
+		Object type = parameters.get(RoleParameter.TYPE);
+		if (type != null && ((int) type) == RoleParameter.TYPE_NONE) {
+			return getAssignment();
+		} else {
+			String js = getStringValue(F_RULE);
+			List<PrimaryObject> rs = getRelationById(F__ID,
+					RoleAssignment.F_ROLE_ID, RoleAssignment.class);
+			List<String> userIdList = new ArrayList<String>();
+			for (PrimaryObject po : rs) {
+				RoleAssignment roleAssignment = (RoleAssignment) po;
+				userIdList.add(roleAssignment.getUserid());
 			}
+			parameters.put(RoleParameter.USERID, userIdList);
+
+			if (((int) type) == RoleParameter.TYPE_PROJECT) {
+				// 转换处理
+				Object projectId = parameters.get(RoleParameter.PROJECT_ID);
+				if (projectId instanceof ObjectId) {
+					Project project = ModelService.createModelObject(
+							Project.class, (ObjectId) projectId);
+					parameters.put(RoleParameter.PROJECT, project);
+					parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
+							project.getBusinessOrganization());
+					parameters.put(RoleParameter.PROJECT_CHARGER,
+							project.getCharger());
+					parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
+							project.getFunctionOrganization());
+					parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
+							project.getLaunchOrganization());
+					parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
+							project.getProductTypeOptions());
+					parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
+							project.getStandardSetOptions());
+					parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
+							project.getProjectTypeOptions());
+				} else {
+					return getAssignment();
+				}
+			} else if (((int) type) == RoleParameter.TYPE_WORK) {
+				// 转换处理
+				Object workId = parameters.get(RoleParameter.WORK_ID);
+				if (workId instanceof ObjectId) {
+					Work work = ModelService.createModelObject(Work.class,
+							(ObjectId) workId);
+					parameters.put(RoleParameter.WORK, work);
+					parameters.put(RoleParameter.WORK_CHARGER,
+							work.getCharger());
+					parameters.put(RoleParameter.WORK_MILESTONE,
+							work.isMilestone());
+					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+				} else {
+					return getAssignment();
+				}
+			} else if (((int) type) == RoleParameter.TYPE_WORK_PROCESS) {
+				// 转换处理
+				Object workId = parameters.get(RoleParameter.WORK_ID);
+				if (workId instanceof ObjectId) {
+					Work work = ModelService.createModelObject(Work.class,
+							(ObjectId) workId);
+					parameters.put(RoleParameter.WORK, work);
+					parameters.put(RoleParameter.WORK_CHARGER,
+							work.getCharger());
+					parameters.put(RoleParameter.WORK_MILESTONE,
+							work.isMilestone());
+					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+					// ProcessInstance executeProcess =
+					// work.getExecuteProcess();
+					//
+					// try {
+					// WorkflowProcessInstance workflowProcessInstance =
+					// WorkflowService.getDefault().getProcessInstance(
+					// executeProcess.getProcessId(),
+					// executeProcess.getId());
+					// workflowProcessInstance.getVariable(arg0)
+					// } catch (Exception e) {
+					// e.printStackTrace();
+					// }
+					// parameters.put(RoleParameter.PROCESS_INPUT, );
+				} else {
+					return getAssignment();
+				}
+
+			} else {
+				return getAssignment();
+			}
+
+			if (js != null) {
+				Object result = JavaScriptEvaluator.evaluate(js, parameters);
+				if (result instanceof String[]) {
+					ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
+					for (int i = 0; i < rs.size(); i++) {
+						Object userid = rs.get(i).getValue(
+								RoleAssignment.F_USER_ID);
+						if (Utils.inArray(userid, (String[]) result)) {
+							rs1.add(rs.get(i));
+						}
+					}
+					return rs1;
+				} else if (result instanceof String) {
+					ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
+					for (int i = 0; i < rs.size(); i++) {
+						Object userid = rs.get(i).getValue(
+								RoleAssignment.F_USER_ID);
+						if (Util.equals(userid, result)) {
+							rs1.add(rs.get(i));
+						}
+					}
+					return rs1;
+				}
+			}
+			return rs;
 		}
-		return rs;
 	}
 
 	/**
@@ -366,15 +450,15 @@ public class Role extends PrimaryObject {
 	 */
 	@Override
 	public boolean canEdit(IContext context) {
-//		String uid = context.getAccountInfo().getUserId();
-//		User user = UserToolkit.getUserById(uid);
-//		if (Boolean.TRUE.equals(user.getValue(User.F_IS_ADMIN))) {
-//			return true;
-//		}
-//		// 系统的角色不可以更改
-//		if (isSystemRole()) {
-//			return false;
-//		}
+		// String uid = context.getAccountInfo().getUserId();
+		// User user = UserToolkit.getUserById(uid);
+		// if (Boolean.TRUE.equals(user.getValue(User.F_IS_ADMIN))) {
+		// return true;
+		// }
+		// // 系统的角色不可以更改
+		// if (isSystemRole()) {
+		// return false;
+		// }
 		return super.canEdit(context);
 	}
 
