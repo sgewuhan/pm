@@ -54,14 +54,14 @@ public class SalesHomePanel {
 		companyBlock.setTopicText("客户");
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.heightHint = (Block.TOPICSIZE + 1) + (CompanyBlock.BLOCKSIZE + 1)
-				* companyBlock.getCountY() - 1;
-		gd.widthHint = (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getCountX()- 1;
+				* companyBlock.getUnitCountY() - 1;
+		gd.widthHint = (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getUnitCountX()- 1;
 		companyBlock.setLayoutData(gd);
 
 		Block workBlock = new TodaysWorkBlock(panel){
 			@Override
 			public int getContentHeight() {
-				return (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getCountY() - 1;
+				return (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getUnitCountY() - 1;
 			}
 		};
 		workBlock.setTopicText("今日工作");
@@ -73,7 +73,7 @@ public class SalesHomePanel {
 		final OpportunityBlock block = new OpportunityBlock(panel) {
 			@Override
 			public int getContentHeight() {
-				return (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getCountY() - 1;
+				return (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getUnitCountY() - 1;
 			}
 		};
 		block.setTopicText("商机");

@@ -44,14 +44,14 @@ public class BasicHomePanel {
 		projectBlock.setTopicText("项目");
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.heightHint = (Block.TOPICSIZE + 1) + (ProjectBlock.BLOCKSIZE + 1)
-				* projectBlock.getCountY() - 1;
-		gd.widthHint = (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getCountX() - 1;
+				* projectBlock.getUnitCountY() - 1;
+		gd.widthHint = (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getUnitCountX() - 1;
 		projectBlock.setLayoutData(gd);
 
 		Block workBlock = new TodaysWorkBlock(panel){
 			@Override
 			public int getContentHeight() {
-				return (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getCountY() - 1;
+				return (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getUnitCountY() - 1;
 			}
 		};
 		workBlock.setTopicText("今日工作");
@@ -63,7 +63,7 @@ public class BasicHomePanel {
 		final DocBlock docBlock = new DocBlock(panel) {
 			@Override
 			public int getContentHeight() {
-				return (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getCountY() - 1;
+				return (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getUnitCountY() - 1;
 			}
 		};
 		docBlock.setTopicText("最近的文档");

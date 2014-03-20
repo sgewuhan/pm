@@ -1,6 +1,7 @@
 package com.sg.business.commons.ui.home.perf;
 
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.DBActivator;
@@ -20,7 +21,7 @@ import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.editor.DataObjectWizard;
 
 public class ImportantProjectBlock extends ButtonBlock {
-	
+
 	private static final String PERSPECTIVE = "perspective.project.charger";
 
 	public ImportantProjectBlock(Composite parent) {
@@ -77,16 +78,83 @@ public class ImportantProjectBlock extends ButtonBlock {
 			MessageUtil.showToast(e);
 		}
 	}
-	
+
 	@Override
-	public int getCountX() {
+	public int getUnitCountX() {
 		return 6;
 	}
-	
+
 	@Override
 	protected int getLimit() {
-		return 5;
-//		return super.getLimit();
+		return 2;
+	}
+
+	@Override
+	protected void fill(DBObject dt[]) {
+		int blankCount = getUnitCountX()*getUnitCountY()-1;
+		switch (dt.length) {
+		case 11:
+			blankCount -= insert(dt,0,11,BLOCK_TYPE[0]);
+			break;
+		case 10:
+			blankCount -= insert(dt,0,1,BLOCK_TYPE[1]);
+			blankCount -= insert(dt,1,10,BLOCK_TYPE[0]);
+			break;
+		case 9:
+			blankCount -= insert(dt,0,2,BLOCK_TYPE[1]);
+			blankCount -= insert(dt,2,9,BLOCK_TYPE[0]);
+			break;
+		case 8:
+			blankCount -= insert(dt,0,1,BLOCK_TYPE[2]);
+			blankCount -= insert(dt,1,8,BLOCK_TYPE[0]);
+			break;
+		case 7:
+			blankCount -= insert(dt,0,1,BLOCK_TYPE[2]);
+			blankCount -= insert(dt,1,2,BLOCK_TYPE[1]);
+			blankCount -= insert(dt,2,7,BLOCK_TYPE[0]);
+			break;
+		case 6:
+			blankCount -= insert(dt,0,1,BLOCK_TYPE[2]);
+			blankCount -= insert(dt,1,3,BLOCK_TYPE[1]);
+			blankCount -= insert(dt,3,6,BLOCK_TYPE[0]);
+			break;
+		case 5:
+			blankCount -= insert(dt,0,2,BLOCK_TYPE[2]);
+			blankCount -= insert(dt,2,5,BLOCK_TYPE[0]);
+			break;
+		case 4:
+			blankCount -= insert(dt,0,2,BLOCK_TYPE[2]);
+			blankCount -= insert(dt,2,3,BLOCK_TYPE[1]);
+			blankCount -= insert(dt,3,4,BLOCK_TYPE[0]);
+			break;
+		case 3:
+			blankCount -= insert(dt,0,2,BLOCK_TYPE[2]);
+			blankCount -= insert(dt,2,3,BLOCK_TYPE[1]);
+			break;
+		case 2:
+		case 1:
+			blankCount -= insert(dt,0,dt.length,BLOCK_TYPE[2]);
+			break;
+		default:
+		}
+		fillBlank(blankCount);
+	}
+
+	private int insert(DBObject[] dt, int start, int end, Point size) {
+		int result = 0;
+		for (int i = start; i < end; i++) {
+			addContentBlock(dt[i], size);
+			result+=size.x*size.y;
+		}
+		return result;
+	}
+
+	private void fillBlank(int blankCount) {
+		if(blankCount>0){
+			for(int i=0;i<blankCount;i++){
+				addBlankBlock();
+			}
+		}
 	}
 
 }

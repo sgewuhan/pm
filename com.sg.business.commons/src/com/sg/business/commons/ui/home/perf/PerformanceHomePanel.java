@@ -41,10 +41,10 @@ public class PerformanceHomePanel {
 		vipBlock.setTopicText("ÖØµã¹Ø×¢");
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.heightHint = (Block.TOPICSIZE + 1)
-				+ (ImportantProjectBlock.BLOCKSIZE + 1) * vipBlock.getCountY()
+				+ (ImportantProjectBlock.BLOCKSIZE + 1) * vipBlock.getUnitCountY()
 				- 1;
 		gd.widthHint = (ImportantProjectBlock.BLOCKSIZE + 1)
-				* vipBlock.getCountX() - 1;
+				* vipBlock.getUnitCountX() - 1;
 		vipBlock.setLayoutData(gd);
 
 		TabBlock performenceBlock = new PerformanceBlock(panel);
