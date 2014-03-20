@@ -26,7 +26,8 @@ public class EditDocumentPropertyTester extends PropertyTester {
 					Organization.class, root_id);
 			if (!org.isEmpty()) {
 				List<String> userIds = org.getRoleAssignmentUserIds(
-						Role.ROLE_VAULT_ADMIN_ID, Organization.ROLE_NOT_SEARCH);
+						Role.ROLE_VAULT_ADMIN_ID, Organization.ROLE_NOT_SEARCH,
+						document.getProject());
 				for (String userId : userIds) {
 					if (loginUserId.equals(userId)) {
 						return true;

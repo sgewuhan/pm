@@ -1,6 +1,7 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.BasicBSONList;
@@ -141,25 +142,24 @@ public abstract class ProcessControl implements IProcessControl {
 	 */
 	@Override
 	public BasicBSONList getWorkflowHistroyData() {
-		List<PrimaryObject> userTaskList = primaryObject.getRelationById(PrimaryObject.F__ID, UserTask.F_WORK_ID,
-				UserTask.class);
+		List<PrimaryObject> userTaskList = primaryObject.getRelationById(
+				PrimaryObject.F__ID, UserTask.F_WORK_ID, UserTask.class);
 		BasicBSONList result = new BasicBSONList();
 		for (PrimaryObject userTask : userTaskList) {
 			result.add(userTask.get_data());
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	@Override
 	public List<PrimaryObject> getWorkflowHistroy() {
-		return primaryObject.getRelationById(PrimaryObject.F__ID, UserTask.F_WORK_ID,
-				UserTask.class);
-		
-		
+		return primaryObject.getRelationById(PrimaryObject.F__ID,
+				UserTask.F_WORK_ID, UserTask.class);
+
 	}
 
 	public void setProcessRoleAssignmentData(String key,
@@ -221,7 +221,7 @@ public abstract class ProcessControl implements IProcessControl {
 	public List<String[]> checkProcessRunnable(String key) {
 		List<String[]> result = new ArrayList<String[]>();
 		DroolsProcessDefinition processd = getProcessDefinition(key);
-		if(processd == null){
+		if (processd == null) {
 			return result;
 		}
 		// 检查流程是否已经激活
@@ -235,7 +235,7 @@ public abstract class ProcessControl implements IProcessControl {
 		for (int i = 0; i < nodes.size(); i++) {
 			NodeAssignment na = nodes.get(i);
 
-			if (na.isNeedAssignment()&& na.forceAssignment()) {
+			if (na.isNeedAssignment() && na.forceAssignment()) {
 				String actorId = getProcessActionActor(key,
 						na.getNodeActorParameter());
 				String nodeName = na.getNodeName();
@@ -244,12 +244,15 @@ public abstract class ProcessControl implements IProcessControl {
 					if (user == null) {
 						result.add(new String[] {
 								"error", //$NON-NLS-1$
-								Messages.get().ProcessControl_4 + nodeName + "\"" //$NON-NLS-2$
+								Messages.get().ProcessControl_4 + nodeName
+										+ "\"" //$NON-NLS-2$
 										+ Messages.get().ProcessControl_6 });
 					} else {
 						result.add(new String[] {
 								"info", //$NON-NLS-1$
-								Messages.get().ProcessControl_8 + nodeName + "\"" + Messages.get().ProcessControl_10 + user //$NON-NLS-2$
+								Messages.get().ProcessControl_8
+										+ nodeName
+										+ "\"" + Messages.get().ProcessControl_10 + user //$NON-NLS-2$
 										+ "]。" }); //$NON-NLS-1$
 					}
 				} else {
@@ -258,7 +261,8 @@ public abstract class ProcessControl implements IProcessControl {
 					if (rd == null) {
 						result.add(new String[] {
 								"error", //$NON-NLS-1$
-								Messages.get().ProcessControl_13 + nodeName + "\"" //$NON-NLS-2$
+								Messages.get().ProcessControl_13 + nodeName
+										+ "\"" //$NON-NLS-2$
 										+ Messages.get().ProcessControl_15 });
 					} else {
 						List<PrimaryObject> roleAssiment = null;
@@ -268,17 +272,45 @@ public abstract class ProcessControl implements IProcessControl {
 							if (((RoleDefinition) rd).isOrganizatioRole()) {
 								Role r = ((RoleDefinition) rd)
 										.getOrganizationRole();
-								//TODO 根据primaryObject的类型进行判断
-								//TODO 如果是项目时，使用ProjectRole.getAssignment();
-								
-								//TODO 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-								roleAssiment = r.getAssignment();
+								// 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
+								HashMap<String, Object> parameters = new HashMap<String, Object>();
+								ObjectId work_id = (ObjectId) rd
+										.getValue(RoleDefinition.F_WORK_ID);
+								if (work_id != null) {
+									Work work = ModelService.createModelObject(
+											Work.class, work_id);
+									parameters.put(RoleParameter.TYPE,
+											RoleParameter.TYPE_WORK_PROCESS);
+									parameters.put(RoleParameter.WORK_ID,
+											work_id);
+									parameters.put(RoleParameter.WORK, work);
+									User charger = work.getCharger();
+									if (charger != null) {
+										parameters.put(
+												RoleParameter.WORK_CHARGER,
+												work.getCharger().getUserid());
+									} else {
+										parameters.put(
+												RoleParameter.WORK_CHARGER, "");
+									}
+									parameters.put(
+											RoleParameter.WORK_MILESTONE,
+											work.isMilestone());
+									parameters.put(RoleParameter.WORK_TYPE,
+											work.getWorkType());
+								} else {
+									parameters.put(RoleParameter.TYPE,
+											RoleParameter.TYPE_NONE);
+								}
+
+								roleAssiment = r.getAssignment(parameters);
 							}
 						}
 						if (roleAssiment == null) {
 							result.add(new String[] {
 									"error", //$NON-NLS-1$
-									Messages.get().ProcessControl_17 + nodeName + "\"" //$NON-NLS-2$
+									Messages.get().ProcessControl_17 + nodeName
+											+ "\"" //$NON-NLS-2$
 											+ Messages.get().ProcessControl_19 });
 						} else {
 							String userList = ""; //$NON-NLS-1$
@@ -295,16 +327,19 @@ public abstract class ProcessControl implements IProcessControl {
 							if (roleAssiment.size() > 1) {
 								result.add(new String[] {
 										"warning", //$NON-NLS-1$
-										Messages.get().ProcessControl_24 + nodeName + "\"" //$NON-NLS-2$
-												+ Messages.get().ProcessControl_26 + userList
+										Messages.get().ProcessControl_24
+												+ nodeName
+												+ "\"" //$NON-NLS-2$
+												+ Messages.get().ProcessControl_26
+												+ userList
 												+ Messages.get().ProcessControl_27 });
 							} else {
 
 								result.add(new String[] {
 										"info", //$NON-NLS-1$
 										"流程任务:\"" + nodeName + "\"" //$NON-NLS-1$ //$NON-NLS-2$
-												+ Messages.get().ProcessControl_31 + userList
-												+ "]。" }); //$NON-NLS-1$
+												+ Messages.get().ProcessControl_31
+												+ userList + "]。" }); //$NON-NLS-1$
 							}
 
 						}

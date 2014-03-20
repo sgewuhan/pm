@@ -27,9 +27,10 @@ public class EditorDocumentForVault implements IPopupMenuProvider {
 			if (!org.isEmpty()) {
 				String loginUserId = new CurrentAccountContext().getUserId();
 				List<String> userIds = org.getRoleAssignmentUserIds(
-						Role.ROLE_VAULT_ADMIN_ID, Organization.ROLE_NOT_SEARCH);
+						Role.ROLE_VAULT_ADMIN_ID, Organization.ROLE_NOT_SEARCH,
+						folder.getProject());
 				for (String userId : userIds) {
-					if(loginUserId.equals(userId)){
+					if (loginUserId.equals(userId)) {
 						return viewerControl.getConfigurator().getPopupMenu();
 					}
 				}

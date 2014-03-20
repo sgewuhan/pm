@@ -169,7 +169,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 	public static final String F_PERFORMENCE = "performence"; //$NON-NLS-1$
 
 	public static final String F_STARTIMMEDIATELY = "startImmediately";//$NON-NLS-1$
-	
+
 	/**
 	 * 是否达成目标
 	 */
@@ -190,7 +190,6 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			F_SETTING_PROJECTCHANGE_MANDORY, F_SETTING_WORKCHANGE_MANDORY,
 			F_SETTING_AUTOFINISH_WHEN_PARENT_FINISH, F_WF_CHANGE_ASSIGNMENT,
 			F_WF_EXECUTE_ASSIGNMENT, F_TARGETS };
-
 
 	private Double overCount = null;
 
@@ -3274,8 +3273,21 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 		} else {
 			Role role = ModelService.createModelObject(Role.class, _id);
-			//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-			ralist = role.getAssignment();
+			// TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_WORK_PROCESS);
+			parameters.put(RoleParameter.WORK_ID, get_id());
+			parameters.put(RoleParameter.WORK, this);
+			User charger = getCharger();
+			if (charger != null) {
+				parameters.put(RoleParameter.WORK_CHARGER, getCharger()
+						.getUserid());
+			} else {
+				parameters.put(RoleParameter.WORK_CHARGER, "");
+			}
+			parameters.put(RoleParameter.WORK_MILESTONE, isMilestone());
+			parameters.put(RoleParameter.WORK_TYPE, getWorkType());
+			ralist = role.getAssignment(parameters);
 		}
 		List<User> result = new ArrayList<User>();
 		if (ralist != null) {
@@ -4286,8 +4298,22 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					RoleDefinition rd = ModelService.createModelObject(
 							RoleDefinition.class, value);
 					Role orole = rd.getOrganizationRole();
-					//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-					List<PrimaryObject> roleAss = orole.getAssignment();
+					HashMap<String, Object> parameters = new HashMap<String, Object>();
+					parameters.put(RoleParameter.TYPE,
+							RoleParameter.TYPE_WORK_PROCESS);
+					parameters.put(RoleParameter.WORK_ID, get_id());
+					parameters.put(RoleParameter.WORK, this);
+					User charger = getCharger();
+					if (charger != null) {
+						parameters.put(RoleParameter.WORK_CHARGER, getCharger()
+								.getUserid());
+					} else {
+						parameters.put(RoleParameter.WORK_CHARGER, "");
+					}
+					parameters.put(RoleParameter.WORK_MILESTONE, isMilestone());
+					parameters.put(RoleParameter.WORK_TYPE, getWorkType());
+					List<PrimaryObject> roleAss = orole
+							.getAssignment(parameters);
 					if (!roleAss.isEmpty()) {
 						if (roleAss.size() > 1) {
 							break;
@@ -4648,7 +4674,7 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		// getCollection().update(new BasicDBObject().append(F__ID, get_id()),
 		// o);
 	}
-	
+
 	public WorksPerformence getWorksPerformence(Date date, String userid) {
 		Long dateCode = new Long(date.getTime() / (24 * 60 * 60 * 1000));
 

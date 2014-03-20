@@ -1,12 +1,19 @@
 package com.sg.sales.bpm.role;
 
+import com.sg.business.commons.actor.AbstractActorIdProvider;
+import com.sg.business.model.Organization;
 import com.sg.sales.ISalesRole;
 
 
-public class ActorOfPaymentAuditor extends ActorOfRole{
+public class ActorOfPaymentAuditor extends AbstractActorIdProvider{
 
 	@Override
-	protected String getRoleId() {
+	protected int getSelectType() {
+		return Organization.ROLE_SEARCH_UP;
+	}
+
+	@Override
+	protected String getRoleNumber() {
 		return ISalesRole.TEAM_MANAGER_NUMBER;
 	}
 

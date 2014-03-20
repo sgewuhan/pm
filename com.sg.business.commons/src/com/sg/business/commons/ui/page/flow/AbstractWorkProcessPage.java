@@ -1,6 +1,7 @@
 package com.sg.business.commons.ui.page.flow;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
@@ -17,6 +18,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.RoleParameter;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -84,21 +86,21 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 		if (project != null) {
 			Organization org = project.getFunctionOrganization();
 			return org.getDroolsProcessDefinitions();
-		}else{
-			//如果不是项目工作，获取当前用户所在组织的项目管理职能组织
+		} else {
+			// 如果不是项目工作，获取当前用户所在组织的项目管理职能组织
 			User charger = work.getCharger();
-			if(charger==null){
+			if (charger == null) {
 				String chargerId = new CurrentAccountContext().getConsignerId();
 				charger = UserToolkit.getUserById(chargerId);
 			}
 			Organization org = charger.getOrganization();
-			if(org!=null){
+			if (org != null) {
 				org = (Organization) org.getFunctionOrganization();
 			}
-			if(org!=null){
+			if (org != null) {
 				return org.getDroolsProcessDefinitions();
 			}
-			
+
 		}
 		return null;
 	}
@@ -117,8 +119,23 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			RoleDefinition roledef = (RoleDefinition) roled;
 			Role role = roledef.getOrganizationRole();
 			if (role != null) {
-				//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-				assignments = role.getAssignment();
+				// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
+				HashMap<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put(RoleParameter.TYPE,
+						RoleParameter.TYPE_WORK_PROCESS);
+				parameters.put(RoleParameter.WORK_ID, work.get_id());
+				parameters.put(RoleParameter.WORK, work);
+				User charger = work.getCharger();
+				if (charger != null) {
+					parameters.put(RoleParameter.WORK_CHARGER, work
+							.getCharger().getUserid());
+				} else {
+					parameters.put(RoleParameter.WORK_CHARGER, "");
+				}
+				parameters
+						.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
+				parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+				assignments = role.getAssignment(parameters);
 			}
 		}
 
