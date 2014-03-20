@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.home;
+package com.sg.business.commons.ui.home.perf;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -13,15 +13,15 @@ import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.part.editor.DataObjectView;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public class MonthlyPerformanceHome extends DataObjectView {
+public class PerformanceHome extends DataObjectView {
 
-	private MonthlyPerformanceHomePanel homePanel;
+	private PerformanceHomePanel homePanel;
 
 	@Override
 	protected void initContent() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		homePanel = new MonthlyPerformanceHomePanel(content);
+		homePanel = new PerformanceHomePanel(content);
 		super.goHome();
 	}
 
@@ -29,7 +29,7 @@ public class MonthlyPerformanceHome extends DataObjectView {
 	public void goHome() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		homePanel = new MonthlyPerformanceHomePanel(content);
+		homePanel = new PerformanceHomePanel(content);
 		content.layout(false, false);
 		super.goHome();
 	}

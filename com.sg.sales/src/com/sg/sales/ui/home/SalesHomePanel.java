@@ -8,8 +8,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.commons.ui.block.BulletinBoardBlock;
-import com.sg.business.commons.ui.block.TodaysWorkBlock;
+import com.sg.business.commons.ui.home.basic.BulletinBoardBlock;
+import com.sg.business.commons.ui.home.basic.TodaysWorkBlock;
 import com.sg.sales.ui.block.CompanyBlock;
 import com.sg.sales.ui.block.ContactBlock;
 import com.sg.sales.ui.block.OpportunityBlock;
@@ -50,18 +50,18 @@ public class SalesHomePanel {
 		layout.marginWidth = 1;
 		panel.setLayout(layout);
 
-		Block companyBlock = new CompanyBlock(panel);
+		final CompanyBlock companyBlock = new CompanyBlock(panel);
 		companyBlock.setTopicText("客户");
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.heightHint = (Block.TOPICSIZE + 1) + (CompanyBlock.BLOCKSIZE + 1)
-				* CompanyBlock.Y_COUNT - 1;
-		gd.widthHint = (CompanyBlock.BLOCKSIZE + 1) * CompanyBlock.X_COUNT - 1;
+				* companyBlock.getCountY() - 1;
+		gd.widthHint = (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getCountX()- 1;
 		companyBlock.setLayoutData(gd);
 
 		Block workBlock = new TodaysWorkBlock(panel){
 			@Override
 			public int getContentHeight() {
-				return (CompanyBlock.BLOCKSIZE + 1) * CompanyBlock.Y_COUNT - 1;
+				return (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getCountY() - 1;
 			}
 		};
 		workBlock.setTopicText("今日工作");
@@ -73,7 +73,7 @@ public class SalesHomePanel {
 		final OpportunityBlock block = new OpportunityBlock(panel) {
 			@Override
 			public int getContentHeight() {
-				return (CompanyBlock.BLOCKSIZE + 1) * CompanyBlock.Y_COUNT - 1;
+				return (CompanyBlock.BLOCKSIZE + 1) * companyBlock.getCountY() - 1;
 			}
 		};
 		block.setTopicText("商机");

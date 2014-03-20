@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.block;
+package com.sg.business.commons.ui.home.basic;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

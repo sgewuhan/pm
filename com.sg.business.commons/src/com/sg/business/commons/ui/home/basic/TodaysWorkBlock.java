@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.block;
+package com.sg.business.commons.ui.home.basic;
 
 import java.util.ArrayList;
 import java.util.Date;

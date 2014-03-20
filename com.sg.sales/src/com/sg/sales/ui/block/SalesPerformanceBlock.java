@@ -4,7 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.commons.ui.block.SchedulePage;
+import com.sg.business.commons.ui.home.basic.SchedulePage;
 import com.sg.widgets.block.tab.TabBlock;
 import com.sg.widgets.block.tab.TabBlockPage;
 

@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.block;
+package com.sg.business.commons.ui.home.perf;
 
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
@@ -9,6 +9,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sg.business.commons.ui.home.basic.ProjectContentBlock;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
@@ -18,11 +19,11 @@ import com.sg.widgets.block.button.ButtonBlock;
 import com.sg.widgets.commons.model.IEditorInputFactory;
 import com.sg.widgets.part.editor.DataObjectWizard;
 
-public class ProjectBlock extends ButtonBlock {
-
+public class ImportantProjectBlock extends ButtonBlock {
+	
 	private static final String PERSPECTIVE = "perspective.project.charger";
 
-	public ProjectBlock(Composite parent) {
+	public ImportantProjectBlock(Composite parent) {
 		super(parent);
 	}
 
@@ -45,13 +46,6 @@ public class ProjectBlock extends ButtonBlock {
 	@Override
 	protected DBObject getSearchCondition() {
 		return new BasicDBObject().append(
-				"$or", //$NON-NLS-1$
-				new BasicDBObject[] {
-						new BasicDBObject().append(Project.F_CHARGER, userId),
-						new BasicDBObject().append(Project.F_PARTICIPATE,
-								userId),
-						new BasicDBObject().append(Project.F_BUSINESS_CHARGER,
-								userId) }).append(
 				Project.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] {
 						ILifecycle.STATUS_WIP_VALUE,
@@ -83,6 +77,16 @@ public class ProjectBlock extends ButtonBlock {
 			MessageUtil.showToast(e);
 		}
 	}
-
+	
+	@Override
+	public int getCountX() {
+		return 6;
+	}
+	
+	@Override
+	protected int getLimit() {
+		return 5;
+//		return super.getLimit();
+	}
 
 }

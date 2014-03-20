@@ -1905,13 +1905,13 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="com.sg.business.commons.ui.home.BasicHome"
+            class="com.sg.business.commons.ui.home.basic.BasicHome"
             id="pm2.work.detail"
             name="HOME"
             restorable="true">
       </view>
       <view
-            class="com.sg.business.commons.ui.home.MonthlyPerformanceHome"
+            class="com.sg.business.commons.ui.home.perf.PerformanceHome"
             id="pm2.performance.detail"
             name="HOME"
             restorable="true">

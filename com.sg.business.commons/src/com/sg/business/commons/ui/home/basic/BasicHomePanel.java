@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.home;
+package com.sg.business.commons.ui.home.basic;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
@@ -8,17 +8,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.commons.ui.block.BulletinBoardBlock;
-import com.sg.business.commons.ui.block.DocBlock;
-import com.sg.business.commons.ui.block.PerformanceBlock;
-import com.sg.business.commons.ui.block.ProjectBlock;
-import com.sg.business.commons.ui.block.TodaysWorkBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.block.tab.TabBlock;
 import com.sg.widgets.part.IRefreshablePart;
 
-public class GenericHomePanel {
+public class BasicHomePanel {
 
 	private Composite panel;
 	private int partHeight;
@@ -30,7 +25,7 @@ public class GenericHomePanel {
 	 * 
 	 * @param panel
 	 */
-	public GenericHomePanel(Composite parent) {
+	public BasicHomePanel(Composite parent) {
 		Rectangle bounds = parent.getDisplay().getBounds();
 		partHeight = bounds.height - 61;
 
@@ -45,18 +40,18 @@ public class GenericHomePanel {
 		layout.marginWidth = 1;
 		panel.setLayout(layout);
 
-		Block projectBlock = new ProjectBlock(panel);
+		final ProjectBlock projectBlock = new ProjectBlock(panel);
 		projectBlock.setTopicText("项目");
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.heightHint = (Block.TOPICSIZE + 1) + (ProjectBlock.BLOCKSIZE + 1)
-				* ProjectBlock.Y_COUNT - 1;
-		gd.widthHint = (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.X_COUNT - 1;
+				* projectBlock.getCountY() - 1;
+		gd.widthHint = (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getCountX() - 1;
 		projectBlock.setLayoutData(gd);
 
 		Block workBlock = new TodaysWorkBlock(panel){
 			@Override
 			public int getContentHeight() {
-				return (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.Y_COUNT - 1;
+				return (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getCountY() - 1;
 			}
 		};
 		workBlock.setTopicText("今日工作");
@@ -68,7 +63,7 @@ public class GenericHomePanel {
 		final DocBlock docBlock = new DocBlock(panel) {
 			@Override
 			public int getContentHeight() {
-				return (ProjectBlock.BLOCKSIZE + 1) * ProjectBlock.Y_COUNT - 1;
+				return (ProjectBlock.BLOCKSIZE + 1) * projectBlock.getCountY() - 1;
 			}
 		};
 		docBlock.setTopicText("最近的文档");

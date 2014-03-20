@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.home;
+package com.sg.business.commons.ui.home.basic;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -12,13 +12,13 @@ import com.sg.widgets.part.editor.DataObjectView;
 
 public class BasicHome extends DataObjectView {
 
-	private GenericHomePanel genericHomePanel;
+	private BasicHomePanel genericHomePanel;
 
 	@Override
 	protected void initContent() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		genericHomePanel = new GenericHomePanel(content);
+		genericHomePanel = new BasicHomePanel(content);
 		super.goHome();
 	}
 
@@ -26,7 +26,7 @@ public class BasicHome extends DataObjectView {
 	public void goHome() {
 		cleanUI();
 		content.setLayout(new GridLayout());
-		genericHomePanel = new GenericHomePanel(content);
+		genericHomePanel = new BasicHomePanel(content);
 		content.layout(false,false);
 		super.goHome();
 	}
