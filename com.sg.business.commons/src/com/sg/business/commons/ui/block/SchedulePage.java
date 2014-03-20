@@ -95,7 +95,7 @@ public class SchedulePage extends TabBlockPage implements ISelectionChangedListe
 		grsphic.setLayoutData(fd);
 		fd.top = new FormAttachment(title);
 		fd.left = new FormAttachment();
-		fd.right = new FormAttachment(45);
+		fd.right = new FormAttachment(35);
 		fd.bottom = new FormAttachment(100);
 
 		Control text = createTextBlock(parent);

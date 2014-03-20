@@ -364,7 +364,7 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 				+ "font-size:10pt;"//$NON-NLS-1$
 				+ "margin:0 2;"//$NON-NLS-1$
 				+ "color:#4d4d4d;"//$NON-NLS-1$
-				+ "width:" + 120
+				+ "width:" + 160
 				+ "px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
@@ -372,7 +372,7 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 		sb.append("</span>");
 
 		sb.append("<span style='" + "color:#909090;" + "font-size:8pt;"
-				+ "margin:0 2;" + "width:" + 120 + "px;"
+				+ "margin:0 2;" + "width:" + 140 + "px;"
 				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		// 如果是项目文档，显示项目名称

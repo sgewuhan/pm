@@ -58,7 +58,7 @@ public class BudgetPage extends TabBlockPage implements
 		fd.top = new FormAttachment(0, 4);
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(30);
+		fd.height = 130;
 		Control finishedDetail = createFinishedSection(parent);
 		fd = new FormData();
 		finishedDetail.setLayoutData(fd);

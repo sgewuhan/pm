@@ -95,7 +95,7 @@ public class RevenuePage extends TabBlockPage implements
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment();
 		fd.right = new FormAttachment(50);
-		fd.bottom = new FormAttachment(40);
+		fd.height = 120;
 
 		textContent2 = new Label(parent, SWT.NONE);
 		HtmlUtil.enableMarkup(textContent2);
@@ -105,7 +105,7 @@ public class RevenuePage extends TabBlockPage implements
 		fd.top = new FormAttachment();
 		fd.left = new FormAttachment(textContent1);
 		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(40);
+		fd.height = 120;
 
 		Label label = new Label(parent, SWT.NONE);
 		HtmlUtil.enableMarkup(label);
