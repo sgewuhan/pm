@@ -1382,10 +1382,10 @@
                   <radio
                         editable="true"
                         id="choice"
-                        label="资料预审"
+                        label="评审方式"
                         labelVisible="false"
                         name="choice"
-                        option="是否资料预审"
+                        option="评审方式2"
                         persistable="true"
                         required="true"
                         type="String">
@@ -1807,7 +1807,7 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsProjectApprove.audit"
+            editorId="gsprojectapprove.audittwo"
             name="审批"
             persistentFields="choice,reviewer_list,reviewer_admin,accessory"
             processDefinitionId="gs.gsProjectApprove2">
@@ -1937,6 +1937,79 @@
                         labelVisible="false"
                         name="choice"
                         option="评审实施计划"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="请上传附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsprojectapprove.audittwo"
+            name="审批">
+         <basicpage
+               id="basicpage1"
+               title="审批">
+            <pagecolumn>
+               <section
+                     label="请填写批准意见、结论和评审专家组成员">
+                  <navigatorSelector
+                        editable="true"
+                        id="reviewer_admin"
+                        label="评审组组长"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="reviewer_admin"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+                  <list
+                        addTableItemHandler="com.sg.business.commons.field.action.AddRiewerList"
+                        editable="true"
+                        id="reviewer_list"
+                        label="评审组"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProviderInField"
+                        name="reviewer_list"
+                        persistable="true"
+                        required="true">
+                  </list>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="评审方式"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否资料预审2"
                         persistable="true"
                         required="true"
                         type="String">
