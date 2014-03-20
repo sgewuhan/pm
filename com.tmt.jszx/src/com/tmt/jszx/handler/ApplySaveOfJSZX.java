@@ -1,19 +1,24 @@
 package com.tmt.jszx.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.drools.runtime.process.ProcessInstance;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
+import com.sg.business.model.RoleParameter;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
+import com.sg.business.model.bpmservice.BPMServiceContext;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.part.editor.IDataObjectDialogCallback;
@@ -35,6 +40,15 @@ public class ApplySaveOfJSZX implements IDataObjectDialogCallback {
 			IProgressMonitor monitor, String operation) throws Exception {
 		TaskForm taskform = (TaskForm) input.getData();
 		/**
+		 * 可以直接调用taskform的addWorkParticipates方法
+		 */
+		Work work = taskform.getWork();
+		ProcessInstance processInstance = work.getExecuteProcess();
+		IContext context = new BPMServiceContext(
+				processInstance.getProcessName(),
+				processInstance.getProcessId());
+
+		/**
 		 * 可以使用以下的语句直接添加chief_engineer字段的内容到work
 		 */
 		// taskform.addWorkParticipatesFromField(new String[]{"chief_master"});
@@ -43,33 +57,46 @@ public class ApplySaveOfJSZX implements IDataObjectDialogCallback {
 		Object dept = taskform.getValue("dept"); //$NON-NLS-1$
 		// ***************************************************
 
-		String deptDirector = getValueByDept(dept, Role.ROLE_DEPT_MANAGER_ID);
+		String deptDirector = getValueByDept(dept, Role.ROLE_DEPT_MANAGER_ID,
+				work, context);
 		String deputyDirector = getValueByDept(dept,
-				IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID);
-		String proAdmin = getValueByDept(dept, Role.ROLE_PROJECT_ADMIN_ID);
+				IRoleConstance.ROLE_DEPUTY_DIRECTOR_ID, work, context);
+		String proAdmin = getValueByDept(dept, Role.ROLE_PROJECT_ADMIN_ID,
+				work, context);
 
 		userList.add(deptDirector);
 		userList.add(chiefMaster);
 		userList.add(deputyDirector);
 		userList.add(proAdmin);
 
-		/**
-		 * 可以直接调用taskform的addWorkParticipates方法
-		 */
-		Work work = taskform.getWork();
 		work.doAddParticipateList(userList);
 		return true;
 	}
 
-	public String getValueByDept(Object dept, String roleNumber) {
+	public String getValueByDept(Object dept, String roleNumber, Work work,
+			IContext context) {
 
 		if (dept instanceof ObjectId) {
 			Organization org = ModelService.createModelObject(
 					Organization.class, (ObjectId) dept);
 			Role role = org.getRole(roleNumber, Organization.ROLE_SEARCH_UP);
 			if (role != null) {
-				//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-				List<PrimaryObject> assignment = role.getAssignment();
+				// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
+				HashMap<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put(RoleParameter.TYPE,
+						RoleParameter.TYPE_WORK_PROCESS);
+				parameters.put(RoleParameter.WORK_ID, work.get_id());
+				parameters.put(RoleParameter.WORK, work);
+				User charger = work.getCharger();
+				if (charger != null) {
+					parameters.put(RoleParameter.WORK_CHARGER, work.getCharger()
+							.getUserid());
+				} else {
+					parameters.put(RoleParameter.WORK_CHARGER, "");
+				}
+				parameters.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
+				parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+				List<PrimaryObject> assignment = role.getAssignment(parameters);
 				if (assignment != null && assignment.size() > 0) {
 					return ((RoleAssignment) assignment.get(0)).getUserid();
 				}

@@ -1,25 +1,31 @@
 package com.sg.business.commons.ui.page.flow;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
 import com.sg.business.model.Organization;
+import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.Role;
+import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.RoleParameter;
 import com.sg.business.model.User;
+import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 
-public abstract class AbstractWorkdProcessPage extends
-		AbstractProcessPage {
-
+public abstract class AbstractWorkdProcessPage extends AbstractProcessPage {
 
 	@Override
 	protected DataSet getRoleDataSet() {
@@ -38,13 +44,13 @@ public abstract class AbstractWorkdProcessPage extends
 		WorkDefinition workd = (WorkDefinition) input.getData();
 		if (workd != null) {
 			Organization org;
-			if(workd.isProjectWork()){
+			if (workd.isProjectWork()) {
 				ProjectTemplate pjt = workd.getProjectTemplate();
 				org = pjt.getOrganization();
-			}else{
+			} else {
 				org = workd.getOrganization();
 			}
-			if(org!=null){
+			if (org != null) {
 				return org.getDroolsProcessDefinitions();
 			}
 		}
@@ -55,11 +61,36 @@ public abstract class AbstractWorkdProcessPage extends
 		// 如果角色定义不为空，取角色下的用户
 		List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 		Role role = roled.getOrganizationRole();
-		//TODO 根据roled的类型进行判断
-		//TODO 如果是项目时，使用ProjectRole.getAssignment();
-		
-		//TODO 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-		List<PrimaryObject> assignments = role.getAssignment();
+		List<PrimaryObject> assignments;
+		// 根据roled的类型进行判断
+		if (roled instanceof ProjectRole) {
+			// 如果是项目时，使用ProjectRole.getAssignment();
+			assignments = ((ProjectRole) roled).getAssignment();
+		} else {
+			// 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			ObjectId work_id = (ObjectId) roled
+					.getValue(RoleDefinition.F_WORK_ID);
+			if (work_id != null) {
+				Work work = ModelService.createModelObject(Work.class, work_id);
+				parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_WORK_PROCESS);
+				parameters.put(RoleParameter.WORK_ID, work_id);
+				parameters.put(RoleParameter.WORK, work);
+				User charger = work.getCharger();
+				if (charger != null) {
+					parameters.put(RoleParameter.WORK_CHARGER, work
+							.getCharger().getUserid());
+				} else {
+					parameters.put(RoleParameter.WORK_CHARGER, "");
+				}
+				parameters
+						.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
+				parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+			} else {
+				parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_NONE);
+			}
+			assignments = role.getAssignment(parameters);
+		}
 		for (int i = 0; i < assignments.size(); i++) {
 			AbstractRoleAssignment ass = (AbstractRoleAssignment) assignments
 					.get(i);

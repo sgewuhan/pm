@@ -2,6 +2,7 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -73,8 +74,11 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		// 如果是系统角色，需要将该角色的用户添加到项目的参与者
 		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();
-			//TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
-			List<PrimaryObject> ass = role.getAssignment();
+			// TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_PROJECT);
+			parameters.put(RoleParameter.PROJECT_ID, getProject().get_id());
+			List<PrimaryObject> ass = role.getAssignment(parameters);
 			Project project = getProject();
 			project.doAddParticipateFromAssignment(ass);
 		}
@@ -129,8 +133,10 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		}
 
 		// 写日志
-		DBUtil.SAVELOG(context.getAccountInfo().getUserId(), Messages.get().ProjectRole_2,
-				new Date(), Messages.get().ProjectRole_3 + this + Messages.get().ProjectRole_4 + users.toString(),
+		DBUtil.SAVELOG(context.getAccountInfo().getUserId(),
+				Messages.get().ProjectRole_2, new Date(),
+				Messages.get().ProjectRole_3 + this
+						+ Messages.get().ProjectRole_4 + users.toString(),
 				IModelConstants.DB);
 
 	}
@@ -149,12 +155,12 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		values.add(new BasicDBObject().append(Work.F_PARTICIPATE_ROLE_SET,
 				Pattern.compile("^.*" + getOrganizationRoleId() + ".*$", //$NON-NLS-1$ //$NON-NLS-2$
 						Pattern.CASE_INSENSITIVE)));
-		long countWork = getRelationCountByCondition(
-				Work.class,
+		long countWork = getRelationCountByCondition(Work.class,
 				new BasicDBObject().append("$or", values).append( //$NON-NLS-1$
 						Work.F_PARENT_ID, getProjectId()));
 		if (countWork > 0) {
-			message.add(new Object[] { Messages.get().ProjectRole_8, this, SWT.ICON_WARNING });
+			message.add(new Object[] { Messages.get().ProjectRole_8, this,
+					SWT.ICON_WARNING });
 		}
 
 		Project project = getProject();
@@ -239,8 +245,11 @@ public class ProjectRole extends AbstractRoleDefinition implements
 	public List<PrimaryObject> getAssignment() {
 		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();
-			//TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入項目ID进行人员指派
-			return role.getAssignment();
+			// 使用TYPE为TYPE_PROJECT的RoleParameter，传入項目ID进行人员指派
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_PROJECT);
+			parameters.put(RoleParameter.PROJECT_ID, getProject().get_id());
+			return role.getAssignment(parameters);
 		} else {
 			return getRelationById(F__ID, ProjectRoleAssignment.F_ROLE_ID,
 					ProjectRoleAssignment.class);

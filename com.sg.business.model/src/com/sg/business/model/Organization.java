@@ -401,9 +401,9 @@ public class Organization extends PrimaryObject {
 	private void doSaveBefore() throws Exception {
 		// 检查如果是事业部类型的组织，组织代码必须填写
 		String type = getOrganizationType();
-//		if (Utils.isNullOrEmpty(type)) {
-//			throw new Exception(Messages.get().Organization_32 + this);
-//		}
+		// if (Utils.isNullOrEmpty(type)) {
+		// throw new Exception(Messages.get().Organization_32 + this);
+		// }
 		if (ORG_TYPE_COMPANY.equals(type)
 				|| ORG_TYPE_BUSINESS_UNIT.equals(type)) {
 			String companyCode = getCompanyCode();
@@ -1697,12 +1697,61 @@ public class Organization extends PrimaryObject {
 	 * @return
 	 */
 	public List<String> getRoleAssignmentUserIds(String roleNumber,
-			int selectType) {
+			int selectType, PrimaryObject po) {
 		Role role = getRole(roleNumber, selectType);
 		List<String> result = new ArrayList<String>();
 		if (role != null) {
-			//TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-			List<PrimaryObject> assignment = role.getAssignment();
+			// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			if (!po.isEmpty()) {
+				if (po instanceof Project) {
+					Project project = (Project) po;
+					parameters.put(RoleParameter.TYPE,
+							RoleParameter.TYPE_PROJECT);
+					parameters.put(RoleParameter.PROJECT_ID, project.get_id());
+					parameters.put(RoleParameter.PROJECT, project);
+					parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
+							project.getBusinessOrganization());
+					User charger = project.getCharger();
+					if (charger != null) {
+						parameters.put(RoleParameter.PROJECT_CHARGER,
+								charger.getUserid());
+					} else {
+						parameters.put(RoleParameter.PROJECT_CHARGER, "");
+					}
+					parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
+							project.getFunctionOrganization());
+					parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
+							project.getLaunchOrganization());
+					parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
+							project.getProductTypeOptions());
+					parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
+							project.getStandardSetOptions());
+					parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
+							project.getProjectTypeOptions());
+				} else if (po instanceof Work) {
+					Work work = (Work) po;
+					parameters.put(RoleParameter.TYPE,
+							RoleParameter.TYPE_WORK_PROCESS);
+					parameters.put(RoleParameter.WORK_ID, work.get_id());
+					parameters.put(RoleParameter.WORK, work);
+					User charger = work.getCharger();
+					if (charger != null) {
+						parameters.put(RoleParameter.WORK_CHARGER, work
+								.getCharger().getUserid());
+					} else {
+						parameters.put(RoleParameter.WORK_CHARGER, "");
+					}
+					parameters.put(RoleParameter.WORK_MILESTONE,
+							work.isMilestone());
+					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+				} else {
+					parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_NONE);
+				}
+			} else {
+				parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_NONE);
+			}
+			List<PrimaryObject> assignment = role.getAssignment(parameters);
 			if (assignment != null) {
 				for (int i = 0; i < assignment.size(); i++) {
 					result.add(((RoleAssignment) assignment.get(i)).getUserid());

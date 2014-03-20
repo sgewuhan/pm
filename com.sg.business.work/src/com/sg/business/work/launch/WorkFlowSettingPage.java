@@ -1,19 +1,25 @@
 package com.sg.business.work.launch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 
 import com.mobnut.db.model.DataSet;
+import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.commons.ui.page.flow.AbstractProcessPage;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
+import com.sg.business.model.ProjectRole;
 import com.sg.business.model.Role;
+import com.sg.business.model.RoleDefinition;
+import com.sg.business.model.RoleParameter;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.dataset.organization.OrgRoot;
@@ -60,13 +66,13 @@ public class WorkFlowSettingPage extends WizardPage {
 			protected String getProcessKey() {
 				return Work.F_WF_EXECUTE;
 			}
-			
+
 			@Override
 			protected String getActorNavigatorId(AbstractRoleDefinition roled) {
-				if(roled == null){
+				if (roled == null) {
 					return "organization.user.selector"; //$NON-NLS-1$
 				}
-				
+
 				return super.getActorNavigatorId(roled);
 			}
 
@@ -76,11 +82,36 @@ public class WorkFlowSettingPage extends WizardPage {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				if (roled != null) {
 					Role role = roled.getOrganizationRole();
-					//TODO 根据roled的类型进行判断
-					//TODO 如果是项目时，使用ProjectRole.getAssignment();
-					
-					//TODO 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-					List<PrimaryObject> assignments = role.getAssignment();
+					List<PrimaryObject> assignments;
+					// 根据roled的类型进行判断
+					if (roled instanceof ProjectRole) {
+						// 如果是项目时，使用ProjectRole.getAssignment();
+						assignments = ((ProjectRole) roled).getAssignment();
+					} else {
+						// 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
+						HashMap<String, Object> parameters = new HashMap<String, Object>();
+						ObjectId work_id = (ObjectId) roled
+								.getValue(RoleDefinition.F_WORK_ID);
+						if (work_id != null) {
+							Work work = ModelService.createModelObject(Work.class, work_id);
+							parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_WORK_PROCESS);
+							parameters.put(RoleParameter.WORK_ID, work_id);
+							parameters.put(RoleParameter.WORK, work);
+							User charger = work.getCharger();
+							if (charger != null) {
+								parameters.put(RoleParameter.WORK_CHARGER, work
+										.getCharger().getUserid());
+							} else {
+								parameters.put(RoleParameter.WORK_CHARGER, "");
+							}
+							parameters
+									.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
+							parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+						} else {
+							parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_NONE);
+						}
+						assignments = role.getAssignment(parameters);
+					}
 					for (int i = 0; i < assignments.size(); i++) {
 						AbstractRoleAssignment ass = (AbstractRoleAssignment) assignments
 								.get(i);
@@ -93,9 +124,9 @@ public class WorkFlowSettingPage extends WizardPage {
 					return new DataSet(result);
 				} else {// 限定角色为空，可以从组织选择用户
 					OrgRoot factory = new OrgRoot();
-//					UserDataSetFactory factory = new UserDataSetFactory();
-//					factory.setQueryCondition(new BasicDBObject().append(
-//							User.F_ACTIVATED, Boolean.TRUE));
+					// UserDataSetFactory factory = new UserDataSetFactory();
+					// factory.setQueryCondition(new BasicDBObject().append(
+					// User.F_ACTIVATED, Boolean.TRUE));
 					return factory.getDataSet();
 				}
 

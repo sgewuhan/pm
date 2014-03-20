@@ -30,6 +30,7 @@ Require-Bundle: org.eclipse.rap.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: com.sg.business.commons,
+ com.sg.business.commons.actor,
  com.sg.business.commons.adminfunction,
  com.sg.business.commons.column.editingsupport,
  com.sg.business.commons.column.labelprovider,

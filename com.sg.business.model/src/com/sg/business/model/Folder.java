@@ -121,6 +121,15 @@ public class Folder extends PrimaryObject {
 		return (ObjectId) getValue(F_PROJECT_ID);
 	}
 
+	public PrimaryObject getProject() {
+		ObjectId ptId = getProject_id();
+		if (ptId != null) {
+			return ModelService.createModelObject(Project.class, ptId);
+		} else {
+			return null;
+		}
+	}
+
 	/**
 	 * ∑µªÿœ‘ æÕº±Í
 	 * 

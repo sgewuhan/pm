@@ -204,7 +204,7 @@ public class Role extends PrimaryObject {
 	 * @return
 	 */
 	public List<PrimaryObject> getAssignment(Map<String, Object> parameters) {
-		if (!parameters.isEmpty()) {
+		if (parameters.isEmpty()) {
 			return getAssignment();
 		}
 		Object type = parameters.get(RoleParameter.TYPE);
@@ -227,23 +227,30 @@ public class Role extends PrimaryObject {
 				if (projectId instanceof ObjectId) {
 					Project project = ModelService.createModelObject(
 							Project.class, (ObjectId) projectId);
-					parameters.put(RoleParameter.PROJECT, project);
-					parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
-							project.getBusinessOrganization());
-					parameters.put(RoleParameter.PROJECT_CHARGER,
-							project.getCharger());
-					parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
-							project.getFunctionOrganization());
-					parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
-							project.getLaunchOrganization());
-					parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
-							project.getProductTypeOptions());
-					parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
-							project.getStandardSetOptions());
-					parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
-							project.getProjectTypeOptions());
-				} else {
-					return getAssignment();
+						parameters.put(RoleParameter.PROJECT, project);
+						parameters.put(
+								RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
+								project.getBusinessOrganization());
+
+						User charger = project.getCharger();
+						if (charger != null) {
+							parameters.put(RoleParameter.PROJECT_CHARGER,
+									charger.getUserid());
+						} else {
+							parameters.put(RoleParameter.PROJECT_CHARGER, "");
+						}
+						parameters.put(
+								RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
+								project.getFunctionOrganization());
+						parameters.put(
+								RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
+								project.getLaunchOrganization());
+						parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
+								project.getProductTypeOptions());
+						parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
+								project.getStandardSetOptions());
+						parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
+								project.getProjectTypeOptions());
 				}
 			} else if (((int) type) == RoleParameter.TYPE_WORK) {
 				// 转换处理
@@ -252,13 +259,16 @@ public class Role extends PrimaryObject {
 					Work work = ModelService.createModelObject(Work.class,
 							(ObjectId) workId);
 					parameters.put(RoleParameter.WORK, work);
-					parameters.put(RoleParameter.WORK_CHARGER,
-							work.getCharger());
+					User charger = work.getCharger();
+					if (charger != null) {
+						parameters.put(RoleParameter.WORK_CHARGER, work
+								.getCharger().getUserid());
+					} else {
+						parameters.put(RoleParameter.WORK_CHARGER, "");
+					}
 					parameters.put(RoleParameter.WORK_MILESTONE,
 							work.isMilestone());
 					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
-				} else {
-					return getAssignment();
 				}
 			} else if (((int) type) == RoleParameter.TYPE_WORK_PROCESS) {
 				// 转换处理
@@ -267,8 +277,13 @@ public class Role extends PrimaryObject {
 					Work work = ModelService.createModelObject(Work.class,
 							(ObjectId) workId);
 					parameters.put(RoleParameter.WORK, work);
-					parameters.put(RoleParameter.WORK_CHARGER,
-							work.getCharger());
+					User charger = work.getCharger();
+					if (charger != null) {
+						parameters.put(RoleParameter.WORK_CHARGER, work
+								.getCharger().getUserid());
+					} else {
+						parameters.put(RoleParameter.WORK_CHARGER, "");
+					}
 					parameters.put(RoleParameter.WORK_MILESTONE,
 							work.isMilestone());
 					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
@@ -285,10 +300,7 @@ public class Role extends PrimaryObject {
 					// e.printStackTrace();
 					// }
 					// parameters.put(RoleParameter.PROCESS_INPUT, );
-				} else {
-					return getAssignment();
 				}
-
 			} else {
 				return getAssignment();
 			}
