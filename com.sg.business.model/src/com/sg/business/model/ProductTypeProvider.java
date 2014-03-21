@@ -119,7 +119,7 @@ public class ProductTypeProvider extends ProjectProvider {
 		return result;
 	}
 
-	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+	public BasicDBObject getQueryCondition(Date start, Date stop) {
 		BasicDBObject dbo = super.getQueryCondition(start, stop);
 		Object ids = getOrganizationIdCascade(null).toArray();
 		dbo.put(Project.F_PRODUCT_TYPE_OPTION, getDesc());

@@ -77,7 +77,7 @@ public class ProjectManagerProvider extends ProjectProvider {
 		return result;
 	}
 
-	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+	public BasicDBObject getQueryCondition(Date start, Date stop) {
 //		return super.getQueryCondition(start, stop).append(Project.F_CHARGER, user.getUserid());
 		BasicDBObject scond = super.getQueryCondition(start, stop);
 		scond.put("$or", new BasicDBObject[]{new BasicDBObject().append(Project.F_CHARGER, user.getUserid()),

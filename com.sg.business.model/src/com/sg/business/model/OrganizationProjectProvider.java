@@ -170,7 +170,7 @@ public class OrganizationProjectProvider extends ProjectProvider {
 	 * @param stop
 	 * @return
 	 */
-	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+	public BasicDBObject getQueryCondition(Date start, Date stop) {
 		return super.getQueryCondition(start, stop).append(
 				getOrganizationFieldName(), new BasicDBObject().append("$in", //$NON-NLS-1$
 						getOrganizations(organization)));

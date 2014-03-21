@@ -313,6 +313,8 @@ public interface IModelConstants {
 
 	public static final String C_PRODUCT_SALESDATA = "productsalesdata";
 
+	public static final String C_USER_PREFORMENCE = "userpref";
+
 	
 
 }

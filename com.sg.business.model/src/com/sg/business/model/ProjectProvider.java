@@ -314,7 +314,7 @@ public abstract class ProjectProvider extends PrimaryObject {
 		return projectSetData;
 	}
 
-	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+	public BasicDBObject getQueryCondition(Date start, Date stop) {
 		BasicDBObject dbo = new BasicDBObject();
 		dbo.put(ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$

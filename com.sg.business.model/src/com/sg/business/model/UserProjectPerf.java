@@ -55,7 +55,7 @@ public class UserProjectPerf extends ProjectProvider {
 		return result;
 	}
 
-	protected BasicDBObject getQueryCondition(Date start, Date stop) {
+	public BasicDBObject getQueryCondition(Date start, Date stop) {
 		List<ObjectId> projectidlist = getAllProjectId();
 		BasicDBObject dbo = new BasicDBObject();
 		dbo.put(F__ID, new BasicDBObject().append("$in", projectidlist)); //$NON-NLS-1$
