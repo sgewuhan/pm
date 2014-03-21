@@ -47,6 +47,18 @@
             <pagecolumn>
                <section
                      label="请填写校核结论和说明">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="说明"
+                        labelVisible="true"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
                   <radio
                         editable="true"
                         id="choice"
@@ -55,20 +67,9 @@
                         name="choice"
                         option="是否通过"
                         persistable="true"
-                        required="false"
+                        required="true"
                         type="String">
                   </radio>
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        label="说明"
-                        labelVisible="true"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -579,17 +580,17 @@
             collectionName="taskform"
             dbName="pm2"
             id="gsmoldacceptapprove.technology"
-            name="技术审核">
+            name="审核">
          <basicpage
                id="com.tmt.gs.basicpage9"
-               title="设计审核">
+               title="审核">
             <pagecolumn>
                <section
-                     label="请填写设计审核结论和说明">
+                     label="请填写审核结论和说明">
                   <radio
                         editable="true"
                         id="choice"
-                        label="设计审核结论"
+                        label="审核结论"
                         labelVisible="true"
                         name="choice"
                         option="是否通过"
