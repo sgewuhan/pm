@@ -1702,56 +1702,21 @@ public class Organization extends PrimaryObject {
 		List<String> result = new ArrayList<String>();
 		if (role != null) {
 			// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			IRoleParameter roleParameter;
 			if (!po.isEmpty()) {
 				if (po instanceof Project) {
 					Project project = (Project) po;
-					parameters.put(RoleParameter.TYPE,
-							RoleParameter.TYPE_PROJECT);
-					parameters.put(RoleParameter.PROJECT_ID, project.get_id());
-					parameters.put(RoleParameter.PROJECT, project);
-					parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
-							project.getBusinessOrganization());
-					User charger = project.getCharger();
-					if (charger != null) {
-						parameters.put(RoleParameter.PROJECT_CHARGER,
-								charger.getUserid());
-					} else {
-						parameters.put(RoleParameter.PROJECT_CHARGER, "");
-					}
-					parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
-							project.getFunctionOrganization());
-					parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
-							project.getLaunchOrganization());
-					parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
-							project.getProductTypeOptions());
-					parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
-							project.getStandardSetOptions());
-					parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
-							project.getProjectTypeOptions());
+					roleParameter = project.getAdapter(IRoleParameter.class);
 				} else if (po instanceof Work) {
 					Work work = (Work) po;
-					parameters.put(RoleParameter.TYPE,
-							RoleParameter.TYPE_WORK_PROCESS);
-					parameters.put(RoleParameter.WORK_ID, work.get_id());
-					parameters.put(RoleParameter.WORK, work);
-					User charger = work.getCharger();
-					if (charger != null) {
-						parameters.put(RoleParameter.WORK_CHARGER, work
-								.getCharger().getUserid());
-					} else {
-						parameters.put(RoleParameter.WORK_CHARGER, "");
-					}
-					parameters.put(RoleParameter.WORK_MILESTONE,
-							work.isMilestone());
-					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+					roleParameter = work.getAdapter(IRoleParameter.class);
 				} else {
-					parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_NONE);
+					roleParameter = new RoleParameter();
 				}
 			} else {
-				parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_NONE);
+				roleParameter = new RoleParameter();
 			}
-			List<PrimaryObject> assignment = role.getAssignment(parameters);
+			List<PrimaryObject> assignment = role.getAssignment(roleParameter);
 			if (assignment != null) {
 				for (int i = 0; i < assignment.size(); i++) {
 					result.add(((RoleAssignment) assignment.get(i)).getUserid());

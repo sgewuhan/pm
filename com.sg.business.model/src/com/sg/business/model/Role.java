@@ -203,12 +203,13 @@ public class Role extends PrimaryObject {
 	 * @param parameters
 	 * @return
 	 */
-	public List<PrimaryObject> getAssignment(Map<String, Object> parameters) {
-		if (parameters.isEmpty()) {
+	public List<PrimaryObject> getAssignment(IRoleParameter roleParameters) {
+		Map<String, Object> parameters = roleParameters.getParameters();
+		if (parameters .isEmpty()) {
 			return getAssignment();
 		}
-		Object type = parameters.get(RoleParameter.TYPE);
-		if (type != null && ((int) type) == RoleParameter.TYPE_NONE) {
+		Object type = parameters.get(IRoleParameter.TYPE);
+		if (type != null && ((int) type) == IRoleParameter.TYPE_NONE) {
 			return getAssignment();
 		} else {
 			String js = getStringValue(F_RULE);
@@ -219,91 +220,7 @@ public class Role extends PrimaryObject {
 				RoleAssignment roleAssignment = (RoleAssignment) po;
 				userIdList.add(roleAssignment.getUserid());
 			}
-			parameters.put(RoleParameter.USERID, userIdList);
-
-			if (((int) type) == RoleParameter.TYPE_PROJECT) {
-				// 转换处理
-				Object projectId = parameters.get(RoleParameter.PROJECT_ID);
-				if (projectId instanceof ObjectId) {
-					Project project = ModelService.createModelObject(
-							Project.class, (ObjectId) projectId);
-						parameters.put(RoleParameter.PROJECT, project);
-						parameters.put(
-								RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
-								project.getBusinessOrganization());
-
-						User charger = project.getCharger();
-						if (charger != null) {
-							parameters.put(RoleParameter.PROJECT_CHARGER,
-									charger.getUserid());
-						} else {
-							parameters.put(RoleParameter.PROJECT_CHARGER, "");
-						}
-						parameters.put(
-								RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
-								project.getFunctionOrganization());
-						parameters.put(
-								RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
-								project.getLaunchOrganization());
-						parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
-								project.getProductTypeOptions());
-						parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
-								project.getStandardSetOptions());
-						parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
-								project.getProjectTypeOptions());
-				}
-			} else if (((int) type) == RoleParameter.TYPE_WORK) {
-				// 转换处理
-				Object workId = parameters.get(RoleParameter.WORK_ID);
-				if (workId instanceof ObjectId) {
-					Work work = ModelService.createModelObject(Work.class,
-							(ObjectId) workId);
-					parameters.put(RoleParameter.WORK, work);
-					User charger = work.getCharger();
-					if (charger != null) {
-						parameters.put(RoleParameter.WORK_CHARGER, work
-								.getCharger().getUserid());
-					} else {
-						parameters.put(RoleParameter.WORK_CHARGER, "");
-					}
-					parameters.put(RoleParameter.WORK_MILESTONE,
-							work.isMilestone());
-					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
-				}
-			} else if (((int) type) == RoleParameter.TYPE_WORK_PROCESS) {
-				// 转换处理
-				Object workId = parameters.get(RoleParameter.WORK_ID);
-				if (workId instanceof ObjectId) {
-					Work work = ModelService.createModelObject(Work.class,
-							(ObjectId) workId);
-					parameters.put(RoleParameter.WORK, work);
-					User charger = work.getCharger();
-					if (charger != null) {
-						parameters.put(RoleParameter.WORK_CHARGER, work
-								.getCharger().getUserid());
-					} else {
-						parameters.put(RoleParameter.WORK_CHARGER, "");
-					}
-					parameters.put(RoleParameter.WORK_MILESTONE,
-							work.isMilestone());
-					parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
-					// ProcessInstance executeProcess =
-					// work.getExecuteProcess();
-					//
-					// try {
-					// WorkflowProcessInstance workflowProcessInstance =
-					// WorkflowService.getDefault().getProcessInstance(
-					// executeProcess.getProcessId(),
-					// executeProcess.getId());
-					// workflowProcessInstance.getVariable(arg0)
-					// } catch (Exception e) {
-					// e.printStackTrace();
-					// }
-					// parameters.put(RoleParameter.PROCESS_INPUT, );
-				}
-			} else {
-				return getAssignment();
-			}
+			parameters.put(IRoleParameter.USERID, userIdList);
 
 			if (js != null) {
 				Object result = JavaScriptEvaluator.evaluate(js, parameters);

@@ -2,7 +2,6 @@ package com.sg.business.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -75,11 +74,9 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();
 			// TODO 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_PROJECT);
-			parameters.put(RoleParameter.PROJECT_ID, getProject().get_id());
-			List<PrimaryObject> ass = role.getAssignment(parameters);
 			Project project = getProject();
+			IRoleParameter roleParameter = project.getAdapter(IRoleParameter.class);
+			List<PrimaryObject> ass = role.getAssignment(roleParameter);
 			project.doAddParticipateFromAssignment(ass);
 		}
 
@@ -246,10 +243,9 @@ public class ProjectRole extends AbstractRoleDefinition implements
 		if (isOrganizatioRole()) {
 			Role role = getOrganizationRole();
 			// 使用TYPE为TYPE_PROJECT的RoleParameter，传入項目ID进行人员指派
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_PROJECT);
-			parameters.put(RoleParameter.PROJECT_ID, getProject().get_id());
-			return role.getAssignment(parameters);
+			Project project = getProject();
+			IRoleParameter roleParameter = project.getAdapter(IRoleParameter.class);
+			return role.getAssignment(roleParameter);
 		} else {
 			return getRelationById(F__ID, ProjectRoleAssignment.F_ROLE_ID,
 					ProjectRoleAssignment.class);

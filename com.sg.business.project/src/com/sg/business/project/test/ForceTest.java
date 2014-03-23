@@ -1,18 +1,16 @@
 package com.sg.business.project.test;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.IRoleParameter;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
-import com.sg.business.model.RoleParameter;
-import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.widgets.part.CurrentAccountContext;
 
@@ -32,28 +30,16 @@ public class ForceTest extends PropertyTester {
 						&& args.length > 0) {
 					if ("force".equals(args[0])) {
 						IContext context = new CurrentAccountContext();
-						String consignerId = context.getAccountInfo().getConsignerId();
+						String consignerId = context.getAccountInfo()
+								.getConsignerId();
 						Organization org = project.getFunctionOrganization();
 						Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
 								Organization.ROLE_NOT_SEARCH);
 						// 使用TYPE为TYPE_WORK的RoleParameter，传入工作ID进行人员指派
-						HashMap<String, Object> parameters = new HashMap<String, Object>();
-						parameters.put(RoleParameter.TYPE,
-								RoleParameter.TYPE_WORK);
-						parameters.put(RoleParameter.WORK_ID, work.get_id());
-						parameters.put(RoleParameter.WORK, work);
-						User charger = work.getCharger();
-						if (charger != null) {
-							parameters.put(RoleParameter.WORK_CHARGER, work
-									.getCharger().getUserid());
-						} else {
-							parameters.put(RoleParameter.WORK_CHARGER, "");
-						}
-						parameters
-								.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
-						parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+						IRoleParameter roleParameter = work
+								.getAdapter(IRoleParameter.class);
 						List<PrimaryObject> assignmentList = role
-								.getAssignment(parameters);
+								.getAssignment(roleParameter);
 						if (assignmentList != null && assignmentList.size() > 0) {
 							for (PrimaryObject po : assignmentList) {
 								RoleAssignment roleAssignment = (RoleAssignment) po;

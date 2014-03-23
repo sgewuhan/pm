@@ -50,6 +50,7 @@ import com.sg.business.model.check.ICheckListItem;
 import com.sg.business.model.commonlabel.WorkCommonHTMLLable;
 import com.sg.business.model.dataset.calendarsetting.CalendarCaculater;
 import com.sg.business.model.input.WorkEditorInputFactory;
+import com.sg.business.model.roleparameter.WorkRoleParameter;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -3274,20 +3275,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		} else {
 			Role role = ModelService.createModelObject(Role.class, _id);
 			// TODO 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_WORK_PROCESS);
-			parameters.put(RoleParameter.WORK_ID, get_id());
-			parameters.put(RoleParameter.WORK, this);
-			User charger = getCharger();
-			if (charger != null) {
-				parameters.put(RoleParameter.WORK_CHARGER, getCharger()
-						.getUserid());
-			} else {
-				parameters.put(RoleParameter.WORK_CHARGER, "");
-			}
-			parameters.put(RoleParameter.WORK_MILESTONE, isMilestone());
-			parameters.put(RoleParameter.WORK_TYPE, getWorkType());
-			ralist = role.getAssignment(parameters);
+			IRoleParameter roleParameter = getAdapter(IRoleParameter.class);
+			ralist = role.getAssignment(roleParameter);
 		}
 		List<User> result = new ArrayList<User>();
 		if (ralist != null) {
@@ -3967,6 +3956,8 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 			return (T) (new WorkCommonHTMLLable(this));
 		} else if (adapter == IEditorInputFactory.class) {
 			return (T) (new WorkEditorInputFactory(this));
+		} else if (adapter == IRoleParameter.class) {
+			return (T) (new WorkRoleParameter(this));
 		}
 		return super.getAdapter(adapter);
 	}
@@ -4298,22 +4289,9 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 					RoleDefinition rd = ModelService.createModelObject(
 							RoleDefinition.class, value);
 					Role orole = rd.getOrganizationRole();
-					HashMap<String, Object> parameters = new HashMap<String, Object>();
-					parameters.put(RoleParameter.TYPE,
-							RoleParameter.TYPE_WORK_PROCESS);
-					parameters.put(RoleParameter.WORK_ID, get_id());
-					parameters.put(RoleParameter.WORK, this);
-					User charger = getCharger();
-					if (charger != null) {
-						parameters.put(RoleParameter.WORK_CHARGER, getCharger()
-								.getUserid());
-					} else {
-						parameters.put(RoleParameter.WORK_CHARGER, "");
-					}
-					parameters.put(RoleParameter.WORK_MILESTONE, isMilestone());
-					parameters.put(RoleParameter.WORK_TYPE, getWorkType());
+					IRoleParameter roleParameter = getAdapter(IRoleParameter.class);
 					List<PrimaryObject> roleAss = orole
-							.getAssignment(parameters);
+							.getAssignment(roleParameter);
 					if (!roleAss.isEmpty()) {
 						if (roleAss.size() > 1) {
 							break;

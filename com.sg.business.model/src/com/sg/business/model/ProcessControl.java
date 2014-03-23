@@ -1,7 +1,6 @@
 package com.sg.business.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.BasicBSONList;
@@ -273,37 +272,19 @@ public abstract class ProcessControl implements IProcessControl {
 								Role r = ((RoleDefinition) rd)
 										.getOrganizationRole();
 								// 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-								HashMap<String, Object> parameters = new HashMap<String, Object>();
+								IRoleParameter roleParameter;
 								ObjectId work_id = (ObjectId) rd
 										.getValue(RoleDefinition.F_WORK_ID);
 								if (work_id != null) {
 									Work work = ModelService.createModelObject(
 											Work.class, work_id);
-									parameters.put(RoleParameter.TYPE,
-											RoleParameter.TYPE_WORK_PROCESS);
-									parameters.put(RoleParameter.WORK_ID,
-											work_id);
-									parameters.put(RoleParameter.WORK, work);
-									User charger = work.getCharger();
-									if (charger != null) {
-										parameters.put(
-												RoleParameter.WORK_CHARGER,
-												work.getCharger().getUserid());
-									} else {
-										parameters.put(
-												RoleParameter.WORK_CHARGER, "");
-									}
-									parameters.put(
-											RoleParameter.WORK_MILESTONE,
-											work.isMilestone());
-									parameters.put(RoleParameter.WORK_TYPE,
-											work.getWorkType());
+									roleParameter = work
+											.getAdapter(IRoleParameter.class);
 								} else {
-									parameters.put(RoleParameter.TYPE,
-											RoleParameter.TYPE_NONE);
+									roleParameter = new RoleParameter();
 								}
 
-								roleAssiment = r.getAssignment(parameters);
+								roleAssiment = r.getAssignment(roleParameter);
 							}
 						}
 						if (roleAssiment == null) {

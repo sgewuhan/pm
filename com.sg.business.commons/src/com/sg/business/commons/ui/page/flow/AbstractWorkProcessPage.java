@@ -1,7 +1,6 @@
 package com.sg.business.commons.ui.page.flow;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
@@ -18,7 +17,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleDefinition;
-import com.sg.business.model.RoleParameter;
+import com.sg.business.model.IRoleParameter;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
 import com.sg.business.model.toolkit.UserToolkit;
@@ -120,22 +119,8 @@ public abstract class AbstractWorkProcessPage extends AbstractProcessPage {
 			Role role = roledef.getOrganizationRole();
 			if (role != null) {
 				// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-				HashMap<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put(RoleParameter.TYPE,
-						RoleParameter.TYPE_WORK_PROCESS);
-				parameters.put(RoleParameter.WORK_ID, work.get_id());
-				parameters.put(RoleParameter.WORK, work);
-				User charger = work.getCharger();
-				if (charger != null) {
-					parameters.put(RoleParameter.WORK_CHARGER, work
-							.getCharger().getUserid());
-				} else {
-					parameters.put(RoleParameter.WORK_CHARGER, "");
-				}
-				parameters
-						.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
-				parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
-				assignments = role.getAssignment(parameters);
+				IRoleParameter roleParameter = work.getAdapter(IRoleParameter.class);
+				assignments = role.getAssignment(roleParameter);
 			}
 		}
 
