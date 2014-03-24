@@ -20,5 +20,6 @@ Require-Bundle: com.sg.bpm.service,
  com.sg.business.resource;bundle-version="1.0.0"
 Export-Package: com.sg.business.taskforms,
  com.sg.business.taskforms.field,
+ com.sg.business.taskforms.handler,
  com.sg.business.taskforms.systemprojectapprove,
  com.sg.business.taskforms.validation

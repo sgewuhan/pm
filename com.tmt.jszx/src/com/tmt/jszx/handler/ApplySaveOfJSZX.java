@@ -1,7 +1,6 @@
 package com.tmt.jszx.handler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -11,10 +10,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.IRoleParameter;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
 import com.sg.business.model.RoleAssignment;
-import com.sg.business.model.RoleParameter;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.Work;
@@ -82,21 +81,8 @@ public class ApplySaveOfJSZX implements IDataObjectDialogCallback {
 			Role role = org.getRole(roleNumber, Organization.ROLE_SEARCH_UP);
 			if (role != null) {
 				// 使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-				HashMap<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put(RoleParameter.TYPE,
-						RoleParameter.TYPE_WORK_PROCESS);
-				parameters.put(RoleParameter.WORK_ID, work.get_id());
-				parameters.put(RoleParameter.WORK, work);
-				User charger = work.getCharger();
-				if (charger != null) {
-					parameters.put(RoleParameter.WORK_CHARGER, work.getCharger()
-							.getUserid());
-				} else {
-					parameters.put(RoleParameter.WORK_CHARGER, "");
-				}
-				parameters.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
-				parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
-				List<PrimaryObject> assignment = role.getAssignment(parameters);
+				IRoleParameter roleParameter = work.getAdapter(IRoleParameter.class);
+				List<PrimaryObject> assignment = role.getAssignment(roleParameter);
 				if (assignment != null && assignment.size() > 0) {
 					return ((RoleAssignment) assignment.get(0)).getUserid();
 				}

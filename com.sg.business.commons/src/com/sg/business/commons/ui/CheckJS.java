@@ -18,7 +18,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
-import com.sg.business.model.RoleParameter;
+import com.sg.business.model.IRoleParameter;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.nls.Messages;
@@ -57,23 +57,23 @@ public class CheckJS extends AbstractHandler {
 		DBObject dbo = col.findOne();
 		// 转换处理
 		Object projectId = dbo.get(Project.F__ID);
-		parameters.put(RoleParameter.PROJECT_ID, projectId);
+		parameters.put(IRoleParameter.PROJECT_ID, projectId);
 		if (projectId instanceof ObjectId) {
 			Project project = ModelService.createModelObject(Project.class,
 					(ObjectId) projectId);
-			parameters.put(RoleParameter.PROJECT, project);
-			parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
+			parameters.put(IRoleParameter.PROJECT, project);
+			parameters.put(IRoleParameter.PROJECT_BUSINESS_ORGANIZATION,
 					project.getBusinessOrganization());
-			parameters.put(RoleParameter.PROJECT_CHARGER, project.getCharger());
-			parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
+			parameters.put(IRoleParameter.PROJECT_CHARGER, project.getCharger());
+			parameters.put(IRoleParameter.PROJECT_FUNCTION_ORGANIZATION,
 					project.getFunctionOrganization());
-			parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
+			parameters.put(IRoleParameter.PROJECT_LAUNCH_ORGANIZATION,
 					project.getLaunchOrganization());
-			parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
+			parameters.put(IRoleParameter.PROJECT_PRODUCT_OPTION,
 					project.getProductTypeOptions());
-			parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
+			parameters.put(IRoleParameter.PROJECT_STANDARD_OPTION,
 					project.getStandardSetOptions());
-			parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
+			parameters.put(IRoleParameter.PROJECT_TYPE_OPTION,
 					project.getProjectTypeOptions());
 		}
 		// 转换处理

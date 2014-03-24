@@ -1,7 +1,6 @@
 package com.sg.business.commons.ui.page.flow;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -13,6 +12,7 @@ import com.sg.bpm.workflow.model.DroolsProcessDefinition;
 import com.sg.business.commons.ui.flow.ProcessSettingPanel;
 import com.sg.business.model.AbstractRoleAssignment;
 import com.sg.business.model.AbstractRoleDefinition;
+import com.sg.business.model.IRoleParameter;
 import com.sg.business.model.Organization;
 import com.sg.business.model.ProjectRole;
 import com.sg.business.model.ProjectTemplate;
@@ -68,28 +68,16 @@ public abstract class AbstractWorkdProcessPage extends AbstractProcessPage {
 			assignments = ((ProjectRole) roled).getAssignment();
 		} else {
 			// 如果是独立工作时，使用TYPE为TYPE_WORK_PROCESS的RoleParameter，传入工作ID进行人员指派
-			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			IRoleParameter roleParameter;
 			ObjectId work_id = (ObjectId) roled
 					.getValue(RoleDefinition.F_WORK_ID);
 			if (work_id != null) {
 				Work work = ModelService.createModelObject(Work.class, work_id);
-				parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_WORK_PROCESS);
-				parameters.put(RoleParameter.WORK_ID, work_id);
-				parameters.put(RoleParameter.WORK, work);
-				User charger = work.getCharger();
-				if (charger != null) {
-					parameters.put(RoleParameter.WORK_CHARGER, work
-							.getCharger().getUserid());
-				} else {
-					parameters.put(RoleParameter.WORK_CHARGER, "");
-				}
-				parameters
-						.put(RoleParameter.WORK_MILESTONE, work.isMilestone());
-				parameters.put(RoleParameter.WORK_TYPE, work.getWorkType());
+				 roleParameter = work.getAdapter(IRoleParameter.class);
 			} else {
-				parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_NONE);
+				roleParameter = new RoleParameter();
 			}
-			assignments = role.getAssignment(parameters);
+			assignments = role.getAssignment(roleParameter);
 		}
 		for (int i = 0; i < assignments.size(); i++) {
 			AbstractRoleAssignment ass = (AbstractRoleAssignment) assignments

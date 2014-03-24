@@ -48,6 +48,7 @@ import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.model.etl.ProjectMonthlyETL;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.input.ProjectEditorInputFactory;
+import com.sg.business.model.roleparameter.ProjectRoleParameter;
 import com.sg.business.model.toolkit.LifecycleToolkit;
 import com.sg.business.model.toolkit.MessageToolkit;
 import com.sg.business.model.toolkit.ProjectToolkit;
@@ -808,32 +809,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 					// 将组织角色中的成员加入到项目的参与者
 					Role role = ModelService.createModelObject(Role.class,
 							(ObjectId) roleId);
-					HashMap<String, Object> parameters = new HashMap<String, Object>();
-					parameters.put(RoleParameter.TYPE,
-							RoleParameter.TYPE_PROJECT);
-					parameters.put(RoleParameter.PROJECT_ID, get_id());
-					parameters.put(RoleParameter.PROJECT, this);
-					parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
-							getBusinessOrganization());
-					User charger = getCharger();
-					if (charger != null) {
-						parameters.put(RoleParameter.PROJECT_CHARGER,
-								charger.getUserid());
-					} else {
-						parameters.put(RoleParameter.PROJECT_CHARGER, "");
-					}
-					parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
-							getFunctionOrganization());
-					parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
-							getLaunchOrganization());
-					parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
-							getProductTypeOptions());
-					parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
-							getStandardSetOptions());
-					parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
-							getProjectTypeOptions());
+					IRoleParameter roleParameter = getAdapter(IRoleParameter.class);
 
-					List<PrimaryObject> ass = role.getAssignment(parameters);
+					List<PrimaryObject> ass = role.getAssignment(roleParameter);
 					doAddParticipateFromAssignment(ass);
 				}
 
@@ -1481,32 +1459,10 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
 					Organization.ROLE_NOT_SEARCH);
 			if (role != null) {
-				// 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
-				HashMap<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_PROJECT);
-				parameters.put(RoleParameter.PROJECT_ID, get_id());
-				parameters.put(RoleParameter.PROJECT, this);
-				parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
-						getBusinessOrganization());
-				User charger = getCharger();
-				if (charger != null) {
-					parameters.put(RoleParameter.PROJECT_CHARGER,
-							charger.getUserid());
-				} else {
-					parameters.put(RoleParameter.PROJECT_CHARGER, "");
-				}
-				parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
-						getFunctionOrganization());
-				parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
-						getLaunchOrganization());
-				parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
-						getProductTypeOptions());
-				parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
-						getStandardSetOptions());
-				parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
-						getProjectTypeOptions());
+				IRoleParameter roleParameter = getAdapter(IRoleParameter.class);
+
 				List<PrimaryObject> assignmentList = role
-						.getAssignment(parameters);
+						.getAssignment(roleParameter);
 				if (assignmentList != null && assignmentList.size() > 0) {
 					for (PrimaryObject po : assignmentList) {
 						RoleAssignment roleAssignment = (RoleAssignment) po;
@@ -2001,29 +1957,9 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 				Organization.ROLE_NOT_SEARCH);
 		boolean b = true;
 		// 使用TYPE为TYPE_PROJECT的RoleParameter，传入项目ID进行人员指派
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put(RoleParameter.TYPE, RoleParameter.TYPE_PROJECT);
-		parameters.put(RoleParameter.PROJECT_ID, get_id());
-		parameters.put(RoleParameter.PROJECT, this);
-		parameters.put(RoleParameter.PROJECT_BUSINESS_ORGANIZATION,
-				getBusinessOrganization());
-		User charger = getCharger();
-		if (charger != null) {
-			parameters.put(RoleParameter.PROJECT_CHARGER, charger.getUserid());
-		} else {
-			parameters.put(RoleParameter.PROJECT_CHARGER, "");
-		}
-		parameters.put(RoleParameter.PROJECT_FUNCTION_ORGANIZATION,
-				getFunctionOrganization());
-		parameters.put(RoleParameter.PROJECT_LAUNCH_ORGANIZATION,
-				getLaunchOrganization());
-		parameters.put(RoleParameter.PROJECT_PRODUCT_OPTION,
-				getProductTypeOptions());
-		parameters.put(RoleParameter.PROJECT_STANDARD_OPTION,
-				getStandardSetOptions());
-		parameters.put(RoleParameter.PROJECT_TYPE_OPTION,
-				getProjectTypeOptions());
-		List<PrimaryObject> assignment = role.getAssignment(parameters);
+		IRoleParameter roleParameter = getAdapter(IRoleParameter.class);
+
+		List<PrimaryObject> assignment = role.getAssignment(roleParameter);
 		for (PrimaryObject po : assignment) {
 			User user = (User) po;
 			if (userId.equals(user.getUserid())) {
@@ -2135,6 +2071,8 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return (T) new ProjectCommonHTMLLable(this);
 		} else if (adapter == IEditorInputFactory.class) {
 			return (T) new ProjectEditorInputFactory(this);
+		} else if (adapter == IRoleParameter.class){
+			return (T) new ProjectRoleParameter(this);
 		}
 		return super.getAdapter(adapter);
 	}

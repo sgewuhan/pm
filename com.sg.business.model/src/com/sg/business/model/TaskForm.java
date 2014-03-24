@@ -15,6 +15,7 @@ import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.bpm.workflow.WorkflowService;
+import com.sg.business.model.roleparameter.TaskFormRoleParameter;
 import com.sg.business.resource.nls.Messages;
 
 public class TaskForm extends PrimaryObject {
@@ -131,4 +132,12 @@ public class TaskForm extends PrimaryObject {
 		}
 		((Map<String, Object>) processInput).put(processVar, value);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		 if (adapter == IRoleParameter.class) {
+			return (T) (new TaskFormRoleParameter(this));
+		}
+		return super.getAdapter(adapter);	}
 }
