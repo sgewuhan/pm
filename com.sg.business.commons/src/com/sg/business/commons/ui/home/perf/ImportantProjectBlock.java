@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
@@ -27,7 +28,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.commons.ui.home.basic.ProjectContentBlock;
+import com.sg.business.commons.ui.home.basic.ProjectContentBlock2;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
@@ -312,33 +313,45 @@ public class ImportantProjectBlock extends ButtonBlock {
 			}
 
 			DBObject[] dates = results.get(key);
-			addTo(resultList, dates, cnt);
+			addTo(resultList, dates, cnt,key);
 		}
 
 		return resultList.toArray(new DBObject[] {});
 	}
 
-	private void addTo(List<DBObject> resultList, DBObject[] dates, int cnt) {
+	private void addTo(List<DBObject> resultList, DBObject[] dates, int cnt, String key) {
 		List<DBObject> toBeAdd = new ArrayList<DBObject>();
 		for (int i = 0; i < dates.length && toBeAdd.size() <= cnt; i++) {
 			boolean has = false;
 			for (int j = 0; j < resultList.size(); j++) {
+				DBObject resultProject = resultList.get(j);
 				if (Util.equals(dates[i].get("_id"),
-						resultList.get(j).get("_id"))) {
+						resultProject.get("_id"))) {
+					Object tags = resultProject.get(Project._TAG);
+					if(!(tags instanceof BasicBSONList)){
+						tags  = new BasicBSONList();
+					}
+					((BasicBSONList)tags).add(key);
+					resultProject.put(Project._TAG, tags);
 					has = true;
 					break;
 				}
 			}
 			if (!has) {
+				BasicBSONList tags = new BasicBSONList();
+				((BasicBSONList)tags).add(key);
+				dates[i].put(Project._TAG, tags);
 				toBeAdd.add(dates[i]);
 			}
 		}
+		resultList.addAll(toBeAdd);
 	}
+
 
 	@Override
 	protected BusinessContentBlock createBlockContent(Composite contentArea,
 			PrimaryObject po) {
-		return new ProjectContentBlock(contentArea);
+		return new ProjectContentBlock2(contentArea);
 	}
 
 	@Override

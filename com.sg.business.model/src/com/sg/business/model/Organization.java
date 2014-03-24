@@ -149,6 +149,11 @@ public class Organization extends PrimaryObject {
 	public static final int ROLE_SEARCH_DOWN = -1;
 
 	/**
+	 * 组织简称/缩写
+	 */
+	public static final String F_SIMPLENAME = "simpledesc";
+
+	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
 	 * 
 	 * @return String
@@ -237,6 +242,15 @@ public class Organization extends PrimaryObject {
 
 	public String getFullName() {
 		return getStringValue(F_FULLDESC);
+	}
+	
+	public String getSimpleName(){
+		String sname = getStringValue(F_SIMPLENAME);
+		if(Utils.isNullOrEmpty(sname)){
+			return getDesc();
+		}else{
+			return sname;
+		}
 	}
 
 	/**
@@ -696,12 +710,12 @@ public class Organization extends PrimaryObject {
 		if (parent instanceof Organization) {
 			if (level > 1) {
 				return ((Organization) parent).getPath(level - 1) + "/" //$NON-NLS-1$
-						+ getDesc();
+						+ getSimpleName();
 			} else {
-				return "../" + getDesc(); //$NON-NLS-1$
+				return "../" + getSimpleName(); //$NON-NLS-1$
 			}
 		} else {
-			return getDesc();
+			return getSimpleName();
 		}
 	}
 

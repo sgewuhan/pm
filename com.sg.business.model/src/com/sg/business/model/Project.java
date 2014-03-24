@@ -204,6 +204,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	public static final String F_BUSINESS_ORGANIZATION = "businessorganization_id";
 
+	/**
+	 * 临时用于记录项目的标签，不作为字段保存
+	 */
+	public static final String _TAG = "d_tag";
+
 	private SummaryProjectWorks summaryProjectWorks;
 
 	/**
