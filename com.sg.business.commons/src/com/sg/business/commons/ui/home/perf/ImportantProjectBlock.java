@@ -82,7 +82,7 @@ public class ImportantProjectBlock extends ButtonBlock {
 			result.putAll(basicQuery);
 			return result;
 		}
-		BasicDBObject query = new BasicDBObject();
+		basicQuery = new BasicDBObject();
 		// 获取当前用户作为那些组织的管理者
 		User user = UserToolkit.getUserById(userId);
 		List<PrimaryObject> ras = user.getRoles(Role.ROLE_DEPT_MANAGER_ID);
@@ -92,16 +92,17 @@ public class ImportantProjectBlock extends ButtonBlock {
 			Organization org = role.getOrganization();
 			orgIdSet.addAll(org.getOrganizationStructureOfId());
 		}
-		query.put(Project.F_LAUNCH_ORGANIZATION,
+		basicQuery.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", orgIdSet.toArray()));
 		// 设置进行中和已完成
-		query.put(
+		basicQuery.put(
 				ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE }));
-		basicQuery = query;
-		return basicQuery;
+		DBObject result = new BasicDBObject();
+		result.putAll(basicQuery);
+		return result;
 	}
 
 	@Override

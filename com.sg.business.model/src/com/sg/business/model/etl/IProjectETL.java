@@ -64,5 +64,7 @@ public interface IProjectETL {
 	public static final String F_MONTH = "month"; //$NON-NLS-1$
 
 	public static final String F_PROJECTID = "project_id"; //$NON-NLS-1$
+	
+	public static final String F_CHARGERID = "chargerid"; //$NON-NLS-1$
 
 }

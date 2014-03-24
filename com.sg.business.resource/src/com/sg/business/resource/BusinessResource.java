@@ -379,6 +379,10 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_S_LEFT_49_PRESSED = "left_49_p.png";
 
+	public static final String IMAGE_UP_48 = "up_48.png";
+	
+	public static final String IMAGE_DOWN_48 = "down_48.png";
+
 	
 
 	/**
