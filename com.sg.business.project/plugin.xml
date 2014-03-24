@@ -4048,6 +4048,33 @@
                </with>
             </visibleWhen>
          </command>
+         <command
+               commandId="document.admin.released"
+               label="发布文档"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Deliverable">
+                        </instanceof>
+                        <test
+                              args="unlock"
+                              property="runtimework.action">
+                        </test>
+                        <test
+                              args="force"
+                              property="work.forceupdate">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
          <separator
                name="project.deliverable.separator2"
                visible="true">
@@ -4469,6 +4496,11 @@
             id="work.admin.setting"
             name="强制更新">
       </command>
+      <command
+            categoryId="project"
+            id="document.admin.released"
+            name="发布文档">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -4652,6 +4684,10 @@
       <handler
             class="com.sg.business.project.handler.ForceUpdateWork"
             commandId="work.admin.setting">
+      </handler>
+      <handler
+            class="com.sg.business.project.handler.ReleasedDocument"
+            commandId="document.admin.released">
       </handler>
    </extension>
    <extension

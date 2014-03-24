@@ -4490,6 +4490,14 @@
                   style="push">
             </pageAction>
             <pageAction
+                  class="com.sg.business.commons.operation.action.CreateChildWork"
+                  icon="image/add_g_24.png"
+                  id="creatework"
+                  label="%command.label.36"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
                   class="com.sg.business.commons.operation.action.AssignWork"
                   icon="image/assign_g_24.png"
                   id="editwork"

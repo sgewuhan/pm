@@ -83,6 +83,10 @@ public class Deliverable extends PrimaryObject implements IProjectRelative,
 		return super.getAdapter(adapter);
 	}
 	
+	public String getType() {
+		return (String) getValue(F_TYPE);
+	}
+	
 	/**
 	 * 返回交付物文档
 	 * 
