@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
@@ -149,6 +151,11 @@ public class Organization extends PrimaryObject {
 	public static final int ROLE_SEARCH_DOWN = -1;
 
 	/**
+	 * 组织简称/缩写
+	 */
+	public static final String F_SIMPLENAME = "simpledesc";
+
+	/**
 	 * 返回组织的说明. see {@link #F_DESCRIPTION}
 	 * 
 	 * @return String
@@ -237,6 +244,15 @@ public class Organization extends PrimaryObject {
 
 	public String getFullName() {
 		return getStringValue(F_FULLDESC);
+	}
+	
+	public String getSimpleName(){
+		String sname = getStringValue(F_SIMPLENAME);
+		if(Utils.isNullOrEmpty(sname)){
+			return getDesc();
+		}else{
+			return sname;
+		}
 	}
 
 	/**
@@ -557,6 +573,23 @@ public class Organization extends PrimaryObject {
 		}
 		return result;
 	}
+	
+	/**
+	 * 获得本级及下级的所有组织id,不会为null
+	 * 
+	 * @return
+	 */
+	public Set<ObjectId> getOrganizationStructureOfId() {
+		Set<ObjectId> result = new HashSet<ObjectId>();
+		result.add(get_id());
+		List<PrimaryObject> children = getChildrenOrganization();
+		if (children != null) {
+			for (int i = 0; i < children.size(); i++) {
+				result.addAll(((Organization) children.get(i)).getOrganizationStructureOfId());
+			}
+		}
+		return result;
+	}
 
 	/**
 	 * 获取组织项下的用户
@@ -696,12 +729,12 @@ public class Organization extends PrimaryObject {
 		if (parent instanceof Organization) {
 			if (level > 1) {
 				return ((Organization) parent).getPath(level - 1) + "/" //$NON-NLS-1$
-						+ getDesc();
+						+ getSimpleName();
 			} else {
-				return "../" + getDesc(); //$NON-NLS-1$
+				return "../" + getSimpleName(); //$NON-NLS-1$
 			}
 		} else {
-			return getDesc();
+			return getSimpleName();
 		}
 	}
 

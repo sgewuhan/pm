@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
 import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
@@ -27,7 +28,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.commons.ui.home.basic.ProjectContentBlock;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
@@ -76,25 +76,13 @@ public class ImportantProjectBlock extends ButtonBlock {
 		return Project.class;
 	}
 
-	private Set<ObjectId> getOrganizations(Organization org) {
-		Set<ObjectId> result = new HashSet<ObjectId>();
-		result.add(org.get_id());
-		List<PrimaryObject> children = org.getChildrenOrganization();
-		if (children != null) {
-			for (int i = 0; i < children.size(); i++) {
-				result.addAll(getOrganizations((Organization) children.get(i)));
-			}
-		}
-		return result;
-	}
-
 	private DBObject getBasicQueryCondition() {
 		if (basicQuery != null) {
 			DBObject result = new BasicDBObject();
 			result.putAll(basicQuery);
 			return result;
 		}
-		BasicDBObject query = new BasicDBObject();
+		basicQuery = new BasicDBObject();
 		// 获取当前用户作为那些组织的管理者
 		User user = UserToolkit.getUserById(userId);
 		List<PrimaryObject> ras = user.getRoles(Role.ROLE_DEPT_MANAGER_ID);
@@ -102,18 +90,19 @@ public class ImportantProjectBlock extends ButtonBlock {
 		for (PrimaryObject po : ras) {
 			Role role = (Role) po;
 			Organization org = role.getOrganization();
-			orgIdSet.addAll(getOrganizations(org));
+			orgIdSet.addAll(org.getOrganizationStructureOfId());
 		}
-		query.put(Project.F_LAUNCH_ORGANIZATION,
+		basicQuery.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", orgIdSet.toArray()));
 		// 设置进行中和已完成
-		query.put(
+		basicQuery.put(
 				ILifecycle.F_LIFECYCLE,
 				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE }));
-
-		return query;
+		DBObject result = new BasicDBObject();
+		result.putAll(basicQuery);
+		return result;
 	}
 
 	@Override
@@ -137,6 +126,7 @@ public class ImportantProjectBlock extends ButtonBlock {
 				results.put(IImportantSetting.OVERTIME_CNT, cursor.toArray()
 						.toArray(new DBObject[] {}));
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -311,33 +301,45 @@ public class ImportantProjectBlock extends ButtonBlock {
 			}
 
 			DBObject[] dates = results.get(key);
-			addTo(resultList, dates, cnt);
+			addTo(resultList, dates, cnt,key);
 		}
 
 		return resultList.toArray(new DBObject[] {});
 	}
 
-	private void addTo(List<DBObject> resultList, DBObject[] dates, int cnt) {
+	private void addTo(List<DBObject> resultList, DBObject[] dates, int cnt, String key) {
 		List<DBObject> toBeAdd = new ArrayList<DBObject>();
 		for (int i = 0; i < dates.length && toBeAdd.size() <= cnt; i++) {
 			boolean has = false;
 			for (int j = 0; j < resultList.size(); j++) {
+				DBObject resultProject = resultList.get(j);
 				if (Util.equals(dates[i].get("_id"),
-						resultList.get(j).get("_id"))) {
+						resultProject.get("_id"))) {
+					Object tags = resultProject.get(Project._TAG);
+					if(!(tags instanceof BasicBSONList)){
+						tags  = new BasicBSONList();
+					}
+					((BasicBSONList)tags).add(key);
+					resultProject.put(Project._TAG, tags);
 					has = true;
 					break;
 				}
 			}
 			if (!has) {
+				BasicBSONList tags = new BasicBSONList();
+				((BasicBSONList)tags).add(key);
+				dates[i].put(Project._TAG, tags);
 				toBeAdd.add(dates[i]);
 			}
 		}
+		resultList.addAll(toBeAdd);
 	}
+
 
 	@Override
 	protected BusinessContentBlock createBlockContent(Composite contentArea,
 			PrimaryObject po) {
-		return new ProjectContentBlock(contentArea);
+		return new ProjectContentBlock2(contentArea);
 	}
 
 	@Override

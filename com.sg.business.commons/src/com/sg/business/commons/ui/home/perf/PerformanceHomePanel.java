@@ -47,8 +47,8 @@ public class PerformanceHomePanel {
 				* vipBlock.getUnitCountX() - 1;
 		vipBlock.setLayoutData(gd);
 
-		TabBlock performenceBlock = new PerformanceBlock(panel);
-		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
+		TabBlock performenceBlock = new OverBudgetAndDelayTop10Block(panel);
+		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 1, 2));
 
 		TabBlock performenceBlock2 = new PerformanceBlock(panel);

@@ -82,7 +82,7 @@ class ImportantSettingBlock extends Block {
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false,
 						4, 1));
 		blist = new ArrayList<Button>();
-		blist.add(createInput(left, "严重超期", "天以上", IImportantSetting.OVERTIME));
+		blist.add(createInput(left, "严重超期", "月以上", IImportantSetting.OVERTIME));
 		blist.add(createInput(left, "严重超支", "万元以上", IImportantSetting.OVERCOST));
 		blist.add(createInput(left, "严重亏损", "万元以上", IImportantSetting.HEAVYLOSS));
 
