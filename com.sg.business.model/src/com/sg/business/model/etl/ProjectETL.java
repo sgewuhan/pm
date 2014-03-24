@@ -187,7 +187,7 @@ public class ProjectETL implements IProjectETL {
 		String processIcon = extractProcessIcon();
 		if (ILifecycle.STATUS_FINIHED_VALUE.equals(lifecycle)) {
 			String bar = TinyVisualizationUtil.getColorBar(8, null, "96%", //$NON-NLS-1$
-					"#ececec", processIcon, "right", null); //$NON-NLS-1$ //$NON-NLS-2$
+					"#ececec", processIcon,null, "right", null); //$NON-NLS-1$ //$NON-NLS-2$
 			sb.append(bar);
 
 		} else {
@@ -263,7 +263,7 @@ public class ProjectETL implements IProjectETL {
 				String bar = TinyVisualizationUtil.getColorBar(colorIndex + 3,
 						colorCode,
 						new DecimalFormat("#.00").format(100 * percent) + "%", //$NON-NLS-1$ //$NON-NLS-2$
-						null, icon, location, null);
+						null, icon, null,location, null);
 				sb.append(bar);
 			}
 		}

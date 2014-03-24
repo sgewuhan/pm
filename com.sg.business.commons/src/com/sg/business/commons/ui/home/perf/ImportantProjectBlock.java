@@ -28,7 +28,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sg.business.commons.ui.home.basic.ProjectContentBlock2;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
@@ -77,18 +76,6 @@ public class ImportantProjectBlock extends ButtonBlock {
 		return Project.class;
 	}
 
-	private Set<ObjectId> getOrganizations(Organization org) {
-		Set<ObjectId> result = new HashSet<ObjectId>();
-		result.add(org.get_id());
-		List<PrimaryObject> children = org.getChildrenOrganization();
-		if (children != null) {
-			for (int i = 0; i < children.size(); i++) {
-				result.addAll(getOrganizations((Organization) children.get(i)));
-			}
-		}
-		return result;
-	}
-
 	private DBObject getBasicQueryCondition() {
 		if (basicQuery != null) {
 			DBObject result = new BasicDBObject();
@@ -103,7 +90,7 @@ public class ImportantProjectBlock extends ButtonBlock {
 		for (PrimaryObject po : ras) {
 			Role role = (Role) po;
 			Organization org = role.getOrganization();
-			orgIdSet.addAll(getOrganizations(org));
+			orgIdSet.addAll(org.getOrganizationStructureOfId());
 		}
 		query.put(Project.F_LAUNCH_ORGANIZATION,
 				new BasicDBObject().append("$in", orgIdSet.toArray()));

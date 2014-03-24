@@ -5,7 +5,7 @@ import com.mobnut.commons.util.Utils;
 public class TinyVisualizationUtil {
 	
 	public static String getColorBar(int i, String style, String percent,
-			String color, String currentStageIcon, String location,String height) {
+			String color, String currentStageIcon,String currentStageIText, String location,String height) {
 		if (color == null) {
 			if (style.equals("red")) { //$NON-NLS-1$
 				if (i < Utils.COLOR_RED.length) {
@@ -34,7 +34,7 @@ public class TinyVisualizationUtil {
 			}
 		}
 		StringBuffer sb = new StringBuffer();
-		sb.append("<span style='display:block;width:" + percent //$NON-NLS-1$
+		sb.append("<div style='display:block;width:" + percent //$NON-NLS-1$
 				+ "; height:"+(height==null?"20":height)+"px;  float:left;background:" + color + ";'>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		if (currentStageIcon != null) {
@@ -43,10 +43,21 @@ public class TinyVisualizationUtil {
 					+ location
 					+ "'><img src='" //$NON-NLS-1$
 					+ currentStageIcon
-					+ "' style='margin-top:2;margin-right:2' width='16' height='16' /></div>"; //$NON-NLS-1$
+					+ "' style='margin-top:2;margin-right:2' width='16' height='16' />"
+					+ "</div>"; //$NON-NLS-1$
 			sb.append(imageUrl);
 		}
-		sb.append("</span>"); //$NON-NLS-1$
+		if (currentStageIText != null) {
+			// ÏÔÊ¾×´Ì¬Í¼±ê<div align="center"><span>abc</span></div>
+			String imageUrl = "<div align='"+location
+					+ "' style='color:#ffffff'/>"
+					+ currentStageIText
+					+ "</div>"; //$NON-NLS-1$
+			sb.append(imageUrl);
+		}
+		sb.append("</div>"); //$NON-NLS-1$
 		return sb.toString();
 	}
+	
+	
 }

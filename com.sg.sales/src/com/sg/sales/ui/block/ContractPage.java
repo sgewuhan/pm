@@ -33,7 +33,6 @@ import com.mobnut.design.ICSSConstants;
 import com.mongodb.BasicDBObject;
 import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.commons.ui.chart.CommonChart;
-import com.sg.business.commons.ui.home.basic.PageListViewer;
 import com.sg.sales.model.Opportunity;
 import com.sg.sales.model.PerformenceUtil;
 import com.sg.sales.model.TeamControl;
@@ -42,6 +41,7 @@ import com.sg.widgets.Widgets;
 import com.sg.widgets.birtcharts.ChartCanvas;
 import com.sg.widgets.block.tab.TabBlockPage;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.viewer.PageListViewer;
 
 public class ContractPage extends TabBlockPage implements
 		ISelectionChangedListener {

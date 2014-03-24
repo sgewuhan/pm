@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.bson.types.BasicBSONList;
 import org.bson.types.ObjectId;
@@ -567,6 +569,23 @@ public class Organization extends PrimaryObject {
 			for (int i = 0; i < children.size(); i++) {
 				Organization child = (Organization) children.get(i);
 				result.addAll(child.getOrganizationStructure());
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 获得本级及下级的所有组织id,不会为null
+	 * 
+	 * @return
+	 */
+	public Set<ObjectId> getOrganizationStructureOfId() {
+		Set<ObjectId> result = new HashSet<ObjectId>();
+		result.add(get_id());
+		List<PrimaryObject> children = getChildrenOrganization();
+		if (children != null) {
+			for (int i = 0; i < children.size(); i++) {
+				result.addAll(((Organization) children.get(i)).getOrganizationStructureOfId());
 			}
 		}
 		return result;

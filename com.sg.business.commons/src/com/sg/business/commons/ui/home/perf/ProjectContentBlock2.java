@@ -1,9 +1,8 @@
-package com.sg.business.commons.ui.home.basic;
+package com.sg.business.commons.ui.home.perf;
 
 import org.bson.types.BasicBSONList;
 import org.eclipse.swt.widgets.Composite;
 
-import com.sg.business.commons.ui.home.perf.IImportantSetting;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;

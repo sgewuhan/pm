@@ -42,13 +42,13 @@ public class BudgetAndInvestmentLabelProvider extends
 			if (ratio > 1) {// 超支的
 				for (int i = 0; i < scale; i++) {
 					String bar = TinyVisualizationUtil.getColorBar(i + 3,
-							"blue", "16%", null, null, null, "14"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							"blue", "16%", null, null,null, null, "14"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					sb.append(bar);
 				}
 			} else {
 				for (int i = 0; i < num; i++) {
 					String bar = TinyVisualizationUtil.getColorBar(i + 3,
-							"blue", "16%", null, null, null, "14"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							"blue", "16%", null, null,null, null, "14"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					sb.append(bar);
 				}
 			}
@@ -59,13 +59,13 @@ public class BudgetAndInvestmentLabelProvider extends
 			if (ratio > 1) {// 超支的
 				for (int i = 0; i < num; i++) {
 					String bar = TinyVisualizationUtil.getColorBar(i + 3,
-							"red", "16%", null, null, null, "14"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							"red", "16%", null, null,null, null, "14"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					sb.append(bar);
 				}
 			} else {
 				for (int i = 0; i < scale; i++) {
 					String bar = TinyVisualizationUtil.getColorBar(i + 3,
-							"green", "16%", null, null, null, "10"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							"green", "16%", null, null,null, null, "10"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					sb.append(bar);
 				}
 			}
