@@ -774,9 +774,9 @@
                         type="String"
                         widthHint="320">
                      <fieldaction
-                           handler="com.tmt.tb.handler.OpenBudget"
+                           handler="com.sg.business.taskforms.handler.OpenBudget"
                            image="image/financial_24.png"
-                           name="%fieldaction.name">
+                           name="查看预算">
                      </fieldaction>
                   </text>
                </section>
