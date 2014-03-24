@@ -112,8 +112,8 @@ public class ImportantProjectBlock extends ButtonBlock {
 				new BasicDBObject().append("$in", new String[] { //$NON-NLS-1$
 						ILifecycle.STATUS_FINIHED_VALUE,
 								ILifecycle.STATUS_WIP_VALUE }));
-
-		return query;
+		basicQuery = query;
+		return basicQuery;
 	}
 
 	@Override
@@ -137,6 +137,7 @@ public class ImportantProjectBlock extends ButtonBlock {
 				results.put(IImportantSetting.OVERTIME_CNT, cursor.toArray()
 						.toArray(new DBObject[] {}));
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 
