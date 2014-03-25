@@ -224,17 +224,17 @@ public class Role extends PrimaryObject {
 
 			if (js != null) {
 				Object result = JavaScriptEvaluator.evaluate(js, parameters);
-				if (result instanceof String[]) {
+				if (result instanceof Object[]) {
 					ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
 					for (int i = 0; i < rs.size(); i++) {
 						Object userid = rs.get(i).getValue(
 								RoleAssignment.F_USER_ID);
-						if (Utils.inArray(userid, (String[]) result)) {
+						if (Utils.inArray(userid, (Object[]) result)) {
 							rs1.add(rs.get(i));
 						}
 					}
 					return rs1;
-				} else if (result instanceof String) {
+				} else if (result instanceof Object) {
 					ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
 					for (int i = 0; i < rs.size(); i++) {
 						Object userid = rs.get(i).getValue(
