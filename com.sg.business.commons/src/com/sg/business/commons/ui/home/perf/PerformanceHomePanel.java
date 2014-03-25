@@ -38,7 +38,7 @@ public class PerformanceHomePanel {
 		panel.setLayout(layout);
 
 		ImportantProjectBlock vipBlock = new ImportantProjectBlock(panel);
-		vipBlock.setTopicText("重点关注");
+		vipBlock.setTopicText("关注点");
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
 		gd.heightHint = (Block.TOPICSIZE + 1)
 				+ (ImportantProjectBlock.BLOCKSIZE + 1) * vipBlock.getUnitCountY()
@@ -47,7 +47,7 @@ public class PerformanceHomePanel {
 				* vipBlock.getUnitCountX() - 1;
 		vipBlock.setLayoutData(gd);
 
-		TabBlock performenceBlock = new OverBudgetAndDelayTop10Block(panel);
+		Composite performenceBlock = new OverBudgetAndDelayTop10Block2(panel);
 		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 1, 2));
 

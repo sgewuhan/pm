@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 
+import org.eclipse.jface.viewers.StructuredViewer;
+
 import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Organization;
@@ -14,6 +16,7 @@ import com.sg.business.model.etl.TinyVisualizationUtil;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.viewer.PageListViewer;
 
 public class ProjectMonthDataCommonHTMLLable extends CommonHTMLLabel {
 
@@ -34,14 +37,84 @@ public class ProjectMonthDataCommonHTMLLable extends CommonHTMLLabel {
 		if ("performence.budget".equals(key)) {
 			return getHTMLForPerformenceHome();
 		}
+		
+		if ("performence.schedure".equals(key)) {
+			return getHTMLForSchedurePerformenceHome();
+		}
 
 		return "";
 	}
+	
+	private String getHTMLForSchedurePerformenceHome() {
+		//È¡ÐòºÅ
+		StructuredViewer viewer = getViewer();
+		List<?> input = (List<?>) viewer.getInput();
+		int index = input.indexOf(project)+1;
+		if(viewer instanceof PageListViewer){
+			PageListViewer plv = (PageListViewer) viewer;
+			index += plv.getPageSize()*plv.getCurrentPageIndex();
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div align='center' style='"//$NON-NLS-1$
+				+ "float:left;"
+				+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+				+ "font-size:18pt;"//$NON-NLS-1$
+				+ "margin:6 0 0 0;"//$NON-NLS-1$
+				+ "color:#4d4d4d;"//$NON-NLS-1$
+				+ "width:" + 48
+				+ "px;"
+				+ "'>"); //$NON-NLS-1$
+		sb.append(index);
+		sb.append("</div>");
+		
+		sb.append("<div style='"
+				+ "position:absolute; " //$NON-NLS-1$
+				+ "left:50;"
+				+ "right:0;"
+				+ "top:10; " //$NON-NLS-1$
+				+ "bottom:0; " //$NON-NLS-1$
+				+ "margin:0;"
+				+ "'>");
+
+		String desc = project.getStringValue(IProjectETL.F_DESC_TEXT);
+		sb.append(project.getStringValue(IProjectETL.F_SCHEDUAL_HTML));
+
+		sb.append("<div style='"//$NON-NLS-1$
+				+ "position:absolute; " //$NON-NLS-1$
+				+ "left:30;"
+				+ "right:0;"
+				+ "top:0; " //$NON-NLS-1$
+				+ "bottom:0; " //$NON-NLS-1$
+				+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+				+ "font-size:10pt;"//$NON-NLS-1$
+				+ "margin:0;"//$NON-NLS-1$
+				+ "color:#ffffff;"//$NON-NLS-1$
+				+ "width:" + 200
+				+ "px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		appendCharger(sb,"#ffffff","10pt");
+		sb.append(desc);
+
+		sb.append("</div>");
+		
+
+		sb.append("</div>");
+		sb.append(HtmlUtil.createBottomLine(0));
+
+		return sb.toString();
+	}
+	
 
 	private String getHTMLForPerformenceHome() {
 		// È¡ÐòºÅ
-		List<?> input = (List<?>) getViewer().getInput();
+		StructuredViewer viewer = getViewer();
+		List<?> input = (List<?>) viewer.getInput();
 		int index = input.indexOf(project) + 1;
+		if(viewer instanceof PageListViewer){
+			PageListViewer plv = (PageListViewer) viewer;
+			index += plv.getPageSize()*plv.getCurrentPageIndex();
+		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div align='center' style='"//$NON-NLS-1$
 				+ "float:left;" + "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
@@ -125,32 +198,7 @@ public class ProjectMonthDataCommonHTMLLable extends CommonHTMLLabel {
 				sb.append("</span>"); //$NON-NLS-1$
 			}
 		}
-		String chargerId = project.getStringValue(IProjectETL.F_CHARGERID);
-		User charger = UserToolkit.getUserById(chargerId);
-		if (charger != null) {
-			sb.append("<span style='"//$NON-NLS-1$
-					+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
-					+ "font-size:8pt;"//$NON-NLS-1$
-					+ "margin:0 0 0 4;"//$NON-NLS-1$
-					+ "color:#4d4d4d;"//$NON-NLS-1$
-					+ "width:"
-					+ 80
-					+ "px;"
-					+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
-					+ "'>"); //$NON-NLS-1$
-			sb.append(" ");
-			sb.append(charger);
-			Organization org = charger.getOrganization();
-			if (org != null) {
-				Organization forg = (Organization) org
-						.getFunctionOrganization();
-				if (forg != null) {
-					sb.append("|");
-					sb.append(forg.getSimpleName());
-				}
-			}
-			sb.append("</span>");
-		}
+		appendCharger(sb,"#4d4d4d","8pt");
 		sb.append("</div>"); //$NON-NLS-1$
 
 		if (budgetValue != 0) {
@@ -205,6 +253,38 @@ public class ProjectMonthDataCommonHTMLLable extends CommonHTMLLabel {
 		sb.append(HtmlUtil.createBottomLine(0));
 
 		return sb.toString();
+	}
+
+	private void appendCharger(StringBuffer sb,String color, String fontSize) {
+		String chargerId = project.getStringValue(IProjectETL.F_CHARGERID);
+		User charger = UserToolkit.getUserById(chargerId);
+		if (charger != null) {
+			sb.append("<span style='"//$NON-NLS-1$
+					+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+					+ "font-size:"
+					+fontSize
+					+ ";"//$NON-NLS-1$
+					+ "margin:0 0 0 4;"//$NON-NLS-1$
+					+ "color:"
+					+ color//$NON-NLS-1$
+					+ "width:"
+					+ 80
+					+ "px;"
+					+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+					+ "'>"); //$NON-NLS-1$
+			sb.append(" ");
+			sb.append(charger);
+			Organization org = charger.getOrganization();
+			if (org != null) {
+				Organization forg = (Organization) org
+						.getFunctionOrganization();
+				if (forg != null) {
+					sb.append("|");
+					sb.append(forg.getSimpleName());
+				}
+			}
+			sb.append("</span>");
+		}
 	}
 
 }
