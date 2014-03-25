@@ -4482,18 +4482,18 @@
                   style="push">
             </pageAction>
             <pageAction
-                  class="com.sg.business.commons.operation.action.EditWork"
-                  icon="image/edit_g_24.png"
-                  id="editwork"
-                  label="%command.label.7"
-                  mode="FORCE_TEXT"
-                  style="push">
-            </pageAction>
-            <pageAction
                   class="com.sg.business.commons.operation.action.CreateChildWork"
                   icon="image/add_g_24.png"
                   id="creatework"
                   label="%command.label.36"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
+                  class="com.sg.business.commons.operation.action.EditWork"
+                  icon="image/edit_g_24.png"
+                  id="editwork"
+                  label="%command.label.7"
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>
