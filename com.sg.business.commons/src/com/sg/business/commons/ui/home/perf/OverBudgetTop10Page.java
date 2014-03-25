@@ -137,59 +137,103 @@ public class OverBudgetTop10Page extends PageControledListTabblockPage {
 		Control bar = createPageBar(parent);
 		fd = new FormData();
 		bar.setLayoutData(fd);
-		fd.top = new FormAttachment(control, 2);
-		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(100, -2);
-
+		fd.top = new FormAttachment(control,2);
+		fd.left = new FormAttachment(0,2);
+		fd.bottom = new FormAttachment(100,-2);
+		fd.right = new FormAttachment(100,-2);
 	}
 
 	private Composite createHead(Composite parent) {
 		Composite head = new Composite(parent, SWT.NONE);
+		head.setBackground(Widgets.getColor(getDisplay(), 0x96,0xc1,0xec));
 		monthLabel = new Label(head, SWT.NONE);
 		HtmlUtil.enableMarkup(monthLabel);
-		indcateLabel = new Label(head, SWT.NONE);
-		HtmlUtil.enableMarkup(indcateLabel);
-		arrow = new Label(head, SWT.NONE);
+
 		Control control = createMonthSwitchLabel(head);
+		
+		Composite ind =createIndPanel(head);
+		
 		Label sep = new Label(head, SWT.NONE);
 		sep.setBackground(Widgets.getColor(getDisplay(), 0xed, 0xed, 0xed));
-
-		head.setLayout(new FormLayout());
-
-		FormData fd = new FormData();
-		indcateLabel.setLayoutData(fd);
-		fd.right = new FormAttachment(100,-2);
-		fd.top = new FormAttachment();
-		fd.width = 160;
-		fd.bottom = new FormAttachment(100, -1);
-
-		fd = new FormData();
-		arrow.setLayoutData(fd);
-		fd.right = new FormAttachment(100,-2);
-		fd.width = 30;
-		fd.top = new FormAttachment(0, 24);
 		
-		fd = new FormData();
+		head.setLayout(new FormLayout());
+		FormData fd = new FormData();
 		monthLabel.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 2);
 		fd.top = new FormAttachment(0, 2);
-		fd.right = new FormAttachment(indcateLabel);
 		fd.height = 40;
-
+		fd.width = 160;
+		
+		fd = new FormData();
+		sep.setLayoutData(fd);
+		fd.left = new FormAttachment();
+		fd.bottom = new FormAttachment(100);
+		fd.right = new FormAttachment(100);
+		fd.height = 1;
+		
+		fd = new FormData();
+		ind.setLayoutData(fd);
+		fd.left = new FormAttachment(monthLabel);
+		fd.top = new FormAttachment();
+		fd.bottom = new FormAttachment(100);
+		fd.right = new FormAttachment(100);
+		
 		fd = new FormData();
 		control.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 6);
 		fd.top = new FormAttachment(monthLabel);
-		fd.right = new FormAttachment(indcateLabel);
 		fd.height = 24;
+		
+
+		return head;
+	}
+
+	private Composite createIndPanel(Composite head) {
+		Composite panel = new Composite(head,SWT.NONE);
+		panel.setBackground(Widgets.getColor(getDisplay(), 0x4b, 0x88, 0xc6));
+		panel.setLayout(new FormLayout());
+		FormData fd;
+		indcateLabel = new Label(panel, SWT.NONE);
+		HtmlUtil.enableMarkup(indcateLabel);
+		Label indcateTitle = new Label(panel, SWT.NONE);
+		HtmlUtil.enableMarkup(indcateTitle);
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div  style='"//$NON-NLS-1$Ð¤
+				+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+				+ "font-size:11pt;"//$NON-NLS-1$
+				+ "margin:2 0 0 12;"//$NON-NLS-1$
+				+ "color:#ffffff;"//$NON-NLS-1$
+//				+ "width:100%;"//$NON-NLS-1$
+//				+ "height:24px;"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		sb.append("³¬Ö§ÏîÄ¿ÊýÁ¿/×ÜÊý");
+		sb.append("</div>");
+		indcateTitle.setText(sb.toString());
+		arrow = new Label(panel, SWT.NONE);
+
+		
+		fd = new FormData();
+		indcateTitle.setLayoutData(fd);
+		fd.left = new FormAttachment();
+		fd.top = new FormAttachment();
+		fd.right = new FormAttachment(100);
+		fd.height = 24;
+		
+		fd = new FormData();
+		indcateLabel.setLayoutData(fd);
+		fd.left = new FormAttachment(0,10);
+		fd.top = new FormAttachment(indcateTitle);
+		fd.bottom = new FormAttachment(100, -1);
+		fd.width = 160;
 
 		fd = new FormData();
-		sep.setLayoutData(fd);
-		fd.left = new FormAttachment(0);
-		fd.bottom = new FormAttachment(100);
-		fd.right = new FormAttachment(100);
-		fd.height = 1;
-		return head;
+		arrow.setLayoutData(fd);
+		fd.right = new FormAttachment(100,-8);
+		fd.width = 30;
+		fd.top = new FormAttachment(indcateTitle);
+		fd.bottom = new FormAttachment(100, -1);
+		
+		return panel;
 	}
 
 	private Control createMonthSwitchLabel(Composite parent) {
@@ -204,11 +248,11 @@ public class OverBudgetTop10Page extends PageControledListTabblockPage {
 		bar.setLayout(layout);
 
 		final Button pageBack = new Button(bar, SWT.PUSH);
-		pageBack.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_LEFT_16);
+		pageBack.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_LEFT_W_16);
 		pageBack.setLayoutData(new RowData(16, 16));
 
 		final Button pageNext = new Button(bar, SWT.PUSH);
-		pageNext.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_RIGHT_16);
+		pageNext.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_RIGHT_W_16);
 		pageNext.setLayoutData(new RowData(16, 16));
 
 		pageBack.addSelectionListener(new SelectionAdapter() {
@@ -271,9 +315,9 @@ public class OverBudgetTop10Page extends PageControledListTabblockPage {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div align='center' style='"//$NON-NLS-1$
 				+ "float:left;" + "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
-				+ "font-size:22pt;"//$NON-NLS-1$
+				+ "font-size:24pt;"//$NON-NLS-1$
 				+ "margin:4 0 0 4;"//$NON-NLS-1$
-				+ "color:#cdcdcd;"//$NON-NLS-1$
+				+ "color:#ffffff;"//$NON-NLS-1$
 				+ "'>"); //$NON-NLS-1$
 		int year = now.get(Calendar.YEAR);
 		int thisYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -286,26 +330,32 @@ public class OverBudgetTop10Page extends PageControledListTabblockPage {
 		monthLabel.setText(sb.toString());
 
 		sb = new StringBuffer();
-		sb.append("<div  style='"//$NON-NLS-1$
-				+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
-				+ "font-size:9pt;"//$NON-NLS-1$
-				+ "margin:4 0 0 0;"//$NON-NLS-1$
-				+ "color:#a6a6a6;"//$NON-NLS-1$
-				+ "'>"); //$NON-NLS-1$
-		sb.append("³¬Ö§ÏîÄ¿ÊýÁ¿/×ÜÊý");
-		sb.append("</div>");
-		sb.append("<div style='"//$NON-NLS-1$
-				+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
-				+ "font-size:28pt;"//$NON-NLS-1$
-				+ "margin:0 0 0 0;"//$NON-NLS-1$
-				+ "color:#d60000;"//$NON-NLS-1$
-				+ "'>"); //$NON-NLS-1$
+		
 		if (monthRates[0] != 0) {
 			double rateThisMonth = 100d * monthRates[1] / monthRates[0];
+			if(rateThisMonth>10){
+			sb.append("<div style='"//$NON-NLS-1$
+					+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+					+ "font-size:28pt;"//$NON-NLS-1$
+					+ "margin:0 0 0 0;"//$NON-NLS-1$
+					+ "color:#ffffff;"//$NON-NLS-1$
+					+ "'>"); //$NON-NLS-1$
 			sb.append(format.format(rateThisMonth));
 			sb.append("%");
+			sb.append("</div>");
+			}else{
+				sb.append("<div style='"//$NON-NLS-1$
+						+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+						+ "font-size:28pt;"//$NON-NLS-1$
+						+ "margin:0 0 0 0;"//$NON-NLS-1$
+						+ "color:#ffffff;"//$NON-NLS-1$
+						+ "'>"); //$NON-NLS-1$
+				sb.append(format.format(rateThisMonth));
+				sb.append("%");
+				sb.append("</div>");
+			}
 		}
-		sb.append("</div>");
+		
 
 		indcateLabel.setText(sb.toString());
 		if (monthRates[0] != 0 && previousMonthRates != null

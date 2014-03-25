@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.List;
 
+import org.eclipse.jface.viewers.StructuredViewer;
+
 import com.mobnut.commons.html.HtmlUtil;
 import com.mobnut.commons.util.Utils;
 import com.sg.business.model.Organization;
@@ -14,6 +16,7 @@ import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.etl.TinyVisualizationUtil;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.commons.labelprovider.CommonHTMLLabel;
+import com.sg.widgets.viewer.PageListViewer;
 
 public class ProjectCommonHTMLLable extends CommonHTMLLabel {
 
@@ -57,8 +60,13 @@ public class ProjectCommonHTMLLable extends CommonHTMLLabel {
 
 	private String getHTMLForPerformenceHome() {
 		//È¡ÐòºÅ
-		List<?> input = (List<?>) getViewer().getInput();
+		StructuredViewer viewer = getViewer();
+		List<?> input = (List<?>) viewer.getInput();
 		int index = input.indexOf(project)+1;
+		if(viewer instanceof PageListViewer){
+			PageListViewer plv = (PageListViewer) viewer;
+			index += plv.getPageSize()*plv.getCurrentPageIndex();
+		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div align='center' style='"//$NON-NLS-1$
 				+ "float:left;"
