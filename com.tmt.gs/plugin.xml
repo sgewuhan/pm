@@ -3659,12 +3659,12 @@
          </searchAction>
       </navigator>
       <navigator
-            id="gs.tbBusinessSupport.supportauditor"
-            table="gs.tbBusinessSupport.supportauditor">
+            id="gs.gsBusinessSupport.supportauditor"
+            table="gs.gsBusinessSupport.supportauditor">
       </navigator>
       <navigator
-            id="gs.tbBusinessSupport.supportapprover"
-            table="gs.tbBusinessSupport.supportapprover">
+            id="gs.gsBusinessSupport.supportapprover"
+            table="gs.gsBusinessSupport.supportapprover">
       </navigator>
       <navigator
             id="organization.navigaor.projectfunction"
@@ -3685,6 +3685,18 @@
          point="com.sg.widgets.tree">
       <tree
             autoExpandLevel="2"
+            dataSet="com.tmt.gs.dataset.GSOrganizationSelectorOfTaskforms"
+            headerVisiable="false"
+            id="gs.taskforms.organization.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
             dataSet="com.tmt.gs.dataset.GSUserSelectorOfTaskforms"
             headerVisiable="false"
             id="gs.taskforms.user.selector">
@@ -3698,6 +3710,158 @@
                modelRelation="organization_user">
          </structure>
       </tree>
+      <tree
+            autoExpandLevel="3"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.sg.business.model.dataset.project.FolderOfProject"
+            headerVisiable="false"
+            id="project.documents.released">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document_released">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.gs.dataset.GSProjectFunctionOrg"
+            headerVisiable="false"
+            id="organization.navigaor.projectfunctionorg">
+         <column
+               columnDefinitionId="work.desc.1">
+         </column>
+         <structure
+               modelRelation="organization_internalbystandlonework">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            canCreate="false"
+            canDelete="false"
+            canEdit="false"
+            canRead="false"
+            dataSet="com.tmt.gs.dataset.GSProjectChangeDocument"
+            headerVisiable="false"
+            id="project.navigator.changedoc">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="folder_folder">
+         </structure>
+         <structure
+               modelRelation="folder_document">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.gs.dataset.GSProjectFunctionOrg"
+            headerVisiable="false"
+            id="organization.navigaor.projectfunction">
+         <column
+               columnDefinitionId="work.desc.1">
+         </column>
+      </tree>
+   </extension>
+   <extension
+         point="com.sg.widgets.table">
+      <table
+            dataSet="com.tmt.gs.dataset.GSProjectSelectorOfTaskforms"
+            headerVisiable="false"
+            id="gs.taskforms.project.selector">
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+      </table>
+      <table
+            id="ec.standlonework"
+            useHashlookup="false">
+         <column
+               column="defaultselected"
+               editingSupport="com.sg.widgets.commons.editingsupport.CheckBoxEditingSupport"
+               type="Boolean"
+               width="40">
+         </column>
+         <column
+               column="desc"
+               name="%column.name"
+               type="String"
+               width="260">
+         </column>
+         <column
+               column="planstart"
+               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
+               name="%column.name.0"
+               type="Date">
+         </column>
+         <column
+               column="planfinish"
+               editingSupport="com.sg.business.commons.column.editingsupport.DateEditing"
+               name="%column.name.1"
+               type="Date">
+         </column>
+         <column
+               column="chargerid"
+               editingSupport="com.sg.business.commons.column.editingsupport.UserNavigatorSelectorEditing"
+               labelProvider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+               lazyDisplay="true"
+               name="%column.name.2"
+               type="String"
+               width="120">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSAllProject"
+            id="company.navigator.allproject">
+         <column
+               columnDefinitionId="project.projectnumber">
+         </column>
+         <column
+               columnDefinitionId="project.desc">
+         </column>
+         <column
+               columnDefinitionId="project.workorder">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSApplicationLeaderOfTaskforms"
+            headerVisiable="false"
+            id="gs.taskforms.applicationleader.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSUserOfChangeApprover"
+            headerVisiable="false"
+            id="changeapprover.navigator">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSBusinessSupportAuditor"
+            headerVisiable="false"
+            id="gs.gsBusinessSupport.supportauditor">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSBusinessSupportApprover"
+            headerVisiable="false"
+            id="gs.gsBusinessSupport.supportapprover">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
    </extension>
 
 </plugin>
