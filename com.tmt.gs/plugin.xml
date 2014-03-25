@@ -2730,8 +2730,8 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsprojectapplication.assign"
-            name="技术负责人"
+            editorId="gsprojectapplication.assignment"
+            name="指派项目负责人"
             persistentFields="prj_manager,accessory,projecttype"
             processDefinitionId="gs.gsProjectApplication"
             saveHandler="com.tmt.gs.handler.GSProjectApplicationAuditSaveOfTB">
@@ -3229,8 +3229,8 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
-            id="gsprojectapplication.assign"
-            name="技术负责人">
+            id="gsprojectapplication.assignment"
+            name="指派项目负责人">
          <basicpage
                id="page1"
                title="审核">
