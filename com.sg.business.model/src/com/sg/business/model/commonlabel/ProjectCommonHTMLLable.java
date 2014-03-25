@@ -39,8 +39,13 @@ public class ProjectCommonHTMLLable extends CommonHTMLLabel {
 		}
 
 		if ("performence.budget".equals(key)) {
-			return getHTMLForPerformenceHome();
+			return getHTMLForBudgetPerformenceHome();
 		}
+		
+		if ("performence.schedure".equals(key)) {
+			return getHTMLForSchedurePerformenceHome();
+		}
+		
 
 		ProjectPresentation pres = project.getPresentation();
 
@@ -58,7 +63,68 @@ public class ProjectCommonHTMLLable extends CommonHTMLLabel {
 		return sb.toString();
 	}
 
-	private String getHTMLForPerformenceHome() {
+	private String getHTMLForSchedurePerformenceHome() {
+		//È¡ÐòºÅ
+		StructuredViewer viewer = getViewer();
+		List<?> input = (List<?>) viewer.getInput();
+		int index = input.indexOf(project)+1;
+		if(viewer instanceof PageListViewer){
+			PageListViewer plv = (PageListViewer) viewer;
+			index += plv.getPageSize()*plv.getCurrentPageIndex();
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div align='center' style='"//$NON-NLS-1$
+				+ "float:left;"
+				+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+				+ "font-size:18pt;"//$NON-NLS-1$
+				+ "margin:6 0 0 0;"//$NON-NLS-1$
+				+ "color:#4d4d4d;"//$NON-NLS-1$
+				+ "width:" + 48
+				+ "px;"
+				+ "'>"); //$NON-NLS-1$
+		sb.append(index);
+		sb.append("</div>");
+		
+//		int width = getViewer().getControl().getBounds().width-48;
+		sb.append("<div style='"
+				+ "position:absolute; " //$NON-NLS-1$
+				+ "left:50;"
+				+ "right:0;"
+				+ "top:10; " //$NON-NLS-1$
+				+ "bottom:0; " //$NON-NLS-1$
+				+ "margin:0;"
+				+ "'>");
+
+		ProjectPresentation pres = project.getPresentation();
+		String desc = pres.getDescriptionText();
+
+		sb.append(pres.getSchedualHTMLLabel());
+
+		sb.append("<div style='"//$NON-NLS-1$
+				+ "position:absolute; " //$NON-NLS-1$
+				+ "left:30;"
+				+ "right:0;"
+				+ "top:0; " //$NON-NLS-1$
+				+ "bottom:0; " //$NON-NLS-1$
+				+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+				+ "font-size:10pt;"//$NON-NLS-1$
+				+ "margin:0;"//$NON-NLS-1$
+				+ "color:#ffffff;"//$NON-NLS-1$
+				+ "width:" + 240
+				+ "px;"
+				+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+				+ "'>"); //$NON-NLS-1$
+		appendCharger(sb,"#ffffff","10pt");
+		sb.append(desc);
+		sb.append("</div>");
+		
+		sb.append("</div>");
+		sb.append(HtmlUtil.createBottomLine(0));
+
+		return sb.toString();
+	}
+
+	private String getHTMLForBudgetPerformenceHome() {
 		//È¡ÐòºÅ
 		StructuredViewer viewer = getViewer();
 		List<?> input = (List<?>) viewer.getInput();
@@ -90,9 +156,6 @@ public class ProjectCommonHTMLLable extends CommonHTMLLabel {
 				+ "margin:0;"
 				+ "'>");
 
-		if(project!=null){
-			
-		}
 		ProjectPresentation pres = project.getPresentation();
 		String desc = pres.getDescriptionText();
 
@@ -157,30 +220,7 @@ public class ProjectCommonHTMLLable extends CommonHTMLLabel {
 			}
 		}
 		
-		User charger = project.getCharger();
-		if (charger != null) {
-			sb.append("<span style='"//$NON-NLS-1$
-					+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
-					+ "font-size:8pt;"//$NON-NLS-1$
-					+ "margin:0 0 0 4;"//$NON-NLS-1$
-					+ "color:#4d4d4d;"//$NON-NLS-1$
-					+ "width:" + 80
-					+ "px;"
-					+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
-					+ "'>"); //$NON-NLS-1$
-			sb.append(" ");
-			sb.append(charger);
-			Organization org = charger.getOrganization();
-			if (org != null) {
-				Organization forg = (Organization) org
-						.getFunctionOrganization();
-				if (forg != null) {
-					sb.append("|");
-					sb.append(forg.getSimpleName());
-				}
-			}			
-			sb.append("</span>");
-		}
+		appendCharger(sb,"#4d4d4d","8pt");
 		sb.append("</div>"); //$NON-NLS-1$
 		
 		
@@ -233,6 +273,38 @@ public class ProjectCommonHTMLLable extends CommonHTMLLabel {
 		return sb.toString();
 	}
 
+	private void appendCharger(StringBuffer sb, String color, String fontSize) {
+		User charger = project.getCharger();
+		if (charger != null) {
+			sb.append("<span style='"//$NON-NLS-1$
+					+ "font-family:Î¢ÈíÑÅºÚ;"//$NON-NLS-1$
+					+ "font-size:"
+					+ fontSize
+					+ ";"//$NON-NLS-1$
+					+ "margin:0 0 0 4;"//$NON-NLS-1$
+					+ "color:"
+					+ color
+					+ ";"//$NON-NLS-1$
+					+ "width:" + 80
+					+ "px;"
+					+ "overflow:hidden;white-space:nowrap;text-overflow:ellipsis"//$NON-NLS-1$
+					+ "'>"); //$NON-NLS-1$
+			sb.append(" ");
+			sb.append(charger);
+			Organization org = charger.getOrganization();
+			if (org != null) {
+				Organization forg = (Organization) org
+						.getFunctionOrganization();
+				if (forg != null) {
+					sb.append("|");
+					sb.append(forg.getSimpleName());
+				}
+			}			
+			sb.append("</span>");
+		}
+	}
+	
+	
 	private String getHTMLForBudgetSingleLine() {
 		ProjectPresentation pres = project.getPresentation();
 		boolean presentationMode = pres.isETLDataAvailable();
