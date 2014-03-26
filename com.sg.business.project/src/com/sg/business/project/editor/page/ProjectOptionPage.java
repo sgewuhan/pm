@@ -8,6 +8,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.internal.widgets.IWidgetGraphicsAdapter;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +33,8 @@ import com.sg.widgets.registry.config.IPageDelegator;
 
 @SuppressWarnings("restriction")
 public class ProjectOptionPage implements IPageDelegator, IFormPart,
-		IPrimaryObjectValueChangeListener, IValidable {
+		IPrimaryObjectValueChangeListener, IValidable,
+		IEditorPageLayoutProvider {
 
 	private boolean dirty;
 	private IManagedForm form;
@@ -41,24 +44,22 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	public ProjectOptionPage() {
 	}
-	
 
 	@Override
 	public IEditorPageLayoutProvider getPageLayout() {
-		return null;
+		return this;
 	}
-	
+
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
 		content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());
 		project = (Project) input.getData();
-		if(project.isPersistent()){
+		if (project.isPersistent()) {
 			this.editable = false;
-		}
-		else{
-			editable=input.isEditable();
+		} else {
+			editable = input.isEditable();
 		}
 		project.addFieldValueListener(Project.F_PROJECT_TEMPLATE_ID, this);
 		createOptionContent();
@@ -106,7 +107,7 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 				});
 				settingButton.setSelection(optionsValue != null
 						&& optionsValue.contains(optionName));
-				
+
 				settingButton.setEnabled(editable);
 			}
 		}
@@ -204,17 +205,20 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 		}
 		List<?> standardOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
-		createOptionSetting(content, standardOptions, Messages.get().ProjectOptionPage_0,
+		createOptionSetting(content, standardOptions,
+				Messages.get().ProjectOptionPage_0,
 				ProjectTemplate.F_STANDARD_OPTION_SET);
 
 		List<?> productTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
-		createOptionSetting(content, productTypeOptions, Messages.get().ProjectOptionPage_2,
+		createOptionSetting(content, productTypeOptions,
+				Messages.get().ProjectOptionPage_2,
 				ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
 
 		List<?> projectTypeOptions = (List<?>) template
 				.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
-		createOptionSetting(content, projectTypeOptions, Messages.get().ProjectOptionPage_3,
+		createOptionSetting(content, projectTypeOptions,
+				Messages.get().ProjectOptionPage_3,
 				ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
 
 		content.layout();
@@ -222,21 +226,21 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	@Override
 	public boolean checkValidOnSave() {
-//		List<?> value = (List<?>) project
-//				.getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
-//		if (value == null || value.size() == 0) {
-//			return false;
-//		}
-//		value = (List<?>) project
-//				.getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
-//		if (value == null || value.size() == 0) {
-//			return false;
-//		}
-//		value = (List<?>) project
-//				.getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
-//		if (value == null || value.size() == 0) {
-//			return false;
-//		}
+		// List<?> value = (List<?>) project
+		// .getValue(ProjectTemplate.F_STANDARD_OPTION_SET);
+		// if (value == null || value.size() == 0) {
+		// return false;
+		// }
+		// value = (List<?>) project
+		// .getValue(ProjectTemplate.F_PRODUCTTYPE_OPTION_SET);
+		// if (value == null || value.size() == 0) {
+		// return false;
+		// }
+		// value = (List<?>) project
+		// .getValue(ProjectTemplate.F_PROJECTTYPE_OPTION_SET);
+		// if (value == null || value.size() == 0) {
+		// return false;
+		// }
 		return true;
 	}
 
@@ -248,5 +252,22 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 	@Override
 	public boolean createBody() {
 		return true;
+	}
+
+	@Override
+	public void layout(Control body, Control customerPage) {
+		FormData fd;
+		fd = new FormData();
+		body.setLayoutData(fd);
+		fd.top = new FormAttachment();
+		fd.left = new FormAttachment();
+		fd.bottom = new FormAttachment(100);
+
+		fd = new FormData();
+		customerPage.setLayoutData(fd);
+		fd.top = new FormAttachment(0,7);
+		fd.left = new FormAttachment(body,8);
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(100);
 	}
 }
