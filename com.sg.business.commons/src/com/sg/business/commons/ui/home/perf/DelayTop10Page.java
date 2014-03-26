@@ -100,6 +100,6 @@ public class DelayTop10Page extends AbstractProjectTop10Page {
 
 	@Override
 	protected String getIndenticatorLabel() {
-		return "超期项目数占比";
+		return "进行中项目超期占比";
 	}
 }
