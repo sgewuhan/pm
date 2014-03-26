@@ -82,6 +82,67 @@
             pageDelegator="com.tmt.pdm.dcpdm.page.PDMVaultPage"
             title="PDM">
       </basicpage>
+      <editor
+            collectionName="document"
+            dbName="pm2"
+            id="editor.document.dcpdm"
+            name="DCPDM图文档">
+         <basicpage
+               description="基本信息"
+               id="basicpage1"
+               pageDelegator="com.tmt.pdm.dcpdm.editor.DocumentPage"
+               title="基本信息">
+            <pagecolumn
+                  id="1">
+               <section
+                     label="基本信息">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="documentnumber"
+                        label="文档编号"
+                        labelVisible="true"
+                        name="documentnumber"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="desc"
+                        label="文档名称"
+                        labelVisible="true"
+                        name="desc"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="false"
+                        id="pdm_ouid"
+                        label="PDM内部代码"
+                        labelVisible="true"
+                        name="pdm_ouid"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <pageExtendsions
+            id="editor.document.dcpdm"
+            location="after=basicpage1"
+            targetId="document.systempage">
+      </pageExtendsions>
+      <pageExtendsions
+            id="editor.document.dcpdm"
+            location="after=basicpage1"
+            targetId="document.wfhistory">
+      </pageExtendsions>
    </extension>
    <extension
          point="com.sg.business.model.fileserver">

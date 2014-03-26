@@ -166,7 +166,7 @@
                         label="%combo.label.0"
                         labelVisible="true"
                         name="document_editorid"
-                        option="文档编辑器"
+                        optionProvider="com.sg.business.document.editor.EditorIDOptionProvider"
                         persistable="true"
                         required="false"
                         type="String">
