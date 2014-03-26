@@ -1,6 +1,7 @@
 package com.sg.business.project.setup;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,14 +9,24 @@ import org.bson.types.ObjectId;
 
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.IPrimaryObjectEventListener;
+import com.mobnut.db.model.ModelService;
+import com.mobnut.db.utils.DBUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
+import com.mongodb.WriteResult;
+import com.sg.business.model.Deliverable;
+import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Project;
 import com.sg.sqldb.utility.SQLResult;
 import com.sg.sqldb.utility.SQLRow;
 import com.sg.sqldb.utility.SQLUtil;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -28,57 +39,72 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	@Override
 	public boolean run() {
 
-//		DBCollection deliverableCol = getCol(IModelConstants.C_DELIEVERABLE);
-//		DBCollection documentCol = getCol(IModelConstants.C_DOCUMENT);
-//		DBCursor deliverableCursor = deliverableCol.find();
-//		while (deliverableCursor.hasNext()) {
-//			DBObject deliverableData = deliverableCursor.next();
-//			Deliverable deliverable = ModelService.createModelObject(deliverableData, Deliverable.class);
-//			ObjectId document_id = deliverable.getDocumentId();
-//			long count = documentCol.count(new BasicDBObject().append(Document.F__ID, document_id));
-//			if(count==0){
-//				try {
-//					deliverable.doRemove(new CurrentAccountContext());
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
+		// DBCollection deliverableCol = getCol(IModelConstants.C_DELIEVERABLE);
+		// DBCollection documentCol = getCol(IModelConstants.C_DOCUMENT);
+		// DBCursor deliverableCursor = deliverableCol.find();
+		// while (deliverableCursor.hasNext()) {
+		// DBObject deliverableData = deliverableCursor.next();
+		// Deliverable deliverable = ModelService.createModelObject(
+		// deliverableData, Deliverable.class);
+		// ObjectId document_id = deliverable.getDocumentId();
+		// long count = documentCol.count(new BasicDBObject().append(
+		// Document.F__ID, document_id));
+		// if (count == 0) {
+		// try {
+		// deliverableCol.remove(new BasicDBObject()
+		// .append(Deliverable.F__ID, deliverable.get_id()),
+		// WriteConcern.NORMAL);
+		//
+		// DBUtil.SAVELOG(
+		// new CurrentAccountContext().getAccountInfo()
+		// .getUserId(),
+		// "É¾³ý",
+		// new Date(),
+		// deliverable.getLabel() + "\n"
+		// + deliverable.getDbName() + "\\"
+		// + deliverable.getCollectionName() + "\\"
+		// + deliverable.get_id(), deliverable
+		// .getDbName());
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// }
 
-		SQLResult result;
-		DBCollection projectCol = getCol(IModelConstants.C_PROJECT);
-		String projectnumber = "";
-		try {
-			result = SQLUtil.SQL_QUERY("budget", //$NON-NLS-1$
-					"select * from jy2 ");
-			if (!result.isEmpty()) {
-				Iterator<SQLRow> iter = result.iterator();
-				while (iter.hasNext()) {
-					SQLRow row = iter.next();
-					projectnumber = "" + row.getValue("projectnumber");
-					BasicDBObject updateData = new BasicDBObject();
-					DBObject dbo = projectCol.findOne(new BasicDBObject()
-							.append(Project.F_PROJECT_NUMBER, projectnumber));
-					ObjectId project_id = (ObjectId) dbo.get(Project.F__ID);
-					String productItem = "" + row.getValue("productitem");
-					if (productItem != "") {
-						String[] productItems = productItem.split(",");
-						List<String> productItemList = new ArrayList<String>();
-						for (String productItemString : productItems) {
-							productItemString = productItemString.trim();
-							productItemList.add(productItemString);
-						}
-						updateData.put("_temp_itemcode", productItemList);
-					}
-					projectCol.update(new BasicDBObject().append(Project.F__ID,
-							project_id), new BasicDBObject().append("$set",
-							updateData));
-				}
-			}
-		} catch (Exception e) {
-			System.out.println(projectnumber);
-			e.printStackTrace();
-		}
+		// SQLResult result;
+		// DBCollection projectCol = getCol(IModelConstants.C_PROJECT);
+		// String projectnumber = "";
+		// try {
+		//			result = SQLUtil.SQL_QUERY("budget", //$NON-NLS-1$
+		// "select * from jy2 ");
+		// if (!result.isEmpty()) {
+		// Iterator<SQLRow> iter = result.iterator();
+		// while (iter.hasNext()) {
+		// SQLRow row = iter.next();
+		// projectnumber = "" + row.getValue("projectnumber");
+		// BasicDBObject updateData = new BasicDBObject();
+		// DBObject dbo = projectCol.findOne(new BasicDBObject()
+		// .append(Project.F_PROJECT_NUMBER, projectnumber));
+		// ObjectId project_id = (ObjectId) dbo.get(Project.F__ID);
+		// String productItem = "" + row.getValue("productitem");
+		// if (productItem != "") {
+		// String[] productItems = productItem.split(",");
+		// List<String> productItemList = new ArrayList<String>();
+		// for (String productItemString : productItems) {
+		// productItemString = productItemString.trim();
+		// productItemList.add(productItemString);
+		// }
+		// updateData.put("_temp_itemcode", productItemList);
+		// }
+		// projectCol.update(new BasicDBObject().append(Project.F__ID,
+		// project_id), new BasicDBObject().append("$set",
+		// updateData));
+		// }
+		// }
+		// } catch (Exception e) {
+		// System.out.println(projectnumber);
+		// e.printStackTrace();
+		// }
 
 		// DBCollection col1 = getCol(IModelConstants.C_WORK);
 		// DBCollection col2 = getCol(IModelConstants.C_WORK);
