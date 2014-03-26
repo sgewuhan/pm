@@ -32,7 +32,7 @@ public class CreateChildWork extends AbstractWorkDetailPageAction {
 			DataObjectDialog d = DataObjectDialog.openDialog(po,
 					(DataEditorConfigurator) conf, true, null,
 					Messages.get().CreateWork_2 + po.getTypeName());
-			if (DataObjectDialog.OK != d.getReturnCode()) {
+			if (DataObjectDialog.OK == d.getReturnCode()) {
 				pageReload(true);
 			}
 		} catch (Exception e) {
