@@ -3,6 +3,7 @@ package com.sg.business.commons.ui.home.perf;
 import org.bson.types.BasicBSONList;
 import org.eclipse.swt.widgets.Composite;
 
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.User;
@@ -120,5 +121,10 @@ public class ProjectContentBlock2 extends BusinessContentBlock {
 //				return getTagText(key);
 //			}
 //	}
+	@Override
+	protected void mouseClick() {
+		UIFrameworkUtils.navigateTo(getInput(),
+				UIFrameworkUtils.NAVIGATE_AUTOSELECT, false,"visualization");
+	}
 
 }
