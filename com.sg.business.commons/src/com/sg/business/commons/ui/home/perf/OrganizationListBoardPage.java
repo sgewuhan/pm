@@ -26,7 +26,7 @@ public class OrganizationListBoardPage extends AbstractListBoardPage {
 
 	@Override
 	protected String getTitle() {
-		return "销售利润排名";
+		return "各部门销售利润排名";
 	}
 
 	@Override
@@ -45,12 +45,17 @@ public class OrganizationListBoardPage extends AbstractListBoardPage {
 			Organization org = ModelService.createModelObject(
 					Organization.class, (ObjectId) _id);
 			StringBuffer sb = new StringBuffer();
-			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:9pt;color:#333333;"
-					+ "margin-left:0; display:block; width=1000px'>");
-			// 显示组织名称
-			String label = org.getLabel();
+			sb.append("<span style='FONT-FAMILY:微软雅黑;font-size:8pt;color:#333333;" //$NON-NLS-1$
+					+ "margin-left:0; display:block; width=1000px;vertical-align:middle;'>"); //$NON-NLS-1$
+
+//			String imageUrl = "<img src='" + org.getImageURL() //$NON-NLS-1$
+//					+ "' style='float:left;padding:2px' width='24' height='24' />"; //$NON-NLS-1$
+			String label = org.getPath(2);
+
+//			sb.append(imageUrl);
 			sb.append(label);
-			sb.append("</span>");
+			sb.append("</span>"); //$NON-NLS-1$
+
 			return sb.toString();
 		}
 		return "?";

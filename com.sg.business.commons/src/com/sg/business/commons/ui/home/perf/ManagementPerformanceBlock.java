@@ -19,8 +19,8 @@ public class ManagementPerformanceBlock extends TabBlock {
 		super(parent, SWT.NONE);
 
 		addPage(ID_ORGANIZATIONLISTBOARD, "组织", null);
-		addPage(ID_CHARGERLISTBOARD, "负责人", null);
 		addPage(ID_PROJECTLISTBOARD, "项目", null);
+		addPage(ID_CHARGERLISTBOARD, "项目经理", null);
 
 		select(ID_ORGANIZATIONLISTBOARD);
 	}
@@ -44,10 +44,13 @@ public class ManagementPerformanceBlock extends TabBlock {
 		switch (pageId) {
 		case ID_CHARGERLISTBOARD:
 			refreshChargerListBoardPage();
+			break;
 		case ID_ORGANIZATIONLISTBOARD:
 			refreshOrganizationListBoardPage();
+			break;
 		case ID_PROJECTLISTBOARD:
 			refreshProjectListBoardPage();
+			break;
 		default:
 		}
 	}
