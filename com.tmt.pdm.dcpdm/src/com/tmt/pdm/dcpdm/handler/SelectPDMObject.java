@@ -8,7 +8,7 @@ import org.eclipse.ui.forms.IFormPart;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.AbstractFieldPart;
 import com.sg.widgets.part.editor.fields.value.IFieldActionHandler;
-import com.tmt.pdm.dcpdm.selector.DCPDMObjectSelector2;
+import com.tmt.pdm.dcpdm.selector.DCPDMObjectSelectWizard;
 
 public class SelectPDMObject implements IFieldActionHandler {
 
@@ -22,7 +22,7 @@ public class SelectPDMObject implements IFieldActionHandler {
 	
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		
-		DCPDMObjectSelector2 wiz = new DCPDMObjectSelector2();
+		DCPDMObjectSelectWizard wiz = new DCPDMObjectSelectWizard();
 
 		WizardDialog wizardDialog = new WizardDialog(shell, wiz);
 		

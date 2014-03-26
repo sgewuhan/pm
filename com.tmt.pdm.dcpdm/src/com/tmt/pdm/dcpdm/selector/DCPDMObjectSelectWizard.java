@@ -1,40 +1,53 @@
 package com.tmt.pdm.dcpdm.selector;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.Wizard;
 
 import com.sg.widgets.part.CurrentAccountContext;
 import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
 
-public class DCPDMObjectSelector2 extends Wizard {
+public class DCPDMObjectSelectWizard extends Wizard {
 
 	Set<String> docContainers = new HashSet<String>();
+	HashMap<String,String> ouid_name = new HashMap<String,String>();
+	private ISelection selection;
 
 
 	@SuppressWarnings("unchecked")
-	public DCPDMObjectSelector2() {
+	public DCPDMObjectSelectWizard() {
 		String userId = new CurrentAccountContext().getConsignerId();
 		List<?> code = DCPDMUtil
 				.getDocumentAndDrawingContainerCode(userId);
 		if(code!=null){
 			docContainers.addAll((Collection<? extends String>) code);
 		}
+		setWindowTitle("Ñ¡ÔñDCPDMµÄÍ¼ÎÄµµ");
 	}
 
 	@Override
 	public void addPages() {
 		addPage(new ConditionPage());
 		addPage(new SearchPage());
-
+		addPage(new AdvanceSearchPage());
 	}
 
 	@Override
 	public boolean performFinish() {
 		return false;
+	}
+
+	public void setSelection(ISelection selection) {
+		this.selection = selection;
+	}
+	
+	public ISelection getSelection() {
+		return selection;
 	}
 
 

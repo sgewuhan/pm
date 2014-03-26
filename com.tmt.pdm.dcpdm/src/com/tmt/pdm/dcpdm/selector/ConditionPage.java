@@ -26,6 +26,7 @@ public class ConditionPage extends WizardPage {
 	protected ConditionPage() {
 		super("请选择DCPDM的图文档数据类型");
 		setTitle("请选择DCPDM的图文档数据类型");
+		setMessage("如果您知道将要选择的图文档的类型，请尽量缩小搜索范围提升查询速度。");
 	}
 
 	@Override
@@ -40,6 +41,7 @@ public class ConditionPage extends WizardPage {
 		fd.right = new FormAttachment(100, -10);
 		fd.top = new FormAttachment(0, 10);
 		fd.width = WIDTH;
+		setPageComplete(!getWizard().docContainers.isEmpty());
 		setControl(pane);
 	}
 
@@ -61,8 +63,10 @@ public class ConditionPage extends WizardPage {
 	private void createClassSelector(Composite parent, final String ouid)
 			throws Exception {
 		DOSChangeable clasDBObject = Starter.dos.getClass(ouid);
+		String title = (String) clasDBObject.get("title");
+		getWizard().ouid_name.put(ouid, title);
 		final Button b = new Button(parent, SWT.CHECK);
-		b.setText((String) clasDBObject.get("title"));
+		b.setText(title);
 		b.setSelection(true);
 		b.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -72,13 +76,15 @@ public class ConditionPage extends WizardPage {
 				} else {
 					getWizard().docContainers.remove(ouid);
 				}
+				setPageComplete(!getWizard().docContainers.isEmpty());
 			}
 		});
 	}
 
 	@Override
-	public DCPDMObjectSelector2 getWizard() {
-		return (DCPDMObjectSelector2)super.getWizard();
+	public DCPDMObjectSelectWizard getWizard() {
+		return (DCPDMObjectSelectWizard)super.getWizard();
 	}
+	
 
 }
