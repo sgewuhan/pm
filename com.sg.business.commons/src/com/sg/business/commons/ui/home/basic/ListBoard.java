@@ -70,33 +70,43 @@ public class ListBoard {
 		fd.right = new FormAttachment(100);
 		// fd.bottom = new FormAttachment(25);
 		fd.height = 36;
-
+		
 		fd = new FormData();
-		leftViewer = createTableViewer(composite, fd);
+		Control leftTable = createLeftTableViewer(composite);
+		leftTable.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 10);
 		fd.right = new FormAttachment(50);
 		fd.top = new FormAttachment(leftLabel);
 		fd.bottom = new FormAttachment(100);
-		createTableViewerColumn(leftViewer, "006633");
 
 		fd = new FormData();
-		rightViewer = createTableViewer(composite, fd);
+		Control rightTable = createRightTableViewer(composite);
+		rightTable.setLayoutData(fd);
 		fd.left = new FormAttachment(50, 10);
 		fd.right = new FormAttachment(100);
 		fd.top = new FormAttachment(rightLabel);
 		fd.bottom = new FormAttachment(100);
-		createTableViewerColumn(rightViewer, "006633");
 
 	}
 
-	private TableViewer createTableViewer(Composite composite, FormData fd) {
-		TableViewer tv = new TableViewer(composite, SWT.NONE);
-		Control table = tv.getControl();
-		table.setLayoutData(fd);
-		HtmlUtil.enableMarkup(table);
+	private Control createLeftTableViewer(Composite composite) {
+		leftViewer = createTableViewer(composite);
+		createTableViewerColumn(leftViewer, "006633");
+		return leftViewer.getControl();
+	}
+	
+	private Control createRightTableViewer(Composite composite) {
+		rightViewer = createTableViewer(composite);
+		createTableViewerColumn(rightViewer, "990033");
+		return rightViewer.getControl();
+	}
 
-		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 28);
+	private TableViewer createTableViewer(Composite composite) {
+		TableViewer tv = new TableViewer(composite, SWT.NONE);
 		tv.setContentProvider(ArrayContentProvider.getInstance());
+		Control table = tv.getControl();
+		HtmlUtil.enableMarkup(table);
+		table.setData(RWT.CUSTOM_ITEM_HEIGHT, 28);
 		return tv;
 	}
 

@@ -245,12 +245,12 @@ public class Organization extends PrimaryObject {
 	public String getFullName() {
 		return getStringValue(F_FULLDESC);
 	}
-	
-	public String getSimpleName(){
+
+	public String getSimpleName() {
 		String sname = getStringValue(F_SIMPLENAME);
-		if(Utils.isNullOrEmpty(sname)){
+		if (Utils.isNullOrEmpty(sname)) {
 			return getDesc();
-		}else{
+		} else {
 			return sname;
 		}
 	}
@@ -573,7 +573,7 @@ public class Organization extends PrimaryObject {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 获得本级及下级的所有组织id,不会为null
 	 * 
@@ -585,7 +585,8 @@ public class Organization extends PrimaryObject {
 		List<PrimaryObject> children = getChildrenOrganization();
 		if (children != null) {
 			for (int i = 0; i < children.size(); i++) {
-				result.addAll(((Organization) children.get(i)).getOrganizationStructureOfId());
+				result.addAll(((Organization) children.get(i))
+						.getOrganizationStructureOfId());
 			}
 		}
 		return result;
@@ -730,6 +731,33 @@ public class Organization extends PrimaryObject {
 			if (level > 1) {
 				return ((Organization) parent).getPath(level - 1) + "/" //$NON-NLS-1$
 						+ getSimpleName();
+			} else {
+				return "../" + getSimpleName(); //$NON-NLS-1$
+			}
+		} else {
+			return getSimpleName();
+		}
+	}
+
+	/**
+	 * 获得当前组织的路径
+	 * 
+	 * @param level
+	 *            限制级别
+	 * @param show
+	 *            是否显示本级
+	 * @return
+	 */
+	public String getPath(int level, boolean show) {
+		PrimaryObject parent = getParentOrganization();
+		if (parent instanceof Organization) {
+			if (level > 1) {
+				if (show) {
+					return ((Organization) parent).getPath(level - 1) + "/" //$NON-NLS-1$
+							+ getSimpleName();
+				} else {
+					return ((Organization) parent).getPath(level - 1);
+				}
 			} else {
 				return "../" + getSimpleName(); //$NON-NLS-1$
 			}
@@ -1758,7 +1786,7 @@ public class Organization extends PrimaryObject {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 搜索角色的用户
 	 * 
@@ -1766,8 +1794,7 @@ public class Organization extends PrimaryObject {
 	 * @param selectType
 	 * @return
 	 */
-	public String[] getRoleAssignmentUserIds(String roleNumber,
-			int selectType) {
+	public String[] getRoleAssignmentUserIds(String roleNumber, int selectType) {
 		Role role = getRole(roleNumber, selectType);
 		List<String> result = new ArrayList<String>();
 		if (role != null) {
