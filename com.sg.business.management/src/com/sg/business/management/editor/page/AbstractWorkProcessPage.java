@@ -11,6 +11,7 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.ProjectTemplate;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 @Deprecated
@@ -22,6 +23,11 @@ public abstract class AbstractWorkProcessPage implements IPageDelegator,
 
 	public AbstractWorkProcessPage() {
 	}
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return null;
+	}
+	
 
 	@Override
 	public Composite createPageContent(Composite parent,

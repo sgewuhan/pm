@@ -25,6 +25,7 @@ import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 
@@ -40,7 +41,13 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	public ProjectOptionPage() {
 	}
+	
 
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return null;
+	}
+	
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
@@ -240,6 +247,6 @@ public class ProjectOptionPage implements IPageDelegator, IFormPart,
 
 	@Override
 	public boolean createBody() {
-		return false;
+		return true;
 	}
 }

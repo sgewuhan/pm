@@ -4730,6 +4730,7 @@
                description="%basicpage.description.1"
                id="project.basicpage"
                image="image/project_24.png"
+               pageDelegator="com.sg.business.project.editor.page.ProjectOptionPage"
                title="%basicpage.title.4">
             <pagecolumn>
                <section

@@ -27,6 +27,7 @@ import com.sg.business.model.TaskForm;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
 import com.sg.widgets.part.editor.fields.IValidable;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 import com.tmt.tb.nls.Messages;
@@ -45,6 +46,11 @@ public class StandloneWorkPageOfTB implements IPageDelegator, IFormPart,
 	public StandloneWorkPageOfTB() {
 	}
 
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return null;
+	}
+	
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {

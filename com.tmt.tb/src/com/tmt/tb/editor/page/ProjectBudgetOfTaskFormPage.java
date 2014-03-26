@@ -19,6 +19,7 @@ import com.sg.business.model.Project;
 import com.sg.business.model.ProjectBudget;
 import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 import com.tmt.tb.nls.Messages;
@@ -34,6 +35,11 @@ public class ProjectBudgetOfTaskFormPage implements IPageDelegator, IFormPart {
 	public ProjectBudgetOfTaskFormPage() {
 	}
 
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return null;
+	}
+	
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {

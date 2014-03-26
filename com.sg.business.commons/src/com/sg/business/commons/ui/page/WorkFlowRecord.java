@@ -20,6 +20,7 @@ import com.sg.business.model.TaskForm;
 import com.sg.business.model.Work;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.part.editor.PrimaryObjectEditorInput;
+import com.sg.widgets.part.editor.page.IEditorPageLayoutProvider;
 import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.sg.widgets.registry.config.IPageDelegator;
 
@@ -29,6 +30,11 @@ public class WorkFlowRecord implements IPageDelegator {
 	public WorkFlowRecord() {
 	}
 
+	@Override
+	public IEditorPageLayoutProvider getPageLayout() {
+		return null;
+	}
+	
 	@Override
 	public Composite createPageContent(Composite parent,
 			PrimaryObjectEditorInput input, BasicPageConfigurator conf) {
