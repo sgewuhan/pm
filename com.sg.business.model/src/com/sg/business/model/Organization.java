@@ -1758,6 +1758,28 @@ public class Organization extends PrimaryObject {
 		}
 		return result;
 	}
+	
+	/**
+	 * 搜索角色的用户
+	 * 
+	 * @param roleNumber
+	 * @param selectType
+	 * @return
+	 */
+	public String[] getRoleAssignmentUserIds(String roleNumber,
+			int selectType) {
+		Role role = getRole(roleNumber, selectType);
+		List<String> result = new ArrayList<String>();
+		if (role != null) {
+			List<PrimaryObject> assignment = role.getAssignment();
+			if (assignment != null) {
+				for (int i = 0; i < assignment.size(); i++) {
+					result.add(((RoleAssignment) assignment.get(i)).getUserid());
+				}
+			}
+		}
+		return result.toArray(new String[0]);
+	}
 
 	public PrimaryObject getFunctionOrganization() {
 		if (isFunctionDepartment()) {

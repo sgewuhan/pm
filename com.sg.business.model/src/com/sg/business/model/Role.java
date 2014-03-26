@@ -205,14 +205,14 @@ public class Role extends PrimaryObject {
 	 */
 	public List<PrimaryObject> getAssignment(IRoleParameter roleParameters) {
 		Map<String, Object> parameters = roleParameters.getParameters();
-		if (parameters .isEmpty()) {
+		if (parameters.isEmpty()) {
 			return getAssignment();
 		}
 		Object type = parameters.get(IRoleParameter.TYPE);
 		if (type != null && ((int) type) == IRoleParameter.TYPE_NONE) {
 			return getAssignment();
 		} else {
-			String js = getStringValue(F_RULE);
+			String js = (String) getValue(F_RULE, true);
 			List<PrimaryObject> rs = getRelationById(F__ID,
 					RoleAssignment.F_ROLE_ID, RoleAssignment.class);
 			List<String> userIdList = new ArrayList<String>();
@@ -223,27 +223,32 @@ public class Role extends PrimaryObject {
 			parameters.put(IRoleParameter.USERID, userIdList);
 
 			if (js != null) {
-				Object result = JavaScriptEvaluator.evaluate(js, parameters);
-				if (result instanceof String[]) {
-					ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
-					for (int i = 0; i < rs.size(); i++) {
-						Object userid = rs.get(i).getValue(
-								RoleAssignment.F_USER_ID);
-						if (Utils.inArray(userid, (String[]) result)) {
-							rs1.add(rs.get(i));
+				try {
+					Object result = JavaScriptEvaluator
+							.evaluate(js, parameters);
+					if (result instanceof Object[]) {
+						ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
+						for (int i = 0; i < rs.size(); i++) {
+							Object userid = rs.get(i).getValue(
+									RoleAssignment.F_USER_ID);
+							if (Utils.inArray(userid, (Object[]) result)) {
+								rs1.add(rs.get(i));
+							}
 						}
-					}
-					return rs1;
-				} else if (result instanceof String) {
-					ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
-					for (int i = 0; i < rs.size(); i++) {
-						Object userid = rs.get(i).getValue(
-								RoleAssignment.F_USER_ID);
-						if (Util.equals(userid, result)) {
-							rs1.add(rs.get(i));
+						return rs1;
+					} else if (result instanceof Object) {
+						ArrayList<PrimaryObject> rs1 = new ArrayList<PrimaryObject>();
+						for (int i = 0; i < rs.size(); i++) {
+							Object userid = rs.get(i).getValue(
+									RoleAssignment.F_USER_ID);
+							if (Util.equals(userid, result)) {
+								rs1.add(rs.get(i));
+							}
 						}
+						return rs1;
 					}
-					return rs1;
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 			return rs;
