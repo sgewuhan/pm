@@ -34,8 +34,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import com.mobnut.commons.util.Utils;
+import com.sg.widgets.MessageUtil;
 import com.tmt.pdm.client.Starter;
 import com.tmt.pdm.dcpdm.nls.Messages;
+
+import dyna.framework.iip.IIPRequestException;
 
 public class SearchPage extends WizardPage implements ISelectionChangedListener {
 	private ArrayList<String> fieldlist;
@@ -43,7 +46,7 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 	protected SearchPage() {
 		super("查找DCPDM图文档");
 		setTitle("输入编号或名称查找DCPDM图文档");
-		setMessage("注意：无需加*，但大小写有区别，查询结果可以多选。\n例如:输入ABC将检索编号或名称包含ABC的DCPDM图文档。");
+		setMessage("输入时无需加*，大小写有别，使用西文逗号分隔多条件。查询结果可以多选。\n例如:输入ABC将检索编号或名称包含ABC的DCPDM图文档。");
 		fieldlist = new ArrayList<String>();
 		fieldlist.add("80001a79");// 编号 //$NON-NLS-1$
 		fieldlist.add("80001a7a");// 名称 //$NON-NLS-1$
@@ -57,7 +60,6 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 
 	private TableColumn createColumn(final int i, String name) {
 		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
-		col.getColumn().setWidth(80);
 		col.getColumn().setText(name);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
@@ -70,43 +72,72 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		return col.getColumn();
 	}
 
+	private TableColumn createTitleColumn() {
+		TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEFT);
+		col.getColumn().setWidth(120);
+		col.getColumn().setText("类型");
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ArrayList<?> ar = ((ArrayList<?>) element);
+				String value = (String) ar.get(0);
+				try {
+					String classOuid = Starter.dos.getClassOuid(value);
+					return getWizard().ouid_name.get(classOuid);
+				} catch (IIPRequestException e) {
+				}
+				return "未知类型";
+			}
+		});
+		return col.getColumn();
+	}
+	
 	protected void searchData(final String input) {
 
 		final ArrayList<?> result = new ArrayList<>();
+		
+		final String[] keys = input.split(",");
+		if(input.isEmpty()){
+			MessageUtil.showToast("请输入条件", SWT.ICON_INFORMATION);
+			return;
+		}
 
 		Job job = new Job("检索PDM数据") {
 			@SuppressWarnings("unchecked")
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
+
 				Iterator<String> iter = getWizard().docContainers.iterator();
 				while (iter.hasNext()) {
-					String classOuid = iter.next();
-					try {
-						HashMap<String, String> condition = new HashMap<String, String>();
-						condition.put("80001a79", "*" + input + "*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
-						@SuppressWarnings("rawtypes")
-						ArrayList r = Starter.dos.list(classOuid, fieldlist,
-								condition);
-						if (r != null) {
-							result.addAll(r);
+					for (int index = 0; index < keys.length; index++) {
+						String classOuid = iter.next();
+						try {
+							HashMap<String, String> condition = new HashMap<String, String>();
+							condition.put("80001a79", "*" + keys[index] + "*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
+							@SuppressWarnings("rawtypes")
+							ArrayList r = Starter.dos.list(classOuid,
+									fieldlist, condition);
+							if (r != null) {
+								result.addAll(r);
+							}
+						} catch (Exception e) {
 						}
-					} catch (Exception e) {
-					}
-					
-					try {
-						HashMap<String, String> condition = new HashMap<String, String>();
-						condition.put("80001a7a", "*" + input + "*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
-						@SuppressWarnings("rawtypes")
-						ArrayList r = Starter.dos.list(classOuid, fieldlist,
-								condition);
-						if (r != null) {
-							result.addAll(r);
+
+						try {
+							HashMap<String, String> condition = new HashMap<String, String>();
+							condition.put("80001a7a", "*" + keys[index] + "*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
+							@SuppressWarnings("rawtypes")
+							ArrayList r = Starter.dos.list(classOuid,
+									fieldlist, condition);
+							if (r != null) {
+								result.addAll(r);
+							}
+						} catch (Exception e) {
 						}
-					} catch (Exception e) {
 					}
-					
+
 				}
 
 				return Status.OK_STATUS;
@@ -119,11 +150,11 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 			@Override
 			public void done(IJobChangeEvent event) {
 				Shell shell = getShell();
-				if(shell.isDisposed()||shell==null){
+				if (shell.isDisposed() || shell == null) {
 					return;
 				}
 				Display display = shell.getDisplay();
-				if(display.isDisposed()){
+				if (display.isDisposed()) {
 					return;
 				}
 				display.asyncExec(new Runnable() {
@@ -138,7 +169,6 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 
 	}
 
-
 	@Override
 	public DCPDMObjectSelectWizard getWizard() {
 		return (DCPDMObjectSelectWizard) super.getWizard();
@@ -149,13 +179,13 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		Composite pane = new Composite(parent, SWT.NONE);
 		pane.setLayout(new FormLayout());
 
-		final Text inputText = new Text(pane, SWT.BORDER | SWT.ICON_SEARCH);
+		final Text inputText = new Text(pane, SWT.BORDER);
 		Button goSearch = new Button(pane, SWT.PUSH);
 		goSearch.setText(Messages.get().PDMObjectSelector_1);
 		goSearch.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
-				searchData(inputText.getText());
+				searchData(inputText.getText().trim());
 			}
 		});
 
@@ -177,11 +207,11 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		table.setHeaderVisible(true);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.addSelectionChangedListener(this);
-		// 编号列
-		TableColumn col = createColumn(1, "编号");
-		col.setWidth(140);
+		TableColumn col = createTitleColumn();
+		col = createColumn(1, "编号");
+		col.setWidth(120);
 		col = createColumn(2, "名称");
-		col.setWidth(320);
+		col.setWidth(200);
 		col = createColumn(3, "创建人");
 		col.setWidth(60);
 		Control control = viewer.getControl();
@@ -195,14 +225,15 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		fd1.height = 200;
 		inputText.setFocus();
 		setControl(pane);
-		setPageComplete(viewer.getSelection()!=null&&!viewer.getSelection().isEmpty());
+		setPageComplete(viewer.getSelection() != null
+				&& !viewer.getSelection().isEmpty());
 	}
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		ISelection selection = event.getSelection();
 		getWizard().setSelection(selection);
-		setPageComplete(selection!=null&&!selection.isEmpty());
+		setPageComplete(selection != null && !selection.isEmpty());
 	}
 
 }

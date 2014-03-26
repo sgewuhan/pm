@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 
 import com.sg.widgets.part.CurrentAccountContext;
@@ -16,7 +17,9 @@ public class DCPDMObjectSelectWizard extends Wizard {
 
 	Set<String> docContainers = new HashSet<String>();
 	HashMap<String,String> ouid_name = new HashMap<String,String>();
-	private ISelection selection;
+	ISelection selection;
+	Set<String> allContainers = new HashSet<String>();;
+	private AdvanceSearchPage advanceSearchPage;
 
 
 	@SuppressWarnings("unchecked")
@@ -26,6 +29,7 @@ public class DCPDMObjectSelectWizard extends Wizard {
 				.getDocumentAndDrawingContainerCode(userId);
 		if(code!=null){
 			docContainers.addAll((Collection<? extends String>) code);
+			allContainers.addAll((Collection<? extends String>) code);
 		}
 		setWindowTitle("Ñ¡ÔñDCPDMµÄÍ¼ÎÄµµ");
 	}
@@ -34,7 +38,8 @@ public class DCPDMObjectSelectWizard extends Wizard {
 	public void addPages() {
 		addPage(new ConditionPage());
 		addPage(new SearchPage());
-		addPage(new AdvanceSearchPage());
+		advanceSearchPage = new AdvanceSearchPage();
+		addPage(advanceSearchPage);
 	}
 
 	@Override
@@ -44,6 +49,11 @@ public class DCPDMObjectSelectWizard extends Wizard {
 
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
+		if(selection!=null){
+			advanceSearchPage.setInput(((IStructuredSelection)selection).toArray());
+		}else{
+			advanceSearchPage.setInput(null);
+		}
 	}
 	
 	public ISelection getSelection() {
