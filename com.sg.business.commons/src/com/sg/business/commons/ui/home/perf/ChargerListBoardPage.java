@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.home.basic;
+package com.sg.business.commons.ui.home.perf;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,17 +30,18 @@ import com.sg.business.model.etl.ProjectETL;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.widgets.block.tab.TabBlockPage;
 
-public class ListBoardPage extends TabBlockPage {
+public class ChargerListBoardPage extends TabBlockPage {
 
 	public static final int BLOCKWIDTH = 300;
-	private ListBoard viewer;
+	private ManagementListBoard viewer;
 	private int year;
 	private int month;
-	private Organization org;
+	private List<ObjectId> organizationIdList;
 	private ObjectId user_id;
+	private Organization org;
 	private static final int limitNumber = 10;
 
-	public ListBoardPage(Composite parent) {
+	public ChargerListBoardPage(Composite parent) {
 		super(parent, SWT.NONE);
 	}
 
@@ -111,11 +112,9 @@ public class ListBoardPage extends TabBlockPage {
 		doRefresh();
 	}
 
-	private ListBoard createListViewer(Composite parent) {
-		ListBoard tabItem = new ListBoard(parent);
+	private ManagementListBoard createListViewer(Composite parent) {
+		ManagementListBoard tabItem = new ManagementListBoard(parent);
 		tabItem.setTitle("销售利润排名");
-		tabItem.setLeftTitle("排名前十的项目负责人");
-		tabItem.setRightTitle("排名前十的项目");
 		return tabItem;
 	}
 
@@ -127,7 +126,8 @@ public class ListBoardPage extends TabBlockPage {
 		month = cal.get(Calendar.MONTH) + 1;
 		String consignerId = context.getConsignerId();
 		User user = UserToolkit.getUserById(consignerId);
-		org = user.getFunctionOrganization();
+		organizationIdList = user.getManagementOrganizationIdList();
+		org = user.getOrganization();
 		user_id = user.get_id();
 	}
 
@@ -139,23 +139,24 @@ public class ListBoardPage extends TabBlockPage {
 	@Override
 	protected Object doGetData() {
 		List<Object[]> input = new ArrayList<Object[]>();
-		List<Object[]> topUserList = getTopListByCharger();
+		List<Object[]> topUserList = getTopListByCharger(ProjectETL.F_MONTH_SALES_PROFIT,Project.F_CHARGER);
 		input.addAll(topUserList);
-		Object[] topOrgList = getTopListByPriject();
+		Object[] topOrgList = getTopListByPriject(ProjectETL.F_MONTH_SALES_PROFIT,ProjectETL.F_PROJECTID);
 		input.add(topOrgList);
 		return input;
 	}
 
-	private List<Object[]> getTopListByCharger() {
+	private List<Object[]> getTopListByCharger(String groupField,String groupByField) {
 		List<Object[]> result = new ArrayList<Object[]>();
-		String groupField = ProjectETL.F_MONTH_SALES_PROFIT;
-		String groupByField = Project.F_CHARGER;
 		BasicDBObject query = new BasicDBObject();
 		query.put(
 				"$match",
-				new BasicDBObject().append(ProjectETL.F_YEAR, year)
+				new BasicDBObject()
+						.append(ProjectETL.F_YEAR, year)
 						.append(ProjectETL.F_MONTH, month)
-						.append(Project.F_FUNCTION_ORGANIZATION, org.get_id()));
+						.append(Project.F_FUNCTION_ORGANIZATION,
+								new BasicDBObject().append("$in",
+										organizationIdList)));
 
 		BasicDBObject group = new BasicDBObject();
 		group.put(
@@ -208,15 +209,16 @@ public class ListBoardPage extends TabBlockPage {
 		return result;
 	}
 
-	private Object[] getTopListByPriject() {
-		String groupField = ProjectETL.F_MONTH_SALES_PROFIT;
-		String groupByField = ProjectETL.F_PROJECTID;
+	private Object[] getTopListByPriject(String groupField,String groupByField) {
 		BasicDBObject query = new BasicDBObject();
 		query.put(
 				"$match",
-				new BasicDBObject().append(ProjectETL.F_YEAR, year)
+				new BasicDBObject()
+						.append(ProjectETL.F_YEAR, year)
 						.append(ProjectETL.F_MONTH, month)
-						.append(Project.F_FUNCTION_ORGANIZATION, org.get_id()));
+						.append(Project.F_FUNCTION_ORGANIZATION,
+								new BasicDBObject().append("$in",
+										organizationIdList)));
 
 		BasicDBObject group = new BasicDBObject();
 		group.put(

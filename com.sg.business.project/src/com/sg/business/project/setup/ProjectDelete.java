@@ -28,6 +28,23 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	@Override
 	public boolean run() {
 
+//		DBCollection deliverableCol = getCol(IModelConstants.C_DELIEVERABLE);
+//		DBCollection documentCol = getCol(IModelConstants.C_DOCUMENT);
+//		DBCursor deliverableCursor = deliverableCol.find();
+//		while (deliverableCursor.hasNext()) {
+//			DBObject deliverableData = deliverableCursor.next();
+//			Deliverable deliverable = ModelService.createModelObject(deliverableData, Deliverable.class);
+//			ObjectId document_id = deliverable.getDocumentId();
+//			long count = documentCol.count(new BasicDBObject().append(Document.F__ID, document_id));
+//			if(count==0){
+//				try {
+//					deliverable.doRemove(new CurrentAccountContext());
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+
 		SQLResult result;
 		DBCollection projectCol = getCol(IModelConstants.C_PROJECT);
 		String projectnumber = "";
