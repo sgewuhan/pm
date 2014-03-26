@@ -108,6 +108,16 @@ public class UIFrameworkUtils {
 	 * @return
 	 */
 	public static Object navigateTo(PrimaryObject po, int navigateMode, boolean editable) {
+		return navigateTo(po,navigateMode,editable,null);
+	}
+	
+	/**
+	 * 导航面板导航到新的对象或回到首页
+	 * @param editable 
+	 * 
+	 * @return
+	 */
+	public static Object navigateTo(PrimaryObject po, int navigateMode, boolean editable,Object key) {
 		if (po == null) {
 			return null;
 		} else {
@@ -116,7 +126,7 @@ public class UIFrameworkUtils {
 			if (navigateMode == NAVIGATE_BY_VIEW
 					|| navigateMode == NAVIGATE_AUTOSELECT) {
 				if (home != null && inf != null) {
-					PrimaryObjectEditorInput input = inf.getInput(null);
+					PrimaryObjectEditorInput input = inf.getInput(key);
 					if (input != null) {
 						home.setInput(input);
 						return home;
