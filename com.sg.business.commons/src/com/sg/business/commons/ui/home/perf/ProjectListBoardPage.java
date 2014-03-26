@@ -26,7 +26,7 @@ public class ProjectListBoardPage extends AbstractListBoardPage {
 
 	@Override
 	protected String getTitle() {
-		return "销售利润排名";
+		return "各项目销售利润排名";
 	}
 
 	@Override

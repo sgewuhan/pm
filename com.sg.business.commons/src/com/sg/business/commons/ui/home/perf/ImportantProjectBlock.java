@@ -309,7 +309,7 @@ public class ImportantProjectBlock extends ButtonBlock {
 
 	private void addTo(List<DBObject> resultList, DBObject[] dates, int cnt, String key) {
 		List<DBObject> toBeAdd = new ArrayList<DBObject>();
-		for (int i = 0; i < dates.length && toBeAdd.size() <= cnt; i++) {
+		for (int i = 0; i < dates.length && toBeAdd.size() < cnt; i++) {
 			boolean has = false;
 			for (int j = 0; j < resultList.size(); j++) {
 				DBObject resultProject = resultList.get(j);

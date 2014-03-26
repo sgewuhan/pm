@@ -37,6 +37,8 @@ public abstract class ManagementListBoard {
 		fd.right = new FormAttachment(100);
 		fd.height = 32;
 		
+		
+		
 		fd = new FormData();
 		Control leftTable = createLeftTableViewer(composite);
 		leftTable.setLayoutData(fd);
