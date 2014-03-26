@@ -1,4 +1,4 @@
-package com.sg.business.commons.ui.home.basic;
+package com.sg.business.commons.ui.home.perf;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,21 +26,17 @@ import com.sg.business.model.User;
 import com.sg.business.model.etl.ProjectPresentation;
 import com.sg.business.model.toolkit.UserToolkit;
 
-public class ListBoard {
+public class ManagementListBoard {
 
-	private String leftTitle;
-	private String rightTitle;
 	private String topTitle;
 	private TableViewer leftViewer;
 	private TableViewer rightViewer;
-	private Label leftLabel;
-	private Label rightLabel;
 	private int year;
 	private int month;
 	private Organization org;
 	private Label topLabel;
 
-	public ListBoard(Composite composite) {
+	public ManagementListBoard(Composite composite) {
 		FormData fd = new FormData();
 		topLabel = new Label(composite, SWT.NONE);
 		topLabel.setLayoutData(fd);
@@ -51,31 +47,10 @@ public class ListBoard {
 		fd.height = 32;
 
 		fd = new FormData();
-		leftLabel = new Label(composite, SWT.NONE);
-		leftLabel.setLayoutData(fd);
-		HtmlUtil.enableMarkup(leftLabel);
-
-		fd.top = new FormAttachment(topLabel);
-		fd.left = new FormAttachment();
-		fd.right = new FormAttachment(50);
-		// fd.bottom = new FormAttachment(25);
-		fd.height = 36;
-
-		rightLabel = new Label(composite, SWT.NONE);
-		fd = new FormData();
-		rightLabel.setLayoutData(fd);
-		HtmlUtil.enableMarkup(rightLabel);
-		fd.top = new FormAttachment(topLabel);
-		fd.left = new FormAttachment(50);
-		fd.right = new FormAttachment(100);
-		// fd.bottom = new FormAttachment(25);
-		fd.height = 36;
-
-		fd = new FormData();
 		leftViewer = createTableViewer(composite, fd);
 		fd.left = new FormAttachment(0, 10);
 		fd.right = new FormAttachment(50);
-		fd.top = new FormAttachment(leftLabel);
+		fd.top = new FormAttachment(topLabel);
 		fd.bottom = new FormAttachment(100);
 		createTableViewerColumn(leftViewer, "006633");
 
@@ -83,9 +58,9 @@ public class ListBoard {
 		rightViewer = createTableViewer(composite, fd);
 		fd.left = new FormAttachment(50, 10);
 		fd.right = new FormAttachment(100);
-		fd.top = new FormAttachment(rightLabel);
+		fd.top = new FormAttachment(topLabel);
 		fd.bottom = new FormAttachment(100);
-		createTableViewerColumn(rightViewer, "006633");
+		createTableViewerColumn(rightViewer, "990033");
 
 	}
 
@@ -252,31 +227,6 @@ public class ListBoard {
 		sb.append(topTitle);
 		sb.append("</div>");
 		topLabel.setText(sb.toString());
-		sb = new StringBuffer();
-		sb.append("<div style='" + "font-family:Î¢ÈíÑÅºÚ;" + "margin:8;"
-				+ "width:100%;" + "'>");
-		sb.append("<div style='" + "font-size:11pt;" + "color:#6a6a6a;"
-				+ "border-bottom:1px dotted #cdcdcd;"
-				+ "display:-moz-inline-box; display:inline-block; "
-				+ "height:100%;" + "width:280;" + "'>");
-		sb.append("<span style='margin:0 0 0 8;'>");
-		sb.append(leftTitle);
-		sb.append("</span>");
-		sb.append("</div>");
-		leftLabel.setText(sb.toString());
-		sb = new StringBuffer();
-		sb.append("<div style='" + "font-family:Î¢ÈíÑÅºÚ;" + "margin:8;"
-				+ "width:100%;" + "'>");
-		sb.append("<div style='" + "font-size:11pt;" + "color:#6a6a6a;"
-				+ "border-bottom:1px dotted #cdcdcd;"
-				+ "display:-moz-inline-box; display:inline-block; "
-				+ "height:100%;" + "width:280;" + "'>");
-		sb.append("<span style='margin:0 0 0 8;'>");
-		sb.append(rightTitle);
-		sb.append("</span>");
-		sb.append("</div>");
-		rightLabel.setText(sb.toString());
-
 	}
 
 	public void setMonth(int month) {
@@ -289,14 +239,6 @@ public class ListBoard {
 
 	public void setTitle(String title) {
 		this.topTitle = title;
-	}
-
-	public void setLeftTitle(String title) {
-		this.leftTitle = title;
-	}
-
-	public void setRightTitle(String title) {
-		this.rightTitle = title;
 	}
 
 }

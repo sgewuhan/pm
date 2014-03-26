@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;
@@ -40,10 +38,8 @@ import com.mongodb.DBObject;
 import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Organization;
 import com.sg.business.model.Project;
 import com.sg.business.model.ProjectMonthData;
-import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.etl.IProjectETL;
 import com.sg.business.model.etl.ProjectETL;
@@ -301,15 +297,9 @@ public abstract class AbstractProjectTop10Page extends PageControledListTabblock
 		}
 		basicQuery = new BasicDBObject();
 		// 获取当前用户作为那些组织的管理者
-		List<PrimaryObject> ras = user.getRoles(Role.ROLE_DEPT_MANAGER_ID);
-		Set<ObjectId> orgIdSet = new HashSet<ObjectId>();
-		for (PrimaryObject po : ras) {
-			Role role = (Role) po;
-			Organization org = role.getOrganization();
-			orgIdSet.addAll(org.getOrganizationStructureOfId());
-		}
+		List<ObjectId> orgIdList = user.getManagementOrganizationIdList();
 		basicQuery.put(Project.F_LAUNCH_ORGANIZATION,
-				new BasicDBObject().append("$in", orgIdSet.toArray()));
+				new BasicDBObject().append("$in", orgIdList.toArray()));
 		// 设置进行
 		basicQuery.put(ILifecycle.F_LIFECYCLE, ILifecycle.STATUS_WIP_VALUE);
 		DBObject result = new BasicDBObject();

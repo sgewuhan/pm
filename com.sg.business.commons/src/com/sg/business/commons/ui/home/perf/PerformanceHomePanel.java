@@ -7,7 +7,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import com.sg.business.commons.ui.home.basic.PerformanceBlock;
 import com.sg.widgets.Widgets;
 import com.sg.widgets.block.Block;
 import com.sg.widgets.block.tab.TabBlock;
@@ -51,7 +50,7 @@ public class PerformanceHomePanel {
 		performenceBlock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 1, 2));
 
-		TabBlock performenceBlock2 = new PerformanceBlock(panel);
+		TabBlock performenceBlock2 = new ManagementPerformanceBlock(panel);
 		performenceBlock2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false,
 				true, 1, 1));
 

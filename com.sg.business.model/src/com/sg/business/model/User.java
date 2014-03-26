@@ -470,4 +470,26 @@ public class User extends PrimaryObject {
 	public boolean isAdmin() {
 		return Boolean.TRUE.equals(getValue(F_IS_ADMIN));
 	}
+
+	public List<ObjectId> getManagementOrganizationIdList() {
+		List<PrimaryObject> ras = getRoles(Role.ROLE_DEPT_MANAGER_ID);
+		List<ObjectId> orgIdList = new ArrayList<ObjectId>();
+		for (PrimaryObject po : ras) {
+			Role role = (Role) po;
+			Organization org = role.getOrganization();
+			orgIdList.addAll(org.getOrganizationStructureOfId());
+		}
+		return orgIdList;
+	}
+
+	public List<PrimaryObject> getManagementOrganizationList() {
+		List<PrimaryObject> ras = getRoles(Role.ROLE_DEPT_MANAGER_ID);
+		List<PrimaryObject> orgList = new ArrayList<PrimaryObject>();
+		for (PrimaryObject po : ras) {
+			Role role = (Role) po;
+			Organization org = role.getOrganization();
+			orgList.add(org);
+		}
+		return orgList;
+	}
 }
