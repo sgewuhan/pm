@@ -27,6 +27,8 @@ public class ProjectEditorInputFactory implements IEditorInputFactory {
 		String editorId;
 		if ("create".equals(data)) {
 			editorId = "project.editor.wizard";
+		}else if("visualization".equals(data)){
+			editorId = "editor.visualization.project";
 		} else {
 			editorId = "project.editor";
 		}

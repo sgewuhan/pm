@@ -70,7 +70,7 @@ public class OverBudgetTop10Page extends AbstractProjectTop10Page {
 
 	@Override
 	protected String getIndenticatorLabel() {
-		return "超支项目数占比";
+		return "进行中项目超支占比";
 	}
 
 }

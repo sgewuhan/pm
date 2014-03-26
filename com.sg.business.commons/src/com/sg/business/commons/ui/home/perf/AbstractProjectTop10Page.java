@@ -452,7 +452,7 @@ public abstract class AbstractProjectTop10Page extends PageControledListTabblock
 	protected void select(PrimaryObject po) {
 		if (po instanceof Project) {
 			UIFrameworkUtils.navigateTo(po,
-					UIFrameworkUtils.NAVIGATE_AUTOSELECT, false);
+					UIFrameworkUtils.NAVIGATE_AUTOSELECT, false,"visualization");
 		} else if (po instanceof ProjectMonthData) {
 			ProjectMonthData monthData = (ProjectMonthData) po;
 			ObjectId projectId = (ObjectId) monthData
@@ -460,7 +460,7 @@ public abstract class AbstractProjectTop10Page extends PageControledListTabblock
 			Project project = ModelService.createModelObject(Project.class,
 					projectId);
 			UIFrameworkUtils.navigateTo(project,
-					UIFrameworkUtils.NAVIGATE_AUTOSELECT, false);
+					UIFrameworkUtils.NAVIGATE_AUTOSELECT, false,"visualization");
 		}
 
 	}
