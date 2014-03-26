@@ -31,7 +31,7 @@ public class ChargerListBoardPage extends AbstractListBoardPage {
 
 	@Override
 	protected String getTitle() {
-		return "销售利润排名";
+		return "各项目经理销售利润排名";
 	}
 
 	@Override

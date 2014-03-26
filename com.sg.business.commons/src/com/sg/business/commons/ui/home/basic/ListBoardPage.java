@@ -57,14 +57,14 @@ public class ListBoardPage extends TabBlockPage {
 
 	private void createPageControl(Composite parent) {
 		Button pageRight = new Button(parent, SWT.NONE);
-		pageRight.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_RIGHT2_48);
+		pageRight.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_RIGHT_24);
 
 		FormData fd = new FormData();
 		pageRight.setLayoutData(fd);
-		fd.top = new FormAttachment(50, -24);
-		fd.right = new FormAttachment(100, -1);
-		fd.width = 48;
-		fd.height = 48;
+		fd.top = new FormAttachment(0, 4);
+		fd.right = new FormAttachment(100, -12);
+		fd.width = 24;
+		fd.height = 24;
 		pageRight.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -73,14 +73,14 @@ public class ListBoardPage extends TabBlockPage {
 		});
 
 		Button pageLeft = new Button(parent, SWT.NONE);
-		pageLeft.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_LEFT2_48);
+		pageLeft.setData(RWT.CUSTOM_VARIANT, ICSSConstants.CSS_LEFT_24);
 
 		fd = new FormData();
 		pageLeft.setLayoutData(fd);
-		fd.top = new FormAttachment(50, -24);
-		fd.left = new FormAttachment(0, 1);
-		fd.width = 48;
-		fd.height = 48;
+		fd.top = new FormAttachment(0, 4);
+		fd.right = new FormAttachment(pageRight,-4);
+		fd.width = 24;
+		fd.height = 24;
 		pageLeft.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
