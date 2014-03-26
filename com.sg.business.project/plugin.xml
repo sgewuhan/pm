@@ -2604,7 +2604,8 @@
                modelRelation="work_work">
          </structure>
          <column
-               columnDefinitionId="work.desc">
+               columnDefinitionId="work.desc"
+               width="-1">
          </column>
          <column
                columnDefinitionId="milestone">
@@ -2707,7 +2708,7 @@
                name="%column.name.71"
                style="SWT.LEFT"
                type="String"
-               width="180">
+               width="-1">
          </column>
          <column
                columnDefinitionId="planstart">

@@ -54,7 +54,7 @@ public class DCPDMUtil {
 		return false;
 	}
 
-	private static List<?> getDocumentAndDrawingContainerCode(String userId) {
+	public static List<?> getDocumentAndDrawingContainerCode(String userId) {
 		User user = UserToolkit.getUserById(userId);
 
 		Organization org = user.getOrganization();
@@ -69,8 +69,10 @@ public class DCPDMUtil {
 		}
 		return null;
 	}
+	
+	
 
-	private static List<?> getPartContainerCode(String userId) {
+	public static List<?> getPartContainerCode(String userId) {
 		User user = UserToolkit.getUserById(userId);
 
 		Organization org = user.getOrganization();
