@@ -1,32 +1,9 @@
 package com.sg.business.project.setup;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.bson.types.ObjectId;
-
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
-import com.mobnut.db.model.IContext;
-import com.mobnut.db.model.IPrimaryObjectEventListener;
-import com.mobnut.db.model.ModelService;
-import com.mobnut.db.utils.DBUtil;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.WriteConcern;
-import com.mongodb.WriteResult;
-import com.sg.business.model.Deliverable;
-import com.sg.business.model.Document;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Project;
-import com.sg.sqldb.utility.SQLResult;
-import com.sg.sqldb.utility.SQLRow;
-import com.sg.sqldb.utility.SQLUtil;
-import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -295,6 +272,7 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	// IModelConstants.C_PROJECT_MONTH_DATA);
 	// }
 
+	@SuppressWarnings("unused")
 	private DBCollection getCol(String collectionName) {
 		return DBActivator.getCollection(IModelConstants.DB, collectionName);
 	}
