@@ -1,5 +1,6 @@
 package com.tmt.pdm.dcpdm.selector;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,9 +19,10 @@ public class DCPDMObjectSelectWizard extends Wizard {
 	Set<String> docContainers = new HashSet<String>();
 	HashMap<String,String> ouid_name = new HashMap<String,String>();
 	ISelection selection;
-	Set<String> allContainers = new HashSet<String>();;
+	Set<String> allContainers = new HashSet<String>();
 	private AdvanceSearchPage advanceSearchPage;
-
+	Set<String> selectedObjectOuid = new HashSet<String>();
+	
 
 	@SuppressWarnings("unchecked")
 	public DCPDMObjectSelectWizard() {
@@ -36,9 +38,9 @@ public class DCPDMObjectSelectWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		addPage(new ConditionPage());
-		addPage(new SearchPage());
-		advanceSearchPage = new AdvanceSearchPage();
+		addPage(new ConditionPage(this));
+		addPage(new SearchPage(this));
+		advanceSearchPage = new AdvanceSearchPage(this);
 		addPage(advanceSearchPage);
 	}
 
@@ -50,9 +52,15 @@ public class DCPDMObjectSelectWizard extends Wizard {
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
 		if(selection!=null){
-			advanceSearchPage.setInput(((IStructuredSelection)selection).toArray());
+			Object[] input = ((IStructuredSelection)selection).toArray();
+			advanceSearchPage.setInput(input);
+			for (int i = 0; i < input.length; i++) {
+				String ouid = (String)((ArrayList<?>)input[i]).get(0);
+				selectedObjectOuid.add(ouid);
+			}
 		}else{
 			advanceSearchPage.setInput(null);
+			selectedObjectOuid.clear();
 		}
 	}
 	

@@ -43,10 +43,14 @@ import dyna.framework.iip.IIPRequestException;
 public class SearchPage extends WizardPage implements ISelectionChangedListener {
 	private ArrayList<String> fieldlist;
 
-	protected SearchPage() {
+	private DCPDMObjectSelectWizard wizard;
+
+	protected SearchPage(DCPDMObjectSelectWizard wizard) {
 		super("查找DCPDM图文档");
 		setTitle("输入编号或名称查找DCPDM图文档");
 		setMessage("输入时无需加*，大小写有别，使用西文逗号分隔多条件。查询结果可以多选。\n例如:输入ABC将检索编号或名称包含ABC的DCPDM图文档。");
+		this.wizard = wizard;
+		
 		fieldlist = new ArrayList<String>();
 		fieldlist.add("80001a79");// 编号 //$NON-NLS-1$
 		fieldlist.add("80001a7a");// 名称 //$NON-NLS-1$
@@ -171,7 +175,7 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 
 	@Override
 	public DCPDMObjectSelectWizard getWizard() {
-		return (DCPDMObjectSelectWizard) super.getWizard();
+		return wizard;
 	}
 
 	@Override

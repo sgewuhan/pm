@@ -1,6 +1,8 @@
 package com.tmt.pdm.dcpdm.selector;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -16,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.mobnut.commons.util.Utils;
 import com.tmt.pdm.client.Starter;
@@ -26,39 +29,21 @@ import dyna.framework.service.dos.DOSChangeable;
 public class AdvanceSearchPage extends WizardPage {
 
 	private TreeViewer viewer;
+	private DCPDMObjectSelectWizard wizard;
 
-	protected AdvanceSearchPage() {
+	protected AdvanceSearchPage(DCPDMObjectSelectWizard wizard) {
 		super("高级选择");
+		this.wizard = wizard;
 		setTitle("选择相关的图文档");
-		setMessage("请选择相关的其他DCPDM对象");
 	}
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite pane = new Composite(parent, SWT.NONE);
-		pane.setLayout(new FormLayout());
-		viewer = new TreeViewer(pane, SWT.CHECK);
-		final Tree tree = viewer.getTree();
-		tree.setHeaderVisible(true);
-		tree.setLinesVisible(true);
-		tree.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				System.out.println(e.item);
-			}
-		});
-		viewer.setContentProvider(new RelationDCDPMObjectContentProvider(
-				getWizard().allContainers));
+		Composite panel = new Composite(parent, SWT.NONE);
+		panel.setLayout(new FormLayout());
+		final Tree tree = createTree(panel);
 
-		TreeColumn col = createTitleColumn();
-		col = createColumn("md$number", "编号");
-		col.setWidth(120);
-		col = createColumn("md$description", "名称");
-		col.setWidth(200);
-		col = createColumn("md$user", "创建人");
-		col.setWidth(60);
-
-		Button selectAll = new Button(pane, SWT.PUSH);
+		Button selectAll = new Button(panel, SWT.PUSH);
 		selectAll.setText("选择全部");
 		selectAll.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -72,7 +57,7 @@ public class AdvanceSearchPage extends WizardPage {
 		fd.bottom = new FormAttachment(100, -10);
 		fd.height = 24;
 
-		Button clearAll = new Button(pane, SWT.PUSH);
+		Button clearAll = new Button(panel, SWT.PUSH);
 		clearAll.setText("清除选择");
 		clearAll.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -93,18 +78,104 @@ public class AdvanceSearchPage extends WizardPage {
 		fd.right = new FormAttachment(100, 10);
 		fd.bottom = new FormAttachment(selectAll, -4);
 
+		updateMessage();
+
 		setPageComplete(true);
-		setControl(pane);
+		setControl(panel);
+	}
+
+	private Tree createTree(Composite parent) {
+		viewer = new TreeViewer(parent, SWT.CHECK);
+		Tree tree = viewer.getTree();
+		tree.setHeaderVisible(true);
+		tree.setLinesVisible(true);
+		tree.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TreeItem ti = (TreeItem) e.item;
+				select(new TreeItem[] { ti }, false, ti.getChecked(), true);
+			}
+		});
+		viewer.setContentProvider(new RelationDCDPMObjectContentProvider(
+				getWizard().allContainers));
+
+		TreeColumn col = createTitleColumn();
+		col = createColumn("md$number", "编号");
+		col.setWidth(120);
+		col = createColumn("md$description", "名称");
+		col.setWidth(200);
+		col = createColumn("md$user", "创建人");
+		col.setWidth(60);
+
+		viewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
+		return tree;
 	}
 
 	protected void clearAll() {
-		// TODO Auto-generated method stub
+		Tree tree = viewer.getTree();
+		TreeItem[] items = tree.getItems();
+		select(items, true, false, true);
+	}
 
+	private void select(TreeItem[] items, boolean selectItem, boolean check,
+			boolean cascade) {
+		for (int i = 0; i < items.length; i++) {
+			if (selectItem) {
+				items[i].setChecked(check);
+			}
+			if (cascade) {
+				select(items[i].getItems(), selectItem, check, cascade);
+			}
+		}
+		updateSelection();
+		updateMessage();
+	}
+
+	private void updateSelection() {
+		Tree tree = viewer.getTree();
+		TreeItem[] items = tree.getItems();
+		updateSelectionFromItems(items);
+	}
+
+	private void updateSelectionFromItems(TreeItem[] items) {
+		for (int i = 0; i < items.length; i++) {
+			DOSChangeable dos = (DOSChangeable) items[i].getData();
+			DCPDMObjectSelectWizard wizard = getWizard();
+			if (items[i].getChecked()) {
+				wizard.selectedObjectOuid.remove(dos.get("ouid"));
+			} else {
+				wizard.selectedObjectOuid.add((String) dos.get("ouid"));
+			}
+			updateSelectionFromItems(items[i].getItems());
+		}
+	}
+
+	private void updateMessage() {
+		DCPDMObjectSelectWizard wizard = getWizard();
+		if (wizard == null || wizard.selectedObjectOuid.isEmpty()) {
+			setMessage("请选择DCPDM的图文档对象");
+		} else {
+			Set<String> selected = wizard.selectedObjectOuid;
+			StringBuffer sb = new StringBuffer();
+			sb.append("选择了:");
+			Iterator<String> iter = selected.iterator();
+			while (iter.hasNext()) {
+				String ouid = (String) iter.next();
+				try {
+					DOSChangeable dos = Starter.dos.get(ouid);
+					sb.append(dos.get("md$number"));
+					sb.append(" ");
+				} catch (Exception e) {
+				}
+			}
+			setMessage(sb.toString());
+		}
 	}
 
 	protected void selectAll() {
-		// TODO Auto-generated method stub
-
+		Tree tree = viewer.getTree();
+		TreeItem[] items = tree.getItems();
+		select(items, true, true, true);
 	}
 
 	protected void setInput(Object input) {
@@ -115,13 +186,19 @@ public class AdvanceSearchPage extends WizardPage {
 				String ouid = (String) ((ArrayList<?>) _input[i]).get(0);
 				try {
 					result[i] = Starter.dos.get(ouid);
-				} catch (IIPRequestException e) {
+					getWizard().selectedObjectOuid.add(ouid);
+				} catch (Exception e) {
 				}
 			}
 			viewer.setInput(result);
-			return;
+		} else {
+			viewer.setInput(new Object[0]);
 		}
-		viewer.setInput(input);
+		Tree tree = viewer.getTree();
+		TreeItem[] root = tree.getItems();
+		for (int i = 0; i < root.length; i++) {
+			root[i].setChecked(true);
+		}
 	}
 
 	private TreeColumn createColumn(final String key, String name) {
@@ -163,7 +240,7 @@ public class AdvanceSearchPage extends WizardPage {
 
 	@Override
 	public DCPDMObjectSelectWizard getWizard() {
-		return (DCPDMObjectSelectWizard) super.getWizard();
+		return wizard;
 	}
 
 }
