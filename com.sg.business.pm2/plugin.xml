@@ -1088,22 +1088,22 @@
                id="perspective.bulletinboard">
          </perspective>
       </scenario>
-      <scenario
+      <!--<scenario
             id="visualization"
             index="30"
             name="%scenario.name">
-         <!--<perspective
+         <perspective
                id="perspective.vis.home">
          </perspective>
          <perspective
                id="perspective.vis2.home">
-         </perspective>-->
+         </perspective>
          <perspective
                default="false"
                id="perspective.vis2.home">
          </perspective>
       </scenario>
-      <!--<scenario
+      <scenario
             id="work"
             name="%scenario.name.0">
          <perspective

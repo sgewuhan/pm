@@ -29,10 +29,12 @@ public class SetUserScenario implements ISchedualJobRunnable {
 			User user = ModelService.createModelObject(object, User.class);
 			List<String> scenario = new ArrayList<String>();
 			if (Boolean.TRUE.equals(user.getValue(User.F_IS_ADMIN))) {
+				scenario.add("projectcharger.home");
+				scenario.add("manager.home");
+				scenario.add("organization");
 				scenario.add("projectcharger");
 				scenario.add("businessmanager");
 				scenario.add("projectmanagement");
-				scenario.add("visualization");
 				scenario.add("resourcemanagement");
 				scenario.add("systemmanager");
 			} else {
@@ -46,9 +48,15 @@ public class SetUserScenario implements ISchedualJobRunnable {
 						new String[] { "projectmanagement" },
 						Role.ROLE_PROJECT_ADMIN_ID);
 				// 添加管理者
-				setUserScenarios(scenario, user, new String[] {
-						"visualization", "resourcemanagement", },
+				setUserScenarios(scenario, user,
+						new String[] { "visualization", "resourcemanagement",
+								"manager.home" },
+						new String[] { "projectcharger.home" },
 						Role.ROLE_DEPT_MANAGER_ID);
+				// 添加组织管理员
+				setUserScenarios(scenario, user,
+						new String[] { "organization" },
+						Role.ROLE_ORGANIZATION_ADMIN_ID);
 			}
 			col.update(new BasicDBObject().append(User.F__ID, user.get_id()),
 					new BasicDBObject().append("$set", new BasicDBObject()
@@ -62,6 +70,20 @@ public class SetUserScenario implements ISchedualJobRunnable {
 		List<PrimaryObject> roles = user.getRoles(role);
 		if (roles.size() > 0) {
 			for (String scenario : scenarioList) {
+				scenarios.add(scenario);
+			}
+		}
+	}
+
+	private void setUserScenarios(List<String> scenarios, User user,
+			String[] scenarioList, String[] scenarioList2, String role) {
+		List<PrimaryObject> roles = user.getRoles(role);
+		if (roles.size() > 0) {
+			for (String scenario : scenarioList) {
+				scenarios.add(scenario);
+			}
+		} else {
+			for (String scenario : scenarioList2) {
 				scenarios.add(scenario);
 			}
 		}
