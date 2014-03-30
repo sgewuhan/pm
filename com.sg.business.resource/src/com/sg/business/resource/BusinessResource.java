@@ -383,7 +383,7 @@ public class BusinessResource extends AbstractUIPlugin {
 	
 	public static final String IMAGE_DOWN_48 = "down_48.png";
 
-	
+	public static final String IMAGE_MENU_48 = "menu_g_24.png";
 
 	/**
 	 * Returns the shared instance
