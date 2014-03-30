@@ -1,9 +1,17 @@
 package com.sg.business.project.setup;
 
+import org.bson.types.ObjectId;
+
 import com.mobnut.admin.schedual.registry.ISchedualJobRunnable;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.model.ModelService;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.sg.business.model.IModelConstants;
+import com.sg.business.model.Work;
+import com.sg.widgets.part.CurrentAccountContext;
 
 public class ProjectDelete implements ISchedualJobRunnable {
 	// private static ObjectId[] DELETELIST = new ObjectId[] {
@@ -15,6 +23,20 @@ public class ProjectDelete implements ISchedualJobRunnable {
 
 	@Override
 	public boolean run() {
+
+		DBCollection workCol = getCol(IModelConstants.C_WORK);
+		DBCursor workCursor = workCol.find(new BasicDBObject().append(
+				Work.F_WORK_DEFINITION_ID,
+				new BasicDBObject().append("$in", new ObjectId[] {
+						new ObjectId("52b81d5fe0ccc44c11e6d187"),
+						new ObjectId("52d4acb1e0cc1c60f8f4d05d"),
+						new ObjectId("5292c9a9e0cc84d8d5965df8"),
+						new ObjectId("5270837629f2f33902f9b538") })));
+		while (workCursor.hasNext()) {
+			DBObject workData = workCursor.next();
+			Work work = ModelService.createModelObject(workData, Work.class);
+			work.doSaveProcessHistoryToDocument(new CurrentAccountContext());
+		}
 
 		// DBCollection deliverableCol = getCol(IModelConstants.C_DELIEVERABLE);
 		// DBCollection documentCol = getCol(IModelConstants.C_DOCUMENT);
@@ -272,7 +294,6 @@ public class ProjectDelete implements ISchedualJobRunnable {
 	// IModelConstants.C_PROJECT_MONTH_DATA);
 	// }
 
-	@SuppressWarnings("unused")
 	private DBCollection getCol(String collectionName) {
 		return DBActivator.getCollection(IModelConstants.DB, collectionName);
 	}

@@ -1,8 +1,11 @@
 package com.sg.business.commons.operation.test;
 
+import java.util.List;
+
 import org.eclipse.core.expressions.PropertyTester;
 
 import com.mobnut.db.model.IContext;
+import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.Work;
@@ -33,6 +36,9 @@ public class RuntimeWorkTest extends PropertyTester {
 					return work.getProjectId() != null;
 				} else if ("delete".equals(args[0])) { //$NON-NLS-1$
 					return work.canDelete(new CurrentAccountContext());
+				}else if ("opendeliverable".equals(args[0])) { //$NON-NLS-1$
+					List<PrimaryObject> deliverable = work.getDeliverable();
+					return deliverable != null && deliverable.size() > 0;
 				}
 
 				// else if ("wfstart".equals(args[0])) {

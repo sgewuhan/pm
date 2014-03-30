@@ -17,7 +17,12 @@ public class WorkEditorInputFactory extends EditorInputFactory {
 			if (Work.STATUS_ONREADY_VALUE.equals(work.getLifecycleStatus())) {
 				return  "navigator.view.work.4";
 			} else if (Work.STATUS_WIP_VALUE.equals(work.getLifecycleStatus())) {
-				return  "navigator.view.work.5";
+				if (work.isExecuteWorkflowActivateAndAvailable()) {
+					return  "navigator.view.work.6";
+				} else {
+					return  "navigator.view.work.5";
+				}
+//				return  "navigator.view.work.5";
 			} else {
 				return  "navigator.view.work.2";
 			}
