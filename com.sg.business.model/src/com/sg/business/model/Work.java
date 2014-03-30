@@ -2668,44 +2668,33 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 
 	}
 
-	private void doSaveProcessHistoryToDocument(final IContext context) {
+	public void doSaveProcessHistoryToDocument(IContext context) {
 		// 将工作的流程记录存储到交付物文档中
-		Job job = new Job(Messages.get().Work_131) {
+		if (isExecuteWorkflowActivateAndAvailable()) {
+			IProcessControl ip = Work.this.getAdapter(IProcessControl.class);
+			BasicBSONList historys = ip.getWorkflowHistroyData();
 
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				if (isExecuteWorkflowActivateAndAvailable()) {
-					IProcessControl ip = Work.this
-							.getAdapter(IProcessControl.class);
-					BasicBSONList historys = ip.getWorkflowHistroyData();
+			if (historys != null && historys.size() > 0) {
+				DBObject wfHistory = new BasicDBObject();
+				wfHistory.put(F_DESC, getDesc());
+				wfHistory.put(F__CDATE, new Date());
+				wfHistory.put(IDocumentProcess.F_HISTORY, historys);
+				wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
+				wfHistory.put(IDocumentProcess.F_PROCESS_INSTANCEID,
+						getExecuteProcessId());
+				DroolsProcessDefinition pd = ip
+						.getProcessDefinition(F_WF_EXECUTE);
+				wfHistory.put(IDocumentProcess.F_PROCESSID, pd.getProcessId());
+				wfHistory.put(IDocumentProcess.F_PROCESSNAME,
+						pd.getProcessName());
 
-					if (historys != null && historys.size() > 0) {
-						DBObject wfHistory = new BasicDBObject();
-						wfHistory.put(F_DESC, getDesc());
-						wfHistory.put(F__CDATE, new Date());
-						wfHistory.put(IDocumentProcess.F_HISTORY, historys);
-						wfHistory.put(IDocumentProcess.F_WORK_ID, get_id());
-						wfHistory.put(IDocumentProcess.F_PROCESS_INSTANCEID,
-								getExecuteProcessId());
-						DroolsProcessDefinition pd = ip
-								.getProcessDefinition(F_WF_EXECUTE);
-						wfHistory.put(IDocumentProcess.F_PROCESSID,
-								pd.getProcessId());
-						wfHistory.put(IDocumentProcess.F_PROCESSNAME,
-								pd.getProcessName());
-
-						try {
-							doWFHistoryToDocument(wfHistory, context);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
+				try {
+					doWFHistoryToDocument(wfHistory, context);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				return org.eclipse.core.runtime.Status.OK_STATUS;
 			}
-
-		};
-		job.schedule();
+		}
 	}
 
 	private void cancelExecuteProcessInstance(IContext context)
