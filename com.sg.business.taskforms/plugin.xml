@@ -253,6 +253,20 @@
                value="不通过">
          </option>
       </option>
+      <option
+            id="是否受理"
+            label="是否受理">
+         <option
+               id="受理"
+               label="受理"
+               value="受理">
+         </option>
+         <option
+               id="不受理"
+               label="不受理"
+               value="不受理">
+         </option>
+      </option>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">

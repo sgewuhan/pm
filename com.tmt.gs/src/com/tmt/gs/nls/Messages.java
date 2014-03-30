@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Display;
 import com.mobnut.commons.util.NLS2;
 
 public class Messages {
-	private static final String BUNDLE_NAME = "com.tmt.tb.nls.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "com.tmt.gs.nls.messages"; //$NON-NLS-1$
 	public String AbstractChangeActivityValidator_0;
 	public String AddAllUserList_1;
 	public String ApplicationMessageOfTB_1;
@@ -36,7 +36,7 @@ public class Messages {
 	public String EngineeringChangePlan_5;
 	public String EngineeringChangePlan_6;
 	public String EngineeringChangePlan_8;
-	public String HasPlanValidation_4;
+	public String HasCustomerValidation_4;
 	public String LinkWorkToProjectOfTB_11;
 	public String LinkWorkToProjectOfTB_5;
 	public String ProjectBudgetOfCreateProjectPage_1;
