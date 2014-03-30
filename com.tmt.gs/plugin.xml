@@ -5983,6 +5983,38 @@
                   </navigatorSelector>
                </section>
                <section
+                     label="市场审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="market"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="market"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="品质管理审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="qc"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="qc"
+                        navigatorId="organization.user.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
                      label="变更是否关联到其他部门">
                   <radio
                         editable="true"
@@ -6048,38 +6080,6 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="customer"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="市场审核者">
-                  <navigatorSelector
-                        editable="true"
-                        id="market"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="market"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="品质管理审核者">
-                  <navigatorSelector
-                        editable="true"
-                        id="qc"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="qc"
                         navigatorId="organization.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
