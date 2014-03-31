@@ -3783,6 +3783,30 @@
             </visibleWhen>
          </command>
          <command
+               commandId="work.wfview"
+               icon="image/flow_24.png"
+               label="查看流程记录"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <and>
+                     <count
+                           value="1">
+                     </count>
+                     <iterate
+                           ifEmpty="false">
+                        <test
+                              args="wfview"
+                              property="work.forceupdate">
+                        </test>
+                     </iterate>
+                  </and>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
                commandId="com.sg.widgets.command.edit"
                icon="image/worksetting_24.png"
                label="%command.label.54"
@@ -4498,6 +4522,16 @@
             id="document.admin.released"
             name="发布文档">
       </command>
+      <command
+            categoryId="work"
+            id="work.wfview"
+            name="查看流程">
+         <commandParameter
+               id="process.key"
+               name="%commandParameter.name.4"
+               optional="false">
+         </commandParameter>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -4685,6 +4719,10 @@
       <handler
             class="com.sg.business.project.handler.ReleasedDocument"
             commandId="document.admin.released">
+      </handler>
+      <handler
+            class="com.sg.business.commons.operation.handler.WorkflowView"
+            commandId="work.wfview">
       </handler>
    </extension>
    <extension

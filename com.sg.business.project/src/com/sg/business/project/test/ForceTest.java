@@ -50,6 +50,30 @@ public class ForceTest extends PropertyTester {
 								}
 							}
 						}
+					} else if ("wfview".equals(args[0])) {
+						IContext context = new CurrentAccountContext();
+						String consignerId = context.getAccountInfo()
+								.getConsignerId();
+						Organization org = project.getFunctionOrganization();
+						Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
+								Organization.ROLE_NOT_SEARCH);
+						// 使用TYPE为TYPE_WORK的RoleParameter，传入工作ID进行人员指派
+						IRoleParameter roleParameter = work
+								.getAdapter(IRoleParameter.class);
+						List<PrimaryObject> assignmentList = role
+								.getAssignment(roleParameter);
+						if (assignmentList != null && assignmentList.size() > 0) {
+							for (PrimaryObject po : assignmentList) {
+								RoleAssignment roleAssignment = (RoleAssignment) po;
+								String assignmentuserId = roleAssignment
+										.getUserid();
+								if (consignerId.equals(assignmentuserId)) {
+									if (work.isExecuteWorkflowActivateAndAvailable()) {
+										return true;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
