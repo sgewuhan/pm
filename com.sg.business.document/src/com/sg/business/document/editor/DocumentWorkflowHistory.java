@@ -57,9 +57,7 @@ public class DocumentWorkflowHistory extends AbstractFormPageDelegator
 		super.createPageContent(parent, input, conf);
 
 		doc = (Document) input.getData();
-		parent.setLayout(new GridLayout());
 		Composite panel = new Composite(parent, SWT.NONE);
-		panel.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1));
 
 		panel.setLayout(new GridLayout());
 

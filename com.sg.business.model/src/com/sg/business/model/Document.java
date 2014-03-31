@@ -287,6 +287,10 @@ public class Document extends PrimaryObject implements IProjectRelative {
 								+ "/temp"; //$NON-NLS-1$
 						try {
 							serverFile = remoteFile.createServerFile(pathname);
+							int fileType = FileUtil.getFileType(serverFile);
+							if(FileUtil.FILETYPE_OFFICE_FILE != fileType){
+								continue;
+							}
 						} catch (IOException e1) {
 							continue;
 						}

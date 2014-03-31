@@ -17,7 +17,9 @@ Require-Bundle: org.eclipse.rap.ui,
  com.tmt.pdm.client;bundle-version="1.0.0",
  org.eclipse.rap.ui.forms,
  com.sg.business.commons,
- com.sg.business.document;bundle-version="1.0.0"
+ com.sg.business.document;bundle-version="1.0.0",
+ javax.servlet,
+ com.mobnut.design
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.tmt.pdm.dcpdm.handler,

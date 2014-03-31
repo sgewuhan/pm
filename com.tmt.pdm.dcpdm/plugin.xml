@@ -82,11 +82,11 @@
             dbName="pm2"
             id="editor.document.dcpdm"
             max="true"
-            name="DCPDM图文档">
+            name="DCPDM图纸包">
          <basicpage
-               description="DCPDM图文档基本信息"
+               description="DCPDM图纸基本信息"
                id="basicpage1"
-               pageDelegator="com.tmt.pdm.dcpdm.editor.DocumentPage"
+               pageDelegator="com.tmt.pdm.dcpdm.editor.DrawingPackagePage"
                title="基本信息">
             <pagecolumn
                   id="1">
@@ -155,23 +155,6 @@
                            required="false">
                      </checkbox>
                   </fieldgroup>
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="false"
-                        id="pdm_ouid"
-                        label="链接PDM对象"
-                        labelVisible="true"
-                        name="pdm_ouid"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        userlabelForReadonly="true">
-                     <fieldaction
-                           handler="com.tmt.pdm.dcpdm.handler.SelectPDMObject"
-                           image="image/find_16.png"
-                           name="选择">
-                     </fieldaction>
-                  </text>
                </section>
                <section
                      label="创建和修改">
@@ -257,28 +240,7 @@
                      </text>
                   </fieldgroup>
                </section>
-               <section
-                     label="修订历史">
-                  <table
-                        ctableId="com.sg.widgets.table.versionhistory"
-                        editable="false"
-                        id="_history"
-                        isComputeField="false"
-                        label="修订历史"
-                        labelVisible="false"
-                        name="_history"
-                        persistable="true"
-                        popupmenu="com.sg.widgets.part.editor.VersionPopupMenu"
-                        required="false">
-                  </table>
-               </section>
             </pagecolumn>
-         </basicpage>
-         <basicpage
-               description="流程信息"
-               id="document.wfhistory"
-               pageDelegator="com.sg.business.document.editor.DocumentWorkflowHistory"
-               title="流程">
          </basicpage>
       </editor>
    </extension>
