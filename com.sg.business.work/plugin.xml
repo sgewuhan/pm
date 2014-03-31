@@ -4500,7 +4500,7 @@
             <pageAction
                   class="com.sg.business.commons.operation.action.DeleteWork"
                   icon="image/del_g_24.png"
-                  id="editwork"
+                  id="deletework"
                   label="%command.label.37"
                   mode="FORCE_TEXT"
                   style="push">
@@ -4530,7 +4530,6 @@
                description="%basicpage.description.25"
                id="basicpage"
                image="image/work_24.png"
-               sibling_order="&lt;pageAction&#x0D;&#x0A;                  class=&quot;com.sg.business.commons.operation.action.AssignWork&quot;&#x0D;&#x0A;                  icon=&quot;image/assign_g_24.png&quot;&#x0D;&#x0A;                  id=&quot;editwork&quot;&#x0D;&#x0A;                  label=&quot;%command.label.11&quot;&#x0D;&#x0A;                  mode=&quot;FORCE_TEXT&quot;&#x0D;&#x0A;                  style=&quot;push&quot;&gt;&#x0D;&#x0A;            &lt;/pageAction&gt;"
                title="%basicpage.title.25">
             <pagecolumn
                   id="1"
@@ -4705,7 +4704,7 @@
             <pageAction
                   class="com.sg.business.commons.operation.action.DeleteWork"
                   icon="image/del_g_24.png"
-                  id="editwork"
+                  id="deletework"
                   label="%command.label.37"
                   mode="FORCE_TEXT"
                   style="push">
@@ -4901,7 +4900,7 @@
             <pageAction
                   class="com.sg.business.commons.operation.action.DeleteWork"
                   icon="image/del_g_24.png"
-                  id="editwork"
+                  id="deletework"
                   label="%command.label.37"
                   mode="FORCE_TEXT"
                   style="push">
@@ -5061,6 +5060,14 @@
                   style="push">
             </pageAction>
             <pageAction
+                  class="com.sg.business.commons.operation.action.CreateChildWork"
+                  icon="image/add_g_24.png"
+                  id="creatework"
+                  label="%command.label.36"
+                  mode="FORCE_TEXT"
+                  style="push">
+            </pageAction>
+            <pageAction
                   class="com.sg.business.commons.operation.action.EditWork"
                   icon="image/edit_g_24.png"
                   id="editwork"
@@ -5073,14 +5080,6 @@
                   icon="image/assign_g_24.png"
                   id="editwork"
                   label="%command.label.11"
-                  mode="FORCE_TEXT"
-                  style="push">
-            </pageAction>
-            <pageAction
-                  class="com.sg.business.commons.operation.action.CreateChildWork"
-                  icon="image/add_g_24.png"
-                  id="creatework"
-                  label="%command.label.36"
                   mode="FORCE_TEXT"
                   style="push">
             </pageAction>

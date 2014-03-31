@@ -137,13 +137,13 @@ public class User extends PrimaryObject {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public boolean doSave(IContext context) throws Exception {
 		boolean saved = super.doSave(context);
-		//更新缓存
+		// 更新缓存
 		UserToolkit.updateUser(this);
-		
+
 		return saved;
 	}
 
@@ -404,7 +404,7 @@ public class User extends PrimaryObject {
 				summary = new SummaryUserWorks(this);
 			}
 			return (T) summary;
-		}else if (adapter == ProjectProvider.class) {
+		} else if (adapter == ProjectProvider.class) {
 			if (projectProvider == null) {
 				projectProvider = ModelService
 						.createModelObject(ProjectManagerProvider.class);
@@ -457,13 +457,14 @@ public class User extends PrimaryObject {
 			} catch (Exception e) {
 			}
 		}
-		
+
 		return null;
 	}
 
 	public Organization getFunctionOrganization() {
 		Organization org = getOrganization();
-		Organization functionOrganization = (Organization) org.getFunctionOrganization();
+		Organization functionOrganization = (Organization) org
+				.getFunctionOrganization();
 		return functionOrganization;
 	}
 
@@ -491,5 +492,32 @@ public class User extends PrimaryObject {
 			orgList.add(org);
 		}
 		return orgList;
+	}
+
+	public boolean isProjectAdmin(IRoleParameter roleParameters) {
+		return isProjectAdmin(getOrganization(),roleParameters);
+	}
+
+	public boolean isProjectAdmin(Organization org,
+			IRoleParameter roleParameters) {
+		String userId = getUserid();
+		if (org != null) {
+			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
+					Organization.ROLE_NOT_SEARCH);
+			if (role != null) {
+				List<PrimaryObject> assignmentList = role
+						.getAssignment(roleParameters);
+				if (assignmentList != null && assignmentList.size() > 0) {
+					for (PrimaryObject po : assignmentList) {
+						RoleAssignment roleAssignment = (RoleAssignment) po;
+						String assignmentuserId = roleAssignment.getUserid();
+						if (userId.equals(assignmentuserId)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 }
