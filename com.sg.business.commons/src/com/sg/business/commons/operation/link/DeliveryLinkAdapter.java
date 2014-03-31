@@ -19,15 +19,25 @@ import java.util.zip.ZipOutputStream;
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.IPostSelectionProvider;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.IMenuService;
 
 import com.mobnut.commons.util.Office2PDFJob;
 import com.mobnut.commons.util.file.FileUtil;
@@ -52,10 +62,7 @@ public class DeliveryLinkAdapter implements SelectionListener {
 
 	@Override
 	public void widgetSelected(SelectionEvent event) {
-//		TreeItem item = (TreeItem) event.item;
-//		Tree tree = item.getParent();
-//		Point l = tree.toDisplay(0, 0);
-		
+
 		if (event.detail == RWT.HYPERLINK) {
 			try {
 				String action = event.text.substring(
@@ -69,10 +76,39 @@ public class DeliveryLinkAdapter implements SelectionListener {
 					doDownload(_data, event);
 				} else if ("upload".equals(action)) { //$NON-NLS-1$
 					doUpload(_data, event);
+				} else if ("menu".equals(action)) {
+					createToolbar(_data, event);
 				}
 			} catch (Exception e) {
 			}
 		}
+	}
+
+	private void createToolbar(String _data, SelectionEvent event) {
+//		TreeItem item = (TreeItem) event.item;
+//		Tree tree = item.getParent();
+//		Point l = tree.toDisplay(0, 0);
+//		System.out.println(l.x);
+//		System.out.println(l.y);
+//		Rectangle bounds = item.getBounds();
+//		System.out.println(bounds.height);
+//
+//		MenuManager menuManager = new MenuManager();
+//
+//		fireSelectionChanged(new SelectionChangedEvent(this, getSelection()));
+//
+//		IWorkbenchWindow window = PlatformUI.getWorkbench()
+//				.getActiveWorkbenchWindow();
+//		IMenuService mSvc = (IMenuService) window
+//				.getService(IMenuService.class);
+//		String menuId = "popup:project.deliverable";
+//		mSvc.populateContributionManager(menuManager, menuId);
+//		Menu createContextMenu = menuManager.createContextMenu(pab);
+//
+//		createContextMenu.setLocation(pab.toDisplay(pab.getBounds().x,
+//				pab.getBounds().y + 24));
+//
+//		createContextMenu.setVisible(true);
 	}
 
 	private void doUpload(String _data, SelectionEvent event) throws Exception {
@@ -92,11 +128,11 @@ public class DeliveryLinkAdapter implements SelectionListener {
 		// 显示文件上传对话框
 		TreeItem item = (TreeItem) event.item;
 		// item.getBounds();
-//		final Point point = item.getParent().toDisplay(item.getBounds().x,
-//				item.getBounds().y + item.getBounds().height);
+		// final Point point = item.getParent().toDisplay(item.getBounds().x,
+		// item.getBounds().y + item.getBounds().height);
 
 		FileDialog fileDialog = new FileDialog(getShell(), SWT.MULTI
-				| SWT.NO_TRIM) ;
+				| SWT.NO_TRIM);
 
 		fileDialog.open();
 		String[] serverFileNames = fileDialog.getFileNames();

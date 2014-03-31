@@ -218,12 +218,12 @@ public class DocumentCommonHTMLLable extends CommonHTMLLabel {
 			sb.append("</a>");
 		}
 
-		// обть
+		// menu
 		if (control) {
-			sb.append("<a href=\"downloadall@" + doc.get_id().toString() //$NON-NLS-1$ 
+			sb.append("<a href=\"menu@" + doc.get_id().toString() //$NON-NLS-1$ 
 					+ "\" target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append("<img src='"); //$NON-NLS-1$
-			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_DOWN_G_24,
+			sb.append(FileUtil.getImageURL(BusinessResource.IMAGE_MENU_48,
 					BusinessResource.PLUGIN_ID));
 			sb.append("' style='border-style:none;position:absolute; right:40; bottom:8; display:block;' width='24' height='24' />"); //$NON-NLS-1$
 			sb.append("</a>");
