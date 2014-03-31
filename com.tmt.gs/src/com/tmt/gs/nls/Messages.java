@@ -10,16 +10,16 @@ public class Messages {
 	private static final String BUNDLE_NAME = "com.tmt.gs.nls.messages"; //$NON-NLS-1$
 	public String AbstractChangeActivityValidator_0;
 	public String AddAllUserList_1;
-	public String ApplicationMessageOfTB_1;
-	public String ApplicationMessageOfTB_10;
-	public String ApplicationMessageOfTB_11;
-	public String ApplicationMessageOfTB_2;
-	public String ApplicationMessageOfTB_23;
-	public String ApplicationMessageOfTB_25;
-	public String ApplicationMessageOfTB_27;
-	public String ApplicationMessageOfTB_4;
-	public String ApplicationMessageOfTB_5;
-	public String ApplicationMessageOfTB_8;
+	public String GSApplicationMessageOfTB_1;
+	public String GSApplicationMessageOfTB_10;
+	public String GSApplicationMessageOfTB_11;
+	public String GSApplicationMessageOfTB_2;
+	public String GSApplicationMessageOfTB_23;
+	public String GSApplicationMessageOfTB_25;
+	public String GSApplicationMessageOfTB_27;
+	public String GSApplicationMessageOfTB_4;
+	public String GSApplicationMessageOfTB_5;
+	public String GSApplicationMessageOfTB_8;
 	public String ComplateChangeActivityValidator_0;
 	public String EngineeringChangePlan_1;
 	public String EngineeringChangePlan_10;

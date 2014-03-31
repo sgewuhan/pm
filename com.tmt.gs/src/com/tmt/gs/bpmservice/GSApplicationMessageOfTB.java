@@ -26,8 +26,8 @@ public class GSApplicationMessageOfTB extends MessageService {
 			try {
 				if (host instanceof Work) {
 					Work work = (Work) host;
-					String content = Messages.get().ApplicationMessageOfTB_1 + work.getLabel();
-					content = content + Messages.get().ApplicationMessageOfTB_2;
+					String content = Messages.get().GSApplicationMessageOfTB_1 + work.getLabel();
+					content = content + Messages.get().GSApplicationMessageOfTB_2;
 					return content;
 				}
 			} catch (Exception e) {
@@ -37,8 +37,8 @@ public class GSApplicationMessageOfTB extends MessageService {
 			try {
 				if (host instanceof Work) {
 					Work work = (Work) host;
-					String content = Messages.get().ApplicationMessageOfTB_4 + work.getLabel();
-					content = content + Messages.get().ApplicationMessageOfTB_5;
+					String content = Messages.get().GSApplicationMessageOfTB_4 + work.getLabel();
+					content = content + Messages.get().GSApplicationMessageOfTB_5;
 					return content;
 				}
 			} catch (Exception e) {
@@ -52,8 +52,8 @@ public class GSApplicationMessageOfTB extends MessageService {
 					if (projectid instanceof String) {
 						ObjectId _id = new ObjectId((String) projectid);
 						Project project = ModelService.createModelObject(Project.class, _id);
-						String content = Messages.get().ApplicationMessageOfTB_8 + work.getLabel() + " "; //$NON-NLS-2$
-						content = content+Messages.get().ApplicationMessageOfTB_10+project.getDesc()+Messages.get().ApplicationMessageOfTB_11;
+						String content = Messages.get().GSApplicationMessageOfTB_8 + work.getLabel() + " "; //$NON-NLS-2$
+						content = content+Messages.get().GSApplicationMessageOfTB_10+project.getDesc()+Messages.get().GSApplicationMessageOfTB_11;
 						return content;
 					}
 				}
@@ -130,11 +130,11 @@ public class GSApplicationMessageOfTB extends MessageService {
 	public String getMessageTitle() {
 		String messageOperation = getOperation();
 		if ("applicationcancelmessage".equals(messageOperation)) { //$NON-NLS-1$
-			return Messages.get().ApplicationMessageOfTB_23;
+			return Messages.get().GSApplicationMessageOfTB_23;
 		} else if ("applicationfinishmessage".equals(messageOperation)) { //$NON-NLS-1$
-			return Messages.get().ApplicationMessageOfTB_25;
+			return Messages.get().GSApplicationMessageOfTB_25;
 		} else if ("financialmessage".equals(messageOperation)) { //$NON-NLS-1$
-			return Messages.get().ApplicationMessageOfTB_27;
+			return Messages.get().GSApplicationMessageOfTB_27;
 		}
 		return super.getMessageTitle();
 	}
