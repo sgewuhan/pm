@@ -22,11 +22,13 @@ public class ConditionPage extends WizardPage {
 
 	
 	private static final int WIDTH = 400;
+	private DCPDMObjectSelectWizard wizard;
 
-	protected ConditionPage() {
+	protected ConditionPage(DCPDMObjectSelectWizard wizard) {
 		super("请选择DCPDM的图文档数据类型");
 		setTitle("请选择DCPDM的图文档数据类型");
 		setMessage("如果您知道将要选择的图文档的类型，请尽量缩小搜索范围提升查询速度。");
+		this.wizard = wizard;
 	}
 
 	@Override
@@ -83,7 +85,7 @@ public class ConditionPage extends WizardPage {
 
 	@Override
 	public DCPDMObjectSelectWizard getWizard() {
-		return (DCPDMObjectSelectWizard)super.getWizard();
+		return wizard;
 	}
 	
 

@@ -1453,26 +1453,11 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return false;
 		}
 
-		String userId = context.getAccountInfo().getConsignerId();
 		Organization org = getFunctionOrganization();
-		if (org != null) {
-			Role role = org.getRole(Role.ROLE_PROJECT_ADMIN_ID,
-					Organization.ROLE_NOT_SEARCH);
-			if (role != null) {
-				IRoleParameter roleParameter = getAdapter(IRoleParameter.class);
-
-				List<PrimaryObject> assignmentList = role
-						.getAssignment(roleParameter);
-				if (assignmentList != null && assignmentList.size() > 0) {
-					for (PrimaryObject po : assignmentList) {
-						RoleAssignment roleAssignment = (RoleAssignment) po;
-						String assignmentuserId = roleAssignment.getUserid();
-						if (userId.equals(assignmentuserId)) {
-							return true;
-						}
-					}
-				}
-			}
+		String userId = context.getAccountInfo().getConsignerId();
+		User consignerUser = UserToolkit.getUserById(userId);
+		if (consignerUser.isProjectAdmin(org, getAdapter(IRoleParameter.class))) {
+			return true;
 		}
 
 		// 如果是项目负责人，可以编辑
@@ -1503,10 +1488,16 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 
 	@Override
 	public boolean canRead(IContext context) {
+		// 如果是项目管理员，可以打开查看
+		Organization org = getFunctionOrganization();
+		String userId = context.getAccountInfo().getConsignerId();
+		User consignerUser = UserToolkit.getUserById(userId);
+		if (consignerUser.isProjectAdmin(org, getAdapter(IRoleParameter.class))) {
+			return true;
+		}
+
 		// 如果是项目参与者，可以打开查看
 		List<?> participates = getParticipatesIdList();
-		String userId = context.getAccountInfo().getConsignerId();
-
 		if (participates != null && participates.contains(userId)) {
 			return true;
 		}
@@ -2071,7 +2062,7 @@ public class Project extends PrimaryObject implements IProjectTemplateRelative,
 			return (T) new ProjectCommonHTMLLable(this);
 		} else if (adapter == IEditorInputFactory.class) {
 			return (T) new ProjectEditorInputFactory(this);
-		} else if (adapter == IRoleParameter.class){
+		} else if (adapter == IRoleParameter.class) {
 			return (T) new ProjectRoleParameter(this);
 		}
 		return super.getAdapter(adapter);
