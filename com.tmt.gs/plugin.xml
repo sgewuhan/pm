@@ -4,6 +4,11 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            name="编制"
+            processDefinitionId="gs.gsDocumentApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+      <taskForm
             editorId="gsdocumentapprove1.check"
             name="校核"
             persistentFields="choice,comment,accessory"
@@ -226,6 +231,11 @@
    <extension
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
+            name="编制"
+            processDefinitionId="gs.gsDrawingApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
+      <taskForm
             editorId="gsdocumentapprove1.check"
             name="校核"
             persistentFields="choice,comment,accessory"
@@ -405,6 +415,11 @@
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
+      <taskForm
+            name="编制"
+            processDefinitionId="gs.gsMoldAcceptApprove"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
       <taskForm
             editorId="gsmoldacceptapprove.mold"
             name="模具审核"
@@ -775,7 +790,8 @@
             editorId="gsopenmoldapprove1.edit"
             name="编制"
             persistentFields="mold_use,mold_amount,mold_ask,accessory"
-            processDefinitionId="gs.gsOpenMoldApprove1">
+            processDefinitionId="gs.gsOpenMoldApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
                processParameterName="mold_use"
                taskFormFieldName="mold_use">
@@ -1062,7 +1078,8 @@
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             name="编制"
-            processDefinitionId="gs.gsDocumentApprove">
+            processDefinitionId="gs.gsDocumentApprove"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
       <taskForm
             editorId="gsdocumentapprove.audit"
@@ -2244,6 +2261,11 @@
                taskFormFieldName="choice">
          </processParameter>
       </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="gs.gsTryMoldApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
+      </taskForm>
    </extension>
    <extension
          point="com.sg.bpm.workflow.taskForm">
@@ -2306,6 +2328,11 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="gs.gsNewProductValidApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -2487,6 +2514,11 @@
                processParameterName="choice"
                taskFormFieldName="choice">
          </processParameter>
+      </taskForm>
+      <taskForm
+            name="编制"
+            processDefinitionId="gs.gsProviderConfirmApprove1"
+            validation="com.sg.business.taskforms.validation.DocumentMondartory">
       </taskForm>
    </extension>
    <extension
@@ -3584,9 +3616,9 @@
          </searchAction>
       </navigator>
       <navigator
-            id="company.navigator.allproject"
+            id="gscompany.navigator.allproject"
             provideSelection="true"
-            table="company.navigator.allproject">
+            table="gscompany.navigator.allproject">
          <filterAction>
             <column
                   columnDefinitionId="project.projectnumber">
@@ -3611,8 +3643,8 @@
          </searchAction>
       </navigator>
       <navigator
-            id="organization.navigaor.projectfunctionorg"
-            tree="organization.navigaor.projectfunctionorg">
+            id="gsorganization.navigaor.projectfunctionorg"
+            tree="gsorganization.navigaor.projectfunctionorg">
          <filterAction>
             <column
                   columnDefinitionId="work.desc">
@@ -3625,12 +3657,12 @@
          </searchAction>
       </navigator>
       <navigator
-            id="project.navigator.changedoc"
-            tree="project.navigator.changedoc">
+            id="gsproject.navigator.changedoc"
+            tree="gsproject.navigator.changedoc">
       </navigator>
       <navigator
-            id="project.documents.released"
-            tree="project.documents.released">
+            id="gsproject.documents.released"
+            tree="gsproject.documents.released">
          <filterAction>
             <column
                   columnDefinitionId="com.sg.widgets.column.desc">
@@ -3663,8 +3695,8 @@
          </searchAction>
       </navigator>
       <navigator
-            id="changeapprover.navigator"
-            table="changeapprover.navigator">
+            id="gschangeapprover.navigator"
+            table="gschangeapprover.navigator">
          <filterAction>
             <column
                   columnDefinitionId="com.sg.widgets.commonlabel">
@@ -3681,8 +3713,8 @@
             table="gs.gsBusinessSupport.supportauditor">
       </navigator>
       <navigator
-            id="organization.navigaor.projectfunction"
-            tree="organization.navigaor.projectfunction">
+            id="gsorganization.navigaor.projectfunction"
+            tree="gsorganization.navigaor.projectfunction">
          <filterAction>
             <column
                   columnDefinitionId="work.desc">
@@ -3736,7 +3768,7 @@
             canRead="false"
             dataSet="com.sg.business.model.dataset.project.FolderOfProject"
             headerVisiable="false"
-            id="project.documents.released">
+            id="gsproject.documents.released">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -3751,7 +3783,7 @@
             autoExpandLevel="2"
             dataSet="com.tmt.gs.dataset.GSProjectFunctionOrg"
             headerVisiable="false"
-            id="organization.navigaor.projectfunctionorg">
+            id="gsorganization.navigaor.projectfunctionorg">
          <column
                columnDefinitionId="work.desc.1">
          </column>
@@ -3767,7 +3799,7 @@
             canRead="false"
             dataSet="com.tmt.gs.dataset.GSProjectChangeDocument"
             headerVisiable="false"
-            id="project.navigator.changedoc">
+            id="gsproject.navigator.changedoc">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -3782,7 +3814,7 @@
             autoExpandLevel="2"
             dataSet="com.tmt.gs.dataset.GSProjectFunctionOrg"
             headerVisiable="false"
-            id="organization.navigaor.projectfunction">
+            id="gsorganization.navigaor.projectfunction">
          <column
                columnDefinitionId="work.desc.1">
          </column>
@@ -3837,7 +3869,7 @@
       </table>
       <table
             dataSet="com.tmt.gs.dataset.GSAllProject"
-            id="company.navigator.allproject">
+            id="gscompany.navigator.allproject">
          <column
                columnDefinitionId="project.projectnumber">
          </column>
@@ -3859,7 +3891,7 @@
       <table
             dataSet="com.tmt.gs.dataset.GSUserOfChangeApprover"
             headerVisiable="false"
-            id="changeapprover.navigator">
+            id="gschangeapprover.navigator">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -4128,7 +4160,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.OrgLabelProvidder"
                         modelClass="com.sg.business.model.Organization"
                         name="dept"
-                        navigatorId="organization.navigaor.projectfunction"
+                        navigatorId="gsorganization.navigaor.projectfunction"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="true">
@@ -4136,7 +4168,7 @@
                   <navigatorSelector
                         editable="true"
                         id="support_auditor"
-                        label="批准人"
+                        label="审批人"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -4339,7 +4371,7 @@
                   <navigatorSelector
                         editable="true"
                         id="priceapprover"
-                        label="批准"
+                        label="商务批准"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -4842,7 +4874,7 @@
       </taskForm>
       <taskForm
             editorId="gs.gssubconcessions.review"
-            name="制造中心工艺资料复审"
+            name="生产部资料复审"
             persistentFields="choice,comment,accessory"
             processDefinitionId="gs.gsSubconcessions1">
          <processParameter
@@ -5084,7 +5116,7 @@
             collectionName="taskform"
             dbName="pm2"
             id="gs.gssubconcessions.review"
-            name="复核">
+            name="复审">
          <basicpage
                id="page1"
                title="审核">
@@ -5109,7 +5141,7 @@
                         label="结论"
                         labelVisible="false"
                         name="choice"
-                        option="是否整改"
+                        option="是否通过"
                         persistable="true"
                         required="false"
                         type="String">
@@ -5168,7 +5200,7 @@
                   <navigatorSelector
                         editable="true"
                         id="craft"
-                        label="制造中心复审人员"
+                        label="生产部复审人员"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
@@ -5699,7 +5731,7 @@
                         labelVisible="true"
                         modelClass="com.sg.business.model.Project"
                         name="project"
-                        navigatorId="company.navigator.allproject"
+                        navigatorId="gscompany.navigator.allproject"
                         navigatorReturnField="_id"
                         persistable="true"
                         required="true">
@@ -6052,7 +6084,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="project_supervisor"
-                        navigatorId="changeapprover.navigator"
+                        navigatorId="gschangeapprover.navigator"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -6117,6 +6149,27 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.bpm.service.serviceTask">
+      <service
+            interface="gsmessage.service.action"
+            name="通知财务"
+            operation="financialmessage"
+            serviceProvider="com.tmt.gs.bpmservice.GSApplicationMessageOfTB">
+      </service>
+      <service
+            interface="gsmessage.service.action"
+            name="立项审批拒绝消息"
+            operation="applicationcancelmessage"
+            serviceProvider="com.tmt.gs.bpmservice.GSApplicationMessageOfTB">
+      </service>
+      <service
+            interface="gsmessage.service.action"
+            name="立项审批通过消息"
+            operation="applicationfinishmessage"
+            serviceProvider="com.tmt.gs.bpmservice.GSApplicationMessageOfTB">
+      </service>
    </extension>
 
 </plugin>
