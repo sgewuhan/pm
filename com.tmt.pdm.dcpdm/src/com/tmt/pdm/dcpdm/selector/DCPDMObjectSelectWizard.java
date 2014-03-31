@@ -46,28 +46,24 @@ public class DCPDMObjectSelectWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		return false;
+		return true;
 	}
-
+	
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
+		selectedObjectOuid.clear();
 		if(selection!=null){
 			Object[] input = ((IStructuredSelection)selection).toArray();
-			advanceSearchPage.setInput(input);
 			for (int i = 0; i < input.length; i++) {
 				String ouid = (String)((ArrayList<?>)input[i]).get(0);
 				selectedObjectOuid.add(ouid);
 			}
-		}else{
-			advanceSearchPage.setInput(null);
-			selectedObjectOuid.clear();
 		}
+		advanceSearchPage.setInput(selectedObjectOuid.toArray(new String[0]));
 	}
 	
-	public ISelection getSelection() {
-		return selection;
+	public Set<String> getSelectedObjectOuid() {
+		return selectedObjectOuid;
 	}
-
-
 
 }

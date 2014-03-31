@@ -1,5 +1,7 @@
 package com.tmt.pdm.dcpdm.handler;
 
+import java.util.Set;
+
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -26,10 +28,17 @@ public class SelectPDMObject implements IFieldActionHandler {
 
 		WizardDialog wizardDialog = new WizardDialog(shell, wiz);
 		
-		wizardDialog.open();
-		
-		fieldPart.presentValue();
-		fieldPart.getForm().dirtyStateChanged();
+		int ok = wizardDialog.open();
+		if(ok==WizardDialog.OK){
+			Set<String> set = wiz.getSelectedObjectOuid();
+			if(set.size()>0){
+				String ouid = set.toArray(new String[0])[0];
+				fieldPart.setValue(ouid);
+				fieldPart.presentValue();
+				fieldPart.updateDataValue();
+				fieldPart.getForm().dirtyStateChanged();
+			}
+		}
 		return null;
 	}
 

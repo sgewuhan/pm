@@ -1,6 +1,5 @@
 package com.tmt.pdm.dcpdm.selector;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -142,9 +141,9 @@ public class AdvanceSearchPage extends WizardPage {
 			DOSChangeable dos = (DOSChangeable) items[i].getData();
 			DCPDMObjectSelectWizard wizard = getWizard();
 			if (items[i].getChecked()) {
-				wizard.selectedObjectOuid.remove(dos.get("ouid"));
-			} else {
 				wizard.selectedObjectOuid.add((String) dos.get("ouid"));
+			} else {
+				wizard.selectedObjectOuid.remove(dos.get("ouid"));
 			}
 			updateSelectionFromItems(items[i].getItems());
 		}
@@ -183,7 +182,7 @@ public class AdvanceSearchPage extends WizardPage {
 			Object[] _input = (Object[]) input;
 			Object[] result = new Object[_input.length];
 			for (int i = 0; i < result.length; i++) {
-				String ouid = (String) ((ArrayList<?>) _input[i]).get(0);
+				String ouid = (String) _input[i];
 				try {
 					result[i] = Starter.dos.get(ouid);
 					getWizard().selectedObjectOuid.add(ouid);
@@ -199,6 +198,7 @@ public class AdvanceSearchPage extends WizardPage {
 		for (int i = 0; i < root.length; i++) {
 			root[i].setChecked(true);
 		}
+		updateMessage();
 	}
 
 	private TreeColumn createColumn(final String key, String name) {

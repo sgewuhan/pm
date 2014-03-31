@@ -96,6 +96,7 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		return col.getColumn();
 	}
 	
+	
 	protected void searchData(final String input) {
 
 		final ArrayList<?> result = new ArrayList<>();
@@ -138,7 +139,7 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 							if (r != null) {
 								result.addAll(r);
 							}
-						} catch (Exception e) {
+						} catch (IIPRequestException e) {
 						}
 					}
 
@@ -233,10 +234,12 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 				&& !viewer.getSelection().isEmpty());
 	}
 
+	
+	
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		ISelection selection = event.getSelection();
-		getWizard().setSelection(selection);
+		getWizard().setSelection(viewer.getSelection());
 		setPageComplete(selection != null && !selection.isEmpty());
 	}
 
