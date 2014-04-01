@@ -266,16 +266,6 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsdocumentapprove1.standard"
-            name="标准化"
-            persistentFields="choice,comment,accessory"
-            processDefinitionId="gs.gsDrawingApprove1">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-      </taskForm>
-      <taskForm
             editorId="gsdocumentapprove1.approver"
             name="批准"
             persistentFields="choice,comment,accessory"
@@ -332,68 +322,6 @@
          </basicpage>
          <basicpage
                id="com.tmt.gs.basicpage14"
-               title="附件">
-            <pagecolumn>
-               <section
-                     label="请上传附件">
-                  <file
-                        editPart="OfficeFileUploader"
-                        editable="true"
-                        id="accessory"
-                        label="附件"
-                        labelVisible="true"
-                        name="accessory"
-                        persistable="true"
-                        required="false">
-                  </file>
-               </section>
-            </pagecolumn>
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="gsdocumentapprove1.standard"
-            name="标准化">
-         <basicpage
-               id="com.tmt.gs.basicpage5"
-               title="审核">
-            <pagecolumn>
-               <section
-                     label="请填写标准化意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="true"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="结论"
-                        labelVisible="true"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="com.tmt.gs.basicpage15"
-               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-         <basicpage
-               id="com.tmt.gs.basicpage16"
                title="附件">
             <pagecolumn>
                <section
@@ -3281,7 +3209,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="prj_manager"
-                        navigatorId="gs.taskforms.user.selector"
+                        navigatorId="gschangeapprover.navigator"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -3730,6 +3658,37 @@
             id="gs.gsBusinessSupport.supportapprove1"
             table="gs.gsBusinessSupport.supportapprove1">
       </navigator>
+      <navigator
+            id="gs.projectchange.confirmprogram"
+            table="gs.projectchange.confirmprogram">
+      </navigator>
+      <navigator
+            id="gs.projectchange.product"
+            table="gs.projectchange.product">
+      </navigator>
+      <navigator
+            id="gs.projectchange.market"
+            table="gs.projectchange.market">
+      </navigator>
+      <navigator
+            id="gs.projectchange.quality"
+            table="gs.projectchange.quality">
+      </navigator>
+      <navigator
+            id="gs.projectchange.related"
+            table="gs.projectchange.related">
+      </navigator>
+      <navigator
+            id="gs.projectchange.customer">
+      </navigator>
+      <navigator
+            id="gs.bussinesssupport.support"
+            table="gs.bussinesssupport.support">
+      </navigator>
+      <navigator
+            id="gs.bussinesssupport.cbcchecker"
+            table="gs.bussinesssupport.cbcchecker">
+      </navigator>
    </extension>
    <extension
          point="com.sg.widgets.tree">
@@ -3908,6 +3867,62 @@
             dataSet="com.tmt.gs.dataset.GSBusinessSupportApprover"
             headerVisiable="false"
             id="gs.gsBusinessSupport.supportapprove1">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSConfirmProgram"
+            id="gs.projectchange.confirmprogram">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSproduct"
+            id="gs.projectchange.product">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSMarket"
+            id="gs.projectchange.market">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSQuality"
+            id="gs.projectchange.quality">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSTechnicalLeader"
+            id="gs.projectchange.related">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSCustomer"
+            id="gs.projectchange.customer">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSBusinessSupport"
+            id="gs.bussinesssupport.support">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+      </table>
+      <table
+            dataSet="com.tmt.gs.dataset.GSSeniorDesigner"
+            id="gs.bussinesssupport.cbcchecker">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -4204,7 +4219,7 @@
                title="附件">
             <pagecolumn>
                <section
-                     label="%section.label.1">
+                     label="意见附件">
                   <file
                         editPart="OfficeFileUploader"
                         editable="true"
@@ -4299,7 +4314,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="support"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.projectchange.confirmprogram"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4376,7 +4391,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="priceapprover"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.projectchange.market"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4427,7 +4442,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cbcchecker"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.bussinesssupport.cbcchecker"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4440,7 +4455,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cbcauditor"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.bussinesssupport.support"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4453,7 +4468,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cbcapporver"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gschangeapprover.navigator"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4504,7 +4519,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="tecchecker"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.bussinesssupport.cbcchecker"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4517,7 +4532,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="tecauditor"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.bussinesssupport.support"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4530,7 +4545,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="tecapporver"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gschangeapprover.navigator"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -5192,7 +5207,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="qm"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.projectchange.quality"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -5205,7 +5220,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="craft"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.projectchange.product"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -5806,7 +5821,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="project_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.projectchange.confirmprogram"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -5830,6 +5845,194 @@
                         editable="true"
                         id="accessory"
                         label="附件"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
+            id="gsprojectchange.confirmProgram"
+            name="确认变更方案"
+            saveHandler="com.tmt.gs.editor.GSProjectChangeConfirmProgramSaveHandler">
+         <basicpage
+               id="page1"
+               title="审核变更申请">
+            <pagecolumn>
+               <section
+                     label="请填写意见和附件">
+                  <text
+                        editPart="Text(Multi Line)"
+                        editable="true"
+                        id="comment"
+                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
+                        label="意见"
+                        labelVisible="false"
+                        name="comment"
+                        persistable="true"
+                        required="false"
+                        type="String"
+                        widthHint="320">
+                  </text>
+                  <radio
+                        editable="true"
+                        id="choice"
+                        label="变更申请是否通过"
+                        labelVisible="false"
+                        name="choice"
+                        option="是否通过"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </radio>
+               </section>
+               <section
+                     label="在制品审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="plan"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="plan"
+                        navigatorId="gs.projectchange.product"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="市场审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="market"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="market"
+                        navigatorId="gs.projectchange.market"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="品质管理审核者">
+                  <navigatorSelector
+                        editable="true"
+                        id="qc"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="qc"
+                        navigatorId="gs.projectchange.quality"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="变更是否关联到其他部门">
+                  <radio
+                        editable="true"
+                        id="hasother"
+                        label="变更是否关联到其他部门"
+                        labelVisible="false"
+                        name="hasother"
+                        option="是\否"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <navigatorSelector
+                        editable="true"
+                        id="other"
+                        inputValidator="com.tmt.gs.validation.GSRelatedDeptValidation"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="other"
+                        navigatorId="gs.projectchange.related"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="变更方案批准者">
+                  <navigatorSelector
+                        editable="true"
+                        id="project_supervisor"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="project_supervisor"
+                        navigatorId="gschangeapprover.navigator"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="变更是否客户确认">
+                  <radio
+                        editable="true"
+                        id="hascustomer"
+                        label="变更是否客户确认"
+                        labelVisible="false"
+                        name="hascustomer"
+                        option="是\否"
+                        persistable="true"
+                        required="false"
+                        type="String">
+                  </radio>
+                  <navigatorSelector
+                        editable="true"
+                        id="customer"
+                        inputValidator="com.tmt.gs.validation.GSHasCustomerValidation"
+                        label="请选择审核者"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="customer"
+                        navigatorId="gs.projectchange.customer"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="false">
+                  </navigatorSelector>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.tmt.gs.editor.page.GSEngineeringChangeItem"
+               title="变更方案">
+         </basicpage>
+         <basicpage
+               id="page3"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
                         labelVisible="true"
                         name="accessory"
                         persistable="true"
@@ -5941,194 +6144,6 @@
                id="page2"
                pageDelegator="com.tmt.gs.editor.page.GSEngineeringChangePlan"
                title="变更方案">
-         </basicpage>
-         <basicpage
-               id="page3"
-               title="附件">
-            <pagecolumn>
-               <section
-                     label="意见附件">
-                  <file
-                        editPart="OfficeFileUploader"
-                        editable="true"
-                        id="accessory"
-                        labelVisible="true"
-                        name="accessory"
-                        persistable="true"
-                        required="false">
-                  </file>
-               </section>
-            </pagecolumn>
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="gsprojectchange.confirmProgram"
-            name="确认变更方案"
-            saveHandler="com.tmt.gs.editor.GSProjectChangeConfirmProgramSaveHandler">
-         <basicpage
-               id="page1"
-               title="审核变更申请">
-            <pagecolumn>
-               <section
-                     label="请填写意见和附件">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="变更申请是否通过"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否通过"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-               </section>
-               <section
-                     label="在制品审核者">
-                  <navigatorSelector
-                        editable="true"
-                        id="plan"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="plan"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="市场审核者">
-                  <navigatorSelector
-                        editable="true"
-                        id="market"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="market"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="品质管理审核者">
-                  <navigatorSelector
-                        editable="true"
-                        id="qc"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="qc"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="变更是否关联到其他部门">
-                  <radio
-                        editable="true"
-                        id="hasother"
-                        label="变更是否关联到其他部门"
-                        labelVisible="false"
-                        name="hasother"
-                        option="是\否"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <navigatorSelector
-                        editable="true"
-                        id="other"
-                        inputValidator="com.tmt.gs.validation.GSRelatedDeptValidation"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="other"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="变更方案批准者">
-                  <navigatorSelector
-                        editable="true"
-                        id="project_supervisor"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="project_supervisor"
-                        navigatorId="gschangeapprover.navigator"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="true">
-                  </navigatorSelector>
-               </section>
-               <section
-                     label="变更是否客户确认">
-                  <radio
-                        editable="true"
-                        id="hascustomer"
-                        label="变更是否客户确认"
-                        labelVisible="false"
-                        name="hascustomer"
-                        option="是\否"
-                        persistable="true"
-                        required="false"
-                        type="String">
-                  </radio>
-                  <navigatorSelector
-                        editable="true"
-                        id="customer"
-                        inputValidator="com.tmt.gs.validation.GSHasCustomerValidation"
-                        label="请选择审核者"
-                        labelVisible="true"
-                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
-                        modelClass="com.sg.business.model.User"
-                        name="customer"
-                        navigatorId="organization.user.selector"
-                        navigatorReturnField="userid"
-                        persistable="true"
-                        required="false">
-                  </navigatorSelector>
-               </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.tmt.gs.editor.page.GSEngineeringChangeItem"
-               title="变更方案">
-         </basicpage>
-         <basicpage
-               id="page3"
-               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
-               title="流程">
          </basicpage>
          <basicpage
                id="page3"

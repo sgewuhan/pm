@@ -111,6 +111,41 @@ public interface IRoleConstance {
 	public static final String ROLE_MOLD_GENERAL_MANAGER_ID = "Mold General Manager";
 	public static final String ROLE_MOLD_GENERAL_MANAGER_TEXT =Messages.get().IRoleConstance_29;
 	
+	/**
+	 * 技术部审核
+	 */
+	public static final String ROLE_TECHNOLOGY_CHECKER_ID = "Technology Checker";
+	public static final String ROLE_TECHNOLOGY_CHECKER_TEXT=Messages.get().IRoleConstance_30;
+	
+	/**
+	 *在制品审核 
+	 */
+	public static final String ROLE_PRODUCT_CHECKER_ID = "Product Checker";
+	public static final String ROLE_PRODUCT_CHECKER_TEXT=Messages.get().IRoleConstance_31;
+	
+	/**
+	 * 市场部审核
+	 */
+	public static final String ROLE_MARKET_CHECKER_ID = "Market Checker";
+	public static final String ROLE_MARKET_CHECKER_TEXT=Messages.get().IRoleConstance_32;
+	
+	/**
+	 * 质量部审核
+	 */
+	public static final String ROLE_QUALITY_CHECKER_ID = "Quality Checker";
+	public static final String ROLE_QUALITY_CHECKER_TEXT=Messages.get().IRoleConstance_33;
+	
+	/**
+	 * 技术负责人审核
+	 */
+	public static final String ROLE_TECHNICAL_LEADER_CHECKER_ID = "Technical Leader Checker";
+	public static final String ROLE_TECHNICAL_LEADER_CHECKER_TEXT=Messages.get().IRoleConstance_34;
+	
+	/**
+	 * 高级设计师校核
+	 */
+	public static final String ROLE_SENIOR_DESIGNER_ID = "Senior Designer";
+	public static final String ROLE_SENIOR_DESIGNER_TEXT=Messages.get().IRoleConstance_35;
 	
 	
 }
