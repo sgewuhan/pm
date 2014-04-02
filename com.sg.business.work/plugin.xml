@@ -2324,6 +2324,102 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:work.deliverable">
+         <command
+               commandId="project.createdeliverable"
+               label="创建新交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.createdeliverablewithtemplate"
+               label="使用文档模板创建交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.linkdeliverable"
+               label="链接项目的其它交付物..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="project.createdeliverablewithvault"
+               label="使用文档库连接其他交付物"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -4352,7 +4448,7 @@
             image="image/work_24.png"
             isDefault="false"
             memo="导航器工作的查看（预备，非摘要）"
-            menu="popup:project.deliverable"
+            menu="popup:work.deliverable"
             name="%editor.name.8"
             titleToolTips="%editor.titleToolTips.8">
          <basicpage
@@ -4523,7 +4619,7 @@
             image="image/work_24.png"
             isDefault="false"
             memo="导航器工作的查看（进行中，非摘要，有流程）"
-            menu="popup:project.deliverable"
+            menu="popup:work.deliverable"
             name="%editor.name.8"
             titleToolTips="%editor.titleToolTips.8">
          <basicpage
@@ -4735,7 +4831,7 @@
             image="image/work_24.png"
             isDefault="false"
             memo="导航器工作的查看（进行中，非摘要，无流程）"
-            menu="popup:project.deliverable"
+            menu="popup:work.deliverable"
             name="%editor.name.8"
             titleToolTips="%editor.titleToolTips.8">
          <basicpage
