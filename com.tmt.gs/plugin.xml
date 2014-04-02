@@ -739,7 +739,7 @@
             persistentFields="mold_amount,mold_ask,choice,comment,accessory"
             processDefinitionId="gs.gsOpenMoldApprove1">
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.ApproverForAmount"
+               processParameterDelegator="com.tmt.gs.field.parameter.ApproverForAmountOfGS"
                processParameterName="approver"
                taskFormFieldName="mold_amount">
          </processParameter>
@@ -1163,11 +1163,11 @@
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             editorId="gsProjectApprove.apply"
-            inputHandler="com.tmt.gs.handler.GSProjectApproveInputOfGS"
+            inputHandler="com.tmt.gs.handler.ProjectApproveOfGSInputHandler"
             name="评审申请"
             persistentFields="reviewer_list,accessory,comment"
             processDefinitionId="gs.gsProjectApprove1"
-            saveHandler="com.tmt.gs.handler.GSProjectApproveSaveOfGS">
+            saveHandler="com.tmt.gs.handler.ProjectApproveOfGSSaveHandler">
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
@@ -1176,11 +1176,11 @@
       </taskForm>
       <taskForm
             editorId="gsProjectApprove.audit"
-            inputHandler="com.tmt.gs.handler.GSProjectApproveInputOfGS"
+            inputHandler="com.tmt.gs.handler.ProjectApproveOfGSInputHandler"
             name="审批"
             persistentFields="choice,reviewer_list,reviewer_admin,accessory"
             processDefinitionId="gs.gsProjectApprove1"
-            saveHandler="com.tmt.gs.handler.GSProjectApproveSaveOfGS">
+            saveHandler="com.tmt.gs.handler.ProjectApproveOfGSSaveHandler">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -1760,11 +1760,11 @@
          point="com.sg.bpm.workflow.taskForm">
       <taskForm
             editorId="gsProjectApprove.apply"
-            inputHandler="com.tmt.gs.handler.GSProjectApproveInputOfGS"
+            inputHandler="com.tmt.gs.handler.ProjectApproveOfGSInputHandler"
             name="评审申请"
             persistentFields="reviewer_list,accessory,comment"
             processDefinitionId="gs.gsProjectApprove2"
-            saveHandler="com.tmt.gs.handler.GSProjectApproveSaveOfGS">
+            saveHandler="com.tmt.gs.handler.ProjectApproveOfGSSaveHandler">
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToList"
                processParameterName="reviewer_list"
@@ -1773,11 +1773,11 @@
       </taskForm>
       <taskForm
             editorId="gsprojectapprove.audittwo"
-            inputHandler="com.tmt.gs.handler.GSProjectApproveInputOfGS"
+            inputHandler="com.tmt.gs.handler.ProjectApproveOfGSInputHandler"
             name="审批"
             persistentFields="choice,reviewer_list,reviewer_admin,accessory"
             processDefinitionId="gs.gsProjectApprove2"
-            saveHandler="com.tmt.gs.handler.GSProjectApproveSaveOfGS">
+            saveHandler="com.tmt.gs.handler.ProjectApproveOfGSSaveHandler">
          <processParameter
                processParameterName="choice"
                taskFormFieldName="choice">
@@ -2680,7 +2680,7 @@
       </taskForm>
       <taskForm
             editorId="gsprojectapplication.approve"
-            inputHandler="com.tmt.gs.handler.GSProjectApplicationSetProjectTypeOfTB"
+            inputHandler="com.tmt.gs.handler.ProjectApplicationSetProjectTypeOfGS"
             name="批准"
             persistentFields="choice,comment,accessory,projecttype"
             processDefinitionId="gs.gsProjectApplication">
@@ -2698,7 +2698,7 @@
             name="指派项目负责人"
             persistentFields="prj_manager,accessory,projecttype"
             processDefinitionId="gs.gsProjectApplication"
-            saveHandler="com.tmt.gs.handler.GSProjectApplicationAuditSaveOfTB">
+            saveHandler="com.tmt.gs.handler.ProjectApplicationOfGSAuditSaveHandler">
          <processParameter
                processParameterName="prj_manager"
                taskFormFieldName="prj_manager">
@@ -2710,7 +2710,7 @@
       </taskForm>
       <taskForm
             editorId="gsprojectapplication.workorder"
-            inputHandler="com.tmt.gs.handler.GSProjectApplicationWorkOrderOfTB"
+            inputHandler="com.tmt.gs.handler.ProjectApplicationWorkOrderOfGS"
             name="审批工作令号"
             persistentFields="prj_number,accessory"
             processDefinitionId="gs.gsProjectApplication">
@@ -2732,7 +2732,7 @@
       </taskForm>
       <taskForm
             editorId="gsprojectapplication.financial"
-            inputHandler="com.tmt.gs.handler.GSProjectApplicationWorkOrderOfTB"
+            inputHandler="com.tmt.gs.handler.ProjectApplicationWorkOrderOfGS"
             name="财务审核"
             persistentFields="choice,changeworkorder,changebudget,accessory"
             processDefinitionId="gs.gsProjectApplication">
@@ -2751,7 +2751,7 @@
       </taskForm>
       <taskForm
             editorId="gsprojectapplication.workorder"
-            inputHandler="com.tmt.gs.handler.GSProjectApplicationWorkOrderOfTB"
+            inputHandler="com.tmt.gs.handler.ProjectApplicationWorkOrderOfGS"
             name="修改工作令号"
             persistentFields="prj_number,accessory"
             processDefinitionId="gs.gsProjectApplication">
@@ -2921,7 +2921,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="confirmdate"
-                        inputValidator="com.tmt.gs.field.GSCheckConfirmOfTBProjectApplication"
+                        inputValidator="com.tmt.gs.field.CheckConfirmOfGSProjectApplication"
                         label="评审会日期"
                         labelVisible="true"
                         name="confirmdate"
@@ -2933,7 +2933,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="confirmtime"
-                        inputValidator="com.tmt.gs.field.GSCheckConfirmOfTBProjectApplication"
+                        inputValidator="com.tmt.gs.field.CheckConfirmOfGSProjectApplication"
                         label="评审会时间"
                         labelVisible="true"
                         name="confirmtime"
@@ -2945,7 +2945,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="confirmaddress"
-                        inputValidator="com.tmt.gs.field.GSCheckConfirmOfTBProjectApplication"
+                        inputValidator="com.tmt.gs.field.CheckConfirmOfGSProjectApplication"
                         label="评审会地点"
                         labelVisible="true"
                         name="confirmaddress"
@@ -3393,7 +3393,7 @@
                         type="String"
                         widthHint="320">
                      <fieldaction
-                           handler="com.tmt.gs.handler.GSOpenBudget"
+                           handler="com.tmt.gs.handler.OpenBudgetOfGS"
                            image="image/financial_24.png"
                            name="参看预算">
                      </fieldaction>
@@ -3694,7 +3694,7 @@
          point="com.sg.widgets.tree">
       <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.gs.dataset.GSOrganizationSelectorOfTaskforms"
+            dataSet="com.tmt.gs.dataset.OrganizationSelectorOfGS"
             headerVisiable="false"
             id="gs.taskforms.organization.selector">
          <column
@@ -3706,7 +3706,7 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.gs.dataset.GSUserSelectorOfTaskforms"
+            dataSet="com.tmt.gs.dataset.UserSelectorOfGS"
             headerVisiable="false"
             id="gs.taskforms.user.selector">
          <column
@@ -3740,7 +3740,7 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.gs.dataset.GSProjectFunctionOrg"
+            dataSet="com.tmt.gs.dataset.ProjectFunctionOrgOfGS"
             headerVisiable="false"
             id="gsorganization.navigaor.projectfunctionorg">
          <column
@@ -3756,7 +3756,7 @@
             canDelete="false"
             canEdit="false"
             canRead="false"
-            dataSet="com.tmt.gs.dataset.GSProjectChangeDocument"
+            dataSet="com.tmt.gs.dataset.ProjectChangeDocumentOfGS"
             headerVisiable="false"
             id="gsproject.navigator.changedoc">
          <column
@@ -3771,7 +3771,7 @@
       </tree>
       <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.gs.dataset.GSProjectFunctionOrg"
+            dataSet="com.tmt.gs.dataset.ProjectFunctionOrgOfGS"
             headerVisiable="false"
             id="gsorganization.navigaor.projectfunction">
          <column
@@ -3782,7 +3782,7 @@
    <extension
          point="com.sg.widgets.table">
       <table
-            dataSet="com.tmt.gs.dataset.GSProjectSelectorOfTaskforms"
+            dataSet="com.tmt.gs.dataset.ProjectSelectorOfGS"
             headerVisiable="false"
             id="gs.taskforms.project.selector">
          <column
@@ -3827,7 +3827,7 @@
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSAllProject"
+            dataSet="com.tmt.gs.dataset.AllProjectOfGS"
             id="gscompany.navigator.allproject">
          <column
                columnDefinitionId="project.projectnumber">
@@ -3840,7 +3840,7 @@
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSApplicationLeaderOfTaskforms"
+            dataSet="com.tmt.gs.dataset.ApplicationLeaderOfGS"
             headerVisiable="false"
             id="gs.taskforms.applicationleader.selector">
          <column
@@ -3848,7 +3848,7 @@
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSUserOfChangeApprover"
+            dataSet="com.tmt.gs.dataset.ChangeApproverOfGS"
             headerVisiable="false"
             id="gschangeapprover.navigator">
          <column
@@ -3856,7 +3856,7 @@
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSBusinessSupportAuditor"
+            dataSet="com.tmt.gs.dataset.BusinessSupportAuditorOfGS"
             headerVisiable="false"
             id="gs.gsBusinessSupport.supportauditor">
          <column
@@ -3864,9 +3864,7 @@
          </column>
       </table>
       <table
-            collectionName="account"
-            dataSet="com.tmt.gs.dataset.GSBusinessSupportApprover"
-            dbName="pm2"
+            dataSet="com.tmt.gs.dataset.BusinessSupportApproverOfGS"
             headerVisiable="false"
             id="gs.gsBusinessSupport.supportapprove1">
          <column
@@ -3874,56 +3872,56 @@
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSConfirmProgram"
+            dataSet="com.tmt.gs.dataset.ConfirmProgramOfGS"
             id="gs.projectchange.confirmprogram">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSproduct"
+            dataSet="com.tmt.gs.dataset.ProductOfGS"
             id="gs.projectchange.product">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSMarket"
+            dataSet="com.tmt.gs.dataset.MarketOfGS"
             id="gs.projectchange.market">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSQuality"
+            dataSet="com.tmt.gs.dataset.QualityOfGS"
             id="gs.projectchange.quality">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSTechnicalLeader"
+            dataSet="com.tmt.gs.dataset.TechnicalLeaderOfGS"
             id="gs.projectchange.related">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSCustomer"
+            dataSet="com.tmt.gs.dataset.CustomerOfGS"
             id="gs.projectchange.customer">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSBusinessSupport"
+            dataSet="com.tmt.gs.dataset.BusinessSupportOfGS"
             id="gs.bussinesssupport.support">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
       </table>
       <table
-            dataSet="com.tmt.gs.dataset.GSSeniorDesigner"
+            dataSet="com.tmt.gs.dataset.SeniorDesignerOfGS"
             id="gs.bussinesssupport.cbcchecker">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
@@ -3977,7 +3975,7 @@
             name="确认技术支持"
             persistentFields="support,choice"
             processDefinitionId="gs.gsBusinessSupport1"
-            saveHandler="com.tmt.gs.handler.GSBusinessSupportAddParticipate">
+            saveHandler="com.tmt.gs.handler.BusinessSupportAddParticipateForGS">
          <processParameter
                processParameterName="support"
                taskFormFieldName="support">
@@ -4835,7 +4833,7 @@
             name="转批申请"
             persistentFields="workorder,product,prj_manager,dept,accessory"
             processDefinitionId="gs.gsSubconcessions1"
-            saveHandler="com.tmt.gs.handler.GSProjectApplicationAuditSaveOfTB">
+            saveHandler="com.tmt.gs.handler.ProjectApplicationOfGSAuditSaveHandler">
          <processParameter
                processParameterName="workorder"
                taskFormFieldName="workorder">
@@ -4850,12 +4848,12 @@
                taskFormFieldName="prj_manager">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSDataAudit"
+               processParameterDelegator="com.tmt.gs.field.parameter.DataAuditOfGS"
                processParameterName="data_audit"
                taskFormFieldName="dept">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSDevelopmentDirector"
+               processParameterDelegator="com.tmt.gs.field.parameter.DevelopmentDirectorOfGS"
                processParameterName="development_director"
                taskFormFieldName="dept">
          </processParameter>
@@ -5004,7 +5002,7 @@
                         name="dept"
                         navigatorId="taskforms.organization.navigator"
                         navigatorReturnField="_id"
-                        navigatorSelectorControl="com.tmt.gs.field.control.GSDeptSelectContorOfTB"
+                        navigatorSelectorControl="com.tmt.gs.field.control.DeptSelectContorOfGS"
                         persistable="true"
                         required="true">
                   </navigatorSelector>
@@ -5290,7 +5288,7 @@
                         required="false">
                   </navigatorSelector>
                   <list
-                        addTableItemHandler="com.tmt.gs.field.action.GSAddAllUserList"
+                        addTableItemHandler="com.tmt.gs.field.action.AddAllUserListOfGS"
                         editable="true"
                         id="reviewer_list"
                         label="专家组成员"
@@ -5308,7 +5306,7 @@
                         editPart="DateDialog"
                         editable="true"
                         id="confirmdate"
-                        inputValidator="com.tmt.gs.field.GSCheckConfirmOfTBProjectApplication"
+                        inputValidator="com.tmt.gs.field.CheckConfirmOfGSProjectApplication"
                         label="评审会日期"
                         labelVisible="true"
                         name="confirmdate"
@@ -5320,7 +5318,7 @@
                         editPart="Text(Single Line)"
                         editable="true"
                         id="confirmtime"
-                        inputValidator="com.tmt.gs.field.GSCheckConfirmOfTBProjectApplication"
+                        inputValidator="com.tmt.gs.field.CheckConfirmOfGSProjectApplication"
                         label="评审会时间"
                         labelVisible="true"
                         name="confirmtime"
@@ -5332,7 +5330,7 @@
                         editPart="Text(Multi Line)"
                         editable="true"
                         id="confirmaddress"
-                        inputValidator="com.tmt.gs.field.GSCheckConfirmOfTBProjectApplication"
+                        inputValidator="com.tmt.gs.field.CheckConfirmOfGSProjectApplication"
                         label="评审会地点"
                         labelVisible="true"
                         name="confirmaddress"
@@ -5437,14 +5435,14 @@
             name="变更申请"
             persistentFields="project,accessory"
             processDefinitionId="gs.gsProjectChange"
-            saveHandler="com.tmt.gs.handler.GSProjectChangeAddParticipate">
+            saveHandler="com.tmt.gs.handler.ProjectChangeAddParticipateOfGS">
          <processParameter
                processParameterDelegator="com.sg.business.commons.field.processparameter.ChangetToObjectId"
                processParameterName="project"
                taskFormFieldName="project">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSProjectManager"
+               processParameterDelegator="com.tmt.gs.field.parameter.ProjectManagerOfGS"
                processParameterName="project_manager"
                taskFormFieldName="project">
          </processParameter>
@@ -5468,9 +5466,9 @@
             name="确认变更方案"
             persistentFields="plan,other,qc,market,customer,project_supervisor,hasother,choice,hascustomer"
             processDefinitionId="gs.gsProjectChange"
-            saveHandler="com.tmt.gs.editor.GSProjectChangeConfirmProgramSaveHandler">
+            saveHandler="com.tmt.gs.editor.ProjectChangeConfirmProgramOfGSSaveHandler">
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecn"
                taskFormFieldName="ecn">
          </processParameter>
@@ -5581,7 +5579,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_design"
                taskFormFieldName="ecnitem_design">
          </processParameter>
@@ -5589,7 +5587,7 @@
       <taskForm
             name="完成设计变更"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSDesignChangeActivityValidator">
+            validation="com.tmt.gs.validation.DesignChangeOfGSActivityValidator">
       </taskForm>
       <taskForm
             editorId="gsprojectchange.activity"
@@ -5601,7 +5599,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_process"
                taskFormFieldName="ecnitem_process">
          </processParameter>
@@ -5609,7 +5607,7 @@
       <taskForm
             name="完成工艺变更"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSProcessChangeActivityValidator">
+            validation="com.tmt.gs.validation.ProcessChangeOfGSActivityValidator">
          tor">
       </taskForm>
       <taskForm
@@ -5622,7 +5620,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_purchase"
                taskFormFieldName="ecnitem_purchase">
          </processParameter>
@@ -5630,7 +5628,7 @@
       <taskForm
             name="完成采购变更"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSPurchaseChangeActivityValidator">
+            validation="com.tmt.gs.validation.PurchaseChangeOfGSActivityValidator">
       </taskForm>
       <taskForm
             editorId="gsprojectchange.activity"
@@ -5642,7 +5640,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_mfg"
                taskFormFieldName="ecnitem_mfg">
          </processParameter>
@@ -5650,7 +5648,7 @@
       <taskForm
             name="完成在制品处理"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSMfgChangeActivityValidator">
+            validation="com.tmt.gs.validation.MFGChangeOfGSActivityValidator">
       </taskForm>
       <taskForm
             editorId="gsprojectchange.activity"
@@ -5662,7 +5660,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_inspect"
                taskFormFieldName="ecnitem_inspect">
          </processParameter>
@@ -5670,7 +5668,7 @@
       <taskForm
             name="完成检验变更"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSInspectChangeActivityValidator">
+            validation="com.tmt.gs.validation.InspectChangeOfGSActivityValidator">
       </taskForm>
       <taskForm
             editorId="gsprojectchange.activity"
@@ -5682,7 +5680,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_package"
                taskFormFieldName="ecnitem_package">
          </processParameter>
@@ -5690,7 +5688,7 @@
       <taskForm
             name="完成包装变更"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSPackageChangeActivityValidator">
+            validation="com.tmt.gs.validation.PackageChangeOfGSActivityValidator">
       </taskForm>
       <taskForm
             editorId="gsprojectchange.activity"
@@ -5702,7 +5700,7 @@
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.GSECN"
+               processParameterDelegator="com.tmt.gs.field.parameter.ECNOfGS"
                processParameterName="ecnitem_relevant"
                taskFormFieldName="ecnitem_relevant">
          </processParameter>
@@ -5710,12 +5708,12 @@
       <taskForm
             name="完成相关部门变更"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSRelevantChangeActivityValidator">
+            validation="com.tmt.gs.validation.RelevantChangeOfGSActivityValidator">
       </taskForm>
       <taskForm
             name="变更完成确认"
             processDefinitionId="gs.gsProjectChange"
-            validation="com.tmt.gs.validation.GSComplateChangeActivityValidator">
+            validation="com.tmt.gs.validation.ComplateChangeOfGSActivityValidator">
       </taskForm>
       <taskForm
             editorId="gsProjectChange.audit"
@@ -5861,7 +5859,7 @@
             dbName="pm2"
             id="gsprojectchange.confirmProgram"
             name="确认变更方案"
-            saveHandler="com.tmt.gs.editor.GSProjectChangeConfirmProgramSaveHandler">
+            saveHandler="com.tmt.gs.editor.ProjectChangeConfirmProgramOfGSSaveHandler">
          <basicpage
                id="page1"
                title="审核变更申请">
@@ -5957,7 +5955,7 @@
                   <navigatorSelector
                         editable="true"
                         id="other"
-                        inputValidator="com.tmt.gs.validation.GSRelatedDeptValidation"
+                        inputValidator="com.tmt.gs.validation.RelatedDeptOfGSValidation"
                         label="请选择审核者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
@@ -6001,7 +5999,7 @@
                   <navigatorSelector
                         editable="true"
                         id="customer"
-                        inputValidator="com.tmt.gs.validation.GSHasCustomerValidation"
+                        inputValidator="com.tmt.gs.validation.HasCustomerOfGSValidation"
                         label="请选择审核者"
                         labelVisible="true"
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
@@ -6017,7 +6015,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.gs.editor.page.GSEngineeringChangeItem"
+               pageDelegator="com.tmt.gs.editor.page.EngineeringOfGSChangeItem"
                title="变更方案">
          </basicpage>
          <basicpage
@@ -6144,7 +6142,7 @@
          </basicpage>
          <basicpage
                id="page2"
-               pageDelegator="com.tmt.gs.editor.page.GSEngineeringChangePlan"
+               pageDelegator="com.tmt.gs.editor.page.EngineeringOfGSChangePlan"
                title="变更方案">
          </basicpage>
          <basicpage
@@ -6173,19 +6171,19 @@
             interface="gsmessage.service.action"
             name="通知财务"
             operation="financialmessage"
-            serviceProvider="com.tmt.gs.bpmservice.GSApplicationMessageOfTB">
+            serviceProvider="com.tmt.gs.bpmservice.ApplicationMessageOfGS">
       </service>
       <service
             interface="gsmessage.service.action"
             name="立项审批拒绝消息"
             operation="applicationcancelmessage"
-            serviceProvider="com.tmt.gs.bpmservice.GSApplicationMessageOfTB">
+            serviceProvider="com.tmt.gs.bpmservice.ApplicationMessageOfGS">
       </service>
       <service
             interface="gsmessage.service.action"
             name="立项审批通过消息"
             operation="applicationfinishmessage"
-            serviceProvider="com.tmt.gs.bpmservice.GSApplicationMessageOfTB">
+            serviceProvider="com.tmt.gs.bpmservice.ApplicationMessageOfGS">
       </service>
    </extension>
 

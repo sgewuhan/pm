@@ -1604,7 +1604,7 @@
             name="指派项目负责人">
          <basicpage
                id="page1"
-               title="%basicpage.title.16">
+               title="指派">
             <pagecolumn>
                <section
                      label="请指派项目经理">
@@ -1616,7 +1616,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="prj_manager"
-                        navigatorId="tb.taskforms.user.selector"
+                        navigatorId="kfzx.taskforms.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -1889,33 +1889,6 @@
                         type="String">
                   </text>
                </section>
-               <section
-                     label="请填写会议评审意见和结论">
-                  <text
-                        editPart="Text(Multi Line)"
-                        editable="true"
-                        id="comment"
-                        inputValidator="com.sg.business.taskforms.field.CheckByDenied"
-                        label="评审意见"
-                        labelVisible="false"
-                        name="comment"
-                        persistable="true"
-                        required="false"
-                        type="String"
-                        widthHint="320">
-                  </text>
-                  <radio
-                        editable="true"
-                        id="choice"
-                        label="评审结论"
-                        labelVisible="false"
-                        name="choice"
-                        option="是否整改"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </radio>
-               </section>
             </pagecolumn>
          </basicpage>
          <basicpage
@@ -1942,6 +1915,47 @@
             </pagecolumn>
          </basicpage>
       </editor>
+   </extension>
+   <extension
+         point="com.sg.widgets.navigator">
+      <navigator
+            id="kfzx.taskforms.user.selector"
+            tree="kfzx.taskforms.user.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
+   </extension>
+   <extension
+         point="com.sg.widgets.tree">
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.kfzx.dataset.UserSelectorOfKFZX"
+            headerVisiable="false"
+            id="kfzx.taskforms.user.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+      </tree>
    </extension>
 
 </plugin>
