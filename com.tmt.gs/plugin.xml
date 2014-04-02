@@ -3864,7 +3864,9 @@
          </column>
       </table>
       <table
+            collectionName="account"
             dataSet="com.tmt.gs.dataset.GSBusinessSupportApprover"
+            dbName="pm2"
             headerVisiable="false"
             id="gs.gsBusinessSupport.supportapprove1">
          <column
