@@ -9,19 +9,20 @@ import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
 import com.sg.business.model.Role;
+import com.sg.business.model.RoleAssignment;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class CustomerOfGS extends MasterDetailDataSetFactory {
+public class SubConcessionDataAuditSelectorOfGS extends
+		MasterDetailDataSetFactory {
 
 	public IContext context;
 	private User user;
 
-	public CustomerOfGS() {
+	public SubConcessionDataAuditSelectorOfGS() {
 		super(IModelConstants.DB, IModelConstants.C_USER);
 		context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getUserId();
@@ -33,28 +34,28 @@ public class CustomerOfGS extends MasterDetailDataSetFactory {
 		return null;
 	}
 
+	@Override
 	public DataSet getDataSet() {
 		if (master != null) {
 			if (master instanceof TaskForm) {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-				// 1.获取当前登录用户承担的角色
-				List<PrimaryObject> roles = user
-						.getRoles(IRoleConstance.ROLE_MARKET_CHECKER_ID);
-				// 2.获取角色所在组织
-				for (PrimaryObject po : roles) {
-					if (po instanceof Role) {
-						Role role = (Role) po;
-						Organization org = role.getOrganization();
-						List<PrimaryObject> userList = org.getUser();
-						for (PrimaryObject primaryObject : userList) {
-							if(primaryObject instanceof User){
-								User mc=(User) primaryObject;
-								result.add(mc);
-							}
-							
-						}
-					}
+				Organization organization = user.getOrganization();
+				Role role = organization.getRole(Role.ROLE_PROJECT_ADMIN_ID,
+						Organization.ROLE_SEARCH_UP);
+				List<PrimaryObject> assignment = role.getAssignment();
+				for (int i = 0; i < assignment.size(); i++) {
+					RoleAssignment assign = (RoleAssignment) assignment.get(i);
+					String userid = assign.getUserid();
+					User pm = UserToolkit.getUserById(userid);
+					result.add(pm);
 				}
+				/*for (PrimaryObject primaryObject : assignment) {
+					if(primaryObject instanceof User){
+						User user=(User) primaryObject;
+					}
+					
+				}*/
+				
 				return new DataSet(result);
 			}
 		}

@@ -39,15 +39,8 @@ public class UserSelectorOfGS extends MasterDetailDataSetFactory {
 			if (master instanceof TaskForm) {
 				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 				try {
-					List<PrimaryObject> roles = user
-							.getRoles(IRoleConstance.ROLE_A_PROJECR_ID);
-					for (PrimaryObject po : roles) {
-						if (po instanceof Role) {
-							Role role = (Role) po;
-							Organization org = role.getOrganization();
-							result.add(org);
-						}
-					}
+					Organization org = user.getOrganization();
+					result.add(org);
 					return new DataSet(result);
 				} catch (Exception e) {
 					e.printStackTrace();

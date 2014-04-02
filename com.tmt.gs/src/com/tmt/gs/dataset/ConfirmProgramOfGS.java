@@ -20,7 +20,7 @@ public class ConfirmProgramOfGS extends MasterDetailDataSetFactory {
 	public IContext context;
 	private User user;
 
-	public ConfirmProgramOfGS(String dbName, String collectionName) {
+	public ConfirmProgramOfGS() {
 		super(IModelConstants.DB, IModelConstants.C_USER);
 		context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getUserId();
@@ -43,7 +43,14 @@ public class ConfirmProgramOfGS extends MasterDetailDataSetFactory {
 				if (po instanceof Role) {
 					Role role = (Role) po;
 					Organization org = role.getOrganization();
-					result.add(org);
+					List<PrimaryObject> userList = org.getUser();
+					for (PrimaryObject primaryObject : userList) {
+						if(primaryObject instanceof User){
+							User tc=(User) primaryObject;
+							result.add(tc);
+						}
+						
+					}
 				}
 			}
 			return new DataSet(result);
