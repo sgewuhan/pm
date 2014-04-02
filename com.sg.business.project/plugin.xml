@@ -4564,11 +4564,11 @@
             commandId="project.editdeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.RemoveDeliverable"
+            class="com.sg.business.commons.operation.handler.RemoveDeliverable"
             commandId="project.deletedeliverable">
       </handler>
       <handler
-            class="com.sg.business.project.handler.EditDeliverableDocument"
+            class="com.sg.business.commons.operation.handler.EditDeliverableDocument"
             commandId="project.editdeliverabledocument">
       </handler>
       <handler
@@ -4685,11 +4685,11 @@
             commandId="project.createdeliverablewithvault">
       </handler>
       <handler
-            class="com.sg.business.project.handler.LockDocument"
+            class="com.sg.business.commons.operation.handler.LockDocument"
             commandId="project.documentlock">
       </handler>
       <handler
-            class="com.sg.business.project.handler.UnLockDocument"
+            class="com.sg.business.commons.operation.handler.UnLockDocument"
             commandId="project.documentunlock">
       </handler>
       <handler

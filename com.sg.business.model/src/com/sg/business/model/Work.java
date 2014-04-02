@@ -4798,4 +4798,16 @@ public class Work extends AbstractWork implements IProjectRelative, ISchedual,
 		return editorId;
 	}
 
+	public Deliverable getDeliverable(Document document) {
+		List<PrimaryObject> deliverableList = getDeliverable();
+		for (int i = 0; i < deliverableList.size(); i++) {
+			Deliverable deliverable = (Deliverable) deliverableList.get(i);
+			Document doc = deliverable.getDocument();
+			if (document.get_id().equals(doc.get_id())) {
+				return deliverable;
+			}
+		}
+		return null;
+	}
+
 }
