@@ -57,7 +57,6 @@ import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.OrganizationDistributeFileBase;
 import com.sg.business.model.Work;
-import com.sg.business.resource.BusinessResource;
 import com.sg.business.resource.nls.Messages;
 import com.sg.widgets.MessageUtil;
 import com.sg.widgets.fileupload.FileDialog;
@@ -248,8 +247,6 @@ public class DeliveryLinkAdapter implements SelectionListener {
 					MenuItem menuItem = new MenuItem(createContextMenu,
 							SWT.NONE);
 					menuItem.setText("编辑文档");
-					menuItem.setImage(BusinessResource
-							.getImage(BusinessResource.IMAGE_EDIT_24));
 					menuItem.addSelectionListener(new SelectionListener() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
@@ -270,8 +267,6 @@ public class DeliveryLinkAdapter implements SelectionListener {
 					MenuItem menuItem = new MenuItem(createContextMenu,
 							SWT.NONE);
 					menuItem.setText("查看文档");
-					menuItem.setImage(BusinessResource
-							.getImage(BusinessResource.IMAGE_DOCUMENT_24));
 					menuItem.addSelectionListener(new SelectionListener() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
@@ -292,8 +287,6 @@ public class DeliveryLinkAdapter implements SelectionListener {
 					MenuItem menuItem = new MenuItem(createContextMenu,
 							SWT.NONE);
 					menuItem.setText("锁定");
-					menuItem.setImage(BusinessResource
-							.getImage(BusinessResource.IMAGE_LOCK_24));
 					menuItem.addSelectionListener(new SelectionListener() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
@@ -313,8 +306,6 @@ public class DeliveryLinkAdapter implements SelectionListener {
 					MenuItem menuItem = new MenuItem(createContextMenu,
 							SWT.NONE);
 					menuItem.setText("解锁");
-					menuItem.setImage(BusinessResource
-							.getImage(BusinessResource.IMAGE_UMLOCK_24));
 					menuItem.addSelectionListener(new SelectionListener() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
@@ -335,8 +326,6 @@ public class DeliveryLinkAdapter implements SelectionListener {
 					MenuItem menuItem = new MenuItem(createContextMenu,
 							SWT.NONE);
 					menuItem.setText("删除");
-					menuItem.setImage(BusinessResource
-							.getImage(BusinessResource.IMAGE_TRASH_24));
 					menuItem.addSelectionListener(new SelectionListener() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
