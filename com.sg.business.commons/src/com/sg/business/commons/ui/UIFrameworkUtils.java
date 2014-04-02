@@ -23,6 +23,7 @@ public class UIFrameworkUtils {
 	 * 侧边拦
 	 */
 	public static final String VIEW_HOME_SIDEBAR = "homenavigator";
+	public static final String VIEW_HOME_SIDEBAR2 = "homenavigator2";
 
 	/**
 	 * 用于一般用户的首页视图
@@ -70,7 +71,14 @@ public class UIFrameworkUtils {
 	public static SideBarNavigator getSidebar() {
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
-		return (SideBarNavigator) page.findView(VIEW_HOME_SIDEBAR);
+		IViewReference[] vr = page.getViewReferences();
+		for (int i = 0; i < vr.length; i++) {
+			IViewPart _view = vr[i].getView(false);
+			if (_view instanceof SideBarNavigator) {
+				return (SideBarNavigator) _view;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -104,21 +112,25 @@ public class UIFrameworkUtils {
 
 	/**
 	 * 导航面板导航到新的对象或回到首页
-	 * @param editable 
+	 * 
+	 * @param editable
 	 * 
 	 * @return
 	 */
-	public static Object navigateTo(PrimaryObject po, int navigateMode, boolean editable) {
-		return navigateTo(po,navigateMode,editable,null);
+	public static Object navigateTo(PrimaryObject po, int navigateMode,
+			boolean editable) {
+		return navigateTo(po, navigateMode, editable, null);
 	}
-	
+
 	/**
 	 * 导航面板导航到新的对象或回到首页
-	 * @param editable 
+	 * 
+	 * @param editable
 	 * 
 	 * @return
 	 */
-	public static Object navigateTo(PrimaryObject po, int navigateMode, boolean editable,Object key) {
+	public static Object navigateTo(PrimaryObject po, int navigateMode,
+			boolean editable, Object key) {
 		if (po == null) {
 			return null;
 		} else {
@@ -157,8 +169,8 @@ public class UIFrameworkUtils {
 			if (navigateMode == NAVIGATE_BY_DIALOG
 					|| navigateMode == NAVIGATE_AUTOSELECT) {
 				try {
-					return DataObjectDialog.openDialog(po, config, editable, null,
-							po.getLabel());
+					return DataObjectDialog.openDialog(po, config, editable,
+							null, po.getLabel());
 				} catch (Exception e) {
 					if (navigateMode != NAVIGATE_AUTOSELECT) {
 						MessageUtil.showToast(e);
