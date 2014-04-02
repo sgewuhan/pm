@@ -2328,7 +2328,7 @@
             allPopups="false"
             locationURI="popup:work.deliverable">
          <command
-               commandId="project.editdeliverabledocument"
+               commandId="work.editdeliverabledocument"
                icon="image/edit_24.png"
                label="编辑文档"
                style="push">
@@ -2356,7 +2356,7 @@
             </parameter>
          </command>
          <command
-               commandId="project.editdeliverabledocument"
+               commandId="work.editdeliverabledocument"
                icon="image/document_24.png"
                label="查看文档"
                style="push">
@@ -2378,7 +2378,7 @@
             </parameter>
          </command>
          <command
-               commandId="project.documentlock"
+               commandId="work.documentlock"
                icon="image/lock_24.png"
                label="锁定"
                style="push">
@@ -2402,7 +2402,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="project.documentunlock"
+               commandId="work.documentunlock"
                icon="image/unlock_24.png"
                label="解锁"
                style="push">
@@ -2426,11 +2426,11 @@
             </visibleWhen>
          </command>
          <separator
-               name="project.deliverable.separator2"
+               name="work.deliverable.separator"
                visible="true">
          </separator>
          <command
-               commandId="project.deletedeliverable"
+               commandId="work.deletedeliverable"
                icon="image/trash_24.png"
                label="删除"
                style="push">
@@ -2600,6 +2600,31 @@
             id="work.sendmessage"
             name="%command.name.16">
       </command>
+      <command
+            categoryId="work"
+            id="work.editdeliverabledocument"
+            name="编辑交付物文档">
+         <commandParameter
+               id="deliverabledocument.editable"
+               name="editable"
+               optional="true">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="work"
+            id="work.documentlock"
+            name="锁定">
+      </command>
+      <command
+            categoryId="work"
+            id="work.documentunlock"
+            name="解锁">
+      </command>
+      <command
+            categoryId="work"
+            id="work.deletedeliverable"
+            name="删除交付物">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -2666,6 +2691,22 @@
       <handler
             class="com.sg.business.work.handler.SendMessage"
             commandId="work.sendmessage">
+      </handler>
+      <handler
+            class="com.sg.business.commons.operation.handler.EditDeliverableDocument"
+            commandId="work.editdeliverabledocument">
+      </handler>
+      <handler
+            class="com.sg.business.commons.operation.handler.LockDocument"
+            commandId="project.documentlock">
+      </handler>
+      <handler
+            class="com.sg.business.commons.operation.handler.UnLockDocument"
+            commandId="project.documentunlock">
+      </handler>
+      <handler
+            class="com.sg.business.commons.operation.handler.RemoveDeliverable"
+            commandId="work.deletedeliverable">
       </handler>
    </extension>
    <extension
