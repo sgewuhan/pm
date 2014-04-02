@@ -60,6 +60,11 @@ public class UserTaskDocumentLabelProvider extends HTMLAdvanceLabelProvider {
 			sb.append("'>"); //$NON-NLS-1$
 			sb.append(fileName);
 			sb.append("</a>"); //$NON-NLS-1$
+			sb.append("  ");
+			sb.append("<a href='view@");
+			sb.append("' target=\"_rwt\">"); 
+			sb.append("‘§¿¿");
+			sb.append("</a>"); 
 		} else {
 			sb.append("<a href='download@"); //$NON-NLS-1$
 			String downloadURL = serverFile.getInternalDownloadURL();
@@ -67,7 +72,11 @@ public class UserTaskDocumentLabelProvider extends HTMLAdvanceLabelProvider {
 			sb.append("' target=\"_rwt\">"); //$NON-NLS-1$
 			sb.append(fileName);
 			sb.append("</a>"); //$NON-NLS-1$
-
+			sb.append("  ");
+			sb.append("<a href='view@");
+			sb.append("' target=\"_rwt\">");  
+			sb.append("‘§¿¿");
+			sb.append("</a>"); 
 		}
 
 		sb.append("<br/>"); //$NON-NLS-1$

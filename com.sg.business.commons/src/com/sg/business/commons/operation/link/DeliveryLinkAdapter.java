@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,35 +19,50 @@ import java.util.zip.ZipOutputStream;
 
 import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.service.UrlLauncher;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.menus.IMenuService;
 
 import com.mobnut.commons.util.Office2PDFJob;
 import com.mobnut.commons.util.file.FileUtil;
+import com.mobnut.commons.util.file.GridFSFilePrevieweUtil;
+import com.mobnut.commons.util.file.OSServerFile;
 import com.mobnut.db.DBActivator;
+import com.mobnut.db.file.GridServerFile;
 import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.file.RemoteFileSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import com.sg.business.commons.ui.UIFrameworkUtils;
+import com.sg.business.model.Deliverable;
 import com.sg.business.model.Document;
 import com.sg.business.model.OrganizationDistributeFileBase;
+import com.sg.business.model.Work;
+import com.sg.business.resource.BusinessResource;
+import com.sg.business.resource.nls.Messages;
+import com.sg.widgets.MessageUtil;
 import com.sg.widgets.fileupload.FileDialog;
 import com.sg.widgets.part.CurrentAccountContext;
+import com.sg.widgets.part.editor.DataObjectEditor;
 import com.sg.widgets.viewer.ViewerControl;
 
 public class DeliveryLinkAdapter implements SelectionListener {
@@ -72,37 +88,288 @@ public class DeliveryLinkAdapter implements SelectionListener {
 					doUpload(_data, event);
 				} else if ("menu".equals(action)) {
 					createToolbar(_data, event);
+				} else if ("view".equals(action)) {
+					showPreview(_data, event);
 				}
 			} catch (Exception e) {
 			}
 		}
 	}
 
-	private void createToolbar(String _data, SelectionEvent event) {
-		TreeItem item = (TreeItem) event.item;
-		Tree tree = item.getParent();
-
-		String menuId = "popup:work.deliverable";
-
-		MenuManager menuManager = new MenuManager();
-		//
-		// fireSelectionChanged(new SelectionChangedEvent(this,
-		// getSelection()));
-		//
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
-		IMenuService mSvc = (IMenuService) window
-				.getService(IMenuService.class);
-		mSvc.populateContributionManager(menuManager, menuId);
-		Menu createContextMenu = menuManager.createContextMenu(tree);
-
-		createContextMenu.setLocation(tree.toDisplay(
-				item.getBounds().x + item.getBounds().width, item.getBounds().y
-						+ item.getBounds().height));
-
-		createContextMenu.setVisible(true);
+	private void showPreview(String _data, SelectionEvent event) {
+		Widget item = event.item;
+		if (item instanceof TreeItem) {
+			TreeItem treeItem = (TreeItem) item;
+			Object data = treeItem.getData();
+			Tree tree = treeItem.getParent();
+			Shell parent = tree.getShell();
+			if (data instanceof GridServerFile) {
+				createPreview(((GridServerFile) data).getRemoteFile(), parent);
+			} else if (data instanceof OSServerFile) {
+				createPreview((OSServerFile) data, parent);
+			}
+		}
 	}
-	
+
+	private void createPreview(final OSServerFile osfile, final Shell parent) {
+		File serverFile = osfile.getServerFile();
+		String serverFilePath = serverFile.getPath();
+		String previewFilePath = serverFilePath + ".pdf"; //$NON-NLS-1$
+		final File previewFile = new File(previewFilePath);
+		if (previewFile.isFile()) {
+			previewOSFile(previewFile, parent);
+			return;
+		}
+
+		int fileType = FileUtil.getFileType(osfile.getFileName());
+		final Display display = parent.getDisplay();
+		if (fileType == FileUtil.FILETYPE_OFFICE_FILE) {
+
+			Office2PDFJob job = new Office2PDFJob();
+			job.setSourceFile(serverFile);
+			job.setTargetFile(previewFile);
+			job.setUser(true);
+
+			job.addJobChangeListener(new JobChangeAdapter() {
+
+				@Override
+				public void done(IJobChangeEvent event) {
+					display.asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							previewOSFile(previewFile, parent);
+						}
+
+					});
+					super.done(event);
+				}
+			});
+			job.schedule();
+
+		}
+
+	}
+
+	private void createPreview(final RemoteFile remoteFile, final Shell parent) {
+		final GridFSFilePrevieweUtil previewUtil = new GridFSFilePrevieweUtil();
+		previewUtil.setRemoteFile(remoteFile);
+		if (!previewUtil.isPreviewAvailable()) {
+			String pathname = System.getProperty("user.dir") + "/temp"; //$NON-NLS-1$ //$NON-NLS-2$
+			File file;
+			try {
+				file = remoteFile.createServerFile(pathname);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				return;
+			}
+
+			final ObjectId pvOid = new ObjectId();
+			String masterfileName = file.getName();
+			String previewPath = file.getParent()
+					+ "/" //$NON-NLS-1$
+					+ masterfileName.substring(0,
+							masterfileName.lastIndexOf(".")) + ".pdf"; //$NON-NLS-1$ //$NON-NLS-2$
+			final File previewFile = new File(previewPath);
+			Job job = previewUtil.createGeneratePDFJob(file, previewPath);
+			final Display display = parent.getDisplay();
+			job.addJobChangeListener(new JobChangeAdapter() {
+
+				@Override
+				public void done(IJobChangeEvent event) {
+					display.asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							remoteFile.setPreviewUploaded(previewFile, pvOid);
+							try {
+								remoteFile.addPreview();
+							} catch (FileNotFoundException e) {
+								e.printStackTrace();
+							}
+							previewRemoteFile(previewUtil, parent);
+						}
+
+					});
+					super.done(event);
+				}
+			});
+			job.schedule();
+		} else {
+			previewRemoteFile(previewUtil, parent);
+		}
+	}
+
+	private void previewOSFile(File previewFile, Shell parent) {
+		StringBuffer url = new StringBuffer();
+		url.append("/pdf/open?"); //$NON-NLS-1$
+		String filePath = previewFile.getPath();
+		url.append("path="); //$NON-NLS-1$
+		url.append(filePath);
+		UrlLauncher launcher = RWT.getClient().getService(UrlLauncher.class);
+		launcher.openURL(url.toString());
+	}
+
+	private void previewRemoteFile(GridFSFilePrevieweUtil previewUtil,
+			Shell parent) {
+		if (previewUtil.isHTML()) {
+			Shell shell = new Shell(parent, SWT.MAX | SWT.CLOSE | SWT.RESIZE);
+			Display display = shell.getDisplay();
+			shell.setLayout(new FillLayout());
+			Browser previewer = new Browser(shell, SWT.NONE);
+			previewer.setText(previewUtil.getHTML());
+			Rectangle bounds = new Rectangle(
+					(display.getBounds().width - 600) / 2,
+					(display.getBounds().height - 600) / 2, 600, 600);
+			shell.setBounds(bounds);
+			shell.open();
+		} else {
+			UrlLauncher launcher = RWT.getClient()
+					.getService(UrlLauncher.class);
+			launcher.openURL(previewUtil.getURL());
+		}
+	}
+
+	private void createToolbar(String _data, SelectionEvent event) {
+		Widget item = event.item;
+		if (item instanceof TreeItem) {
+			TreeItem treeItem = (TreeItem) item;
+			Rectangle bounds = treeItem.getBounds();
+			final Tree tree = treeItem.getParent();
+			final Document doc = ModelService.createModelObject(Document.class,
+					new ObjectId(_data));
+			final ViewerControl vc = (ViewerControl) tree.getData("navi");
+			final IContext context = new CurrentAccountContext();
+			final PrimaryObject po = vc.getMaster();
+			if (po instanceof Work) {
+				final Deliverable deliverable = ((Work) po).getDeliverable(doc);
+				Menu createContextMenu = new Menu(tree);
+				if (doc.canEdit(context)) {
+					MenuItem menuItem = new MenuItem(createContextMenu,
+							SWT.NONE);
+					menuItem.setText("编辑文档");
+					menuItem.setImage(BusinessResource
+							.getImage(BusinessResource.IMAGE_EDIT_24));
+					menuItem.addSelectionListener(new SelectionListener() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							try {
+								DataObjectEditor.open(doc,
+										doc.getDefaultEditorId(), true, null);
+							} catch (Exception e1) {
+								MessageUtil.showToast(e1);
+							}
+						}
+
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+						}
+					});
+				}
+				if (doc.canRead(context)) {
+					MenuItem menuItem = new MenuItem(createContextMenu,
+							SWT.NONE);
+					menuItem.setText("查看文档");
+					menuItem.setImage(BusinessResource
+							.getImage(BusinessResource.IMAGE_DOCUMENT_24));
+					menuItem.addSelectionListener(new SelectionListener() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							try {
+								DataObjectEditor.open(doc,
+										doc.getDefaultEditorId(), false, null);
+							} catch (Exception e1) {
+								MessageUtil.showToast(e1);
+							}
+						}
+
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+						}
+					});
+				}
+				if (doc.canLock(context)) {
+					MenuItem menuItem = new MenuItem(createContextMenu,
+							SWT.NONE);
+					menuItem.setText("锁定");
+					menuItem.setImage(BusinessResource
+							.getImage(BusinessResource.IMAGE_LOCK_24));
+					menuItem.addSelectionListener(new SelectionListener() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							try {
+								doc.doLock(context);
+								vc.getViewer().refresh(doc);
+							} catch (Exception e1) {
+								MessageUtil.showToast(e1);
+							}
+						}
+
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+						}
+					});
+				} else {
+					MenuItem menuItem = new MenuItem(createContextMenu,
+							SWT.NONE);
+					menuItem.setText("解锁");
+					menuItem.setImage(BusinessResource
+							.getImage(BusinessResource.IMAGE_UMLOCK_24));
+					menuItem.addSelectionListener(new SelectionListener() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							try {
+								doc.doUnLock(context);
+								vc.getViewer().refresh(doc);
+							} catch (Exception e1) {
+								MessageUtil.showToast(e1);
+							}
+						}
+
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+						}
+					});
+				}
+				if (deliverable.canDelete(context)) {
+					MenuItem menuItem = new MenuItem(createContextMenu,
+							SWT.NONE);
+					menuItem.setText("删除");
+					menuItem.setImage(BusinessResource
+							.getImage(BusinessResource.IMAGE_TRASH_24));
+					menuItem.addSelectionListener(new SelectionListener() {
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							try {
+								int yes = MessageUtil.showMessage(
+										tree.getShell(),
+										Messages.get().RemovePrimaryObject_1
+												+ deliverable.getTypeName(),
+										Messages.get().RemovePrimaryObject_2,
+										SWT.YES | SWT.NO | SWT.ICON_QUESTION);
+								if (yes != SWT.YES) {
+									return;
+								}
+								deliverable.doRemove(context);
+								UIFrameworkUtils.getHomePart().doRefresh();
+							} catch (Exception e1) {
+								MessageUtil.showToast(e1);
+							}
+						}
+
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+						}
+					});
+				}
+
+				createContextMenu.setLocation(tree.toDisplay(bounds.x
+						+ bounds.width, bounds.y + bounds.height));
+				createContextMenu.setVisible(true);
+			}
+		}
+	}
+
 	private void doUpload(String _data, SelectionEvent event) throws Exception {
 		Document doc = ModelService.createModelObject(Document.class,
 				new ObjectId(_data));
