@@ -24,6 +24,7 @@ public class LaunchWork extends AbstractWorkDetailPageAction {
 		if (b) {
 			try {
 				work.doSave(context);
+				sidebarRefresh("1");
 			} catch (Exception e) {
 				MessageUtil.showToast(e);
 				return;
@@ -82,6 +83,12 @@ public class LaunchWork extends AbstractWorkDetailPageAction {
 	private void sidebarSelected(String id, Work work) {
 		SideBarNavigator sidebar = UIFrameworkUtils.getSidebar();
 		sidebar.setSelection(id, work);
-		UIFrameworkUtils.navigateTo(work,UIFrameworkUtils.NAVIGATE_AUTOSELECT,true);
+		UIFrameworkUtils.navigateTo(work, UIFrameworkUtils.NAVIGATE_AUTOSELECT,
+				true);
+	}
+
+	private void sidebarRefresh(String id) {
+		SideBarNavigator sidebar = UIFrameworkUtils.getSidebar();
+		sidebar.doRefresh(id);
 	}
 }

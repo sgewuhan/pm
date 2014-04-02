@@ -79,6 +79,7 @@ public class UIFrameworkUtils {
 	public static void refreshSidebar() {
 		SideBarNavigator sidebar = getSidebar();
 		if (sidebar != null) {
+			sidebar.cleanSelection();
 			sidebar.doRefresh();
 		}
 	}

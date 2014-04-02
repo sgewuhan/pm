@@ -5,10 +5,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.ui.IWorkbenchPart;
 
+import com.sg.business.commons.ui.UIFrameworkUtils;
 import com.sg.business.model.Message;
 import com.sg.business.model.Work;
 import com.sg.business.model.WorkDefinition;
 import com.sg.widgets.part.editor.DataObjectView;
+import com.sg.widgets.part.view.SideBarNavigator;
 
 public class BasicHome extends DataObjectView {
 
@@ -28,6 +30,10 @@ public class BasicHome extends DataObjectView {
 		content.setLayout(new GridLayout());
 		genericHomePanel = new BasicHomePanel(content);
 		content.layout(false,false);
+		SideBarNavigator sidebar = UIFrameworkUtils.getSidebar();
+		if(sidebar != null){
+			sidebar.cleanSelection();
+		}
 		super.goHome();
 	}
 

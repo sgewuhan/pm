@@ -14,10 +14,11 @@ public class DeleteWork extends AbstractWorkDetailPageAction {
 	public void run(Work work, Control control) {
 		try {
 			Shell shell = control.getShell();
-			int yes = MessageUtil.showMessage(shell,
-					Messages.get().RemoveWork_1 + work.getDesc(),
-					Messages.get().RemoveWork_4
-							+ work.getDesc() //$NON-NLS-2$ //$NON-NLS-1$
+			String desc = work.getDesc();
+			int yes = MessageUtil.showMessage(
+					shell,
+					Messages.get().RemoveWork_1 + desc,
+					Messages.get().RemoveWork_4 + desc
 							+ Messages.get().RemoveWork_6
 							+ Messages.get().RemoveWork_7, SWT.YES | SWT.NO
 							| SWT.ICON_QUESTION);

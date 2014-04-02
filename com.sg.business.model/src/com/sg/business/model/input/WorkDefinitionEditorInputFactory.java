@@ -25,10 +25,11 @@ public class WorkDefinitionEditorInputFactory implements IEditorInputFactory {
 			work.setValue(Work.F_CHARGER, context.getConsignerId());// 设置负责人为当前用户
 			try {
 				workd.makeStandloneWork(work, context);
+				work.setValue(Work.F_DESC, workd.getDesc());
 			} catch (Exception e) {
 				return null;
 			}
-			
+
 			DataEditorConfigurator conf = getEditorConfig(work);
 			PrimaryObjectEditorInput editorInput = new PrimaryObjectEditorInput(
 					work, conf, null);

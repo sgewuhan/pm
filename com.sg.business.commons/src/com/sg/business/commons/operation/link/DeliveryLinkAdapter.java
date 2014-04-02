@@ -20,16 +20,10 @@ import org.bson.types.ObjectId;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.IPostSelectionProvider;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
@@ -85,32 +79,30 @@ public class DeliveryLinkAdapter implements SelectionListener {
 	}
 
 	private void createToolbar(String _data, SelectionEvent event) {
-//		TreeItem item = (TreeItem) event.item;
-//		Tree tree = item.getParent();
-//		Point l = tree.toDisplay(0, 0);
-//		System.out.println(l.x);
-//		System.out.println(l.y);
-//		Rectangle bounds = item.getBounds();
-//		System.out.println(bounds.height);
-//
-//		MenuManager menuManager = new MenuManager();
-//
-//		fireSelectionChanged(new SelectionChangedEvent(this, getSelection()));
-//
-//		IWorkbenchWindow window = PlatformUI.getWorkbench()
-//				.getActiveWorkbenchWindow();
-//		IMenuService mSvc = (IMenuService) window
-//				.getService(IMenuService.class);
-//		String menuId = "popup:project.deliverable";
-//		mSvc.populateContributionManager(menuManager, menuId);
-//		Menu createContextMenu = menuManager.createContextMenu(pab);
-//
-//		createContextMenu.setLocation(pab.toDisplay(pab.getBounds().x,
-//				pab.getBounds().y + 24));
-//
-//		createContextMenu.setVisible(true);
-	}
+		TreeItem item = (TreeItem) event.item;
+		Tree tree = item.getParent();
 
+		String menuId = "popup:work.deliverable";
+
+		MenuManager menuManager = new MenuManager();
+		//
+		// fireSelectionChanged(new SelectionChangedEvent(this,
+		// getSelection()));
+		//
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		IMenuService mSvc = (IMenuService) window
+				.getService(IMenuService.class);
+		mSvc.populateContributionManager(menuManager, menuId);
+		Menu createContextMenu = menuManager.createContextMenu(tree);
+
+		createContextMenu.setLocation(tree.toDisplay(
+				item.getBounds().x + item.getBounds().width, item.getBounds().y
+						+ item.getBounds().height));
+
+		createContextMenu.setVisible(true);
+	}
+	
 	private void doUpload(String _data, SelectionEvent event) throws Exception {
 		Document doc = ModelService.createModelObject(Document.class,
 				new ObjectId(_data));
