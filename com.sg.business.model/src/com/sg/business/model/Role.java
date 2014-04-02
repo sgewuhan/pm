@@ -220,7 +220,7 @@ public class Role extends PrimaryObject {
 				RoleAssignment roleAssignment = (RoleAssignment) po;
 				userIdList.add(roleAssignment.getUserid());
 			}
-			parameters.put(IRoleParameter.USERID, userIdList);
+			parameters.put(IRoleParameter.USERID, userIdList.toArray());
 
 			if (js != null) {
 				try {
