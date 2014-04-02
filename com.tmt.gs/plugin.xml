@@ -3209,7 +3209,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="prj_manager"
-                        navigatorId="gschangeapprover.navigator"
+                        navigatorId="gs.taskforms.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -3679,7 +3679,8 @@
             table="gs.projectchange.related">
       </navigator>
       <navigator
-            id="gs.projectchange.customer">
+            id="gs.projectchange.customer"
+            table="gs.projectchange.customer">
       </navigator>
       <navigator
             id="gs.bussinesssupport.support"
@@ -3694,7 +3695,7 @@
          point="com.sg.widgets.tree">
       <tree
             autoExpandLevel="2"
-            dataSet="com.tmt.gs.dataset.OrganizationSelectorOfGS"
+            dataSet="com.tmt.gs.dataset.SubConcessionDataAuditSelectorOfGS"
             headerVisiable="false"
             id="gs.taskforms.organization.selector">
          <column
@@ -4314,7 +4315,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="support"
-                        navigatorId="gs.projectchange.confirmprogram"
+                        navigatorId="gschangeapprover.navigator"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4468,7 +4469,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="cbcapporver"
-                        navigatorId="gschangeapprover.navigator"
+                        navigatorId="gs.projectchange.related"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4545,7 +4546,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="tecapporver"
-                        navigatorId="gschangeapprover.navigator"
+                        navigatorId="gs.projectchange.related"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">
@@ -4831,7 +4832,7 @@
       <taskForm
             editorId="gs.gssubconcessions.application"
             name="转批申请"
-            persistentFields="workorder,product,prj_manager,dept,accessory"
+            persistentFields="workorder,product,prj_manager,dept,accessory,data_audit"
             processDefinitionId="gs.gsSubconcessions1"
             saveHandler="com.tmt.gs.handler.ProjectApplicationOfGSAuditSaveHandler">
          <processParameter
@@ -4848,9 +4849,8 @@
                taskFormFieldName="prj_manager">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.gs.field.parameter.DataAuditOfGS"
                processParameterName="data_audit"
-               taskFormFieldName="dept">
+               taskFormFieldName="data_audit">
          </processParameter>
          <processParameter
                processParameterDelegator="com.tmt.gs.field.parameter.DevelopmentDirectorOfGS"
@@ -5014,7 +5014,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="prj_manager"
-                        navigatorId="organization.user.selector"
+                        navigatorId="gs.taskforms.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
@@ -5039,6 +5039,19 @@
                         persistable="true"
                         required="true">
                   </list>
+                  <navigatorSelector
+                        editable="true"
+                        id="data_audit"
+                        label="资料初审人"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="data_audit"
+                        navigatorId="gs.taskforms.organization.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
                </section>
             </pagecolumn>
          </basicpage>
@@ -6005,7 +6018,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="customer"
-                        navigatorId="gs.projectchange.customer"
+                        navigatorId="gs.taskforms.user.selector"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="false">

@@ -8,7 +8,7 @@ public class BusinessSupportApproverOfGS extends AbstractRoleAssignmentDataSetFa
 
 	@Override
 	protected int getSelectType() {
-		return Organization.ROLE_SEARCH_DOWN;
+		return Organization.ROLE_SEARCH_UP;
 	}
 
 	@Override

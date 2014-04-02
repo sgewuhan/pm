@@ -14,7 +14,7 @@ public class ProductOfGS extends AbstractRoleAssignmentDataSetFactory {
 
 	@Override
 	protected String getRoleNumber() {
-		return IRoleConstance.ROLE_PRODUCT_CHECKER_ID;
+		return IRoleConstance.ROLE_PRODUCTION_CHECKER_ID;
 	}
 
 

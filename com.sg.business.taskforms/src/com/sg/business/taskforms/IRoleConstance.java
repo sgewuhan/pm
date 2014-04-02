@@ -118,10 +118,10 @@ public interface IRoleConstance {
 	public static final String ROLE_TECHNOLOGY_CHECKER_TEXT=Messages.get().IRoleConstance_30;
 	
 	/**
-	 *在制品审核 
+	 *生产部审核 
 	 */
-	public static final String ROLE_PRODUCT_CHECKER_ID = "Product Checker";
-	public static final String ROLE_PRODUCT_CHECKER_TEXT=Messages.get().IRoleConstance_31;
+	public static final String ROLE_PRODUCTION_CHECKER_ID = "Production Checker";
+	public static final String ROLE_PRODUCTION_CHECKER_TEXT=Messages.get().IRoleConstance_31;
 	
 	/**
 	 * 市场部审核

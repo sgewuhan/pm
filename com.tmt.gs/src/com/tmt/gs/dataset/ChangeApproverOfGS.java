@@ -21,7 +21,7 @@ public class ChangeApproverOfGS extends MasterDetailDataSetFactory {
 	public IContext context;
 	private User user;
 
-	public ChangeApproverOfGS(String dbName, String collectionName) {
+	public ChangeApproverOfGS() {
 		super(IModelConstants.DB, IModelConstants.C_USER);
 		context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getUserId();
@@ -43,14 +43,16 @@ public class ChangeApproverOfGS extends MasterDetailDataSetFactory {
 					if (po instanceof Role) {
 						Role role = (Role) po;
 						Organization org = role.getOrganization();
-						/*List<PrimaryObject> user2 = org.getUser();
-						for (PrimaryObject primaryObject : user2) {
+						 List<PrimaryObject> userList = org.getUser();
+						for (PrimaryObject primaryObject : userList) {
 							if(primaryObject instanceof User){
-								user=(User) primaryObject;
+								User tlc=(User) primaryObject;
+								result.add(tlc);
 							}
+							
 						}
-						result.add(user);*/
-						result.add(org);
+						
+						
 					}
 				}
 				return new DataSet(result);
