@@ -10,6 +10,8 @@ public class Messages {
 	private static final String BUNDLE_NAME = "com.sg.business.resource.nls.messages"; //$NON-NLS-1$
 	
 	
+	
+	
 	public static Messages get() {
 		return NLS2.getMessage(BUNDLE_NAME, Messages.class);
 	}
@@ -380,6 +382,12 @@ public class Messages {
 	public String IRoleConstance_27;
 	public String IRoleConstance_28;
 	public String IRoleConstance_29;
+	public String IRoleConstance_30;
+	public String IRoleConstance_31;
+	public String IRoleConstance_32;
+	public String IRoleConstance_33;
+	public String IRoleConstance_34;
+	public String IRoleConstance_35;
 	public String LaunchWorkWizard_1;
 	public String LifeCycleActionCancel_0;
 	public String LifeCycleActionCancel_2;
