@@ -58,6 +58,7 @@ public abstract class ImportData implements Runnable {
 		}
 	}
 
+	@Deprecated
 	public void syncItem(String ouid,Document doc) throws Exception {
 		if(doc==null){
 			doc = ModelService.createModelObject(Document.class);

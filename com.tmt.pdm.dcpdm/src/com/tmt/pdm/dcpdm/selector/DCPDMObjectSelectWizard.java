@@ -10,6 +10,8 @@ import java.util.Set;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Shell;
 
 import com.sg.widgets.part.CurrentAccountContext;
 import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
@@ -23,7 +25,7 @@ public class DCPDMObjectSelectWizard extends Wizard {
 	private AdvanceSearchPage advanceSearchPage;
 	Set<String> selectedObjectOuid = new HashSet<String>();
 	
-
+	
 	@SuppressWarnings("unchecked")
 	public DCPDMObjectSelectWizard() {
 		String userId = new CurrentAccountContext().getConsignerId();
@@ -64,6 +66,15 @@ public class DCPDMObjectSelectWizard extends Wizard {
 	
 	public Set<String> getSelectedObjectOuid() {
 		return selectedObjectOuid;
+	}
+	
+	public static Set<String> selectPDMObject(Shell shell){
+		DCPDMObjectSelectWizard wiz = new DCPDMObjectSelectWizard();
+		WizardDialog wizardDialog = new WizardDialog(shell, wiz);
+		if (WizardDialog.OK == wizardDialog.open()) {
+			return wiz.getSelectedObjectOuid();
+		}
+		return null;
 	}
 
 }

@@ -2,13 +2,11 @@ package com.tmt.pdm.dcpdm.editor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,7 +23,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.forms.widgets.Section;
 
 import com.mobnut.commons.html.HtmlUtil;
-import com.mongodb.BasicDBList;
 import com.sg.business.document.editor.DocumentWorkflowHistory;
 import com.sg.business.model.Document;
 import com.sg.widgets.part.SimpleSection;
@@ -35,7 +32,6 @@ import com.sg.widgets.registry.config.BasicPageConfigurator;
 import com.tmt.pdm.client.Starter;
 import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
 import com.tmt.pdm.dcpdm.label.DCPDMObjectLabelProvider;
-import com.tmt.pdm.dcpdm.selector.DCPDMObjectSelectWizard;
 
 import dyna.framework.iip.IIPRequestException;
 
@@ -86,20 +82,23 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 		layout.marginBottom = 0;
 		bar.setLayout(layout);
 
-		Button button = new Button(bar, SWT.PUSH);
-		button.setText("选择DCPDM图纸对象");
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				try {
-					selectDCPDMObject(input, panel.getShell());
-				} catch (Exception e1) {
-				}
-			}
-		});
+		// Button
+		// button = new Button(bar, SWT.PUSH);
+		// button.setText("选择...");
+		// button.setData(RWT.CUSTOM_VARIANT,"small_white");
+		// button.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// try {
+		// selectDCPDMObject(input, panel.getShell());
+		// } catch (Exception e1) {
+		// }
+		// }
+		// });
 
-		button = new Button(bar, SWT.PUSH);
+		Button button = new Button(bar, SWT.PUSH);
 		button.setText("下载全部");
+		button.setData(RWT.CUSTOM_VARIANT, "small_white");
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -113,43 +112,44 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 
 		section.setTextClient(bar);
 
-		section.setText("文件包");
+		section.setText("DCPDM图纸对象");
 		Composite table = createFileContentTable(section, input);
 		section.setClient(table);
 		return section;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected void selectDCPDMObject(PrimaryObjectEditorInput input, Shell shell) {
-		DCPDMObjectSelectWizard wiz = new DCPDMObjectSelectWizard();
+	// @SuppressWarnings({ "unchecked", "rawtypes" })
+	// protected void selectDCPDMObject(PrimaryObjectEditorInput input, Shell
+	// shell) {
+	// DCPDMObjectSelectWizard wiz = new DCPDMObjectSelectWizard();
+	//
+	// WizardDialog wizardDialog = new WizardDialog(shell, wiz);
+	//
+	// int ok = wizardDialog.open();
+	// if (ok == WizardDialog.OK) {
+	// Set<String> set = wiz.getSelectedObjectOuid();
+	// if (set.size() > 0) {
+	// BasicDBList value = new BasicDBList();
+	// value.addAll(set);
+	// Object oldValues = input.getData().getValue("pdm_ouids");
+	// if(oldValues instanceof List){
+	// List oldList = (List) oldValues;
+	// if(oldList.containsAll(value)&&value.containsAll(oldList)){
+	// return;
+	// }
+	// }
+	//
+	// input.getData().setValue("pdm_ouids", value);
+	// this.setDirty(true);
+	// try {
+	// loadFileValue(value);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	// }
 
-		WizardDialog wizardDialog = new WizardDialog(shell, wiz);
-
-		int ok = wizardDialog.open();
-		if (ok == WizardDialog.OK) {
-			Set<String> set = wiz.getSelectedObjectOuid();
-			if (set.size() > 0) {
-				BasicDBList value =  new BasicDBList();
-				value.addAll(set);
-				Object oldValues = input.getData().getValue("pdm_ouids");
-				if(oldValues instanceof List){
-					List oldList = (List) oldValues;
-					if(oldList.containsAll(value)&&value.containsAll(oldList)){
-						return;
-					}
-				}
-				
-				input.getData().setValue("pdm_ouids", value);
-				this.setDirty(true);
-				try {
-					loadFileValue(value);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
 	@Override
 	public void commit(boolean onSave) {
 		super.commit(onSave);
@@ -159,15 +159,11 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void downloadAll(PrimaryObjectEditorInput input, Shell shell)
 			throws Exception {
-		List pdm_ouids = (List) input.getData().getValue("pdm_ouids");
+		String pdm_ouid = (String) input.getData().getValue("pdm_ouid");
 		String zipFileName = (String) input.getData().getValue(
 				Document.F_DOCUMENT_NUMBER);
-		if (pdm_ouids != null) {
-			ArrayList fileList = new ArrayList();
-			for (int i = 0; i < pdm_ouids.size(); i++) {
-				ArrayList fl = Starter.dos.listFile((String) pdm_ouids.get(i));
-				fileList.addAll(fl);
-			}
+		if (pdm_ouid != null) {
+			ArrayList fileList = Starter.dos.listFile((String) pdm_ouid);
 			if (fileList != null) {
 				DCPDMUtil.download(zipFileName, fileList, shell);
 			}
@@ -230,9 +226,8 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 
 		fileViewer.setAutoExpandLevel(TreeViewer.ALL_LEVELS);
 		try {
-			@SuppressWarnings("rawtypes")
-			List pdm_ouids = (List) input.getData().getValue("pdm_ouids");
-			loadFileValue(pdm_ouids);
+			String pdm_ouid = (String) input.getData().getValue("pdm_ouid");
+			loadFileValue(pdm_ouid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -240,9 +235,9 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void loadFileValue(List pdm_ouids) throws Exception {
-		if (pdm_ouids != null) {
-			fileViewer.setInput(pdm_ouids);
+	private void loadFileValue(String pdm_ouid) throws Exception {
+		if (pdm_ouid != null) {
+			fileViewer.setInput(new String[]{pdm_ouid});
 			return;
 		}
 		fileViewer.setInput(new ArrayList());

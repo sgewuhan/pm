@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.bson.types.ObjectId;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.widgets.Shell;
 
@@ -72,6 +73,7 @@ public class DCPDMUtil {
 
 	}
 
+	@Deprecated
 	private static boolean createDocumentFromDCPDM(Work work,
 			List<?> docContainer, List<?> partContainer, Shell shell) {
 		PDMObjectSelector selector = new PDMObjectSelector(shell, docContainer,
@@ -127,6 +129,7 @@ public class DCPDMUtil {
 		return null;
 	}
 
+	@Deprecated
 	public static void createDocument(Work work, String ouid) throws Exception {
 		IContext context = new CurrentAccountContext();
 
@@ -158,7 +161,96 @@ public class DCPDMUtil {
 		document = deli.getDocument();
 		writePDMInfo(ouid, document);
 	}
+	
+	@Deprecated
+	public static void createDocument(Work work, String ouid, IContext context) throws Exception {
 
+		// 取出PDM中的对象
+		DOSChangeable pdmObject = Starter.dos.get(ouid);
+		Object docNumber = pdmObject.get("md$number"); //$NON-NLS-1$
+		Document document = null;
+		if (!Utils.isNullOrEmptyString(docNumber)) {
+			DBCollection docCol = DBActivator.getCollection(IModelConstants.DB,
+					IModelConstants.C_DOCUMENT);
+			DBObject docData = docCol.findOne(new BasicDBObject().append(
+					Document.F_DOCUMENT_NUMBER, docNumber));
+			if (docData != null) {
+				document = ModelService.createModelObject(docData,
+						Document.class);
+			}
+		}
+		Deliverable deli;
+
+		// 没有对应的PDM对象
+		if (document == null) {
+			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
+		} else {
+			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_LINK);
+			deli.setValue(Deliverable.F_DOCUMENT_ID, document.get_id());
+		}
+		deli.setValue(Deliverable.F_DESC, pdmObject.get("md$description")); //$NON-NLS-1$
+		deli.doSave(context);
+		document = deli.getDocument();
+		writePDMInfo(ouid, document);
+	}
+	
+	public static void createDocument2(Work work, String ouid, IContext context) throws Exception {
+
+		// 取出PDM中的对象
+		DOSChangeable pdmObject = Starter.dos.get(ouid);
+		Object docId = pdmObject.get("pm_id"); //$NON-NLS-1$
+		String pdmDesc = (String) pdmObject.get("md$description");
+		String number = (String) pdmObject.get("md$number");
+		String pdmModelName = (String) pdmObject.get("name");
+		String desc;
+		if(pdmModelName!=null){
+			desc = pdmModelName;
+		}else if(pdmDesc!=null){
+			desc = pdmDesc;
+		}else{
+			desc = "";
+		}
+		
+		Document doc = null;
+		if (!Utils.isNullOrEmptyString(docId)) {
+			DBCollection docCol = DBActivator.getCollection(IModelConstants.DB,
+					IModelConstants.C_DOCUMENT);
+			DBObject docData = docCol.findOne(new BasicDBObject().append(
+					Document.F__ID, new ObjectId((String)docId)));
+			//可系统中查找到该文档
+			if (docData != null) {
+				doc = ModelService.createModelObject(docData,
+						Document.class);
+			}
+		}
+		Deliverable deli;
+
+		// 没有对应的PDM对象
+		if (doc == null) {
+			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_OUTPUT);
+		} else {
+			deli = work.makeDeliverableDefinition(IDeliverable.TYPE_LINK);
+			deli.setValue(Deliverable.F_DOCUMENT_ID, doc.get_id());
+		}
+		deli.setValue(Deliverable.F_DESC, desc); 
+		deli.doSave(context);
+		doc = deli.getDocument();
+		if(doc==null){
+			doc = ModelService.createModelObject(Document.class);
+			doc.setValue(Document.F__ID, new ObjectId());
+		}
+
+		doc.setValue(Document.F_DOCUMENT_NUMBER, number); 
+		doc.setValue(Document.F_DESC, desc); 
+		doc.setValue(Document.F_PDM_OUID, ouid);
+		doc.setValue(Document.F__EDITOR, "editor.document.dcpdm");
+		doc.doSave(context);
+		pdmObject = Starter.dos.get(ouid);
+		pdmObject.put("pm_id", doc.get_id().toString());
+		Starter.dos.set(pdmObject);
+	}
+
+	@Deprecated
 	public static boolean createDocumentFromDCPDM(String userId, Work work,
 			Shell shell) throws Exception {
 		List<?> docContainer = DCPDMUtil
@@ -171,7 +263,8 @@ public class DCPDMUtil {
 
 		return createDocumentFromDCPDM(work, docContainer, partContainer, shell);
 	}
-
+	
+	@Deprecated
 	public static List<Document> getDocumentFromDCPDM(String userId, Shell shell)
 			throws Exception {
 		List<?> docContainer = DCPDMUtil
@@ -222,6 +315,7 @@ public class DCPDMUtil {
 
 	}
 
+	@Deprecated
 	private static void writePDMInfo(String ouid, final Document document)
 			throws Exception {
 		ImportData ip = new ImportData() {

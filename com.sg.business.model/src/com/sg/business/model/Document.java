@@ -602,9 +602,9 @@ public class Document extends PrimaryObject implements IProjectRelative {
 		return getDateValue(F_LOCKED_ON);
 	}
 
-	public String getEditor() {
-		return EDITOR;
-	}
+//	public String getEditor() {
+//		return EDITOR;
+//	}
 
 	@Override
 	public boolean canDelete(IContext context) {

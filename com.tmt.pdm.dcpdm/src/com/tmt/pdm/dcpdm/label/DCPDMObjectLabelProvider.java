@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 
+import com.mobnut.commons.html.HtmlUtil;
 import com.tmt.pdm.client.Starter;
 import com.tmt.pdm.dcpdm.handler.DCPDMUtil;
 
@@ -23,13 +24,38 @@ public class DCPDMObjectLabelProvider extends ColumnLabelProvider {
 				if (dosObj != null) {
 					String classOuid = Starter.dos.getClassOuid((String) element);
 					DOSChangeable classObj = Starter.dos.getClass(classOuid);
-					Object title = classObj.get("title");
-					title = title == null ? "" : title;
+					Object title = null;
+					
+					if(classObj!=null){
+						title = classObj.get("title");
+					}
+					title = title == null ? "未知类型" : title;
+					
 					Object num = dosObj.get("md$number");
+					Object version = dosObj.get("vf$version");
 					num = num == null ? "" : num;
 					Object desc = dosObj.get("md$description");
 					desc = desc == null ? "" : desc;
-					return ""+title +": "+ num + "|" + desc;
+					Object name = dosObj.get("name");
+					name = name == null ? "" : name;
+
+					StringBuffer sb = new StringBuffer();
+					sb.append("<b>");
+					sb.append(name);
+					sb.append(" ");
+					sb.append(num);
+					sb.append(" ");
+					sb.append(version);
+					sb.append("</b><br/>");
+					sb.append("<small>");
+					sb.append("类型:");
+					sb.append(title);
+					sb.append(" 描述:");
+					sb.append(desc);
+
+					sb.append("</small>");
+					sb.append(HtmlUtil.createBottomLine(0));
+					return sb.toString();
 				}
 			} catch (Exception e) {
 			}
@@ -48,6 +74,7 @@ public class DCPDMObjectLabelProvider extends ColumnLabelProvider {
 			sb.append(file.getName());
 			sb.append("</a>");//$NON-NLS-1$
 			sb.append("<br/><small>");
+			sb.append("上传:");
 			sb.append(userName);
 			sb.append(" ");
 			sb.append(date);

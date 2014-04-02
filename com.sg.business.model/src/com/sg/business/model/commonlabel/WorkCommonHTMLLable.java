@@ -281,21 +281,23 @@ public class WorkCommonHTMLLable extends CommonHTMLLabel {
 
 		sb.append("<span style='font-family:微软雅黑;font-size:9pt;padding-left:24px;'>"); //$NON-NLS-1$
 
-		// 工作desc
-		String workDesc = work.getDesc();
-		workDesc = Utils.getPlainText(workDesc);
-		sb.append(workDesc);
-
 		// 获得有关的项目信息
 		Project project = work.getProject();
 		if (project != null) {
 			String projectDesc = project.getDesc();
 			projectDesc = Utils.getPlainText(projectDesc);
 			sb.append(" ");
-			sb.append("<span style='color:#909090;'>");//$NON-NLS-1$
+			sb.append("<span style='font-weight:bold;'>");//$NON-NLS-1$
 			sb.append(projectDesc);
 			sb.append("</span>");//$NON-NLS-1$
+			sb.append(" ");//$NON-NLS-1$
 		}
+
+		// 工作desc
+		String workDesc = work.getDesc();
+		workDesc = Utils.getPlainText(workDesc);
+		sb.append(workDesc);
+
 
 		// 有关时间
 		sb.append("<br/>"); //$NON-NLS-1$

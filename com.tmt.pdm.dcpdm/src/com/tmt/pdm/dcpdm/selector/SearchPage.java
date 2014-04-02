@@ -50,10 +50,11 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		setTitle("输入编号或名称查找DCPDM图文档");
 		setMessage("输入时无需加*，大小写有别，使用西文逗号分隔多条件。查询结果可以多选。\n例如:输入ABC将检索编号或名称包含ABC的DCPDM图文档。");
 		this.wizard = wizard;
-		
+
 		fieldlist = new ArrayList<String>();
 		fieldlist.add("80001a79");// 编号 //$NON-NLS-1$
-		fieldlist.add("80001a7a");// 名称 //$NON-NLS-1$
+		fieldlist.add("86054a45");// 名称 //$NON-NLS-1$
+		fieldlist.add("80001a7a");// 描述 //$NON-NLS-1$
 		fieldlist.add("80001aac");// 创建人 //$NON-NLS-1$
 
 	}
@@ -95,20 +96,16 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		});
 		return col.getColumn();
 	}
-	
-	
-	protected void searchData(final String input) {
 
+	protected void searchData(final String input) {
 		final ArrayList<?> result = new ArrayList<>();
-		
 		final String[] keys = input.split(",");
-		if(input.isEmpty()){
+		if (input.isEmpty()) {
 			MessageUtil.showToast("请输入条件", SWT.ICON_INFORMATION);
 			return;
 		}
 
 		Job job = new Job("检索PDM数据") {
-			@SuppressWarnings("unchecked")
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 
@@ -116,37 +113,14 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 				while (iter.hasNext()) {
 					for (int index = 0; index < keys.length; index++) {
 						String classOuid = iter.next();
-						try {
-							HashMap<String, String> condition = new HashMap<String, String>();
-							condition.put("80001a79", "*" + keys[index] + "*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
-							@SuppressWarnings("rawtypes")
-							ArrayList r = Starter.dos.list(classOuid,
-									fieldlist, condition);
-							if (r != null) {
-								result.addAll(r);
-							}
-						} catch (Exception e) {
-						}
-
-						try {
-							HashMap<String, String> condition = new HashMap<String, String>();
-							condition.put("80001a7a", "*" + keys[index] + "*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-							condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
-							@SuppressWarnings("rawtypes")
-							ArrayList r = Starter.dos.list(classOuid,
-									fieldlist, condition);
-							if (r != null) {
-								result.addAll(r);
-							}
-						} catch (IIPRequestException e) {
-						}
+						appendResult(result, keys[index], classOuid, "80001a79");
+						appendResult(result, keys[index], classOuid, "86054a45");
+						appendResult(result, keys[index], classOuid, "80001a7a");
 					}
-
 				}
-
 				return Status.OK_STATUS;
 			}
+
 		};
 		job.setUser(true);
 		job.schedule();
@@ -172,6 +146,21 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 			}
 		});
 
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void appendResult(final ArrayList<?> result, String key,
+			String classOuid, String fieldName) {
+		try {
+			HashMap<String, String> condition = new HashMap<String, String>();
+			condition.put(fieldName, "*" + key + "*"); //$NON-NLS-1$ //$NON-NLS-2$ 
+			condition.put("version.condition.type", "wip"); //$NON-NLS-1$ //$NON-NLS-2$
+			ArrayList r = Starter.dos.list(classOuid, fieldlist, condition);
+			if (r != null) {
+				result.addAll(r);
+			}
+		} catch (Exception e) {
+		}
 	}
 
 	@Override
@@ -216,8 +205,10 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 		col = createColumn(1, "编号");
 		col.setWidth(120);
 		col = createColumn(2, "名称");
-		col.setWidth(200);
-		col = createColumn(3, "创建人");
+		col.setWidth(120);
+		col = createColumn(3, "描述");
+		col.setWidth(120);
+		col = createColumn(4, "创建人");
 		col.setWidth(60);
 		Control control = viewer.getControl();
 		FormData fd1 = new FormData();
@@ -234,8 +225,6 @@ public class SearchPage extends WizardPage implements ISelectionChangedListener 
 				&& !viewer.getSelection().isEmpty());
 	}
 
-	
-	
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		ISelection selection = event.getSelection();

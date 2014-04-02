@@ -33,6 +33,7 @@ import com.mobnut.commons.html.HtmlUtil;
 import com.tmt.pdm.client.Starter;
 import com.tmt.pdm.dcpdm.nls.Messages;
 
+@Deprecated
 public class PDMObjectSelector extends Dialog {
 
 	private String[] docContainers;

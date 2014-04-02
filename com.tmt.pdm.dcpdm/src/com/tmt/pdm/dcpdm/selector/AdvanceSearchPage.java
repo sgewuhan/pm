@@ -101,8 +101,10 @@ public class AdvanceSearchPage extends WizardPage {
 		TreeColumn col = createTitleColumn();
 		col = createColumn("md$number", "编号");
 		col.setWidth(120);
-		col = createColumn("md$description", "名称");
-		col.setWidth(200);
+		col = createColumn("name", "模型名称");
+		col.setWidth(120);
+		col = createColumn("md$description", "描述");
+		col.setWidth(120);
 		col = createColumn("md$user", "创建人");
 		col.setWidth(60);
 
