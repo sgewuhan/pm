@@ -44,6 +44,7 @@ import com.tmt.pdm.dcpdm.DCPDMFSDownloadServiceHandler;
 import com.tmt.pdm.dcpdm.nls.Messages;
 import com.tmt.pdm.dcpdm.sync.ImportData;
 
+import dyna.framework.iip.IIPRequestException;
 import dyna.framework.service.dos.DOSChangeable;
 
 public class DCPDMUtil {
@@ -409,4 +410,25 @@ public class DCPDMUtil {
 		fileNameSet.add(fileName);
 		return fileName;
 	}
+	
+	public static boolean lock(String ouid){
+		try {
+			Starter.dos.lock(ouid);
+			return true;
+		} catch (IIPRequestException e) {
+			return false;
+		}
+	}
+
+	
+	public static boolean unlock(String ouid){
+		try {
+			Starter.dos.unlock(ouid);
+			return true;
+		} catch (IIPRequestException e) {
+			return false;
+		}
+	}
+	
+
 }

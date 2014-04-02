@@ -17,6 +17,7 @@ import com.sg.widgets.part.CurrentAccountContext;
 import com.sg.widgets.viewer.ViewerControl;
 import com.tmt.pdm.dcpdm.nls.Messages;
 
+@Deprecated
 public class LinkPDMDocAndDraw2 extends AbstractNavigatorHandler {
 
 

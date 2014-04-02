@@ -44,6 +44,33 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
+            locationURI="popup:work.deliverable?after=project.linkdeliverable">
+         <command
+               commandId="deliverable.linkpdm"
+               label="%command.label"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <iterate
+                        ifEmpty="false">
+                     <and>
+                        <instanceof
+                              value="com.sg.business.model.Work">
+                        </instanceof>
+                        <test
+                              args="createDeliverable"
+                              property="runtimework.action">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
             locationURI="toolbar:workflow.workdelivery?after=additions">
          <command
                commandId="workflow.deliverable.linkpdm"

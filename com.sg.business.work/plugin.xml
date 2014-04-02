@@ -4567,6 +4567,12 @@
                         persistable="false"
                         required="false">
                   </tree>
+                  <pageAction
+                        class="com.sg.business.work.handler.DownloadAllDocumentFiles"
+                        id="work.downloadalldocumentfile"
+                        label="下载全部"
+                        style="push">
+                  </pageAction>
                </section>
             </pagecolumn>
             <pageAction
