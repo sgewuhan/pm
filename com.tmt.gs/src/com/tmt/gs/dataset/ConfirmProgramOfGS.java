@@ -1,14 +1,11 @@
 package com.tmt.gs.dataset;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
 import com.sg.business.model.IModelConstants;
-import com.sg.business.model.Organization;
-import com.sg.business.model.Role;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
 import com.sg.business.taskforms.IRoleConstance;
@@ -34,26 +31,10 @@ public class ConfirmProgramOfGS extends MasterDetailDataSetFactory {
 
 	public DataSet getDataSet() {
 		if (master != null) {
-			List<PrimaryObject> result = new ArrayList<PrimaryObject>();
 			// 1.获取当前登录用户承担的角色
-			List<PrimaryObject> roles = user
-					.getRoles(IRoleConstance.ROLE_TECHNOLOGY_CHECKER_ID);
+			List<PrimaryObject> orglist = user.getRoleGrantedInAllOrganization(IRoleConstance.ROLE_TECHNOLOGY_CHECKER_ID);
 			// 2.获取角色所在组织
-			for (PrimaryObject po : roles) {
-				if (po instanceof Role) {
-					Role role = (Role) po;
-					Organization org = role.getOrganization();
-					List<PrimaryObject> userList = org.getUser();
-					for (PrimaryObject primaryObject : userList) {
-						if(primaryObject instanceof User){
-							User tc=(User) primaryObject;
-							result.add(tc);
-						}
-						
-					}
-				}
-			}
-			return new DataSet(result);
+			return new DataSet(orglist);
 		}
 		return super.getDataSet();
 	}
