@@ -2608,7 +2608,7 @@
       <taskForm
             editorId="gsprojectapplication.application"
             name="立项申请"
-            persistentFields="prj_number,accessory,application_leader,standardset"
+            persistentFields="prj_number,accessory,application_leader"
             processDefinitionId="gs.gsProjectApplication"
             validation="com.sg.business.taskforms.validation.DocumentMondartory">
          <processParameter
@@ -2618,10 +2618,6 @@
          <processParameter
                processParameterName="application_leader"
                taskFormFieldName="application_leader">
-         </processParameter>
-         <processParameter
-               processParameterName="standardset"
-               taskFormFieldName="standardset">
          </processParameter>
       </taskForm>
       <taskForm
@@ -2679,24 +2675,9 @@
          </processParameter>
       </taskForm>
       <taskForm
-            editorId="gsprojectapplication.approve"
-            inputHandler="com.tmt.gs.handler.ProjectApplicationSetProjectTypeOfGS"
-            name="批准"
-            persistentFields="choice,comment,accessory,projecttype"
-            processDefinitionId="gs.gsProjectApplication">
-         <processParameter
-               processParameterName="choice"
-               taskFormFieldName="choice">
-         </processParameter>
-         <processParameter
-               processParameterName="projecttype"
-               taskFormFieldName="projecttype">
-         </processParameter>
-      </taskForm>
-      <taskForm
             editorId="gsprojectapplication.assignment"
             name="指派项目负责人"
-            persistentFields="prj_manager,accessory,projecttype"
+            persistentFields="prj_manager,accessory,projecttype,standardset"
             processDefinitionId="gs.gsProjectApplication"
             saveHandler="com.tmt.gs.handler.ProjectApplicationOfGSAuditSaveHandler">
          <processParameter
@@ -2706,6 +2687,34 @@
          <processParameter
                processParameterName="projecttype"
                taskFormFieldName="projecttype">
+         </processParameter>
+         <processParameter
+               processParameterName="standardset"
+               taskFormFieldName="standardset">
+         </processParameter>
+      </taskForm>
+      <taskForm
+            editorId="gsprojectapplication.approve"
+            inputHandler="com.tmt.gs.handler.ProjectApplicationSetProjectTypeOfGS"
+            name="批准"
+            persistentFields="choice,comment,accessory,projecttype,prj_manager,standardset"
+            processDefinitionId="gs.gsProjectApplication"
+            saveHandler="com.tmt.gs.handler.ProjectApplicationOfGSAuditSaveHandler">
+         <processParameter
+               processParameterName="choice"
+               taskFormFieldName="choice">
+         </processParameter>
+         <processParameter
+               processParameterName="projecttype"
+               taskFormFieldName="projecttype">
+         </processParameter>
+         <processParameter
+               processParameterName="prj_manager"
+               taskFormFieldName="prj_manager">
+         </processParameter>
+         <processParameter
+               processParameterName="standardset"
+               taskFormFieldName="standardset">
          </processParameter>
       </taskForm>
       <taskForm
@@ -2734,7 +2743,7 @@
             editorId="gsprojectapplication.financial"
             inputHandler="com.tmt.gs.handler.ProjectApplicationWorkOrderOfGS"
             name="财务审核"
-            persistentFields="choice,changeworkorder,changebudget,accessory"
+            persistentFields="choice,changeworkorder,changebudget,accessory,prj_number"
             processDefinitionId="gs.gsProjectApplication">
          <processParameter
                processParameterName="choice"
@@ -2747,6 +2756,10 @@
          <processParameter
                processParameterName="changebudget"
                taskFormFieldName="changebudget">
+         </processParameter>
+         <processParameter
+               processParameterName="prj_number"
+               taskFormFieldName="prj_number">
          </processParameter>
       </taskForm>
       <taskForm
@@ -3117,6 +3130,85 @@
       <editor
             collectionName="taskform"
             dbName="pm2"
+            id="gsprojectapplication.assignment"
+            name="指派项目负责人">
+         <basicpage
+               id="page1"
+               title="审核">
+            <pagecolumn>
+               <section
+                     label="请指派项目经理">
+                  <navigatorSelector
+                        editable="true"
+                        id="prj_manager"
+                        label="项目经理"
+                        labelVisible="true"
+                        labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
+                        modelClass="com.sg.business.model.User"
+                        name="prj_manager"
+                        navigatorId="gs.projectapplication.aimprjadmin.selector"
+                        navigatorReturnField="userid"
+                        persistable="true"
+                        required="true">
+                  </navigatorSelector>
+               </section>
+               <section
+                     label="请输入项目等级">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="projecttype"
+                        label="项目等级"
+                        labelVisible="true"
+                        name="projecttype"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+               </section>
+               <section
+                     label="请填写适用标准">
+                  <text
+                        editPart="Text(Single Line)"
+                        editable="true"
+                        id="standardset"
+                        label="适用标准"
+                        labelVisible="true"
+                        name="standardset"
+                        persistable="true"
+                        required="true"
+                        type="String">
+                  </text>
+               </section>
+            </pagecolumn>
+         </basicpage>
+         <basicpage
+               id="page2"
+               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
+               title="流程记录">
+         </basicpage>
+         <basicpage
+               id="page3"
+               title="附件">
+            <pagecolumn>
+               <section
+                     label="意见附件">
+                  <file
+                        editPart="OfficeFileUploader"
+                        editable="true"
+                        id="accessory"
+                        labelVisible="true"
+                        name="accessory"
+                        persistable="true"
+                        required="false">
+                  </file>
+               </section>
+            </pagecolumn>
+         </basicpage>
+      </editor>
+      <editor
+            collectionName="taskform"
+            dbName="pm2"
             id="gsprojectapplication.approve"
             name="批准">
          <basicpage
@@ -3164,43 +3256,22 @@
                         type="String">
                   </text>
                </section>
-            </pagecolumn>
-         </basicpage>
-         <basicpage
-               id="page2"
-               pageDelegator="com.sg.business.commons.ui.page.WorkFlowRecord"
-               title="流程记录">
-         </basicpage>
-         <basicpage
-               id="page3"
-               title="附件">
-            <pagecolumn>
                <section
-                     label="意见附件">
-                  <file
-                        editPart="OfficeFileUploader"
+                     label="请确认适用标准">
+                  <text
+                        editPart="Text(Single Line)"
                         editable="true"
-                        id="accessory"
+                        id="standardset"
+                        label="适用标准"
                         labelVisible="true"
-                        name="accessory"
+                        name="standardset"
                         persistable="true"
-                        required="false">
-                  </file>
+                        required="true"
+                        type="String">
+                  </text>
                </section>
-            </pagecolumn>
-         </basicpage>
-      </editor>
-      <editor
-            collectionName="taskform"
-            dbName="pm2"
-            id="gsprojectapplication.assignment"
-            name="指派项目负责人">
-         <basicpage
-               id="page1"
-               title="审核">
-            <pagecolumn>
                <section
-                     label="请指派项目经理">
+                     label="请确认项目经理">
                   <navigatorSelector
                         editable="true"
                         id="prj_manager"
@@ -3214,34 +3285,6 @@
                         persistable="true"
                         required="true">
                   </navigatorSelector>
-               </section>
-               <section
-                     label="请输入项目等级">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="projecttype"
-                        label="项目等级"
-                        labelVisible="true"
-                        name="projecttype"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </text>
-               </section>
-               <section
-                     label="请填写适用标准">
-                  <text
-                        editPart="Text(Single Line)"
-                        editable="true"
-                        id="standardset"
-                        label="适用标准"
-                        labelVisible="true"
-                        name="standardset"
-                        persistable="true"
-                        required="true"
-                        type="String">
-                  </text>
                </section>
             </pagecolumn>
          </basicpage>
@@ -3639,6 +3682,22 @@
       <navigator
             id="gs.gsBusinessSupport.supportauditor"
             table="gs.gsBusinessSupport.supportauditor">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gsorganization.navigaor.projectfunction"
@@ -3657,38 +3716,202 @@
       <navigator
             id="gs.gsBusinessSupport.supportapprove1"
             table="gs.gsBusinessSupport.supportapprove1">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.projectchange.confirmprogram"
-            table="gs.projectchange.confirmprogram">
+            tree="gs.projectchange.confirmprogram">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.projectchange.product"
             table="gs.projectchange.product">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.projectchange.market"
             table="gs.projectchange.market">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.projectchange.quality"
             table="gs.projectchange.quality">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.projectchange.related"
             table="gs.projectchange.related">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.projectchange.customer"
             table="gs.projectchange.customer">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.bussinesssupport.support"
             table="gs.bussinesssupport.support">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
       <navigator
             id="gs.bussinesssupport.cbcchecker"
             table="gs.bussinesssupport.cbcchecker">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
+      </navigator>
+      <navigator
+            id="gs.projectapplication.aimprjadmin.selector"
+            tree="gs.projectapplication.aimprjadmin.selector">
+         <filterAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </filterAction>
+         <searchAction>
+            <column
+                  columnDefinitionId="account.userid">
+            </column>
+            <column
+                  columnDefinitionId="account.username">
+            </column>
+         </searchAction>
       </navigator>
    </extension>
    <extension
@@ -3779,6 +4002,36 @@
                columnDefinitionId="work.desc.1">
          </column>
       </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.gs.dataset.AimToPrjManager"
+            headerVisiable="false"
+            id="gs.projectapplication.aimprjadmin.selector">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+      </tree>
+      <tree
+            autoExpandLevel="2"
+            dataSet="com.tmt.gs.dataset.ConfirmProgramOfGS"
+            headerVisiable="false"
+            id="gs.projectchange.confirmprogram">
+         <column
+               columnDefinitionId="com.sg.widgets.commonlabel">
+         </column>
+         <structure
+               modelRelation="organization_organization">
+         </structure>
+         <structure
+               modelRelation="organization_user">
+         </structure>
+      </tree>
    </extension>
    <extension
          point="com.sg.widgets.table">
@@ -3868,13 +4121,6 @@
             dataSet="com.tmt.gs.dataset.BusinessSupportApproverOfGS"
             headerVisiable="false"
             id="gs.gsBusinessSupport.supportapprove1">
-         <column
-               columnDefinitionId="com.sg.widgets.commonlabel">
-         </column>
-      </table>
-      <table
-            dataSet="com.tmt.gs.dataset.ConfirmProgramOfGS"
-            id="gs.projectchange.confirmprogram">
          <column
                columnDefinitionId="com.sg.widgets.commonlabel">
          </column>
@@ -5990,7 +6236,7 @@
                         labelprovider="com.sg.business.commons.column.labelprovider.UserIdLabelProvider"
                         modelClass="com.sg.business.model.User"
                         name="project_supervisor"
-                        navigatorId="gschangeapprover.navigator"
+                        navigatorId="gs.projectchange.related"
                         navigatorReturnField="userid"
                         persistable="true"
                         required="true">
