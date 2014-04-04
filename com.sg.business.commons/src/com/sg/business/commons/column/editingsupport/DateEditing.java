@@ -13,7 +13,7 @@ import com.sg.widgets.commons.editingsupport.IEditingSupportor;
 import com.sg.widgets.commons.editingsupport.SchedualCellEditor;
 import com.sg.widgets.registry.config.ColumnConfigurator;
 
-public  class DateEditing implements IEditingSupportor {
+public class DateEditing implements IEditingSupportor {
 
 	@Override
 	public EditingSupport createEditingSupport(final ColumnViewer viewer,
@@ -38,6 +38,10 @@ public  class DateEditing implements IEditingSupportor {
 
 			@Override
 			protected boolean canEdit(Object element) {
+				if (element instanceof PrimaryObject) {
+					return !Boolean.FALSE.equals(((PrimaryObject) element)
+							.getValue("ecn_canedit"));
+				}
 				return true;
 			}
 
@@ -56,12 +60,11 @@ public  class DateEditing implements IEditingSupportor {
 					PrimaryObject po = (PrimaryObject) element;
 					po.setValue(configurator.getColumn(), value);
 					viewer.update(po, null);
-					}
+				}
 			}
 
 		};
 		return es;
 	}
-
 
 }

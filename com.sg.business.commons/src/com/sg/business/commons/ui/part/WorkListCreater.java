@@ -248,5 +248,4 @@ public class WorkListCreater extends Composite {
 		viewer.refresh();
 		viewer.expandAll();
 	}
-
 }

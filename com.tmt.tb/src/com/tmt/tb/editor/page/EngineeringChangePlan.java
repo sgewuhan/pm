@@ -28,6 +28,7 @@ import org.jbpm.task.Task;
 
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.portal.Portal;
 import com.mongodb.DBObject;
 import com.sg.business.commons.ui.part.WorkListCreater;
@@ -56,6 +57,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 	private String eca;
 	private String menuId = "popup:project.change.document";
 	private Button createDeliverableButton;
+	private boolean buttonEnable;
 
 	public EngineeringChangePlan() {
 	}
@@ -67,7 +69,6 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		context = new CurrentAccountContext();
 		setFormInput(input);
 		parent.setLayout(new FormLayout());
-		Button b = createToolBar(parent);
 		workListCreater = new WorkListCreater(parent, SWT.BORDER);
 		workListCreater.setContext(context);
 
@@ -76,46 +77,30 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		Object value;
 		try {
 			Task task = taskform.getExecuteTask(context);
-			String taskName = task.getNames().get(0).getText();
 			List<Work> ecnList = new ArrayList<Work>();
-			value = taskform.getProcessInstanceVarible("ecn", context); //$NON-NLS-1$
-
-			if (value instanceof List<?>) {
-				List<?> list = (List<?>) value;
-				for (Object dbo : list) {
-					Work work = ModelService.createModelObject((DBObject) dbo,
-							Work.class);
-					ecnList.add(work);
-				}
-			} else if (value instanceof Object[]) {
-				Object[] array = (Object[]) value;
-				for (Object dbo : array) {
-					Work work = ModelService.createModelObject((DBObject) dbo,
-							Work.class);
-					ecnList.add(work);
-				}
-
-			}
-			for (Work ecn : ecnList) {
-				if (taskName != null && taskName.equals(ecn.getDesc())) {
-					eca = (String) ecn.getValue(Work.F_INTERNAL_ECAPARA);
-					value = taskform.getProcessInstanceVarible(eca, context);
-					if (value instanceof List<?>) {
-						List<?> list = (List<?>) value;
-						for (Object dbo : list) {
-							Work work = ModelService.createModelObject(
-									(DBObject) dbo, Work.class);
-							ecnList.add(work);
-						}
-					} else if (value instanceof Object[]) {
-						Object[] array = (Object[]) value;
-						for (Object dbo : array) {
-							Work work = ModelService.createModelObject(
-									(DBObject) dbo, Work.class);
-							ecnList.add(work);
-						}
+			String taskName;
+			if (task != null) {
+				taskName = task.getNames().get(0).getText();
+				value = taskform.getProcessInstanceVarible("ecn", context); //$NON-NLS-1$
+				ecnList.addAll(appendWorkDataList(value));
+				for (Work ecn : ecnList) {
+					if (taskName != null && taskName.equals(ecn.getDesc())) {
+						eca = (String) ecn.getValue(Work.F_INTERNAL_ECAPARA);
+						// value = taskform.getProcessInstanceVarible(eca,
+						// context);
+						value = taskform.getValue(eca);
+						ecnList.addAll(appendWorkDataList(value));
 					}
 				}
+				buttonEnable = true;
+			} else {
+				taskName = taskform.getUserTask().getDesc();
+				eca = (String) taskform.getValue(Work.F_INTERNAL_ECAPARA);
+				// value = taskform.getProcessInstanceVarible(eca,
+				// context);
+				buttonEnable = false;
+				value = taskform.getValue(eca);
+				ecaList.addAll(appendWorkDataList(value));
 			}
 
 		} catch (Exception e) {
@@ -123,7 +108,10 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				e.printStackTrace();
 			}
 		}
-
+		
+		
+		Button b = createToolBar(parent);
+		
 		FormData fd = new FormData();
 		workListCreater.setLayoutData(fd);
 		fd.left = new FormAttachment(0, 2);
@@ -136,12 +124,33 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		return workListCreater;
 	}
 
+	private List<Work> appendWorkDataList(Object value) {
+		List<Work> primaryObjectList = new ArrayList<Work>();
+		if (value instanceof List<?>) {
+			List<?> list = (List<?>) value;
+			for (Object dbo : list) {
+				Work work = ModelService.createModelObject((DBObject) dbo,
+						Work.class);
+				primaryObjectList.add(work);
+			}
+		} else if (value instanceof Object[]) {
+			Object[] array = (Object[]) value;
+			for (Object dbo : array) {
+				Work work = ModelService.createModelObject((DBObject) dbo,
+						Work.class);
+				primaryObjectList.add(work);
+			}
+		}
+		return primaryObjectList;
+	}
+
 	private Button createToolBar(final Composite parent) {
 		Button createWorkButton = new Button(parent, SWT.PUSH);
 		createWorkButton.setImage(BusinessResource
 				.getImage(BusinessResource.IMAGE_CREATEWORK_24));
 		createWorkButton.setToolTipText(Messages.get().EngineeringChangePlan_1);
 		createWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton");//$NON-NLS-1$
+		createWorkButton.setEnabled(buttonEnable);
 		createWorkButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -165,7 +174,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 		createDeliverableButton
 				.setToolTipText(Messages.get().EngineeringChangePlan_6);
 		createDeliverableButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
-
+		createDeliverableButton.setEnabled(buttonEnable);
 		createDeliverableButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -177,6 +186,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 			}
 		});
+		
 		fd = new FormData();
 		createDeliverableButton.setLayoutData(fd);
 		fd.top = new FormAttachment(0, 2);
@@ -187,6 +197,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				.getImage(BusinessResource.IMAGE_EDITWORK_24));
 		editWorkButton.setToolTipText(Messages.get().EngineeringChangePlan_8);
 		editWorkButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+		editWorkButton.setEnabled(buttonEnable);
 		editWorkButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -209,6 +220,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				.getImage(BusinessResource.IMAGE_REMOVE_24));
 		deleteButton.setToolTipText(Messages.get().EngineeringChangePlan_10);
 		deleteButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+		deleteButton.setEnabled(buttonEnable);
 		deleteButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -235,6 +247,7 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 				.getImage(BusinessResource.IMAGE_REFRESH_24));
 		refreshButton.setToolTipText(Messages.get().EngineeringChangePlan_12);
 		refreshButton.setData(RWT.CUSTOM_VARIANT, "whitebutton"); //$NON-NLS-1$
+		refreshButton.setEnabled(buttonEnable);
 		refreshButton.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -516,7 +529,21 @@ public class EngineeringChangePlan extends AbstractFormPageDelegator {
 
 		TaskForm taskform = (TaskForm) getInputData();
 		if (eca != null) {
-			taskform.setValue(eca, workListCreater.getInput());
+			// 转换成DBObject存入到TaskForm中 2014/04/04 yangjun
+			// taskform.setValue(eca, workListCreater.getInput());
+			Object value = workListCreater.getInput();
+			List<DBObject> ecaList = new ArrayList<DBObject>();
+			if (value instanceof List<?>) {
+				List<?> list = (List<?>) value;
+				for (Object obj : list) {
+					if (obj instanceof PrimaryObject) {
+						PrimaryObject po = (PrimaryObject) obj;
+						ecaList.add(po.get_data());
+					}
+				}
+			}
+			taskform.setValue(Work.F_INTERNAL_ECAPARA, eca);
+			taskform.setValue(eca, ecaList);
 		}
 		setDirty(false);
 

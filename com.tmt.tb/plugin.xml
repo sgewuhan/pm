@@ -1413,11 +1413,10 @@
       <taskForm
             editorId="tbprojectchange.confirmProgram"
             name="确认变更方案"
-            persistentFields="plan,hasplan,other,hasother,project_supervisor,choice,accessory"
+            persistentFields="plan,hasplan,other,hasother,project_supervisor,choice,accessory,ecn"
             processDefinitionId="tb.tbProjectChange"
             saveHandler="com.tmt.tb.editor.ProjectChangeConfirmProgramSaveHandler">
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecn"
                taskFormFieldName="ecn">
          </processParameter>
@@ -1479,14 +1478,13 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="设计变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_design,ecapara"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_design"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_design"
                taskFormFieldName="ecnitem_design">
          </processParameter>
@@ -1499,14 +1497,13 @@
       <taskForm
             editorId="tbprojectchange.activity"
             name="工艺变更"
-            persistentFields="choice,comment,accessory"
+            persistentFields="choice,comment,accessory,ecnitem_process,ecapara"
             processDefinitionId="tb.tbProjectChange">
          <processParameter
                processParameterName="choice_process"
                taskFormFieldName="choice">
          </processParameter>
          <processParameter
-               processParameterDelegator="com.tmt.tb.field.parameter.ECN"
                processParameterName="ecnitem_process"
                taskFormFieldName="ecnitem_process">
          </processParameter>
@@ -2238,7 +2235,7 @@
             useHashlookup="false">
          <column
                column="defaultselected"
-               editingSupport="com.sg.widgets.commons.editingsupport.CheckBoxEditingSupport"
+               editingSupport="com.sg.business.commons.column.editingsupport.ECNCheckBox"
                type="Boolean"
                width="40">
          </column>

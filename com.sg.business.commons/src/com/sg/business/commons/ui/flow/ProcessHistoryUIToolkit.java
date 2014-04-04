@@ -18,7 +18,6 @@ import com.mobnut.db.file.RemoteFile;
 import com.mobnut.db.model.AccountInfo;
 import com.mobnut.db.model.ModelService;
 import com.mobnut.db.utils.DBUtil;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.sg.business.model.Document;
 import com.sg.business.model.IDocumentProcess;
@@ -61,21 +60,23 @@ public class ProcessHistoryUIToolkit {
 		if (editorId == null) {
 			return;
 		}
+		TaskForm taskForm = userTask.makeTaskForm();
 
-		BasicDBObject taskData = new BasicDBObject();
+//		BasicDBObject taskData = new BasicDBObject();
 		Iterator<String> iter = userTask.get_data().keySet().iterator();
 		while (iter.hasNext()) {
 			String key = iter.next();
 			if (key.startsWith("form_")) { //$NON-NLS-1$
 				String nkey = key.substring(5);
-				taskData.put(nkey, userTask.getValue(key));
+				taskForm.setValue(nkey, userTask.getValue(key));
 			}
 		}
-		taskData.put(TaskForm.F_WORK_ID, userTask.getWorkId());
+//		taskData.put(TaskForm.F_WORK_ID, userTask.getWorkId());
+//		taskData.put(TaskForm.F_USER_TASK_ID, userTask.get_id());
 		DataEditorConfigurator ec = (DataEditorConfigurator) Widgets
 				.getEditorRegistry().getConfigurator(editorId);
-		TaskForm taskForm = ModelService.createModelObject(taskData,
-				TaskForm.class);
+//		TaskForm taskForm = ModelService.createModelObject(taskData,
+//				TaskForm.class);
 		try {
 			DataObjectDialog.openDialog(taskForm, ec, false, null, Messages.get().ProcessHistoryUIToolkit_5);
 		} catch (Exception e) {

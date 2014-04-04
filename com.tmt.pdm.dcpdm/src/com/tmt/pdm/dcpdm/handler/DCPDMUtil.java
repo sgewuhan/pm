@@ -515,38 +515,46 @@ public class DCPDMUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Map<String, Object>> getChildFile(String ouid) {
-		ArrayList<Map<String, Object>> resultOuids = new ArrayList<Map<String, Object>>();
+	public static ArrayList<Map<String, Object>> getFileCascade(String ouid) {
+		ArrayList<Map<String, Object>> resultFileMaps;
 		try {
+			resultFileMaps = Starter.dos.listFile(ouid);
+			if (resultFileMaps == null) {
+				resultFileMaps = new ArrayList<Map<String, Object>>();
+			}
+			Starter.dos.setWorkingModel("80001764");
 			String classOuid = Starter.dos.getClassOuid(ouid);
 			ArrayList<?> asso = Starter.dos.listAssociationOfClass(classOuid);
+			HashMap<String, String> filter = new HashMap<String, String>();
+			filter.put("list.mode", "aggregation");
+			filter.put("version.condition.type", "wip");
+			Set<String> assClassSet = new HashSet<String>();
 			for (Iterator<?> iterator = asso.iterator(); iterator.hasNext();) {
 				DOSChangeable dos = (DOSChangeable) iterator.next();
 				String end1Class = (String) dos.get("end1.ouid@class");
 				String assClass = (String) dos.get("ouid@class");
 				if (classOuid.equals(end1Class)) {
-					HashMap<String, String> filter = new HashMap<String, String>();
-					filter.put("list.mode", "aggregation");
-					filter.put("version.condition.type", "wip");
-					filter.put("ouid@association.class", assClass);
-					Starter.dos.setWorkingModel("80001764");
-					ArrayList<?> result = Starter.dos
-							.listLinkFrom(ouid, filter);
-					if (result != null) {
-						for (int i = 0; i < result.size(); i++) {
-							ArrayList<?> item = (ArrayList<?>) result.get(i);
-							if (item != null && item.size() > 0) {
-								String subItemOuid = (String) item.get(0);
-								@SuppressWarnings("rawtypes")
-								ArrayList subItemFile = Starter.dos
-										.listFile(subItemOuid);
-								resultOuids.addAll(subItemFile);
-							}
+					assClassSet.add(assClass);
+				}
+			}
+			for (String assClass : assClassSet) {
+				filter.put("ouid@association.class", assClass);
+				ArrayList<?> result = Starter.dos.listLinkFrom(ouid, filter);
+				if (result != null) {
+
+					for (int i = 0; i < result.size(); i++) {
+						ArrayList<?> item = (ArrayList<?>) result.get(i);
+						if (item != null && item.size() > 0) {
+							String subItemOuid = (String) item.get(0);
+							@SuppressWarnings("rawtypes")
+							ArrayList subItemFile = Starter.dos
+									.listFile(subItemOuid);
+							resultFileMaps.addAll(subItemFile);
 						}
 					}
 				}
 			}
-			return resultOuids;
+			return resultFileMaps;
 		} catch (Exception e) {
 		}
 		return null;

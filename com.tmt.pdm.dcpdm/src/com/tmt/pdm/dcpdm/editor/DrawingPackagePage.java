@@ -124,22 +124,15 @@ public class DrawingPackagePage extends DocumentWorkflowHistory implements
 		setDirty(false);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void downloadAll(PrimaryObjectEditorInput input, Shell shell)
 			throws Exception {
 		String pdm_ouid = (String) input.getData().getValue("pdm_ouid");
 		String zipFileName = (String) input.getData().getValue(
 				Document.F_DOCUMENT_NUMBER);
 		if (pdm_ouid != null) {
-			ArrayList<Map<String, Object>> fileList = Starter.dos
-					.listFile((String) pdm_ouid);
-
-			if (fileList != null) {
-				ArrayList<Map<String, Object>> childFile = DCPDMUtil
-						.getChildFile(pdm_ouid);
-				fileList.addAll(childFile);
-				DCPDMUtil.download(zipFileName, fileList, shell);
-			}
+			ArrayList<Map<String, Object>> fileList = DCPDMUtil
+					.getFileCascade(pdm_ouid);
+			DCPDMUtil.download(zipFileName, fileList, shell);
 		}
 	}
 

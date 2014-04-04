@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.mobnut.db.DBActivator;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.ModelService;
+import com.mobnut.db.model.PrimaryObject;
 import com.mobnut.portal.Portal;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -41,20 +42,22 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 		setDirty(true);
 
 		context = new CurrentAccountContext();
-		createTable(input,parent);
+		createTable(input, parent);
 		TaskForm taskform = (TaskForm) input.getData();
 
 		List<Work> changeItems = new ArrayList<Work>();
 		try {
-			Object value = taskform.getProcessInstanceVarible("ecn", //$NON-NLS-1$
-					context);
+			// Object value = taskform.getProcessInstanceVarible("ecn", 
+			// context);
+			Object value = taskform.getValue("ecn");
 			if (value == null) {
-
+				// 默认给出一组系统定义在独立工作定义中的ECN选项
 				DBCollection collection = DBActivator.getCollection(
 						IModelConstants.DB, IModelConstants.C_WORK_DEFINITION);
-				DBCursor cur = collection.find(new BasicDBObject()
-						.append(WorkDefinition.F_ACTIVATED, Boolean.TRUE)
-						.append(WorkDefinition.F_INTERNAL_TYPE,WorkDefinition.INTERNAL_TYPE_CHANGEITEM));
+				DBCursor cur = collection.find(new BasicDBObject().append(
+						WorkDefinition.F_ACTIVATED, Boolean.TRUE).append(
+						WorkDefinition.F_INTERNAL_TYPE,
+						WorkDefinition.INTERNAL_TYPE_CHANGEITEM));
 				while (cur.hasNext()) {
 					DBObject dbo = cur.next();
 					WorkDefinition workd = ModelService.createModelObject(dbo,
@@ -69,6 +72,8 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 					for (Object dbo : list) {
 						Work work = ModelService.createModelObject(
 								(DBObject) dbo, Work.class);
+						// 增加取出流程记录中的ECN不允许编辑 2014/04/04 yangjun
+						work.setValue("ecn_canedit", Boolean.FALSE);
 						changeItems.add(work);
 					}
 				} else if (value instanceof Object[]) {
@@ -76,6 +81,8 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 					for (Object dbo : array) {
 						Work work = ModelService.createModelObject(
 								(DBObject) dbo, Work.class);
+						// 增加取出流程记录中的ECN不允许编辑 2014/04/04 yangjun
+						work.setValue("ecn_canedit", Boolean.FALSE);
 						changeItems.add(work);
 					}
 
@@ -91,11 +98,11 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 		return viewer.getTable();
 	}
 
-	private void createTable(PrimaryObjectEditorInput input,Composite parent) {
-		TableConfigurator configurator=(TableConfigurator) Widgets.getTableRegistry().getConfigurator("ec.standlonework"); //$NON-NLS-1$
-		viewer=new CTableViewer(parent, configurator);
+	private void createTable(PrimaryObjectEditorInput input, Composite parent) {
+		TableConfigurator configurator = (TableConfigurator) Widgets
+				.getTableRegistry().getConfigurator("ec.standlonework"); //$NON-NLS-1$
+		viewer = new CTableViewer(parent, configurator);
 	}
-
 
 	@Override
 	public boolean canRefresh() {
@@ -110,14 +117,27 @@ public class EngineeringChangeItem extends AbstractFormPageDelegator {
 	@Override
 	public void commit(boolean onSave) {
 		TaskForm taskform = (TaskForm) getInputData();
-		taskform.setValue("ecn",viewer.getInput() ); //$NON-NLS-1$
+		// 转换成DBObject存入到TaskForm中 2014/04/04 yangjun
+		//taskform.setValue("ecn", viewer.getInput()); //$NON-NLS-1$
+		Object value = viewer.getInput();
+		List<DBObject> ecn = new ArrayList<DBObject>();
+		if (value instanceof List<?>) {
+			List<?> list = (List<?>) value;
+			for (Object obj : list) {
+				if (obj instanceof PrimaryObject) {
+					PrimaryObject po = (PrimaryObject) obj;
+					ecn.add(po.get_data());
+				}
+			}
+		}
+		taskform.setValue("ecn", ecn);
 		setDirty(false);
-		
+
 	}
 
 	@Override
 	public void setFocus() {
-		
+
 	}
 
 }

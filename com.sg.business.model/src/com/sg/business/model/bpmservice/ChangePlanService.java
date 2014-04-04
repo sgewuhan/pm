@@ -133,7 +133,7 @@ public class ChangePlanService extends ServiceProvider {
 
 				}
 				try {
-					eca.setValue(Work.TEMPLATE_DELIVERABLE, null);
+//					eca.setValue(Work.TEMPLATE_DELIVERABLE, null);
 					// eca.setValue(Work.F_MANDATORY,
 					// Boolean.TRUE);
 					// eca.setValue(Work.F_SETTING_CAN_SKIP_WORKFLOW_TO_FINISH,
