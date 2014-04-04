@@ -48,7 +48,7 @@ public class ApproverForAmountOfGS extends AbstractRoleParameterDelegator {
 			} else if (amount >= 10000d && amount < 100000d) {
 				roleId = IRoleConstance.ROLE_MOLD_APPROVER_DEVICE_ID;
 			} else if (amount >= 100000d && amount < 200000d) {
-				roleId = IRoleConstance.ROLE_MOLD_MAIN_ENGINEER_ID;
+				roleId = IRoleConstance.ROLE_CHIEF_ENGINEER_APPROVER_ID;
 			}
 		}
 		return roleId;

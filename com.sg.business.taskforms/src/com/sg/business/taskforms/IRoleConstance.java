@@ -100,10 +100,10 @@ public interface IRoleConstance {
 	public static final String ROLE_MOLD_APPROVER_DEVICE_TEXT =Messages.get().IRoleConstance_27;
 	
 	/**
-	 * 总工模具批准者
+	 * 总工程师批准
 	 */
-	public static final String ROLE_MOLD_MAIN_ENGINEER_ID = "Mold Main Engineer";
-	public static final String ROLE_MOLD_MAIN_ENGINEER_TEXT =Messages.get().IRoleConstance_28;
+	public static final String ROLE_CHIEF_ENGINEER_APPROVER_ID = "Chief Engineer Approver";
+	public static final String ROLE_CHIEF_ENGINEER_APPROVER_TEXT =Messages.get().IRoleConstance_28;
 	
 	/**
 	 * 公司模具批准者

@@ -6,22 +6,22 @@ import java.util.List;
 import com.mobnut.db.model.DataSet;
 import com.mobnut.db.model.IContext;
 import com.mobnut.db.model.PrimaryObject;
+import com.sg.business.model.ILifecycle;
 import com.sg.business.model.IModelConstants;
 import com.sg.business.model.Organization;
-import com.sg.business.model.Role;
+import com.sg.business.model.Project;
 import com.sg.business.model.TaskForm;
 import com.sg.business.model.User;
 import com.sg.business.model.toolkit.UserToolkit;
-import com.sg.business.taskforms.IRoleConstance;
 import com.sg.widgets.commons.dataset.MasterDetailDataSetFactory;
 import com.sg.widgets.part.CurrentAccountContext;
 
-public class ChangeApproverOfGS extends MasterDetailDataSetFactory {
+public class OtherDept extends MasterDetailDataSetFactory {
 
 	public IContext context;
 	private User user;
 
-	public ChangeApproverOfGS() {
+	public OtherDept() {
 		super(IModelConstants.DB, IModelConstants.C_USER);
 		context = new CurrentAccountContext();
 		String userId = context.getAccountInfo().getUserId();
@@ -36,21 +36,20 @@ public class ChangeApproverOfGS extends MasterDetailDataSetFactory {
 	public DataSet getDataSet() {
 		if (master != null) {
 			if (master instanceof TaskForm) {
-				List<PrimaryObject> result = new ArrayList<PrimaryObject>();
-				List<PrimaryObject> roles = user
-						.getRoles(IRoleConstance.ROLE_TECHNICAL_LEADER_CHECKER_ID);
-				for (PrimaryObject po : roles) {
-					if (po instanceof Role) {
-						Role role = (Role) po;
-						Organization org = role.getOrganization();
+				List<PrimaryObject> result=new ArrayList<PrimaryObject>();
+				List<PrimaryObject> prjlist = user.getChargeProject(ILifecycle.STATUS_NONE_VALUE);
+				for (PrimaryObject po : prjlist) {
+					if(po instanceof Project){
+						Project project=(Project) po;
+						Organization org=project.getFunctionOrganization();
 						result.add(org);
-						
 					}
+					
 				}
 				return new DataSet(result);
 			}
 		}
 		return super.getDataSet();
-	}
 
+	}
 }
